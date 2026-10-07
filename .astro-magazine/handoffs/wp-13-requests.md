@@ -13,3 +13,7 @@
 1. Add reduced-motion, forced-colors and print screenshots for `/`, `/styleguide/` and the mega menu open: `page.emulateMedia({ reducedMotion: 'reduce' })`, `page.emulateMedia({ forcedColors: 'active' })`, `page.emulateMedia({ media: 'print' })`. `e2e/**` is not in WP-13's write set.
 2. Wire `node scripts/audit-tokens.mjs` into `verify:static` (needs an `audit:tokens` script in the frozen `package.json`). Until then `tests/unit/wp-13/design-system.test.ts` runs the same audit over the design-system paths inside `npm run test:unit`.
 3. Add a horizontal-overflow assertion at 390 px for every route: `document.documentElement.scrollWidth <= window.innerWidth`.
+
+## To WP-08 (ReadinessCheck owner)
+
+`node scripts/audit-tokens.mjs` reports one magic-spacing value outside WP-13 paths: `src/components/islands/we-readiness-check/ReadinessCheck.astro:107` (`margin-block-start: 0.2rem`). Use a `--sp-*` token or `calc()` on the scale. The `audit:wired` job runs the script.
