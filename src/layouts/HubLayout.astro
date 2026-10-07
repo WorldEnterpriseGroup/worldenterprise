@@ -1,0 +1,67 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import type { HeaderProps, PageMeta } from './types.ts';
+import { href } from '../lib/url.ts';
+import type { Heading } from './types.ts';
+
+interface HubChild {
+  readonly title: string;
+  readonly href: string;
+  readonly description?: string;
+}
+
+type Props = PageMeta & HeaderProps & {
+  title: string;
+  /** Whole subtree of this hub. Rendered as a list so the section is reachable without the mega menu or JavaScript. */
+  subtree?: readonly HubChild[];
+  /** In-page table of contents entries (anchor ids on the page). */
+  toc?: readonly Pick<Heading, 'slug' | 'text'>[];
+};
+
+const { eyebrow, lead, subtree = [], toc = [], ...meta } = Astro.props;
+const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+---
+
+<BaseLayout {...meta} crumbs={crumbs} schemaType={meta.schemaType ?? 'CollectionPage'}>
+  <PageHeader title={meta.title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} />
+  {
+    toc.length > 0 && (
+      <nav class="toc container" aria-label="On this page">
+        <ul class="cluster" role="list">
+          {toc.map((entry) => (
+            <li>
+              <a href={`#${entry.slug}`}>{entry.text}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+  <div class="section">
+    <div class="container stack">
+      <slot />
+    </div>
+  </div>
+  {
+    subtree.length > 0 && (
+      <section class="section section--soft section--defer" aria-labelledby="hub-subtree">
+        <div class="container stack">
+          <h2 id="hub-subtree">In this section</h2>
+          <ul class="subtree grid" role="list">
+            {subtree.map((child) => (
+              <li>
+                <a class="subtree__link" href={href(child.href)}>
+                  <span class="subtree__title">{child.title}</span>
+                  {child.description && <span class="subtree__desc">{child.description}</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+  <slot name="after" />
+</BaseLayout>

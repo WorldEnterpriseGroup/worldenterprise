@@ -1,0 +1,45 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import type { HeaderProps, PageMeta } from './types.ts';
+import ContextualNext from '../components/blocks/ContextualNext.astro';
+
+const ALTITUDES = { dream: 'Survey', build: 'Blueprint', grow: 'Territory' } as const;
+
+interface NextItem {
+  readonly title: string;
+  readonly href: string;
+  readonly description?: string;
+}
+
+type Props = PageMeta & HeaderProps & {
+  title: string;
+  /** Dream, Build and Grow are three altitudes of the same map: survey, blueprint, territory. */
+  stage?: keyof typeof ALTITUDES;
+  next?: readonly NextItem[];
+};
+
+const { eyebrow, lead, stage, next = [], ...meta } = Astro.props;
+const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+const altitude = stage ? ALTITUDES[stage] : undefined;
+---
+
+<BaseLayout {...meta} crumbs={crumbs}>
+  <PageHeader title={meta.title} eyebrow={eyebrow ?? (altitude ? `${altitude} altitude` : undefined)} lead={lead} crumbs={crumbs} />
+  <div class="section">
+    <div class="container stack">
+      <slot />
+    </div>
+  </div>
+  <slot name="after" />
+  {
+    next.length > 0 && (
+      <div class="section section--soft section--defer">
+        <div class="container">
+          <ContextualNext items={next} />
+        </div>
+      </div>
+    )
+  }
+</BaseLayout>

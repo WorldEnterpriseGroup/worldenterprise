@@ -1,0 +1,61 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import type { HeaderProps, PageMeta } from './types.ts';
+import HexIcon from '../components/ui/HexIcon.astro';
+import LimitsBlock from '../components/blocks/LimitsBlock.astro';
+import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
+import type { ServiceLine } from '../data/nav.ts';
+import { site } from '../data/site.ts';
+import { absoluteUrl } from '../lib/url.ts';
+
+type Props = PageMeta & HeaderProps & {
+  title: string;
+  line: ServiceLine;
+  covers?: readonly string[];
+  /** Required: every service line states what it does not do (claim C-04). */
+  doesNotCover: readonly string[];
+};
+
+const { eyebrow, lead, line, covers = [], doesNotCover, ...meta } = Astro.props;
+const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+const serviceNode = {
+  '@type': 'Service',
+  '@id': `${absoluteUrl(meta.path)}#service`,
+  name: meta.title,
+  description: meta.description,
+  serviceType: meta.title,
+  provider: { '@id': `${site.origin}/#org` },
+  url: absoluteUrl(meta.path),
+};
+---
+
+<BaseLayout {...meta} crumbs={crumbs} jsonLd={[...(meta.jsonLd ?? []), serviceNode]}>
+  <PageHeader title={meta.title} eyebrow={eyebrow ?? `Service line ${line}`} lead={lead} crumbs={crumbs}>
+    <HexIcon line={line} size={72} />
+  </PageHeader>
+  <div class="section">
+    <div class="container with-rail">
+      <div class="stack prose">
+        {
+          covers.length > 0 && (
+            <section aria-labelledby="covers-title">
+              <h2 id="covers-title">What this line covers</h2>
+              <ul>
+                {covers.map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+          )
+        }
+        <slot />
+        <LimitsBlock items={doesNotCover} />
+        {line === 'F' && <NoFundingDisclaimer />}
+      </div>
+      <aside class="rail" aria-label="Related">
+        <slot name="aside" />
+      </aside>
+    </div>
+  </div>
+  <slot name="after" />
+</BaseLayout>

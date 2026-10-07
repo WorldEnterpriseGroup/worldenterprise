@@ -1,0 +1,33 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import type { HeaderProps, PageMeta } from './types.ts';
+type Props = PageMeta & HeaderProps & {
+  title: string;
+  /** Editor's introduction for topic hubs (120 to 200 words, written by hand). */
+  introduction?: string;
+};
+
+const { eyebrow, lead, introduction, ...meta } = Astro.props;
+const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+---
+
+<BaseLayout {...meta} crumbs={crumbs} schemaType={meta.schemaType ?? 'CollectionPage'}>
+  <PageHeader title={meta.title} eyebrow={eyebrow ?? 'Insights'} lead={lead} crumbs={crumbs} />
+  {
+    introduction && (
+      <div class="section section--tight">
+        <div class="container container--prose prose">
+          <p>{introduction}</p>
+        </div>
+      </div>
+    )
+  }
+  <div class="section">
+    <div class="container stack">
+      <slot />
+    </div>
+  </div>
+  <slot name="after" />
+</BaseLayout>

@@ -1,0 +1,34 @@
+---
+import { href } from '../../lib/url.ts';
+
+interface NextItem {
+  readonly title: string;
+  readonly href: string;
+  readonly description?: string;
+}
+
+interface Props {
+  items: readonly NextItem[];
+  title?: string;
+}
+
+const { items, title = 'Next' } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section class="next" aria-labelledby="next-title">
+      <h2 id="next-title" class="next__title">{title}</h2>
+      <ul class="next__list" role="list">
+        {items.map((item) => (
+          <li>
+            <a class="next__link" href={href(item.href)}>
+              <span class="next__label">{item.title}</span>
+              {item.description && <span class="next__desc">{item.description}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

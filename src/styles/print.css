@@ -1,0 +1,50 @@
+@layer print {
+  @media print {
+    :root {
+      --fs-base: 11pt;
+    }
+
+    body {
+      background: #fff;
+      color: #000;
+    }
+
+    .site-header,
+    .site-footer,
+    .utility-bar,
+    .skip-link,
+    .reading-progress,
+    .rail,
+    .no-print {
+      display: none !important;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    a[href^='http']::after {
+      content: ' (' attr(href) ')';
+      font-size: 0.85em;
+    }
+
+    h1,
+    h2,
+    h3 {
+      break-after: avoid;
+    }
+
+    pre,
+    table,
+    figure {
+      break-inside: avoid;
+    }
+
+    .container,
+    .container--wide,
+    .container--prose {
+      inline-size: 100%;
+    }
+  }
+}

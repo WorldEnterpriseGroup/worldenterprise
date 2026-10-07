@@ -1,0 +1,34 @@
+---
+import { resolveUtility, utilityNav } from '../../data/nav.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const state = await getRouteState();
+const links = resolveUtility(state.isLive);
+---
+
+<div class="utility-bar">
+  <div class="container utility-bar__inner">
+    <p class="utility-bar__statement">{utilityNav.statement}</p>
+    {
+      links.length > 0 && (
+        <nav aria-label="Utility">
+          <ul class="utility-bar__list" role="list">
+            {links.map((link) => (
+              <li>
+                <a href={href(link.href)} aria-current={link.href === currentPath ? 'page' : undefined}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+  </div>
+</div>

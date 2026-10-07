@@ -1,0 +1,100 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/layout/Breadcrumbs.astro';
+import RelatedRail from '../components/blocks/RelatedRail.astro';
+import SourcesList from '../components/blocks/SourcesList.astro';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import { articleNode } from '../lib/schema.ts';
+import { href } from '../lib/url.ts';
+import { getRouteState } from '../lib/route-state.ts';
+import type { Heading, PageMeta } from './types.ts';
+
+interface Source {
+  readonly id: string;
+  readonly title: string;
+  readonly publisher: string;
+  readonly url: string;
+  readonly accessed?: Date | undefined;
+}
+
+type Props = Omit<PageMeta, 'updated'> & {
+  title: string;
+  topic: 'dream' | 'build' | 'grow' | 'fundable';
+  publishedDate: Date;
+  updatedDate?: Date | undefined;
+  readingMinutes?: number;
+  headings?: readonly Heading[];
+  sources?: readonly Source[];
+  related?: readonly { readonly kind: string; readonly title: string; readonly href: string }[];
+};
+
+const { topic, publishedDate, updatedDate, readingMinutes, headings = [], sources = [], related = [], ...meta } = Astro.props;
+const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+const toc = headings.filter((h) => h.depth === 2);
+const state = await getRouteState();
+const policyLive = state.isLive('/about/editorial-policy/');
+const topicLive = state.isLive(`/insights/topic/${topic}/`);
+const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const article = articleNode({ path: meta.path, headline: meta.title, description: meta.description, published: publishedDate, ...(updatedDate !== undefined ? { modified: updatedDate } : {}) });
+---
+
+<BaseLayout {...meta} crumbs={crumbs} ogType="article" published={publishedDate} updated={updatedDate ?? publishedDate} jsonLd={[...(meta.jsonLd ?? []), article]}>
+  <div class="reading-progress" aria-hidden="true"></div>
+  <article>
+    <header class="page-header page-header--article">
+      <div class="container container--prose stack">
+        <Breadcrumbs crumbs={crumbs} />
+        <p class="eyebrow">
+          {topicLive ? <a href={href(`/insights/topic/${topic}/`)}>{topic}</a> : topic}
+        </p>
+        <h1>{meta.title}</h1>
+        <div class="rule" aria-hidden="true"></div>
+        <p class="lead">{meta.description}</p>
+        <p class="byline ui">
+          By World Enterprise Editorial
+          <span aria-hidden="true"> / </span>
+          <time datetime={publishedDate.toISOString()}>{dateFormat.format(publishedDate)}</time>
+          {updatedDate && <span>, updated <time datetime={updatedDate.toISOString()}>{dateFormat.format(updatedDate)}</time></span>}
+          {readingMinutes && <span aria-hidden="true"> / </span>}
+          {readingMinutes && <span>{readingMinutes} min read</span>}
+        </p>
+      </div>
+    </header>
+    <div class="section">
+      <div class="container with-rail">
+        <div class="prose">
+          <slot />
+          <SourcesList sources={sources} />
+          {
+            policyLive && (
+              <p class="muted ui">
+                Spotted an error? Read how we handle <a href={href('/about/editorial-policy/')}>corrections in our editorial policy</a>.
+              </p>
+            )
+          }
+        </div>
+        {
+          toc.length > 0 && (
+            <aside class="rail" aria-label="In this article">
+              <nav class="toc-rail" aria-label="Contents">
+                <p class="eyebrow">Contents</p>
+                <ol role="list">
+                  {toc.map((h) => (
+                    <li>
+                      <a href={`#${h.slug}`}>{h.text}</a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </aside>
+          )
+        }
+      </div>
+    </div>
+  </article>
+  <div class="section section--soft section--defer">
+    <div class="container">
+      <RelatedRail items={related} />
+    </div>
+  </div>
+</BaseLayout>

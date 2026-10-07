@@ -1,0 +1,54 @@
+---
+import wordmark from '../../assets/brand/we-logo-wordmark.svg';
+import { flags } from '../../data/flags.ts';
+import { resolveFooter } from '../../data/nav.ts';
+import { site } from '../../data/site.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const state = await getRouteState();
+const columns = resolveFooter(state.isLive);
+const legalLine = flags.pbcWording ? site.legalLine : `${site.legalName}, registered in Delaware`;
+const year = new Date().getUTCFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand stack">
+      <a href={href('/')} class="site-footer__logo" aria-label={`${site.name}, home`}>
+        <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="World Enterprise" loading="lazy" decoding="async" />
+      </a>
+      <p class="site-footer__motto">{site.motto}</p>
+      <p class="site-footer__positioning">{site.tagline}. {site.description}</p>
+    </div>
+    {
+      columns.map((column) => (
+        <nav class="site-footer__col" aria-labelledby={`footer-${column.heading.toLowerCase().replace(/[^a-z]+/g, '-')}`}>
+          <h2 class="site-footer__heading" id={`footer-${column.heading.toLowerCase().replace(/[^a-z]+/g, '-')}`}>
+            {column.heading}
+          </h2>
+          <ul role="list">
+            {column.links.map((link) => (
+              <li>
+                <a href={href(link.href)} aria-current={link.href === currentPath ? 'page' : undefined}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+  </div>
+  <div class="site-footer__bar">
+    <div class="container site-footer__bar-inner">
+      <p>&copy; {year} {legalLine}.</p>
+      <p>{site.signature}</p>
+    </div>
+  </div>
+</footer>

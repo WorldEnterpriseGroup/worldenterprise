@@ -1,0 +1,40 @@
+---
+import wordmark from '../../assets/brand/we-logo-wordmark.svg';
+import { applyButton, resolveNav } from '../../data/nav.ts';
+import { site } from '../../data/site.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const state = await getRouteState();
+const items = resolveNav(state.isLive);
+const applyLive = state.isLive(applyButton.href);
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href={href('/')} class="site-header__logo" aria-label={`${site.name}, home`}>
+      <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="World Enterprise" decoding="async" />
+    </a>
+    {
+      items.length > 0 && (
+        <nav aria-label="Primary">
+          <ul class="site-header__list" role="list">
+            {items.map((item) => (
+              <li>
+                <a href={href(item.href)} aria-current={item.href === currentPath ? 'page' : currentPath.startsWith(item.href) && item.href !== '/' ? 'true' : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+    {applyLive && <a class="btn btn--primary" href={href(applyButton.href)}>{applyButton.label}</a>}
+  </div>
+</header>

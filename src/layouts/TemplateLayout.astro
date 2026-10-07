@@ -1,0 +1,33 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import type { HeaderProps, PageMeta } from './types.ts';
+import { href } from '../lib/url.ts';
+
+type Props = PageMeta & HeaderProps & {
+  title: string;
+  /** Path of the static Markdown download for this template, when it exists. */
+  markdownHref?: string;
+  instructions?: string;
+};
+
+const { eyebrow, lead, markdownHref, instructions, ...meta } = Astro.props;
+const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+---
+
+<BaseLayout {...meta} crumbs={crumbs}>
+  <PageHeader title={meta.title} eyebrow={eyebrow ?? 'Template'} lead={lead} crumbs={crumbs} />
+  <div class="section">
+    <div class="container container--prose stack">
+      {instructions && <p class="callout"><strong>How to use this.</strong> {instructions}</p>}
+      <div class="cluster no-print">
+        <slot name="actions" />
+        {markdownHref && <a class="btn btn--secondary" href={href(markdownHref)} download>Download as Markdown</a>}
+      </div>
+      <div class="prose template-body">
+        <slot />
+      </div>
+    </div>
+  </div>
+</BaseLayout>

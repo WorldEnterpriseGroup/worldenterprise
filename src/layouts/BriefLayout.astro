@@ -1,0 +1,55 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/layout/Breadcrumbs.astro';
+import MethodologyBox from '../components/blocks/MethodologyBox.astro';
+import SourcesList from '../components/blocks/SourcesList.astro';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import { articleNode } from '../lib/schema.ts';
+import type { PageMeta } from './types.ts';
+
+interface Source {
+  readonly id: string;
+  readonly title: string;
+  readonly publisher: string;
+  readonly url: string;
+  readonly accessed?: Date | undefined;
+}
+
+type Props = Omit<PageMeta, 'updated'> & {
+  title: string;
+  subtitle: string;
+  publishedDate: Date;
+  updatedDate?: Date | undefined;
+  version: string;
+  methodology: string;
+  limitations: string;
+  sources: readonly Source[];
+};
+
+const { subtitle, publishedDate, updatedDate, version, methodology, limitations, sources, ...meta } = Astro.props;
+const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+const report = articleNode({ path: meta.path, headline: meta.title, description: meta.description, published: publishedDate, type: 'Report', ...(updatedDate !== undefined ? { modified: updatedDate } : {}) });
+---
+
+<BaseLayout {...meta} crumbs={crumbs} ogType="article" published={publishedDate} updated={updatedDate ?? publishedDate} jsonLd={[...(meta.jsonLd ?? []), report]}>
+  <header class="page-header">
+    <div class="container stack">
+      <Breadcrumbs crumbs={crumbs} />
+      <p class="eyebrow">Research brief</p>
+      <h1>{meta.title}</h1>
+      <div class="rule" aria-hidden="true"></div>
+      <p class="lead">{subtitle}</p>
+    </div>
+  </header>
+  <div class="section">
+    <div class="container with-rail">
+      <div class="prose">
+        <slot />
+        <SourcesList sources={sources} />
+      </div>
+      <aside class="rail" aria-label="About this brief">
+        <MethodologyBox methodology={methodology} limitations={limitations} version={version} updated={updatedDate ?? publishedDate} />
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { PageMeta } from './types.ts';
+
+/** Home page shell (hero mode H1 Atlas). The page supplies the hero, which carries the single h1. */
+type Props = Omit<PageMeta, 'path' | 'title'> & { path?: string };
+
+const { path = '/', ...meta } = Astro.props;
+---
+
+<BaseLayout {...meta} path={path} schemaType="WebPage">
+  <slot name="hero" />
+  <slot />
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+interface Step {
+  readonly title: string;
+  readonly body: string;
+}
+
+interface Props {
+  steps: readonly Step[];
+  /** Heading level for step titles, so the page outline stays valid. */
+  headingLevel?: 2 | 3 | 4;
+}
+
+const { steps, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+
+<ol class="steps" role="list">
+  {
+    steps.map((step, index) => (
+      <li class="steps__item">
+        <span class="steps__index" aria-hidden="true">{index + 1}</span>
+        <div class="steps__body">
+          <Heading class="steps__title">{step.title}</Heading>
+          <p>{step.body}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>

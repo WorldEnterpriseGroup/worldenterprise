@@ -1,0 +1,34 @@
+---
+import { href } from '../../lib/url.ts';
+
+interface RelatedItem {
+  readonly kind: string;
+  readonly title: string;
+  readonly href: string;
+}
+
+interface Props {
+  items: readonly RelatedItem[];
+  title?: string;
+}
+
+const { items, title = 'Related' } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section class="related" aria-labelledby="related-title">
+      <h2 id="related-title" class="related__title">{title}</h2>
+      <ul class="related__rail" role="list">
+        {items.map((item) => (
+          <li class="related__item">
+            <a href={href(item.href)}>
+              <span class="eyebrow">{item.kind}</span>
+              <span class="related__label">{item.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

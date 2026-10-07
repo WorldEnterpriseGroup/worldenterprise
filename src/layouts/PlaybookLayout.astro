@@ -1,0 +1,47 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import type { HeaderProps, PageMeta } from './types.ts';
+import ContextualNext from '../components/blocks/ContextualNext.astro';
+import Steps from '../components/ui/Steps.astro';
+
+interface Step {
+  readonly title: string;
+  readonly body: string;
+}
+
+type Props = PageMeta & HeaderProps & {
+  title: string;
+  stage?: 'dream' | 'build' | 'grow';
+  steps: readonly Step[];
+  /** Artifacts the reader can open today (templates, checklists, briefs). */
+  artifacts?: readonly { readonly title: string; readonly href: string; readonly description?: string }[];
+};
+
+const { eyebrow, lead, stage, steps, artifacts = [], ...meta } = Astro.props;
+const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+---
+
+<BaseLayout {...meta} crumbs={crumbs}>
+  <PageHeader title={meta.title} eyebrow={eyebrow ?? (stage ? `Playbook, ${stage}` : 'Playbook')} lead={lead} crumbs={crumbs} />
+  <div class="section">
+    <div class="container stack">
+      <slot />
+      <section aria-labelledby="steps-title">
+        <h2 id="steps-title">The steps</h2>
+        <Steps steps={steps} headingLevel={3} />
+      </section>
+    </div>
+  </div>
+  {
+    artifacts.length > 0 && (
+      <div class="section section--soft section--defer">
+        <div class="container">
+          <ContextualNext items={artifacts} title="Open these next" />
+        </div>
+      </div>
+    )
+  }
+  <slot name="after" />
+</BaseLayout>

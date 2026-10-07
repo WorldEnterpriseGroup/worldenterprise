@@ -1,0 +1,28 @@
+---
+interface Props {
+  methodology: string;
+  limitations: string;
+  version: string;
+  updated?: Date | undefined;
+}
+
+const { methodology, limitations, version, updated } = Astro.props;
+const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+---
+
+<aside class="methodology" aria-label="Method and limits">
+  <dl>
+    <div>
+      <dt>Version</dt>
+      <dd>{version}{updated && <span class="muted">, updated {dateFormat.format(updated)}</span>}</dd>
+    </div>
+    <div>
+      <dt>Methodology</dt>
+      <dd>{methodology}</dd>
+    </div>
+    <div>
+      <dt>Limitations</dt>
+      <dd>{limitations}</dd>
+    </div>
+  </dl>
+</aside>

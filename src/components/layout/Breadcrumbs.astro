@@ -1,0 +1,28 @@
+---
+import type { Crumb } from '../../lib/breadcrumbs.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  crumbs: readonly Crumb[];
+}
+
+const { crumbs } = Astro.props;
+---
+
+{
+  crumbs.length > 1 && (
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol role="list">
+        {crumbs.map((crumb, index) => (
+          <li>
+            {index === crumbs.length - 1 ? (
+              <span aria-current="page">{crumb.label}</span>
+            ) : (
+              <a href={href(crumb.href)}>{crumb.label}</a>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

@@ -1,0 +1,25 @@
+---
+import a from '../../assets/icons/A-brand-identity.svg';
+import b from '../../assets/icons/B-product-it.svg';
+import c from '../../assets/icons/C-customer-market.svg';
+import d from '../../assets/icons/D-business-operations.svg';
+import e from '../../assets/icons/E-digital-incubation.svg';
+import f from '../../assets/icons/F-fundability.svg';
+import g from '../../assets/icons/G-professional-coordination.svg';
+import type { ServiceLine } from '../../data/nav.ts';
+
+interface Props {
+  /** Service line letter A to G. */
+  line: ServiceLine;
+  /** Rendered size in CSS pixels. */
+  size?: number;
+  /** Text alternative. Leave empty when the line name is printed next to the icon. */
+  alt?: string;
+}
+
+const icons = { A: a, B: b, C: c, D: d, E: e, F: f, G: g } as const;
+const { line, size = 48, alt = '' } = Astro.props;
+const icon = icons[line];
+---
+
+<img class="hex-icon" src={icon.src} width={size} height={size} alt={alt} loading="lazy" decoding="async" />

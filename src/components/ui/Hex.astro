@@ -1,0 +1,12 @@
+---
+interface Props {
+  /** Fill token name: mist, tint, blue, deep or amber. */
+  tone?: 'mist' | 'tint' | 'blue' | 'deep' | 'amber';
+  /** Outer size in CSS pixels (flat-top hexagon, width). */
+  size?: number;
+}
+
+const { tone = 'mist', size = 56 } = Astro.props;
+---
+
+<span class={`hex hex--${tone}`} style={`--hex-size:${size}px`}><slot /></span>

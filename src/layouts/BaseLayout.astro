@@ -1,0 +1,115 @@
+---
+import '../styles/tokens.css';
+import '../styles/reset.css';
+import '../styles/base.css';
+import '../styles/layout.css';
+import '../styles/components.css';
+import '../styles/utilities.css';
+import '../styles/motion.css';
+import '../styles/print.css';
+import wordmark from '../assets/brand/we-logo-wordmark.svg';
+import { photo } from '../assets/photo/index.ts';
+import type { SlotId } from '../assets/photo/slots.ts';
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import SkipLink from '../components/layout/SkipLink.astro';
+import UtilityBar from '../components/layout/UtilityBar.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import SeoHead from '../components/seo/SeoHead.astro';
+import { getRoute } from '../data/routes.ts';
+import { site } from '../data/site.ts';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import type { Crumb } from '../lib/breadcrumbs.ts';
+import { assertReleaseReady } from '../lib/route-state.ts';
+import { breadcrumbNode, organizationNode, pageNode, websiteNode } from '../lib/schema.ts';
+import type { JsonLdNode, PageSchemaType } from '../lib/schema.ts';
+import { buildTitle, clampDescription, resolveRobots, TITLE_MAX } from '../lib/seo.ts';
+
+interface Props {
+  title?: string;
+  description: string;
+  path: string;
+  ogSlot?: SlotId;
+  ogType?: 'website' | 'article';
+  draft?: boolean;
+  updated?: Date;
+  published?: Date;
+  schemaType?: PageSchemaType;
+  crumbs?: readonly Crumb[];
+  jsonLd?: readonly JsonLdNode[];
+  preloadImage?: { readonly href: string; readonly type: string };
+  /** Extra class for the main landmark. */
+  mainClass?: string;
+}
+
+const {
+  title,
+  description,
+  path,
+  ogSlot = 'og-default',
+  ogType = 'website',
+  draft = false,
+  updated,
+  published,
+  schemaType = 'WebPage',
+  crumbs,
+  jsonLd = [],
+  preloadImage,
+  mainClass,
+} = Astro.props;
+
+await assertReleaseReady();
+
+const fullTitle = buildTitle(title);
+if (fullTitle.length > TITLE_MAX) {
+  console.warn(`[seo] Title for ${path} is ${fullTitle.length} characters (limit ${TITLE_MAX}): ${fullTitle}`);
+}
+const metaDescription = clampDescription(description);
+const row = getRoute(path);
+const indexable = row?.indexable ?? true;
+const robots = resolveRobots({ noindex: !indexable, follow: path !== '/apply/thanks/', draft });
+const searchable = indexable && !draft;
+const pageCrumbs = crumbs ?? (path === '/' ? [] : buildCrumbs(path, title ?? site.name));
+
+const card = photo[ogSlot];
+const ogImage = card.placeholder ? undefined : { url: new URL(card.src.src, site.origin).href, alt: card.alt };
+
+const nodes: JsonLdNode[] = [
+  organizationNode(new URL(wordmark.src, site.origin).href),
+  websiteNode(),
+  pageNode({ path, name: title ?? site.name, description: metaDescription, type: schemaType, ...(updated !== undefined ? { updated } : {}) }),
+  ...(pageCrumbs.length > 0 ? [breadcrumbNode(path, pageCrumbs)] : []),
+  ...jsonLd,
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SeoHead
+      title={fullTitle}
+      description={metaDescription}
+      path={path}
+      robots={robots}
+      ogType={ogType}
+      ogImage={ogImage}
+      preloadImage={preloadImage}
+      published={published}
+      modified={updated}
+    />
+    <JsonLd nodes={nodes} />
+  </head>
+  <body>
+    <SkipLink />
+    <div class="page">
+      <div class="site-top">
+        <UtilityBar currentPath={path} />
+        <Header currentPath={path} />
+      </div>
+      <main id="main" class={mainClass} tabindex="-1" data-pagefind-body={searchable ? '' : undefined} data-pagefind-ignore={searchable ? undefined : 'all'}>
+        <slot />
+      </main>
+      <Footer currentPath={path} />
+    </div>
+  </body>
+</html>

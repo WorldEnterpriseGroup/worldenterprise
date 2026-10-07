@@ -1,0 +1,24 @@
+---
+import type { Crumb } from '../../lib/breadcrumbs.ts';
+import Breadcrumbs from './Breadcrumbs.astro';
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lead?: string;
+  crumbs?: readonly Crumb[];
+}
+
+const { title, eyebrow, lead, crumbs = [] } = Astro.props;
+---
+
+<div class="page-header">
+  <div class="container stack">
+    <Breadcrumbs crumbs={crumbs} />
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    <div class="rule" aria-hidden="true"></div>
+    {lead && <p class="lead">{lead}</p>}
+    <slot />
+  </div>
+</div>

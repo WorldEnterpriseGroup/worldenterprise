@@ -1,0 +1,13 @@
+---
+import type { JsonLdNode } from '../../lib/schema.ts';
+import { graph, serializeJsonLd } from '../../lib/schema.ts';
+
+interface Props {
+  /** Graph nodes for this page. The sitewide organisation and website nodes are added by BaseLayout. */
+  nodes: readonly JsonLdNode[];
+}
+
+const { nodes } = Astro.props;
+---
+
+<script type="application/ld+json" is:inline set:html={serializeJsonLd(graph(nodes))} />

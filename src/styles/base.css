@@ -1,0 +1,163 @@
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-block-start: calc(var(--header-h) + var(--sp-4));
+    accent-color: var(--color-accent);
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--ff-serif);
+    font-size: var(--fs-base);
+    line-height: var(--lh-body);
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--fs-3xl);
+    line-height: var(--lh-tight);
+  }
+  h2 {
+    font-size: var(--fs-2xl);
+  }
+  h3 {
+    font-size: var(--fs-xl);
+  }
+  h4 {
+    font-size: var(--fs-lg);
+  }
+
+  p,
+  li,
+  dd,
+  blockquote {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: var(--color-link);
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.18em;
+    transition: color var(--dur-fast) var(--ease-out);
+
+    &:hover {
+      color: var(--color-link-hover);
+      text-decoration-thickness: 0.14em;
+    }
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background: var(--we-tint);
+    color: var(--color-text);
+  }
+
+  strong,
+  b {
+    font-weight: 600;
+  }
+
+  hr {
+    border: 0;
+    border-block-start: var(--border-hair);
+    margin-block: var(--sp-6);
+  }
+
+  small {
+    font-size: var(--fs-sm);
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--ff-mono);
+    font-size: 0.9em;
+  }
+
+  pre {
+    overflow-x: auto;
+    padding: var(--sp-4);
+    background: var(--color-bg-soft);
+    border-radius: var(--radius-md);
+  }
+
+  table {
+    inline-size: 100%;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+  }
+
+  th,
+  td {
+    padding: var(--sp-3) var(--sp-4);
+    text-align: start;
+    vertical-align: top;
+    border-block-end: var(--border-hair);
+  }
+
+  th {
+    font-family: var(--ff-display);
+    font-weight: 600;
+  }
+
+  /* Skip link: first focusable element on every page. */
+  .skip-link {
+    position: absolute;
+    inset-inline-start: var(--sp-4);
+    inset-block-start: var(--sp-4);
+    z-index: var(--z-skip);
+    padding: var(--sp-3) var(--sp-5);
+    background: var(--color-cta);
+    color: var(--color-cta-contrast);
+    font-family: var(--ff-sans);
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    transform: translateY(-300%);
+    text-decoration: none;
+
+    &:focus {
+      transform: none;
+    }
+  }
+
+  /* Dark bands reverse the focus ring to white (brand 4.8). */
+  .on-dark {
+    color: var(--color-text-inverse);
+    background: var(--color-bg-inverse);
+
+    & :focus-visible {
+      outline-color: var(--color-focus-inverse);
+    }
+
+    & a {
+      color: var(--color-text-inverse);
+    }
+  }
+
+  /* Forced colours: keep focus and borders visible. */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline-color: Highlight;
+    }
+  }
+}

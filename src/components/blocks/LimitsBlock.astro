@@ -1,0 +1,21 @@
+---
+interface Props {
+  items: readonly string[];
+  title?: string;
+  headingLevel?: 2 | 3;
+}
+
+const { items, title = 'What this line does not do', headingLevel = 2 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+{
+  items.length > 0 && (
+    <section class="limits" aria-labelledby="limits-title">
+      <Heading id="limits-title">{title}</Heading>
+      <ul>
+        {items.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+  )
+}

@@ -1,0 +1,46 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import type { HeaderProps, PageMeta } from './types.ts';
+import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
+import SourcesList from '../components/blocks/SourcesList.astro';
+
+interface Source {
+  readonly id: string;
+  readonly title: string;
+  readonly publisher: string;
+  readonly url: string;
+  readonly accessed?: Date | undefined;
+}
+
+type Props = PageMeta & HeaderProps & {
+  title: string;
+  disclaimers?: readonly ('no-funding' | 'not-legal-advice' | 'generic-definition')[];
+  sources?: readonly Source[];
+};
+
+const { eyebrow, lead, disclaimers = [], sources = [], ...meta } = Astro.props;
+const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+---
+
+<BaseLayout {...meta} crumbs={crumbs}>
+  <PageHeader title={meta.title} eyebrow={eyebrow ?? 'Guide'} lead={lead} crumbs={crumbs} />
+  <div class="section">
+    <div class="container container--prose stack">
+      {disclaimers.includes('no-funding') && <NoFundingDisclaimer />}
+      <div class="prose">
+        <slot />
+      </div>
+      {
+        disclaimers.includes('not-legal-advice') && (
+          <aside class="callout" aria-label="Legal notice">
+            <p>This guide is general information, not legal advice. Ask your own counsel before you rely on it.</p>
+          </aside>
+        )
+      }
+      <SourcesList sources={sources} />
+    </div>
+  </div>
+  <slot name="after" />
+</BaseLayout>

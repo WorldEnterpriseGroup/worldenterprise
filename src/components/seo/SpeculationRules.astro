@@ -1,0 +1,23 @@
+---
+import { normalizeBase } from '../../lib/url-core.ts';
+
+/** Prerender on hover for same-site links, except the thanks page and search. Base-aware for preview builds. */
+const base = normalizeBase(import.meta.env.BASE_URL);
+const rules = {
+  prerender: [
+    {
+      where: {
+        and: [
+          { href_matches: `${base}/*` },
+          { not: { href_matches: `${base}/apply/thanks/` } },
+          { not: { href_matches: `${base}/search/*` } },
+          { not: { selector_matches: '[rel~=external]' } },
+        ],
+      },
+      eagerness: 'moderate',
+    },
+  ],
+};
+---
+
+<script type="speculationrules" is:inline set:html={JSON.stringify(rules)} />

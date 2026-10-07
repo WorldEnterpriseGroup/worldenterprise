@@ -1,0 +1,82 @@
+@layer layout {
+  .container {
+    inline-size: min(100% - 2 * var(--gutter), var(--page-max));
+    margin-inline: auto;
+  }
+
+  .container--wide {
+    inline-size: min(100% - 2 * var(--gutter), var(--page-wide));
+  }
+
+  .container--prose {
+    inline-size: min(100% - 2 * var(--gutter), var(--prose-max));
+  }
+
+  .section {
+    padding-block: var(--section-y);
+  }
+
+  .section--soft {
+    background: var(--color-bg-soft);
+  }
+
+  .section--tight {
+    padding-block: calc(var(--section-y) / 2);
+  }
+
+  /* Below-the-fold sections skip rendering work until needed. */
+  .section--defer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 40rem;
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-gap, var(--sp-4));
+  }
+
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cluster-gap, var(--sp-3));
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--grid-gap, var(--sp-5));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--grid-min, 16rem)), 1fr));
+  }
+
+  /* Page frame: header, main, footer. */
+  .page {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-block-size: 100dvh;
+  }
+
+  .page__main {
+    min-inline-size: 0;
+  }
+
+  /* Article-like pages with a sticky side rail. */
+  .with-rail {
+    display: grid;
+    gap: var(--sp-7);
+    grid-template-columns: minmax(0, 1fr);
+
+    @media (min-width: 62rem) {
+      grid-template-columns: minmax(0, var(--prose-max)) minmax(14rem, 1fr);
+      align-items: start;
+    }
+  }
+
+  .rail {
+    position: sticky;
+    inset-block-start: calc(var(--header-h) + var(--sp-5));
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-5);
+  }
+}
