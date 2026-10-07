@@ -38,7 +38,11 @@ for (const [name, toPath] of collectionPaths) {
 }
 
 const paths = routes.filter((r) => r.launch && r.indexable && state.isLive(r.path)).map((r) => r.path);
-const sections = groupSitemapRoutes(paths, (path) => labels.get(path));
+const topicDesk = (path: string): string | undefined => {
+  const topic = /^\/insights\/topic\/([a-z]+)\/$/.exec(path)?.[1];
+  return topic === undefined ? undefined : `${topic.charAt(0).toUpperCase()}${topic.slice(1)} desk`;
+};
+const sections = groupSitemapRoutes(paths, (path) => topicDesk(path) ?? labels.get(path));
 ---
 
 <ReferenceLayout
