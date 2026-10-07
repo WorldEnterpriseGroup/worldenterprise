@@ -1,0 +1,14 @@
+---
+import HexAtlas from '../ui/HexAtlas.astro';
+import { servicePath } from './lines.ts';
+import type { ServiceSummary } from './data.ts';
+
+interface Props {
+  lines: readonly ServiceSummary[];
+}
+
+const { lines } = Astro.props;
+const cells = lines.map(({ slug, entry }) => ({ label: entry.data.shortTitle, href: servicePath(slug), line: entry.data.line }));
+---
+
+<HexAtlas label="The seven service lines" cells={cells} />

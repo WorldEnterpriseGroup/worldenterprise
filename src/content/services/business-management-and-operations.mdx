@@ -1,0 +1,71 @@
+---
+line: D
+title: Business Management and Operations
+shortTitle: Management and Operations
+summary: "An operating rhythm for your company, with goals, metrics, a weekly review and the first finance-systems and policy scaffolding."
+covers:
+  - "An operating cadence: a weekly review plus a longer look back at a regular interval."
+  - "Goals and metrics: a few that matter, each defined in writing."
+  - "Finance-systems scaffolding: the structure and tools your own bookkeeper will use."
+  - "Policy scaffolding: a starter set of company policies for your counsel to review."
+  - "Contractor-management frameworks: how you brief, review and pay people who work for you."
+  - "A decision log and a risk log, kept current."
+doesNotCover:
+  - "Keeping your books, preparing financial statements or filing taxes."
+  - "Legal or tax advice. Your own counsel and accountant provide it."
+  - "Running your company for you. WE sets up the rhythm, and you and your team run it."
+icon: D
+relatedPlaybooks:
+  - build-and-ship-v1
+  - build-repeatable-growth
+claimsUsed:
+  - C-04
+updated: 2026-10-06
+---
+import DataTable from '../../components/ui/DataTable.astro';
+import FaqList from '../../components/cards/FaqList.astro';
+import Steps from '../../components/ui/Steps.astro';
+
+## A rhythm before a headcount
+
+Most early problems are not caused by a lack of effort. They come from unclear priorities, numbers that mean different things to different people, and decisions that nobody wrote down. This line puts a small, steady structure in place before the company grows into the habit of improvising.
+
+## How the work runs
+
+<Steps
+  headingLevel={3}
+  steps={[
+    { title: 'Agree the calendar', body: 'Reviews and check-ins are fixed on a calendar so that progress is looked at on purpose, not when something goes wrong.' },
+    { title: 'Set a few goals', body: 'Goals are written so that anyone on the team can say, without asking, whether they were met.' },
+    { title: 'Define the metrics', body: 'Each metric states what it counts and where the number comes from, so it means the same thing every time.' },
+    { title: 'Scaffold finance and policy', body: 'WE maps the finance systems and drafts starter policies. Your accountant and counsel review what belongs to them.' },
+    { title: 'Review weekly', body: 'A short weekly review looks at goals, metrics, decisions and risks, and ends with a written page.' },
+  ]}
+/>
+
+## What you receive
+
+<DataTable
+  caption="Artifacts from line D and what each is for"
+  columns={['Artifact', 'What it is for']}
+  rows={[
+    ['Operating calendar', 'When reviews, check-ins and reports happen.'],
+    ['Goals and metrics sheet', 'The few measures that matter and how each is defined.'],
+    ['Weekly review template', 'A single page that keeps the weekly review short and useful.'],
+    ['Finance-systems map', 'Which tools hold which records, so your bookkeeper starts with a clear picture.'],
+    ['Starter policy set', 'Plain-language policies, drafted for your counsel to review.'],
+    ['Contractor brief and review templates', 'A repeatable way to brief, check and pay outside help.'],
+    ['Decision and risk log', 'What was decided, by whom and why, and what could go wrong.'],
+  ]}
+/>
+
+## Questions about this line
+
+<FaqList
+  name="faq-line-d"
+  items={[
+    { question: 'Will WE be my bookkeeper?', answer: 'No. WE does not keep books or file taxes. The line maps the systems so that your own bookkeeper and accountant can work from a clear structure.' },
+    { question: 'How many metrics will I track?', answer: 'Few. Each one is defined in writing, and a metric nobody uses in the weekly review is removed.' },
+    { question: 'Who runs the weekly review?', answer: 'The review belongs to your company. WE sets up the format and takes part, and the aim is a habit your team can keep without help.' },
+  ]}
+/>

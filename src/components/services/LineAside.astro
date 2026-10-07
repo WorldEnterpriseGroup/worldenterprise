@@ -1,0 +1,33 @@
+---
+import { getPhoto } from '../../assets/photo/index.ts';
+import { href } from '../../lib/url.ts';
+import CellTrail from '../ui/CellTrail.astro';
+import { LINE_SLOT, servicePath } from './lines.ts';
+import type { ServiceSummary } from './data.ts';
+import type { ServiceLine } from '../../data/nav.ts';
+
+interface Props {
+  line: ServiceLine;
+  lines: readonly ServiceSummary[];
+}
+
+const { line, lines } = Astro.props;
+const photo = getPhoto(LINE_SLOT[line]);
+const current = lines.findIndex((l) => l.entry.data.line === line);
+const cells = lines.map(({ slug, entry }) => ({ label: entry.data.shortTitle, href: href(servicePath(slug)) }));
+---
+
+<img class="line-aside__image" src={photo.src.src} width="512" height="384" alt={photo.alt} loading="lazy" decoding="async" />
+<CellTrail label="All service lines" cells={cells} current={current >= 0 ? current : undefined} />
+
+<style>
+  @layer pages {
+    .line-aside__image {
+      inline-size: 100%;
+      block-size: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+    }
+  }
+</style>

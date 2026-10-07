@@ -1,0 +1,116 @@
+---
+import { getEntry, render } from 'astro:content';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import Steps from '../../components/ui/Steps.astro';
+import HubIntro from '../../components/services/HubIntro.astro';
+import ServiceCard from '../../components/cards/ServiceCard.astro';
+import Grid from '../../components/ui/Grid.astro';
+import { loadServiceLines } from '../../components/services/data.ts';
+import { LINE_GROUPS, LINE_SLOT, servicePath } from '../../components/services/lines.ts';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { href } from '../../lib/url.ts';
+
+const page = await getEntry('pages', 'services/index');
+if (page === undefined) throw new Error('Missing content entry src/content/pages/services/index.mdx.');
+const { Content } = await render(page);
+const lines = await loadServiceLines();
+if (lines.length !== 7) throw new Error(`Expected seven published service lines, found ${lines.length}.`);
+
+const byLine = new Map(lines.map((l) => [l.entry.data.line, l]));
+const subtree = lines.map(({ slug, entry }) => ({ title: `${entry.data.line}. ${entry.data.title}`, href: servicePath(slug), description: entry.data.summary }));
+
+const compareRows = lines.map(({ entry }) => [
+  `${entry.data.line}. ${entry.data.shortTitle}`,
+  entry.data.covers.slice(0, 3).join(' '),
+  entry.data.doesNotCover.slice(0, 2).join(' '),
+]);
+
+const startRows: readonly (readonly [string, string])[] = [
+  ['I have an idea and no customers yet.', 'Lines C and E: learn from buyers first, with a curriculum around you.'],
+  ['I know the problem and need a first version.', 'Line B, with line A if you also need a name and a way to describe it.'],
+  ['I need a name and a clear description of the product.', 'Line A.'],
+  ['I have no routine and no numbers I trust.', 'Line D.'],
+  ['An investor has asked for materials I do not have.', 'Line F, with line G for the questions that need a professional.'],
+  ['I have questions for a lawyer or accountant and no time to chase them.', 'Line G.'],
+];
+
+const processSteps = [
+  { title: 'Apply', body: 'Tell WE about your company and the stage it is at.' },
+  { title: 'Scope the lines', body: 'Together you choose the lines that fit. A line you do not choose is not provided.' },
+  { title: 'Seat the team', body: 'WE seats a dedicated team for your company, steers it and manages any subcontractors.' },
+  { title: 'Work in cycles', body: 'Work runs in short cycles, with a written plan at the start and written results at the end.' },
+  { title: 'Review and adjust', body: 'At each review you look at the evidence, adjust the plan and, if needed, scale the team up or down by notice.' },
+];
+---
+
+<HubLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/services/"
+  eyebrow={page.data.eyebrow}
+  lead="One accountable team and seven defined lines of work. Choose the lines your company needs, and see what each does and does not do."
+  updated={page.data.updated}
+  subtree={subtree}
+>
+  <HubIntro lines={lines} />
+
+  {
+    LINE_GROUPS.map((group) => (
+      <section aria-labelledby={`group-${group.id}`} class="stack">
+        <h2 id={`group-${group.id}`}>{group.heading}</h2>
+        <Grid min="17rem">
+          {group.lines.map((letter) => {
+            const item = byLine.get(letter);
+            if (item === undefined) throw new Error(`Service line ${letter} is missing.`);
+            return (
+              <ServiceCard
+                title={item.entry.data.title}
+                summary={item.entry.data.summary}
+                path={servicePath(item.slug)}
+                eyebrow={`Line ${letter}`}
+                slot={LINE_SLOT[letter]}
+                headingLevel={3}
+              />
+            );
+          })}
+        </Grid>
+      </section>
+    ))
+  }
+
+  <section aria-labelledby="compare-title" class="stack">
+    <h2 id="compare-title">What each line covers and does not do</h2>
+    <p>The table shows the opening items from each line. Every line page carries the full lists.</p>
+    <DataTable
+      caption="Service lines compared: what each covers and what it does not do"
+      columns={['Line', 'Covers', 'Does not do']}
+      rows={compareRows}
+    />
+  </section>
+
+  <section aria-labelledby="start-title" class="stack">
+    <h2 id="start-title">Where to start</h2>
+    <DataTable
+      caption="Common starting questions and the lines that usually answer them"
+      columns={['If this sounds like you', 'Start with']}
+      rows={startRows}
+    />
+  </section>
+
+  <section aria-labelledby="process-title" class="stack">
+    <h2 id="process-title">How a line becomes work</h2>
+    <Steps steps={processSteps} headingLevel={3} />
+    <p><a href={href('/program/how-it-works/')}>Read how the program works</a></p>
+  </section>
+
+  <div class="prose stack"><Content /></div>
+
+  <CtaBand
+    slot="after"
+    title="Tell WE where your company is"
+    text="Apply, or sketch the roles you need first. Neither commits you to anything."
+    cta={{ label: 'Apply', href: '/apply/' }}
+    secondary={{ label: 'Compose your team', href: '/tools/team-composer/' }}
+  />
+</HubLayout>

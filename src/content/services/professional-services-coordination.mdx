@@ -1,0 +1,68 @@
+---
+line: G
+title: Professional-Services Coordination
+shortTitle: Professional Coordination
+summary: "WE coordinates your own counsel, accountant and other specialists so their work fits your plan. You engage them directly, and WE does not replace them."
+covers:
+  - "Coordination with your own counsel, so legal questions reach them early and in good order."
+  - "Coordination with your own accountant, so finance records reach them in a form they can use."
+  - "Coordination with other specialists you choose, such as an export-compliance specialist, an insurance broker or a security officer."
+  - "Briefs that give each specialist the context they need, so their time goes to judgement and not to catching up."
+  - "A shared list of open questions, who owns each and when it is due."
+doesNotCover:
+  - "Legal, tax, accounting, insurance or compliance advice. WE is none of those and does not act as one."
+  - "Engaging or paying specialists for you. Your company engages them directly."
+  - "Replacing the judgement of your specialists with WE's own."
+  - "Any assurance about the outcome of a specialist's work."
+icon: G
+relatedPlaybooks:
+  - build-and-ship-v1
+  - build-repeatable-growth
+claimsUsed:
+  - C-04
+updated: 2026-10-06
+---
+import DataTable from '../../components/ui/DataTable.astro';
+import FaqList from '../../components/cards/FaqList.astro';
+import Steps from '../../components/ui/Steps.astro';
+
+## Their advice, your plan
+
+A company needs advice that only a licensed professional can give. It also needs that advice to arrive at the right moment and in a form the team can act on. This line does the coordinating. The professional relationship stays between your company and the specialist.
+
+## How the work runs
+
+<Steps
+  headingLevel={3}
+  steps={[
+    { title: 'List who you need', body: 'You and WE list the questions that need a professional and which kind of specialist each one calls for.' },
+    { title: 'Engage them yourself', body: 'Your company chooses and engages each specialist directly, so the relationship is yours.' },
+    { title: 'Brief each specialist', body: 'WE prepares a short brief with the facts, the documents and the question, so the first meeting starts at the point.' },
+    { title: 'Track the open questions', body: 'A shared list shows what is waiting on whom, and what is due.' },
+    { title: 'Fold the answers back in', body: 'Decisions from the specialists go into the plan, the data room and the decision log.' },
+  ]}
+/>
+
+## What you receive
+
+<DataTable
+  caption="Artifacts from line G and what each is for"
+  columns={['Artifact', 'What it is for']}
+  rows={[
+    ['Specialist roster', 'Who advises your company on what, and how to reach them.'],
+    ['Specialist briefs', 'Context, documents and the question, in one page per specialist.'],
+    ['Open-question tracker', 'What is waiting, on whom, and when it is due.'],
+    ['Obligations calendar', 'The filings and renewals your specialists tell you about, with dates.'],
+  ]}
+/>
+
+## Questions about this line
+
+<FaqList
+  name="faq-line-g"
+  items={[
+    { question: 'Does WE give legal advice?', answer: 'No. WE is not a law firm. Legal advice comes from your own counsel, and this line helps that advice arrive at the right time.' },
+    { question: 'Who pays the specialists?', answer: 'Your company engages them directly, so the professional relationship and the invoice are between you and them.' },
+    { question: 'Can WE choose a specialist for me?', answer: 'You choose. WE can describe the kind of specialist a question calls for, and the engagement is still yours to make.' },
+  ]}
+/>

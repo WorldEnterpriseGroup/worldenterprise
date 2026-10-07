@@ -1,0 +1,71 @@
+---
+line: B
+title: Product and IT Development
+shortTitle: Product and IT Development
+summary: "Architecture, design and an agile build for your SaaS, taken to a pilot that early customers can use and a technical reviewer can inspect."
+covers:
+  - "Architecture: the shape of the system, its main parts and the reason for each choice."
+  - "An agile build in short cycles, with working software shown at the end of each one."
+  - "Secure development practice built into the work from the first repository."
+  - "A pilot environment where your first customers can use the product."
+  - "Documentation covering how the product is built, how it runs and how to change it."
+  - "Preparation for technical due diligence, so questions about your product have written answers."
+doesNotCover:
+  - "Production operations. WE builds to pilot scale and does not run your live service."
+  - "Round-the-clock support or on-call cover for your customers."
+  - "Storing or processing restricted or regulated data in WE systems."
+  - "Any assurance that a product will pass a particular audit or hold a particular certification."
+icon: B
+relatedPlaybooks:
+  - design-the-product
+  - build-and-ship-v1
+claimsUsed:
+  - C-04
+updated: 2026-10-06
+---
+import DataTable from '../../components/ui/DataTable.astro';
+import FaqList from '../../components/cards/FaqList.astro';
+import Steps from '../../components/ui/Steps.astro';
+
+## Built to be inspected
+
+An investor's engineer will ask how the product works, what it depends on and what you would fix first. This line builds the product and the written answers at the same time, so neither is an afterthought.
+
+## How the work runs
+
+<Steps
+  headingLevel={3}
+  steps={[
+    { title: 'Frame the first version', body: 'WE starts from the problem you validated and agrees the smallest version that can prove the product to a real user.' },
+    { title: 'Design the architecture', body: 'The main parts, the data they hold and the reasons for each choice are written down before the build gathers pace.' },
+    { title: 'Build in cycles', body: 'Each cycle ends with working software you can open, and notes on what changed and why.' },
+    { title: 'Stand up the pilot', body: 'A pilot environment is prepared so early customers can use the product and tell you what is missing.' },
+    { title: 'Document and review', body: 'Documentation and registers are kept current, and each review looks at what to change before the next cycle.' },
+  ]}
+/>
+
+## What you receive
+
+<DataTable
+  caption="Artifacts from line B and what each is for"
+  columns={['Artifact', 'What it is for']}
+  rows={[
+    ['Architecture overview', 'A readable map of the system and the reasons behind its shape.'],
+    ['Backlog and cycle notes', 'What was built, what was set aside and why.'],
+    ['Pilot environment', 'A place where early customers can use the product.'],
+    ['Technical documentation', 'How to build, run and change the product.'],
+    ['Dependency register', 'The open-source and third-party components the product relies on.'],
+    ['Technical-debt register', 'The shortcuts taken and what each is likely to cost later.'],
+  ]}
+/>
+
+## Questions about this line
+
+<FaqList
+  name="faq-line-b"
+  items={[
+    { question: 'Does WE host and run my live product?', answer: 'No. Line B stops at pilot scale. Running a live service for many customers is a separate decision that WE does not make for you.' },
+    { question: 'Which technology stack will it use?', answer: 'The one that fits your product and the team you can afford to keep. WE records the reasons for each choice so you can revisit it later.' },
+    { question: 'What does pilot scale mean?', answer: 'A system built to prove the product with a small number of early users, not to carry a large customer base.' },
+  ]}
+/>
