@@ -1,13 +1,68 @@
-# worldenterprise — GitLab Pages deploy + GitHub mirror
+# World Enterprise Incubator: GitLab is the release authority.
 #
-# demo branch  → deploys to GitLab Pages (internal via Ziti)
-# gh-pages     → mirrors to GitHub Pages (public)
+#   preflight  verify:static  type check, unit tests, build, audits on every branch
+#   deploy     pages          internal preview (demo only), built from source with a Node image
+#   mirror     mirror         gh-pages to GitHub, only after verify:static is green
+#
+# The Launch Sequence include is pinned to an immutable commit (D-6).
 
 include:
-  - project: 'FocusApiary/ci-templates'
-    ref: main
+  - project: 'DroidOpsInc/launch-sequence'
+    ref: 6c547b757f89ec5552b5d769dfa64700e9bd4289 # immutable Launch Sequence commit, checked 2026-10-06
     file: '/pipelines/static-site.yml'
 
 variables:
   GITHUB_REPO: "WorldEnterpriseGroup/worldenterprise"
-  SITE_DIR: "."
+  NODE_IMAGE: "${IMAGE_REGISTRY}/dockerhub-proxy/library/node:24-alpine"
+  npm_config_cache: "${CI_PROJECT_DIR}/.npm"
+  npm_config_update_notifier: "false"
+
+verify:static:
+  stage: preflight
+  image: "${NODE_IMAGE}"
+  interruptible: true
+  variables:
+    PUBLIC_STYLEGUIDE: "1"
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+  script:
+    - node --version
+    - npm --version
+    - npm ci --prefer-offline --no-audit --no-fund
+    - npm run check
+    - npm run test:unit
+    - npm run build
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - dist/
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+# The shared Pages job defaults to Alpine without Node and copies the repository
+# source tree. Build the static Astro output in a Node image and publish the
+# contents of dist/ at the Pages document root. The preview is path based, so the
+# build gets PAGES_BASE_PATH; production (GitHub Pages) has no base.
+pages:
+  extends: .pages:deploy
+  image: "${NODE_IMAGE}"
+  variables:
+    SITE_DIR: "dist/."
+    BUILD_COMMANDS: "npm ci --prefer-offline --no-audit --no-fund && npm run build"
+    PAGES_BASE_PATH: "/worldenterprise"
+    PUBLIC_PREVIEW: "1"
+    PUBLIC_STYLEGUIDE: "1"
+  needs:
+    - job: verify:static
+      artifacts: false
+
+mirror:
+  extends: .mirror:github
+  needs:
+    - job: verify:static
+      artifacts: false
