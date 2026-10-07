@@ -1,0 +1,113 @@
+---
+title: "IP, contracts and access diligence for small engineering teams"
+description: "The ownership, contract and access records a small software team should keep in order, and why they matter to a reviewer. General education, not legal advice."
+topic: fundable
+publishedDate: 2026-10-06
+noStatistics: true
+sources:
+  - id: copyright-circ30
+    title: "Circular 30: Works Made for Hire"
+    publisher: U.S. Copyright Office
+    url: https://www.copyright.gov/circs/circ30.pdf
+    accessed: 2026-10-06
+  - id: osi-licenses
+    title: Licenses
+    publisher: Open Source Initiative
+    url: https://opensource.org/licenses
+    accessed: 2026-10-06
+evidence: [copyright-circ30, osi-licenses]
+relatedServices: [F, G]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: seed-data-room-checklist
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general education written by World Enterprise Editorial. It is not legal advice and it describes United States sources only. Intellectual property and employment rules differ between countries and states, and you should ask your own counsel what applies to you.*
+
+For a software company, the code, the brand and the data are most of the assets. When someone reviews the company, one of the first questions is whether the company really owns them and who can reach them. Small engineering teams tend to answer this question from memory, and memory is a poor record. This article explains the records worth keeping, the most common gaps and the access questions that sit alongside them.
+
+## Ownership is a paperwork question
+
+It is easy to assume that if a company paid for the code, the company owns it. That is not always so. The U.S. Copyright Office's circular on works made for hire explains the general position: work created by an employee within the scope of the job is typically a work made for hire, so the employer is treated as the author. Work created by an independent contractor is different. A commissioned work counts as made for hire only if it falls within specific categories listed in the law and the parties have signed a written agreement saying so. Otherwise, the creator generally keeps the copyright unless it is transferred in writing.
+
+Read that carefully, because it means the answer depends on who wrote the code and what they signed. Software developed by a contractor, a freelancer or a founder who worked before the company existed may not belong to the company unless there is a written assignment. The circular is the Copyright Office's own plain statement of the rule. How it applies to a particular piece of code is a question for a lawyer.
+
+### Who contributed
+
+Make a list of everyone who has ever contributed to the product: founders, employees, contractors, agencies, interns, advisers who wrote code or designs and any offshore or remote team members. Include people who worked before the company was formed. For each person, record:
+
+- the dates they worked on the product,
+- the agreement they signed (name, date, signatory),
+- whether that agreement assigns what they created to the company,
+- where the signed copy is stored.
+
+A gap in this table is not a disaster. It is a to-do. A short assignment signed now is far easier to obtain than one requested after the contributor has moved on.
+
+### Founders' pre-company work
+
+If a founder wrote code or created a brand before the company existed, that work belongs to the founder until it is transferred. Many founders assume the company has it because they started the company. A written assignment from the founder to the company closes that gap. The exact form is for counsel.
+
+### Contractors, agencies and dedicated teams
+
+If you work with an outside team, whether a freelancer, an agency or a dedicated offshore team, the contract is what determines who owns the output. Check that the agreement covers assignment of the work, the handling of any pre-existing material the team brings, confidentiality and what happens if the engagement ends. These are questions to take to your own counsel before signing; our related article on questions to ask counsel gives a fuller list.
+
+## Open source and third-party components
+
+Almost every modern product includes components written by other people. Each one comes with a licence that sets out what you may do. The Open Source Initiative maintains the list of licences that comply with the Open Source Definition, and describes them as licences that allow software to be freely used, modified and shared. Some licences are permissive. Others attach conditions that apply when you distribute the software or make it available over a network. Whether a given licence affects your product depends on how you use the component.
+
+You do not need to read every licence yourself in order to be organised. You need an inventory:
+
+| Column | What to record |
+|---|---|
+| Component | Name and version |
+| Where it is used | Which service or product |
+| Licence | The identifier, taken from the component itself |
+| How it is used | Linked, modified, only a development tool |
+| Source of record | The package manifest or lockfile reference |
+
+Most package managers can export a list of dependencies and their declared licences. That export is a starting point, not a final answer, since declared licences can be wrong or missing.
+
+Add a short rule for the team: before adding a new dependency, check its licence and add it to the list. A habit like that costs a minute and avoids an unpleasant discovery later.
+
+## Contracts with customers and suppliers
+
+Reviewers also ask what the company has promised. Gather every agreement with a customer, a supplier, a platform and a partner, and note the terms that carry long-term consequences: exclusivity, rights to use your code or data, limits on liability, commitments to service levels, restrictions on who you can work with, and termination and renewal. The aim is not to analyse them yourself; it is to be able to find them and to know which ones contain unusual terms that your counsel should review.
+
+If a customer has signed on a template you did not write, keep a copy of the exact version they signed.
+
+## Access is part of ownership
+
+A company can own an asset on paper and still not control it. Access diligence asks who can actually get into the systems that matter and what happens when they leave. Common items include:
+
+- **Source code hosting.** Who are the owners of the organisation account? Is the account in the company's name or a person's?
+- **Cloud accounts and production systems.** Who holds administrator rights? Are they tied to individual personal accounts?
+- **Domains and DNS.** Whose name is on the registrar account? Where do renewal notices go?
+- **Third-party services.** Payment processor, email provider, analytics and error tracking: which account is each one under?
+- **Credentials and secrets.** Where are they stored, and who can read them?
+- **Departures.** Is there a checklist that removes a person's access when they leave?
+
+Write this down as an access register: system, owner (a person and a role), account holder (company or individual), administrators and date last reviewed. Review it on a fixed schedule.
+
+The most common finding is not malice but convenience: an early contractor set up an account in their own name, and no one moved it. These are easy to fix when found early and awkward to fix when the person is unavailable.
+
+## Keep personal data in view
+
+If your product handles personal data, you have obligations that depend on where your customers are and what data you hold. A reviewer may ask what personal data you collect, why, where it is stored and who can access it. A simple data map covers the answers. Beyond that, the rules are for counsel.
+
+## A practical order of work
+
+1. Build the contributor list and note which agreements are missing.
+2. Get the missing assignments and confidentiality agreements signed, with counsel's help.
+3. Export the dependency list and record the licences. Flag anything unclear.
+4. Gather customer and supplier agreements in one controlled place.
+5. Build the access register and move any company assets that sit in personal accounts.
+6. Put a short note in the records saying who is responsible for keeping each of these up to date.
+
+Our seed data room checklist in the library lays these out as a template you can adapt.
+
+## What this article does not know
+
+We have described general categories, not the law of any jurisdiction beyond a plain reading of one U.S. circular. We cannot tell you whether a particular assignment is valid, whether a licence applies to your use or what a reviewer will ask. We have not used statistics, because the claims here are about what records to keep, not how often problems occur. World Enterprise makes no promise of funding, and nothing here predicts how a review will go.

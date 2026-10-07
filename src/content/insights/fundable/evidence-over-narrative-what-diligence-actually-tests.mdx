@@ -1,0 +1,114 @@
+---
+title: "Evidence over narrative: what diligence actually tests"
+description: What due diligence checks in an early-stage software company, how it separates claims from evidence, and how to prepare records that stand up to questions.
+topic: fundable
+publishedDate: 2026-10-06
+noStatistics: true
+sources:
+  - id: sec-exempt-offerings
+    title: Exempt Offerings
+    publisher: U.S. Securities and Exchange Commission
+    url: https://www.sec.gov/resources-small-businesses/exempt-offerings
+    accessed: 2026-10-06
+  - id: yc-safe
+    title: SAFE (Simple Agreement for Future Equity) documents
+    publisher: Y Combinator
+    url: https://www.ycombinator.com/safe
+    accessed: 2026-10-06
+  - id: pg-raise-money
+    title: How to Raise Money
+    publisher: Paul Graham
+    url: https://paulgraham.com/fr.html
+    accessed: 2026-10-06
+evidence: [sec-exempt-offerings, yc-safe, pg-raise-money]
+relatedServices: [F]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: seed-data-room-checklist
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general education written by World Enterprise Editorial. It is not legal advice, not financial advice and not an offer or solicitation of any kind. Talk to your own lawyer before you sign or issue anything.*
+
+A pitch is a story. Due diligence is the process by which someone checks whether the story is true. Founders who treat the two as separate jobs, with the story first and the proof later, often discover that the proof takes longer to assemble than the story took to write. This article describes what diligence tests in an early-stage software company, how the checking tends to work and what it means to prepare evidence rather than narrative.
+
+## What diligence is, in plain terms
+
+Due diligence is a structured review that a person or firm carries out before committing money, time or a contract to another party. In the context of a small software company, the reviewer wants to confirm that what the company says about itself matches what the records show: who owns what, what the company has agreed to, what the product does and what the numbers are.
+
+It is not a single event. Reviewers may check some items early, before substantial discussion, and the rest late, before a binding agreement. The depth varies by who is reviewing, the size of the commitment and the stage of the company. We do not know what a particular reviewer will ask, and no checklist can promise it.
+
+## Claims and evidence are different objects
+
+A claim is a statement: "customers love the product", "the code is ours", "we own the brand". Evidence is something a reviewer can open and check: the signed agreement, the repository history, the invoices, the domain registration record.
+
+The test for any statement in your materials is simple: what would I show if someone asked me to prove this? If the answer is a document, a record or a system export, you have evidence. If the answer is "trust me", you have a claim.
+
+| What you might say | The evidence a reviewer could ask for |
+|---|---|
+| The company owns its code | Written assignments from everyone who contributed, and the repository history |
+| We have paying customers | Invoices or payment records, and the customer agreements |
+| The product works | A running system, a demonstration on real data, and test results |
+| Our market is large | Your sizing method, written out, with every input sourced |
+| The team is committed | Signed agreements, and a record of who holds what role |
+| We are compliant with rules that apply to us | The policies you operate, and records that show you follow them |
+
+You may notice that the right-hand column is mostly boring. That is the point. Records are rarely exciting, and a company that has them tends to move through review faster than one that has to reconstruct them.
+
+## The four areas where evidence is usually checked
+
+These are editorial categories, not an official list.
+
+### The company itself
+
+Reviewers generally want to confirm that the company exists in good standing, who owns it and what rights attach to the ownership. The usual documents are the formation records, the ownership table, the agreements with founders and any agreements that have already granted rights to others, such as convertible instruments or advisory arrangements. Y Combinator's page on its SAFE documents is a useful illustration of why this matters: a SAFE is described there as a short contract an investor signs to fund a startup now in exchange for the right to shares later, so the existence of each such agreement changes what the company's future ownership looks like. Every instrument you have issued is part of the picture.
+
+### The work and who owns it
+
+For a software company, the most common diligence question is whether the company owns what it says it owns. That means contributor agreements, contractor agreements and the licences of any third-party or open source components in the product. Our article on intellectual property, contracts and access diligence goes through these in detail. The key principle is that the paperwork should exist before it is asked for, because getting a signature from a former contractor after the fact is harder than getting it at the start.
+
+### The business
+
+Reviewers look for evidence that the business is what the narrative says. For a company with revenue, that is billing records, customer agreements and how the numbers in the pitch were calculated. For a company before revenue, it is the problem evidence: interview notes, pilot records and whatever commitments exist. Be careful with any metric you cite. A figure you cannot reproduce from records is a liability, because the reviewer who finds the gap will wonder what else does not reconcile.
+
+### The legal and regulatory position
+
+Raising money by selling securities is regulated. The SEC explains on its exempt offerings page that every offer and sale of securities must either be registered or rely on an available exemption, and it describes several exemptions that small companies use. Which route, if any, applies to a company is a legal question for the company's own counsel. For preparation purposes, the lesson is that how you talk about a raise, and to whom, is itself something a reviewer may examine. Keep records of what you have said and sent.
+
+## Consistency is a form of evidence
+
+A subtle thing diligence tests is whether your materials agree with each other. The pitch says one number for customers, the data room shows another and the website says a third. Each discrepancy may have an innocent explanation, such as different dates or definitions, but each one costs you time and credibility.
+
+Two habits help:
+
+1. **Keep a single source of truth for every number.** Define the metric once, in writing, with the formula and the date range, and have every document refer to it.
+2. **Date everything.** A figure without a date invites questions about whether it is current.
+
+## Do not let preparation take over the company
+
+Paul Graham's essay on how to raise money makes a point worth keeping in mind when preparing for any review: fundraising can take over a founder's attention so that everything else slows. Preparation of evidence has the same risk, and it is the reason to prepare steadily as you go rather than in a burst. The cheapest time to file a signed agreement is the day you sign it.
+
+A practical rhythm is to spend a short, fixed slot each month updating your records: new agreements filed, metrics recalculated with their definitions, a short note of what changed. Over a year, that rhythm builds the record a reviewer would want to see, without a crisis.
+
+## A starting set of records
+
+If you do nothing else, assemble these in a single folder with controlled access.
+
+- Formation documents and a current ownership table.
+- Every agreement with a founder, employee or contractor who has worked on the product.
+- A list of all third-party and open source components with their licences.
+- Every agreement with a customer, partner or supplier.
+- Every instrument you have issued that could convert to ownership.
+- Your metric definitions, and the calculations behind any number you quote.
+- Evidence for the problem: interview notes, pilot records, commitments.
+- A list of what you have told others about a raise, and when.
+
+Our seed data room checklist in the library turns this list into a working template.
+
+## What this article does not know
+
+This article cannot tell you what any specific reviewer will ask, how long a review will take or whether a company that is well prepared will find a counterparty. Preparation improves the quality of your own records and the quality of the conversation. It does not predict an outcome, and World Enterprise makes no promise of funding. We have not included benchmarks about review length or failure rates, because we do not have a public primary source for them.
+
+Finally, the legal points here are general. Rules differ by country and by the type of transaction, and they change. Ask your own counsel what applies to you.
