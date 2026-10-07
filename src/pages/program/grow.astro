@@ -1,0 +1,34 @@
+---
+import CtaBand from '../../components/ui/CtaBand.astro';
+import StageBody from '../../components/program/StageBody.astro';
+import { loadPage } from '../../components/program/loadPage.ts';
+import { getStage, nextStage } from '../../components/program/stages.ts';
+import StageLayout from '../../layouts/StageLayout.astro';
+
+const stage = getStage('grow');
+const { data, Content } = await loadPage('program/grow');
+const following = nextStage(stage.id);
+const [primary, secondary] = data.ctas;
+const next = [
+  ...(following ? [{ title: `${following.name}: ${following.promise}`, href: following.path, description: `The ${following.altitude.toLowerCase()} altitude.` }] : []),
+  { title: 'How the program works', href: '/program/how-it-works/', description: 'The path from application to a working team.' },
+  { title: 'Dedicated seats, steered by WE', href: '/program/dedicated-teams/', description: 'Who does the work, and who steers it.' },
+];
+---
+
+<StageLayout
+  title={stage.title}
+  description={data.description}
+  path={stage.path}
+  stage={stage.id}
+  lead={stage.promise}
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-program"
+  next={next}
+>
+  <StageBody stage={stage}><Content /></StageBody>
+  <Fragment slot="after">
+    {primary && <CtaBand title={`Start with ${stage.name}`} text="Apply, and WE will agree the scope with you before any work begins." cta={primary} secondary={secondary} />}
+  </Fragment>
+</StageLayout>

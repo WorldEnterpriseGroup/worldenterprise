@@ -1,0 +1,107 @@
+---
+import { href } from '../../lib/url.ts';
+import { STAGES } from './stages.ts';
+
+interface Props {
+  /** Id of the heading that labels the diagram. */
+  labelledby: string;
+}
+
+const { labelledby } = Astro.props;
+---
+
+<nav class="altitude" aria-labelledby={labelledby}>
+  <ol role="list">
+    {
+      STAGES.map((stage, index) => (
+        <li class="altitude__step" style={`--rise:${index}`}>
+          <a class="altitude__link" href={href(stage.path)}>
+            <span class="altitude__hex" aria-hidden="true">{stage.name.charAt(0)}</span>
+            <span class="altitude__text">
+              <span class="altitude__name">{stage.name}</span>
+              <span class="altitude__alt">{stage.altitude} altitude</span>
+              <span class="altitude__promise">{stage.promise}</span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  @layer pages {
+    .altitude ol {
+      display: grid;
+      gap: var(--sp-4);
+      list-style: none;
+      padding: 0;
+
+      @media (min-width: 52rem) {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: end;
+      }
+    }
+
+    .altitude__link {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-4);
+      align-items: start;
+      block-size: 100%;
+      padding: var(--sp-5);
+      color: var(--color-text);
+      text-decoration: none;
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-block-start: 4px solid var(--color-accent);
+      border-radius: var(--radius-md);
+      transition: box-shadow var(--dur-base) var(--ease-out);
+
+      &:hover {
+        box-shadow: var(--shadow-2);
+      }
+
+      @media (min-width: 52rem) {
+        padding-block-start: calc(var(--sp-5) + var(--rise) * var(--sp-5));
+      }
+    }
+
+    .altitude__hex {
+      display: grid;
+      place-items: center;
+      inline-size: 3.25rem;
+      aspect-ratio: var(--hex-ratio);
+      clip-path: var(--hex-clip);
+      background: var(--color-accent);
+      color: var(--color-accent-contrast);
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+    }
+
+    .altitude__text {
+      display: grid;
+      gap: var(--sp-1);
+    }
+
+    .altitude__name {
+      font-family: var(--ff-display);
+      font-size: var(--fs-xl);
+      font-weight: 700;
+    }
+
+    .altitude__alt {
+      font-family: var(--ff-display);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      color: var(--color-link);
+    }
+
+    .altitude__promise {
+      color: var(--color-text);
+    }
+  }
+</style>

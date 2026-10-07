@@ -1,0 +1,119 @@
+---
+import { getPhoto } from '../../assets/photo/index.ts';
+import LimitsBlock from '../blocks/LimitsBlock.astro';
+import NoFundingDisclaimer from '../blocks/NoFundingDisclaimer.astro';
+import Card from '../ui/Card.astro';
+import CellTrail from '../ui/CellTrail.astro';
+import HexIcon from '../ui/HexIcon.astro';
+import { href } from '../../lib/url.ts';
+import ArtifactList from './ArtifactList.astro';
+import ExitEvidence from './ExitEvidence.astro';
+import { STAGES } from './stages.ts';
+import type { Stage } from './stages.ts';
+
+interface Props {
+  stage: Stage;
+}
+
+const { stage } = Astro.props;
+const image = getPhoto(stage.slot);
+const current = STAGES.findIndex((s) => s.id === stage.id);
+const trail = STAGES.map((s) => ({ label: `${s.name} (${s.altitude})`, href: href(s.path) }));
+---
+
+<div class="stagebody">
+  <div class="stagebody__intro">
+    <div class="prose measure"><slot /></div>
+    <div class="hex-frame stagebody__media">
+      <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} loading="lazy" decoding="async" />
+    </div>
+  </div>
+
+  <CellTrail label="The WE path" cells={trail} current={current} />
+
+  <section class="stack" aria-labelledby="stage-work">
+    <h2 id="stage-work">What you work on in {stage.name}</h2>
+    <div class="grid" style="--grid-min:15rem">
+      {stage.activities.map((a) => <Card title={a.title} headingLevel={3}><p>{a.body}</p></Card>)}
+    </div>
+  </section>
+
+  <section class="stack" aria-labelledby="stage-artifacts">
+    <h2 id="stage-artifacts">Where to start</h2>
+    <p class="measure">Each of these is open to read today. They are the working tools of this stage.</p>
+    <ArtifactList items={stage.artifacts} />
+  </section>
+
+  <section class="stack" aria-labelledby="stage-exit">
+    <h2 id="stage-exit">Exit evidence for {stage.name}</h2>
+    <p class="measure">
+      WE judges a stage by what you can inspect, not by how much time has passed. Before moving on, check that these exist and
+      that you have read them.
+    </p>
+    <ExitEvidence items={stage.exitEvidence} labelledby="stage-exit" />
+  </section>
+
+  {stage.id === 'grow' && <NoFundingDisclaimer />}
+
+  <LimitsBlock title="What this stage does not do" items={stage.limits} />
+
+  <section class="stack" aria-labelledby="stage-lines">
+    <h2 id="stage-lines">Service lines that carry this stage</h2>
+    <ul class="stagebody__lines" role="list">
+      {
+        stage.lines.map((l) => (
+          <li class="stagebody__line">
+            <HexIcon line={l.line} size={48} />
+            <div>
+              <a class="stagebody__line-title" href={href(l.path)}>{l.line}. {l.title}</a>
+              <p class="muted">{l.note}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</div>
+
+<style>
+  @layer pages {
+    .stagebody {
+      display: grid;
+      gap: var(--sp-8);
+    }
+
+    .stagebody__intro {
+      display: grid;
+      gap: var(--sp-6);
+      align-items: center;
+
+      @media (min-width: 62rem) {
+        grid-template-columns: 3fr 2fr;
+      }
+    }
+
+    .stagebody__media {
+      max-inline-size: 26rem;
+    }
+
+    .stagebody__lines {
+      display: grid;
+      gap: var(--sp-4);
+      list-style: none;
+      padding: 0;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    }
+
+    .stagebody__line {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-4);
+      align-items: start;
+    }
+
+    .stagebody__line-title {
+      font-family: var(--ff-display);
+      font-weight: 700;
+    }
+  }
+</style>

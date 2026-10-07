@@ -1,0 +1,83 @@
+---
+import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import FactBand from '../../components/ui/FactBand.astro';
+import Steps from '../../components/ui/Steps.astro';
+import { loadPage } from '../../components/program/loadPage.ts';
+import { PROGRAM_STEPS } from '../../components/program/steps.ts';
+import { STAGES } from '../../components/program/stages.ts';
+import { routes } from '../../data/routes.ts';
+import StageLayout from '../../layouts/StageLayout.astro';
+
+const { data, Content } = await loadPage('program/how-it-works');
+const [primary, secondary] = data.ctas;
+const lineCount = routes.filter((r) => r.launch && r.path.startsWith('/services/') && r.path !== '/services/').length;
+const facts = [
+  { label: 'Format', value: 'Fully remote' },
+  { label: 'Team model', value: 'Dedicated seats' },
+  { label: 'Stages', value: String(STAGES.length) },
+  { label: 'Service lines', value: String(lineCount) },
+];
+const next = [
+  { title: 'Dedicated seats, steered by WE', href: '/program/dedicated-teams/', description: 'Who does the work, and who steers it.' },
+  { title: 'Who the program is for', href: '/program/who-its-for/', description: 'Check your own fit before you apply.' },
+  { title: 'Dream: validate the problem', href: '/program/dream/', description: 'The first stage of the path.' },
+];
+---
+
+<StageLayout
+  title={data.title}
+  description={data.description}
+  path="/program/how-it-works/"
+  eyebrow={data.eyebrow}
+  lead="A digital incubator, step by step."
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-program"
+  next={next}
+>
+  <div class="prose measure"><Content /></div>
+
+  <section class="stack" aria-labelledby="how-steps">
+    <h2 id="how-steps">Five steps from application to a working team</h2>
+    <Steps steps={PROGRAM_STEPS} headingLevel={3} />
+  </section>
+
+  <section class="stack" aria-labelledby="how-cycle">
+    <h2 id="how-cycle">A cycle at a glance</h2>
+    <p class="measure">Every cycle follows the same four parts, so you always know where the work stands and what happens next.</p>
+    <DataTable
+      caption="The four parts of a cycle"
+      columns={['Part', 'What happens', 'What you can see']}
+      rows={[
+        ['Plan', 'WE and the founder agree the goal of the cycle and which seats it needs.', 'A short written plan.'],
+        ['Work', 'The dedicated team does the work. WE steers it and clears blockers.', 'The work in progress, open to you at any time.'],
+        ['Review', 'WE shows what now exists, what changed and what is still open.', 'Review notes with the decisions recorded.'],
+        ['Decide', 'The founder decides what the next cycle holds and whether the seats change.', 'An updated plan for the next cycle.'],
+      ]}
+    />
+  </section>
+
+  <section class="stack" aria-labelledby="how-get">
+    <h2 id="how-get">What you receive</h2>
+    <ul class="measure">
+      <li>A written scope that names the service lines in use and what each covers.</li>
+      <li>A dedicated team, steered by WE, that works only on your company.</li>
+      <li>A plan and a review for every cycle, written so that anyone can read them later.</li>
+      <li>Access to the same playbooks and templates that are published on this site.</li>
+    </ul>
+  </section>
+
+  <LimitsBlock title="What the program does not do" items={[
+    'It does not promise funding. WE makes no promise of funding to any company.',
+    'It does not give legal, tax or accounting advice, and it does not keep your books or file your taxes.',
+    'It does not run your product in production or provide round-the-clock support.',
+    'It does not guarantee results. It gives you a team, a method and a written record of the work.',
+  ]} />
+
+  <Fragment slot="after">
+    <FactBand label="The program in four facts" facts={facts} />
+    {primary && <CtaBand title="Ready to start?" text="Apply, and WE will agree the scope with you before any work begins." cta={primary} secondary={secondary} />}
+  </Fragment>
+</StageLayout>

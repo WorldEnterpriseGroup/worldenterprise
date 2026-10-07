@@ -1,0 +1,126 @@
+---
+import { href } from '../../lib/url.ts';
+import { STAGES } from './stages.ts';
+
+interface Props {
+  /** Heading level of each stage title inside the explorer. */
+  headingLevel?: 3 | 4;
+}
+
+const { headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h3' | 'h4';
+---
+
+<div class="explorer">
+  {
+    STAGES.map((stage, index) => (
+      <details class="explorer__item" name="stage-explorer" open={index === 0}>
+        <summary class="explorer__summary">
+          <span class="explorer__hex" aria-hidden="true">{stage.name.charAt(0)}</span>
+          <Heading class="explorer__title">
+            {stage.name}: <span class="explorer__promise">{stage.promise}</span>
+          </Heading>
+          <span class="explorer__alt">{stage.altitude} altitude</span>
+        </summary>
+        <div class="explorer__panel stack">
+          <p>{stage.altitudeNote}</p>
+          <p class="explorer__label">You leave this stage holding</p>
+          <ul class="explorer__list">
+            {stage.exitEvidence.slice(0, 3).map((item) => <li>{item}</li>)}
+          </ul>
+          <p><a class="btn btn--secondary" href={href(stage.path)}>Read about {stage.name}</a></p>
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  @layer pages {
+    .explorer {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .explorer__item {
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+
+      &[open] {
+        border-color: var(--color-accent);
+      }
+    }
+
+    .explorer__summary {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-1) var(--sp-4);
+      align-items: center;
+      min-block-size: var(--target-min);
+      padding: var(--sp-4) var(--sp-5);
+      cursor: pointer;
+      list-style: none;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+    }
+
+    .explorer__hex {
+      grid-row: span 2;
+      display: grid;
+      place-items: center;
+      inline-size: 3rem;
+      aspect-ratio: var(--hex-ratio);
+      clip-path: var(--hex-clip);
+      background: var(--we-tint);
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+    }
+
+    .explorer__item[open] .explorer__hex {
+      background: var(--color-accent);
+      color: var(--color-accent-contrast);
+    }
+
+    .explorer__title {
+      font-size: var(--fs-lg);
+      line-height: var(--lh-snug);
+    }
+
+    .explorer__promise {
+      font-weight: 400;
+      font-family: var(--ff-sans);
+    }
+
+    .explorer__alt {
+      font-family: var(--ff-display);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      color: var(--color-link);
+    }
+
+    .explorer__panel {
+      padding: 0 var(--sp-5) var(--sp-5);
+
+      @media (min-width: 52rem) {
+        padding-inline-start: calc(var(--sp-5) + 3rem + var(--sp-4));
+      }
+    }
+
+    .explorer__label {
+      font-family: var(--ff-display);
+      font-weight: 700;
+    }
+
+    .explorer__list {
+      padding-inline-start: var(--sp-5);
+      display: grid;
+      gap: var(--sp-2);
+    }
+  }
+</style>

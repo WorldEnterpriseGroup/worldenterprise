@@ -1,0 +1,56 @@
+---
+import { href } from '../../lib/url.ts';
+import type { ArtifactLink } from './stages.ts';
+
+interface Props {
+  items: readonly ArtifactLink[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="artifacts" role="list">
+  {
+    items.map((item) => (
+      <li class="artifacts__item">
+        <span class="tag">{item.kind}</span>
+        <a class="artifacts__title" href={href(item.path)}>{item.title}</a>
+        <span class="artifacts__note">{item.note}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  @layer pages {
+    .artifacts {
+      display: grid;
+      gap: var(--sp-3);
+      list-style: none;
+      padding: 0;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    }
+
+    .artifacts__item {
+      display: grid;
+      align-content: start;
+      justify-items: start;
+      gap: var(--sp-2);
+      padding: var(--sp-4);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
+
+    .artifacts__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+      line-height: var(--lh-snug);
+    }
+
+    .artifacts__note {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+  }
+</style>

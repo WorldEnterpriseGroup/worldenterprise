@@ -1,0 +1,74 @@
+---
+import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import SeatDiagram from '../../components/program/SeatDiagram.astro';
+import { loadPage } from '../../components/program/loadPage.ts';
+import { SEAT_ROLES } from '../../components/program/roles.ts';
+import StageLayout from '../../layouts/StageLayout.astro';
+
+const { data, Content } = await loadPage('program/dedicated-teams');
+const [primary, secondary] = data.ctas;
+const next = [
+  { title: 'Compose your team', href: '/tools/team-composer/', description: 'Sketch the roles you need. No sign-up, no price.' },
+  { title: 'Seats and pricing', href: '/pricing/', description: 'How seats are priced, and how to request the current rate.' },
+  { title: 'What a dedicated team seat is and is not', href: '/insights/what-a-dedicated-team-seat-is-and-is-not/', description: 'The longer explanation.' },
+];
+---
+
+<StageLayout
+  title={data.title}
+  description={data.description}
+  path="/program/dedicated-teams/"
+  eyebrow={data.eyebrow}
+  lead="Offshore seats that work only on your company, managed by WE."
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-program"
+  next={next}
+>
+  <div class="prose measure"><Content /></div>
+
+  <section class="stack" aria-labelledby="seat-map">
+    <h2 id="seat-map">How a seat fits</h2>
+    <SeatDiagram labelledby="seat-map" />
+  </section>
+
+  <section class="stack" aria-labelledby="seat-roles">
+    <h2 id="seat-roles">The roles a team can include</h2>
+    <p class="measure">
+      Roles are functions, not named people. Your scope decides which of them your team needs, and the Team Composer helps you sketch
+      the shape before you apply.
+    </p>
+    <DataTable caption="Roles a dedicated team can include" columns={['Role', 'What the role does']} rows={SEAT_ROLES.map((r) => [r.role, r.does])} />
+  </section>
+
+  <section class="stack" aria-labelledby="seat-scale">
+    <h2 id="seat-scale">Scale up or down by notice</h2>
+    <p class="measure">
+      Seats can be added or released as the company's needs change. The notice terms are set out in the written agreement, not on this
+      page.
+    </p>
+  </section>
+
+  <section class="stack" aria-labelledby="seat-two">
+    <h2 id="seat-two">Two companies, one objective</h2>
+    <p class="measure">
+      WE and your company are two companies with one objective: a product that customers use and a company whose evidence holds up. That
+      is why a seat is dedicated. The team's work is measured against your company's goals, and WE answers for how the team is steered.
+    </p>
+  </section>
+
+  <LimitsBlock
+    title="What a seat is not"
+    items={[
+      'A seat is not a freelancer you must recruit, brief and manage. WE does that.',
+      'A seat is not a fixed promise of output. WE steers the work, and what ships depends on the scope and on your decisions.',
+      'A seat is not legal, tax or accounting help. Those stay with your own counsel and accountant.',
+    ]}
+  />
+
+  <Fragment slot="after">
+    {primary && <CtaBand title="Sketch the team you would need" text="The Team Composer shows a team shape in a few clicks. It asks for no sign-up and shows no price." cta={primary} secondary={secondary} />}
+  </Fragment>
+</StageLayout>

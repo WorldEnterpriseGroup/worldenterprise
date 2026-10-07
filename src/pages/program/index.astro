@@ -1,0 +1,83 @@
+---
+import { getPhoto } from '../../assets/photo/index.ts';
+import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
+import AltitudeDiagram from '../../components/program/AltitudeDiagram.astro';
+import SeatDiagram from '../../components/program/SeatDiagram.astro';
+import { loadPage } from '../../components/program/loadPage.ts';
+import { PROGRAM_STEPS } from '../../components/program/steps.ts';
+import CellTrail from '../../components/ui/CellTrail.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import { href } from '../../lib/url.ts';
+import HubLayout from '../../layouts/HubLayout.astro';
+
+const { data, Content } = await loadPage('program');
+const [primary, secondary] = data.ctas;
+const inset = getPhoto('inset-program');
+const subtree = [
+  { title: 'How the program works', href: '/program/how-it-works/', description: 'Five steps from application to a working team.' },
+  { title: 'The digital incubation model', href: '/program/digital-incubation-model/', description: 'What fully remote means in practice.' },
+  { title: 'Dedicated seats, steered by WE', href: '/program/dedicated-teams/', description: 'The people on the team and who steers them.' },
+  { title: 'Who the program is for', href: '/program/who-its-for/', description: 'The founders and ideas WE builds with.' },
+  { title: 'Dream: validate the problem', href: '/program/dream/', description: 'The survey altitude.' },
+  { title: 'Build: ship the first product', href: '/program/build/', description: 'The blueprint altitude.' },
+  { title: 'Grow: earn customers', href: '/program/grow/', description: 'The territory altitude.' },
+];
+const toc = [
+  { slug: 'program-stages', text: 'Three stages' },
+  { slug: 'program-team', text: 'The team' },
+  { slug: 'program-steps', text: 'How it starts' },
+  { slug: 'program-limits', text: 'What it is not' },
+];
+---
+
+<HubLayout
+  title={data.title}
+  description={data.description}
+  path="/program/"
+  eyebrow={data.eyebrow}
+  lead="A digital incubator for SaaS, run as a remote team."
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-program"
+  subtree={subtree}
+  toc={toc}
+>
+  <div class="split">
+    <div class="prose measure"><Content /></div>
+    <img src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
+  </div>
+
+  <section class="stack" aria-labelledby="program-stages">
+    <h2 id="program-stages">Three stages, three altitudes</h2>
+    <p class="measure">Dream surveys the ground, Build draws the blueprint and Grow works the territory. Each stage ends with evidence you can inspect.</p>
+    <AltitudeDiagram labelledby="program-stages" />
+  </section>
+
+  <section class="stack" aria-labelledby="program-team">
+    <h2 id="program-team">A team that works for your company</h2>
+    <SeatDiagram labelledby="program-team" />
+  </section>
+
+  <section class="stack" aria-labelledby="program-steps">
+    <h2 id="program-steps">How it starts</h2>
+    <CellTrail label="The five steps" cells={PROGRAM_STEPS.map((s) => ({ label: s.title }))} />
+    <p class="measure">
+      Each step is explained on <a href={href('/program/how-it-works/')}>how the program works</a>.
+    </p>
+  </section>
+
+  <div id="program-limits">
+    <LimitsBlock
+      title="What the program is not"
+      items={[
+        'It is not funding, and WE makes no promise of funding.',
+        'It is not legal, tax or accounting advice.',
+        'It is not an office, a campus or an in-person cohort.',
+      ]}
+    />
+  </div>
+
+  <Fragment slot="after">
+    {primary && <CtaBand title="Start with an application" text="WE agrees the scope with you before any work begins." cta={primary} secondary={secondary} />}
+  </Fragment>
+</HubLayout>

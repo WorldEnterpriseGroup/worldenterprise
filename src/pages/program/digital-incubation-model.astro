@@ -1,0 +1,76 @@
+---
+import Callout from '../../components/ui/Callout.astro';
+import CellTrail from '../../components/ui/CellTrail.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import { loadPage } from '../../components/program/loadPage.ts';
+import { flags } from '../../data/flags.ts';
+import { href } from '../../lib/url.ts';
+import StageLayout from '../../layouts/StageLayout.astro';
+
+const { data, Content } = await loadPage('program/digital-incubation-model');
+const [primary, secondary] = data.ctas;
+const loop = [
+  ['Advance', 'Keep the roadmap current and look ahead at what the product could become.'],
+  ['Network', 'Keep the team, the founder and other stakeholders informed, and share what is learned in writing.'],
+  ['Design', 'Shape the processes and the product experience so that they serve the customer and the goal.'],
+  ['Research', 'Study customers, competitors and data before committing effort.'],
+  ['Optimize', 'Review how the work is going and tighten whatever is slow or error-prone.'],
+  ['Implement', 'Carry out and test the work, and help people adopt what was built.'],
+  ['Deliver', 'Release to customers, listen to what comes back and keep supporting what shipped.'],
+] as const;
+const next = [
+  { title: 'Dedicated seats, steered by WE', href: '/program/dedicated-teams/', description: 'The people in the remote team.' },
+  { title: 'How the program works', href: '/program/how-it-works/', description: 'Five steps from application to a working team.' },
+  { title: 'How WE steers a team: frameworks', href: '/about/frameworks/', description: 'The operating frameworks behind the loop.' },
+];
+---
+
+<StageLayout
+  title={data.title}
+  description={data.description}
+  path="/program/digital-incubation-model/"
+  eyebrow={data.eyebrow}
+  lead="No office, no relocation, and a written record of the work."
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-program"
+  next={next}
+>
+  <div class="prose measure"><Content /></div>
+
+  <section class="stack" aria-labelledby="remote-practice">
+    <h2 id="remote-practice">What remote means in practice</h2>
+    <ul class="measure">
+      <li><strong>No office.</strong> WE has no physical premises to visit. World Enterprise Group Incorporated is registered in Delaware and works online.</li>
+      <li><strong>A written rhythm.</strong> What each cycle is for, who is in the review and where the notes go are all recorded.</li>
+      <li><strong>Decisions where everyone can read them.</strong> The reasoning behind a choice is kept with the choice, not in someone's memory.</li>
+      <li><strong>Work that does not wait for a meeting.</strong> You review at set points. The team keeps moving between them.</li>
+    </ul>
+  </section>
+
+  <section class="stack" aria-labelledby="remote-loop">
+    <h2 id="remote-loop">The operating loop</h2>
+    <p class="measure">
+      WE plans each cycle with an operating framework it calls ANDROID Ops. It has seven focus areas, and a cycle draws on the ones the
+      work needs. Here they are in plain words.
+    </p>
+    <CellTrail label="The seven ANDROID Ops focus areas" cells={loop.map(([name]) => ({ label: name }))} />
+    <DataTable caption="The seven focus areas" columns={['Focus area', 'What it asks of the team']} rows={loop.map(([name, text]) => [name, text])} />
+    {
+      flags.focusShiftConfirmed && (
+        <p class="measure">
+          A cycle can include a Focus Shift: a dedicated four-hour block in which the team concentrates on one or more of these areas to
+          move a piece of work forward.
+        </p>
+      )
+    }
+    <Callout title="Read the full framework">
+      <p>The frameworks page explains how WE steers a team and the vocabulary it uses. <a href={href('/about/frameworks/')}>Read how WE steers a team</a>.</p>
+    </Callout>
+  </section>
+
+  <Fragment slot="after">
+    {primary && <CtaBand title="Work with a remote team that writes things down" text="Apply, and WE will agree the scope with you before any work begins." cta={primary} secondary={secondary} />}
+  </Fragment>
+</StageLayout>

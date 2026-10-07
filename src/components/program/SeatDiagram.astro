@@ -1,0 +1,126 @@
+---
+import { SEAT_ROLES } from './roles.ts';
+
+interface Props {
+  /** Heading id that labels the figure, so assistive technology announces its purpose. */
+  labelledby: string;
+}
+
+const { labelledby } = Astro.props;
+---
+
+<figure class="seat" role="group" aria-labelledby={labelledby}>
+  <div class="seat__lane">
+    <div class="seat__node seat__node--you">
+      <p class="seat__label">Your company</p>
+      <p>Sets the direction, owns the decisions and joins every review.</p>
+    </div>
+    <span class="seat__link" aria-hidden="true"></span>
+    <div class="seat__node seat__node--we">
+      <p class="seat__label">WE steers</p>
+      <p>Plans each cycle, assigns the seats and manages any subcontractors.</p>
+    </div>
+    <span class="seat__link" aria-hidden="true"></span>
+    <div class="seat__node seat__node--seats">
+      <p class="seat__label">Dedicated seats</p>
+      <ul class="seat__roles" role="list">
+        {SEAT_ROLES.map((r) => <li>{r.role}</li>)}
+      </ul>
+    </div>
+  </div>
+  <figcaption>The seats work for your company. WE is accountable for how they are steered.</figcaption>
+</figure>
+
+<style>
+  @layer pages {
+    .seat {
+      margin: 0;
+      container-type: inline-size;
+    }
+
+    .seat__lane {
+      display: grid;
+      gap: var(--sp-3);
+      align-items: stretch;
+    }
+
+    .seat__node {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      border: var(--border-strong);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .seat__node--we {
+      background: var(--color-bg-inverse);
+      color: var(--color-text-inverse);
+      border-color: var(--color-bg-inverse);
+    }
+
+    .seat__node--we p {
+      color: var(--color-text-inverse);
+    }
+
+    .seat__node--seats {
+      background: var(--color-bg-soft);
+    }
+
+    .seat__label {
+      font-family: var(--ff-display);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+    }
+
+    .seat__node--you .seat__label,
+    .seat__node--seats .seat__label {
+      color: var(--color-link);
+    }
+
+    .seat__link {
+      justify-self: center;
+      inline-size: 3px;
+      block-size: var(--sp-5);
+      background: var(--color-highlight);
+    }
+
+    .seat__roles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2);
+      list-style: none;
+      padding: 0;
+    }
+
+    .seat__roles li {
+      padding: var(--sp-1) var(--sp-3);
+      border: var(--border-hair);
+      border-radius: var(--radius-pill);
+      background: var(--color-bg);
+      font-family: var(--ff-sans);
+      font-size: var(--fs-sm);
+    }
+
+    .seat figcaption {
+      margin-block-start: var(--sp-4);
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    @container (min-width: 56rem) {
+      .seat__lane {
+        grid-template-columns: 1fr auto 1fr auto 1.6fr;
+        align-items: center;
+      }
+
+      .seat__link {
+        inline-size: var(--sp-5);
+        block-size: 3px;
+      }
+    }
+  }
+</style>
