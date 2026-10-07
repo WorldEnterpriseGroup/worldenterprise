@@ -1,0 +1,15 @@
+---
+import Callout from '../ui/Callout.astro';
+
+interface Props {
+  title: string;
+  /** Plain text statement of what the brief is and is not. */
+  text: string;
+}
+
+const { title, text } = Astro.props;
+---
+
+<Callout tone="notice" title={title}>
+  <p>{text}</p>
+</Callout>

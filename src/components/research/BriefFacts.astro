@@ -1,0 +1,57 @@
+---
+interface Props {
+  version: string;
+  asOf: Date;
+  sourceCount: number;
+  kindLabel: string;
+  minutes: number;
+}
+
+const { version, asOf, sourceCount, kindLabel, minutes } = Astro.props;
+const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const facts = [
+  { label: 'Type', value: kindLabel },
+  { label: 'As of', value: dateFormat.format(asOf) },
+  { label: 'Version', value: version },
+  { label: 'Sources', value: String(sourceCount) },
+  { label: 'Reading time', value: `${minutes} min` },
+];
+---
+
+<section class="brief-facts" aria-label="Brief facts">
+  <dl class="brief-facts__list">
+    {facts.map((f) => <div class="brief-facts__item"><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+  </dl>
+</section>
+
+<style>
+  .brief-facts {
+    border-block: var(--border-strong);
+    padding-block: var(--sp-4);
+    margin-block-end: var(--sp-6);
+    font-family: var(--ff-sans);
+  }
+  .brief-facts__list {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    margin: 0;
+  }
+  .brief-facts__item dt {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text-muted);
+  }
+  .brief-facts__item dd {
+    margin: 0;
+    font-size: var(--fs-base);
+  }
+  @media print {
+    .brief-facts {
+      border-color: currentColor;
+    }
+  }
+</style>

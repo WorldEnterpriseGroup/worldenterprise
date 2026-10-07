@@ -1,0 +1,52 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import BriefFacts from '../../components/research/BriefFacts.astro';
+import BriefNotice from '../../components/research/BriefNotice.astro';
+import PrintNote from '../../components/research/PrintNote.astro';
+import { briefMeta, readingMinutes } from '../../components/research/briefs.ts';
+import Toc from '../../components/ui/Toc.astro';
+import BriefLayout from '../../layouts/BriefLayout.astro';
+import { getRenderable, isDraft } from '../../lib/content.ts';
+
+export const getStaticPaths = (async () => {
+  const entries = await getRenderable('research');
+  // Fixtures live in a _fixtures/ subfolder, so the route slug is the last segment of the entry id.
+  return entries.map((entry) => ({ params: { slug: entry.id.split('/').at(-1) ?? entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { slug } = Astro.params;
+const { Content, headings } = await render(entry);
+const { data } = entry;
+// Fixtures have no metadata entry; real briefs must, and briefMeta throws a clear error if one is missing.
+const meta = isDraft(entry)
+  ? { kindLabel: 'Fixture', notice: 'Draft fixture.', noticeTitle: 'Draft' }
+  : briefMeta(slug ?? entry.id);
+---
+
+<BriefLayout
+  title={data.title}
+  subtitle={data.subtitle}
+  description={data.description}
+  path={`/research/${slug}/`}
+  publishedDate={data.publishedDate}
+  updatedDate={data.updatedDate}
+  version={data.version}
+  methodology={data.methodology}
+  limitations={data.limitations}
+  sources={data.sources}
+  draft={isDraft(entry)}
+>
+  <BriefFacts
+    version={data.version}
+    asOf={data.updatedDate ?? data.publishedDate}
+    sourceCount={data.sources.length}
+    kindLabel={meta.kindLabel}
+    minutes={readingMinutes(entry.body)}
+  />
+  <BriefNotice title={meta.noticeTitle} text={meta.notice} />
+  <PrintNote />
+  <Toc headings={headings.map((h) => ({ depth: h.depth, slug: h.slug, text: h.text }))} title="In this brief" />
+  <Content />
+</BriefLayout>

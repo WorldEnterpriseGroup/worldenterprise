@@ -1,0 +1,50 @@
+---
+import { getEntry, render } from 'astro:content';
+import BriefCard from '../../components/cards/BriefCard.astro';
+import { BRIEF_META, briefMeta, readingMinutes } from '../../components/research/briefs.ts';
+import Grid from '../../components/ui/Grid.astro';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { getPublished } from '../../lib/content.ts';
+
+const page = await getEntry('pages', 'research/index');
+if (page === undefined) {
+  throw new Error('Missing content entry src/content/pages/research/index.md for the /research/ hub.');
+}
+const { Content } = await render(page);
+const order = Object.keys(BRIEF_META);
+const briefs = (await getPublished('research'))
+  .map((entry) => ({ entry, slug: entry.id.split('/').at(-1) ?? entry.id }))
+  .filter(({ slug }) => slug in BRIEF_META)
+  .sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug));
+const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+---
+
+<HubLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/research/"
+  {...(page.data.eyebrow !== undefined ? { eyebrow: page.data.eyebrow } : {})}
+  lead={page.data.description}
+  updated={page.data.updated}
+  draft={page.data.draft}
+>
+  <div class="prose"><Content /></div>
+  <Grid>
+    {
+      briefs.map(({ entry, slug }) => {
+        const meta = briefMeta(slug);
+        const asOf = entry.data.updatedDate ?? entry.data.publishedDate;
+        return (
+          <BriefCard
+            title={entry.data.title}
+            summary={entry.data.description}
+            path={`/research/${slug}/`}
+            slot={meta.slot}
+            headingLevel={2}
+            meta={`${meta.kindLabel}. Version ${entry.data.version}, as of ${dateFormat.format(asOf)}. ${entry.data.sources.length} sources, ${readingMinutes(entry.body)} min read.`}
+          />
+        );
+      })
+    }
+  </Grid>
+</HubLayout>
