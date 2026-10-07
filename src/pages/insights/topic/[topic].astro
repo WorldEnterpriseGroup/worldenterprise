@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import ArticleHub from '../../../layouts/ArticleHub.astro';
 import { DESKS, DESK_LABELS, listInsights } from '../../../components/insights/articles.ts';
 import type { Desk } from '../../../components/insights/articles.ts';
@@ -11,7 +11,7 @@ export const getStaticPaths = (() => DESKS.map((topic) => ({ params: { topic } }
 
 const topic = Astro.params.topic as Desk;
 const label = DESK_LABELS[topic];
-const page = await getEntry('pages', `insights/topic-${topic}`);
+const page = (await getCollection('pages')).find((e) => e.id === `insights/topic-${topic}`);
 const Content = page === undefined ? undefined : (await render(page)).Content;
 const items = await listInsights(topic);
 ---

@@ -1,12 +1,13 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import ArticleHub from '../../layouts/ArticleHub.astro';
 import DeskRail from '../../components/insights/DeskRail.astro';
 import { DESKS, DESK_LABELS, listInsights } from '../../components/insights/articles.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
-const page = await getEntry('pages', 'insights/index');
+// The glob loader collapses index files, so src/content/pages/insights/index.mdx has the id "insights".
+const page = (await getCollection('pages')).find((e) => e.id === 'insights');
 if (page === undefined) throw new Error('Missing content entry src/content/pages/insights/index.mdx.');
 const { Content } = await render(page);
 const state = await getRouteState();
