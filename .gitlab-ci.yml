@@ -38,6 +38,27 @@ verify:static:
   rules:
     - if: '$CI_COMMIT_BRANCH'
 
+e2e:smoke:
+  stage: preflight
+  image: "${IMAGE_REGISTRY}/mcr-proxy/playwright:v1.63.0-noble"
+  needs:
+    - job: verify:static
+      artifacts: true
+  variables:
+    PUBLIC_STYLEGUIDE: "1"
+    CI: "1"
+  script:
+    - npm ci --prefer-offline --no-audit --no-fund
+    - npx playwright test
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - test-results/
+      - playwright-report/
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
 # The shared Pages job defaults to Alpine without Node and copies the repository
 # source tree. Build the static Astro output in a Node image and publish the
 # contents of dist/ at the Pages document root. The preview is path based, so the
