@@ -56,6 +56,8 @@
     /* A bare auto column grows to the widest min-content descendant and pushes the page past the viewport. */
     grid-template-columns: minmax(0, 1fr);
     min-block-size: 100dvh;
+    /* Safety net for header, utility bar and footer, which sit outside main. clip keeps sticky headers working. */
+    overflow-x: clip;
   }
 
   .page > * {
