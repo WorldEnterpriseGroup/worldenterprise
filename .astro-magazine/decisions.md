@@ -150,3 +150,21 @@ The npm `build` script ends with `pagefind --site dist` (npm `postbuild`), so ev
 ### W-7 Fonts are local
 The Astro Fonts API (stable in 7.3.6) is configured with the local provider and the whitelab `.woff` files, so there is no network fetch at generation time and no Google Fonts request. OFL licence texts ship beside the files.
 
+
+### W-8 Chrome uses the Popover API with a script enhancement layer
+MegaNav panels are `popover="auto"` opened by `popovertarget`, so they work without JavaScript; each panel carries its hub link. `src/scripts/nav.ts` adds focus return, arrow keys, hover intent (150 ms, fine pointers) and panel positioning. The browser smoke (mega-menu keyboard, no-JS fallback, mobile drawer) runs in `e2e:smoke`.
+
+### W-9 Verify build renders the full nav (PUBLIC_NAV_FIXTURE)
+Nav hides routes that do not exist, so before Wave 1 the menu is empty. The verify build sets `PUBLIC_NAV_FIXTURE=1` so the browser tests can exercise the real menu. It is never set for preview or production.
+
+### W-10 og:image omitted while the slot is a placeholder
+BaseLayout emits no og:image until WP-12 replaces the placeholder (FLAG-OG), rather than advertising a decorative graphic.
+
+### W-11 Wordmark sized by width
+The wordmark ratio is 14:1, so the header and footer logos are sized by width instead of the 36/30 px height in the brand spec.
+
+### W-12 Ownership gate image
+`check:ownership` runs on the full `node:24` image because it needs `git` and the runners are non-root (no `apk`). It only runs on `wp/*` branches and was verified against a seeded out-of-scope change on a throwaway branch.
+
+### W-13 Styleguide and fixtures are kept out of the sitemap
+`/styleguide/` is a dynamic route emitted only when `PUBLIC_STYLEGUIDE=1`, marked noindex, and filtered from the sitemap along with any `/fixture-` URL. Fixture routes use the last segment of the glob id because fixtures sit in `_fixtures/`.
