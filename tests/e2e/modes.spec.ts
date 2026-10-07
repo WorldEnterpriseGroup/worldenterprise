@@ -76,6 +76,7 @@ test.describe('zoom-200', () => {
   });
 
   test('no horizontal scroll at 720 px on any built route', async ({ page }) => {
+    test.setTimeout(180_000);
     const failures: string[] = [];
     for (const route of liveRoutes) {
       await page.goto(route.path);

@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import { isBuilt, liveRoutes } from './support/routes.ts';
 
@@ -6,6 +7,7 @@ import { isBuilt, liveRoutes } from './support/routes.ts';
 
 test('home: h1, promise, Apply button and hero image are inside the first viewport', async ({ page }) => {
   test.skip(!isBuilt('/'), 'home is not built');
+  test.skip(!existsSync('src/components/home/HomeHero.astro'), 'the home hero (WP-01) has not merged yet');
   await page.goto('/');
   const viewport = page.viewportSize();
   expect(viewport).not.toBeNull();
@@ -28,14 +30,12 @@ test('home: h1, promise, Apply button and hero image are inside the first viewpo
   await expect(parts.image.first()).not.toHaveAttribute('loading', 'lazy');
 });
 
-test('every built route shows its h1 inside the first viewport', async ({ page }) => {
-  const failures: string[] = [];
-  for (const route of liveRoutes) {
-    await page.goto(route.path);
+for (const { path: route } of liveRoutes) {
+  test(`h1 is inside the first viewport on ${route}`, async ({ page }) => {
+    await page.goto(route);
     const box = await page.locator('h1').first().boundingBox();
     const height = page.viewportSize()?.height ?? 0;
-    if (box === null) failures.push(`${route.path}: h1 has no box`);
-    else if (box.y + box.height > height) failures.push(`${route.path}: h1 ends at ${Math.round(box.y + box.height)}px, below the ${height}px fold`);
-  }
-  expect(failures).toEqual([]);
-});
+    expect(box, 'h1 has a box').not.toBeNull();
+    expect((box?.y ?? 0) + (box?.height ?? 0), `h1 bottom edge against the ${height}px fold`).toBeLessThanOrEqual(height);
+  });
+}

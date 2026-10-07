@@ -43,8 +43,10 @@ async function mockEndpoint(page: Page, respond: (route: Route) => Promise<void>
 
 const ok = (route: Route): Promise<void> => route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
 
-async function open(page: Page, kind: Kind): Promise<void> {
+async function open(page: Page, kind: Kind, frozen = false): Promise<void> {
   await page.clock.install();
+  // A frozen clock makes the fill time exactly zero, so the too-fast check is deterministic.
+  if (frozen) await page.clock.setFixedTime(new Date());
   await page.goto(kind.route);
   const mode = await page.locator('form[data-intake-form]').first().getAttribute('data-mode');
   if (process.env.E2E_REQUIRE_ENDPOINT === '1') expect(mode, `${kind.route} must be in endpoint mode in the forms build`).toBe('endpoint');
@@ -160,7 +162,7 @@ for (const kind of KINDS) {
 
     test('a submit under three seconds is paused once, the second goes through', async ({ page }) => {
       const mock = await mockEndpoint(page, ok);
-      await open(page, kind);
+      await open(page, kind, true);
       await fillValid(page, kind);
       await submit(page);
       await expect(page.locator('form[data-intake-form] [data-status]')).toContainText('That was quick');
