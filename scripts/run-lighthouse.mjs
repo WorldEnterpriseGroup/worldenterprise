@@ -1,0 +1,108 @@
+#!/usr/bin/env node
+// Runs Lighthouse (mobile, simulated throttling) on up to eight representative routes of the built site and checks the
+// budgets in lighthouserc.json (SAGE-PLAN 6.9). The site is served by scripts/lib/serve.mjs with its production origin
+// rewritten to the local one so the canonical URL is self-referential. Chromium comes from Playwright.
+// Usage: node scripts/run-lighthouse.mjs [--dist dist] [--out reports/lighthouse] [--config lighthouserc.json]
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { parseArgs } from './lib/html.mjs';
+import { builtRoutes } from './lib/ledger.mjs';
+
+const CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
+
+/** Picks up to `max` candidate routes that exist in the build, keeping the configured order. */
+export function pickRoutes(candidates, built, max) {
+  return candidates.filter((c) => built.has(c)).slice(0, max);
+}
+
+/** Reduces a Lighthouse result to the numbers the budgets use. `lhr` is the Lighthouse report object. */
+export function summarise(route, lhr, origin) {
+  const num = (id) => lhr.audits?.[id]?.numericValue ?? null;
+  const requests = lhr.audits?.['network-requests']?.details?.items ?? [];
+  const thirdParty = requests.filter((r) => typeof r.url === 'string' && /^https?:/.test(r.url) && new URL(r.url).origin !== origin).map((r) => r.url);
+  const scriptBytes = requests.filter((r) => r.resourceType === 'Script').reduce((sum, r) => sum + (r.transferSize ?? 0), 0);
+  return {
+    route,
+    scores: Object.fromEntries(CATEGORIES.map((c) => [c, lhr.categories?.[c]?.score ?? null])),
+    lcpMs: num('largest-contentful-paint'),
+    cls: num('cumulative-layout-shift'),
+    tbtMs: num('total-blocking-time'),
+    scriptBytes,
+    thirdParty,
+  };
+}
+
+/** Compares one summary with the budgets. Returns a list of human-readable failures (empty when within budget). */
+export function evaluate(summary, config) {
+  const failures = [];
+  for (const [category, min] of Object.entries(config.scores)) {
+    const score = summary.scores[category];
+    if (score === null || score < min) failures.push(`${category} score ${score === null ? 'missing' : Math.round(score * 100)} is below ${Math.round(min * 100)}`);
+  }
+  if (summary.lcpMs === null || summary.lcpMs >= config.metrics.lcpMs) failures.push(`LCP ${summary.lcpMs === null ? 'missing' : `${Math.round(summary.lcpMs)} ms`} is not under ${config.metrics.lcpMs} ms`);
+  if (summary.cls === null || summary.cls >= config.metrics.cls) failures.push(`CLS ${summary.cls ?? 'missing'} is not under ${config.metrics.cls}`);
+  if (summary.tbtMs === null || summary.tbtMs >= config.metrics.tbtMs) failures.push(`TBT ${summary.tbtMs === null ? 'missing' : `${Math.round(summary.tbtMs)} ms`} is not under ${config.metrics.tbtMs} ms`);
+  if (summary.thirdParty.length > 0) failures.push(`third-party requests: ${summary.thirdParty.slice(0, 3).join(', ')}`);
+  const exempt = config.javascript.exemptPrefixes.some((p) => summary.route.startsWith(p));
+  if (!exempt && summary.scriptBytes > config.javascript.maxGzipBytes) failures.push(`JavaScript transfer ${summary.scriptBytes} bytes exceeds ${config.javascript.maxGzipBytes}`);
+  return failures;
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2), { dist: 'dist', out: 'reports/lighthouse', config: 'lighthouserc.json' });
+  const config = JSON.parse(readFileSync(args.config, 'utf8'));
+  const built = builtRoutes(args.dist);
+  const routes = pickRoutes(config.candidates, built, config.maxRoutes);
+  if (routes.length === 0) throw new Error('None of the Lighthouse candidate routes exist in dist.');
+  mkdirSync(args.out, { recursive: true });
+
+  const { createStaticServer, listen } = await import('./lib/serve.mjs');
+  const options = {};
+  const live = createStaticServer(args.dist, options);
+  const port = await listen(live, 0);
+  const origin = `http://127.0.0.1:${port}`;
+  options.rewriteOrigin = origin;
+
+  const { chromium } = await import('@playwright/test');
+  const debugPort = 9222;
+  const browser = await chromium.launch({ args: [`--remote-debugging-port=${debugPort}`, '--no-sandbox'] });
+  const { default: lighthouse } = await import('lighthouse');
+  const results = [];
+  let failed = 0;
+  try {
+    for (const route of routes) {
+      let summary = null;
+      let failures = [];
+      for (let attempt = 0; attempt <= (config.retries ?? 0); attempt += 1) {
+        const run = await lighthouse(`${origin}${route}`, { port: debugPort, output: 'json', logLevel: 'error', onlyCategories: CATEGORIES, formFactor: config.formFactor });
+        if (run === undefined) throw new Error(`Lighthouse returned no result for ${route}`);
+        summary = summarise(route, run.lhr, origin);
+        failures = evaluate(summary, config);
+        writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), `${JSON.stringify(run.lhr)}\n`);
+        if (failures.length === 0) break;
+      }
+      results.push({ ...summary, failures });
+      const line = `${route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  a11y ${Math.round((summary.scores.accessibility ?? 0) * 100)}  bp ${Math.round((summary.scores['best-practices'] ?? 0) * 100)}  seo ${Math.round((summary.scores.seo ?? 0) * 100)}  LCP ${Math.round(summary.lcpMs ?? 0)}ms  CLS ${(summary.cls ?? 0).toFixed(3)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  JS ${summary.scriptBytes}B`;
+      if (failures.length === 0) console.log(`ok    ${line}`);
+      else {
+        failed += 1;
+        console.error(`FAIL  ${line}`);
+        for (const f of failures) console.error(`        ${f}`);
+      }
+    }
+  } finally {
+    await browser.close();
+    live.close();
+  }
+  writeFileSync(join(args.out, 'summary.json'), `${JSON.stringify(results, null, 2)}\n`);
+  console.log(`run-lighthouse: ${results.length} routes, ${failed} over budget`);
+  process.exit(failed === 0 ? 0 : 1);
+}
+
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error(`run-lighthouse: ${error instanceof Error ? error.stack ?? error.message : String(error)}`);
+    process.exit(2);
+  });
+}

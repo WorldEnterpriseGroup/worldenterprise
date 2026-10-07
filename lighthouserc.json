@@ -1,0 +1,26 @@
+{
+  "$comment": "Read by scripts/run-lighthouse.mjs. Budgets follow SAGE-PLAN 6.9: mobile, simulated throttling, zero third-party requests.",
+  "formFactor": "mobile",
+  "maxRoutes": 8,
+  "candidates": [
+    "/",
+    "/program/",
+    "/services/",
+    "/services/brand-and-identity/",
+    "/insights/",
+    "/insights/is-your-saas-idea-a-business-or-a-feature/",
+    "/research/saas-security-baseline-year-one/",
+    "/library/one-page-problem-brief/",
+    "/faq/",
+    "/pricing/",
+    "/playbooks/",
+    "/fundability/"
+  ],
+  "scores": { "performance": 0.9, "accessibility": 1, "seo": 1, "best-practices": 0.95 },
+  "metrics": { "lcpMs": 2500, "cls": 0.1, "tbtMs": 200 },
+  "javascript": {
+    "maxGzipBytes": 10240,
+    "exemptPrefixes": ["/tools/", "/fundability/", "/search/", "/apply/", "/contact/", "/pricing/", "/newsletter/"]
+  },
+  "retries": 1
+}
