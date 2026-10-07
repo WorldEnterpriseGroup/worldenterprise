@@ -23,6 +23,7 @@ verify:static:
   interruptible: true
   variables:
     PUBLIC_STYLEGUIDE: "1"
+    PUBLIC_NAV_FIXTURE: "1"
   script:
     - node --version
     - npm --version
