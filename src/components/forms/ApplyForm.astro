@@ -1,0 +1,71 @@
+---
+import { href } from '../../lib/url.ts';
+import Field from './Field.astro';
+import Fieldset from './Fieldset.astro';
+import FormFrame from './FormFrame.astro';
+
+const stages = [
+  { value: '', label: 'Choose a stage' },
+  { value: 'idea', label: 'An idea that is not yet tested with customers' },
+  { value: 'validating', label: 'Validating the problem with customers' },
+  { value: 'building', label: 'Building the first version' },
+  { value: 'launched', label: 'Live, and looking for the first customers' },
+] as const;
+---
+
+<FormFrame
+  kind="apply"
+  id="apply"
+  submitLabel="Send my application"
+  thanksPath="/apply/thanks/"
+  consentLabel="I agree that WE may use these details to reply to my application, as described in the privacy notice."
+>
+  <Fieldset legend="About you">
+    <Field id="apply-name" name="name" label="Your name" required autocomplete="name" maxlength={120} reserveError />
+    <Field
+      id="apply-email"
+      name="email"
+      label="Email address"
+      type="email"
+      required
+      autocomplete="email"
+      maxlength={254}
+      hint="WE replies to this address."
+      reserveError
+    />
+    <Field
+      id="apply-company"
+      name="company"
+      label="Company or working name"
+      autocomplete="organization"
+      maxlength={120}
+      hint="Optional. Leave it blank if the company has no name yet."
+      reserveError
+    />
+  </Fieldset>
+
+  <Fieldset legend="About the idea">
+    <Field id="apply-stage" name="stage" label="Where is the idea today?" type="select" required options={stages} reserveError />
+    <Field
+      id="apply-message"
+      name="message"
+      label="What are you building, and for whom?"
+      type="textarea"
+      rows={6}
+      maxlength={4000}
+      hint="Optional. A few plain sentences are enough: the problem, the customer and what you have learned so far."
+      reserveError
+    />
+    <Field
+      id="apply-seats"
+      name="seats"
+      label="Team you have in mind"
+      type="textarea"
+      rows={3}
+      maxlength={500}
+      hint="Optional. Sketch the roles in the Team Composer and they appear here, or describe them yourself."
+      reserveError
+    />
+    <p class="field__hint">Want help sketching roles? Use the <a href={href('/tools/team-composer/')}>Team Composer</a> first. It brings your roles back to this form.</p>
+  </Fieldset>
+</FormFrame>

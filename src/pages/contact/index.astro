@@ -1,0 +1,51 @@
+---
+import { getEntry, render } from 'astro:content';
+import { getPhoto } from '../../assets/photo/index.ts';
+import AsideStyles from '../../components/forms/AsideStyles.astro';
+import ContactForm from '../../components/forms/ContactForm.astro';
+import { publicContactAddress } from '../../data/forms.ts';
+import { site } from '../../data/site.ts';
+import FormLayout from '../../layouts/FormLayout.astro';
+import { href } from '../../lib/url.ts';
+
+const entry = await getEntry('pages', 'contact/contact');
+if (!entry) throw new Error('Missing content entry pages/contact/contact (src/content/pages/contact/contact.mdx).');
+const { Content } = await render(entry);
+const { data } = entry;
+const inset = getPhoto('inset-contact');
+const address = publicContactAddress();
+---
+
+<FormLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead="Ask a question, request the current seat rate, or report a correction. WE is fully remote."
+  path="/contact/"
+  updated={data.updated}
+  draft={data.draft}
+  schemaType="ContactPage"
+  ogSlot="og-default"
+>
+  <div class="prose"><Content /></div>
+  <ContactForm />
+
+  <Fragment slot="aside">
+    <AsideStyles />
+    <img class="aside-image" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
+    <h2 class="aside-title">Where WE is</h2>
+    <p>
+      WE is fully remote and has no office to visit. {site.legalName} is registered in Delaware.
+    </p>
+    {address !== null && <p>You can also write to <a href={`mailto:${address}`}>{address}</a>.</p>}
+    <h2 class="aside-title">Choose the right topic</h2>
+    <ul class="stack" role="list">
+      <li><strong>Seat rate.</strong> WE shares the current rate when you ask. See <a href={href('/pricing/')}>how seats work</a> first.</li>
+      <li><strong>Press.</strong> Facts and logos are on the <a href={href('/press/')}>press page</a>.</li>
+      <li><strong>Corrections.</strong> Include the page address and what should change. The <a href={href('/about/editorial-policy/')}>editorial policy</a> explains how WE handles them.</li>
+      <li><strong>Information handling.</strong> The <a href={href('/trust/')}>trust center</a> says what is true of this site.</li>
+    </ul>
+    <h2 class="aside-title">Ready to apply?</h2>
+    <p>Use the <a href={href('/apply/')}>application form</a> instead. It asks the questions WE needs.</p>
+  </Fragment>
+</FormLayout>

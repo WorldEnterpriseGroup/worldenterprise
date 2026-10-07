@@ -1,0 +1,164 @@
+---
+import { getEntry, render } from 'astro:content';
+import { getPhoto } from '../../assets/photo/index.ts';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import Button from '../../components/ui/Button.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import FactBand from '../../components/ui/FactBand.astro';
+import { flags } from '../../data/flags.ts';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { href } from '../../lib/url.ts';
+import { ROLES } from '../../scripts/team-composer.ts';
+
+const entry = await getEntry('pages', 'pricing/pricing');
+if (!entry) throw new Error('Missing content entry pages/pricing/pricing (src/content/pages/pricing/pricing.mdx).');
+const { Content } = await render(entry);
+const { data } = entry;
+
+const inset = getPhoto('inset-pricing');
+const band = getPhoto('band-3');
+
+/** The rate column exists only while the operator has published the seat rate (claim C-06, FLAG-PRICE). */
+const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
+const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+const columns = rate === null ? ['Role', 'What the seat does'] : ['Role', 'What the seat does', 'Monthly rate per seat'];
+const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [role.label, role.summary, money.format(rate)]));
+---
+
+<ToolLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead="WE prices dedicated team seats, not packages. Here is how a seat works and how to ask for the current rate."
+  path="/pricing/"
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-default"
+>
+  <div class="pricing-intro">
+    <div class="stack">
+      <FactBand
+        label="The seat model at a glance"
+        facts={[
+          { label: 'Format', value: 'Fully remote' },
+          { label: 'A seat is', value: 'Dedicated to your company' },
+          { label: 'Steered by', value: 'WE' },
+          { label: 'Scaling', value: 'Up or down by notice' },
+        ]}
+      />
+      <div class="cluster">
+        <Button href={href('/contact/?topic=seat-rate')}>Request the current seat rate</Button>
+        <Button href={href('/tools/team-composer/')} variant="secondary">Compose your team</Button>
+      </div>
+    </div>
+    <figure class="seatflow" aria-labelledby="seatflow-title">
+      <figcaption id="seatflow-title" class="seatflow__title">Two companies, one objective</figcaption>
+      <ol class="seatflow__list" role="list">
+        <li class="seatflow__cell seatflow__cell--lead"><strong>Your company</strong><span>Sets the goal and makes the decisions.</span></li>
+        <li class="seatflow__cell"><strong>WE steers</strong><span>Plans the work, runs the cycles and manages the subcontractors.</span></li>
+        <li class="seatflow__cell"><strong>Dedicated seats</strong><span>People in the roles you choose, working only on your company.</span></li>
+      </ol>
+    </figure>
+  </div>
+
+  <div class="prose pricing-copy"><Content /></div>
+
+  <section class="stack" aria-labelledby="roles-title">
+    <h2 id="roles-title">Roles a seat can fill</h2>
+    <DataTable caption="Seat roles and what each seat does" columns={columns} rows={rows} />
+    {
+      rate === null && (
+        <p class="pricing-note">The seat rate is not listed here. Ask for it and WE shares the current figure.</p>
+      )
+    }
+  </section>
+
+  <NoFundingDisclaimer />
+
+  <div class="pricing-visual">
+    <img src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
+    <img src={band.src.src} width={band.src.width} height={band.src.height} alt={band.alt} loading="lazy" decoding="async" />
+  </div>
+
+  <CtaBand
+    slot="after"
+    title="Ask for the current seat rate"
+    text="Tell WE what you are building and the roles you have in mind. WE replies with the current rate."
+    cta={{ label: 'Request the rate', href: '/contact/?topic=seat-rate' }}
+    secondary={{ label: 'Compose your team', href: '/tools/team-composer/' }}
+  />
+</ToolLayout>
+
+<style>
+  @layer pages {
+    .pricing-intro {
+      display: grid;
+      gap: var(--sp-7);
+      align-items: start;
+
+      @media (min-width: 62rem) {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      }
+    }
+
+    .pricing-copy {
+      max-inline-size: var(--prose-max);
+    }
+
+    .seatflow {
+      display: grid;
+      gap: var(--sp-3);
+      padding: var(--sp-5);
+      background: var(--color-bg-soft);
+      border: var(--border-hair);
+      border-inline-start: 6px solid var(--color-highlight);
+      border-radius: var(--radius-md);
+      font-family: var(--ff-sans);
+    }
+
+    .seatflow__title {
+      font-family: var(--ff-display);
+      font-weight: 700;
+      font-size: var(--fs-lg);
+    }
+
+    .seatflow__list {
+      display: grid;
+      gap: var(--sp-3);
+      list-style: none;
+      padding: 0;
+    }
+
+    .seatflow__cell {
+      display: grid;
+      gap: var(--sp-1);
+      padding: var(--sp-3) var(--sp-4);
+      background: var(--color-bg);
+      border: var(--border-strong);
+      border-radius: var(--radius-sm);
+
+    }
+
+    .pricing-note {
+      font-family: var(--ff-sans);
+      color: var(--color-text-muted);
+    }
+
+    .pricing-visual {
+      display: grid;
+      gap: var(--sp-5);
+      align-items: start;
+
+      @media (min-width: 48rem) {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      }
+
+      & img {
+        inline-size: 100%;
+        block-size: auto;
+        border-radius: var(--radius-md);
+      }
+    }
+  }
+</style>

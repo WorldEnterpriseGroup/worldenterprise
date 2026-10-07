@@ -1,0 +1,15 @@
+---
+interface Props {
+  /** Id prefix, unique per form on the page. */
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<div class="error-summary" data-error-summary tabindex="-1" aria-labelledby={`${id}-error-title`} hidden>
+  <h2 class="error-summary__title" id={`${id}-error-title`}>Check your answers</h2>
+  <p data-error-intro></p>
+  <ul class="error-summary__list"></ul>
+  <p class="error-summary__fallback"><a data-fallback href="#" hidden>Send these answers by email instead</a></p>
+</div>

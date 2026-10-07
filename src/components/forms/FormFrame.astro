@@ -1,0 +1,172 @@
+---
+import { forms, intakeRequiresJs, mailboxFor } from '../../data/forms.ts';
+import { absoluteUrl, href } from '../../lib/url.ts';
+import ErrorSummary from './ErrorSummary.astro';
+import FormStatus from './FormStatus.astro';
+import HoneypotField from './HoneypotField.astro';
+import Choice from './Choice.astro';
+
+interface Props {
+  kind: 'apply' | 'contact' | 'newsletter';
+  /** Unique id prefix on the page. */
+  id: string;
+  submitLabel: string;
+  /** Route to open after a successful submit (Apply only). */
+  thanksPath?: string;
+  /** Wording of the required consent checkbox. */
+  consentLabel: string;
+}
+
+const { kind, id, submitLabel, thanksPath, consentLabel } = Astro.props;
+const config = kind === 'newsletter' ? forms.newsletter : forms.intake;
+const mailbox = kind === 'newsletter' ? null : mailboxFor(kind);
+const mode = config.mode === 'mailto' && mailbox === null ? 'disabled' : config.mode;
+const nativePost = kind !== 'newsletter' && mode === 'endpoint' && !intakeRequiresJs ? config.endpoint : null;
+const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') : null;
+---
+
+<form
+  class="intake stack"
+  id={`${id}-form`}
+  method={nativePost !== null ? 'post' : undefined}
+  action={nativePost ?? undefined}
+  data-intake-form
+  data-kind={kind}
+  data-mode={mode}
+  data-endpoint={config.endpoint ?? undefined}
+  data-mailto={mailbox ?? undefined}
+  data-thanks={thanksPath !== undefined ? href(thanksPath) : undefined}
+>
+  {
+    mode === 'disabled' && (
+      <div class="callout callout--notice" role="note">
+        <p class="callout__title">This form is not connected yet</p>
+        <p>
+          It is shown so you can see what WE asks for. It cannot be sent until WE connects it to an inbox, and the send button stays off until then.
+        </p>
+      </div>
+    )
+  }
+  {
+    intakeRequiresJs && mode === 'endpoint' && (
+      <noscript>
+        <div class="callout callout--notice">
+          <p class="callout__title">This form needs JavaScript</p>
+          <p>Turn JavaScript on to send this form{mailbox !== null && <Fragment>, or write to <a href={`mailto:${mailbox}`}>{mailbox}</a></Fragment>}.</p>
+        </div>
+      </noscript>
+    )
+  }
+  {mode === 'mailto' && mailbox !== null && (
+    <noscript>
+      <div class="callout">
+        <p>Without JavaScript this form cannot prefill your email. Write to <a href={`mailto:${mailbox}`}>{mailbox}</a> with your answers.</p>
+      </div>
+    </noscript>
+  )}
+
+  <ErrorSummary id={id} />
+
+  {nativePost !== null && <input type="hidden" name="form" value={kind} />}
+  {nativePost !== null && redirect !== null && <input type="hidden" name="redirect" value={redirect} />}
+
+  <slot />
+
+  <div class="intake__consent stack">
+    <Choice id={`${id}-consent`} name="consent" required label={consentLabel} describedby={`${id}-consent-error`} />
+    <p class="field__error" id={`${id}-consent-error`} hidden></p>
+    <p class="field__hint"><a href={href('/legal/privacy/')}>Read the privacy notice</a>. WE sets no cookies and loads no third-party scripts.</p>
+  </div>
+
+  <HoneypotField id={`${id}-website`} />
+
+  <div class="cluster">
+    <button class="btn btn--primary" type="submit" data-submit disabled={mode === 'disabled'}>{submitLabel}</button>
+  </div>
+  <FormStatus id={`${id}-status`} />
+</form>
+
+<script>
+  import { mountIntakeForms } from '../../scripts/forms.ts';
+  mountIntakeForms();
+</script>
+
+<style is:global>
+  @layer pages {
+    .intake {
+      --stack-gap: var(--sp-5);
+    }
+
+    .intake .fieldset {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .intake .field__error::before {
+      content: 'Error: ';
+    }
+
+    .intake .field :is(input, textarea, select):focus-visible,
+    .intake .choice input:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .error-summary {
+      border: 3px solid var(--color-error);
+      border-radius: var(--radius-md);
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--color-bg);
+      font-family: var(--ff-sans);
+    }
+
+    .error-summary:focus {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 3px;
+    }
+
+    .error-summary__title {
+      font-size: var(--fs-lg);
+      color: var(--color-error);
+    }
+
+    .error-summary__list {
+      margin-block: var(--sp-3);
+      padding-inline-start: var(--sp-5);
+      display: grid;
+      gap: var(--sp-2);
+    }
+
+    .error-summary__list a {
+      font-weight: 600;
+    }
+
+    .error-summary__fallback:empty,
+    .error-summary__fallback:has(a[hidden]) {
+      display: none;
+    }
+
+    .form-status {
+      font-family: var(--ff-sans);
+      font-weight: 600;
+      min-block-size: 1.5em;
+    }
+
+    .form-status:empty {
+      display: none;
+    }
+
+    .hp {
+      position: absolute;
+      inset-inline-start: -10000px;
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+    }
+
+    .btn[disabled] {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+  }
+</style>

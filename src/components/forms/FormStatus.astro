@@ -1,0 +1,10 @@
+---
+interface Props {
+  /** Id of the live region. */
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<p class="form-status" id={id} data-status role="status" aria-live="polite" tabindex="-1"></p>

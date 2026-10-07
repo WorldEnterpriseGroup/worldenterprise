@@ -1,0 +1,25 @@
+---
+import { forms } from '../../data/forms.ts';
+import Field from './Field.astro';
+import FormFrame from './FormFrame.astro';
+
+interface Props {
+  /** Unique id prefix when the form appears more than once on a page. */
+  id?: string;
+}
+
+const { id = 'newsletter' } = Astro.props;
+---
+
+{
+  forms.newsletter.mode === 'endpoint' && (
+    <FormFrame
+      kind="newsletter"
+      id={id}
+      submitLabel="Subscribe"
+      consentLabel="I agree that WE may use my email address to send the newsletter, as described in the privacy notice."
+    >
+      <Field id={`${id}-email`} name="email" label="Email address" type="email" required autocomplete="email" maxlength={254} reserveError />
+    </FormFrame>
+  )
+}

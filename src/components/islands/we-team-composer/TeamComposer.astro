@@ -1,0 +1,193 @@
+---
+import { flags } from '../../../data/flags.ts';
+import { href } from '../../../lib/url.ts';
+import { MAX_SEATS_PER_ROLE, ROLE_GROUPS, ROLES } from '../../../scripts/team-composer.ts';
+
+/**
+ * <we-team-composer>: choose roles and seat counts, see a team-shape summary and carry it to the Apply form.
+ * The server-rendered form is a complete no-JavaScript tool (a plain GET to /apply/). The script enhances it.
+ * The price renders only when flags.seatPrice.published is true (claim C-06).
+ */
+const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
+---
+
+<we-team-composer class="composer">
+  <form class="composer__form" method="get" action={href('/apply/')}>
+    <div class="composer__layout">
+      <div class="stack">
+        {
+          ROLE_GROUPS.map((group) => (
+            <fieldset class="fieldset composer__group">
+              <legend>{group.label}</legend>
+              <ul class="composer__roles" role="list">
+                {ROLES.filter((role) => role.group === group.id).map((role) => (
+                  <li class="composer__role">
+                    <div class="composer__role-copy">
+                      <label for={`seats-${role.id}`}>{role.label}</label>
+                      <p class="field__hint" id={`seats-${role.id}-hint`}>{role.summary}</p>
+                    </div>
+                    <input
+                      class="composer__seats"
+                      id={`seats-${role.id}`}
+                      name={role.id}
+                      type="number"
+                      inputmode="numeric"
+                      min="0"
+                      max={MAX_SEATS_PER_ROLE}
+                      step="1"
+                      placeholder="0"
+                      aria-describedby={`seats-${role.id}-hint`}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </fieldset>
+          ))
+        }
+      </div>
+
+      <section class="composer__summary" aria-labelledby="composer-summary-title">
+        <h2 id="composer-summary-title">Your team sketch</h2>
+        <p class="composer__static">Enter the number of seats for each role. Then continue to the application. Your choices travel in the link, not to a server.</p>
+        <div class="composer__live stack">
+          <p class="composer__headline" data-headline role="status">No seats chosen yet.</p>
+          <ul class="composer__roster" data-roster role="list" hidden></ul>
+          <ul class="composer__groups" role="list">
+            {
+              ROLE_GROUPS.map((group) => (
+                <li>
+                  <span id={`group-${group.id}-label`}>{group.label}</span>
+                  <meter data-group={group.id} min="0" max="1" value="0" aria-labelledby={`group-${group.id}-label`}>0 seats</meter>
+                  <span data-group-text={group.id}>0 seats</span>
+                </li>
+              ))
+            }
+          </ul>
+          {rate !== null && <p class="composer__cost" data-cost data-rate={String(rate)}></p>}
+        </div>
+        <div class="cluster">
+          <button class="btn btn--primary" type="submit">Continue to Apply with this team</button>
+          <button class="btn btn--quiet composer__live" type="button" data-copy>Copy team sketch</button>
+          <button class="btn btn--quiet" type="reset">Clear</button>
+        </div>
+        <p class="form-status" data-status role="status" aria-live="polite"></p>
+      </section>
+    </div>
+  </form>
+</we-team-composer>
+
+<script>
+  import { defineTeamComposer } from '../../../scripts/team-composer.ts';
+  defineTeamComposer();
+</script>
+
+<style is:global>
+  @layer pages {
+    .composer__layout {
+      display: grid;
+      gap: var(--sp-7);
+
+      @media (min-width: 62rem) {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        align-items: start;
+      }
+    }
+
+    .composer__group {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .composer__roles {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .composer__role {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 5.5rem;
+      gap: var(--sp-4);
+      align-items: start;
+      font-family: var(--ff-sans);
+
+      & label {
+        font-weight: 600;
+      }
+    }
+
+    .composer__seats {
+      min-block-size: var(--target-min);
+      padding: var(--sp-2) var(--sp-3);
+      border: var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+      color: var(--color-text);
+      font: inherit;
+      text-align: end;
+
+      &:focus-visible {
+        outline: 3px solid var(--color-focus);
+        outline-offset: 2px;
+      }
+    }
+
+    .composer__summary {
+      display: grid;
+      gap: var(--sp-4);
+      padding: var(--sp-5);
+      background: var(--color-bg-soft);
+      border: var(--border-hair);
+      border-inline-start: 6px solid var(--color-highlight);
+      border-radius: var(--radius-md);
+      font-family: var(--ff-sans);
+
+      @media (min-width: 62rem) {
+        position: sticky;
+        inset-block-start: calc(var(--header-h) + var(--sp-5));
+      }
+    }
+
+    .composer__headline {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+    }
+
+    .composer__roster {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      gap: var(--sp-1);
+    }
+
+    .composer__groups {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      gap: var(--sp-3);
+
+      & li {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: var(--sp-1) var(--sp-3);
+        align-items: center;
+      }
+
+      & meter {
+        grid-column: 1 / -1;
+        inline-size: 100%;
+      }
+    }
+
+    /* Enhancement-only parts stay hidden until the script has run. */
+    we-team-composer:not([data-enhanced]) .composer__live {
+      display: none;
+    }
+
+    we-team-composer[data-enhanced] .composer__static {
+      display: none;
+    }
+  }
+</style>

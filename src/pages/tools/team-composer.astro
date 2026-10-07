@@ -1,0 +1,37 @@
+---
+import { getEntry, render } from 'astro:content';
+import TeamComposer from '../../components/islands/we-team-composer/TeamComposer.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+
+const entry = await getEntry('pages', 'tools/team-composer');
+if (!entry) throw new Error('Missing content entry pages/tools/team-composer (src/content/pages/tools/team-composer.mdx).');
+const { Content } = await render(entry);
+const { data } = entry;
+---
+
+<ToolLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead="Sketch the roles you need. No sign-up, no price."
+  path="/tools/team-composer/"
+  updated={data.updated}
+  draft={data.draft}
+  crumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Resources', href: '/resources/' },
+    { label: 'Team Composer', href: '/tools/team-composer/' },
+  ]}
+  noscript="JavaScript is off. You can still enter seats for each role and continue to the application. The live summary needs JavaScript."
+>
+  <TeamComposer />
+  <div class="prose composer-notes"><Content /></div>
+  <CtaBand
+    slot="after"
+    title="Ready to turn the sketch into an application?"
+    text="Your roles arrive in the application's team box, ready to edit."
+    cta={{ label: 'Apply', href: '/apply/' }}
+    secondary={{ label: 'How seats and pricing work', href: '/pricing/' }}
+  />
+</ToolLayout>

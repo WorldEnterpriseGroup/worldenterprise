@@ -53,7 +53,7 @@ The Team Composer (`/tools/team-composer/`) is not a form that submits anywhere.
 
 | Field | Type | Forms | Rules |
 |---|---|---|---|
-| `form` | `"apply"` or `"contact"` | both | Required. |
+| `form` | `"apply"`, `"contact"` or `"newsletter"` | all | Required. Newsletter fills only `email`, `consent`, `website`, `startedAt`, `submittedAt` and `page`; other fields are empty strings. |
 | `name` | string | both | Required, 1 to 120 characters after trimming. |
 | `email` | string | both | Required, one address, at most 254 characters. |
 | `company` | string | both | Optional, at most 120 characters. |

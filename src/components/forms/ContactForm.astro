@@ -1,0 +1,57 @@
+---
+import Field from './Field.astro';
+import Fieldset from './Fieldset.astro';
+import FormFrame from './FormFrame.astro';
+
+const topics = [
+  { value: '', label: 'Choose a topic' },
+  { value: 'general', label: 'A general question' },
+  { value: 'seat-rate', label: 'Request the current seat rate' },
+  { value: 'press', label: 'Press or media' },
+  { value: 'correction', label: 'A correction to something WE published' },
+  { value: 'information', label: 'How WE handles information' },
+] as const;
+---
+
+<FormFrame
+  kind="contact"
+  id="contact"
+  submitLabel="Send message"
+  consentLabel="I agree that WE may use these details to reply to my message, as described in the privacy notice."
+>
+  <Fieldset legend="Your message">
+    <Field id="contact-name" name="name" label="Your name" required autocomplete="name" maxlength={120} reserveError />
+    <Field
+      id="contact-email"
+      name="email"
+      label="Email address"
+      type="email"
+      required
+      autocomplete="email"
+      maxlength={254}
+      hint="WE replies to this address."
+      reserveError
+    />
+    <Field
+      id="contact-company"
+      name="company"
+      label="Company or organisation"
+      autocomplete="organization"
+      maxlength={120}
+      hint="Optional."
+      reserveError
+    />
+    <Field id="contact-topic" name="topic" label="What is this about?" type="select" required options={topics} reserveError />
+    <Field
+      id="contact-message"
+      name="message"
+      label="Message"
+      type="textarea"
+      required
+      rows={6}
+      maxlength={4000}
+      hint="Say what you need. For a correction, include the page address and what should change."
+      reserveError
+    />
+  </Fieldset>
+</FormFrame>

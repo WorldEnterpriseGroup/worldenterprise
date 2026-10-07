@@ -6,12 +6,14 @@ interface Props {
   type?: 'checkbox' | 'radio';
   value?: string;
   required?: boolean;
+  /** Id of an element that describes the control, such as its error message. */
+  describedby?: string;
 }
 
-const { id, name, label, type = 'checkbox', value, required = false } = Astro.props;
+const { id, name, label, type = 'checkbox', value, required = false, describedby } = Astro.props;
 ---
 
 <div class="choice">
-  <input id={id} name={name} type={type} value={value} required={required} />
+  <input id={id} name={name} type={type} value={value} required={required} aria-describedby={describedby} />
   <label for={id}>{label}</label>
 </div>

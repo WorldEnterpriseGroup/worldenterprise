@@ -1,0 +1,57 @@
+---
+import { getEntry, render } from 'astro:content';
+import { getPhoto } from '../../assets/photo/index.ts';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import AsideStyles from '../../components/forms/AsideStyles.astro';
+import ApplyForm from '../../components/forms/ApplyForm.astro';
+import Steps from '../../components/ui/Steps.astro';
+import FormLayout from '../../layouts/FormLayout.astro';
+import { href } from '../../lib/url.ts';
+
+const entry = await getEntry('pages', 'apply/apply');
+if (!entry) throw new Error('Missing content entry pages/apply/apply (src/content/pages/apply/apply.mdx).');
+const { Content } = await render(entry);
+const { data } = entry;
+const inset = getPhoto('inset-apply');
+---
+
+<FormLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead="Tell WE about your SaaS idea, where it stands and the team you have in mind."
+  path="/apply/"
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-default"
+>
+  <div class="prose apply-intro"><Content /></div>
+  <ApplyForm />
+
+  <Fragment slot="aside">
+    <AsideStyles />
+    <img class="aside-image" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
+    <h2 class="aside-title">What happens next</h2>
+    <Steps
+      headingLevel={3}
+      steps={[
+        { title: 'Apply', body: 'Send the form. A person at WE reads it.' },
+        { title: 'Scope', body: 'WE replies to the email address you give and, if the idea fits, scopes the work with you.' },
+        { title: 'Seat your team', body: 'You choose the roles and WE seats them. Seats scale up or down by notice.' },
+        { title: 'Work in focused cycles', body: 'WE steers the team through short cycles with a review at the end of each.' },
+      ]}
+    />
+    <p>The full path is on <a href={href('/program/how-it-works/')}>How it works</a>.</p>
+    <h2 class="aside-title">What WE collects</h2>
+    <p>
+      Only what is in this form. WE sets no cookies, runs no analytics and loads no third-party scripts. The
+      <a href={href('/legal/privacy/')}>privacy notice</a> says where the answers go.
+    </p>
+    <h2 class="aside-title">Not ready to apply?</h2>
+    <p>
+      Sketch a team in the <a href={href('/tools/team-composer/')}>Team Composer</a>, read the <a href={href('/pricing/')}>seat model</a>, or
+      <a href={href('/contact/')}>ask WE a question</a>.
+    </p>
+    <NoFundingDisclaimer />
+  </Fragment>
+</FormLayout>

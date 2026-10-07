@@ -9,15 +9,21 @@ interface Props {
   /** Error text, rendered and linked with aria-describedby when present. */
   error?: string;
   autocomplete?: string;
+  maxlength?: number;
+  rows?: number;
+  /** Always render an empty, hidden error element so scripts can fill it and aria-describedby stays valid. */
+  reserveError?: boolean;
   options?: readonly { readonly value: string; readonly label: string }[];
 }
 
-const { id, name, label, type = 'text', required = false, hint, error, autocomplete, options = [] } = Astro.props;
-const describedBy = [hint ? `${id}-hint` : '', error ? `${id}-error` : ''].filter(Boolean).join(' ') || undefined;
+const { id, name, label, type = 'text', required = false, hint, error, autocomplete, options = [], maxlength, rows = 5, reserveError = false } = Astro.props;
+const hasError = error !== undefined || reserveError;
+const describedBy = [hint ? `${id}-hint` : '', hasError ? `${id}-error` : ''].filter(Boolean).join(' ') || undefined;
 const common = {
   id,
   name,
   required,
+  ...(maxlength !== undefined ? { maxlength } : {}),
   ...(autocomplete ? { autocomplete: autocomplete as 'off' } : {}),
   ...(describedBy ? { 'aria-describedby': describedBy } : {}),
   ...(error ? { 'aria-invalid': 'true' as const } : {}),
@@ -27,6 +33,6 @@ const common = {
 <div class="field">
   <label for={id}>{label}{required && <span class="field__req"> (required)</span>}</label>
   {hint && <p class="field__hint" id={`${id}-hint`}>{hint}</p>}
-  {type === 'textarea' ? <textarea rows="5" {...common} /> : type === 'select' ? <select {...common}>{options.map((o) => <option value={o.value}>{o.label}</option>)}</select> : <input type={type} {...common} />}
-  {error && <p class="field__error" id={`${id}-error`}>{error}</p>}
+  {type === 'textarea' ? <textarea rows={rows} {...common} /> : type === 'select' ? <select {...common}>{options.map((o) => <option value={o.value}>{o.label}</option>)}</select> : <input type={type} {...common} />}
+  {hasError && <p class="field__error" id={`${id}-error`} hidden={!error}>{error}</p>}
 </div>

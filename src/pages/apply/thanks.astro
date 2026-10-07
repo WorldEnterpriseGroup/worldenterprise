@@ -1,0 +1,46 @@
+---
+import { getEntry, render } from 'astro:content';
+import AsideStyles from '../../components/forms/AsideStyles.astro';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import Steps from '../../components/ui/Steps.astro';
+import FormLayout from '../../layouts/FormLayout.astro';
+import { href } from '../../lib/url.ts';
+
+const entry = await getEntry('pages', 'apply/thanks');
+if (!entry) throw new Error('Missing content entry pages/apply/thanks (src/content/pages/apply/thanks.mdx).');
+const { Content } = await render(entry);
+const { data } = entry;
+---
+
+<FormLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead="Your application is with WE."
+  path="/apply/thanks/"
+  updated={data.updated}
+  draft={data.draft}
+>
+  <div class="prose"><Content /></div>
+  <h2>What happens next</h2>
+  <Steps
+    headingLevel={3}
+    steps={[
+      { title: 'WE reads your application', body: 'A person at WE reads what you wrote about the idea and the team you have in mind.' },
+      { title: 'WE replies', body: 'The reply goes to the email address you gave. If it does not arrive, check your spam folder and then write to WE from the contact page.' },
+      { title: 'Scope and seat the team', body: 'If the idea fits, WE scopes the work with you and seats the roles you need.' },
+    ]}
+  />
+  <Fragment slot="aside">
+    <AsideStyles />
+    <h2 class="aside-title">While you wait</h2>
+    <ul class="stack" role="list">
+      <li><a href={href('/program/how-it-works/')}>How the program works</a></li>
+      <li><a href={href('/playbooks/validate-the-problem/')}>Playbook: validate the problem</a></li>
+      <li><a href={href('/tools/team-composer/')}>Sketch a team in the Team Composer</a></li>
+      <li><a href={href('/pricing/')}>Seats and pricing</a></li>
+      <li><a href={href('/contact/')}>Contact WE</a></li>
+    </ul>
+    <NoFundingDisclaimer />
+  </Fragment>
+</FormLayout>

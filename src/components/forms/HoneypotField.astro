@@ -1,0 +1,13 @@
+---
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<!-- Honeypot (docs/forms-contract.md): people never see or reach this field; automation tends to fill it. -->
+<div class="hp" inert>
+  <label for={id}>Leave this field empty</label>
+  <input id={id} name="website" type="text" tabindex="-1" autocomplete="off" />
+</div>
