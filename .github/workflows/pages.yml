@@ -35,22 +35,18 @@ jobs:
       - run: npm run build
       - run: npm run audit:contrast
       - run: npm run audit:claims
-      - name: Forbidden-file gate
+      - name: Export route ledger
+        run: node scripts/lib/export-ledger.mjs reports/ledger.json
+      - name: Published-output gate (forbidden paths, CNAME, shell files)
+        run: node scripts/lib/audit-dist.mjs --dist dist --cname CNAME
+      - name: Route ledger, links and image audits
         run: |
           set -eu
-          found=0
-          for name in .plan .claude .astro-magazine CLAUDE.md plan.md .gitlab-ci.yml docs documents package.json package-lock.json scripts tests _refs node_modules; do
-            if [ -e "dist/$name" ]; then
-              echo "forbidden path in dist: $name" >&2
-              found=1
-            fi
-          done
-          [ "$found" -eq 0 ]
+          node scripts/audit-route-ledger.mjs --dist dist --ledger reports/ledger.json --strict
+          node scripts/audit-links.mjs --dist dist --ledger reports/ledger.json --strict
+          node scripts/audit-images.mjs --dist dist
       - name: Custom domain
-        run: |
-          set -eu
-          test "$(cat CNAME)" = "worldenterprise.org"
-          cp CNAME dist/CNAME
+        run: cp CNAME dist/CNAME
       - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
