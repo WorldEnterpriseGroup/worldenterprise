@@ -44,9 +44,9 @@ const link = (target: string) => (target === currentPath ? 'page' : undefined);
                   </a>
                 </div>
                 <div class="mega-panel__columns">
-                  {item.columns.map((column) => (
-                    <section class="mega-panel__column">
-                      <h2 class="mega-panel__heading">{column.heading}</h2>
+                  {item.columns.map((column, ci) => (
+                    <section class="mega-panel__column" aria-labelledby={`mega-${item.id}-h${ci}`}>
+                      <p class="mega-panel__heading" id={`mega-${item.id}-h${ci}`}>{column.heading}</p>
                       <ul role="list">
                         {column.links.map((l) => (
                           <li>

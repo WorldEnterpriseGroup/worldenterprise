@@ -74,10 +74,16 @@
 
   .utility-bar__inner {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--sp-4);
     min-block-size: var(--utility-h);
+  }
+
+  .utility-bar nav {
+    min-inline-size: 0;
+    margin-inline-start: auto;
   }
 
   .utility-bar__statement {
@@ -90,7 +96,8 @@
 
   .utility-bar__list {
     display: flex;
-    gap: var(--sp-5);
+    flex-wrap: wrap;
+    gap: var(--sp-1) var(--sp-4);
     list-style: none;
     padding: 0;
     margin-inline-start: auto;
