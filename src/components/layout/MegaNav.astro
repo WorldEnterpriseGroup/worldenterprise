@@ -1,0 +1,87 @@
+---
+import type { PrimaryNavItem } from '../../data/nav.ts';
+import { activeSectionId } from '../../data/nav.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  items: readonly PrimaryNavItem[];
+  currentPath: string;
+}
+
+const { items, currentPath } = Astro.props;
+const activeId = activeSectionId(currentPath);
+const link = (target: string) => (target === currentPath ? 'page' : undefined);
+---
+
+<nav class="mega-nav" aria-label="Primary" data-mega-nav>
+  <ul class="mega-nav__list" role="list">
+    {
+      items.map((item) =>
+        item.kind === 'direct' ? (
+          <li>
+            <a class="mega-nav__link" href={href(item.href)} aria-current={link(item.href) ?? (activeId === item.id ? 'true' : undefined)}>
+              {item.label}
+            </a>
+          </li>
+        ) : (
+          <li>
+            <button
+              type="button"
+              class="mega-nav__trigger"
+              popovertarget={`mega-${item.id}`}
+              aria-haspopup="true"
+              aria-current={activeId === item.id ? 'true' : undefined}
+              data-mega-trigger
+            >
+              {item.label}
+            </button>
+            <div id={`mega-${item.id}`} class="mega-panel" popover="auto" aria-label={`${item.label} menu`} role="group" data-mega-panel>
+              <div class="container mega-panel__inner">
+                <div class="mega-panel__lead stack">
+                  <p class="mega-panel__text">{item.lead}</p>
+                  <a class="mega-panel__hub" href={href(item.href)} aria-current={link(item.href)}>
+                    {item.leadLink}
+                  </a>
+                </div>
+                <div class="mega-panel__columns">
+                  {item.columns.map((column) => (
+                    <section class="mega-panel__column">
+                      <h2 class="mega-panel__heading">{column.heading}</h2>
+                      <ul role="list">
+                        {column.links.map((l) => (
+                          <li>
+                            <a href={href(l.href)} aria-current={link(l.href)}>
+                              {l.label}
+                            </a>
+                            {l.description && <span class="mega-panel__desc">{l.description}</span>}
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))}
+                </div>
+                <aside class="mega-panel__featured" aria-label={item.featured.label}>
+                  <p class="eyebrow">{item.featured.label}</p>
+                  <p class="mega-panel__featured-title">{item.featured.title}</p>
+                  {item.featured.text && <p>{item.featured.text}</p>}
+                  <a href={href(item.featured.cta.href)}>{item.featured.cta.label}</a>
+                </aside>
+                {item.strip.length > 0 && (
+                  <ul class="mega-panel__strip" role="list">
+                    {item.strip.map((l) => (
+                      <li>
+                        <a href={href(l.href)} aria-current={link(l.href)}>
+                          {l.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </li>
+        ),
+      )
+    }
+  </ul>
+</nav>

@@ -67,3 +67,9 @@ test('serializeJsonLd escapes characters that could close the script element', (
   assert.ok(!out.includes('>'));
   assert.ok(out.includes('\\u003c'));
 });
+
+test('the site description fits the meta description limit without clamping', async () => {
+  const { site } = await import('../../../src/data/site.ts');
+  assert.ok(site.description.length <= DESCRIPTION_MAX, `${site.description.length} characters`);
+  assert.ok(buildTitle().length <= TITLE_MAX);
+});

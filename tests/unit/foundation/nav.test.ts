@@ -102,3 +102,16 @@ test('resolveNav hides L2 links and routes that are not live', () => {
   assert.ok(program !== undefined && program.kind === 'mega');
   assert.deepEqual(program.columns.flatMap((c) => c.links.map((l) => l.href)), ['/program/how-it-works/']);
 });
+
+test('activeSectionId maps paths to their primary section', async () => {
+  const { activeSectionId } = await import('../../../src/data/nav.ts');
+  assert.equal(activeSectionId('/'), null);
+  assert.equal(activeSectionId('/program/dream/'), 'program');
+  assert.equal(activeSectionId('/services/digital-incubation/'), 'services');
+  assert.equal(activeSectionId('/fundability/data-room/'), 'playbooks');
+  assert.equal(activeSectionId('/insights/some-article/'), 'resources');
+  assert.equal(activeSectionId('/research/saas-security-baseline-year-one/'), 'playbooks');
+  assert.equal(activeSectionId('/investors/'), 'network');
+  assert.equal(activeSectionId('/pricing/'), 'pricing');
+  assert.equal(activeSectionId('/legal/privacy/'), null);
+});

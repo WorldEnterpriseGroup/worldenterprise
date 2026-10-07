@@ -4,6 +4,8 @@ import { applyButton, resolveNav } from '../../data/nav.ts';
 import { site } from '../../data/site.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
+import MegaNav from './MegaNav.astro';
+import MobileNav from './MobileNav.astro';
 
 interface Props {
   currentPath: string;
@@ -12,7 +14,7 @@ interface Props {
 const { currentPath } = Astro.props;
 const state = await getRouteState();
 const items = resolveNav(state.isLive);
-const applyLive = state.isLive(applyButton.href);
+const apply = state.isLive(applyButton.href) ? applyButton : null;
 ---
 
 <header class="site-header">
@@ -20,21 +22,11 @@ const applyLive = state.isLive(applyButton.href);
     <a href={href('/')} class="site-header__logo" aria-label={`${site.name}, home`}>
       <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="World Enterprise" decoding="async" />
     </a>
-    {
-      items.length > 0 && (
-        <nav aria-label="Primary">
-          <ul class="site-header__list" role="list">
-            {items.map((item) => (
-              <li>
-                <a href={href(item.href)} aria-current={item.href === currentPath ? 'page' : currentPath.startsWith(item.href) && item.href !== '/' ? 'true' : undefined}>
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )
-    }
-    {applyLive && <a class="btn btn--primary" href={href(applyButton.href)}>{applyButton.label}</a>}
+    {items.length > 0 && <MegaNav items={items} currentPath={currentPath} />}
+    {apply && <a class="btn btn--primary site-header__apply" href={href(apply.href)}>{apply.label}</a>}
+    {items.length > 0 && <MobileNav items={items} apply={apply} currentPath={currentPath} />}
   </div>
 </header>
+<script>
+  import '../../scripts/nav.ts';
+</script>

@@ -1,0 +1,68 @@
+---
+import type { NavLink, PrimaryNavItem } from '../../data/nav.ts';
+import { activeSectionId } from '../../data/nav.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  items: readonly PrimaryNavItem[];
+  apply: NavLink | null;
+  currentPath: string;
+}
+
+const { items, apply, currentPath } = Astro.props;
+const activeId = activeSectionId(currentPath);
+const link = (target: string) => (target === currentPath ? 'page' : undefined);
+---
+
+<div class="mobile-nav">
+  <button type="button" class="mobile-nav__toggle" popovertarget="mobile-drawer" aria-haspopup="true">Menu</button>
+  <div id="mobile-drawer" class="mobile-drawer" popover="auto" role="group" aria-label="Site menu" data-mobile-drawer>
+    <div class="mobile-drawer__head">
+      <button type="button" class="mobile-nav__toggle" popovertarget="mobile-drawer" popovertargetaction="hide">Close</button>
+    </div>
+    <nav aria-label="Primary mobile">
+      <ul class="mobile-drawer__list" role="list">
+        {
+          items.map((item) =>
+            item.kind === 'direct' ? (
+              <li>
+                <a class="mobile-drawer__link" href={href(item.href)} aria-current={link(item.href) ?? (activeId === item.id ? 'true' : undefined)}>
+                  {item.label}
+                </a>
+              </li>
+            ) : (
+              <li>
+                <details name="mobile-nav" open={activeId === item.id}>
+                  <summary aria-current={activeId === item.id ? 'true' : undefined}>{item.label}</summary>
+                  <ul role="list">
+                    <li>
+                      <a href={href(item.href)} aria-current={link(item.href)}>
+                        {item.leadLink}
+                      </a>
+                    </li>
+                    {item.columns.flatMap((column) =>
+                      column.links.map((l) => (
+                        <li>
+                          <a href={href(l.href)} aria-current={link(l.href)}>
+                            {l.label}
+                          </a>
+                        </li>
+                      )),
+                    )}
+                  </ul>
+                </details>
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </nav>
+  </div>
+  {
+    apply && (
+      <div class="mobile-apply">
+        <a class="btn btn--primary" href={href(apply.href)}>{apply.label}</a>
+      </div>
+    )
+  }
+</div>

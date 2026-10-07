@@ -396,3 +396,28 @@ export function resolveFooter(isLive: (href: string) => boolean): readonly Foote
 export function resolveUtility(isLive: (href: string) => boolean): readonly NavLink[] {
   return utilityNav.links.filter((l) => l.l2 !== true && isLive(l.href));
 }
+
+/**
+ * Which primary section a path belongs to, for aria-current="true" on the top-level link.
+ * Order: hub prefix, then an exact link match inside a panel, then the longest link that is a prefix of the path.
+ */
+export function activeSectionId(path: string): string | null {
+  if (path === '/') return null;
+  for (const item of primaryNav) {
+    if (path.startsWith(item.href)) return item.id;
+  }
+  let best: { id: string; length: number } | null = null;
+  for (const item of primaryNav) {
+    if (item.kind !== 'mega') continue;
+    for (const column of item.columns) {
+      for (const link of column.links) {
+        if (link.href !== '/' && path.startsWith(link.href) && (best === null || link.href.length > best.length)) {
+          best = { id: item.id, length: link.href.length };
+        }
+      }
+    }
+  }
+  if (best !== null) return best.id;
+  if (path.startsWith('/insights/') || path.startsWith('/research/') || path.startsWith('/library/') || path.startsWith('/glossary/')) return 'resources';
+  return null;
+}
