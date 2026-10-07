@@ -1,0 +1,112 @@
+---
+title: Build versus buy for auth, billing and email
+description: How to decide whether to build or buy sign-in, billing and email in a first SaaS product, with criteria, the standards that apply and the traps to check.
+topic: build
+publishedDate: 2026-10-06
+noStatistics: true
+evidence: [owasp-asvs, nist-800-63b, pci-dss, rfc-7208, rfc-6376]
+relatedServices: [B]
+relatedPlaybook: build-and-ship-v1
+relatedTemplate: security-baseline-checklist
+sources:
+  - id: owasp-asvs
+    title: OWASP Application Security Verification Standard, version 5.0.0
+    publisher: OWASP
+    url: https://github.com/OWASP/ASVS
+    accessed: 2026-10-06
+  - id: nist-800-63b
+    title: NIST SP 800-63B, Authentication and Authenticator Management
+    publisher: National Institute of Standards and Technology
+    url: https://pages.nist.gov/800-63-4/sp800-63b.html
+    accessed: 2026-10-06
+  - id: pci-dss
+    title: PCI Data Security Standard
+    publisher: PCI Security Standards Council
+    url: https://www.pcisecuritystandards.org/standards/pci-dss/
+    accessed: 2026-10-06
+  - id: rfc-7208
+    title: RFC 7208, Sender Policy Framework (SPF) for Authorizing Use of Domains in Email, Version 1
+    publisher: IETF
+    url: https://www.rfc-editor.org/rfc/rfc7208
+    accessed: 2026-10-06
+  - id: rfc-6376
+    title: RFC 6376, DomainKeys Identified Mail (DKIM) Signatures
+    publisher: IETF
+    url: https://www.rfc-editor.org/rfc/rfc6376
+    accessed: 2026-10-06
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+
+Sign-in, billing and email are in nearly every SaaS product, and almost none of them is the reason a customer chooses yours. They are context, not core. They are also surprisingly hard to do well and surprisingly easy to get dangerously wrong. A team that builds them from scratch spends weeks on work that is invisible when it works and costly when it fails.
+
+This article offers a way to decide, and then looks at each of the three in turn. We name no vendors. Choosing among them is a separate exercise that depends on your market and your constraints.
+
+## A simple decision rule
+
+For each component, ask four questions.
+
+1. **Is it core?** Does it differentiate your product, or does every competitor need the same thing? Differentiators justify building. Commodities usually do not.
+2. **What is the cost of getting it wrong?** Defects in authentication and payments harm customers directly and can damage trust quickly. High cost favors buying a mature component.
+3. **What does leaving cost?** Every bought component creates dependency. Check how easily you could export your data and switch. Low exit cost makes buying safer.
+4. **What does owning it require?** Standards, compliance duties and ongoing maintenance come with building. Count them honestly.
+
+If a component is not core, is costly to get wrong, and can be left without great pain, buy it. If it is core, build it, but do so deliberately and with the standards in view. Most early teams will find that all three of the components here fall on the buying side, with a small amount of integration work of their own.
+
+<DataTable
+  caption="First-pass recommendation for three common components"
+  columns={['Component', 'Usually core?', 'Cost of failure', 'First-pass lean']}
+  rows={[
+    ['Authentication and sessions', 'No', 'High: account takeover, data exposure', 'Buy a mature identity component; own the integration'],
+    ['Billing and payments', 'Rarely', 'High: money, tax and card data', 'Buy; keep card data out of your systems'],
+    ['Transactional email', 'No', 'Medium: missed resets, spam folders', 'Buy delivery; own your domain records']
+  ]}
+/>
+
+## Authentication
+
+Passwords, sessions, account recovery and multi-factor authentication each hide subtle failure modes. The OWASP Application Security Verification Standard, a catalogue of security requirements for web applications now at version 5.0.0, covers authentication among its chapters, and its three levels give you a way to say how rigorous you intend to be. The NIST publication on authentication, SP 800-63B, specifies authenticator types and assurance levels for government systems and is widely used as a reference. It describes three authentication assurance levels, with the middle one requiring proof of possession and control of two distinct factors, and it calls for rate-limiting to prevent guessing attacks.
+
+You do not have to meet every line of those documents to learn from them. Use them as checklists when you evaluate a component: does it support multi-factor authentication, throttle repeated attempts, handle recovery safely and manage sessions properly? A bought component that does these things saves you from re-deriving them.
+
+What to build is the part around it: how your accounts and organizations map onto identities, what each role can do, and how an administrator removes a person. Those rules are specific to your product, and mistakes there cause the breaches that matter in practice.
+
+What to check before buying: how data is exported, how users are migrated away, how outages are communicated, and where the identity data is stored.
+
+## Billing
+
+Billing combines several hard problems: pricing models that change, invoices, taxes in more than one place, failed payments, refunds and the handling of card data. The PCI Data Security Standard applies to entities that store, process or transmit cardholder data, or that could affect the security of the environment where it is handled. Whether and how it applies to you depends on how you take payments, and the standards council's own published guidance is the place to check which arrangement you are in. The practical lesson is to design so that card numbers never touch your own systems if you can avoid it, which reduces what you must secure and prove.
+
+Even when you buy the payment processing, billing logic remains yours. Plans, trials, upgrades, proration and cancellation rules are part of your product, and customers feel them. Keep that logic in one place and test it carefully. Decide early how you will represent money, in exact amounts with a currency, and how you will reconcile what your system believes with what the processor reports.
+
+What to check before buying: how you export customer and subscription data, what happens to stored payment methods if you switch, how tax is handled in the places you sell, and what your obligations are for disputes.
+
+## Email
+
+Email appears simple until messages stop arriving. Delivery depends on your domain proving that a sender is allowed to use it. Two published standards underpin this: the Sender Policy Framework, specified in RFC 7208, lets a domain publish which servers may send for it, and DomainKeys Identified Mail, specified in RFC 6376, lets a sender sign messages so that receivers can verify them. A further mechanism called DMARC builds on both to let a domain publish what receivers should do with messages that fail. If you are checking your setup, read the current specification for DMARC rather than relying on older material, as the documents in this area have been revised.
+
+The practical decision: buy the sending infrastructure and keep control of your own domain's records. Whoever sends on your behalf will ask you to publish DNS entries. Do it, keep a record of what each one is for, and review it when you change providers. A password-reset email that lands in a spam folder is a support ticket and a lost customer.
+
+What to build: the content and triggers of your messages, and a way to see whether they were delivered.
+
+## A short buying checklist
+
+Before you commit to any bought component, get written answers to a handful of questions. Where is our data stored and who can access it? How do we export everything, in a documented format, and how long does that take? What does the provider publish about incidents and outages, and how are customers told? How are changes to the service and its pricing announced? What happens to our data if the provider ends the service? Which parts of our product would break if the component were unavailable for a day, and what do we show users when that happens? Teams that ask these questions early tend to design a fallback for the one or two dependencies that cannot fail silently. Teams that skip them learn the answers during an incident, at the worst possible time and with customers watching.
+
+Keep one engineer's attention on the integration surface. A small adapter layer between your code and each bought component costs a few days now and makes later replacement a contained project rather than a rewrite.
+
+## Common traps
+
+- **Building because it looks easy.** The first version is easy. Recovery, edge cases and abuse are not.
+- **Buying without an exit.** Ask how you would leave before you sign.
+- **Letting the vendor define your model.** Keep your own concepts, such as customer, plan and role, in your own code, and map them to the component at the edge.
+- **Forgetting compliance when it arrives.** Your customers may ask how you handle authentication and payments. Written answers, tied to the standards above, are much easier when the components are well chosen.
+
+<Callout title="Record the decision">
+  For each component, write one short page: what you chose, why, the alternatives, the exit plan and what would make you revisit it. It takes ten minutes and saves hours when someone asks.
+</Callout>
+
+## What this article cannot tell you
+
+We have not evaluated any vendor and do not endorse one. Standards change, and the figures and requirements in them are not reproduced here. Whether PCI DSS, privacy laws or sector rules apply to you depends on facts we do not have, and nothing here is legal or compliance advice. If your product handles payment, health or other regulated data, take specialist advice. A security baseline checklist can help you structure the conversation, but it is not an assessment.

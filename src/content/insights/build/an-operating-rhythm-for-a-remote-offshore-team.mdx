@@ -1,0 +1,109 @@
+---
+title: An operating rhythm for a remote offshore team
+description: "A weekly and daily rhythm for working with a team in another time zone: written handoffs, a short overlap, a visible plan and four-hour focus blocks."
+topic: build
+publishedDate: 2026-10-06
+noStatistics: true
+evidence: [agile-principles, scrum-guide-2020, team-topologies]
+claimsUsed: [C-01, C-19]
+relatedServices: [E]
+relatedPlaybook: build-and-ship-v1
+relatedTemplate: weekly-investor-update-template
+sources:
+  - id: agile-principles
+    title: Principles behind the Agile Manifesto
+    publisher: agilemanifesto.org
+    url: https://agilemanifesto.org/principles.html
+    accessed: 2026-10-06
+  - id: scrum-guide-2020
+    title: The Scrum Guide (November 2020)
+    publisher: Ken Schwaber and Jeff Sutherland, scrumguides.org
+    url: https://scrumguides.org/scrum-guide.html
+    accessed: 2026-10-06
+  - id: team-topologies
+    title: Team Topologies, key concepts
+    publisher: Team Topologies
+    url: https://teamtopologies.com/key-concepts
+    accessed: 2026-10-06
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import Steps from '../../../components/ui/Steps.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Working with a team that sits several time zones away fails in a predictable way. Messages go out in the evening and answers arrive the next evening. Questions that would take two minutes in a room take two days. Small misunderstandings compound, and by the end of the week nobody is sure what was decided.
+
+The cure is not more meetings. It is a rhythm: a small number of fixed points, a habit of writing things down, and a clear sense of what each person is doing in each block of time. This article describes one, built from published team practice and from the way World Enterprise Group frames focused work.
+
+## Start from the constraint
+
+A distributed team has a short overlap, or none, between working hours. Treat that overlap as a scarce resource and spend it only on what needs live conversation: decisions with real trade-offs, ambiguity that written exchange would take too long to clear up, and the human contact that keeps a team together. Everything else moves to writing.
+
+The Agile Manifesto's principles state that the most efficient and effective way to convey information to and within a team is face-to-face conversation. That principle was written with co-located teams in mind, and it remains a good reminder of why a regular live call is worth protecting. For a remote team, video calls play that role. They do not make writing optional. They make it necessary to be disciplined about which things need a call and which are better written, because a written record can be read by someone who was asleep when the discussion happened.
+
+## The weekly shape
+
+<DataTable
+  caption="A weekly rhythm for a distributed team"
+  columns={['When', 'What happens', 'Who', 'Output']}
+  rows={[
+    ['Start of week', 'Planning call in the overlap hours: the goal for the week and what is in scope.', 'Founder and delivery lead, with the team', 'A written weekly goal and a short list of work items'],
+    ['Daily', 'A short written update, and a brief call only if the overlap allows.', 'Whole team', 'Done, next, blocked, posted where everyone can read it'],
+    ['Midweek', 'A review of work in progress, with a demo of anything usable.', 'Founder and team', 'Decisions recorded, scope changes noted'],
+    ['End of week', 'A demo of finished work and a short retrospective.', 'Founder and team', 'A written summary and one change to try next week'],
+    ['Any time', 'Questions in writing with enough context to answer without a call.', 'Anyone', 'An answer, or a scheduled conversation']
+  ]}
+/>
+
+This follows the pattern the Scrum Guide describes. It asks the team to set a goal for the period, which it calls the Sprint Goal, because a goal gives coherence and focus and encourages the team to work together rather than on separate initiatives. It also describes a short daily check on progress toward that goal, in which the team chooses its own structure and techniques so long as the focus stays on the goal. You do not need to adopt Scrum wholesale to borrow these two ideas. A weekly goal and a daily check are enough to give a remote team a spine.
+
+## Make writing the default
+
+Three kinds of writing carry most of the load.
+
+**The daily update.** Three lines: what was finished, what is next, what is blocked. The blocked line is the important one. A blocker stated at the end of one person's day can be cleared by another person at the start of theirs, saving a full day.
+
+**The handoff note.** When work passes between people or between time zones, the note says where things stand, what was tried, what remains and where to find it. A good test: could someone pick this up cold and make progress in fifteen minutes?
+
+**The decision record.** When a decision is made on a call, someone posts it in writing within the day, with the reasoning. This protects against the "I thought we agreed otherwise" problem and gives people who missed the call something to read.
+
+Questions benefit from the same discipline. A question that says "Can we talk about the sign-up flow?" costs a round trip. A question that states the situation, the options and a recommendation can often be answered with one word.
+
+## Protect focus with four-hour blocks
+
+World Enterprise Group documents a unit of work it calls a Focus Shift: a defined four-hour working block devoted to a single outcome. We describe it here as an idea you can borrow, not as proof that it works. We make no claim about results.
+
+The reasoning is simple. Fragmented attention is expensive for anyone doing demanding work, and a remote team can protect long blocks precisely because it is not pulled into drop-in conversations. A four-hour block with one stated outcome gives each person a clear target and a natural point at which to report. Two blocks fill a working day. Put the live overlap at the edge of the blocks, so that the call becomes the handover rather than an interruption in the middle.
+
+<Steps
+  headingLevel={3}
+  steps={[
+    { title: 'Name the outcome', body: 'Write one sentence describing what will be true at the end of the block, such as "the invoice export works for one customer".' },
+    { title: 'Remove interruptions', body: 'Turn off notifications and agree that questions go into the written channel until the block ends.' },
+    { title: 'Work on that outcome only', body: 'If something else arises, note it for later instead of switching.' },
+    { title: 'Report at the end', body: 'Post what was achieved, what was not and what the next block will do.' }
+  ]}
+/>
+
+If you want to see how WE describes its frameworks, the <MaybeLink path="/about/frameworks/">frameworks overview</MaybeLink> sets them out.
+
+## Keep the plan visible
+
+A remote team needs one place that shows the current goal, the work in progress and what has been finished. The format matters less than the habit: everyone looks at the same board, and the founder reads it before asking for a status update. When the plan is visible, most status questions answer themselves, and the overlap hours can be spent on decisions.
+
+Keep the number of work items in progress small. *Team Topologies* warns that teams have finite cognitive capacity and that piling on responsibilities without removing others reduces effectiveness. The same applies to a board: too many parallel items means each moves slowly and the handoff notes multiply.
+
+## The founder's part
+
+The rhythm only works if the founder participates in it. Three commitments matter. Be present for the weekly planning call and the end-of-week demo. Answer written questions within the working day on your side, even if the answer is "I need to think; I will reply tomorrow". And make decisions: an unanswered question is a decision to wait, and the team is idle in the meantime.
+
+If you cannot commit to this, say so at the start. A smaller team with a faster feedback loop will outperform a larger one waiting on your replies.
+
+<Callout title="A quick health check">
+  Ask three questions each week. Did anyone wait more than a day for an answer? Did we make a decision that is not written down? Did anyone lose a focus block to an interruption? If the answer to any is yes, change one thing next week.
+</Callout>
+
+## What this article cannot tell you
+
+We have drawn on published team practice and on WE's own description of focused work. We have not measured how much a particular rhythm improves output, and we do not claim that this one beats others. Teams differ in size, in how much overlap they have and in how well-defined their work is. Treat this as a starting point, then adjust it after a few weeks using the weekly retrospective.

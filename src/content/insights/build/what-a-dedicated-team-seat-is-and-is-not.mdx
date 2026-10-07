@@ -1,0 +1,104 @@
+---
+title: What a dedicated team seat is, and is not
+description: "What a dedicated team seat is: who steers the work, how it differs from freelancers and agencies, and what a seat does not cover."
+topic: build
+publishedDate: 2026-10-06
+noStatistics: true
+evidence: [scrum-guide-2020, team-topologies, agile-principles]
+claimsUsed: [C-01, C-02, C-03]
+relatedServices: [E]
+relatedPlaybook: build-and-ship-v1
+relatedTemplate: mvp-cut-line-worksheet
+sources:
+  - id: scrum-guide-2020
+    title: The Scrum Guide (November 2020)
+    publisher: Ken Schwaber and Jeff Sutherland, scrumguides.org
+    url: https://scrumguides.org/scrum-guide.html
+    accessed: 2026-10-06
+  - id: team-topologies
+    title: Team Topologies, key concepts
+    publisher: Team Topologies
+    url: https://teamtopologies.com/key-concepts
+    accessed: 2026-10-06
+  - id: agile-principles
+    title: Principles behind the Agile Manifesto
+    publisher: agilemanifesto.org
+    url: https://agilemanifesto.org/principles.html
+    accessed: 2026-10-06
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+"Seat" is an unfamiliar word for a familiar need: people who work on your product, steadily, without you employing them. This article explains what we mean by it at World Enterprise Incubator, how it differs from the other ways founders staff a build, and where it stops. It describes a model, not a price or a contract. Terms live in the written agreement.
+
+## The short version
+
+A dedicated team seat is a place on a team that works on your product on an ongoing basis. The seat is dedicated, which means it is assigned to your product for the length of the engagement. The team is remote by design, and its size can be scaled up or down by notice. World Enterprise Group steers the team and manages its subcontractors, so that you deal with one accountable party instead of coordinating individuals.
+
+That is the whole claim. The rest of this article is about what follows from it, and about what a seat does not mean.
+
+## Four ways to staff a build
+
+Founders usually choose among four arrangements. They solve different problems.
+
+<DataTable
+  caption="Common ways to staff a first build"
+  columns={['Arrangement', 'You get', 'You carry', 'Fits when']}
+  rows={[
+    ['Employees', 'Full control and long-term commitment', 'Hiring, payroll, management, retention', 'You can recruit and lead a team and expect steady work'],
+    ['Freelancers', 'Flexible individual skills at short notice', 'Coordination, continuity, quality across people', 'The work is a discrete task you can specify'],
+    ['Project agency', 'A fixed scope delivered by a firm', 'Change cost when the scope moves', 'You know exactly what to build'],
+    ['Dedicated team seats', 'A steady, steered team that can change size', 'Direction of the product and acceptance of the work', 'The product is still being discovered and needs continuous effort'],
+  ]}
+/>
+
+Seats are for the middle ground: you know the problem, you do not yet know the final shape of the product, and you need steady engineering and design effort that can grow or shrink as you learn. Agencies are strongest when scope is fixed, and freelancers when a task is well defined. A first SaaS rarely has either.
+
+## What "dedicated" means
+
+Dedicated means continuity. The same people learn your domain, your code and your customers, and carry that knowledge from one week to the next. The Agile principles put it plainly: build projects around motivated individuals, give them the environment and support they need, and trust them to get the job done. Continuity is what makes that trust reasonable, because trust accumulates through working together.
+
+It does not mean exclusive in every sense, and it does not mean your employees. The people in a seat do not work for you as employees. They work to the direction you set through the steering described below.
+
+## Who steers
+
+Every team needs someone who turns a goal into the next piece of work, removes obstacles and keeps quality in view. In a seat arrangement, that role belongs to World Enterprise Group. We steer the team: we work with you on the plan and manage the subcontractors who fill the seats. You set the priorities and accept the results.
+
+The Scrum Guide describes the aim of a well-functioning team in terms that help here. It calls teams cross-functional, meaning the members have all the skills needed to create value, and self-managing, meaning they decide internally who does what, when and how. Our model borrows that thinking. You are not asked to manage individuals, and the team is not asked to wait for instructions on every task. Your job is to be clear about outcomes, and the team's is to work out how to deliver them.
+
+This is also why we describe the arrangement as two companies working toward one objective: yours sets the destination, and ours is accountable for how the team travels.
+
+## Scaling by notice
+
+Needs change. Early discovery may need a small group, a build push may need more, and a quiet period may need fewer. A seat model lets the team change size by giving notice, rather than through hiring and dismissal. We do not state notice periods or team sizes on this site, because those belong in the agreement and depend on the engagement.
+
+The *Team Topologies* work offers a useful caution: teams have a finite capacity for cognitive load, and adding responsibilities without removing others reduces effectiveness. The same applies when you add seats. More people do not make a team faster if the work is not ready to be divided. Plan to add seats when there is clear, independent work for them, not simply because money is available.
+
+## What a seat is not
+
+<Callout tone="notice" title="Limits worth knowing">
+  A seat is not a promise of outcomes, funding or timing. It is not a substitute for a founder who owns the product direction. It does not include legal advice, bookkeeping or tax filing, and it does not stand in for your own counsel. The terms of any engagement, including ownership of work and confidentiality, are set out in the written agreement.
+</Callout>
+
+More specifically:
+
+- **A seat is not a promise of speed.** A team works at the pace the work and the decisions allow. Unclear priorities slow every team.
+- **A seat is not an outsourced founder.** Someone on your side has to decide what matters and say yes or no. If you cannot give that time, no model will fix it.
+- **A seat is not an anonymous resource pool.** The value comes from a stable team. Treating people as interchangeable undermines the continuity you are paying for.
+- **A seat is not the whole of a business.** It supplies engineering and design effort. Customers, revenue and judgment remain yours.
+
+## Questions to ask any provider of team seats
+
+Whoever you choose, put the same questions to them. Who is accountable when the work is late or wrong, a named party or a chain of individuals? How is continuity protected if a person leaves the team? How is the team's knowledge written down so that it does not live only in heads? How is work shown to you and accepted by you, and how often? What happens to the work and the documentation at the end of the engagement? How does the team change size, and what do you need to do to make that happen? Vague answers to these questions predict friction later. Specific answers, in writing, are a good sign. We would rather you ask them of us before signing than discover the gaps afterwards.
+
+## Deciding whether it fits
+
+Ask four questions. Do you have a problem brief that a team could read in one sitting? Can you give a weekly hour or two to set priorities and review work? Is your scope still changing? Do you want one accountable party rather than several individual relationships? If the answers are yes, a seat arrangement is worth discussing. If your scope is fixed and complete, an agency may be cheaper and simpler. If you can hire well and want the team permanently, employees will serve you better.
+
+You can explore the shape of a team with the <MaybeLink path="/tools/team-composer/">team composer</MaybeLink>, and read how the model works on the <MaybeLink path="/program/dedicated-teams/">dedicated teams page</MaybeLink>.
+
+## What this article cannot tell you
+
+We have described a staffing model and the reasoning behind it. We have not measured its results against employees, freelancers or agencies, and we do not claim it outperforms them. The sources cited describe general team practices, not our service. Pricing, terms and the specifics of any engagement are outside this article, and we encourage you to read the written agreement with your own counsel before you commit to anything.

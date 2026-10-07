@@ -1,0 +1,130 @@
+---
+title: Customer discovery interviews without false positives
+description: Run customer interviews that surface real behavior and commitment instead of polite encouragement, with a question set and a way to log what you hear.
+topic: dream
+publishedDate: 2026-10-06
+noStatistics: true
+evidence: [mom-test, nng-interviews, lean-startup-principles]
+relatedServices: [C]
+relatedPlaybook: validate-the-problem
+relatedTemplate: customer-interview-guide
+sources:
+  - id: mom-test
+    title: The Mom Test
+    publisher: Rob Fitzpatrick
+    url: https://www.momtestbook.com/
+    accessed: 2026-10-06
+  - id: nng-interviews
+    title: User Interviews 101
+    publisher: Nielsen Norman Group
+    url: https://www.nngroup.com/articles/user-interviews/
+    accessed: 2026-10-06
+  - id: lean-startup-principles
+    title: The Lean Startup, principles
+    publisher: Eric Ries, theleanstartup.com
+    url: https://theleanstartup.com/principles
+    accessed: 2026-10-06
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+
+The most dangerous result of a customer interview is a good one. People are kind. Asked whether they would use your idea, most will say yes, because yes is polite and costs them nothing. A founder who collects ten of those answers can leave with total confidence and no evidence.
+
+Customer discovery is the discipline of learning what is true about a customer's life without asking them to predict the future or to judge your idea. This article sets out a way to do that with small effort: how to prepare, what to ask, what to ignore, and how to record the result so that it can be argued with later.
+
+## Why interviews mislead
+
+Three habits produce most false positives.
+
+**Pitching.** The moment you describe your idea, the person in front of you shifts from reporting their life to reviewing your product. Reviews are generous. Rob Fitzpatrick's book on the subject, *The Mom Test*, takes its name from the observation that even your mother will tell you a flawed business idea is good, and his remedy is to ask questions that are safe to ask anyone because they are about the other person's life rather than your idea.
+
+**Asking about the future.** "Would you pay for this?" and "Would you use this?" invite a guess. People are poor forecasters of their own behavior, and in an interview there is a social reason to guess generously. Nielsen Norman Group makes a related point in its guidance on interviews: what people say is shaped by memory limits and by a wish to appear reasonable, which is why interview data is best treated as a lead to be checked against observation and behavior.
+
+**Hearing compliments as data.** "That sounds great" feels like progress. It is a courtesy. The question to ask of any compliment is what the person did or committed to as a result.
+
+## Ask about the past
+
+The simplest reliable shift is from the hypothetical to the specific and recent. Compare these pairs.
+
+<DataTable
+  caption="Questions that invite guesses, and better replacements"
+  columns={['Weak question', 'Why it fails', 'Stronger question']}
+  rows={[
+    ['Would you use a tool that does this?', 'Asks for a prediction and a verdict on your idea.', 'Tell me about the last time you had to do this. What happened?'],
+    ['Is this a big problem for you?', 'Invites exaggeration or politeness.', 'What did the last occurrence cost you in time, money or stress?'],
+    ['How much would you pay?', 'A guess with no consequence.', 'What do you pay for this today, and who approved it?'],
+    ['Do you think teams like yours need this?', 'Asks about other people.', 'How does your team handle this now, step by step?'],
+    ['Would you like a feature that does X?', 'Leads the witness to a feature list.', 'What have you tried to fix this, and why did you stop?'],
+  ]}
+/>
+
+The stronger questions share a structure. They are about a real, recent episode. They ask what the person did, not what they would do. They leave room for an answer you did not expect.
+
+Nielsen Norman Group recommends open prompts such as asking someone to walk you through a typical day or tell you about the last time they did something, and warns against leading questions that assume a behavior the person may not have. Both recommendations work for founders as well as researchers.
+
+## Look for commitment, not praise
+
+A real signal costs the other person something. The currencies are time, reputation and money.
+
+- **Time:** they agree to a second, longer conversation, or to share the actual spreadsheet, document or workflow.
+- **Reputation:** they introduce you to a colleague who owns the budget, or agree to show the problem to their manager.
+- **Money:** they pay a deposit, sign a letter of intent where that makes sense, or pre-order.
+
+Compare that with "keep me posted", an email address given without any follow-up, or a promise to circle back. These are the polite equivalents of no. Treat them as such in your notes. A meeting that ends without any next step has told you something, even if it felt warm.
+
+## Choosing and finding people
+
+Interview the person who has the problem and, separately, the person who pays. They are often different. Aim for people who match the customer you believe in, and also for at least a few who do not, so you learn where your assumptions end.
+
+Avoid starting with friends and family if you can. They are kind in the way your mother is kind. If you must start there, use them to rehearse the questions and not to validate the idea.
+
+Pay attention to who you cannot find. If you search for the people who have this problem and struggle to find any, that is itself a finding about the size and reachability of the market.
+
+## Running the conversation
+
+A workable structure for a thirty-minute call:
+
+1. **Context (five minutes).** Their role, what a normal week looks like, how the problem fits into it.
+2. **Recent episode (fifteen minutes).** The last time the problem occurred. What triggered it, what they did, which tools and people were involved, what it cost. Follow up on anything specific with "Can you show me?" or "What happened next?".
+3. **Current solutions (five minutes).** What they use now, what they have tried, what they pay.
+4. **Close and commitment (five minutes).** Ask what else you should have asked. Ask for a next step proportional to the interest you heard, and note the answer.
+
+Do not describe your solution until the end, and only if you need a reaction to it. If you do show something, treat the reaction as a weak signal and return to behavior and commitment.
+
+Take notes or record the call, with the person's agreement. Do not rely on memory. The strongest evidence often arrives in an aside you will have forgotten by the evening.
+
+## Keep a log you can argue with
+
+Write up every interview the same day, in the same format, separating observation from interpretation.
+
+<DataTable
+  caption="A minimal interview log"
+  columns={['Field', 'What to record']}
+  rows={[
+    ['Who and role', 'Name or code, their role, and whether they pay, use or both.'],
+    ['Recent episode', 'What happened, in their words, with dates where they gave them.'],
+    ['Current solution and cost', 'Tools, people and money involved today.'],
+    ['Commitments', 'Time, reputation or money offered, or an explicit note that none was.'],
+    ['Surprises', 'Anything you did not expect. These are the most valuable lines.'],
+    ['Your interpretation', 'Kept apart from the facts, labelled as interpretation.'],
+  ]}
+/>
+
+After five or six conversations, read the logs side by side. Patterns in what people did are more reliable than patterns in what they said. When a pattern appears, write it as a hypothesis and decide which later conversation could disprove it. This is the same loop the Lean Startup literature describes as validated learning: state what you believe, find the cheapest evidence that could contradict it, and update.
+
+<Callout title="When to stop">
+  Stop interviewing when new conversations stop surprising you, not when you reach a round number. If every call confirms the same story and the commitments are real, you have learned what you can. If the stories differ widely, you may be talking to several different customers and need to choose one.
+</Callout>
+
+## Interviewing remotely
+
+Most of this work can be done by video or phone, which suits a team that is distributed by design. Two adjustments help. Ask people to share their screen and show the real spreadsheet, inbox or tool they use, because a walkthrough exposes steps that a description leaves out. And send a short note the day after the call, restating in two lines what you understood and asking whether you got it wrong. Corrections arrive more readily in writing, and the reply, or the lack of one, is itself a small commitment signal.
+
+## What to do with the results
+
+Interviews should change a decision. After each round, write three lines: what you now believe more strongly, what you now believe less strongly, and what you will do differently as a result. If the answer to the third is "nothing", either the interviews were too gentle or the decision was already made. Feed the results into your problem brief, where the problem, the customer and the evidence sit on one page that a technical team can read before it estimates any work.
+
+## What this article cannot tell you
+
+Interviews tell you about the people you talked to. They cannot size a market, and a small sample can mislead if it is not drawn from the customers you hope to serve. We have not tested our question set against outcomes, and we do not claim a particular number of interviews is enough. Treat the approach as a way to reduce one kind of error, polite agreement, rather than as proof that an idea will work.

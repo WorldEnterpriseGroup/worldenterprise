@@ -1,0 +1,110 @@
+---
+title: Write the problem brief before the code
+description: A one-page problem brief makes a team agree on who has the problem, what it costs and what done looks like before design or engineering begins.
+topic: dream
+publishedDate: 2026-10-06
+noStatistics: true
+evidence: [shapeup-boundaries, hbr-jtbd, lean-startup-principles]
+relatedServices: [B]
+relatedPlaybook: validate-the-problem
+relatedTemplate: one-page-problem-brief
+sources:
+  - id: shapeup-boundaries
+    title: Shape Up, Chapter 3, Set Boundaries
+    publisher: Basecamp
+    url: https://basecamp.com/shapeup/1.2-chapter-03
+    accessed: 2026-10-06
+  - id: hbr-jtbd
+    title: Know Your Customers' "Jobs to Be Done"
+    publisher: Harvard Business Review
+    url: https://hbr.org/2016/09/know-your-customers-jobs-to-be-done
+    accessed: 2026-10-06
+  - id: lean-startup-principles
+    title: The Lean Startup, principles
+    publisher: Eric Ries, theleanstartup.com
+    url: https://theleanstartup.com/principles
+    accessed: 2026-10-06
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Most software projects that go wrong did not fail in the code. They failed earlier, when several people held slightly different pictures of the problem and nobody noticed until the first demo. The founder pictured one customer, the designer another, the engineers a third, and each picture was reasonable.
+
+A problem brief is the cheapest tool for preventing that. It is one page, written before design or engineering starts, that says who has the problem, what it costs them, what you know and do not know, and what finished looks like. It is short on purpose. A page that fits in one sitting is a page everyone reads and everyone can argue with.
+
+## Why the brief comes first
+
+Teams are often asked for an estimate before they have been told what is wrong. Basecamp's *Shape Up* describes the failure well. It argues that a request such as "build a calendar" hides the real question, which is what is actually going wrong for the customer, and that narrowing the problem is the work that has to happen before anyone designs a solution. In its worked example, the underlying need turns out to be seeing available time slots, not building a full calendar. The same book contrasts estimating from a design with setting a time budget first and letting the design fit it, a distinction that matters when you are paying for a team by the month.
+
+A brief does three jobs.
+
+1. It **aligns** the people involved on one problem and one customer.
+2. It **bounds** the work, so that a request to add something can be tested against what the brief says matters.
+3. It **records** what you believed at the start, so that later you can see which beliefs were wrong.
+
+## What goes on the page
+
+<DataTable
+  caption="Sections of a one-page problem brief"
+  columns={['Section', 'What it answers', 'Test of a good answer']}
+  rows={[
+    ['Customer', 'Who has this problem, and who pays?', 'A role or segment you could find in a list, not "everyone".'],
+    ['Job and trigger', 'What are they trying to get done, and what starts it?', 'Described as progress the customer wants, not as a feature.'],
+    ['Problem today', 'What do they do now, and what goes wrong?', 'Taken from real episodes in your interviews.'],
+    ['Cost of the problem', 'What does it cost in time, money or risk?', 'Stated in the customer\'s terms with the source noted.'],
+    ['Evidence and gaps', 'What do you know, and what do you not?', 'Facts and assumptions are labelled separately.'],
+    ['Appetite', 'How much time and money is this worth?', 'A budget, not an estimate.'],
+    ['Done looks like', 'How will you know the problem is smaller?', 'An observable change, not "users like it".'],
+    ['Out of scope', 'What are you deliberately not doing?', 'At least three things, each tempting.'],
+  ]}
+/>
+
+### Customer, job and trigger
+
+Be specific about who. "Small businesses" is a category, not a customer. "Office managers at firms with a handful of staff who currently chase invoices by email" is a customer you could telephone tomorrow. Then describe the job. Clayton Christensen and his coauthors argue in *Harvard Business Review* that customers hire products to make progress in a particular circumstance, and that understanding the circumstance matters more than understanding the demographic. A useful way to phrase it is: when this happens, the customer wants to achieve this, so they can do that.
+
+### Problem today and its cost
+
+Describe what the customer does now, including the ugly workaround. This section should read like a report from the field. If it reads like a pitch, you have not yet done the interviews. Include the cost in a form the customer would recognize and the source of each figure, whether a conversation, a document or a measurement you made. If you do not have a cost yet, write "unknown" and say how you will find out.
+
+### Evidence and gaps
+
+Split the page in two. One list holds what you have seen: quotes, episodes, documents. The other holds what you are assuming. The act of sorting is where many founders discover that their conviction rests on two conversations and a feeling. That is useful news, and cheap to learn now.
+
+### Appetite
+
+Decide how much this problem deserves before you design the answer. *Shape Up* calls this the appetite, a time budget that determines how elaborate the solution may be. Stating it up front forces trade-offs that an open-ended estimate hides. For a first product, the appetite might be a few weeks of a small team's effort. For a bigger bet, more. The point is that someone chose it.
+
+### What done looks like
+
+Name an observable change. "Customers can see free slots without calling the office" can be checked. "A better scheduling experience" cannot. If you can imagine a person watching and saying yes or no, the criterion is good enough.
+
+### Out of scope
+
+List the things people will ask for and you will decline. Naming them early makes later refusals easier and less personal, because you are pointing at the page instead of making a fresh decision under pressure.
+
+<Callout title="Keep it to one page">
+  If the brief spills onto a second page, the problem is probably two problems. Split it and brief each separately. The one-page limit is a feature: it forces a choice about what matters.
+</Callout>
+
+## How briefs go wrong
+
+Four failures are common. The first is the solution in disguise: a brief that says "customers need a dashboard" has skipped the problem. Rewrite it as what the customer cannot currently see or decide. The second is the brief that describes everyone, which cannot be tested against any real person. The third is the brief written once and never touched, which decays into folklore. The fourth is the brief with no out-of-scope list, which invites every good idea in. A quick review catches most of these. Read each section and ask whether a stranger could use it to say no to something, because a brief that cannot refuse anything is not bounding the work.
+
+## Using the brief with a team
+
+A brief earns its keep in the first conversation with the people who will build. Read it aloud with them and ask three questions. What is unclear? What would you build first, given only this page? What would you want to know before you started? The answers show where the page is weak, and where your assumptions will cost time later.
+
+When the work is under way, refer back to it. A change request becomes a simple question: does this serve the customer and the done criterion on the page, or is it something new? If it is something new, it may be a good idea. It is still a decision, to be made on purpose and written into a revised brief, not absorbed quietly into the plan.
+
+Revise the brief as you learn. It is a living page with a version history, not a contract. What matters is that the current version is the one everyone is working from. If you are working with World Enterprise Incubator, the brief is the first thing a delivery lead will ask for, and the <MaybeLink path="/library/one-page-problem-brief/">one-page problem brief template</MaybeLink> follows the structure above.
+
+## A note on the lean loop
+
+The Lean Startup framework describes the basic activity of a young company as turning ideas into products, measuring how customers respond and learning whether to change direction or continue. A brief supports that loop by stating, before you build, what you expect to learn and what result would change your mind. Without that, "measure" has nothing to measure against.
+
+## What this article cannot tell you
+
+A good brief does not make a problem real. It makes your understanding of it inspectable. We have not measured how much a one-page brief reduces cost or delay, and we do not claim a figure. The format here draws on published product practice and on our own working method, and you should adapt it to your situation. If a section does not fit your product, replace it, but keep the habit of separating what you know from what you are assuming.

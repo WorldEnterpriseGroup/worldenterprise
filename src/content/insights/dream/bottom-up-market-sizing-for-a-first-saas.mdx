@@ -1,0 +1,114 @@
+---
+title: Bottom-up market sizing for a first SaaS
+description: Size a market from countable customers and a defensible price, using public business counts and explicit assumptions instead of a borrowed top-down figure.
+topic: dream
+publishedDate: 2026-10-06
+noStatistics: true
+evidence: [census-cbp, pg-startup-ideas, lean-startup-principles]
+relatedServices: [C]
+relatedPlaybook: validate-the-problem
+relatedTemplate: one-page-problem-brief
+sources:
+  - id: census-cbp
+    title: County Business Patterns
+    publisher: U.S. Census Bureau
+    url: https://www.census.gov/programs-surveys/cbp.html
+    accessed: 2026-10-06
+  - id: pg-startup-ideas
+    title: How to Get Startup Ideas
+    publisher: Paul Graham
+    url: https://paulgraham.com/startupideas.html
+    accessed: 2026-10-06
+  - id: lean-startup-principles
+    title: The Lean Startup, principles
+    publisher: Eric Ries, theleanstartup.com
+    url: https://theleanstartup.com/principles
+    accessed: 2026-10-06
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+
+"A hundred-billion-dollar market, and we only need one percent." Almost every founder has heard that sentence and almost every investor and buyer has learned to ignore it. A top-down figure borrowed from a research report says how much money is spent in a broad category. It says nothing about who you can reach, what they would pay you, or how many would choose you.
+
+Bottom-up sizing starts from the other end. You count the customers you could actually serve, multiply by what each would plausibly pay, and then discount by what you could reasonably win. The result is smaller than the headline figure and far more useful, because every number in it is an assumption you can name, test and change.
+
+This article walks through the method, shows where public data can help, and is blunt about where it cannot.
+
+## The basic structure
+
+Write the estimate as a chain of explicit terms.
+
+<DataTable
+  caption="Bottom-up market size, term by term"
+  columns={['Term', 'Meaning', 'Where the number comes from']}
+  rows={[
+    ['N', 'Number of organizations (or users) that have the problem and could buy', 'Public counts, a list you can build, or a count from conversations'],
+    ['F', 'Fraction of N that fits your first customer profile', 'Your problem brief and interview log'],
+    ['P', 'Price per customer per year, in one currency', 'What customers pay now for the workaround, plus tests of your own price'],
+    ['A', 'Fraction of the fitting customers you could realistically win in a stated period', 'Your channels, sales capacity and evidence of intent'],
+  ]}
+/>
+
+Annual revenue potential in the stated period is then N times F times P times A. The number that matters in the first year is usually the product of N, F and P alone, which is the reachable market for your first customer profile. Keep A separate so that you never confuse what exists with what you will capture.
+
+Two cautions. First, use one unit throughout. If N counts companies, P is per company. If N counts seats, P is per seat. Mixed units are the most common source of quietly wrong results. Second, state the period. Revenue per year and revenue over five years are different claims.
+
+## Getting N from public data
+
+For software sold to businesses, public establishment counts are a good starting point. In the United States, the Census Bureau's County Business Patterns series reports the number of establishments with paid employees, grouped by industry code and by employment size, and by geography down to the county. That lets you ask a countable question, such as how many establishments of a given industry and size exist in the regions you can serve.
+
+Use these counts with care.
+
+- **Establishments are not companies.** One company can run many establishments, and a count of locations can overstate the number of buyers.
+- **Paid employees only.** The series covers establishments with paid employees, so sole proprietors without staff are outside it. If your customer is a one-person business, it will not appear.
+- **Industry codes are coarse.** A code describes a broad activity, and your customer may sit in several codes or in a corner of one. Treat the code as a way to find a population, then narrow it with your own criteria.
+- **Data lags.** The series is published annually with a delay. It describes a past year, not today.
+- **It is a United States source.** If you sell elsewhere, find the equivalent national statistics office and read its definitions before reusing the method.
+
+When public counts do not fit, build the list yourself. Name the companies that match your profile, using directories, conference lists, marketplaces and the people you interviewed. A list of three hundred named companies you could contact is a better foundation than a statistic for three million you cannot.
+
+## Getting F and P honestly
+
+F, the fitting fraction, comes from your discovery work, not from a hunch. If four of the twelve people you interviewed had the problem urgently, you have a starting estimate that is clearly small-sample and should be written as such. A fraction without the sample behind it is decoration.
+
+P, the price, should be anchored to behavior. What do customers pay today for the workaround, in software, contractors and staff time? A price far above that needs a reason. A price far below it leaves value on the table and may signal that the problem is not urgent. Test a price in conversations by asking for a commitment, not an opinion.
+
+Paul Graham's advice on startup ideas is relevant here. He argues for aiming at a small group with an intense need, because that group can be reached and served well, and growth can come later. A bottom-up estimate for a narrow first segment is therefore not an embarrassment. It is the honest statement of where you will start. What you owe the reader is a credible story of how the segment leads to the next one.
+
+## A worked structure, without invented numbers
+
+Here is how a founder might fill the template, with every blank tied to a source.
+
+1. **Segment:** the first customer profile, in one sentence, taken from the problem brief.
+2. **N:** the count of organizations matching that sentence, with the source and date of the count and the definition used.
+3. **F:** the fraction that also meets your sharper criteria, with the number of conversations behind it.
+4. **P:** the annual price, with the current spend it replaces.
+5. **Reachable market:** N times F times P, in a stated currency and year.
+6. **A and period:** the share you could win in a defined period, with the channels that justify it.
+
+We deliberately do not supply example figures. Any numbers placed here would look authoritative and would be ours rather than yours.
+
+## Test the structure, not just the arithmetic
+
+Once the chain exists, stress it.
+
+- **Sensitivity.** Move each term up and down by a generous margin. Which one changes the answer most? That term deserves the next round of evidence.
+- **Cross-check.** Estimate the same market a second way, for example by counting users instead of companies, or by estimating from the revenue of a comparable product's public pricing and your count of its customers. If two routes diverge widely, one of your assumptions is wrong.
+- **Ceiling check.** Ask what must be true for the business to reach the revenue it needs. If the answer requires winning most of a segment, the segment is too small or the plan needs a second segment.
+
+This mirrors the loop recommended in lean product practice: state a belief, find the cheapest evidence that could disprove it, and update.
+
+<Callout title="Write down the assumptions, not just the answer">
+  A bottom-up estimate is a list of assumptions with arithmetic attached. Anyone reading yours should be able to change one number and see the result. If they cannot, it is a claim, not an estimate.
+</Callout>
+
+## Mistakes that inflate the answer
+
+Four errors account for most overconfident estimates. The first is counting everyone who could conceivably use the product rather than those who have the problem urgently. The second is treating a segment's total budget as your price, when the customer will only redirect what they spend on the workaround. The third is applying a win rate with no channel behind it: a share of a segment is meaningless until you can say how you will reach that share. The fourth is mixing time periods, for example comparing a five-year capture with a one-year price. Each of these can be caught by reading the chain aloud and asking, for every term, "Where did that come from, and who could check it?"
+
+It also helps to show the estimate to someone who sells to your intended customers. A salesperson or an advisor with direct experience will spot an implausible fraction or price in seconds, and their reaction costs you one conversation rather than a year of building.
+
+## What this article cannot tell you
+
+A bottom-up estimate does not tell you whether customers will switch, whether you can reach them cheaply or whether the market will grow. It reflects your current knowledge and will be wrong in ways you cannot yet see. Public statistics describe the past and use categories that may not match your customer. We have not validated the method against the outcomes of any company, ours or anyone else's, and we make no claim that a larger result predicts a better business. Its value is that it makes your reasoning visible and open to challenge.

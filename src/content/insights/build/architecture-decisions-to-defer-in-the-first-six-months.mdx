@@ -1,0 +1,93 @@
+---
+title: Architecture decisions to defer in the first six months
+description: Which technical decisions a young SaaS team can safely postpone, which must be made early because they are costly to reverse, and how to record both.
+topic: build
+publishedDate: 2026-10-06
+noStatistics: true
+evidence: [fowler-monolith-first, fowler-yagni, adr-github]
+relatedServices: [B]
+relatedPlaybook: build-and-ship-v1
+relatedTemplate: mvp-cut-line-worksheet
+sources:
+  - id: fowler-monolith-first
+    title: MonolithFirst
+    publisher: Martin Fowler
+    url: https://martinfowler.com/bliki/MonolithFirst.html
+    accessed: 2026-10-06
+  - id: fowler-yagni
+    title: Yagni
+    publisher: Martin Fowler
+    url: https://martinfowler.com/bliki/Yagni.html
+    accessed: 2026-10-06
+  - id: adr-github
+    title: Architectural Decision Records
+    publisher: adr.github.io
+    url: https://adr.github.io/
+    accessed: 2026-10-06
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+
+Early in a product's life, engineers feel pressure to make large technical decisions: which database, how to split the services, how to handle scale, which cloud features to build around. The pressure is understandable. These decisions feel like foundations, and nobody wants a weak foundation.
+
+But a young SaaS company's greatest uncertainty is not technical. It is whether anyone needs the product and what exactly they need. Technical decisions made before that is known are guesses, and some guesses are expensive to undo. The skill is telling apart the decisions you can safely postpone from the few that cost far more to change later.
+
+## The principle: pay for reversibility
+
+For each decision, ask how much it would cost to reverse in a year, and how likely you are to want to. A decision that is cheap to reverse can be made quickly, because a mistake is small. A decision that is expensive to reverse deserves care now. A decision that is both expensive to reverse and likely to be needed should be deferred only if you can keep your options open cheaply.
+
+Martin Fowler's essay on Yagni, "you aren't gonna need it", lists the costs of building for a future need that may not arrive: the cost of building, the cost of delay, the cost of carrying extra complexity and the cost of repair when the guess is wrong. His essay also draws a boundary. Yagni does not argue against effort that makes software easier to change. Automated tests, clear module boundaries and frequent small releases are what make deferral safe. Without them, "we will fix it later" is a promise you cannot keep.
+
+## What to defer
+
+<DataTable
+  caption="Decisions that can usually wait, and what to do instead"
+  columns={['Decision', 'Why it can wait', 'Do this instead']}
+  rows={[
+    ['Splitting into services', 'Boundaries are hard to place before the domain is understood, and moving code between services is harder than within one program.', 'Build one deployable application with clear internal modules.'],
+    ['Scaling for large load', 'You do not know your load profile yet, and early traffic is small.', 'Measure, set a simple alert, and revisit when the numbers justify it.'],
+    ['Choosing a specialized datastore', 'A single general-purpose database serves most early needs.', 'Keep data access behind a thin layer so a later move is contained.'],
+    ['A plugin or extension system', 'It is a bet on how others will use you, before you have users.', 'Add a hook when a real customer needs one.'],
+    ['Multi-region deployment', 'It adds operational burden before it earns its place.', 'Document the recovery plan for one region and test it.'],
+    ['A custom design system', 'Appearance will change as the product does.', 'Use a small set of shared components and a short style guide.']
+  ]}
+/>
+
+On the first row, Fowler's essay on building a monolith first is direct. He observes that nearly all the successful microservice stories he knows began with a monolith that grew too large and was then split, while systems built as microservices from the start often ran into serious trouble. His reasons are practical: early projects need speed and feedback, and any refactoring of functionality between services is much harder than within a monolith. He also cautions against starting with microservices unless the team already has experience building such a system. Our summary of his view is not that services are bad, but that the boundaries are easiest to draw after you have learned where the real seams are.
+
+## What to decide early
+
+A few choices are costly to reverse and affect everything built afterwards. Spend real time on these.
+
+- **How you identify and separate customers.** The way accounts, users and organizations relate, and how one customer's data is kept from another's, runs through every table and every query. Changing it late means touching everything.
+- **How data leaves.** Decide that customers can export their data and that you can remove it on request. Retrofitting this is tedious and sometimes impossible without a migration.
+- **The boundary of trust.** Decide where authentication and authorization are enforced. Scattered checks are a standing source of defects.
+- **How money is represented.** Store amounts as exact values with a currency, never as floating-point numbers. This is a small decision with a painful reversal.
+- **How you test and release.** A test suite and an automated release path are the things that keep every other decision reversible.
+
+Notice what these have in common. They concern data, trust and the ability to change, not performance or fashion. They are about keeping the future open.
+
+## Keeping deferral honest
+
+Deferral is easy to abuse. A team can call any shortcut a deliberate deferral and then never come back. Three habits keep it honest. First, give each deferral an owner and a trigger, such as a customer count, a team size or a specific kind of incident, so that review is tied to events rather than to good intentions. Second, protect the seams that make later change cheap: keep modules separate, hide data access behind a small interface and avoid reaching across boundaries for convenience. Third, schedule a short review every month or so in which the team reads the deferral log and asks which triggers have been met. A deferral that nobody ever reviews is simply a decision made by default, and the default is rarely the one you would have chosen.
+
+## Write the decision down
+
+When you do make a significant choice, record it. An architectural decision record, as described by the ADR community, captures a single decision together with its rationale, trade-offs and consequences. A collection of them forms a decision log that explains why the system is as it is. A record can be a page of plain text kept beside the code.
+
+A useful record answers five questions: what is the decision, what was the context, what alternatives did you consider, what do you expect to happen as a result, and what would make you revisit it. The last question is the most valuable one. It turns a deferral into an explicit commitment to look again at a specific moment, for example "when we have more than one team working in this code", rather than a vague intention.
+
+For the things you chose to defer, write short records too. "We are not splitting into services yet; revisit when deploys of unrelated parts block each other." This protects you from two failure modes: forgetting the deferral, and being re-argued into the same debate every few weeks.
+
+## Working with a remote team
+
+Documentation matters more when the people making decisions are not in the same room. A short written record lets a team member in another time zone understand why something is the way it is, without waiting for an answer to a message. It also gives a new member of the team a trail to follow. If you work with an external team, ask to see their decision log early, and ask them what they chose to defer and why.
+
+<Callout title="A cheap habit">
+  At the end of each week, ask the team which decision they made that they would struggle to undo. If there is one, write it down. If there are none, the team may be avoiding decisions, which is its own risk.
+</Callout>
+
+## What this article cannot tell you
+
+These are heuristics, not rules, and they come from published engineering practice and our reading of it. They do not account for regulated data, strict latency demands, or products whose core feature is a technical capability that really does need a specialized design from day one. We have not measured how often deferral pays off, and we make no such claim. If your product handles sensitive data or has formal security obligations, take specialist advice before deferring anything in that area.

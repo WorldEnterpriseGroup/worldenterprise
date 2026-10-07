@@ -1,0 +1,116 @@
+---
+title: Cutting an MVP with the cut-line test
+description: A simple test for deciding which features belong in a first release, by drawing a line and asking what the customer cannot complete the core job without.
+topic: build
+publishedDate: 2026-10-06
+noStatistics: true
+evidence: [lean-startup-principles, shapeup-boundaries, fowler-yagni]
+relatedServices: [B]
+relatedPlaybook: build-and-ship-v1
+relatedTemplate: mvp-cut-line-worksheet
+sources:
+  - id: lean-startup-principles
+    title: The Lean Startup, principles
+    publisher: Eric Ries, theleanstartup.com
+    url: https://theleanstartup.com/principles
+    accessed: 2026-10-06
+  - id: shapeup-boundaries
+    title: Shape Up, Chapter 3, Set Boundaries
+    publisher: Basecamp
+    url: https://basecamp.com/shapeup/1.2-chapter-03
+    accessed: 2026-10-06
+  - id: fowler-yagni
+    title: Yagni
+    publisher: Martin Fowler
+    url: https://martinfowler.com/bliki/Yagni.html
+    accessed: 2026-10-06
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import CellTrail from '../../../components/ui/CellTrail.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Every first release starts as a list. The list grows because each item is defensible: a settings page, an export, a second user role, an admin screen, notifications. Taken one at a time, none of them is unreasonable. Taken together they are a product that takes a year to launch and teaches you nothing until it does.
+
+The cut-line test is a way of making the list shorter without arguing about every item. You draw a line, put the core job above it, and make every other feature earn its place by surviving four questions.
+
+## What an MVP is for
+
+The term "minimum viable product" is often misused as "cheap version of the product". The Lean Startup framework defines the idea differently: figure out the problem to be solved, then build the smallest product that lets you begin learning as quickly as possible. The purpose is learning, not thrift. An MVP is an experiment designed to answer a question about customers.
+
+That reframing helps with cutting. The question is not "what is the smallest thing we can ship?" but "what do we need to see a real customer do, and what is the least we must build for them to do it?". Every item either serves that question or does not.
+
+## Draw the line
+
+Start with the problem brief. The core job is the one sentence that says what the customer is trying to accomplish. Write it at the top of the page. Everything that is part of completing that job end to end, for one type of customer, goes above the line. Everything else goes below it.
+
+Be strict about "end to end". An MVP that covers half the job forces the customer to leave your product and finish elsewhere, which means you are not measuring whether your product solves the problem. It is better to do a narrow job completely than a wide job partially.
+
+<CellTrail
+  label="From trigger to done, for one customer type"
+  cells={[
+    { label: 'Trigger: the need appears' },
+    { label: 'Get in: sign up or be invited' },
+    { label: 'Do the core job' },
+    { label: 'See the result' },
+    { label: 'Come back or pay' },
+  ]}
+/>
+
+Look at the sequence above. Every step must exist in some form, even if the form is crude. The sign-up step might be a manual invitation. The result step might be an email you send by hand. Crude is acceptable. Missing is not.
+
+## The four questions
+
+For each feature on the list, ask in order.
+
+<DataTable
+  caption="The cut-line test"
+  columns={['Question', 'If the answer is yes', 'If the answer is no']}
+  rows={[
+    ['1. Can the customer complete the core job without it?', 'Below the line. Not in the first release.', 'Continue to question 2.'],
+    ['2. Could we do this by hand for the first customers?', 'Do it by hand. Build nothing yet.', 'Continue to question 3.'],
+    ['3. Does it need to be correct and polished for the first customers?', 'Build it, to the standard the job demands.', 'Build the roughest version that works.'],
+    ['4. Would leaving it out stop us learning the thing we set out to learn?', 'Above the line, with a named reason.', 'Below the line.']
+  ]}
+/>
+
+The second question deserves attention. Founders often automate steps that they could perform manually for the first customers, and so build software for a process they have not yet understood. Doing a step by hand costs time and teaches you what the software must do. It is a good trade while customer numbers are small.
+
+The fourth question ties the feature to learning. State what you want to learn, for example whether customers complete the job unaided, whether they return, whether they will pay. If a feature does not help you learn that, it can wait.
+
+## Time as the fixed variable
+
+A cut line works better with a time budget. Basecamp's *Shape Up* describes fixing the time and letting the scope flex, rather than estimating a fixed scope and discovering the time. In its words, estimates start with a design and end with a number, while appetites start with a number and end with a design. For a first release, that means choosing how long you are willing to spend before real customers see something, and then cutting until the work fits.
+
+If you cannot fit the core job inside the time budget, do not extend the budget by reflex. Either the job is too big for a first release and should be narrowed to a smaller customer or a smaller outcome, or the budget is wrong. Both are decisions to make deliberately.
+
+## The cost of the presumptive feature
+
+Martin Fowler's essay on the Yagni principle, "you aren't gonna need it", lists the costs of building a feature before it is needed: the cost of building it, the cost of delay to features that would pay off sooner, the cost of carrying the added complexity, and the cost of repair when the guess turns out wrong. It also makes an important exception. The principle applies to capabilities built for a presumed future need, not to practices that keep the software easy to change, such as tests and a clean structure. Cutting scope should not mean cutting the habits that make later changes cheap.
+
+## A worked pass through the questions
+
+Imagine a product that helps small clinics confirm appointments. The core job is "get each patient to confirm or cancel before the day". A reminder message passes question 4, because without it nothing is being learned. A calendar sync passes question 1 as a no, since the job can be completed with a spreadsheet import for now, and so it goes below the line. A report on no-show rates fails question 2 as a no: you can compile it by hand for the first clinics, and doing so will tell you which numbers they actually read. A two-way chat feature fails question 1 and question 4, and waits. The product above the line is a reminder, a confirm or cancel reply and a simple list, which is small enough to ship and large enough to learn from. The example is illustrative, not drawn from a client.
+
+Notice that the exercise produced a list of manual work as well as a list of software. That is healthy. Keep the manual work visible, assign it to a person, and count how often it happens, because the count is your evidence for what to build next.
+
+## Common traps
+
+- **The second user role.** Supporting two kinds of user doubles many things. Choose one for the first release.
+- **The admin screen.** Early on, you can often use the database directly or a small internal tool.
+- **Settings.** Every setting is a decision you have not made. Make it for the customer until they ask otherwise.
+- **Integrations.** Each one brings another system's quirks. Include only those without which the job cannot be finished.
+- **Perfect onboarding.** A guided call with the first customers teaches more than a tutorial you wrote before meeting them.
+
+<Callout title="Cut with the customer's job, not the team's comfort">
+  The features that feel most necessary to the team, such as dashboards and settings, are often the least necessary to the customer. Defer to the job on the page.
+</Callout>
+
+## Recording the decisions
+
+Keep a short list below the line, with the reason each item is there and what evidence would move it above. That list is not a graveyard. It is the start of your next release, ordered by what you learn. Several items will be proposed again by customers, which is exactly the signal you were waiting for. The <MaybeLink path="/library/mvp-cut-line-worksheet/">MVP cut-line worksheet</MaybeLink> sets out the table above in a form you can fill in with your team.
+
+## What this article cannot tell you
+
+The test is a way to structure a conversation, not a formula. It does not tell you what your customer wants, how long a feature will take, or whether the job you chose is the right one. We have not measured whether teams using it ship faster or learn more, and we make no such claim. Its strength is that it makes each inclusion explain itself. If your product has safety, regulatory or data requirements, some items that look optional will not be, and you should take advice on those before you cut.
