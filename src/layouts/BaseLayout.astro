@@ -86,6 +86,8 @@ const nodes: JsonLdNode[] = [
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Declared before any stylesheet link so a component sheet that opens a layer can never reorder the cascade. -->
+    <style is:inline set:html="@layer reset, tokens, base, layout, components, utilities, pages, print;"></style>
     <SeoHead
       title={fullTitle}
       description={metaDescription}

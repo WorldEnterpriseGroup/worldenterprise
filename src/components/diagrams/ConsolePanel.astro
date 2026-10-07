@@ -18,6 +18,9 @@ const { title, note = 'Illustrative structure' } = Astro.props;
 </div>
 
 <style is:global>
+  /* Repeat the order so this sheet cannot reorder the layers when it loads before the global one. */
+  @layer reset, tokens, base, layout, components, utilities, pages, print;
+
   @layer components {
     .console {
       overflow: clip;

@@ -41,6 +41,9 @@ const { columns = defaults, title = 'weekly review' } = Astro.props;
 </ConsolePanel>
 
 <style is:global>
+  /* Repeat the order so this sheet cannot reorder the layers when it loads before the global one. */
+  @layer reset, tokens, base, layout, components, utilities, pages, print;
+
   @layer components {
     .console__cols {
       display: grid;

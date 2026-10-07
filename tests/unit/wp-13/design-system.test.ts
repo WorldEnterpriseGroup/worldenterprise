@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -62,6 +62,25 @@ describe('design tokens audit', () => {
 
   it('allows system colours in forced-colors blocks', () => {
     assert.equal(auditCss('x.css', '@media (forced-colors: active) {\n  .a {\n    background: ButtonText;\n    color: red;\n  }\n}').length, 0);
+  });
+});
+
+describe('layer order in component style blocks', () => {
+  it('every <style> block that opens a layer first repeats the full layer order', () => {
+    const ORDER = '@layer reset, tokens, base, layout, components, utilities, pages, print;';
+    const dirs = ['diagrams', 'ui', 'hero', 'layout', 'cards', 'blocks', 'motion'];
+    const bad: string[] = [];
+    for (const d of dirs) {
+      const base = join(root, 'src', 'components', d);
+      for (const f of readdirSync(base).filter((n) => n.endsWith('.astro'))) {
+        const text = readFileSync(join(base, f), 'utf8');
+        for (const m of text.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/g)) {
+          const css = m[1] ?? '';
+          if (/@layer\s+\w+\s*\{/.test(css) && !css.includes(ORDER)) bad.push(`${d}/${f}`);
+        }
+      }
+    }
+    assert.deepEqual(bad, []);
   });
 });
 
