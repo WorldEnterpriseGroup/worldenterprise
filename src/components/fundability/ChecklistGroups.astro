@@ -1,0 +1,47 @@
+---
+import { href } from '../../lib/url.ts';
+import { isLinkable } from '../playbooks/links.ts';
+import { READINESS_GROUPS, readinessStatements } from '../islands/we-readiness-check/statements.ts';
+import type { ReadinessGroup } from '../islands/we-readiness-check/statements.ts';
+
+/**
+ * The twelve readiness statements as grouped tables. Same data as the self-check island, so the guide and
+ * the tool cannot drift apart. Headings are h2 per group; the page supplies the h1.
+ */
+const groups: readonly ReadinessGroup[] = ['problem', 'product', 'company', 'communication'];
+const rows = await Promise.all(
+  readinessStatements.map(async (s) => ({ ...s, live: await isLinkable(s.gapHref) })),
+);
+---
+
+{
+  groups.map((group) => (
+    <section class="stack" aria-labelledby={`cg-${group}`}>
+      <h2 id={`cg-${group}`}>{READINESS_GROUPS[group].title}</h2>
+      <p>{READINESS_GROUPS[group].intro}</p>
+      <div class="table-wrap" tabindex="0" role="region" aria-label={`Checklist: ${READINESS_GROUPS[group].title}`}>
+        <table class="data-table">
+          <caption>{READINESS_GROUPS[group].title}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Statement</th>
+              <th scope="col">Artifact that shows it</th>
+              <th scope="col">If it is not true yet</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows
+              .filter((r) => r.group === group)
+              .map((r) => (
+                <tr>
+                  <th scope="row">{r.statement}</th>
+                  <td>{r.artifact}</td>
+                  <td>{r.live ? <a href={href(r.gapHref)}>{r.gapTitle}</a> : r.gapTitle}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  ))
+}

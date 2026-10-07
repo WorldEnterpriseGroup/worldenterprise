@@ -1,0 +1,55 @@
+---
+stage: build
+order: 2
+title: Design the product
+description: "Turn a validated problem into a version-one design: the shortest path to value, a written cut line and the decisions you will defer."
+steps:
+  - title: List the jobs the customer is hiring you to do
+    body: Write each job as a sentence from the customer's side, using the words they used in your interviews. These sentences, not a feature wish list, are the brief for the design.
+  - title: Map the shortest path to value
+    body: Draw the single route from first visit to the moment the customer gets what they came for. Remove every step that is not on that route.
+  - title: Sketch the key screens and test them on paper
+    body: Show low-detail sketches to people from your interviews and ask what they expect to happen next. Fix the confusion now, while a fix costs a pencil line.
+  - title: Draw the cut line
+    body: Sort every idea into three groups, which are must exist for the first customer to get value, can wait, and will not build. Version one is everything above the line and nothing below it.
+  - title: Choose well-understood components
+    body: Use proven parts for sign-in, billing and email unless one of them is your product. Keep a short log of the choices you are deliberately deferring and the trigger that would reopen each.
+  - title: Write acceptance criteria for what is above the line
+    body: For each item, write the observable result that means it is done. A person who did not design it should be able to check it.
+artifacts:
+  - A list of customer jobs in the customer's own words
+  - A path to first value, drawn from first visit to first result
+  - Annotated screen sketches
+  - A written cut line for version one
+  - A log of deferred decisions
+  - Acceptance criteria for every item above the line
+relatedLibrary:
+  - mvp-cut-line-worksheet
+updated: 2026-10-06
+---
+import DataTable from '../../components/ui/DataTable.astro';
+
+## Common mistakes
+
+<DataTable
+  caption="Common mistakes when designing a first version"
+  columns={['Mistake', 'Why it costs you', 'Do this instead']}
+  rows={[
+    ['Designing for everyone', 'A product with no first customer in mind has no first path to value.', 'Name one kind of customer from your interviews and design for that person.'],
+    ['Copying a competitor feature list', 'You inherit years of someone else\'s decisions without their reasons.', 'Start from the jobs you heard in interviews and add only what a job needs.'],
+    ['Polishing visuals before the flow works', 'Beautiful screens hide a path that confuses people.', 'Test the flow with sketches first and add polish once the path holds.'],
+    ['Leaving the cut line unwritten', 'Scope grows quietly and the release date moves with it.', 'Write the line down and change it only through a recorded decision.'],
+    ['Building sign-in or billing from scratch', 'You spend weeks on parts that are not your product.', 'Use proven components and note what would make you revisit the choice.'],
+  ]}
+/>
+
+## Evidence to check before you move on
+
+Move to [Build and ship v1](/playbooks/build-and-ship-v1/) when you can show each of these.
+
+- Every item above the cut line traces back to a customer job.
+- The path to first value fits on one page and has no step that a customer would call optional.
+- Someone outside your team has read the acceptance criteria and could tell whether a feature passes.
+- Deferred decisions are listed with the trigger that would bring each one back.
+
+The design does not have to be finished or beautiful. It has to be specific enough that a team can build from it without guessing.

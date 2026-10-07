@@ -1,0 +1,58 @@
+---
+section: fundability
+title: The seed data room
+description: What a seed-stage data room is, the folders it usually holds, and how to keep it organised and current without exposing anything it should not.
+disclaimers:
+  - no-funding
+  - not-legal-advice
+updated: 2026-10-06
+---
+import DataTable from '../../components/ui/DataTable.astro';
+
+A data room is a shared, organised folder of the records someone needs to check a company's claims. Investors ask for one during due diligence, which is the structured check made before money moves. At seed stage it does not need special software. A shared drive with clear names and an index does the job.
+
+Building the folder early is useful even if nobody asks for it. The act of filling it shows you what is missing while you still have time to fix it, and it replaces a scramble with a link.
+
+## Principles
+
+- **Organised.** A stranger should find any document in under a minute using the index alone.
+- **Current.** An out-of-date document is worse than a missing one, because it makes everything else look doubtful. Put a date on every file.
+- **True.** Include only records that describe the company as it is. A plan is labelled as a plan.
+- **Permissioned.** Decide who can see which folder before you share. Share the minimum, in stages.
+- **Yours.** Keep the master copy. Give viewers read-only access to a copy.
+
+## The folders
+
+<DataTable
+  caption="A seed data room, folder by folder"
+  columns={['Folder', 'What belongs in it', 'What it shows']}
+  rows={[
+    ['1. Company', 'Formation documents, ownership records, the current cap table, founder agreements, board and shareholder decisions.', 'That the company exists and who owns it.'],
+    ['2. Product', 'A plain description of the product, the current roadmap, an architecture overview and the list of deferred decisions.', 'What exists, and what you chose not to build yet.'],
+    ['3. Customers', 'A list of customers and pilots, the signed pilot scopes, and a summary of the conversation log.', 'Who uses the product and what they committed to.'],
+    ['4. Metrics and finance', 'Your metrics definitions, monthly figures calculated from them, bank and accounting summaries, and a simple budget.', 'That the numbers are defined once and calculated consistently.'],
+    ['5. People and contracts', 'Contractor and employee agreements, assignments of work, advisor agreements and any outstanding commitments.', 'That the company owns the work it sells.'],
+    ['6. Intellectual property', 'Domain names, source repositories and who controls them, open-source licences in use, and brand assets.', 'What the company controls and on what terms.'],
+    ['7. Security and privacy', 'A data inventory, an access list, the privacy notice you publish and the vendors that handle customer data.', 'Where customer data lives and who can reach it.'],
+    ['8. Legal', 'Public terms, customer agreements, any disputes or notices, and the questions you have put to your counsel.', 'What obligations the company has taken on.'],
+    ['9. Updates', 'Your dated investor updates and any materials you have shared with investors.', 'A consistent history of reporting.'],
+  ]}
+/>
+
+## Keep it honest
+
+If a record is missing, leave a short note in the index that says what is missing and when you expect it. A visible gap with a date is easier to trust than a quiet one. Never fill a folder with documents you hope will pass. Anyone reading it is looking for the places where the story and the paperwork disagree.
+
+Do not put secrets in the folder: passwords, private keys and personal data about customers or staff do not belong in a data room. If a document contains personal data, ask your counsel what must be removed before it is shared.
+
+## Before you share it
+
+1. Read the index as if you were a stranger. Can you find the cap table and the assignments of work in one step?
+2. Check the dates. Replace or archive anything out of date.
+3. Open each folder in a private window to confirm the permissions are what you intended.
+4. Ask your own counsel to review folders 1, 5, 6 and 8 before they go anywhere.
+5. Keep a log of who was given access and when.
+
+The [seed data room checklist](/library/seed-data-room-checklist/) is the same set of folders as a template you can copy and tick. Use this guide to understand the purpose of each folder and the checklist to do the work. The [investor readiness checklist](/fundability/investor-readiness-checklist/) shows which statements each folder helps you prove.
+
+This guide is general information. It describes a common structure and is not legal advice. Which documents you hold, and what you may share, depend on your company and your jurisdiction.

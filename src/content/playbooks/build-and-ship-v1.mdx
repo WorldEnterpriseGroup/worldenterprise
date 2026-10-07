@@ -1,0 +1,55 @@
+---
+stage: build
+order: 3
+title: Build and ship v1
+description: Build the first release in short cycles, keep a release checklist, review against the cut line and put it in front of a small group.
+steps:
+  - title: Set a weekly rhythm
+    body: Choose one goal for the week, write it where the whole team can see it, and review it at the end. A fixed rhythm makes slipping visible early, which is when it is cheapest to fix.
+  - title: Build the riskiest path first
+    body: Build a thin working slice from the start of the path to the first result before you widen anything. If the hardest part does not work, you learn it in week one rather than week ten.
+  - title: Keep a release checklist from the first week
+    body: List what must be true before anyone outside the team uses the product, including data protection basics, accessibility, backups and a way to see errors. Add to the list every time something surprises you.
+  - title: Review against the cut line every week
+    body: Compare what was built with the written cut line. When scope changes, write down what changed, why, and what moved below the line to make room.
+  - title: Release to a small group you can talk to
+    body: Start with a few people you know by name, so you can watch what they do and ask what they expected. Widen the group only when the first group can reach the result without help.
+  - title: Write down what broke and what you learned
+    body: Keep a short release note and an ordered backlog that records the evidence behind each item. The next cycle starts from that backlog, not from memory.
+artifacts:
+  - A working first release
+  - A release checklist
+  - Weekly review notes that show scope changes
+  - A short release note
+  - A backlog ordered by evidence
+relatedLibrary:
+  - security-baseline-checklist
+  - mvp-cut-line-worksheet
+updated: 2026-10-06
+---
+import DataTable from '../../components/ui/DataTable.astro';
+
+## Common mistakes
+
+<DataTable
+  caption="Common mistakes when building a first release"
+  columns={['Mistake', 'Why it costs you', 'Do this instead']}
+  rows={[
+    ['Adding scope without writing it down', 'The cut line stops meaning anything and the release keeps moving.', 'Record every change to scope with the item that moved below the line.'],
+    ['Leaving security and accessibility until later', 'Retrofitting them touches everything that is already built.', 'Put both on the release checklist in week one and build them in as you go.'],
+    ['Releasing to everyone at once', 'You cannot watch or talk to everyone, so you learn little.', 'Start with a small group you can reach by name.'],
+    ['Having no way to roll back', 'A bad release becomes an outage you cannot undo.', 'Decide how you will return to the last good version before you release.'],
+    ['Measuring activity instead of results', 'A busy team can still be building the wrong thing.', 'Review each week against the result the customer came for.'],
+  ]}
+/>
+
+## Evidence to check before you move on
+
+Move to [Earn your first customers](/playbooks/earn-your-first-customers/) when you can show each of these.
+
+- A person outside your team reached the first result without you doing it for them.
+- The release checklist exists, has dates on it and has been followed at least once.
+- Weekly review notes show what changed in scope and why.
+- The backlog is ordered, and each of the top items points to something you observed.
+
+Version one will be incomplete. That is expected. What matters is that you can say exactly what is missing and what you saw that told you so.

@@ -1,0 +1,143 @@
+---
+import { href } from '../../../lib/url.ts';
+import { isLinkable } from '../../playbooks/links.ts';
+import { READINESS_GROUPS, readinessStatements } from './statements.ts';
+import type { ReadinessGroup } from './statements.ts';
+
+/**
+ * Investor readiness self-check. Twelve yes/no statements, local only, no storage, no score.
+ * The no-funding statement is rendered inside the component so it cannot be dropped from a page.
+ */
+const groupOrder: readonly ReadinessGroup[] = ['problem', 'product', 'company', 'communication'];
+
+const resolved = await Promise.all(
+  readinessStatements.map(async (s) => ({ ...s, target: (await isLinkable(s.gapHref)) ? href(s.gapHref) : '' })),
+);
+---
+
+<we-readiness-check class="rc">
+  <p class="rc__status">
+    Confirm each statement that is true today. Nothing you tick here is saved or sent anywhere. The result is a list of gaps to
+    work on, not a score, and it does not predict whether any company will raise money. WE makes no promise of funding.
+  </p>
+  <form class="rc__form stack" data-rc-form aria-labelledby="rc-title">
+    <h2 id="rc-title" class="rc__title">Investor readiness self-check</h2>
+    {
+      groupOrder.map((group) => (
+        <fieldset class="fieldset rc__group">
+          <legend>{READINESS_GROUPS[group].title}</legend>
+          <p class="field__hint">{READINESS_GROUPS[group].intro}</p>
+          <ul class="rc__items" role="list">
+            {resolved
+              .filter((s) => s.group === group)
+              .map((s) => (
+                <li class="rc__item">
+                  <div class="choice">
+                    <input id={s.id} name={s.id} type="checkbox" data-gap-title={s.gapTitle} data-gap-href={s.target} />
+                    <label for={s.id}>{s.statement}</label>
+                  </div>
+                  <p class="rc__gap field__hint">
+                    Artifact that shows it: {s.artifact}.
+                    {s.target !== '' && (
+                      <span class="rc__start">
+                        {' '}If it is not yet true, start with <a href={s.target}>{s.gapTitle}</a>.
+                      </span>
+                    )}
+                  </p>
+                </li>
+              ))}
+          </ul>
+        </fieldset>
+      ))
+    }
+    <div class="cluster rc__controls" data-rc-controls hidden>
+      <button type="button" class="btn btn--primary" data-rc-show>Show my gaps</button>
+      <button type="button" class="btn btn--secondary" data-rc-reset>Clear all</button>
+    </div>
+  </form>
+  <div class="rc__result" data-rc-result aria-live="polite"></div>
+</we-readiness-check>
+
+<script>
+  import '../../../scripts/readiness-check.ts';
+</script>
+
+<style>
+  @layer pages {
+    .rc {
+      display: grid;
+      gap: var(--sp-5);
+    }
+
+    .rc__title {
+      font-size: var(--fs-xl);
+    }
+
+    .rc__status {
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--color-amber-wash);
+      border-inline-start: 4px solid var(--color-highlight);
+      border-radius: var(--radius-sm);
+      font-family: var(--ff-sans);
+    }
+
+    .rc__group {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .rc__items {
+      display: grid;
+      gap: var(--sp-4);
+      list-style: none;
+      padding: 0;
+    }
+
+    .rc__item {
+      display: grid;
+      gap: var(--sp-1);
+    }
+
+    .rc__item .choice {
+      align-items: flex-start;
+    }
+
+    .rc__item .choice input {
+      flex: none;
+      margin-block-start: 0.2rem;
+    }
+
+    .rc__gap {
+      padding-inline-start: calc(1.25rem + var(--sp-3));
+    }
+
+    .rc__result:not(:empty) {
+      padding: var(--sp-5);
+      border: var(--border-strong);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-soft);
+    }
+
+    :global(.rc__gaps) {
+      display: grid;
+      gap: var(--sp-3);
+      margin-block-start: var(--sp-4);
+      padding: 0;
+      list-style: none;
+      font-family: var(--ff-sans);
+    }
+
+    :global(.rc__gaps li) {
+      display: grid;
+      gap: var(--sp-1);
+    }
+
+    :global(.rc__gap-statement) {
+      color: var(--color-text-muted);
+    }
+
+    we-readiness-check[data-enhanced] .rc__start {
+      display: none;
+    }
+  }
+</style>

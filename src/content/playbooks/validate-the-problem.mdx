@@ -1,0 +1,53 @@
+---
+stage: dream
+order: 1
+title: Validate the problem
+description: "Test whether a real, painful problem exists before you write code: a problem brief, honest interviews and a written decision."
+steps:
+  - title: Write the problem brief
+    body: State who has the problem, what they do about it today and why that is not good enough, on one page. If you cannot write it plainly, you are not ready to interview anyone.
+  - title: List the assumptions that would sink the idea
+    body: Separate what you know from what you hope. Rank each assumption by how badly the idea fails if it is wrong, then test the top ones first.
+  - title: Find people who have the problem
+    body: Recruit from the group your brief describes, not from friends. Prefer people who dealt with the problem recently, because recent behaviour is better evidence than opinion.
+  - title: Interview about the past, not the future
+    body: Ask what happened the last time, what they tried and what it cost them. Keep your solution out of the conversation. Write notes the same day, in the same format every time.
+  - title: Look for commitment, not compliments
+    body: Praise costs nothing. Evidence is time, access, money or a written pilot commitment. Record each person's response honestly, including a plain no.
+  - title: Decide, and write the decision down
+    body: Set what you learned against your assumptions. Choose to continue, change the problem or stop, and write the evidence behind the choice so someone else can read it.
+artifacts:
+  - A one-page problem brief
+  - An ordered list of assumptions with a status for each
+  - Interview notes in a single format
+  - A written decision to continue, change or stop, with the evidence behind it
+relatedLibrary:
+  - one-page-problem-brief
+  - customer-interview-guide
+updated: 2026-10-06
+---
+import DataTable from '../../components/ui/DataTable.astro';
+
+## Common mistakes
+
+<DataTable
+  caption="Common mistakes when validating a problem"
+  columns={['Mistake', 'Why it costs you', 'Do this instead']}
+  rows={[
+    ['Interviewing friends and family', 'They want to be kind, so their answers say little about the market.', 'Recruit people who match your problem brief and do not know you.'],
+    ['Describing your solution while you ask', 'People react to the idea instead of describing their own situation.', 'Ask about the last time the problem happened. Keep the idea out of the first conversation.'],
+    ['Counting compliments as demand', 'Praise is cheap and does not predict what a person will do.', 'Record what each person did, offered or committed to.'],
+    ['Stopping at the first enthusiastic yes', 'One keen person is a story, not a pattern.', 'Look for the same problem in similar words from several people who do not know each other.'],
+  ]}
+/>
+
+## Evidence to check before you move on
+
+Move to [Design the product](/playbooks/design-the-product/) when each of these is true and you could show it to a stranger.
+
+- The problem brief reads clearly to someone outside your field in about two minutes.
+- Every assumption has a status: supported, contradicted or still untested.
+- Interview notes exist for every conversation, in one format, with the date.
+- The decision to continue, change or stop is written down with the evidence beside it.
+
+A "stop" is a useful result. It costs far less than building the wrong product, and your notes still show how you think.

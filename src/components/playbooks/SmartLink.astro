@@ -1,0 +1,28 @@
+---
+import { href } from '../../lib/url.ts';
+import { isExternal } from '../../lib/url.ts';
+import { isLinkable } from './links.ts';
+
+/**
+ * Anchor used for every link inside MDX bodies. Internal paths go through href() so the preview base path
+ * applies, external links get rel="noopener", and an internal route that does not exist yet renders as plain text.
+ */
+interface Props {
+  href?: string;
+  [attr: string]: unknown;
+}
+
+const { href: target = '', ...rest } = Astro.props;
+const external = isExternal(target);
+const internalPath = !external && target.startsWith('/');
+const linkable = internalPath ? await isLinkable(target) : true;
+const resolved = internalPath ? href(target) : target;
+---
+
+{
+  linkable ? (
+    <a href={resolved} rel={external ? 'noopener' : undefined} {...rest}><slot /></a>
+  ) : (
+    <span><slot /></span>
+  )
+}

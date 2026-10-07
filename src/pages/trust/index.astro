@@ -1,0 +1,122 @@
+---
+import { getEntry, render } from 'astro:content';
+import { getPhoto } from '../../assets/photo/index.ts';
+import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
+import SmartLink from '../../components/playbooks/SmartLink.astro';
+import StandardsTable from '../../components/trust/StandardsTable.astro';
+import Callout from '../../components/ui/Callout.astro';
+import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
+import FactBand from '../../components/ui/FactBand.astro';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { isDraft } from '../../lib/content.ts';
+
+const page = await getEntry('pages', 'trust/index');
+if (!page) throw new Error('Missing content entry: src/content/pages/trust/index.mdx');
+const { Content } = await render(page);
+const { data } = page;
+const inset = getPhoto('inset-trust');
+---
+
+<HubLayout
+  title={data.title}
+  description={data.description}
+  path="/trust/"
+  eyebrow={data.eyebrow}
+  lead="This page states what is true of this website today, where the other commitments are written down, and which public standards WE's research briefs and checklists are written against."
+  updated={data.updated}
+  draft={isDraft(page)}
+  toc={[
+    { slug: 'this-website', text: 'This website' },
+    { slug: 'agreement', text: 'The written agreement' },
+    { slug: 'standards', text: 'Public standards' },
+    { slug: 'report', text: 'Report a concern' },
+  ]}
+>
+  <section id="this-website" class="stack" aria-labelledby="tr-site-title">
+    <h2 id="tr-site-title">What is true of this website</h2>
+    <FactBand
+      label="Facts about this website"
+      facts={[
+        { label: 'Cookies', value: 'None set' },
+        { label: 'Third-party scripts', value: 'None loaded' },
+        { label: 'Analytics', value: 'None' },
+        { label: 'Forms', value: 'Collect only the fields shown' },
+      ]}
+    />
+    <p>
+      These four statements describe the site you are reading. The <SmartLink href="/legal/privacy/">privacy notice</SmartLink>
+      describes exactly what each form collects and where it goes.
+    </p>
+  </section>
+
+  <section id="agreement" class="tr-split" aria-labelledby="tr-agreement-title">
+    <div class="stack">
+      <h2 id="tr-agreement-title">Security and confidentiality in the written agreement</h2>
+      <div class="prose">
+        <Content components={{ a: SmartLink }} />
+      </div>
+    </div>
+    <img class="tr-inset" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
+  </section>
+
+  <section id="standards" class="stack" aria-labelledby="tr-standards-title">
+    <h2 id="tr-standards-title">Public standards WE reads and writes against</h2>
+    <p class="measure">
+      WE's research briefs and checklists are written against the public standards below. They are reference points that anyone
+      can read. Naming a standard is not a statement that WE, or any product built by a founder, has been assessed against it.
+    </p>
+    <StandardsTable />
+    <p class="measure">
+      Read how the standards are used in the <SmartLink href="/research/saas-security-baseline-year-one/">SaaS security baseline brief</SmartLink>
+      and, for accessibility, the <SmartLink href="/research/accessibility-as-a-launch-requirement/">accessibility brief</SmartLink>.
+    </p>
+    <LimitsBlock
+      title="What this page does not claim"
+      items={[
+        'It does not say that WE or any product has passed an audit, an attestation or a certification.',
+        'It does not list specific technical controls. Those belong in the written agreement for an engagement.',
+        'It does not describe how any founder company handles its own customers data. That is each company\'s responsibility.',
+      ]}
+    />
+  </section>
+
+  <section id="report" class="stack" aria-labelledby="tr-report-title">
+    <h2 id="tr-report-title">Report a concern</h2>
+    <Callout title="Tell WE what you found">
+      <p>
+        If you think something on this website is wrong, unsafe or inaccessible, send the details through the
+        <SmartLink href="/contact/">contact form</SmartLink>. Say what you saw, on which page, and how to reproduce it.
+      </p>
+    </Callout>
+  </section>
+
+  <SafeCtaBand
+    slot="after"
+    title="Have a question about how WE works with information?"
+    text="Ask before you apply. Security and confidentiality terms are set out in the written agreement for an engagement."
+    primary={{ label: 'Contact WE', href: '/contact/' }}
+    secondary={{ label: 'Read the FAQ', href: '/faq/' }}
+  />
+</HubLayout>
+
+<style>
+  @layer pages {
+    .tr-split {
+      display: grid;
+      gap: var(--sp-6);
+      align-items: start;
+    }
+
+    @media (min-width: 52rem) {
+      .tr-split {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+      }
+    }
+
+    .tr-inset {
+      inline-size: 100%;
+      block-size: auto;
+      border-radius: var(--radius-md);
+    }
+  }
+</style>

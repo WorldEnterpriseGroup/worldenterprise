@@ -1,0 +1,90 @@
+---
+import { href } from '../../lib/url.ts';
+import { isLinkable } from '../playbooks/links.ts';
+
+/**
+ * Public standards named as text. Facts here come from each publisher's own page (see
+ * .astro-magazine/sources/wp-04.json). Naming a standard is never a claim of certification or assessment.
+ */
+interface Standard {
+  readonly name: string;
+  readonly publisher: string;
+  readonly what: string;
+  readonly version: string;
+  readonly url: string;
+  readonly brief?: { readonly path: string; readonly label: string };
+}
+
+const standards: readonly Standard[] = [
+  {
+    name: 'OWASP ASVS',
+    publisher: 'OWASP',
+    what: 'The Application Security Verification Standard: a set of security requirements for designing, developing and testing web applications and services, organised into three levels.',
+    version: 'Version 5.0.0, May 2025',
+    url: 'https://asvs.dev/',
+    brief: { path: '/research/saas-security-baseline-year-one/', label: 'Security baseline brief' },
+  },
+  {
+    name: 'NIST SSDF (SP 800-218)',
+    publisher: 'NIST',
+    what: 'The Secure Software Development Framework: high-level secure software development practices that fit into any development lifecycle, with a common vocabulary.',
+    version: 'Version 1.1, February 2022',
+    url: 'https://csrc.nist.gov/pubs/sp/800/218/final',
+    brief: { path: '/research/saas-security-baseline-year-one/', label: 'Security baseline brief' },
+  },
+  {
+    name: 'AICPA Trust Services Criteria',
+    publisher: 'AICPA',
+    what: 'Criteria in five categories: Security, Availability, Processing Integrity, Confidentiality and Privacy. SOC 2 reports are attestation engagements by a CPA firm that are built on these criteria.',
+    version: '2017 criteria, points of focus revised 2022',
+    url: 'https://www.aicpa-cima.com/resources/download/2017-trust-services-criteria-with-revised-points-of-focus-2022',
+    brief: { path: '/research/saas-security-baseline-year-one/', label: 'Security baseline brief' },
+  },
+  {
+    name: 'WCAG 2.2',
+    publisher: 'W3C',
+    what: 'The Web Content Accessibility Guidelines: testable success criteria for making web content usable by people with disabilities.',
+    version: 'W3C Recommendation, 12 December 2024',
+    url: 'https://www.w3.org/TR/WCAG22/',
+    brief: { path: '/research/accessibility-as-a-launch-requirement/', label: 'Accessibility brief' },
+  },
+];
+
+const rows = await Promise.all(
+  standards.map(async (s) => ({ ...s, briefLive: s.brief ? await isLinkable(s.brief.path) : false })),
+);
+---
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Public standards named on this page">
+  <table class="data-table">
+    <caption>Public standards named on this page</caption>
+    <thead>
+      <tr>
+        <th scope="col">Standard</th>
+        <th scope="col">What it is</th>
+        <th scope="col">Edition</th>
+        <th scope="col">Read</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((s) => (
+          <tr>
+            <th scope="row">{s.name}<br /><span class="muted">{s.publisher}</span></th>
+            <td>{s.what}</td>
+            <td>{s.version}</td>
+            <td>
+              <a href={s.url} rel="noopener">Publisher page<span class="visually-hidden"> for {s.name}</span></a>
+              {s.brief && s.briefLive && (
+                <>
+                  <br />
+                  <a href={href(s.brief.path)}>{s.brief.label}<span class="visually-hidden"> ({s.name})</span></a>
+                </>
+              )}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

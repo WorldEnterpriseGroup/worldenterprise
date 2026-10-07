@@ -1,0 +1,53 @@
+---
+stage: grow
+order: 5
+title: Build repeatable growth
+description: Define your metrics in writing, run one channel long enough to learn, fix leaks before adding traffic and turn the results into a monthly review.
+steps:
+  - title: Define your metrics in writing
+    body: Write one definition each for monthly recurring revenue, churn, activation and the cost of winning a customer. Use the same definitions in every report so that this month can be compared with last month.
+  - title: Pick one channel and run it long enough to learn
+    body: Choose the single way of finding customers that has already worked once. Run it for a fixed number of weeks so that you can compare results rather than reacting to one good or bad week.
+  - title: Count cost and result for each channel
+    body: Each period, record what you spent in money and time, and how many customers you won. Use the written definitions from step one so the figures stay comparable.
+  - title: Fix the leaks before adding traffic
+    body: Look at onboarding, activation and support before you pour more people in. A leak in the first week costs more than a small gain in reach.
+  - title: Write the process down so someone else could run it
+    body: Record each step of the channel in plain words, with examples. If it only works when you do it, it is a habit, not a process.
+  - title: Review monthly and decide
+    body: Once a month, look at the results and choose to put more into a channel, change it or stop. Write the reason down and let the record carry into your investor updates.
+artifacts:
+  - A metrics definitions sheet
+  - A channel log with cost and result for each period
+  - A written process for the channel
+  - A monthly review with the decision and the reason
+relatedLibrary:
+  - weekly-investor-update-template
+updated: 2026-10-06
+---
+import DataTable from '../../components/ui/DataTable.astro';
+
+## Common mistakes
+
+<DataTable
+  caption="Common mistakes when building growth"
+  columns={['Mistake', 'Why it costs you', 'Do this instead']}
+  rows={[
+    ['Changing a metric definition between reports', 'The trend line breaks and nobody can tell what actually changed.', 'Write each definition once, version it and note any change with its date.'],
+    ['Reporting vanity measures', 'Page views and sign-ups can rise while customers leave.', 'Report revenue, churn and activation, each defined in writing.'],
+    ['Running many channels at once', 'None gets enough time to teach you anything.', 'Run one channel for a fixed period, then compare.'],
+    ['Scaling before onboarding works', 'New customers leave in the first week and the money spent winning them is lost.', 'Fix the first-week experience, then widen the channel.'],
+    ['Treating a rule of thumb as a target', 'A ratio from a blog post is not a fact about your business.', 'Use your own figures, defined the same way each period.'],
+  ]}
+/>
+
+## Evidence to check before you move on
+
+Investor readiness starts here. Move to [investor readiness](/fundability/) when you can show each of these.
+
+- The metrics sheet exists, with one definition per measure and a date.
+- The channel log covers at least two periods, measured the same way.
+- Someone who did not build the channel could follow the written process.
+- Monthly reviews record a decision and the reason for it.
+
+These records are what the [investor updates guide](/fundability/investor-updates/) asks you to report from, and what a [seed data room](/fundability/data-room/) holds. Keep them current and they cost almost nothing to share.

@@ -1,0 +1,23 @@
+---
+import CtaBand from '../ui/CtaBand.astro';
+import { liveItems } from './links.ts';
+
+/** CtaBand that drops any button whose route does not exist in this build, and renders nothing if none remain. */
+interface Action {
+  readonly label: string;
+  readonly href: string;
+}
+
+interface Props {
+  title: string;
+  text?: string;
+  primary: Action;
+  secondary?: Action;
+}
+
+const { title, text, primary, secondary } = Astro.props;
+const actions = await liveItems([primary, ...(secondary ? [secondary] : [])]);
+const [first, second] = actions;
+---
+
+{first && <CtaBand title={title} text={text} cta={first} secondary={second} />}

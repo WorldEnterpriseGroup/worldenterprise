@@ -1,0 +1,111 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import { getPhoto } from '../../assets/photo/index.ts';
+import RelatedRail from '../../components/blocks/RelatedRail.astro';
+import Button from '../../components/ui/Button.astro';
+import PlaybookTrail from '../../components/playbooks/PlaybookTrail.astro';
+import SmartLink from '../../components/playbooks/SmartLink.astro';
+import { liveItems } from '../../components/playbooks/links.ts';
+import { LIBRARY_REFS, PLAYBOOK_RELATED, PLAYBOOK_SEQUENCE } from '../../components/playbooks/meta.ts';
+import PlaybookLayout from '../../layouts/PlaybookLayout.astro';
+import { getRenderable, isDraft } from '../../lib/content.ts';
+import { href } from '../../lib/url.ts';
+
+export const getStaticPaths = (async () => {
+  const entries = await getRenderable('playbooks');
+  // Fixtures live in a _fixtures/ subfolder, so the route slug is the last segment of the entry id.
+  return entries.map((entry) => ({ params: { slug: entry.id.split('/').at(-1) ?? entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { slug = '' } = Astro.params;
+const { Content } = await render(entry);
+const { data } = entry;
+
+const position = PLAYBOOK_SEQUENCE.findIndex((p) => p.slug === slug);
+const next = position >= 0 ? PLAYBOOK_SEQUENCE[position + 1] : undefined;
+const stageLabel = { dream: 'Dream', build: 'Build', grow: 'Grow' }[data.stage];
+const eyebrow = position >= 0 ? `Playbook ${position + 1} of ${PLAYBOOK_SEQUENCE.length}, ${stageLabel}` : `Playbook, ${stageLabel}`;
+
+const templates = await liveItems(
+  data.relatedLibrary.map((id) => ({
+    title: LIBRARY_REFS[id]?.title ?? id,
+    description: LIBRARY_REFS[id]?.description,
+    href: `/library/${id}/`,
+  })),
+);
+const related = await liveItems(PLAYBOOK_RELATED[slug] ?? []);
+const photo = position >= 0 ? getPhoto(PLAYBOOK_SEQUENCE[position]?.slot ?? 'pb-1') : undefined;
+---
+
+<PlaybookLayout
+  title={data.title}
+  description={data.description}
+  path={`/playbooks/${slug}/`}
+  stage={data.stage}
+  eyebrow={eyebrow}
+  lead={data.description}
+  steps={data.steps}
+  artifacts={templates}
+  updated={data.updated}
+  draft={isDraft(entry)}
+>
+  <PlaybookTrail current={slug} />
+  <section class="stack" aria-labelledby="outputs-title">
+    <h2 id="outputs-title">What you will have at the end</h2>
+    <ul>
+      {data.artifacts.map((artifact) => <li>{artifact}</li>)}
+    </ul>
+    {photo && <img class="pb-photo" src={photo.src.src} width={photo.src.width} height={photo.src.height} alt={photo.alt} loading="lazy" decoding="async" />}
+  </section>
+
+  <Fragment slot="after">
+    <div class="section">
+      <div class="container container--prose stack">
+        <div class="prose">
+          <Content components={{ a: SmartLink }} />
+        </div>
+        {
+          next && (
+            <nav class="stack" aria-label="Next playbook">
+              <p class="eyebrow">Next playbook</p>
+              <div class="cluster">
+                <Button href={href(`/playbooks/${next.slug}/`)}>{next.short}</Button>
+                <Button href={href('/playbooks/')} variant="quiet">All playbooks</Button>
+              </div>
+            </nav>
+          )
+        }
+        {
+          position === PLAYBOOK_SEQUENCE.length - 1 && (
+            <nav class="stack" aria-label="Where this leads">
+              <p class="eyebrow">Where this leads</p>
+              <div class="cluster">
+                <Button href={href('/fundability/')}>Investor readiness</Button>
+                <Button href={href('/playbooks/')} variant="quiet">All playbooks</Button>
+              </div>
+            </nav>
+          )
+        }
+      </div>
+    </div>
+    {
+      related.length > 0 && (
+        <div class="section section--soft section--defer">
+          <div class="container"><RelatedRail items={related} title="Related reading" /></div>
+        </div>
+      )
+    }
+  </Fragment>
+</PlaybookLayout>
+
+<style>
+  @layer pages {
+    .pb-photo {
+      inline-size: min(100%, 32rem);
+      block-size: auto;
+      border-radius: var(--radius-md);
+    }
+  }
+</style>

@@ -1,0 +1,82 @@
+---
+import { getEntry, render } from 'astro:content';
+import { getPhoto } from '../../assets/photo/index.ts';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import ReadinessCheck from '../../components/islands/we-readiness-check/ReadinessCheck.astro';
+import SmartLink from '../../components/playbooks/SmartLink.astro';
+import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { getPublished, isDraft } from '../../lib/content.ts';
+
+const page = await getEntry('pages', 'fundability/index');
+if (!page) throw new Error('Missing content entry: src/content/pages/fundability/index.mdx');
+const { Content } = await render(page);
+const { data } = page;
+
+const order = ['investor-readiness-checklist', 'data-room', 'safe-explained', 'investor-updates'];
+const guides = (await getPublished('guides'))
+  .filter((g) => g.data.section === 'fundability')
+  .sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+const inset = getPhoto('inset-fundability');
+---
+
+<HubLayout
+  title={data.title}
+  description={data.description}
+  path="/fundability/"
+  eyebrow={data.eyebrow}
+  lead="Investor readiness is evidence preparation: the records, the numbers and the habits that let a serious person check your claims quickly. It is not a promise of funding."
+  updated={data.updated}
+  draft={isDraft(page)}
+  ogSlot="og-fundability"
+  toc={[
+    { slug: 'what-it-means', text: 'What it means' },
+    { slug: 'self-check', text: 'Self-check' },
+    { slug: 'hub-subtree', text: 'The four guides' },
+  ]}
+  subtree={guides.map((g) => ({ title: g.data.title, href: `/fundability/${g.id}/`, description: g.data.description }))}
+>
+  <NoFundingDisclaimer />
+  <section id="what-it-means" class="fd-intro" aria-label="What investor readiness means">
+    <div class="prose">
+      <Content components={{ a: SmartLink }} />
+    </div>
+    <img class="fd-inset" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
+  </section>
+  <section id="self-check" aria-label="Investor readiness self-check" class="scroll-target">
+    <ReadinessCheck />
+  </section>
+  <SafeCtaBand
+    slot="after"
+    title="Prepare with a team that steers the work"
+    text="Service Line F covers fundability and investor readiness inside the program. WE prepares the evidence. The raise itself, and the legal advice around it, stay with you and your own counsel."
+    primary={{ label: 'See Service Line F', href: '/services/fundability-and-investor-readiness/' }}
+    secondary={{ label: 'Apply', href: '/apply/' }}
+  />
+</HubLayout>
+
+<style>
+  @layer pages {
+    .fd-intro {
+      display: grid;
+      gap: var(--sp-6);
+      align-items: start;
+    }
+
+    @media (min-width: 52rem) {
+      .fd-intro {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+      }
+    }
+
+    .fd-inset {
+      inline-size: 100%;
+      block-size: auto;
+      border-radius: var(--radius-md);
+    }
+
+    .scroll-target {
+      scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
+    }
+  }
+</style>

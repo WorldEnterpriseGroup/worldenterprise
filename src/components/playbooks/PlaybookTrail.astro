@@ -1,0 +1,16 @@
+---
+import CellTrail from '../ui/CellTrail.astro';
+import { href } from '../../lib/url.ts';
+import { PLAYBOOK_SEQUENCE } from './meta.ts';
+
+interface Props {
+  /** Slug of the playbook being read; omit on the hub. */
+  current?: string;
+}
+
+const { current } = Astro.props;
+const cells = PLAYBOOK_SEQUENCE.map((p) => ({ label: p.short, href: href(`/playbooks/${p.slug}/`) }));
+const index = PLAYBOOK_SEQUENCE.findIndex((p) => p.slug === current);
+---
+
+<CellTrail label="The five playbooks in order" cells={cells} current={index === -1 ? undefined : index} />
