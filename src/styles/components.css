@@ -229,9 +229,14 @@
     border-block-start: var(--border-hair);
   }
 
-  .mobile-nav__toggle {
+  .mobile-nav {
     margin-inline-start: auto;
-    border: var(--border-hair);
+  }
+
+  .mobile-nav__toggle {
+    font-family: var(--ff-display);
+    border: var(--border-strong);
+    border-radius: var(--radius-md);
   }
 
   .mobile-drawer {

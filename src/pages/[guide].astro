@@ -143,7 +143,7 @@ const headings = [
       <PullQuote cite="Named source, role">Quoted text appears only with a real, named source.</PullQuote>
       <FactBand label="Example facts" facts={[{ label: 'Stages', value: 'Five' }, { label: 'Format', value: 'Fully remote' }]} />
       <Meter label="Readiness example" value={60} text="Sixty percent, illustrative only" />
-      <Figure src="/favicon.svg" width={64} height={64} alt="World Enterprise mark" caption="Figure caption." />
+      <div style="max-inline-size:8rem"><Figure src="/favicon.svg" width={64} height={64} alt="World Enterprise mark" caption="Figure caption." /></div>
       <form class="stack" onsubmit="return false">
         <Field id="sg-name" name="name" label="Name" required hint="As you would sign it." autocomplete="name" />
         <Field id="sg-email" name="email" label="Email" type="email" required error="Enter an email address in the form name@example.org." autocomplete="email" />
