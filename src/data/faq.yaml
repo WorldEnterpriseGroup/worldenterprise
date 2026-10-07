@@ -1,2 +1,7 @@
 # FAQ entries (WP-08). Schema: src/content.config.ts, collection "faq".
-[]
+# The fixture row below is a draft test fixture; WP-15 removes it before release.
+- id: fixture-faq
+  question: Test fixture question?
+  answer: Test fixture answer. Draft, never indexed.
+  group: fixture
+  draft: true

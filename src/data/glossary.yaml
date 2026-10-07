@@ -1,2 +1,7 @@
 # Glossary terms (WP-08). Schema: src/content.config.ts, collection "glossary".
-[]
+# The fixture row below is a draft test fixture; WP-15 removes it before release.
+- id: fixture-term
+  term: Test fixture term
+  definition: Test fixture definition. Draft, never indexed.
+  group: fixture
+  draft: true

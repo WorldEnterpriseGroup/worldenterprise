@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getRenderable, isDraft } from '../../lib/content.ts';
+
+export const getStaticPaths = (async () => {
+  const entries = await getRenderable('insights');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const { data } = entry;
+---
+
+<ArticleLayout
+  title={data.title}
+  description={data.description}
+  path={`/insights/${entry.id}/`}
+  topic={data.topic}
+  publishedDate={data.publishedDate}
+  updatedDate={data.updatedDate}
+  headings={headings.map((h) => ({ depth: h.depth, slug: h.slug, text: h.text }))}
+  sources={data.sources}
+  draft={isDraft(entry)}
+>
+  <Content />
+</ArticleLayout>

@@ -93,3 +93,24 @@ test.describe('styleguide', () => {
     await expect(page.getByRole('tab', { name: 'Second' })).toHaveAttribute('aria-selected', 'true');
   });
 });
+
+test.describe('fixtures and shells', () => {
+  test('the draft fixture article renders noindex with a single h1', async ({ page }) => {
+    await page.goto('/insights/fixture-article/');
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+  });
+
+  test('the 404 shell renders', async ({ page }) => {
+    await page.goto('/404.html');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('This page is not here');
+  });
+
+  test('the sitemap lists neither the styleguide nor fixtures', async ({ request }) => {
+    const res = await request.get('/sitemap-0.xml');
+    expect(res.ok()).toBe(true);
+    const body = await res.text();
+    expect(body).not.toContain('/styleguide/');
+    expect(body).not.toContain('fixture-');
+  });
+});
