@@ -154,10 +154,10 @@ const headings = [
 
   <section id="heroes" aria-labelledby="h-heroes">
     <div class="container"><h2 id="h-heroes">Heroes</h2></div>
-    <HeroAtlas eyebrow="H1 Atlas" title="Atlas hero" lead="Home and top-level hubs." primary={{ label: 'Primary', href: '#heroes' }} secondary={{ label: 'Secondary', href: '#heroes' }} />
-    <HeroEditorial eyebrow="H2 Editorial" title="Editorial hero" lead="Hubs with a long lead." />
-    <HeroConsole eyebrow="H3 Console" title="Console hero" lead="Tools and forms."><p>Panel content.</p></HeroConsole>
-    <HeroArticle eyebrow="H4 Article" title="Article hero" lead="Single articles." byline="Editorial team" published={new Date('2026-01-01')} />
+    <HeroAtlas as="h2" eyebrow="H1 Atlas" title="Atlas hero" lead="Home and top-level hubs." primary={{ label: 'Primary', href: '#heroes' }} secondary={{ label: 'Secondary', href: '#heroes' }} />
+    <HeroEditorial as="h2" eyebrow="H2 Editorial" title="Editorial hero" lead="Hubs with a long lead." />
+    <HeroConsole as="h2" eyebrow="H3 Console" title="Console hero" lead="Tools and forms."><p>Panel content.</p></HeroConsole>
+    <HeroArticle as="h2" eyebrow="H4 Article" title="Article hero" lead="Single articles." byline="Editorial team" published={new Date('2026-01-01')} />
     <HeroCompact title="H5 Compact" lead="Utility and legal pages." />
   </section>
 

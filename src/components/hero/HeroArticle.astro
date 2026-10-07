@@ -1,5 +1,7 @@
 ---
 interface Props {
+  /** Heading element for the title. Only the styleguide uses h2, to show several heroes on one page. */
+  as?: 'h1' | 'h2';
   eyebrow?: string;
   title: string;
   lead?: string;
@@ -8,14 +10,14 @@ interface Props {
   updated?: Date;
 }
 
-const { eyebrow, title, lead, byline, published, updated } = Astro.props;
+const { as: Heading = 'h1', eyebrow, title, lead, byline, published, updated } = Astro.props;
 const fmt = (d: Date): string => d.toISOString().slice(0, 10);
 ---
 
 <header class="hero hero--article">
   <div class="container container--prose stack">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <h1>{title}</h1>
+    <Heading>{title}</Heading>
     {lead && <p class="lead">{lead}</p>}
     <p class="byline">
       {byline}

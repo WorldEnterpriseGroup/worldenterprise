@@ -9,6 +9,8 @@ interface Cta {
 }
 
 interface Props {
+  /** Heading element for the title. Only the styleguide uses h2, to show several heroes on one page. */
+  as?: 'h1' | 'h2';
   eyebrow?: string;
   title: string;
   lead: string;
@@ -17,7 +19,7 @@ interface Props {
   slot?: SlotId;
 }
 
-const { eyebrow, title, lead, primary, secondary, slot = 'band-1' } = Astro.props;
+const { as: Heading = 'h1', eyebrow, title, lead, primary, secondary, slot = 'band-1' } = Astro.props;
 const image = getPhoto(slot);
 ---
 
@@ -25,7 +27,7 @@ const image = getPhoto(slot);
   <div class="container hero__grid">
     <div class="hero__copy stack">
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-      <h1>{title}</h1>
+      <Heading>{title}</Heading>
       <div class="rule" aria-hidden="true"></div>
       <p class="lead">{lead}</p>
       <div class="cluster">
