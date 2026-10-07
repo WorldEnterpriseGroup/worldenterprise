@@ -1,0 +1,85 @@
+---
+import { render } from 'astro:content';
+import Callout from '../../components/ui/Callout.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import Steps from '../../components/ui/Steps.astro';
+import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
+import { getPageEntry } from '../../components/network/pageEntry.ts';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { href } from '../../lib/url.ts';
+
+const page = await getPageEntry('founders', 'founders/index');
+const { Content } = await render(page);
+
+const criteria: readonly (readonly [string, string])[] = [
+  ['A software product sold by subscription', 'The company is a SaaS company, or intends to be one.'],
+  ['A named customer and a named problem', 'You can say whose problem it is in a sentence, and why it matters to them.'],
+  ['Contact with real customers', 'You have spoken with them, or you will start in the first cycle.'],
+  ['Time and decisions', 'A founder is available each week to review work and make decisions.'],
+  ['Written working habits', 'You are willing to work from a written plan and written results for each cycle.'],
+];
+
+const stages: readonly (readonly [string, string])[] = [
+  ['Idea', 'The problem and customer are not yet tested. Dream work and service lines C and E fit here.'],
+  ['Prototype', 'You know the problem and need a first version. Build work and line B fit here.'],
+  ['First customers', 'A version exists and you are earning your first users. Grow work and lines C, D and F fit here.'],
+];
+
+const steps = [
+  { title: 'Apply', body: 'Tell WE about the company, the customer and the stage it is at.' },
+  { title: 'Agree the scope', body: 'You and WE choose the service lines and roles that fit. A line you do not choose is not provided.' },
+  { title: 'Meet your team', body: 'WE seats a dedicated team for your company and steers it.' },
+  { title: 'Work in cycles', body: 'Each cycle starts with a written plan you approve and ends with written results.' },
+];
+
+const notFor = [
+  'It is not for founders who want someone else to run the company.',
+  'It is not for companies that need an office, in-person sessions or physical premises.',
+  'It does not promise funding, find investors or predict whether any company will raise money.',
+  'It does not replace your own lawyer or accountant.',
+];
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/founders/"
+  eyebrow={page.data.eyebrow}
+  lead="WE builds with founders who know whose problem they want to solve. Here is what that asks of you."
+  updated={page.data.updated}
+  ogSlot="og-network"
+>
+  <Content />
+
+  <h2 id="criteria-title">The evidence WE looks for</h2>
+  <DataTable caption="Criteria WE uses when deciding whether a company is a fit" columns={['Criterion', 'What it means']} rows={criteria} />
+
+  <h2 id="stages-title">Stages WE works with</h2>
+  <DataTable caption="Company stages from idea to first customers" columns={['Stage', 'What fits']} rows={stages} />
+  <p>
+    The program page <a href={href('/program/who-its-for/')}>describes who the program is for</a>. This page describes
+    the working relationship.
+  </p>
+
+  <h2 id="start-title">What happens after you apply</h2>
+  <Steps steps={steps} headingLevel={3} />
+
+  <h2 id="notfor-title">Who this is not for</h2>
+  <LimitsBlock title="Limits to know before you apply" items={notFor} headingLevel={3} />
+
+  <Callout tone="notice" title="No promise of funding">
+    <p>
+      WE makes no promise of funding. Working with WE does not mean investors will back your company. Read
+      <a href={href('/investors/')}>what WE does and does not do</a> for investors.
+    </p>
+  </Callout>
+
+  <CtaBand
+    slot="after"
+    title="Ready to describe your company?"
+    text="Apply, or see how a seat is staffed first. Neither commits you to anything."
+    cta={{ label: 'Apply', href: '/apply/' }}
+    secondary={{ label: 'See the operator roles', href: '/network/operators/' }}
+  />
+</MarketingLayout>

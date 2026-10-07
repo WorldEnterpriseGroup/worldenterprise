@@ -1,0 +1,55 @@
+---
+import { getPhoto } from '../../assets/photo/index.ts';
+
+const inset = getPhoto('inset-network');
+---
+
+<div class="network-intro">
+  <div class="network-intro__copy stack">
+    <h2 id="network-intro-title">Described by roles and criteria</h2>
+    <p>
+      WE is a fully remote digital incubator for SaaS, so its network is not a building or a member list. It is three
+      things you can read about today: the founders WE builds with, the roles that staff a dedicated team seat, and the
+      standards WE maps work to.
+    </p>
+    <p>
+      This section names no people and no companies. Nothing here is a client list, a portfolio or a partner programme.
+    </p>
+  </div>
+  <img
+    class="network-intro__image"
+    src={inset.src.src}
+    width="512"
+    height="384"
+    alt={inset.alt}
+    decoding="async"
+  />
+</div>
+
+<style>
+  @layer pages {
+    .network-intro {
+      display: grid;
+      gap: var(--sp-6);
+      align-items: center;
+
+      @media (min-width: 62rem) {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      }
+    }
+
+    .network-intro__image {
+      display: none;
+      inline-size: 100%;
+      max-inline-size: 32rem;
+      block-size: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+
+      @media (min-width: 62rem) {
+        display: block;
+      }
+    }
+  }
+</style>

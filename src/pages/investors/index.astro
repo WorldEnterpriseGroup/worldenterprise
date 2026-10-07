@@ -1,0 +1,75 @@
+---
+import { render } from 'astro:content';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
+import Callout from '../../components/ui/Callout.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import { getPageEntry } from '../../components/network/pageEntry.ts';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { href } from '../../lib/url.ts';
+
+const page = await getPageEntry('investors', 'investors/index');
+const { Content } = await render(page);
+
+const prepares: readonly (readonly [string, string])[] = [
+  ['A readiness checklist', 'A list of the evidence an investor commonly asks for, so a founder can see the gaps.'],
+  ['A seed data room', 'A guide to organising and keeping current the documents an investor reads.'],
+  ['Investor updates', 'A consistent shape for the regular update a founder sends to people who have backed the company.'],
+  ['Plain explanations', 'Generic, sourced explanations of terms such as SAFEs. They describe the instrument and do not describe any deal.'],
+];
+
+const doesNot = [
+  'WE does not offer, sell or place securities, and takes no part in any financing.',
+  'WE does not arrange meetings with investors or act as a go-between.',
+  'WE does not advise investors, rank companies or recommend one to you.',
+  'WE does not verify a company’s statements. They remain that company’s own.',
+  'WE does not promise or predict funding for any company.',
+];
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/investors/"
+  eyebrow={page.data.eyebrow}
+  lead="WE prepares a company's evidence. It does not raise money, place securities or promise funding."
+  updated={page.data.updated}
+  ogSlot="og-network"
+>
+  <Callout tone="notice" title="Not an offer of securities">
+    <p>
+      Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security. WE does not offer
+      securities through this site or in any other way described on it.
+    </p>
+  </Callout>
+
+  <Content />
+
+  <h2 id="prepares-title">The materials</h2>
+  <DataTable caption="Materials WE helps a founder prepare" columns={['Material', 'What it is']} rows={prepares} />
+  <p>
+    Each item has its own page: the <a href={href('/fundability/investor-readiness-checklist/')}>readiness checklist</a>,
+    the <a href={href('/fundability/data-room/')}>seed data room</a>, <a href={href('/fundability/investor-updates/')}>investor updates</a>
+    and <a href={href('/fundability/safe-explained/')}>SAFEs in plain language</a>.
+  </p>
+
+  <LimitsBlock title="The limits of WE's role" items={doesNot} headingLevel={2} />
+
+  <h2 id="investor-title">If you are an investor</h2>
+  <p>
+    Any company that shows you materials prepared with WE’s help is making its own case. Ask the founder for the
+    source of each claim, as you would for any company. If you have a question about how WE works, use the
+    <a href={href('/contact/')}>contact page</a>. A question is not a request for access to any company.
+  </p>
+
+  <NoFundingDisclaimer />
+
+  <CtaBand
+    slot="after"
+    title="Questions about how WE works"
+    text="Use the contact page. A question is not a request for access to any company."
+    cta={{ label: 'Contact', href: '/contact/' }}
+    secondary={{ label: 'Read about investor readiness', href: '/fundability/' }}
+  />
+</MarketingLayout>

@@ -1,0 +1,80 @@
+---
+import { render } from 'astro:content';
+import CellTrail from '../../components/ui/CellTrail.astro';
+import Callout from '../../components/ui/Callout.astro';
+import Card from '../../components/ui/Card.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import Grid from '../../components/ui/Grid.astro';
+import NetworkIntro from '../../components/network/NetworkIntro.astro';
+import { getPageEntry } from '../../components/network/pageEntry.ts';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { href } from '../../lib/url.ts';
+
+const page = await getPageEntry('network', 'network/index');
+const { Content } = await render(page);
+
+const subtree = [
+  { title: 'Who WE builds with', href: '/founders/', description: 'The founder profile and the evidence WE looks for' },
+  { title: 'Operator roles', href: '/network/operators/', description: 'The roles WE places around your team' },
+  { title: 'For investors', href: '/investors/', description: 'How WE prepares companies, and what WE does not do' },
+] as const;
+
+const trail = [
+  { label: 'Founder applies', href: href('/apply/') },
+  { label: 'WE scopes the work', href: href('/program/how-it-works/') },
+  { label: 'Operator roles seated', href: href('/network/operators/') },
+  { label: 'Evidence gathered', href: href('/fundability/') },
+  { label: 'Investor-ready materials', href: href('/investors/') },
+];
+---
+
+<HubLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/network/"
+  eyebrow={page.data.eyebrow}
+  lead="The people and partners around your company, described by role and by criteria."
+  updated={page.data.updated}
+  ogSlot="og-network"
+  subtree={subtree}
+>
+  <NetworkIntro />
+
+  <section aria-labelledby="network-parts" class="stack">
+    <h2 id="network-parts">Three places to start</h2>
+    <Grid min="17rem">
+      <Card title="Founders" href={href('/founders/')} eyebrow="Who WE builds with" headingLevel={3}>
+        <p>The criteria WE uses, what WE asks of you and what you keep doing yourself.</p>
+      </Card>
+      <Card title="Operators" href={href('/network/operators/')} eyebrow="Roles on a seat" headingLevel={3}>
+        <p>Nine roles that can staff a dedicated team seat, and what each one does not do.</p>
+      </Card>
+      <Card title="Investors" href={href('/investors/')} eyebrow="What WE does and does not do" headingLevel={3}>
+        <p>WE prepares evidence. It offers no securities, makes no introductions and promises no funding.</p>
+      </Card>
+    </Grid>
+  </section>
+
+  <section aria-labelledby="network-path" class="stack">
+    <h2 id="network-path">From application to investor-ready materials</h2>
+    <CellTrail label="How a company moves through the WE network" cells={trail} />
+    <p>
+      Preparing materials is not a route to funding. Read <a href={href('/fundability/')}>how investor readiness works</a>,
+      <a href={href('/about/frameworks/')}>how WE steers a team</a> and the <a href={href('/trust/')}>trust center</a>.
+    </p>
+  </section>
+
+  <div class="prose stack"><Content /></div>
+
+  <Callout tone="notice" title="No promise of funding">
+    <p>WE makes no promise of funding, and nothing in the network is a route to investors.</p>
+  </Callout>
+
+  <CtaBand
+    slot="after"
+    title="Ask a question, or apply"
+    text="Tell WE about your company, or ask how the network works. Neither commits you to anything."
+    cta={{ label: 'Contact', href: '/contact/' }}
+    secondary={{ label: 'Apply', href: '/apply/' }}
+  />
+</HubLayout>

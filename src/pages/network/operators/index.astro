@@ -1,0 +1,60 @@
+---
+import { render } from 'astro:content';
+import RoleCard from '../../../components/cards/RoleCard.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import CtaBand from '../../../components/ui/CtaBand.astro';
+import DataTable from '../../../components/ui/DataTable.astro';
+import Grid from '../../../components/ui/Grid.astro';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import { SEAT_ROLES } from '../../../components/network/roles.ts';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { href } from '../../../lib/url.ts';
+
+const page = await getPageEntry('network/operators', 'network/operators/index');
+const { Content } = await render(page);
+
+const limits = SEAT_ROLES.map((role) => [role.title, role.lines.map((l) => `Line ${l}`).join(', '), role.doesNot]);
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/network/operators/"
+  eyebrow={page.data.eyebrow}
+  lead="The roles WE places around your team, and where each one stops."
+  updated={page.data.updated}
+  ogSlot="og-network"
+>
+  <Content />
+
+  <h2 id="roles-title">The nine roles</h2>
+  <Grid min="16rem">
+    {SEAT_ROLES.map((role) => <RoleCard title={role.title} summary={role.summary} path="/tools/team-composer/" team={role.group} headingLevel={3} />)}
+  </Grid>
+
+  <h2 id="limits-title">Where each role stops</h2>
+  <DataTable
+    caption="Seat roles, the service lines they mostly support and what each does not do"
+    columns={['Role', 'Mostly supports', 'Does not do']}
+    rows={limits}
+  />
+  <p>
+    Service lines are described on the <a href={href('/services/')}>services page</a>. Each line carries its own list of
+    what it does not do.
+  </p>
+
+  <Callout title="One accountable team">
+    <p>
+      WE steers the team and manages its subcontractors, so the roles above work as one team on your company. Read
+      <a href={href('/program/dedicated-teams/')}>how dedicated teams work</a>.
+    </p>
+  </Callout>
+
+  <CtaBand
+    slot="after"
+    title="Sketch the team you need"
+    text="Choose roles in the Team Composer, or ask WE a question first."
+    cta={{ label: 'Compose your team', href: '/tools/team-composer/' }}
+    secondary={{ label: 'Contact', href: '/contact/' }}
+  />
+</MarketingLayout>
