@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/astro-magazine/content-record.schema.json",
+  "title": "Astro Magazine Content Record",
+  "type": "object",
+  "required": ["schema_version", "id", "kind", "status", "title", "slug", "canonical", "cluster", "reader_job", "thesis", "novelty", "differentiation", "owners", "sources", "media", "links", "seo", "freshness", "accepted_exceptions", "gates"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "kind": { "const": "article" },
+    "status": { "enum": ["commissioned", "researching", "outlining", "drafting", "editing", "fact_check", "visual_edit", "seo_edit", "copy_edit", "senior_review", "publish_ready", "published", "killed", "merged", "deferred"] },
+    "title": { "type": "string", "minLength": 1 },
+    "slug": { "type": "string", "minLength": 1 },
+    "canonical": { "type": "string", "minLength": 1 },
+    "cluster": { "type": "string", "minLength": 1 },
+    "reader_job": { "type": "string", "minLength": 1 },
+    "thesis": { "type": "string", "minLength": 1 },
+    "novelty": { "type": "string", "minLength": 1 },
+    "differentiation": { "type": "string", "minLength": 1 },
+    "owners": { "type": "object" },
+    "sources": { "type": "array", "minItems": 1 },
+    "media": { "type": "object" },
+    "links": { "type": "object" },
+    "seo": { "type": "object" },
+    "freshness": { "type": "object" },
+    "accepted_exceptions": { "type": "object" },
+    "gates": {
+      "type": "object",
+      "required": ["research", "developmental_edit", "fact_check", "visual", "seo", "copy_accessibility", "senior_approval", "rendered_qa"],
+      "additionalProperties": {
+        "enum": ["pass", "warn", "blocked", "accepted_exception", "unknown"]
+      }
+    }
+  }
+}

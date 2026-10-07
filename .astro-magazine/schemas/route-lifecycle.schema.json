@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/astro-magazine/route-lifecycle.schema.json",
+  "title": "Astro Magazine Route Lifecycle Manifest",
+  "description": "A local, manifest-only contract for preserving and migrating public route identities. The auditor accepts this object form or a top-level array of route records.",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/routes"
+    },
+    {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/route"
+      }
+    }
+  ],
+  "$defs": {
+    "routes": {
+      "type": "object",
+      "required": ["routes"],
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/route"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "route": {
+      "type": "object",
+      "description": "A route URL must appear in the candidate even when its lifecycle is redirect or retire, so the baseline change is explicit.",
+      "required": ["url", "canonical", "index_policy"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lifecycle": {
+          "enum": ["preserve", "redirect", "retire"],
+          "default": "preserve"
+        },
+        "canonical": {
+          "type": "string",
+          "minLength": 1
+        },
+        "index_policy": {
+          "enum": ["index", "noindex"]
+        },
+        "redirect": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "required": ["target", "status"],
+              "properties": {
+                "target": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "status": {
+                  "type": "integer",
+                  "enum": [301, 308]
+                }
+              },
+              "additionalProperties": true
+            }
+          ]
+        },
+        "retirement": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "required": ["evidence"],
+              "properties": {
+                "decision": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "authorized_by": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "authorized_decision": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "evidence": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    {
+                      "type": "array",
+                      "minItems": 1
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1
+                    }
+                  ]
+                },
+                "authorized": {
+                  "const": true
+                },
+                "approved": {
+                  "const": true
+                },
+                "status": {
+                  "enum": ["approved", "authorized"]
+                }
+              },
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "required": ["decision"]
+                    },
+                    {
+                      "required": ["authorized_decision"]
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "required": ["authorized_by"]
+                    },
+                    {
+                      "required": ["authorized"]
+                    },
+                    {
+                      "required": ["approved"]
+                    },
+                    {
+                      "required": ["status"]
+                    },
+                    {
+                      "required": ["authorized_decision"]
+                    }
+                  ]
+                }
+              ],
+              "additionalProperties": true
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["lifecycle"],
+            "properties": {
+              "lifecycle": {
+                "const": "redirect"
+              }
+            }
+          },
+          "then": {
+            "required": ["redirect"],
+            "properties": {
+              "redirect": {
+                "type": "object",
+                "required": ["target", "status"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["lifecycle"],
+            "properties": {
+              "lifecycle": {
+                "const": "retire"
+              }
+            }
+          },
+          "then": {
+            "required": ["retirement"],
+            "properties": {
+              "retirement": {
+                "type": "object",
+                "required": ["evidence"]
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": true
+    }
+  }
+}

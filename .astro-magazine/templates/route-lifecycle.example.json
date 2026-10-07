@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "routes": [
+    {
+      "url": "/",
+      "lifecycle": "preserve",
+      "canonical": "https://example.test/",
+      "index_policy": "index",
+      "redirect": null,
+      "retirement": null
+    },
+    {
+      "url": "/stories/current/",
+      "lifecycle": "preserve",
+      "canonical": "https://example.test/stories/current/",
+      "index_policy": "index",
+      "redirect": null,
+      "retirement": null
+    },
+    {
+      "url": "/stories/previous-url/",
+      "lifecycle": "redirect",
+      "canonical": "https://example.test/stories/previous-url/",
+      "index_policy": "noindex",
+      "redirect": {
+        "target": "/stories/current/",
+        "status": 308
+      },
+      "retirement": null
+    },
+    {
+      "url": "/stories/removed/",
+      "lifecycle": "retire",
+      "canonical": "https://example.test/stories/removed/",
+      "index_policy": "noindex",
+      "redirect": null,
+      "retirement": {
+        "decision": "DEC-042",
+        "authorized_by": "managing-editor",
+        "evidence": ["decisions.md#DEC-042", "reviews/route-retirement-042.json"]
+      }
+    }
+  ]
+}

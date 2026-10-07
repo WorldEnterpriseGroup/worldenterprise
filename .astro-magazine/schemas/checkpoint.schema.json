@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/astro-magazine/checkpoint.schema.json",
+  "title": "Astro Magazine Checkpoint",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "checkpoint_id",
+    "run_id",
+    "phase",
+    "status",
+    "last_event",
+    "counts",
+    "artifact_hashes",
+    "last_verified",
+    "next_action",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "checkpoint_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "phase": { "type": "string" },
+    "status": { "enum": ["pass", "warn", "blocked", "accepted_exception", "unknown"] },
+    "last_event": {
+      "type": "object",
+      "required": ["seq", "hash"],
+      "properties": {
+        "seq": { "type": "integer", "minimum": 0 },
+        "hash": { "type": "string" }
+      }
+    },
+    "counts": { "type": "object" },
+    "artifact_hashes": { "type": "object" },
+    "active_leases": { "type": "array" },
+    "active_handoffs": { "type": "array" },
+    "last_verified": { "type": "object" },
+    "next_action": { "type": "object" },
+    "updated_at": { "type": "string" }
+  }
+}

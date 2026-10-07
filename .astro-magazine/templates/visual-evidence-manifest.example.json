@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "build_identity": "",
+  "captured_at": "",
+  "required_matrix": {
+    "viewports": ["390x844", "1440x900"],
+    "modes": ["first-two-viewports", "full-page"],
+    "states": ["normal", "no-javascript", "reduced-motion", "zoom-200"]
+  },
+  "routes": [
+    {
+      "route": "/",
+      "states": ["normal"],
+      "captures": [
+        {
+          "viewport": "390x844",
+          "mode": "full-page",
+          "javascript": true,
+          "reduced_motion": false,
+          "path": "",
+          "hash": ""
+        },
+        {
+          "viewport": "1440x900",
+          "mode": "first-two-viewports",
+          "state": "normal",
+          "javascript": true,
+          "reduced_motion": false,
+          "path": "",
+          "hash": ""
+        }
+      ],
+      "contact_sheet": "",
+      "reviewer": "",
+      "gate": "unknown"
+    }
+  ]
+}

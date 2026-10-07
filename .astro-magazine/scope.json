@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "mode": "focused_production",
+  "included": [
+    "90-route ledger (src/data/routes.ts); 86 indexable",
+    "4 topic desks (dream, build, grow, fundable)",
+    "28 long-form items: 18 insight articles, 4 research briefs, 6 library templates",
+    "7 service lines A to G, 5 playbooks, 5 fundability guides, trust centre",
+    "Mega-menu navigation per SAGE-PLAN 5.2 to 5.5 (nav is data in src/data/nav.ts)",
+    "Internal GitLab Pages preview on demo; production via gh-pages and GitHub Pages"
+  ],
+  "excluded": [
+    "Everything from the third-party template (D-2): no images, SCSS, JS, icon fonts or copy",
+    "L2 routes: founder stories, portfolio, case studies, partners, delivery partners, team bios, careers, events, cohorts, Demo Day, brand kit, people pages, video",
+    "Analytics, cookies, third-party scripts (D-14)",
+    "Claims excluded by the ladder: C-06 (price, flag-gated), C-08 to C-17, C-20, C-24 as assertions",
+    "Signed-provenance deploy hardening (WP-32)"
+  ],
+  "approved_changes": [],
+  "protected_paths": [
+    "CNAME",
+    "CLAUDE.md",
+    "plan.md",
+    ".claude/**",
+    "LICENSE"
+  ],
+  "constraints": [
+    "Verification is CI-only (D-5): no local astro build, dev, preview or Playwright",
+    "Never push gh-pages or main; never push or reference quarantine/httrack-wip",
+    "Light theme only; logo dark-on-light only (D-8)",
+    "AVIF-only rasters; the single PNG is apple-touch-icon.png",
+    "All internal links via href() from src/lib/url.ts"
+  ],
+  "accepted_exceptions": [
+    {
+      "id": "EX-SCALE",
+      "note": "Launch scale 18 articles and 4 briefs instead of the skill default of 150 and 8 (D-10, D-19). Briefs are designed HTML reports without a 30-page target; PDF editions are L2. commission.json carries the schema floor for page counts only.",
+      "owner": "WP-00"
+    },
+    {
+      "id": "EX-NO-3D",
+      "note": "No Three.js scene, video or lightbox at launch: no sourced footage or evidence to show; the vector Hive Atlas and CSS-only explorers carry the interaction budget.",
+      "owner": "WP-00"
+    },
+    {
+      "id": "EX-CLAUDE-MD",
+      "note": "Operator authorised Astro and a full rebrand, overriding the repo CLAUDE.md no-build-tools rule and gh-pages-only workflow for the build phase.",
+      "owner": "operator"
+    }
+  ],
+  "updated_at": "2026-10-07T02:20:34.888Z"
+}

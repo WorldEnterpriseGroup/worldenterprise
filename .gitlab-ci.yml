@@ -23,12 +23,6 @@ verify:static:
   interruptible: true
   variables:
     PUBLIC_STYLEGUIDE: "1"
-  cache:
-    key:
-      files:
-        - package-lock.json
-    paths:
-      - .npm/
   script:
     - node --version
     - npm --version

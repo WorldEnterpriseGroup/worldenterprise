@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/astro-magazine/commission.schema.json",
+  "title": "Astro Magazine Commission",
+  "type": "object",
+  "required": ["schema_version", "mode", "publication", "targets", "owners", "authority"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "mode": { "enum": ["full_publication", "focused_production", "audit"] },
+    "publication": {
+      "type": "object",
+      "required": ["title", "audience", "thesis", "editorial_promise"],
+      "properties": {
+        "title": { "type": "string" },
+        "audience": { "type": "array", "items": { "type": "string" } },
+        "thesis": { "type": "string" },
+        "editorial_promise": { "type": "string" }
+      }
+    },
+    "targets": {
+      "type": "object",
+      "required": ["minimum_articles", "briefs", "minimum_designed_pages_per_brief", "target_physical_pages_per_brief", "minimum_substantive_pages_per_brief", "minimum_active_production_hours"],
+      "properties": {
+        "minimum_articles": { "type": "integer", "minimum": 0 },
+        "briefs": { "type": "integer", "minimum": 0 },
+        "minimum_designed_pages_per_brief": { "type": "integer", "minimum": 1 },
+        "target_physical_pages_per_brief": { "type": "integer", "minimum": 30 },
+        "minimum_substantive_pages_per_brief": { "type": "integer", "minimum": 30 },
+        "minimum_active_production_hours": { "type": "number", "minimum": 0 }
+      }
+    },
+    "owners": { "type": "object" },
+    "authority": { "type": "object" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "mode": { "const": "full_publication" } } },
+      "then": {
+        "properties": {
+          "targets": {
+            "properties": {
+              "minimum_articles": { "minimum": 150 },
+              "briefs": { "minimum": 8 },
+              "minimum_active_production_hours": { "minimum": 8 }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

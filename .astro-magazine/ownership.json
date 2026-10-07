@@ -1,0 +1,326 @@
+{
+  "schema_version": "1.0.0",
+  "assignments": [
+    {
+      "owner": "WP-01",
+      "title": "Home and Program",
+      "branch": "wp/01",
+      "write_set": [
+        "src/pages/index.astro",
+        "src/pages/program/**",
+        "src/components/home/**",
+        "src/components/program/**",
+        "src/content/pages/home/**",
+        "src/content/pages/program/**",
+        "tests/unit/wp-01/**",
+        ".astro-magazine/handoffs/wp-01*",
+        ".astro-magazine/sources/wp-01.json"
+      ]
+    },
+    {
+      "owner": "WP-02",
+      "title": "Services",
+      "branch": "wp/02",
+      "write_set": [
+        "src/pages/services/**",
+        "src/components/services/**",
+        "src/content/services/**",
+        "src/content/pages/services/**",
+        "tests/unit/wp-02/**",
+        ".astro-magazine/handoffs/wp-02*",
+        ".astro-magazine/sources/wp-02.json"
+      ]
+    },
+    {
+      "owner": "WP-03",
+      "title": "Pricing, Apply, Contact, forms, Team Composer",
+      "branch": "wp/03",
+      "write_set": [
+        "src/pages/apply/**",
+        "src/pages/pricing/**",
+        "src/pages/contact/**",
+        "src/pages/tools/**",
+        "src/components/forms/**",
+        "src/components/islands/we-team-composer/**",
+        "src/scripts/team-composer.ts",
+        "src/scripts/forms.ts",
+        "src/data/forms.ts",
+        "docs/forms-contract.md",
+        "src/content/pages/apply/**",
+        "src/content/pages/pricing/**",
+        "src/content/pages/contact/**",
+        "src/content/pages/tools/**",
+        "tests/unit/wp-03/**",
+        ".astro-magazine/handoffs/wp-03*",
+        ".astro-magazine/sources/wp-03.json"
+      ]
+    },
+    {
+      "owner": "WP-04",
+      "title": "Playbooks, Fundability, Trust",
+      "branch": "wp/04",
+      "write_set": [
+        "src/pages/playbooks/**",
+        "src/pages/fundability/**",
+        "src/pages/trust/**",
+        "src/components/playbooks/**",
+        "src/components/fundability/**",
+        "src/components/trust/**",
+        "src/components/islands/we-readiness-check/**",
+        "src/scripts/readiness-check.ts",
+        "src/content/playbooks/**",
+        "src/content/guides/**",
+        "src/content/pages/playbooks/**",
+        "src/content/pages/fundability/**",
+        "src/content/pages/trust/**",
+        "tests/unit/wp-04/**",
+        ".astro-magazine/handoffs/wp-04*",
+        ".astro-magazine/sources/wp-04.json"
+      ]
+    },
+    {
+      "owner": "WP-05",
+      "title": "Insights engine, Dream and Build articles",
+      "branch": "wp/05",
+      "write_set": [
+        "src/pages/insights/**",
+        "src/components/insights/**",
+        "src/content/insights/dream/**",
+        "src/content/insights/build/**",
+        "src/content/pages/insights/index.mdx",
+        "src/content/pages/insights/topic-dream.mdx",
+        "src/content/pages/insights/topic-build.mdx",
+        "tests/unit/wp-05/**",
+        ".astro-magazine/handoffs/wp-05*",
+        ".astro-magazine/sources/wp-05.json"
+      ]
+    },
+    {
+      "owner": "WP-06",
+      "title": "Grow and Fundable articles",
+      "branch": "wp/06",
+      "write_set": [
+        "src/content/insights/grow/**",
+        "src/content/insights/fundable/**",
+        "src/content/pages/insights/topic-grow.mdx",
+        "src/content/pages/insights/topic-fundable.mdx",
+        "tests/unit/wp-06/**",
+        ".astro-magazine/handoffs/wp-06*",
+        ".astro-magazine/sources/wp-06.json"
+      ]
+    },
+    {
+      "owner": "WP-07",
+      "title": "Research briefs",
+      "branch": "wp/07",
+      "write_set": [
+        "src/pages/research/**",
+        "src/components/research/**",
+        "src/content/research/**",
+        "src/content/pages/research/**",
+        "tests/unit/wp-07/**",
+        ".astro-magazine/handoffs/wp-07*",
+        ".astro-magazine/sources/wp-07.json"
+      ]
+    },
+    {
+      "owner": "WP-08",
+      "title": "Library, Glossary, FAQ, Newsletter, Resources hub, Search UI",
+      "branch": "wp/08",
+      "write_set": [
+        "src/pages/resources/**",
+        "src/pages/library/**",
+        "src/pages/glossary/**",
+        "src/pages/faq/**",
+        "src/pages/newsletter/**",
+        "src/pages/search/**",
+        "src/components/library/**",
+        "src/components/reference/**",
+        "src/components/islands/we-copy/**",
+        "src/components/islands/we-search/**",
+        "src/scripts/copy.ts",
+        "src/scripts/search.ts",
+        "src/data/faq.yaml",
+        "src/data/glossary.yaml",
+        "src/content/library/**",
+        "src/content/pages/resources/**",
+        "src/content/pages/library/**",
+        "src/content/pages/reference/**",
+        "src/pages/library/[slug].md.ts",
+        "tests/unit/wp-08/**",
+        ".astro-magazine/handoffs/wp-08*",
+        ".astro-magazine/sources/wp-08.json"
+      ]
+    },
+    {
+      "owner": "WP-09",
+      "title": "SEO, schema, distribution, sitemap page, 404",
+      "branch": "wp/09",
+      "write_set": [
+        "src/components/seo/**",
+        "src/pages/robots.txt.ts",
+        "src/pages/rss.xml.ts",
+        "src/pages/sitemap.astro",
+        "src/pages/404.astro",
+        "src/pages/.well-known/security.txt.ts",
+        "src/lib/seo.ts",
+        "src/lib/schema.ts",
+        "scripts/audit-seo.mjs",
+        "scripts/validate-jsonld.mjs",
+        "tests/unit/wp-09/**",
+        "src/content/pages/utility/**",
+        ".astro-magazine/handoffs/wp-09*",
+        ".astro-magazine/sources/wp-09.json"
+      ]
+    },
+    {
+      "owner": "WP-10",
+      "title": "About, Manifesto, Frameworks, Editorial policy, Press, Legal",
+      "branch": "wp/10",
+      "write_set": [
+        "src/pages/about/**",
+        "src/pages/press/**",
+        "src/pages/legal/**",
+        "src/components/about/**",
+        "src/components/legal/**",
+        "src/content/pages/about/**",
+        "src/content/pages/press/**",
+        "src/content/pages/legal/**",
+        "public/press/**",
+        "tests/unit/wp-10/**",
+        ".astro-magazine/handoffs/wp-10*",
+        ".astro-magazine/sources/wp-10.json"
+      ]
+    },
+    {
+      "owner": "WP-11",
+      "title": "Network, Founders, Operators, Investors",
+      "branch": "wp/11",
+      "write_set": [
+        "src/pages/network/**",
+        "src/pages/founders/**",
+        "src/pages/investors/**",
+        "src/components/network/**",
+        "src/content/pages/network/**",
+        "src/content/pages/founders/**",
+        "src/content/pages/investors/**",
+        "tests/unit/wp-11/**",
+        ".astro-magazine/handoffs/wp-11*",
+        ".astro-magazine/sources/wp-11.json"
+      ]
+    },
+    {
+      "owner": "WP-12",
+      "title": "Media and imagery",
+      "branch": "wp/12",
+      "write_set": [
+        "src/assets/photo/**",
+        "src/assets/og/**",
+        "src/components/media/**",
+        "scripts/build-og.mjs",
+        ".astro-magazine/media/**",
+        ".astro-magazine/handoffs/wp-12*"
+      ]
+    },
+    {
+      "owner": "WP-13",
+      "title": "Design system steward and motion",
+      "branch": "wp/13",
+      "write_set": [
+        "src/styles/**",
+        "src/layouts/**",
+        "src/components/ui/**",
+        "src/components/hero/**",
+        "src/components/diagrams/**",
+        "src/components/motion/**",
+        "src/components/layout/**",
+        "src/components/nav/**",
+        "src/components/cards/**",
+        "src/components/blocks/**",
+        "src/scripts/nav.ts",
+        "src/assets/brand/**",
+        "src/assets/hex/**",
+        "src/assets/icons/**",
+        "src/assets/fonts/**",
+        "public/favicon.svg",
+        "public/apple-touch-icon.png",
+        "src/pages/styleguide.astro",
+        "scripts/audit-tokens.mjs",
+        "tests/unit/wp-13/**",
+        ".astro-magazine/handoffs/wp-13*"
+      ]
+    },
+    {
+      "owner": "WP-14",
+      "title": "QA harness and CI",
+      "branch": "wp/14",
+      "write_set": [
+        "tests/e2e/**",
+        "tests/unit/shared/**",
+        "playwright.config.ts",
+        "lighthouserc.json",
+        ".gitlab-ci.yml",
+        ".github/workflows/**",
+        "scripts/audit-images.mjs",
+        "scripts/audit-links.mjs",
+        "scripts/audit-route-ledger.mjs",
+        "scripts/audit-a11y.mjs",
+        "scripts/check-ownership.mjs",
+        "scripts/run-lighthouse.mjs",
+        "scripts/audit-contrast.mjs",
+        "scripts/audit-claims.mjs",
+        "scripts/lib/**",
+        ".astro-magazine/handoffs/wp-14*"
+      ]
+    }
+  ],
+  "active_leases": [],
+  "handoffs": [],
+  "conflicts": [],
+  "updated_at": "2026-10-07T02:20:55.517Z",
+  "frozen_paths": [
+    "package.json",
+    "package-lock.json",
+    "astro.config.mjs",
+    "tsconfig.json",
+    ".node-version",
+    "src/data/site.ts",
+    "src/data/flags.ts",
+    "src/data/claims.ts",
+    "src/data/routes.ts",
+    "src/data/nav.ts",
+    "src/lib/url.ts",
+    "src/lib/url-core.ts",
+    "src/lib/route-state.ts",
+    "src/lib/content.ts",
+    "src/content.config.ts",
+    "claims-denylist.json",
+    "CNAME",
+    "CLAUDE.md",
+    "plan.md",
+    ".claude/**",
+    ".astro-magazine/ownership.json",
+    ".astro-magazine/decisions.md",
+    "tests/unit/foundation/**"
+  ],
+  "always_allowed": [],
+  "exceptions": [
+    {
+      "wp": "WP-03",
+      "path": "src/data/forms.ts",
+      "reason": "Created by WP-00, owned by WP-03 (plan 8.4); not frozen."
+    },
+    {
+      "wp": "WP-14",
+      "path": "scripts/{audit-contrast,audit-claims}.mjs",
+      "reason": "Created by WP-00; handed to WP-14 after G0 (plan 3.2: policed by WP-14)."
+    }
+  ],
+  "notes": [
+    "Branch wp/NN or wp/NN-suffix maps to WP-NN. Branch wp/21-NN maps to WP-NN (fix-forward family).",
+    "check-ownership.mjs diffs against origin/demo and fails on any path outside the owner write_set or inside frozen_paths.",
+    "Content fixtures live in src/content/<collection>/_fixtures/ and are removed by WP-15 (draft:true).",
+    "Package.json and the lockfile are single-writer: WP-00 until G0, then WP-14, then WP-15.",
+    "WP-02 also owns src/content/pages/services/** (small addition to the plan spec so the services hub can carry page copy)."
+  ]
+}
