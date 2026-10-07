@@ -1,5 +1,5 @@
 ---
-title: "Accessibility as a launch requirement"
+title: "Accessibility at launch"
 subtitle: "What WCAG 2.2, Section 508 and the DOJ web rule for state and local government say, and why late fixes cost more than early ones."
 description: "A source-based reading of WCAG 2.2, Section508.gov and the DOJ ADA Title II web rule, with a labelled analysis of why accessibility belongs in launch scope."
 publishedDate: 2026-10-06

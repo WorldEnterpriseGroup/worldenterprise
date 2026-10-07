@@ -1,5 +1,5 @@
 ---
-title: "Dedicated team, agency or freelancers"
+title: "Team, agency or freelancers"
 subtitle: "A decision framework for choosing how to staff product work, with criteria and trade-offs. This brief is analysis, not a statistical study."
 description: "A criteria-based decision framework for choosing between a dedicated team, an agency and freelancers, with the legal basics that apply to each."
 publishedDate: 2026-10-06

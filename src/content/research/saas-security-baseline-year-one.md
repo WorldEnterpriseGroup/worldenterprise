@@ -1,5 +1,5 @@
 ---
-title: "SaaS security baseline for year one"
+title: "Security baseline for year one"
 subtitle: "A reading guide to three public documents, and a sequencing analysis for the first twelve months of a software product."
 description: "What a first-year SaaS security baseline can draw from OWASP ASVS, NIST SSDF and the AICPA Trust Services Criteria, and how to sequence the work."
 publishedDate: 2026-10-06

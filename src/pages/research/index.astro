@@ -6,7 +6,8 @@ import Grid from '../../components/ui/Grid.astro';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { getPublished } from '../../lib/content.ts';
 
-const page = await getEntry('pages', 'research/index');
+// The glob loader may strip a trailing /index from the entry id, so accept either form.
+const page = (await getEntry('pages', 'research/index')) ?? (await getEntry('pages', 'research'));
 if (page === undefined) {
   throw new Error('Missing content entry src/content/pages/research/index.md for the /research/ hub.');
 }

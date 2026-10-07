@@ -1,5 +1,5 @@
 ---
-title: "Early-stage SaaS metrics definitions"
+title: "SaaS metrics definitions"
 subtitle: "How to define and report MRR, ARR, churn, net revenue retention, CAC and customer lifetime value consistently. Formulas only, no benchmarks."
 description: "Definitions and a formula appendix for MRR, ARR, churn, NRR, CAC and LTV, drawn from public references, with a reporting discipline and no benchmarks."
 publishedDate: 2026-10-06
