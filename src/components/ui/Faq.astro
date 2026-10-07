@@ -2,12 +2,14 @@
 interface Props {
   question: string;
   name?: string;
+  /** Optional anchor id so a question can be linked to directly. */
+  id?: string;
 }
 
-const { question, name = 'faq' } = Astro.props;
+const { question, name = 'faq', id } = Astro.props;
 ---
 
-<details class="faq" name={name}>
+<details class="faq" name={name} id={id}>
   <summary>{question}</summary>
   <div class="faq__answer prose"><slot /></div>
 </details>

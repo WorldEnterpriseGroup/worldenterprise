@@ -20,6 +20,8 @@ function syncExpanded(t: HTMLButtonElement, open: boolean): void {
 }
 
 let hoverTimer: number | undefined;
+let leaveTimer: number | undefined;
+const LEAVE_MS = 250;
 
 for (const t of triggers) {
   const panel = panelOf(t);
@@ -39,14 +41,46 @@ for (const t of triggers) {
     if ((e.target as Element).closest('a')) panel.hidePopover();
   });
 
+  let openedByHover = false;
+
   t.addEventListener('pointerenter', (e) => {
     if (!FINE.matches || e.pointerType !== 'mouse') return;
     window.clearTimeout(hoverTimer);
+    window.clearTimeout(leaveTimer);
     hoverTimer = window.setTimeout(() => {
-      if (!panel.matches(':popover-open')) panel.showPopover();
+      if (!panel.matches(':popover-open')) {
+        // Opening one panel light-dismisses another, so only one is ever open.
+        panel.showPopover();
+        openedByHover = true;
+      }
     }, HOVER_MS);
   });
-  t.addEventListener('pointerleave', () => window.clearTimeout(hoverTimer));
+
+  // A panel opened by hover closes shortly after the pointer leaves both trigger and panel (WCAG 1.4.13: the pointer may travel into it).
+  const scheduleLeave = (): void => {
+    window.clearTimeout(hoverTimer);
+    if (!openedByHover) return;
+    window.clearTimeout(leaveTimer);
+    leaveTimer = window.setTimeout(() => {
+      if (openedByHover && panel.matches(':popover-open') && !panel.contains(document.activeElement)) panel.hidePopover();
+    }, LEAVE_MS);
+  };
+  const cancelLeave = (): void => window.clearTimeout(leaveTimer);
+  t.addEventListener('pointerleave', scheduleLeave);
+  panel.addEventListener('pointerleave', scheduleLeave);
+  panel.addEventListener('pointerenter', cancelLeave);
+  panel.addEventListener('toggle', (e) => {
+    if ((e as ToggleEvent).newState === 'closed') openedByHover = false;
+  });
+  t.addEventListener('click', () => {
+    openedByHover = false;
+  });
+
+  // Keyboard users who Tab past the last link leave the panel; close it so it does not linger over the page.
+  panel.addEventListener('focusout', (e) => {
+    const next = (e as FocusEvent).relatedTarget as Node | null;
+    if (next && !panel.contains(next) && next !== t && panel.matches(':popover-open')) panel.hidePopover();
+  });
 
   t.addEventListener('keydown', (e) => {
     const i = triggers.indexOf(t);

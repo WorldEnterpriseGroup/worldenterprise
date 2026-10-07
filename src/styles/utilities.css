@@ -1,6 +1,6 @@
 @layer utilities {
   .visually-hidden {
-    position: absolute !important;
+    position: absolute;
     inline-size: 1px;
     block-size: 1px;
     margin: -1px;
@@ -62,12 +62,6 @@
       inset-block: -1px;
       inline-size: var(--rule-lead);
       background: var(--color-highlight);
-    }
-  }
-
-  @media print {
-    .no-print {
-      display: none !important;
     }
   }
 

@@ -1,0 +1,14 @@
+---
+interface Props {
+  /** Element to render. */
+  as?: 'div' | 'section' | 'ul' | 'ol';
+  /** Reveal each direct child in turn instead of the whole block. */
+  stagger?: boolean;
+  class?: string;
+}
+
+const { as: Tag = 'div', stagger = false, class: className } = Astro.props;
+const classes = [stagger ? 'reveal-stagger' : 'reveal', className].filter(Boolean).join(' ');
+---
+
+<Tag class={classes}><slot /></Tag>

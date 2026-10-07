@@ -1,21 +1,36 @@
 ---
+import { getPhoto } from '../../assets/photo/index.ts';
+import type { SlotId } from '../../assets/photo/slots.ts';
+
 interface Props {
   /** Heading element for the title. Only the styleguide uses h2, to show several heroes on one page. */
   as?: 'h1' | 'h2';
   eyebrow?: string;
   title: string;
   lead?: string;
+  /** Optional 4:3 inset image slot, shown beside the copy on wide screens. */
+  inset?: SlotId;
 }
 
-const { as: Heading = 'h1', eyebrow, title, lead } = Astro.props;
+const { as: Heading = 'h1', eyebrow, title, lead, inset } = Astro.props;
+const image = inset ? getPhoto(inset) : undefined;
 ---
 
 <section class="hero hero--editorial">
-  <div class="container container--wide stack">
-    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <Heading>{title}</Heading>
-    <div class="rule" aria-hidden="true"></div>
-    {lead && <p class="lead">{lead}</p>}
-    <slot />
+  <div class={`container container--wide ${image ? 'hero__grid hero__grid--inset' : 'stack'}`}>
+    <div class="stack">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <Heading>{title}</Heading>
+      <div class="rule" aria-hidden="true"></div>
+      {lead && <p class="lead">{lead}</p>}
+      <slot />
+    </div>
+    {
+      image && (
+        <div class="hero__inset">
+          <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} fetchpriority="high" decoding="async" />
+        </div>
+      )
+    }
   </div>
 </section>

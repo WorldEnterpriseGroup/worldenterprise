@@ -154,10 +154,62 @@
     }
   }
 
-  /* Forced colours: keep focus and borders visible. */
+  /* Forced colours: keep focus visible and give colour-only shapes a system-colour fill. */
   @media (forced-colors: active) {
     :focus-visible {
-      outline-color: Highlight;
+      outline: 3px solid Highlight;
+    }
+
+    .btn {
+      border-color: ButtonText;
+    }
+
+    .btn--primary,
+    .hex,
+    .steps__index,
+    .celltrail__hex,
+    .hexatlas__shape {
+      forced-color-adjust: none;
+      background: ButtonText;
+      color: ButtonFace;
+    }
+
+    .rule,
+    .reading-progress {
+      forced-color-adjust: none;
+      background: CanvasText;
+    }
+
+    .rule::before {
+      forced-color-adjust: none;
+      background: Highlight;
+    }
+
+    .card,
+    .callout,
+    .tag,
+    .limits,
+    .methodology,
+    .pullquote,
+    .hero__panel,
+    .mega-panel__featured {
+      border: 1px solid CanvasText;
+    }
+
+    .mega-panel__column a[aria-current],
+    .mobile-drawer :is(a, summary)[aria-current] {
+      forced-color-adjust: none;
+      color: LinkText;
+      text-decoration: underline;
+    }
+
+    .mega-nav__trigger::after,
+    .mobile-drawer summary::after {
+      border-color: ButtonText;
+    }
+
+    img {
+      forced-color-adjust: none;
     }
   }
 }

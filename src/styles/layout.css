@@ -53,7 +53,27 @@
   .page {
     display: grid;
     grid-template-rows: auto 1fr auto;
+    /* A bare auto column grows to the widest min-content descendant and pushes the page past the viewport. */
+    grid-template-columns: minmax(0, 1fr);
     min-block-size: 100dvh;
+  }
+
+  .page > * {
+    min-inline-size: 0;
+  }
+
+  .page__main,
+  .page > main {
+    min-inline-size: 0;
+    overflow-x: clip;
+  }
+
+  .hero__grid > *,
+  .with-rail > *,
+  .form-layout > *,
+  .grid > *,
+  .mega-panel__inner > * {
+    min-inline-size: 0;
   }
 
   .page__main {

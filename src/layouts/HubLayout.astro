@@ -1,6 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import PageHeader from '../components/layout/PageHeader.astro';
+import Breadcrumbs from '../components/layout/Breadcrumbs.astro';
+import HeroConsole from '../components/hero/HeroConsole.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 import { href } from '../lib/url.ts';
@@ -18,14 +20,25 @@ type Props = PageMeta & HeaderProps & {
   subtree?: readonly HubChild[];
   /** In-page table of contents entries (anchor ids on the page). */
   toc?: readonly Pick<Heading, 'slug' | 'text'>[];
+  /** Header style. `console` renders the split hero with the named `panel` slot beside the copy. */
+  hero?: 'editorial' | 'console';
 };
 
-const { eyebrow, lead, subtree = [], toc = [], ...meta } = Astro.props;
+const { eyebrow, lead, subtree = [], toc = [], hero = 'editorial', ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 ---
 
 <BaseLayout {...meta} crumbs={crumbs} schemaType={meta.schemaType ?? 'CollectionPage'}>
-  <PageHeader title={meta.title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} />
+  {
+    hero === 'console' ? (
+      <>
+        <div class="container hub-crumbs"><Breadcrumbs crumbs={crumbs} /></div>
+        <HeroConsole eyebrow={eyebrow} title={meta.title} lead={lead}><slot name="panel" /></HeroConsole>
+      </>
+    ) : (
+      <PageHeader title={meta.title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} />
+    )
+  }
   {
     toc.length > 0 && (
       <nav class="toc container" aria-label="On this page">

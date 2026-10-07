@@ -12,13 +12,15 @@ import { absoluteUrl } from '../lib/url.ts';
 
 type Props = PageMeta & HeaderProps & {
   title: string;
+  /** Optional longer name for the h1 when the SEO title must stay short. */
+  heading?: string;
   line: ServiceLine;
   covers?: readonly string[];
   /** Required: every service line states what it does not do (claim C-04). */
   doesNotCover: readonly string[];
 };
 
-const { eyebrow, lead, line, covers = [], doesNotCover, ...meta } = Astro.props;
+const { eyebrow, lead, line, heading, covers = [], doesNotCover, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const serviceNode = {
   '@type': 'Service',
@@ -32,7 +34,7 @@ const serviceNode = {
 ---
 
 <BaseLayout {...meta} crumbs={crumbs} jsonLd={[...(meta.jsonLd ?? []), serviceNode]}>
-  <PageHeader title={meta.title} eyebrow={eyebrow ?? `Service line ${line}`} lead={lead} crumbs={crumbs}>
+  <PageHeader title={heading ?? meta.title} eyebrow={eyebrow ?? `Service line ${line}`} lead={lead} crumbs={crumbs}>
     <HexIcon line={line} size={72} />
   </PageHeader>
   <div class="section">

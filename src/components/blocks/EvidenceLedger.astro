@@ -36,10 +36,66 @@ const basisLabel: Record<Row['basis'], string> = {
           <tr>
             <th scope="row">{r.claim}</th>
             <td>{r.sourceHref ? <a href={href(r.sourceHref)}>{r.source}</a> : r.source}</td>
-            <td>{basisLabel[r.basis]}</td>
+            <td><span class={`evidence__basis evidence__basis--${r.basis}`}>{basisLabel[r.basis]}</span></td>
           </tr>
         ))
       }
     </tbody>
   </table>
 </div>
+
+<style>
+  .evidence {
+    border-block-start: 3px solid var(--color-accent);
+  }
+
+  .evidence tbody th {
+    position: relative;
+    padding-inline-start: var(--sp-6);
+    font-family: var(--ff-serif);
+    font-size: var(--fs-base);
+    font-weight: 600;
+  }
+
+  .evidence tbody th::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: var(--sp-3);
+    inset-block-start: 1.1em;
+    inline-size: 0.8rem;
+    aspect-ratio: var(--hex-ratio);
+    clip-path: var(--hex-clip);
+    background: var(--we-blue);
+  }
+
+  .evidence tbody tr:first-child th::before {
+    background: var(--color-highlight);
+  }
+
+  .evidence__basis {
+    display: inline-block;
+    padding: 0.1em 0.6em;
+    border: 1px solid var(--we-tint);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-soft);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .evidence__basis--editorial-judgement {
+    background: var(--color-amber-wash);
+    border-color: var(--color-highlight);
+    color: var(--color-highlight-ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .evidence tbody tr {
+      transition: background-color var(--dur-fast) var(--ease-out);
+    }
+
+    .evidence tbody tr:hover {
+      background: var(--color-bg-soft);
+    }
+  }
+</style>

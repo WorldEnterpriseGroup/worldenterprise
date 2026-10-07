@@ -26,3 +26,32 @@ const { cells, current, label } = Astro.props;
     }
   </ol>
 </nav>
+
+<style>
+  .celltrail ol {
+    gap: var(--sp-2) 0;
+  }
+
+  /* Hairline link between cells, the trail of a droid becoming a world. */
+  .celltrail__cell:not(:last-child)::after {
+    content: '';
+    inline-size: var(--sp-5);
+    block-size: 2px;
+    margin-inline: var(--sp-2);
+    background: var(--we-tint);
+  }
+
+  .celltrail__cell[aria-current='step'] ~ .celltrail__cell .celltrail__hex {
+    background: var(--we-mist);
+    color: var(--color-text-muted);
+  }
+
+  .celltrail__cell:has(~ [aria-current='step']) .celltrail__hex {
+    background: var(--we-blue-deep);
+    color: var(--color-text-inverse);
+  }
+
+  .celltrail a {
+    color: inherit;
+  }
+</style>

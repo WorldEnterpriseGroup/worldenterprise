@@ -1,50 +1,177 @@
 @layer print {
   @media print {
+    @page {
+      margin: 18mm 16mm;
+    }
+
     :root {
       --fs-base: 11pt;
+      --section-y: 1.25rem;
+      --gutter: 0;
+    }
+
+    html {
+      scroll-behavior: auto;
     }
 
     body {
-      background: #fff;
-      color: #000;
+      background: var(--we-white);
+      color: var(--we-charcoal);
     }
 
+    /* Chrome and interaction that has no meaning on paper. */
     .site-header,
-    .site-footer,
+    .site-top,
+    .site-footer__grid,
     .utility-bar,
     .skip-link,
     .reading-progress,
+    .mobile-apply,
+    .mobile-nav,
+    .mega-nav,
     .rail,
+    .toc,
+    .toc-rail,
+    .ctaband,
+    .related,
+    .hero__media,
+    .hero-art,
+    .tabs__list,
     .no-print {
-      display: none !important;
+      display: none;
     }
 
-    a {
+    .page-header,
+    .hero,
+    .section,
+    .section--soft,
+    .factband {
+      background: none;
+      padding-block: var(--section-y);
+    }
+
+    .section--defer {
+      content-visibility: visible;
+    }
+
+    * {
+      box-shadow: none;
+      animation: none;
+      transition: none;
+    }
+
+    main a {
       color: inherit;
       text-decoration: underline;
     }
 
-    a[href^='http']::after {
+    /* Show where external links go; internal and in-page links stay clean. */
+    main a[href^='http']:not(.card__link)::after {
       content: ' (' attr(href) ')';
-      font-size: 0.85em;
+      font-family: var(--ff-sans);
+      font-size: 0.8em;
+      word-break: break-all;
     }
 
     h1,
     h2,
-    h3 {
+    h3,
+    h4,
+    caption,
+    summary {
       break-after: avoid;
     }
 
     pre,
     table,
-    figure {
+    figure,
+    blockquote,
+    .callout,
+    .limits,
+    .methodology,
+    .card,
+    .steps__item,
+    tr {
       break-inside: avoid;
+    }
+
+    p,
+    li {
+      orphans: 3;
+      widows: 3;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      overflow: visible;
+      background: none;
+      border: 1px solid var(--we-slate);
+    }
+
+    /* Tables print in full, without their scroll frame. */
+    .table-wrap {
+      overflow: visible;
+      border: 0;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    .data-table thead th {
+      background: none;
+      border-block-end: 2px solid var(--we-charcoal);
+    }
+
+    /* Collapsed answers print open. */
+    details::details-content {
+      content-visibility: visible;
+    }
+
+    details[open],
+    .faq,
+    .accordion__item {
+      background: none;
+    }
+
+    .tabs__panel[hidden] {
+      display: block;
+    }
+
+    .hex,
+    .steps__index,
+    .celltrail__hex {
+      background: none;
+      border: 1.5px solid var(--we-charcoal);
+      color: var(--we-charcoal);
+    }
+
+    .rule {
+      block-size: 2px;
+      background: var(--we-charcoal);
+      print-color-adjust: exact;
     }
 
     .container,
     .container--wide,
-    .container--prose {
+    .container--prose,
+    .factband__list {
       inline-size: 100%;
+    }
+
+    .with-rail,
+    .hero__grid,
+    .form-layout {
+      display: block;
+    }
+
+    .site-footer {
+      background: none;
+      border-block-start: 1px solid var(--we-slate);
+    }
+
+    .site-footer__bar {
+      background: none;
     }
   }
 }

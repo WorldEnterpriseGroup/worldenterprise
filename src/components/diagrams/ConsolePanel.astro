@@ -1,0 +1,132 @@
+---
+interface Props {
+  title: string;
+  /** Shown in the title bar. The panels draw structure only: no figures, dates or names. */
+  note?: string;
+}
+
+const { title, note = 'Illustrative structure' } = Astro.props;
+---
+
+<div class="console" role="group" aria-label={title}>
+  <div class="console__bar">
+    <span class="console__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="console__title">{title}</span>
+    <span class="console__note">{note}</span>
+  </div>
+  <div class="console__body"><slot /></div>
+</div>
+
+<style is:global>
+  @layer components {
+    .console {
+      overflow: clip;
+      background: var(--color-bg);
+      color: var(--color-text);
+      border: var(--border-strong);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-2);
+      font-family: var(--ff-sans);
+      font-size: var(--fs-sm);
+      text-align: start;
+    }
+
+    .console__bar {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      padding: var(--sp-2) var(--sp-4);
+      background: var(--color-bg-soft);
+      border-block-end: var(--border-hair);
+    }
+
+    .console__dots {
+      display: inline-flex;
+      gap: var(--sp-1);
+
+      & i {
+        inline-size: 0.6rem;
+        aspect-ratio: var(--hex-ratio);
+        clip-path: var(--hex-clip);
+        background: var(--we-tint);
+      }
+
+      & i:first-child {
+        background: var(--we-amber);
+      }
+    }
+
+    .console__title {
+      font-family: var(--ff-mono);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+    }
+
+    .console__note {
+      margin-inline-start: auto;
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+
+    .console__body {
+      padding: var(--sp-4);
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .console__h {
+      font-family: var(--ff-display);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      color: var(--color-text-muted);
+    }
+
+    .console__list {
+      display: grid;
+      gap: var(--sp-2);
+      list-style: none;
+      padding: 0;
+    }
+
+    .console__row {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      min-inline-size: 0;
+      padding: var(--sp-2) var(--sp-3);
+      background: var(--color-bg-soft);
+      border-radius: var(--radius-sm);
+    }
+
+    .console__cell {
+      flex: none;
+      inline-size: 1.1rem;
+      aspect-ratio: var(--hex-ratio);
+      clip-path: var(--hex-clip);
+      background: var(--color-accent);
+    }
+
+    .console__cell--open {
+      background: var(--we-tint);
+    }
+
+    .console__cell--lead {
+      background: var(--color-highlight);
+    }
+
+    .console__grow {
+      flex: 1 1 auto;
+      min-inline-size: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .console__state {
+      flex: none;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      color: var(--color-link);
+    }
+  }
+</style>

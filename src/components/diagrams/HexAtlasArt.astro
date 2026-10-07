@@ -1,0 +1,51 @@
+---
+import { flower, hexPoints } from './hex.ts';
+
+/** Decorative atlas of hex cells with hairline links. Sits behind hero media; never carries meaning. */
+const R = 30;
+const centres = [
+  ...flower(150, 130, R, 0.1),
+  ...flower(330, 210, R, 0.1).slice(0, 4),
+  ...flower(90, 280, R, 0.1).slice(0, 3),
+];
+const links: readonly (readonly [number, number])[] = [[0, 7], [7, 8], [0, 11], [11, 12]];
+---
+
+<svg class="hero-art" viewBox="0 0 420 340" aria-hidden="true" focusable="false">
+  {links.map(([a, b]) => <line class="hero-art__link" x1={centres[a]?.x} y1={centres[a]?.y} x2={centres[b]?.x} y2={centres[b]?.y} />)}
+  {centres.map((c, i) => <polygon class={`hero-art__cell${i === 0 ? ' is-core' : ''}${i === 9 ? ' is-lead' : ''}`} points={hexPoints(c.x, c.y, R)} />)}
+</svg>
+
+<style>
+  .hero-art {
+    position: absolute;
+    inset-block-start: calc(-1 * var(--sp-4));
+    inset-inline-end: 0;
+    inline-size: min(70%, 26rem);
+    block-size: auto;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-art__cell {
+    fill: var(--we-mist);
+    stroke: var(--we-tint);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+
+  .hero-art__cell.is-core {
+    fill: var(--we-tint);
+    stroke: var(--we-blue);
+  }
+
+  .hero-art__cell.is-lead {
+    fill: var(--we-amber);
+    stroke: var(--we-amber);
+  }
+
+  .hero-art__link {
+    stroke: var(--we-tint);
+    stroke-width: 2;
+  }
+</style>

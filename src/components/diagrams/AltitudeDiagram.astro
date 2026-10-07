@@ -1,0 +1,165 @@
+---
+import { href } from '../../lib/url.ts';
+import { flower, hexPoints } from './hex.ts';
+
+interface Stage {
+  /** Stage name, for example Dream. */
+  readonly stage: string;
+  /** Altitude of the map: survey, blueprint or territory. */
+  readonly altitude: 'Survey' | 'Blueprint' | 'Territory';
+  readonly text: string;
+  readonly href?: string;
+}
+
+interface Props {
+  stages?: readonly Stage[];
+  label?: string;
+}
+
+const defaults: readonly Stage[] = [
+  { stage: 'Dream', altitude: 'Survey', text: 'Validate the problem and the customer before building anything.' },
+  { stage: 'Build', altitude: 'Blueprint', text: 'Turn the validated idea into a product that ships.' },
+  { stage: 'Grow', altitude: 'Territory', text: 'Earn customers and become a company an investor can examine.' },
+];
+const { stages = defaults, label = 'Dream, Build and Grow as three altitudes of one map' } = Astro.props;
+const R = 22;
+const cells = flower(80, 70, R);
+---
+
+<ol class="altitude" aria-label={label} role="list">
+  {
+    stages.map((s) => (
+      <li class={`altitude__stage altitude__stage--${s.altitude.toLowerCase()}`}>
+        <svg class="altitude__art" viewBox="0 0 160 140" aria-hidden="true" focusable="false">
+          {s.altitude === 'Blueprint' &&
+            cells.slice(1).map((c) => <line class="altitude__link" x1={cells[0]?.x} y1={cells[0]?.y} x2={c.x} y2={c.y} />)}
+          {cells.map((c, i) => (
+            <polygon class={`altitude__cell${i === 0 ? ' is-core' : ''}${s.altitude === 'Territory' && i === 3 ? ' is-lead' : ''}`} points={hexPoints(c.x, c.y, R)} />
+          ))}
+        </svg>
+        <p class="altitude__altitude">{s.altitude}</p>
+        <p class="altitude__name">{s.href ? <a href={href(s.href)}>{s.stage}</a> : s.stage}</p>
+        <p class="altitude__text">{s.text}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .altitude {
+    display: grid;
+    gap: var(--sp-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    list-style: none;
+    padding: 0;
+    counter-reset: alt;
+  }
+
+  .altitude__stage {
+    position: relative;
+    display: grid;
+    gap: var(--sp-1);
+    justify-items: start;
+    padding: var(--sp-5);
+    background: var(--color-bg);
+    border: var(--border-hair);
+    border-block-start: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+  }
+
+  .altitude__art {
+    inline-size: min(100%, 10rem);
+    block-size: auto;
+    margin-block-end: var(--sp-2);
+  }
+
+  .altitude__cell {
+    fill: none;
+    stroke: var(--we-slate);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+
+  .altitude__stage--survey .altitude__cell {
+    stroke-dasharray: 4 4;
+    stroke: var(--we-grey);
+  }
+
+  .altitude__stage--survey .is-core {
+    stroke: var(--we-slate);
+    stroke-dasharray: none;
+    fill: var(--we-mist);
+  }
+
+  .altitude__stage--blueprint .altitude__cell {
+    stroke: var(--we-blue);
+    stroke-width: 2;
+  }
+
+  .altitude__stage--blueprint .is-core {
+    fill: var(--we-tint);
+  }
+
+  .altitude__link {
+    stroke: var(--we-blue);
+    stroke-width: 1;
+  }
+
+  .altitude__stage--territory .altitude__cell {
+    fill: var(--we-tint);
+    stroke: var(--we-blue);
+  }
+
+  .altitude__stage--territory .is-core {
+    fill: var(--we-blue);
+  }
+
+  .altitude__stage--territory .is-lead {
+    fill: var(--we-amber);
+    stroke: var(--we-amber);
+  }
+
+  .altitude__altitude {
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text-muted);
+  }
+
+  .altitude__name {
+    font-family: var(--ff-display);
+    font-size: var(--fs-xl);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+  }
+
+  .altitude__text {
+    font-family: var(--ff-sans);
+    color: var(--color-text-muted);
+  }
+
+  /* A hairline link carries the eye from one altitude to the next. */
+  @media (min-width: 62rem) {
+    .altitude__stage:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      inset-block-start: calc(var(--sp-8) + var(--sp-5));
+      inset-inline-start: 100%;
+      inline-size: var(--sp-5);
+      block-size: 2px;
+      background: var(--we-hairline);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .altitude__cell {
+      transition: fill var(--dur-base) var(--ease-out);
+    }
+
+    .altitude__stage:hover .altitude__cell:not(.is-core):not(.is-lead) {
+      fill: var(--we-mist);
+    }
+  }
+</style>

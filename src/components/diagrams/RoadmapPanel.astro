@@ -1,0 +1,38 @@
+---
+import ConsolePanel from './ConsolePanel.astro';
+
+interface Lane {
+  readonly stage: string;
+  readonly items: readonly string[];
+}
+
+interface Props {
+  lanes?: readonly Lane[];
+  title?: string;
+}
+
+const defaults: readonly Lane[] = [
+  { stage: 'Dream', items: ['Problem statement', 'Customer interviews', 'Validation summary'] },
+  { stage: 'Build', items: ['Scope and backlog', 'First release', 'Quality review'] },
+  { stage: 'Grow', items: ['Customer discovery', 'Operating rhythm', 'Readiness review'] },
+];
+const { lanes = defaults, title = 'roadmap' } = Astro.props;
+---
+
+<ConsolePanel title={title}>
+  {
+    lanes.map((lane, li) => (
+      <section class="console__lane" aria-label={lane.stage}>
+        <h3 class="console__h">{lane.stage}</h3>
+        <ol class="console__list" role="list">
+          {lane.items.map((it, i) => (
+            <li class="console__row">
+              <span class={`console__cell${li === 0 && i === 0 ? '' : ' console__cell--open'}`} aria-hidden="true" />
+              <span class="console__grow">{it}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))
+  }
+</ConsolePanel>

@@ -1,0 +1,51 @@
+---
+import ConsolePanel from './ConsolePanel.astro';
+
+interface Column {
+  readonly heading: string;
+  readonly items: readonly string[];
+  readonly done?: boolean;
+}
+
+interface Props {
+  columns?: readonly Column[];
+  title?: string;
+}
+
+const defaults: readonly Column[] = [
+  { heading: 'Shipped', items: ['Decisions recorded', 'Release candidate reviewed'], done: true },
+  { heading: 'Next', items: ['Customer follow-ups', 'Scope check for the coming week'] },
+  { heading: 'Needs a decision', items: ['Priority between two features'] },
+];
+const { columns = defaults, title = 'weekly review' } = Astro.props;
+---
+
+<ConsolePanel title={title}>
+  <div class="console__cols">
+    {
+      columns.map((c) => (
+        <section aria-label={c.heading}>
+          <h3 class="console__h">{c.heading}</h3>
+          <ul class="console__list" role="list">
+            {c.items.map((it) => (
+              <li class="console__row">
+                <span class={`console__cell${c.done ? '' : ' console__cell--open'}`} aria-hidden="true" />
+                <span class="console__grow">{it}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</ConsolePanel>
+
+<style is:global>
+  @layer components {
+    .console__cols {
+      display: grid;
+      gap: var(--sp-4);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    }
+  }
+</style>

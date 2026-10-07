@@ -1,0 +1,66 @@
+---
+import ConsolePanel from './ConsolePanel.astro';
+
+interface Row {
+  readonly risk: string;
+  readonly owner: string;
+  readonly response: string;
+  readonly status: 'Open' | 'Watching' | 'Closed';
+}
+
+interface Props {
+  rows?: readonly Row[];
+  title?: string;
+}
+
+const defaults: readonly Row[] = [
+  { risk: 'Scope grows faster than the team', owner: 'Delivery lead', response: 'Re-confirm scope at the weekly review', status: 'Watching' },
+  { risk: 'A key assumption is untested', owner: 'Founder', response: 'Schedule customer conversations', status: 'Open' },
+  { risk: 'A dependency has no owner', owner: 'Operations', response: 'Assign an owner and a date', status: 'Closed' },
+];
+const { rows = defaults, title = 'risk register' } = Astro.props;
+---
+
+<ConsolePanel title={title}>
+  <div class="console__scroll" tabindex="0" role="region" aria-label="Risk register table">
+    <table class="console__table">
+      <thead>
+        <tr><th scope="col">Risk</th><th scope="col">Owner</th><th scope="col">Response</th><th scope="col">Status</th></tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => <tr><th scope="row">{r.risk}</th><td>{r.owner}</td><td>{r.response}</td><td><span class="console__state">{r.status}</span></td></tr>)}
+      </tbody>
+    </table>
+  </div>
+</ConsolePanel>
+
+<style is:global>
+  @layer components {
+    .console__scroll {
+      overflow-x: auto;
+    }
+
+    .console__table {
+      min-inline-size: 30rem;
+      border-collapse: collapse;
+
+      & :is(th, td) {
+        padding: var(--sp-2) var(--sp-3);
+        border-block-end: var(--border-hair);
+        font-size: var(--fs-sm);
+      }
+
+      & thead th {
+        font-family: var(--ff-display);
+        font-size: var(--fs-xs);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-caps);
+        color: var(--color-text-muted);
+      }
+
+      & tbody th {
+        font-weight: 600;
+      }
+    }
+  }
+</style>

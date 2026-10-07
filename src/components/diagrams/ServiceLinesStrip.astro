@@ -1,0 +1,106 @@
+---
+import type { ServiceLine } from '../../data/nav.ts';
+import { href } from '../../lib/url.ts';
+import HexIcon from '../ui/HexIcon.astro';
+
+interface Item {
+  readonly line: ServiceLine;
+  readonly label: string;
+  readonly href?: string;
+}
+
+interface Props {
+  items: readonly Item[];
+  label?: string;
+}
+
+const { items, label = 'The seven service lines' } = Astro.props;
+---
+
+<nav class="linesstrip" aria-label={label}>
+  <ol role="list">
+    {
+      items.map((it) => (
+        <li class="linesstrip__item">
+          {it.href ? (
+            <a class="linesstrip__link" href={href(it.href)}>
+              <HexIcon line={it.line} size={64} />
+              <span class="linesstrip__line">Line {it.line}</span>
+              <span class="linesstrip__label">{it.label}</span>
+            </a>
+          ) : (
+            <div class="linesstrip__link">
+              <HexIcon line={it.line} size={64} />
+              <span class="linesstrip__line">Line {it.line}</span>
+              <span class="linesstrip__label">{it.label}</span>
+            </div>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .linesstrip ol {
+    position: relative;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(8.5rem, 1fr);
+    gap: var(--sp-3);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: var(--sp-2) 0 var(--sp-3);
+    list-style: none;
+  }
+
+  .linesstrip__item {
+    scroll-snap-align: start;
+  }
+
+  .linesstrip__link {
+    display: grid;
+    justify-items: center;
+    gap: var(--sp-1);
+    padding: var(--sp-3);
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-text);
+    border-radius: var(--radius-md);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    line-height: 1.25;
+  }
+
+  .linesstrip__line {
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-link);
+  }
+
+  a.linesstrip__link:hover,
+  a.linesstrip__link:focus-visible {
+    background: var(--color-bg-soft);
+  }
+
+  a.linesstrip__link:hover .linesstrip__label {
+    text-decoration: underline;
+  }
+
+  @media (min-width: 62rem) {
+    .linesstrip ol {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      overflow: visible;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .linesstrip__link {
+      transition: background-color var(--dur-fast) var(--ease-out);
+    }
+  }
+</style>

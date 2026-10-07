@@ -1,0 +1,122 @@
+---
+import { hexPoints } from './hex.ts';
+
+interface Props {
+  /** Role names, one cell per dedicated seat. No counts are implied. */
+  seats: readonly string[];
+  company?: string;
+  steering?: string;
+  label?: string;
+}
+
+const {
+  seats,
+  company = 'Your company sets the goals and makes the decisions.',
+  steering = 'WE steers the team and manages its subcontractors.',
+  label = 'How a dedicated team is organised: your company, WE steering, and the seats',
+} = Astro.props;
+---
+
+<figure class="seatdiagram" role="group" aria-label={label}>
+  <div class="seatdiagram__tier seatdiagram__tier--company">
+    <p class="seatdiagram__label">Your company</p>
+    <p>{company}</p>
+  </div>
+  <div class="seatdiagram__link" aria-hidden="true"></div>
+  <div class="seatdiagram__tier seatdiagram__tier--we">
+    <p class="seatdiagram__label">World Enterprise</p>
+    <p>{steering}</p>
+  </div>
+  <div class="seatdiagram__link" aria-hidden="true"></div>
+  <ul class="seatdiagram__seats" role="list" aria-label="Dedicated seats">
+    {
+      seats.map((s) => (
+        <li class="seatdiagram__seat">
+          <svg viewBox="0 0 48 44" aria-hidden="true" focusable="false"><polygon points={hexPoints(24, 22, 20)} /></svg>
+          <span>{s}</span>
+        </li>
+      ))
+    }
+  </ul>
+</figure>
+
+<style>
+  .seatdiagram {
+    display: grid;
+    justify-items: center;
+    margin: 0;
+    font-family: var(--ff-sans);
+  }
+
+  .seatdiagram__tier {
+    inline-size: min(100%, 36rem);
+    padding: var(--sp-4) var(--sp-5);
+    border: var(--border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    text-align: center;
+  }
+
+  .seatdiagram__tier--we {
+    background: var(--color-bg-inverse);
+    color: var(--color-text-inverse);
+    border-color: var(--color-bg-inverse);
+  }
+
+  .seatdiagram__label {
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .seatdiagram__link {
+    inline-size: 2px;
+    block-size: var(--sp-5);
+    background: var(--we-slate);
+  }
+
+  .seatdiagram__seats {
+    display: grid;
+    gap: var(--sp-3);
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(6.5rem, 8rem));
+    inline-size: 100%;
+    list-style: none;
+    padding: 0;
+  }
+
+  .seatdiagram__seat {
+    display: grid;
+    justify-items: center;
+    gap: var(--sp-1);
+    text-align: center;
+    font-size: var(--fs-sm);
+    line-height: 1.25;
+  }
+
+  .seatdiagram__seat svg {
+    inline-size: 3rem;
+    block-size: auto;
+    fill: var(--we-tint);
+    stroke: var(--we-blue);
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+
+  .seatdiagram__seat:first-child svg {
+    fill: var(--we-amber);
+    stroke: var(--we-amber);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .seatdiagram__seat svg {
+      transition: transform var(--dur-fast) var(--ease-out);
+    }
+
+    .seatdiagram__seat:hover svg {
+      transform: translateY(-2px);
+    }
+  }
+</style>

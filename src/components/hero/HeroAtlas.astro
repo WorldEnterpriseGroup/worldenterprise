@@ -2,6 +2,7 @@
 import { getPhoto } from '../../assets/photo/index.ts';
 import type { SlotId } from '../../assets/photo/slots.ts';
 import { href } from '../../lib/url.ts';
+import HexAtlasArt from '../diagrams/HexAtlasArt.astro';
 
 interface Cta {
   readonly label: string;
@@ -17,9 +18,11 @@ interface Props {
   primary?: Cta;
   secondary?: Cta;
   slot?: SlotId;
+  /** Strip under the actions, for example the Evidence Ledger teaser. Rendered when provided. */
+  strip?: boolean;
 }
 
-const { as: Heading = 'h1', eyebrow, title, lead, primary, secondary, slot = 'band-1' } = Astro.props;
+const { as: Heading = 'h1', eyebrow, title, lead, primary, secondary, slot = 'band-1', strip = false } = Astro.props;
 const image = getPhoto(slot);
 ---
 
@@ -36,7 +39,9 @@ const image = getPhoto(slot);
       </div>
     </div>
     <div class="hero__media hex-frame">
+      <HexAtlasArt />
       <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} fetchpriority="high" decoding="async" />
     </div>
   </div>
+  {strip && <div class="container hero__strip"><slot name="strip" /></div>}
 </section>
