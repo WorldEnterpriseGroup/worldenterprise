@@ -1,0 +1,22 @@
+---
+interface Props {
+  /** When set, the title is the card's single link target and the whole card is clickable. */
+  href?: string;
+  title: string;
+  headingLevel?: 2 | 3 | 4;
+  eyebrow?: string;
+  image?: { readonly src: string; readonly width: number; readonly height: number; readonly alt: string };
+}
+
+const { href: target, title, headingLevel = 3, eyebrow, image } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+
+<article class="card" data-linked={target ? '' : undefined}>
+  {image && <img class="card__image" src={image.src} width={image.width} height={image.height} alt={image.alt} loading="lazy" decoding="async" />}
+  <div class="card__body stack">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <Heading class="card__title">{target ? <a class="card__link" href={target}>{title}</a> : title}</Heading>
+    <slot />
+  </div>
+</article>

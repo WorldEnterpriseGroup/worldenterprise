@@ -1,0 +1,19 @@
+---
+import { href } from '../../lib/url.ts';
+import Card from '../ui/Card.astro';
+
+interface Props {
+  title: string;
+  summary: string;
+  path: string;
+  /** Seat or team the role belongs to. */
+  team?: string;
+  headingLevel?: 2 | 3 | 4;
+}
+
+const { title, summary, path, team, headingLevel = 3 } = Astro.props;
+---
+
+<Card title={title} href={href(path)} eyebrow={team ?? 'Role'} headingLevel={headingLevel}>
+  <p>{summary}</p>
+</Card>

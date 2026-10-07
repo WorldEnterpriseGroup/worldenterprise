@@ -74,3 +74,22 @@ test('captures full-page screenshots for review', async ({ page }, info) => {
   await page.goto('/');
   await page.screenshot({ path: `test-results/home-${info.project.name}.png`, fullPage: true });
 });
+
+test.describe('styleguide', () => {
+  test('is noindex, has no serious axe violations and is screenshotted', async ({ page }, info) => {
+    await page.goto('/styleguide/');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+    await expect(page.locator('h1')).toHaveCount(1);
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+    expect(results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')).toEqual([]);
+    await page.screenshot({ path: `test-results/styleguide-${info.project.name}.png`, fullPage: true });
+  });
+
+  test('tabs enhance with keyboard support', async ({ page }) => {
+    await page.goto('/styleguide/');
+    const first = page.getByRole('tab', { name: 'First' });
+    await first.focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(page.getByRole('tab', { name: 'Second' })).toHaveAttribute('aria-selected', 'true');
+  });
+});

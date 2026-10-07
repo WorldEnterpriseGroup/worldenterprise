@@ -1,0 +1,22 @@
+---
+import type { Heading } from '../../layouts/types.ts';
+
+interface Props {
+  headings: readonly Heading[];
+  title?: string;
+}
+
+const { headings, title = 'On this page' } = Astro.props;
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length > 1 && (
+    <nav class="toc-rail" aria-label={title}>
+      <p class="toc-rail__title">{title}</p>
+      <ol role="list">
+        {items.map((h) => <li class={h.depth === 3 ? 'toc-rail__sub' : undefined}><a href={`#${h.slug}`}>{h.text}</a></li>)}
+      </ol>
+    </nav>
+  )
+}

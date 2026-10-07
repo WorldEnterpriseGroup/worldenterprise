@@ -1,0 +1,61 @@
+---
+interface Tab {
+  readonly id: string;
+  readonly label: string;
+  readonly body: string;
+}
+
+interface Props {
+  tabs: readonly Tab[];
+  label: string;
+}
+
+const { tabs, label } = Astro.props;
+---
+
+<div class="tabs" data-tabs>
+  <div class="tabs__list" role="tablist" aria-label={label} hidden>
+    {tabs.map((t, i) => <button type="button" role="tab" id={`tab-${t.id}`} aria-controls={`panel-${t.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{t.label}</button>)}
+  </div>
+  {
+    tabs.map((t) => (
+      <section class="tabs__panel" id={`panel-${t.id}`} aria-labelledby={`tab-${t.id}`}>
+        <h3 class="tabs__fallback-title">{t.label}</h3>
+        <p>{t.body}</p>
+      </section>
+    ))
+  }
+</div>
+<script>
+  // Without JavaScript every panel is shown in sequence under its own heading.
+  for (const root of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
+    const list = root.querySelector<HTMLElement>('[role="tablist"]');
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('.tabs__panel'));
+    if (!list || tabs.length === 0) continue;
+    list.hidden = false;
+    root.dataset.enhanced = '';
+    const select = (index: number, focus: boolean): void => {
+      tabs.forEach((t, i) => {
+        t.setAttribute('aria-selected', i === index ? 'true' : 'false');
+        t.tabIndex = i === index ? 0 : -1;
+      });
+      panels.forEach((p, i) => {
+        p.hidden = i !== index;
+      });
+      if (focus) tabs[index]?.focus();
+    };
+    tabs.forEach((t, i) =>
+      t.addEventListener('click', () => select(i, false)),
+    );
+    list.addEventListener('keydown', (e) => {
+      const current = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+      const last = tabs.length - 1;
+      const next = e.key === 'ArrowRight' ? (current + 1) % tabs.length : e.key === 'ArrowLeft' ? (current - 1 + tabs.length) % tabs.length : e.key === 'Home' ? 0 : e.key === 'End' ? last : -1;
+      if (next < 0) return;
+      e.preventDefault();
+      select(next, true);
+    });
+    select(0, false);
+  }
+</script>

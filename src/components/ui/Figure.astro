@@ -1,0 +1,26 @@
+---
+interface Props {
+  src: string;
+  width: number;
+  height: number;
+  /** Meaningful alt text. Use an empty string only for decorative images. */
+  alt: string;
+  caption?: string;
+  priority?: boolean;
+}
+
+const { src, width, height, alt, caption, priority = false } = Astro.props;
+---
+
+<figure class="figure">
+  <img
+    src={src}
+    width={width}
+    height={height}
+    alt={alt}
+    decoding="async"
+    loading={priority ? undefined : 'lazy'}
+    fetchpriority={priority ? 'high' : undefined}
+  />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

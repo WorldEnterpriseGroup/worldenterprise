@@ -1,0 +1,40 @@
+---
+import { getPhoto } from '../../assets/photo/index.ts';
+import type { SlotId } from '../../assets/photo/slots.ts';
+import { href } from '../../lib/url.ts';
+
+interface Cta {
+  readonly label: string;
+  readonly href: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead: string;
+  primary?: Cta;
+  secondary?: Cta;
+  slot?: SlotId;
+}
+
+const { eyebrow, title, lead, primary, secondary, slot = 'band-1' } = Astro.props;
+const image = getPhoto(slot);
+---
+
+<section class="hero hero--atlas">
+  <div class="container hero__grid">
+    <div class="hero__copy stack">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{title}</h1>
+      <div class="rule" aria-hidden="true"></div>
+      <p class="lead">{lead}</p>
+      <div class="cluster">
+        {primary && <a class="btn btn--primary" href={href(primary.href)}>{primary.label}</a>}
+        {secondary && <a class="btn btn--secondary" href={href(secondary.href)}>{secondary.label}</a>}
+      </div>
+    </div>
+    <div class="hero__media hex-frame">
+      <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} fetchpriority="high" decoding="async" />
+    </div>
+  </div>
+</section>

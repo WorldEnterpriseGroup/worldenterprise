@@ -1,0 +1,19 @@
+---
+import Faq from '../ui/Faq.astro';
+
+interface Item {
+  readonly question: string;
+  readonly answer: string;
+}
+
+interface Props {
+  items: readonly Item[];
+  name?: string;
+}
+
+const { items, name = 'faq' } = Astro.props;
+---
+
+<div class="faq-list">
+  {items.map((i) => <Faq question={i.question} name={name}><p>{i.answer}</p></Faq>)}
+</div>

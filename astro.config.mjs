@@ -78,7 +78,7 @@ export default defineConfig({
     },
   ],
   devToolbar: { enabled: false },
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/styleguide/') })],
   vite: {
     build: {
       assetsInlineLimit: 0,

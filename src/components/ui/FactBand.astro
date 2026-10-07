@@ -1,0 +1,20 @@
+---
+interface Fact {
+  readonly label: string;
+  /** Value with its qualifier, for example a program stage count. Never an unsourced metric. */
+  readonly value: string;
+}
+
+interface Props {
+  facts: readonly Fact[];
+  label: string;
+}
+
+const { facts, label } = Astro.props;
+---
+
+<section class="factband" aria-label={label}>
+  <dl class="factband__list">
+    {facts.map((f) => <div class="factband__item"><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+  </dl>
+</section>

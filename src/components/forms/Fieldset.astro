@@ -1,0 +1,14 @@
+---
+interface Props {
+  legend: string;
+  hint?: string;
+}
+
+const { legend, hint } = Astro.props;
+---
+
+<fieldset class="fieldset">
+  <legend>{legend}</legend>
+  {hint && <p class="field__hint">{hint}</p>}
+  <slot />
+</fieldset>

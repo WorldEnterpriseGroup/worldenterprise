@@ -1,0 +1,29 @@
+---
+interface Props {
+  caption: string;
+  columns: readonly string[];
+  rows: readonly (readonly string[])[];
+  /** Treat the first column as the row header. */
+  rowHeaders?: boolean;
+}
+
+const { caption, columns, rows, rowHeaders = true } = Astro.props;
+---
+
+<div class="table-wrap" tabindex="0" role="region" aria-label={caption}>
+  <table class="data-table">
+    <caption>{caption}</caption>
+    <thead>
+      <tr>{columns.map((c) => <th scope="col">{c}</th>)}</tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            {row.map((cell, i) => (rowHeaders && i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

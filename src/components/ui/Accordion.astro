@@ -1,0 +1,25 @@
+---
+interface Item {
+  readonly title: string;
+  readonly body: string;
+}
+
+interface Props {
+  items: readonly Item[];
+  /** Items sharing a name behave as an exclusive group. */
+  name: string;
+}
+
+const { items, name } = Astro.props;
+---
+
+<div class="accordion">
+  {
+    items.map((item) => (
+      <details name={name} class="accordion__item">
+        <summary>{item.title}</summary>
+        <p>{item.body}</p>
+      </details>
+    ))
+  }
+</div>

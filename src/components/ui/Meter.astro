@@ -1,0 +1,17 @@
+---
+interface Props {
+  label: string;
+  value: number;
+  max?: number;
+  /** Plain-language reading of the value for assistive technology. */
+  text: string;
+}
+
+const { label, value, max = 100, text } = Astro.props;
+---
+
+<div class="meter">
+  <label class="meter__label" for={`meter-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>{label}</label>
+  <meter id={`meter-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} min="0" max={max} value={value}>{text}</meter>
+  <span class="meter__text">{text}</span>
+</div>

@@ -1,0 +1,15 @@
+---
+interface Props {
+  title: string;
+  lead?: string;
+}
+
+const { title, lead } = Astro.props;
+---
+
+<section class="hero hero--compact">
+  <div class="container stack">
+    <h1>{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+  </div>
+</section>

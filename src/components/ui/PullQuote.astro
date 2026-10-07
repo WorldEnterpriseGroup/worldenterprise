@@ -1,0 +1,13 @@
+---
+interface Props {
+  /** Required attribution. A quotation without a named, real source is not published. */
+  cite: string;
+}
+
+const { cite } = Astro.props;
+---
+
+<figure class="pullquote">
+  <blockquote><slot /></blockquote>
+  <figcaption>{cite}</figcaption>
+</figure>

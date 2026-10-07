@@ -1,0 +1,11 @@
+---
+interface Props {
+  width?: 'default' | 'wide' | 'prose';
+  class?: string;
+}
+
+const { width = 'default', class: extra } = Astro.props;
+const classes = ['container', width === 'default' ? '' : `container--${width}`, extra].filter(Boolean).join(' ');
+---
+
+<div class={classes}><slot /></div>

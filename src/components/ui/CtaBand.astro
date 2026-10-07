@@ -1,0 +1,25 @@
+---
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  title: string;
+  text?: string;
+  cta: { readonly label: string; readonly href: string };
+  secondary?: { readonly label: string; readonly href: string };
+}
+
+const { title, text, cta, secondary } = Astro.props;
+---
+
+<section class="ctaband" aria-labelledby="ctaband-title">
+  <div class="container ctaband__inner">
+    <div class="stack">
+      <h2 id="ctaband-title">{title}</h2>
+      {text && <p>{text}</p>}
+    </div>
+    <div class="cluster">
+      <a class="btn btn--inverse" href={href(cta.href)}>{cta.label}</a>
+      {secondary && <a class="btn btn--quiet-inverse" href={href(secondary.href)}>{secondary.label}</a>}
+    </div>
+  </div>
+</section>

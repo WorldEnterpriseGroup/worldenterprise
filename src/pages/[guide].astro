@@ -1,0 +1,179 @@
+---
+import type { GetStaticPaths } from 'astro';
+import readTokens from '../styles/tokens.css?raw';
+import Accordion from '../components/ui/Accordion.astro';
+import Button from '../components/ui/Button.astro';
+import Callout from '../components/ui/Callout.astro';
+import Card from '../components/ui/Card.astro';
+import CellTrail from '../components/ui/CellTrail.astro';
+import CtaBand from '../components/ui/CtaBand.astro';
+import DataTable from '../components/ui/DataTable.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import FactBand from '../components/ui/FactBand.astro';
+import Figure from '../components/ui/Figure.astro';
+import Grid from '../components/ui/Grid.astro';
+import Hex from '../components/ui/Hex.astro';
+import HexAtlas from '../components/ui/HexAtlas.astro';
+import Meter from '../components/ui/Meter.astro';
+import PullQuote from '../components/ui/PullQuote.astro';
+import Section from '../components/ui/Section.astro';
+import Steps from '../components/ui/Steps.astro';
+import Tabs from '../components/ui/Tabs.astro';
+import Tag from '../components/ui/Tag.astro';
+import Toc from '../components/ui/Toc.astro';
+import Field from '../components/forms/Field.astro';
+import Fieldset from '../components/forms/Fieldset.astro';
+import Choice from '../components/forms/Choice.astro';
+import ArticleCard from '../components/cards/ArticleCard.astro';
+import BriefCard from '../components/cards/BriefCard.astro';
+import FaqList from '../components/cards/FaqList.astro';
+import PlaybookCard from '../components/cards/PlaybookCard.astro';
+import RoleCard from '../components/cards/RoleCard.astro';
+import ServiceCard from '../components/cards/ServiceCard.astro';
+import TemplateCard from '../components/cards/TemplateCard.astro';
+import EvidenceLedger from '../components/blocks/EvidenceLedger.astro';
+import LimitsBlock from '../components/blocks/LimitsBlock.astro';
+import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
+import HeroArticle from '../components/hero/HeroArticle.astro';
+import HeroAtlas from '../components/hero/HeroAtlas.astro';
+import HeroCompact from '../components/hero/HeroCompact.astro';
+import HeroConsole from '../components/hero/HeroConsole.astro';
+import HeroEditorial from '../components/hero/HeroEditorial.astro';
+import ReadingProgress from '../components/ui/ReadingProgress.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { readFlag } from '../lib/env.ts';
+import { readPairs } from '../lib/contrast.ts';
+import { STYLEGUIDE_PATH } from '../data/routes.ts';
+
+/** Built only when PUBLIC_STYLEGUIDE=1 (CI and preview). The production release never emits it. */
+export const getStaticPaths = (() => (readFlag('PUBLIC_STYLEGUIDE') ? [{ params: { guide: 'styleguide' } }] : [])) satisfies GetStaticPaths;
+
+const pairs = readPairs(readTokens);
+const swatches = Array.from(readTokens.matchAll(/^\s*(--we-[a-z-]+):[^;]+;\s*\/\*\s*(#[0-9A-Fa-f]{6})\s*\*\//gm)).map((m) => ({ name: m[1] ?? '', hex: m[2] ?? '' }));
+
+const layouts = [
+  ['HomeLayout', 'Home. Hero slot carries the single h1.'],
+  ['MarketingLayout', 'Short marketing pages: header, prose, after slot.'],
+  ['HubLayout', 'Section hubs with full subtree list and optional table of contents.'],
+  ['StageLayout', 'Program stage pages.'],
+  ['ServiceLayout', 'Service line pages.'],
+  ['PlaybookLayout', 'Playbook pages with steps and limits.'],
+  ['GuideLayout', 'Long guides with a rail table of contents.'],
+  ['ArticleHub', 'Insights index and desk pages.'],
+  ['ArticleLayout', 'Insight articles with byline, sources and reading progress.'],
+  ['BriefLayout', 'Research briefs with methodology and limits.'],
+  ['TemplateLayout', 'Templates and downloads.'],
+  ['ToolLayout', 'Interactive tools.'],
+  ['FormLayout', 'Application and contact forms with an aside.'],
+  ['ReferenceLayout', 'Glossary and FAQ reference pages.'],
+  ['LegalLayout', 'Legal and policy pages.'],
+] as const;
+
+const headings = [
+  { depth: 2, slug: 'colour', text: 'Colour' },
+  { depth: 2, slug: 'type', text: 'Type' },
+  { depth: 2, slug: 'components', text: 'Components' },
+  { depth: 2, slug: 'heroes', text: 'Heroes' },
+  { depth: 2, slug: 'contrast', text: 'Contrast pairs' },
+  { depth: 2, slug: 'layouts', text: 'Layouts' },
+];
+---
+
+<BaseLayout
+  title="Styleguide"
+  description="Internal reference for the World Enterprise Incubator design system: tokens, components, heroes and layouts."
+  path={STYLEGUIDE_PATH}
+  draft
+>
+  <ReadingProgress />
+  <HeroCompact title="Styleguide" lead="Internal reference. Not part of the production release." />
+  <Section>
+    <Toc headings={headings} title="Contents" />
+  </Section>
+
+  <Section id="colour" labelledby="h-colour" tone="soft">
+    <h2 id="h-colour">Colour</h2>
+    <Grid min="9rem">
+      {swatches.map((s) => <div class="swatch" style={`--swatch:${s.hex}`}><span>{s.name}</span><span>{s.hex}</span></div>)}
+    </Grid>
+  </Section>
+
+  <Section id="type" labelledby="h-type">
+    <h2 id="h-type">Type</h2>
+    <div class="stack">
+      <p style="font-size:var(--fs-4xl);font-family:var(--ff-display);font-weight:700;line-height:var(--lh-tight)">Display, Titillium Web</p>
+      <p style="font-family:var(--ff-serif);font-size:var(--fs-xl)">Serif, Source Serif 4, for article reading.</p>
+      <p>Sans, Source Sans 3, for interface and body copy.</p>
+      <p style="font-family:var(--ff-mono)">Mono, Source Code Pro, for identifiers.</p>
+      <Eyebrow>Eyebrow label</Eyebrow>
+    </div>
+  </Section>
+
+  <Section id="components" labelledby="h-components" tone="soft">
+    <h2 id="h-components">Components</h2>
+    <div class="stack" style="--stack-gap:var(--sp-7)">
+      <div class="cluster">
+        <Button href="#components">Primary</Button>
+        <Button href="#components" variant="secondary">Secondary</Button>
+        <Button href="#components" variant="quiet">Quiet</Button>
+        <Tag>Tag</Tag><Tag tone="notice">Notice tag</Tag>
+        <Hex tone="blue">A</Hex><Hex tone="amber">B</Hex>
+      </div>
+      <Callout title="Callout">Information that supports the page.</Callout>
+      <Callout tone="notice" title="Notice">A statement the reader must not miss.</Callout>
+      <NoFundingDisclaimer />
+      <LimitsBlock items={['This is a limit stated in plain words.', 'A second limit.']} />
+      <Steps steps={[{ title: 'First step', body: 'What happens first.' }, { title: 'Second step', body: 'What follows.' }]} />
+      <CellTrail label="Example trail" cells={[{ label: 'One', href: '#components' }, { label: 'Two' }, { label: 'Three', href: '#components' }]} current={1} />
+      <HexAtlas label="Example atlas" cells={[{ label: 'Alpha', href: '#components', line: 'A' }, { label: 'Beta', href: '#components', line: 'B' }]} />
+      <Grid>
+        <ServiceCard title="Service card" summary="One line on what the service covers." path="/services/" />
+        <PlaybookCard title="Playbook card" summary="One line on the playbook." path="/playbooks/" />
+        <ArticleCard title="Article card" summary="One line on the article." path="/insights/" />
+        <BriefCard title="Brief card" summary="One line on the brief." path="/research/" />
+        <TemplateCard title="Template card" summary="One line on the template." path="/library/" />
+        <RoleCard title="Role card" summary="One line on the role." path="/careers/" team="Team seat" />
+        <Card title="Plain card"><p>A card without a link.</p></Card>
+      </Grid>
+      <DataTable caption="Data table" columns={['Item', 'State']} rows={[['Row one', 'Open'], ['Row two', 'Closed']]} />
+      <EvidenceLedger rows={[{ claim: 'An example statement.', source: 'Example source label', basis: 'framework' }]} />
+      <Accordion name="sg-acc" items={[{ title: 'First item', body: 'Opens one at a time.' }, { title: 'Second item', body: 'The group is exclusive.' }]} />
+      <FaqList name="sg-faq" items={[{ question: 'A question?', answer: 'An answer.' }]} />
+      <Tabs label="Example tabs" tabs={[{ id: 'sg-a', label: 'First', body: 'First panel.' }, { id: 'sg-b', label: 'Second', body: 'Second panel.' }]} />
+      <PullQuote cite="Named source, role">Quoted text appears only with a real, named source.</PullQuote>
+      <FactBand label="Example facts" facts={[{ label: 'Stages', value: 'Five' }, { label: 'Format', value: 'Fully remote' }]} />
+      <Meter label="Readiness example" value={60} text="Sixty percent, illustrative only" />
+      <Figure src="/favicon.svg" width={64} height={64} alt="World Enterprise mark" caption="Figure caption." />
+      <form class="stack" onsubmit="return false">
+        <Field id="sg-name" name="name" label="Name" required hint="As you would sign it." autocomplete="name" />
+        <Field id="sg-email" name="email" label="Email" type="email" required error="Enter an email address in the form name@example.org." autocomplete="email" />
+        <Fieldset legend="Interest"><Choice id="sg-c1" name="interest" label="Option one" type="radio" value="one" /><Choice id="sg-c2" name="interest" label="Option two" type="radio" value="two" /></Fieldset>
+      </form>
+    </div>
+  </Section>
+
+  <section id="heroes" aria-labelledby="h-heroes">
+    <div class="container"><h2 id="h-heroes">Heroes</h2></div>
+    <HeroAtlas eyebrow="H1 Atlas" title="Atlas hero" lead="Home and top-level hubs." primary={{ label: 'Primary', href: '#heroes' }} secondary={{ label: 'Secondary', href: '#heroes' }} />
+    <HeroEditorial eyebrow="H2 Editorial" title="Editorial hero" lead="Hubs with a long lead." />
+    <HeroConsole eyebrow="H3 Console" title="Console hero" lead="Tools and forms."><p>Panel content.</p></HeroConsole>
+    <HeroArticle eyebrow="H4 Article" title="Article hero" lead="Single articles." byline="Editorial team" published={new Date('2026-01-01')} />
+    <HeroCompact title="H5 Compact" lead="Utility and legal pages." />
+  </section>
+
+  <Section id="contrast" labelledby="h-contrast">
+    <h2 id="h-contrast">Contrast pairs</h2>
+    <DataTable
+      caption="Token pairs checked against WCAG 2.2 AA"
+      columns={['Foreground', 'Background', 'Ratio', 'Required', 'Result']}
+      rows={pairs.map((p) => [p.foreground, p.background, p.ratio.toFixed(2), String(p.required), p.pass ? 'Pass' : 'Fail'])}
+    />
+  </Section>
+
+  <Section id="layouts" labelledby="h-layouts" tone="soft">
+    <h2 id="h-layouts">Layouts</h2>
+    <DataTable caption="Layout skeletons" columns={['Layout', 'Use']} rows={layouts.map(([n, u]) => [n, u])} />
+  </Section>
+
+  <CtaBand title="Call to action band" text="Closes a page with one clear next step." cta={{ label: 'Primary action', href: '/apply/' }} secondary={{ label: 'Secondary', href: '/contact/' }} />
+</BaseLayout>

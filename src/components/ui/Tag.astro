@@ -1,0 +1,9 @@
+---
+interface Props {
+  tone?: 'neutral' | 'accent' | 'notice';
+}
+
+const { tone = 'neutral' } = Astro.props;
+---
+
+<span class={`tag tag--${tone}`}><slot /></span>

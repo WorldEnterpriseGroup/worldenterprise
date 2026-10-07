@@ -1,0 +1,30 @@
+---
+import { getPhoto } from '../../assets/photo/index.ts';
+import type { SlotId } from '../../assets/photo/slots.ts';
+import { href } from '../../lib/url.ts';
+import Card from '../ui/Card.astro';
+
+interface Props {
+  title: string;
+  summary: string;
+  path: string;
+  eyebrow?: string;
+  slot?: SlotId;
+  headingLevel?: 2 | 3 | 4;
+  meta?: string;
+}
+
+const { title, summary, path, eyebrow = 'Playbook', slot, headingLevel = 3, meta } = Astro.props;
+const image = slot ? getPhoto(slot) : undefined;
+---
+
+<Card
+  title={title}
+  href={href(path)}
+  eyebrow={eyebrow}
+  headingLevel={headingLevel}
+  image={image ? { src: image.src.src, width: image.src.width, height: image.src.height, alt: image.alt } : undefined}
+>
+  <p>{summary}</p>
+  {meta && <p class="card__meta">{meta}</p>}
+</Card>

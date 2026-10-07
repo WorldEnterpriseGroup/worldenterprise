@@ -1,0 +1,13 @@
+---
+interface Props {
+  /** Minimum column width, any CSS length. */
+  min?: string;
+  gap?: string;
+  as?: 'div' | 'ul' | 'ol';
+}
+
+const { min = '16rem', gap, as: Tag = 'div' } = Astro.props;
+const style = `--grid-min:${min};${gap ? `--grid-gap:${gap};` : ''}`;
+---
+
+<Tag class="grid" style={style} role={Tag === 'div' ? undefined : 'list'}><slot /></Tag>

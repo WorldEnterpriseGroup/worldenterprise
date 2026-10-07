@@ -1,0 +1,26 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  byline?: string;
+  published?: Date;
+  updated?: Date;
+}
+
+const { eyebrow, title, lead, byline, published, updated } = Astro.props;
+const fmt = (d: Date): string => d.toISOString().slice(0, 10);
+---
+
+<header class="hero hero--article">
+  <div class="container container--prose stack">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <p class="byline">
+      {byline}
+      {published && <time datetime={fmt(published)}>{fmt(published)}</time>}
+      {updated && <span>, updated <time datetime={fmt(updated)}>{fmt(updated)}</time></span>}
+    </p>
+  </div>
+</header>

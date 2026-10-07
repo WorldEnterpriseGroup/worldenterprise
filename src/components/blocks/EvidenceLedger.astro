@@ -1,0 +1,45 @@
+---
+import { href } from '../../lib/url.ts';
+
+interface Row {
+  /** The statement as published. */
+  readonly claim: string;
+  /** Source label shown to the reader. */
+  readonly source: string;
+  readonly sourceHref?: string;
+  /** How the statement is grounded. */
+  readonly basis: 'primary-source' | 'framework' | 'editorial-judgement';
+}
+
+interface Props {
+  rows: readonly Row[];
+  caption?: string;
+}
+
+const { rows, caption = 'Evidence for the statements on this page' } = Astro.props;
+const basisLabel: Record<Row['basis'], string> = {
+  'primary-source': 'Primary source',
+  framework: 'Published framework',
+  'editorial-judgement': 'Editorial judgement',
+};
+---
+
+<div class="table-wrap" tabindex="0" role="region" aria-label={caption}>
+  <table class="data-table evidence">
+    <caption>{caption}</caption>
+    <thead>
+      <tr><th scope="col">Statement</th><th scope="col">Source</th><th scope="col">Basis</th></tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((r) => (
+          <tr>
+            <th scope="row">{r.claim}</th>
+            <td>{r.sourceHref ? <a href={href(r.sourceHref)}>{r.source}</a> : r.source}</td>
+            <td>{basisLabel[r.basis]}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
