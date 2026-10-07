@@ -86,7 +86,7 @@ const proofRows = PROOF.map((r) => ({
     )
   }
 
-  <section class="section section--defer" aria-labelledby="home-stages">
+  <section class="section" aria-labelledby="home-stages">
     <div class="container stack">
       <h2 id="home-stages">Three stages, one map</h2>
       <p class="measure">Dream surveys the ground, Build draws the blueprint and Grow works the territory. Open a stage to see what you leave it holding.</p>
@@ -94,7 +94,7 @@ const proofRows = PROOF.map((r) => ({
     </div>
   </section>
 
-  <section class="section section--soft section--defer" aria-labelledby="home-team">
+  <section class="section section--soft" aria-labelledby="home-team">
     <div class="container stack">
       <h2 id="home-team">A team that works for your company</h2>
       <SeatDiagram labelledby="home-team" />
@@ -104,7 +104,7 @@ const proofRows = PROOF.map((r) => ({
 
   {
     services.length > 0 && (
-      <section class="section section--defer" aria-labelledby="home-services">
+      <section class="section" aria-labelledby="home-services">
         <div class="container stack">
           <h2 id="home-services">Seven service lines, one accountable team</h2>
           <HexAtlas label="Service lines" cells={services} />
@@ -114,14 +114,14 @@ const proofRows = PROOF.map((r) => ({
     )
   }
 
-  <section class="section section--soft section--defer" aria-labelledby="home-proof">
+  <section class="section section--soft" aria-labelledby="home-proof">
     <div class="container stack">
       <h2 id="home-proof">Promise and proof</h2>
       <EvidenceLedger caption="What WE promises and where to check it" rows={proofRows} />
     </div>
   </section>
 
-  <section class="section section--defer" aria-labelledby="home-fundable">
+  <section class="section" aria-labelledby="home-fundable">
     <div class="container stack">
       <h2 id="home-fundable">Evidence a serious investor asks for</h2>
       <p class="measure">WE helps you assemble the evidence an investor will look for: a validated problem, a working product and customers who use it. The decision to invest stays with the investor.</p>
@@ -129,21 +129,21 @@ const proofRows = PROOF.map((r) => ({
     </div>
   </section>
 
-  <section class="section section--soft section--defer" aria-labelledby="home-remote">
+  <section class="section section--soft" aria-labelledby="home-remote">
     <div class="container stack">
       <h2 id="home-remote">Fully remote, by design</h2>
-      <img src={band.src.src} width={band.src.width} height={band.src.height} alt={band.alt} loading="lazy" decoding="async" />
+      <img class="home-band" src={band.src.src} width={band.src.width} height={band.src.height} alt={band.alt} loading="lazy" decoding="async" />
       <p class="measure">There is no office to visit and nobody relocates. The work is written down, reviewed at set points and visible to you throughout. <a href={href('/program/digital-incubation-model/')}>Read how remote works in practice</a>.</p>
     </div>
   </section>
 
-  <section class="section section--defer">
+  <section class="section">
     <div class="container prose measure"><Content /></div>
   </section>
 
   <LatestInsights />
 
-  <section class="section section--defer" aria-labelledby="home-faq">
+  <section class="section" aria-labelledby="home-faq">
     <div class="container stack">
       <h2 id="home-faq">Questions founders ask first</h2>
       <FaqList items={HOME_FAQS} name="home-faq" />
@@ -152,3 +152,14 @@ const proofRows = PROOF.map((r) => ({
 
   {primary && <CtaBand title="Ready to test your idea?" text="Apply, or sketch the team you would need first." cta={primary} secondary={secondary} />}
 </HomeLayout>
+
+<style>
+  @layer pages {
+    .home-band {
+      inline-size: 100%;
+      block-size: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+  }
+</style>

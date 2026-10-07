@@ -44,7 +44,7 @@ const toc = [
 >
   <div class="split">
     <div class="prose measure"><Content /></div>
-    <img src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
+    <img class="split__media" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
   </div>
 
   <section class="stack" aria-labelledby="program-stages">
@@ -84,6 +84,15 @@ const toc = [
 
 <style>
   @layer pages {
+    .split__media {
+      inline-size: 100%;
+      block-size: auto;
+    }
+
+    .split > * {
+      min-inline-size: 0;
+    }
+
     .split {
       display: grid;
       gap: var(--sp-5);
