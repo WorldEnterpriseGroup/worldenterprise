@@ -1,5 +1,5 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import Steps from '../../components/ui/Steps.astro';
@@ -11,7 +11,8 @@ import { LINE_GROUPS, LINE_SLOT, servicePath } from '../../components/services/l
 import HubLayout from '../../layouts/HubLayout.astro';
 import { href } from '../../lib/url.ts';
 
-const page = await getEntry('pages', 'services/index');
+// The glob loader collapses an index file to the folder name, so the id is "services".
+const page = (await getCollection('pages')).find((p) => p.id === 'services' || p.id === 'services/index');
 if (page === undefined) throw new Error('Missing content entry src/content/pages/services/index.mdx.');
 const { Content } = await render(page);
 const lines = await loadServiceLines();
