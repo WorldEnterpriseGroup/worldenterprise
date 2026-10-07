@@ -8,7 +8,7 @@ import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { getPublished, isDraft } from '../../lib/content.ts';
 
-const page = await getEntry('pages', 'fundability/index');
+const page = await getEntry('pages', 'fundability');
 if (!page) throw new Error('Missing content entry: src/content/pages/fundability/index.mdx');
 const { Content } = await render(page);
 const { data } = page;

@@ -10,7 +10,7 @@ import { PLAYBOOK_SEQUENCE } from '../../components/playbooks/meta.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { getPublished, isDraft } from '../../lib/content.ts';
 
-const page = await getEntry('pages', 'playbooks/index');
+const page = await getEntry('pages', 'playbooks');
 if (!page) throw new Error('Missing content entry: src/content/pages/playbooks/index.mdx');
 const { Content } = await render(page);
 const { data } = page;

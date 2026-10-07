@@ -10,7 +10,7 @@ import FactBand from '../../components/ui/FactBand.astro';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { isDraft } from '../../lib/content.ts';
 
-const page = await getEntry('pages', 'trust/index');
+const page = await getEntry('pages', 'trust');
 if (!page) throw new Error('Missing content entry: src/content/pages/trust/index.mdx');
 const { Content } = await render(page);
 const { data } = page;
