@@ -70,4 +70,25 @@
       display: none !important;
     }
   }
+
+  /* Text on the inverse (night blue) background. Lives in utilities so it outranks element and component colours. */
+  .on-inverse {
+    color: var(--color-text-inverse);
+
+    & :is(h1, h2, h3, h4, p, li, .eyebrow, .lead) {
+      color: var(--color-text-inverse);
+    }
+
+    & a:not(.btn) {
+      color: var(--color-text-inverse);
+    }
+
+    & .hero__panel :is(h1, h2, h3, h4, p, li) {
+      color: var(--color-text);
+    }
+
+    & :focus-visible {
+      outline-color: var(--color-focus-inverse);
+    }
+  }
 }

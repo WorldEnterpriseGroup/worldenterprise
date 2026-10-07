@@ -1,0 +1,66 @@
+# GitHub Pages deploy. GitLab verify:static must be green before the mirror pushes gh-pages here.
+name: pages
+
+on:
+  push:
+    branches: [gh-pages]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_WE_INTAKE_API_URL: ${{ vars.PUBLIC_WE_INTAKE_API_URL }}
+      PUBLIC_WE_NEWSLETTER_API_URL: ${{ vars.PUBLIC_WE_NEWSLETTER_API_URL }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run check
+      - run: npm run test:unit
+      - run: npm run build
+      - run: npm run audit:contrast
+      - run: npm run audit:claims
+      - name: Forbidden-file gate
+        run: |
+          set -eu
+          found=0
+          for name in .plan .claude .astro-magazine CLAUDE.md plan.md .gitlab-ci.yml docs documents package.json package-lock.json scripts tests _refs node_modules; do
+            if [ -e "dist/$name" ]; then
+              echo "forbidden path in dist: $name" >&2
+              found=1
+            fi
+          done
+          [ "$found" -eq 0 ]
+      - name: Custom domain
+        run: |
+          set -eu
+          test "$(cat CNAME)" = "worldenterprise.org"
+          cp CNAME dist/CNAME
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
