@@ -67,6 +67,7 @@ export function auditLinks({ distDir, pages, ledger = null, strict = false }) {
   const inbound = new Map();
   const idCache = new Map();
   const byRoute = new Map(pages.map((p) => [p.route, p]));
+  const pendingHits = new Map();
   const pendingRoutes = new Set([
     ...(ledger?.routes ?? []).filter((r) => r.launch && !byRoute.has(r.path)).map((r) => r.path),
     ...(ledger?.machine ?? []).filter((m) => m.launch).map((m) => m.path),
@@ -124,7 +125,12 @@ export function auditLinks({ distDir, pages, ledger = null, strict = false }) {
       const hit = lookup(distDir, internal.path);
       if (hit === null) {
         if (pendingRoutes.has(internal.path)) {
-          findings.push({ level: strict ? 'error' : 'warn', where: here, message: `${url} points at a launched route that is not built yet (pending)` });
+          if (strict) findings.push({ level: 'error', where: here, message: `${url} points at a launched route that is not built yet (pending)` });
+          else {
+            const seen = pendingHits.get(internal.path) ?? { count: 0, first: here };
+            seen.count += 1;
+            pendingHits.set(internal.path, seen);
+          }
           continue;
         }
         findings.push({ level: 'error', where: here, message: `broken ${ref.kind}: ${url} (no ${internal.path} in dist)` });
@@ -149,6 +155,9 @@ export function auditLinks({ distDir, pages, ledger = null, strict = false }) {
   for (const row of ledger?.routes ?? []) {
     if (!row.launch || !byRoute.has(row.path) || row.path === '/' || row.path === '/404.html') continue;
     if ((inbound.get(row.path) ?? 0) === 0) orphans.push(row.path);
+  }
+  for (const [path, hit] of pendingHits) {
+    findings.push({ level: 'warn', where: path, message: `${hit.count} link(s) point at this launched route, which is not built yet (pending); first on ${hit.first}` });
   }
   for (const path of orphans) {
     findings.push({ level: strict ? 'error' : 'warn', where: path, message: 'orphan route: no other page links to it' });

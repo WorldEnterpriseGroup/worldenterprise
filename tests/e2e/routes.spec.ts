@@ -39,7 +39,7 @@ for (const { path: route } of liveRoutes) {
 }
 
 for (const route of pendingRoutes) {
-  test(`route ${route} (pending: owner ${route.owner} has not merged it)`, () => {
+  test(`route ${route.path} (pending: owner ${route.owner} has not merged it)`, () => {
     test.skip(true, `${route.path} is launched in the ledger but not built yet`);
   });
 }

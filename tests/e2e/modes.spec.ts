@@ -24,11 +24,13 @@ test.describe('no-js', () => {
   });
 
   test('content and links render without JavaScript', async ({ page }) => {
+    const failures: string[] = [];
     for (const route of SAMPLE) {
       await page.goto(route);
-      await expect(page.locator('h1')).toHaveCount(1);
-      await expect(page.locator('main#main a').first()).toBeVisible();
+      if ((await page.locator('h1').count()) !== 1) failures.push(`${route}: expected one h1`);
+      if ((await page.locator('main#main a[href]').count()) === 0) failures.push(`${route}: main has no links`);
     }
+    expect(failures).toEqual([]);
   });
 
   test('the mobile drawer toggle does not hide the page content', async ({ page }) => {

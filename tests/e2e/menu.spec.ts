@@ -77,7 +77,20 @@ test.describe('desktop navigation', () => {
     await page.goto('/');
     await page.locator('[data-mega-trigger]').first().click();
     await expect(page.locator('[data-mega-panel]:popover-open')).toBeVisible();
-    await page.locator('main#main').click({ position: { x: 5, y: 400 }, force: true });
+    // The open panel fills the viewport below the header, so the outside point is a blank spot in the header itself.
+    const point = await page.evaluate(() => {
+      const header = document.querySelector('header');
+      const box = header?.getBoundingClientRect();
+      if (!box) return null;
+      const y = box.top + box.height / 2;
+      for (let x = Math.floor(box.width / 2); x < box.width - 4; x += 8) {
+        const hit = document.elementFromPoint(x, y);
+        if (hit && !hit.closest('a, button, [popover], summary, input')) return { x, y };
+      }
+      return null;
+    });
+    expect(point, 'a blank header point exists to click').not.toBeNull();
+    await page.mouse.click(point?.x ?? 0, point?.y ?? 0);
     await expect(page.locator('[data-mega-panel]:popover-open')).toHaveCount(0);
   });
 

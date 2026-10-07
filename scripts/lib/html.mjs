@@ -150,8 +150,15 @@ export function parseArgs(argv, defaults = {}) {
 
 /** Prints findings and returns the exit code. Errors fail; warnings are informational. */
 export function report(name, findings, extra = '') {
-  const errors = findings.filter((f) => f.level === 'error');
-  const warnings = findings.filter((f) => f.level === 'warn');
+  const seen = new Set();
+  const unique = findings.filter((f) => {
+    const key = `${f.level}|${f.where}|${f.message}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  const errors = unique.filter((f) => f.level === 'error');
+  const warnings = unique.filter((f) => f.level === 'warn');
   for (const f of errors) console.error(`FAIL  ${f.where}: ${f.message}`);
   for (const f of warnings) console.warn(`warn  ${f.where}: ${f.message}`);
   console.log(`${name}: ${errors.length} errors, ${warnings.length} warnings${extra === '' ? '' : `, ${extra}`}`);
