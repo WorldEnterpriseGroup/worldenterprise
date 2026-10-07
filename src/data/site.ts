@@ -1,0 +1,40 @@
+/**
+ * Site identity. Every value here is taken from the claims ladder (SAGE-PLAN section 3) or the ORBITAL registry.
+ * Never add a street address (C-01), EIN, SIN, PSC, SIC or a founding date (C-18).
+ */
+export const site = {
+  /** Public brand name. */
+  name: 'World Enterprise Incubator',
+  /** Legal entity name, used in the footer legal line and JSON-LD legalName (C-18, FLAG-PBC pending). */
+  legalName: 'World Enterprise Group Incorporated',
+  legalLine: 'World Enterprise Group Incorporated, a Delaware public benefit corporation',
+  origin: 'https://worldenterprise.org',
+  tagline: 'A digital incubator for SaaS',
+  motto: 'WE Dream. WE Build. WE Grow.',
+  signature: 'Where vision becomes evidence.',
+  description:
+    'World Enterprise Incubator is a digital incubator for SaaS. Dedicated team seats, steered by WE, take a founder from first idea to a fundable company, fully remote.',
+  /** Title suffix: "{Page} | World Enterprise Incubator" (max 60 characters in total). */
+  titleSuffix: 'World Enterprise Incubator',
+  locality: 'Lewes',
+  region: 'DE',
+  country: 'US',
+  /** NAICS 541611, administrative management and general management consulting. */
+  naics: '541611',
+  sameAs: ['https://github.com/WorldEnterpriseGroup'],
+  /** Mailboxes. Not published until the operator confirms each exists and is monitored (C-22, B-2). */
+  mailboxes: {
+    hello: { address: 'hello@worldenterprise.org', confirmed: false },
+    apply: { address: 'apply@worldenterprise.org', confirmed: false },
+  },
+  /** security@ address for /.well-known/security.txt, or null until confirmed monitored (C-22). */
+  securityContact: null as string | null,
+} as const;
+
+export type Site = typeof site;
+
+/** Builds a page title of the form "{Page} | World Enterprise Incubator". The home page uses the brand alone. */
+export function pageTitle(page?: string): string {
+  if (page === undefined || page.trim() === '') return `${site.name}: ${site.tagline}`;
+  return `${page.trim()} | ${site.titleSuffix}`;
+}
