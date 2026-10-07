@@ -1,0 +1,13 @@
+---
+import PageShell from '../../../components/about/PageShell.astro';
+import { loadPage } from '../../../components/about/load-page.ts';
+import CtaBand from '../../../components/ui/CtaBand.astro';
+
+const entry = await loadPage('about/editorial-policy');
+---
+
+<PageShell entry={entry} path="/about/editorial-policy/" ogSlot="og-about" lead="How WE chooses, sources, checks, dates and corrects what it publishes.">
+  <Fragment slot="after">
+    <CtaBand title="Found a mistake?" text="Tell WE which page and what is wrong. A source helps." cta={{ label: 'Report a correction', href: '/contact/' }} secondary={{ label: 'Read the research briefs', href: '/research/' }} />
+  </Fragment>
+</PageShell>

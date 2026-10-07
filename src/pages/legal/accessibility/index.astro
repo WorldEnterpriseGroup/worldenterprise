@@ -1,0 +1,21 @@
+---
+import LegalLayout from '../../../layouts/LegalLayout.astro';
+import { render } from 'astro:content';
+import { loadPage } from '../../../components/about/load-page.ts';
+import { href } from '../../../lib/url.ts';
+
+const entry = await loadPage('legal/accessibility');
+const { Content } = await render(entry);
+---
+
+<LegalLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  path="/legal/accessibility/"
+  updated={entry.data.updated}
+  draft={entry.data.draft}
+  lead="Our target, how the site is built and tested, and the gaps we know about."
+>
+  <Content />
+  <p>To report a barrier, use the <a href={href('/contact/')}>contact page</a>.</p>
+</LegalLayout>

@@ -1,0 +1,35 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import type { SlotId } from '../../assets/photo/slots.ts';
+import type { PageSchemaType } from '../../lib/schema.ts';
+
+interface Props {
+  entry: CollectionEntry<'pages'>;
+  path: string;
+  lead?: string;
+  ogSlot?: SlotId;
+  schemaType?: PageSchemaType;
+}
+
+const { entry, path, lead, ogSlot, schemaType } = Astro.props;
+const { Content } = await render(entry);
+const { title, description, eyebrow, updated, draft } = entry.data;
+---
+
+<MarketingLayout
+  title={title}
+  description={description}
+  path={path}
+  lead={lead ?? description}
+  updated={updated}
+  draft={draft}
+  {...(eyebrow !== undefined ? { eyebrow } : {})}
+  {...(ogSlot !== undefined ? { ogSlot } : {})}
+  {...(schemaType !== undefined ? { schemaType } : {})}
+>
+  <Content />
+  <slot />
+  <Fragment slot="after"><slot name="after" /></Fragment>
+</MarketingLayout>

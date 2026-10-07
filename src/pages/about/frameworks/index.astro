@@ -1,0 +1,44 @@
+---
+import PageShell from '../../../components/about/PageShell.astro';
+import { loadPage } from '../../../components/about/load-page.ts';
+import { FRAMEWORKS } from '../../../components/about/frameworks.ts';
+import CtaBand from '../../../components/ui/CtaBand.astro';
+import DataTable from '../../../components/ui/DataTable.astro';
+import Grid from '../../../components/ui/Grid.astro';
+import Card from '../../../components/ui/Card.astro';
+import Section from '../../../components/ui/Section.astro';
+import { flags } from '../../../data/flags.ts';
+import { href } from '../../../lib/url.ts';
+
+const entry = await loadPage('about/frameworks');
+const deep = FRAMEWORKS.filter((f) => f.path !== null);
+---
+
+<PageShell entry={entry} path="/about/frameworks/" ogSlot="og-about" lead="Five working methods that give a team shared words for what it is doing.">
+  {
+    flags.focusShiftConfirmed && (
+      <p>Dedicated seat teams plan their work in Focus Shifts.</p>
+    )
+  }
+  <Fragment slot="after">
+    <Section tone="soft" labelledby="fw-glance">
+      <div class="container stack">
+        <h2 id="fw-glance">The frameworks at a glance</h2>
+        <DataTable
+          caption="WE operating frameworks"
+          columns={['Framework', 'What it describes', 'In one line']}
+          rows={FRAMEWORKS.map((f) => [f.name, f.short, f.summary])}
+        />
+      </div>
+    </Section>
+    <Section labelledby="fw-deep">
+      <div class="container stack">
+        <h2 id="fw-deep">Read the detail</h2>
+        <Grid>
+          {deep.map((f) => <Card title={f.name} href={href(f.path ?? '/about/frameworks/')} headingLevel={3}><p>{f.summary}</p></Card>)}
+        </Grid>
+      </div>
+    </Section>
+    <CtaBand title="See the frameworks at work" text="The playbooks turn each stage into steps you can follow." cta={{ label: 'Read the playbooks', href: '/playbooks/' }} secondary={{ label: 'How the program works', href: '/program/how-it-works/' }} />
+  </Fragment>
+</PageShell>

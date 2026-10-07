@@ -1,0 +1,64 @@
+---
+import PageShell from '../../components/about/PageShell.astro';
+import { loadPage } from '../../components/about/load-page.ts';
+import Callout from '../../components/ui/Callout.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import Section from '../../components/ui/Section.astro';
+import { flags } from '../../data/flags.ts';
+import { site } from '../../data/site.ts';
+import { asset } from '../../lib/url.ts';
+
+const entry = await loadPage('press/index');
+const entity = flags.pbcWording ? site.legalLine : `${site.legalName}, registered in Delaware`;
+const boilerplate =
+  'World Enterprise Incubator is a digital incubator for SaaS. Dedicated team seats, steered by WE, work with a founder from first idea toward a company that can show investors its evidence. WE is fully remote and makes no promise of funding. World Enterprise Incubator is operated by ' +
+  `${entity}.`;
+---
+
+<PageShell entry={entry} path="/press/" lead="Facts, a short boilerplate and logo downloads." schemaType="WebPage">
+  <Fragment slot="after">
+    <Section labelledby="press-boiler">
+      <div class="container stack">
+        <h2 id="press-boiler">Boilerplate</h2>
+        <Callout title="Copy and use"><p>{boilerplate}</p></Callout>
+        <p>WE may update this text. Check the date on this page before you reuse it.</p>
+      </div>
+    </Section>
+    <Section tone="soft" labelledby="press-facts">
+      <div class="container stack">
+        <h2 id="press-facts">Facts to check against</h2>
+        <DataTable
+          caption="Published facts about WE"
+          columns={['Item', 'Fact']}
+          rows={[
+            ['Name', site.name],
+            ['Operating company', entity],
+            ['What it is', 'A digital incubator for SaaS'],
+            ['Format', 'Fully remote; no office and no visiting address'],
+            ['Motto', site.motto],
+            ['Funding', 'WE makes no promise of funding']
+          ]}
+        />
+        <p>Anything not in this table is not a published claim. Check with WE before you state it.</p>
+      </div>
+    </Section>
+    <Section labelledby="press-logo">
+      <div class="container stack">
+        <h2 id="press-logo">Logo downloads</h2>
+        <p>The wordmark is provided as SVG for use on white or very light backgrounds.</p>
+        <p>
+          <a href={asset('/press/we-logo-wordmark.svg')} download>Download the World Enterprise wordmark (SVG)</a>
+        </p>
+        <h3 id="press-use">Using the logo</h3>
+        <ul>
+          <li>Use it dark on light only. There is no reversed version.</li>
+          <li>Keep clear space around it equal to the height of one of its hexagonal cells.</li>
+          <li>Do not stretch, recolour, outline, crop or place it on a dark or busy ground.</li>
+          <li>Do not use it in a way that suggests WE endorses your product or service.</li>
+        </ul>
+      </div>
+    </Section>
+    <CtaBand title="A question or a correction?" text="Choose the topic Press or media, or A correction to something WE published." cta={{ label: 'Contact WE', href: '/contact/' }} />
+  </Fragment>
+</PageShell>

@@ -1,0 +1,21 @@
+---
+import LegalLayout from '../../../layouts/LegalLayout.astro';
+import { render } from 'astro:content';
+import { loadPage } from '../../../components/about/load-page.ts';
+import { href } from '../../../lib/url.ts';
+
+const entry = await loadPage('legal/privacy');
+const { Content } = await render(entry);
+---
+
+<LegalLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  path="/legal/privacy/"
+  updated={entry.data.updated}
+  draft={entry.data.draft}
+  lead="What the site collects, where it goes, and what it never does."
+>
+  <Content />
+  <p>To ask about your information, use the <a href={href('/contact/')}>contact page</a>.</p>
+</LegalLayout>

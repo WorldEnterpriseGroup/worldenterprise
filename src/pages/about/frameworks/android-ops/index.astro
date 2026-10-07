@@ -1,0 +1,28 @@
+---
+import PageShell from '../../../../components/about/PageShell.astro';
+import { loadPage } from '../../../../components/about/load-page.ts';
+import { ANDROID_AREAS } from '../../../../components/about/frameworks.ts';
+import CellTrail from '../../../../components/ui/CellTrail.astro';
+import CtaBand from '../../../../components/ui/CtaBand.astro';
+import DataTable from '../../../../components/ui/DataTable.astro';
+import Section from '../../../../components/ui/Section.astro';
+import { flags } from '../../../../data/flags.ts';
+import { href } from '../../../../lib/url.ts';
+
+const entry = await loadPage('about/android-ops');
+---
+
+<PageShell entry={entry} path="/about/frameworks/android-ops/" ogSlot="og-about" lead="Seven focus areas a team returns to as the work demands, and the four-hour Focus Shift.">
+  {flags.focusShiftConfirmed && <p>Dedicated seat teams plan their work in Focus Shifts.</p>}
+  <Fragment slot="after">
+    <Section tone="soft" labelledby="ao-summary">
+      <div class="container stack">
+        <h2 id="ao-summary">The loop at a glance</h2>
+        <CellTrail label="ANDROID Ops focus areas" cells={ANDROID_AREAS.map((a) => ({ label: a.name }))} />
+        <DataTable caption="ANDROID Ops focus areas" columns={['Focus area', 'What it asks the team to do']} rows={ANDROID_AREAS.map((a) => [a.name, a.asks])} />
+        <p><a href={href('/about/frameworks/')}>Back to all frameworks</a>, or see <a href={href('/about/frameworks/orbital/')}>ORBITAL</a> for how a plan is written.</p>
+      </div>
+    </Section>
+    <CtaBand title="Put the loop to work" text="The playbooks apply these focus areas stage by stage." cta={{ label: 'Read the playbooks', href: '/playbooks/' }} secondary={{ label: 'Dedicated teams', href: '/program/dedicated-teams/' }} />
+  </Fragment>
+</PageShell>

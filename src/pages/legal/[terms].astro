@@ -1,0 +1,26 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { loadPage } from '../../components/about/load-page.ts';
+import { flags } from '../../data/flags.ts';
+import { href } from '../../lib/url.ts';
+
+/** Terms of use ship only when counsel signs (C-23, flags.legalTerms). Otherwise no page is built. */
+export const getStaticPaths = (() => (flags.legalTerms ? [{ params: { terms: 'terms' } }] : [])) satisfies GetStaticPaths;
+
+const entry = await loadPage('legal/terms');
+const { Content } = await render(entry);
+---
+
+<LegalLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  path="/legal/terms/"
+  updated={entry.data.updated}
+  draft={entry.data.draft}
+  lead="The rules for using this website."
+>
+  <Content />
+  <p>Questions about these terms can be sent through the <a href={href('/contact/')}>contact page</a>.</p>
+</LegalLayout>

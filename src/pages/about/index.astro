@@ -1,0 +1,54 @@
+---
+import PageShell from '../../components/about/PageShell.astro';
+import { loadPage } from '../../components/about/load-page.ts';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import CellTrail from '../../components/ui/CellTrail.astro';
+import FactBand from '../../components/ui/FactBand.astro';
+import Section from '../../components/ui/Section.astro';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import { flags } from '../../data/flags.ts';
+import { site } from '../../data/site.ts';
+import { href } from '../../lib/url.ts';
+
+const entry = await loadPage('about/index');
+const entity = flags.pbcWording ? site.legalLine : `${site.legalName}, registered in Delaware`;
+---
+
+<PageShell entry={entry} path="/about/" ogSlot="og-about" schemaType="AboutPage" lead={site.description}>
+  <Fragment slot="after">
+    <Section tone="soft" labelledby="about-path">
+      <div class="container stack">
+        <h2 id="about-path">The path, in three stages</h2>
+        <CellTrail
+          label="WE Dream, WE Build, WE Grow"
+          cells={[
+            { label: 'Dream', href: href('/program/dream/') },
+            { label: 'Build', href: href('/program/build/') },
+            { label: 'Grow', href: href('/program/grow/') },
+          ]}
+        />
+        <FactBand
+          label="Facts about WE"
+          facts={[
+            { label: 'Focus', value: 'SaaS founders' },
+            { label: 'Format', value: 'Fully remote' },
+            { label: 'Company', value: entity },
+          ]}
+        />
+      </div>
+    </Section>
+    <Section labelledby="about-next">
+      <div class="container stack">
+        <h2 id="about-next">Read on</h2>
+        <ul>
+          <li><a href={href('/about/manifesto/')}>The manifesto</a>: nine commitments you can check.</li>
+          <li><a href={href('/about/frameworks/')}>How WE steers a team</a>: the operating frameworks in plain language.</li>
+          <li><a href={href('/about/editorial-policy/')}>Editorial policy</a>: how WE sources, dates and corrects what it publishes.</li>
+          <li><a href={href('/press/')}>Press</a>: facts and logo downloads.</li>
+        </ul>
+        <NoFundingDisclaimer />
+      </div>
+    </Section>
+    <CtaBand title="Ready to bring an idea?" text="Applying takes a short form. A person at WE reads it." cta={{ label: 'Apply', href: '/apply/' }} secondary={{ label: 'Talk to WE', href: '/contact/' }} />
+  </Fragment>
+</PageShell>

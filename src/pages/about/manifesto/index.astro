@@ -1,0 +1,19 @@
+---
+import PageShell from '../../../components/about/PageShell.astro';
+import { loadPage } from '../../../components/about/load-page.ts';
+import CtaBand from '../../../components/ui/CtaBand.astro';
+import { site } from '../../../data/site.ts';
+import { href } from '../../../lib/url.ts';
+
+const entry = await loadPage('about/manifesto');
+---
+
+<PageShell entry={entry} path="/about/manifesto/" ogSlot="og-about" lead={site.signature}>
+  <p>
+    Where each commitment can be tested: <a href={href('/services/')}>service pages</a>, the
+    <a href={href('/about/editorial-policy/')}>editorial policy</a> and the <a href={href('/legal/privacy/')}>privacy notice</a>.
+  </p>
+  <Fragment slot="after">
+    <CtaBand title="Read the commitments, then test them." text="Ask WE a question or apply when you are ready." cta={{ label: 'Apply', href: '/apply/' }} secondary={{ label: 'Contact', href: '/contact/' }} />
+  </Fragment>
+</PageShell>

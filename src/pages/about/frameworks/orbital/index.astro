@@ -1,0 +1,26 @@
+---
+import PageShell from '../../../../components/about/PageShell.astro';
+import { loadPage } from '../../../../components/about/load-page.ts';
+import { ORBITAL_PARTS } from '../../../../components/about/frameworks.ts';
+import CellTrail from '../../../../components/ui/CellTrail.astro';
+import CtaBand from '../../../../components/ui/CtaBand.astro';
+import DataTable from '../../../../components/ui/DataTable.astro';
+import Section from '../../../../components/ui/Section.astro';
+import { href } from '../../../../lib/url.ts';
+
+const entry = await loadPage('about/orbital');
+---
+
+<PageShell entry={entry} path="/about/frameworks/orbital/" ogSlot="og-about" lead="Seven components a project plan has to answer.">
+  <Fragment slot="after">
+    <Section tone="soft" labelledby="or-summary">
+      <div class="container stack">
+        <h2 id="or-summary">The frame at a glance</h2>
+        <CellTrail label="ORBITAL components" cells={ORBITAL_PARTS.map((a) => ({ label: a.name }))} />
+        <DataTable caption="ORBITAL components" columns={['Component', 'What the plan says']} rows={ORBITAL_PARTS.map((a) => [a.name, a.asks])} />
+        <p><a href={href('/about/frameworks/')}>Back to all frameworks</a>, or see <a href={href('/about/frameworks/android-ops/')}>ANDROID Ops</a> for how a team works.</p>
+      </div>
+    </Section>
+    <CtaBand title="Plan before you build" text="The Dream playbook starts with the evidence a plan needs." cta={{ label: 'Read the playbooks', href: '/playbooks/' }} secondary={{ label: 'Contact', href: '/contact/' }} />
+  </Fragment>
+</PageShell>
