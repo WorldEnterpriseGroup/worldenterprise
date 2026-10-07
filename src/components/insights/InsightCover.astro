@@ -1,0 +1,61 @@
+---
+import { seedFrom } from './related.ts';
+
+interface Props {
+  slug: string;
+  topic: 'dream' | 'build' | 'grow' | 'fundable';
+}
+
+/** Deterministic decorative hex field seeded from topic and slug. No raster; always aria-hidden. */
+const { slug, topic } = Astro.props;
+const COLS = 9;
+const ROWS = 4;
+const R = 22;
+const W = Math.sqrt(3) * R;
+let state = seedFrom(`${topic}:${slug}`) || 1;
+function next(): number {
+  state ^= state << 13;
+  state >>>= 0;
+  state ^= state >>> 17;
+  state ^= state << 5;
+  state >>>= 0;
+  return state / 0xffffffff;
+}
+const tones = ['mist', 'tint', 'blue', 'deep'] as const;
+const accentCol = Math.floor(next() * COLS);
+const accentRow = Math.floor(next() * ROWS);
+const cells = Array.from({ length: COLS * ROWS }, (_, i) => {
+  const col = i % COLS;
+  const row = Math.floor(i / COLS);
+  const cx = col * W + (row % 2 === 1 ? W / 2 : 0) + W / 2;
+  const cy = row * R * 1.5 + R;
+  const bias = (col + row * 2) / (COLS + ROWS * 2);
+  const tone = tones[Math.min(3, Math.floor((next() * 0.6 + bias * 0.8) * 4 * (topic === 'dream' ? 0.9 : topic === 'build' ? 1.05 : 1)))] ?? 'mist';
+  const points = Array.from({ length: 6 }, (_, k) => {
+    const a = (Math.PI / 180) * (60 * k - 30);
+    return `${(cx + (R - 1.5) * Math.cos(a)).toFixed(1)},${(cy + (R - 1.5) * Math.sin(a)).toFixed(1)}`;
+  }).join(' ');
+  return { points, tone, accent: col === accentCol && row === accentRow };
+});
+const width = COLS * W + W / 2;
+const height = ROWS * R * 1.5 + R * 0.5 + R;
+---
+
+<svg class="cover" viewBox={`0 0 ${width.toFixed(0)} ${height.toFixed(0)}`} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+  {cells.map((c) => <polygon points={c.points} class={`cover__cell cover__cell--${c.accent ? 'accent' : c.tone}`} />)}
+</svg>
+
+<style>
+  .cover {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 16 / 9;
+    background: var(--we-mist);
+  }
+  .cover__cell--mist { fill: var(--we-mist); stroke: var(--we-tint); }
+  .cover__cell--tint { fill: var(--we-tint); }
+  .cover__cell--blue { fill: var(--we-blue); }
+  .cover__cell--deep { fill: var(--we-blue-deep); }
+  .cover__cell--accent { fill: var(--we-amber); }
+</style>

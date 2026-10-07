@@ -1,0 +1,51 @@
+---
+import { getEntry, render } from 'astro:content';
+import ArticleHub from '../../layouts/ArticleHub.astro';
+import DeskRail from '../../components/insights/DeskRail.astro';
+import { DESKS, DESK_LABELS, listInsights } from '../../components/insights/articles.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+const page = await getEntry('pages', 'insights/index');
+if (page === undefined) throw new Error('Missing content entry src/content/pages/insights/index.mdx.');
+const { Content } = await render(page);
+const state = await getRouteState();
+const desks = await Promise.all(DESKS.map(async (desk) => ({ desk, items: await listInsights(desk) })));
+---
+
+<ArticleHub
+  title={page.data.title}
+  description={page.data.description}
+  path="/insights/"
+  eyebrow={page.data.eyebrow ?? 'Resources'}
+  lead="Practical, sourced pieces on how a SaaS idea becomes a company. Written by World Enterprise Editorial."
+  updated={page.data.updated}
+  draft={page.data.draft}
+>
+  <div class="prose">
+    <Content />
+  </div>
+  {
+    desks.map(({ desk, items }) => (
+      <DeskRail
+        id={`desk-${desk}`}
+        title={DESK_LABELS[desk].name}
+        blurb={DESK_LABELS[desk].blurb}
+        items={items}
+      />
+    ))
+  }
+  <nav aria-label="Insight desks">
+    <ul class="cluster" role="list">
+      {
+        desks.map(({ desk }) => (
+          <li>
+            {state.isLive(`/insights/topic/${desk}/`) ? (
+              <a class="btn btn--secondary" href={href(`/insights/topic/${desk}/`)}>All {DESK_LABELS[desk].name} articles</a>
+            ) : null}
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</ArticleHub>

@@ -1,0 +1,60 @@
+---
+import InsightCard from './InsightCard.astro';
+import { insightPath, insightSlug, readingMinutes } from './articles.ts';
+import type { Insight } from './articles.ts';
+
+interface Props {
+  title: string;
+  id: string;
+  blurb?: string;
+  items: readonly Insight[];
+  href?: string;
+}
+
+const { title, id, blurb, items } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section class="desk-rail stack" aria-labelledby={id}>
+      <div class="stack">
+        <h2 id={id}>{title}</h2>
+        {blurb && <p class="muted">{blurb}</p>}
+      </div>
+      <ul class="desk-rail__list" role="list">
+        {items.map((e) => (
+          <li class="desk-rail__item">
+            <InsightCard
+              title={e.data.title}
+              summary={e.data.description}
+              path={insightPath(e)}
+              slug={insightSlug(e)}
+              topic={e.data.topic}
+              meta={`${readingMinutes(e.body)} min read`}
+            />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .desk-rail__list {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(85%, 20rem);
+    gap: var(--sp-4);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0 0 var(--sp-3);
+    list-style: none;
+  }
+  .desk-rail__item {
+    scroll-snap-align: start;
+    display: flex;
+  }
+  .desk-rail__item :global(.card) {
+    inline-size: 100%;
+  }
+</style>

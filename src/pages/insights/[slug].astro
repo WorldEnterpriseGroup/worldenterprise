@@ -2,18 +2,24 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import InsightCover from '../../components/insights/InsightCover.astro';
+import { insightSlug, listInsights, readingMinutes, relatedFor } from '../../components/insights/articles.ts';
 import { getRenderable, isDraft } from '../../lib/content.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 
 export const getStaticPaths = (async () => {
   const entries = await getRenderable('insights');
-  // Fixtures live in a _fixtures/ subfolder, so the route slug is the last segment of the entry id.
-  return entries.map((entry) => ({ params: { slug: entry.id.split('/').at(-1) ?? entry.id }, props: { entry } }));
+  // Entries live in desk folders (and _fixtures/), so the route slug is the last segment of the entry id.
+  return entries.map((entry) => ({ params: { slug: insightSlug(entry) }, props: { entry } }));
 }) satisfies GetStaticPaths;
 
 const { entry } = Astro.props;
 const { slug } = Astro.params;
 const { Content, headings } = await render(entry);
 const { data } = entry;
+const state = await getRouteState();
+const siblings = await listInsights(data.topic);
+const related = relatedFor(entry, siblings, (path) => state.isLive(path));
 ---
 
 <ArticleLayout
@@ -23,9 +29,12 @@ const { data } = entry;
   topic={data.topic}
   publishedDate={data.publishedDate}
   updatedDate={data.updatedDate}
+  readingMinutes={readingMinutes(entry.body)}
   headings={headings.map((h) => ({ depth: h.depth, slug: h.slug, text: h.text }))}
   sources={data.sources}
+  related={related}
   draft={isDraft(entry)}
 >
+  <InsightCover slug={insightSlug(entry)} topic={data.topic} />
   <Content />
 </ArticleLayout>

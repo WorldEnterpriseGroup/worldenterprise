@@ -1,0 +1,27 @@
+---
+import { href } from '../../lib/url.ts';
+import InsightCover from './InsightCover.astro';
+
+interface Props {
+  title: string;
+  summary: string;
+  path: string;
+  slug: string;
+  topic: 'dream' | 'build' | 'grow' | 'fundable';
+  meta?: string;
+  headingLevel?: 2 | 3 | 4;
+}
+
+const { title, summary, path, slug, topic, meta, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+
+<article class="card" data-linked>
+  <InsightCover slug={slug} topic={topic} />
+  <div class="card__body stack">
+    <p class="eyebrow">{topic}</p>
+    <Heading class="card__title"><a class="card__link" href={href(path)}>{title}</a></Heading>
+    <p>{summary}</p>
+    {meta && <p class="card__meta">{meta}</p>}
+  </div>
+</article>

@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getEntry, render } from 'astro:content';
+import ArticleHub from '../../../layouts/ArticleHub.astro';
+import { DESKS, DESK_LABELS, listInsights } from '../../../components/insights/articles.ts';
+import type { Desk } from '../../../components/insights/articles.ts';
+import InsightCard from '../../../components/insights/InsightCard.astro';
+import { insightPath, insightSlug, readingMinutes } from '../../../components/insights/articles.ts';
+
+export const getStaticPaths = (() => DESKS.map((topic) => ({ params: { topic } }))) satisfies GetStaticPaths;
+
+const topic = Astro.params.topic as Desk;
+const label = DESK_LABELS[topic];
+const page = await getEntry('pages', `insights/topic-${topic}`);
+const Content = page === undefined ? undefined : (await render(page)).Content;
+const items = await listInsights(topic);
+---
+
+<ArticleHub
+  title={page?.data.title ?? `${label.name} insights`}
+  description={page?.data.description ?? `${label.blurb} Sourced articles from World Enterprise Editorial.`}
+  path={`/insights/topic/${topic}/`}
+  eyebrow={`Insights / ${label.name}`}
+  lead={label.blurb}
+  {...(page !== undefined ? { updated: page.data.updated, draft: page.data.draft } : {})}
+>
+  {Content !== undefined && <div class="prose"><Content /></div>}
+  {
+    items.length > 0 ? (
+      <ul class="grid" style="--grid-min:16rem" role="list">
+        {items.map((e) => (
+          <li>
+            <InsightCard
+              title={e.data.title}
+              summary={e.data.description}
+              path={insightPath(e)}
+              slug={insightSlug(e)}
+              topic={e.data.topic}
+              meta={`${readingMinutes(e.body)} min read`}
+              headingLevel={2}
+            />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="muted">Articles for this desk are being edited and will appear here when they are ready.</p>
+    )
+  }
+</ArticleHub>

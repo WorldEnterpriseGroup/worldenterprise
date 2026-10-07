@@ -1,0 +1,15 @@
+---
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  path: string;
+}
+
+/** Links to a ledger route only when it exists in this build; otherwise renders the text alone. */
+const { path } = Astro.props;
+const state = await getRouteState();
+const live = state.isLive(path);
+---
+
+{live ? <a href={href(path)}><slot /></a> : <slot />}
