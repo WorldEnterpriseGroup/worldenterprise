@@ -121,7 +121,7 @@ export const STAGES: readonly Stage[] = [
     limits: [
       'Build does not include production operations or round-the-clock support.',
       'It does not promise a ship date. Dates depend on scope and on decisions only you can make.',
-      'The baseline checklist is a working tool. It is not a certification and WE does not describe the product as certified.',
+      'The baseline checklist is a working tool. It is not an audit or an attestation, and it does not show that the product meets any outside standard.',
     ],
     lines: [
       { line: 'B', title: 'Product and IT Development', path: '/services/product-and-it-development/', note: 'Design, build and release your SaaS.' },

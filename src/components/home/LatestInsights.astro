@@ -1,0 +1,29 @@
+---
+import { getPublished } from '../../lib/content.ts';
+import ArticleCard from '../cards/ArticleCard.astro';
+
+const entries = (await getPublished('insights'))
+  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime())
+  .slice(0, 3);
+
+/** The route slug is the last segment of the entry id. */
+function slugOf(id: string): string {
+  const parts = id.split('/');
+  return parts[parts.length - 1] ?? id;
+}
+---
+
+{
+  entries.length > 0 && (
+    <section class="section section--defer" aria-labelledby="home-insights">
+      <div class="container stack">
+        <h2 id="home-insights">Latest insights</h2>
+        <div class="grid">
+          {entries.map((e) => (
+            <ArticleCard title={e.data.title} summary={e.data.description} path={`/insights/${slugOf(e.id)}/`} eyebrow={e.data.topic} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

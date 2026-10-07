@@ -81,3 +81,17 @@ const toc = [
     {primary && <CtaBand title="Start with an application" text="WE agrees the scope with you before any work begins." cta={primary} secondary={secondary} />}
   </Fragment>
 </HubLayout>
+
+<style>
+  @layer pages {
+    .split {
+      display: grid;
+      gap: var(--sp-5);
+      align-items: center;
+
+      @media (min-width: 62rem) {
+        grid-template-columns: 3fr 2fr;
+      }
+    }
+  }
+</style>

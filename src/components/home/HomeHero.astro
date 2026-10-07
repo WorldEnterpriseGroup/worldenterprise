@@ -1,0 +1,70 @@
+---
+import { getPhoto } from '../../assets/photo/index.ts';
+import CellTrail from '../ui/CellTrail.astro';
+import { STAGES } from '../program/stages.ts';
+import { href } from '../../lib/url.ts';
+
+interface Cta {
+  readonly label: string;
+  readonly href: string;
+}
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  primary: Cta;
+  secondary?: Cta;
+}
+
+const { eyebrow, title, lead, primary, secondary } = Astro.props;
+const image = getPhoto('band-1');
+const trail = STAGES.map((s) => ({ label: s.name, href: href(s.path) }));
+---
+
+<section class="home-hero hero--atlas" aria-labelledby="home-title">
+  <div class="container home-hero__grid">
+    <div class="home-hero__copy stack">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1 id="home-title">{title}</h1>
+      <p class="lead">{lead}</p>
+      <div class="cluster">
+        <a class="btn btn--primary" href={href(primary.href)}>{primary.label}</a>
+        {secondary && <a class="btn btn--secondary" href={href(secondary.href)}>{secondary.label}</a>}
+      </div>
+      <CellTrail label="The three stages" cells={trail} />
+    </div>
+    <div class="home-hero__media hex-frame">
+      <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} fetchpriority="high" decoding="async" />
+    </div>
+  </div>
+</section>
+
+<style>
+  @layer pages {
+    .home-hero {
+      padding-block: var(--sp-5);
+    }
+
+    .home-hero__grid {
+      display: grid;
+      gap: var(--sp-4);
+      align-items: center;
+
+      @media (min-width: 62rem) {
+        grid-template-columns: 3fr 2fr;
+        gap: var(--sp-6);
+      }
+    }
+
+    /* Keeps the whole hero inside the first viewport on phones and desktops. */
+    .home-hero__media img {
+      max-block-size: 22dvh;
+      object-fit: cover;
+
+      @media (min-width: 62rem) {
+        max-block-size: 60dvh;
+      }
+    }
+  }
+</style>

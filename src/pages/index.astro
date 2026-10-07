@@ -1,15 +1,154 @@
 ---
+import { getPhoto } from '../assets/photo/index.ts';
+import EvidenceLedger from '../components/blocks/EvidenceLedger.astro';
+import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
+import FaqList from '../components/cards/FaqList.astro';
+import HomeHero from '../components/home/HomeHero.astro';
+import LatestInsights from '../components/home/LatestInsights.astro';
+import { HOME_FAQS } from '../components/home/faq.ts';
+import { loadPage } from '../components/program/loadPage.ts';
+import SeatDiagram from '../components/program/SeatDiagram.astro';
+import StageExplorer from '../components/program/StageExplorer.astro';
+import { STAGES } from '../components/program/stages.ts';
+import CtaBand from '../components/ui/CtaBand.astro';
+import FactBand from '../components/ui/FactBand.astro';
+import HexAtlas from '../components/ui/HexAtlas.astro';
+import { getPublished } from '../lib/content.ts';
+import { getRouteState } from '../lib/route-state.ts';
+import { href } from '../lib/url.ts';
 import HomeLayout from '../layouts/HomeLayout.astro';
-import { site } from '../data/site.ts';
+
+const { data, Content } = await loadPage('home');
+const [primary, secondary] = data.ctas;
+const state = await getRouteState();
+const band = getPhoto('band-4');
+
+const SERVICES = [
+  { label: 'Brand and Identity', href: '/services/brand-and-identity/', line: 'A' },
+  { label: 'Product and IT Development', href: '/services/product-and-it-development/', line: 'B' },
+  { label: 'Customer Relations and Market Development', href: '/services/customer-and-market-development/', line: 'C' },
+  { label: 'Business Management and Operations', href: '/services/business-management-and-operations/', line: 'D' },
+  { label: 'Digital Incubation', href: '/services/digital-incubation/', line: 'E' },
+  { label: 'Fundability and Investor Readiness', href: '/services/fundability-and-investor-readiness/', line: 'F' },
+  { label: 'Professional-Services Coordination', href: '/services/professional-services-coordination/', line: 'G' },
+] as const;
+const services = SERVICES.filter((s) => state.isLive(s.href));
+
+// Evidence strip numbers come from the collections and the route ledger, never from typed figures.
+const [playbooks, library, insights, research] = await Promise.all([
+  getPublished('playbooks'),
+  getPublished('library'),
+  getPublished('insights'),
+  getPublished('research'),
+]);
+const frameworkCount = [...state.live].filter((p) => p.startsWith('/about/frameworks/') && p !== '/about/frameworks/').length;
+const counts = [
+  { label: 'Stages from idea to first customers', value: STAGES.length },
+  { label: 'Service lines', value: services.length },
+  { label: 'Playbooks', value: playbooks.length },
+  { label: 'Templates and library items', value: library.length },
+  { label: 'Insight articles', value: insights.length },
+  { label: 'Research briefs', value: research.length },
+  { label: 'Published frameworks', value: frameworkCount },
+];
+const facts = counts.filter((c) => c.value > 0).map((c) => ({ label: c.label, value: String(c.value) }));
+
+interface ProofRow {
+  readonly claim: string;
+  readonly source: string;
+  readonly sourceHref: string;
+  readonly basis: 'framework' | 'editorial-judgement';
+}
+const PROOF: readonly ProofRow[] = [
+  { claim: 'WE is a digital incubator for SaaS and works fully remotely.', source: 'How the program works', sourceHref: '/program/how-it-works/', basis: 'framework' },
+  { claim: 'Team seats are dedicated to one company and steered by WE.', source: 'Dedicated seats, steered by WE', sourceHref: '/program/dedicated-teams/', basis: 'framework' },
+  { claim: 'Each stage ends with evidence you can inspect, not a promised outcome.', source: 'Dream, Build and Grow', sourceHref: '/program/dream/', basis: 'editorial-judgement' },
+  { claim: 'WE does not promise funding.', source: 'Fundability and investor readiness', sourceHref: '/fundability/', basis: 'editorial-judgement' },
+];
+const proofRows = PROOF.map((r) => ({
+  claim: r.claim,
+  source: r.source,
+  sourceHref: state.isLive(r.sourceHref) ? r.sourceHref : undefined,
+  basis: r.basis,
+}));
 ---
 
-<HomeLayout description={site.description}>
-  <div slot="hero" class="page-header">
+<HomeLayout description={data.description} updated={data.updated} draft={data.draft} ogSlot="og-home">
+  {primary && <HomeHero eyebrow={data.eyebrow ?? 'World Enterprise Incubator'} title="Turn a SaaS idea into a company that can prove itself." lead="WE is a digital incubator: dedicated team seats, steered by WE, take you from first idea to the evidence a serious investor asks for." primary={primary} secondary={secondary} />}
+
+  {
+    facts.length > 0 && (
+      <section class="section section--tight" aria-label="What is on this site">
+        <div class="container">
+          <FactBand label="What is on this site" facts={facts} />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--defer" aria-labelledby="home-stages">
     <div class="container stack">
-      <p class="eyebrow">{site.motto}</p>
-      <h1>{site.tagline}</h1>
-      <div class="rule" aria-hidden="true"></div>
-      <p class="lead">{site.description}</p>
+      <h2 id="home-stages">Three stages, one map</h2>
+      <p class="measure">Dream surveys the ground, Build draws the blueprint and Grow works the territory. Open a stage to see what you leave it holding.</p>
+      <StageExplorer headingLevel={3} />
     </div>
-  </div>
+  </section>
+
+  <section class="section section--soft section--defer" aria-labelledby="home-team">
+    <div class="container stack">
+      <h2 id="home-team">A team that works for your company</h2>
+      <SeatDiagram labelledby="home-team" />
+      <p><a href={href('/program/dedicated-teams/')}>See how dedicated seats work</a></p>
+    </div>
+  </section>
+
+  {
+    services.length > 0 && (
+      <section class="section section--defer" aria-labelledby="home-services">
+        <div class="container stack">
+          <h2 id="home-services">Seven service lines, one accountable team</h2>
+          <HexAtlas label="Service lines" cells={services} />
+          <p><a href={href('/services/')}>Explore all service lines</a></p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--soft section--defer" aria-labelledby="home-proof">
+    <div class="container stack">
+      <h2 id="home-proof">Promise and proof</h2>
+      <EvidenceLedger caption="What WE promises and where to check it" rows={proofRows} />
+    </div>
+  </section>
+
+  <section class="section section--defer" aria-labelledby="home-fundable">
+    <div class="container stack">
+      <h2 id="home-fundable">Evidence a serious investor asks for</h2>
+      <p class="measure">WE helps you assemble the evidence an investor will look for: a validated problem, a working product and customers who use it. The decision to invest stays with the investor.</p>
+      <NoFundingDisclaimer />
+    </div>
+  </section>
+
+  <section class="section section--soft section--defer" aria-labelledby="home-remote">
+    <div class="container stack">
+      <h2 id="home-remote">Fully remote, by design</h2>
+      <img src={band.src.src} width={band.src.width} height={band.src.height} alt={band.alt} loading="lazy" decoding="async" />
+      <p class="measure">There is no office to visit and nobody relocates. The work is written down, reviewed at set points and visible to you throughout. <a href={href('/program/digital-incubation-model/')}>Read how remote works in practice</a>.</p>
+    </div>
+  </section>
+
+  <section class="section section--defer">
+    <div class="container prose measure"><Content /></div>
+  </section>
+
+  <LatestInsights />
+
+  <section class="section section--defer" aria-labelledby="home-faq">
+    <div class="container stack">
+      <h2 id="home-faq">Questions founders ask first</h2>
+      <FaqList items={HOME_FAQS} name="home-faq" />
+    </div>
+  </section>
+
+  {primary && <CtaBand title="Ready to test your idea?" text="Apply, or sketch the team you would need first." cta={primary} secondary={secondary} />}
 </HomeLayout>
