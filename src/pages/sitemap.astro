@@ -1,0 +1,85 @@
+---
+import ReferenceLayout from '../layouts/ReferenceLayout.astro';
+import { primaryNav, footerNav, utilityNav } from '../data/nav.ts';
+import { routes } from '../data/routes.ts';
+import { getPublished } from '../lib/content.ts';
+import { getRouteState } from '../lib/route-state.ts';
+import { groupSitemapRoutes } from '../lib/seo.ts';
+import { href } from '../lib/url.ts';
+
+/**
+ * HTML site map (SAGE-PLAN 5.6 Utility). Lists every launched, indexable route that exists, grouped by section.
+ * Labels come from the navigation data first, then from collection titles, so a page is named the way readers see it.
+ */
+const state = await getRouteState();
+
+const labels = new Map<string, string>();
+const addLabel = (path: string, label: string): void => {
+  if (!labels.has(path)) labels.set(path, label);
+};
+for (const item of primaryNav) {
+  addLabel(item.href, item.label);
+  if (item.kind === 'mega') for (const column of item.columns) for (const link of column.links) addLabel(link.href, link.label);
+}
+for (const column of footerNav) for (const link of column.links) addLabel(link.href, link.label);
+for (const link of utilityNav.links) addLabel(link.href, link.label);
+
+const lastSegment = (id: string): string => id.split('/').at(-1) ?? id;
+const collectionPaths = [
+  ['insights', (id: string) => `/insights/${lastSegment(id)}/`],
+  ['research', (id: string) => `/research/${lastSegment(id)}/`],
+  ['library', (id: string) => `/library/${lastSegment(id)}/`],
+  ['services', (id: string) => `/services/${lastSegment(id)}/`],
+  ['playbooks', (id: string) => `/playbooks/${lastSegment(id)}/`],
+  ['guides', (id: string) => `/fundability/${lastSegment(id)}/`],
+] as const;
+for (const [name, toPath] of collectionPaths) {
+  for (const entry of await getPublished(name)) addLabel(toPath(entry.id), entry.data.title);
+}
+
+const paths = routes.filter((r) => r.launch && r.indexable && state.isLive(r.path)).map((r) => r.path);
+const sections = groupSitemapRoutes(paths, (path) => labels.get(path));
+---
+
+<ReferenceLayout
+  title="Site map"
+  description="Every page of the World Enterprise Incubator site, grouped by section."
+  path="/sitemap/"
+  eyebrow="Reference"
+  lead="Every page on this site, grouped by section."
+  wide
+>
+  <div class="sitemap-grid">
+    {
+      sections.map((section) => (
+        <section class="stack" aria-labelledby={`sitemap-${section.id}`}>
+          <h2 id={`sitemap-${section.id}`}>{section.label}</h2>
+          <ul role="list">
+            {section.links.map((link) => (
+              <li>
+                <a href={href(link.href)}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</ReferenceLayout>
+
+<style>
+  @layer pages {
+    .sitemap-grid {
+      display: grid;
+      gap: var(--sp-6);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    }
+
+    .sitemap-grid ul {
+      display: grid;
+      gap: var(--sp-2);
+      padding: 0;
+      list-style: none;
+    }
+  }
+</style>

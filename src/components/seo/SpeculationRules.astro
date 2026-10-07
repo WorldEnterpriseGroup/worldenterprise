@@ -1,23 +1,15 @@
 ---
-import { normalizeBase } from '../../lib/url-core.ts';
+import { createHash } from 'node:crypto';
+import { speculationRules } from '../../lib/seo.ts';
 
-/** Prerender on hover for same-site links, except the thanks page and search. Base-aware for preview builds. */
-const base = normalizeBase(import.meta.env.BASE_URL);
-const rules = {
-  prerender: [
-    {
-      where: {
-        and: [
-          { href_matches: `${base}/*` },
-          { not: { href_matches: `${base}/apply/thanks/` } },
-          { not: { href_matches: `${base}/search/*` } },
-          { not: { selector_matches: '[rel~=external]' } },
-        ],
-      },
-      eagerness: 'moderate',
-    },
-  ],
-};
+/**
+ * Prerender on hover for same-site links, except the thanks page and search (SAGE-PLAN 6.9). Base-aware for preview builds.
+ * The inline script is registered with Astro's CSP runtime by its SHA-256 hash, which is a no-op until security.csp is
+ * enabled in astro.config.mjs. The hash is computed over the exact serialised text so it always matches the markup.
+ */
+const body = JSON.stringify(speculationRules(import.meta.env.BASE_URL));
+const digest = createHash('sha256').update(body).digest('base64');
+Astro.csp?.insertScriptHash(`sha256-${digest}`);
 ---
 
-<script type="speculationrules" is:inline set:html={JSON.stringify(rules)} />
+<script type="speculationrules" is:inline set:html={body} />

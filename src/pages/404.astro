@@ -1,19 +1,73 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import ReferenceLayout from '../layouts/ReferenceLayout.astro';
+import { resolveNav } from '../data/nav.ts';
+import { getRouteState } from '../lib/route-state.ts';
 import { href } from '../lib/url.ts';
+
+/**
+ * Served by GitHub Pages for any unknown address at any depth, so every link is root-relative and base-aware (href()).
+ * Search and section links appear only when their routes exist.
+ */
+const state = await getRouteState();
+const searchLive = state.isLive('/search/');
+const sections = resolveNav(state.isLive).slice(0, 6);
 ---
 
-<BaseLayout title="Page not found" description="The page you asked for does not exist. Go to the home page or search the site." path="/404.html" crumbs={[]}>
-  <section class="page-header">
-    <div class="container stack">
-      <p class="eyebrow">Error 404</p>
-      <h1>This page is not here</h1>
-      <div class="rule" aria-hidden="true"></div>
-      <p class="lead">The address may have changed, or the page may not exist yet.</p>
-      <div class="cluster">
-        <a class="btn btn--primary" href={href('/')}>Go to the home page</a>
-        <a class="btn btn--secondary" href={href('/search/')}>Search the site</a>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<ReferenceLayout
+  title="Page not found"
+  description="The page you asked for does not exist. Go to the home page, search the site or choose a section."
+  path="/404.html"
+  eyebrow="Error 404"
+  lead="The address may have changed, or the page may not exist yet. Search the site or pick a section below."
+  crumbs={[]}
+>
+  <div class="cluster">
+    <a class="btn btn--primary" href={href('/')}>Go to the home page</a>
+    {state.isLive('/sitemap/') && <a class="btn btn--secondary" href={href('/sitemap/')}>Open the site map</a>}
+  </div>
+
+  {
+    searchLive && (
+      <form class="not-found__search stack" action={href('/search/')} method="get" role="search" aria-label="Search the site">
+        <div class="field">
+          <label for="not-found-q">Search the site</label>
+          <input id="not-found-q" name="q" type="search" autocomplete="off" />
+        </div>
+        <div>
+          <button class="btn btn--primary" type="submit">Search</button>
+        </div>
+      </form>
+    )
+  }
+
+  {
+    sections.length > 0 && (
+      <nav class="stack" aria-labelledby="not-found-sections">
+        <h2 id="not-found-sections">Popular sections</h2>
+        <ul class="not-found__links" role="list">
+          {sections.map((item) => (
+            <li>
+              <a href={href(item.href)}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+</ReferenceLayout>
+
+<style>
+  @layer pages {
+    .not-found__search {
+      max-inline-size: 32rem;
+    }
+
+    .not-found__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-3) var(--sp-5);
+      padding: 0;
+      list-style: none;
+    }
+  }
+</style>

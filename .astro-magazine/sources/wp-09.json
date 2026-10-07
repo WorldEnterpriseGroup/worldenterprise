@@ -1,0 +1,29 @@
+[
+  {
+    "schema_version": "1.0.0",
+    "source_id": "wp09-rfc-9116",
+    "publisher_or_author": "IETF",
+    "title": "RFC 9116: A File Format to Aid in Security Vulnerability Disclosure (security.txt)",
+    "source_tier": "primary",
+    "exact_url_or_locator": "https://www.rfc-editor.org/rfc/rfc9116",
+    "retrieved_at": "2026-10-06",
+    "relevant_locator": "Contact and Expires fields are required",
+    "claims_supported": ["security.txt carries Contact and Expires"],
+    "claims_not_supported": ["any statement about WE security practices (C-24)"],
+    "captured_by": "WP-09"
+  },
+  {
+    "schema_version": "1.0.0",
+    "source_id": "wp09-astro-7-3-6-types",
+    "publisher_or_author": "Astro",
+    "title": "astro 7.3.6 installed package: security.csp configuration and Astro.csp runtime API (type declarations)",
+    "source_tier": "primary",
+    "exact_url_or_locator": "node_modules/astro/dist/types/public/config.d.ts and context.d.ts",
+    "retrieved_at": "2026-10-06",
+    "version_or_release": "7.3.6",
+    "relevant_locator": "security.csp, scriptDirective.hashes, styleDirective, Astro.csp.insertScriptHash",
+    "claims_supported": ["CSP is emitted as a meta element with hashes for Astro-processed scripts and styles", "inline speculationrules scripts need an explicit hash or resource"],
+    "claims_not_supported": ["header-only directives (frame-ancestors) via the meta element"],
+    "captured_by": "WP-09"
+  }
+]
