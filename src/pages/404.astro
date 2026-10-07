@@ -1,5 +1,5 @@
 ---
-import ReferenceLayout from '../layouts/ReferenceLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { resolveNav } from '../data/nav.ts';
 import { getRouteState } from '../lib/route-state.ts';
 import { href } from '../lib/url.ts';
@@ -13,48 +13,58 @@ const searchLive = state.isLive('/search/');
 const sections = resolveNav(state.isLive).slice(0, 6);
 ---
 
-<ReferenceLayout
+<BaseLayout
   title="Page not found"
   description="The page you asked for does not exist. Go to the home page, search the site or choose a section."
   path="/404.html"
-  eyebrow="Error 404"
-  lead="The address may have changed, or the page may not exist yet. Search the site or pick a section below."
   crumbs={[]}
 >
-  <div class="cluster">
-    <a class="btn btn--primary" href={href('/')}>Go to the home page</a>
-    {state.isLive('/sitemap/') && <a class="btn btn--secondary" href={href('/sitemap/')}>Open the site map</a>}
+  <section class="page-header">
+    <div class="container stack">
+      <p class="eyebrow">Error 404</p>
+      <h1>This page is not here</h1>
+      <div class="rule" aria-hidden="true"></div>
+      <p class="lead">The address may have changed, or the page may not exist yet. Search the site or pick a section below.</p>
+    </div>
+  </section>
+  <div class="section">
+    <div class="container container--prose stack">
+      <div class="cluster">
+        <a class="btn btn--primary" href={href('/')}>Go to the home page</a>
+        {state.isLive('/sitemap/') && <a class="btn btn--secondary" href={href('/sitemap/')}>Open the site map</a>}
+      </div>
+
+      {
+        searchLive && (
+          <form class="not-found__search stack" action={href('/search/')} method="get" role="search" aria-label="Search the site">
+            <div class="field">
+              <label for="not-found-q">Search the site</label>
+              <input id="not-found-q" name="q" type="search" autocomplete="off" />
+            </div>
+            <div>
+              <button class="btn btn--primary" type="submit">Search</button>
+            </div>
+          </form>
+        )
+      }
+
+      {
+        sections.length > 0 && (
+          <nav class="stack" aria-labelledby="not-found-sections">
+            <h2 id="not-found-sections">Popular sections</h2>
+            <ul class="not-found__links" role="list">
+              {sections.map((item) => (
+                <li>
+                  <a href={href(item.href)}>{item.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+    </div>
   </div>
-
-  {
-    searchLive && (
-      <form class="not-found__search stack" action={href('/search/')} method="get" role="search" aria-label="Search the site">
-        <div class="field">
-          <label for="not-found-q">Search the site</label>
-          <input id="not-found-q" name="q" type="search" autocomplete="off" />
-        </div>
-        <div>
-          <button class="btn btn--primary" type="submit">Search</button>
-        </div>
-      </form>
-    )
-  }
-
-  {
-    sections.length > 0 && (
-      <nav class="stack" aria-labelledby="not-found-sections">
-        <h2 id="not-found-sections">Popular sections</h2>
-        <ul class="not-found__links" role="list">
-          {sections.map((item) => (
-            <li>
-              <a href={href(item.href)}>{item.label}</a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    )
-  }
-</ReferenceLayout>
+</BaseLayout>
 
 <style>
   @layer pages {
