@@ -39,4 +39,4 @@ WE uses AI tools in its editorial work, for drafting, editing, research support 
 
 ## What WE does not publish
 
-No customer quotes, no claims of funding raised, no named clients, no invented case studies and no unsourced statistics. Educational pages on legal and financial subjects, such as how a SAFE works in general, are not legal or financial advice. For advice about your own company, talk to your own counsel.
+No customer quotes, no claims about money raised, no named clients, no invented case studies and no unsourced statistics. Educational pages on legal and financial subjects, such as how a SAFE works in general, are not legal or financial advice. For advice about your own company, talk to your own counsel.
