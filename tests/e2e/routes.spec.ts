@@ -24,7 +24,18 @@ for (const { path: route } of liveRoutes) {
     expect(new URL(canonical ?? '').pathname, 'canonical path').toBe(route);
 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-    expect(overflow, `horizontal overflow at ${page.viewportSize()?.width}px`).toBeLessThanOrEqual(0);
+    if (overflow > 0) {
+      // Name the elements that poke out of the viewport so the owner can fix them without reproducing the page.
+      const culprits = await page.evaluate(() => {
+        const width = document.documentElement.clientWidth;
+        const describe = (el: Element): string => `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ''}${typeof el.className === 'string' && el.className ? `.${el.className.trim().split(/\s+/).slice(0, 2).join('.')}` : ''}`;
+        return [...document.body.querySelectorAll('*')]
+          .filter((el) => el.getBoundingClientRect().right > width + 1)
+          .slice(0, 4)
+          .map((el) => `${describe(el)} right=${Math.round(el.getBoundingClientRect().right)}`);
+      });
+      expect(overflow, `horizontal overflow at ${page.viewportSize()?.width}px by ${culprits.join('; ')}`).toBeLessThanOrEqual(0);
+    }
 
     await page.waitForLoadState('networkidle');
     expect(seen.pageErrors, 'uncaught exceptions').toEqual([]);
