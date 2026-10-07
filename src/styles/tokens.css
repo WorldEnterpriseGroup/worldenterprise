@@ -1,0 +1,133 @@
+/*
+ * Design tokens, Hive Atlas. Light theme only (D-3).
+ * Palette source: whitelab brand. Hex values are kept in comments for audit-contrast.
+ * Contrast pairs are declared as `@pair fg bg ratio-min` comments and verified by scripts/audit-contrast.mjs.
+ */
+@layer reset, tokens, base, layout, components, utilities, pages, print;
+
+@layer tokens {
+  :root {
+    color-scheme: light;
+
+    /* Brand palette */
+    --we-charcoal: oklch(24.42% 0.0064 0.6); /* #231F20 */
+    --we-blue: oklch(54.87% 0.1362 248.3); /* #1C75BC */
+    --we-blue-hi: oklch(59.14% 0.1321 244.3); /* #2484C6 */
+    --we-blue-deep: oklch(40.92% 0.1065 250.2); /* #0F4C81 */
+    --we-blue-night: oklch(31.86% 0.0797 249.9); /* #0A3459 */
+    --we-grey: oklch(66.91% 0.005 258.3); /* #939598 */
+    --we-slate: oklch(48.06% 0.0074 255.5); /* #5B5E62 */
+    --we-mist: oklch(95.71% 0.0127 244.3); /* #EAF2F9 */
+    --we-tint: oklch(88.44% 0.0382 239.6); /* #C3DDF0 */
+    --we-hairline: oklch(88.37% 0.0081 253.9); /* #D5D9DE */
+    --we-amber: oklch(76.49% 0.1399 72.9); /* #E8A33D */
+    --we-amber-ink: oklch(50.84% 0.1033 71.2); /* #8A5A10 */
+    --we-amber-wash: oklch(96.72% 0.026 82.4); /* #FDF3E1 */
+    --we-white: oklch(100% 0 0); /* #FFFFFF */
+    --we-error: oklch(50.13% 0.1783 28.7); /* #B3261E */
+    --we-success: oklch(46.78% 0.1091 152); /* #1B6B3A */
+
+    /* Semantic colour aliases */
+    --color-bg: var(--we-white);
+    --color-bg-soft: var(--we-mist);
+    --color-bg-inverse: var(--we-blue-night);
+    --color-text: var(--we-charcoal); /* @pair color-text color-bg 4.5 */
+    --color-text-muted: var(--we-slate); /* @pair color-text-muted color-bg 4.5 */
+    --color-text-inverse: var(--we-white); /* @pair color-text-inverse color-bg-inverse 4.5 */
+    --color-link: var(--we-blue-deep); /* @pair color-link color-bg 4.5 */
+    --color-link-hover: var(--we-blue-night);
+    --color-accent: var(--we-blue); /* @pair color-accent color-bg 3 */
+    --color-accent-contrast: var(--we-white); /* @pair color-accent-contrast color-accent 4.5 */
+    --color-cta: var(--we-blue-deep);
+    --color-cta-contrast: var(--we-white); /* @pair color-cta-contrast color-cta 4.5 */
+    --color-highlight: var(--we-amber);
+    --color-highlight-ink: var(--we-amber-ink); /* @pair color-highlight-ink color-amber-wash 4.5 */
+    --color-amber-wash: var(--we-amber-wash);
+    --color-border: var(--we-hairline);
+    --color-border-strong: var(--we-grey); /* @pair color-border-strong color-bg 3 */
+    --color-focus: var(--we-blue-deep); /* @pair color-focus color-bg 3 */
+    --color-focus-inverse: var(--we-white); /* @pair color-focus-inverse color-bg-inverse 3 */
+    --color-error: var(--we-error); /* @pair color-error color-bg 4.5 */
+    --color-success: var(--we-success); /* @pair color-success color-bg 4.5 */
+
+    /* Typography families (variables provided by the Astro Fonts API) */
+    --ff-display: var(--font-display), 'Titillium Web', Arial, sans-serif;
+    --ff-serif: var(--font-serif), 'Source Serif 4', Georgia, serif;
+    --ff-sans: var(--font-sans), 'Source Sans 3', Arial, sans-serif;
+    --ff-mono: var(--font-mono), 'Source Code Pro', Consolas, monospace;
+
+    /* Fluid type scale, 360px to 1440px viewport */
+    --fs-xs: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
+    --fs-sm: clamp(0.9rem, 0.88rem + 0.1vw, 0.975rem);
+    --fs-base: clamp(1.0625rem, 1.03rem + 0.16vw, 1.1875rem);
+    --fs-lg: clamp(1.25rem, 1.18rem + 0.35vw, 1.5rem);
+    --fs-xl: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
+    --fs-2xl: clamp(1.875rem, 1.6rem + 1.4vw, 2.75rem);
+    --fs-3xl: clamp(2.25rem, 1.8rem + 2.2vw, 3.5rem);
+    --fs-4xl: clamp(2.75rem, 2rem + 3.7vw, 4.75rem);
+    --lh-tight: 1.1;
+    --lh-snug: 1.25;
+    --lh-body: 1.6;
+    --measure: 68ch;
+    --tracking-caps: 0.08em;
+
+    /* Spacing, 4px base */
+    --sp-1: 0.25rem;
+    --sp-2: 0.5rem;
+    --sp-3: 0.75rem;
+    --sp-4: 1rem;
+    --sp-5: 1.5rem;
+    --sp-6: 2rem;
+    --sp-7: 3rem;
+    --sp-8: 4rem;
+    --sp-9: 6rem;
+    --sp-10: 8rem;
+    --section-y: clamp(3rem, 2rem + 5vw, 7rem);
+
+    /* Radii and borders */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 1rem;
+    --radius-pill: 999px;
+    --border-hair: 1px solid var(--color-border);
+    --border-strong: 2px solid var(--color-border-strong);
+
+    /* Hexagon cell geometry (flat-top clip) */
+    --hex-clip: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+    --hex-ratio: 1.1547;
+
+    /* Layout */
+    --page-max: 80rem;
+    --page-wide: 90rem;
+    --prose-max: 46rem;
+    --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+    --header-h: 4.5rem;
+    --utility-h: 2.25rem;
+    --target-min: 2.75rem;
+
+    /* Elevation */
+    --shadow-1: 0 1px 2px oklch(24.42% 0.0064 0.6 / 0.08), 0 1px 1px oklch(24.42% 0.0064 0.6 / 0.06);
+    --shadow-2: 0 6px 20px oklch(31.86% 0.0797 249.9 / 0.12);
+    --shadow-3: 0 18px 48px oklch(31.86% 0.0797 249.9 / 0.18);
+
+    /* Motion */
+    --dur-fast: 120ms;
+    --dur-base: 220ms;
+    --dur-slow: 420ms;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+    /* Layering */
+    --z-header: 50;
+    --z-menu: 60;
+    --z-skip: 100;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --dur-fast: 0.01ms;
+      --dur-base: 0.01ms;
+      --dur-slow: 0.01ms;
+    }
+  }
+}

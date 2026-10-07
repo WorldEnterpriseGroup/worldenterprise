@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
@@ -23,6 +23,60 @@ export default defineConfig({
     format: 'directory',
     inlineStylesheets: 'auto',
   },
+  fonts: [
+    {
+      provider: fontProviders.local(),
+      name: 'Titillium Web',
+      cssVariable: '--font-display',
+      fallbacks: ['Arial', 'sans-serif'],
+      options: {
+        variants: [
+          { weight: 600, style: 'normal', src: ['./src/assets/fonts/titillium-web-latin-600-normal.woff'] },
+          { weight: 700, style: 'normal', src: ['./src/assets/fonts/titillium-web-latin-700-normal.woff'] },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: 'Source Serif 4',
+      cssVariable: '--font-serif',
+      fallbacks: ['Georgia', 'serif'],
+      options: {
+        variants: [
+          { weight: 400, style: 'normal', src: ['./src/assets/fonts/source-serif-4-latin-400-normal.woff'] },
+          { weight: 400, style: 'italic', src: ['./src/assets/fonts/source-serif-4-latin-400-italic.woff'] },
+          { weight: 600, style: 'normal', src: ['./src/assets/fonts/source-serif-4-latin-600-normal.woff'] },
+          { weight: 700, style: 'normal', src: ['./src/assets/fonts/source-serif-4-latin-700-normal.woff'] },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: 'Source Sans 3',
+      cssVariable: '--font-sans',
+      fallbacks: ['Arial', 'sans-serif'],
+      options: {
+        variants: [
+          { weight: 400, style: 'normal', src: ['./src/assets/fonts/source-sans-3-latin-400-normal.woff'] },
+          { weight: 400, style: 'italic', src: ['./src/assets/fonts/source-sans-3-latin-400-italic.woff'] },
+          { weight: 600, style: 'normal', src: ['./src/assets/fonts/source-sans-3-latin-600-normal.woff'] },
+          { weight: 700, style: 'normal', src: ['./src/assets/fonts/source-sans-3-latin-700-normal.woff'] },
+        ],
+      },
+    },
+    {
+      provider: fontProviders.local(),
+      name: 'Source Code Pro',
+      cssVariable: '--font-mono',
+      fallbacks: ['Consolas', 'monospace'],
+      options: {
+        variants: [
+          { weight: 400, style: 'normal', src: ['./src/assets/fonts/source-code-pro-latin-400-normal.woff'] },
+          { weight: 600, style: 'normal', src: ['./src/assets/fonts/source-code-pro-latin-600-normal.woff'] },
+        ],
+      },
+    },
+  ],
   devToolbar: { enabled: false },
   integrations: [mdx(), sitemap()],
   vite: {
