@@ -1,0 +1,25 @@
+---
+import WeSearch from '../../components/islands/we-search/WeSearch.astro';
+import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
+import { getRouteState } from '../../lib/route-state.ts';
+
+const state = await getRouteState();
+const candidates = [
+  { label: 'Site map', path: '/sitemap/' },
+  { label: 'Resources', path: '/resources/' },
+  { label: 'Templates and checklists', path: '/library/' },
+  { label: 'Glossary', path: '/glossary/' },
+  { label: 'FAQ', path: '/faq/' },
+];
+const fallback = candidates.filter((link) => state.isLive(link.path));
+---
+
+<ReferenceLayout
+  title="Search"
+  description="Search every public page of World Enterprise Incubator: program, services, playbooks, templates, research and reference."
+  path="/search/"
+  eyebrow="Reference"
+  lead="Find a page by what it says."
+>
+  <WeSearch fallback={fallback} />
+</ReferenceLayout>

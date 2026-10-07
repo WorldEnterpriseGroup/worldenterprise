@@ -1,0 +1,50 @@
+---
+import Grid from '../../components/ui/Grid.astro';
+import TemplateCard from '../../components/cards/TemplateCard.astro';
+import Callout from '../../components/ui/Callout.astro';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { entrySlug } from '../../components/library/markdown.ts';
+import { LIBRARY_SLUGS } from '../../data/routes.ts';
+import { getPublished } from '../../lib/content.ts';
+
+const entries = await getPublished('library');
+const order = new Map<string, number>(LIBRARY_SLUGS.map((slug, index) => [slug, index]));
+const templates = entries
+  .filter((entry) => order.has(entrySlug(entry.id)))
+  .sort((a, b) => (order.get(entrySlug(a.id)) ?? 0) - (order.get(entrySlug(b.id)) ?? 0));
+
+const KIND_LABEL = { template: 'Template', checklist: 'Checklist', worksheet: 'Worksheet', guide: 'Guide' } as const;
+---
+
+<HubLayout
+  title="Templates and checklists"
+  description="Six working documents for early-stage SaaS teams: problem brief, interview guide, MVP cut line, investor update, data room and security checklists."
+  path="/library/"
+  eyebrow="Library"
+  lead="Documents you can use today. Copy them, print them or download them as Markdown."
+>
+  {
+    templates.length > 0 && (
+      <Grid min="18rem">
+        {templates.map((entry) => {
+          const slug = entrySlug(entry.id);
+          return (
+            <TemplateCard
+              title={entry.data.title}
+              summary={entry.data.description}
+              path={`/library/${slug}/`}
+              eyebrow={KIND_LABEL[entry.data.kind]}
+              headingLevel={2}
+            />
+          );
+        })}
+      </Grid>
+    )
+  }
+  <Callout title="How to use these documents">
+    <p>
+      Every document is a plain page you can read, print or copy. Each one also has a static Markdown file, so you can paste it into
+      your own notes or tools. They are general working aids and are not legal, financial or accounting advice.
+    </p>
+  </Callout>
+</HubLayout>

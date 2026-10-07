@@ -1,0 +1,61 @@
+---
+/**
+ * Newsletter signup. Rendered only when the newsletter endpoint is configured (src/data/forms.ts). A plain HTML
+ * form that posts to the endpoint, so it works without JavaScript. WP-03 may replace it with its own NewsletterForm.
+ */
+interface Props {
+  endpoint: string;
+}
+
+const { endpoint } = Astro.props;
+---
+
+<form class="stack newsletter-form" method="post" action={endpoint}>
+  <div class="stack" style="--stack-gap:var(--sp-2)">
+    <label for="newsletter-email">Email address</label>
+    <input id="newsletter-email" name="email" type="email" required autocomplete="email" aria-describedby="newsletter-hint" />
+    <p id="newsletter-hint" class="newsletter-form__hint">Used only to send the newsletter. Unsubscribe at any time.</p>
+  </div>
+  <div class="newsletter-form__trap" aria-hidden="true">
+    <label for="newsletter-website">Leave this field empty</label>
+    <input id="newsletter-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <div class="stack" style="--stack-gap:var(--sp-2)">
+    <label class="newsletter-form__consent">
+      <input name="consent" type="checkbox" value="yes" required />
+      <span>I agree to receive the World Enterprise Incubator newsletter by email.</span>
+    </label>
+  </div>
+  <button class="btn btn--primary" type="submit">Subscribe</button>
+</form>
+
+<style>
+  .newsletter-form input[type='email'],
+  .newsletter-form input[type='text'] {
+    min-block-size: var(--target-min);
+    padding: var(--sp-3) var(--sp-4);
+    border: var(--border-strong);
+    border-radius: var(--radius-md);
+    font: inherit;
+  }
+
+  .newsletter-form__hint {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  .newsletter-form__consent {
+    display: flex;
+    gap: var(--sp-3);
+    align-items: flex-start;
+  }
+
+  .newsletter-form__trap {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+</style>

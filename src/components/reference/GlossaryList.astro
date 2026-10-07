@@ -1,0 +1,118 @@
+---
+import { anchorId, initials } from './jsonld.ts';
+
+interface Term {
+  readonly id: string;
+  readonly term: string;
+  readonly definition: string;
+  readonly group: string;
+  readonly related: readonly string[];
+}
+
+interface Props {
+  terms: readonly Term[];
+}
+
+const { terms } = Astro.props;
+const sorted = [...terms].sort((a, b) => a.term.localeCompare(b.term, 'en', { sensitivity: 'base' }));
+const byId = new Map(sorted.map((t) => [t.id, t]));
+const letterOf = (term: string): string => {
+  const first = term.trim().charAt(0).toUpperCase();
+  return /[A-Z]/.test(first) ? first : '#';
+};
+const letters = initials(sorted.map((t) => t.term));
+const sections = letters.map((letter) => ({ letter, terms: sorted.filter((t) => letterOf(t.term) === letter) }));
+---
+
+<nav class="glossary-index" aria-label="Jump to a letter">
+  <ul class="cluster" role="list">
+    {letters.map((letter) => <li><a href={`#letter-${letter === '#' ? 'other' : letter}`}>{letter}</a></li>)}
+  </ul>
+</nav>
+
+<div class="stack" style="--stack-gap:var(--sp-7)">
+  {
+    sections.map((section) => (
+      <section aria-labelledby={`letter-${section.letter === '#' ? 'other' : section.letter}`} class="stack">
+        <h2 id={`letter-${section.letter === '#' ? 'other' : section.letter}`}>{section.letter}</h2>
+        <dl class="glossary-list">
+          {section.terms.map((t) => (
+            <div class="glossary-list__entry">
+              <dt id={anchorId('term', t.id)}>{t.term}</dt>
+              <dd>
+                <p>{t.definition}</p>
+                <p class="glossary-list__meta">
+                  <span>{t.group}</span>
+                  {t.related.filter((r) => byId.has(r)).length > 0 && (
+                    <span>
+                      See also:{' '}
+                      {t.related
+                        .filter((r) => byId.has(r))
+                        .map((r, i) => (
+                          <Fragment>
+                            {i > 0 && ', '}
+                            <a href={`#${anchorId('term', r)}`}>{byId.get(r)?.term}</a>
+                          </Fragment>
+                        ))}
+                    </span>
+                  )}
+                </p>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .glossary-index {
+    padding-block-end: var(--sp-4);
+    border-block-end: var(--border-hair);
+  }
+
+  .glossary-index a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--target-min);
+    min-block-size: var(--target-min);
+    font-family: var(--ff-display);
+    font-weight: 600;
+  }
+
+  .glossary-list {
+    display: grid;
+    gap: var(--sp-5);
+    margin: 0;
+  }
+
+  .glossary-list__entry {
+    scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
+  }
+
+  dt {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
+  }
+
+  dd {
+    margin: var(--sp-2) 0 0;
+  }
+
+  dd p {
+    margin: 0;
+  }
+
+  .glossary-list__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-5);
+    margin-block-start: var(--sp-2);
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+</style>

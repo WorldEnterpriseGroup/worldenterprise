@@ -1,0 +1,37 @@
+---
+/**
+ * <we-copy> island host. Renders an empty custom element: the buttons exist only after src/scripts/copy.ts
+ * upgrades it, so without JavaScript nothing is shown and the Markdown download link carries the task.
+ */
+interface Props {
+  /** URL of the static Markdown download. */
+  source: string;
+  /** CSS selector of the rendered document, copied as plain text if the download cannot be fetched. */
+  target: string;
+  label?: string;
+  print?: boolean;
+}
+
+const { source, target, label = 'Copy as Markdown', print = true } = Astro.props;
+---
+
+<we-copy source={source} target={target} label={label} print={print ? '' : undefined}></we-copy>
+
+<script>
+  import '../../../scripts/copy.ts';
+</script>
+
+<style is:global>
+  @layer components {
+    we-copy {
+      display: block;
+    }
+
+    .we-copy__status {
+      min-block-size: 1.5em;
+      margin-block: var(--sp-2) 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+  }
+</style>

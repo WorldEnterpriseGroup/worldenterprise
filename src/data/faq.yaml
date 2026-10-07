@@ -1,5 +1,101 @@
-# FAQ entries (WP-08). Schema: src/content.config.ts, collection "faq".
+# FAQ entries (WP-08). Schema: src/content.config.ts, collection "faq". Answers follow SAGE-PLAN 7.5 and cite only enabled claims.
 # The fixture row below is a draft test fixture; WP-15 removes it before release.
+- id: what-is-we
+  question: "What is World Enterprise Incubator?"
+  answer: "World Enterprise Incubator is a digital incubator for SaaS, run by World Enterprise Group Incorporated. Dedicated team seats, steered by WE, take a founder from a first idea toward a fundable company. The work is fully remote."
+  group: "About WE"
+  claimsUsed: [C-01, C-03, C-18]
+  related: [digital-incubator-meaning, what-is-a-seat]
+- id: is-it-an-accelerator
+  question: "Is WE an accelerator?"
+  answer: "WE describes itself as a digital incubator. It builds with your company through dedicated team seats. This site does not describe a cohort calendar or a demo day."
+  group: "About WE"
+  claimsUsed: [C-01, C-02]
+  related: [what-is-we, digital-incubator-meaning]
+- id: digital-incubator-meaning
+  question: "What does \"digital incubator\" mean?"
+  answer: "It means the incubator is fully digital. There are no physical offices. Planning, building and reviewing all happen online, so you can work with WE from wherever you are."
+  group: "About WE"
+  claimsUsed: [C-01]
+  related: [relocate]
+- id: what-is-a-seat
+  question: "What is a seat?"
+  answer: "A seat is a dedicated role on your team, filled from WE's offshore team, that works on your company. WE steers the team and manages its subcontractors, so you have one accountable party rather than a set of separate vendors."
+  group: "The seat model"
+  claimsUsed: [C-02, C-03]
+  related: [scale-by-notice]
+- id: scale-by-notice
+  question: "Can the team scale up or down?"
+  answer: "Yes. Seats can be scaled up or down by notice. The notice mechanics are set out in the written agreement."
+  group: "The seat model"
+  claimsUsed: [C-02]
+  related: [what-is-a-seat]
+- id: relocate
+  question: "Do I have to relocate?"
+  answer: "No. WE is fully remote, with no physical offices, so there is nothing to relocate to and no visiting address."
+  group: "The seat model"
+  claimsUsed: [C-01]
+  related: [digital-incubator-meaning]
+- id: how-to-apply
+  question: "How do I apply?"
+  answer: "Use the application form on the Apply page. Tell WE about your idea and where you are, and WE will reply with next steps."
+  group: "Applying and cost"
+  claimsUsed: [C-01]
+  related: [what-stage]
+- id: what-stage
+  question: "What stage should my company be at?"
+  answer: "WE builds with founders from first idea to first customers. If you want to validate a problem, build a first version or earn your first customers, you are in range."
+  group: "Applying and cost"
+  claimsUsed: [C-04]
+  related: [not-for]
+- id: promise-funding
+  question: "Does WE promise my company will raise money?"
+  answer: "No. WE makes no promise of funding. The work helps you prepare the evidence investors ask for. It does not predict that any company will raise money."
+  group: "Scope and limits"
+  claimsUsed: [C-05]
+  related: [not-for]
+- id: cost
+  question: "What does it cost?"
+  answer: "Pricing is seat-based. The Pricing page explains the seat model and lets you request the current seat rate."
+  group: "Applying and cost"
+  claimsUsed: [C-02]
+  related: [how-paid]
+- id: how-paid
+  question: "How is WE paid?"
+  answer: "How WE is paid is set out in a written agreement that is shared with you at intake."
+  group: "Applying and cost"
+  claimsUsed: []
+  related: [cost, who-owns-work]
+- id: who-owns-work
+  question: "Who owns the work?"
+  answer: "Ownership of the work is set out in the written agreement. This site does not state ownership or licensing terms."
+  group: "Applying and cost"
+  claimsUsed: []
+  related: [how-paid, confidential]
+- id: legal-advice
+  question: "Does WE give legal advice?"
+  answer: "No. WE does not give legal advice. Service Line G coordinates your own counsel, accountant and specialists. It does not replace them."
+  group: "Scope and limits"
+  claimsUsed: [C-04]
+  related: [bookkeeping-tax]
+- id: bookkeeping-tax
+  question: "Does WE do bookkeeping or tax filing?"
+  answer: "No. WE does not keep books or file taxes. Your own accountant does that, and Service Line G can help coordinate the work."
+  group: "Scope and limits"
+  claimsUsed: [C-04]
+  related: [legal-advice]
+- id: confidential
+  question: "Is my information confidential?"
+  answer: "Confidentiality terms are set out in the written agreement. This site does not list specific security controls."
+  group: "Scope and limits"
+  claimsUsed: []
+  related: [who-owns-work]
+- id: not-for
+  question: "Who is WE not for?"
+  answer: "WE is not for founders who want a promise of funding, who want legal or accounting services in place of their own advisers, or who want an in-person office program."
+  group: "Scope and limits"
+  claimsUsed: [C-01, C-04, C-05]
+  related: [promise-funding, what-stage]
 - id: fixture-faq
   question: Test fixture question?
   answer: Test fixture answer. Draft, never indexed.

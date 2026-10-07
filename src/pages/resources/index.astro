@@ -1,0 +1,77 @@
+---
+import ArticleCard from '../../components/cards/ArticleCard.astro';
+import BriefCard from '../../components/cards/BriefCard.astro';
+import { liveGroups, RESOURCE_STRIP } from '../../components/reference/resources.ts';
+import { entrySlug } from '../../components/library/markdown.ts';
+import Card from '../../components/ui/Card.astro';
+import Grid from '../../components/ui/Grid.astro';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { getPublished } from '../../lib/content.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+const state = await getRouteState();
+const groups = liveGroups(state.isLive);
+const strip = RESOURCE_STRIP.filter((item) => state.isLive(item.path));
+
+const briefs = (await getPublished('research')).sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
+const newestBrief = briefs[0];
+const insights = (await getPublished('insights'))
+  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime())
+  .slice(0, 3);
+---
+
+<HubLayout
+  title="Resources"
+  description="Read it, use it, check it: insights, research briefs, templates, a glossary, an FAQ and site search from World Enterprise Incubator."
+  path="/resources/"
+  eyebrow="Resources"
+  lead="Read it, use it, check it."
+  ogSlot="og-resources"
+>
+  {
+    groups.map((group) => (
+      <section class="stack" aria-labelledby={`resources-${group.id}`}>
+        <h2 id={`resources-${group.id}`}>{group.title}</h2>
+        <Grid min="16rem">
+          {group.items.map((item) => (
+            <Card title={item.title} href={href(item.path)} headingLevel={3}>
+              <p>{item.description}</p>
+            </Card>
+          ))}
+        </Grid>
+      </section>
+    ))
+  }
+  {
+    newestBrief !== undefined && (
+      <section class="stack" aria-labelledby="resources-newest">
+        <h2 id="resources-newest">Newest research brief</h2>
+        <Grid min="20rem">
+          <BriefCard title={newestBrief.data.title} summary={newestBrief.data.description} path={`/research/${entrySlug(newestBrief.id)}/`} headingLevel={3} />
+        </Grid>
+      </section>
+    )
+  }
+  {
+    insights.length > 0 && (
+      <section class="stack" aria-labelledby="resources-latest">
+        <h2 id="resources-latest">Latest insights</h2>
+        <Grid min="16rem">
+          {insights.map((entry) => (
+            <ArticleCard title={entry.data.title} summary={entry.data.description} path={`/insights/${entrySlug(entry.id)}/`} headingLevel={3} />
+          ))}
+        </Grid>
+      </section>
+    )
+  }
+  {
+    strip.length > 0 && (
+      <nav class="cluster" aria-label="About these resources">
+        {strip.map((item) => (
+          <a href={href(item.path)}>{item.title}</a>
+        ))}
+      </nav>
+    )
+  }
+</HubLayout>

@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro';
+import NewsletterForm from '../../components/reference/NewsletterForm.astro';
+import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
+import { forms } from '../../data/forms.ts';
+
+/**
+ * /newsletter/ exists only when the newsletter endpoint is configured. With no endpoint nothing is emitted: a
+ * "coming soon" page is not allowed, and the ledger row is launch:false in the same state (src/data/routes.ts).
+ */
+export const getStaticPaths = (() => {
+  const { mode, endpoint } = forms.newsletter;
+  if (mode !== 'endpoint' || endpoint === null) return [];
+  return [{ params: { slug: undefined }, props: { endpoint } }];
+}) satisfies GetStaticPaths;
+
+const { endpoint } = Astro.props;
+---
+
+<ReferenceLayout
+  title="Newsletter"
+  description="New playbooks, templates and research briefs from World Enterprise Incubator, by email. Plain language, sourced, no hype."
+  path="/newsletter/"
+  eyebrow="Resources"
+  lead="New playbooks, templates and research briefs, by email."
+>
+  <p>The newsletter announces new playbooks, templates and research briefs, and updates to existing pieces.</p>
+  <NewsletterForm endpoint={endpoint} />
+</ReferenceLayout>

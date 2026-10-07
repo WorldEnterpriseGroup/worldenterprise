@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import FaqGroups from '../../components/reference/FaqGroups.astro';
+import { faqPageNode } from '../../components/reference/jsonld.ts';
+import Button from '../../components/ui/Button.astro';
+import Callout from '../../components/ui/Callout.astro';
+import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+const entries = (await getCollection('faq')).filter((entry) => entry.data.draft !== true);
+const items = entries.map((entry) => ({
+  id: entry.data.id,
+  question: entry.data.question,
+  answer: entry.data.answer,
+  group: entry.data.group,
+}));
+const state = await getRouteState();
+const canApply = state.isLive('/apply/');
+const canContact = state.isLive('/contact/');
+---
+
+<ReferenceLayout
+  title="FAQ"
+  description="Short, plain answers about World Enterprise Incubator: what a seat is, how the remote model works, what WE does not do, and how to apply."
+  path="/faq/"
+  eyebrow="Reference"
+  lead="Straight answers, including what WE does not do."
+  updated={new Date('2026-10-06')}
+  jsonLd={[faqPageNode('/faq/', items)]}
+>
+  <FaqGroups items={items} />
+  {
+    (canApply || canContact) && (
+      <Callout title="Still have a question?">
+        <p>Tell WE about your idea, or ask directly.</p>
+        <div class="cluster">
+          {canApply && <Button href={href('/apply/')}>Apply to the program</Button>}
+          {canContact && <Button href={href('/contact/')} variant="secondary">Contact WE</Button>}
+        </div>
+      </Callout>
+    )
+  }
+</ReferenceLayout>

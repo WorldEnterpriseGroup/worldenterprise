@@ -1,0 +1,117 @@
+---
+import { asset, href } from '../../../lib/url.ts';
+
+/**
+ * <we-search> island host. The form is hidden until src/scripts/search.ts has loaded the Pagefind index. The
+ * fallback block (links to the site map and key pages) is visible without JavaScript and when the index fails.
+ */
+interface FallbackLink {
+  readonly label: string;
+  readonly path: string;
+}
+
+interface Props {
+  /** Links shown while search is unavailable. Pass only routes that exist. */
+  fallback: readonly FallbackLink[];
+}
+
+const { fallback } = Astro.props;
+---
+
+<we-search data-pagefind={asset('/pagefind/pagefind.js')} data-base={href('/')}>
+  <form class="we-search__form" role="search" action={href('/search/')} method="get" hidden>
+    <label class="we-search__label" for="we-search-input">Search this site</label>
+    <div class="we-search__field">
+      <input id="we-search-input" class="we-search__input" type="search" name="q" autocomplete="off" spellcheck="false" maxlength="200" />
+      <button class="btn btn--primary" type="submit">Search</button>
+    </div>
+  </form>
+  <p class="we-search__status" role="status" data-search-status></p>
+  <ol class="we-search__results" role="list" data-search-results></ol>
+  <button class="btn btn--secondary" type="button" data-search-more hidden>Show more results</button>
+  <div class="we-search__fallback stack">
+    <p class="we-search__fallback-lead">Search is not available here. These pages list everything on the site.</p>
+    <ul class="we-search__links" role="list">
+      {fallback.map((link) => <li><a href={href(link.path)}>{link.label}</a></li>)}
+    </ul>
+  </div>
+</we-search>
+
+<script>
+  import '../../../scripts/search.ts';
+</script>
+
+<style is:global>
+  @layer components {
+    we-search {
+      display: grid;
+      gap: var(--sp-5);
+    }
+
+    .we-search__field {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-3);
+    }
+
+    .we-search__label {
+      display: block;
+      margin-block-end: var(--sp-2);
+      font-family: var(--ff-display);
+      font-weight: 600;
+    }
+
+    .we-search__input {
+      flex: 1 1 16rem;
+      min-block-size: var(--target-min);
+      padding: var(--sp-3) var(--sp-4);
+      border: var(--border-strong);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+      color: var(--color-text);
+      font: inherit;
+    }
+
+    .we-search__status {
+      min-block-size: 1.5em;
+      margin: 0;
+      color: var(--color-text-muted);
+    }
+
+    .we-search__results {
+      display: grid;
+      gap: var(--sp-5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .we-search__title {
+      margin-block-end: var(--sp-2);
+      font-size: var(--fs-lg);
+    }
+
+    .we-search__result p {
+      margin: 0;
+    }
+
+    .we-search__result mark {
+      background: var(--color-amber-wash);
+      color: var(--color-text);
+      box-shadow: 0 -1px 0 var(--we-amber) inset;
+    }
+
+    .we-search__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-3) var(--sp-5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    we-search[data-state='ready'] .we-search__fallback {
+      display: none;
+    }
+  }
+</style>

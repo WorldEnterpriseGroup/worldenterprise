@@ -1,0 +1,38 @@
+---
+import { anchorId, groupBy } from './jsonld.ts';
+
+interface Item {
+  readonly id: string;
+  readonly question: string;
+  readonly answer: string;
+  readonly group: string;
+}
+
+interface Props {
+  items: readonly Item[];
+}
+
+const { items } = Astro.props;
+const groups = groupBy(items);
+const slugify = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+
+<div class="stack" style="--stack-gap:var(--sp-7)">
+  {
+    groups.map((g) => (
+      <section aria-labelledby={`faq-group-${slugify(g.group)}`} class="stack">
+        <h2 id={`faq-group-${slugify(g.group)}`}>{g.group}</h2>
+        <div class="faq-list">
+          {g.items.map((item) => (
+            <details class="faq" id={anchorId('faq', item.id)} name={`faq-${slugify(g.group)}`}>
+              <summary>{item.question}</summary>
+              <div class="faq__answer prose">
+                <p>{item.answer}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+</div>

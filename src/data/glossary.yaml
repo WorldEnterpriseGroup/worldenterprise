@@ -1,5 +1,210 @@
-# Glossary terms (WP-08). Schema: src/content.config.ts, collection "glossary".
+# Glossary terms (WP-08). Schema: src/content.config.ts, collection "glossary". Definitions are neutral and general.
 # The fixture row below is a draft test fixture; WP-15 removes it before release.
+- id: safe
+  term: SAFE
+  definition: "Simple Agreement for Future Equity. A contract in which an investor provides money now in exchange for the right to receive shares in a later priced financing round. It is a financing instrument, not a loan. This entry is a general definition, not legal or investment advice."
+  group: Funding
+  related: [convertible-note, pre-money, post-money]
+- id: pre-money
+  term: Pre-money
+  definition: "A company's valuation before new investment is added. It is the agreed value of the company before the new money arrives."
+  group: Funding
+  related: [post-money]
+- id: post-money
+  term: Post-money
+  definition: "A company's valuation immediately after new investment is added. It equals the pre-money valuation plus the new money."
+  group: Funding
+  related: [pre-money, cap-table]
+- id: cap-table
+  term: Cap table
+  definition: "A table that shows who owns what share of a company: founders, investors, option holders and holders of convertible instruments."
+  group: Funding
+  related: [post-money, due-diligence]
+- id: runway
+  term: Runway
+  definition: "How long a company can keep operating on the cash it has, usually stated in months at the current rate of spending."
+  group: Finance and metrics
+  related: [burn]
+- id: burn
+  term: Burn
+  definition: "The net amount of cash a company spends in a period, usually a month, after counting the money it receives."
+  group: Finance and metrics
+  related: [runway]
+- id: mrr
+  term: MRR
+  definition: "Monthly recurring revenue. The revenue a subscription business expects each month from active customers, leaving out one-time fees."
+  group: Finance and metrics
+  related: [arr, churn]
+- id: arr
+  term: ARR
+  definition: "Annual recurring revenue. Recurring revenue tracked on an annual basis rather than a monthly one."
+  group: Finance and metrics
+  related: [mrr]
+- id: churn
+  term: Churn
+  definition: "The rate at which customers, or the revenue they bring, are lost over a period. A team should state whether it counts customers or revenue."
+  group: Finance and metrics
+  related: [mrr, nrr]
+- id: nrr
+  term: Net revenue retention
+  definition: "A measure of how much recurring revenue from existing customers a company keeps over a period, after subtracting losses from cancellations and downgrades and adding gains from upgrades."
+  group: Finance and metrics
+  related: [churn, mrr]
+- id: cac
+  term: CAC
+  definition: "Customer acquisition cost. The cost of persuading a customer to buy, commonly calculated as sales and marketing spend divided by the number of customers won in the same period."
+  group: Finance and metrics
+  related: [ltv]
+- id: ltv
+  term: LTV
+  definition: "Lifetime value. The net profit a customer is expected to contribute over the whole relationship with a business. Any estimate depends on assumptions about retention and margin."
+  group: Finance and metrics
+  related: [cac, gross-margin]
+- id: gross-margin
+  term: Gross margin
+  definition: "Revenue minus the direct cost of delivering the product or service, usually shown as a share of revenue."
+  group: Finance and metrics
+  related: [ltv]
+- id: icp
+  term: ICP
+  definition: "Ideal customer profile. A description of the type of organisation or person for whom the product delivers the most value and who is most likely to buy."
+  group: Customers and product
+  related: [design-partner]
+- id: mvp
+  term: MVP
+  definition: "Minimum viable product. The smallest version of a product that lets a team test an important assumption with real users."
+  group: Customers and product
+  related: [backlog, pilot]
+- id: design-partner
+  term: Design partner
+  definition: "A customer that works closely with a product team during development, giving regular feedback in return for early access or influence on the product."
+  group: Customers and product
+  related: [pilot, icp]
+- id: pilot
+  term: Pilot
+  definition: "A limited, time-boxed trial of a product with a real customer, run against success criteria agreed in advance."
+  group: Customers and product
+  related: [design-partner, mvp]
+- id: activation
+  term: Activation
+  definition: "The point at which a new user first completes the action that shows they have understood the product's value. Each team defines its own activation action."
+  group: Customers and product
+  related: [time-to-first-value]
+- id: time-to-first-value
+  term: Time to first value
+  definition: "How long it takes a new user to get a first meaningful result from a product."
+  group: Customers and product
+  related: [activation]
+- id: term-sheet
+  term: Term sheet
+  definition: "A summary of the main terms of a proposed investment, used as the basis for the final agreements. Most of its terms are usually not legally binding."
+  group: Funding
+  related: [due-diligence, safe]
+- id: convertible-note
+  term: Convertible note
+  definition: "A short-term debt instrument that is meant to convert into equity at a later financing round rather than be repaid in cash. Terms vary between deals."
+  group: Funding
+  related: [safe]
+- id: due-diligence
+  term: Due diligence
+  definition: "The investigation an investor or buyer carries out before closing a deal, covering legal, financial and technical matters."
+  group: Funding
+  related: [data-room]
+- id: data-room
+  term: Data room
+  definition: "A controlled, organised set of documents shared with investors or buyers during due diligence."
+  group: Funding
+  related: [due-diligence, cap-table]
+- id: nda
+  term: NDA
+  definition: "Non-disclosure agreement. A contract in which the parties agree to keep specified information confidential."
+  group: Legal and contracts
+  related: [ip-assignment]
+- id: ip-assignment
+  term: IP assignment
+  definition: "An agreement that transfers ownership of intellectual property, such as code or designs, from the person who created it to a company."
+  group: Legal and contracts
+  related: [nda]
+- id: sow
+  term: SOW
+  definition: "Statement of work. A document that describes the work to be done under an agreement, including deliverables and timetable."
+  group: Legal and contracts
+  related: [sla]
+- id: sla
+  term: SLA
+  definition: "Service level agreement. A commitment about the level of service a provider will deliver, such as availability or response time, and what happens when it is not met."
+  group: Legal and contracts
+  related: [sow]
+- id: dpa
+  term: DPA
+  definition: "Data processing agreement. A contract between an organisation that controls personal data and a provider that handles it on that organisation's behalf, setting out how the data may be used and protected."
+  group: Legal and contracts
+  related: [nda]
+- id: soc-2
+  term: SOC 2
+  definition: "A reporting framework from the AICPA in which an independent CPA evaluates and reports on a service organisation's controls against the Trust Services Criteria: security, availability, processing integrity, confidentiality and privacy. It is an attestation report, not a certification."
+  group: Security and accessibility
+  related: [owasp-asvs, nist-ssdf]
+- id: owasp-asvs
+  term: OWASP ASVS
+  definition: "The Application Security Verification Standard, published by OWASP. A set of security requirements for designing, developing and testing web applications and services, organised in three levels."
+  group: Security and accessibility
+  related: [nist-ssdf, soc-2]
+- id: nist-ssdf
+  term: NIST SSDF
+  definition: "The Secure Software Development Framework, NIST Special Publication 800-218. A set of high-level secure software development practices that can be integrated into any software development lifecycle."
+  group: Security and accessibility
+  related: [owasp-asvs]
+- id: wcag
+  term: WCAG
+  definition: "The Web Content Accessibility Guidelines, published by the W3C. Testable criteria at levels A, AA and AAA for making web content usable by people with disabilities. Version 2.2 is a W3C Recommendation dated December 2024."
+  group: Security and accessibility
+  related: [section-508]
+- id: section-508
+  term: Section 508
+  definition: "Section 508 of the US Rehabilitation Act requires federal agencies to give people with disabilities access to information comparable to the access others have. Its web requirements refer to WCAG, and it is commonly reflected in what agencies ask of vendors."
+  group: Security and accessibility
+  related: [wcag]
+- id: backlog
+  term: Backlog
+  definition: "An ordered list of the work a team intends to do, with the most valuable or most urgent items first."
+  group: Product delivery
+  related: [sprint, mvp]
+- id: sprint
+  term: Sprint
+  definition: "A short, fixed period, often one to four weeks, in which a team commits to finishing a chosen set of work."
+  group: Product delivery
+  related: [backlog]
+- id: seat
+  term: Seat
+  definition: "In WE's model, a dedicated role on a founder's team, filled from WE's offshore team, that works on the founder's company."
+  group: WE vocabulary
+  claimsUsed: [C-02, C-03]
+  related: [steering]
+- id: steering
+  term: Steering
+  definition: "In WE's usage, the direction and day-to-day management of a team: setting priorities, reviewing work and managing the subcontractors who do it."
+  group: WE vocabulary
+  claimsUsed: [C-03]
+  related: [seat]
+- id: focus-shift
+  term: Focus Shift
+  definition: "In WE's operating frameworks, a defined four-hour working block set aside for focused work."
+  group: WE vocabulary
+  claimsUsed: [C-19]
+  related: [droid]
+- id: droid
+  term: Droid
+  definition: "In WE's framework vocabulary, a project in its early stages that can grow into a company."
+  group: WE vocabulary
+  claimsUsed: [C-19]
+  related: [world]
+- id: world
+  term: World
+  definition: "In WE's framework vocabulary, a company that has grown out of a project, or droid, into an established business."
+  group: WE vocabulary
+  claimsUsed: [C-19]
+  related: [droid]
 - id: fixture-term
   term: Test fixture term
   definition: Test fixture definition. Draft, never indexed.

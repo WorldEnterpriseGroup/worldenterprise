@@ -1,0 +1,57 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import WeCopy from '../../components/islands/we-copy/WeCopy.astro';
+import { entrySlug, markdownPath } from '../../components/library/markdown.ts';
+import { FUNDING_RELATED, relatedFor } from '../../components/library/related.ts';
+import TemplateLayout from '../../layouts/TemplateLayout.astro';
+import { getRenderable, isDraft } from '../../lib/content.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { asset, href } from '../../lib/url.ts';
+
+export const getStaticPaths = (async () => {
+  const entries = await getRenderable('library');
+  return entries.map((entry) => ({ params: { slug: entrySlug(entry.id) }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const slug = entrySlug(entry.id);
+const { Content } = await render(entry);
+const { data } = entry;
+const state = await getRouteState();
+const related = relatedFor(slug, state.isLive);
+const mdPath = markdownPath(slug);
+---
+
+<TemplateLayout
+  title={data.title}
+  description={data.description}
+  path={`/library/${slug}/`}
+  eyebrow={{ template: 'Template', checklist: 'Checklist', worksheet: 'Worksheet', guide: 'Guide' }[data.kind]}
+  lead={data.description}
+  instructions={data.instructions}
+  markdownHref={mdPath}
+  updated={data.updated}
+  draft={isDraft(entry)}
+>
+  <WeCopy slot="actions" source={asset(mdPath)} target="#template-doc" />
+  <div id="template-doc"><Content /></div>
+  <Fragment>
+    {FUNDING_RELATED.has(slug) && <NoFundingDisclaimer />}
+    {
+      related.length > 0 && (
+        <nav class="no-print" aria-label="Related pages">
+          <h2>Related</h2>
+          <ul>
+            {related.map((link) => (
+              <li>
+                <a href={href(link.path)}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+  </Fragment>
+</TemplateLayout>

@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import GlossaryList from '../../components/reference/GlossaryList.astro';
+import { definedTermSetNode } from '../../components/reference/jsonld.ts';
+import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
+
+const entries = (await getCollection('glossary')).filter((entry) => entry.data.draft !== true);
+const terms = entries.map((entry) => ({
+  id: entry.data.id,
+  term: entry.data.term,
+  definition: entry.data.definition,
+  group: entry.data.group,
+  related: entry.data.related,
+}));
+---
+
+<ReferenceLayout
+  title="Glossary"
+  description="Plain definitions of the funding, finance, product, legal and security terms early-stage SaaS founders meet, plus the words WE uses."
+  path="/glossary/"
+  eyebrow="Reference"
+  lead="Terms founders meet, defined neutrally. These are general definitions, not legal or financial advice."
+  wide
+  updated={new Date('2026-10-06')}
+  jsonLd={[definedTermSetNode('/glossary/', 'World Enterprise Incubator glossary', terms)]}
+>
+  <GlossaryList terms={terms} />
+</ReferenceLayout>
