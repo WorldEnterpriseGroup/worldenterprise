@@ -1,0 +1,65 @@
+---
+import { buildCover, hexPoints } from './cover-art.ts';
+import type { CoverTopic } from './cover-art.ts';
+
+interface Props {
+  topic: CoverTopic;
+  /** Article slug; seeds the geometry so a cover never changes between builds. */
+  slug: string;
+  /** Describes the cover. Leave empty for a decorative cover next to the article title. */
+  alt?: string;
+  class?: string;
+}
+
+const { topic, slug, alt = '', class: className } = Astro.props;
+const model = buildCover(topic, slug);
+const gradientId = `cover-${topic}-${slug.replace(/[^a-z0-9]+/gi, '-')}`;
+const fills: Record<string, string> = {
+  blue: 'var(--we-blue)',
+  tint: 'var(--we-tint)',
+  deep: 'var(--we-blue-deep)',
+  amber: 'var(--we-amber)',
+};
+const dark = topic === 'fundable';
+---
+
+<svg
+  class:list={['cover-art', className]}
+  viewBox={`0 0 ${model.width} ${model.height}`}
+  width={model.width}
+  height={model.height}
+  role={alt ? 'img' : undefined}
+  aria-label={alt || undefined}
+  aria-hidden={alt ? undefined : 'true'}
+  focusable="false"
+>
+  <defs>
+    <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" style={`stop-color:${model.from}`}></stop>
+      <stop offset="1" style={`stop-color:${model.to}`}></stop>
+    </linearGradient>
+  </defs>
+  <rect width={model.width} height={model.height} fill={`url(#${gradientId})`}></rect>
+  {
+    model.cells.map((cell) => (
+      <polygon
+        points={hexPoints(cell.x, cell.y, cell.r)}
+        fill={cell.tone === 'none' ? 'none' : fills[cell.tone]}
+        fill-opacity={cell.tone === 'amber' ? 1 : cell.opacity}
+        stroke={cell.tone === 'amber' ? 'var(--we-amber)' : dark ? 'var(--we-tint)' : 'var(--we-blue)'}
+        stroke-opacity={cell.tone === 'amber' ? 1 : 0.35}
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      ></polygon>
+    ))
+  }
+</svg>
+
+<style>
+  .cover-art {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 16 / 9;
+  }
+</style>

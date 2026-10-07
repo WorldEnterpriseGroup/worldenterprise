@@ -1,0 +1,40 @@
+---
+import { Picture } from 'astro:assets';
+import { getPhoto } from '../../assets/photo/index.ts';
+import type { SlotId } from '../../assets/photo/slots.ts';
+
+interface Props {
+  /** Canonical slot id from src/assets/photo/slots.ts. Never a filename. */
+  slot: SlotId;
+  /** Overrides the manifest alt text. Pass an empty string only when the image is purely decorative on this page. */
+  alt?: string;
+  /** Responsive sizes attribute. Defaults to the slot's largest display width. */
+  sizes?: string;
+  /** True for the LCP image only: fetchpriority="high" and no lazy loading. */
+  priority?: boolean;
+  class?: string;
+}
+
+const { slot, alt, sizes, priority = false, class: className } = Astro.props;
+const asset = getPhoto(slot);
+const [maxWidth] = asset.spec.displayMax;
+const native = asset.src.width;
+const widths = [...new Set([Math.min(maxWidth, native), native])].sort((a, b) => a - b);
+const resolvedSizes = sizes ?? `(max-width: ${maxWidth}px) 100vw, ${maxWidth}px`;
+const resolvedAlt = alt ?? asset.alt;
+---
+
+<Picture
+  src={asset.src}
+  alt={resolvedAlt}
+  formats={['avif']}
+  fallbackFormat="avif"
+  widths={widths}
+  sizes={resolvedSizes}
+  width={native}
+  height={asset.src.height}
+  loading={priority ? 'eager' : 'lazy'}
+  decoding="async"
+  fetchpriority={priority ? 'high' : undefined}
+  class={className}
+/>
