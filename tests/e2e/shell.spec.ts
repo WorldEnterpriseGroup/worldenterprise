@@ -34,7 +34,13 @@ test('the sitemap lists neither the styleguide, fixtures, the 404 nor noindex ro
   expect(body).not.toContain('fixture-');
   expect(body).not.toContain('/404');
   expect(body).not.toContain('/apply/thanks/');
-  expect(body).toContain('<lastmod>');
+  expect(body).not.toContain('/search/');
+  expect(body).not.toContain('/sitemap/');
+});
+
+test('sitemap entries carry lastmod', async ({ request }) => {
+  const res = await request.get('/sitemap-0.xml');
+  expect(await res.text()).toContain('<lastmod>');
 });
 
 test('the primary navigation is identical on every sampled page and marks the current page', async ({ page }) => {

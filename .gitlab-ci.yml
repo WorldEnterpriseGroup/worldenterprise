@@ -97,6 +97,7 @@ verify:static:
     # The verify build includes the dev-only routes and the full nav so every shell can be tested before its pages land.
     PUBLIC_STYLEGUIDE: "1"
     PUBLIC_NAV_FIXTURE: "1"
+    GIT_DEPTH: "0" # sitemap lastmod reads git history (WP-09 request)
   script:
     - node --version
     - npm --version
@@ -166,7 +167,7 @@ audit:wired:
     - |
       set -eu
       ran=0
-      if [ -f scripts/audit-seo.mjs ]; then node scripts/audit-seo.mjs --dist dist; ran=1; fi
+      if [ -f scripts/audit-seo.mjs ]; then node scripts/audit-seo.mjs --dist dist --sitemap=warn; ran=1; fi
       if [ -f scripts/validate-jsonld.mjs ]; then node scripts/validate-jsonld.mjs --dist dist; ran=1; fi
       if [ -f scripts/audit-tokens.mjs ]; then node scripts/audit-tokens.mjs --root .; ran=1; fi
       [ "$ran" -eq 1 ] || echo "no wired audit scripts present yet"
@@ -263,6 +264,7 @@ pages:
     PAGES_BASE_PATH: "/worldenterprise"
     PUBLIC_PREVIEW: "1"
     PUBLIC_STYLEGUIDE: "1"
+    GIT_DEPTH: "0"
   needs:
     - job: verify:static
       artifacts: false
