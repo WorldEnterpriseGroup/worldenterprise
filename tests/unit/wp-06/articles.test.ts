@@ -61,9 +61,19 @@ test('no article text matches the claims denylist or carries a currency figure',
   const rules = loadDenylist().map((r) => ({ id: r.id, re: new RegExp(r.pattern, r.flags) }));
   for (const a of [...grow, ...fundable]) {
     for (const rule of rules) {
-      assert.equal(rule.re.test(a.body), false, `${a.file} matches ${rule.id}`);
+      assert.equal(rule.re.test(a.raw), false, `${a.file} matches ${rule.id}`);
     }
     assert.equal(/[$£€]\s?\d/.test(a.body), false, `${a.file}: currency figure`);
+  }
+});
+
+test('topic introductions (including frontmatter) pass the denylist and stay within 120 to 200 words', () => {
+  const rules = loadDenylist().map((r) => ({ id: r.id, re: new RegExp(r.pattern, r.flags) }));
+  for (const name of ['topic-grow.mdx', 'topic-fundable.mdx']) {
+    const raw = readFileSync(join(root, 'src/content/pages/insights', name), 'utf8');
+    for (const rule of rules) assert.equal(rule.re.test(raw), false, `${name} matches ${rule.id}`);
+    const words = raw.split(/^---$/m).slice(2).join(' ').split(/\s+/).filter(Boolean).length;
+    assert.ok(words >= 120 && words <= 200, `${name}: ${words} words`);
   }
 });
 
