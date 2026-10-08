@@ -58,7 +58,7 @@ Good sources are the places where your buyer already talks about the problem: pr
 
 The message should be short, specific and easy to decline. Say who you are, what problem you are studying, why you are writing to this person and what you are asking for. Do not attach a deck. Do not ask for a "quick call to pick your brain" with no stated topic.
 
-In the conversation itself, follow the discipline described in our article on customer discovery interviews: ask about what the person did the last time the problem occurred, not whether they would use your idea. The goal at this stage is to find out whether the problem is frequent and costly enough for someone to change their behaviour.
+In the conversation itself, follow the discipline described in our article on customer discovery interviews: ask about what the person did the last time the problem occurred, not whether they would use your idea. The goal at this stage is to find out whether the problem is frequent and costly enough for someone to change their behavior.
 
 ### Step 4: offer a working version
 

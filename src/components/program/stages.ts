@@ -150,7 +150,7 @@ export const STAGES: readonly Stage[] = [
       { title: 'Earn your first customers', path: '/playbooks/earn-your-first-customers/', kind: 'Playbook', note: 'A founder-led sequence for the first customers.' },
       { title: 'Build repeatable growth', path: '/playbooks/build-repeatable-growth/', kind: 'Playbook', note: 'Turning early wins into a process you can repeat.' },
       { title: 'Weekly investor update template', path: '/library/weekly-investor-update-template/', kind: 'Template', note: 'A short, regular update written from real data.' },
-      { title: 'Seed data room checklist', path: '/library/seed-data-room-checklist/', kind: 'Template', note: 'What an organised data room contains.' },
+      { title: 'Seed data room checklist', path: '/library/seed-data-room-checklist/', kind: 'Template', note: 'What an organized data room contains.' },
       { title: 'Investor readiness checklist', path: '/fundability/investor-readiness-checklist/', kind: 'Guide', note: 'The evidence a serious investor asks for.' },
     ],
     exitEvidence: [

@@ -29,7 +29,7 @@ export const LIBRARY_REFS: Readonly<Record<string, LibraryRef>> = {
   },
   'customer-interview-guide': {
     title: 'Customer interview guide',
-    description: 'Questions and a note format for interviews about past behaviour.',
+    description: 'Questions and a note format for interviews about past behavior.',
   },
   'mvp-cut-line-worksheet': {
     title: 'MVP cut-line worksheet',

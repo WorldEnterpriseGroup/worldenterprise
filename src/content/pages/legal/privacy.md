@@ -56,7 +56,7 @@ You can ask what WE holds about you, ask for it to be corrected, or ask for it t
 
 ## Links to other sites
 
-Some pages link to other websites, for example public standards and the WE organisation on GitHub. Those sites have their own practices, and this notice does not cover them.
+Some pages link to other websites, for example public standards and the WE organization on GitHub. Those sites have their own practices, and this notice does not cover them.
 
 ## Changes to this notice
 

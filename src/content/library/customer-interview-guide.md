@@ -1,6 +1,6 @@
 ---
 title: Customer interview guide
-description: A script and note sheet for discovery interviews that surface real behaviour and past events instead of opinions about your idea.
+description: A script and note sheet for discovery interviews that surface real behavior and past events instead of opinions about your idea.
 kind: guide
 instructions: Print or copy this guide before each call. Ask about the past, take notes in the sheet at the end, and review the notes within a day while you remember the context.
 updated: 2026-10-06
@@ -59,7 +59,7 @@ updated: 2026-10-06
 
 ## Note sheet (copy one per interview)
 
-- **Name or code, role, organisation type:**
+- **Name or code, role, organization type:**
 - **Date and length:**
 - **Facts they stated (past events, tools, costs):**
 - **Exact phrases worth quoting later:**

@@ -35,7 +35,7 @@ export const EXTRA_NEXT: Readonly<Partial<Record<ServiceLine, readonly NextLink[
   E: [{ title: 'How the program works', href: '/program/how-it-works/', description: 'From application to the first working cycle.' }],
   F: [
     { title: 'Investor readiness checklist', href: '/fundability/investor-readiness-checklist/', description: 'The evidence a serious investor asks for.' },
-    { title: 'The seed data room', href: '/fundability/data-room/', description: 'What goes in it and how to organise it.' },
+    { title: 'The seed data room', href: '/fundability/data-room/', description: 'What goes in it and how to organize it.' },
   ],
   G: [{ title: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'How WE seats and steers a team for your company.' }],
 };

@@ -35,7 +35,7 @@ Before choosing plan names or layout, decide what the customer is actually payin
 | Tiered | A unit cost that changes with quantity or usage | Value grows with volume and large customers expect scale terms |
 | Usage-based | A charge based on what the customer uses | Usage varies widely and tracks the value delivered |
 
-The "when it tends to fit" column is our editorial judgement, not a statement from the Stripe documentation, and it is a starting hypothesis, not a rule.
+The "when it tends to fit" column is our editorial judgment, not a statement from the Stripe documentation, and it is a starting hypothesis, not a rule.
 
 A helpful question is: as the customer gets more value, what grows? People, records, projects, volume, or nothing in particular? The thing that grows with value is a candidate for your pricing unit. A unit that does not track value invites arguments, because the customer feels the price rises while the benefit does not.
 
@@ -85,8 +85,8 @@ If you change prices, decide in advance how existing customers will be treated a
 
 Pricing pages are heavy on tables, icons and calls to action, which are exactly the places where accessibility problems collect. WCAG 2.2, the W3C recommendation for web accessibility, is the reference to design against. A few of its requirements show up on nearly every pricing page:
 
-- **Text contrast.** Body text and plan descriptions need enough contrast with their background. Light grey text on white is a common failure.
-- **Not relying on colour alone.** If a "recommended" plan is marked only by a coloured border, a person who cannot see the colour misses it. Add a text label.
+- **Text contrast.** Body text and plan descriptions need enough contrast with their background. Light gray text on white is a common failure.
+- **Not relying on color alone.** If a "recommended" plan is marked only by a colored border, a person who cannot see the color misses it. Add a text label.
 - **Table structure.** A comparison table should use real table headers so that a screen reader can announce which plan and which feature a cell belongs to.
 - **Keyboard use.** Every plan selector, toggle between monthly and annual and button should be reachable and usable with a keyboard, with a visible focus indicator.
 - **Target size.** WCAG 2.2 adds a success criterion on the size of pointer targets, so buttons and toggles should not be tiny.
@@ -99,11 +99,11 @@ Built in from the start, these cost little. Retrofitted into a page full of nest
 2. The pricing unit is named and explained in one sentence.
 3. Every limit appears in the units the customer uses.
 4. The page says what happens at a limit, how billing works and how to cancel.
-5. The comparison table uses real headers and does not depend on colour alone.
+5. The comparison table uses real headers and does not depend on color alone.
 6. Two real customer questions are answered on the page.
 7. A way to reach a person is visible.
 8. The reason for the current price is written down somewhere you will find it later.
 
 ## What this article does not know
 
-We have not given price points, discount norms or conversion benchmarks, because no public primary source we have reviewed would apply to your market, and an invented benchmark would mislead. The table of models is a way to organise the decision, not a prediction of which one will perform best for you. The only reliable evidence on what your customers will pay comes from asking them to pay, which is why the conversation log from your first customers belongs next to this page.
+We have not given price points, discount norms or conversion benchmarks, because no public primary source we have reviewed would apply to your market, and an invented benchmark would mislead. The table of models is a way to organize the decision, not a prediction of which one will perform best for you. The only reliable evidence on what your customers will pay comes from asking them to pay, which is why the conversation log from your first customers belongs next to this page.

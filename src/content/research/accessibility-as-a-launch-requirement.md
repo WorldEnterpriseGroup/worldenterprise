@@ -18,7 +18,7 @@ draft: false
 
 ## Summary
 
-Accessibility obligations come from different places and apply to different organisations, which is why teams misjudge them. WCAG is a technical standard published by the W3C. Section 508 binds US federal agencies. The Department of Justice web rule under Title II of the ADA binds state and local governments. A private software company is usually not directly named by any of the three, but it meets all three through customers, procurement and the standard's role as the common yardstick.
+Accessibility obligations come from different places and apply to different organizations, which is why teams misjudge them. WCAG is a technical standard published by the W3C. Section 508 binds US federal agencies. The Department of Justice web rule under Title II of the ADA binds state and local governments. A private software company is usually not directly named by any of the three, but it meets all three through customers, procurement and the standard's role as the common yardstick.
 
 The rest of this brief reports what the sources state, flags what could not be verified, and then gives a labelled analysis of why accessibility belongs in launch scope.
 
@@ -56,7 +56,7 @@ Secondary law-firm summaries report that an interim final rule published April 2
 This section is analysis by World Enterprise Editorial. It is a reasoned argument, not a finding of the sources, and it contains no cost figures because none were sourced.
 
 1. **The buyer chain carries the obligation.** A product sold to a federal agency meets Section 508 through procurement requirements; one sold to a state or local government meets the Title II rule through its customer. The vendor feels the obligation as a contract term even when the statute names someone else. This is inference, not text from the sources.
-2. **Late fixes touch shared structure.** Focus order, form labelling, colour tokens, target sizes and error handling live in shared components. Retrofitting means reopening those components after many screens depend on them, and retesting everything that uses them. Fixing them while the component library is small changes one place.
+2. **Late fixes touch shared structure.** Focus order, form labelling, color tokens, target sizes and error handling live in shared components. Retrofitting means reopening those components after many screens depend on them, and retesting everything that uses them. Fixing them while the component library is small changes one place.
 3. **Some WCAG 2.2 criteria are design decisions.** Authentication flows (3.3.8), drag interactions (2.5.7) and repeated help (3.2.6) shape the product's structure. They are cheap to choose and expensive to reverse.
 4. **A target that is a standard version is easier to test than a target that is a feeling.** Choosing "WCAG 2.2 Level AA" gives a test plan. The Title II rule's own standard is 2.1 Level AA, which content that conforms to 2.2 also meets.
 

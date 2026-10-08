@@ -19,7 +19,7 @@ The same vocabulary scales up. WE has words for groups of companies and whole in
 
 ## UBF, the Universal Business Framework
 
-UBF describes business through relationships rather than org charts. It names the kinds of bodies you find in an industry: the industry itself, very large companies, holding companies, flagship companies, small companies, side projects and projects that are unstable and need better planning. Seen this way, a new project has neighbours, dependencies and a place on a map.
+UBF describes business through relationships rather than org charts. It names the kinds of bodies you find in an industry: the industry itself, very large companies, holding companies, flagship companies, small companies, side projects and projects that are unstable and need better planning. Seen this way, a new project has neighbors, dependencies and a place on a map.
 
 UBF also sets out a five-stage lifecycle for an initiative: ideation and conceptualization, planning and resource allocation, execution and monitoring, scaling and growth, and integration and ecosystem management. WE uses it to keep the larger picture in view while a team works on a small piece of it.
 

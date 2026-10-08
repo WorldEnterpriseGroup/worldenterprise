@@ -74,7 +74,7 @@ const layouts = [
 ] as const;
 
 const headings = [
-  { depth: 2, slug: 'colour', text: 'Colour' },
+  { depth: 2, slug: 'colour', text: 'Color' },
   { depth: 2, slug: 'type', text: 'Type' },
   { depth: 2, slug: 'components', text: 'Components' },
   { depth: 2, slug: 'states', text: 'States' },
@@ -99,7 +99,7 @@ const headings = [
   </Section>
 
   <Section id="colour" labelledby="h-colour" tone="soft">
-    <h2 id="h-colour">Colour</h2>
+    <h2 id="h-colour">Color</h2>
     <Grid min="9rem">
       {swatches.map((s) => <div class="swatch" style={`--swatch:${s.hex}`}><span>{s.name}</span><span>{s.hex}</span></div>)}
     </Grid>

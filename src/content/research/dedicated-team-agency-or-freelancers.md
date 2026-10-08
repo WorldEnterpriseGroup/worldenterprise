@@ -5,7 +5,7 @@ description: "A criteria-based decision framework for choosing between a dedicat
 publishedDate: 2026-10-06
 version: "1.0"
 methodology: "Defines three staffing models, derives ten decision criteria, and rates each model per criterion as analysis. Public legal and standards pages are cited only for the facts they state: worker classification tests, written-agreement rules for copyright, and security reference documents."
-limitations: "This is analysis, not research: it contains no survey data, costs or benchmarks. The ratings are judgement. World Enterprise Group offers dedicated team seats, so the reader should weigh the framing accordingly. It is not legal advice."
+limitations: "This is analysis, not research: it contains no survey data, costs or benchmarks. The ratings are judgment. World Enterprise Group offers dedicated team seats, so the reader should weigh the framing accordingly. It is not legal advice."
 sources:
   - { id: irs-classification, title: "Independent contractor (self-employed) or employee?", publisher: "Internal Revenue Service", url: "https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee", accessed: 2026-10-06 }
   - { id: dol-misclassification, title: "Misclassification of Employees as Independent Contractors Under the Fair Labor Standards Act", publisher: "U.S. Department of Labor, Wage and Hour Division", url: "https://www.dol.gov/agencies/whd/flsa/misclassification", accessed: 2026-10-06 }
@@ -65,7 +65,7 @@ No model wins on every criterion. The useful move is to weight the criteria for 
 
 ## Methodology
 
-The three models are defined above. The ten criteria were derived by listing the questions a founder must answer when comparing models and removing duplicates. Ratings in the appendix are judgements by World Enterprise Editorial and are labelled as such. External documents were retrieved on 6 October 2026 and are cited only for the specific facts quoted.
+The three models are defined above. The ten criteria were derived by listing the questions a founder must answer when comparing models and removing duplicates. Ratings in the appendix are judgments by World Enterprise Editorial and are labelled as such. External documents were retrieved on 6 October 2026 and are cited only for the specific facts quoted.
 
 ## Limitations
 
@@ -77,7 +77,7 @@ The three models are defined above. The ten criteria were derived by listing the
 
 ## Appendix: decision matrix and question list
 
-Ratings are judgement: Stronger, Mixed or Weaker for the model on that criterion, assuming competent providers.
+Ratings are judgment: Stronger, Mixed or Weaker for the model on that criterion, assuming competent providers.
 
 | Criterion | Freelancers | Agency | Dedicated team |
 |---|---|---|---|

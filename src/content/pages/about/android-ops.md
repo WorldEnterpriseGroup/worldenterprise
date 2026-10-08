@@ -9,7 +9,7 @@ claimsUsed: [C-19, C-01]
 
 ANDROID Ops is WE's description of how a team works on a project, which WE calls a droid. It draws on ordinary software delivery practice, including traditional life-cycle planning, agile working, DevOps and machine-learning operations, and arranges it as seven focus areas. The name is an acronym of the areas: Advance, Network, Design, Research, Optimize, Implement, Deliver.
 
-It is a way to organise attention, not a promise of results. A team is not meant to move through the seven areas once, in order; it returns to them as the work demands.
+It is a way to organize attention, not a promise of results. A team is not meant to move through the seven areas once, in order; it returns to them as the work demands.
 
 ## The seven focus areas
 
@@ -27,7 +27,7 @@ Shape how the work runs and what it produces. This covers refining processes, de
 
 ### 4. Research
 
-Find out before deciding. The team analyses data, studies customers and their needs, looks at competitors, and explores new technologies and methods.
+Find out before deciding. The team analyzes data, studies customers and their needs, looks at competitors, and explores new technologies and methods.
 
 ### 5. Optimize
 

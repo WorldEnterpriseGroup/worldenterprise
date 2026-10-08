@@ -15,7 +15,7 @@ Like the other frameworks, it is a working method written by WE. It is not a sta
 
 ### 1. Objective
 
-The goal or outcome the project aims at. A good objective is clear, measurable and aligned with the larger aims of the organisation, and it leaves room for new ideas about how to reach it.
+The goal or outcome the project aims at. A good objective is clear, measurable and aligned with the larger aims of the organization, and it leaves room for new ideas about how to reach it.
 
 ### 2. Resources
 
@@ -31,11 +31,11 @@ How progress will be judged. The team picks performance indicators, or sustainab
 
 ### 5. Transport
 
-How energy, goods or information moves from one place to another in an organised way. For a software team that is chiefly the movement of information and work products; the component asks for a plan for that movement and for the risks in it.
+How energy, goods or information moves from one place to another in an organized way. For a software team that is chiefly the movement of information and work products; the component asks for a plan for that movement and for the risks in it.
 
 ### 6. Activities
 
-The tasks and events that make up the work, organised into a timeline with milestones and deadlines, and coordinated so that one task does not block another.
+The tasks and events that make up the work, organized into a timeline with milestones and deadlines, and coordinated so that one task does not block another.
 
 ### 7. Logistics
 

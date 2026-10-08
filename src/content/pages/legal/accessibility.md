@@ -14,7 +14,7 @@ World Enterprise Group Incorporated wants everyone to be able to read this site 
 - Every page has a link at the top that skips to the main content, one main landmark, one level-one heading and headings that do not skip levels.
 - Navigation works with a keyboard alone, and the menus open and close with the keyboard. The navigation also works with scripts switched off, because each top-level item is a plain link to a page that lists its sections.
 - Focus is visible on every interactive element, and controls are sized for touch.
-- Text and interface colours are checked against the contrast minimums for their size, and no information is carried by colour alone.
+- Text and interface colors are checked against the contrast minimums for their size, and no information is carried by color alone.
 - Motion is limited, and it is removed when your system asks for reduced motion.
 - Every informative image has a text description, and decorative images are marked so that assistive technology skips them.
 - Forms use visible labels, say what is required, and list errors in a summary that links to each field.

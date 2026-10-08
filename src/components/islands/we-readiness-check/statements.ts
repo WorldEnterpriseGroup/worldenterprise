@@ -105,7 +105,7 @@ export const readinessStatements: readonly ReadinessStatement[] = [
   {
     id: 'data-room-folder',
     group: 'company',
-    statement: 'My core company documents sit in one organised folder that I could share within a day.',
+    statement: 'My core company documents sit in one organized folder that I could share within a day.',
     artifact: 'A data room folder with an index',
     gapTitle: 'Template: seed data room checklist',
     gapHref: '/library/seed-data-room-checklist/',

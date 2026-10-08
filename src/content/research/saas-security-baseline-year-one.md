@@ -5,7 +5,7 @@ description: "What a first-year SaaS security baseline can draw from OWASP ASVS,
 publishedDate: 2026-10-06
 version: "1.0"
 methodology: "Reads the public pages for OWASP ASVS, NIST SP 800-218 and the AICPA Trust Services Criteria on 6 October 2026, records only what those pages state, and labels every sequencing recommendation as analysis."
-limitations: "Source pages were read through a page summariser, not line by line. ASVS requirement counts, the AICPA common-criteria structure and any newer SSDF revision were not verified, so the brief does not state them. It is not an audit and describes no control operated by World Enterprise."
+limitations: "Source pages were read through a page summarizer, not line by line. ASVS requirement counts, the AICPA common-criteria structure and any newer SSDF revision were not verified, so the brief does not state them. It is not an audit and describes no control operated by World Enterprise."
 sources:
   - { id: asvs-github, title: "OWASP Application Security Verification Standard (repository)", publisher: OWASP, url: "https://github.com/OWASP/ASVS", accessed: 2026-10-06 }
   - { id: asvs-site, title: "OWASP ASVS chapter listing", publisher: OWASP, url: "https://asvs.dev/", accessed: 2026-10-06 }
@@ -72,7 +72,7 @@ On 6 October 2026 the public pages listed under Sources were retrieved and read.
 
 ## Limitations
 
-- The pages were read through an automated summariser, so wording was not re-checked against the raw page source.
+- The pages were read through an automated summarizer, so wording was not re-checked against the raw page source.
 - ASVS requirement counts per level were not verified and are not stated.
 - The AICPA common-criteria structure and the text of the criteria were not read.
 - Whether NIST has issued a newer SSDF revision was not established.

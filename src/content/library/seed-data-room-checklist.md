@@ -1,6 +1,6 @@
 ---
 title: Seed data room checklist
-description: A checklist of the documents a seed-stage company usually organises before investor due diligence, grouped by folder, with an owner and status for each.
+description: A checklist of the documents a seed-stage company usually organizes before investor due diligence, grouped by folder, with an owner and status for each.
 kind: checklist
 instructions: Create one folder per section, mark each item present, missing or not applicable, and name an owner. Update it before you share access with anyone.
 updated: 2026-10-06
@@ -8,7 +8,7 @@ updated: 2026-10-06
 
 ## How to use this checklist
 
-A data room is a controlled, organised set of documents shared during due diligence. Use this list to find gaps early. Which items an investor asks for varies, so treat it as a starting point and confirm requirements with your own counsel and accountant.
+A data room is a controlled, organized set of documents shared during due diligence. Use this list to find gaps early. Which items an investor asks for varies, so treat it as a starting point and confirm requirements with your own counsel and accountant.
 
 Status key: **P** present, **M** missing, **N** not applicable.
 
@@ -36,7 +36,7 @@ Status key: **P** present, **M** missing, **N** not applicable.
 |---|---|---|---|
 | Product overview and roadmap | | | |
 | Architecture summary | | | |
-| List of third-party and open-source components with licences | | | |
+| List of third-party and open-source components with licenses | | | |
 | Security baseline summary | | | |
 | Accessibility statement | | | |
 

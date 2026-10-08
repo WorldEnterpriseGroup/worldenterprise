@@ -14,7 +14,7 @@ Write the problem as the customer would say it. Do not mention your solution.
 
 ## 2. Who has it
 
-- **Primary customer:** the role and the kind of organisation, in one line.
+- **Primary customer:** the role and the kind of organization, in one line.
 - **Who pays:** the person or budget that would pay, if different from the user.
 - **Who else is affected:** people who use, approve or block the work.
 
