@@ -1,5 +1,6 @@
 ---
 title: "Support at five customers, not fifty"
+seoTitle: Support at five customers
 description: "How to run customer support with a handful of customers: one inbox, a written log, and a weekly review that turns each question into a product decision."
 topic: grow
 publishedDate: 2026-10-06

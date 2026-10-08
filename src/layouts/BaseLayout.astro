@@ -27,6 +27,8 @@ import { buildTitle, clampDescription, resolveRobots, TITLE_MAX } from '../lib/s
 
 interface Props {
   title?: string;
+  /** Short form of the title for the document title and social cards. Defaults to title. */
+  seoTitle?: string | undefined;
   description: string;
   path: string;
   ogSlot?: SlotId;
@@ -44,6 +46,7 @@ interface Props {
 
 const {
   title,
+  seoTitle,
   description,
   path,
   ogSlot = 'og-default',
@@ -60,7 +63,7 @@ const {
 
 await assertReleaseReady();
 
-const fullTitle = buildTitle(title);
+const fullTitle = buildTitle(seoTitle ?? title);
 if (fullTitle.length > TITLE_MAX) {
   console.warn(`[seo] Title for ${path} is ${fullTitle.length} characters (limit ${TITLE_MAX}): ${fullTitle}`);
 }

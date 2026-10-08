@@ -6,6 +6,8 @@ import type { JsonLdNode, PageSchemaType } from '../lib/schema.ts';
 export interface PageMeta {
   /** Page title without the site suffix. Omit only on the home page. */
   title?: string;
+  /** Short form of the title for the document title and social cards when the heading is too long. Defaults to title. */
+  seoTitle?: string | undefined;
   /** Meta description, 160 characters or fewer. */
   description: string;
   /** Route path as listed in the ledger, for example /program/how-it-works/. */

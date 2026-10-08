@@ -9,7 +9,7 @@ import { getRouteState } from '../../lib/route-state.ts';
 
 export const getStaticPaths = (async () => {
   const entries = await getRenderable('insights');
-  // Entries live in desk folders (and _fixtures/), so the route slug is the last segment of the entry id.
+  // Entries live in desk folders, so the route slug is the last segment of the entry id.
   return entries.map((entry) => ({ params: { slug: insightSlug(entry) }, props: { entry } }));
 }) satisfies GetStaticPaths;
 
@@ -24,6 +24,7 @@ const related = relatedFor(entry, siblings, (path) => state.isLive(path));
 
 <ArticleLayout
   title={data.title}
+  seoTitle={data.seoTitle}
   description={data.description}
   path={`/insights/${slug}/`}
   topic={data.topic}

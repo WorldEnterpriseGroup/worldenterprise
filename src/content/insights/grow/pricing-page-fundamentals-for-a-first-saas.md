@@ -1,5 +1,6 @@
 ---
 title: "Pricing page fundamentals for a first SaaS"
+seoTitle: Pricing page fundamentals
 description: How to build a clear pricing page for a first SaaS product - choosing a pricing model, stating what is included, and making the page readable and accessible.
 topic: grow
 publishedDate: 2026-10-06

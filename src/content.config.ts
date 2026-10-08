@@ -3,6 +3,8 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { CLAIM_IDS, isClaimUsable } from './data/claims.ts';
 import type { ClaimId } from './data/claims.ts';
+import { site } from './data/site.ts';
+import { TITLE_MAX } from './lib/seo.ts';
 
 /**
  * Content collections (SAGE-PLAN 6.4). Every object is strict: unknown frontmatter keys fail the build.
@@ -16,6 +18,12 @@ const claimId = z
 
 const claimsUsed = z.array(claimId).default([]);
 const draft = z.boolean().default(false);
+
+/**
+ * Optional short title for the document title and social cards, for headings that cannot fit in 60 characters once
+ * " | World Enterprise Incubator" is added. The heading itself is never shortened.
+ */
+const seoTitle = z.string().min(1).max(TITLE_MAX - ` | ${site.titleSuffix}`.length).optional();
 const serviceLine = z.enum(['A', 'B', 'C', 'D', 'E', 'F', 'G']);
 
 const source = z.strictObject({
@@ -38,6 +46,7 @@ const pages = defineCollection({
   loader: mdLoader('./src/content/pages'),
   schema: z.strictObject({
     title: z.string().min(1).max(70),
+    seoTitle,
     description: z.string().min(50).max(160),
     eyebrow: z.string().optional(),
     hero: z.enum(['H1', 'H2', 'H3', 'H4', 'H5']).default('H2'),
@@ -107,6 +116,7 @@ const insights = defineCollection({
   schema: z
     .strictObject({
       title: z.string().min(1),
+      seoTitle,
       description: z.string().min(50).max(160),
       topic: z.enum(['dream', 'build', 'grow', 'fundable']),
       publishedDate: z.coerce.date(),

@@ -1,5 +1,6 @@
 ---
 title: "Your first ten customers: a founder-led sequence"
+seoTitle: Your first ten customers
 description: "A five-step sequence for winning the first ten paying customers by hand, with the founder selling and a log that turns each conversation into learning."
 topic: grow
 publishedDate: 2026-10-06

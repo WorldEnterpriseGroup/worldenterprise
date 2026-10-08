@@ -1,5 +1,6 @@
 ---
 title: "Onboarding is acquisition: time to first value"
+seoTitle: Onboarding is acquisition
 description: Why the first session decides whether a signup becomes a customer, how to define the first value moment, and how to remove steps between signup and that moment.
 topic: grow
 publishedDate: 2026-10-06
