@@ -9,9 +9,10 @@
 #   deploy     pages            internal preview (demo only), built from source with a Node image
 #   mirror     mirror           gh-pages to GitHub, only after every QA job is green
 #
-# Blocking policy. verify:static and check:ownership always block. Every qa job is allow_failure on wp/* branches and on demo until
-# WP-15 sets QA_STRICT=1 (CI/CD variable or this file), so a heavy suite cannot hold back a work package merge. On gh-pages, and on
-# any branch whose name ends in "negatives", every qa job is strict. The negatives branch is how each gate is proven able to fail.
+# Blocking policy. verify:static and check:ownership always block. Every qa job blocks: WP-15 set QA_STRICT=1 below once one wp/15
+# pipeline passed every qa job (decision I-10). Removing that variable returns wp/* branches and demo to allow_failure, which a work
+# package merge may use while a heavy suite is being repaired; gh-pages, and any branch whose name ends in "negatives", is always
+# strict. The negatives branch is how each gate is proven able to fail.
 #
 # The Launch Sequence include is pinned to an immutable commit (D-6).
 
@@ -41,6 +42,8 @@ variables:
   # so the launched /apply/ and /contact/ forms render disabled. Every launch route exists and no draft remains. gh-pages
   # overrides this to empty, so the endpoints must exist before production ships.
   RELEASE_ALLOW: '^launched form route'
+  # Every qa job blocks on every branch (decision I-10). Set by WP-15 after a wp/15 pipeline passed all of them.
+  QA_STRICT: "1"
 
 # npm packages are cached per lockfile. Playwright browsers ship inside the Playwright image, so nothing is downloaded per job.
 .npm-cache:
