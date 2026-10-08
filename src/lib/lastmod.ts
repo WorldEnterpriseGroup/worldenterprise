@@ -6,16 +6,21 @@ import { DYNAMIC_COLLECTIONS, fileToRoute, matchDynamic } from './route-core.ts'
 
 /**
  * Sitemap lastmod lookup (WP-09 request W15-1). Runs in Node at config time, never inside a page.
- * A route's date is the `updated` / `updatedDate` frontmatter of its content entry; when the entry has none, the
- * date of the last git commit that touched the entry; when no entry backs the route, the last commit that touched
- * the page file. When none of these is known the route gets no lastmod: an invented date is worse than none.
+ * A route's lastmod is the date the page itself declares as its modified date, so the sitemap, the JSON-LD dateModified and
+ * article:modified_time always agree (the build audit compares them). In order:
+ *   1. the `updatedDate` / `updated` / `publishedDate` frontmatter of the route's content entry, the same fallback chain
+ *      ArticleLayout and BriefLayout use for their `updated` prop;
+ *   2. a literal `updated={new Date('YYYY-MM-DD')}` in the page file, for a page with no content entry (the FAQ and the glossary);
+ *   3. otherwise the date of the last git commit that touched the entry, or the page file when no entry backs the route.
+ * When none of these is known the route gets no lastmod: an invented date is worse than none.
  */
 
 const CONTENT_EXTENSIONS = /\.(md|mdx)$/;
 const FRONTMATTER = /^---\r?\n([\s\S]*?)\r?\n---/;
-const DATE_KEYS = ['updatedDate', 'updated'] as const;
+const DATE_KEYS = ['updatedDate', 'updated', 'publishedDate'] as const;
+const PAGE_UPDATED = /\bupdated=\{\s*new Date\(\s*(['"])(\d{4}-\d{2}-\d{2}(?:T[\d:.]+Z)?)\1\s*\)\s*\}/;
 
-/** The date in an `updated` or `updatedDate` frontmatter field, or undefined when absent or not a date. */
+/** The date in an `updatedDate`, `updated` or `publishedDate` frontmatter field (in that order), or undefined when absent or not a date. */
 export function frontmatterDate(source: string): Date | undefined {
   const block = FRONTMATTER.exec(source)?.[1];
   if (block === undefined) return undefined;
@@ -27,6 +32,14 @@ export function frontmatterDate(source: string): Date | undefined {
     if (!Number.isNaN(parsed.getTime())) return parsed;
   }
   return undefined;
+}
+
+/** The date of a literal `updated={new Date('2026-10-06')}` in a page file, or undefined when the page computes or omits it. */
+export function pageFileDate(source: string): Date | undefined {
+  const raw = PAGE_UPDATED.exec(source)?.[2];
+  if (raw === undefined) return undefined;
+  const parsed = new Date(raw);
+  return Number.isNaN(parsed.getTime()) ? undefined : parsed;
 }
 
 export interface ContentFile {
@@ -167,7 +180,8 @@ export function createLastmodLookup({ root, base, git = gitCommitDate(root) }: L
       if (fromGit !== undefined) return fromGit;
     }
     const page = pages.fixed.get(route) ?? pages.dynamic.find((candidate) => matchDynamic(candidate.pattern, route) !== null)?.path;
-    return page === undefined ? undefined : git(page);
+    if (page === undefined) return undefined;
+    return pageFileDate(readFileSync(join(root, page), 'utf8')) ?? git(page);
   }
 
   return (pathname) => {

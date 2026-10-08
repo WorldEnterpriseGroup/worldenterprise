@@ -217,13 +217,22 @@ export function parseSitemap(xml) {
   });
 }
 
-/** Sitemap rules: noindex routes are not listed, every indexable page is listed, lastmod (when present) is a valid date. */
+/**
+ * Sitemap rules: noindex routes are not listed, every indexable page is listed, lastmod (when present) is a valid date, and a page
+ * that states its own modified date (article:modified_time, which is also its JSON-LD dateModified) has that same instant as its
+ * lastmod. Search engines stop trusting a lastmod that a page contradicts.
+ */
 export function auditSitemap(pages, entries, options) {
   const errors = [];
   const listed = new Set(entries.map((e) => e.path));
+  const htmlOf = new Map(pages.map((page) => [page.path, page.html]));
   for (const entry of entries) {
     if (!entry.loc.startsWith(`${ORIGIN}/`)) errors.push(`sitemap: ${entry.loc} is not an absolute production URL`);
     if (entry.lastmod !== undefined && Number.isNaN(Date.parse(entry.lastmod))) errors.push(`sitemap: ${entry.path} has an invalid lastmod "${entry.lastmod}"`);
+    const modified = metaContent(htmlOf.get(entry.path) ?? '', 'property', 'article:modified_time');
+    if (entry.lastmod !== undefined && modified !== undefined && Date.parse(entry.lastmod) !== Date.parse(modified)) {
+      errors.push(`sitemap: ${entry.path} lastmod ${entry.lastmod} differs from the page's own article:modified_time ${modified}`);
+    }
     if (expectsNoindex(entry.path, { ...options, preview: false })) errors.push(`sitemap: noindex route ${entry.path} is listed`);
   }
   for (const page of pages) {
