@@ -21,7 +21,7 @@ export const LINE_SLOT: Readonly<Record<ServiceLine, SlotId>> = {
 /** The two jobs the services menu groups the lines under (SAGE-PLAN 5.2). */
 export const LINE_GROUPS: readonly { readonly id: 'build' | 'fundable'; readonly heading: string; readonly lines: readonly ServiceLine[] }[] = [
   { id: 'build', heading: 'Build the company', lines: ['A', 'B', 'C', 'D'] },
-  { id: 'fundable', heading: 'Become fundable', lines: ['E', 'F', 'G'] },
+  { id: 'fundable', heading: 'Learn and prepare', lines: ['E', 'F', 'G'] },
 ];
 
 export interface NextLink {

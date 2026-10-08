@@ -1,6 +1,6 @@
 ---
 title: About WE
-description: "World Enterprise Incubator is a digital incubator for SaaS. Fully remote, with dedicated team seats steered by WE, from first idea toward a fundable company."
+description: "World Enterprise Incubator is a digital incubator for SaaS. Fully remote, with dedicated team seats steered by WE, from first idea to first customers."
 eyebrow: About
 hero: H2
 updated: 2026-10-06
@@ -25,7 +25,7 @@ WE is fully digital. There is no office to visit and no relocation to plan. Work
 
 ## What WE does not do
 
-WE does not promise funding, and nothing here predicts that a company will raise money. WE does not keep your books, file your taxes or replace your lawyer; the program coordinates the professionals you already use. WE does not publish client logos, customer quotes or results, because it will not show proof it cannot back.
+WE does not promise funding, and nothing here predicts that a company will raise money. WE does not keep your books, file your taxes or replace your lawyer; the program coordinates the professionals you already use. WE does not publish client logos, customer quotes or results.
 
 ## How WE works
 

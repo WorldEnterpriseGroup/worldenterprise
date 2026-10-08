@@ -18,7 +18,7 @@ export const RESOURCE_GROUPS: readonly ResourceGroup[] = [
     id: 'read',
     title: 'Read',
     items: [
-      { title: 'Insights', path: '/insights/', description: 'Sourced articles on validating, building, growing and becoming fundable.' },
+      { title: 'Insights', path: '/insights/', description: 'Sourced articles on validating, building, growing and preparing evidence for investors.' },
       { title: 'Research briefs', path: '/research/', description: 'Designed reports with methodology, limitations and public sources.' },
       { title: 'Newsletter', path: '/newsletter/', description: 'New playbooks, templates and research briefs by email.' },
     ],

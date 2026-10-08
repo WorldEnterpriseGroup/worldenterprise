@@ -15,8 +15,6 @@ export const flags = {
   legalTerms: false,
   /** FLAG-PBC. When true, the footer and About page may call WE a "Delaware public benefit corporation". */
   pbcWording: false,
-  /** FLAG-LIMITS. Service-line limits ("What this line does not do") confirmed by the operator. */
-  limitsConfirmed: false,
   /** FLAG-FOCUS. Focus Shifts confirmed as used in seat operations. */
   focusShiftConfirmed: false,
 } as const;

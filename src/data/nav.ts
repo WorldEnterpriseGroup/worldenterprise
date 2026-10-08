@@ -72,7 +72,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     id: 'program',
     label: 'Program',
     href: '/program/',
-    lead: 'A digital incubator for SaaS. Dedicated team seats, steered by WE, from first idea to fundable company.',
+    lead: 'A digital incubator for SaaS. Dedicated team seats, steered by WE, from first idea to first customers.',
     leadLink: 'Explore the program',
     columns: [
       {
@@ -89,7 +89,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         links: [
           { label: 'Dream', href: '/program/dream/', description: 'Validate the problem and the customer' },
           { label: 'Build', href: '/program/build/', description: 'Turn the validated idea into a product that ships' },
-          { label: 'Grow', href: '/program/grow/', description: 'Earn customers and become fundable' },
+          { label: 'Grow', href: '/program/grow/', description: 'Earn your first customers and gather evidence' },
           { label: 'Cohorts', href: '/program/cohorts/', l2: true },
           { label: 'Demo Day', href: '/program/demo-day/', l2: true },
         ],
@@ -106,7 +106,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     id: 'services',
     label: 'Services',
     href: '/services/',
-    lead: 'Seven service lines, one accountable team.',
+    lead: 'Seven service lines, one team steered by WE.',
     leadLink: 'All services',
     columns: [
       {
@@ -119,11 +119,11 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         ],
       },
       {
-        heading: 'Become fundable',
+        heading: 'Learn and prepare',
         links: [
-          { label: 'Digital Incubation', href: '/services/digital-incubation/', line: 'E', description: 'Workspace, curriculum, coaching and peer sessions' },
+          { label: 'Digital Incubation', href: '/services/digital-incubation/', line: 'E', description: 'Workspace, curriculum and coaching' },
           { label: 'Fundability and Investor Readiness', href: '/services/fundability-and-investor-readiness/', line: 'F', description: 'The evidence a serious investor asks for' },
-          { label: 'Professional-Services Coordination', href: '/services/professional-services-coordination/', line: 'G', description: 'We coordinate your own counsel, accountant and specialists; WE does not replace them' },
+          { label: 'Professional-Services Coordination', href: '/services/professional-services-coordination/', line: 'G', description: 'WE coordinates your own counsel, accountant and specialists; it does not replace them' },
         ],
       },
     ],
@@ -238,7 +238,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     id: 'network',
     label: 'Network',
     href: '/network/',
-    lead: 'The people and partners around your company.',
+    lead: 'The founder profile, operator roles and standards behind your team.',
     leadLink: 'The WE network',
     columns: [
       {
@@ -251,7 +251,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         ],
       },
       {
-        heading: 'Operators and partners',
+        heading: 'Operators',
         links: [
           { label: 'Operators', href: '/network/operators/', description: 'The roles WE places around your team' },
           { label: 'Delivery partners', href: '/network/delivery-partners/', l2: true },
@@ -275,7 +275,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     id: 'about',
     label: 'About',
     href: '/about/',
-    lead: 'A public benefit corporation building digital companies.',
+    lead: 'A digital incubator for SaaS, run by World Enterprise Group Incorporated.',
     leadLink: 'About WE',
     columns: [
       {
