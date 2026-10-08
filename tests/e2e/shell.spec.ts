@@ -55,7 +55,8 @@ test('every sampled page carries a Content-Security-Policy that blocks inline sc
     expect(directives.get('base-uri'), `${route} base-uri`).toEqual(["'self'"]);
     const scripts = directives.get('script-src') ?? [];
     expect(scripts, `${route} script-src names the site`).toContain("'self'");
-    expect(scripts.filter((value) => /unsafe-(inline|eval)/.test(value)), `${route} script-src has no unsafe-inline or unsafe-eval`).toEqual([]);
+    // 'wasm-unsafe-eval' (Pagefind compiles WebAssembly) is the one accepted exception and is not 'unsafe-eval'.
+    expect(scripts.filter((value) => /^'unsafe-(inline|eval)'$/.test(value)), `${route} script-src has no unsafe-inline or unsafe-eval`).toEqual([]);
     expect(directives.get('style-src-attr'), `${route} only style attributes may be inline`).toEqual(["'unsafe-inline'"]);
     expect(directives.get('style-src-elem') ?? [], `${route} style elements are hashed, not inline`).not.toContain("'unsafe-inline'");
   }
