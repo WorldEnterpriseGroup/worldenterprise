@@ -10,6 +10,7 @@ import type { Page } from '@playwright/test';
  * reachable. The rules, in the order they apply:
  * - Boxes under 2px, `display: none`, `visibility: hidden`, `position: fixed` and elements inside a closed popover are not content.
  * - A scroll container (`overflow-x: auto | scroll`) makes everything inside it reachable, as long as the container itself fits.
+ * - A clipping ancestor that is itself 1px or 2px across is the visually-hidden pattern, and nothing in it is meant to be seen.
  * - `overflow: hidden | clip` is never an excuse for content, because that is exactly the blind spot: text, controls and borders
  *   cut off with no scrollbar. Decorative graphics (an `svg`, or anything `aria-hidden`) are excused only when a clipping ancestor
  *   that is not a page-frame safety net (`html`, `body`, `.page`, `main`) contains them and itself fits, so a card may crop its
@@ -77,6 +78,11 @@ export async function findOverflow(page: Page): Promise<Offender[]> {
         }
       }
       if (scrolls || hiddenByFixed) continue;
+      // A clip box of a pixel or two is the visually-hidden pattern (the honeypot field, skip-link text): nothing there is meant to be seen.
+      if (clipper !== null) {
+        const clipBox = clipper.getBoundingClientRect();
+        if (clipBox.width < 2 || clipBox.height < 2) continue;
+      }
 
       const decorative = tag === 'svg' || el.closest('[aria-hidden="true"]') !== null;
       if (decorative && clipper !== null) {
