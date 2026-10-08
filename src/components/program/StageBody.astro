@@ -25,7 +25,7 @@ const trail = STAGES.map((s) => ({ label: `${s.name} (${s.altitude})`, href: hre
   <div class="stagebody__intro">
     <div class="prose measure"><slot /></div>
     <div class="hex-frame stagebody__media">
-      <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} loading="lazy" decoding="async" />
+      <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} fetchpriority="high" decoding="async" />
     </div>
   </div>
 

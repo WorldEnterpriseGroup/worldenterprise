@@ -1,0 +1,84 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import test from 'node:test';
+import * as imagesAudit from '../../../scripts/audit-images.mjs';
+import * as html from '../../../scripts/lib/html.mjs';
+import { imageMediaType, preloadOf } from '../../../src/lib/image-type.ts';
+import { cleanSite, makeDist, page } from '../shared/fixture-dist.ts';
+
+const ROOT = new URL('../../../', import.meta.url).pathname;
+
+interface Finding {
+  readonly level: 'error' | 'warn';
+  readonly where: string;
+  readonly message: string;
+}
+interface Page {
+  readonly route: string;
+  readonly file: string;
+  readonly html: string;
+}
+
+const readPages = (html as unknown as { readPages(root: string): Page[] }).readPages;
+const auditMarkup = (imagesAudit as unknown as { auditMarkup(o: { root: string; pages: Page[] }): { findings: Finding[] } }).auditMarkup;
+
+const IMG = '<img src="/_astro/hero.avif" alt="A model of three stages on a table" width="1024" height="576" fetchpriority="high" decoding="async">';
+
+function audit(head: string, body = `<h1>Home</h1>${IMG}`): string {
+  const root = makeDist({ ...cleanSite(), 'index.html': page({ head, body }), '_astro/hero.avif': 1000 });
+  return auditMarkup({ root, pages: readPages(root) })
+    .findings.filter((f) => f.level === 'error')
+    .map((f) => f.message)
+    .join('\n');
+}
+
+test('imageMediaType names the type of each format Astro can report, and throws for anything else', () => {
+  assert.equal(imageMediaType('avif'), 'image/avif');
+  assert.equal(imageMediaType('svg'), 'image/svg+xml');
+  assert.equal(imageMediaType('jpg'), 'image/jpeg');
+  assert.equal(imageMediaType('JPEG'), 'image/jpeg');
+  assert.throws(() => imageMediaType('bmp'), /No media type is known for the image format "bmp"/);
+});
+
+test('preloadOf takes the type from the imported image, not from the caller', () => {
+  assert.deepEqual(preloadOf({ src: '/_astro/hero.1a2b3c.avif', format: 'avif' }), { href: '/_astro/hero.1a2b3c.avif', type: 'image/avif' });
+  assert.deepEqual(preloadOf({ src: '/_astro/hex.svg', format: 'svg' }), { href: '/_astro/hex.svg', type: 'image/svg+xml' });
+});
+
+test('the home page derives its hero preload from the imported image', () => {
+  const home = readFileSync(`${ROOT}src/pages/index.astro`, 'utf8');
+  assert.match(home, /preloadImage=\{preloadOf\(heroImage\.src\)\}/);
+  assert.doesNotMatch(home, /image\/svg\+xml/);
+});
+
+test('audit:images accepts a preload whose type matches the file and whose image the page uses', () => {
+  assert.equal(audit('<link rel="preload" as="image" href="/_astro/hero.avif" type="image/avif" fetchpriority="high">'), '');
+});
+
+test('audit:images rejects a preload that declares the wrong type for its file (negative proof)', () => {
+  assert.match(audit('<link rel="preload" as="image" href="/_astro/hero.avif" type="image/svg+xml">'), /declares type "image\/svg\+xml" for a \.avif file \(expected "image\/avif"\)/);
+});
+
+test('audit:images rejects a preload that no <img> on the page uses (negative proof)', () => {
+  assert.match(audit('<link rel="preload" as="image" href="/_astro/other.avif" type="image/avif">'), /preloaded image is not used by any <img>/);
+});
+
+test('the pages whose first-viewport images were lazy-loaded now load them at high priority', () => {
+  for (const file of [
+    'src/pages/program/index.astro',
+    'src/pages/playbooks/index.astro',
+    'src/pages/fundability/index.astro',
+    'src/pages/apply/index.astro',
+    'src/pages/contact/index.astro',
+    'src/components/program/StageBody.astro',
+  ]) {
+    const source = readFileSync(`${ROOT}${file}`, 'utf8');
+    const images = source.match(/<img\b[^>]*>/g) ?? [];
+    assert.ok(images.length > 0, `${file} renders an image`);
+    for (const image of images) {
+      assert.match(image, /fetchpriority="high"/, `${file}: ${image}`);
+      assert.doesNotMatch(image, /loading="lazy"/, `${file}: ${image}`);
+      assert.match(image, /decoding="async"/, `${file}: ${image}`);
+    }
+  }
+});

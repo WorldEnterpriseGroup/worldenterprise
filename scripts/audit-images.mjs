@@ -2,7 +2,8 @@
 // Image audit over dist (SAGE-PLAN 6.7).
 //   Files:  every raster is .avif. The only other raster allowed is apple-touch-icon.png. SVG is allowed.
 //   Markup: every <img> has alt (decorative = alt=""), width, height and decoding; alt text is not "image of" filler; the LCP
-//           image (fetchpriority=high) is not also lazy; no external image URLs; no data: raster; og:image is AVIF.
+//           image (fetchpriority=high) is not also lazy; no external image URLs; no data: raster; og:image is AVIF; an image
+//           preload names the type of the file it points at and is used by an <img> on the same page.
 //   Size:   no raster displays wider than 1024 CSS px; a card (<= 512 px) weighs <= 60 KB, a band <= 120 KB, and the images
 //           a page loads by default weigh <= 400 KB in total.
 // Usage: node scripts/audit-images.mjs [--dist dist] [--json reports/images.json]
@@ -14,6 +15,7 @@ import { distRel, isDevRoute, metaContent, ORIGIN, parseArgs, readPages, report,
 export const BUDGET = { card: 60 * 1024, band: 120 * 1024, page: 400 * 1024, cardMaxWidth: 512, maxWidth: 1024 };
 const RASTER = /\.(?:png|jpe?g|gif|webp|bmp|tiff?|heic|ico)(?:[?#].*)?$/i;
 const ALLOWED_RASTER = new Set(['apple-touch-icon.png']);
+const MEDIA_TYPE_BY_EXTENSION = { avif: 'image/avif', webp: 'image/webp', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', svg: 'image/svg+xml' };
 const FILLER_ALT = /^(?:image|photo|picture|graphic|img|image of|photo of|picture of|a photo of|an image of)\b/i;
 
 /** Raster files in dist that are not AVIF. */
@@ -80,6 +82,23 @@ export function auditMarkup({ root, pages, sizeOf = (rel) => (existsSync(join(ro
           }
         }
       }
+    }
+
+    const usedImageUrls = new Set();
+    for (const img of startTags(doc, 'img')) {
+      if (img.attrs.src !== undefined) usedImageUrls.add(img.attrs.src);
+      for (const u of img.attrs.srcset !== undefined ? srcsetUrls(img.attrs.srcset) : []) usedImageUrls.add(u);
+    }
+    for (const link of startTags(doc, 'link')) {
+      if (link.attrs.rel !== 'preload' || link.attrs.as !== 'image') continue;
+      const href = link.attrs.href ?? '';
+      const label = where(` <link rel="preload" href="${href.slice(0, 80)}">`);
+      const extension = /\.([a-z0-9]+)(?:[?#].*)?$/i.exec(href)?.[1]?.toLowerCase();
+      const expected = extension === undefined ? undefined : MEDIA_TYPE_BY_EXTENSION[extension];
+      if (link.attrs.type !== undefined && expected !== undefined && link.attrs.type !== expected) {
+        findings.push({ level: 'error', where: label, message: `preload declares type "${link.attrs.type}" for a .${extension} file (expected "${expected}"); the browser ignores the hint` });
+      }
+      if (!usedImageUrls.has(href)) findings.push({ level: 'error', where: label, message: 'preloaded image is not used by any <img> on the page' });
     }
 
     for (const source of startTags(doc, 'source')) {

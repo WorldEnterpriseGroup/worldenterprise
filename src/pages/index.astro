@@ -15,6 +15,7 @@ import CtaBand from '../components/ui/CtaBand.astro';
 import FactBand from '../components/ui/FactBand.astro';
 import HexAtlas from '../components/ui/HexAtlas.astro';
 import { getPublished } from '../lib/content.ts';
+import { preloadOf } from '../lib/image-type.ts';
 import { getRouteState } from '../lib/route-state.ts';
 import { href } from '../lib/url.ts';
 import HomeLayout from '../layouts/HomeLayout.astro';
@@ -81,7 +82,7 @@ const proofRows = PROOF.map((r) => ({
 }));
 ---
 
-<HomeLayout description={data.description} updated={data.updated} draft={data.draft} ogSlot="og-home" preloadImage={{ href: heroImage.src.src, type: 'image/svg+xml' }}>
+<HomeLayout description={data.description} updated={data.updated} draft={data.draft} ogSlot="og-home" preloadImage={preloadOf(heroImage.src)}>
   {primary && <HomeHero eyebrow={data.eyebrow ?? 'World Enterprise Incubator'} title="Turn a SaaS idea into a company that can prove itself." lead="WE is a digital incubator: dedicated team seats, steered by WE, take you from first idea to the evidence a serious investor asks for." primary={primary} secondary={secondary} />}
 
   {

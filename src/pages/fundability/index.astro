@@ -42,7 +42,7 @@ const inset = getPhoto('inset-fundability');
     <div class="prose">
       <Content components={{ a: SmartLink }} />
     </div>
-    <img class="fd-inset" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
+    <img class="fd-inset" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} fetchpriority="high" decoding="async" />
   </section>
   <section id="self-check" aria-label="Investor readiness self-check" class="scroll-target">
     <ReadinessCheck />
