@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 // The suite runs against an already built dist/ served by scripts/lib/serve.mjs. Nothing here builds the site.
 // Specs are matched per project: the common specs run at both viewports, the mode specs run in one project each.
 const PORT = Number(process.env.E2E_PORT ?? 4321);
-const COMMON = ['routes', 'axe', 'menu', 'folds', 'interaction', 'forms', 'shell'].map((name) => new RegExp(`/${name}\\.spec\\.ts$`));
+const COMMON = ['routes', 'axe', 'menu', 'folds', 'interaction', 'forms', 'shell', 'layout-shift'].map((name) => new RegExp(`/${name}\\.spec\\.ts$`));
 
 export default defineConfig({
   testDir: 'tests/e2e',

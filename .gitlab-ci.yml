@@ -192,6 +192,12 @@ e2e:menu:
   script:
     - npx playwright test menu modes
 
+# Layout stability: CLS under 0.1 on every route at both viewports, and the web fonts swap in without moving the first screen.
+e2e:stability:
+  extends: [.e2e]
+  script:
+    - npx playwright test layout-shift
+
 # Team Composer, readiness check, search and copy.
 e2e:interaction:
   extends: [.e2e]
@@ -298,6 +304,8 @@ mirror:
     - job: e2e:menu
       artifacts: false
     - job: e2e:interaction
+      artifacts: false
+    - job: e2e:stability
       artifacts: false
     - job: e2e:forms
       artifacts: false
