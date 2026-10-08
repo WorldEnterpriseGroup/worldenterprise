@@ -103,6 +103,8 @@ const inset = getPhoto('inset-trust');
   @layer pages {
     .tr-split {
       display: grid;
+      /* A bare auto column grows to its widest min-content descendant and pushes the page past a narrow viewport. */
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--sp-6);
       align-items: start;
     }

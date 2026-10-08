@@ -993,6 +993,9 @@
   }
 
   .table-wrap {
+    /* The containing block for .visually-hidden spans inside cells. Without it they are placed against the page, escape
+       this scroll container and main's overflow clip, and widen the document (the /trust/ overflow at 390px). */
+    position: relative;
     overflow-x: auto;
     border: var(--border-hair);
     border-radius: var(--radius-md);
