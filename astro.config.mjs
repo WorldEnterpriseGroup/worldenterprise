@@ -2,6 +2,9 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { fileURLToPath } from 'node:url';
+import { createLastmodLookup } from './src/lib/lastmod.ts';
+import { isSitemapUrl, withLastmod } from './src/lib/seo.ts';
 
 /** Production origin. Never changes for preview builds: canonicals always point here. */
 const SITE = 'https://worldenterprise.org';
@@ -12,6 +15,9 @@ const SITE = 'https://worldenterprise.org';
  */
 const rawBase = (process.env.PAGES_BASE_PATH ?? '').trim();
 const base = rawBase === '' ? undefined : `/${rawBase.replace(/^\/+|\/+$/g, '')}`;
+
+/** Sitemap lastmod: frontmatter date, else the last git commit of the source file, else none (src/lib/lastmod.ts). */
+const lastmod = createLastmodLookup({ root: fileURLToPath(new URL('.', import.meta.url)), base });
 
 export default defineConfig({
   site: SITE,
@@ -78,7 +84,7 @@ export default defineConfig({
     },
   ],
   devToolbar: { enabled: false },
-  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/styleguide/') && !page.includes('/fixture-') })],
+  integrations: [mdx(), sitemap({ filter: isSitemapUrl, serialize: (item) => withLastmod(item, lastmod) })],
   vite: {
     build: {
       assetsInlineLimit: 0,
