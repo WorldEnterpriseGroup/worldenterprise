@@ -8,8 +8,11 @@ import type { AstroUserConfig } from 'astro';
  *
  * Accepted exceptions (a meta policy cannot do these, and the host cannot add headers):
  * - frame-ancestors, report-uri and sandbox are ignored in a meta tag, so they are not listed.
- * - style attributes are allowed (style-src-attr 'unsafe-inline'). The site sets CSS custom properties in markup, for
- *   example style="--grid-min:16rem". Scripts stay locked to 'self' plus hashes, so an attribute cannot run code.
+ * - There is no style-attribute exception any more (WP-16, EX-CSP-STYLE-ATTR). The site used to set CSS custom properties in markup
+ *   (a column minimum on a grid, a gap on a stack) and allowed them with style-src-attr 'unsafe-inline'. Those became modifier classes
+ *   (.grid--min-*, .stack--loose, .hex--sm, ...), so a style attribute in markup is now blocked, and tests/unit/wp-16/csp-style-attr.test.ts
+ *   fails the build when one comes back. Script-set styles are unaffected: the CSSOM (el.style.setProperty, as nav.ts does for
+ *   --panel-top) is not governed by style-src-attr. Only an attribute in markup, or one written with setAttribute, is.
  * - Pagefind needs 'wasm-unsafe-eval' to compile its WebAssembly index reader. That is not 'unsafe-eval'.
  */
 
@@ -59,10 +62,9 @@ export function buildCsp(endpoints: readonly (string | undefined)[]): CspConfig 
       resources: ["'self'", "'wasm-unsafe-eval'"],
     },
     styleDirective: {
-      resources: [
-        { resource: "'self'", kind: 'element' },
-        { resource: "'unsafe-inline'", kind: 'attribute' },
-      ],
+      // Element resources only. Astro emits no style-src-attr in that case, so style attributes fall back to style-src, which names
+      // 'self' and the per-page hashes and has no 'unsafe-inline'.
+      resources: [{ resource: "'self'", kind: 'element' }],
     },
   };
 }

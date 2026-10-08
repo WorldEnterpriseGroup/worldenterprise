@@ -566,7 +566,12 @@
     {
       "wp": "WP-16",
       "path": "astro.config.mjs",
-      "reason": "One markdown.rehypePlugins entry that wraps Markdown tables in .table-wrap (a11y P1-2); library, research and legal are plain .md and have no other hook."
+      "reason": "One markdown.processor entry: satteri({ hastPlugins: [tableWrapPlugin] }) frames every Markdown and MDX table in .table-wrap (a11y P1-2). Astro 7 renders .md and .mdx with Satteri, and library, research and legal are plain .md with no other hook."
+    },
+    {
+      "wp": "WP-16",
+      "path": "src/components/media/CoverArt.astro",
+      "reason": "One-line CSP fix: the gradient stops carried a style attribute (stop-color), which the policy now blocks. They take the stop-color presentation attribute instead. The component has no importer yet."
     },
     {
       "wp": "WP-18",

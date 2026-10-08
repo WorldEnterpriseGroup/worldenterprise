@@ -47,12 +47,10 @@ test('the policy locks down objects, base URIs, images and fonts, and never allo
   assert.ok(!JSON.stringify(csp.scriptDirective).includes('unsafe-inline'));
 });
 
-test('inline style attributes are the only unsafe-inline, scoped to style-src-attr', () => {
-  const resources = buildCsp([]).styleDirective?.resources ?? [];
-  assert.deepEqual(resources, [
-    { resource: "'self'", kind: 'element' },
-    { resource: "'unsafe-inline'", kind: 'attribute' },
-  ]);
+test('there is no unsafe-inline anywhere: style attributes are blocked as well as inline scripts', () => {
+  const csp = buildCsp([]);
+  assert.deepEqual(csp.styleDirective?.resources ?? [], [{ resource: "'self'", kind: 'element' }]);
+  assert.ok(!JSON.stringify(csp).includes('unsafe-inline'));
 });
 
 test('frame-ancestors, report-uri and sandbox are not listed: a meta policy ignores them', () => {

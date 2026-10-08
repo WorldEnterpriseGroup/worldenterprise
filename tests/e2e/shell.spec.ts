@@ -1,5 +1,6 @@
+import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
-import { isBuilt } from './support/routes.ts';
+import { fileFor, isBuilt, liveRoutes } from './support/routes.ts';
 
 // Site shell: 404, machine routes, the development routes (when the build includes them), and the structure of the nav.
 
@@ -57,9 +58,24 @@ test('every sampled page carries a Content-Security-Policy that blocks inline sc
     expect(scripts, `${route} script-src names the site`).toContain("'self'");
     // 'wasm-unsafe-eval' (Pagefind compiles WebAssembly) is the one accepted exception and is not 'unsafe-eval'.
     expect(scripts.filter((value) => /^'unsafe-(inline|eval)'$/.test(value)), `${route} script-src has no unsafe-inline or unsafe-eval`).toEqual([]);
-    expect(directives.get('style-src-attr'), `${route} only style attributes may be inline`).toEqual(["'unsafe-inline'"]);
+    // No style-attribute exception (WP-16): Astro emits no style-src-attr, so attributes fall back to style-src, which has no 'unsafe-inline'.
+    expect(directives.get('style-src-attr'), `${route} has no style-src-attr exception`).toBeUndefined();
+    expect(directives.get('style-src') ?? [], `${route} style-src has no unsafe-inline`).not.toContain("'unsafe-inline'");
     expect(directives.get('style-src-elem') ?? [], `${route} style elements are hashed, not inline`).not.toContain("'unsafe-inline'");
   }
+});
+
+test('no built page carries a style attribute, which the policy blocks (WP-16)', ({}, info) => {
+  test.skip(info.project.name !== 'desktop-1440x900', 'static scan, once');
+  test.setTimeout(120_000);
+  const failures: string[] = [];
+  for (const route of liveRoutes) {
+    const html = readFileSync(fileFor(route.path), 'utf8');
+    // An attribute named style on any start tag. Text that merely mentions it is HTML-escaped or sits outside a tag.
+    for (const tag of html.matchAll(/<[a-zA-Z][^<>]*?\sstyle=("[^"]*"|'[^']*')[^<>]*>/g)) failures.push(`${route.path}: ${tag[0].slice(0, 120)}`);
+  }
+  expect(liveRoutes.length, 'routes scanned').toBeGreaterThan(40);
+  expect(failures.slice(0, 10), `${failures.length} style attribute(s) in built pages`).toEqual([]);
 });
 
 test('sitemap entries carry lastmod', async ({ request }) => {
