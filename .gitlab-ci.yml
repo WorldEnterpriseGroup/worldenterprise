@@ -155,10 +155,16 @@ audit:ledger:
   script:
     - npm run audit:ledger
 
+# Published-output allowlist and leak scan (audit:dist), and CSP hash coverage of every inline block (audit:csp). Both run and both
+# count, so one red audit does not hide the other.
 audit:dist:
   extends: [.audit]
   script:
-    - npm run audit:dist
+    - |
+      status=0
+      npm run audit:dist || status=1
+      npm run audit:csp || status=1
+      exit "$status"
 
 audit:a11y:
   extends: [.audit]
@@ -226,6 +232,8 @@ e2e:forms:
     - node --version
     - npm ci --prefer-offline --no-audit --no-fund
     - npm run build
+    # This is the only build with endpoints: every form origin must be in the page's connect-src and form-action.
+    - npm run audit:csp
     - node scripts/lib/export-ledger.mjs reports/ledger.json
     - npx playwright test forms
   artifacts:
@@ -283,8 +291,19 @@ pages:
       artifacts: false
 
 # Production reaches GitHub only when the full QA set is green on gh-pages.
+#
+# The template script is replaced, not extended: it ends the job with exit 0 ("skipping mirror") when GITHUB_REPO or GITHUB_TOKEN
+# is unset, so a gh-pages pipeline went green without publishing anything (code-security P1-3). The first script line below fails
+# the job instead. The remote and push lines are the template's, unchanged. GITHUB_TOKEN is a masked, protected CI/CD variable
+# (Azure Key Vault holds the source of truth) and is never echoed.
 mirror:
   extends: .mirror:github
+  script:
+    - echo "=== Mirror gh-pages to GitHub ==="
+    - sh scripts/ci/require-mirror-secrets.sh
+    - git remote add github "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" 2>/dev/null || git remote set-url github "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git"
+    - git push github gh-pages --force
+    - echo "Mirrored gh-pages to github.com/${GITHUB_REPO}"
   needs:
     - job: verify:static
       artifacts: false
