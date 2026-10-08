@@ -1,11 +1,13 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import { satteri } from '@astrojs/markdown-satteri';
 import sitemap from '@astrojs/sitemap';
 import { fileURLToPath } from 'node:url';
 import { buildCsp } from './src/lib/csp.ts';
 import { createLastmodLookup } from './src/lib/lastmod.ts';
 import { isSitemapUrl, withLastmod } from './src/lib/seo.ts';
+import { tableWrapPlugin } from './src/lib/rehype-table-wrap.ts';
 
 /** Production origin. Never changes for preview builds: canonicals always point here. */
 const SITE = 'https://worldenterprise.org';
@@ -92,6 +94,9 @@ export default defineConfig({
       },
     },
   ],
+  // Markdown and MDX tables get the same scroll frame as the tables the templates write (src/lib/rehype-table-wrap.ts). Astro 7 renders
+  // both formats with Sätteri, and @astrojs/mdx inherits this processor, so one plugin list covers .md and .mdx.
+  markdown: { processor: satteri({ hastPlugins: [tableWrapPlugin] }) },
   security,
   devToolbar: { enabled: false },
   integrations: [mdx(), sitemap({ filter: isSitemapUrl, serialize: (item) => withLastmod(item, lastmod) })],
