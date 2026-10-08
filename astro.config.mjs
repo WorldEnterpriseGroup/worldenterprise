@@ -102,7 +102,12 @@ export default defineConfig({
   integrations: [mdx(), sitemap({ filter: isSitemapUrl, serialize: (item) => withLastmod(item, lastmod) })],
   vite: {
     build: {
-      assetsInlineLimit: 0,
+      /**
+       * Only stylesheets may be inlined. Astro's `inlineStylesheets: 'auto'` inlines a CSS chunk when it is under this limit
+       * (4096 B when the function returns undefined), which turns the per-component chunks into one inline style block per
+       * page. Everything else (images, scripts, fonts) must stay a file: a data: URI would need a CSP source we do not grant.
+       */
+      assetsInlineLimit: (/** @type {string} */ file) => (file.endsWith('.css') ? undefined : false),
     },
   },
 });
