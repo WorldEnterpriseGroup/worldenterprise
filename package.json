@@ -16,8 +16,18 @@
     "test:unit": "node --test \"tests/unit/**/*.test.ts\"",
     "postbuild": "pagefind --site dist --output-subdir pagefind",
     "audit:contrast": "node scripts/audit-contrast.mjs",
-    "audit:claims": "node scripts/audit-claims.mjs",
+    "audit:claims": "node scripts/audit-claims.mjs dist",
     "audit:claims:selftest": "node scripts/audit-claims.mjs --self-test",
+    "audit:seo": "node scripts/audit-seo.mjs --dist dist",
+    "audit:jsonld": "node scripts/validate-jsonld.mjs --dist dist",
+    "audit:tokens": "node scripts/audit-tokens.mjs --root .",
+    "audit:images": "node scripts/audit-images.mjs --dist dist",
+    "audit:links": "node scripts/audit-links.mjs --dist dist --ledger reports/ledger.json",
+    "audit:ledger": "node scripts/audit-route-ledger.mjs --dist dist --ledger reports/ledger.json",
+    "audit:dist": "node scripts/lib/audit-dist.mjs --dist dist --cname CNAME",
+    "audit:a11y": "node scripts/audit-a11y.mjs --dist dist",
+    "qa:lighthouse": "node scripts/run-lighthouse.mjs --dist dist --out reports/lighthouse",
+    "verify:release": "node scripts/lib/release-gate.mjs --json reports/release-gate.json",
     "check:ownership": "node scripts/check-ownership.mjs",
     "test:e2e": "playwright test"
   },
@@ -34,7 +44,6 @@
     "@playwright/test": "1.63.0",
     "@types/node": "24.19.1",
     "lighthouse": "13.5.0",
-    "linkinator": "8.1.0",
     "pagefind": "1.5.2",
     "typescript": "6.0.3"
   }

@@ -30,11 +30,17 @@ stages:
 variables:
   GITHUB_REPO: "WorldEnterpriseGroup/worldenterprise"
   NODE_IMAGE: "${IMAGE_REGISTRY}/dockerhub-proxy/library/node:24-alpine"
+  # The full image ships git. verify:static and check:ownership need it: sitemap lastmod and the ownership diff read history.
+  NODE_FULL_IMAGE: "${IMAGE_REGISTRY}/dockerhub-proxy/library/node:24"
+  # Full history for every job: sitemap lastmod reads git dates, check:ownership diffs against demo.
+  GIT_DEPTH: "0"
   PLAYWRIGHT_IMAGE: "${IMAGE_REGISTRY}/mcr-proxy/playwright:v1.63.0-noble"
   npm_config_cache: "${CI_PROJECT_DIR}/.npm"
   npm_config_update_notifier: "false"
-  # Operator-gated and not-yet-built items tolerated by verify:release off gh-pages. gh-pages overrides this to empty.
-  RELEASE_ALLOW: '^launch:true route does not exist,^draft content remains,^launched form route'
+  # The one operator-gated item verify:release tolerates off gh-pages: the intake and newsletter endpoints are not provisioned,
+  # so the launched /apply/ and /contact/ forms render disabled. Every launch route exists and no draft remains. gh-pages
+  # overrides this to empty, so the endpoints must exist before production ships.
+  RELEASE_ALLOW: '^launched form route'
 
 # npm packages are cached per lockfile. Playwright browsers ship inside the Playwright image, so nothing is downloaded per job.
 .npm-cache:
@@ -91,12 +97,11 @@ variables:
 verify:static:
   extends: [.npm-cache]
   stage: preflight
-  image: "${NODE_IMAGE}"
+  image: "${NODE_FULL_IMAGE}" # ships git, so sitemap lastmod is computed here as it is in the release build
   interruptible: true
   variables:
     # The verify build includes the dev-only styleguide route; the nav and footer render only routes that exist.
     PUBLIC_STYLEGUIDE: "1"
-    GIT_DEPTH: "0" # sitemap lastmod reads git history (WP-09 request)
   script:
     - node --version
     - npm --version
@@ -118,10 +123,8 @@ verify:static:
 
 check:ownership:
   stage: preflight
-  image: "${IMAGE_REGISTRY}/dockerhub-proxy/library/node:24" # full image: ships git
+  image: "${NODE_FULL_IMAGE}"
   interruptible: true
-  variables:
-    GIT_DEPTH: "0"
   before_script:
     - git fetch --no-tags origin demo:refs/remotes/origin/demo
   script:
@@ -132,44 +135,44 @@ check:ownership:
 audit:claims:
   extends: [.audit]
   script:
-    - node scripts/audit-claims.mjs dist
+    - npm run audit:claims
 
 audit:images:
   extends: [.audit]
   script:
-    - node scripts/audit-images.mjs --dist dist
+    - npm run audit:images
 
 audit:links:
   extends: [.audit]
   script:
-    - node scripts/audit-links.mjs --dist dist --ledger reports/ledger.json
+    - npm run audit:links
 
 audit:ledger:
   extends: [.audit]
   script:
-    - node scripts/audit-route-ledger.mjs --dist dist --ledger reports/ledger.json
+    - npm run audit:ledger
 
 audit:dist:
   extends: [.audit]
   script:
-    - node scripts/lib/audit-dist.mjs --dist dist --cname CNAME
+    - npm run audit:dist
 
 audit:a11y:
   extends: [.audit]
   script:
-    - node scripts/audit-a11y.mjs --dist dist
+    - npm run audit:a11y
 
-# Scripts owned by WP-09 (SEO, schema) and WP-13 (tokens). Each runs when it exists on the branch, so this job needs no change when they land.
+# SEO and titles (WP-09), JSON-LD (WP-09) and design tokens (WP-13). One job, three audits: every audit runs and every failure
+# counts, so one red audit does not hide the next.
 audit:wired:
   extends: [.audit]
   script:
     - |
-      set -eu
-      ran=0
-      if [ -f scripts/audit-seo.mjs ]; then node scripts/audit-seo.mjs --dist dist --sitemap=warn; ran=1; fi
-      if [ -f scripts/validate-jsonld.mjs ]; then node scripts/validate-jsonld.mjs --dist dist; ran=1; fi
-      if [ -f scripts/audit-tokens.mjs ]; then node scripts/audit-tokens.mjs --root .; ran=1; fi
-      [ "$ran" -eq 1 ] || echo "no wired audit scripts present yet"
+      status=0
+      npm run audit:seo || status=1
+      npm run audit:jsonld || status=1
+      npm run audit:tokens || status=1
+      exit "$status"
 
 # Route smoke, 390 px overflow, folds, shell, screenshots at 1440 and 390 (JPEG, attached as artifacts).
 e2e:routes:
@@ -224,7 +227,7 @@ e2e:forms:
 qa:lighthouse:
   extends: [.e2e]
   script:
-    - node scripts/run-lighthouse.mjs --dist dist --out reports/lighthouse
+    - npm run qa:lighthouse
 
 verify:release:
   extends: [.qa-rules, .npm-cache]
@@ -234,7 +237,7 @@ verify:release:
   needs: []
   script:
     - npm ci --prefer-offline --no-audit --no-fund
-    - node scripts/lib/release-gate.mjs --json reports/release-gate.json
+    - npm run verify:release
   artifacts:
     when: always
     expire_in: 1 week

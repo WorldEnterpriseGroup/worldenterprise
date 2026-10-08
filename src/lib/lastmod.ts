@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
-import { readdirSync, readFileSync } from 'node:fs';
-import type { Dirent } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
+import { walkFiles } from './page-files.ts';
 import { DYNAMIC_COLLECTIONS, fileToRoute, matchDynamic } from './route-core.ts';
 
 /**
@@ -41,20 +41,6 @@ function isNotFound(error: unknown): boolean {
   return error instanceof Error && 'code' in error && error.code === 'ENOENT';
 }
 
-function walk(dir: string): string[] {
-  let entries: Dirent[];
-  try {
-    entries = readdirSync(dir, { withFileTypes: true });
-  } catch (error) {
-    if (isNotFound(error)) return [];
-    throw error;
-  }
-  return entries.flatMap((entry) => {
-    const full = join(dir, entry.name);
-    return entry.isDirectory() ? walk(full) : [full];
-  });
-}
-
 function posix(path: string): string {
   return path.split(sep).join('/');
 }
@@ -62,7 +48,7 @@ function posix(path: string): string {
 /** Every markdown entry under src/content/<collection>/, skipping underscore folders and files. */
 export function indexContent(root: string): ContentFile[] {
   const base = join(root, 'src', 'content');
-  return walk(base)
+  return walkFiles(base)
     .map((file) => posix(relative(base, file)))
     .filter((rel) => CONTENT_EXTENSIONS.test(rel) && !rel.split('/').some((part) => part.startsWith('_')))
     .map((rel) => {
@@ -83,7 +69,7 @@ export function indexPages(root: string): PageIndex {
   const base = join(root, 'src', 'pages');
   const fixed = new Map<string, string>();
   const dynamic: { pattern: string; path: string }[] = [];
-  for (const file of walk(base)) {
+  for (const file of walkFiles(base)) {
     const rel = posix(relative(root, file));
     const route = fileToRoute(`/${rel}`);
     if (route === null) continue;
@@ -111,12 +97,11 @@ export function gitCommitDate(root: string): GitDate {
       const parsed = new Date(out);
       return Number.isNaN(parsed.getTime()) ? undefined : parsed;
     } catch (error) {
-      if (isNotFound(error)) {
-        available = false;
-        console.warn('lastmod: git is not installed; routes without a frontmatter date get no lastmod.');
-        return undefined;
-      }
-      console.warn(`lastmod: git log failed for ${path}: ${error instanceof Error ? error.message : String(error)}`);
+      // A failure here is systemic (git missing, not a repository, unsafe directory, shallow-clone limits), not specific
+      // to one file, so report it once and stop asking.
+      available = false;
+      const reason = isNotFound(error) ? 'git is not installed' : `git log failed for ${path}: ${error instanceof Error ? error.message.split('\n')[0] : String(error)}`;
+      console.warn(`lastmod: ${reason}; routes without a frontmatter date get no lastmod.`);
       return undefined;
     }
   };
