@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Fails when a work-package branch changes a path outside its write_set or inside frozen_paths.
-// Branch wp/NN or wp/NN-suffix maps to WP-NN. Other branches (demo, main) are not policed here.
+// Branch wp/NN or wp/NN-suffix maps to WP-NN; wp/NNx (one letter) maps to WP-NNx. Other branches (demo, main) are not policed here.
 // Diffs against origin/demo. Usage: node scripts/check-ownership.mjs [--branch wp/01] [--base origin/demo]
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -35,7 +35,8 @@ export function matches(path, globs) {
 }
 
 export function ownerOf(branch) {
-  const m = /^wp\/(\d{2})(?:-[\w-]+)?$/.exec(branch) ?? /^wp\/\d{2}-(\d{2})$/.exec(branch);
+  // wp/12b is a follow-up work package of its own (WP-12b), not a suffix of WP-12.
+  const m = /^wp\/(\d{2}[a-z]?)(?:-[\w-]+)?$/.exec(branch) ?? /^wp\/\d{2}-(\d{2})$/.exec(branch);
   return m ? `WP-${m[1]}` : null;
 }
 

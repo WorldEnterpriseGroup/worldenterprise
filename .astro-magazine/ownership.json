@@ -223,6 +223,21 @@
       ]
     },
     {
+      "owner": "WP-12b",
+      "title": "Photography pass",
+      "branch": "wp/12b",
+      "write_set": [
+        "src/assets/photo/**",
+        "src/assets/og/**",
+        "src/components/media/**",
+        "scripts/build-og.mjs",
+        ".astro-magazine/media/**",
+        ".astro-magazine/handoffs/wp-12b*",
+        ".astro-magazine/sources/wp-12b.json",
+        "tests/unit/wp-12b/**"
+      ]
+    },
+    {
       "owner": "WP-13",
       "title": "Design system steward and motion",
       "branch": "wp/13",
@@ -301,7 +316,7 @@
   "active_leases": [],
   "handoffs": [],
   "conflicts": [],
-  "updated_at": "2026-10-07T02:20:55.517Z",
+  "updated_at": "2026-10-08T03:45:00.000Z",
   "frozen_paths": [
     "package.json",
     "package-lock.json",
@@ -356,6 +371,36 @@
       "wp": "WP-15",
       "path": ".astro-magazine/{ownership.json,decisions.md}",
       "reason": "The integrator records the flag snapshot and accepted CSP exceptions (plan 8.4) and registers its own assignment."
+    },
+    {
+      "wp": "WP-12b",
+      "path": "src/assets/photo/slots.ts",
+      "reason": "Photography pass (issue #22): slot ids and alt text live here; frozen for every other work package."
+    },
+    {
+      "wp": "WP-12b",
+      "path": "src/components/cards/**",
+      "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+    },
+    {
+      "wp": "WP-12b",
+      "path": "src/components/ui/Card.astro",
+      "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+    },
+    {
+      "wp": "WP-12b",
+      "path": "src/components/hero/HeroAtlas.astro",
+      "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+    },
+    {
+      "wp": "WP-12b",
+      "path": "src/components/hero/HeroEditorial.astro",
+      "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+    },
+    {
+      "wp": "WP-12b",
+      "path": "src/components/home/HomeHero.astro",
+      "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
     }
   ],
   "notes": [
