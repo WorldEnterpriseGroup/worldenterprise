@@ -40,6 +40,7 @@ const { title, id, blurb, items } = Astro.props;
 }
 
 <style>
+  /* Phones: a one-row scroller with the next card peeking, which is the cue that there are more. */
   .desk-rail__list {
     display: grid;
     grid-auto-flow: column;
@@ -56,5 +57,18 @@ const { title, id, blurb, items } = Astro.props;
   }
   .desk-rail__item :global(.card) {
     inline-size: 100%;
+  }
+
+  /* From 48rem every card is on the page: a wrapping grid, not a row that hides its fourth and fifth card behind a scroll bar
+     (visual-brand P0-2). Four across at 1280, then the fifth article starts a second row. */
+  @media (min-width: 48rem) {
+    .desk-rail__list {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+      overflow: visible;
+      scroll-snap-type: none;
+      padding: 0;
+    }
   }
 </style>
