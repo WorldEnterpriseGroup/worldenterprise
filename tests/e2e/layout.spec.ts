@@ -153,15 +153,20 @@ test('every article card of the /insights/ rows is on the page from 768px up, an
 // ---------------------------------------------------------------------------------------------------------------------------
 // Header and body share one left edge (visual-brand P0-4).
 
-test('the page header and the first body block start at the same x on every route that has a page header', async ({ page }, info) => {
+// The hero (WP-17) replaced the page header. /about/ is the one page where a photo sits beside the hero copy over a reading-column body,
+// so its copy starts at the page container and its text starts at the column.
+const HERO_OVER_NARROWER_BODY: ReadonlySet<string> = new Set(['/about/']);
+
+test('the hero and the first body block start at the same x on every route that has a hero', async ({ page }, info) => {
   test.skip(info.project.name !== 'desktop-1440x900', 'edges differ only where the viewport is wider than the column');
   test.setTimeout(240_000);
   const failures: string[] = [];
   let checked = 0;
   for (const route of liveRoutes) {
+    if (HERO_OVER_NARROWER_BODY.has(route.path)) continue;
     await page.goto(route.path);
     const edges = await page.evaluate(() => {
-      const header = document.querySelector('main .page-header');
+      const header = document.querySelector('main [data-hero]');
       const h1 = document.querySelector('main h1');
       if (header === null || h1 === null) return null;
       const first = [...document.querySelectorAll('main .container')].find(
@@ -174,6 +179,6 @@ test('the page header and the first body block start at the same x on every rout
     checked += 1;
     if (Math.abs(edges.h1 - edges.body) > 1) failures.push(`${route.path}: h1 at ${Math.round(edges.h1)}, body (${edges.bodyClass}) at ${Math.round(edges.body)}`);
   }
-  expect(checked, 'routes with a page header').toBeGreaterThan(40);
+  expect(checked, 'routes with a hero').toBeGreaterThan(40);
   expect(failures).toEqual([]);
 });

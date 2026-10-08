@@ -26,7 +26,7 @@ interface Props {
 
 const { as: Heading = 'h1', id, crumbs = [], eyebrow, eyebrowHref, title, lead, byline, published, updated, measure = 'rail' } = Astro.props;
 const fmt = (d: Date): string => d.toISOString().slice(0, 10);
-const containerClass = measure === 'prose' ? 'container container--prose' : measure === 'wide' ? 'container container--wide' : 'container';
+const containerClass = measure === 'prose' ? 'container container--prose' : 'container';
 const hasMeta = Astro.slots.has('meta');
 const hasByline = byline !== undefined || published !== undefined || updated !== undefined;
 ---

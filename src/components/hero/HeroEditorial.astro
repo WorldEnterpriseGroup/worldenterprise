@@ -36,9 +36,9 @@ const image = slotId ? getPhoto(slotId) : undefined;
 const hasMediaSlot = Astro.slots.has('media');
 const hasActions = Astro.slots.has('actions');
 // Reading-column measures have no room beside the copy, so they never carry a media frame.
-const beside = measure === 'default' || measure === 'wide';
+const beside = measure === 'default';
 const showMedia = beside && (image !== undefined || hasMediaSlot || art !== undefined);
-const containerClass = { default: 'container', wide: 'container container--wide', prose: 'container container--prose', rail: 'container' }[measure];
+const containerClass = { default: 'container', prose: 'container container--prose', rail: 'container' }[measure];
 ---
 
 <section class="hero hero--editorial" data-hero="editorial" data-measure={measure}>

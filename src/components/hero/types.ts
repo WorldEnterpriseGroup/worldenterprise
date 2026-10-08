@@ -10,10 +10,10 @@ export interface HeroCta {
 
 /**
  * How wide the hero copy runs, mirroring the body container of the layout below it so both share one left edge.
- * default: the 80rem page container. wide: the 90rem container. prose: the 46rem reading column.
+ * default: the 80rem page container. prose: the 46rem reading column.
  * rail: the page container with the copy held to the reading column, which is where an article body starts.
  */
-export type HeroMeasure = 'default' | 'wide' | 'prose' | 'rail';
+export type HeroMeasure = 'default' | 'prose' | 'rail';
 
 /** Vector art for the hero media slot. Used when no photo slot is given. */
 export interface HeroArtProps {

@@ -20,7 +20,7 @@ interface Props {
 
 const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, secondary, measure = 'default' } = Astro.props;
 const hasActions = Astro.slots.has('actions');
-const containerClass = { default: 'container', wide: 'container container--wide', prose: 'container container--prose', rail: 'container' }[measure];
+const containerClass = { default: 'container', prose: 'container container--prose', rail: 'container' }[measure];
 ---
 
 <section class="hero hero--compact" data-hero="compact" data-measure={measure}>

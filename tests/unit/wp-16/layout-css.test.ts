@@ -55,20 +55,25 @@ test('the desk rail wraps into a grid from 48rem and keeps the scroller only bel
   assert.match(rail, /@media \(min-width: 48rem\)\s*\{\s*\.desk-rail__list\s*\{[^}]*overflow:\s*visible/);
 });
 
-test('PageHeader takes the body measure so the header and the reading column share a left edge', () => {
-  const header = read('src/components/layout/PageHeader.astro');
-  assert.match(header, /measure\?: 'wide' \| 'prose'/);
-  assert.match(header, /'container--prose': measure === 'prose'/);
-  for (const layout of ['GuideLayout', 'LegalLayout', 'MarketingLayout', 'TemplateLayout']) {
-    assert.match(read(`src/layouts/${layout}.astro`), /<PageHeader [^>]*measure="prose"/, `${layout} has a prose body`);
+// WP-17 replaced PageHeader with the hero components; the measure prop keeps the same job: the hero copy and the body share a left edge.
+test('the hero takes the body measure so the hero and the reading column share a left edge', () => {
+  assert.match(read('src/components/hero/types.ts'), /export type HeroMeasure = 'default' \| 'prose' \| 'rail';/);
+  for (const hero of ['HeroCompact', 'HeroEditorial', 'HeroArticle']) {
+    assert.match(read(`src/components/hero/${hero}.astro`), /prose.{0,20}'container container--prose'/, `${hero} puts a prose measure in the reading column`);
   }
-  assert.match(read('src/layouts/ReferenceLayout.astro'), /measure=\{wide \? 'wide' : 'prose'\}/);
+  assert.match(read('src/layouts/types.ts'), /measure\?: HeroMeasure \| undefined/);
+  assert.match(read('src/layouts/GuideLayout.astro'), /measure = 'prose'/);
+  assert.match(read('src/layouts/LegalLayout.astro'), /measure = 'prose'/);
+  assert.match(read('src/layouts/TemplateLayout.astro'), /measure = 'prose'/);
+  assert.match(read('src/layouts/MarketingLayout.astro'), /'prose'/);
+  assert.match(read('src/layouts/ReferenceLayout.astro'), /measure=\{measure \?\? \(wide \? 'default' : 'prose'\)\}/);
 });
 
-test('the article header uses the same container as its body', () => {
-  const article = read('src/layouts/ArticleLayout.astro');
-  assert.match(article, /<header class="page-header page-header--article">\s*<div class="container stack">/);
-  assert.match(article, /<div class="container with-rail">/);
+test('the article hero uses the same container as its body', () => {
+  const hero = read('src/components/hero/HeroArticle.astro');
+  assert.match(hero, /measure = 'rail'/);
+  assert.match(hero, /: 'container'/, 'the rail measure sits in the page container, like the article body');
+  assert.match(read('src/layouts/ArticleLayout.astro'), /<div class="container with-rail">/);
 });
 
 test('the breadcrumb is one line and every crumb can shrink, the current page first, so neither a font swap nor a long label moves the page', () => {

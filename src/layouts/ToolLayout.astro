@@ -9,7 +9,7 @@ type Props = PageMeta & HeaderProps & {
   noscript?: string;
 };
 
-const { eyebrow, lead, noscript, primary, secondary, photo, art, measure = 'wide', ...meta } = Astro.props;
+const { eyebrow, lead, noscript, primary, secondary, photo, art, measure, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 ---
 

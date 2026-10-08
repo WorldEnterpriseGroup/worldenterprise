@@ -19,10 +19,10 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
     secondary={secondary}
     photo={photo}
     art={art}
-    measure={measure ?? (wide ? 'wide' : 'prose')}
+    measure={measure ?? (wide ? 'default' : 'prose')}
   />
   <div class="section">
-    <div class:list={['container', 'stack', wide ? 'container--wide' : 'container--prose']}>
+    <div class:list={['container', 'stack', { 'container--prose': !wide }]}>
       <slot />
     </div>
   </div>
