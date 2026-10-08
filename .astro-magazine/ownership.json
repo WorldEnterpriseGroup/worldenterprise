@@ -360,7 +360,7 @@
   "notes": [
     "Branch wp/NN or wp/NN-suffix maps to WP-NN. Branch wp/21-NN maps to WP-NN (fix-forward family).",
     "check-ownership.mjs diffs against origin/demo and fails on any path outside the owner write_set or inside frozen_paths.",
-    "Content fixtures live in src/content/<collection>/_fixtures/ and are removed by WP-15 (draft:true).",
+    "The WP-00 content fixtures (src/content/<collection>/_fixtures/) were removed by WP-15; new draft:true entries fail a PUBLIC_RELEASE build.",
     "Package.json and the lockfile are single-writer: WP-00 until G0, then WP-14, then WP-15.",
     "WP-02 also owns src/content/pages/services/** (small addition to the plan spec so the services hub can carry page copy)."
   ]

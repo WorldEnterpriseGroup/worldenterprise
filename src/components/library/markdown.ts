@@ -42,7 +42,7 @@ export function markdownPath(slug: string): string {
   return `/library/${slug}.md`;
 }
 
-/** Route slug for a collection entry id. Fixtures live in a _fixtures/ folder, so the slug is the last id segment. */
+/** Route slug for a collection entry id: entries may sit in sub-folders while the URL is flat, so it is the last id segment. */
 export function entrySlug(id: string): string {
   return id.split('/').at(-1) ?? id;
 }

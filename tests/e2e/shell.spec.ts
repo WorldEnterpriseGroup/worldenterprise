@@ -72,11 +72,4 @@ test.describe('development routes (present only in the verify build)', () => {
     await page.keyboard.press('ArrowRight');
     await expect(page.getByRole('tab', { name: 'Second' })).toHaveAttribute('aria-selected', 'true');
   });
-
-  test('the draft fixture article is noindex when built', async ({ page }) => {
-    test.skip(!isBuilt('/insights/fixture-article/'), 'fixture article is not part of this build');
-    await page.goto('/insights/fixture-article/');
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
-    await expect(page.locator('h1')).toHaveCount(1);
-  });
 });

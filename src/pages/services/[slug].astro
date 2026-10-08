@@ -13,7 +13,7 @@ import { getRenderable, isDraft } from '../../lib/content.ts';
 export const getStaticPaths = (async () => {
   const entries = await getRenderable('services');
   const lines = await loadServiceLines();
-  // Fixtures live in a _fixtures/ subfolder, so the route slug is the last segment of the entry id.
+  // The route slug is the last segment of the entry id.
   return entries.map((entry) => ({ params: { slug: entrySlug(entry.id) }, props: { entry, lines } }));
 }) satisfies GetStaticPaths;
 

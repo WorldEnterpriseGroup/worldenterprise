@@ -11,7 +11,7 @@ import { getRenderable, isDraft } from '../../lib/content.ts';
 
 export const getStaticPaths = (async () => {
   const entries = await getRenderable('research');
-  // Fixtures live in a _fixtures/ subfolder, so the route slug is the last segment of the entry id.
+  // The route slug is the last segment of the entry id.
   return entries.map((entry) => ({ params: { slug: entry.id.split('/').at(-1) ?? entry.id }, props: { entry } }));
 }) satisfies GetStaticPaths;
 
@@ -19,9 +19,9 @@ const { entry } = Astro.props;
 const { slug } = Astro.params;
 const { Content, headings } = await render(entry);
 const { data } = entry;
-// Fixtures have no metadata entry; real briefs must, and briefMeta throws a clear error if one is missing.
+// Every published brief needs a metadata entry; briefMeta throws a clear error if one is missing.
 const meta = isDraft(entry)
-  ? { kindLabel: 'Fixture', notice: 'Draft fixture.', noticeTitle: 'Draft' }
+  ? { kindLabel: 'Draft', notice: 'Draft, not published.', noticeTitle: 'Draft' }
   : briefMeta(slug ?? entry.id);
 ---
 

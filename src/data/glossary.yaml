@@ -1,5 +1,4 @@
 # Glossary terms (WP-08). Schema: src/content.config.ts, collection "glossary". Definitions are neutral and general.
-# The fixture row below is a draft test fixture; WP-15 removes it before release.
 - id: safe
   term: SAFE
   definition: "Simple Agreement for Future Equity. A contract in which an investor provides money now in exchange for the right to receive shares in a later priced financing round. It is a financing instrument, not a loan. This entry is a general definition, not legal or investment advice."
@@ -205,8 +204,3 @@
   group: WE vocabulary
   claimsUsed: [C-19]
   related: [droid]
-- id: fixture-term
-  term: Test fixture term
-  definition: Test fixture definition. Draft, never indexed.
-  group: fixture
-  draft: true

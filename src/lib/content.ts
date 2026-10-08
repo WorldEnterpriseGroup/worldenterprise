@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import { isReleaseBuild } from './route-state.ts';
 
 /**
- * Collection helpers. Pages render every entry in dev and preview (so fixtures can be inspected) but mark drafts
+ * Collection helpers. Pages render every entry in dev and preview (so unfinished work can be inspected) but mark drafts
  * noindex; release builds never see drafts because assertReleaseReady() fails first.
  */
 export type PublicCollection = 'pages' | 'services' | 'playbooks' | 'guides' | 'insights' | 'research' | 'library';

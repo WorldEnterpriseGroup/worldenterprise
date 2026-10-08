@@ -14,7 +14,7 @@ import { href } from '../../lib/url.ts';
 
 export const getStaticPaths = (async () => {
   const entries = await getRenderable('playbooks');
-  // Fixtures live in a _fixtures/ subfolder, so the route slug is the last segment of the entry id.
+  // The route slug is the last segment of the entry id.
   return entries.map((entry) => ({ params: { slug: entry.id.split('/').at(-1) ?? entry.id }, props: { entry } }));
 }) satisfies GetStaticPaths;
 

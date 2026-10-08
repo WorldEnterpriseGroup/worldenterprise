@@ -1,5 +1,4 @@
 # FAQ entries (WP-08). Schema: src/content.config.ts, collection "faq". Answers follow SAGE-PLAN 7.5 and cite only enabled claims.
-# The fixture row below is a draft test fixture; WP-15 removes it before release.
 - id: what-is-we
   question: "What is World Enterprise Incubator?"
   answer: "World Enterprise Incubator is a digital incubator for SaaS, run by World Enterprise Group Incorporated. Dedicated team seats, steered by WE, take a founder from a first idea toward a fundable company. The work is fully remote."
@@ -96,8 +95,3 @@
   group: "Scope and limits"
   claimsUsed: [C-01, C-04, C-05]
   related: [promise-funding, what-stage]
-- id: fixture-faq
-  question: Test fixture question?
-  answer: Test fixture answer. Draft, never indexed.
-  group: fixture
-  draft: true

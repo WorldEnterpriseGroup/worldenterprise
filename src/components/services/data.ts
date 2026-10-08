@@ -7,7 +7,7 @@ export interface ServiceSummary {
   readonly entry: CollectionEntry<'services'>;
 }
 
-/** The published service lines in A to G order. Drafts and fixtures never appear in listings. */
+/** The published service lines in A to G order. Drafts never appear in listings. */
 export async function loadServiceLines(): Promise<ServiceSummary[]> {
   const entries = await getPublished('services');
   const summaries = entries.map((entry) => ({ slug: entrySlug(entry.id), entry }));

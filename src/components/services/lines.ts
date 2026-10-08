@@ -75,7 +75,7 @@ export function lineTagline(line: ServiceLine): string {
   throw new Error(`No services menu entry with a description for line ${line}.`);
 }
 
-/** Last segment of a collection entry id. Fixtures live in a _fixtures folder, so the slug is not the whole id. */
+/** Last segment of a collection entry id: entries may sit in sub-folders while the URL is flat. */
 export function entrySlug(id: string): string {
   return id.split('/').at(-1) ?? id;
 }

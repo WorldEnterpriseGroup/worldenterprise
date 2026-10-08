@@ -54,7 +54,7 @@ export async function getRouteState(): Promise<RouteState> {
   return (await cached).state;
 }
 
-/** Paths of draft entries across all collections (fixtures and unfinished content). */
+/** Paths of draft entries across all collections (unfinished content). */
 export async function getDraftEntries(): Promise<readonly string[]> {
   cached ??= build();
   return (await cached).drafts;
