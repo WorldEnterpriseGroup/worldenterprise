@@ -34,12 +34,14 @@ const { cells, current, label } = Astro.props;
     gap: var(--sp-2) 0;
   }
 
-  /* Hairline link between cells, the trail of a droid becoming a world. */
+  /* Hairline link between cells, the trail of a droid becoming a world. It is short on purpose: the five playbook labels fill a
+     1280px container to within a few pixels at the web font's widths, and a trail that wraps with one font and not the other moves
+     everything below it when the web fonts arrive (CLS 0.25 on the playbook pages). The slack keeps it on one row with both. */
   .celltrail__cell:not(:last-child)::after {
     content: '';
-    inline-size: var(--sp-5);
+    inline-size: var(--sp-4);
     block-size: 2px;
-    margin-inline: var(--sp-2);
+    margin-inline: var(--sp-1);
     background: var(--we-tint);
   }
 
