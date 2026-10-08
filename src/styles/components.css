@@ -1007,8 +1007,22 @@
        this scroll container and main's overflow clip, and widen the document (the /trust/ overflow at 390px). */
     position: relative;
     overflow-x: auto;
+    overscroll-behavior-x: contain;
     border: var(--border-hair);
     border-radius: var(--radius-md);
+    /* Scroll cue without JavaScript: a fade at each edge that still has content behind it. The two covers (local) sit over the two
+       shadows (scroll) until the table is scrolled that way, so a shadow shows only where more of the table lies. */
+    background:
+      linear-gradient(to right, var(--color-bg) 30%, transparent) left center / 2rem 100% no-repeat local,
+      linear-gradient(to left, var(--color-bg) 30%, transparent) right center / 2rem 100% no-repeat local,
+      linear-gradient(to right, color-mix(in oklch, var(--color-text) 22%, transparent), transparent) left center / 0.75rem 100% no-repeat scroll,
+      linear-gradient(to left, color-mix(in oklch, var(--color-text) 22%, transparent), transparent) right center / 0.75rem 100% no-repeat scroll;
+
+    /* The frame is a keyboard stop (tabindex=0), so it needs the same visible ring as every other focusable element. */
+    &:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
   }
 
   .data-table {
@@ -1033,6 +1047,11 @@
 
     & thead th {
       background: var(--color-bg-soft);
+    }
+
+    /* The first column names the row. Give it room so a table wider than its frame scrolls with a readable first column, not one word per line. */
+    & :is(th, td):first-child {
+      min-inline-size: 9rem;
     }
   }
 
@@ -1248,6 +1267,9 @@
   /* ---------- Forms ---------- */
   .field {
     display: grid;
+    /* One track that may shrink below its content: a bare auto track would grow to the widest control (a select sized to its longest
+       option, a textarea at its default cols) and push the form past the column. */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--sp-1);
     font-family: var(--ff-sans);
 
@@ -1256,6 +1278,9 @@
     }
 
     & :is(input, textarea, select) {
+      inline-size: 100%;
+      max-inline-size: 100%;
+      box-sizing: border-box;
       min-block-size: var(--target-min);
       padding: var(--sp-2) var(--sp-3);
       border: var(--border-strong);
@@ -1281,6 +1306,8 @@
   }
 
   .fieldset {
+    /* A fieldset defaults to min-inline-size: min-content, which stops it shrinking to the column. */
+    min-inline-size: 0;
     border: var(--border-hair);
     border-radius: var(--radius-md);
     padding: var(--sp-4);
