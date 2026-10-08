@@ -29,10 +29,10 @@ Automated accessibility checks run against every page each time the site is buil
 This list is kept honest. It will change as gaps are fixed.
 
 - No independent accessibility audit has been completed. Manual testing with a range of screen readers and magnifiers is still to be done.
-- Illustrative images are generated, and their descriptions are written from the intended picture rather than checked by a person who is blind or has low vision.
+- Illustrative images are created or generated for this site, and their descriptions are written from the intended picture rather than checked by a person who is blind or has low vision.
 - Forms depend on an intake service that is separate from this site. If that service is unavailable the form shows a message and keeps your answers on the page; a mail link is offered only when WE has a monitored mailbox for it.
 - Printed versions of briefs and templates are provided through the browser's print function and have not been tested with every printer driver or reader.
 
 ## Tell WE about a barrier
 
-If something on the site is hard or impossible for you to use, use the contact page and choose the topic "A general question". Say which page, what you were trying to do, and what technology you use, if you are willing to share it. WE reads each report and treats a barrier as a defect to fix. WE does not promise a response time.
+If something on the site is hard or impossible for you to use, use the contact page and choose the topic "A general question". Say which page, what you were trying to do, and what technology you use, if you are willing to share it. WE reviews each report and treats a barrier as a defect to fix. WE does not promise a response time.

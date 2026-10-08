@@ -35,7 +35,7 @@ If you find a mistake, tell WE through the contact page and choose the topic "A 
 
 ## Use of AI tools
 
-WE uses AI tools in its editorial work, for drafting, editing, research support and checking. A tool's output is never treated as a source: facts are tied to the primary documents listed on the page, not to what a tool said. Some images on this site are generated with AI. None depicts a real person, client or place presented as real, and the site uses no AI-generated faces.
+WE uses AI tools in its editorial work, for drafting, editing, research support and checking. A tool's output is never treated as a source: facts are tied to the primary documents listed on the page, not to what a tool said. Images on this site are illustrations made for it. When an image is generated with AI, the footer of every page says so. Where an image shows a person, the figure is invented, unnamed and shown without a face, and none depicts or stands for a real person, founder, client or member of WE staff.
 
 ## What WE does not publish
 

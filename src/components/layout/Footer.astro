@@ -1,8 +1,10 @@
 ---
 import wordmark from '../../assets/brand/we-logo-wordmark.svg';
+import manifest from '../../assets/photo/manifest.json';
 import { flags } from '../../data/flags.ts';
 import { resolveFooter } from '../../data/nav.ts';
 import { site } from '../../data/site.ts';
+import { hasGeneratedImages, PHOTO_DISCLOSURE, PHOTO_DISCLOSURE_HREF } from '../../lib/photo-disclosure.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
@@ -15,6 +17,9 @@ const state = await getRouteState();
 const columns = resolveFooter(state.isLive);
 const legalLine = flags.pbcWording ? site.legalLine : `${site.legalName}, registered in Delaware`;
 const year = new Date().getUTCFullYear();
+// Shown only while at least one image is image-model output; the audit requires it on every page in that state.
+const showPhotoDisclosure = hasGeneratedImages(manifest.slots);
+const disclosureLinked = state.isLive(PHOTO_DISCLOSURE_HREF);
 ---
 
 <footer class="site-footer">
@@ -49,6 +54,30 @@ const year = new Date().getUTCFullYear();
     <div class="container site-footer__bar-inner">
       <p>&copy; {year} {legalLine}.</p>
       <p>{site.signature}</p>
+      {
+        showPhotoDisclosure && (
+          <p class="site-footer__disclosure">
+            {PHOTO_DISCLOSURE}
+            {disclosureLinked && (
+              <>
+                {' '}
+                <a href={href(PHOTO_DISCLOSURE_HREF)}>Editorial policy</a>
+              </>
+            )}
+          </p>
+        )
+      }
     </div>
   </div>
 </footer>
+
+<style>
+  @layer reset, tokens, base, layout, components, utilities, pages, print;
+
+  @layer components {
+    /* Its own row under the copyright and signature, so the longer line never squeezes the other two. */
+    .site-footer__disclosure {
+      flex: 1 1 100%;
+    }
+  }
+</style>
