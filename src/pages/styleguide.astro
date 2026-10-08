@@ -119,6 +119,42 @@ const headings = [
       <p class="sg-sample sg-sample--mono">Mono, Source Code Pro, for identifiers.</p>
       <Eyebrow>Eyebrow label</Eyebrow>
     </div>
+    <h3 id="h-scale">Modular scale</h3>
+    <p class="muted">Each step is one ratio above the one before it: 1.2 on a phone, growing to 1.32 at 1440 pixels. Body text is 17 to 19 pixels.</p>
+    <ul class="sg-scale" role="list">
+      {
+        ['4xl', '3xl', '2xl', 'xl', 'lg', 'lead', 'base', 'sm', 'xs'].map((step) => (
+          <li class={`sg-scale__row sg-scale__row--${step}`}>
+            <span class="sg-scale__sample">The incubator for SaaS</span>
+            <code>--fs-{step}</code>
+          </li>
+        ))
+      }
+    </ul>
+    <h3 id="h-roles">Heading roles</h3>
+    <p class="muted">The page title is the 3xl step, a section is xl, a sub-section is lg and a small heading is the body size. The 4xl step is for the home hero only.</p>
+    <ul class="sg-scale" role="list">
+      {
+        [['h1', 'Page title'], ['h2', 'Section heading'], ['h3', 'Sub-section heading'], ['h4', 'Small heading']].map(([role, label]) => (
+          <li class={`sg-scale__row sg-scale__row--${role}`}>
+            <span class="sg-scale__sample">{label}</span>
+            <code>--fs-{role}</code>
+          </li>
+        ))
+      }
+    </ul>
+    <h3 id="h-rhythm">Vertical rhythm</h3>
+    <p class="muted">Space grows with the level of the break. Every value is fluid between a phone and a desktop.</p>
+    <ul class="sg-rhythm" role="list">
+      {
+        ['heading', 'flow', 'group', 'block', 'section', 'hero'].map((step) => (
+          <li class="sg-rhythm__row">
+            <span class={`sg-rhythm__bar sg-rhythm__bar--${step}`} aria-hidden="true"></span>
+            <code>--space-{step}</code>
+          </li>
+        ))
+      }
+    </ul>
   </Section>
 
   <Section id="components" labelledby="h-components" tone="soft">
@@ -214,10 +250,29 @@ const headings = [
   <section id="heroes" aria-labelledby="h-heroes">
     <div class="container"><h2 id="h-heroes">Heroes</h2></div>
     <HeroAtlas as="h2" eyebrow="H1 Atlas" title="Atlas hero" lead="Home and top-level hubs." primary={{ label: 'Primary', href: '#heroes' }} secondary={{ label: 'Secondary', href: '#heroes' }} />
-    <HeroEditorial as="h2" eyebrow="H2 Editorial" title="Editorial hero" lead="Hubs with a long lead." />
-    <HeroConsole as="h2" eyebrow="H3 Console" title="Console hero" lead="Tools and forms."><p>Panel content.</p></HeroConsole>
-    <HeroArticle as="h2" eyebrow="H4 Article" title="Article hero" lead="Single articles." byline="Editorial team" published={new Date('2026-01-01')} />
-    <HeroCompact as="h2" title="H5 Compact" lead="Utility and legal pages." />
+    <HeroEditorial
+      as="h2"
+      eyebrow="H2 Editorial, flower art"
+      title="Editorial hero"
+      lead="Hubs with a long lead. The media frame holds a photo slot, or this vector art until the photo exists."
+      primary={{ label: 'Primary action', href: '#heroes' }}
+      secondary={{ label: 'Secondary action', href: '#heroes' }}
+      art={{ variant: 'flower', glyph: 'A' }}
+    />
+    <HeroEditorial
+      as="h2"
+      eyebrow="H2 Editorial, trail art"
+      title="Trail hero"
+      lead="Stage pages and playbooks. The numbered cells show the steps, and one cell can mark where the reader is."
+      primary={{ label: 'Primary action', href: '#heroes' }}
+      art={{ variant: 'trail', count: 5, active: 2 }}
+    />
+    <HeroConsole as="h2" eyebrow="H3 Console" title="Console hero" lead="Hubs that open with a structured panel." primary={{ label: 'Primary action', href: '#heroes' }} secondary={{ label: 'Secondary action', href: '#heroes' }}>
+      <p class="eyebrow">Panel</p>
+      <p>Panel content sits on a white card over the night-blue band.</p>
+    </HeroConsole>
+    <HeroArticle as="h2" eyebrow="H4 Article" title="Article hero" lead="Single articles. The copy starts where the article body starts." byline="Editorial team" published={new Date('2026-01-01')} />
+    <HeroCompact as="h2" eyebrow="H5 Compact" title="Compact hero" lead="Utility and legal pages. Copy only, with an optional action." primary={{ label: 'Primary action', href: '#heroes' }} />
   </section>
 
   <Section id="contrast" labelledby="h-contrast">
@@ -238,6 +293,63 @@ const headings = [
 </BaseLayout>
 
 <style>
+  .sg-scale,
+  .sg-rhythm {
+    display: grid;
+    gap: var(--sp-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .sg-scale__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding-block-end: var(--sp-2);
+    border-block-end: var(--border-hair);
+  }
+
+  .sg-scale__sample {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+  }
+
+  .sg-scale__row--4xl .sg-scale__sample { font-size: var(--fs-4xl); }
+  .sg-scale__row--3xl .sg-scale__sample { font-size: var(--fs-3xl); }
+  .sg-scale__row--2xl .sg-scale__sample { font-size: var(--fs-2xl); }
+  .sg-scale__row--xl .sg-scale__sample { font-size: var(--fs-xl); }
+  .sg-scale__row--lg .sg-scale__sample { font-size: var(--fs-lg); }
+  .sg-scale__row--lead .sg-scale__sample { font-size: var(--fs-lead); }
+  .sg-scale__row--base .sg-scale__sample { font-size: var(--fs-base); }
+  .sg-scale__row--sm .sg-scale__sample { font-size: var(--fs-sm); }
+  .sg-scale__row--xs .sg-scale__sample { font-size: var(--fs-xs); }
+  .sg-scale__row--h1 .sg-scale__sample { font-size: var(--fs-h1); }
+  .sg-scale__row--h2 .sg-scale__sample { font-size: var(--fs-h2); }
+  .sg-scale__row--h3 .sg-scale__sample { font-size: var(--fs-h3); }
+  .sg-scale__row--h4 .sg-scale__sample { font-size: var(--fs-h4); }
+
+  .sg-rhythm__row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+  }
+
+  .sg-rhythm__bar {
+    inline-size: 4rem;
+    background: var(--we-tint);
+    border-inline-start: 4px solid var(--we-blue);
+  }
+
+  .sg-rhythm__bar--heading { block-size: var(--space-heading); }
+  .sg-rhythm__bar--flow { block-size: var(--space-flow); }
+  .sg-rhythm__bar--group { block-size: var(--space-group); }
+  .sg-rhythm__bar--block { block-size: var(--space-block); }
+  .sg-rhythm__bar--section { block-size: var(--space-section); }
+  .sg-rhythm__bar--hero { block-size: var(--space-hero); }
+
   .sg-states {
     display: grid;
     gap: var(--sp-5);
