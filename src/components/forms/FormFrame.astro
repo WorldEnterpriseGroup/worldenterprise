@@ -1,5 +1,5 @@
 ---
-import { forms, intakeRequiresJs, mailboxFor } from '../../data/forms.ts';
+import { forms, intakeRequiresJs, mailboxFor, planForm } from '../../data/forms.ts';
 import { absoluteUrl, href } from '../../lib/url.ts';
 import ErrorSummary from './ErrorSummary.astro';
 import FormStatus from './FormStatus.astro';
@@ -19,16 +19,15 @@ interface Props {
 
 const { kind, id, submitLabel, thanksPath, consentLabel } = Astro.props;
 const config = kind === 'newsletter' ? forms.newsletter : forms.intake;
-const mailbox = kind === 'newsletter' ? null : mailboxFor(kind);
-const mode = config.mode === 'mailto' && mailbox === null ? 'disabled' : config.mode;
-const nativePost = kind !== 'newsletter' && mode === 'endpoint' && !intakeRequiresJs ? config.endpoint : null;
+const plan = planForm(kind, config, kind === 'newsletter' ? null : mailboxFor(kind), intakeRequiresJs);
+const { mode, mailbox, nativePost } = plan;
 const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') : null;
 ---
 
 <form
   class="intake stack"
   id={`${id}-form`}
-  method={nativePost !== null ? 'post' : undefined}
+  method="post"
   action={nativePost ?? undefined}
   data-intake-form
   data-kind={kind}
@@ -48,7 +47,7 @@ const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') 
     )
   }
   {
-    intakeRequiresJs && mode === 'endpoint' && (
+    plan.noscript === 'needs-js' && (
       <noscript>
         <div class="callout callout--notice">
           <p class="callout__title">This form needs JavaScript</p>
@@ -57,7 +56,7 @@ const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') 
       </noscript>
     )
   }
-  {mode === 'mailto' && mailbox !== null && (
+  {plan.noscript === 'mailto-no-prefill' && mailbox !== null && (
     <noscript>
       <div class="callout">
         <p>Without JavaScript this form cannot prefill your email. Write to <a href={`mailto:${mailbox}`}>{mailbox}</a> with your answers.</p>
@@ -81,7 +80,7 @@ const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') 
   <HoneypotField id={`${id}-website`} />
 
   <div class="cluster">
-    <button class="btn btn--primary" type="submit" data-submit disabled={mode === 'disabled'}>{submitLabel}</button>
+    <button class="btn btn--primary" type="submit" data-submit disabled={plan.submitDisabledInMarkup}>{submitLabel}</button>
   </div>
   <FormStatus id={`${id}-status`} />
 </form>

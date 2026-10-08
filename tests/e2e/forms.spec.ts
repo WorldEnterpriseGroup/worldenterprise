@@ -172,3 +172,89 @@ for (const kind of KINDS) {
     });
   });
 }
+
+// Without JavaScript (code-security P1-1). A form with no method submits as a GET query string, which puts the visitor's name, email
+// and message in the URL, the browser history and the server log. planForm (src/data/forms.ts) therefore makes every form
+// method="post" and ships the button disabled unless the browser can POST to the endpoint. The endpoint origin is also the proof that
+// the CSP form-action list carries it: a refused form post never reaches page.route.
+test.describe('without JavaScript', () => {
+  test.use({ javaScriptEnabled: false });
+
+  interface Seen {
+    readonly method: string;
+    readonly url: string;
+    readonly contentType: string;
+    readonly body: string;
+  }
+
+  for (const kind of KINDS) {
+    test(`${kind.route} posts form-encoded fields to the endpoint and never builds a query string`, async ({ page }) => {
+      test.skip(!isBuilt(kind.route), `${kind.route} is not built`);
+      const seen: Seen[] = [];
+      await page.route(`${ENDPOINT_ORIGIN}/**`, async (route) => {
+        const request = route.request();
+        seen.push({ method: request.method(), url: request.url(), contentType: request.headers()['content-type'] ?? '', body: request.postData() ?? '' });
+        await route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>received</title><p>received</p>' });
+      });
+      await page.goto(kind.route);
+      const form = page.locator('form[data-intake-form]').first();
+      const mode = await form.getAttribute('data-mode');
+      if (process.env.E2E_REQUIRE_ENDPOINT === '1') expect(mode, `${kind.route} must be in endpoint mode in the forms build`).toBe('endpoint');
+      test.skip(mode !== 'endpoint', `${kind.route} is not in endpoint mode in this build`);
+
+      await expect(form).toHaveAttribute('method', 'post');
+      await expect(form).toHaveAttribute('action', `${ENDPOINT_ORIGIN}/api/intake`);
+      await expect(form.locator('[data-submit]')).toBeEnabled();
+
+      await fillValid(page, kind);
+      await form.locator('[data-submit]').click();
+      await expect.poll(() => seen.length).toBe(1);
+
+      const [request] = seen;
+      expect(request?.method).toBe('POST');
+      expect(request?.url, 'no query string on the endpoint URL').toBe(`${ENDPOINT_ORIGIN}/api/intake`);
+      expect(request?.contentType).toContain('application/x-www-form-urlencoded');
+      const fields = new URLSearchParams(request?.body ?? '');
+      expect(fields.get('form')).toBe(kind.name);
+      expect(fields.get('email')).toBe('founder@example.org');
+      expect(fields.get('consent')).toBe('on');
+      expect(fields.get('website')).toBe('');
+      if (kind.name === 'apply') expect(fields.get('redirect')).toMatch(/\/apply\/thanks\/$/);
+    });
+  }
+
+  test('the newsletter form cannot post without JavaScript: the button is disabled, the method is post and a note says why', async ({ page }) => {
+    test.skip(!isBuilt('/newsletter/'), '/newsletter/ is not built');
+    const requests: string[] = [];
+    page.on('request', (request) => requests.push(`${request.method()} ${request.url()}`));
+    await page.goto('/newsletter/');
+    const form = page.locator('form[data-intake-form]').first();
+    const mode = await form.getAttribute('data-mode');
+    if (process.env.E2E_REQUIRE_ENDPOINT === '1') expect(mode, '/newsletter/ must be in endpoint mode in the forms build').toBe('endpoint');
+    test.skip(mode !== 'endpoint', '/newsletter/ is not in endpoint mode in this build');
+
+    await expect(form).toHaveAttribute('method', 'post');
+    await expect(form).not.toHaveAttribute('action', /./);
+    await expect(form.locator('[data-submit]')).toBeDisabled();
+    await expect(form.getByText('This form needs JavaScript')).toBeVisible();
+
+    const before = page.url();
+    await form.locator('[name="email"]').fill('founder@example.org');
+    await page.keyboard.press('Enter');
+    await page.waitForLoadState('load');
+    expect(page.url(), 'Enter in a field must not submit a form whose button is disabled').toBe(before);
+    expect(requests.filter((entry) => entry.includes('?') || entry.includes(ENDPOINT_ORIGIN))).toEqual([]);
+  });
+});
+
+test.describe('with JavaScript', () => {
+  test('the newsletter button, disabled in the markup, is enabled once the form script has mounted', async ({ page }) => {
+    test.skip(!isBuilt('/newsletter/'), '/newsletter/ is not built');
+    await page.goto('/newsletter/');
+    const form = page.locator('form[data-intake-form]').first();
+    const mode = await form.getAttribute('data-mode');
+    test.skip(mode !== 'endpoint', '/newsletter/ is not in endpoint mode in this build');
+    await expect(form).toHaveAttribute('data-mounted', 'true');
+    await expect(form.locator('[data-submit]')).toBeEnabled();
+  });
+});

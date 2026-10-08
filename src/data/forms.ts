@@ -50,6 +50,39 @@ export const forms = {
  */
 export const intakeRequiresJs: boolean = readFlag('PUBLIC_WE_INTAKE_REQUIRES_JS');
 
+export type FormPage = 'apply' | 'contact' | 'newsletter';
+
+/** What a form shows and permits before any JavaScript has run (docs/forms-contract.md section 8). */
+export interface FormPlan {
+  /** Effective mode: a mailto form without a confirmed mailbox is disabled. */
+  readonly mode: FormMode;
+  readonly mailbox: string | null;
+  /** Endpoint a no-JavaScript submit posts to, or null when a no-JavaScript submit must not be possible. */
+  readonly nativePost: string | null;
+  /** The submit button ships `disabled` and only the client script removes it. True whenever `nativePost` is null. */
+  readonly submitDisabledInMarkup: boolean;
+  /** The client script removes `disabled` when it mounts. False only for a form that is not connected at all. */
+  readonly scriptEnablesSubmit: boolean;
+  /** Note shown to visitors who run without JavaScript. */
+  readonly noscript: 'none' | 'needs-js' | 'mailto-no-prefill';
+}
+
+/**
+ * Decides, for one form, how it behaves without JavaScript. The rule: a form is only ever submittable before JavaScript
+ * mounts when the browser can POST it form-encoded to a confirmed endpoint. In every other state the submit button is
+ * disabled in the markup, so no visitor can send their name, email and message as a GET query string (PII in the URL,
+ * browser history and server logs). The element is also always `method="post"`, so a submit that slips past the disabled
+ * button still never builds a query string.
+ */
+export function planForm(kind: FormPage, config: FormConfig, mailbox: string | null, requiresJs: boolean): FormPlan {
+  const mode: FormMode = config.mode === 'mailto' && mailbox === null ? 'disabled' : config.mode;
+  const nativePost = kind !== 'newsletter' && mode === 'endpoint' && !requiresJs ? config.endpoint : null;
+  let noscript: FormPlan['noscript'] = 'none';
+  if (mode === 'mailto') noscript = 'mailto-no-prefill';
+  else if (mode === 'endpoint' && nativePost === null) noscript = 'needs-js';
+  return { mode, mailbox, nativePost, submitDisabledInMarkup: nativePost === null, scriptEnablesSubmit: mode !== 'disabled', noscript };
+}
+
 /** Mailbox that a form may expose as a mailto fallback, or null until the operator confirms it exists (C-22, B-2). */
 export function mailboxFor(kind: 'apply' | 'contact'): string | null {
   const preferred: Mailbox = kind === 'apply' ? site.mailboxes.apply : site.mailboxes.hello;

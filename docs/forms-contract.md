@@ -105,7 +105,19 @@ The Team Composer links to `/apply/#team=<role>:<count>,<role>:<count>`. Role id
 
 ## 8. No-JavaScript behaviour
 
-Every form is a real `<form method="post" action="{endpoint}">` with native `required`, `type="email"` and `maxlength`. Without JavaScript the browser validates natively and posts form-encoded data. This works only when the endpoint implements obligation 5 of section 5; otherwise the page must be built with `PUBLIC_WE_INTAKE_REQUIRES_JS=1`, which makes the form state that JavaScript is required and show the mailto fallback if a mailbox is confirmed.
+Every form is a real `<form method="post">`, in every mode, with native `required`, `type="email"` and `maxlength`. A form with no method would submit as a GET query string and put the visitor's name, email and message in the URL, the browser history and the server log, so the method is never omitted.
+
+`planForm` in `src/data/forms.ts` decides what a form permits before JavaScript runs:
+
+| Mode | `action` | Submit button in the markup | Without JavaScript |
+|---|---|---|---|
+| `endpoint`, intake, `PUBLIC_WE_INTAKE_REQUIRES_JS` unset | the endpoint | enabled | The browser validates natively and posts form-encoded data to the endpoint. This works only when the endpoint implements obligation 5 of section 5. |
+| `endpoint`, intake, `PUBLIC_WE_INTAKE_REQUIRES_JS=1` | none | disabled | A note says the form needs JavaScript and names the mailbox if one is confirmed. |
+| `endpoint`, newsletter | none | disabled | The same note. The newsletter has no native POST contract and no mailbox. |
+| `mailto` | none | disabled | A note says the form cannot prefill an email without JavaScript and names the mailbox. |
+| `disabled` | none | disabled | The form states that it is not connected yet. The button stays off. |
+
+The client script (`src/scripts/forms.ts`) removes `disabled` when it mounts, for every mode except `disabled`, after its submit handlers are attached. So the only way to send a form without JavaScript is the native POST to a confirmed https endpoint. `tests/unit/wp-19/forms-plan.test.ts` checks every combination, and the e2e suites check the built pages with JavaScript off (`tests/e2e/forms.spec.ts` for the endpoint build, `tests/e2e/modes.spec.ts` for the default build).
 
 ## 9. Open items for the operator
 

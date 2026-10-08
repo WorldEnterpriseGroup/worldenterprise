@@ -38,6 +38,31 @@ test.describe('no-js', () => {
     await page.goto('/');
     await expect(page.locator('main#main')).toBeVisible();
   });
+
+  // code-security P1-1. A form with no method submits as a GET query string, which puts the visitor's answers in the URL, the history and
+  // the server log. Every built form must say method="post", and its button must be disabled unless the form posts to an https endpoint
+  // natively. The forms job (tests/e2e/forms.spec.ts) proves the endpoint build; this proves the default build, where every form is off.
+  test('every form is a POST form, and its button is disabled unless it posts to an https endpoint', async ({ page }) => {
+    const routes = ['/apply/', '/contact/', '/newsletter/'].filter(isBuilt);
+    test.skip(routes.length === 0, 'no form route is built');
+    const failures: string[] = [];
+    for (const route of routes) {
+      await page.goto(route);
+      const forms = page.locator('form[data-intake-form]');
+      const count = await forms.count();
+      if (count === 0) failures.push(`${route}: no intake form on a form route`);
+      for (let index = 0; index < count; index += 1) {
+        const form = forms.nth(index);
+        const method = (await form.getAttribute('method'))?.toLowerCase() ?? null;
+        const action = await form.getAttribute('action');
+        const disabled = await form.locator('[data-submit]').isDisabled();
+        if (method !== 'post') failures.push(`${route}: form ${index} has method "${method}", expected "post"`);
+        if (action === null && !disabled) failures.push(`${route}: form ${index} has no action and an enabled submit button`);
+        if (action !== null && !action.startsWith('https://')) failures.push(`${route}: form ${index} posts to "${action}", expected https`);
+      }
+    }
+    expect(failures).toEqual([]);
+  });
 });
 
 test.describe('forced-colors', () => {

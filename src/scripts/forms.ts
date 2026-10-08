@@ -362,6 +362,9 @@ class IntakeFormController {
     this.form.addEventListener('input', (event) => this.clearFieldError(event.target));
     this.form.addEventListener('change', (event) => this.clearFieldError(event.target));
     this.prefill();
+    // The server renders the button disabled unless the browser could post the form natively (planForm in src/data/forms.ts),
+    // so a visitor without JavaScript can never submit it as a GET query string. The handlers above are now attached.
+    this.submit?.removeAttribute('disabled');
   }
 
   private prefill(): void {
