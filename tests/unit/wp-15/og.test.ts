@@ -22,7 +22,9 @@ test('section routes get their own card and the rest get the default card', () =
   assert.equal(ogSlotForPath('/services/'), 'og-services');
   assert.equal(ogSlotForPath('/playbooks/'), 'og-playbooks');
   assert.equal(ogSlotForPath('/library/one-page-problem-brief/'), 'og-resources');
-  assert.equal(ogSlotForPath('/insights/'), 'og-default');
+  assert.equal(ogSlotForPath('/insights/'), 'og-resources');
+  assert.equal(ogSlotForPath('/insights/cutting-an-mvp-the-cut-line-test/'), 'og-resources');
+  assert.equal(ogSlotForPath('/research/saas-security-baseline-year-one/'), 'og-resources');
   assert.equal(ogSlotForPath('/trust/'), 'og-default');
 });
 

@@ -6,10 +6,12 @@
 // Per page: every ld+json block parses; @context is schema.org; every @type is on the allowlist (mirrors ALLOWED_TYPES in
 // src/lib/schema.ts); Offer, Review, AggregateRating, Person and Event never appear; required properties per type exist;
 // every { "@id": ... } reference resolves inside the page graph; @id values are unique; the page node's url matches the
-// canonical. The organisation node carries no EIN, SIN, PSC, SIC, founding date or street address (claim C-18).
+// canonical; an Article or Report has the page's og:image as its image; the logo is not a hashed asset. The organisation node
+// carries no EIN, SIN, PSC, SIC, founding date or street address (claim C-18).
 import { existsSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { canonicalLinks, listBuiltPages } from './audit-seo.mjs';
+import { metaContent } from './lib/html.mjs';
 
 export const ORIGIN = 'https://worldenterprise.org';
 export const ORG_ID = `${ORIGIN}/#org`;
@@ -162,6 +164,20 @@ export function validatePage({ path, html }) {
   if (docs.length > 0 && pageNodes.length !== 1) out(`expected exactly one page node (WebPage family), found ${pageNodes.length}`);
   else if (pageNodes[0] !== undefined && canonical !== undefined && pageNodes[0].url !== canonical) {
     out(`page node url ${pageNodes[0].url} differs from the canonical ${canonical}`);
+  }
+
+  // A page that has a social card says so in its Article or Report node too, and the organisation logo is a stable URL (a hashed
+  // build asset changes with every edit of the artwork and orphans the URL a search engine cached).
+  const social = metaContent(html, 'og:image');
+  const nodes = docs.flatMap((d) => (Array.isArray(d['@graph']) ? d['@graph'] : []));
+  for (const node of nodes) {
+    const types = typesOf(node);
+    if (types.some((t) => t === 'Article' || t === 'Report') && social !== null && social !== '' && node.image !== social) {
+      out(`${node['@id']}: image must be the page's og:image ${social}, found ${JSON.stringify(node.image)}`);
+    }
+    if (types.includes('ProfessionalService') && /\/_astro\//.test(String(node.logo ?? ''))) {
+      out(`organisation logo must be a stable URL, not a hashed build asset: ${node.logo}`);
+    }
   }
   return errors;
 }

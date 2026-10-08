@@ -9,7 +9,6 @@ import '../styles/components.css';
 import '../styles/utilities.css';
 import '../styles/motion.css';
 import '../styles/print.css';
-import wordmark from '../assets/brand/we-logo-wordmark.svg';
 import { photo } from '../assets/photo/index.ts';
 import type { SlotId } from '../assets/photo/slots.ts';
 import Footer from '../components/layout/Footer.astro';
@@ -24,7 +23,7 @@ import { site } from '../data/site.ts';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { Crumb } from '../lib/breadcrumbs.ts';
 import { assertReleaseReady } from '../lib/route-state.ts';
-import { breadcrumbNode, organizationNode, pageNode, websiteNode } from '../lib/schema.ts';
+import { breadcrumbNode, logoUrl, organizationNode, pageNode, websiteNode, withArticleImage } from '../lib/schema.ts';
 import type { JsonLdNode, PageSchemaType } from '../lib/schema.ts';
 import { buildTitle, clampDescription, resolveRobots, TITLE_MAX } from '../lib/seo.ts';
 
@@ -89,18 +88,18 @@ const card = photo[ogSlot];
 const ogImage = card.placeholder ? undefined : { url: new URL(card.src.src, site.origin).href, alt: card.alt };
 
 const nodes: JsonLdNode[] = [
-  organizationNode(new URL(wordmark.src, site.origin).href),
+  organizationNode(logoUrl()),
   websiteNode(),
   pageNode({ path, name: title ?? site.name, description: metaDescription, type: schemaType, ...(updated !== undefined ? { updated } : {}) }),
   ...(pageCrumbs.length > 0 ? [breadcrumbNode(path, pageCrumbs)] : []),
-  ...jsonLd,
+  ...withArticleImage(jsonLd, ogImage?.url),
 ];
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Declared before any stylesheet link so a component sheet that opens a layer can never reorder the cascade. -->
+    {/* Declared before any stylesheet link so a component sheet that opens a layer can never reorder the cascade. */}
     <style is:inline set:html={LAYER_ORDER}></style>
     <SeoHead
       title={fullTitle}

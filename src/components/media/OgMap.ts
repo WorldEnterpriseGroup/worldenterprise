@@ -12,6 +12,8 @@ const SECTION_CARDS: ReadonlyArray<readonly [prefix: string, slot: SlotId]> = [
   ['/resources', 'og-resources'],
   ['/library', 'og-resources'],
   ['/glossary', 'og-resources'],
+  ['/insights', 'og-resources'],
+  ['/research', 'og-resources'],
   ['/faq', 'og-resources'],
   ['/network', 'og-network'],
   ['/founders', 'og-network'],

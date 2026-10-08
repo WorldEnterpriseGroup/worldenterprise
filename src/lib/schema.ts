@@ -14,6 +14,17 @@ export type PageSchemaType = 'WebPage' | 'CollectionPage' | 'AboutPage' | 'Conta
 const ORG_ID = `${site.origin}/#org`;
 const WEBSITE_ID = `${site.origin}/#website`;
 
+/**
+ * The organisation logo is a file in public/, so its URL never carries a content hash. The copy under src/assets/brand is hashed by
+ * the build and changes whenever the artwork is edited, which would orphan the URL a search engine has cached.
+ * tests/unit/wp-19/wordmark.test.ts keeps the two files identical.
+ */
+export const LOGO_PATH = '/press/we-logo-wordmark.svg';
+
+export function logoUrl(): string {
+  return buildAbsolute(LOGO_PATH, site.origin);
+}
+
 export function organizationNode(logoUrl: string): JsonLdNode {
   return {
     '@type': 'ProfessionalService',
@@ -167,6 +178,18 @@ export function articleNode({ path, headline, description, published, modified, 
     inLanguage: 'en-US',
     ...(image !== undefined ? { image } : {}),
   };
+}
+
+const IMAGE_NODE_TYPES: ReadonlySet<unknown> = new Set(['Article', 'Report']);
+
+/**
+ * Gives every Article and Report node that has no image of its own the page's social card, which Google recommends for article rich
+ * results. A page without a real card (a placeholder slot) passes undefined and the nodes are returned untouched, so the graph
+ * never points at an image that does not exist.
+ */
+export function withArticleImage(nodes: readonly JsonLdNode[], image: string | undefined): readonly JsonLdNode[] {
+  if (image === undefined) return nodes;
+  return nodes.map((node) => (IMAGE_NODE_TYPES.has(node['@type']) && node.image === undefined ? { ...node, image } : node));
 }
 
 export interface ServiceNodeInput {

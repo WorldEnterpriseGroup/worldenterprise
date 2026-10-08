@@ -1,8 +1,11 @@
 # Asset sources
 
-All brand assets are copied unmodified from the whitelab repository (/WorldEnterpriseGroup/whitelab), with one exception: the
+All brand assets are copied unmodified from the whitelab repository (/WorldEnterpriseGroup/whitelab), with two exceptions. The
 font files were re-wrapped from WOFF to WOFF2 (fontTools, table for table, nothing added or removed). Glyph outlines, metrics,
-name tables and character coverage are identical, and each font is about 20 percent smaller.
+name tables and character coverage are identical, and each font is about 20 percent smaller. The wordmark SVG was optimised: its
+sixteen gradients all had two identical stops, so they became flat fills, and SVGO ran at precision 2 (22.7 KB to 8.1 KB; a raster
+diff at 1x, 2x and 4x shows no pixel off by more than 18 of 255, only on antialiased edges). The same file is the press download
+in public/press/, and tests/unit/wp-19/wordmark.test.ts keeps the two identical.
 
 | Path here | Whitelab source | Licence |
 |---|---|---|
