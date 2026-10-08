@@ -311,6 +311,39 @@
         "lighthouserc.json",
         "claims-denylist.json"
       ]
+    },
+    {
+      "owner": "WP-16",
+      "title": "Layout and accessibility fix-forward",
+      "branch": "wp/16",
+      "write_set": [
+        "src/styles/**",
+        "src/layouts/**",
+        "src/components/layout/**",
+        "src/components/ui/**",
+        "src/components/forms/**",
+        "src/components/insights/DeskRail.astro",
+        "src/components/hero/HeroEditorial.astro",
+        "src/components/program/**",
+        "src/components/reference/**",
+        "src/components/islands/**",
+        "src/pages/program/who-its-for.astro",
+        "src/pages/insights/topic/[topic].astro",
+        "src/pages/playbooks/[slug].astro",
+        "src/pages/styleguide.astro",
+        "src/scripts/nav.ts",
+        "src/scripts/search.ts",
+        "src/scripts/copy.ts",
+        "src/lib/rehype-table-wrap.ts",
+        "src/lib/csp.ts",
+        "tests/e2e/**",
+        "tests/unit/wp-16/**",
+        "tests/unit/wp-15/csp.test.ts",
+        "tests/unit/wp-15/overflow.test.ts",
+        "playwright.config.ts",
+        ".gitlab-ci.yml",
+        ".astro-magazine/handoffs/wp-16*"
+      ]
     }
   ],
   "active_leases": [],
@@ -401,6 +434,21 @@
       "wp": "WP-12b",
       "path": "src/components/home/HomeHero.astro",
       "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+    },
+    {
+      "wp": "WP-16",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 4 fix-forward: each work package registers its own assignment and exceptions."
+    },
+    {
+      "wp": "WP-16",
+      "path": "src/data/nav.ts",
+      "reason": "Brief grants the active-section mapping only (activeSectionId): /apply/, /contact/ and /trust/ no longer light up a mega section."
+    },
+    {
+      "wp": "WP-16",
+      "path": "astro.config.mjs",
+      "reason": "One markdown.rehypePlugins entry that wraps Markdown tables in .table-wrap (a11y P1-2); library, research and legal are plain .md and have no other hook."
     }
   ],
   "notes": [
