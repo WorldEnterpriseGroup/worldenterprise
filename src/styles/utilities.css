@@ -89,5 +89,10 @@
     & :focus-visible {
       outline-color: var(--color-focus-inverse);
     }
+
+    /* The hero panel is a white card inside the dark band: its focus ring is the ordinary one, not white on white. */
+    & .hero__panel :focus-visible {
+      outline-color: var(--color-focus);
+    }
   }
 }

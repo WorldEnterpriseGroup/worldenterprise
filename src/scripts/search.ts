@@ -59,8 +59,13 @@ class WeSearch extends HTMLElement {
   private shown = 0;
   private serial = 0;
   private timer: number | undefined;
+  /** A batch of rows is being fetched. A second click on "Show more" meanwhile must not start the same batch again. */
+  private rendering = false;
+  /** Listeners are attached once. connectedCallback runs again when the element is moved (a view transition, a re-parent). */
+  private initialised = false;
 
   connectedCallback(): void {
+    if (this.initialised) return;
     const form = this.querySelector<HTMLFormElement>('form');
     const input = this.querySelector<HTMLInputElement>('input[type="search"]');
     const status = this.querySelector<HTMLElement>('[data-search-status]');
@@ -76,6 +81,7 @@ class WeSearch extends HTMLElement {
     this.list = list;
     this.more = more;
     this.base = normalizeBase(this.getAttribute('data-base') ?? '');
+    this.initialised = true;
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -86,7 +92,12 @@ class WeSearch extends HTMLElement {
       window.clearTimeout(this.timer);
       this.timer = window.setTimeout(() => void this.run(this.input.value, true), DEBOUNCE_MS);
     });
-    more.addEventListener('click', () => void this.renderNext());
+    more.addEventListener('click', () => {
+      this.renderNext().catch((error: unknown) => {
+        console.error('we-search: more results could not be loaded.', error);
+        this.status.textContent = 'More results could not be loaded. Try again.';
+      });
+    });
 
     void this.start();
   }
@@ -137,6 +148,7 @@ class WeSearch extends HTMLElement {
     this.more.hidden = true;
     this.pending = [];
     this.shown = 0;
+    this.rendering = false;
     if (query === '') {
       this.status.textContent = '';
       return;
@@ -155,13 +167,25 @@ class WeSearch extends HTMLElement {
     }
   }
 
+  /**
+   * Appends the next batch of rows. `shown` only moves once the rows are in the list, so a failed fetch can be retried, and `rendering`
+   * keeps a double click from fetching and appending the same batch twice (the second click is a no-op until the first batch is in).
+   */
   private async renderNext(ticket: number = this.serial): Promise<void> {
+    if (this.rendering) return;
     const batch = this.pending.slice(this.shown, this.shown + PAGE_SIZE);
-    const rows = await Promise.all(batch.map((result) => result.data()));
-    if (ticket !== this.serial) return;
-    for (const row of rows) this.list.append(this.renderRow(row));
-    this.shown += batch.length;
-    this.more.hidden = this.shown >= this.pending.length;
+    if (batch.length === 0) return;
+    this.rendering = true;
+    try {
+      const rows = await Promise.all(batch.map((result) => result.data()));
+      if (ticket !== this.serial) return;
+      for (const row of rows) this.list.append(this.renderRow(row));
+      this.shown += batch.length;
+      this.more.hidden = this.shown >= this.pending.length;
+    } finally {
+      // A newer search has already reset the flag for its own batches; only the batch that still owns it may release it.
+      if (ticket === this.serial) this.rendering = false;
+    }
   }
 
   private renderRow(data: PagefindData): HTMLLIElement {

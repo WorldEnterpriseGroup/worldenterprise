@@ -35,6 +35,12 @@ const { tabs, label } = Astro.props;
     if (!list || tabs.length === 0) continue;
     list.hidden = false;
     root.dataset.enhanced = '';
+    // The panels are plain labelled sections until the script runs. Once the tab list is shown they are tab panels, and a panel is a tab
+    // stop so a keyboard user can reach and scroll its content (tab panel pattern, APG).
+    for (const panel of panels) {
+      panel.setAttribute('role', 'tabpanel');
+      panel.tabIndex = 0;
+    }
     const select = (index: number, focus: boolean): void => {
       tabs.forEach((t, i) => {
         t.setAttribute('aria-selected', i === index ? 'true' : 'false');

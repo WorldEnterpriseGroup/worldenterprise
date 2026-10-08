@@ -7,7 +7,7 @@ interface Props {
 const { id } = Astro.props;
 ---
 
-<div class="error-summary" data-error-summary tabindex="-1" aria-labelledby={`${id}-error-title`} hidden>
+<div class="error-summary" data-error-summary role="group" tabindex="-1" aria-labelledby={`${id}-error-title`} hidden>
   <h2 class="error-summary__title" id={`${id}-error-title`}>Check your answers</h2>
   <p data-error-intro></p>
   <ul class="error-summary__list"></ul>

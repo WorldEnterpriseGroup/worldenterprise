@@ -66,8 +66,15 @@ class WeCopy extends HTMLElement {
 
   private fallbackText(): string {
     const selector = this.getAttribute('target');
-    const target = selector === null ? null : document.querySelector<HTMLElement>(selector);
-    return target?.innerText.trim() ?? '';
+    if (selector === null) return '';
+    try {
+      return document.querySelector<HTMLElement>(selector)?.innerText.trim() ?? '';
+    } catch (error) {
+      // The selector comes from the page author. A malformed one throws a SyntaxError, which would otherwise surface as an uncaught
+      // error inside the click handler and leave the person with no feedback.
+      console.warn(`we-copy: the target selector "${selector}" is not valid.`, error);
+      return '';
+    }
   }
 
   private async copy(): Promise<void> {

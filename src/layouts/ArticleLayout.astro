@@ -45,7 +45,7 @@ const article = articleNode({ path: meta.path, headline: meta.title, description
       <div class="container stack">
         <Breadcrumbs crumbs={crumbs} />
         <p class="eyebrow">
-          {topicLive ? <a href={href(`/insights/topic/${topic}/`)}>{topic}</a> : topic}
+          {topicLive ? <a href={href(`/insights/topic/${topic}/`)}><span class="visually-hidden">Topic: </span>{topic}</a> : topic}
         </p>
         <h1>{meta.title}</h1>
         <div class="rule" aria-hidden="true"></div>
