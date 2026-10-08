@@ -38,7 +38,7 @@ The newsletter form uses only `email`, `consent`, the spam trap, the two times a
 
 ## Where it goes
 
-A form posts your answers over an encrypted connection to an intake service that is separate from this website. The service passes each submission to a monitored mailbox or case system that WE names. The form sends no cookies and does not tell the service which page you came from beyond the `page` field above. Where the intake service is not yet connected, the form says so and sends nothing.
+A form posts your answers over an encrypted connection to an intake service that is separate from this website. The service passes each submission on to WE. The form sends no cookies and does not tell the service which page you came from beyond the `page` field above. Where the intake service is not yet connected, the form says so and sends nothing.
 
 WE uses what you send to answer you, to consider your application, to send you the newsletter if you asked for it, and to keep a record of the conversation. WE does not sell it and does not pass it to advertisers.
 
