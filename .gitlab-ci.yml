@@ -181,7 +181,9 @@ audit:wired:
 e2e:routes:
   extends: [.e2e]
   script:
-    - npx playwright test routes layout folds shell
+    # `layout.spec` and not `layout`: the filter is a regular expression on the file path, and `layout` would also pull in layout-shift.spec.ts,
+    # which has its own job (e2e:stability) and is timing-sensitive when four workers share the runner with a thousand other tests.
+    - npx playwright test routes layout.spec folds shell
 
 # axe on every route and with the navigation open.
 e2e:a11y:
