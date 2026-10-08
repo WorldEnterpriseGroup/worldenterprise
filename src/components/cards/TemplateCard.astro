@@ -9,13 +9,13 @@ interface Props {
   summary: string;
   path: string;
   eyebrow?: string;
-  slot?: SlotId;
+  photo?: SlotId;
   headingLevel?: 2 | 3 | 4;
   meta?: string;
 }
 
-const { title, summary, path, eyebrow = 'Template', slot, headingLevel = 3, meta } = Astro.props;
-const image = slot ? getPhoto(slot) : undefined;
+const { title, summary, path, eyebrow = 'Template', photo, headingLevel = 3, meta } = Astro.props;
+const image = photo ? getPhoto(photo) : undefined;
 ---
 
 <Card

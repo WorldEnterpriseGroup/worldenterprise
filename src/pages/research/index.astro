@@ -40,7 +40,7 @@ const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'l
             title={entry.data.title}
             summary={entry.data.description}
             path={`/research/${slug}/`}
-            slot={meta.slot}
+            photo={meta.slot}
             headingLevel={2}
             meta={`${meta.kindLabel}. Version ${entry.data.version}, as of ${dateFormat.format(asOf)}. ${entry.data.sources.length} sources, ${readingMinutes(entry.body)} min read.`}
           />

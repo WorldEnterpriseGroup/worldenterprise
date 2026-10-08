@@ -17,13 +17,13 @@ interface Props {
   lead: string;
   primary?: Cta;
   secondary?: Cta;
-  slot?: SlotId;
+  photo?: SlotId;
   /** Strip under the actions, for example the Evidence Ledger teaser. Rendered when provided. */
   strip?: boolean;
 }
 
-const { as: Heading = 'h1', eyebrow, title, lead, primary, secondary, slot = 'band-1', strip = false } = Astro.props;
-const image = getPhoto(slot);
+const { as: Heading = 'h1', eyebrow, title, lead, primary, secondary, photo = 'band-1', strip = false } = Astro.props;
+const image = getPhoto(photo);
 ---
 
 <section class="hero hero--atlas">
