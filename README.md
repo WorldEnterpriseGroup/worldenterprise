@@ -18,6 +18,36 @@ audits and browser tests.
 
 `CNAME` at the repository root binds the custom domain and must never be changed or removed.
 
+## How the site is organised
+
+| Path | What lives there |
+|---|---|
+| `src/data/routes.ts` | The route ledger: 90 rows, each with `launch`, `indexable`, layout and owner. Everything that lists pages is generated from it and from the routes that exist. |
+| `src/data/flags.ts`, `src/data/site.ts`, `src/data/claims.ts` | Publication flags (all OFF), site identity and the claims ladder. Nothing about clients, people, metrics or prices is published without a source. |
+| `src/content/` | Typed content collections (pages, services, playbooks, guides, insights, research, library) with strict schemas. |
+| `src/pages/`, `src/layouts/`, `src/components/` | Routes, page layouts and components. Every internal link goes through `href()` in `src/lib/url.ts`. |
+| `src/styles/` | Layered CSS on OKLCH tokens (`@layer reset, tokens, base, layout, components, utilities, pages, print`). Light theme only. |
+| `scripts/` | Audits, the Lighthouse runner, the ownership check and the release gate. |
+| `tests/unit/`, `tests/e2e/` | `node --test` unit tests and the Playwright suites (CI only). |
+| `.astro-magazine/` | Ownership map, decisions, handoffs and the integration review. |
+
+## Quality gates
+
+GitLab runs every gate; see `.gitlab-ci.yml` for the stages and `docs/runbook-release.md` for the procedure.
+
+- `verify:static`: type check, unit tests, contrast, production-shaped build, route ledger export.
+- `audit:*`: claims, images, links, route ledger, dist, static accessibility, SEO, JSON-LD and token audits over `dist/`.
+- `e2e:*`: Playwright at 1440 and 390 px (routes, axe, menu, interaction, forms, layout stability), plus no-js, forced-colors and zoom-200 modes.
+- `qa:lighthouse`: mobile budgets on eight routes.
+- `verify:release`: a `PUBLIC_RELEASE=1` build. A launched route that is missing, a draft, or a launched form with no endpoint fails it; only operator-gated items are allowed off `gh-pages`.
+
+## Operator-owned items
+
+These are the only things standing between the build and a release, and none of them is code:
+the intake and newsletter endpoints (`PUBLIC_WE_INTAKE_API_URL`, `PUBLIC_WE_NEWSLETTER_API_URL`), a monitored security mailbox
+for `/.well-known/security.txt`, confirmation of the `hello@` and `apply@` mailboxes, and counsel sign-off on the terms
+and on the public benefit corporation wording. The flag snapshot is in `.astro-magazine/decisions.md`.
+
 ## Local commands (type level only)
 
 ```sh

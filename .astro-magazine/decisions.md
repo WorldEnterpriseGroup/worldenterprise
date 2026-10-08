@@ -122,7 +122,7 @@ Source of truth for scope: `.plan/SAGE-PLAN.md` (internal, untracked). Decisions
 
 - **EX-LIGHT.** Light theme only (`color-scheme: light`); no `prefers-color-scheme: dark` styles. The logo is dark-on-light only and no reversed logo may be invented (D-8).
 - **EX-OG-AVIF.** Open Graph images are AVIF per the project standard; some social scrapers do not render AVIF (FLAG-OG). An OG-only JPEG exception needs an operator decision (D-18).
-- **EX-CSP-META.** GitHub Pages cannot set headers. CSP and referrer policy are delivered through `<meta>` tags; `frame-ancestors`, `Permissions-Policy` and HSTS cannot be enforced and are accepted as limits (R-12).
+- **EX-CSP-META.** GitHub Pages cannot set headers. CSP and referrer policy are delivered through `<meta>` tags; `frame-ancestors`, `Permissions-Policy` and HSTS cannot be enforced and are accepted as limits (R-12). Details and the two directive exceptions are in I-2.
 - **EX-NO-TAILWIND.** No Tailwind or UI framework (D-9): hand-written layered CSS on OKLCH tokens, vanilla custom elements for islands.
 - **EX-CLAUDE-MD.** The operator authorised Astro and a full rebrand, overriding the repo `CLAUDE.md` "no build tools" and "push directly to gh-pages" rules for the construction phase. `CLAUDE.md` and `plan.md` are auto-synced from the org `.github` repo and are never edited here.
 - **EX-SCALE.** Launch scale is 90 routes, 18 articles and 4 briefs (D-10, D-19), not the skill defaults of 150 and 8.
@@ -155,9 +155,15 @@ The Astro Fonts API (stable in 7.3.6) is configured with the local provider and 
 MegaNav panels are `popover="auto"` opened by `popovertarget`, so they work without JavaScript; each panel carries its hub link. `src/scripts/nav.ts` adds focus return, arrow keys, hover intent (150 ms, fine pointers) and panel positioning. The browser smoke (mega-menu keyboard, no-JS fallback, mobile drawer) runs in `e2e:smoke`.
 
 ### W-9 Verify build renders the full nav (PUBLIC_NAV_FIXTURE)
+
+**Superseded by I-3.** The fixture is retired; the nav is built from the routes that exist.
+
 Nav hides routes that do not exist, so before Wave 1 the menu is empty. The verify build sets `PUBLIC_NAV_FIXTURE=1` so the browser tests can exercise the real menu. It is never set for preview or production.
 
 ### W-10 og:image omitted while the slot is a placeholder
+
+**Superseded by I-4.** Every page now resolves an og:image from its section.
+
 BaseLayout emits no og:image until WP-12 replaces the placeholder (FLAG-OG), rather than advertising a decorative graphic.
 
 ### W-11 Wordmark sized by width
@@ -168,3 +174,76 @@ The wordmark ratio is 14:1, so the header and footer logos are sized by width in
 
 ### W-13 Styleguide and fixtures are kept out of the sitemap
 `/styleguide/` is a dynamic route emitted only when `PUBLIC_STYLEGUIDE=1`, marked noindex, and filtered from the sitemap along with any `/fixture-` URL. Fixture routes use the last segment of the glob id because fixtures sit in `_fixtures/`.
+
+## Decisions made during WP-15 (integration)
+
+### I-1 Flag snapshot at integration (2026-10-08)
+
+Every publication flag is OFF. Nothing flagged is published, and no test or build flips a flag.
+
+| Flag (`src/data/flags.ts`, `src/data/site.ts`) | Value | What stays unpublished | Who flips it |
+|---|---|---|---|
+| `flags.seatPrice.published` | `false` (`monthlyRate` `null`, `currency` `'USD'`) | The per-seat price. The Team Composer and /pricing/ show no figure; the claims audit scans `dist` for a currency-per-seat phrase. | Operator (C-06, FLAG-PRICE) |
+| `flags.legalTerms` | `false` | /legal/terms/ stays `launch:false` (not built). | Counsel sign-off (C-23) |
+| `flags.pbcWording` | `false` | The footer and About do not call WE a "Delaware public benefit corporation". The legal line renders without it until counsel confirms. | Counsel (FLAG-PBC) |
+| `flags.limitsConfirmed` | `false` | "What this line does not do" limits on service lines. | Operator (FLAG-LIMITS) |
+| `flags.focusShiftConfirmed` | `false` | Focus Shifts are not described as used in seat operations. | Operator (FLAG-FOCUS) |
+| `site.securityContact` | `null` | /.well-known/security.txt returns an empty body; the route is a machine row, not a page. | Operator, once a monitored security@ mailbox exists (C-22) |
+| `site.mailboxes.hello`, `.apply` | `confirmed: false` | No mailto fallback is rendered. | Operator (B-2) |
+| `PUBLIC_WE_INTAKE_API_URL`, `PUBLIC_WE_NEWSLETTER_API_URL` | unset in production builds | /apply/ and /contact/ render their forms disabled; /newsletter/ is `launch:false`. | Operator provisions the function (D-13, B-2) |
+
+`flags.seatPrice.currency` was added during integration because the Team Composer reads it only when the price is published; it does not publish anything.
+
+### I-2 Content Security Policy (Astro `security.csp`)
+
+The policy is built in `src/lib/csp.ts` and enabled in `astro.config.mjs`. Astro emits it as a per-page `<meta http-equiv="content-security-policy">` with SHA-256 hashes for every script and style it processes, and `BaseLayout` hashes the one inline style (the `@layer` order declaration) with `Astro.csp.insertStyleHash`.
+
+- `default-src 'self'`, `img-src 'self'`, `font-src 'self'`, `object-src 'none'`, `base-uri 'self'`.
+- `script-src 'self' 'wasm-unsafe-eval'` plus hashes. No `unsafe-inline`, no `unsafe-eval`.
+- `style-src-elem 'self'` plus hashes; `style-src-attr 'unsafe-inline'`.
+- `connect-src` and `form-action` are `'self'` plus the origins of the two endpoint variables when they are set at build time. A malformed endpoint URL fails the build.
+- The browser tests fail on any console error, so a blocked resource on any launched route fails `e2e:routes`; `e2e:routes` also asserts the policy on five sampled pages.
+
+Accepted exceptions:
+
+- **EX-CSP-WASM.** `'wasm-unsafe-eval'`: Pagefind compiles its WebAssembly index reader. It does not allow `eval()`.
+- **EX-CSP-STYLE-ATTR.** `style-src-attr 'unsafe-inline'`: about 14 elements set CSS custom properties or SVG `stop-color` in a `style` attribute (for example `style="--grid-min:16rem"`). Script stays locked to `'self'` and hashes, so an attribute cannot run code. Replacing them with classes is hardening work (L2), not a launch blocker.
+- **EX-CSP-NO-HEADERS.** A meta policy ignores `frame-ancestors`, `report-uri` and `sandbox`, and GitHub Pages cannot send `Permissions-Policy`, `Strict-Transport-Security` or `X-Content-Type-Options`. The site cannot be framed-proofed on this host (R-12). Moving to a host that sets headers would close all of these.
+- **EX-NO-REPORTING.** There is no violation reporting endpoint (D-14: no third-party scripts, no collection).
+
+### I-3 W-9 retired: the nav is built from the routes that exist
+
+`PUBLIC_NAV_FIXTURE` made the verify build show every menu entry before the pages existed, which hid 89 `/newsletter/` link errors until it was removed. Nav, footer, breadcrumbs, sitemap and the HTML site map are generated from `getRouteState().live`. The draft fixture entries (`src/content/*/_fixtures/`), the superseded smoke suite and the colliding `src/pages/[guide].astro` are deleted. The unlaunched `/newsletter/` and `/legal/terms/` routes are absent from every list.
+
+### I-4 og:image is wired for every page (supersedes W-10)
+
+`BaseLayout` takes `ogSlot` from the page or from `ogSlotForPath(path)` (`src/components/media/OgMap.ts`), so every page advertises an AVIF og:image of its section. D-18 still applies: some social scrapers do not render AVIF (FLAG-OG). `/research/`, `/insights/` and `/press/` fall back to `og-default`; mapping the first two to `og-resources` is a one-line change for WP-12b.
+
+### I-5 Route state reads page files from disk
+
+`route-state.ts` listed the page files with `import.meta.glob` over `src/pages`. Even a lazy glob puts every page module in every page's graph, so every page linked all 29 route stylesheets. It now reads the directory (`src/lib/page-files.ts`); each page links its own stylesheet and the layout's. A unit test fails if any module globs `src/pages` again.
+
+### I-6 Sitemap lastmod
+
+`lastmod` is the frontmatter `updated` or `updatedDate`; otherwise the git commit date of the content entry; otherwise the git date of the page file; otherwise none. It is never the build time. Git history needs a full clone, so every CI job sets `GIT_DEPTH: "0"` and `verify:static` and `check:ownership` run on the full Node image (W-12). If git is unavailable the build warns once and routes without a frontmatter date get no `lastmod`.
+
+### I-7 Title contract
+
+Titles are `{Page} | World Enterprise Incubator`, at most 60 characters. A page whose natural title is longer sets `seoTitle` in its frontmatter (18 insight files do), and the page heading keeps the full title.
+
+### I-8 Links: one rule
+
+`href()` and `asset()` are idempotent, and every component that renders a link calls `href()` itself, so a caller may pass a site path or a resolved link and the preview base is never doubled. Card props named `slot` were renamed `photo` (Astro reads `slot` as the slot attribute).
+
+### I-9 Release gate allow-list
+
+`RELEASE_ALLOW` is `^launched form route`: the only items `verify:release` forgives off `gh-pages` are the two forms that render disabled until the endpoint exists. Every launched route is built and no draft remains. On `gh-pages` the variable is empty, so production cannot ship with a disabled form.
+
+### I-10 QA strictness
+
+All qa jobs are advisory on `wp/*` and `demo` until every one has been green on a wp/15 pipeline; then `QA_STRICT=1` is set in `.gitlab-ci.yml`. `gh-pages` and `*negatives` branches are always strict. The GitHub workflow runs the same audits with `--strict`.
+
+### I-11 WP-12b ownership
+
+`wp/12b` (photography pass, issue #22) owns `src/assets/photo/**`, `src/assets/og/**`, `src/components/media/**`, `scripts/build-og.mjs`, and, as exceptions, the slot id file and the `img` markup of the card, hero and home hero components (width, srcset, sizes only). `check-ownership` maps `wp/NNx` to `WP-NNx`.
+
