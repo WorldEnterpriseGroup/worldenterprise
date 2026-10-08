@@ -426,6 +426,39 @@
         "tests/unit/wp-18/**",
         ".astro-magazine/handoffs/wp-18*"
       ]
+    },
+    {
+      "owner": "WP-19",
+      "title": "Performance, SEO, release security and dependencies",
+      "branch": "wp/19",
+      "write_set": [
+        ".gitlab-ci.yml",
+        ".github/workflows/**",
+        "scripts/**",
+        "playwright.config.ts",
+        "lighthouserc.json",
+        "src/lib/csp.ts",
+        "src/lib/schema.ts",
+        "src/lib/seo.ts",
+        "src/lib/lastmod.ts",
+        "src/data/forms.ts",
+        "src/scripts/forms.ts",
+        "src/components/forms/FormFrame.astro",
+        "src/components/media/OgMap.ts",
+        "src/layouts/BaseLayout.astro",
+        "src/assets/fonts/**",
+        "src/assets/brand/**",
+        "public/press/**",
+        "docs/forms-contract.md",
+        "tests/unit/wp-19/**",
+        "tests/unit/wp-15/csp.test.ts",
+        "tests/unit/wp-15/lastmod.test.ts",
+        "tests/unit/wp-09/**",
+        "tests/unit/shared/**",
+        "tests/e2e/forms.spec.ts",
+        "tests/e2e/modes.spec.ts",
+        ".astro-magazine/handoffs/wp-19*"
+      ]
     }
   ],
   "active_leases": [],
@@ -551,6 +584,21 @@
       "wp": "WP-18",
       "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
       "reason": "Forced by the approved nav copy amendment: nav.test.ts asserts every lead and column heading against this snapshot."
+    },
+    {
+      "wp": "WP-19",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 4: registers the WP-19 assignment (common rules: every WP adds its own row)."
+    },
+    {
+      "wp": "WP-19",
+      "path": "{package.json,package-lock.json}",
+      "reason": "Wave 4 brief: dependency currency (astro 7.3.7, Playwright 1.64, other outdated packages)."
+    },
+    {
+      "wp": "WP-19",
+      "path": "astro.config.mjs",
+      "reason": "Wave 4 brief: stylesheet inlining, WOFF2 font sources and one endpoint source for the CSP and the forms."
     }
   ],
   "notes": [
