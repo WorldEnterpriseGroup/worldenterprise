@@ -14,6 +14,7 @@ import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 import SkipLink from '../components/layout/SkipLink.astro';
 import UtilityBar from '../components/layout/UtilityBar.astro';
+import { ogSlotForPath } from '../components/media/OgMap.ts';
 import JsonLd from '../components/seo/JsonLd.astro';
 import SeoHead from '../components/seo/SeoHead.astro';
 import { getRoute } from '../data/routes.ts';
@@ -49,7 +50,7 @@ const {
   seoTitle,
   description,
   path,
-  ogSlot = 'og-default',
+  ogSlot: ogSlotProp,
   ogType = 'website',
   draft = false,
   updated,
@@ -62,6 +63,9 @@ const {
 } = Astro.props;
 
 await assertReleaseReady();
+
+// A page names its own card with ogSlot; every other page gets the card of its section (OgMap), else the default card.
+const ogSlot = ogSlotProp ?? ogSlotForPath(path);
 
 const fullTitle = buildTitle(seoTitle ?? title);
 if (fullTitle.length > TITLE_MAX) {
