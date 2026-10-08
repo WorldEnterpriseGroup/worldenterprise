@@ -3,7 +3,7 @@ import type { RouteRow } from '../data/routes.ts';
 
 /**
  * Pure route-existence logic, free of Astro globals so it runs under `node --test`.
- * src/lib/route-state.ts feeds it the page files (import.meta.glob) and published collection ids.
+ * src/lib/route-state.ts feeds it the page files (read from disk) and published collection ids.
  */
 
 /** Dynamic page pattern to the collection whose entry ids supply the parameter. */

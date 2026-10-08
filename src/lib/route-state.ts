@@ -2,6 +2,7 @@ import { getCollection } from 'astro:content';
 import { forms, FORM_ROUTES } from '../data/forms.ts';
 import { routes } from '../data/routes.ts';
 import { readFlag } from './env.ts';
+import { listPageFiles } from './page-files.ts';
 import { computeRouteState, entryRouteIds, fileToRoute } from './route-core.ts';
 import type { PageFileRoute, RouteContext, RouteState } from './route-core.ts';
 
@@ -11,11 +12,11 @@ import type { PageFileRoute, RouteContext, RouteState } from './route-core.ts';
  */
 export const COLLECTION_NAMES = ['pages', 'services', 'playbooks', 'guides', 'insights', 'research', 'library'] as const;
 
-const pageFiles = import.meta.glob('/src/pages/**/*.{astro,md,mdx,ts,js}');
 
 function pageRoutes(): PageFileRoute[] {
   const found: PageFileRoute[] = [];
-  for (const file of Object.keys(pageFiles)) {
+  // Read from disk, not through a module glob: a glob over the pages folder puts every page's stylesheet on every page.
+  for (const file of listPageFiles(process.cwd())) {
     const route = fileToRoute(file);
     if (route !== null) found.push(route);
   }
