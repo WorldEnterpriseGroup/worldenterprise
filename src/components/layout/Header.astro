@@ -23,7 +23,7 @@ const apply = state.isLive(applyButton.href) ? applyButton : null;
       <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="World Enterprise" decoding="async" />
     </a>
     {items.length > 0 && <MegaNav items={items} currentPath={currentPath} />}
-    {apply && <a class="btn btn--primary site-header__apply" href={href(apply.href)}>{apply.label}</a>}
+    {apply && <a class="btn btn--primary site-header__apply" href={href(apply.href)} aria-current={currentPath === apply.href ? 'page' : undefined}>{apply.label}</a>}
     {items.length > 0 && <MobileNav items={items} apply={apply} currentPath={currentPath} />}
   </div>
 </header>

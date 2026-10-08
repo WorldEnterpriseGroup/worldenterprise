@@ -29,7 +29,6 @@ const link = (target: string) => (target === currentPath ? 'page' : undefined);
               type="button"
               class="mega-nav__trigger"
               popovertarget={`mega-${item.id}`}
-              aria-haspopup="true"
               aria-current={activeId === item.id ? 'true' : undefined}
               data-mega-trigger
             >
@@ -48,14 +47,23 @@ const link = (target: string) => (target === currentPath ? 'page' : undefined);
                     <section class="mega-panel__column" aria-labelledby={`mega-${item.id}-h${ci}`}>
                       <p class="mega-panel__heading" id={`mega-${item.id}-h${ci}`}>{column.heading}</p>
                       <ul role="list">
-                        {column.links.map((l) => (
-                          <li>
-                            <a href={href(l.href)} aria-current={link(l.href)}>
-                              {l.label}
-                            </a>
-                            {l.description && <span class="mega-panel__desc">{l.description}</span>}
-                          </li>
-                        ))}
+                        {column.links.map((l, li) => {
+                          const descId = `mega-${item.id}-d${ci}-${li}`;
+                          // The description sits inside the link so the whole block is one target and one hover area. It is hidden from the link's
+                          // name (the name stays the label, which keeps the visible text a prefix of it) and is announced as the link's description.
+                          return (
+                            <li>
+                              <a href={href(l.href)} aria-current={link(l.href)} aria-describedby={l.description ? descId : undefined}>
+                                <span class="mega-panel__label">{l.label}</span>
+                                {l.description && (
+                                  <span class="mega-panel__desc" id={descId} aria-hidden="true">
+                                    {l.description}
+                                  </span>
+                                )}
+                              </a>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </section>
                   ))}

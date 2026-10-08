@@ -1,6 +1,6 @@
 /**
- * Progressive enhancement for the mega menu. The popover attributes already open and close panels
- * without this script; it adds focus return, arrow keys, hover intent and panel positioning.
+ * Progressive enhancement for the mega menu and the mobile drawer. The popover attributes already open and close both without this
+ * script; it adds focus return, arrow keys, hover intent, panel positioning and keeping keyboard focus inside the open drawer.
  */
 const WIDE = window.matchMedia('(min-width: 1100px)');
 const FINE = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -19,13 +19,15 @@ function syncExpanded(t: HTMLButtonElement, open: boolean): void {
   t.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
-let hoverTimer: number | undefined;
-let leaveTimer: number | undefined;
 const LEAVE_MS = 250;
 
 for (const t of triggers) {
   const panel = panelOf(t);
   if (!panel) continue;
+  // Timers belong to one trigger. Shared between triggers, moving the pointer from one item to the next let the second item's enter
+  // cancel the first item's pending close, and a stale close could fire on the panel that had just opened.
+  let hoverTimer: number | undefined;
+  let leaveTimer: number | undefined;
   syncExpanded(t, false);
   t.setAttribute('aria-controls', panel.id);
 
@@ -107,3 +109,50 @@ const drawer = document.querySelector<HTMLElement>('[data-mobile-drawer]');
 drawer?.addEventListener('click', (e) => {
   if ((e.target as Element).closest('a')) drawer.hidePopover();
 });
+
+// The drawer is a non-modal popover with a scrim over the page, so it has to behave like the modal it looks like: Tab and Shift+Tab stay
+// inside it (WCAG 2.4.3 Focus Order), and Escape, which the popover handles itself, returns focus to the Menu button.
+const TABBABLE = 'a[href], button:not([disabled]), summary, [tabindex]:not([tabindex="-1"])';
+
+/** The drawer's current tab stops in order. Links in a collapsed section are not stops. */
+function drawerStops(root: HTMLElement): HTMLElement[] {
+  return Array.from(root.querySelectorAll<HTMLElement>(TABBABLE)).filter((node) => {
+    const collapsed = node.closest('details:not([open])');
+    if (collapsed !== null && !(node.tagName === 'SUMMARY' && node.parentElement === collapsed)) return false;
+    return node.checkVisibility();
+  });
+}
+
+if (drawer) {
+  const menuButton = document.querySelector<HTMLElement>('button.mobile-nav__toggle[popovertarget="mobile-drawer"]:not([popovertargetaction])');
+  drawer.addEventListener('toggle', (e) => {
+    if ((e as ToggleEvent).newState === 'open') drawerStops(drawer)[0]?.focus();
+    else if (drawer.contains(document.activeElement)) menuButton?.focus();
+  });
+
+  drawer.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const stops = drawerStops(drawer);
+    const first = stops[0];
+    const last = stops[stops.length - 1];
+    if (first === undefined || last === undefined) return;
+    const active = document.activeElement;
+    const inside = active !== null && drawer.contains(active);
+    if (e.shiftKey && (!inside || active === first)) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && (!inside || active === last)) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+
+  // Anything else that puts keyboard focus outside the open drawer (a script, an assistive technology, the Menu button reached with
+  // Shift+Tab) is sent back in. Pointer focus is left alone, so pressing the Menu button at tablet widths still toggles the drawer.
+  document.addEventListener('focusin', (e) => {
+    if (!drawer.matches(':popover-open')) return;
+    const target = e.target;
+    if (!(target instanceof Element) || drawer.contains(target) || !target.matches(':focus-visible')) return;
+    (drawerStops(drawer)[0] ?? drawer).focus();
+  });
+}

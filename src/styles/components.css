@@ -134,6 +134,22 @@
     inline-size: clamp(11rem, 30vw, 16rem);
   }
 
+  /* From 1100px the header row holds the logo, seven items and Apply. The logo may not shrink to make room (it was 117px at 1100, under
+     the 160px brand minimum): it grows from 160px at 1100 to its full 256px at 1279, and the nav type gives 1px instead. */
+  @media (min-width: 1100px) {
+    .site-header__logo {
+      flex: 0 0 auto;
+      inline-size: clamp(10rem, calc(10rem + (100vw - 1100px) * 0.536), 16rem);
+    }
+  }
+
+  @media (min-width: 1100px) and (max-width: 1279.98px) {
+    .mega-nav__link,
+    .mega-nav__trigger {
+      font-size: 0.9375rem;
+    }
+  }
+
   .site-header__logo img {
     inline-size: 100%;
     block-size: auto;
@@ -232,37 +248,65 @@
     letter-spacing: var(--tracking-caps);
     color: var(--color-text-muted);
     border-block-end: var(--border-hair);
-
-    &::after {
-      content: '';
-      position: absolute;
-      inset-inline-start: 0;
-      inset-block-end: -1px;
-      inline-size: var(--sp-6);
-      block-size: 2px;
-      background: var(--color-highlight);
-    }
   }
 
-  .mega-panel__column a {
-    padding-inline: var(--sp-2);
-    margin-inline: calc(-1 * var(--sp-2));
+  /* A link is one grid: a hex bullet, the label and, under the label, its description. The label sits closer to its own description
+     (--sp-1) than the link sits to the next one (--sp-2 padding on each side), so proximity groups the right things, and the whole grid
+     is the hit target. The bullet is the Hive cell at 12px: it costs no image and fills with the link colour on hover and for the page. */
+  .mega-panel__column li > a {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    column-gap: var(--sp-2);
+    row-gap: var(--sp-1);
+    padding: var(--sp-2) var(--sp-3);
+    margin-inline: calc(-1 * var(--sp-3));
     border-radius: var(--radius-sm);
     text-decoration: none;
     color: var(--color-text);
     transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 
+    &::before {
+      content: '';
+      grid-row: 1;
+      grid-column: 1;
+      align-self: center;
+      inline-size: 0.75rem;
+      aspect-ratio: var(--hex-ratio);
+      clip-path: var(--hex-clip);
+      background: var(--we-tint);
+      transition: background-color var(--dur-fast) var(--ease-out);
+    }
+
     &:hover,
     &:focus-visible {
       background: var(--color-bg-soft);
       color: var(--color-link);
+
+      &::before {
+        background: var(--color-link);
+      }
     }
 
     &[aria-current] {
       color: var(--color-link);
       font-weight: 700;
-      box-shadow: inset 3px 0 0 var(--color-highlight);
-      padding-inline-start: var(--sp-3);
+
+      &::before {
+        background: var(--color-link);
+      }
+    }
+
+    & > .mega-panel__label {
+      grid-column: 2;
+    }
+
+    & > .mega-panel__desc {
+      grid-column: 2;
+      max-inline-size: 38ch;
+      font-weight: 400;
+      text-wrap: pretty;
     }
   }
 
@@ -276,11 +320,18 @@
     line-height: var(--lh-snug);
   }
 
+  /* The featured card carries the panel's single amber mark (its edge bar) and a cropped pair of Hive cells, so a panel more than 1000px
+     wide shows the brand without an image. It stretches to the height of the link columns instead of leaving the lower right empty. */
   .mega-panel__featured {
-    align-self: start;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    align-self: stretch;
+    align-content: start;
     display: grid;
     gap: var(--sp-2);
     padding: var(--sp-5);
+    padding-block-end: var(--sp-7);
     background: var(--color-bg-soft);
     border-inline-start: 4px solid var(--color-highlight);
     border-radius: var(--radius-md);
@@ -289,6 +340,30 @@
 
     & > p {
       margin: 0;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      aspect-ratio: var(--hex-ratio);
+      clip-path: var(--hex-clip);
+    }
+
+    /* Both cells sit on the lower right corner and are pushed past it by a share of their own size, so the card crops them. */
+    &::before {
+      inset: auto 0 0 auto;
+      inline-size: 7.5rem;
+      translate: 25% 30%;
+      background: var(--we-tint);
+    }
+
+    &::after {
+      inset: auto 0 0 auto;
+      inline-size: 4.5rem;
+      translate: -125% 70%;
+      background: color-mix(in oklch, var(--color-accent) 22%, var(--color-bg-soft));
     }
   }
 
@@ -308,6 +383,10 @@
     display: block;
     font-size: var(--fs-sm);
     color: var(--color-text-muted);
+  }
+
+  .mega-panel__column li > a {
+    min-block-size: var(--target-min);
   }
 
   .mega-panel__hub {
@@ -417,10 +496,13 @@
     overscroll-behavior: contain;
   }
 
+  /* The bar is one button, 2 x --sp-3 of padding and a hairline: --apply-bar-h in tokens.css, which is also what keeps the page clear of it. */
   .mobile-apply {
     position: fixed;
     inset: auto 0 0 0;
     z-index: var(--z-header);
+    box-sizing: border-box;
+    min-block-size: var(--apply-bar-h);
     padding: var(--sp-3) var(--sp-4);
     background: var(--color-bg);
     border-block-start: var(--border-hair);
@@ -435,9 +517,15 @@
     display: none;
   }
 
+  /* While the bar is on screen, a focused or targeted element is scrolled clear of it (WCAG 2.4.11 Focus Not Obscured), and the end of
+     the page can scroll the last footer line above it. */
   @media (max-width: 1099.98px) {
-    .site-footer {
-      padding-block-end: calc(var(--sp-8) + var(--sp-2));
+    html:has(.mobile-apply) {
+      scroll-padding-block-end: calc(var(--apply-bar-h) + var(--sp-2));
+    }
+
+    body:has(.mobile-apply) .site-footer {
+      padding-block-end: calc(var(--sp-6) + var(--apply-bar-h));
     }
   }
 

@@ -16,6 +16,7 @@
     --we-blue-deep: oklch(40.92% 0.1065 250.2); /* #0F4C81 */
     --we-blue-night: oklch(31.86% 0.0797 249.9); /* #0A3459 */
     --we-grey: oklch(66.91% 0.005 258.3); /* #939598 */
+    --we-grey-ui: oklch(62.27% 0.0051 258.3); /* #85878A: 3.6:1 on white, 3.2:1 on mist, for control borders (WCAG 1.4.11) */
     --we-slate: oklch(48.06% 0.0074 255.5); /* #5B5E62 */
     --we-mist: oklch(95.71% 0.0127 244.3); /* #EAF2F9 */
     --we-tint: oklch(88.44% 0.0382 239.6); /* #C3DDF0 */
@@ -44,7 +45,7 @@
     --color-highlight-ink: var(--we-amber-ink); /* @pair color-highlight-ink color-amber-wash 4.5 */
     --color-amber-wash: var(--we-amber-wash);
     --color-border: var(--we-hairline);
-    --color-border-strong: var(--we-grey); /* @pair color-border-strong color-bg 3 */
+    --color-border-strong: var(--we-grey-ui); /* @pair color-border-strong color-bg 3 @pair color-border-strong color-bg-soft 3 */
     --color-focus: var(--we-blue-deep); /* @pair color-focus color-bg 3 */
     --color-focus-inverse: var(--we-white); /* @pair color-focus-inverse color-bg-inverse 3 */
     --color-error: var(--we-error); /* @pair color-error color-bg 4.5 */
@@ -103,6 +104,7 @@
     --header-h: 4.5rem;
     --utility-h: 2.25rem;
     --target-min: 2.75rem;
+    --apply-bar-h: calc(var(--target-min) + 2 * var(--sp-3) + 1px); /* the fixed mobile Apply bar: one button, its padding and its top hairline */
     --rule-lead: 6.25rem; /* approximates the 25 mm amber lead of the brand rule */
 
     /* Elevation */

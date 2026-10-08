@@ -12,10 +12,14 @@ interface Props {
 const { items, apply, currentPath } = Astro.props;
 const activeId = activeSectionId(currentPath);
 const link = (target: string) => (target === currentPath ? 'page' : undefined);
+// The fixed Apply bar is the call to action on every other page. On the application itself and on Contact it repeats the page, covers the
+// bottom of the form and adds nothing, so it is not rendered there.
+const BARLESS_PREFIXES = ['/apply/', '/contact/'] as const;
+const showApplyBar = apply !== null && !BARLESS_PREFIXES.some((prefix) => currentPath.startsWith(prefix));
 ---
 
 <div class="mobile-nav">
-  <button type="button" class="mobile-nav__toggle" popovertarget="mobile-drawer" aria-haspopup="true">Menu</button>
+  <button type="button" class="mobile-nav__toggle" popovertarget="mobile-drawer">Menu</button>
   <div id="mobile-drawer" class="mobile-drawer" popover="auto" role="group" aria-label="Site menu" data-mobile-drawer>
     <div class="mobile-drawer__head">
       <button type="button" class="mobile-nav__toggle" popovertarget="mobile-drawer" popovertargetaction="hide">Close</button>
@@ -59,7 +63,7 @@ const link = (target: string) => (target === currentPath ? 'page' : undefined);
     </nav>
   </div>
   {
-    apply && (
+    apply && showApplyBar && (
       <div class="mobile-apply">
         <a class="btn btn--primary" href={href(apply.href)}>{apply.label}</a>
       </div>
