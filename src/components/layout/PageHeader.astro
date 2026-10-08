@@ -7,13 +7,18 @@ interface Props {
   eyebrow?: string;
   lead?: string;
   crumbs?: readonly Crumb[];
+  /**
+   * The width of the body column below this header. The header shares the body's left edge: a layout whose body sits in the centred
+   * 46rem reading column passes 'prose', so the breadcrumb, eyebrow, title and lede start where the text does.
+   */
+  measure?: 'wide' | 'prose';
 }
 
-const { title, eyebrow, lead, crumbs = [] } = Astro.props;
+const { title, eyebrow, lead, crumbs = [], measure = 'wide' } = Astro.props;
 ---
 
 <div class="page-header">
-  <div class="container stack">
+  <div class:list={['container', { 'container--prose': measure === 'prose' }, 'stack']}>
     <Breadcrumbs crumbs={crumbs} />
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h1>{title}</h1>

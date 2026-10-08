@@ -18,8 +18,10 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
   {
     introduction && (
       <div class="section section--tight">
-        <div class="container container--prose prose">
-          <p>{introduction}</p>
+        <div class="container">
+          <div class="prose measure-prose">
+            <p>{introduction}</p>
+          </div>
         </div>
       </div>
     )

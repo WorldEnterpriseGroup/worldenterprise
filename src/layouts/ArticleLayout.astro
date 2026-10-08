@@ -42,7 +42,7 @@ const article = articleNode({ path: meta.path, headline: meta.title, description
   <div class="reading-progress" aria-hidden="true"></div>
   <article>
     <header class="page-header page-header--article">
-      <div class="container container--prose stack">
+      <div class="container stack">
         <Breadcrumbs crumbs={crumbs} />
         <p class="eyebrow">
           {topicLive ? <a href={href(`/insights/topic/${topic}/`)}>{topic}</a> : topic}

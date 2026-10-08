@@ -17,7 +17,7 @@ const image = inset ? getPhoto(inset) : undefined;
 ---
 
 <section class="hero hero--editorial">
-  <div class={`container container--wide ${image ? 'hero__grid hero__grid--inset' : 'stack'}`}>
+  <div class={`container ${image ? 'hero__grid hero__grid--inset' : 'stack'}`}>
     <div class="stack">
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
       <Heading>{title}</Heading>

@@ -4,10 +4,6 @@
     margin-inline: auto;
   }
 
-  .container--wide {
-    inline-size: min(100% - 2 * var(--gutter), var(--page-wide));
-  }
-
   .container--prose {
     inline-size: min(100% - 2 * var(--gutter), var(--prose-max));
   }
@@ -56,8 +52,10 @@
     /* A bare auto column grows to the widest min-content descendant and pushes the page past the viewport. */
     grid-template-columns: minmax(0, 1fr);
     min-block-size: 100dvh;
-    /* Safety net for header, utility bar and footer, which sit outside main. clip keeps sticky headers working. */
-    overflow-x: clip;
+    /* No overflow-x clip here. It used to hide anything wider than the viewport, so tables, forms and rows were cut off with no
+       scrollbar and no test could see it (WP-16, visual-brand P0-1). Overflow is fixed where it starts, and tests/e2e/layout.spec.ts
+       measures every element against the viewport at 1440, 390 and 320. If something wider slips in, the page now scrolls sideways,
+       which WCAG 1.4.10 tolerates, instead of losing content. */
   }
 
   .page > * {
@@ -67,7 +65,6 @@
   .page__main,
   .page > main {
     min-inline-size: 0;
-    overflow-x: clip;
   }
 
   .hero__grid > *,
