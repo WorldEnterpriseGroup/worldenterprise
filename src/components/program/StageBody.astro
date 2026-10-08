@@ -79,6 +79,7 @@ const trail = STAGES.map((s) => ({ label: `${s.name} (${s.altitude})`, href: hre
   @layer pages {
     .stagebody {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--sp-8);
     }
 
@@ -87,8 +88,10 @@ const trail = STAGES.map((s) => ({ label: `${s.name} (${s.altitude})`, href: hre
       gap: var(--sp-6);
       align-items: center;
 
+      grid-template-columns: minmax(0, 1fr);
+
       @media (min-width: 62rem) {
-        grid-template-columns: 3fr 2fr;
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
       }
     }
 

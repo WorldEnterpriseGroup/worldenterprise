@@ -50,9 +50,10 @@ const trail = STAGES.map((s) => ({ label: s.name, href: href(s.path) }));
       display: grid;
       gap: var(--sp-4);
       align-items: center;
+      grid-template-columns: minmax(0, 1fr);
 
       @media (min-width: 62rem) {
-        grid-template-columns: 3fr 2fr;
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
         gap: var(--sp-6);
       }
     }
