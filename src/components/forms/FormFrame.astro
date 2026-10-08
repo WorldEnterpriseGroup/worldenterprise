@@ -158,10 +158,11 @@ const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') 
 
     .hp {
       position: absolute;
-      inset-inline-start: -10000px;
       inline-size: 1px;
       block-size: 1px;
       overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
 
     .btn[disabled] {
