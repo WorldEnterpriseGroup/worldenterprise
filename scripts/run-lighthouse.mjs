@@ -34,6 +34,65 @@ export function summarise(route, lhr, origin) {
 }
 
 /**
+ * What each page asks the network for, and when the first paint happens: FCP, the request count and transfer size by type, and the
+ * render-blocking requests Lighthouse lists. These are the numbers the stylesheet and font changes are judged by (WP-19), so they are
+ * recorded for every route in summary.json and in network.md. Sizes are transfer sizes as Lighthouse measures them (compressed).
+ */
+export function networkProfile(lhr) {
+  const items = lhr.audits?.['network-requests']?.details?.items ?? [];
+  const ofType = (type) => items.filter((r) => r.resourceType === type);
+  const bytes = (list) => list.reduce((sum, r) => sum + (r.transferSize ?? 0), 0);
+  const blocking = lhr.audits?.['render-blocking-insight'];
+  return {
+    fcpMs: lhr.audits?.['first-contentful-paint']?.numericValue ?? null,
+    requests: items.length,
+    totalBytes: bytes(items),
+    htmlBytes: bytes(ofType('Document')),
+    cssRequests: ofType('Stylesheet').length,
+    cssBytes: bytes(ofType('Stylesheet')),
+    fontRequests: ofType('Font').length,
+    fontBytes: bytes(ofType('Font')),
+    imageBytes: bytes(ofType('Image')),
+    renderBlocking: blocking?.details?.items?.length ?? 0,
+    renderBlockingSavingsMs: blocking?.metricSavings?.FCP ?? 0,
+  };
+}
+
+/** A Markdown table of the network profile per route, with the mean of each column. `results` holds { route, lcpMs, network }. */
+export function networkReport(results) {
+  const rows = results.filter((r) => r.network);
+  const mean = (pick) => (rows.length === 0 ? 0 : rows.reduce((sum, r) => sum + (pick(r) ?? 0), 0) / rows.length);
+  const kb = (n) => (n / 1024).toFixed(1);
+  const line = (label, c) => `| ${label} | ${Math.round(c.fcp)} | ${Math.round(c.lcp)} | ${c.css} | ${c.blocking} | ${kb(c.cssBytes)} | ${c.fonts} | ${kb(c.fontBytes)} | ${kb(c.total)} | ${c.requests} |`;
+  const body = rows.map((r) =>
+    line(`\`${r.route}\``, {
+      fcp: r.network.fcpMs ?? 0,
+      lcp: r.lcpMs ?? 0,
+      css: r.network.cssRequests,
+      blocking: r.network.renderBlocking,
+      cssBytes: r.network.cssBytes,
+      fonts: r.network.fontRequests,
+      fontBytes: r.network.fontBytes,
+      total: r.network.totalBytes,
+      requests: r.network.requests,
+    }),
+  );
+  const average = line('**mean**', {
+    fcp: mean((r) => r.network.fcpMs),
+    lcp: mean((r) => r.lcpMs),
+    css: mean((r) => r.network.cssRequests).toFixed(2),
+    blocking: mean((r) => r.network.renderBlocking).toFixed(2),
+    cssBytes: mean((r) => r.network.cssBytes),
+    fonts: mean((r) => r.network.fontRequests).toFixed(2),
+    fontBytes: mean((r) => r.network.fontBytes),
+    total: mean((r) => r.network.totalBytes),
+    requests: mean((r) => r.network.requests).toFixed(1),
+  });
+  const header = ['| Route | FCP ms | LCP ms | CSS requests | Render-blocking | CSS KB | Font requests | Font KB | Total KB | Requests |', '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |'];
+  return [...header, ...body, average, ''].join('\n');
+}
+
+/**
  * The layout shifts in a trace, for the failure message: when it happened, its score and where each impacted node moved from
  * and to ([x, y, width, height] in CSS pixels). Lighthouse's own audit names the element but not the distance it moved.
  * Chromium flags the first shifts after Lighthouse resizes the viewport with `had_recent_input` and Lighthouse still counts them
@@ -101,6 +160,7 @@ async function main() {
         const events = run.artifacts?.Trace?.traceEvents ?? run.artifacts?.traces?.defaultPass?.traceEvents ?? [];
         summary.shifts = layoutShifts(events);
         summary.traceEvents = events.length;
+        summary.network = networkProfile(run.lhr);
         writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), `${JSON.stringify(run.lhr)}\n`);
         if (failures.length === 0) break;
       }
@@ -124,6 +184,9 @@ async function main() {
     live.close();
   }
   writeFileSync(join(args.out, 'summary.json'), `${JSON.stringify(results, null, 2)}\n`);
+  const table = networkReport(results);
+  writeFileSync(join(args.out, 'network.md'), table);
+  console.log(`\n${table}`);
   console.log(`run-lighthouse: ${results.length} routes, ${failed} over budget`);
   process.exit(failed === 0 ? 0 : 1);
 }
