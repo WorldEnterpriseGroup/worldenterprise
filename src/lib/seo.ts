@@ -89,12 +89,23 @@ export interface SecurityTxtInput {
   readonly expires: Date;
 }
 
-/** security.txt (RFC 9116) body, or null while no confirmed mailbox exists (C-22). */
+/**
+ * The RFC 9116 Contact value for a configured contact: an https: URL (for example GitHub private vulnerability reporting, which
+ * needs no mailbox), a mailto: or tel: URI, or a bare mailbox address, which gets mailto:. Anything else is refused at build time,
+ * because a malformed Contact line is worse than none (cleartext http: is not allowed by the RFC for web URIs).
+ */
+export function securityContactUri(contact: string): string {
+  const value = contact.trim();
+  if (/^(https:\/\/|mailto:|tel:)\S+$/i.test(value)) return value;
+  if (/^[^\s@:/]+@[^\s@:/]+\.[^\s@:/]+$/.test(value)) return `mailto:${value}`;
+  throw new Error(`security.txt contact must be an https: URL, a mailto: or tel: URI, or a mailbox address. Got "${contact}".`);
+}
+
+/** security.txt (RFC 9116) body, or null while no confirmed contact exists (C-22). */
 export function securityTxt({ contact, expires }: SecurityTxtInput): string | null {
   if (contact === null) return null;
-  const address = contact.startsWith('mailto:') ? contact : `mailto:${contact}`;
   return [
-    `Contact: ${address}`,
+    `Contact: ${securityContactUri(contact)}`,
     `Expires: ${expires.toISOString()}`,
     'Preferred-Languages: en',
     `Canonical: ${site.origin}/.well-known/security.txt`,
@@ -102,7 +113,10 @@ export function securityTxt({ contact, expires }: SecurityTxtInput): string | nu
   ].join('\n');
 }
 
-/** Speculation rules: prerender same-site links on hover, except the thanks page and search. Base-aware for preview. */
+/**
+ * Speculation rules: prerender same-site links on hover, except the thanks page and search. Base-aware for preview.
+ * href_matches takes a path pattern, so cross-origin links never match and need no separate guard.
+ */
 export function speculationRules(rawBase: string | undefined): Record<string, unknown> {
   const base = normalizeBase(rawBase);
   return {
@@ -113,7 +127,6 @@ export function speculationRules(rawBase: string | undefined): Record<string, un
             { href_matches: `${base}/*` },
             { not: { href_matches: `${base}/apply/thanks/` } },
             { not: { href_matches: `${base}/search/*` } },
-            { not: { selector_matches: '[rel~=external]' } },
           ],
         },
         eagerness: 'moderate',
