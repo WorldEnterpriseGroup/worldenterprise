@@ -36,14 +36,18 @@ export function summarise(route, lhr, origin) {
 /**
  * The layout shifts in a trace, for the failure message: when it happened, its score and where each impacted node moved from
  * and to ([x, y, width, height] in CSS pixels). Lighthouse's own audit names the element but not the distance it moved.
+ * Chromium flags the first shifts after Lighthouse resizes the viewport with `had_recent_input` and Lighthouse still counts them
+ * (core/computed/metrics/cumulative-layout-shift.js), so shifts are listed whatever that flag says and carry it as `input`.
+ * Only main-frame shifts are listed.
  */
 export function layoutShifts(traceEvents) {
   const start = traceEvents.find((e) => e.name === 'navigationStart')?.ts ?? Math.min(...traceEvents.map((e) => e.ts ?? Infinity));
   return traceEvents
-    .filter((e) => e.name === 'LayoutShift' && e.args?.data?.is_main_frame === true && e.args.data.had_recent_input !== true)
+    .filter((e) => e.name === 'LayoutShift' && e.args?.data?.is_main_frame === true)
     .map((e) => ({
       atMs: Math.round(((e.ts ?? start) - start) / 1000),
-      score: e.args.data.score,
+      score: e.args.data.weighted_score_delta ?? e.args.data.score ?? 0,
+      input: e.args.data.had_recent_input === true,
       nodes: (e.args.data.impacted_nodes ?? []).map((n) => ({ from: n.old_rect, to: n.new_rect })),
     }));
 }
@@ -96,6 +100,7 @@ async function main() {
         failures = evaluate(summary, config);
         const events = run.artifacts?.Trace?.traceEvents ?? run.artifacts?.traces?.defaultPass?.traceEvents ?? [];
         summary.shifts = layoutShifts(events);
+        summary.traceEvents = events.length;
         writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), `${JSON.stringify(run.lhr)}\n`);
         if (failures.length === 0) break;
       }
@@ -108,8 +113,9 @@ async function main() {
         for (const f of failures) console.error(`        ${f}`);
         if (failures.some((f) => f.startsWith('CLS'))) {
           for (const shift of summary.shifts.slice(0, 6)) {
-            console.error(`        shift ${shift.score.toFixed(3)} at ${shift.atMs} ms: ${shift.nodes.slice(0, 4).map((n) => `${JSON.stringify(n.from)} -> ${JSON.stringify(n.to)}`).join('; ')}`);
+            console.error(`        shift ${shift.score.toFixed(3)} at ${shift.atMs} ms${shift.input ? ' (recent input flag)' : ''}: ${shift.nodes.slice(0, 4).map((n) => `${JSON.stringify(n.from)} -> ${JSON.stringify(n.to)}`).join('; ')}`);
           }
+          if (summary.shifts.length === 0) console.error(`        no LayoutShift events in the trace (${summary.traceEvents} trace events)`);
         }
       }
     }
