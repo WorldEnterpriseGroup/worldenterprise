@@ -1,11 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import { getPhoto } from '../assets/photo/index.ts';
 import EvidenceLedger from '../components/blocks/EvidenceLedger.astro';
 import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
 import FaqList from '../components/cards/FaqList.astro';
 import HomeHero from '../components/home/HomeHero.astro';
 import LatestInsights from '../components/home/LatestInsights.astro';
-import { HOME_FAQS } from '../components/home/faq.ts';
+import { HOME_FAQ_IDS } from '../components/home/faq.ts';
 import { loadPage } from '../components/program/loadPage.ts';
 import SeatDiagram from '../components/program/SeatDiagram.astro';
 import StageExplorer from '../components/program/StageExplorer.astro';
@@ -52,6 +53,12 @@ const counts = [
   { label: 'Research briefs', value: research.length },
   { label: 'Published frameworks', value: frameworkCount },
 ];
+const faqEntries = (await getCollection('faq')).filter((entry) => entry.data.draft !== true);
+const homeFaqs = HOME_FAQ_IDS.map((id) => {
+  const entry = faqEntries.find((e) => e.data.id === id);
+  if (entry === undefined) throw new Error(`The home page lists the FAQ "${id}", which is not a published entry in src/data/faq.yaml.`);
+  return { question: entry.data.question, answer: entry.data.answer };
+});
 const facts = counts.filter((c) => c.value > 0).map((c) => ({ label: c.label, value: String(c.value) }));
 
 interface ProofRow {
@@ -147,7 +154,7 @@ const proofRows = PROOF.map((r) => ({
   <section class="section" aria-labelledby="home-faq">
     <div class="container stack">
       <h2 id="home-faq">Questions founders ask first</h2>
-      <FaqList items={HOME_FAQS} name="home-faq" />
+      <FaqList items={homeFaqs} name="home-faq" />
     </div>
   </section>
 

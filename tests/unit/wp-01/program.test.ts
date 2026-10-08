@@ -3,7 +3,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { routes } from '../../../src/data/routes.ts';
-import { HOME_FAQS } from '../../../src/components/home/faq.ts';
+import { HOME_FAQ_IDS } from '../../../src/components/home/faq.ts';
 import { STAGES } from '../../../src/components/program/stages.ts';
 
 const ROOT = new URL('../../../', import.meta.url).pathname;
@@ -102,10 +102,14 @@ test('the Two companies, one objective phrase appears only on the dedicated team
   }
 });
 
-test('home FAQ answers are non-empty and mention no excluded phrasing', () => {
-  assert.equal(HOME_FAQS.length, 5);
-  for (const f of HOME_FAQS) {
-    assert.ok(f.question.endsWith('?'));
-    assert.ok(f.answer.length > 20);
+test('home FAQs are five published entries of src/data/faq.yaml, with answers that state no promise', () => {
+  assert.equal(HOME_FAQ_IDS.length, 5);
+  const yaml = readFileSync(join(ROOT, 'src/data/faq.yaml'), 'utf8');
+  for (const id of HOME_FAQ_IDS) {
+    const block = new RegExp(`^- id: ${id}\\n((?:  .*\\n)+)`, 'm').exec(yaml);
+    assert.ok(block?.[1] !== undefined, `${id} is in faq.yaml`);
+    assert.doesNotMatch(block[1], /^  draft: true$/m, `${id} is not a draft`);
+    assert.match(block[1], /^  question: ".*\?"$/m, `${id} asks a question`);
+    assert.ok((/^  answer: "(.*)"$/m.exec(block[1])?.[1] ?? '').length > 20, `${id} has an answer`);
   }
 });
