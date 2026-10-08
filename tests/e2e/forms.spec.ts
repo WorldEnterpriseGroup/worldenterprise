@@ -53,7 +53,7 @@ async function open(page: Page, kind: Kind, frozen = false): Promise<void> {
   test.skip(mode !== 'endpoint', `${kind.route} is not in endpoint mode in this build`);
 }
 
-async function fillValid(page: Page, kind: Kind): Promise<void> {
+async function fillValid(page: Page, kind: Kind, how: 'pointer' | 'keyboard' = 'pointer'): Promise<void> {
   const form = page.locator('form[data-intake-form]').first();
   await form.locator('[name="name"]').fill('Test Founder');
   await form.locator('[name="email"]').fill('founder@example.org');
@@ -62,7 +62,14 @@ async function fillValid(page: Page, kind: Kind): Promise<void> {
     await form.locator('[name="topic"]').selectOption('general');
     await form.locator('[name="message"]').fill('A short message for the team.');
   }
-  await form.locator('[name="consent"]').check();
+  const consent = form.locator('[name="consent"]');
+  if (how === 'pointer') await consent.check();
+  else {
+    // The keyboard path: focus brings the checkbox into view natively, so no click has to find it first.
+    await consent.focus();
+    await page.keyboard.press('Space');
+    await expect(consent).toBeChecked();
+  }
 }
 
 const submit = (page: Page): Promise<void> => page.locator('form[data-intake-form] [data-submit]').first().click();
@@ -178,7 +185,11 @@ for (const kind of KINDS) {
 // method="post" and ships the button disabled unless the browser can POST to the endpoint. The endpoint origin is also the proof that
 // the CSP form-action list carries it: a refused form post never reaches page.route.
 test.describe('without JavaScript', () => {
-  test.use({ javaScriptEnabled: false });
+  // Reduced motion also switches smooth scrolling off (src/styles/motion.css). With scripting off and html { scroll-behavior: smooth },
+  // Playwright's click scrolling never settled the consent checkbox inside the viewport in CI (pipeline 64252: "element is outside of
+  // the viewport" until the 45 s timeout), and the form contract under test has nothing to do with motion. The two forms are filled
+  // and sent from the keyboard as well, which is the path a no-JavaScript visitor on a screen reader takes.
+  test.use({ javaScriptEnabled: false, reducedMotion: 'reduce' });
 
   interface Seen {
     readonly method: string;
@@ -206,8 +217,9 @@ test.describe('without JavaScript', () => {
       await expect(form).toHaveAttribute('action', `${ENDPOINT_ORIGIN}/api/intake`);
       await expect(form.locator('[data-submit]')).toBeEnabled();
 
-      await fillValid(page, kind);
-      await form.locator('[data-submit]').click();
+      await fillValid(page, kind, 'keyboard');
+      await form.locator('[data-submit]').focus();
+      await page.keyboard.press('Enter');
       await expect.poll(() => seen.length).toBe(1);
 
       const [request] = seen;
@@ -236,7 +248,9 @@ test.describe('without JavaScript', () => {
     await expect(form).toHaveAttribute('method', 'post');
     await expect(form).not.toHaveAttribute('action', /./);
     await expect(form.locator('[data-submit]')).toBeDisabled();
-    await expect(form.getByText('This form needs JavaScript')).toBeVisible();
+    // Not getByText: Playwright's text engine never looks inside <noscript>, even when the browser renders it as elements.
+    await expect(form.locator('noscript .callout__title')).toHaveText('This form needs JavaScript');
+    await expect(form.locator('noscript .callout__title')).toBeVisible();
 
     const before = page.url();
     await form.locator('[name="email"]').fill('founder@example.org');
