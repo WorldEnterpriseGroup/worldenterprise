@@ -241,7 +241,7 @@ Titles are `{Page} | World Enterprise Incubator`, at most 60 characters. A page 
 
 ### I-10 QA strictness
 
-All qa jobs are advisory on `wp/*` and `demo` until every one has been green on a wp/15 pipeline; then `QA_STRICT=1` is set in `.gitlab-ci.yml`. `gh-pages` and `*negatives` branches are always strict. The GitHub workflow runs the same audits with `--strict`.
+All qa jobs were advisory on `wp/*` and `demo` until every one had been green on one wp/15 pipeline. That happened on pipeline 64205 (sha e0c03fe), and `QA_STRICT: "1"` was then set in `.gitlab-ci.yml` (a5de47b), so every qa job now blocks on every branch; removing the variable restores allow_failure on `wp/*` and `demo`. `gh-pages` and `*negatives` branches are always strict. CI retries are 2 so one slow minute on the runner does not redden a blocking pipeline. The GitHub workflow runs the same audits with `--strict`.
 
 ### I-11 WP-12b ownership
 

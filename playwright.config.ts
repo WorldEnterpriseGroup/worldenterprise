@@ -12,8 +12,8 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   // Two retries in CI. With every qa job blocking, one failed attempt must not redden a pipeline: pipeline 64205 had 4 tests that hit
   // the 45 s timeout in the same slow minute on the runner (two jobs) and 3 mobile full-page screenshots that Chromium refused
-  // ("Unable to capture screenshot"); all passed on the first retry in about a second. A real defect fails every attempt, so the extra
-  // retry hides none.
+  // ("Unable to capture screenshot"); all passed on the first retry in about a second. A deterministic defect fails every attempt, so the
+  // extra retry hides none, and the job log still lists any test that needed one as flaky.
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 4 : undefined,
   timeout: 45_000,

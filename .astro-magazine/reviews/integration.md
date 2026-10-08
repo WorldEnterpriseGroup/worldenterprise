@@ -21,7 +21,7 @@ Branch `wp/15`, issue #17, 2026-10-08. Every check below ran in CI; locally only
 
 ## QA triage
 
-Every advisory failure was read from the CI logs and fixed at its cause; none was waved through.
+Every advisory failure was read from the CI logs and has a cause; the defects below are fixed, and the flaky first attempts (finding 1 below) are retried, not fixed.
 
 | Finding | Cause | Fix |
 |---|---|---|
