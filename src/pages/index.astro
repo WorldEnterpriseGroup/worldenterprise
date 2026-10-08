@@ -158,7 +158,9 @@ const proofRows = PROOF.map((r) => ({
     </div>
   </section>
 
-  {primary && <CtaBand title="Ready to test your idea?" text="Apply, or sketch the team you would need first." cta={primary} secondary={secondary} />}
+  <Fragment slot="after">
+    {primary && <CtaBand title="Ready to test your idea?" text="Apply, or sketch the team you would need first." cta={primary} secondary={secondary} />}
+  </Fragment>
 </HomeLayout>
 
 <style>
