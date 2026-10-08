@@ -81,8 +81,8 @@ function art(seed) {
 }
 
 async function main() {
-  const titleFont = await loadFont('titillium-web-latin-700-normal.woff');
-  const subFont = await loadFont('titillium-web-latin-600-normal.woff');
+  const titleFont = await loadFont('titillium-web-latin-700-normal.woff2');
+  const subFont = await loadFont('titillium-web-latin-600-normal.woff2');
   const logo = await wordmark();
   await mkdir(outDir, { recursive: true });
   if (svgDir) await mkdir(svgDir, { recursive: true });
