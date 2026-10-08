@@ -35,7 +35,7 @@ variables:
   NODE_FULL_IMAGE: "${IMAGE_REGISTRY}/dockerhub-proxy/library/node:24"
   # Full history for every job: sitemap lastmod reads git dates, check:ownership diffs against demo.
   GIT_DEPTH: "0"
-  PLAYWRIGHT_IMAGE: "${IMAGE_REGISTRY}/mcr-proxy/playwright:v1.63.0-noble"
+  PLAYWRIGHT_IMAGE: "${IMAGE_REGISTRY}/mcr-proxy/playwright:v1.64.0-noble"
   npm_config_cache: "${CI_PROJECT_DIR}/.npm"
   npm_config_update_notifier: "false"
   # The one operator-gated item verify:release tolerates off gh-pages: the intake and newsletter endpoints are not provisioned,
