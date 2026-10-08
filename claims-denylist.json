@@ -1,18 +1,19 @@
 {
-  "$comment": "Scanned by scripts/audit-claims.mjs over dist/**/*.html, dist/**/*.xml, JSON-LD and alt text. Classes follow SAGE-PLAN 3.2 (C-06 to C-17, C-24). Package tier names and the seat price literal are added by the operator when flags change; numbers are never recorded here.",
-  "version": 1,
+  "$comment": "Read by scripts/audit-claims.mjs over dist/**/*.html, dist/**/*.xml, JSON-LD and alt text. Classes follow SAGE-PLAN 3.2 (C-06 to C-17, C-24). Package tier names and the seat price literal are added by the operator when flags change; numbers are never recorded here. Four sections: `rules` (unconditional; the source-level unit tests in tests/unit also apply these to the repository, so add a rule here only when no source file matches it), `contextRules` (wording that is legitimate in a few named places; applied to the built output only), `required` (text that must be present) and `manifestRules` (checks on src/assets/photo/manifest.json). A context rule can carry `disabledByFlag` (inactive while that flag in src/data/flags.ts is on), `allowPaths` (route regexes where it does not apply), `markerAllowed` (elements marked data-claim-allow=\"<rule id>\" or \"*\" are skipped) and `genericDefinitionAllowed` (elements marked data-generic-definition are skipped).",
+  "version": 2,
   "rules": [
     { "id": "C-06-currency-per-seat", "claim": "C-06", "flags": "i", "pattern": "(?:\\$|USD|US\\$|EUR|GBP|£|€)\\s?\\d[\\d,.]*\\s*(?:/|per|a|each)\\s*(?:seat|month|mo)\\b", "description": "A currency amount tied to a seat or monthly rate" },
     { "id": "C-06-seat-rate-figure", "claim": "C-06", "flags": "i", "pattern": "\\bseats?\\s*(?:at|for|from)\\s*(?:\\$|USD|£|€)\\s?\\d", "description": "A seat price figure" },
     { "id": "C-08-success-fee", "claim": "C-09", "flags": "i", "pattern": "\\bsuccess[- ]fees?\\b", "description": "Success fee wording (counsel pending)" },
     { "id": "C-08-no-success-fee", "claim": "C-09", "flags": "i", "pattern": "\\bno\\s+success[- ]fees?\\b", "description": "No success fees claim" },
     { "id": "C-08-valuation-cap", "claim": "C-08", "flags": "i", "pattern": "\\bvaluation\\s+cap\\b", "description": "SAFE valuation cap mechanics", "genericDefinitionAllowed": true },
-    { "id": "C-08-mfn", "claim": "C-08", "flags": "", "pattern": "\\bMFN\\b", "description": "Most-favoured-nation SAFE terms", "genericDefinitionAllowed": true },
+    { "id": "C-08-mfn", "claim": "C-08", "flags": "", "pattern": "\\bMFN\\b", "description": "Most-favored-nation SAFE terms", "genericDefinitionAllowed": true },
     { "id": "C-08-discount-rate", "claim": "C-08", "flags": "i", "pattern": "\\bdiscount\\s+rate\\b", "description": "SAFE discount mechanics", "genericDefinitionAllowed": true },
     { "id": "C-08-pro-rata", "claim": "C-08", "flags": "i", "pattern": "\\bpro[- ]rata\\b", "description": "SAFE pro-rata rights", "genericDefinitionAllowed": true },
     { "id": "C-08-tranche", "claim": "C-08", "flags": "i", "pattern": "\\btranches?\\b", "description": "SAFE tranche timing" },
     { "id": "C-14-guaranteed-funding", "claim": "C-14", "flags": "i", "pattern": "\\bguarantee(?:d|s)?\\s+(?:funding|investment|a raise|seed)\\b", "description": "Guaranteed funding" },
     { "id": "C-14-investor-intros", "claim": "C-14", "flags": "i", "pattern": "\\b(?:investor\\s+introductions?|introduce(?:s|d)?\\s+you\\s+to\\s+investors|our\\s+investor\\s+network)\\b", "description": "Investor network or introductions" },
+    { "id": "C-14-intro-positive", "claim": "C-14", "flags": "i", "pattern": "(?<!\\bno\\s)(?<!\\bnot\\s)\\b(?:provides?|offers?|makes?|arranges?|facilitates?)\\s+(?:curated\\s+)?(?:investor\\s+)?introductions?\\b", "description": "WE doing investor introductions, stated positively (a negation such as \"does not provide introductions\" passes)" },
     { "id": "C-14-demo-day-outcomes", "claim": "C-14", "flags": "i", "pattern": "\\bdemo\\s+day\\s+(?:results|outcomes|alumni)\\b", "description": "Demo Day outcomes" },
     { "id": "C-12-premier", "claim": "C-12", "flags": "i", "pattern": "\\bpremier\\b", "description": "Unverifiable superlative" },
     { "id": "C-12-market-dominance", "claim": "C-12", "flags": "i", "pattern": "\\bmarket\\s+dominance\\b", "description": "Unverifiable superlative" },
@@ -23,13 +24,30 @@
     { "id": "C-13-testimonial", "claim": "C-13", "flags": "i", "pattern": "\\btestimonials?\\b", "description": "Testimonial wording" },
     { "id": "C-13-as-seen-in", "claim": "C-13", "flags": "i", "pattern": "\\bas\\s+seen\\s+(?:in|on)\\b", "description": "As-seen-in strip" },
     { "id": "C-13-funding-raised", "claim": "C-13", "flags": "i", "pattern": "\\b(?:funding\\s+raised|raised\\s+\\$|portfolio\\s+companies)\\b", "description": "Funding raised or portfolio claims" },
+    { "id": "C-11-years", "claim": "C-11", "flags": "i", "pattern": "\\b(?:over\\s+)?(?:20|twenty)\\+?\\s+years?\\b|\\btwo\\s+decades\\b", "description": "A years-of-experience claim (FLAG-YEARS; the registry shows the entity filed in 2022)" },
     { "id": "C-15-soc2-certified", "claim": "C-15", "flags": "i", "pattern": "\\bSOC\\s?2\\s+(?:certified|compliant|type\\s+(?:1|2|I|II))\\b", "description": "SOC 2 certification claim" },
     { "id": "C-15-iso-certified", "claim": "C-15", "flags": "i", "pattern": "\\bISO\\s?27001\\s+(?:certified|compliant)\\b", "description": "ISO 27001 certification claim" },
     { "id": "C-15-hipaa-compliant", "claim": "C-15", "flags": "i", "pattern": "\\bHIPAA[- ](?:compliant|certified)\\b", "description": "HIPAA claim" },
     { "id": "C-16-time-to-mvp", "claim": "C-16", "flags": "i", "pattern": "\\b(?:mvp\\s+in\\s+\\d+\\s+(?:days|weeks|months)|10x|guaranteed\\s+growth)\\b", "description": "Time-to-MVP or growth guarantees" },
     { "id": "C-10-package-tiers", "claim": "C-10", "flags": "i", "pattern": "\\b(?:nine[- ]milestone|milestone\\s+[1-9]\\s+payment|package\\s+tier)\\b", "description": "Whitelab commercial model terms" },
+    { "id": "C-20-frameworks", "claim": "C-20", "flags": "i", "pattern": "\\b(?:Galactic|World)\\s+Enterprise\\s+Framework\\b", "description": "Excluded framework names" },
     { "id": "C-24-security-controls", "claim": "C-24", "flags": "i", "pattern": "\\b(?:we\\s+(?:enforce|require|use)\\s+(?:MFA|multi-factor)|least[- ]privilege\\s+access\\s+(?:is|are)\\s+enforced|encrypted\\s+at\\s+rest\\s+and\\s+in\\s+transit)\\b", "description": "Specific security controls asserted as practice" },
     { "id": "Q-lorem", "claim": "quality", "flags": "i", "pattern": "\\blorem\\s+ipsum\\b", "description": "Placeholder copy" },
     { "id": "C-10-seal-wording", "claim": "C-10", "flags": "i", "pattern": "\\bBusiness\\s+Incubator\\s+Agreement\\b", "description": "Agreement title is not for public pages" }
+  ],
+  "contextRules": [
+    { "id": "C-18-pbc", "claim": "C-18", "flags": "i", "pattern": "\\b(?:public\\s+benefit|benefit\\s+corporation|PBC)\\b", "disabledByFlag": "pbcWording", "description": "Public benefit corporation wording while FLAG-PBC (pbcWording) is off" },
+    { "id": "C-05-fundable-outcome", "claim": "C-05", "flags": "i", "pattern": "\\b(?:become|becoming|to)\\s+(?:a\\s+)?fundable\\b|\\bfundable\\s+compan(?:y|ies)\\b", "markerAllowed": true, "description": "\"Fundable\" stated as an outcome WE delivers (WE promises no funding). \"Fundability\" and a question such as \"will this make my company fundable?\" do not match" },
+    { "id": "C-13-peers", "claim": "C-13", "flags": "i", "pattern": "\\b(?:cohorts?|mentors?|alumni|peer\\s+sessions?|accelerators?)\\b", "allowPaths": ["^/faq/$", "^/research/early-stage-saas-metrics-definitions/$"], "markerAllowed": true, "description": "Implied peer group, staff or alumni while none exist. Allowed on the FAQ, which answers \"is WE an accelerator?\", and on the metrics definitions page, where \"cohort\" is an analytics term" },
+    { "id": "C-21-phrase", "claim": "C-21", "flags": "i", "pattern": "\\btwo\\s+companies,?\\s+one\\s+objective\\b", "allowPaths": ["^/program/dedicated-teams/$"], "markerAllowed": true, "description": "The phrase is permitted on the dedicated-teams page only" },
+    { "id": "Q-spelling", "claim": "quality", "flags": "i", "pattern": "\\b(?:programmes?|organis(?:e|ed|es|ing|ation|ations|er|ers)|colour(?:s|ed|ing)?|behaviour(?:s|al)?|licences?|judgements?|neighbour(?:s|ing)?|catalogues?|favour(?:s|ed|ing)?)\\b", "description": "UK spelling; the site uses US spelling (a Delaware company)" },
+    { "id": "Q-we-case", "claim": "quality", "flags": "", "pattern": "\\bWe\\s+(?:coordinate|steer|build)\\b", "markerAllowed": true, "description": "The company is \"WE\" in capitals, not the pronoun \"We\", in sentences about what it does" }
+  ],
+  "required": [
+    { "id": "R-C05-no-funding-disclaimer", "claim": "C-05", "text": "WE makes no promise of funding.", "routes": ["/", "/fundability/", "/investors/", "/program/grow/", "/services/fundability-and-investor-readiness/", "/pricing/"], "description": "The no-funding disclaimer must be visible on the pages that talk about investors and fundability" },
+    { "id": "R-photo-disclosure", "claim": "editorial", "text": "Illustrative images, some AI-generated. Figures shown are not real people, founders, clients or WE staff.", "routes": "*", "when": "generatedImages", "description": "Once any photo manifest slot has source \"generated\", every page footer must carry the disclosure line (src/lib/photo-disclosure.ts)" }
+  ],
+  "manifestRules": [
+    { "id": "Q-photo-alt", "claim": "editorial", "flags": "i", "field": "alt", "appliesTo": { "source": "generated" }, "pattern": "\\b(?:founders?|customers?|clients?|team\\s+members?|our\\s+team|staff|employees?)\\b", "description": "Alt text of a generated image describes the activity, never an identity, role or relationship, and is never empty" }
   ]
 }
