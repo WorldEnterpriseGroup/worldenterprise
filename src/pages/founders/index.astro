@@ -6,6 +6,7 @@ import DataTable from '../../components/ui/DataTable.astro';
 import Steps from '../../components/ui/Steps.astro';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
 import { getPageEntry } from '../../components/network/pageEntry.ts';
+import { founderStageRows } from '../../components/program/stages.ts';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
 import { href } from '../../lib/url.ts';
 
@@ -20,11 +21,8 @@ const criteria: readonly (readonly [string, string])[] = [
   ['Written working habits', 'You are willing to work from a written plan and written results for each cycle.'],
 ];
 
-const stages: readonly (readonly [string, string])[] = [
-  ['Idea', 'The problem and customer are not yet tested. Dream work and service lines C and E fit here.'],
-  ['Prototype', 'You know the problem and need a first version. Build work and line B fit here.'],
-  ['First customers', 'A version exists and you are earning your first users. Grow work and lines C, D and F fit here.'],
-];
+// Stage labels and service lines come from the single mapping in src/components/program/stages.ts.
+const stages = founderStageRows();
 
 const steps = [
   { title: 'Apply', body: 'Tell WE about the company, the customer and the stage it is at.' },

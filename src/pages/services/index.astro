@@ -6,6 +6,7 @@ import Steps from '../../components/ui/Steps.astro';
 import HubIntro from '../../components/services/HubIntro.astro';
 import ServiceCard from '../../components/cards/ServiceCard.astro';
 import Grid from '../../components/ui/Grid.astro';
+import { stageLinePhrase } from '../../components/program/stages.ts';
 import { loadServiceLines } from '../../components/services/data.ts';
 import { LINE_GROUPS, LINE_SLOT, servicePath } from '../../components/services/lines.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
@@ -28,8 +29,8 @@ const compareRows = lines.map(({ entry }) => [
 ]);
 
 const startRows: readonly (readonly [string, string])[] = [
-  ['I have an idea and no customers yet.', 'Lines C and E: learn from buyers first, with a curriculum around you.'],
-  ['I know the problem and need a first version.', 'Line B, with line A if you also need a name and a way to describe it.'],
+  ['I have an idea and no customers yet.', `Dream, with ${stageLinePhrase('dream')}: learn from buyers first, with a curriculum around you.`],
+  ['I know the problem and need a first version.', `Build, with ${stageLinePhrase('build')}: design and ship the first release, with a weekly rhythm around it.`],
   ['I need a name and a clear description of the product.', 'Line A.'],
   ['I have no routine and no numbers I trust.', 'Line D.'],
   ['An investor has asked for materials I do not have.', 'Line F, with line G for the questions that need a professional.'],
@@ -50,7 +51,7 @@ const processSteps = [
   description={page.data.description}
   path="/services/"
   eyebrow={page.data.eyebrow}
-  lead="One accountable team and seven defined lines of work. Choose the lines your company needs, and see what each does and does not do."
+  lead="One team and seven defined lines of work. Choose the lines your company needs, and see what each does and does not do."
   updated={page.data.updated}
   subtree={subtree}
 >

@@ -183,3 +183,33 @@ export function nextStage(id: StageId): Stage | undefined {
   const index = STAGES.findIndex((s) => s.id === id);
   return STAGES[index + 1];
 }
+
+/**
+ * The service lines a stage draws on, as a reader-facing list: "C and E", "B and D", "C, F and G". This is the single
+ * stage-to-line mapping; the founders page and the services hub build their text from it so the three never disagree.
+ */
+export function stageLineList(id: StageId): string {
+  const letters = getStage(id).lines.map((entry) => entry.line);
+  if (letters.length <= 1) return letters.join('');
+  return `${letters.slice(0, -1).join(', ')} and ${letters[letters.length - 1]}`;
+}
+
+/** "line C" or "lines C and E", for running text. */
+export function stageLinePhrase(id: StageId): string {
+  return `${getStage(id).lines.length === 1 ? 'line' : 'lines'} ${stageLineList(id)}`;
+}
+
+/** How a founder describes where the company is today, mapped to the stage whose work fits it. */
+export const FOUNDER_ENTRY_POINTS: readonly { readonly stage: StageId; readonly label: string; readonly where: string }[] = [
+  { stage: 'dream', label: 'Idea', where: 'The problem and customer are not yet tested.' },
+  { stage: 'build', label: 'Prototype', where: 'You know the problem and need a first version.' },
+  { stage: 'grow', label: 'First customers', where: 'A version exists and you are earning your first users.' },
+];
+
+/** Rows for the founders page table: "Idea (Dream)" and what fits there, with lines taken from the stage mapping. */
+export function founderStageRows(): readonly (readonly [string, string])[] {
+  return FOUNDER_ENTRY_POINTS.map((entry): readonly [string, string] => {
+    const stage = getStage(entry.stage);
+    return [`${entry.label} (${stage.name})`, `${entry.where} ${stage.name} work and service ${stageLinePhrase(entry.stage)} fit here.`];
+  });
+}
