@@ -186,7 +186,7 @@ Every publication flag is OFF. Nothing flagged is published, and no test or buil
 | `flags.seatPrice.published` | `false` (`monthlyRate` `null`, `currency` `'USD'`) | The per-seat price. The Team Composer and /pricing/ show no figure; the claims audit scans `dist` for a currency-per-seat phrase. | Operator (C-06, FLAG-PRICE) |
 | `flags.legalTerms` | `false` | /legal/terms/ stays `launch:false` (not built). | Counsel sign-off (C-23) |
 | `flags.pbcWording` | `false` | The footer and About do not call WE a "Delaware public benefit corporation". The legal line renders without it until counsel confirms. | Counsel (FLAG-PBC) |
-| `flags.limitsConfirmed` | `false` | "What this line does not do" limits on service lines. | Operator (FLAG-LIMITS) |
+| ~~`flags.limitsConfirmed`~~ | removed (WP-18, see F-3) | It had no reader. The "does not do" limits render by default under G-LEGAL; confirmation is tracked in the WP-18 handoff. | Operator (Q-17) |
 | `flags.focusShiftConfirmed` | `false` | Focus Shifts are not described as used in seat operations. | Operator (FLAG-FOCUS) |
 | `site.securityContact` | `null` | /.well-known/security.txt returns an empty body; the route is a machine row, not a page. | Operator, once a monitored security@ mailbox exists (C-22) |
 | `site.mailboxes.hello`, `.apply` | `confirmed: false` | No mailto fallback is rendered. | Operator (B-2) |
@@ -257,3 +257,29 @@ Matching the average width does not make every line wrap the same way: a trailin
 ### I-13 Likely-LCP images
 
 The home hero preload takes its `type` from the imported image (`src/lib/image-type.ts`); it had declared `image/svg+xml` for an AVIF, which a browser ignores. `audit:images` now fails a preload whose type does not match its file or that no `<img>` on the page uses. The program, playbooks, fundability, apply and contact insets and the three stage images sit in the first viewport on desktop and were `loading="lazy"`; they are now eager with `fetchpriority="high"` (one per page). On phones they stack below the copy, so the high priority costs one small AVIF that is fetched a little earlier than needed.
+
+## Decisions made during WP-18 (claims and editorial fix-forward)
+
+Source: `.plan/qa/claims-editorial.md`. The audit rules below live in `claims-denylist.json` and `scripts/audit-claims.mjs`, with unit tests in `tests/unit/wp-18/`.
+
+### F-1 The About nav lead does not call WE a public benefit corporation
+
+The About mega-menu lead read "A public benefit corporation building digital companies." with no gate, while the footer, About and Press pages hide the same wording behind `flags.pbcWording`. It now reads "A digital incubator for SaaS, run by World Enterprise Group Incorporated." The denylist rule `C-18-pbc` fails the audit on any built page that says "public benefit", "benefit corporation" or "PBC" while `flags.pbcWording` is off, and stops applying the moment the flag is turned on. The audit reads the flag from `src/data/flags.ts`, so the rule and the gate cannot disagree. The wording that exists only in source (`site.legalLine`, the claims ladder, the flag comment) is not rendered unless the flag is on.
+
+### F-2 SAGE-PLAN 5.2 amendment: no "fundable company" outcome
+
+Approved by the orchestrator. SAGE-PLAN 5.2 specified three strings that promise an outcome WE cannot deliver (C-05, "WE promises no funding"). They are replaced everywhere they occur:
+
+| Where | Plan wording | Now |
+|---|---|---|
+| Program mega-menu lead (`nav.ts`) | "...from first idea to fundable company." | "...from first idea to first customers." |
+| Grow description (`nav.ts`) | "Earn customers and become fundable" | "Earn your first customers and gather evidence" |
+| Services mega-menu column heading (`nav.ts`, `lines.ts`) | "Become fundable" | "Learn and prepare" |
+
+The site description (`site.ts`, meta description, JSON-LD) now ends "WE promises no funding." The scope sentence on every page is the single form "from first idea to first customers, with the evidence an investor will ask for". The home hero reads "Build the evidence a SaaS idea needs to be a company." (the audit proposed "...that a SaaS idea deserves to be a company", which wrapped to two more lines at 390 px and pushed the hero image below the first viewport; the shorter line keeps the fold test green). The denylist rule `C-05-fundable-outcome` catches "become fundable", "to a fundable company" and "fundable companies"; "Fundability" and a reader's question such as "will this make my company fundable?" do not match. The required-text rule `R-C05-no-funding-disclaimer` fails the audit when "WE makes no promise of funding." is missing from `/`, `/fundability/`, `/investors/`, `/program/grow/`, `/services/fundability-and-investor-readiness/` or `/pricing/`.
+
+### F-3 FLAG-LIMITS removed; the photo disclosure follows the manifest
+
+`flags.limitsConfirmed` had no reader anywhere (the "does not do" limits render by default under G-LEGAL), so a flag that looked like a gate was not one. It is deleted. Whether the operator has confirmed those statements is tracked in the WP-18 handoff, not in code, so nobody believes a switch protects them.
+
+The footer shows "Illustrative images, some AI-generated. Figures shown are not real people, founders, clients or WE staff." with a link to the editorial policy, only when a slot in `src/assets/photo/manifest.json` has `source: "generated"`. Today none does (38 vector-fallback rasters and 9 composed SVG), so the footer is unchanged. The audit applies the same test: once any slot is generated, every built page must carry the line (`R-photo-disclosure`), and the alt text of a generated slot must describe an activity and never an identity or role (`Q-photo-alt`). `src/lib/photo-disclosure.ts` holds the line and the test for both the footer and the unit tests, so the footer and the audit cannot disagree. Whoever lands the first generated image (WP-12b) only has to write `source: "generated"` in the manifest.
