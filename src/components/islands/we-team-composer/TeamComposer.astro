@@ -63,7 +63,7 @@ const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
               ))
             }
           </ul>
-          {rate !== null && <p class="composer__cost" data-cost data-rate={String(rate)}></p>}
+          {rate !== null && <p class="composer__cost" data-cost data-rate={String(rate)} data-currency={flags.seatPrice.currency}></p>}
         </div>
         <div class="cluster">
           <button class="btn btn--primary" type="submit">Continue to Apply with this team</button>

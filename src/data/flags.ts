@@ -8,6 +8,8 @@ export const flags = {
     published: false,
     /** Monthly per-seat rate in whole currency units. Must stay null while published is false. */
     monthlyRate: null as number | null,
+    /** ISO 4217 code for the rate. Read only when published is true; the seat price is quoted in US dollars. */
+    currency: 'USD' as string,
   },
   /** C-23. Terms of use ship only when counsel signs. Drives the /legal/terms/ route. */
   legalTerms: false,

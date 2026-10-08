@@ -28,6 +28,11 @@ test('softened claims default off', () => {
   assert.equal(flags.seatPrice.monthlyRate, null);
 });
 
+test('the seat price currency is an ISO 4217 code and defaults to USD', () => {
+  assert.match(flags.seatPrice.currency, /^[A-Z]{3}$/);
+  assert.equal(flags.seatPrice.currency, 'USD');
+});
+
 test('the mandatory claims are usable', () => {
   for (const id of ['C-01', 'C-02', 'C-03', 'C-04', 'C-05', 'C-18', 'C-19', 'C-21'] as const) {
     assert.equal(isClaimUsable(id), true, id);

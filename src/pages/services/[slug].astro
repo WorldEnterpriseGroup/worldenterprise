@@ -28,11 +28,12 @@ const playbookLinks: NextLink[] = data.relatedPlaybooks.map((id) => {
   return { title: playbook.title, href: playbookPath(id), description: playbook.description };
 });
 const nextItems = [...playbookLinks, ...(EXTRA_NEXT[data.line] ?? [])];
-const eyebrow = data.title === data.shortTitle ? `Service line ${data.line}` : `Service line ${data.line}: ${data.title}`;
+const eyebrow = `Service line ${data.line}`;
 ---
 
 <ServiceLayout
   title={data.shortTitle}
+  heading={data.title}
   description={data.summary}
   path={servicePath(slug ?? entrySlug(entry.id))}
   line={data.line}
