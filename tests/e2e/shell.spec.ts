@@ -39,6 +39,28 @@ test('the sitemap lists neither the styleguide, fixtures, the 404 nor noindex ro
   expect(paths.filter((path) => path.startsWith('/404')), 'the 404 is not listed').toEqual([]);
 });
 
+test('every sampled page carries a Content-Security-Policy that blocks inline script, eval and foreign sources', async ({ page }) => {
+  const sample = ['/', '/program/', '/search/', '/apply/', '/library/one-page-problem-brief/'].filter(isBuilt);
+  test.skip(sample.length === 0, 'no sampled route is built');
+  for (const route of sample) {
+    await page.goto(route);
+    const policy = await page.locator('meta[http-equiv="content-security-policy"]').getAttribute('content');
+    expect(policy, `${route} has a CSP meta tag`).not.toBeNull();
+    const directives = new Map((policy ?? '').split(';').map((part) => part.trim()).filter(Boolean).map((part) => {
+      const [name = '', ...values] = part.split(/\s+/);
+      return [name, values] as const;
+    }));
+    expect(directives.get('default-src'), `${route} default-src`).toEqual(["'self'"]);
+    expect(directives.get('object-src'), `${route} object-src`).toEqual(["'none'"]);
+    expect(directives.get('base-uri'), `${route} base-uri`).toEqual(["'self'"]);
+    const scripts = directives.get('script-src') ?? [];
+    expect(scripts, `${route} script-src names the site`).toContain("'self'");
+    expect(scripts.filter((value) => /unsafe-(inline|eval)/.test(value)), `${route} script-src has no unsafe-inline or unsafe-eval`).toEqual([]);
+    expect(directives.get('style-src-attr'), `${route} only style attributes may be inline`).toEqual(["'unsafe-inline'"]);
+    expect(directives.get('style-src-elem') ?? [], `${route} style elements are hashed, not inline`).not.toContain("'unsafe-inline'");
+  }
+});
+
 test('sitemap entries carry lastmod', async ({ request }) => {
   const res = await request.get('/sitemap-0.xml');
   expect(await res.text()).toContain('<lastmod>');

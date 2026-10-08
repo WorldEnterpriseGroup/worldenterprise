@@ -3,6 +3,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { fileURLToPath } from 'node:url';
+import { buildCsp } from './src/lib/csp.ts';
 import { createLastmodLookup } from './src/lib/lastmod.ts';
 import { isSitemapUrl, withLastmod } from './src/lib/seo.ts';
 
@@ -18,6 +19,14 @@ const base = rawBase === '' ? undefined : `/${rawBase.replace(/^\/+|\/+$/g, '')}
 
 /** Sitemap lastmod: frontmatter date, else the last git commit of the source file, else none (src/lib/lastmod.ts). */
 const lastmod = createLastmodLookup({ root: fileURLToPath(new URL('.', import.meta.url)), base });
+
+/**
+ * Content Security Policy as a per-page meta tag (src/lib/csp.ts). The form endpoints are read from the build environment,
+ * as src/data/forms.ts reads them, so the policy allows exactly the origins the forms post to.
+ */
+const security = {
+  csp: buildCsp([process.env.PUBLIC_WE_INTAKE_API_URL, process.env.PUBLIC_WE_NEWSLETTER_API_URL]),
+};
 
 export default defineConfig({
   site: SITE,
@@ -83,6 +92,7 @@ export default defineConfig({
       },
     },
   ],
+  security,
   devToolbar: { enabled: false },
   integrations: [mdx(), sitemap({ filter: isSitemapUrl, serialize: (item) => withLastmod(item, lastmod) })],
   vite: {

@@ -1,4 +1,5 @@
 ---
+import { createHash } from 'node:crypto';
 import '../styles/tokens.css';
 import '../styles/reset.css';
 import '../styles/base.css';
@@ -64,6 +65,11 @@ const {
 
 await assertReleaseReady();
 
+// The cascade-layer order is an inline style that Astro does not process, so its hash is registered with the CSP by hand.
+// The hash is computed over the exact text the style element carries.
+const LAYER_ORDER = '@layer reset, tokens, base, layout, components, utilities, pages, print;';
+Astro.csp?.insertStyleHash(`sha256-${createHash('sha256').update(LAYER_ORDER).digest('base64')}`);
+
 // A page names its own card with ogSlot; every other page gets the card of its section (OgMap), else the default card.
 const ogSlot = ogSlotProp ?? ogSlotForPath(path);
 
@@ -94,7 +100,7 @@ const nodes: JsonLdNode[] = [
 <html lang="en">
   <head>
     <!-- Declared before any stylesheet link so a component sheet that opens a layer can never reorder the cascade. -->
-    <style is:inline set:html="@layer reset, tokens, base, layout, components, utilities, pages, print;"></style>
+    <style is:inline set:html={LAYER_ORDER}></style>
     <SeoHead
       title={fullTitle}
       description={metaDescription}
