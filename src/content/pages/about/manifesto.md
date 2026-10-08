@@ -19,7 +19,7 @@ WE helps founders prepare evidence for investors. It does not predict or arrange
 
 ## 3. Show evidence, not applause
 
-There are no logo walls, no quotes from customers and no counters on this site. In their place sit things you can open today: playbooks, templates, sourced briefs and the framework pages.
+There are no logo walls, no quotes from customers and no performance figures on this site. In their place sit things you can open today: playbooks, templates, sourced briefs and the framework pages. The only counts on the site are counts of what you can open.
 
 ## 4. Stay remote by design
 
