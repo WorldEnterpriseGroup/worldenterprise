@@ -22,6 +22,7 @@ const { data, Content } = await loadPage('home');
 const [primary, secondary] = data.ctas;
 const state = await getRouteState();
 const band = getPhoto('band-4');
+const heroImage = getPhoto('band-1');
 
 const SERVICES = [
   { label: 'Brand and Identity', href: '/services/brand-and-identity/', line: 'A' },
@@ -73,7 +74,7 @@ const proofRows = PROOF.map((r) => ({
 }));
 ---
 
-<HomeLayout description={data.description} updated={data.updated} draft={data.draft} ogSlot="og-home">
+<HomeLayout description={data.description} updated={data.updated} draft={data.draft} ogSlot="og-home" preloadImage={{ href: heroImage.src.src, type: 'image/svg+xml' }}>
   {primary && <HomeHero eyebrow={data.eyebrow ?? 'World Enterprise Incubator'} title="Turn a SaaS idea into a company that can prove itself." lead="WE is a digital incubator: dedicated team seats, steered by WE, take you from first idea to the evidence a serious investor asks for." primary={primary} secondary={secondary} />}
 
   {
