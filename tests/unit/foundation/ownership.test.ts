@@ -27,3 +27,10 @@ test('in-scope paths pass and out-of-scope or frozen paths fail', () => {
   assert.equal(api.violations(['src/pages/services/index.astro'], 'WP-01', ownership).length, 1);
   assert.equal(api.violations(['src/data/nav.ts'], 'WP-01', ownership)[0]?.reason, 'frozen path');
 });
+
+test('the integrator may change frozen build and data files but never CNAME or agent instructions', () => {
+  const allowed = ['src/data/flags.ts', 'astro.config.mjs', 'package.json', '.gitlab-ci.yml', '.astro-magazine/decisions.md', 'docs/adr/0001-astro-rebuild.md', 'README.md'];
+  assert.deepEqual(api.violations(allowed, 'WP-15', ownership), []);
+  const blocked = api.violations(['CNAME', 'CLAUDE.md', 'plan.md', '.claude/settings.json'], 'WP-15', ownership);
+  assert.deepEqual(blocked.map((v) => v.path), ['CNAME', 'CLAUDE.md', 'plan.md', '.claude/settings.json']);
+});

@@ -272,6 +272,29 @@
         "scripts/lib/**",
         ".astro-magazine/handoffs/wp-14*"
       ]
+    },
+    {
+      "owner": "WP-15",
+      "title": "Integrator",
+      "branch": "wp/15",
+      "write_set": [
+        "src/**",
+        "scripts/**",
+        "tests/**",
+        "docs/**",
+        "public/**",
+        ".astro-magazine/**",
+        ".gitlab-ci.yml",
+        ".github/workflows/**",
+        "README.md",
+        "package.json",
+        "package-lock.json",
+        "astro.config.mjs",
+        "tsconfig.json",
+        "playwright.config.ts",
+        "lighthouserc.json",
+        "claims-denylist.json"
+      ]
     }
   ],
   "active_leases": [],
@@ -317,6 +340,21 @@
       "wp": "WP-14",
       "path": "scripts/{audit-contrast,audit-claims}.mjs",
       "reason": "Created by WP-00; handed to WP-14 after G0 (plan 3.2: policed by WP-14)."
+    },
+    {
+      "wp": "WP-15",
+      "path": "{src,scripts,tests,docs,public}/**",
+      "reason": "The integrator is the sole writer of frozen files in Wave 2 (plan 8.4). CNAME, CLAUDE.md, plan.md and .claude/** stay outside this exception."
+    },
+    {
+      "wp": "WP-15",
+      "path": "{package.json,package-lock.json,astro.config.mjs,tsconfig.json,.node-version,claims-denylist.json}",
+      "reason": "Frozen build and claim configuration changes route through the integrator (plan 8.4)."
+    },
+    {
+      "wp": "WP-15",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "The integrator records the flag snapshot and accepted CSP exceptions (plan 8.4) and registers its own assignment."
     }
   ],
   "notes": [
