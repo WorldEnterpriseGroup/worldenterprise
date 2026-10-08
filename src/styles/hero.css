@@ -1,0 +1,190 @@
+/*
+ * Hero system. One copy stack (breadcrumbs, eyebrow, title, rule, lead, actions) and one media frame, in four modes:
+ * editorial (copy and media), console (night blue with a panel), article (reading column), compact (copy only).
+ * Every mode reads its spacing from the rhythm tokens and its sizes from the heading roles in tokens.css.
+ */
+@layer components {
+  .hero {
+    position: relative;
+    padding-block: var(--space-hero) var(--space-group);
+    background: linear-gradient(180deg, var(--color-bg-soft), var(--color-bg) 92%);
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: var(--space-group);
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero__grid--media {
+    @media (min-width: 62rem) {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: var(--space-block);
+    }
+  }
+
+  .hero__copy {
+    --stack-gap: var(--sp-4);
+    min-inline-size: 0;
+
+    /* The page title, whether the hero is the page's h1 or one of several heroes on the styleguide. */
+    & > :is(h1, h2) {
+      font-size: var(--fs-h1);
+      line-height: var(--lh-tight);
+      letter-spacing: -0.01em;
+      overflow-wrap: break-word;
+    }
+
+    /* The eyebrow belongs to the title below it. */
+    & > .eyebrow + :is(h1, h2) {
+      margin-block-start: calc(-1 * var(--sp-2));
+    }
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-3);
+    margin-block-start: var(--sp-3);
+  }
+
+  /* Media frame: the space is reserved by the ratio, so a late image or a font swap cannot move the page. */
+  .hero__media .hero__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: clip;
+    background: linear-gradient(135deg, var(--we-mist), var(--we-tint));
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-2);
+
+    @media (min-width: 62rem) {
+      aspect-ratio: 4 / 3;
+    }
+
+    & > :is(img, svg) {
+      position: absolute;
+      inset: 0;
+      inline-size: 100%;
+      block-size: 100%;
+    }
+
+    & > img {
+      object-fit: cover;
+    }
+  }
+
+  /* Editorial mode keeps the soft wash; the first band after any hero starts one block below it. */
+  .hero + .section,
+  .hero + .toc + .section {
+    padding-block-start: var(--space-block);
+  }
+
+  .hero--compact {
+    padding-block: var(--space-block) var(--space-group);
+  }
+
+  .hero--article {
+    padding-block: var(--space-block) var(--space-group);
+    border-block-end: var(--border-hair);
+
+    & .lead {
+      font-family: var(--ff-serif);
+      font-style: italic;
+    }
+  }
+
+  /* The article copy starts at the left edge of the article body and holds the reading measure. */
+  .hero[data-measure='rail'] .hero__copy {
+    max-inline-size: var(--prose-max);
+  }
+
+  .hero--console {
+    background: var(--color-bg-inverse);
+    color: var(--color-text-inverse);
+
+    & .breadcrumbs,
+    & .breadcrumbs li:not(:last-child)::after {
+      color: var(--color-text-inverse);
+    }
+
+    & .hero__panel {
+      box-shadow: var(--shadow-3);
+    }
+  }
+
+  /* ---------- Vector art ---------- */
+  .heroart__cell {
+    fill: var(--color-bg);
+    stroke: var(--we-tint);
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+
+  .heroart__cell--ghost {
+    fill: none;
+  }
+
+  .heroart__cell--soft,
+  .heroart__cell--next {
+    fill: var(--we-mist);
+  }
+
+  .heroart__cell--tone,
+  .heroart__cell--done {
+    fill: var(--we-tint);
+    stroke: var(--we-blue);
+  }
+
+  .heroart__cell--core {
+    fill: var(--color-cta);
+    stroke: var(--we-blue-night);
+  }
+
+  .heroart__cell--lead {
+    fill: var(--color-highlight);
+    stroke: var(--color-highlight);
+  }
+
+  .heroart__link {
+    stroke: var(--we-tint);
+    stroke-width: 3;
+  }
+
+  .heroart__text {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+
+  .heroart__text--core {
+    fill: var(--color-cta-contrast);
+  }
+}
+
+/* These sit in the utilities layer because the .lead and .rule helpers they adjust live there. */
+@layer utilities {
+  .hero__copy > .lead {
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+    max-inline-size: 60ch;
+  }
+
+  .hero__copy > .rule {
+    margin-block: 0;
+  }
+
+  /* White cards on the night-blue hero read as ordinary pages: links and small text take the page colours back. */
+  .on-inverse .hero__panel {
+    color: var(--color-text);
+
+    & :is(h1, h2, h3, h4, p, li, .eyebrow, .lead) {
+      color: var(--color-text);
+    }
+
+    & a:not(.btn) {
+      color: var(--color-link);
+    }
+  }
+}

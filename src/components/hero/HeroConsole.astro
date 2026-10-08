@@ -1,21 +1,36 @@
 ---
+import type { Crumb } from '../../lib/breadcrumbs.ts';
+import Breadcrumbs from '../layout/Breadcrumbs.astro';
+import HeroActions from './HeroActions.astro';
+import type { HeroCta, HeroMeasure } from './types.ts';
+
+/** Console hero: copy on night blue with a white panel beside it. The panel is the default slot. */
 interface Props {
   /** Heading element for the title. Only the styleguide uses h2, to show several heroes on one page. */
   as?: 'h1' | 'h2';
+  id?: string;
+  crumbs?: readonly Crumb[];
   eyebrow?: string;
   title: string;
   lead?: string;
+  primary?: HeroCta | undefined;
+  secondary?: HeroCta | undefined;
+  measure?: HeroMeasure;
 }
 
-const { as: Heading = 'h1', eyebrow, title, lead } = Astro.props;
+const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, secondary, measure = 'default' } = Astro.props;
+const containerClass = measure === 'wide' ? 'container container--wide' : 'container';
 ---
 
-<section class="hero hero--console on-inverse">
-  <div class="container hero__grid">
+<section class="hero hero--console on-inverse" data-hero="console" data-measure={measure}>
+  <div class:list={[containerClass, 'hero__grid', 'hero__grid--media']}>
     <div class="hero__copy stack">
+      <Breadcrumbs crumbs={crumbs} />
       {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-      <Heading>{title}</Heading>
+      <Heading id={id}>{title}</Heading>
+      <div class="rule" aria-hidden="true"></div>
       {lead && <p class="lead">{lead}</p>}
+      <HeroActions primary={primary} secondary={secondary} tone="inverse" />
     </div>
     <div class="hero__panel"><slot /></div>
   </div>

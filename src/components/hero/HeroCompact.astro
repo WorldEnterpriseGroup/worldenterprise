@@ -1,17 +1,37 @@
 ---
+import type { Crumb } from '../../lib/breadcrumbs.ts';
+import Breadcrumbs from '../layout/Breadcrumbs.astro';
+import HeroActions from './HeroActions.astro';
+import type { HeroCta, HeroMeasure } from './types.ts';
+
+/** Compact hero for reading, reference and utility pages: the same copy stack as the others, with no media frame. */
 interface Props {
   /** Heading element for the title. Only the styleguide uses h2, to show several heroes on one page. */
   as?: 'h1' | 'h2';
+  id?: string;
+  crumbs?: readonly Crumb[];
+  eyebrow?: string;
   title: string;
   lead?: string;
+  primary?: HeroCta | undefined;
+  secondary?: HeroCta | undefined;
+  measure?: HeroMeasure;
 }
 
-const { as: Heading = 'h1', title, lead } = Astro.props;
+const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, secondary, measure = 'default' } = Astro.props;
+const containerClass = { default: 'container', wide: 'container container--wide', prose: 'container container--prose', rail: 'container' }[measure];
 ---
 
-<section class="hero hero--compact">
-  <div class="container stack">
-    <Heading>{title}</Heading>
-    {lead && <p class="lead">{lead}</p>}
+<section class="hero hero--compact" data-hero="compact" data-measure={measure}>
+  <div class:list={[containerClass, 'hero__grid']}>
+    <div class="hero__copy stack">
+      <Breadcrumbs crumbs={crumbs} />
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <Heading id={id}>{title}</Heading>
+      <div class="rule" aria-hidden="true"></div>
+      {lead && <p class="lead">{lead}</p>}
+      <HeroActions primary={primary} secondary={secondary} />
+      <slot />
+    </div>
   </div>
 </section>

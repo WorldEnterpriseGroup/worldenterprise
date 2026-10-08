@@ -35,19 +35,25 @@
     .ctaband,
     .related,
     .hero__media,
+    .hero__actions,
     .hero-art,
     .tabs__list,
     .no-print {
       display: none;
     }
 
-    .page-header,
     .hero,
     .section,
     .section--soft,
     .factband {
       background: none;
       padding-block: var(--section-y);
+    }
+
+    /* The console hero is white on night blue on screen; on paper it is ordinary ink. */
+    .on-inverse,
+    .on-inverse :is(h1, h2, h3, h4, p, li, .eyebrow, .lead, a:not(.btn)) {
+      color: var(--color-text);
     }
 
     .section--defer {

@@ -1,28 +1,57 @@
 ---
+import type { Crumb } from '../../lib/breadcrumbs.ts';
+import { href } from '../../lib/url.ts';
+import Breadcrumbs from '../layout/Breadcrumbs.astro';
+import type { HeroMeasure } from './types.ts';
+
+/**
+ * Article hero for insight articles and research briefs. It holds the copy to the reading column and, by default, starts
+ * at the left edge of the article body (measure "rail"). The `meta` slot replaces the default byline line.
+ */
 interface Props {
   /** Heading element for the title. Only the styleguide uses h2, to show several heroes on one page. */
   as?: 'h1' | 'h2';
+  id?: string;
+  crumbs?: readonly Crumb[];
   eyebrow?: string;
+  /** Makes the eyebrow a link, for example to the topic page. */
+  eyebrowHref?: string | undefined;
   title: string;
   lead?: string;
   byline?: string;
   published?: Date;
   updated?: Date;
+  measure?: HeroMeasure;
 }
 
-const { as: Heading = 'h1', eyebrow, title, lead, byline, published, updated } = Astro.props;
+const { as: Heading = 'h1', id, crumbs = [], eyebrow, eyebrowHref, title, lead, byline, published, updated, measure = 'rail' } = Astro.props;
 const fmt = (d: Date): string => d.toISOString().slice(0, 10);
+const containerClass = measure === 'prose' ? 'container container--prose' : measure === 'wide' ? 'container container--wide' : 'container';
+const hasMeta = Astro.slots.has('meta');
+const hasByline = byline !== undefined || published !== undefined || updated !== undefined;
 ---
 
-<header class="hero hero--article">
-  <div class="container container--prose stack">
-    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <Heading>{title}</Heading>
-    {lead && <p class="lead">{lead}</p>}
-    <p class="byline">
-      {byline}
-      {published && <time datetime={fmt(published)}>{fmt(published)}</time>}
-      {updated && <span>, updated <time datetime={fmt(updated)}>{fmt(updated)}</time></span>}
-    </p>
+<header class="hero hero--article" data-hero="article" data-measure={measure}>
+  <div class:list={[containerClass, 'hero__grid']}>
+    <div class="hero__copy stack">
+      <Breadcrumbs crumbs={crumbs} />
+      {eyebrow && <p class="eyebrow">{eyebrowHref ? <a href={href(eyebrowHref)}>{eyebrow}</a> : eyebrow}</p>}
+      <Heading id={id}>{title}</Heading>
+      <div class="rule" aria-hidden="true"></div>
+      {lead && <p class="lead">{lead}</p>}
+      {
+        hasMeta ? (
+          <slot name="meta" />
+        ) : (
+          hasByline && (
+            <p class="byline">
+              {byline}
+              {published && <time datetime={fmt(published)}>{fmt(published)}</time>}
+              {updated && <span>, updated <time datetime={fmt(updated)}>{fmt(updated)}</time></span>}
+            </p>
+          )
+        )
+      }
+    </div>
   </div>
 </header>

@@ -1,0 +1,98 @@
+---
+import { hexPoints } from '../diagrams/hex.ts';
+import type { HeroArtProps } from './types.ts';
+
+/**
+ * Decorative vector art for the hero media slot: cells of the Hive Atlas lattice, drawn at 4:3 so the 16:9 phone frame
+ * crops only empty margin. It never carries meaning, so every character in it is hidden from assistive technology.
+ */
+type Props = HeroArtProps;
+
+const { variant = 'flower', count = 3, active, glyph } = Astro.props;
+
+const W = 400;
+const H = 300;
+const CX = W / 2;
+const CY = H / 2;
+
+type Role = 'core' | 'lead' | 'tone' | 'soft' | 'ghost' | 'done' | 'next';
+interface Cell {
+  readonly x: number;
+  readonly y: number;
+  readonly role: Role;
+  readonly text?: string;
+}
+
+/** Flat-top lattice: `a` steps along the 30 degree axis, `b` straight down. d is the centre-to-centre distance. */
+function lattice(r: number, gap: number) {
+  const d = Math.sqrt(3) * r * (1 + gap);
+  return (a: number, b: number): { x: number; y: number } => ({
+    x: Number((CX + a * d * Math.cos(Math.PI / 6)).toFixed(2)),
+    y: Number((CY + a * d * 0.5 + b * d).toFixed(2)),
+  });
+}
+
+let radius = 36;
+const cells: Cell[] = [];
+
+if (variant === 'trail') {
+  const n = Math.min(7, Math.max(2, Math.round(count)));
+  radius = n <= 3 ? 44 : n <= 5 ? 34 : 28;
+  const at = lattice(radius, 0.1);
+  // Alternate a step along the lattice axis with a step up-and-along, so the trail climbs to the right.
+  const coords: { a: number; b: number }[] = [];
+  let a = 0;
+  let b = 0;
+  for (let i = 0; i < n; i += 1) {
+    coords.push({ a, b });
+    if (i % 2 === 0) a += 1;
+    else {
+      a += 1;
+      b -= 1;
+    }
+  }
+  const first = at(coords[0]?.a ?? 0, coords[0]?.b ?? 0);
+  const last = at(coords[n - 1]?.a ?? 0, coords[n - 1]?.b ?? 0);
+  const shiftX = CX - (first.x + last.x) / 2;
+  const shiftY = CY - (first.y + last.y) / 2;
+  const current = active !== undefined ? Math.min(n, Math.max(1, Math.round(active))) : undefined;
+  coords.forEach((c, i) => {
+    const p = at(c.a, c.b);
+    const step = i + 1;
+    const role: Role = current === undefined ? 'tone' : step === current ? 'core' : step < current ? 'done' : 'next';
+    cells.push({ x: Number((p.x + shiftX).toFixed(2)), y: Number((p.y + shiftY).toFixed(2)), role, text: String(step) });
+  });
+} else {
+  const at = lattice(radius, 0.1);
+  const place = (a: number, b: number, role: Role, text?: string): void => {
+    const p = at(a, b);
+    cells.push({ ...p, role, ...(text !== undefined ? { text } : {}) });
+  };
+  // Ghost ring first so the lit cells draw over it.
+  for (const [a, b] of [[2, 0], [2, -1], [-2, 1], [-2, 2], [-1, 2], [1, 1], [0, -2], [1, -2]] as const) place(a, b, 'ghost');
+  place(1, 0, 'tone');
+  place(0, 1, 'soft');
+  place(-1, 1, 'tone');
+  place(-1, 0, 'soft');
+  place(0, -1, 'tone');
+  place(1, -1, 'lead');
+  place(0, 0, 'core', glyph);
+}
+const links = variant === 'trail' ? cells.slice(0, -1).map((c, i) => [c, cells[i + 1]] as const) : [];
+const fontSize = Math.round(radius * 0.8);
+---
+
+<svg class={`heroart heroart--${variant}`} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  {links.map(([from, to]) => from && to && <line class="heroart__link" x1={from.x} y1={from.y} x2={to.x} y2={to.y} />)}
+  {cells.map((c) => <polygon class={`heroart__cell heroart__cell--${c.role}`} points={hexPoints(c.x, c.y, radius)} />)}
+  {
+    cells.map(
+      (c) =>
+        c.text !== undefined && (
+          <text class={`heroart__text heroart__text--${c.role}`} x={c.x} y={c.y} font-size={fontSize} text-anchor="middle" dominant-baseline="central">
+            {c.text}
+          </text>
+        )
+    )
+  }
+</svg>

@@ -1,0 +1,32 @@
+---
+import { href } from '../../lib/url.ts';
+import type { HeroCta } from './types.ts';
+
+interface Props {
+  primary?: HeroCta | undefined;
+  secondary?: HeroCta | undefined;
+  /** inverse puts white buttons on the night-blue console hero. */
+  tone?: 'default' | 'inverse';
+}
+
+const { primary, secondary, tone = 'default' } = Astro.props;
+const primaryClass = tone === 'inverse' ? 'btn btn--inverse' : 'btn btn--primary';
+const secondaryClass = tone === 'inverse' ? 'btn btn--quiet-inverse' : 'btn btn--secondary';
+---
+
+{
+  (primary || secondary) && (
+    <div class="hero__actions">
+      {primary && (
+        <a class={primaryClass} href={href(primary.href)} data-hero-action="primary" download={primary.download ? '' : undefined}>
+          {primary.label}
+        </a>
+      )}
+      {secondary && (
+        <a class={secondaryClass} href={href(secondary.href)} data-hero-action="secondary" download={secondary.download ? '' : undefined}>
+          {secondary.label}
+        </a>
+      )}
+    </div>
+  )
+}

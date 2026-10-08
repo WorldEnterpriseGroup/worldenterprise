@@ -666,12 +666,7 @@
     color: var(--color-text-muted);
   }
 
-  /* ---------- Page header and breadcrumbs ---------- */
-  .page-header {
-    padding-block: var(--sp-7) var(--sp-6);
-    background: linear-gradient(to bottom, var(--color-bg-soft), var(--color-bg));
-  }
-
+  /* ---------- Breadcrumbs ---------- */
   .breadcrumbs {
     font-family: var(--ff-sans);
     font-size: var(--fs-sm);
@@ -1378,28 +1373,9 @@
   }
 
   /* ---------- Heroes ---------- */
-  .hero {
-    padding-block: var(--sp-8);
-  }
-
-  .hero__grid {
-    display: grid;
-    gap: var(--sp-6);
-    align-items: center;
-    grid-template-columns: minmax(0, 1fr);
-
-    @media (min-width: 62rem) {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-    }
-  }
-
+  /* The hero system (copy stack, media frame, modes) lives in hero.css. What follows is shared by the atlas hero and the home hero. */
   .hero--atlas {
     background: linear-gradient(180deg, var(--color-bg-soft), var(--color-bg));
-  }
-
-  .hero--console {
-    background: var(--color-bg-inverse);
-    color: var(--color-text-inverse);
   }
 
   .hero__panel {
@@ -1407,11 +1383,6 @@
     background: var(--color-bg);
     color: var(--color-text);
     border-radius: var(--radius-md);
-  }
-
-  .hero--compact {
-    padding-block: var(--sp-6);
-    background: var(--color-bg-soft);
   }
 
   .hex-frame img {
@@ -1576,71 +1547,19 @@
     z-index: 1;
   }
 
-  .hero--atlas h1,
-  .hero--editorial h1 {
-    font-size: var(--fs-4xl);
+  .hero--atlas h1 {
+    font-size: var(--fs-display);
     line-height: var(--lh-tight);
     letter-spacing: -0.01em;
   }
 
-  .hero--atlas .lead,
-  .hero--editorial .lead {
+  .hero--atlas .lead {
     font-size: var(--fs-xl);
     line-height: 1.4;
   }
 
-  .hero--editorial {
-    padding-block: var(--sp-9) var(--sp-8);
-    background: linear-gradient(180deg, var(--color-bg-soft), var(--color-bg) 85%);
-  }
-
-  .hero__grid--inset {
-    @media (min-width: 62rem) {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-    }
-  }
-
-  .hero__inset img {
-    inline-size: 100%;
-    block-size: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-2);
-  }
-
   .hero__strip {
     margin-block-start: var(--sp-7);
-  }
-
-  .hero--console h1 {
-    font-size: var(--fs-3xl);
-  }
-
-  .hero--console .hero__panel {
-    box-shadow: var(--shadow-3);
-  }
-
-  .hero--article {
-    padding-block: var(--sp-8) var(--sp-6);
-    border-block-end: var(--border-hair);
-
-    & h1 {
-      font-size: var(--fs-3xl);
-    }
-
-    & .lead {
-      font-family: var(--ff-serif);
-      font-style: italic;
-    }
-  }
-
-  .hero--compact h1 {
-    font-size: var(--fs-2xl);
-  }
-
-  .hub-crumbs {
-    padding-block-start: var(--sp-4);
   }
 
   /* ---------- Styleguide ---------- */

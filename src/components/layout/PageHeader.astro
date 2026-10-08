@@ -1,29 +1,22 @@
 ---
 import type { Crumb } from '../../lib/breadcrumbs.ts';
-import Breadcrumbs from './Breadcrumbs.astro';
+import HeroCompact from '../hero/HeroCompact.astro';
+import type { HeroCta, HeroMeasure } from '../hero/types.ts';
 
+/** The compact page opener. Kept as the stable name for pages that need only a title, a lead and perhaps one action. */
 interface Props {
   title: string;
   eyebrow?: string;
   lead?: string;
   crumbs?: readonly Crumb[];
-  /**
-   * The width of the body column below this header. The header shares the body's left edge: a layout whose body sits in the centred
-   * 46rem reading column passes 'prose', so the breadcrumb, eyebrow, title and lede start where the text does.
-   */
-  measure?: 'wide' | 'prose';
+  primary?: HeroCta | undefined;
+  secondary?: HeroCta | undefined;
+  measure?: HeroMeasure;
 }
 
-const { title, eyebrow, lead, crumbs = [], measure = 'wide' } = Astro.props;
+const { title, eyebrow, lead, crumbs = [], primary, secondary, measure = 'default' } = Astro.props;
 ---
 
-<div class="page-header">
-  <div class:list={['container', { 'container--prose': measure === 'prose' }, 'stack']}>
-    <Breadcrumbs crumbs={crumbs} />
-    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <h1>{title}</h1>
-    <div class="rule" aria-hidden="true"></div>
-    {lead && <p class="lead">{lead}</p>}
-    <slot />
-  </div>
-</div>
+<HeroCompact title={title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} primary={primary} secondary={secondary} measure={measure}>
+  <slot />
+</HeroCompact>
