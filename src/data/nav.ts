@@ -398,11 +398,20 @@ export function resolveUtility(isLive: (href: string) => boolean): readonly NavL
 }
 
 /**
+ * Pages that a panel lists so people can find them but that are not part of that section: Apply is the header call to action
+ * (it also sits in the Network panel), Contact is a utility link (it also sits in the About panel), and Trust is the standalone trust
+ * centre (it also sits in the Playbooks panel). On these pages no top-level item is current; the link to the page itself keeps
+ * aria-current="page". Prefixes, so /apply/thanks/ is covered.
+ */
+const SECTIONLESS_PREFIXES = ['/apply/', '/contact/', '/trust/'] as const;
+
+/**
  * Which primary section a path belongs to, for aria-current="true" on the top-level link.
- * Order: hub prefix, then an exact link match inside a panel, then the longest link that is a prefix of the path.
+ * Order: sectionless pages, hub prefix, then the longest panel link that is a prefix of the path, then the resources fallback.
  */
 export function activeSectionId(path: string): string | null {
   if (path === '/') return null;
+  if (SECTIONLESS_PREFIXES.some((prefix) => path.startsWith(prefix))) return null;
   for (const item of primaryNav) {
     if (path.startsWith(item.href)) return item.id;
   }
