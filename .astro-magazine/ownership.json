@@ -462,6 +462,35 @@
         "tests/e2e/modes.spec.ts",
         ".astro-magazine/handoffs/wp-19*"
       ]
+    },
+    {
+      "owner": "WP-17",
+      "title": "Heroes, page openers and typographic rhythm",
+      "branch": "wp/17",
+      "write_set": [
+        "src/styles/**",
+        "src/layouts/**",
+        "src/components/hero/**",
+        "src/components/layout/**",
+        "src/components/ui/**",
+        "src/components/diagrams/**",
+        "src/components/cards/**",
+        "src/components/blocks/**",
+        "src/components/reference/**",
+        "src/components/services/**",
+        "src/components/network/**",
+        "src/components/program/**",
+        "src/components/playbooks/**",
+        "src/components/trust/**",
+        "src/pages/**",
+        "src/content/services/**",
+        "tests/e2e/**",
+        "playwright.config.ts",
+        "tests/unit/wp-17/**",
+        "tests/unit/wp-15/toc.test.ts",
+        "tests/unit/wp-13/design-system.test.ts",
+        ".astro-magazine/handoffs/wp-17*"
+      ]
     }
   ],
   "active_leases": [],
@@ -607,6 +636,16 @@
       "wp": "WP-19",
       "path": "astro.config.mjs",
       "reason": "Wave 4 brief: stylesheet inlining, WOFF2 font sources and one endpoint source for the CSP and the forms."
+    },
+    {
+      "wp": "WP-17",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 4: registers the WP-17 assignment (common rules: every WP adds its own row)."
+    },
+    {
+      "wp": "WP-17",
+      "path": "src/content.config.ts",
+      "reason": "Wave 4 brief: the optional services `artifacts` field left open by WP-15 (WP-02 request 2)."
     }
   ],
   "notes": [
