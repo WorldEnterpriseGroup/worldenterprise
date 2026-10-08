@@ -29,13 +29,14 @@ test('the sitemap lists neither the styleguide, fixtures, the 404 nor noindex ro
   expect(index.ok()).toBe(true);
   const res = await request.get('/sitemap-0.xml');
   expect(res.ok()).toBe(true);
-  const body = await res.text();
-  expect(body).not.toContain('/styleguide/');
-  expect(body).not.toContain('fixture-');
-  expect(body).not.toContain('/404');
-  expect(body).not.toContain('/apply/thanks/');
-  expect(body).not.toContain('/search/');
-  expect(body).not.toContain('/sitemap/');
+  // Compare the listed URLs only: the XML namespaces in the file also contain "/sitemap/".
+  const paths = [...(await res.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => new URL(match[1] ?? '').pathname);
+  expect(paths.length, 'the sitemap lists pages').toBeGreaterThan(0);
+  for (const excluded of ['/styleguide/', '/apply/thanks/', '/search/', '/sitemap/']) {
+    expect(paths, `${excluded} is not listed`).not.toContain(excluded);
+  }
+  expect(paths.filter((path) => path.includes('fixture-')), 'no fixture is listed').toEqual([]);
+  expect(paths.filter((path) => path.startsWith('/404')), 'the 404 is not listed').toEqual([]);
 });
 
 test('sitemap entries carry lastmod', async ({ request }) => {
