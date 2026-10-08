@@ -1,27 +1,15 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { SEAT_ROLES } from '../../../src/components/network/roles.ts';
+import { ROLES } from '../../../src/scripts/team-composer.ts';
 import { claimRegistry } from '../../../src/data/claims.ts';
 import type { ClaimId } from '../../../src/data/claims.ts';
 import { routes } from '../../../src/data/routes.ts';
 import { site } from '../../../src/data/site.ts';
 
 const root = new URL('../../../', import.meta.url).pathname;
-
-/** Team Composer role list from SAGE-PLAN 6.8 (WP-03 builds the island from the same list). */
-const COMPOSER_ROLES = [
-  'Product design',
-  'Front end',
-  'Back end',
-  'QA',
-  'DevOps and security',
-  'Brand',
-  'Growth and support',
-  'Operations',
-  'Delivery lead',
-] as const;
 
 const contentFiles = [
   'src/content/pages/network/index.mdx',
@@ -49,12 +37,8 @@ function scalar(text: string, key: string): string {
 }
 
 test('operator roles equal the Team Composer role list', () => {
-  assert.deepEqual(SEAT_ROLES.map((r) => r.title), [...COMPOSER_ROLES]);
-  const composer = join(root, 'src/scripts/team-composer.ts');
-  if (existsSync(composer)) {
-    const source = readFileSync(composer, 'utf8').toLowerCase();
-    for (const title of COMPOSER_ROLES) assert.ok(source.includes(title.toLowerCase()), `Team Composer source lacks "${title}"`);
-  }
+  // Both read src/data/seat-roles.ts; tests/unit/wp-15/seat-roles.test.ts checks the shared list itself.
+  assert.deepEqual(SEAT_ROLES.map((r) => [r.id, r.title]), ROLES.map((r) => [r.id, r.label]));
 });
 
 test('roles are functions: unique ids, a limit statement each, no individual named', () => {

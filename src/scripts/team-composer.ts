@@ -4,34 +4,36 @@
  * enhances server-rendered markup that already works without JavaScript. No storage, no network, no cookies.
  */
 
-export const ROLE_GROUPS = [
-  { id: 'build', label: 'Build the product' },
-  { id: 'company', label: 'Build the company' },
-  { id: 'coordination', label: 'Coordinate the work' },
-] as const;
-export type RoleGroupId = (typeof ROLE_GROUPS)[number]['id'];
+import { SEAT_ROLE_GROUPS, SEAT_ROLE_IDENTITIES } from '../data/seat-roles.ts';
+import type { SeatRoleGroupId, SeatRoleId } from '../data/seat-roles.ts';
+
+export const ROLE_GROUPS = SEAT_ROLE_GROUPS;
+export type RoleGroupId = SeatRoleGroupId;
 
 export interface Role {
-  readonly id: string;
+  readonly id: SeatRoleId;
   readonly label: string;
   readonly group: RoleGroupId;
   readonly summary: string;
 }
 
-/** Roles a seat can fill (SAGE-PLAN 6.8). Descriptions say what the work is; they make no promise about outcomes. */
-export const ROLES = [
-  { id: 'product-design', label: 'Product design', group: 'build', summary: 'Shapes the flows, screens and design system of the product.' },
-  { id: 'front-end', label: 'Front end', group: 'build', summary: 'Builds the interface people use in the browser.' },
-  { id: 'back-end', label: 'Back end', group: 'build', summary: 'Builds the services, data and integrations behind the product.' },
-  { id: 'qa', label: 'Quality assurance', group: 'build', summary: 'Tests the product before each release and keeps known problems from shipping again.' },
-  { id: 'devops-security', label: 'DevOps and security', group: 'build', summary: 'Sets up delivery pipelines and environments, and the security basics around them.' },
-  { id: 'brand', label: 'Brand', group: 'company', summary: 'Creates the name, identity and visual system of the company.' },
-  { id: 'growth-support', label: 'Growth and support', group: 'company', summary: 'Talks with customers, runs pilots and answers support questions.' },
-  { id: 'operations', label: 'Operations', group: 'coordination', summary: 'Keeps goals, metrics and the weekly rhythm in order.' },
-  { id: 'delivery-lead', label: 'Delivery lead', group: 'coordination', summary: 'Keeps the plan moving: sequencing, risks and the weekly review.' },
-] as const satisfies readonly Role[];
+/** What each role does, in the Composer's words. Descriptions say what the work is; they make no promise about outcomes. */
+const SUMMARIES: Readonly<Record<SeatRoleId, string>> = {
+  'product-design': 'Shapes the flows, screens and design system of the product.',
+  'front-end': 'Builds the interface people use in the browser.',
+  'back-end': 'Builds the services, data and integrations behind the product.',
+  qa: 'Tests the product before each release and keeps known problems from shipping again.',
+  'devops-security': 'Sets up delivery pipelines and environments, and the security basics around them.',
+  brand: 'Creates the name, identity and visual system of the company.',
+  'growth-support': 'Talks with customers, runs pilots and answers support questions.',
+  operations: 'Keeps goals, metrics and the weekly rhythm in order.',
+  'delivery-lead': 'Keeps the plan moving: sequencing, risks and the weekly review.',
+};
 
-export type RoleId = (typeof ROLES)[number]['id'];
+/** Roles a seat can fill (SAGE-PLAN 6.8). The ids, labels and groups come from src/data/seat-roles.ts. */
+export const ROLES: readonly Role[] = SEAT_ROLE_IDENTITIES.map((role) => ({ ...role, summary: SUMMARIES[role.id] }));
+
+export type RoleId = SeatRoleId;
 
 /** Whole seats per role. Roles with zero seats are absent. */
 export type TeamSelection = Partial<Record<RoleId, number>>;
