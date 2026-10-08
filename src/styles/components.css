@@ -135,7 +135,8 @@
   }
 
   /* From 1100px the header row holds the logo, seven items and Apply. The logo may not shrink to make room (it was 117px at 1100, under
-     the 160px brand minimum): it grows from 160px at 1100 to its full 256px at 1279, and the nav type gives 1px instead. */
+     the 160px brand minimum): it grows from 160px at 1100 to its full 256px at 1279, and the nav gives instead: 16px type (the fluid size
+     is 18px there) and items 4px closer. At 18px type the row was 21px wider than the viewport at 1100px, which the old page frame clipped. */
   @media (min-width: 1100px) {
     .site-header__logo {
       flex: 0 0 auto;
@@ -143,10 +144,11 @@
     }
   }
 
+  /* The items inherit their size (font: inherit), so the size is set on the list. */
   @media (min-width: 1100px) and (max-width: 1279.98px) {
-    .mega-nav__link,
-    .mega-nav__trigger {
-      font-size: 0.9375rem;
+    .mega-nav__list {
+      gap: var(--sp-3);
+      font-size: 1rem;
     }
   }
 
@@ -502,6 +504,9 @@
     inset: auto 0 0 0;
     z-index: var(--z-header);
     box-sizing: border-box;
+    /* A grid, so the button is a block-level item: an inline-flex button in a block sits on a line box and the strut under it makes
+       the bar taller than the token. And the button is exactly the touch target: its own padding would make it taller than --target-min. */
+    display: grid;
     min-block-size: var(--apply-bar-h);
     padding: var(--sp-3) var(--sp-4);
     background: var(--color-bg);
@@ -510,6 +515,7 @@
     & .btn {
       inline-size: 100%;
       justify-content: center;
+      padding-block: 0;
     }
   }
 
@@ -671,24 +677,46 @@
     font-size: var(--fs-sm);
     color: var(--color-text-muted);
 
+    /* One line, always. The trail used to wrap, and on a phone the last crumb fit on the first line in the web font and dropped to a
+       second line in the fallback font (or the reverse), so the whole page moved 27px when the fonts swapped: a layout shift of 0.10 to
+       0.15 on /services/, /research/ and /insights/ pages (layout-shift.spec, WP-16). The ancestors are short navigation labels and keep
+       their width; only the current page, whose title the h1 repeats right below, gives way with an ellipsis. */
     & ol {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: var(--sp-1) var(--sp-2);
       list-style: none;
       padding: 0;
     }
 
-    & li:not(:last-child)::after {
-      content: '/';
-      margin-inline-start: var(--sp-2);
-      color: var(--color-text-muted);
+    & li {
+      flex: none;
+      white-space: nowrap;
+
+      &:last-child {
+        flex: 0 1 auto;
+        min-inline-size: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &:not(:last-child)::after {
+        content: '/';
+        margin-inline-start: var(--sp-2);
+        color: var(--color-text-muted);
+      }
     }
   }
 
   .byline {
     font-size: var(--fs-sm);
     color: var(--color-text-muted);
+
+    /* On a phone the byline is two lines in the fallback font and one or two in the web font. Holding two lines keeps the article body
+       where it is when the fonts swap, instead of moving everything under it. */
+    @media (max-width: 40rem) {
+      min-block-size: 2lh;
+    }
   }
 
   /* ---------- Prose ---------- */

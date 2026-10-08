@@ -198,7 +198,7 @@ test.describe('the header at the widths between the drawer and the full nav', ()
   });
 
   // The logo has a brand minimum of 160px. It used to shrink to 117px at 1100px to make room for the nav; now it holds 160px and the
-  // nav gives 1px of type. Nothing may wrap, collide with the Apply button or leave the header.
+  // nav gives: 16px type and tighter gaps. Nothing may wrap, collide with the Apply button or leave the header.
   for (const width of [1100, 1140, 1180, 1230, 1279, 1440]) {
     test(`at ${width}px the logo is legible and the nav fits on one row`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
@@ -230,7 +230,7 @@ test.describe('the header at the widths between the drawer and the full nav', ()
       expect(m.nav?.right ?? 0, 'nav ends before the Apply button').toBeLessThanOrEqual((m.apply?.left ?? 0) - 8);
       expect(m.apply?.right ?? 0, 'Apply stays inside the viewport').toBeLessThanOrEqual(m.viewport);
       expect(m.logo?.right ?? 0, 'logo ends before the nav').toBeLessThanOrEqual((m.nav?.left ?? 0) + 1);
-      if (width < 1280) expect(m.font, 'nav type under 1280px').toBeCloseTo(15, 0);
+      if (width < 1280) expect(m.font, 'nav type under 1280px').toBeCloseTo(16, 0);
       else expect(m.font, 'nav type from 1280px').toBeGreaterThanOrEqual(16);
     });
   }
@@ -454,7 +454,8 @@ test.describe('the fixed Apply bar', () => {
         return { inBar: false, bottom: r.bottom, barTop: bar.getBoundingClientRect().top, name: `${el.tagName.toLowerCase()} ${(el.textContent ?? '').trim().slice(0, 30)}` };
       });
       if (state === null) continue;
-      if (state.inBar) break;
+      // The bar comes early in the tab order (it sits in the header markup) and is skipped here: the test is about everything else.
+      if (state.inBar) continue;
       visited += 1;
       if (state.bottom > state.barTop + 0.5) hidden.push(`${state.name} ends at ${Math.round(state.bottom)} under the bar at ${Math.round(state.barTop)}`);
     }

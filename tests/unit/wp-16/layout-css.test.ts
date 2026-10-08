@@ -70,3 +70,21 @@ test('the article header uses the same container as its body', () => {
   assert.match(article, /<header class="page-header page-header--article">\s*<div class="container stack">/);
   assert.match(article, /<div class="container with-rail">/);
 });
+
+test('the breadcrumb is one line, and only the current page gives way, so a font swap cannot move the page', () => {
+  const crumbs = rule(read('src/styles/components.css'), '.breadcrumbs').replace(/\/\*[\s\S]*?\*\//g, '');
+  assert.match(rule(crumbs, '& ol'), /flex-wrap:\s*nowrap/);
+  const item = rule(crumbs, '& li');
+  assert.match(item, /flex:\s*none/);
+  assert.match(item, /white-space:\s*nowrap/);
+  const last = rule(item, '&:last-child');
+  assert.match(last, /flex:\s*0 1 auto/);
+  assert.match(last, /min-inline-size:\s*0/);
+  assert.match(last, /overflow:\s*hidden/);
+  assert.match(last, /text-overflow:\s*ellipsis/);
+});
+
+test('the byline holds two lines on a phone, where the fallback font wraps it and the web font may not', () => {
+  const byline = rule(read('src/styles/components.css'), '.byline').replace(/\/\*[\s\S]*?\*\//g, '');
+  assert.match(byline, /@media \(max-width: 40rem\)\s*\{\s*min-block-size:\s*2lh;\s*\}/);
+});
