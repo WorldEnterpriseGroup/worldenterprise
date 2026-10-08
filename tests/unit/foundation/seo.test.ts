@@ -37,6 +37,12 @@ test('breadcrumbs take ancestor labels from the navigation data', () => {
   assert.deepEqual(buildCrumbs('/404.html', 'Not found').map((c) => c.label), ['Home']);
 });
 
+test('breadcrumbs skip ancestors that are not launched routes', () => {
+  assert.deepEqual(buildCrumbs('/legal/privacy/', 'Privacy notice').map((c) => c.href), ['/', '/legal/privacy/']);
+  assert.deepEqual(buildCrumbs('/insights/topic/dream/', 'Dream').map((c) => c.href), ['/', '/insights/', '/insights/topic/dream/']);
+  assert.deepEqual(buildCrumbs('/program/dream/', 'Dream').map((c) => c.href), ['/', '/program/', '/program/dream/']);
+});
+
 test('the organisation node has no founding date, EIN or street address', () => {
   const org = organizationNode('https://worldenterprise.org/logo.svg');
   const text = JSON.stringify(org);

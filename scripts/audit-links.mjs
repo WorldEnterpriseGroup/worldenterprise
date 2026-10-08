@@ -11,6 +11,10 @@ import { pathToFileURL } from 'node:url';
 import { collectIds, isDevRoute, ORIGIN, parseArgs, readPages, report, srcsetUrls, startTags, stripNonMarkup } from './lib/html.mjs';
 import { loadLedger } from './lib/ledger.mjs';
 
+// Routes reached only by a redirect or a script, never by a link: the form success page is the 303 target of the no-JS
+// post and the destination of the scripted submit, so no page should link to it.
+const FLOW_TARGETS = new Set(['/apply/thanks/']);
+
 const SKIP_SCHEME = /^(?:mailto:|tel:|sms:|data:|blob:|about:)/i;
 
 /** Pulls every reference out of one page. Each ref: { kind, url, tag, attrs }. */
@@ -153,7 +157,7 @@ export function auditLinks({ distDir, pages, ledger = null, strict = false }) {
 
   const orphans = [];
   for (const row of ledger?.routes ?? []) {
-    if (!row.launch || !byRoute.has(row.path) || row.path === '/' || row.path === '/404.html') continue;
+    if (!row.launch || !byRoute.has(row.path) || row.path === '/' || row.path === '/404.html' || FLOW_TARGETS.has(row.path)) continue;
     if ((inbound.get(row.path) ?? 0) === 0) orphans.push(row.path);
   }
   for (const [path, hit] of pendingHits) {

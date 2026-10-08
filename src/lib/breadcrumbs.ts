@@ -1,4 +1,5 @@
 import { footerNav, primaryNav, utilityNav } from '../data/nav.ts';
+import { routes } from '../data/routes.ts';
 
 export interface Crumb {
   readonly label: string;
@@ -21,14 +22,15 @@ function buildLabelMap(): ReadonlyMap<string, string> {
   add('/insights/', 'Insights');
   add('/research/', 'Research');
   add('/library/', 'Templates');
-  add('/legal/', 'Legal');
   add('/tools/', 'Tools');
   add('/fundability/', 'Fundability');
-  add('/insights/topic/', 'Topics');
   return map;
 }
 
 const LABELS = buildLabelMap();
+
+/** Launched ledger paths. An ancestor crumb is emitted only when its route exists, so no crumb links to a missing page. */
+const LAUNCHED: ReadonlySet<string> = new Set(routes.filter((r) => r.launch).map((r) => r.path));
 
 function titleCase(segment: string): string {
   return segment
@@ -38,8 +40,9 @@ function titleCase(segment: string): string {
 }
 
 /**
- * Derives breadcrumbs from a route path. Ancestors take their label from the navigation data; the last crumb
- * takes `currentLabel` (the page title). The home crumb is always first.
+ * Derives breadcrumbs from a route path. Ancestors take their label from the navigation data and are skipped when the
+ * ancestor path is not a launched route (for example /legal/ or /insights/topic/); the last crumb takes
+ * `currentLabel` (the page title). The home crumb is always first.
  */
 export function buildCrumbs(path: string, currentLabel: string): Crumb[] {
   const crumbs: Crumb[] = [{ label: 'Home', href: '/' }];
@@ -49,6 +52,7 @@ export function buildCrumbs(path: string, currentLabel: string): Crumb[] {
     acc += `/${segment}`;
     const href = `${acc}/`;
     const isLast = index === segments.length - 1;
+    if (!isLast && !LAUNCHED.has(href)) return;
     crumbs.push({ label: isLast ? currentLabel : (LABELS.get(href) ?? titleCase(segment)), href });
   });
   return crumbs;

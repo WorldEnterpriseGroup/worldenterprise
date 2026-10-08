@@ -3,7 +3,6 @@ import wordmark from '../../assets/brand/we-logo-wordmark.svg';
 import { applyButton, resolveNav } from '../../data/nav.ts';
 import { site } from '../../data/site.ts';
 import { getRouteState } from '../../lib/route-state.ts';
-import { readFlag } from '../../lib/env.ts';
 import { href } from '../../lib/url.ts';
 import MegaNav from './MegaNav.astro';
 import MobileNav from './MobileNav.astro';
@@ -14,12 +13,8 @@ interface Props {
 
 const { currentPath } = Astro.props;
 const state = await getRouteState();
-// PUBLIC_NAV_FIXTURE is set only on the verify build so the browser tests can exercise the full menu
-// before the routes exist. It is never set for the preview or production builds.
-const navFixture = readFlag('PUBLIC_NAV_FIXTURE');
-const isLive = navFixture ? () => true : state.isLive;
-const items = resolveNav(isLive);
-const apply = isLive(applyButton.href) ? applyButton : null;
+const items = resolveNav(state.isLive);
+const apply = state.isLive(applyButton.href) ? applyButton : null;
 ---
 
 <header class="site-header">

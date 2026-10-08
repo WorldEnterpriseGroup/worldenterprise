@@ -45,7 +45,6 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const allow = process.env.RELEASE_ALLOW ?? '';
   const env = { ...process.env, PUBLIC_RELEASE: '1' };
   delete env.PUBLIC_STYLEGUIDE;
-  delete env.PUBLIC_NAV_FIXTURE;
   const run = spawnSync('npm', ['run', 'build'], { env, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   const output = `${run.stdout ?? ''}\n${run.stderr ?? ''}`;
   mkdirSync(dirname(args.json), { recursive: true });

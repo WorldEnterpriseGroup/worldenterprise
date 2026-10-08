@@ -94,9 +94,8 @@ verify:static:
   image: "${NODE_IMAGE}"
   interruptible: true
   variables:
-    # The verify build includes the dev-only routes and the full nav so every shell can be tested before its pages land.
+    # The verify build includes the dev-only styleguide route; the nav and footer render only routes that exist.
     PUBLIC_STYLEGUIDE: "1"
-    PUBLIC_NAV_FIXTURE: "1"
     GIT_DEPTH: "0" # sitemap lastmod reads git history (WP-09 request)
   script:
     - node --version
