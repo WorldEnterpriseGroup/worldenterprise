@@ -16,7 +16,11 @@ import type { AstroUserConfig } from 'astro';
 type SecurityConfig = NonNullable<AstroUserConfig['security']>;
 export type CspConfig = Extract<NonNullable<SecurityConfig['csp']>, object>;
 
-/** The origin of each form endpoint URL, sorted and without duplicates. Blank and missing values are skipped. */
+/**
+ * The origin of each form endpoint URL, sorted and without duplicates. Blank and missing values are skipped. Only absolute
+ * https URLs are allowed, the same rule src/data/forms.ts applies (src/lib/endpoints.ts), so a cleartext origin can never
+ * reach connect-src or form-action.
+ */
 export function endpointOrigins(urls: readonly (string | undefined)[]): string[] {
   const origins = new Set<string>();
   for (const raw of urls) {
@@ -28,8 +32,8 @@ export function endpointOrigins(urls: readonly (string | undefined)[]): string[]
     } catch (error) {
       throw new Error(`Content Security Policy: "${value}" is not an absolute URL (${error instanceof Error ? error.message : String(error)}).`);
     }
-    if (url.protocol !== 'https:' && url.protocol !== 'http:') {
-      throw new Error(`Content Security Policy: endpoint "${value}" must use http or https.`);
+    if (url.protocol !== 'https:') {
+      throw new Error(`Content Security Policy: endpoint "${value}" must use https.`);
     }
     origins.add(url.origin);
   }

@@ -4,10 +4,14 @@ import mdx from '@astrojs/mdx';
 import { satteri } from '@astrojs/markdown-satteri';
 import sitemap from '@astrojs/sitemap';
 import { fileURLToPath } from 'node:url';
+import { loadEnv } from 'vite';
 import { buildCsp } from './src/lib/csp.ts';
+import { resolveEndpoints } from './src/lib/endpoints.ts';
 import { createLastmodLookup } from './src/lib/lastmod.ts';
 import { isSitemapUrl, withLastmod } from './src/lib/seo.ts';
 import { tableWrapPlugin } from './src/lib/rehype-table-wrap.ts';
+
+const root = fileURLToPath(new URL('.', import.meta.url));
 
 /** Production origin. Never changes for preview builds: canonicals always point here. */
 const SITE = 'https://worldenterprise.org';
@@ -20,14 +24,20 @@ const rawBase = (process.env.PAGES_BASE_PATH ?? '').trim();
 const base = rawBase === '' ? undefined : `/${rawBase.replace(/^\/+|\/+$/g, '')}`;
 
 /** Sitemap lastmod: frontmatter date, else the last git commit of the source file, else none (src/lib/lastmod.ts). */
-const lastmod = createLastmodLookup({ root: fileURLToPath(new URL('.', import.meta.url)), base });
+const lastmod = createLastmodLookup({ root, base });
 
 /**
- * Content Security Policy as a per-page meta tag (src/lib/csp.ts). The form endpoints are read from the build environment,
- * as src/data/forms.ts reads them, so the policy allows exactly the origins the forms post to.
+ * Content Security Policy as a per-page meta tag (src/lib/csp.ts). The form endpoints are resolved by the same code, from the
+ * same sources, as src/data/forms.ts: the process environment first, then the .env files Vite loads for the build (code-security
+ * P1-4). So the policy allows exactly the origins the forms post to, and a value that is set but is not an https URL fails the
+ * build instead of widening the policy.
  */
+const dotenv = loadEnv('production', root, 'PUBLIC_WE_');
+/** @param {string | undefined} value */
+const nonEmpty = (value) => (value === undefined || value === '' ? undefined : value);
+const endpoints = resolveEndpoints((/** @type {string} */ name) => nonEmpty(process.env[name]) ?? nonEmpty(dotenv[name]));
 const security = {
-  csp: buildCsp([process.env.PUBLIC_WE_INTAKE_API_URL, process.env.PUBLIC_WE_NEWSLETTER_API_URL]),
+  csp: buildCsp([endpoints.intake ?? undefined, endpoints.newsletter ?? undefined]),
 };
 
 export default defineConfig({

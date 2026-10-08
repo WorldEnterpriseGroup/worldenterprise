@@ -13,9 +13,10 @@ test('endpointOrigins keeps the origin of each endpoint once, sorted, and skips 
   );
 });
 
-test('endpointOrigins rejects a value that is not an http or https URL', () => {
+test('endpointOrigins rejects a value that is not an https URL, so cleartext never widens connect-src or form-action', () => {
   assert.throws(() => endpointOrigins(['intake.example.test/api']), /not an absolute URL/);
-  assert.throws(() => endpointOrigins(['ftp://intake.example.test/api']), /must use http or https/);
+  assert.throws(() => endpointOrigins(['ftp://intake.example.test/api']), /must use https/);
+  assert.throws(() => endpointOrigins(['http://intake.example.test/api']), /must use https/);
 });
 
 test('without endpoints the policy allows only the site itself as a form target and fetch destination', () => {
@@ -61,7 +62,9 @@ test('frame-ancestors, report-uri and sandbox are not listed: a meta policy igno
 
 test('astro.config.mjs enables the policy from the endpoint environment, and BaseLayout hashes its inline layer style', () => {
   const config = readFileSync(`${ROOT}astro.config.mjs`, 'utf8');
-  assert.match(config, /buildCsp\(\[process\.env\.PUBLIC_WE_INTAKE_API_URL, process\.env\.PUBLIC_WE_NEWSLETTER_API_URL\]\)/);
+  assert.match(config, /resolveEndpoints\(/);
+  assert.match(config, /buildCsp\(\[endpoints\.intake \?\? undefined, endpoints\.newsletter \?\? undefined\]\)/);
+  assert.doesNotMatch(config, /buildCsp\(\[process\.env/);
   assert.match(config, /^\s*security,$/m);
   const layout = readFileSync(`${ROOT}src/layouts/BaseLayout.astro`, 'utf8');
   assert.match(layout, /Astro\.csp\?\.insertStyleHash/);

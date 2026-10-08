@@ -1,5 +1,9 @@
 import { readEnv, readFlag } from '../lib/env.ts';
+import { INTAKE_ENDPOINT_VAR, NEWSLETTER_ENDPOINT_VAR, parseEndpoint, resolveEndpoint } from '../lib/endpoints.ts';
 import { site } from './site.ts';
+
+/** Kept here for the callers that import it from the forms module. The parser itself lives in src/lib/endpoints.ts. */
+export { parseEndpoint };
 
 /**
  * Forms contract (docs/forms-contract.md, authored by WP-03). A form posts JSON to an endpoint, falls back to a
@@ -20,28 +24,18 @@ export interface FormConfig {
   readonly mailto: string | null;
 }
 
-/** Validates a configured endpoint. Only absolute https URLs are accepted; anything else is treated as unset. */
-export function parseEndpoint(raw: string | undefined): string | null {
-  if (raw === undefined) return null;
-  try {
-    const url = new URL(raw);
-    return url.protocol === 'https:' ? url.href : null;
-  } catch {
-    return null;
-  }
-}
-
 function resolveForm(id: FormConfig['id'], endpointVar: string, mailbox: Mailbox | null): FormConfig {
-  const endpoint = parseEndpoint(readEnv(endpointVar));
+  // Throws on a set value that is not an absolute https URL, exactly as astro.config.mjs does for the Content Security Policy.
+  const endpoint = resolveEndpoint(endpointVar, readEnv(endpointVar));
   if (endpoint !== null) return { id, mode: 'endpoint', endpoint, mailto: null };
   if (mailbox !== null && mailbox.confirmed) return { id, mode: 'mailto', endpoint: null, mailto: mailbox.address };
   return { id, mode: 'disabled', endpoint: null, mailto: null };
 }
 
 export const forms = {
-  intake: resolveForm('intake', 'PUBLIC_WE_INTAKE_API_URL', site.mailboxes.apply),
+  intake: resolveForm('intake', INTAKE_ENDPOINT_VAR, site.mailboxes.apply),
   /** Newsletter has no mailto fallback: it is hidden unless an endpoint is configured. */
-  newsletter: resolveForm('newsletter', 'PUBLIC_WE_NEWSLETTER_API_URL', null),
+  newsletter: resolveForm('newsletter', NEWSLETTER_ENDPOINT_VAR, null),
 } as const;
 
 /**
