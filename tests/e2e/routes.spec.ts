@@ -4,8 +4,8 @@ import { expect, test } from '@playwright/test';
 import { watch } from './support/page-guards.ts';
 import { fileFor, liveRoutes, pendingRoutes } from './support/routes.ts';
 
-// Route smoke over every launched ledger route that is built: status, one h1, canonical, console, third parties,
-// horizontal overflow and a screenshot. Pending routes are listed as skipped so the gap stays visible.
+// Route smoke over every launched ledger route that is built: status, one h1, canonical, console, third parties
+// and a screenshot. Horizontal fit is measured per element in layout.spec.ts. Pending routes are listed as skipped so the gap stays visible.
 
 const slug = (route: string): string => (route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/[/.]/g, '-'));
 
@@ -22,20 +22,6 @@ for (const { path: route } of liveRoutes) {
     const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
     expect(canonical, 'canonical link').toMatch(/^https:\/\/worldenterprise\.org\//);
     expect(new URL(canonical ?? '').pathname, 'canonical path').toBe(route);
-
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-    if (overflow > 0) {
-      // Name the elements that poke out of the viewport so the owner can fix them without reproducing the page.
-      const culprits = await page.evaluate(() => {
-        const width = document.documentElement.clientWidth;
-        const describe = (el: Element): string => `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ''}${typeof el.className === 'string' && el.className ? `.${el.className.trim().split(/\s+/).slice(0, 2).join('.')}` : ''}`;
-        return [...document.body.querySelectorAll('*')]
-          .filter((el) => el.getBoundingClientRect().right > width + 1)
-          .slice(0, 4)
-          .map((el) => `${describe(el)} right=${Math.round(el.getBoundingClientRect().right)}`);
-      });
-      expect(overflow, `horizontal overflow at ${page.viewportSize()?.width}px by ${culprits.join('; ')}`).toBeLessThanOrEqual(0);
-    }
 
     await page.waitForLoadState('networkidle');
     expect(seen.pageErrors, 'uncaught exceptions').toEqual([]);

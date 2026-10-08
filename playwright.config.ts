@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 // The suite runs against an already built dist/ served by scripts/lib/serve.mjs. Nothing here builds the site.
 // Specs are matched per project: the common specs run at both viewports, the mode specs run in one project each.
 const PORT = Number(process.env.E2E_PORT ?? 4321);
-const COMMON = ['routes', 'axe', 'menu', 'folds', 'interaction', 'forms', 'shell', 'layout-shift'].map((name) => new RegExp(`/${name}\\.spec\\.ts$`));
+const COMMON = ['routes', 'axe', 'menu', 'folds', 'interaction', 'forms', 'shell', 'layout-shift', 'layout'].map((name) => new RegExp(`/${name}\\.spec\\.ts$`));
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -31,6 +31,8 @@ export default defineConfig({
   projects: [
     { name: 'desktop-1440x900', testMatch: COMMON, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
     { name: 'mobile-390x844', testMatch: COMMON, use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
+    // 320 px is the WCAG 1.4.10 reflow width. Only the layout spec runs here: it is the suite that measures where elements sit.
+    { name: 'mobile-320x568', testMatch: /\/layout\.spec\.ts$/, use: { ...devices['Pixel 7'], viewport: { width: 320, height: 568 } } },
     { name: 'no-js', testMatch: /\/modes\.spec\.ts$/, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 }, javaScriptEnabled: false } },
     { name: 'forced-colors', testMatch: /\/modes\.spec\.ts$/, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 }, forcedColors: 'active', colorScheme: 'light' } },
     { name: 'zoom-200', testMatch: /\/modes\.spec\.ts$/, use: { ...devices['Desktop Chrome'], viewport: { width: 720, height: 450 } } },

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { findOverflow, formatOffenders } from './support/overflow.ts';
 import { isBuilt, liveRoutes } from './support/routes.ts';
 
 // One spec, three projects: no-js (JavaScript disabled), forced-colors (Windows high contrast emulation) and zoom-200
@@ -75,13 +76,15 @@ test.describe('zoom-200', () => {
     test.skip(info.project.name !== 'zoom-200', 'zoom-200 project only');
   });
 
-  test('no horizontal scroll at 720 px on any built route', async ({ page }) => {
-    test.setTimeout(180_000);
+  test('no horizontal scroll and no element outside the viewport at 720 px on any built route', async ({ page }) => {
+    test.setTimeout(300_000);
     const failures: string[] = [];
     for (const route of liveRoutes) {
       await page.goto(route.path);
       const over = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-      if (over > 0) failures.push(`${route.path} overflows by ${over}px`);
+      if (over > 0) failures.push(`${route.path} scrolls sideways by ${over}px`);
+      const offenders = await findOverflow(page);
+      if (offenders.length > 0) failures.push(`${route.path}: ${formatOffenders(offenders, 3)}`);
     }
     expect(failures).toEqual([]);
   });

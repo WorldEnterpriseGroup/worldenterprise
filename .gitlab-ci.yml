@@ -3,7 +3,7 @@
 #   preflight  verify:static   type check, unit tests, contrast, production-shaped build, route ledger export
 #              check:ownership  wp/* branches only: the diff stays inside the branch owner's paths
 #   qa         audit:*          static audits of dist/ (claims, images, links, ledger, dist, a11y, seo, schema, tokens)
-#              e2e:*            Playwright suites against dist/ served by scripts/lib/serve.mjs (five projects)
+#              e2e:*            Playwright suites against dist/ served by scripts/lib/serve.mjs (six projects)
 #              qa:lighthouse    mobile Lighthouse on eight routes with the SAGE-PLAN 6.9 budgets
 #              verify:release   PUBLIC_RELEASE=1 build (RELEASE_ALLOW tolerates operator-gated items)
 #   deploy     pages            internal preview (demo only), built from source with a Node image
@@ -177,11 +177,11 @@ audit:wired:
       npm run audit:tokens || status=1
       exit "$status"
 
-# Route smoke, 390 px overflow, folds, shell, screenshots at 1440 and 390 (JPEG, attached as artifacts).
+# Route smoke, element-level layout fit at 1440, 390 and 320 px, folds, shell, screenshots at 1440 and 390 (JPEG, attached as artifacts).
 e2e:routes:
   extends: [.e2e]
   script:
-    - npx playwright test routes folds shell
+    - npx playwright test routes layout folds shell
 
 # axe on every route and with the navigation open.
 e2e:a11y:
