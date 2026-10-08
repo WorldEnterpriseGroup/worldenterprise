@@ -2,7 +2,7 @@ import { getCollection } from 'astro:content';
 import { forms, FORM_ROUTES } from '../data/forms.ts';
 import { routes } from '../data/routes.ts';
 import { readFlag } from './env.ts';
-import { computeRouteState, fileToRoute } from './route-core.ts';
+import { computeRouteState, entryRouteIds, fileToRoute } from './route-core.ts';
 import type { PageFileRoute, RouteContext, RouteState } from './route-core.ts';
 
 /**
@@ -40,7 +40,7 @@ async function build(): Promise<{ state: RouteState; drafts: readonly string[] }
     const ids = new Set<string>();
     for (const entry of await loadEntries(name)) {
       if (entry.data.draft === true) drafts.push(`${name}/${entry.id}`);
-      else ids.add(entry.id);
+      else for (const id of entryRouteIds(name, entry.id)) ids.add(id);
     }
     entryIds[name] = ids;
   }

@@ -19,7 +19,22 @@ export const DYNAMIC_COLLECTIONS: Readonly<Record<string, string>> = {
 /** Dynamic patterns whose parameter comes from a fixed list instead of a collection. */
 export const DYNAMIC_FIXED: Readonly<Record<string, readonly string[]>> = {
   '/insights/topic/[topic]/': DESKS,
+  // src/pages/newsletter/[...slug].astro emits only /newsletter/ itself (an empty rest segment).
+  '/newsletter/[...slug]/': [''],
 };
+
+/**
+ * Collections whose pages are routed by the last segment of the entry id, because entries sit in
+ * sub-folders (insights/dream/<slug>.mdx) while the URL is flat (/insights/<slug>/).
+ */
+const LAST_SEGMENT_COLLECTIONS: ReadonlySet<string> = new Set(['insights']);
+
+/** The ids under which a published entry can satisfy a dynamic route parameter. */
+export function entryRouteIds(collection: string, id: string): readonly string[] {
+  if (!LAST_SEGMENT_COLLECTIONS.has(collection)) return [id];
+  const last = id.split('/').at(-1);
+  return last === undefined || last === id ? [id] : [id, last];
+}
 
 export interface PageFileRoute {
   /** Route pattern with trailing slash (or a file name), for example /insights/[slug]/ */
@@ -60,9 +75,8 @@ export function matchDynamic(pattern: string, path: string): Record<string, stri
     const seg = p[i] ?? '';
     const rest = /^\[\.\.\.(.+)\]$/.exec(seg);
     if (rest?.[1] !== undefined) {
-      const remaining = q.slice(i);
-      if (remaining.length === 0) return null;
-      params[rest[1]] = remaining.join('/');
+      // An optional rest segment matches zero remaining parts and yields ''.
+      params[rest[1]] = q.slice(i).join('/');
       return params;
     }
     const one = /^\[(.+)\]$/.exec(seg);
