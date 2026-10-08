@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import NewsletterForm from '../../components/reference/NewsletterForm.astro';
+import NewsletterForm from '../../components/forms/NewsletterForm.astro';
 import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
 import { forms } from '../../data/forms.ts';
 
@@ -11,10 +11,8 @@ import { forms } from '../../data/forms.ts';
 export const getStaticPaths = (() => {
   const { mode, endpoint } = forms.newsletter;
   if (mode !== 'endpoint' || endpoint === null) return [];
-  return [{ params: { slug: undefined }, props: { endpoint } }];
+  return [{ params: { slug: undefined } }];
 }) satisfies GetStaticPaths;
-
-const { endpoint } = Astro.props;
 ---
 
 <ReferenceLayout
@@ -25,5 +23,5 @@ const { endpoint } = Astro.props;
   lead="New playbooks, templates and research briefs, by email."
 >
   <p>The newsletter announces new playbooks, templates and research briefs, and updates to existing pieces.</p>
-  <NewsletterForm endpoint={endpoint} />
+  <NewsletterForm />
 </ReferenceLayout>
