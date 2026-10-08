@@ -2,11 +2,11 @@
 interface Props {
   /** Fill token name: mist, tint, blue, deep or amber. */
   tone?: 'mist' | 'tint' | 'blue' | 'deep' | 'amber';
-  /** Outer size in CSS pixels (flat-top hexagon, width). */
-  size?: number;
+  /** Outer size of the flat-top hexagon: sm 2.5rem, md 3.5rem (the default), lg 5rem. Classes in components.css. */
+  size?: 'sm' | 'md' | 'lg';
 }
 
-const { tone = 'mist', size = 56 } = Astro.props;
+const { tone = 'mist', size = 'md' } = Astro.props;
 ---
 
-<span class={`hex hex--${tone}`} style={`--hex-size:${size}px`}><slot /></span>
+<span class:list={['hex', `hex--${tone}`, size !== 'md' && `hex--${size}`]}><slot /></span>

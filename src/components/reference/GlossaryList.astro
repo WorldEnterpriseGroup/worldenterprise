@@ -30,7 +30,7 @@ const sections = letters.map((letter) => ({ letter, terms: sorted.filter((t) => 
   </ul>
 </nav>
 
-<div class="stack" style="--stack-gap:var(--sp-7)">
+<div class="stack stack--loose">
   {
     sections.map((section) => (
       <section aria-labelledby={`letter-${section.letter === '#' ? 'other' : section.letter}`} class="stack">

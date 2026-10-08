@@ -27,7 +27,7 @@ const items = await listInsights(topic);
   {Content !== undefined && <div class="prose"><Content /></div>}
   {
     items.length > 0 ? (
-      <ul class="grid" style="--grid-min:16rem" role="list">
+      <ul class="grid grid--min-16" role="list">
         {items.map((e) => (
           <li>
             <InsightCard

@@ -101,24 +101,29 @@ const headings = [
   <Section id="colour" labelledby="h-colour" tone="soft">
     <h2 id="h-colour">Color</h2>
     <Grid min="9rem">
-      {swatches.map((s) => <div class="swatch" style={`--swatch:${s.hex}`}><span>{s.name}</span><span>{s.hex}</span></div>)}
+      {swatches.map((s) => (
+        <div class="swatch">
+          <svg class="swatch__chip" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect width="1" height="1" fill={s.hex}></rect></svg>
+          <span>{s.name}</span><span>{s.hex}</span>
+        </div>
+      ))}
     </Grid>
   </Section>
 
   <Section id="type" labelledby="h-type">
     <h2 id="h-type">Type</h2>
     <div class="stack">
-      <p style="font-size:var(--fs-4xl);font-family:var(--ff-display);font-weight:700;line-height:var(--lh-tight)">Display, Titillium Web</p>
-      <p style="font-family:var(--ff-serif);font-size:var(--fs-xl)">Serif, Source Serif 4, for article reading.</p>
+      <p class="sg-sample sg-sample--display">Display, Titillium Web</p>
+      <p class="sg-sample sg-sample--serif">Serif, Source Serif 4, for article reading.</p>
       <p>Sans, Source Sans 3, for interface and body copy.</p>
-      <p style="font-family:var(--ff-mono)">Mono, Source Code Pro, for identifiers.</p>
+      <p class="sg-sample sg-sample--mono">Mono, Source Code Pro, for identifiers.</p>
       <Eyebrow>Eyebrow label</Eyebrow>
     </div>
   </Section>
 
   <Section id="components" labelledby="h-components" tone="soft">
     <h2 id="h-components">Components</h2>
-    <div class="stack" style="--stack-gap:var(--sp-7)">
+    <div class="stack stack--loose">
       <div class="cluster">
         <Button href="#components">Primary</Button>
         <Button href="#components" variant="secondary">Secondary</Button>
@@ -150,7 +155,7 @@ const headings = [
       <PullQuote cite="Named source, role">Quoted text appears only with a real, named source.</PullQuote>
       <FactBand label="Example facts" facts={[{ label: 'Stages', value: 'Five' }, { label: 'Format', value: 'Fully remote' }]} />
       <Meter label="Readiness example" value={60} text="Sixty percent, illustrative only" />
-      <div style="max-inline-size:8rem"><Figure src="/favicon.svg" width={64} height={64} alt="World Enterprise mark" caption="Figure caption." /></div>
+      <div class="sg-figure"><Figure src="/favicon.svg" width={64} height={64} alt="World Enterprise mark" caption="Figure caption." /></div>
       <form class="stack" onsubmit="return false">
         <Field id="sg-name" name="name" label="Name" required hint="As you would sign it." autocomplete="name" />
         <Field id="sg-email" name="email" label="Email" type="email" required error="Enter an email address in the form name@example.org." autocomplete="email" />
@@ -175,7 +180,7 @@ const headings = [
 
   <Section id="diagrams" labelledby="h-diagrams" tone="soft">
     <h2 id="h-diagrams">Diagrams and panels</h2>
-    <div class="stack" style="--stack-gap:var(--sp-7)">
+    <div class="stack stack--loose">
       <AltitudeDiagram />
       <SeatDiagram seats={['Delivery lead', 'Product design', 'Engineering', 'Quality assurance', 'Operations']} />
       <ServiceLinesStrip items={[
@@ -263,5 +268,25 @@ const headings = [
   .sg-reveal {
     list-style: none;
     padding: 0;
+  }
+
+  .sg-sample--display {
+    font-size: var(--fs-4xl);
+    font-family: var(--ff-display);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+  }
+
+  .sg-sample--serif {
+    font-family: var(--ff-serif);
+    font-size: var(--fs-xl);
+  }
+
+  .sg-sample--mono {
+    font-family: var(--ff-mono);
+  }
+
+  .sg-figure {
+    max-inline-size: 8rem;
   }
 </style>

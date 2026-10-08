@@ -14,7 +14,7 @@ const { labelledby } = Astro.props;
   <ol role="list">
     {
       STAGES.map((stage, index) => (
-        <li class="altitude__step" style={`--rise:${index}`}>
+        <li class={`altitude__step altitude__step--rise-${index}`}>
           <a class="altitude__link" href={href(stage.path)}>
             <span class="altitude__hex" aria-hidden="true">{stage.name.charAt(0)}</span>
             <span class="altitude__text">
@@ -63,8 +63,22 @@ const { labelledby } = Astro.props;
       }
 
       @media (min-width: 52rem) {
-        padding-block-start: calc(var(--sp-5) + var(--rise) * var(--sp-5));
+        padding-block-start: calc(var(--sp-5) + var(--rise, 0) * var(--sp-5));
       }
+    }
+
+    /* Each step sits one notch lower than the one before. A class per step, not a style attribute, so the CSP needs no
+       style-src-attr exception. One rule per entry of STAGES; tests/unit/wp-16/csp-style-attr.test.ts checks the count. */
+    .altitude__step--rise-0 {
+      --rise: 0;
+    }
+
+    .altitude__step--rise-1 {
+      --rise: 1;
+    }
+
+    .altitude__step--rise-2 {
+      --rise: 2;
     }
 
     .altitude__hex {

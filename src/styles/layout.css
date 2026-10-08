@@ -32,6 +32,15 @@
     gap: var(--stack-gap, var(--sp-4));
   }
 
+  /* Spacing modifiers. They set the custom property, never a style attribute: the CSP has no style-src-attr exception (WP-16). */
+  .stack--tight {
+    --stack-gap: var(--sp-2);
+  }
+
+  .stack--loose {
+    --stack-gap: var(--sp-7);
+  }
+
   .cluster {
     display: flex;
     flex-wrap: wrap;
@@ -41,8 +50,33 @@
 
   .grid {
     display: grid;
-    gap: var(--grid-gap, var(--sp-5));
+    gap: var(--sp-5);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--grid-min, 16rem)), 1fr));
+  }
+
+  /* Column minimums, one class per value in use. Grid.astro maps its `min` prop to these; a test keeps the two lists equal. */
+  .grid--min-9 {
+    --grid-min: 9rem;
+  }
+
+  .grid--min-15 {
+    --grid-min: 15rem;
+  }
+
+  .grid--min-16 {
+    --grid-min: 16rem;
+  }
+
+  .grid--min-17 {
+    --grid-min: 17rem;
+  }
+
+  .grid--min-18 {
+    --grid-min: 18rem;
+  }
+
+  .grid--min-20 {
+    --grid-min: 20rem;
   }
 
   /* Page frame: header, main, footer. */

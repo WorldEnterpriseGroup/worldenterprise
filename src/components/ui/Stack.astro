@@ -1,9 +1,10 @@
 ---
 interface Props {
-  gap?: string;
+  /** Spacing between children. Omitted is the default rhythm; `tight` and `loose` are classes in layout.css. */
+  gap?: 'tight' | 'loose';
 }
 
 const { gap } = Astro.props;
 ---
 
-<div class="stack" style={gap ? `--stack-gap:${gap}` : undefined}><slot /></div>
+<div class:list={['stack', gap !== undefined && `stack--${gap}`]}><slot /></div>

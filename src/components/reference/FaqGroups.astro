@@ -17,7 +17,7 @@ const groups = groupBy(items);
 const slugify = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
 
-<div class="stack" style="--stack-gap:var(--sp-7)">
+<div class="stack stack--loose">
   {
     groups.map((g) => (
       <section aria-labelledby={`faq-group-${slugify(g.group)}`} class="stack">

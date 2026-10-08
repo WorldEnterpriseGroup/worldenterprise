@@ -33,7 +33,7 @@ const trail = STAGES.map((s) => ({ label: `${s.name} (${s.altitude})`, href: hre
 
   <section class="stack" aria-labelledby="stage-work">
     <h2 id="stage-work">What you work on in {stage.name}</h2>
-    <div class="grid" style="--grid-min:15rem">
+    <div class="grid grid--min-15">
       {stage.activities.map((a) => <Card title={a.title} headingLevel={3}><p>{a.body}</p></Card>)}
     </div>
   </section>

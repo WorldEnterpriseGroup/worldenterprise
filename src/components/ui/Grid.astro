@@ -1,13 +1,29 @@
 ---
+/**
+ * The column minimums the site uses. Each one is a `.grid--min-*` class in layout.css, so the component needs no style attribute
+ * (Content Security Policy: style-src-attr is not allowed). Add a value here and a class there together; the unit test in
+ * tests/unit/wp-16/csp-style-attr.test.ts fails when the two lists differ.
+ */
+const MIN_CLASS = {
+  '9rem': 'grid--min-9',
+  '15rem': 'grid--min-15',
+  '16rem': 'grid--min-16',
+  '17rem': 'grid--min-17',
+  '18rem': 'grid--min-18',
+  '20rem': 'grid--min-20',
+} as const;
+
 interface Props {
-  /** Minimum column width, any CSS length. */
-  min?: string;
-  gap?: string;
+  /** Minimum column width. One of the values with a class in layout.css. */
+  min?: keyof typeof MIN_CLASS;
   as?: 'div' | 'ul' | 'ol';
 }
 
-const { min = '16rem', gap, as: Tag = 'div' } = Astro.props;
-const style = `--grid-min:${min};${gap ? `--grid-gap:${gap};` : ''}`;
+const { min = '16rem', as: Tag = 'div' } = Astro.props;
+const minClass: string | undefined = MIN_CLASS[min];
+if (minClass === undefined) {
+  throw new Error(`Grid: min="${min}" has no class. Use one of ${Object.keys(MIN_CLASS).join(', ')}, or add a .grid--min-* class in layout.css and a row here.`);
+}
 ---
 
-<Tag class="grid" style={style} role={Tag === 'div' ? undefined : 'list'}><slot /></Tag>
+<Tag class:list={['grid', minClass]} role={Tag === 'div' ? undefined : 'list'}><slot /></Tag>

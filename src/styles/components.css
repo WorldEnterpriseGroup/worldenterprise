@@ -916,6 +916,15 @@
     background: var(--color-bg-soft);
   }
 
+  /* Sizes. Medium is the default 3.5rem above. */
+  .hex--sm {
+    --hex-size: 2.5rem;
+  }
+
+  .hex--lg {
+    --hex-size: 5rem;
+  }
+
   .hex--tint {
     background: var(--we-tint);
   }
@@ -1582,13 +1591,13 @@
     font-family: var(--ff-mono);
     font-size: var(--fs-xs);
 
-    &::before {
-      content: '';
+    /* The colour is the fill of an inline SVG rect, a presentation attribute that the CSP allows, so the swatch needs no style attribute. */
+    .swatch__chip {
       display: block;
+      inline-size: 100%;
       block-size: 3rem;
       border-radius: var(--radius-sm);
       border: var(--border-hair);
-      background: var(--swatch);
     }
   }
 }

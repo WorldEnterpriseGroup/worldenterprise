@@ -35,8 +35,8 @@ const dark = topic === 'fundable';
 >
   <defs>
     <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" style={`stop-color:${model.from}`}></stop>
-      <stop offset="1" style={`stop-color:${model.to}`}></stop>
+      <stop offset="0" stop-color={model.from}></stop>
+      <stop offset="1" stop-color={model.to}></stop>
     </linearGradient>
   </defs>
   <rect width={model.width} height={model.height} fill={`url(#${gradientId})`}></rect>
