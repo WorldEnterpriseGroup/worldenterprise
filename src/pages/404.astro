@@ -1,4 +1,5 @@
 ---
+import PageHero from '../components/hero/PageHero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { resolveNav } from '../data/nav.ts';
 import { getRouteState } from '../lib/route-state.ts';
@@ -11,6 +12,7 @@ import { href } from '../lib/url.ts';
 const state = await getRouteState();
 const searchLive = state.isLive('/search/');
 const sections = resolveNav(state.isLive).slice(0, 6);
+const siteMap = state.isLive('/sitemap/') ? { label: 'Open the site map', href: '/sitemap/' } : undefined;
 ---
 
 <BaseLayout
@@ -19,21 +21,16 @@ const sections = resolveNav(state.isLive).slice(0, 6);
   path="/404.html"
   crumbs={[]}
 >
-  <section class="page-header">
-    <div class="container stack">
-      <p class="eyebrow">Error 404</p>
-      <h1>This page is not here</h1>
-      <div class="rule" aria-hidden="true"></div>
-      <p class="lead">The address may have changed, or the page may not exist yet. Search the site or pick a section below.</p>
-    </div>
-  </section>
+  <PageHero
+    eyebrow="Error 404"
+    title="This page is not here"
+    lead="The address may have changed, or the page may not exist yet. Search the site or pick a section below."
+    primary={{ label: 'Go to the home page', href: '/' }}
+    secondary={siteMap}
+    measure="prose"
+  />
   <div class="section">
     <div class="container container--prose stack">
-      <div class="cluster">
-        <a class="btn btn--primary" href={href('/')}>Go to the home page</a>
-        {state.isLive('/sitemap/') && <a class="btn btn--secondary" href={href('/sitemap/')}>Open the site map</a>}
-      </div>
-
       {
         searchLive && (
           <form class="not-found__search stack" action={href('/search/')} method="get" role="search" aria-label="Search the site">

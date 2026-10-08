@@ -5,6 +5,7 @@ import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
 import Callout from '../../components/ui/Callout.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import DataTable from '../../components/ui/DataTable.astro';
+import { TALK_TO_WE } from '../../components/hero/ctas.ts';
 import { getPageEntry } from '../../components/network/pageEntry.ts';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
 import { href } from '../../lib/url.ts';
@@ -36,6 +37,8 @@ const doesNot = [
   lead="WE prepares a company's evidence. It does not raise money, place securities or promise funding."
   updated={page.data.updated}
   ogSlot="og-network"
+  primary={TALK_TO_WE}
+  secondary={{ label: 'How investor readiness works', href: '/fundability/' }}
 >
   <Callout tone="notice" title="Not an offer of securities">
     <p>

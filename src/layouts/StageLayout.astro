@@ -1,6 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import PageHeader from '../components/layout/PageHeader.astro';
+import PageHero from '../components/hero/PageHero.astro';
+import { APPLY } from '../components/hero/ctas.ts';
+import { getStage } from '../components/program/stages.ts';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 import ContextualNext from '../components/blocks/ContextualNext.astro';
@@ -20,13 +22,26 @@ type Props = PageMeta & HeaderProps & {
   next?: readonly NextItem[];
 };
 
-const { eyebrow, lead, stage, next = [], ...meta } = Astro.props;
+const { eyebrow, lead, stage, next = [], primary = APPLY, secondary, photo, art, measure, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const altitude = stage ? ALTITUDES[stage] : undefined;
+// A stage page shows its own stage image. The pages that are about the path as a whole show the flower, or the trail they pass.
+const heroPhoto = photo ?? (stage ? getStage(stage).slot : undefined);
+const heroArt = heroPhoto !== undefined ? art : (art ?? { variant: 'flower' as const });
 ---
 
 <BaseLayout {...meta} crumbs={crumbs}>
-  <PageHeader title={meta.title} eyebrow={eyebrow ?? (altitude ? `${altitude} altitude` : undefined)} lead={lead} crumbs={crumbs} />
+  <PageHero
+    title={meta.title}
+    eyebrow={eyebrow ?? (altitude ? `${altitude} altitude` : undefined)}
+    lead={lead}
+    crumbs={crumbs}
+    primary={primary}
+    secondary={secondary}
+    photo={heroPhoto}
+    art={heroArt}
+    measure={measure}
+  />
   <div class="section">
     <div class="container stack">
       <slot />

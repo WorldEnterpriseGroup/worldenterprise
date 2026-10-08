@@ -1,5 +1,6 @@
 ---
 import { getEntry, render } from 'astro:content';
+import { jumpTo } from '../../components/hero/ctas.ts';
 import TeamComposer from '../../components/islands/we-team-composer/TeamComposer.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import ToolLayout from '../../layouts/ToolLayout.astro';
@@ -16,6 +17,8 @@ const { data } = entry;
   eyebrow={data.eyebrow}
   lead="Sketch the roles you need. No sign-up, no price."
   path="/tools/team-composer/"
+  primary={jumpTo('Start composing', '#composer')}
+  secondary={{ label: 'How seats and pricing work', href: '/pricing/' }}
   updated={data.updated}
   draft={data.draft}
   crumbs={[
@@ -25,7 +28,7 @@ const { data } = entry;
   ]}
   noscript="JavaScript is off. You can still enter seats for each role and continue to the application. The live summary needs JavaScript."
 >
-  <TeamComposer />
+  <div id="composer"><TeamComposer /></div>
   <div class="prose composer-notes"><Content /></div>
   <CtaBand
     slot="after"

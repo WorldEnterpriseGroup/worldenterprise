@@ -1,6 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import PageHeader from '../components/layout/PageHeader.astro';
+import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 type Props = PageMeta & HeaderProps & {
@@ -9,12 +9,12 @@ type Props = PageMeta & HeaderProps & {
   noscript?: string;
 };
 
-const { eyebrow, lead, noscript, ...meta } = Astro.props;
+const { eyebrow, lead, noscript, primary, secondary, photo, art, measure = 'wide', ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 ---
 
 <BaseLayout {...meta} crumbs={crumbs}>
-  <PageHeader title={meta.title} eyebrow={eyebrow ?? 'Tool'} lead={lead} crumbs={crumbs} />
+  <PageHero title={meta.title} eyebrow={eyebrow ?? 'Tool'} lead={lead} crumbs={crumbs} primary={primary} secondary={secondary} photo={photo} art={art} measure={measure} />
   <div class="section">
     <div class="container stack">
       {noscript && <noscript><p class="callout">{noscript}</p></noscript>}

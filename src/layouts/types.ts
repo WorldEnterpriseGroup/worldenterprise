@@ -1,4 +1,5 @@
 import type { SlotId } from '../assets/photo/slots.ts';
+import type { HeroArtProps, HeroCta, HeroMeasure } from '../components/hero/types.ts';
 import type { Crumb } from '../lib/breadcrumbs.ts';
 import type { JsonLdNode, PageSchemaType } from '../lib/schema.ts';
 
@@ -27,10 +28,23 @@ export interface PageMeta {
   preloadImage?: { readonly href: string; readonly type: string };
 }
 
-/** Header block shared by layouts that render a PageHeader. */
-export interface HeaderProps {
-  eyebrow?: string;
-  lead?: string;
+/** Hero options for the layouts that open with a hero. Each layout supplies the defaults that suit its template. */
+export interface HeroProps {
+  /** The main action above the fold. A fragment href ("#form") links inside the page. */
+  primary?: HeroCta | undefined;
+  secondary?: HeroCta | undefined;
+  /** Photo slot for the hero media frame. It replaces the vector art. */
+  photo?: SlotId | undefined;
+  /** Vector art for the hero media frame when no photo is given. */
+  art?: HeroArtProps | undefined;
+  /** How wide the hero copy runs. Layouts match it to the body below so both share one left edge. */
+  measure?: HeroMeasure | undefined;
+}
+
+/** Header block shared by layouts that open with a hero. */
+export interface HeaderProps extends HeroProps {
+  eyebrow?: string | undefined;
+  lead?: string | undefined;
 }
 
 export interface Heading {

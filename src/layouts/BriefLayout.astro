@@ -1,6 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import Breadcrumbs from '../components/layout/Breadcrumbs.astro';
+import HeroArticle from '../components/hero/HeroArticle.astro';
 import MethodologyBox from '../components/blocks/MethodologyBox.astro';
 import SourcesList from '../components/blocks/SourcesList.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
@@ -32,15 +32,7 @@ const report = articleNode({ path: meta.path, headline: meta.title, description:
 ---
 
 <BaseLayout {...meta} crumbs={crumbs} ogType="article" published={publishedDate} updated={updatedDate ?? publishedDate} jsonLd={[...(meta.jsonLd ?? []), report]}>
-  <header class="page-header">
-    <div class="container stack">
-      <Breadcrumbs crumbs={crumbs} />
-      <p class="eyebrow">Research brief</p>
-      <h1>{meta.title}</h1>
-      <div class="rule" aria-hidden="true"></div>
-      <p class="lead">{subtitle}</p>
-    </div>
-  </header>
+  <HeroArticle crumbs={crumbs} eyebrow="Research brief" title={meta.title} lead={subtitle} />
   <div class="section">
     <div class="container with-rail">
       <div class="prose">

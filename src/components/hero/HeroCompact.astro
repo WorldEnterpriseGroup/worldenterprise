@@ -19,6 +19,7 @@ interface Props {
 }
 
 const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, secondary, measure = 'default' } = Astro.props;
+const hasActions = Astro.slots.has('actions');
 const containerClass = { default: 'container', wide: 'container container--wide', prose: 'container container--prose', rail: 'container' }[measure];
 ---
 
@@ -30,7 +31,7 @@ const containerClass = { default: 'container', wide: 'container container--wide'
       <Heading id={id}>{title}</Heading>
       <div class="rule" aria-hidden="true"></div>
       {lead && <p class="lead">{lead}</p>}
-      <HeroActions primary={primary} secondary={secondary} />
+      <HeroActions primary={primary} secondary={secondary} extra={hasActions}>{hasActions && <slot name="actions" />}</HeroActions>
       <slot />
     </div>
   </div>

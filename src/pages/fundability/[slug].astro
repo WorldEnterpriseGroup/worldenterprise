@@ -39,6 +39,8 @@ const { slug = '' } = Astro.params;
 const { Content } = await render(entry);
 const { data } = entry;
 const next = await liveItems(NEXT[slug] ?? []);
+// The first next step is the one action a reader of this guide takes: a self-check or a template to copy.
+const nextStep = next[0] ? { label: next[0].title, href: next[0].href } : undefined;
 ---
 
 <GuideLayout
@@ -46,6 +48,7 @@ const next = await liveItems(NEXT[slug] ?? []);
   description={data.description}
   path={`/fundability/${slug}/`}
   eyebrow="Fundability guide"
+  primary={nextStep}
   lead={data.description}
   disclaimers={data.disclaimers}
   sources={data.sources}

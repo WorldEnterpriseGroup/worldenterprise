@@ -644,6 +644,11 @@
     },
     {
       "wp": "WP-17",
+      "path": "tests/unit/wp-15/image-type.test.ts",
+      "reason": "Wave 4: the first-viewport images moved from the page bodies into the hero photo slot, so the WP-15 file list that asserted an <img> in those pages now asserts the hero component instead."
+    },
+    {
+      "wp": "WP-17",
       "path": "src/content.config.ts",
       "reason": "Wave 4 brief: the optional services `artifacts` field left open by WP-15 (WP-02 request 2)."
     }

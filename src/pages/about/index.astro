@@ -6,6 +6,7 @@ import CellTrail from '../../components/ui/CellTrail.astro';
 import FactBand from '../../components/ui/FactBand.astro';
 import Section from '../../components/ui/Section.astro';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import { APPLY, TALK_TO_WE } from '../../components/hero/ctas.ts';
 import { flags } from '../../data/flags.ts';
 import { site } from '../../data/site.ts';
 import { href } from '../../lib/url.ts';
@@ -14,7 +15,7 @@ const entry = await loadPage('about/index');
 const entity = flags.pbcWording ? site.legalLine : `${site.legalName}, registered in Delaware`;
 ---
 
-<PageShell entry={entry} path="/about/" ogSlot="og-about" schemaType="AboutPage" lead={site.description}>
+<PageShell entry={entry} path="/about/" ogSlot="og-about" schemaType="AboutPage" lead={site.description} photo="inset-about" primary={APPLY} secondary={TALK_TO_WE}>
   <Fragment slot="after">
     <Section tone="soft" labelledby="about-path">
       <div class="container stack">

@@ -1,8 +1,8 @@
 ---
 import { getEntry, render } from 'astro:content';
-import { getPhoto } from '../../assets/photo/index.ts';
 import AsideStyles from '../../components/forms/AsideStyles.astro';
 import ContactForm from '../../components/forms/ContactForm.astro';
+import { jumpTo } from '../../components/hero/ctas.ts';
 import { publicContactAddress } from '../../data/forms.ts';
 import { site } from '../../data/site.ts';
 import FormLayout from '../../layouts/FormLayout.astro';
@@ -12,7 +12,6 @@ const entry = await getEntry('pages', 'contact/contact');
 if (!entry) throw new Error('Missing content entry pages/contact/contact (src/content/pages/contact/contact.mdx).');
 const { Content } = await render(entry);
 const { data } = entry;
-const inset = getPhoto('inset-contact');
 const address = publicContactAddress();
 ---
 
@@ -22,6 +21,8 @@ const address = publicContactAddress();
   eyebrow={data.eyebrow}
   lead="Ask a question, request the current seat rate, or report a correction. WE is fully remote."
   path="/contact/"
+  photo="inset-contact"
+  primary={jumpTo('Write to WE', '#contact-form')}
   updated={data.updated}
   draft={data.draft}
   schemaType="ContactPage"
@@ -32,7 +33,6 @@ const address = publicContactAddress();
 
   <Fragment slot="aside">
     <AsideStyles />
-    <img class="aside-image" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} fetchpriority="high" decoding="async" />
     <h2 class="aside-title">Where WE is</h2>
     <p>
       WE is fully remote and has no office to visit. {site.legalName} is registered in Delaware.

@@ -5,6 +5,7 @@ import CtaBand from '../../components/ui/CtaBand.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import Steps from '../../components/ui/Steps.astro';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
+import { APPLY } from '../../components/hero/ctas.ts';
 import { getPageEntry } from '../../components/network/pageEntry.ts';
 import { founderStageRows } from '../../components/program/stages.ts';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
@@ -47,6 +48,8 @@ const notFor = [
   lead="WE builds with founders who know whose problem they want to solve. Here is what that asks of you."
   updated={page.data.updated}
   ogSlot="og-network"
+  primary={APPLY}
+  secondary={{ label: 'See the operator roles', href: '/network/operators/' }}
 >
   <Content />
 

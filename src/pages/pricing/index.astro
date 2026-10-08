@@ -2,13 +2,12 @@
 import { getEntry, render } from 'astro:content';
 import { getPhoto } from '../../assets/photo/index.ts';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
-import Button from '../../components/ui/Button.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import FactBand from '../../components/ui/FactBand.astro';
+import { COMPOSE_TEAM } from '../../components/hero/ctas.ts';
 import { flags } from '../../data/flags.ts';
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { href } from '../../lib/url.ts';
 import { ROLES } from '../../scripts/team-composer.ts';
 
 const entry = await getEntry('pages', 'pricing/pricing');
@@ -16,7 +15,6 @@ if (!entry) throw new Error('Missing content entry pages/pricing/pricing (src/co
 const { Content } = await render(entry);
 const { data } = entry;
 
-const inset = getPhoto('inset-pricing');
 const band = getPhoto('band-3');
 
 /** The rate column exists only while the operator has published the seat rate (claim C-06, FLAG-PRICE). */
@@ -32,6 +30,9 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
   eyebrow={data.eyebrow}
   lead="How a dedicated team seat works, and how to ask for the current rate."
   path="/pricing/"
+  photo="inset-pricing"
+  primary={{ label: 'Request the current seat rate', href: '/contact/?topic=seat-rate' }}
+  secondary={COMPOSE_TEAM}
   updated={data.updated}
   draft={data.draft}
   ogSlot="og-default"
@@ -47,10 +48,6 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
           { label: 'Scaling', value: 'Up or down by notice' },
         ]}
       />
-      <div class="cluster">
-        <Button href={href('/contact/?topic=seat-rate')}>Request the current seat rate</Button>
-        <Button href={href('/tools/team-composer/')} variant="secondary">Compose your team</Button>
-      </div>
     </div>
     <figure class="seatflow" aria-labelledby="seatflow-title">
       <figcaption id="seatflow-title" class="seatflow__title">How a seat is staffed and steered</figcaption>
@@ -77,7 +74,6 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
   <NoFundingDisclaimer />
 
   <div class="pricing-visual">
-    <img src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
     <img src={band.src.src} width={band.src.width} height={band.src.height} alt={band.alt} loading="lazy" decoding="async" />
   </div>
 
@@ -145,20 +141,10 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
       color: var(--color-text-muted);
     }
 
-    .pricing-visual {
-      display: grid;
-      gap: var(--sp-5);
-      align-items: start;
-
-      @media (min-width: 48rem) {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-      }
-
-      & img {
-        inline-size: 100%;
-        block-size: auto;
-        border-radius: var(--radius-md);
-      }
+    .pricing-visual img {
+      inline-size: min(100%, 40rem);
+      block-size: auto;
+      border-radius: var(--radius-md);
     }
   }
 </style>

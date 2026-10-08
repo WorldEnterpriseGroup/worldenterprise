@@ -7,15 +7,17 @@ interface Props {
   secondary?: HeroCta | undefined;
   /** inverse puts white buttons on the night-blue console hero. */
   tone?: 'default' | 'inverse';
+  /** True when the default slot carries more actions, for example the copy button of a template. */
+  extra?: boolean;
 }
 
-const { primary, secondary, tone = 'default' } = Astro.props;
+const { primary, secondary, tone = 'default', extra = false } = Astro.props;
 const primaryClass = tone === 'inverse' ? 'btn btn--inverse' : 'btn btn--primary';
 const secondaryClass = tone === 'inverse' ? 'btn btn--quiet-inverse' : 'btn btn--secondary';
 ---
 
 {
-  (primary || secondary) && (
+  (primary || secondary || extra) && (
     <div class="hero__actions">
       {primary && (
         <a class={primaryClass} href={href(primary.href)} data-hero-action="primary" download={primary.download ? '' : undefined}>
@@ -27,6 +29,7 @@ const secondaryClass = tone === 'inverse' ? 'btn btn--quiet-inverse' : 'btn btn-
           {secondary.label}
         </a>
       )}
+      {extra && <slot />}
     </div>
   )
 }

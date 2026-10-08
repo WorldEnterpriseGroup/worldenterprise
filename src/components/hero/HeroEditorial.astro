@@ -34,6 +34,7 @@ const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, seco
 const slotId = photo ?? inset;
 const image = slotId ? getPhoto(slotId) : undefined;
 const hasMediaSlot = Astro.slots.has('media');
+const hasActions = Astro.slots.has('actions');
 // Reading-column measures have no room beside the copy, so they never carry a media frame.
 const beside = measure === 'default' || measure === 'wide';
 const showMedia = beside && (image !== undefined || hasMediaSlot || art !== undefined);
@@ -48,7 +49,7 @@ const containerClass = { default: 'container', wide: 'container container--wide'
       <Heading id={id}>{title}</Heading>
       <div class="rule" aria-hidden="true"></div>
       {lead && <p class="lead">{lead}</p>}
-      <HeroActions primary={primary} secondary={secondary} />
+      <HeroActions primary={primary} secondary={secondary} extra={hasActions}>{hasActions && <slot name="actions" />}</HeroActions>
       <slot />
     </div>
     {

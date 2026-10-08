@@ -5,6 +5,7 @@ import Callout from '../../../components/ui/Callout.astro';
 import CtaBand from '../../../components/ui/CtaBand.astro';
 import DataTable from '../../../components/ui/DataTable.astro';
 import Grid from '../../../components/ui/Grid.astro';
+import { APPLY, COMPOSE_TEAM } from '../../../components/hero/ctas.ts';
 import { getPageEntry } from '../../../components/network/pageEntry.ts';
 import { SEAT_ROLES } from '../../../components/network/roles.ts';
 import MarketingLayout from '../../../layouts/MarketingLayout.astro';
@@ -24,6 +25,8 @@ const limits = SEAT_ROLES.map((role) => [role.title, role.lines.map((l) => `Line
   lead="The roles WE places around your team, and where each one stops."
   updated={page.data.updated}
   ogSlot="og-network"
+  primary={COMPOSE_TEAM}
+  secondary={APPLY}
 >
   <Content />
 

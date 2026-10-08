@@ -1,9 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import PageHeader from '../components/layout/PageHeader.astro';
+import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
-import { href } from '../lib/url.ts';
 
 type Props = PageMeta & HeaderProps & {
   title: string;
@@ -12,19 +11,29 @@ type Props = PageMeta & HeaderProps & {
   instructions?: string;
 };
 
-const { eyebrow, lead, markdownHref, instructions, ...meta } = Astro.props;
+const { eyebrow, lead, markdownHref, instructions, primary, secondary, photo, art, measure = 'prose', ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
+// The download is the main action of a template, so it sits in the hero. Controls the page adds (copy, print) join it there.
+const download = markdownHref !== undefined ? { label: 'Download as Markdown', href: markdownHref, download: true } : undefined;
 ---
 
 <BaseLayout {...meta} crumbs={crumbs}>
-  <PageHeader title={meta.title} eyebrow={eyebrow ?? 'Template'} lead={lead} crumbs={crumbs} measure="prose" />
+  <PageHero
+    title={meta.title}
+    eyebrow={eyebrow ?? 'Template'}
+    lead={lead}
+    crumbs={crumbs}
+    primary={primary ?? download}
+    secondary={secondary}
+    photo={photo}
+    art={art}
+    measure={measure}
+  >
+    <Fragment slot="actions"><slot name="actions" /></Fragment>
+  </PageHero>
   <div class="section">
     <div class="container container--prose stack">
       {instructions && <p class="callout"><strong>How to use this.</strong> {instructions}</p>}
-      <div class="cluster no-print">
-        <slot name="actions" />
-        {markdownHref && <a class="btn btn--secondary" href={href(markdownHref)} download>Download as Markdown</a>}
-      </div>
       <div class="prose template-body">
         <slot />
       </div>

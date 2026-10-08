@@ -1,9 +1,9 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import PageHeader from '../components/layout/PageHeader.astro';
+import PageHero from '../components/hero/PageHero.astro';
+import { APPLY, COMPOSE_TEAM } from '../components/hero/ctas.ts';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
-import HexIcon from '../components/ui/HexIcon.astro';
 import LimitsBlock from '../components/blocks/LimitsBlock.astro';
 import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
 import type { ServiceLine } from '../data/nav.ts';
@@ -20,7 +20,7 @@ type Props = PageMeta & HeaderProps & {
   doesNotCover: readonly string[];
 };
 
-const { eyebrow, lead, line, heading, covers = [], doesNotCover, ...meta } = Astro.props;
+const { eyebrow, lead, line, heading, covers = [], doesNotCover, primary = APPLY, secondary = COMPOSE_TEAM, photo, art, measure, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const serviceNode = {
   '@type': 'Service',
@@ -34,9 +34,17 @@ const serviceNode = {
 ---
 
 <BaseLayout {...meta} crumbs={crumbs} jsonLd={[...(meta.jsonLd ?? []), serviceNode]}>
-  <PageHeader title={heading ?? meta.title} eyebrow={eyebrow ?? `Service line ${line}`} lead={lead} crumbs={crumbs}>
-    <HexIcon line={line} size={72} />
-  </PageHeader>
+  <PageHero
+    title={heading ?? meta.title}
+    eyebrow={eyebrow ?? `Service line ${line}`}
+    lead={lead}
+    crumbs={crumbs}
+    primary={primary}
+    secondary={secondary}
+    photo={photo}
+    art={photo === undefined ? (art ?? { variant: 'flower', glyph: line }) : art}
+    measure={measure}
+  />
   <div class="section">
     <div class="container with-rail">
       <div class="stack prose">

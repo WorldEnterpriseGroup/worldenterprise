@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import HexAtlas from '../../components/ui/HexAtlas.astro';
 import CellTrail from '../../components/ui/CellTrail.astro';
 import Callout from '../../components/ui/Callout.astro';
 import Card from '../../components/ui/Card.astro';
@@ -37,7 +38,21 @@ const trail = [
   updated={page.data.updated}
   ogSlot="og-network"
   subtree={subtree}
+  hero="console"
+  secondary={{ label: 'See the operator roles', href: '/network/operators/' }}
 >
+  <Fragment slot="panel">
+    <p class="eyebrow">Three places to start</p>
+    <HexAtlas
+      label="The three parts of the WE network"
+      cells={[
+        { label: 'Founders', href: '/founders/', line: 'F' },
+        { label: 'Operator roles', href: '/network/operators/', line: 'O' },
+        { label: 'Investors', href: '/investors/', line: 'I' },
+      ]}
+    />
+  </Fragment>
+
   <NetworkIntro />
 
   <section aria-labelledby="network-parts" class="stack">

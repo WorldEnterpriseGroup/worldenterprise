@@ -1,0 +1,58 @@
+---
+import type { Crumb } from '../../lib/breadcrumbs.ts';
+import HeroCompact from './HeroCompact.astro';
+import HeroEditorial from './HeroEditorial.astro';
+import type { SlotId } from '../../assets/photo/slots.ts';
+import type { HeroArtProps, HeroCta, HeroMeasure } from './types.ts';
+
+/**
+ * The opener the layouts share. With a photo or vector art it is the editorial hero (copy beside a media frame);
+ * with neither it is the compact hero (copy only). Either way the title, eyebrow, lead and actions come out of one
+ * copy stack, so a page changes its hero by passing or dropping `photo` and `art`.
+ * The `actions` slot adds controls beside the primary and secondary links.
+ */
+interface Props {
+  crumbs?: readonly Crumb[];
+  eyebrow?: string | undefined;
+  title: string;
+  lead?: string | undefined;
+  primary?: HeroCta | undefined;
+  secondary?: HeroCta | undefined;
+  photo?: SlotId | undefined;
+  art?: HeroArtProps | undefined;
+  measure?: HeroMeasure | undefined;
+}
+
+const { crumbs = [], eyebrow, title, lead, primary, secondary, photo, art, measure = 'default' } = Astro.props;
+const copy = { crumbs, eyebrow, title, lead, primary, secondary, measure };
+const editorial = photo !== undefined || art !== undefined;
+const hasActions = Astro.slots.has('actions');
+---
+
+{
+  editorial ? (
+    hasActions ? (
+      <HeroEditorial {...copy} photo={photo} art={art}>
+        <slot />
+        <Fragment slot="actions">
+          <slot name="actions" />
+        </Fragment>
+      </HeroEditorial>
+    ) : (
+      <HeroEditorial {...copy} photo={photo} art={art}>
+        <slot />
+      </HeroEditorial>
+    )
+  ) : hasActions ? (
+    <HeroCompact {...copy}>
+      <slot />
+      <Fragment slot="actions">
+        <slot name="actions" />
+      </Fragment>
+    </HeroCompact>
+  ) : (
+    <HeroCompact {...copy}>
+      <slot />
+    </HeroCompact>
+  )
+}

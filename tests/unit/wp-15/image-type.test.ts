@@ -63,7 +63,16 @@ test('audit:images rejects a preload that no <img> on the page uses (negative pr
   assert.match(audit('<link rel="preload" as="image" href="/_astro/other.avif" type="image/avif">'), /preloaded image is not used by any <img>/);
 });
 
-test('the pages whose first-viewport images were lazy-loaded now load them at high priority', () => {
+test('the first-viewport images load at high priority from the hero, and the pages no longer render a second one', () => {
+  // WP-17 moved the program, playbooks, fundability, apply, contact and stage images into the hero `photo` slot.
+  const hero = readFileSync(`${ROOT}src/components/hero/HeroEditorial.astro`, 'utf8');
+  const images = hero.match(/<img\b[^>]*>/g) ?? [];
+  assert.ok(images.length > 0, 'HeroEditorial renders the photo');
+  for (const image of images) {
+    assert.match(image, /fetchpriority="high"/, image);
+    assert.doesNotMatch(image, /loading="lazy"/, image);
+    assert.match(image, /decoding="async"/, image);
+  }
   for (const file of [
     'src/pages/program/index.astro',
     'src/pages/playbooks/index.astro',
@@ -72,13 +81,6 @@ test('the pages whose first-viewport images were lazy-loaded now load them at hi
     'src/pages/contact/index.astro',
     'src/components/program/StageBody.astro',
   ]) {
-    const source = readFileSync(`${ROOT}${file}`, 'utf8');
-    const images = source.match(/<img\b[^>]*>/g) ?? [];
-    assert.ok(images.length > 0, `${file} renders an image`);
-    for (const image of images) {
-      assert.match(image, /fetchpriority="high"/, `${file}: ${image}`);
-      assert.doesNotMatch(image, /loading="lazy"/, `${file}: ${image}`);
-      assert.match(image, /decoding="async"/, `${file}: ${image}`);
-    }
+    assert.doesNotMatch(readFileSync(`${ROOT}${file}`, 'utf8'), /<img\b/, `${file} opens with the hero image, so its body renders no second image`);
   }
 });

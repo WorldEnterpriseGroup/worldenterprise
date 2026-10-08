@@ -1,9 +1,9 @@
 ---
 import { getEntry, render } from 'astro:content';
-import { getPhoto } from '../../assets/photo/index.ts';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
 import AsideStyles from '../../components/forms/AsideStyles.astro';
 import ApplyForm from '../../components/forms/ApplyForm.astro';
+import { jumpTo } from '../../components/hero/ctas.ts';
 import Steps from '../../components/ui/Steps.astro';
 import FormLayout from '../../layouts/FormLayout.astro';
 import { href } from '../../lib/url.ts';
@@ -12,7 +12,6 @@ const entry = await getEntry('pages', 'apply/apply');
 if (!entry) throw new Error('Missing content entry pages/apply/apply (src/content/pages/apply/apply.mdx).');
 const { Content } = await render(entry);
 const { data } = entry;
-const inset = getPhoto('inset-apply');
 ---
 
 <FormLayout
@@ -21,6 +20,8 @@ const inset = getPhoto('inset-apply');
   eyebrow={data.eyebrow}
   lead="Tell WE about your SaaS idea, where it stands and the team you have in mind."
   path="/apply/"
+  photo="inset-apply"
+  primary={jumpTo('Start the application', '#apply-form')}
   updated={data.updated}
   draft={data.draft}
   ogSlot="og-default"
@@ -30,7 +31,6 @@ const inset = getPhoto('inset-apply');
 
   <Fragment slot="aside">
     <AsideStyles />
-    <img class="aside-image" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} fetchpriority="high" decoding="async" />
     <h2 class="aside-title">What happens next</h2>
     <Steps
       headingLevel={3}

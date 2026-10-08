@@ -1,7 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
-import { getPhoto } from '../../assets/photo/index.ts';
 import RelatedRail from '../../components/blocks/RelatedRail.astro';
 import Button from '../../components/ui/Button.astro';
 import PlaybookTrail from '../../components/playbooks/PlaybookTrail.astro';
@@ -36,7 +35,7 @@ const templates = await liveItems(
   })),
 );
 const related = await liveItems(PLAYBOOK_RELATED[slug] ?? []);
-const photo = position >= 0 ? getPhoto(PLAYBOOK_SEQUENCE[position]?.slot ?? 'pb-1') : undefined;
+const photo = position >= 0 ? PLAYBOOK_SEQUENCE[position]?.slot : undefined;
 ---
 
 <PlaybookLayout
@@ -48,6 +47,7 @@ const photo = position >= 0 ? getPhoto(PLAYBOOK_SEQUENCE[position]?.slot ?? 'pb-
   lead={data.description}
   steps={data.steps}
   artifacts={templates}
+  photo={photo}
   updated={data.updated}
   draft={isDraft(entry)}
 >
@@ -57,7 +57,6 @@ const photo = position >= 0 ? getPhoto(PLAYBOOK_SEQUENCE[position]?.slot ?? 'pb-
     <ul>
       {data.artifacts.map((artifact) => <li>{artifact}</li>)}
     </ul>
-    {photo && <img class="pb-photo" src={photo.src.src} width={photo.src.width} height={photo.src.height} alt={photo.alt} loading="lazy" decoding="async" />}
   </section>
 
   <Fragment slot="after">
@@ -99,13 +98,3 @@ const photo = position >= 0 ? getPhoto(PLAYBOOK_SEQUENCE[position]?.slot ?? 'pb-
     }
   </Fragment>
 </PlaybookLayout>
-
-<style>
-  @layer pages {
-    .pb-photo {
-      inline-size: min(100%, 32rem);
-      block-size: auto;
-      border-radius: var(--radius-md);
-    }
-  }
-</style>

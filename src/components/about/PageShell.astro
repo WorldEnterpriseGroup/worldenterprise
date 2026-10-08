@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
 import type { SlotId } from '../../assets/photo/slots.ts';
+import type { HeroCta } from '../hero/types.ts';
 import type { PageSchemaType } from '../../lib/schema.ts';
 
 interface Props {
@@ -11,9 +12,13 @@ interface Props {
   lead?: string;
   ogSlot?: SlotId;
   schemaType?: PageSchemaType;
+  /** Hero actions and photo, passed through to the marketing layout. */
+  primary?: HeroCta | undefined;
+  secondary?: HeroCta | undefined;
+  photo?: SlotId | undefined;
 }
 
-const { entry, path, lead, ogSlot, schemaType } = Astro.props;
+const { entry, path, lead, ogSlot, schemaType, primary, secondary, photo } = Astro.props;
 const { Content } = await render(entry);
 const { title, description, eyebrow, updated, draft } = entry.data;
 ---
@@ -25,6 +30,9 @@ const { title, description, eyebrow, updated, draft } = entry.data;
   lead={lead ?? description}
   updated={updated}
   draft={draft}
+  primary={primary}
+  secondary={secondary}
+  photo={photo}
   {...(eyebrow !== undefined ? { eyebrow } : {})}
   {...(ogSlot !== undefined ? { ogSlot } : {})}
   {...(schemaType !== undefined ? { schemaType } : {})}

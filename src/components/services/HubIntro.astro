@@ -1,75 +1,14 @@
 ---
-import { getPhoto } from '../../assets/photo/index.ts';
-import { href } from '../../lib/url.ts';
-import Button from '../ui/Button.astro';
-import ServiceLinesAtlas from './ServiceLinesAtlas.astro';
-import type { ServiceSummary } from './data.ts';
-
-interface Props {
-  lines: readonly ServiceSummary[];
-}
-
-const { lines } = Astro.props;
-const inset = getPhoto('inset-services');
+/**
+ * The short orientation under the services hero. The hero carries the actions and the atlas of the seven lines, so this
+ * block is text only.
+ */
 ---
 
-<div class="hub-intro">
-  <div class="hub-intro__copy stack">
-    <h2 id="hub-intro-title">Pick the lines your company needs</h2>
-    <p>
-      Each line is a defined piece of work with a clear edge. You choose the lines that fit your stage, and a line you
-      do not choose is not provided. One dedicated team, steered by WE, carries the work across all of them.
-    </p>
-    <div class="cluster">
-      <Button href={href('/apply/')}>Apply</Button>
-      <Button href={href('/tools/team-composer/')} variant="secondary">Compose your team</Button>
-    </div>
-    <img
-      class="hub-intro__image"
-      src={inset.src.src}
-      width="512"
-      height="384"
-      alt={inset.alt}
-      decoding="async"
-    />
-  </div>
-  <div class="hub-intro__panel stack" aria-labelledby="hub-intro-title">
-    <p class="eyebrow">Service lines A to G</p>
-    <ServiceLinesAtlas lines={lines} />
-  </div>
+<div class="hub-intro stack">
+  <h2 id="hub-intro-title">Pick the lines your company needs</h2>
+  <p>
+    Each line is a defined piece of work with a clear edge. You choose the lines that fit your stage, and a line you
+    do not choose is not provided. One dedicated team, steered by WE, carries the work across all of them.
+  </p>
 </div>
-
-<style>
-  @layer pages {
-    .hub-intro {
-      display: grid;
-      gap: var(--sp-6);
-      align-items: start;
-
-      @media (min-width: 62rem) {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      }
-    }
-
-    .hub-intro__panel {
-      padding: var(--sp-5);
-      background: var(--color-bg-soft);
-      border: var(--border-hair);
-      border-radius: var(--radius-md);
-    }
-
-    .hub-intro__image {
-      display: none;
-      inline-size: 100%;
-      max-inline-size: 32rem;
-      block-size: auto;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      border-radius: var(--radius-md);
-
-      @media (min-width: 62rem) {
-        display: block;
-      }
-    }
-  }
-</style>

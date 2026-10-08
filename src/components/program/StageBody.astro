@@ -1,5 +1,4 @@
 ---
-import { getPhoto } from '../../assets/photo/index.ts';
 import LimitsBlock from '../blocks/LimitsBlock.astro';
 import NoFundingDisclaimer from '../blocks/NoFundingDisclaimer.astro';
 import Card from '../ui/Card.astro';
@@ -16,18 +15,12 @@ interface Props {
 }
 
 const { stage } = Astro.props;
-const image = getPhoto(stage.slot);
 const current = STAGES.findIndex((s) => s.id === stage.id);
 const trail = STAGES.map((s) => ({ label: `${s.name} (${s.altitude})`, href: href(s.path) }));
 ---
 
 <div class="stagebody">
-  <div class="stagebody__intro">
-    <div class="prose measure"><slot /></div>
-    <div class="hex-frame stagebody__media">
-      <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} fetchpriority="high" decoding="async" />
-    </div>
-  </div>
+  <div class="prose measure"><slot /></div>
 
   <CellTrail label="The WE path" cells={trail} current={current} />
 
@@ -81,22 +74,6 @@ const trail = STAGES.map((s) => ({ label: `${s.name} (${s.altitude})`, href: hre
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       gap: var(--sp-8);
-    }
-
-    .stagebody__intro {
-      display: grid;
-      gap: var(--sp-6);
-      align-items: center;
-
-      grid-template-columns: minmax(0, 1fr);
-
-      @media (min-width: 62rem) {
-        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-      }
-    }
-
-    .stagebody__media {
-      max-inline-size: 26rem;
     }
 
     .stagebody__lines {

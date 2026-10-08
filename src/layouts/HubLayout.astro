@@ -1,8 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import PageHeader from '../components/layout/PageHeader.astro';
-import Breadcrumbs from '../components/layout/Breadcrumbs.astro';
 import HeroConsole from '../components/hero/HeroConsole.astro';
+import PageHero from '../components/hero/PageHero.astro';
+import { APPLY } from '../components/hero/ctas.ts';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 import { href } from '../lib/url.ts';
@@ -24,19 +24,29 @@ type Props = PageMeta & HeaderProps & {
   hero?: 'editorial' | 'console';
 };
 
-const { eyebrow, lead, subtree = [], toc = [], hero = 'editorial', ...meta } = Astro.props;
+// A hub opens with the editorial hero: its photo if the page names one, the flower art otherwise. Apply is the default action.
+const { eyebrow, lead, subtree = [], toc = [], hero = 'editorial', primary = APPLY, secondary, photo, art, measure, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 ---
 
 <BaseLayout {...meta} crumbs={crumbs} schemaType={meta.schemaType ?? 'CollectionPage'}>
   {
     hero === 'console' ? (
-      <>
-        <div class="container hub-crumbs"><Breadcrumbs crumbs={crumbs} /></div>
-        <HeroConsole eyebrow={eyebrow} title={meta.title} lead={lead}><slot name="panel" /></HeroConsole>
-      </>
+      <HeroConsole crumbs={crumbs} eyebrow={eyebrow} title={meta.title} lead={lead} primary={primary} secondary={secondary} measure={measure}>
+        <slot name="panel" />
+      </HeroConsole>
     ) : (
-      <PageHeader title={meta.title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} />
+      <PageHero
+        title={meta.title}
+        eyebrow={eyebrow}
+        lead={lead}
+        crumbs={crumbs}
+        primary={primary}
+        secondary={secondary}
+        photo={photo}
+        art={photo === undefined ? (art ?? { variant: 'flower' }) : art}
+        measure={measure}
+      />
     )
   }
   {

@@ -5,6 +5,7 @@ import Callout from '../../components/ui/Callout.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import Section from '../../components/ui/Section.astro';
+import { jumpTo } from '../../components/hero/ctas.ts';
 import { flags } from '../../data/flags.ts';
 import { site } from '../../data/site.ts';
 import { asset } from '../../lib/url.ts';
@@ -16,7 +17,14 @@ const boilerplate =
   `${entity}.`;
 ---
 
-<PageShell entry={entry} path="/press/" lead="Facts, a short boilerplate and logo downloads." schemaType="WebPage">
+<PageShell
+  entry={entry}
+  path="/press/"
+  lead="Facts, a short boilerplate and logo downloads."
+  schemaType="WebPage"
+  primary={{ label: 'Download the wordmark (SVG)', href: '/press/we-logo-wordmark.svg', download: true }}
+  secondary={jumpTo('Read the boilerplate', '#press-boiler')}
+>
   <Fragment slot="after">
     <Section labelledby="press-boiler">
       <div class="container stack">

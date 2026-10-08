@@ -4,6 +4,8 @@ import CtaBand from '../../components/ui/CtaBand.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import Steps from '../../components/ui/Steps.astro';
 import HubIntro from '../../components/services/HubIntro.astro';
+import ServiceLinesAtlas from '../../components/services/ServiceLinesAtlas.astro';
+import { COMPOSE_TEAM } from '../../components/hero/ctas.ts';
 import ServiceCard from '../../components/cards/ServiceCard.astro';
 import Grid from '../../components/ui/Grid.astro';
 import { stageLinePhrase } from '../../components/program/stages.ts';
@@ -54,8 +56,15 @@ const processSteps = [
   lead="One team and seven defined lines of work. Choose the lines your company needs, and see what each does and does not do."
   updated={page.data.updated}
   subtree={subtree}
+  hero="console"
+  secondary={COMPOSE_TEAM}
 >
-  <HubIntro lines={lines} />
+  <Fragment slot="panel">
+    <p class="eyebrow">Service lines A to G</p>
+    <ServiceLinesAtlas lines={lines} />
+  </Fragment>
+
+  <HubIntro />
 
   {
     LINE_GROUPS.map((group) => (

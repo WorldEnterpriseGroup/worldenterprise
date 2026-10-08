@@ -1,16 +1,16 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import PageHeader from '../components/layout/PageHeader.astro';
+import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 type Props = PageMeta & HeaderProps & { title: string };
 
-const { eyebrow, lead, ...meta } = Astro.props;
+const { eyebrow, lead, primary, secondary, photo, art, measure, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 ---
 
 <BaseLayout {...meta} crumbs={crumbs} schemaType={meta.schemaType ?? 'WebPage'}>
-  <PageHeader title={meta.title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} />
+  <PageHero title={meta.title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} primary={primary} secondary={secondary} photo={photo} art={art} measure={measure} />
   <div class="section">
     <div class="container form-layout">
       <div class="stack">

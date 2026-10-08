@@ -1,5 +1,4 @@
 ---
-import { getPhoto } from '../../assets/photo/index.ts';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
 import AltitudeDiagram from '../../components/program/AltitudeDiagram.astro';
 import SeatDiagram from '../../components/program/SeatDiagram.astro';
@@ -12,7 +11,6 @@ import HubLayout from '../../layouts/HubLayout.astro';
 
 const { data, Content } = await loadPage('program');
 const [primary, secondary] = data.ctas;
-const inset = getPhoto('inset-program');
 const subtree = [
   { title: 'How the program works', href: '/program/how-it-works/', description: 'Five steps from application to a working team.' },
   { title: 'The digital incubation model', href: '/program/digital-incubation-model/', description: 'What fully remote means in practice.' },
@@ -41,11 +39,11 @@ const toc = [
   ogSlot="og-program"
   subtree={subtree}
   toc={toc}
+  photo="inset-program"
+  primary={primary}
+  secondary={secondary}
 >
-  <div class="split">
-    <div class="prose measure"><Content /></div>
-    <img class="split__media" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} fetchpriority="high" decoding="async" />
-  </div>
+  <div class="prose measure"><Content /></div>
 
   <section class="stack" aria-labelledby="program-stages">
     <h2 id="program-stages">Three stages, three altitudes</h2>
@@ -81,27 +79,3 @@ const toc = [
     {primary && <CtaBand title="Start with an application" text="WE agrees the scope with you before any work begins." cta={primary} secondary={secondary} />}
   </Fragment>
 </HubLayout>
-
-<style>
-  @layer pages {
-    .split__media {
-      inline-size: 100%;
-      block-size: auto;
-    }
-
-    .split > * {
-      min-inline-size: 0;
-    }
-
-    .split {
-      display: grid;
-      gap: var(--sp-5);
-      align-items: center;
-      grid-template-columns: minmax(0, 1fr);
-
-      @media (min-width: 62rem) {
-        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-      }
-    }
-  }
-</style>

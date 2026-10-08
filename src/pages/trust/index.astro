@@ -1,12 +1,12 @@
 ---
 import { getEntry, render } from 'astro:content';
-import { getPhoto } from '../../assets/photo/index.ts';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
 import StandardsTable from '../../components/trust/StandardsTable.astro';
 import Callout from '../../components/ui/Callout.astro';
 import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
 import FactBand from '../../components/ui/FactBand.astro';
+import { jumpTo, TALK_TO_WE } from '../../components/hero/ctas.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { isDraft } from '../../lib/content.ts';
 
@@ -14,7 +14,6 @@ const page = await getEntry('pages', 'trust');
 if (!page) throw new Error('Missing content entry: src/content/pages/trust/index.mdx');
 const { Content } = await render(page);
 const { data } = page;
-const inset = getPhoto('inset-trust');
 ---
 
 <HubLayout
@@ -25,6 +24,9 @@ const inset = getPhoto('inset-trust');
   lead="This page states what is true of this website today, where the other commitments are written down, and which public standards WE's research briefs and checklists are written against."
   updated={data.updated}
   draft={isDraft(page)}
+  photo="inset-trust"
+  primary={TALK_TO_WE}
+  secondary={jumpTo('Read the public standards', '#standards')}
   toc={[
     { slug: 'this-website', text: 'This website' },
     { slug: 'agreement', text: 'The written agreement' },
@@ -49,14 +51,11 @@ const inset = getPhoto('inset-trust');
     </p>
   </section>
 
-  <section id="agreement" class="tr-split" aria-labelledby="tr-agreement-title">
-    <div class="stack">
-      <h2 id="tr-agreement-title">Security and confidentiality in the written agreement</h2>
-      <div class="prose">
-        <Content components={{ a: SmartLink }} />
-      </div>
+  <section id="agreement" class="stack" aria-labelledby="tr-agreement-title">
+    <h2 id="tr-agreement-title">Security and confidentiality in the written agreement</h2>
+    <div class="prose">
+      <Content components={{ a: SmartLink }} />
     </div>
-    <img class="tr-inset" src={inset.src.src} width={inset.src.width} height={inset.src.height} alt={inset.alt} loading="lazy" decoding="async" />
   </section>
 
   <section id="standards" class="stack" aria-labelledby="tr-standards-title">
@@ -98,27 +97,3 @@ const inset = getPhoto('inset-trust');
     secondary={{ label: 'Read the FAQ', href: '/faq/' }}
   />
 </HubLayout>
-
-<style>
-  @layer pages {
-    .tr-split {
-      display: grid;
-      /* A bare auto column grows to its widest min-content descendant and pushes the page past a narrow viewport. */
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--sp-6);
-      align-items: start;
-    }
-
-    @media (min-width: 52rem) {
-      .tr-split {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
-      }
-    }
-
-    .tr-inset {
-      inline-size: 100%;
-      block-size: auto;
-      border-radius: var(--radius-md);
-    }
-  }
-</style>
