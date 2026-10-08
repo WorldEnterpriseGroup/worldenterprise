@@ -67,6 +67,8 @@ const services = defineCollection({
     summary: z.string().min(20),
     covers: z.array(z.string().min(1)).min(1),
     doesNotCover: z.array(z.string().min(1)).min(1),
+    /** What the founder receives from this line: one row per artifact. The layout renders it as "What you receive". */
+    artifacts: z.array(z.strictObject({ name: z.string().min(1), purpose: z.string().min(1) })).default([]),
     icon: serviceLine,
     relatedPlaybooks: z.array(z.string()).default([]),
     faqRefs: z.array(z.string()).default([]),

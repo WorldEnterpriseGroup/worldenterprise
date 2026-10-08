@@ -6,6 +6,7 @@ import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 import LimitsBlock from '../components/blocks/LimitsBlock.astro';
 import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
+import DataTable from '../components/ui/DataTable.astro';
 import type { ServiceLine } from '../data/nav.ts';
 import { site } from '../data/site.ts';
 import { absoluteUrl } from '../lib/url.ts';
@@ -16,11 +17,13 @@ type Props = PageMeta & HeaderProps & {
   heading?: string;
   line: ServiceLine;
   covers?: readonly string[];
+  /** What the founder receives from this line. Rendered as a table before the page body. */
+  artifacts?: readonly { readonly name: string; readonly purpose: string }[];
   /** Required: every service line states what it does not do (claim C-04). */
   doesNotCover: readonly string[];
 };
 
-const { eyebrow, lead, line, heading, covers = [], doesNotCover, primary = APPLY, secondary = COMPOSE_TEAM, photo, art, measure, ...meta } = Astro.props;
+const { eyebrow, lead, line, heading, covers = [], artifacts = [], doesNotCover, primary = APPLY, secondary = COMPOSE_TEAM, photo, art, measure, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const serviceNode = {
   '@type': 'Service',
@@ -55,6 +58,18 @@ const serviceNode = {
               <ul>
                 {covers.map((item) => <li>{item}</li>)}
               </ul>
+            </section>
+          )
+        }
+        {
+          artifacts.length > 0 && (
+            <section aria-labelledby="receive-title">
+              <h2 id="receive-title">What you receive</h2>
+              <DataTable
+                caption={`Artifacts from line ${line} and what each is for`}
+                columns={['Artifact', 'What it is for']}
+                rows={artifacts.map((artifact) => [artifact.name, artifact.purpose])}
+              />
             </section>
           )
         }

@@ -4,10 +4,13 @@ import Faq from '../ui/Faq.astro';
 interface Item {
   readonly question: string;
   readonly answer: string;
+  /** Optional anchor id on the question, so it can be linked to directly. */
+  readonly id?: string | undefined;
 }
 
 interface Props {
   items: readonly Item[];
+  /** The accordion group: only one question of a group is open at a time. */
   name?: string;
 }
 
@@ -15,5 +18,5 @@ const { items, name = 'faq' } = Astro.props;
 ---
 
 <div class="faq-list">
-  {items.map((i) => <Faq question={i.question} name={name}><p>{i.answer}</p></Faq>)}
+  {items.map((i) => <Faq question={i.question} name={name} id={i.id}><p>{i.answer}</p></Faq>)}
 </div>
