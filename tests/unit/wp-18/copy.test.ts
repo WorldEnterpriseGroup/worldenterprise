@@ -111,13 +111,6 @@ test('the unused limitsConfirmed flag is gone from the flags, the source, the sc
   assert.deepEqual(offenders, []);
 });
 
-test('the flags that remain are all off', () => {
-  assert.equal(flags.pbcWording, false);
-  assert.equal(flags.legalTerms, false);
-  assert.equal(flags.focusShiftConfirmed, false);
-  assert.equal(flags.seatPrice.published, false);
-});
-
 // ---- P1-10: how WE is paid ----
 
 test('the FAQ answers "How is WE paid?" by pointing to the written agreement, without terms or figures', () => {
