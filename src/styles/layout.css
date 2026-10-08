@@ -20,6 +20,16 @@
     padding-block: calc(var(--section-y) / 2);
   }
 
+  /* Bands of the same tone share one gap (one --section-y) instead of stacking two paddings. A tone change keeps both paddings. */
+  .section:not(.section--soft, .section--tight) + .section:not(.section--soft),
+  .section--soft:not(.section--tight) + .section--soft {
+    padding-block-start: 0;
+  }
+
+  .section--tight:not(.section--soft) + .section:not(.section--soft, .section--tight) {
+    padding-block-start: calc(var(--section-y) / 2);
+  }
+
   /* Below-the-fold sections skip rendering work until needed. */
   .section--defer {
     content-visibility: auto;
@@ -27,9 +37,31 @@
   }
 
   .stack {
+    --_gap: var(--stack-gap, var(--sp-4));
     display: flex;
     flex-direction: column;
-    gap: var(--stack-gap, var(--sp-4));
+    gap: var(--_gap);
+  }
+
+  /*
+   * Rhythm inside a page-level stack: a sub-section is a new block, a heading opens a group.
+   * The margin is the wanted distance minus the flex gap that is already there, never negative.
+   */
+  .stack > section:not(:first-child) {
+    margin-block-start: max(0px, calc(var(--space-block) - var(--_gap)));
+  }
+
+  :is(.container, section).stack > h2:not(:first-child) {
+    margin-block-start: max(0px, calc(var(--space-block) - var(--_gap)));
+  }
+
+  :is(.container, section).stack > h3:not(:first-child) {
+    margin-block-start: max(0px, calc(var(--space-group) - var(--_gap)));
+  }
+
+  /* Home sections announce the page's story, so their titles keep the step-3 size; every other page uses the h2 role. */
+  .main--home :where(h2:not([class])) {
+    font-size: var(--fs-2xl);
   }
 
   /* Spacing modifiers. They set the custom property, never a style attribute: the CSP has no style-src-attr exception (WP-16). */

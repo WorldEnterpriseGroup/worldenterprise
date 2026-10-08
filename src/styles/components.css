@@ -735,9 +735,25 @@
       margin-block-start: var(--sp-4);
     }
 
+    & > h2 {
+      margin-block-start: var(--space-block);
+    }
+
+    & > :is(h3, h4) {
+      margin-block-start: var(--space-group);
+    }
+
     & > :is(h2, h3, h4) {
-      margin-block-start: var(--sp-7);
       scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
+
+      & + * {
+        margin-block-start: var(--space-heading);
+      }
+    }
+
+    /* Prose that opens its container has nothing above it to space from; the band padding does that. */
+    &:first-child > :first-child {
+      margin-block-start: 0;
     }
 
     & :is(ul, ol) {
@@ -1296,7 +1312,12 @@
   .ctaband {
     background: var(--color-bg-inverse);
     color: var(--color-text-inverse);
-    padding-block: var(--sp-8);
+    padding-block: var(--space-section);
+
+    /* The closing call is an announcement, one step above a sub-section heading. */
+    & h2 {
+      font-size: var(--fs-2xl);
+    }
 
     & :focus-visible {
       outline-color: var(--color-focus-inverse);

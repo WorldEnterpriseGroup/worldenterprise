@@ -8,7 +8,7 @@ type Props = Omit<PageMeta, 'path' | 'title'> & { path?: string };
 const { path = '/', ...meta } = Astro.props;
 ---
 
-<BaseLayout {...meta} path={path} schemaType="WebPage">
+<BaseLayout {...meta} path={path} schemaType="WebPage" mainClass="main--home">
   <slot name="hero" />
   <slot />
   <slot name="after" />
