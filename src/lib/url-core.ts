@@ -25,9 +25,10 @@ export function isExternal(input: string): boolean {
 }
 
 /**
- * Builds an internal link.
+ * Builds an internal link. It is idempotent: a link that already carries the base prefix is returned as it is, so a
+ * component may call href() on a value its caller already resolved without doubling the prefix on the preview.
  * - external, mailto and pure fragment references pass through unchanged
- * - site paths get the base prefix
+ * - site paths get the base prefix, unless they already start with it
  * - paths without a file extension get a trailing slash (trailingSlash: 'always')
  */
 export function buildHref(input: string, base: string | undefined): string {
@@ -39,16 +40,20 @@ export function buildHref(input: string, base: string | undefined): string {
   const lastSegment = rooted.slice(rooted.lastIndexOf('/') + 1);
   const hasExtension = lastSegment.includes('.');
   const withSlash = hasExtension || rooted.endsWith('/') ? rooted : `${rooted}/`;
-  return `${normalizeBase(base)}${withSlash}${suffix}`;
+  const prefix = normalizeBase(base);
+  const resolved = prefix !== '' && (rooted === prefix || rooted.startsWith(`${prefix}/`));
+  return `${resolved ? '' : prefix}${withSlash}${suffix}`;
 }
 
-/** Builds a URL for a file in public/ (no trailing slash handling). */
+/** Builds a URL for a file in public/ (no trailing slash handling). Idempotent, like buildHref. */
 export function buildAsset(input: string, base: string | undefined): string {
   if (isExternal(input)) {
     return input;
   }
   const rooted = input.startsWith('/') ? input : `/${input}`;
-  return `${normalizeBase(base)}${rooted}`;
+  const prefix = normalizeBase(base);
+  const resolved = prefix !== '' && (rooted === prefix || rooted.startsWith(`${prefix}/`));
+  return `${resolved ? '' : prefix}${rooted}`;
 }
 
 /** Absolute production URL for a site path. Never includes the preview base. */

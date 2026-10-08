@@ -1,4 +1,6 @@
 ---
+import { href } from '../../lib/url.ts';
+
 interface Cell {
   readonly label: string;
   readonly href?: string;
@@ -20,7 +22,7 @@ const { cells, current, label } = Astro.props;
       cells.map((c, i) => (
         <li class="celltrail__cell" aria-current={i === current ? 'step' : undefined}>
           <span class="celltrail__hex" aria-hidden="true">{i + 1}</span>
-          {c.href && i !== current ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>}
+          {c.href && i !== current ? <a href={href(c.href)}>{c.label}</a> : <span>{c.label}</span>}
         </li>
       ))
     }

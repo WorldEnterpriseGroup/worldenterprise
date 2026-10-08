@@ -1,4 +1,6 @@
 ---
+import { href as resolve } from '../../lib/url.ts';
+
 interface Props {
   /** When set, the title is the card's single link target and the whole card is clickable. */
   href?: string;
@@ -8,7 +10,9 @@ interface Props {
   image?: { readonly src: string; readonly width: number; readonly height: number; readonly alt: string };
 }
 
-const { href: target, title, headingLevel = 3, eyebrow, image } = Astro.props;
+const { href: raw, title, headingLevel = 3, eyebrow, image } = Astro.props;
+// href() is idempotent, so a caller may pass a resolved link or a site path.
+const target = raw === undefined ? undefined : resolve(raw);
 const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
 ---
 

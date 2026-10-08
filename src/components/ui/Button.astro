@@ -1,4 +1,6 @@
 ---
+import { href as resolve } from '../../lib/url.ts';
+
 interface Props {
   href?: string;
   variant?: 'primary' | 'secondary' | 'quiet';
@@ -7,7 +9,9 @@ interface Props {
   disabled?: boolean;
 }
 
-const { href: target, variant = 'primary', type = 'button', class: extra, disabled = false } = Astro.props;
+const { href: raw, variant = 'primary', type = 'button', class: extra, disabled = false } = Astro.props;
+// href() is idempotent, so a caller may pass a resolved link or a site path.
+const target = raw === undefined ? undefined : resolve(raw);
 const classes = ['btn', `btn--${variant}`, extra].filter(Boolean).join(' ');
 ---
 
