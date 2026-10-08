@@ -42,7 +42,7 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
   {
     toc.length > 0 && (
       <nav class="toc container" aria-label="On this page">
-        <ul class="cluster" role="list">
+        <ul class="toc__list" role="list">
           {toc.map((entry) => (
             <li>
               <a href={`#${entry.slug}`}>{entry.text}</a>

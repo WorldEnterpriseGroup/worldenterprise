@@ -1,19 +1,17 @@
-import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { liveRoutes } from './support/routes.ts';
 
 // Layout stability, measured the way Lighthouse and the field measure it: every layout-shift entry from the first byte until the
-// page has settled, on a cold load with no input. Two checks:
-// 1. every launched route stays under the CLS budget (0.1) at both viewports, and a failure names the elements that moved;
-// 2. the web fonts replace the fallback fonts without moving the first screen: the position of the page's landmarks with the font
-//    files blocked is compared with their position once the fonts are in;
-// 3. the routes the Lighthouse budget covers hold still at Lighthouse's own phone (412 x 823, scale 1.75, mobile viewport rules), and a
-//    failure names the elements that moved between the first layout and the settled page.
+// page has settled, on a cold load with no input. Three checks on every launched route:
+// 1. a plain load stays under the CLS budget (0.1) at both viewports, and a failure names the elements that moved;
+// 2. the same load with the web font files held back until after the first paint, then released, so the swap from the fallback fonts
+//    happens as it does on a cold visit (Lighthouse sees it 90 ms in). The shifts the swap causes are scored by Chromium itself;
+// 3. the same swap at Lighthouse's own phone (412 x 823, scale 1.75, mobile viewport rules). A trailing item that fits one line in
+//    one font and wraps in the other flips only at some widths, so the second phone width catches what 390 does not.
+// A failure lists the shifts and the elements that moved between the first layout and the settled page.
 
 const CLS_BUDGET = 0.1;
-/** Largest distance, in CSS pixels, a landmark may move when the web fonts replace the fallbacks. */
-const FONT_SWAP_TOLERANCE = 6;
 
 interface Rect {
   readonly x: number;
@@ -46,6 +44,12 @@ interface LayoutShiftEntry extends PerformanceEntry {
   readonly value: number;
   readonly hadRecentInput: boolean;
   readonly sources: readonly LayoutShiftSource[];
+}
+
+interface ShiftReport {
+  readonly shifts: readonly ShiftRecord[];
+  readonly moved: readonly string[];
+  readonly fonts: readonly string[];
 }
 
 declare global {
@@ -96,110 +100,85 @@ async function settle(page: Page): Promise<void> {
   await page.waitForTimeout(500);
 }
 
-const LANDMARKS = ['.site-top', '.utility-bar', '.site-header', 'main > :first-child', 'nav.breadcrumbs', 'h1', 'h1 ~ .lead', 'main > :nth-child(2)'] as const;
-
-async function measureLandmarks(page: Page): Promise<Record<string, Rect | null>> {
-  return page.evaluate((selectors) => {
-    const out: Record<string, Rect | null> = {};
-    for (const selector of selectors) {
-      const el = document.querySelector(selector);
-      if (el === null) {
-        out[selector] = null;
-        continue;
-      }
-      const r = el.getBoundingClientRect();
-      out[selector] = { x: Math.round(r.x), y: Math.round(r.y + window.scrollY), width: Math.round(r.width), height: Math.round(r.height) };
-    }
-    return out;
-  }, LANDMARKS);
+/** The recorded shifts, the elements of the first viewport that moved since the first layout, and the font states at that layout. */
+async function readReport(page: Page): Promise<ShiftReport> {
+  return page.evaluate(() => {
+    const settled = [...document.querySelectorAll('main *')].slice(0, 2500).map((el) => el.getBoundingClientRect());
+    const first = window.__firstLayout ?? [];
+    const viewportHeight = window.innerHeight;
+    const moved = first
+      .map((box, i) => {
+        const now = settled[i];
+        return now === undefined ? null : { box, dx: Math.round(now.x - box.x), dy: Math.round(now.y - box.y), dh: Math.round(now.height - box.height), nowY: Math.round(now.y) };
+      })
+      .filter((m): m is NonNullable<typeof m> => m !== null)
+      .filter((m) => (m.box.y < viewportHeight || m.nowY < viewportHeight) && Math.max(Math.abs(m.dx), Math.abs(m.dy)) >= 4)
+      .sort((a, b) => Math.max(Math.abs(b.dx), Math.abs(b.dy)) - Math.max(Math.abs(a.dx), Math.abs(a.dy)))
+      .slice(0, 10)
+      .map((m) => `${m.box.name} y ${m.box.y} -> ${m.nowY} (${m.dy >= 0 ? '+' : ''}${m.dy}), x ${m.dx >= 0 ? '+' : ''}${m.dx}, height ${m.dh >= 0 ? '+' : ''}${m.dh}`);
+    return { shifts: window.__layoutShifts ?? [], moved, fonts: window.__firstFonts ?? [] };
+  });
 }
+
+/**
+ * Loads a route with every font file held back until the page has painted with the fallback fonts, then releases them and waits for
+ * the page to settle. This is the swap a cold visit makes, made deterministic: a fast local server otherwise delivers the fonts
+ * before the first paint and nothing moves.
+ */
+async function loadWithLateFonts(page: Page, route: string): Promise<ShiftReport> {
+  await recordShifts(page);
+  let release: () => void = () => undefined;
+  const released = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route('**/*.woff*', async (fontRequest) => {
+    await released;
+    await fontRequest.continue();
+  });
+  try {
+    await page.goto(route, { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+    await page.waitForTimeout(250);
+  } finally {
+    release();
+  }
+  await settle(page);
+  return readReport(page);
+}
+
+function describeShifts(report: ShiftReport): string {
+  const detail = report.shifts
+    .slice(0, 4)
+    .map((s) => `${s.value.toFixed(3)} at ${s.at} ms: ${s.sources.slice(0, 5).map((src) => `${src.node} ${JSON.stringify(src.from)} -> ${JSON.stringify(src.to)}`).join('; ')}`)
+    .join(' | ');
+  return `layout shifts (${report.shifts.length}): ${detail}\nmoved between the first layout and the settled page: ${report.moved.join(' | ')}\nfonts at first layout: ${report.fonts.join(', ')}`;
+}
+
+const total = (report: ShiftReport): number => report.shifts.reduce((sum, s) => sum + s.value, 0);
 
 for (const { path: route } of liveRoutes) {
   test(`layout shift stays under ${CLS_BUDGET} on ${route}`, async ({ page }) => {
     await recordShifts(page);
     await page.goto(route, { waitUntil: 'load' });
     await settle(page);
-    const shifts = await page.evaluate(() => window.__layoutShifts ?? []);
-    const total = shifts.reduce((sum, s) => sum + s.value, 0);
-    const detail = shifts
-      .slice(0, 6)
-      .map((s) => `${s.value.toFixed(3)} at ${s.at} ms: ${s.sources.slice(0, 4).map((src) => `${src.node} ${JSON.stringify(src.from)} -> ${JSON.stringify(src.to)}`).join('; ')}`)
-      .join(' | ');
-    expect(total, `layout shifts (${shifts.length}): ${detail}`).toBeLessThan(CLS_BUDGET);
+    const report = await readReport(page);
+    expect(total(report), describeShifts(report)).toBeLessThan(CLS_BUDGET);
   });
-}
 
-const FONT_SAMPLE = ['/', '/program/', '/services/', '/insights/', '/research/saas-security-baseline-year-one/', '/insights/is-your-saas-idea-a-business-or-a-feature/', '/library/one-page-problem-brief/'];
-
-for (const route of FONT_SAMPLE.filter((r) => liveRoutes.some((live) => live.path === r))) {
-  test(`web fonts replace the fallbacks without moving the first screen on ${route}`, async ({ page, context }) => {
-    // The first page cannot load any font file, so it shows the fallback fonts. The second loads the real ones.
-    await page.route('**/*.woff*', (request) => request.abort());
-    await page.goto(route, { waitUntil: 'load' });
-    await page.waitForTimeout(300);
-    const before = await measureLandmarks(page);
-
-    const loaded = await context.newPage();
-    await loaded.goto(route, { waitUntil: 'load' });
-    await settle(loaded);
-    const after = await measureLandmarks(loaded);
-
-    const moves = LANDMARKS.map((selector) => {
-      const a = before[selector] ?? null;
-      const b = after[selector] ?? null;
-      return { selector, a, b, dy: a !== null && b !== null ? b.y - a.y : 0 };
-    });
-    const worst = Math.max(...moves.map((m) => Math.abs(m.dy)));
-    const table = moves.map((m) => `${m.selector}: y ${m.a?.y ?? 'none'} -> ${m.b?.y ?? 'none'}, height ${m.a?.height ?? 'none'} -> ${m.b?.height ?? 'none'}`).join(' | ');
-    expect(worst, `a landmark moved ${worst}px when the fonts loaded: ${table}`).toBeLessThanOrEqual(FONT_SWAP_TOLERANCE);
+  test(`layout shift stays under ${CLS_BUDGET} when the web fonts arrive after the first paint on ${route}`, async ({ page }) => {
+    const report = await loadWithLateFonts(page, route);
+    expect(total(report), describeShifts(report)).toBeLessThan(CLS_BUDGET);
   });
-}
-
-interface Lighthouserc {
-  readonly candidates: readonly string[];
-  readonly maxRoutes: number;
-}
-
-function lighthouseRoutes(): string[] {
-  const config = JSON.parse(readFileSync('lighthouserc.json', 'utf8')) as Lighthouserc;
-  const live = new Set(liveRoutes.map((r) => r.path));
-  return config.candidates.filter((c) => live.has(c)).slice(0, config.maxRoutes);
 }
 
 test.describe('at the Lighthouse phone', () => {
   test.use({ viewport: { width: 412, height: 823 }, deviceScaleFactor: 1.75, isMobile: true, hasTouch: true });
 
-  for (const route of lighthouseRoutes()) {
-    test(`layout shift stays under ${CLS_BUDGET} on ${route}`, async ({ page }, info) => {
+  for (const { path: route } of liveRoutes) {
+    test(`layout shift stays under ${CLS_BUDGET} when the web fonts arrive after the first paint on ${route}`, async ({ page }, info) => {
       test.skip(info.project.name !== 'mobile-390x844', 'Lighthouse measures a phone, so the desktop project has nothing to add.');
-      await recordShifts(page);
-      await page.goto(route, { waitUntil: 'load' });
-      await settle(page);
-      const report = await page.evaluate(() => {
-        const settled = [...document.querySelectorAll('main *')].slice(0, 2500).map((el) => el.getBoundingClientRect());
-        const first = window.__firstLayout ?? [];
-        const viewportHeight = window.innerHeight;
-        const moved = first
-          .map((box, i) => {
-            const now = settled[i];
-            return now === undefined ? null : { box, dx: Math.round(now.x - box.x), dy: Math.round(now.y - box.y), dh: Math.round(now.height - box.height), nowY: Math.round(now.y) };
-          })
-          .filter((m): m is NonNullable<typeof m> => m !== null)
-          .filter((m) => (m.box.y < viewportHeight || m.nowY < viewportHeight) && Math.max(Math.abs(m.dx), Math.abs(m.dy)) >= 4)
-          .sort((a, b) => Math.max(Math.abs(b.dx), Math.abs(b.dy)) - Math.max(Math.abs(a.dx), Math.abs(a.dy)))
-          .slice(0, 10)
-          .map((m) => `${m.box.name} y ${m.box.y} -> ${m.nowY} (${m.dy >= 0 ? '+' : ''}${m.dy}), x ${m.dx >= 0 ? '+' : ''}${m.dx}, height ${m.dh >= 0 ? '+' : ''}${m.dh}`);
-        return { shifts: window.__layoutShifts ?? [], moved, fonts: window.__firstFonts ?? [] };
-      });
-      const total = report.shifts.reduce((sum, s) => sum + s.value, 0);
-      const detail = report.shifts
-        .slice(0, 4)
-        .map((s) => `${s.value.toFixed(3)} at ${s.at} ms: ${s.sources.slice(0, 5).map((src) => `${src.node} ${JSON.stringify(src.from)} -> ${JSON.stringify(src.to)}`).join('; ')}`)
-        .join(' | ');
-      expect(
-        total,
-        `layout shifts (${report.shifts.length}): ${detail}\nmoved between the first layout and the settled page: ${report.moved.join(' | ')}\nfonts at first layout: ${report.fonts.join(', ')}`,
-      ).toBeLessThan(CLS_BUDGET);
+      const report = await loadWithLateFonts(page, route);
+      expect(total(report), describeShifts(report)).toBeLessThan(CLS_BUDGET);
     });
   }
 });

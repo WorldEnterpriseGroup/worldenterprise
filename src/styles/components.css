@@ -854,6 +854,16 @@
     font-family: var(--ff-sans);
   }
 
+  /* Fixed tracks, not a wrapping row: the number of entries per line depends on the container and never on the width of the words,
+     so the fallback font and the web font put the same entries on the same lines. */
+  .toc__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 10rem), 12rem));
+    gap: var(--sp-2) var(--sp-4);
+    list-style: none;
+    padding: 0;
+  }
+
   .toc-rail {
     font-family: var(--ff-sans);
     font-size: var(--fs-sm);
