@@ -43,7 +43,7 @@ export default defineConfig({
       provider: fontProviders.local(),
       name: 'Titillium Web',
       cssVariable: '--font-display',
-      fallbacks: ['Arial', 'sans-serif'],
+      fallbacks: ['WE Display Fallback', 'Arial', 'sans-serif'],
       options: {
         variants: [
           { weight: 600, style: 'normal', src: ['./src/assets/fonts/titillium-web-latin-600-normal.woff'] },
@@ -55,7 +55,7 @@ export default defineConfig({
       provider: fontProviders.local(),
       name: 'Source Serif 4',
       cssVariable: '--font-serif',
-      fallbacks: ['Georgia', 'serif'],
+      fallbacks: ['WE Serif Fallback', 'Georgia', 'serif'],
       options: {
         variants: [
           { weight: 400, style: 'normal', src: ['./src/assets/fonts/source-serif-4-latin-400-normal.woff'] },
@@ -69,7 +69,7 @@ export default defineConfig({
       provider: fontProviders.local(),
       name: 'Source Sans 3',
       cssVariable: '--font-sans',
-      fallbacks: ['Arial', 'sans-serif'],
+      fallbacks: ['WE Sans Fallback', 'Arial', 'sans-serif'],
       options: {
         variants: [
           { weight: 400, style: 'normal', src: ['./src/assets/fonts/source-sans-3-latin-400-normal.woff'] },

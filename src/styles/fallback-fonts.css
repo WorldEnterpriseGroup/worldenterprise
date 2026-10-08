@@ -1,0 +1,74 @@
+/*
+ * Metric fallbacks for the web fonts. While Titillium Web, Source Serif 4 and Source Sans 3 load, text is set in a system font that is
+ * scaled (size-adjust) and re-spaced (ascent, descent, line-gap) to take the same room, so the swap does not re-wrap paragraphs and move
+ * the page (SAGE-PLAN 6.9, CLS under 0.1).
+ *
+ * Astro's own fallbacks (generated from astro.config.mjs) name "Arial" and "Times New Roman". Chromium matches local() on a font's full
+ * or PostScript name and applies no aliases, so on Linux and Android those faces never resolve and the browser fell back to an
+ * unscaled generic font: 6 percent wider than Source Sans 3 for sans text, 15 percent narrower than Source Serif 4 for serif text.
+ * These faces name the metric-compatible fonts that exist there (Liberation, Arimo and Tinos on Linux and ChromeOS, Roboto on Android,
+ * whose average width is within 0.3 percent of Arial's) and use Astro's computed adjustments. They sit after Astro's faces in the
+ * stack, so Windows and macOS keep the Arial and Times New Roman faces Astro generates.
+ *
+ * The numbers are the ones astro build prints for these three families; recompute them when a family or weight changes.
+ */
+
+@font-face {
+  font-family: 'WE Sans Fallback';
+  font-weight: 400 599;
+  src: local('Arial'), local('Liberation Sans'), local('Arimo'), local('Roboto'), local('Helvetica');
+  size-adjust: 93.7639%;
+  ascent-override: 109.2105%;
+  descent-override: 42.6604%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'WE Sans Fallback';
+  font-weight: 600 900;
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Arimo Bold'), local('Roboto Bold'), local('Helvetica Bold');
+  size-adjust: 87.0869%;
+  ascent-override: 117.5837%;
+  descent-override: 45.9311%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'WE Serif Fallback';
+  font-weight: 400 599;
+  src: local('Times New Roman'), local('Liberation Serif'), local('Tinos'), local('Times');
+  size-adjust: 117.9077%;
+  ascent-override: 87.8653%;
+  descent-override: 28.4121%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'WE Serif Fallback';
+  font-weight: 600 900;
+  src: local('Times New Roman Bold'), local('TimesNewRomanPS-BoldMT'), local('Liberation Serif Bold'), local('LiberationSerif-Bold'), local('Tinos Bold'), local('Times Bold');
+  size-adjust: 110.7214%;
+  ascent-override: 93.5681%;
+  descent-override: 30.2561%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'WE Display Fallback';
+  font-weight: 400 699;
+  src: local('Arial'), local('Liberation Sans'), local('Arimo'), local('Roboto'), local('Helvetica');
+  size-adjust: 96.2313%;
+  ascent-override: 117.7371%;
+  descent-override: 40.3195%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'WE Display Fallback';
+  font-weight: 700 900;
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Arimo Bold'), local('Roboto Bold'), local('Helvetica Bold');
+  size-adjust: 89.3786%;
+  ascent-override: 126.7641%;
+  descent-override: 43.4108%;
+  line-gap-override: 0%;
+}
