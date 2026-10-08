@@ -5,10 +5,10 @@ import ContextualNext from '../../components/blocks/ContextualNext.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import LineAside from '../../components/services/LineAside.astro';
 import { loadServiceLines } from '../../components/services/data.ts';
-import { EXTRA_NEXT, PLAYBOOKS, entrySlug, playbookPath, servicePath } from '../../components/services/lines.ts';
+import { EXTRA_NEXT, entrySlug, playbookPath, servicePath } from '../../components/services/lines.ts';
 import type { NextLink } from '../../components/services/lines.ts';
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
-import { getRenderable, isDraft } from '../../lib/content.ts';
+import { getPublished, getRenderable, isDraft } from '../../lib/content.ts';
 
 export const getStaticPaths = (async () => {
   const entries = await getRenderable('services');
@@ -22,9 +22,11 @@ const { slug } = Astro.params;
 const { Content } = await render(entry);
 const { data } = entry;
 
+// Titles and descriptions come from the playbooks collection, so a line page never repeats them by hand.
+const playbooks = new Map((await getPublished('playbooks')).map((p) => [entrySlug(p.id), p.data] as const));
 const playbookLinks: NextLink[] = data.relatedPlaybooks.map((id) => {
-  const playbook = PLAYBOOKS[id];
-  if (playbook === undefined) throw new Error(`Service entry ${entry.id} lists unknown playbook "${id}".`);
+  const playbook = playbooks.get(id);
+  if (playbook === undefined) throw new Error(`Service entry ${entry.id} lists playbook "${id}", which is not a published playbook.`);
   return { title: playbook.title, href: playbookPath(id), description: playbook.description };
 });
 const nextItems = [...playbookLinks, ...(EXTRA_NEXT[data.line] ?? [])];

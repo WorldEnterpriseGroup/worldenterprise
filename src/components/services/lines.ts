@@ -24,20 +24,6 @@ export const LINE_GROUPS: readonly { readonly id: 'build' | 'fundable'; readonly
   { id: 'fundable', heading: 'Become fundable', lines: ['E', 'F', 'G'] },
 ];
 
-export interface PlaybookRef {
-  readonly title: string;
-  readonly description: string;
-}
-
-/** Playbook slugs from the route ledger (owned by WP-04). Titles follow the services menu wording. */
-export const PLAYBOOKS: Readonly<Record<string, PlaybookRef>> = {
-  'validate-the-problem': { title: 'Validate the problem', description: 'Check that the problem and the customer are real before you build.' },
-  'design-the-product': { title: 'Design the product', description: 'Turn what you learned into a first version worth building.' },
-  'build-and-ship-v1': { title: 'Build and ship v1', description: 'Plan, build and release the first version of your SaaS.' },
-  'earn-your-first-customers': { title: 'Earn your first customers', description: 'Run pilots and a simple pipeline until customers say yes.' },
-  'build-repeatable-growth': { title: 'Build repeatable growth', description: 'Find the channels and habits that keep working.' },
-};
-
 export interface NextLink {
   readonly title: string;
   readonly href: string;

@@ -3,13 +3,15 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { SLOT_SPECS } from '../../../src/assets/photo/slots.ts';
-import { LINE_ORDER, LINE_SLOT, PLAYBOOKS, lineTagline, playbookPath, servicePath } from '../../../src/components/services/lines.ts';
+import { LINE_ORDER, LINE_SLOT, lineTagline, playbookPath, servicePath } from '../../../src/components/services/lines.ts';
 import { routes } from '../../../src/data/routes.ts';
 import { site } from '../../../src/data/site.ts';
 
 const root = new URL('../../../', import.meta.url).pathname;
 const serviceDir = join(root, 'src/content/services');
 const hubFile = join(root, 'src/content/pages/services/index.mdx');
+// Playbook slugs are the file names in the playbooks collection, the same rule the line pages use to look them up.
+const playbookSlugs = new Set(readdirSync(join(root, 'src/content/playbooks')).filter((f) => /\.mdx?$/.test(f)).map((f) => f.replace(/\.mdx?$/, '')));
 
 interface Frontmatter {
   readonly scalars: Record<string, string>;
@@ -92,7 +94,7 @@ test('each line links at least two playbooks that are in the ledger', () => {
     const related = e.data.lists['relatedPlaybooks'] ?? [];
     assert.ok(related.length >= 2, `${e.slug} relatedPlaybooks`);
     for (const slug of related) {
-      assert.ok(PLAYBOOKS[slug] !== undefined, `${e.slug}: unknown playbook ${slug}`);
+      assert.ok(playbookSlugs.has(slug), `${e.slug}: unknown playbook ${slug}`);
       assert.ok(ledgerPaths.has(playbookPath(slug)), `${e.slug}: ${playbookPath(slug)} is not a ledger route`);
     }
   }

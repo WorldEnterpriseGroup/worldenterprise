@@ -2,7 +2,7 @@
 import { getPhoto } from '../../assets/photo/index.ts';
 import { href } from '../../lib/url.ts';
 import Button from '../ui/Button.astro';
-import ServiceLinesStrip from './ServiceLinesStrip.astro';
+import ServiceLinesAtlas from './ServiceLinesAtlas.astro';
 import type { ServiceSummary } from './data.ts';
 
 interface Props {
@@ -35,7 +35,7 @@ const inset = getPhoto('inset-services');
   </div>
   <div class="hub-intro__panel stack" aria-labelledby="hub-intro-title">
     <p class="eyebrow">Service lines A to G</p>
-    <ServiceLinesStrip lines={lines} />
+    <ServiceLinesAtlas lines={lines} />
   </div>
 </div>
 
