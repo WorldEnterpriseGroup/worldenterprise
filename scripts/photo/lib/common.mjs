@@ -2,6 +2,7 @@
 // imported by src/ or copied to dist/. Pure functions here are unit-tested in tests/unit/wp-12d.
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,8 +12,8 @@ export const REPO_ROOT = resolve(PHOTO_DIR, '..', '..');
 /** Long edge of the largest master the model renders (decision P-1). Mirrors MODEL_MAX_EDGE in src/assets/photo/slots.ts; a unit test keeps them equal. */
 export const MODEL_MAX_EDGE = 1024;
 
-/** Where candidates go. Never inside the repo, so a stray `git add -A` cannot pick them up. */
-export const DEFAULT_STAGING = '/home/seantech/.claude/jobs/504efe46/tmp/photo-staging';
+/** Where candidates go (PHOTO_STAGING overrides). Never inside the repo, so a stray `git add -A` cannot pick them up. */
+export const DEFAULT_STAGING = process.env.PHOTO_STAGING ?? join(homedir(), '.cache', 'we-photo-staging');
 
 export const EXTRACT_PATH = '.astro-magazine/media/shotlist-extract.json';
 export const MANIFEST_PATH = 'src/assets/photo/manifest.json';
