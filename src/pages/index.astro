@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { getPhoto } from '../assets/photo/index.ts';
 import { FRAMEWORKS } from '../components/about/frameworks.ts';
 import EvidenceLedger from '../components/blocks/EvidenceLedger.astro';
 import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
@@ -12,11 +11,12 @@ import { loadPage } from '../components/program/loadPage.ts';
 import SeatDiagram from '../components/program/SeatDiagram.astro';
 import StageExplorer from '../components/program/StageExplorer.astro';
 import { STAGES } from '../components/program/stages.ts';
+import { photoImage } from '../components/media/photo-image.ts';
 import CtaBand from '../components/ui/CtaBand.astro';
 import FactBand from '../components/ui/FactBand.astro';
 import HexAtlas from '../components/ui/HexAtlas.astro';
 import { getPublished } from '../lib/content.ts';
-import { preloadOf } from '../lib/image-type.ts';
+import { preloadOfPhoto } from '../lib/image-type.ts';
 import { getRouteState } from '../lib/route-state.ts';
 import { href } from '../lib/url.ts';
 import HomeLayout from '../layouts/HomeLayout.astro';
@@ -24,8 +24,8 @@ import HomeLayout from '../layouts/HomeLayout.astro';
 const { data, Content } = await loadPage('home');
 const [primary, secondary] = data.ctas;
 const state = await getRouteState();
-const band = getPhoto('band-4');
-const heroImage = getPhoto('band-1');
+const band = await photoImage('band-4');
+const heroImage = await photoImage('band-1');
 
 const SERVICES = [
   { label: 'Brand and Identity', href: '/services/brand-and-identity/', line: 'A' },
@@ -84,8 +84,8 @@ const proofRows = PROOF.map((r) => ({
 }));
 ---
 
-<HomeLayout description={data.description} updated={data.updated} draft={data.draft} ogSlot="og-home" preloadImage={preloadOf(heroImage.src)}>
-  {primary && <HomeHero eyebrow={data.eyebrow ?? 'World Enterprise Incubator'} title="Build the evidence a SaaS idea needs to be a company." lead="Dedicated team seats, steered by WE, take you from first idea to first customers, with the evidence an investor will ask for." primary={primary} secondary={secondary} />}
+<HomeLayout description={data.description} updated={data.updated} draft={data.draft} ogSlot="og-home" preloadImage={preloadOfPhoto(heroImage)}>
+  {primary && <HomeHero image={heroImage} eyebrow={data.eyebrow ?? 'World Enterprise Incubator'} title="Build the evidence a SaaS idea needs to be a company." lead="Dedicated team seats, steered by WE, take you from first idea to first customers, with the evidence an investor will ask for." primary={primary} secondary={secondary} />}
 
   {
     facts.length > 0 && (
@@ -143,7 +143,7 @@ const proofRows = PROOF.map((r) => ({
   <section class="section section--soft" aria-labelledby="home-remote">
     <div class="container stack">
       <h2 id="home-remote">Fully remote, by design</h2>
-      <img class="home-band" src={band.src.src} width={band.src.width} height={band.src.height} alt={band.alt} loading="lazy" decoding="async" />
+      <img class="home-band" src={band.src} srcset={band.srcset} sizes={band.srcset === undefined ? undefined : band.sizes} width={band.width} height={band.height} alt={band.alt} loading="lazy" decoding="async" />
       <p class="measure">There is no office to visit and nobody relocates. The work is written down, reviewed at set points and visible to you throughout. <a href={href('/program/digital-incubation-model/')}>Read how remote works in practice</a>.</p>
     </div>
   </section>

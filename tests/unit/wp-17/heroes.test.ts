@@ -48,9 +48,14 @@ test('the actions render the primary first and mark both links for the e2e suite
   assert.match(source, /href\(primary\.href\)/, 'links go through href()');
 });
 
-test('the editorial hero keeps the photo-pass image shape and reserves the media space', () => {
+test('the editorial hero serves the slot srcset at high priority and reserves the media space', () => {
   const source = read('src/components/hero/HeroEditorial.astro');
-  assert.match(source, /<img src=\{image\.src\.src\} width=\{image\.src\.width\} height=\{image\.src\.height\} alt=\{image\.alt\} fetchpriority="high" decoding="async" \/>/);
+  // WP-12c: the LCP image is the responsive photoImage() output, not the bare master (decision P-4); tests/unit/wp-12c pins the contract.
+  assert.match(source, /const image = slotId \? await photoImage\(slotId\) : undefined;/);
+  assert.match(
+    source,
+    /<img src=\{image\.src\} srcset=\{image\.srcset\} sizes=\{image\.srcset === undefined \? undefined : image\.sizes\} width=\{image\.width\} height=\{image\.height\} alt=\{image\.alt\} fetchpriority="high" decoding="async" \/>/,
+  );
   assert.doesNotMatch(source, /loading="lazy"/, 'the first-viewport image is never lazy');
   assert.match(source, /photo\?: SlotId/, 'the hero takes an optional photo slot');
   const css = read('src/styles/hero.css');

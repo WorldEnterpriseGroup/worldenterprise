@@ -1,8 +1,8 @@
 ---
-import { getPhoto } from '../../assets/photo/index.ts';
 import type { SlotId } from '../../assets/photo/slots.ts';
 import type { Crumb } from '../../lib/breadcrumbs.ts';
 import Breadcrumbs from '../layout/Breadcrumbs.astro';
+import { photoImage } from '../media/photo-image.ts';
 import HeroActions from './HeroActions.astro';
 import HeroArt from './HeroArt.astro';
 import type { HeroArtProps, HeroCta, HeroMeasure } from './types.ts';
@@ -21,7 +21,7 @@ interface Props {
   lead?: string;
   primary?: HeroCta | undefined;
   secondary?: HeroCta | undefined;
-  /** Photo slot for the media frame. Drops in over the vector art; the image carries fetchpriority="high". */
+  /** Photo slot for the media frame. Drops in over the vector art; the image is the LCP, so it carries fetchpriority="high" and the slot's AVIF srcset. */
   photo?: SlotId | undefined;
   /** Earlier name of `photo`, kept so existing callers keep working. */
   inset?: SlotId | undefined;
@@ -32,7 +32,7 @@ interface Props {
 
 const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, secondary, photo, inset, art, measure = 'default' } = Astro.props;
 const slotId = photo ?? inset;
-const image = slotId ? getPhoto(slotId) : undefined;
+const image = slotId ? await photoImage(slotId) : undefined;
 const hasMediaSlot = Astro.slots.has('media');
 const hasActions = Astro.slots.has('actions');
 // Reading-column measures have no room beside the copy, so they never carry a media frame.
@@ -57,7 +57,7 @@ const containerClass = { default: 'container', prose: 'container container--pros
         <div class="hero__media">
           <div class="hero__frame">
             {image ? (
-              <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} fetchpriority="high" decoding="async" />
+              <img src={image.src} srcset={image.srcset} sizes={image.srcset === undefined ? undefined : image.sizes} width={image.width} height={image.height} alt={image.alt} fetchpriority="high" decoding="async" />
             ) : hasMediaSlot ? (
               <slot name="media" />
             ) : (

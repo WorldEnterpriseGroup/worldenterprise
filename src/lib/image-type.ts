@@ -24,7 +24,27 @@ export function imageMediaType(format: string): string {
   return type;
 }
 
+/**
+ * The LCP image hint a page passes as `preloadImage`. `srcset` and `sizes` are set together for a responsive image: the head then
+ * writes them as `imagesrcset` and `imagesizes`, so the browser picks the same candidate for the preload as for the `<img>`.
+ */
+export interface PreloadImage {
+  readonly href: string;
+  readonly type: string;
+  readonly srcset?: string | undefined;
+  readonly sizes?: string | undefined;
+}
+
 /** The `{ href, type }` pair a page passes as `preloadImage`, for an imported image. */
-export function preloadOf(image: Pick<ImageMetadata, 'src' | 'format'>): { readonly href: string; readonly type: string } {
+export function preloadOf(image: Pick<ImageMetadata, 'src' | 'format'>): PreloadImage {
   return { href: image.src, type: imageMediaType(image.format) };
+}
+
+/**
+ * The preload for a responsive photo (the result of `photoImage()`). `href` is the fallback for a browser that ignores
+ * `imagesrcset`; `srcset` and `sizes` are the very strings the `<img>` carries, so the two requests are one.
+ */
+export function preloadOfPhoto(image: { readonly src: string; readonly format: string; readonly srcset: string | undefined; readonly sizes: string }): PreloadImage {
+  const type = imageMediaType(image.format);
+  return image.srcset === undefined ? { href: image.src, type } : { href: image.src, type, srcset: image.srcset, sizes: image.sizes };
 }

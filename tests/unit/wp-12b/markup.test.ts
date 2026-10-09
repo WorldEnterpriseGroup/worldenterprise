@@ -69,7 +69,7 @@ test('high priority is confined to the three LCP heroes, the preload link, and t
 test('the heroes take an optional photo slot and the editorial hero fetches it at high priority without lazy loading', () => {
   const editorial = read('src/components/hero/HeroEditorial.astro');
   assert.match(editorial, /photo\?: SlotId/);
-  assert.match(editorial, /const image = slotId \? getPhoto\(slotId\) : undefined/);
+  assert.match(editorial, /const image = slotId \? await photoImage\(slotId\) : undefined/);
   const page = read('src/components/hero/PageHero.astro');
   assert.match(page, /photo\?: SlotId/);
   assert.match(page, /const editorial = photo !== undefined \|\| art !== undefined/, 'a page with no photo and no art gets the compact hero');
@@ -79,8 +79,11 @@ test('the heroes take an optional photo slot and the editorial hero fetches it a
 test('only the home page passes a preload (its hero is the LCP), and the link names the type of the file it points at', () => {
   const users = listFiles('src/pages', '.astro').filter((file) => /preloadImage=/.test(read(file)));
   assert.deepEqual(users, ['src/pages/index.astro'], 'no other page preloads an image');
-  assert.match(read('src/pages/index.astro'), /preloadImage=\{preloadOf\(heroImage\.src\)\}/);
-  assert.match(read('src/components/seo/SeoHead.astro'), /<link rel="preload" as="image" href=\{preloadImage\.href\} type=\{preloadImage\.type\} fetchpriority="high" \/>/);
+  assert.match(read('src/pages/index.astro'), /preloadImage=\{preloadOfPhoto\(heroImage\)\}/);
+  assert.match(
+    read('src/components/seo/SeoHead.astro'),
+    /<link rel="preload" as="image" href=\{preloadImage\.href\} imagesrcset=\{preloadImage\.srcset\} imagesizes=\{preloadImage\.sizes\} type=\{preloadImage\.type\} fetchpriority="high" \/>/,
+  );
 });
 
 test('cards and the image consumers serve the slot srcset and sizes and keep the display size as width and height', () => {

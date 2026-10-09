@@ -3,7 +3,8 @@
 //   Files:  every raster is .avif. The only other raster allowed is apple-touch-icon.png. SVG is allowed.
 //   Markup: every <img> has alt (decorative = alt=""), width, height and decoding; alt text is not "image of" filler; the LCP
 //           image (fetchpriority=high) is not also lazy; no external image URLs; no data: raster; og:image is AVIF; an image
-//           preload names the type of the file it points at and is used by an <img> on the same page.
+//           preload names the type of the file it points at and is used by an <img> on the same page, and a preload with
+//           imagesrcset carries the same srcset and sizes as that <img> (otherwise the browser fetches the image twice).
 //   Size:   no raster displays wider than 1024 CSS px; a card (<= 512 px) weighs <= 60 KB, a band <= 120 KB, and the images
 //           a page loads by default weigh <= 400 KB in total.
 // Usage: node scripts/audit-images.mjs [--dist dist] [--json reports/images.json]
@@ -28,6 +29,12 @@ export function auditFiles(root) {
     }
   }
   return findings;
+}
+
+/** Two srcset or sizes values are the same list when they match once whitespace is collapsed. */
+function sameList(a, b) {
+  const normal = (value) => (value ?? '').replace(/\s+/g, ' ').trim();
+  return a !== undefined && b !== undefined && normal(a) === normal(b);
 }
 
 function toDistPath(url, route) {
@@ -99,6 +106,10 @@ export function auditMarkup({ root, pages, sizeOf = (rel) => (existsSync(join(ro
         findings.push({ level: 'error', where: label, message: `preload declares type "${link.attrs.type}" for a .${extension} file (expected "${expected}"); the browser ignores the hint` });
       }
       if (!usedImageUrls.has(href)) findings.push({ level: 'error', where: label, message: 'preloaded image is not used by any <img> on the page' });
+      if (link.attrs.imagesrcset !== undefined) {
+        const twin = startTags(doc, 'img').some((img) => sameList(img.attrs.srcset, link.attrs.imagesrcset) && sameList(img.attrs.sizes, link.attrs.imagesizes));
+        if (!twin) findings.push({ level: 'error', where: label, message: 'preload imagesrcset and imagesizes match no <img> srcset and sizes on the page; the browser fetches the image twice' });
+      }
     }
 
     for (const source of startTags(doc, 'source')) {

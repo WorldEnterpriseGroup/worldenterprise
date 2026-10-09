@@ -6,6 +6,8 @@ import type { SlotId } from '../../assets/photo/slots.ts';
 /** The attributes of one responsive `<img>` for a photo slot. */
 export interface PhotoImage {
   readonly src: string;
+  /** Format of `src` and of every `srcset` candidate: AVIF for a raster slot, SVG for a slot that still holds vector art. */
+  readonly format: 'avif' | 'svg';
   readonly srcset: string | undefined;
   readonly sizes: string;
   readonly width: number;
@@ -22,9 +24,9 @@ export async function photoImage(slot: SlotId, overrides: { readonly sizes?: str
   const asset = getPhoto(slot);
   const { spec, src } = asset;
   const sizes = overrides.sizes ?? spec.sizes;
-  if (src.format === 'svg') return { src: src.src, srcset: undefined, sizes, width: src.width, height: src.height, alt: asset.alt };
+  if (src.format === 'svg') return { src: src.src, format: 'svg', srcset: undefined, sizes, width: src.width, height: src.height, alt: asset.alt };
   const { width, height } = displayAttributes(spec, src.width, src.height);
   const image = await getImage({ src, format: 'avif', width, height, widths: srcsetWidths(spec, src.width), sizes });
   const srcset = image.srcSet.values.length > 0 ? image.srcSet.attribute : undefined;
-  return { src: image.src, srcset, sizes, width, height, alt: asset.alt };
+  return { src: image.src, format: 'avif', srcset, sizes, width, height, alt: asset.alt };
 }

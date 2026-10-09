@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import * as imagesAudit from '../../../scripts/audit-images.mjs';
 import * as html from '../../../scripts/lib/html.mjs';
-import { imageMediaType, preloadOf } from '../../../src/lib/image-type.ts';
+import { imageMediaType, preloadOf, preloadOfPhoto } from '../../../src/lib/image-type.ts';
 import { cleanSite, makeDist, page } from '../shared/fixture-dist.ts';
 
 const ROOT = new URL('../../../', import.meta.url).pathname;
@@ -45,14 +45,47 @@ test('preloadOf takes the type from the imported image, not from the caller', ()
   assert.deepEqual(preloadOf({ src: '/_astro/hex.svg', format: 'svg' }), { href: '/_astro/hex.svg', type: 'image/svg+xml' });
 });
 
-test('the home page derives its hero preload from the imported image', () => {
+test('preloadOfPhoto carries the srcset and sizes of a responsive photo, and a vector slot gets a plain preload', () => {
+  const raster = { src: '/_astro/hero.1a2b3c.avif', format: 'avif', srcset: '/_astro/hero.640.avif 640w, /_astro/hero.1a2b3c.avif 1024w', sizes: '(min-width: 62rem) 32rem, 100vw' };
+  assert.deepEqual(preloadOfPhoto(raster), { href: raster.src, type: 'image/avif', srcset: raster.srcset, sizes: raster.sizes });
+  const vector = { src: '/_astro/hex.svg', format: 'svg', srcset: undefined, sizes: '100vw' };
+  assert.deepEqual(preloadOfPhoto(vector), { href: '/_astro/hex.svg', type: 'image/svg+xml' });
+  assert.throws(() => preloadOfPhoto({ ...raster, format: 'bmp' }), /No media type is known/);
+});
+
+test('the home page derives its hero preload from the same photoImage() result the hero renders', () => {
   const home = readFileSync(`${ROOT}src/pages/index.astro`, 'utf8');
-  assert.match(home, /preloadImage=\{preloadOf\(heroImage\.src\)\}/);
+  assert.match(home, /const heroImage = await photoImage\('band-1'\);/);
+  assert.match(home, /preloadImage=\{preloadOfPhoto\(heroImage\)\}/);
+  assert.match(home, /<HomeHero image=\{heroImage\}/);
   assert.doesNotMatch(home, /image\/svg\+xml/);
 });
 
 test('audit:images accepts a preload whose type matches the file and whose image the page uses', () => {
   assert.equal(audit('<link rel="preload" as="image" href="/_astro/hero.avif" type="image/avif" fetchpriority="high">'), '');
+});
+
+const SRCSET = '/_astro/hero.640.avif 640w, /_astro/hero.avif 1024w';
+const SIZES = '(min-width: 62rem) 32rem, 100vw';
+const RESPONSIVE_IMG = `<img src="/_astro/hero.avif" srcset="${SRCSET}" sizes="${SIZES}" alt="A model of three stages on a table" width="1024" height="576" fetchpriority="high" decoding="async">`;
+
+function auditResponsive(head: string): string {
+  const root = makeDist({ ...cleanSite(), 'index.html': page({ head, body: `<h1>Home</h1>${RESPONSIVE_IMG}` }), '_astro/hero.avif': 1000, '_astro/hero.640.avif': 800 });
+  return auditMarkup({ root, pages: readPages(root) })
+    .findings.filter((f) => f.level === 'error')
+    .map((f) => f.message)
+    .join('\n');
+}
+
+test('audit:images accepts a responsive preload whose imagesrcset and imagesizes are the <img> srcset and sizes', () => {
+  assert.equal(auditResponsive(`<link rel="preload" as="image" href="/_astro/hero.avif" imagesrcset="${SRCSET}" imagesizes="${SIZES}" type="image/avif" fetchpriority="high">`), '');
+});
+
+test('audit:images rejects a responsive preload whose imagesrcset or imagesizes differ from the <img> (negative proof: two fetches)', () => {
+  const twice = /preload imagesrcset and imagesizes match no <img> srcset and sizes on the page/;
+  assert.match(auditResponsive(`<link rel="preload" as="image" href="/_astro/hero.avif" imagesrcset="/_astro/hero.avif 1024w" imagesizes="${SIZES}" type="image/avif">`), twice);
+  assert.match(auditResponsive(`<link rel="preload" as="image" href="/_astro/hero.avif" imagesrcset="${SRCSET}" imagesizes="100vw" type="image/avif">`), twice);
+  assert.match(auditResponsive(`<link rel="preload" as="image" href="/_astro/hero.avif" imagesrcset="${SRCSET}" type="image/avif">`), twice);
 });
 
 test('audit:images rejects a preload that declares the wrong type for its file (negative proof)', () => {

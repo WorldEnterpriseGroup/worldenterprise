@@ -357,3 +357,17 @@ SAGE-PLAN 4.6 refuses "synthetic people" and "AI-generated faces". The photograp
 | Disclosure | the footer line from F-3 appears with the first generated slot |
 
 Enforced by `tests/unit/wp-12b/manifest.test.ts` (the people class, the figure count per slot, page and site, the stage set, the alt text of a generated slot), by the claims audit rules `Q-photo-alt` and `R-photo-disclosure` (F-3), and by a human look at every render before it is committed. Figure candidates are generated four to a slot (seeds +1000 to +2500); the single-amber rule passed on only 3 of 10 figure scenes in testing.
+
+## Decisions made during WP-12c (responsive heroes and declared dependencies)
+
+### P-4 The LCP heroes and the home band are responsive; the preload names the same srcset
+
+`HeroEditorial`, `HeroAtlas`, `HomeHero` and the home band in `src/pages/index.astro` now render the output of `photoImage()` (P-2): an AVIF `srcset`, the slot's `sizes`, and the display size as `width` and `height`. The LCP images keep `fetchpriority="high"`, `decoding="async"` and no `loading`. `HomeHero` takes the image as a prop: the home page builds `band-1` once, hands it to the hero and derives the head preload from the same object (`preloadOfPhoto()` in `src/lib/image-type.ts`), so the `<img>` and the `<link rel="preload" as="image">` carry one `srcset` and one `sizes`. `SeoHead` writes them as `imagesrcset` and `imagesizes` (with `href` as the fallback for a browser that ignores them), so the browser starts one request, not two. `audit:images` fails a preload whose `imagesrcset` or `imagesizes` match no `<img>` on the page.
+
+Smaller variants: none is committed. The slot table already lists them (`hero-home` 640 and 1024, `card-4x3` 512, 768 and 1024), and `getImage()` writes every width from the committed master at build time, so a replaced master (WP-12b phase B) gets its variants without a second step. The 640 variant stands in for the 480 and 768 widths the brief used as examples: `slots.ts` is frozen, and a 640 file serves a 390 px phone at 1x and the 32rem hero column at 1x. A phone at 2x or more takes the 1024 master.
+
+Editorial heroes on a 4:3 slot now report 512x384 as `width` and `height` (the slot's display size), not the 1024x768 master. The media frame is absolutely positioned and `object-fit: cover`, so nothing moves; `audit:images` takes the 60 KB card budget for the 512 file instead of the band budget for the master.
+
+### P-5 `satteri` and `@astrojs/markdown-satteri` are declared
+
+`astro.config.mjs` and `src/lib/rehype-table-wrap.ts` import them, and `tests/unit/wp-16/table-wrap.test.ts` imports `satteri` itself, but both were only transitive dependencies of Astro. They are now `dependencies` pinned like the rest: `@astrojs/markdown-satteri` 0.4.3 and `satteri` 0.10.5, the latest stable versions of each and the versions the lockfile already resolved, so `npm install --package-lock-only` changed nothing else.
