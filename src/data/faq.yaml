@@ -52,18 +52,30 @@
   answer: "No. WE makes no promise of funding. The work helps you prepare the evidence investors ask for. It does not predict that any company will raise money."
   group: "Scope and limits"
   claimsUsed: [C-05]
-  related: [not-for]
+  related: [not-for, investor-introductions]
+- id: investor-introductions
+  question: "Does WE introduce founders to investors?"
+  answer: "Yes, as a separate paid add-on called Investor Introductions, for companies that have completed the readiness work in Service Line F. WE curates and limits the introductions, and charges a flat fee that does not depend on whether any investment closes. Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding."
+  group: "Scope and limits"
+  claimsUsed: [C-05, C-14]
+  related: [promise-funding, cost]
 - id: cost
   question: "What does it cost?"
-  answer: "Pricing is seat-based. The Pricing page explains the seat model and lets you request the current seat rate."
+  answer: "Pricing is seat-based. A dedicated seat is the unit of work, and WE arranges seats into four packages or into a custom seat plan. The Pricing page lists no amounts and lets you request the current rate."
   group: "Applying and cost"
-  claimsUsed: [C-02]
-  related: [how-paid]
+  claimsUsed: [C-02, C-10]
+  related: [packages, how-paid]
+- id: packages
+  question: "What are Spark, Launch, Accelerate and Studio?"
+  answer: "They are WE's four packages: pre-configured seat plans with a fixed scope, each sized for a company stage. Every package covers all seven service lines at a different depth. You can choose a custom seat plan instead, and seats change by notice either way."
+  group: "Applying and cost"
+  claimsUsed: [C-02, C-10]
+  related: [cost, scale-by-notice]
 - id: how-paid
   question: "How is WE paid?"
-  answer: "The written agreement sets out how WE is paid. WE shares it before you commit to anything, and you should read it with your own counsel. How seats are priced is explained on the Pricing page."
+  answer: "The written agreement sets out how WE is paid. WE shares it before you commit to anything, and you should read it with your own counsel. How seats and packages are priced is explained on the Pricing page."
   group: "Applying and cost"
-  claimsUsed: []
+  claimsUsed: [C-10]
   related: [cost, who-owns-work]
 - id: who-owns-work
   question: "Who owns the work?"

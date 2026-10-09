@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import InvestorIntroductionsOffer from '../../components/blocks/InvestorIntroductionsOffer.astro';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
 import Callout from '../../components/ui/Callout.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
@@ -22,10 +23,10 @@ const prepares: readonly (readonly [string, string])[] = [
 
 const doesNot = [
   'WE does not offer, sell or place securities, and takes no part in any financing.',
-  'WE does not arrange meetings with investors or act as a go-between.',
-  'WE does not advise investors, rank companies or recommend one to you.',
+  'WE does not negotiate terms, advise on securities or handle funds.',
+  'WE does not advise investors or recommend any company as an investment, and an introduction is not an endorsement.',
   'WE does not verify a company’s statements. They remain that company’s own.',
-  'WE does not promise or predict funding for any company.',
+  'WE does not promise or predict a meeting, a reply or funding for any company.',
 ];
 ---
 
@@ -57,12 +58,15 @@ const doesNot = [
     and <a href={href('/fundability/safe-explained/')}>SAFEs in plain language</a>.
   </p>
 
+  <InvestorIntroductionsOffer variant="full" headingLevel={2} idPrefix="intro-offer" />
+
   <LimitsBlock title="The limits of WE's role" items={doesNot} headingLevel={2} />
 
   <h2 id="investor-title">If you are an investor</h2>
   <p>
     Any company that shows you materials prepared with WE’s help is making its own case. Ask the founder for the
-    source of each claim, as you would for any company. If you have a question about how WE works, use the
+    source of each claim, as you would for any company. An introduction through the add-on above is not an endorsement or a
+    recommendation to invest. You decide whether to reply, and you do your own diligence. If you have a question about how WE works, use the
     <a href={href('/contact/')}>contact page</a>. A question is not a request for access to any company.
   </p>
 

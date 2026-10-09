@@ -1,0 +1,65 @@
+---
+/**
+ * Claim C-14: the Investor Introductions add-on (owner decision of 2026-10-09). The full variant describes the structure and
+ * the readiness criteria; the brief variant names the add-on, states the fee structure and links to the full description.
+ * Both end with the disclaimer, so a page that uses this block always satisfies the required-text rules.
+ */
+import { href } from '../../lib/url.ts';
+import DataTable from '../ui/DataTable.astro';
+import IntroductionsDisclaimer from './IntroductionsDisclaimer.astro';
+import { INTRODUCTIONS_FLAT_FEE, INTRODUCTIONS_READINESS } from './introductions.ts';
+
+interface Props {
+  variant?: 'full' | 'brief';
+  headingLevel?: 2 | 3;
+  /** Keeps element ids unique when a page uses the block twice. */
+  idPrefix?: string;
+}
+
+const { variant = 'full', headingLevel = 2, idPrefix = 'intro' } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const SubHeading = `h${headingLevel + 1}` as 'h3' | 'h4';
+const rows = INTRODUCTIONS_READINESS.map((c) => [c.artifact, c.inPlace]);
+---
+
+<section class="stack" aria-labelledby={`${idPrefix}-title`}>
+  <Heading id={`${idPrefix}-title`}>Investor Introductions, an optional add-on</Heading>
+  {
+    variant === 'brief' ? (
+      <>
+        <p>
+          Investor Introductions is a separate, paid add-on. It is not part of any package, and no package requires it. A flat fee covers
+          curation and preparation. {INTRODUCTIONS_FLAT_FEE} WE curates and limits the introductions, and makes them only after the readiness
+          criteria of <a href={href('/services/fundability-and-investor-readiness/')}>Service Line F</a> are met.
+        </p>
+        <p>
+          The structure and the readiness criteria are on the <a href={href('/investors/')}>investors page</a>. To ask for the current fee, use the
+          <a href={href('/contact/?topic=seat-rate')}>contact form</a> and name the add-on.
+        </p>
+      </>
+    ) : (
+      <>
+        <p>
+          Investor Introductions is a separate, paid add-on for a company that has finished the readiness work in Service Line F. It is not part
+          of any package, and no package requires it.
+        </p>
+        <div class="limits">
+          <SubHeading id={`${idPrefix}-how`}>How the add-on works</SubHeading>
+          <ul>
+            <li>A flat fee covers curation and preparation: choosing which investors may fit your company, and preparing your materials for them.</li>
+            <li>{INTRODUCTIONS_FLAT_FEE}</li>
+            <li>WE curates the introductions and limits their number. It makes them only after the readiness criteria below are met, and it may defer the add-on until they are.</li>
+            <li>WE does not negotiate terms, advise on securities or handle funds. Terms and instruments stay between you, your counsel and the investor.</li>
+          </ul>
+        </div>
+        <SubHeading id={`${idPrefix}-criteria`}>Readiness criteria</SubHeading>
+        <DataTable caption="Readiness criteria for Investor Introductions, from the work in Service Line F" columns={['From line F', 'What must be in place']} rows={rows} />
+        <p>
+          WE judges whether the criteria are met. Meeting them does not mean an introduction will be made, and each investor decides for
+          themselves whether to reply. To ask for the current fee, use the <a href={href('/contact/?topic=seat-rate')}>contact form</a> and name the add-on.
+        </p>
+      </>
+    )
+  }
+  <IntroductionsDisclaimer />
+</section>

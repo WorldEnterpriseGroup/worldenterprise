@@ -12,7 +12,7 @@ covers:
   - "Pitch materials and question rehearsals, and a habit of short, regular investor updates."
 doesNotCover:
   - "A promise of funding, or any prediction that your company will raise money."
-  - "Offering, selling or placing securities, or acting as a broker, finder or placement agent."
+  - "Offering, selling or placing securities, or acting as a broker-dealer or investment adviser."
   - "A promise that any investor will meet, read or reply to you."
   - "Legal, tax or investment advice. Your own counsel advises on instruments and terms."
 icon: F
@@ -22,8 +22,10 @@ relatedPlaybooks:
 claimsUsed:
   - C-04
   - C-05
-updated: 2026-10-06
+  - C-14
+updated: 2026-10-09
 ---
+import InvestorIntroductionsOffer from '../../components/blocks/InvestorIntroductionsOffer.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import FaqList from '../../components/cards/FaqList.astro';
 import Steps from '../../components/ui/Steps.astro';
@@ -60,12 +62,14 @@ Investors read many pitches. What separates one from another is whether each sta
   ]}
 />
 
+<InvestorIntroductionsOffer variant="full" headingLevel={2} idPrefix="line-f-intro" />
+
 ## Questions about this line
 
 <FaqList
   name="faq-line-f"
   items={[
-    { question: 'Does WE find investors for me?', answer: 'No. This line prepares evidence. It does not find, approach or match you with investors, and it does not promise any investor contact.' },
+    { question: 'Does WE find investors for me?', answer: 'Not as part of this line, which prepares evidence and does not approach investors. Investor Introductions is a separate, paid add-on, described above, for companies that meet its readiness criteria.' },
     { question: 'Will this make my company fundable?', answer: 'WE cannot say. The line helps you assemble what a careful investor will want to see. Whether anyone invests is their decision, and WE makes no promise of funding.' },
     { question: 'When should I start?', answer: 'Usually not first. The evidence comes from the work in the other lines, and line F organizes it. Starting the records early makes the later work lighter.' },
   ]}

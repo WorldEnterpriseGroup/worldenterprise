@@ -44,9 +44,9 @@ function parse(file: string): Row[] {
 const faq = parse('faq.yaml').filter((r) => r.draft !== true);
 const glossary = parse('glossary.yaml').filter((r) => r.draft !== true);
 
-test('FAQ has the 16 seeded entries with unique ids', () => {
-  assert.equal(faq.length, 16);
-  assert.equal(new Set(faq.map((r) => r.id)).size, 16);
+test('FAQ has the 16 seeded entries and the two added for the 2026-10-09 owner decisions, with unique ids', () => {
+  assert.equal(faq.length, 18);
+  assert.equal(new Set(faq.map((r) => r.id)).size, 18);
 });
 
 test('glossary has 40 terms with unique ids', () => {

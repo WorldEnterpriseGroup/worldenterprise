@@ -111,7 +111,10 @@ test('investors page carries the no-funding disclaimer and the not-an-offer stat
   assert.match(page, /<NoFundingDisclaimer\s*\/>/);
   assert.match(page, /Not an offer of securities/);
   assert.match(page, /does not offer securities|offer to sell, or a solicitation/);
-  assert.match(page, /does not arrange meetings with investors/i);
+  // Owner decision of 2026-10-09: introductions are a separate paid add-on, so the page no longer says WE arranges no meetings.
+  assert.match(page, /<InvestorIntroductionsOffer\b/);
+  assert.match(page, /does not negotiate terms, advise on securities or handle funds/i);
+  assert.doesNotMatch(page, /does not arrange meetings with investors/i);
 });
 
 test('every page uses one h1 through its layout and no page renders a raw h1', () => {

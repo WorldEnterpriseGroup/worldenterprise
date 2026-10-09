@@ -1,0 +1,12 @@
+---
+/**
+ * Claim C-14: the Investor Introductions disclaimer, verbatim (src/components/blocks/introductions.ts).
+ * Required by scripts/audit-claims.mjs on every page whose main content names the add-on.
+ */
+import { INTRODUCTIONS_DISCLAIMER } from './introductions.ts';
+---
+
+<aside class="callout callout--notice" aria-label="Investor Introductions disclaimer">
+  <p class="callout__title">A service, not a promise</p>
+  <p>{INTRODUCTIONS_DISCLAIMER}</p>
+</aside>

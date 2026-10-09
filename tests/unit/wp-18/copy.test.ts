@@ -4,6 +4,8 @@ import { join, relative } from 'node:path';
 import test from 'node:test';
 import { parse } from 'yaml';
 import * as auditMod from '../../../scripts/audit-claims.mjs';
+import { INTRODUCTIONS_DISCLAIMER, INTRODUCTIONS_FLAT_FEE } from '../../../src/components/blocks/introductions.ts';
+import { isClaimUsable } from '../../../src/data/claims.ts';
 import { flags } from '../../../src/data/flags.ts';
 import { site } from '../../../src/data/site.ts';
 import { founderStageRows, FOUNDER_ENTRY_POINTS, stageLineList, stageLinePhrase } from '../../../src/components/program/stages.ts';
@@ -199,4 +201,112 @@ test('the editorial policy and the accessibility statement describe the disclosu
   assert.match(policy, /not a real person|none depicts or stands for a real person, founder, client or member of WE staff/);
   const accessibility = read('src/content/pages/legal/accessibility.md');
   assert.match(accessibility, /Illustrative images are created or generated for this site/);
+});
+
+// ---- Owner decisions of 2026-10-09: hybrid pricing and the Investor Introductions add-on ----
+
+const PACKAGES = ['Spark', 'Launch', 'Accelerate', 'Studio'] as const;
+
+test('claims C-10 and C-14 are usable, and the seat price and legal flags stay off', () => {
+  assert.equal(isClaimUsable('C-10'), true);
+  assert.equal(isClaimUsable('C-14'), true);
+  assert.equal(flags.seatPrice.published, false);
+  assert.equal(flags.seatPrice.monthlyRate, null);
+  assert.equal(flags.legalTerms, false);
+  assert.equal(flags.pbcWording, false);
+  assert.equal(flags.focusShiftConfirmed, false);
+});
+
+test('the pricing page names the four packages, publishes no amounts or seat counts, and says how to ask for the rate', () => {
+  const sources = [read('src/content/pages/pricing/pricing.mdx'), read('src/pages/pricing/index.astro')];
+  const mdx = sources[0] ?? '';
+  for (const name of PACKAGES) assert.match(mdx, new RegExp(`\\b${name}\\b`), `${name} is on the pricing page`);
+  for (const text of sources) {
+    assert.doesNotMatch(text, /\$\s?\d|\bdollars?\b|\bper month\b|\/mo\b/i, 'an amount');
+    assert.doesNotMatch(text, /\b(?:\d+|two|three|four|five|six|seven|eight|nine|ten|twelve)\s+(?:dedicated\s+)?seats?\b/i, 'a seat count');
+    assert.doesNotMatch(text, /\bnot packages\b|does not list [^.]*\bpackages?\b|\bwithout packages\b/i, 'a denial of packages');
+  }
+  // Words from KEY-VALUES.md that this site does not publish: the milestone scheme, the phases and the term.
+  for (const text of sources) assert.doesNotMatch(text, /\bnine Milestones\b|\bRaise-Ready\b|\bFundability Certification\b|\bDelivery Hours\b|\b12[- ]month\b|\btwelve[- ]month\b/i);
+  // The page formats a rate only behind flags.seatPrice, which stays off (asserted above).
+  assert.doesNotMatch(mdx, /\bUSD\b/);
+  assert.match(mdx, /contact\/\?topic=seat-rate/);
+});
+
+test('the contact form offers the seat-rate topic the pricing page links to', () => {
+  const form = read('src/components/forms/ContactForm.astro');
+  assert.match(form, /seat-rate/);
+  assert.match(form, /Request the current seat rate/);
+});
+
+test('every source page that names Investor Introductions shows the verbatim disclaimer', () => {
+  const trigger = SET.required.find((rule) => rule.id === 'R-C14-intro-disclaimer-wherever-named') as unknown as { whenMatches?: string } | undefined;
+  assert.ok(trigger?.whenMatches, 'the trigger rule exists');
+  const regex = new RegExp(trigger.whenMatches, 'i');
+  const exempt = new Set([
+    'src/components/blocks/InvestorIntroductionsOffer.astro',
+    'src/components/blocks/IntroductionsDisclaimer.astro',
+    'src/components/blocks/introductions.ts',
+    // The ladder and the registry describe the claim; no page renders them.
+    'src/data/claims.ts',
+  ]);
+  const uses = /<(?:IntroductionsDisclaimer|InvestorIntroductionsOffer)\b/;
+  const named = [...walk(join(ROOT, 'src'), /\.(astro|ts|md|mdx|yaml)$/)].map(rel).filter((file) => !exempt.has(file));
+  const withText = named.filter((file) => regex.test(read(file)));
+  assert.ok(withText.length >= 1, 'the trigger matches at least the FAQ and the investor-choice article');
+  // A content file that a page renders is covered when the page renders the disclaimer.
+  const renderedBy: Readonly<Record<string, string>> = {
+    'src/content/pages/investors/index.mdx': 'src/pages/investors/index.astro',
+    'src/content/pages/network/index.mdx': 'src/pages/network/index.astro',
+  };
+  const shows = (file: string): boolean => {
+    const text = read(file).replace(/\s+/g, ' ');
+    return uses.test(text) || text.includes(INTRODUCTIONS_DISCLAIMER);
+  };
+  const missing = withText.filter((file) => !shows(file) && !(renderedBy[file] && shows(renderedBy[file])));
+  assert.deepEqual(missing, [], 'a page names the add-on without the disclaimer');
+  // And the pages the owner named render it, through the component.
+  for (const file of [
+    'src/pages/investors/index.astro',
+    'src/pages/network/index.astro',
+    'src/content/services/fundability-and-investor-readiness.mdx',
+    'src/content/pages/pricing/pricing.mdx',
+    'src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx',
+  ]) assert.match(read(file), uses, `${file} renders the disclaimer`);
+  const topic = read('src/content/pages/insights/topic-fundable.mdx').replace(/\s+/g, ' ');
+  assert.ok(topic.includes(INTRODUCTIONS_DISCLAIMER), 'the fundable topic page carries the disclaimer in its text');
+});
+
+test('the investors page and Service Line F state the flat fee and no longer deny introductions', () => {
+  const investors = read('src/pages/investors/index.astro') + read('src/content/pages/investors/index.mdx');
+  const service = read('src/content/services/fundability-and-investor-readiness.mdx');
+  assert.doesNotMatch(investors, /does not (?:arrange|broker|make)[^.]*(?:meetings|introductions)/i);
+  assert.doesNotMatch(investors, /no introductions/i);
+  assert.match(investors + service, /InvestorIntroductionsOffer/);
+  assert.ok(INTRODUCTIONS_FLAT_FEE.length > 0);
+  assert.doesNotMatch(service, /\bfinder\b/i, 'the finder wording is removed from line F');
+  assert.match(service, /broker-dealer or investment adviser/);
+});
+
+test('the FAQ answers the two new questions, and the add-on answer carries the disclaimer', () => {
+  const list = parse(read('src/data/faq.yaml')) as readonly { id: string; question: string; answer: string; claimsUsed: readonly string[] }[];
+  const intro = list.find((item) => item.id === 'investor-introductions');
+  assert.ok(intro, 'the investor-introductions entry exists');
+  assert.ok(intro.answer.includes(INTRODUCTIONS_DISCLAIMER));
+  assert.ok(intro.claimsUsed.includes('C-14'));
+  assert.match(intro.answer, /separate paid add-on/);
+  assert.match(intro.answer, /does not depend on whether any investment closes/);
+  const packages = list.find((item) => item.id === 'packages');
+  assert.ok(packages, 'the packages entry exists');
+  assert.ok(packages.claimsUsed.includes('C-10'));
+  assert.doesNotMatch(packages.answer, /\$|\d/);
+  assert.ok(list.every((item) => !/\bnot packages\b/i.test(item.answer)), 'no entry denies packages');
+});
+
+test('the insights topic page keeps the verbatim disclaimer and a body of 120 to 200 words', () => {
+  const raw = read('src/content/pages/insights/topic-fundable.mdx');
+  const body = raw.replace(/^---[\s\S]*?---\s*/, '');
+  const words = body.trim().split(/\s+/).length;
+  assert.ok(words >= 120 && words <= 200, `the body has ${words} words`);
+  assert.ok(body.replace(/\s+/g, ' ').includes(INTRODUCTIONS_DISCLAIMER));
 });

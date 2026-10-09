@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import HexAtlas from '../../components/ui/HexAtlas.astro';
+import InvestorIntroductionsOffer from '../../components/blocks/InvestorIntroductionsOffer.astro';
 import CellTrail from '../../components/ui/CellTrail.astro';
 import Callout from '../../components/ui/Callout.astro';
 import Card from '../../components/ui/Card.astro';
@@ -65,7 +66,7 @@ const trail = [
         <p>Nine roles that can staff a dedicated team seat, and what each one does not do.</p>
       </Card>
       <Card title="Investors" href={href('/investors/')} eyebrow="What WE does and does not do" headingLevel={3}>
-        <p>WE prepares evidence. It offers no securities, makes no introductions and promises no funding.</p>
+        <p>WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.</p>
       </Card>
     </Grid>
   </section>
@@ -81,8 +82,10 @@ const trail = [
 
   <div class="prose stack"><Content /></div>
 
+  <InvestorIntroductionsOffer variant="brief" headingLevel={2} idPrefix="network-intro" />
+
   <Callout tone="notice" title="No promise of funding">
-    <p>WE makes no promise of funding, and nothing in the network is a route to investors.</p>
+    <p>WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.</p>
   </Callout>
 
   <CtaBand

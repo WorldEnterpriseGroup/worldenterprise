@@ -121,13 +121,15 @@ test('page titles fit the 60 character limit with the site suffix', () => {
   assert.ok(`${hubTitle} | ${site.titleSuffix}`.length <= 60);
 });
 
-test('claims cited are C-04, plus C-05 on line F, never an excluded id', () => {
+test('claims cited are C-04, plus C-05 and C-14 on line F, never an excluded id', () => {
   for (const e of entries) {
     const cited = e.data.lists['claimsUsed'] ?? [];
-    const allowed = new Set(['C-01', 'C-04', 'C-05']);
+    const allowed = new Set(['C-01', 'C-04', 'C-05', 'C-14']);
     for (const id of cited) assert.ok(allowed.has(id), `${e.slug} cites ${id}`);
     assert.ok(cited.includes('C-04'), `${e.slug} must cite C-04`);
     assert.equal(cited.includes('C-05'), e.data.scalars['line'] === 'F', `${e.slug} C-05 use`);
+    // C-14 (owner decision of 2026-10-09): the Investor Introductions add-on is described on line F only.
+    assert.equal(cited.includes('C-14'), e.data.scalars['line'] === 'F', `${e.slug} C-14 use`);
   }
 });
 
