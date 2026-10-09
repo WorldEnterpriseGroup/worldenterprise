@@ -95,13 +95,30 @@ test('the denylist parses and keeps the four sections separate', () => {
   assert.ok(SET.rules.length >= 32);
   assert.deepEqual(
     SET.contextRules.map((r) => r.id),
-    ['C-18-pbc', 'C-14-success-based', 'C-05-fundable-outcome', 'C-13-peers', 'C-21-phrase', 'Q-spelling', 'Q-we-case'],
+    [
+      'C-18-pbc',
+      'C-14-success-based',
+      'C-05-fundable-outcome',
+      'C-13-peers',
+      'C-21-phrase',
+      // Version 3 (wave 7, WP-40): tests/unit/wp-40/denylist.test.ts pins each of these with positive and negative cases.
+      'W7-C09-no-fee',
+      'W7-C09-no-equity',
+      'W7-C09-free-of-charge',
+      'W7-response-time',
+      'W7-application-counts',
+      'W7-package-seat-count',
+      'Q-spelling',
+      'Q-we-case',
+    ],
   );
   assert.deepEqual(SET.required.map((r) => r.id), [
     'R-C05-no-funding-disclaimer',
     'R-C14-intro-disclaimer',
     'R-C14-intro-disclaimer-wherever-named',
     'R-C14-flat-fee-statement',
+    'R-W7-C05-no-funding-disclaimer',
+    'R-W7-C14-intro-disclaimer',
     'R-photo-disclosure',
   ]);
   assert.deepEqual(SET.manifestRules.map((r) => r.id), ['Q-photo-alt']);
@@ -118,9 +135,9 @@ test('the unconditional rules stay free of contextual wording the source tests c
   for (const retired of ['C-14-investor-intros', 'C-14-intro-positive']) assert.ok(!unconditional.includes(retired), `${retired} was retired`);
 });
 
-test('the denylist file is valid JSON with version 2', () => {
+test('the denylist file is valid JSON with version 3', () => {
   const doc = JSON.parse(readFileSync(join(ROOT, 'claims-denylist.json'), 'utf8')) as { version: number };
-  assert.equal(doc.version, 2);
+  assert.equal(doc.version, 3);
 });
 
 test('parseDenylist rejects a duplicate id, a bad pattern, bad routes and an unknown condition', () => {

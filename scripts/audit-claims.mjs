@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Scans built output for claims the ladder forbids and for text that must be present
-// (claims-denylist.json). Visible text, alt text, meta tags and JSON-LD are checked.
+// (claims-denylist.json). Visible text, alt text, meta tags and JSON-LD are checked in .html and .xml files; .txt and .md files
+// (robots.txt, llms.txt, llms-full.txt and the Markdown twins, wave 7) are scanned as plain text with link addresses removed.
 //
 // Four kinds of rule, all in claims-denylist.json:
 //   rules / contextRules  Wording that must not appear. A context rule may be switched off by a flag
@@ -10,7 +11,9 @@
 //   required              Text that must be visible on the listed routes, or on every page ("*"), optionally
 //                         only when the photo manifest has a generated image (when: "generatedImages") or only
 //                         on pages whose <main> text matches a pattern (whenMatches, with whenFlags, default "i").
-//   manifestRules         Checks on src/assets/photo/manifest.json, for example alt text of generated images.
+//                         A rule with "ifBuilt": true skips a listed route that is not built, so a wave 7 page can be
+//                         required before it exists and is held to the rule from the day it is built.
+//   manifestRules        Checks on src/assets/photo/manifest.json, for example alt text of generated images.
 //
 // Usage: node scripts/audit-claims.mjs [dist-dir] [--manifest <file>] [--denylist <file>] | --self-test
 // Dependency-free on purpose: the CI audit job runs it without npm ci. It reads src/data/flags.ts through
@@ -72,6 +75,8 @@ function compileRequired(rule) {
     fail(`${where} routes must be "*" or a non-empty array of routes that start with "/"`);
   }
   if (rule.when !== undefined && !WHEN_CONDITIONS.has(rule.when)) fail(`${where} has an unknown "when": ${String(rule.when)}`);
+  if (rule.ifBuilt !== undefined && typeof rule.ifBuilt !== 'boolean') fail(`${where} ifBuilt must be a boolean`);
+  if (rule.ifBuilt === true && rule.routes === '*') fail(`${where} ifBuilt applies to a list of routes, not "*"`);
   if (rule.whenMatches === undefined) return rule;
   ensureString(rule.whenMatches, `${where} whenMatches`);
   return { ...rule, trigger: compileRegex(rule.whenMatches, (rule.whenFlags ?? 'i').replace(/[gy]/g, ''), where) };
@@ -117,6 +122,25 @@ export function routeOf(relativePath) {
   if (path === 'index.html') return '/';
   if (path.endsWith('/index.html')) return `/${path.slice(0, -'index.html'.length)}`;
   return `/${path}`;
+}
+
+/**
+ * Route that a built text file stands for. A Markdown twin (insights/x.md) stands for its page (/insights/x/), so a rule that is
+ * allowed on a page is allowed on its twin; index.md is the home page. Other files (llms.txt, robots.txt) are their own route.
+ */
+export function textRouteOf(relativePath) {
+  const path = relativePath.split(sep).join('/');
+  if (path === 'index.md') return '/';
+  if (path.endsWith('.md') && !path.startsWith('library/')) return `/${path.slice(0, -'.md'.length)}/`;
+  return `/${path}`;
+}
+
+/** Reduces a plain-text or Markdown file to its words: link addresses and bare URLs go, because a slug is not copy. */
+export function plainText(text) {
+  return text
+    .replace(/\]\([^)\s]*(?:\s+"[^"]*")?\)/g, ']')
+    .replace(/<?\bhttps?:\/\/[^\s<>)\]]+>?/gi, ' ')
+    .replace(/\s+/g, ' ');
 }
 
 export function decodeEntities(text) {
@@ -230,7 +254,8 @@ const DEFAULT_SET = loadDenylist();
 
 /**
  * Scans one page. Options: `route` (default "/"), `rules` (compiled rules, default every scan rule in
- * claims-denylist.json) and `flagValues` (default the real flags). Returns one hit per rule at most.
+ * claims-denylist.json), `flagValues` (default the real flags) and `plain` (true for a .txt or .md file: there is no markup to strip
+ * and no data-claim-allow marker to honor). Returns one hit per rule at most.
  */
 export function scan(html, options = {}) {
   const route = options.route ?? '/';
@@ -239,9 +264,16 @@ export function scan(html, options = {}) {
   const hits = [];
   let strict;
   let relaxed;
+  const plain = options.plain === true ? plainText(html) : null;
   for (const rule of rules) {
     if (typeof rule.disabledByFlag === 'string' && flagIsOn(flagValues, rule.disabledByFlag)) continue;
     if (rule.allow.some((re) => re.test(route))) continue;
+    if (plain !== null) {
+      rule.regex.lastIndex = 0;
+      const found = rule.regex.exec(plain);
+      if (found) hits.push({ rule: rule.id, claim: rule.claim, match: found[0], context: snippet(plain, found.index, found[0].length) });
+      continue;
+    }
     let source = html;
     if (rule.genericDefinitionAllowed) {
       relaxed ??= stripGenericDefinitions(html);
@@ -266,7 +298,7 @@ export function hasGeneratedImages(manifest) {
 }
 
 /**
- * Checks the required-text rules. `pages` is [{ route, html, isHtml }]; `options.generatedImages` says whether the
+ * Checks the required-text rules. `pages` is [{ route, html, isHtml, plain }]; `options.generatedImages` says whether the
  * photo manifest has a generated image. Returns findings, one per page and rule that lacks the text.
  */
 export function checkRequired(pages, required, options = {}) {
@@ -275,7 +307,9 @@ export function checkRequired(pages, required, options = {}) {
   for (const rule of required) {
     if (rule.when === 'generatedImages' && options.generatedImages !== true) continue;
     const needle = comparable(rule.text);
-    const targets = rule.routes === '*' ? htmlPages : rule.routes.map((route) => htmlPages.find((p) => p.route === route) ?? { route, missing: true });
+    // A listed route may be a built text file (/llms.txt); a Markdown twin never shadows the page of the same route.
+    const find = (route) => htmlPages.find((p) => p.route === route) ?? pages.find((p) => p.route === route && p.plain === true) ?? { route, missing: true };
+    const targets = rule.routes === '*' ? htmlPages : rule.routes.map(find);
     for (const page of targets) {
       if (rule.trigger !== undefined) {
         // A conditional rule judges the <main> text only: the trigger and the required text must both be in the content.
@@ -287,6 +321,7 @@ export function checkRequired(pages, required, options = {}) {
           findings.push({ rule: rule.id, claim: rule.claim, route: page.route, message: `this page names "${rule.whenMatches}" but its main content lacks the required text: "${rule.text}"` });
         }
       } else if (page.missing === true) {
+        if (rule.ifBuilt === true) continue;
         findings.push({ rule: rule.id, claim: rule.claim, route: page.route, message: `required route ${page.route} was not built, so "${rule.text}" cannot be shown there` });
       } else if (!comparable(bodyText(page.html)).includes(needle)) {
         findings.push({ rule: rule.id, claim: rule.claim, route: page.route, message: `required text is missing: "${rule.text}"` });
@@ -320,7 +355,7 @@ function* walk(dir) {
     const p = join(dir, name);
     if (statSync(p).isDirectory()) {
       if (name !== 'pagefind' && name !== '_astro') yield* walk(p);
-    } else if (/\.(html|xml)$/.test(name)) yield p;
+    } else if (/\.(html|xml|txt|md)$/.test(name)) yield p;
   }
 }
 
@@ -332,10 +367,14 @@ export function auditDist(dist, options = {}) {
   const set = options.set ?? DEFAULT_SET;
   const manifest = options.manifest ?? JSON.parse(readFileSync(DEFAULT_MANIFEST, 'utf8'));
   const files = [...walk(dist)];
-  const pages = files.map((file) => ({ file, route: routeOf(relative(dist, file)), html: readFileSync(file, 'utf8'), isHtml: file.endsWith('.html') }));
+  const pages = files.map((file) => {
+    const rel = relative(dist, file);
+    const plain = file.endsWith('.txt') || file.endsWith('.md');
+    return { file, route: plain ? textRouteOf(rel) : routeOf(rel), html: readFileSync(file, 'utf8'), isHtml: file.endsWith('.html'), plain };
+  });
   const findings = [];
   for (const page of pages) {
-    for (const hit of scan(page.html, { route: page.route, rules: set.scanRules, flagValues: options.flagValues })) {
+    for (const hit of scan(page.html, { route: page.route, rules: set.scanRules, flagValues: options.flagValues, plain: page.plain })) {
       findings.push({ where: page.file, rule: hit.rule, message: `${hit.rule} (${hit.claim}) matched "${hit.match}" in: ${hit.context}` });
     }
   }
@@ -390,6 +429,36 @@ function selfTest() {
     ['a page that names Investor Introductions without the disclaimer is caught', () => missing('/insights/x/', '<main><p>Investor Introductions is an add-on.</p></main>', false).includes('R-C14-intro-disclaimer-wherever-named')],
     ['a page that names Investor Introductions with the disclaimer passes', () => !missing('/insights/x/', `<main><p>Investor Introductions is an add-on.</p><p>${introDisclaimer}</p></main>`, false).includes('R-C14-intro-disclaimer-wherever-named')],
     ['a mention outside <main> does not trigger the disclaimer rule', () => !missing('/about/', '<nav>Investor Introductions</nav><main><p>About.</p></main>', false).includes('R-C14-intro-disclaimer-wherever-named')],
+    ['a "no fee" claim is caught', () => hit('<p>There is no fee to apply.</p>').includes('W7-C09-no-fee')],
+    ['"no fee or stake tied to any investment" is not a no-fee claim', () => !hit('<p>WE takes no fee or stake tied to any investment.</p>').includes('W7-C09-no-fee')],
+    ['a no-equity claim is caught', () => hit('<p>We take no equity, so it is non-dilutive.</p>').includes('W7-C09-no-equity')],
+    ['the verbatim disclaimer is not a no-equity claim', () => !hit(`<p>${introDisclaimer}</p>`).includes('W7-C09-no-equity')],
+    ['a free-of-charge claim is caught', () => hit('<p>The first call is free of charge.</p>').includes('W7-C09-free-of-charge')],
+    ['a response-time promise is caught', () => hit('<p>We reply within 24 hours.</p>').includes('W7-response-time') && hit('<p>Expect an answer within two business days.</p>').includes('W7-response-time')],
+    ['a window that is not a response time passes', () => !hit('<p>Complete the sketch within one session.</p>').includes('W7-response-time')],
+    ['advice to a founder about their own response time passes', () => !hit('<p>Choose a response expectation you can meet, such as “within one working day”.</p>').includes('W7-response-time')],
+    ['"costs nothing" as a general remark passes', () => !hit('<p>Praise costs nothing. It contains no cost figures.</p>').includes('W7-C09-free-of-charge')],
+    ['an application count is caught', () => hit('<p>We reviewed 1,200 applications.</p>').includes('W7-application-counts') && hit('<p>Our acceptance rate is low.</p>').includes('W7-application-counts')],
+    ['a seat count tied to a package is caught', () => hit('<p>Launch includes 3 seats.</p>').includes('W7-package-seat-count') && hit('<p>Two seats in Studio.</p>').includes('W7-package-seat-count')],
+    ['a package name beside seats without a count passes', () => !hit('<p>Studio is an embedded team. Seats are the unit of work.</p>').includes('W7-package-seat-count')],
+    ['a plain-text file is scanned', () => scan('Pricing: no fee to apply.', { route: '/llms.txt', plain: true }).map((h) => h.rule).includes('W7-C09-no-fee')],
+    ['a link address in a Markdown twin is not copy', () => scan('[Free of charge](https://example.org/no-fee/) page', { route: '/x/', plain: true, rules: set.scanRules }).map((h) => h.rule).includes('W7-C09-no-fee') === false],
+    ['the verbatim disclaimer passes in plain text', () => scan(introDisclaimer, { route: '/llms.txt', plain: true }).length === 0],
+    ['a marker cannot exempt a plain-text file', () => scan('<span data-claim-allow="*">no fee</span>', { route: '/llms.txt', plain: true }).map((h) => h.rule).includes('W7-C09-no-fee')],
+    ['an ifBuilt rule skips a route that is not built', () => checkRequired([], set.required.filter((r) => r.id === 'R-W7-C05-no-funding-disclaimer'), {}).length === 0],
+    ['an ifBuilt rule holds a built text file to the text', () => checkRequired([{ route: '/llms.txt', html: 'WE offers a lot.', isHtml: false, plain: true }], set.required.filter((r) => r.id === 'R-W7-C05-no-funding-disclaimer'), {}).length === 1],
+    ['an ifBuilt rule passes a text file that has the text', () => checkRequired([{ route: '/llms.txt', html: 'WE makes no promise of funding.', isHtml: false, plain: true }], set.required.filter((r) => r.id === 'R-W7-C05-no-funding-disclaimer'), {}).length === 0],
+    [
+      'a Markdown twin does not stand in for its page in a required text',
+      () => {
+        const pages = [
+          { route: '/pricing/', html: '<main><p>Pricing.</p></main>', isHtml: true },
+          { route: '/pricing/', html: 'WE makes no promise of funding.', isHtml: false, plain: true },
+        ];
+        return checkRequired(pages, set.required.filter((r) => r.id === 'R-C05-no-funding-disclaimer'), {}).some((f) => f.route === '/pricing/');
+      },
+    ],
+    ['a Markdown twin stands for its page route', () => textRouteOf('insights/x.md') === '/insights/x/' && textRouteOf('index.md') === '/' && textRouteOf('llms.txt') === '/llms.txt'],
     ['an identity word in a generated image alt is caught', () => checkManifest({ slots: [{ id: 'x', source: 'generated', alt: 'A founder at a desk' }] }, set.manifestRules).length === 1],
     ['an activity alt on a generated image passes', () => checkManifest({ slots: [{ id: 'x', source: 'generated', alt: 'Two hands arranging index cards on a desk' }] }, set.manifestRules).length === 0],
   ];
