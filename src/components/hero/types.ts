@@ -17,7 +17,7 @@ export type HeroMeasure = 'default' | 'prose' | 'rail';
 
 /** Vector art for the hero media slot. Used when no photo slot is given. */
 export interface HeroArtProps {
-  /** flower: a core cell ringed by six neighbours. trail: a row of numbered cells, one of them active. */
+  /** flower: a core cell ringed by six neighbors. trail: a row of numbered cells, one of them active. */
   readonly variant?: 'flower' | 'trail';
   /** trail: how many cells (2 to 7). */
   readonly count?: number;
