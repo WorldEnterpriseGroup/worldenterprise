@@ -29,7 +29,7 @@ export function variantHeight(master, width) {
 }
 
 /** Encode the master AVIF. Returns `{ buffer, width, height, plan }`. */
-export async function encodeMaster(input, master, { quality = DEFAULT_QUALITY, allowUpscale = false } = {}) {
+export async function encodeMaster(input, master, { quality = DEFAULT_QUALITY, allowUpscale = false, effort = 6 } = {}) {
   const meta = await sharp(input).metadata();
   if (!meta.width || !meta.height) throw new Error('The candidate has no readable dimensions.');
   const plan = planMaster([meta.width, meta.height], master, { allowUpscale });
@@ -37,7 +37,7 @@ export async function encodeMaster(input, master, { quality = DEFAULT_QUALITY, a
     .rotate()
     .extract(plan.crop)
     .resize({ ...plan.resize, fit: 'fill', kernel: 'lanczos3' })
-    .avif({ quality, effort: 6 })
+    .avif({ quality, effort })
     .toBuffer();
   const out = await sharp(buffer).metadata();
   if (out.width !== master[0] || out.height !== master[1]) throw new Error(`Encoded ${out.width}x${out.height}, expected ${master[0]}x${master[1]}.`);
@@ -45,11 +45,11 @@ export async function encodeMaster(input, master, { quality = DEFAULT_QUALITY, a
 }
 
 /** Variants narrower than the master, as AVIF buffers keyed by width. For QA only. */
-export async function encodeVariants(masterBuffer, master, widths, { quality = DEFAULT_QUALITY } = {}) {
+export async function encodeVariants(masterBuffer, master, widths, { quality = DEFAULT_QUALITY, effort = 6 } = {}) {
   const variants = new Map();
   for (const width of widths.filter((candidate) => candidate < master[0])) {
     const height = variantHeight(master, width);
-    variants.set(width, await sharp(masterBuffer).resize({ width, height, fit: 'fill', kernel: 'lanczos3' }).avif({ quality, effort: 6 }).toBuffer());
+    variants.set(width, await sharp(masterBuffer).resize({ width, height, fit: 'fill', kernel: 'lanczos3' }).avif({ quality, effort }).toBuffer());
   }
   return variants;
 }

@@ -18,6 +18,7 @@ import { loadPromptFiles } from './build-prompts.mjs';
 const SHEET_BG = { r: 238, g: 242, b: 247, alpha: 1 };
 const GAP = 16;
 const MAX_SHEET_WIDTH = 1600; // keeps a sheet under the 2 MB Read limit
+const QA_EFFORT = 2; // the sheet only needs the look of the AVIF, not its smallest size, and effort 6 takes about a minute per candidate
 
 function svg(width, height, body) {
   return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">${body}</svg>`);
@@ -78,12 +79,12 @@ async function stack(rows) {
 
 async function sheetFor(candidate, slot, row) {
   const master = masterSize(slot);
-  const { buffer: avif } = await encodeMaster(candidate.imagePath, master);
+  const { buffer: avif } = await encodeMaster(candidate.imagePath, master, { effort: QA_EFFORT });
   const masterPng = await sharp(avif).png().toBuffer();
   const overlaid = await overlayMaster(masterPng, master, slot.group);
   const rows = [[{ buffer: overlaid, width: master[0], height: master[1] }]];
   rows.push(await cropImages(masterPng, master, slot.group));
-  const variants = await encodeVariants(avif, master, qaWidths(row ?? slot.srcsetWidths));
+  const variants = await encodeVariants(avif, master, qaWidths(row ?? slot.srcsetWidths), { effort: QA_EFFORT });
   const variantRow = [];
   for (const [width, variantAvif] of variants) {
     const png = await sharp(variantAvif).png().toBuffer();
