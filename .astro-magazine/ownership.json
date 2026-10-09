@@ -520,6 +520,16 @@
         ".astro-magazine/handoffs/wp-30*",
         "docs/runbook-release.md"
       ]
+    },
+    {
+      "owner": "WP-12d",
+      "title": "Photo-generation rig (issue #22 phase B tooling)",
+      "branch": "wp/12d",
+      "write_set": [
+        "scripts/photo/**",
+        "tests/unit/wp-12d/**",
+        ".astro-magazine/handoffs/wp-12d*"
+      ]
     }
   ],
   "active_leases": [],
@@ -755,6 +765,16 @@
       "wp": "WP-30",
       "path": "tests/unit/wp-19/release-security.test.ts",
       "reason": "Issue #20: the mirror job tests moved to tests/unit/wp-30 with the job; the GitHub workflow tests stay."
+    },
+    {
+      "wp": "WP-12d",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 6: the WP-12d assignment row (the rig is new dev tooling under scripts/photo)."
+    },
+    {
+      "wp": "WP-12d",
+      "path": ".astro-magazine/decisions.md",
+      "reason": "Wave 6: the decision rows for the photo-generation rig (models.json, seeds, QA rubric, batch promotion)."
     }
   ],
   "notes": [

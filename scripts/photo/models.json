@@ -1,0 +1,24 @@
+{
+  "_note": "Model-specific facts live here and nowhere else, so the prompts stay model-agnostic (art direction section 8). `router` is the id the GPU Router serves, `name` is what the manifest records. `negativePrompt` is true only for a model that honours a negative prompt; a distilled turbo model at CFG 1.0 does not, so it gets positive phrasing only.",
+  "default": "boogu_image_turbo",
+  "models": {
+    "boogu_image_turbo": {
+      "name": "Boogu/Boogu-Image-0.1-Turbo",
+      "negativePrompt": false,
+      "maxEdge": 1024,
+      "notes": "Apache-2.0. 4 steps, CFG 1.0, 1K native. Counting is weak (about 22 percent on ImageBench), so counts above seven are never asked for. Waiting on cluster hardware when this rig was written."
+    },
+    "mage_flow_turbo": {
+      "name": "microsoft/Mage-Flow-Turbo",
+      "negativePrompt": false,
+      "maxEdge": 1024,
+      "notes": "Stand-in used for the dry run. 4 steps, CFG 1.0, no negative prompt. Serial only: four concurrent requests wedged it. About 1 request in 25 returns an intermittent 500."
+    },
+    "mage_flow_edit_turbo": {
+      "name": "microsoft/Mage-Flow-Edit-Turbo",
+      "negativePrompt": false,
+      "maxEdge": 1024,
+      "notes": "Editing variant; the model the art direction was calibrated on."
+    }
+  }
+}
