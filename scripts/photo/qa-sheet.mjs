@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// Build the QA material for the candidates in staging: one PNG sheet per candidate and a qa-queue.json that a QA agent (or a person)
+// Build the QA material for the candidates in staging: one JPEG sheet per candidate and a qa-queue.json that a QA agent (or a person)
 // works through with scripts/photo/qa-rubric.md.
 //
 //   node scripts/photo/qa-sheet.mjs [--model boogu_image_turbo] [--slots id,id] [--staging DIR]
 //
 // A sheet stacks three views, each at the size a visitor gets: the master with the safe zone drawn on it, the page crops (hexagon
 // clip, 1.9:1/3.2:1/5:1 band crops, card detail crop) and every srcset width below the master at its own pixel width.
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import { DEFAULT_STAGING, list, loadExtract, loadModels, masterSize, parseArgs, rasterSlots, sizeString } from './lib/common.mjs';
@@ -17,6 +17,7 @@ import { loadPromptFiles } from './build-prompts.mjs';
 
 const SHEET_BG = { r: 238, g: 242, b: 247, alpha: 1 };
 const GAP = 16;
+const MAX_SHEET_WIDTH = 1600; // keeps a sheet under the 2 MB Read limit
 
 function svg(width, height, body) {
   return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">${body}</svg>`);
@@ -72,7 +73,7 @@ async function stack(rows) {
     }
     y += Math.max(...row.map((item) => item.height)) + GAP;
   }
-  return sharp({ create: { width, height, channels: 4, background: SHEET_BG } }).composite(composites).png().toBuffer();
+  return sharp({ create: { width, height, channels: 4, background: SHEET_BG } }).composite(composites).flatten({ background: SHEET_BG }).resize({ width: Math.min(width, MAX_SHEET_WIDTH) }).jpeg({ quality: 88 }).toBuffer();
 }
 
 async function sheetFor(candidate, slot, row) {
@@ -103,7 +104,6 @@ async function main() {
   const only = list(args.slots);
   const queue = [];
   for (const slot of rasterSlots(extract)) {
-    if (only && !only.includes(slot.id)) continue;
     const dir = slotDir(staging, routerId, slot.id);
     const candidates = listCandidates(dir);
     if (candidates.length === 0) continue;
@@ -112,8 +112,8 @@ async function main() {
     const widths = slot.srcsetWidths.filter((width) => width <= masterSize(slot)[0]);
     for (const candidate of candidates) {
       const name = `${candidate.kind}-${candidate.offset}`;
-      const sheet = join(qaDir, `${name}.png`);
-      writeFileSync(sheet, await sheetFor(candidate, slot, widths));
+      const sheet = join(qaDir, `${name}.jpg`);
+      if (!only || only.includes(slot.id) || !existsSync(sheet)) writeFileSync(sheet, await sheetFor(candidate, slot, widths)); // the queue always lists every staged candidate
       const file = files.get(slot.id);
       queue.push({
         slot: slot.id,

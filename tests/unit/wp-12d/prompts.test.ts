@@ -93,7 +93,7 @@ test('a prompt is the template prefix, the authored subject and the template suf
     assert.ok(candidate.prompts.object.endsWith('No text, no logos, no writing.'), candidate.id);
     if (candidate.prompts.figure !== null) {
       assert.ok(candidate.prompts.figure.startsWith(FIGURE_PREFIX), candidate.id);
-      assert.match(candidate.prompts.figure, /Framed from the chest down so that no head is in the frame/);
+      assert.match(candidate.prompts.figure, /Close-up at table height. The picture shows only .* pairs? of forearms and hands/);
       assert.match(candidate.prompts.figure, /knit|cardigan|sweater/i);
     }
     assert.ok(candidate.prompts.object.length < 1400, candidate.id);
@@ -128,7 +128,7 @@ test('the builder is deterministic and the stored hashes follow the prompt text'
 
 test('the figure subject is chest-down with a stated headcount and rejects an impossible one', () => {
   const text = figureSubject({ count: 2, garments: 'navy knitwear', posture: 'seated', table: 'a pale table', activity: 'sketching', model: 'a model' });
-  assert.match(text, /^Framed from the chest down so that no head is in the frame: two people, in navy knitwear/);
+  assert.match(text, /^Close-up at table height\. The picture shows only two pairs of forearms and hands, in navy knitwear/);
   assert.throws(() => figureSubject({ count: 4, garments: 'knitwear', posture: 'seated', table: 't', activity: 'a', model: 'm' }), /one to three/);
 });
 

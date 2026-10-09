@@ -26,13 +26,13 @@ export function suffixFor(accent) {
   return `Color palette: crisp white and pale mist-blue surfaces, deep blue and slate, soft grey. There is exactly one amber object in the frame: ${accent}. All other objects are white, grey, blue or slate. No text, no logos, no writing.`;
 }
 
-const COUNT_WORDS = { 1: 'one person only', 2: 'two people', 3: 'three people' };
+const COUNT_WORDS = { 1: 'one pair of forearms and hands', 2: 'two pairs of forearms and hands', 3: 'three pairs of forearms and hands' };
 
-/** SUBJECT of a figure scene: chest-down framing, a stated headcount, named knitwear (art direction 4.4). */
+/** SUBJECT of a figure scene: a table-height close-up of forearms and hands (no head to crop out), a stated headcount, named knitwear (art direction 4.4). The dry run showed "no head in the frame" still lets a chin through; describing what the picture does show does not. */
 export function figureSubject({ count, garments, posture, table, activity, model }) {
   const people = COUNT_WORDS[count];
   if (people === undefined) throw new Error(`A figure scene has one to three people, got ${count}.`);
-  return `Framed from the chest down so that no head is in the frame: ${people}, in ${garments}, ${posture} at ${table}, forearms on the table, ${activity}, in front of ${model}.`;
+  return `Close-up at table height. The picture shows only ${people}, in ${garments}, ${posture} at ${table}, ${activity}, in front of ${model}. The top edge of the photograph cuts through the middle of the torso, well below the collar.`;
 }
 
 /** Assemble the object prompt of a prompt file. */

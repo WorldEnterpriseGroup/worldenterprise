@@ -9,7 +9,7 @@ list lives.
 
 ## What you get
 
-`node scripts/photo/qa-sheet.mjs` writes, per candidate, a PNG sheet and one entry in
+`node scripts/photo/qa-sheet.mjs` writes, per candidate, a JPEG sheet and one entry in
 `<staging>/<model>/qa-queue.json`:
 
 | Queue field | Use |
@@ -52,7 +52,7 @@ Fail on zero or two or more amber objects, amber light washing the scene, an amb
 The policy is in `.plan/photo/people-policy.json` and manifest rule `Q-photo-alt`. Pass when:
 
 - an **object** candidate (`figures: 0`) shows **no person, no part of a person, no skin, no reflection of one**. Not a hand, not a shadow of one;
-- a **figure** candidate (`figures` 1 to 3) shows exactly that many people, framed **chest-down with no head in the frame** and **no face**, forearms on a table, in plain knitwear (navy, grey or white), working at the tabletop model;
+- a **figure** candidate (`figures` 1 to 3) shows exactly that many people as a table-height close-up of **forearms and hands only: no head and no face in the frame**, in plain knitwear (navy, grey or white), working at the tabletop model;
 - nothing implies who anyone is: no name tag, lanyard, badge, laptop, screen, handshake, pointing, whiteboard presentation, crowd, suit or jacket, no setting that reads as an office, boardroom or pitch;
 - nothing reads as a **founder, staff member, client, mentor, investor or testimonial**. The people are anonymous and the scene is a working session, never a portrait.
 
