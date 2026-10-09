@@ -14,11 +14,12 @@ for (const { path: route } of liveRoutes) {
     expect(response?.status(), 'HTTP status').toBe(200);
     const width = page.viewportSize()?.width;
 
-    const scroll = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-    expect(scroll, `document scrolls sideways at ${width}px`).toBeLessThanOrEqual(0);
-
+    // The offenders first: they name the element, where a bare document scroll width only says that something is too wide.
     const offenders = await findOverflow(page);
     expect(offenders, `elements outside the ${width}px viewport: ${formatOffenders(offenders)}`).toEqual([]);
+
+    const scroll = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(scroll, `document scrolls sideways at ${width}px`).toBeLessThanOrEqual(0);
   });
 }
 

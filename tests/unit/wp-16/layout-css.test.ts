@@ -71,21 +71,23 @@ test('the article header uses the same container as its body', () => {
   assert.match(article, /<div class="container with-rail">/);
 });
 
-test('the breadcrumb is one line, and only the current page gives way, so a font swap cannot move the page', () => {
+test('the breadcrumb is one line and every crumb can shrink, the current page first, so neither a font swap nor a long label moves the page', () => {
   const crumbs = rule(read('src/styles/components.css'), '.breadcrumbs').replace(/\/\*[\s\S]*?\*\//g, '');
   assert.match(rule(crumbs, '& ol'), /flex-wrap:\s*nowrap/);
   const item = rule(crumbs, '& li');
-  assert.match(item, /flex:\s*none/);
+  assert.match(item, /display:\s*flex/);
+  assert.match(item, /flex:\s*0 1 auto/);
+  assert.match(item, /min-inline-size:\s*0/);
   assert.match(item, /white-space:\s*nowrap/);
-  const last = rule(item, '&:last-child');
-  assert.match(last, /flex:\s*0 1 auto/);
-  assert.match(last, /min-inline-size:\s*0/);
-  // The span is what is cut, as a block of the item's width: a clipped inline span still has a box past the viewport edge.
-  const current = rule(last, '& > [aria-current]');
-  assert.match(current, /display:\s*block/);
-  assert.match(current, /overflow:\s*hidden/);
-  assert.match(current, /text-overflow:\s*ellipsis/);
-  assert.doesNotMatch(last.replace(current, ''), /overflow:\s*hidden/, 'the item itself does not clip');
+  // The text is cut on the link or the span, a flex item of the crumb's width. A clipped inline child keeps a box past the viewport edge.
+  const text = rule(item, '& > :is(a, [aria-current])');
+  assert.match(text, /min-inline-size:\s*0/);
+  assert.match(text, /overflow:\s*hidden/);
+  assert.match(text, /text-overflow:\s*ellipsis/);
+  assert.doesNotMatch(item.replace(text, ''), /overflow:\s*(hidden|clip)/, 'the crumb itself does not clip');
+  // The current page gives way before the ancestors do.
+  assert.match(rule(item, '&:last-child'), /flex-shrink:\s*100/);
+  assert.match(rule(item, '&:not(:last-child)::after'), /flex:\s*none/);
 });
 
 test('the byline holds two lines on a phone, where the fallback font wraps it and the web font may not', () => {

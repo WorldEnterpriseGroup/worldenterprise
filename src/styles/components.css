@@ -679,8 +679,11 @@
 
     /* One line, always. The trail used to wrap, and on a phone the last crumb fit on the first line in the web font and dropped to a
        second line in the fallback font (or the reverse), so the whole page moved 27px when the fonts swapped: a layout shift of 0.10 to
-       0.15 on /services/, /research/ and /insights/ pages (layout-shift.spec, WP-16). The ancestors are short navigation labels and keep
-       their width; only the current page, whose title the h1 repeats right below, gives way with an ellipsis. */
+       0.15 on /services/, /research/ and /insights/ pages (layout-shift.spec, WP-16). Every crumb may shrink instead and ellipsise its
+       text: the current page first (the h1 repeats its title right below), then the ancestors, so a long ancestor label such as "How WE
+       steers a team: frameworks" cannot push the page sideways at 320px. The ellipsis sits on the link or span, a flex item the width of
+       its crumb: if the crumb clipped an inline child instead, that child's box would still run past the viewport edge. The focus ring of
+       a link is its own outline, which the link's overflow does not clip. */
     & ol {
       display: flex;
       flex-wrap: nowrap;
@@ -690,24 +693,25 @@
     }
 
     & li {
-      flex: none;
+      display: flex;
+      align-items: baseline;
+      flex: 0 1 auto;
+      min-inline-size: 0;
       white-space: nowrap;
 
-      &:last-child {
-        flex: 0 1 auto;
+      & > :is(a, [aria-current]) {
         min-inline-size: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
-        /* The ellipsis is on the current-page span, made a block the width of the item. If the item clipped an inline span instead, the
-           span's box would still run past the viewport edge, which is exactly what the overflow test is there to catch. */
-        & > [aria-current] {
-          display: block;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
+      &:last-child {
+        flex-shrink: 100;
       }
 
       &:not(:last-child)::after {
         content: '/';
+        flex: none;
         margin-inline-start: var(--sp-2);
         color: var(--color-text-muted);
       }
