@@ -117,7 +117,7 @@ async function main() {
     await writeFile(path.join(outDir, `${card.id}.avif`), encoded.buf);
     rows.push({
       id: card.id, group: 'og', file: `${card.id}.avif`, profile: 'og', width: W, height: H, bytes: encoded.buf.length,
-      quality: encoded.quality, source: 'svg-composed', seed, text: [...card.title, card.sub].join(' '), alt: card.alt,
+      quality: encoded.quality, source: 'vector', seed, text: [...card.title, card.sub].join(' '), alt: card.alt,
     });
   }
   await writeFile(path.join(root, '.astro-magazine', 'media', 'og-rows.json'), `${JSON.stringify(rows, null, 2)}\n`);

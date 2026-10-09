@@ -54,10 +54,9 @@ for (const [index, slot] of SLOTS.entries()) {
     height: h,
     bytes: buf.length,
     quality,
-    source: 'vector-fallback',
+    source: 'vector',
     motif: slot.motif,
     seed,
-    comfyui: { style: slot.style, filter: slot.filter, prompt: slot.prompt, generated: false },
     alt: slot.alt,
   });
 }

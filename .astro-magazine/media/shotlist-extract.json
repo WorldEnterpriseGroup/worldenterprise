@@ -1,0 +1,1193 @@
+{
+ "meta": {
+  "purpose": "Compact extract of the photography pass inputs so unit tests and phase B can run in CI, where .plan/ does not exist. Read-only: regenerate from the sources, never edit by hand.",
+  "sources": {
+   "shotlist": {
+    "file": ".plan/photo/shotlist.json",
+    "generatedOn": "2026-10-07",
+    "source": "origin/demo 0a48fc8 (apply, contact, pricing, band-3 placement from wp/03 b41dd8a)",
+    "sha256": "a4c09704ad7a3b47b5ae2a543a3926c35a82f7623158442cb2aa01ed976f742f"
+   },
+   "peoplePolicy": {
+    "file": ".plan/photo/people-policy.json",
+    "date": "2026-10-08",
+    "sha256": "56db274b6b41fc40f79a2cd8c3295a634f6172e666c6a1e47f2b32f2e0fb8b0b"
+   }
+  },
+  "size": "`size` is the master the shotlist asked for. The shipped master is `size` scaled down to a long edge of MODEL_MAX_EDGE (1024), see decisions P-1; OG cards are composed from SVG and exempt.",
+  "people": "`people` is the class from people-policy.json: forbidden, optional or recommended. The shotlist peopleAllowed field is the older all-false version and is not used."
+ },
+ "peoplePolicy": {
+  "caps": {
+   "figureSlotsAtLaunch": 6,
+   "recommendedCount": 5,
+   "allowedCount": 13,
+   "forbiddenCount": 34
+  },
+  "sceneRules": [
+   "Unnamed and illustrative: no identity, role, employer or customer in alt text or nearby copy.",
+   "Chest-down or from behind or at distance: no head, or no face, in frame (tested: 'framed from the chest down so that no head is in the frame' held 3 of 3).",
+   "At most two figures in a stage or card image, three in a wide scene; state the count in the prompt ('one person only').",
+   "At most one figure image per page, except the three stage images, which ship as a set.",
+   "No suits (dark jackets at distance read as a boardroom); knitwear and cardigans in navy, grey and white.",
+   "Working at the hand-built model or notebook; no screens, no handshakes, no pointing, no crowd, no eye contact with the camera.",
+   "Disclosure line in the footer or About page: Illustrative images are AI-generated and depict no real person or customer."
+  ],
+  "policy": "People allowed as unnamed, illustrative scenes on program, services, playbooks, insights and events slots. No people on about, team, contact, trust, pricing, or any slot that could read as our staff, founders, portfolio or testimonials."
+ },
+ "register": {
+  "name": "Hive Atlas tabletop",
+  "statement": "One register for every raster: a rendered still life of a hand-built tabletop model (paper, card, matte ceramic, brushed steel, frosted glass, wood), photographed as a physical object on a plain surface. People-free and unmistakably a constructed model, so it reads as illustration and never as documentary evidence of WE. Hexagons are the recurring structural form. The Dream, Build and Grow altitudes appear as survey (flat contours), blueprint (frame and plan) and territory (terrain and fields).",
+  "lighting": "Soft north-window light, long gentle shadows, shallow depth of field, 50mm look, matte surfaces, no lens flare.",
+  "palette": "Deep blue #0F4C81 and blue #1C75BC for main objects, slate #5B5E62 for neutrals, mist #EAF2F9 and white for grounds, charcoal #231F20 only for the deepest shadows; exactly one amber #E8A33D element per image, no more than about 6 percent of the frame.",
+  "promptSuffix": "deep blue, white, soft grey, one small warm amber accent",
+  "promptStyle": "The model takes no negative prompt, so state constraints positively: 'an uninhabited tabletop model of paper and card, nothing written on any surface, one amber element'. Vary the amber object per slot (tile, ribbon, edge, rim, tick) instead of defaulting to a sun.",
+  "banned": [
+   "people, faces, hands, silhouettes, backs of heads",
+   "any text, numerals, letters, logos or legible screens",
+   "seals, badges, shields, padlocks, checkmarks, certificates (claims C-15, C-24)",
+   "scales or gavels as legal symbols; calculators, receipts, invoices",
+   "money, price tags, tiers, podiums, trophies, rockets (claims C-06, C-10, C-14, C-16)",
+   "generic office, coworking, desk-and-window or golden-hour workspace scenes (stock-photography trope)",
+   "globes with network lines, handshakes, hands on keyboards, boardrooms"
+  ]
+ },
+ "slots": [
+  {
+   "id": "inset-program",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/program/"
+   ],
+   "people": "optional",
+   "proposedAlt": "A tabletop relief model in three zones: paper contours, a blueprint frame and a field of hexagon tiles, with one amber tile.",
+   "subjectBrief": "Overhead three-quarter view of one tabletop relief model built in three zones from left to right: flat layered paper-cut contours (survey), a pale-line blueprint frame on deep blue card (blueprint), and a field of small hexagon tiles standing as terrain (territory). One amber hex tile at the seam between the second and third zone. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "inset-services",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/services/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Overhead still life: seven matte hexagonal tiles (wood, ceramic, frosted glass) in a ring around one larger deep-blue centre tile that stands for the one dedicated team. One ring tile edged in amber. Even spacing, calm, symmetrical. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "inset-playbooks",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/playbooks/"
+   ],
+   "people": "recommended",
+   "proposedAlt": null,
+   "subjectBrief": "Overhead still life: an open grid-paper notebook with no writing, two hexagon outlines sketched in blue pencil, one blue pencil resting below the page. Optional ruler edge in brushed steel. No hands, no text, no numerals. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame. The amber element is the pencil ferrule."
+  },
+  {
+   "id": "inset-fundability",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/fundability/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Overhead still life: four blank card folders fanned in graded blues on a mist-grey surface, one folder open to show blank ruled sheets, one folder edged in amber. No labels, no figures, no pens, no coins or currency. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "inset-trust",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/trust/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "A squared stack of blank folded pages under a steel clip, with one hexagon-shaped window cut through the top sheet and an amber edge.",
+   "subjectBrief": "Overhead still life: a squared stack of blank folded pages held by a plain steel clip, with one hexagon-shaped window die-cut through the top sheet so the next sheet shows through. Soft side light. No padlock, shield, seal, badge, checkmark, key or certificate, and no visible words. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame. The amber element is the die-cut edge."
+  },
+  {
+   "id": "inset-resources",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Frontal view of a three-tier shelf, each tier a different object set: top tier bound blank-spine books (read), middle tier a tray of blank template cards (use), bottom tier a hexagonal gauge or caliper (check). Calm blues, no titles on any spine. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame. The amber element is one spine."
+  },
+  {
+   "id": "inset-network",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/network/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "Three separate clusters of hexagon tiles on a pale grid sheet, each cluster in a different material, with one amber tile.",
+   "subjectBrief": "Overhead still life of exactly three separate clusters of matte hexagon tiles on one pale grid sheet, one cluster per thing the copy names (founders, roles, standards), each cluster built from a different material. No lines, arcs or bridges joining the clusters. One amber tile in the cluster of roles. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "inset-about",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [],
+   "people": "forbidden",
+   "proposedAlt": "A large hexagon cell debossed in white card stock, ringed by six smaller cells, one filled with amber foil.",
+   "subjectBrief": "Straight-on still life of the Hive Atlas mark as a physical object: one large hexagon cell debossed into mist-white card stock, ringed by six smaller debossed cells, one of them filled with amber foil. Symmetrical and centred. No lettering. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "inset-pricing",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/pricing/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "One matte blue hexagonal seat token on a blank ruled sheet, with an amber edge.",
+   "subjectBrief": "Overhead still life: one thick matte-blue hexagonal seat token standing alone on a blank ruled sheet, with an empty rate column. No numerals, no coins, no calculator, no price tag, no stacked tiers or podium. Amber edge on the token. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "inset-apply",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/apply/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Overhead still life: a single blank sheet of mist-white paper with one hexagon outline drawn in blue, and one blue pen with an amber tip lying beside it. No hands, no handwriting, no form fields or text. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "inset-contact",
+   "group": "inset",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/contact/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "A blank flat envelope with a hexagon-shaped window beside a small blank card, with an amber window edge.",
+   "subjectBrief": "Overhead still life: one blank flat envelope in mist white with a hexagon-shaped window, and a small blank card beside it, on a pale grey surface. No stamp, no address, no mailbox, building, street or window view. Amber hex window edge. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "svc-a",
+   "group": "service",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/services/",
+    "/services/brand-and-identity/"
+   ],
+   "people": "optional",
+   "proposedAlt": null,
+   "subjectBrief": "Overhead still life: a tidy grid of blank paint-swatch and paper-sample cards in whites and blues, each with a small die-cut hexagon, one swatch card in amber. Ordered, matching spacing (it must look unlike svc-d, which is a single row). Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "svc-b",
+   "group": "service",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/services/",
+    "/services/product-and-it-development/"
+   ],
+   "people": "recommended",
+   "proposedAlt": null,
+   "subjectBrief": "Three-quarter view of an architectural scaffold model: three tiers of brushed-steel hex-grid floor plates stacked with visible rods between them, one tier plate in amber, deep-blue backdrop. Looks built, not electronic (no circuit traces, no chips). Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "svc-c",
+   "group": "service",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/services/",
+    "/services/customer-and-market-development/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Side view of two large matte hexagon blocks, one deep blue and one white, facing each other across a plain table line with a small amber hex tile on the table between them. Quiet, symmetrical, no figures standing behind the blocks. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "svc-d",
+   "group": "service",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/services/",
+    "/services/business-management-and-operations/"
+   ],
+   "people": "optional",
+   "proposedAlt": null,
+   "subjectBrief": "Frontal view of a single horizontal rail holding seven evenly spaced matte tiles (one per day), with one larger tile below the fourth in amber marking the weekly review. Rigid, even spacing; one row only. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "svc-e",
+   "group": "service",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/services/",
+    "/services/digital-incubation/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Overhead still life: a shallow hexagonal tray holding five blank booklets in graded blues, fanned like a curriculum, with one amber bookmark ribbon. No screens, no chairs, no figures. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "svc-f",
+   "group": "service",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/services/",
+    "/services/fundability-and-investor-readiness/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Side view of six matte hexagon tiles of increasing height in a row (the six artifacts), the first and lowest in amber to mark records first. No summit, flag, trophy, rocket or podium. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "svc-g",
+   "group": "service",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/services/",
+    "/services/professional-services-coordination/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "A slate grid frame holding four hexagon tiles in different finishes, with one empty slot rimmed in amber.",
+   "subjectBrief": "Overhead still life: one slate grid frame with four slots, each holding a hexagon tile in a different finish (ceramic, brushed steel, frosted glass, paper). One further empty slot with an amber rim marks the coordinator. No scales, gavel, pen, calculator or any legal or accounting symbol. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "stage-dream",
+   "group": "stage",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/program/dream/",
+    "/program/who-its-for/"
+   ],
+   "people": "recommended",
+   "proposedAlt": null,
+   "subjectBrief": "Straight-down view of layered paper-cut coastline contours in graded blues, as a survey map, with a small amber disc at one contour edge. Flat, calm, symmetrical in weight. On stage pages this image sits inside a hexagon clip (the four corners and 5 percent top and bottom are lost), so keep every key element inside the central ellipse. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "stage-build",
+   "group": "stage",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/program/build/",
+    "/program/who-its-for/"
+   ],
+   "people": "recommended",
+   "proposedAlt": null,
+   "subjectBrief": "Straight-down view of a full-scale blueprint: pale linework of a hex-grid frame on deep blue card with fine dimension lines, one dimension line in amber. Looks drawn, not constructed. Must read differently from pb-2 (a cut-line sheet). On stage pages this image sits inside a hexagon clip (the four corners and 5 percent top and bottom are lost), so keep every key element inside the central ellipse. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "stage-grow",
+   "group": "stage",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/program/grow/",
+    "/program/who-its-for/"
+   ],
+   "people": "recommended",
+   "proposedAlt": null,
+   "subjectBrief": "Oblique view of terraced hillside bands built from blue paper, each terrace tiled with small hexagon fields, one amber hex field on the middle terrace. No sun disc, no flags, no summit. On stage pages this image sits inside a hexagon clip (the four corners and 5 percent top and bottom are lost), so keep every key element inside the central ellipse. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "pb-1",
+   "group": "playbook",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/playbooks/",
+    "/playbooks/validate-the-problem/"
+   ],
+   "people": "optional",
+   "proposedAlt": "One chalk hexagon outline on a blank sheet, ringed by seven blank index cards, one of them amber.",
+   "subjectBrief": "Overhead still life: one large hexagon outline in chalk at the centre of a blank sheet, with seven small blank index cards laid around it at even spacing; one card in amber. No handwriting. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "pb-2",
+   "group": "playbook",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/playbooks/",
+    "/playbooks/design-the-product/"
+   ],
+   "people": "optional",
+   "proposedAlt": "A paper wireframe sheet with a dashed cut line, four hexagon tiles above it, faded tiles below and one amber tile on the line.",
+   "subjectBrief": "Overhead still life: a paper wireframe sheet with a dashed cut line across it; four hexagon tiles above the line, three faded tiles below it. One amber tile on the line itself. Must read as a plan sheet, not a blueprint frame. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "pb-3",
+   "group": "playbook",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/playbooks/",
+    "/playbooks/build-and-ship-v1/"
+   ],
+   "people": "optional",
+   "proposedAlt": null,
+   "subjectBrief": "Side view of a row of hexagon wooden blocks growing from small to large left to right, as successive cycles, the last block amber and set slightly apart as the release. No crate, rocket or flag. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "pb-4",
+   "group": "playbook",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/playbooks/",
+    "/playbooks/earn-your-first-customers/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "Ten matte hexagon tiles in two rows of five, nine blue and white and one amber.",
+   "subjectBrief": "Overhead still life: ten small matte hexagon tiles in two rows of five on a pale surface, nine in blue and white, one in amber. Even spacing, no connecting lines. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "pb-5",
+   "group": "playbook",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/playbooks/",
+    "/playbooks/build-repeatable-growth/"
+   ],
+   "people": "optional",
+   "proposedAlt": null,
+   "subjectBrief": "Overhead still life: a regular honeycomb tessellation of matte blue and white hexagon tiles filling the frame edge to edge, with one repeating unit of seven tiles outlined by a thin steel ring and one tile in amber. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "topic-dream",
+   "group": "topic",
+   "kind": "raster",
+   "aspect": "16:9",
+   "size": [
+    1024,
+    576
+   ],
+   "srcsetWidths": [
+    512,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Do not generate. Keep the vector fallback or retire the four slots together in a later change (slots.ts, manifest.json and the 47-slot unit test change at the same time). If revived, one 16:9 gradient field per desk, hexagons large and quiet, one amber cell."
+  },
+  {
+   "id": "topic-build",
+   "group": "topic",
+   "kind": "raster",
+   "aspect": "16:9",
+   "size": [
+    1024,
+    576
+   ],
+   "srcsetWidths": [
+    512,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Do not generate. Keep the vector fallback or retire the four slots together in a later change (slots.ts, manifest.json and the 47-slot unit test change at the same time). If revived, one 16:9 gradient field per desk, hexagons large and quiet, one amber cell."
+  },
+  {
+   "id": "topic-grow",
+   "group": "topic",
+   "kind": "raster",
+   "aspect": "16:9",
+   "size": [
+    1024,
+    576
+   ],
+   "srcsetWidths": [
+    512,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Do not generate. Keep the vector fallback or retire the four slots together in a later change (slots.ts, manifest.json and the 47-slot unit test change at the same time). If revived, one 16:9 gradient field per desk, hexagons large and quiet, one amber cell."
+  },
+  {
+   "id": "topic-fundable",
+   "group": "topic",
+   "kind": "raster",
+   "aspect": "16:9",
+   "size": [
+    1024,
+    576
+   ],
+   "srcsetWidths": [
+    512,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Do not generate. Keep the vector fallback or retire the four slots together in a later change (slots.ts, manifest.json and the 47-slot unit test change at the same time). If revived, one 16:9 gradient field per desk, hexagons large and quiet, one amber cell."
+  },
+  {
+   "id": "research-1",
+   "group": "research",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/research/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "Three nested hexagonal shells in steel, frosted glass and blue with one amber tile at the centre.",
+   "subjectBrief": "Overhead still life of three nested hexagonal shells in brushed steel, frosted glass and matte blue, each slightly larger, with one amber tile at the centre. No padlock, shield, key or seal. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "research-2",
+   "group": "research",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/research/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Side view of a pale wall with one hexagon-shaped aperture through which a wedge of warm light falls across the floor in a wide diagonal; everything else cool and soft. No people or wheelchair icons, no door signs. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame. The amber element is the light wedge."
+  },
+  {
+   "id": "research-3",
+   "group": "research",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/research/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "Three differently built hexagon objects on a ruled sheet: an interlocked unit, a sealed block and loose single tiles, with one amber rule.",
+   "subjectBrief": "Overhead still life: three differently built hexagon objects in a row on a ruled criteria sheet: an assembled interlocking unit (team), one sealed solid block (agency), a loose scatter of single tiles (freelancers). One amber thin rule across all three as the criterion. No people, no logos. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "research-4",
+   "group": "research",
+   "kind": "raster",
+   "aspect": "4:3",
+   "size": [
+    1024,
+    768
+   ],
+   "srcsetWidths": [
+    512,
+    768,
+    1024
+   ],
+   "priority": "P2",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/research/"
+   ],
+   "people": "optional",
+   "proposedAlt": "A steel ruler with unnumbered hexagonal ticks, three nested gauge rings and a blank ruled sheet, with one amber tick.",
+   "subjectBrief": "Overhead still life: a steel ruler with hexagonal tick marks and no numerals, a set of three nested hexagonal gauge rings, and a blank ruled sheet; one amber tick on the ruler. No charts, no numbers, no graphs. Centre the subject in the middle 70 percent of a 4:3 frame; the card and the detail view share this crop, so keep the outer 15 percent quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "band-1",
+   "group": "band",
+   "kind": "raster",
+   "aspect": "16:9",
+   "size": [
+    2048,
+    1152
+   ],
+   "srcsetWidths": [
+    640,
+    1024,
+    1536,
+    2048
+   ],
+   "priority": "P0",
+   "generateNow": true,
+   "isLCP": true,
+   "routes": [
+    "/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "A tabletop model in which rough white hexagon tiles lock into a blue honeycomb and end in a tidy stack topped by one amber tile.",
+   "subjectBrief": "Wide tabletop model composed along the horizontal centre line: at left, a loose cluster of rough unfinished white hexagon tiles (the idea); at centre, tiles locking into a regular deep-blue honeycomb (the dedicated seats taking shape); at right, a tidy stack of blue tiles topped by one amber tile (the evidence). Keep every element inside the middle 35 percent of the frame height and out of the outer 12 percent left and right: the box is about 1.9:1 on a phone, about 3.2:1 on a 768px tablet and up to about 5:1 near 62rem. Nothing important in the corners (hexagon clip). Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "band-2",
+   "group": "band",
+   "kind": "raster",
+   "aspect": "16:9",
+   "size": [
+    2048,
+    1152
+   ],
+   "srcsetWidths": [
+    640,
+    1024,
+    1536,
+    2048
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [],
+   "people": "forbidden",
+   "proposedAlt": "Five hexagon seat tokens, each marked with a different shape, linked by steel rods to a larger blue hexagon with an amber rim.",
+   "subjectBrief": "Wide overhead still life: five matte hexagon seat tokens in a ring, each marked on its face by a different abstract shape (circle, bar, triangle, square, dot; no letters), linked to a larger deep-blue steering hexagon at the centre by thin steel rods. The steering hexagon rim is the one amber element. Spread along the horizontal centre line. No map, flags or geography. Wide 16:9 frame, subject spread along the horizontal centre line, the outer 10 percent left and right quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "band-3",
+   "group": "band",
+   "kind": "raster",
+   "aspect": "16:9",
+   "size": [
+    1536,
+    864
+   ],
+   "srcsetWidths": [
+    640,
+    1024,
+    1536
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [
+    "/pricing/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "Five tiles in a row, each more finished than the last, from a blank card to a frame holding a seat unit, the last in amber.",
+   "subjectBrief": "Wide overhead still life of five matte tiles in a straight row left to right, each more finished than the last: a blank card, a card with a hex outline, a die-cut hex, a hex tile seated in a frame, and a frame holding a full seat unit; the last tile carries the amber. No numerals. Wide 16:9 frame, subject spread along the horizontal centre line, the outer 10 percent left and right quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "band-4",
+   "group": "band",
+   "kind": "raster",
+   "aspect": "16:9",
+   "size": [
+    2048,
+    1152
+   ],
+   "srcsetWidths": [
+    640,
+    1024,
+    1536,
+    2048
+   ],
+   "priority": "P1",
+   "generateNow": true,
+   "isLCP": false,
+   "routes": [
+    "/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": "Five separate hexagon-tile platforms across a long table joined by one continuous blank paper strip with an amber hexagon stamp.",
+   "subjectBrief": "Wide tabletop model: five small separate hexagon-tile platforms spaced across a long pale table, with one continuous blank paper record strip running through all of them from edge to edge. The strip carries one amber hexagon stamp at its centre. No globe, no network lines, no map. Wide 16:9 frame, subject spread along the horizontal centre line, the outer 10 percent left and right quiet. Exactly one amber (#E8A33D) element, no more than about 6 percent of the frame."
+  },
+  {
+   "id": "og-home",
+   "group": "og",
+   "kind": "og-card",
+   "aspect": "1.91:1",
+   "size": [
+    1200,
+    630
+   ],
+   "srcsetWidths": [
+    1200
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [
+    "/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Not generated. SVG-composed 1200x630 card: deep-blue field, white headline from the manifest text, hexagon cell pattern, one amber cell. No people, no photograph. Art direction only needs to keep it on-palette and make sure the headline fits at 1200x630 and at the 600x315 crop most scrapers show."
+  },
+  {
+   "id": "og-program",
+   "group": "og",
+   "kind": "og-card",
+   "aspect": "1.91:1",
+   "size": [
+    1200,
+    630
+   ],
+   "srcsetWidths": [
+    1200
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [
+    "/program/",
+    "/program/how-it-works/",
+    "/program/digital-incubation-model/",
+    "/program/dedicated-teams/",
+    "/program/who-its-for/",
+    "/program/dream/",
+    "/program/build/",
+    "/program/grow/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Not generated. SVG-composed 1200x630 card: deep-blue field, white headline from the manifest text, hexagon cell pattern, one amber cell. No people, no photograph. Art direction only needs to keep it on-palette and make sure the headline fits at 1200x630 and at the 600x315 crop most scrapers show."
+  },
+  {
+   "id": "og-services",
+   "group": "og",
+   "kind": "og-card",
+   "aspect": "1.91:1",
+   "size": [
+    1200,
+    630
+   ],
+   "srcsetWidths": [
+    1200
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Not generated. SVG-composed 1200x630 card: deep-blue field, white headline from the manifest text, hexagon cell pattern, one amber cell. No people, no photograph. Art direction only needs to keep it on-palette and make sure the headline fits at 1200x630 and at the 600x315 crop most scrapers show."
+  },
+  {
+   "id": "og-playbooks",
+   "group": "og",
+   "kind": "og-card",
+   "aspect": "1.91:1",
+   "size": [
+    1200,
+    630
+   ],
+   "srcsetWidths": [
+    1200
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [
+    "/playbooks/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Not generated. SVG-composed 1200x630 card: deep-blue field, white headline from the manifest text, hexagon cell pattern, one amber cell. No people, no photograph. Art direction only needs to keep it on-palette and make sure the headline fits at 1200x630 and at the 600x315 crop most scrapers show."
+  },
+  {
+   "id": "og-fundability",
+   "group": "og",
+   "kind": "og-card",
+   "aspect": "1.91:1",
+   "size": [
+    1200,
+    630
+   ],
+   "srcsetWidths": [
+    1200
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [
+    "/fundability/",
+    "/fundability/<guide>/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Not generated. SVG-composed 1200x630 card: deep-blue field, white headline from the manifest text, hexagon cell pattern, one amber cell. No people, no photograph. Art direction only needs to keep it on-palette and make sure the headline fits at 1200x630 and at the 600x315 crop most scrapers show."
+  },
+  {
+   "id": "og-resources",
+   "group": "og",
+   "kind": "og-card",
+   "aspect": "1.91:1",
+   "size": [
+    1200,
+    630
+   ],
+   "srcsetWidths": [
+    1200
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [
+    "/resources/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Not generated. SVG-composed 1200x630 card: deep-blue field, white headline from the manifest text, hexagon cell pattern, one amber cell. No people, no photograph. Art direction only needs to keep it on-palette and make sure the headline fits at 1200x630 and at the 600x315 crop most scrapers show."
+  },
+  {
+   "id": "og-network",
+   "group": "og",
+   "kind": "og-card",
+   "aspect": "1.91:1",
+   "size": [
+    1200,
+    630
+   ],
+   "srcsetWidths": [
+    1200
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [
+    "/network/",
+    "/network/operators/",
+    "/founders/",
+    "/investors/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Not generated. SVG-composed 1200x630 card: deep-blue field, white headline from the manifest text, hexagon cell pattern, one amber cell. No people, no photograph. Art direction only needs to keep it on-palette and make sure the headline fits at 1200x630 and at the 600x315 crop most scrapers show."
+  },
+  {
+   "id": "og-about",
+   "group": "og",
+   "kind": "og-card",
+   "aspect": "1.91:1",
+   "size": [
+    1200,
+    630
+   ],
+   "srcsetWidths": [
+    1200
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [
+    "/about/",
+    "/about/manifesto/",
+    "/about/frameworks/",
+    "/about/frameworks/orbital/",
+    "/about/frameworks/android-ops/",
+    "/about/editorial-policy/"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Not generated. SVG-composed 1200x630 card: deep-blue field, white headline from the manifest text, hexagon cell pattern, one amber cell. No people, no photograph. Art direction only needs to keep it on-palette and make sure the headline fits at 1200x630 and at the 600x315 crop most scrapers show."
+  },
+  {
+   "id": "og-default",
+   "group": "og",
+   "kind": "og-card",
+   "aspect": "1.91:1",
+   "size": [
+    1200,
+    630
+   ],
+   "srcsetWidths": [
+    1200
+   ],
+   "priority": "P2",
+   "generateNow": false,
+   "isLCP": false,
+   "routes": [
+    "/trust/",
+    "/research/",
+    "/insights/",
+    "/press/",
+    "/legal/*",
+    "/services/*",
+    "/playbooks/<slug>/",
+    "/library/*",
+    "/glossary/",
+    "/faq/",
+    "/apply/",
+    "/contact/",
+    "/pricing/ (wp/03 passes og-default explicitly)"
+   ],
+   "people": "forbidden",
+   "proposedAlt": null,
+   "subjectBrief": "Not generated. SVG-composed 1200x630 card: deep-blue field, white headline from the manifest text, hexagon cell pattern, one amber cell. No people, no photograph. Art direction only needs to keep it on-palette and make sure the headline fits at 1200x630 and at the 600x315 crop most scrapers show."
+  }
+ ]
+}
