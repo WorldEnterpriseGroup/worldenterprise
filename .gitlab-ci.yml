@@ -7,7 +7,7 @@
 #              qa:lighthouse    mobile Lighthouse on eight routes with the SAGE-PLAN 6.9 budgets
 #              verify:release   PUBLIC_RELEASE=1 build (RELEASE_ALLOW tolerates operator-gated items)
 #   deploy     pages            internal preview (demo only), built from source with a Node image
-#   mirror     mirror           gh-pages to GitHub, only after every QA job is green
+#   mirror     mirror           gh-pages only: manual, needs RELEASE_APPROVED, confirms GitHub has the commit (it does not push)
 #
 # Blocking policy. verify:static and check:ownership always block. Every qa job blocks: WP-15 set QA_STRICT=1 below once one wp/15
 # pipeline passed every qa job (decision I-10). Removing that variable returns wp/* branches and demo to allow_failure, which a work
@@ -135,10 +135,13 @@ check:ownership:
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
 
+# Also writes reports/counsel-review.md: every rendered sentence about investors and Investor Introductions, for the counsel review
+# that gates the release (.astro-magazine/release/RELEASE.md section 5). It reads dist and never fails on content.
 audit:claims:
   extends: [.audit]
   script:
     - npm run audit:claims
+    - node scripts/ci/counsel-extract.mjs --dist dist --out reports/counsel-review.md
 
 audit:images:
   extends: [.audit]
@@ -290,20 +293,29 @@ pages:
     - job: verify:static
       artifacts: false
 
-# Production reaches GitHub only when the full QA set is green on gh-pages.
+# Release confirmation on gh-pages (WP-30, issue #20, decision R-1). This job does not push. GitHub is fed by the nightly
+# weg-ghpages-mirror CronJob (nebula, tools/weg-ghpages-mirror): it fast-forwards GitLab gh-pages to GitHub gh-pages with its own
+# short-lived GitHub App installation token, worldenterprise is on its allowlist, and it never forces. So this project holds no
+# GitHub credential (the former GITHUB_TOKEN push, which used --force, is gone) and has no way to overwrite GitHub.
 #
-# The template script is replaced, not extended: it ends the job with exit 0 ("skipping mirror") when GITHUB_REPO or GITHUB_TOKEN
-# is unset, so a gh-pages pipeline went green without publishing anything (code-security P1-3). The first script line below fails
-# the job instead. The remote and push lines are the template's, unchanged. GITHUB_TOKEN is a masked, protected CI/CD variable
-# (Azure Key Vault holds the source of truth) and is never echoed.
+# The job is manual and blocked until the operator supplies RELEASE_APPROVED=<the commit being released> (the owner runs the job
+# with that variable). It then checks, read-only and without credentials, that GitHub gh-pages is at this pipeline's commit and
+# fails otherwise (not yet mirrored, diverged, unreadable), so a release that did not land never shows green. The template's
+# script, which ended with exit 0 ("skipping mirror") when GITHUB_REPO or GITHUB_TOKEN was unset (code-security P1-3), is replaced.
+# The template's rules are replaced too so that `when: manual` is explicit and gh-pages only.
+#
+# The effective publication controls sit upstream of this job and are listed in .astro-magazine/release/RELEASE.md: only the owner
+# may push gh-pages (protected, no force), and the GitHub Actions build re-runs the release gate with no allowances.
 mirror:
   extends: .mirror:github
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "gh-pages"'
+      when: manual
+      allow_failure: false
   script:
-    - echo "=== Mirror gh-pages to GitHub ==="
-    - sh scripts/ci/require-mirror-secrets.sh
-    - git remote add github "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git" 2>/dev/null || git remote set-url github "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git"
-    - git push github gh-pages --force
-    - echo "Mirrored gh-pages to github.com/${GITHUB_REPO}"
+    - echo "=== Confirm gh-pages is mirrored to GitHub ==="
+    - sh scripts/ci/require-release-approval.sh
+    - sh scripts/ci/confirm-mirror.sh
   needs:
     - job: verify:static
       artifacts: false

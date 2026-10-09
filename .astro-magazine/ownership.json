@@ -507,6 +507,19 @@
         ".astro-magazine/handoffs/wp-12c*",
         "tests/unit/wp-12c/**"
       ]
+    },
+    {
+      "owner": "WP-30",
+      "title": "Release engineer: mirror confirmation, release gate, runbook, pre-flight",
+      "branch": "wp/30",
+      "write_set": [
+        ".gitlab-ci.yml",
+        "scripts/ci/**",
+        ".astro-magazine/release/**",
+        "tests/unit/wp-30/**",
+        ".astro-magazine/handoffs/wp-30*",
+        "docs/runbook-release.md"
+      ]
     }
   ],
   "active_leases": [],
@@ -732,6 +745,16 @@
       "wp": "WP-12c",
       "path": ".astro-magazine/{ownership.json,decisions.md}",
       "reason": "Registers the WP-12c assignment and records decision P-4."
+    },
+    {
+      "wp": "WP-30",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "Issue #20: registers the WP-30 assignment and records decision R-1 (the release path and its gates)."
+    },
+    {
+      "wp": "WP-30",
+      "path": "tests/unit/wp-19/release-security.test.ts",
+      "reason": "Issue #20: the mirror job tests moved to tests/unit/wp-30 with the job; the GitHub workflow tests stay."
     }
   ],
   "notes": [
