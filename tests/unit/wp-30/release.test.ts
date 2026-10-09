@@ -7,7 +7,8 @@ import test from 'node:test';
 
 // WP-30 (issue #20, decision R-1): the release path from GitLab gh-pages to GitHub. The mirror job is manual, blocked until the owner
 // approves the exact commit, holds no GitHub credential and cannot push; it only confirms that the nightly weg-ghpages-mirror
-// CronJob has delivered the commit. The pipeline on gh-pages never reports a release that did not land.
+// CronJob has delivered the commit. It exists only for a protected release-* tag (decision DP-1), never for a branch, and it never
+// reports a release that did not land.
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string): string => readFileSync(new URL(path, root), 'utf8');
@@ -30,11 +31,16 @@ function run(script: string, env: Record<string, string>, cwd?: string): Run {
 }
 
 const SHA = '0123456789abcdef0123456789abcdef01234567';
+/** The pipeline variables of a protected release tag, the only place the gate passes. */
+const TAG = { CI_COMMIT_TAG: 'release-1-rc1', CI_COMMIT_REF_PROTECTED: 'true' };
 
 // ---- approval gate ---------------------------------------------------------------------------------------------------------------
 
 test('the approval gate is blocked when RELEASE_APPROVED is not set or empty', () => {
-  const cases: Record<string, string>[] = [{ CI_COMMIT_SHA: SHA }, { CI_COMMIT_SHA: SHA, RELEASE_APPROVED: '' }];
+  const cases: Record<string, string>[] = [
+    { ...TAG, CI_COMMIT_SHA: SHA },
+    { ...TAG, CI_COMMIT_SHA: SHA, RELEASE_APPROVED: '' },
+  ];
   for (const env of cases) {
     const result = run(APPROVAL, env);
     assert.equal(result.status, 1, result.output);
@@ -44,36 +50,68 @@ test('the approval gate is blocked when RELEASE_APPROVED is not set or empty', (
 
 test('the approval gate refuses "true" and anything that is not a lowercase hex SHA', () => {
   for (const value of ['true', 'yes', 'on', 'TRUE', '0123456789AB', '0123456789ab; rm', '0123456789ab ', 'g123456789ab']) {
-    const result = run(APPROVAL, { CI_COMMIT_SHA: SHA, RELEASE_APPROVED: value });
+    const result = run(APPROVAL, { ...TAG, CI_COMMIT_SHA: SHA, RELEASE_APPROVED: value });
     assert.equal(result.status, 1, `${JSON.stringify(value)}: ${result.output}`);
     assert.match(result.output, /must be a lowercase hex commit SHA/);
   }
 });
 
 test('the approval gate refuses a SHA shorter than 12 characters', () => {
-  const result = run(APPROVAL, { CI_COMMIT_SHA: SHA, RELEASE_APPROVED: SHA.slice(0, 11) });
+  const result = run(APPROVAL, { ...TAG, CI_COMMIT_SHA: SHA, RELEASE_APPROVED: SHA.slice(0, 11) });
   assert.equal(result.status, 1, result.output);
   assert.match(result.output, /at least 12 characters/);
 });
 
 test('an approval for another commit does not carry over', () => {
   const other = `${SHA.slice(0, 12)}${'f'.repeat(28)}`;
-  assert.equal(run(APPROVAL, { CI_COMMIT_SHA: other, RELEASE_APPROVED: SHA }).status, 1);
-  const stale = run(APPROVAL, { CI_COMMIT_SHA: SHA, RELEASE_APPROVED: 'fedcba987654' });
+  assert.equal(run(APPROVAL, { ...TAG, CI_COMMIT_SHA: other, RELEASE_APPROVED: SHA }).status, 1);
+  const stale = run(APPROVAL, { ...TAG, CI_COMMIT_SHA: SHA, RELEASE_APPROVED: 'fedcba987654' });
   assert.equal(stale.status, 1, stale.output);
   assert.match(stale.output, /is not this commit/);
 });
 
 test('the approval gate passes for the full SHA and for a prefix of at least 12 characters', () => {
   for (const value of [SHA, SHA.slice(0, 12), SHA.slice(0, 20)]) {
-    const result = run(APPROVAL, { CI_COMMIT_SHA: SHA, RELEASE_APPROVED: value });
+    const result = run(APPROVAL, { ...TAG, CI_COMMIT_SHA: SHA, RELEASE_APPROVED: value });
     assert.equal(result.status, 0, `${value}: ${result.output}`);
     assert.match(result.output, /approved for/);
   }
 });
 
 test('the approval gate needs a commit to approve', () => {
-  assert.equal(run(APPROVAL, { RELEASE_APPROVED: SHA }).status, 1);
+  assert.equal(run(APPROVAL, { ...TAG, RELEASE_APPROVED: SHA }).status, 1);
+});
+
+test('the approval gate refuses a branch pipeline, even with a correct approval', () => {
+  for (const branch of ['gh-pages', 'demo', 'main', 'wp/30']) {
+    const result = run(APPROVAL, { CI_COMMIT_BRANCH: branch, CI_COMMIT_SHA: SHA, CI_COMMIT_REF_PROTECTED: 'true', RELEASE_APPROVED: SHA });
+    assert.equal(result.status, 1, `${branch}: ${result.output}`);
+    assert.match(result.output, /not from a branch/);
+  }
+  const both = run(APPROVAL, { ...TAG, CI_COMMIT_BRANCH: 'demo', CI_COMMIT_SHA: SHA, RELEASE_APPROVED: SHA });
+  assert.equal(both.status, 1, both.output);
+});
+
+test('the approval gate refuses a tag that is not named release-*, and a tag that is not protected', () => {
+  for (const tag of ['v1', 'rc-release-1', 'release-', 'Release-1']) {
+    const result = run(APPROVAL, { ...TAG, CI_COMMIT_TAG: tag, CI_COMMIT_SHA: SHA, RELEASE_APPROVED: SHA });
+    assert.equal(result.status, 1, `${tag}: ${result.output}`);
+    assert.match(result.output, /not named release-\*/);
+  }
+  for (const protectedRef of ['false', '', 'TRUE', 'yes']) {
+    const result = run(APPROVAL, { ...TAG, CI_COMMIT_REF_PROTECTED: protectedRef, CI_COMMIT_SHA: SHA, RELEASE_APPROVED: SHA });
+    assert.equal(result.status, 1, `${JSON.stringify(protectedRef)}: ${result.output}`);
+    assert.match(result.output, /is not protected/);
+  }
+  const unset = run(APPROVAL, { CI_COMMIT_TAG: 'release-1', CI_COMMIT_SHA: SHA, RELEASE_APPROVED: SHA });
+  assert.equal(unset.status, 1, unset.output);
+});
+
+test('the approval gate passes for release-1 and for a release candidate tag', () => {
+  for (const tag of ['release-1', 'release-1-rc1', 'release-2025.10']) {
+    const result = run(APPROVAL, { ...TAG, CI_COMMIT_TAG: tag, CI_COMMIT_SHA: SHA, RELEASE_APPROVED: SHA });
+    assert.equal(result.status, 0, `${tag}: ${result.output}`);
+  }
 });
 
 // ---- mirror confirmation, against real local repositories ------------------------------------------------------------------------
@@ -236,14 +274,27 @@ function job(name: string): string {
   return lines.slice(0, end === -1 ? undefined : end).join('\n');
 }
 
-test('the mirror job is manual on gh-pages only, and a failed or unapproved run blocks the pipeline', () => {
+test('the mirror job is manual on release-* tags only, and a failed or unapproved run blocks the pipeline', () => {
   const body = job('mirror');
   assert.match(body, /^ {2}extends: \.mirror:github$/m);
   const rules = body.slice(body.indexOf('  rules:'), body.indexOf('  script:'));
-  assert.match(rules, /if: '\$CI_COMMIT_BRANCH == "gh-pages"'/);
+  assert.match(rules, /if: '\$CI_COMMIT_TAG =~ \/\^release-\/'/);
   assert.match(rules, /when: manual/);
   assert.match(rules, /allow_failure: false/);
-  assert.equal([...rules.matchAll(/- if:/g)].length, 1, 'one rule, gh-pages only');
+  assert.doesNotMatch(rules, /CI_COMMIT_BRANCH/, 'no branch can create the job');
+  assert.equal([...rules.matchAll(/- if:/g)].length, 1, 'one rule, release tags only');
+});
+
+test('a release tag runs every qa job strictly, with verify:release allowing nothing', () => {
+  const tagRule = /\$CI_COMMIT_TAG =~ \/\^release-\//;
+  const qaRules = ci.slice(ci.indexOf('\n.qa-rules:'), ci.indexOf('\n.needs-build:'));
+  assert.match(qaRules, tagRule);
+  assert.match(qaRules.slice(qaRules.search(tagRule)), /^[^\n]*\n\s+allow_failure: false/, 'the tag rule is strict');
+  assert.match(job('verify:static'), tagRule, 'the build runs on a release tag');
+  const release = job('verify:release');
+  const rule = release.slice(release.search(tagRule));
+  assert.match(rule.slice(0, rule.indexOf('allow_failure')), /RELEASE_ALLOW: ""/, 'a release tag allows nothing');
+  assert.match(rule, /allow_failure: false/);
 });
 
 test('the mirror job runs the approval gate before the confirmation, holds no credential and cannot push', () => {

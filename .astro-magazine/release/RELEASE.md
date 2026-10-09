@@ -8,8 +8,8 @@ Nothing in this document has been run against production. Releasing is the owner
 
 Ready, built and tested:
 
-- The release path is a fast-forward of GitLab `gh-pages` to a green `demo` commit, then the existing mirror to GitHub, then a strict GitHub Actions build and deploy.
-- The GitLab `mirror` job on `gh-pages` is manual, blocked until `RELEASE_APPROVED` names the commit, and read-only. It confirms the release reached GitHub. It holds no GitHub credential and cannot push.
+- A release is a tag, not the head of `demo` (decision DP-1). Release N is the protected tag `release-N` (candidates are `release-N-rcM`); wave work keeps landing on `demo`. The path is: tag, then a fast-forward of GitLab `gh-pages` to exactly the tagged commit, then the existing mirror to GitHub, then a strict GitHub Actions build and deploy.
+- The GitLab `mirror` job exists only on a pipeline for a `release-*` tag. It refuses a branch and an unprotected tag, is manual, is blocked until `RELEASE_APPROVED` names the commit, and is read-only. It confirms the release reached GitHub. It holds no GitHub credential and cannot push.
 - `audit:claims` writes `reports/counsel-review.md`, every sentence about investors as the built pages render it, for counsel.
 - The counsel checklist in section 8 quotes every Investor Introductions sentence from the sources. A unit test fails if a quote drifts from its source or a new source file starts naming the add-on without being listed.
 
@@ -25,14 +25,17 @@ Waiting on the owner or an operator (names only, no values anywhere in Git):
 | A monitored security mailbox, for `security.txt` | operator | section 6 |
 | Terms of use sign-off (C-23) | counsel | section 9 |
 | Public benefit corporation wording (FLAG-PBC), seat price publication (FLAG-PRICE) | owner, counsel | section 9 |
-| The push of a green `demo` commit to `gh-pages` | owner (Matthew Hackney) | section 4, step 5 |
-| `RELEASE_APPROVED=<sha>` on the manual `mirror` job | owner | section 4, step 8 |
+| Protected tag rule `release-*` (create: maintainers only), then the owner chooses the release tag | operator, owner | section 4, steps 3 and 5 |
+| The push of the tagged commit to `gh-pages` | owner (Matthew Hackney) | section 4, step 6 |
+| `RELEASE_APPROVED=<sha>` on the manual `mirror` job of the tag pipeline | owner | section 4, step 9 |
 
 ## 2. How a release travels, and where the real gates are
 
 ```
-demo (GitLab, green) --push, fast-forward only--> gh-pages (GitLab)
-   gh-pages pipeline: verify:static, audits, e2e, verify:release with no allowances, manual mirror job
+demo (GitLab, wave work continues here) --tag--> release-N-rcM / release-N (protected tag, immutable)
+   tag pipeline: verify:static, audits, e2e, verify:release with no allowances, manual mirror job
+release tag commit --push, fast-forward only, owner--> gh-pages (GitLab)
+   gh-pages pipeline: the same checks again on the same commit
 gh-pages (GitLab) --weg-ghpages-mirror CronJob, daily 03:23 UTC, fast-forward only--> gh-pages (GitHub)
    GitHub Actions pages.yml: rebuild with PUBLIC_RELEASE=1 and no allowances, audit dist, deploy to Pages
 ```
@@ -42,7 +45,8 @@ Read this part before approving anything:
 - GitHub is fed by the `weg-ghpages-mirror` CronJob (nebula, `tools/weg-ghpages-mirror`). It uses a short-lived installation token from the GitHub App `focusapiary-mirror-sync`, pushes only fast-forwards, skips and alerts on divergence, and has `worldenterprise` on its allowlist. That is why this project holds no GitHub credential and needs no `GITHUB_TOKEN`. The earlier handoff instruction to set `GITHUB_TOKEN` (wp-19) is obsolete.
 - The cron copies whatever is on GitLab `gh-pages`. It does not look at CI. A CI approval therefore cannot stop it, and the `RELEASE_APPROVED` gate is a confirmation step, not the publish switch.
 - The controls that do stop a bad publish are, in order: (1) only the owner can push `gh-pages` (the branch is protected, push is limited to Matthew Hackney, force push is off), so nothing goes live until that push; (2) the GitHub Actions build re-runs the release gate with `RELEASE_ALLOW` empty, so a launched form that is disabled, a missing launched route or leftover draft content fails the deploy; (3) the audits in the same workflow (dist allowlist, CSP coverage, route ledger, links, images).
-- Because of (1): do not push `gh-pages` until the checklist in section 1 is finished. The push is the approved button.
+- Because of (1): do not push `gh-pages` until the checklist in section 1 is finished. The push is the approved button. Creating a tag publishes nothing.
+- A tag, not `demo`, is the unit of release (DP-1), so wave work that lands on `demo` during approval cannot change what ships. A tag is never moved or deleted: a change after counsel review is a merge to `demo` and a new candidate tag (`release-N-rc2`), and the earlier candidate is simply not used. The release tag must name the commit that is pushed to `gh-pages`, and the `mirror` job confirms GitHub `gh-pages` is at exactly that commit.
 
 ## 3. Pre-flight against current demo
 
@@ -55,7 +59,7 @@ Run on 2026-10-09. Demo `cc84ffa` is pipeline 64693. Its `verify:release` job (1
 | `astro check` | 0 errors, 0 warnings, 1 hint |
 | WP-30 unit tests (`tests/unit/wp-30`) | 24 pass |
 
-Tolerated on demo, red on `gh-pages` until `PUBLIC_WE_INTAKE_API_URL` is set:
+Tolerated on demo, red on a release tag and on `gh-pages` until `PUBLIC_WE_INTAKE_API_URL` is set (so a release candidate tag pipeline is red on `verify:release` until the operator provisions it, and its `mirror` job stays blocked):
 
 ```
 allowed  launched form route /apply/ has form "intake" in disabled mode
@@ -91,29 +95,31 @@ Observation for the owner: the public GitHub repository `WorldEnterpriseGroup/wo
 
 Do these in order. A step that fails stops the release; fix forward, never force.
 
-1. Settle the checklist in section 1. Counsel's answers on section 8 may change wording; any change goes through a normal `demo` merge and a new green pipeline, and the release SHA below is chosen after it.
+1. Settle the checklist in section 1. Counsel's answers on section 8 may change wording; any change goes through a normal `demo` merge and a new candidate tag (`release-N-rc2`), never through moving a tag.
 2. Operator, GitHub settings (once): Settings, Pages, Source set to "GitHub Actions". Settings, Environments, `github-pages`, deployment branches allow `gh-pages`. Settings, Secrets and variables, Actions, Variables: the two variables in section 5.
-3. Operator, GitLab settings (once): Settings, CI/CD, Variables: the two variables in section 5, scoped to protected branches so `gh-pages` sees them. No `GITHUB_TOKEN` is needed or wanted.
-4. Choose the release commit: the head of `demo`, with a green pipeline on that exact SHA. Note it as `<sha>`. Confirm `gh-pages` (GitLab, `d7a65dd` today, the legacy site) is an ancestor of it:
+3. Operator, GitLab settings (once): Settings, CI/CD, Variables: the two variables in section 5, protected, so they reach the protected release tag and `gh-pages` pipelines and nothing else. No `GITHUB_TOKEN` is needed or wanted. Also Settings, Repository, Protected tags: pattern `release-*`, allowed to create: Maintainers only, so only a maintainer can create a release tag and the `mirror` job (which refuses an unprotected tag) can run.
+4. Cut the tag. A maintainer tags a `demo` commit that has a green `demo` pipeline, as an annotated, protected tag: `git tag -a release-N-rcM -m "..." <sha>` and `git push origin release-N-rcM`. `release-1-rc1` is the first candidate (the commit that merged the WP-30 pre-stage). Never move or delete a pushed release tag.
+5. Choose the release tag and read its pipeline. The tag pipeline runs the full qa set strictly, with `verify:release` allowing nothing. Required green: `verify:static`, the audits, the e2e jobs, `qa:lighthouse` and `verify:release`. Note the tagged commit as `<sha>` and confirm `gh-pages` (GitLab, `d7a65dd` today, the legacy site) is an ancestor of it:
 
    ```
-   git fetch origin
+   git fetch origin --tags
    git merge-base --is-ancestor origin/gh-pages <sha> && echo fast-forward
    ```
 
-5. Owner, the approved button. Matthew Hackney pushes the commit to `gh-pages` as a plain fast-forward:
+6. Owner, the approved button. Matthew Hackney pushes the tagged commit to `gh-pages` as a plain fast-forward:
 
    ```
-   git push origin <sha>:gh-pages
+   git push origin release-N:gh-pages
    ```
 
-   Never `--force`, never push `main`, never edit `CNAME`.
-6. The `gh-pages` pipeline starts. Watch it. Required green: `verify:static`, the audits, the e2e jobs and `verify:release`, which on `gh-pages` runs with `RELEASE_ALLOW` empty. If `verify:release` is red with the two `launched form route` lines, `PUBLIC_WE_INTAKE_API_URL` is not visible to the pipeline (section 5): fix the variable and re-run the job.
-7. Mirror to GitHub. Wait for the nightly run (03:23 UTC), or, for an immediate publish, an operator makes the "publish now" GitOps commit in nebula as documented for `weg-ghpages-mirror` (no `kubectl create job`). Then GitHub Actions `pages` runs: it rebuilds with the gate on and deploys only if every audit passes. Watch the run under Actions on GitHub.
-8. Owner, confirmation. In GitLab, open the `gh-pages` pipeline, click the name of the `mirror` job (not the play icon), set the variable `RELEASE_APPROVED` to the commit being released (the full SHA, or at least its first 12 characters), and run it. The job:
+   The pushed commit must be the tagged commit (`git rev-parse release-N^{commit}`). Never `--force`, never push `main`, never edit `CNAME`.
+7. The `gh-pages` pipeline starts on the same commit. Watch it. Required green: the same jobs as the tag pipeline, with `verify:release` running with `RELEASE_ALLOW` empty. If `verify:release` is red with the two `launched form route` lines, `PUBLIC_WE_INTAKE_API_URL` is not visible to the pipeline (section 5): fix the variable and re-run the job.
+8. Mirror to GitHub. Wait for the nightly run (03:23 UTC), or, for an immediate publish, an operator makes the "publish now" GitOps commit in nebula as documented for `weg-ghpages-mirror` (no `kubectl create job`). Then GitHub Actions `pages` runs: it rebuilds with the gate on and deploys only if every audit passes. Watch the run under Actions on GitHub.
+9. Owner, confirmation. In GitLab, open the pipeline of the release tag (the `mirror` job exists only there), click the name of the `mirror` job (not the play icon), set the variable `RELEASE_APPROVED` to the commit being released (the full SHA, or at least its first 12 characters), and run it. The job:
+   - refuses a branch pipeline, a tag not named `release-*` and a tag that is not protected;
    - refuses an empty value, `true`, anything not lowercase hex, fewer than 12 characters, and a SHA that is not this pipeline's commit (an approval for a different commit does not carry over);
-   - then reads `github.com/WorldEnterpriseGroup/worldenterprise` without credentials and passes only if GitHub `gh-pages` is at this commit. Not yet mirrored, GitHub ahead, diverged, unreadable and missing all exit 1. Re-run it after the mirror has run.
-9. Verify live (section 10 has the list), and record the result on issue #20.
+   - then reads `github.com/WorldEnterpriseGroup/worldenterprise` without credentials and passes only if GitHub `gh-pages` is at the tagged commit. Not yet mirrored, GitHub ahead, diverged, unreadable and missing all exit 1. Re-run it after the mirror has run.
+10. Verify live (section 10 has the list), and record the result on issue #20.
 
 ## 5. Variables, by name only
 
@@ -122,10 +128,10 @@ Do these in order. A step that fails stops the release; fix forward, never force
 | `PUBLIC_WE_INTAKE_API_URL` | GitHub repo variable and GitLab CI variable (protected) | absolute `https://` URL | Endpoint for the apply and contact forms. Without it a launched form is disabled and the release build refuses to ship. |
 | `PUBLIC_WE_NEWSLETTER_API_URL` | GitHub repo variable and GitLab CI variable (protected) | absolute `https://` URL | Endpoint for the newsletter form. Without it the newsletter does not launch. |
 | `PUBLIC_WE_INTAKE_REQUIRES_JS` | optional, same places | `1` | Set only if the intake endpoint cannot take a native form-encoded post (`docs/forms-contract.md`, section 8). |
-| `RELEASE_APPROVED` | manual `mirror` job run only | commit SHA, 12 or more hex characters | Approves exactly one commit. Do not store it as a project variable. |
+| `RELEASE_APPROVED` | manual `mirror` job run on the release tag only | commit SHA, 12 or more hex characters | Approves exactly one commit. Do not store it as a project variable. |
 | `GITHUB_REPO` | already set in `.gitlab-ci.yml` | `WorldEnterpriseGroup/worldenterprise` | Which public repository the confirmation reads. |
 
-The GitHub variables feed `.github/workflows/pages.yml`. The GitLab variables feed the `gh-pages` `verify:release` job. They must hold the same URLs. The CI test URLs in `.gitlab-ci.yml` (`intake.example.test`) are only for `e2e:forms` and never reach a release.
+The GitHub variables feed `.github/workflows/pages.yml`. The GitLab variables feed the `verify:release` job on a release tag and on `gh-pages`. They must hold the same URLs. The CI test URLs in `.gitlab-ci.yml` (`intake.example.test`) are only for `e2e:forms` and never reach a release.
 
 A non-https value fails the build with a message naming the variable (`src/lib/endpoints.ts`). The CSP is built from the configured origins and `audit:csp` fails the deploy if a form origin is missing from `connect-src` or `form-action`.
 
@@ -434,9 +440,9 @@ All three stay off until the named person signs. Flags live in `src/data/flags.t
 
 ## 10. Verify live, and record a baseline
 
-Before step 5, record: the head SHA of GitLab and GitHub `gh-pages` (`d7a65dd` today), the current Pages deployment (Settings, Pages, and the last `github-pages` deployment in Environments), and a few saved pages of the live site. This is the rollback target.
+Before step 6, record: the head SHA of GitLab and GitHub `gh-pages` (`d7a65dd` today), the current Pages deployment (Settings, Pages, and the last `github-pages` deployment in Environments), and a few saved pages of the live site. This is the rollback target.
 
-After step 8, check each on `https://worldenterprise.org`:
+After step 9, check each on `https://worldenterprise.org`:
 
 - Home, `/apply/`, `/contact/`, `/pricing/`, `/investors/`, `/network/`, `/services/fundability-and-investor-readiness/` respond 200 and show the release wording from section 8.
 - `/robots.txt`, `/sitemap-index.xml`, `/rss.xml` respond. `/.well-known/security.txt` responds only if section 6 was done.
@@ -459,7 +465,7 @@ git commit-tree <good-sha>^{tree} -p origin/gh-pages -m "revert: restore <good-s
 git push origin rollback:gh-pages
 ```
 
-Then the same chain runs (pipeline, mirror, Actions). For an immediate GitHub update use the "publish now" route in step 7.
+Then the same chain runs (pipeline, mirror, Actions). For an immediate GitHub update use the "publish now" route in step 8.
 
 First release: there is no earlier green `pages` run to re-run. The baseline is the legacy site (`d7a65dd`, the tree currently on `gh-pages`). To roll back, restore that tree with the permanent path (`<good-sha>` is `d7a65dd`), and also set Settings, Pages, Source back to "Deploy from a branch", `gh-pages`, root, because the legacy tree has no `package.json` and the workflow cannot rebuild it. Check what the Pages source is today (section 3) and write it down before the release, so the rollback restores exactly it.
 
@@ -470,4 +476,6 @@ If the problem is a wording problem found after launch, a fix forward through `d
 - The mirror cron publishes whatever is on GitLab `gh-pages` regardless of CI results, and the `RELEASE_APPROVED` gate cannot stop it. The push to `gh-pages` is the real gate, which is why section 2 asks that it wait.
 - The GitHub strict build is the safety net for form and route problems, and the audits in `pages.yml` cover the output files. They do not read wording. Wording is covered only by section 8 and the claims audit.
 - The stale GitHub `demo` branch (section 3).
-- This runbook cannot see the GitHub Pages and environment settings or the live site. Section 4 steps 2 and 9 are the operator's check of them.
+- A release candidate tag pipeline is red on `verify:release` until `PUBLIC_WE_INTAKE_API_URL` is available to it, and the `mirror` job stays blocked behind it. That is the gate working, not a defect. The tag rule `release-*` must be protected before the `mirror` job will run.
+- Protecting `release-*` and the variables above are GitLab settings that this repository cannot set. If a maintainer tags before the rule exists, the `mirror` job refuses the unprotected tag: protect the pattern, then cut the next candidate tag (never move the earlier one).
+- This runbook cannot see the GitHub Pages and environment settings or the live site. Section 4 steps 2 and 10 are the operator's check of them.
