@@ -136,12 +136,14 @@ check:ownership:
     - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
 
 # Also writes reports/counsel-review.md: every rendered sentence about investors and Investor Introductions, for the counsel review
-# that gates the release (.astro-magazine/release/RELEASE.md section 5). It reads dist and never fails on content.
+# that gates the release (.astro-magazine/release/RELEASE.md section 8). It reads dist and never fails on content.
 audit:claims:
   extends: [.audit]
   script:
     - npm run audit:claims
     - node scripts/ci/counsel-extract.mjs --dist dist --out reports/counsel-review.md
+    # Also in the job log, so it can be read without downloading the artifact.
+    - cat reports/counsel-review.md
 
 audit:images:
   extends: [.audit]

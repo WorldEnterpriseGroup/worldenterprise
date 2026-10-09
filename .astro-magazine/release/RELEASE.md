@@ -46,7 +46,7 @@ Read this part before approving anything:
 
 ## 3. Pre-flight against current demo
 
-Run on 2026-10-09 against demo `cc84ffa` (pipeline 64693) and the WP-30 branch (pipeline 64723 and later).
+Run on 2026-10-09. Demo `cc84ffa` is pipeline 64693. Its `verify:release` job (1119395) is green, but GitLab returned no trace or artifact for it, so the output below is from the same job on the WP-30 branch (pipeline 64723, job 1120231, commit `dbcbf46`). That commit changes only CI scripts, tests, ownership and docs relative to demo, so the site source and the release gate are identical.
 
 | Check | Result |
 |---|---|
@@ -263,10 +263,14 @@ Source: `src/content/pages/investors/index.mdx:3`. Renders on: /investors/ (meta
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-09. Investors page, "The limits of WE's role" list and the investor paragraph
+#### CR-09. Investors page, lead, "Not an offer of securities" box, "The limits of WE's role" list and the investor paragraph
 
 Source: `src/pages/investors/index.astro:25`. Renders on: /investors/.
 
+> L38: WE prepares a company's evidence. It does not raise money, place securities or promise funding.
+>
+> L46: Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security. WE does not offer securities through this site or in any other way described on it.
+>
 > L25: WE does not offer, sell or place securities, and takes no part in any financing.
 >
 > L26: WE does not negotiate terms, advise on securities or handle funds.
@@ -341,7 +345,7 @@ Source: `src/content/services/fundability-and-investor-readiness.mdx:72`. Render
 
 #### CR-15. Fundable desk introduction
 
-Source: `src/content/pages/insights/topic-fundable.mdx:3`. Renders on: /insights/ Fundable desk page (meta description and body).
+Source: `src/content/pages/insights/topic-fundable.mdx:3`. Renders on: /insights/topic/fundable/ (meta description and body).
 
 > L3: No promise of funding, no securities advice and no promised meetings.
 >
@@ -363,7 +367,25 @@ Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-17. FAQ entry (also in the FAQPage JSON-LD of /faq/)
+#### CR-17. Grow stage, what WE does not do
+
+Source: `src/components/program/stages.ts:164`. Renders on: /program/grow/ and every page that lists the stage limits.
+
+> L164: WE does not promise a meeting with any investor and does not run a raise on your behalf.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-18. Site description (the default meta and Open Graph description, and the Organization JSON-LD)
+
+Source: `src/data/site.ts:16`. Renders on: Any page that uses the site description.
+
+> L16: A fully remote digital incubator for SaaS. Dedicated team seats, steered by WE, help a founder build evidence for investors. WE promises no funding.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-19. FAQ entry (also in the FAQPage JSON-LD of /faq/)
 
 Source: `src/data/faq.yaml:57`. Renders on: /faq/.
 
@@ -378,7 +400,7 @@ Source: `src/data/faq.yaml:57`. Renders on: /faq/.
 
 Counsel sign-off:
 
-- [ ] Every item above approved, or its change made and the checklist regenerated from the new sources
+- [ ] Every item above approved, or its change made in the source and the quote and line updated here by hand (the test names the line it found)
 - [ ] `reports/counsel-review.md` for the release commit read in full
 - [ ] Counsel name, date and release SHA recorded on issue #20
 
