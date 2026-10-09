@@ -172,3 +172,19 @@ test('a service entry that lists artifacts does not also carry its own "What you
     }
   }
 });
+
+test('the breadcrumb trail stays on one row, so a font swap cannot add or remove a line above the title', () => {
+  const css = read('src/styles/components.css');
+  const trail = /\.breadcrumbs\s*\{[\s\S]*?\n  \}\n/.exec(css)?.[0] ?? '';
+  assert.match(trail, /flex-wrap:\s*nowrap/, 'the list never wraps');
+  assert.match(trail, /li:last-child\s*\{[^}]*text-overflow:\s*ellipsis/, 'the current page ends in an ellipsis when it must');
+  assert.doesNotMatch(trail, /flex-wrap:\s*wrap/);
+});
+
+test('the article byline is made of whole parts that stack on a phone', () => {
+  const css = read('src/styles/components.css');
+  assert.match(css, /\.byline\s*\{[^}]*flex-direction:\s*column/, 'a phone gets one part per row');
+  assert.match(css, /\.byline__part\s*\{[^}]*white-space:\s*nowrap/, 'a part never breaks inside');
+  assert.match(read('src/layouts/ArticleLayout.astro'), /class="byline__part"/);
+  assert.match(read('src/components/hero/HeroArticle.astro'), /class="byline__part"/);
+});

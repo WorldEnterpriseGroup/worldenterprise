@@ -45,9 +45,15 @@ const hasByline = byline !== undefined || published !== undefined || updated !==
         ) : (
           hasByline && (
             <p class="byline">
-              {byline}
-              {published && <time datetime={fmt(published)}>{fmt(published)}</time>}
-              {updated && <span>, updated <time datetime={fmt(updated)}>{fmt(updated)}</time></span>}
+              {byline && <span class="byline__part">{byline}</span>}
+              {
+                (published || updated) && (
+                  <span class="byline__part">
+                    {published && <time datetime={fmt(published)}>{fmt(published)}</time>}
+                    {updated && <>{published ? ', updated ' : 'Updated '}<time datetime={fmt(updated)}>{fmt(updated)}</time></>}
+                  </span>
+                )
+              }
             </p>
           )
         )
