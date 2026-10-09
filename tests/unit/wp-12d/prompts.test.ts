@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import test from 'node:test';
 import { MODEL_MAX_EDGE } from '../../../src/assets/photo/slots.ts';
 import { checkAll, loadPromptFiles } from '../../../scripts/photo/build-prompts.mjs';
-import { MODEL_MAX_EDGE as RIG_MAX_EDGE, FIGURE_OFFSETS, OBJECT_OFFSETS, masterSize, parseArgs, rasterSlots, seedBase } from '../../../scripts/photo/lib/common.mjs';
+import { MODEL_MAX_EDGE as RIG_MAX_EDGE, FIGURE_OFFSETS, OBJECT_OFFSETS, masterSize, parseArgs, seedBase } from '../../../scripts/photo/lib/common.mjs';
 import { FIGURE_PREFIX, OBJECT_PREFIX, buildPrompts, candidatePlan, figureSubject, hashPrompts, lintAssembled, lintParts } from '../../../scripts/photo/lib/prompt.mjs';
 import { buildWorkList } from '../../../scripts/photo/generate.mjs';
 

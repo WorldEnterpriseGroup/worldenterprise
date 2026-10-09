@@ -77,7 +77,12 @@ export function sizeString([w, h]) {
   return `${w}x${h}`;
 }
 
-/** Pure argv parser: `--flag`, `--key value` and `--key=value`. Repeated keys are not supported. */
+/**
+ * Pure argv parser: `--flag`, `--key value` and `--key=value`. Repeated keys are not supported.
+ * @param {string[]} argv
+ * @param {{ booleans?: string[] }} [options] camelCase names that are flags and take no value
+ * @returns {{ _: string[], [key: string]: string | boolean | string[] }}
+ */
 export function parseArgs(argv, { booleans = [] } = {}) {
   const out = { _: [] };
   for (let i = 0; i < argv.length; i += 1) {

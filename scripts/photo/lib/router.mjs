@@ -5,6 +5,16 @@ import { promisify } from 'node:util';
 
 const execFileAsync = promisify(execFile);
 
+/**
+ * @param {string} cmd
+ * @param {string[]} args
+ * @returns {Promise<{ stdout: string }>}
+ */
+async function runCommand(cmd, args) {
+  const { stdout } = await execFileAsync(cmd, args, { timeout: 60_000 });
+  return { stdout };
+}
+
 export const DEFAULT_ROUTER_URL = 'http://localhost:18200';
 export const KEY_VAULT = 'omlab-secrets';
 export const KEY_SECRET_NAME = 'hardmagic-internal-api-key';
@@ -38,8 +48,10 @@ export function classifyStatus(status) {
 /**
  * The router key. `HARDMAGIC_INTERNAL_KEY` wins; otherwise it is read from Azure Key Vault by secret NAME. The value is returned to
  * the caller and never logged; errors name the vault and secret only.
+ * @param {{ env?: Record<string, string | undefined>, run?: (cmd: string, args: string[]) => Promise<{ stdout: string }> }} [options] `run` is injectable for tests
+ * @returns {Promise<string>}
  */
-export async function loadKey({ env = process.env, run = (cmd, args) => execFileAsync(cmd, args, { timeout: 60_000 }) } = {}) {
+export async function loadKey({ env = process.env, run = runCommand } = {}) {
   if (env.HARDMAGIC_INTERNAL_KEY) return env.HARDMAGIC_INTERNAL_KEY;
   try {
     const { stdout } = await run('az', ['keyvault', 'secret', 'show', '--vault-name', KEY_VAULT, '-n', KEY_SECRET_NAME, '--query', 'value', '-o', 'tsv']);
@@ -66,7 +78,7 @@ export class RouterClient {
    * @param {object} options
    * @param {string} options.key router key
    * @param {string} [options.baseUrl]
-   * @param {typeof fetch} [options.fetchImpl]
+   * @param {(url: string, init: RequestInit) => Promise<Response>} [options.fetchImpl]
    * @param {(ms: number) => Promise<void>} [options.sleep]
    * @param {number} [options.pollMs] delay between polls of an async job
    * @param {number} [options.jobTimeoutMs] give up on one job after this long
@@ -146,6 +158,8 @@ export class RouterClient {
   /**
    * One image with retry. Transient failures (5xx, network, blank frame) back off 5, 15, 45 s; capacity failures (503, 429) wait
    * minutes (60, 180, 300 s). Client and auth errors fail at once. `onRetry({ attempt, error, waitMs })` is called before each wait.
+   * @param {{ model: string, prompt: string, size: string, seed: number }} request
+   * @param {{ retries?: number, backoffMs?: number[], capacityBackoffMs?: number[], onRetry?: (info: { attempt: number, error: RouterError, waitMs: number }) => unknown }} [options]
    */
   async generate(request, { retries = 4, backoffMs = [5_000, 15_000, 45_000, 90_000], capacityBackoffMs = [60_000, 180_000, 300_000, 300_000], onRetry = () => {} } = {}) {
     let lastError;

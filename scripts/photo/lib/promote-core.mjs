@@ -37,8 +37,10 @@ export function promotedRow(row, entry, { modelName, now }) {
 /**
  * Apply a batch of promotions to a manifest and return a new manifest. All entries apply or none: an unknown slot or a duplicate
  * throws before anything is returned. The stage trio and the figure caps are checked afterwards by checkManifest on the whole result.
- * @param {{ slots: object[] }} manifest
+ * @template {{ slots: object[] }} M
+ * @param {M} manifest
  * @param {{ slotId: string }[]} entries each with `slotId` plus the fields promotedRow takes
+ * @returns {M}
  */
 export function promoteRows(manifest, entries, context) {
   const seen = new Set();
