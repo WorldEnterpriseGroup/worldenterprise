@@ -18,6 +18,8 @@ interface RequiredRule {
   readonly text: string;
   readonly routes: '*' | readonly string[];
   readonly when?: string;
+  readonly whenMatches?: string;
+  readonly whenFlags?: string;
 }
 interface RuleSet {
   readonly rules: readonly CompiledRule[];
@@ -63,6 +65,7 @@ const audit = auditMod as unknown as {
   stripGenericDefinitions(html: string): string;
   visibleText(html: string): string;
   bodyText(html: string): string;
+  mainText(html: string): string;
   hasGeneratedImages(manifest: unknown): boolean;
   checkRequired(pages: readonly Page[], required: readonly RequiredRule[], options?: { generatedImages?: boolean }): Finding[];
   checkManifest(manifest: unknown, rules: readonly CompiledRule[]): Finding[];
@@ -74,6 +77,13 @@ const SET = audit.loadDenylist();
 const PHOTO_LINE = 'Illustrative images, some AI-generated. Figures shown are not real people, founders, clients or WE staff.';
 const DISCLAIMER = 'WE makes no promise of funding.';
 const DISCLAIMER_ROUTES = ['/', '/fundability/', '/investors/', '/program/grow/', '/services/fundability-and-investor-readiness/', '/pricing/'];
+const INTRO_DISCLAIMER =
+  'Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.';
+const FLAT_FEE = 'The fee does not depend on whether any investment closes.';
+const INTRO_ROUTES = ['/investors/', '/network/', '/services/fundability-and-investor-readiness/', '/pricing/', '/faq/'];
+const FLAT_FEE_ROUTES = ['/investors/', '/services/fundability-and-investor-readiness/', '/pricing/'];
+/** Every route a required rule lists, so a fixture site can satisfy all of them. */
+const ALL_ROUTES = [...new Set([...DISCLAIMER_ROUTES, ...INTRO_ROUTES])];
 
 function ids(html: string, route = '/', flagValues: Record<string, unknown> = {}): string[] {
   return audit.scan(html, { route, flagValues }).map((h) => h.rule);
@@ -85,19 +95,27 @@ test('the denylist parses and keeps the four sections separate', () => {
   assert.ok(SET.rules.length >= 32);
   assert.deepEqual(
     SET.contextRules.map((r) => r.id),
-    ['C-18-pbc', 'C-05-fundable-outcome', 'C-13-peers', 'C-21-phrase', 'Q-spelling', 'Q-we-case'],
+    ['C-18-pbc', 'C-14-success-based', 'C-05-fundable-outcome', 'C-13-peers', 'C-21-phrase', 'Q-spelling', 'Q-we-case'],
   );
-  assert.deepEqual(SET.required.map((r) => r.id), ['R-C05-no-funding-disclaimer', 'R-photo-disclosure']);
+  assert.deepEqual(SET.required.map((r) => r.id), [
+    'R-C05-no-funding-disclaimer',
+    'R-C14-intro-disclaimer',
+    'R-C14-intro-disclaimer-wherever-named',
+    'R-C14-flat-fee-statement',
+    'R-photo-disclosure',
+  ]);
   assert.deepEqual(SET.manifestRules.map((r) => r.id), ['Q-photo-alt']);
   assert.equal(SET.scanRules.length, SET.rules.length + SET.contextRules.length);
 });
 
 test('the unconditional rules stay free of contextual wording the source tests could not tolerate', () => {
   const unconditional = SET.rules.map((r) => r.id);
-  for (const contextual of ['C-18-pbc', 'C-05-fundable-outcome', 'C-13-peers', 'C-21-phrase', 'Q-spelling', 'Q-we-case']) {
+  for (const contextual of ['C-18-pbc', 'C-14-success-based', 'C-05-fundable-outcome', 'C-13-peers', 'C-21-phrase', 'Q-spelling', 'Q-we-case']) {
     assert.ok(!unconditional.includes(contextual), `${contextual} belongs in contextRules`);
   }
-  for (const added of ['C-11-years', 'C-20-frameworks', 'C-14-intro-positive']) assert.ok(unconditional.includes(added), `${added} is a rule`);
+  for (const added of ['C-11-years', 'C-20-frameworks', 'C-14-investor-network', 'C-14-guaranteed-meetings']) assert.ok(unconditional.includes(added), `${added} is a rule`);
+  // The owner decision of 2026-10-09 retired the rules that denied the add-on.
+  for (const retired of ['C-14-investor-intros', 'C-14-intro-positive']) assert.ok(!unconditional.includes(retired), `${retired} was retired`);
 });
 
 test('the denylist file is valid JSON with version 2', () => {
@@ -113,6 +131,9 @@ test('parseDenylist rejects a duplicate id, a bad pattern, bad routes and an unk
   assert.throws(() => audit.parseDenylist({ rules: [{ ...ok, allowPaths: '^/a/$' }] }), /allowPaths must be an array/);
   assert.throws(() => audit.parseDenylist({ required: [{ id: 'R-1', text: 'x', routes: ['no-slash'] }] }), /routes must be/);
   assert.throws(() => audit.parseDenylist({ required: [{ id: 'R-2', text: 'x', routes: '*', when: 'always' }] }), /unknown "when"/);
+  assert.throws(() => audit.parseDenylist({ required: [{ id: 'R-3', text: 'x', routes: '*', whenMatches: '(' }] }), /invalid pattern/);
+  assert.throws(() => audit.parseDenylist({ required: [{ id: 'R-4', text: 'x', routes: '*', whenMatches: '' }] }), /non-empty string/);
+  assert.doesNotThrow(() => audit.parseDenylist({ required: [{ id: 'R-5', text: 'x', routes: '*', whenMatches: 'a', whenFlags: 'i' }] }));
   assert.throws(() => audit.parseDenylist({ rules: 'nope' }), /must be an array/);
   assert.doesNotThrow(() => audit.parseDenylist({}));
 });
@@ -222,7 +243,7 @@ test('C-21-phrase is allowed on the dedicated-teams page only', () => {
   assert.ok(!ids('<p>Two companies with different objectives</p>', '/pricing/').includes('C-21-phrase'));
 });
 
-// ---- C-11-years, C-20-frameworks, C-14-intro-positive ----
+// ---- C-11-years and C-20-frameworks ----
 
 test('C-11-years catches a years-of-experience claim and not a plain duration', () => {
   for (const text of ['Over 20 years of experience', '20+ years', 'twenty years in the field', 'two decades of work']) {
@@ -239,13 +260,108 @@ test('C-20-frameworks catches the excluded framework names', () => {
   assert.ok(!ids('<p>The ANDROID Ops Framework and the ORBITAL framework</p>').includes('C-20-frameworks'));
 });
 
-test('C-14-intro-positive catches a positive introductions claim and passes the negations', () => {
-  for (const text of ['WE provides introductions to investors.', 'WE arranges curated investor introductions.', 'It makes introductions.', 'WE facilitates introductions.', 'WE offers investor introductions']) {
-    assert.ok(ids(`<p>${text}</p>`).includes('C-14-intro-positive'), text);
+// ---- C-14: Investor Introductions (owner decision of 2026-10-09) ----
+
+test('the add-on may be named and described: the old denials of introductions are retired', () => {
+  for (const text of [
+    'Investor Introductions is a separate, paid add-on.',
+    'WE offers curated introductions after the readiness criteria are met.',
+    'WE provides introductions to a limited number of investors.',
+    'A flat fee covers curation and preparation.',
+    'The fee does not depend on whether any investment closes.',
+    'WE does not negotiate terms, advise on securities or handle funds.',
+  ]) {
+    const hits = ids(`<p>${text}</p>`).filter((id) => id.startsWith('C-14'));
+    assert.deepEqual(hits, [], text);
   }
-  for (const text of ['WE does not provide introductions to investors.', 'WE does not arrange meetings with investors.', 'WE makes no introductions.', 'WE does not offer introductions.']) {
-    assert.ok(!ids(`<p>${text}</p>`).includes('C-14-intro-positive'), text);
+});
+
+test('C-14-guaranteed-meetings catches a promise of meetings, introductions or investor contact and passes the negations', () => {
+  for (const text of [
+    'WE guarantees introductions to investors.',
+    'WE promises you meetings with investors.',
+    'We assure founders a meeting with a lead investor.',
+    'Guaranteed introductions to top investors.',
+    'WE promises investor access.',
+    'A promise of investor replies.',
+  ]) {
+    assert.ok(ids(`<p>${text}</p>`).includes('C-14-guaranteed-meetings'), text);
   }
+  for (const text of [
+    'WE cannot promise a meeting or funding.',
+    'WE does not promise introductions.',
+    'WE does not promise a meeting with any investor.',
+    'There is no guarantee of meetings.',
+    'WE promises no funding.',
+    'WE makes no promise of funding.',
+    'It never guarantees introductions.',
+    'WE can’t promise investor contact.',
+  ]) {
+    assert.ok(!ids(`<p>${text}</p>`).includes('C-14-guaranteed-meetings'), text);
+  }
+});
+
+test('C-14-investor-network catches a claimed network and not a denial of one', () => {
+  for (const text of ['Join our investor network.', 'a network of vetted investors', 'The WE investor network']) {
+    assert.ok(ids(`<p>${text}</p>`).includes('C-14-investor-network'), text);
+  }
+  for (const text of ['There is no investor network.', 'It is not a membership of any network.', 'a network of operators']) {
+    assert.ok(!ids(`<p>${text}</p>`).includes('C-14-investor-network'), text);
+  }
+});
+
+test('C-14-success-based catches contingent, commission, finder and equity-for-introductions wording', () => {
+  for (const text of [
+    'A success-based fee applies.',
+    'A contingent fee is due at closing.',
+    'WE earns a finder’s fee.',
+    'A placement fee of the round.',
+    'It takes carried interest.',
+    'A commission on the amount raised.',
+    'A percentage of the money raised.',
+    'Equity in exchange for introductions.',
+    'WE is paid only when the round closes.',
+    'A transaction-based fee.',
+  ]) {
+    assert.ok(ids(`<p>${text}</p>`).includes('C-14-success-based'), text);
+  }
+  for (const text of [
+    'The Securities and Exchange Commission explains exempt offerings.',
+    'A flat fee covers curation and preparation.',
+    INTRO_DISCLAIMER,
+    FLAT_FEE,
+  ]) {
+    assert.ok(!ids(`<p>${text}</p>`).includes('C-14-success-based'), text);
+  }
+});
+
+test('C-14-success-based is built-output only and a marked element may quote the wording to deny it', () => {
+  assert.ok(SET.contextRules.some((r) => r.id === 'C-14-success-based'));
+  assert.ok(!SET.rules.some((r) => r.id === 'C-14-success-based'));
+  assert.ok(!ids('<p data-claim-allow="C-14-success-based">WE takes no carried interest.</p>').includes('C-14-success-based'));
+  assert.ok(ids('<p data-claim-allow="C-13-peers">WE takes no carried interest.</p>').includes('C-14-success-based'));
+  assert.ok(ids('<script type="application/ld+json">{"description":"a finder\'s fee"}</script>').includes('C-14-success-based'));
+});
+
+test('the verbatim disclaimer and the flat-fee sentence pass every rule in the live denylist', () => {
+  assert.deepEqual(ids(`<main><p>${INTRO_DISCLAIMER}</p><p>${FLAT_FEE}</p></main>`), []);
+  // The FAQ page puts answers in JSON-LD, outside any marker, so the disclaimer must pass there too.
+  assert.deepEqual(ids(`<script type="application/ld+json">{"text":"${INTRO_DISCLAIMER}"}</script>`), []);
+});
+
+test('the disclaimer rules require the owner’s sentence and flat-fee statement on the named routes', () => {
+  const disclaimer = SET.required.find((r) => r.id === 'R-C14-intro-disclaimer');
+  const flat = SET.required.find((r) => r.id === 'R-C14-flat-fee-statement');
+  assert.equal(disclaimer?.text, INTRO_DISCLAIMER);
+  assert.deepEqual([...(disclaimer?.routes as readonly string[])].sort(), [...INTRO_ROUTES].sort());
+  assert.equal(flat?.text, FLAT_FEE);
+  assert.deepEqual([...(flat?.routes as readonly string[])].sort(), [...FLAT_FEE_ROUTES].sort());
+});
+
+test('the disclaimer sentence in the denylist is the one the component renders', async () => {
+  const lib = (await import('../../../src/components/blocks/introductions.ts')) as { INTRODUCTIONS_DISCLAIMER: string; INTRODUCTIONS_FLAT_FEE: string };
+  assert.equal(lib.INTRODUCTIONS_DISCLAIMER, INTRO_DISCLAIMER);
+  assert.equal(lib.INTRODUCTIONS_FLAT_FEE, FLAT_FEE);
 });
 
 // ---- Q-spelling and Q-we-case ----
@@ -321,26 +437,92 @@ test('routeOf maps built files to routes', () => {
 
 // ---- required text ----
 
-function disclaimerPages(withText: readonly string[]): Page[] {
-  return DISCLAIMER_ROUTES.map((route) => ({ route, html: `<main><h1>Page</h1>${withText.includes(route) ? `<p>${DISCLAIMER} This is general information.</p>` : '<p>Nothing.</p>'}</main>`, isHtml: true }));
+type Omit_ = Partial<Record<string, readonly ('funding' | 'intro' | 'flat')[]>>;
+
+/** One page per route the required rules list. `omit` removes a statement from a route, so a test can break exactly one rule. */
+function builtPages(omit: Omit_ = {}): Page[] {
+  return ALL_ROUTES.map((route) => {
+    const left = omit[route] ?? [];
+    const parts: string[] = [];
+    if (DISCLAIMER_ROUTES.includes(route) && !left.includes('funding')) parts.push(`<p>${DISCLAIMER} This is general information.</p>`);
+    if (INTRO_ROUTES.includes(route) && !left.includes('intro')) parts.push(`<p>${INTRO_DISCLAIMER}</p>`);
+    if (FLAT_FEE_ROUTES.includes(route) && !left.includes('flat')) parts.push(`<p>${FLAT_FEE}</p>`);
+    return { route, html: `<main><h1>Page</h1>${parts.join('') || '<p>Nothing.</p>'}</main>`, isHtml: true };
+  });
 }
 
 test('required: the no-funding disclaimer must be present on each listed route', () => {
   const rule = SET.required.find((r) => r.id === 'R-C05-no-funding-disclaimer');
   assert.ok(rule);
   assert.deepEqual([...(rule.routes as readonly string[])].sort(), [...DISCLAIMER_ROUTES].sort());
-  assert.deepEqual(audit.checkRequired(disclaimerPages(DISCLAIMER_ROUTES), SET.required, { generatedImages: false }), []);
-  const partial = audit.checkRequired(disclaimerPages(DISCLAIMER_ROUTES.filter((r) => r !== '/pricing/')), SET.required, { generatedImages: false });
+  assert.deepEqual(audit.checkRequired(builtPages(), SET.required, { generatedImages: false }), []);
+  const partial = audit.checkRequired(builtPages({ '/pricing/': ['funding'] }), SET.required, { generatedImages: false });
   assert.equal(partial.length, 1);
   assert.equal(partial[0]?.route, '/pricing/');
+  assert.equal(partial[0]?.rule, 'R-C05-no-funding-disclaimer');
   assert.match(partial[0]?.message ?? '', /required text is missing/);
 });
 
-test('required: a listed route that was not built is a finding', () => {
-  const pages = disclaimerPages(DISCLAIMER_ROUTES).filter((p) => p.route !== '/investors/');
+test('required: a listed route that was not built is a finding for every rule that lists it', () => {
+  const pages = builtPages().filter((p) => p.route !== '/investors/');
   const findings = audit.checkRequired(pages, SET.required, { generatedImages: false });
-  assert.equal(findings.length, 1);
-  assert.match(findings[0]?.message ?? '', /was not built/);
+  assert.deepEqual(findings.map((f) => f.rule).sort(), ['R-C05-no-funding-disclaimer', 'R-C14-flat-fee-statement', 'R-C14-intro-disclaimer']);
+  for (const f of findings) assert.match(f.message, /was not built/);
+});
+
+test('required: the Investor Introductions disclaimer and the flat-fee sentence are each required on their routes', () => {
+  const noDisclaimer = audit.checkRequired(builtPages({ '/network/': ['intro'], '/faq/': ['intro'] }), SET.required, { generatedImages: false });
+  assert.deepEqual(noDisclaimer.map((f) => `${f.rule} ${f.route}`).sort(), ['R-C14-intro-disclaimer /faq/', 'R-C14-intro-disclaimer /network/']);
+  const noFlat = audit.checkRequired(builtPages({ '/investors/': ['flat'], '/pricing/': ['flat'] }), SET.required, { generatedImages: false });
+  assert.deepEqual(noFlat.map((f) => `${f.rule} ${f.route}`).sort(), ['R-C14-flat-fee-statement /investors/', 'R-C14-flat-fee-statement /pricing/']);
+});
+
+test('required: a marked element still counts, because the disclaimer must be seen even where a rule allows quoting', () => {
+  const marked = builtPages({ '/network/': ['intro'] });
+  const network = marked.find((p) => p.route === '/network/');
+  assert.ok(network);
+  const withMarker: Page[] = [
+    ...marked.filter((p) => p !== network),
+    { ...network, html: `<main><p data-claim-allow="C-14-success-based">${INTRO_DISCLAIMER}</p></main>` },
+  ];
+  assert.deepEqual(audit.checkRequired(withMarker, SET.required, { generatedImages: false }), []);
+  const hidden: Page[] = [
+    ...marked.filter((p) => p !== network),
+    { ...network, html: `<main><p title="${INTRO_DISCLAIMER}">x</p><script type="application/ld+json">{"t":"${INTRO_DISCLAIMER}"}</script></main>` },
+  ];
+  assert.deepEqual(audit.checkRequired(hidden, SET.required, { generatedImages: false }).map((f) => f.route), ['/network/']);
+});
+
+test('required whenMatches: any page whose <main> names the add-on must carry the disclaimer, whatever its route', () => {
+  const rule = SET.required.find((r) => r.id === 'R-C14-intro-disclaimer-wherever-named');
+  assert.ok(rule);
+  assert.equal(rule.routes, '*');
+  const only = [rule];
+  const run = (route: string, html: string) => audit.checkRequired([{ route, html, isHtml: true }], only, {}).map((f) => f.route);
+  for (const mention of [
+    'Investor Introductions is a paid add-on.',
+    'WE offers investor introductions.',
+    'It offers introductions to investors.',
+    'WE can introduce founders to investors.',
+    'WE introduces you to investors.',
+  ]) {
+    assert.deepEqual(run('/insights/x/', `<main><p>${mention}</p></main>`), ['/insights/x/'], mention);
+    assert.deepEqual(run('/insights/x/', `<main><p>${mention}</p><p>${INTRO_DISCLAIMER}</p></main>`), [], `${mention} with the disclaimer`);
+  }
+  for (const quiet of ['An introduction to SAFEs.', 'The editor’s introduction.', 'Introduce an owner for each request.', 'No add-on here.']) {
+    assert.deepEqual(run('/insights/x/', `<main><p>${quiet}</p></main>`), [], quiet);
+  }
+});
+
+test('required whenMatches: navigation and footer text never triggers it, and the text must sit in <main>', () => {
+  const rule = SET.required.find((r) => r.id === 'R-C14-intro-disclaimer-wherever-named');
+  assert.ok(rule);
+  const run = (html: string) => audit.checkRequired([{ route: '/about/', html, isHtml: true }], [rule], {}).length;
+  assert.equal(run('<nav><a>Investor Introductions</a></nav><main><p>About.</p></main>'), 0);
+  assert.equal(run('<main><p>Investor Introductions.</p></main><footer><p>' + INTRO_DISCLAIMER + '</p></footer>'), 1);
+  assert.equal(run('<p>Investor Introductions.</p>'), 1, 'a page without <main> is judged as a whole');
+  assert.equal(audit.mainText('<nav>x</nav><main id="main"><p>Hello <b>there</b></p></main><footer>y</footer>'), 'Hello there');
+  assert.equal(audit.mainText('<p>No main element</p>'), 'No main element');
 });
 
 test('required: hidden text does not count, but whitespace, entities and curly apostrophes are tolerated', () => {
@@ -411,9 +593,12 @@ function page(body: string, footer = '<p>Footer</p>'): string {
 
 function cleanSite(footer?: string): Record<string, string> {
   const files: Record<string, string> = {};
-  for (const route of DISCLAIMER_ROUTES) {
+  for (const route of ALL_ROUTES) {
     const rel = route === '/' ? 'index.html' : `${route.slice(1)}index.html`;
-    files[rel] = page(`<h1>Page</h1><p>${DISCLAIMER}</p>`, footer);
+    const funding = DISCLAIMER_ROUTES.includes(route) ? `<p>${DISCLAIMER}</p>` : '';
+    const intro = INTRO_ROUTES.includes(route) ? `<p>${INTRO_DISCLAIMER}</p>` : '';
+    const flat = FLAT_FEE_ROUTES.includes(route) ? `<p>${FLAT_FEE}</p>` : '';
+    files[rel] = page(`<h1>Page</h1>${funding}${intro}${flat}`, footer);
   }
   files['about/index.html'] = page('<h1>About</h1><p>A digital incubator for SaaS.</p>', footer);
   return files;
@@ -425,12 +610,12 @@ const WITH_IMAGES: Manifest = { slots: [{ id: 'a', source: 'vector-fallback', al
 test('auditDist: a clean site with no generated images passes without the photo line', () => {
   const result = audit.auditDist(makeDist(cleanSite()), { manifest: NO_IMAGES, flagValues: {} });
   assert.deepEqual(result.findings, []);
-  assert.equal(result.files, 7);
+  assert.equal(result.files, ALL_ROUTES.length + 1);
 });
 
 test('auditDist: once an image is generated, a page without the line fails and the line makes it pass', () => {
   const without = audit.auditDist(makeDist(cleanSite()), { manifest: WITH_IMAGES, flagValues: {} });
-  assert.equal(without.findings.length, 7);
+  assert.equal(without.findings.length, ALL_ROUTES.length + 1);
   assert.ok(without.findings.every((f) => f.rule === 'R-photo-disclosure'));
   const withLine = audit.auditDist(makeDist(cleanSite(`<p>${PHOTO_LINE} <a href="/about/editorial-policy/">Editorial policy</a></p>`)), { manifest: WITH_IMAGES, flagValues: {} });
   assert.deepEqual(withLine.findings, []);
@@ -450,11 +635,11 @@ test('auditDist: a missing disclaimer, a context-rule hit and a manifest alt pro
 
 test('auditDist: the route comes from the file path, so a path allow applies to the right page only', () => {
   const files = cleanSite();
-  files['faq/index.html'] = page('<h1>FAQ</h1><p>Is WE an accelerator?</p>');
+  files['faq/index.html'] = page(`<h1>FAQ</h1><p>Is WE an accelerator?</p><p>${INTRO_DISCLAIMER}</p>`);
   files['program/dedicated-teams/index.html'] = page('<h2>Two companies, one objective</h2>');
   const ok = audit.auditDist(makeDist(files), { manifest: NO_IMAGES, flagValues: {} });
   assert.deepEqual(ok.findings, []);
-  files['pricing/index.html'] = page('<h1>Pricing</h1><p>' + DISCLAIMER + '</p><h2>Two companies, one objective</h2>');
+  files['pricing/index.html'] = page(`<h1>Pricing</h1><p>${DISCLAIMER}</p><p>${INTRO_DISCLAIMER}</p><p>${FLAT_FEE}</p><h2>Two companies, one objective</h2>`);
   const bad = audit.auditDist(makeDist(files), { manifest: NO_IMAGES, flagValues: {} });
   assert.deepEqual(bad.findings.map((f) => f.rule), ['C-21-phrase']);
 });
@@ -476,7 +661,7 @@ test('cli: exits 0 on a clean site, 1 on a finding and 2 when the directory or m
   const dist = makeDist(cleanSite());
   const clean = run([dist, '--manifest', manifestFile(NO_IMAGES)]);
   assert.equal(clean.status, 0, clean.out);
-  assert.match(clean.out, /7 files scanned, 0 findings/);
+  assert.match(clean.out, new RegExp(`${ALL_ROUTES.length + 1} files scanned, 0 findings`));
 
   const generated = run([dist, '--manifest', manifestFile(WITH_IMAGES)]);
   assert.equal(generated.status, 1, generated.out);

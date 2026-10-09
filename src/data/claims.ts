@@ -22,6 +22,7 @@ export const CLAIM_IDS = [
 export type ClaimId = (typeof CLAIM_IDS)[number];
 
 const OPERATOR = 'Operator brief';
+const OWNER_2026_10_09 = 'Owner decision 2026-10-09 (.astro-magazine/decisions.md)';
 
 export const claimRegistry: Readonly<Record<ClaimId, Claim>> = {
   'C-01': { id: 'C-01', status: 'publish', enabled: true, source: `${OPERATOR}; whitelab README`, summary: 'Fully digital, fully remote; no physical offices' },
@@ -33,11 +34,11 @@ export const claimRegistry: Readonly<Record<ClaimId, Claim>> = {
   'C-07': { id: 'C-07', status: 'softened', enabled: false, source: OPERATOR, summary: 'SAFE as compensation concept (FLAG-SAFE, counsel clearance)' },
   'C-08': { id: 'C-08', status: 'excluded', enabled: false, source: OPERATOR, summary: 'SAFE mechanics: tranche timing, cap, discount, MFN, pro-rata, percentages' },
   'C-09': { id: 'C-09', status: 'excluded', enabled: false, source: OPERATOR, summary: '"No success fees" pending counsel' },
-  'C-10': { id: 'C-10', status: 'excluded', enabled: false, source: 'whitelab/template/KEY-VALUES.md', summary: 'Package names, nine-milestone scheme, phases, fee tables' },
+  'C-10': { id: 'C-10', status: 'publish', enabled: true, source: `whitelab/template/KEY-VALUES.md section 1; ${OWNER_2026_10_09}`, summary: 'Packages Spark, Launch, Accelerate and Studio: names, the company stage each is sized for and its depth only. Seat plans with a fixed scope; seats change by notice. The milestone scheme, phases, delivery hours, fees, rate card, fee-to-equity election and the twelve-month term stay unpublished' },
   'C-11': { id: 'C-11', status: 'softened', enabled: false, source: 'ORBITAL registry description', summary: '"Over 20 years of experience" (FLAG-YEARS)' },
   'C-12': { id: 'C-12', status: 'excluded', enabled: false, source: 'ORBITAL registry description', summary: 'Premier, market dominance, scientific approach, industry leaders' },
   'C-13': { id: 'C-13', status: 'excluded', enabled: false, source: 'none exist', summary: 'Portfolio, clients, case studies, testimonials, funding raised, metrics, logo walls; also peer sessions, cohorts, mentors and alumni while none exist' },
-  'C-14': { id: 'C-14', status: 'excluded', enabled: false, source: 'implies funding', summary: 'Investor network, introductions, Demo Day outcomes' },
+  'C-14': { id: 'C-14', status: 'publish', enabled: true, source: `${OWNER_2026_10_09}; counsel to review before the gh-pages release`, summary: 'Investor Introductions as a separate paid add-on: a flat fee for curation and preparation that does not depend on any investment closing; no success fee, stake or transaction-based pay; WE negotiates no terms, gives no securities advice and handles no funds; curated, limited and only after the line F readiness criteria are met; no promise of a meeting, a reply or funding; the disclaimer is shown wherever the add-on is named. Still excluded: an investor network, Demo Day outcomes, success-based or guaranteed wording' },
   'C-15': { id: 'C-15', status: 'excluded', enabled: false, source: 'none evidenced', summary: 'Security or compliance certifications' },
   'C-16': { id: 'C-16', status: 'excluded', enabled: false, source: 'none', summary: 'Time-to-MVP, runway, 10x, growth guarantees' },
   'C-17': { id: 'C-17', status: 'excluded', enabled: false, source: 'whitelab elevate/C-graphics', summary: 'Whitelab figures 02, 03 and 05' },

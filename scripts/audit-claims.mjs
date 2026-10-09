@@ -8,7 +8,8 @@
 //                         marked data-claim-allow="<rule id>" or "*" (markerAllowed), or skipped inside
 //                         data-generic-definition elements (genericDefinitionAllowed, SAFE terms only).
 //   required              Text that must be visible on the listed routes, or on every page ("*"), optionally
-//                         only when the photo manifest has a generated image (when: "generatedImages").
+//                         only when the photo manifest has a generated image (when: "generatedImages") or only
+//                         on pages whose <main> text matches a pattern (whenMatches, with whenFlags, default "i").
 //   manifestRules         Checks on src/assets/photo/manifest.json, for example alt text of generated images.
 //
 // Usage: node scripts/audit-claims.mjs [dist-dir] [--manifest <file>] [--denylist <file>] | --self-test
@@ -71,7 +72,9 @@ function compileRequired(rule) {
     fail(`${where} routes must be "*" or a non-empty array of routes that start with "/"`);
   }
   if (rule.when !== undefined && !WHEN_CONDITIONS.has(rule.when)) fail(`${where} has an unknown "when": ${String(rule.when)}`);
-  return rule;
+  if (rule.whenMatches === undefined) return rule;
+  ensureString(rule.whenMatches, `${where} whenMatches`);
+  return { ...rule, trigger: compileRegex(rule.whenMatches, (rule.whenFlags ?? 'i').replace(/[gy]/g, ''), where) };
 }
 
 function compileManifestRule(rule) {
@@ -204,6 +207,12 @@ export function bodyText(html) {
   return decodeEntities(body).replace(/\s+/g, ' ').trim();
 }
 
+/** The text inside <main> (the page body when there is no <main>). Navigation and footer text never counts. */
+export function mainText(html) {
+  const m = /<main\b[^>]*>([\s\S]*?)<\/main>/i.exec(html);
+  return bodyText(m === null ? html : m[1]);
+}
+
 function comparable(text) {
   return text
     .replace(/[‘’]/g, "'")
@@ -268,7 +277,16 @@ export function checkRequired(pages, required, options = {}) {
     const needle = comparable(rule.text);
     const targets = rule.routes === '*' ? htmlPages : rule.routes.map((route) => htmlPages.find((p) => p.route === route) ?? { route, missing: true });
     for (const page of targets) {
-      if (page.missing === true) {
+      if (rule.trigger !== undefined) {
+        // A conditional rule judges the <main> text only: the trigger and the required text must both be in the content.
+        if (page.missing === true) continue;
+        const main = mainText(page.html);
+        rule.trigger.lastIndex = 0;
+        if (!rule.trigger.test(main)) continue;
+        if (!comparable(main).includes(needle)) {
+          findings.push({ rule: rule.id, claim: rule.claim, route: page.route, message: `this page names "${rule.whenMatches}" but its main content lacks the required text: "${rule.text}"` });
+        }
+      } else if (page.missing === true) {
         findings.push({ rule: rule.id, claim: rule.claim, route: page.route, message: `required route ${page.route} was not built, so "${rule.text}" cannot be shown there` });
       } else if (!comparable(bodyText(page.html)).includes(needle)) {
         findings.push({ rule: rule.id, claim: rule.claim, route: page.route, message: `required text is missing: "${rule.text}"` });
@@ -337,6 +355,7 @@ function selfTest() {
   const pbcOn = { pbcWording: true };
   const photoLine = set.required.find((r) => r.id === 'R-photo-disclosure')?.text ?? '';
   const disclaimer = set.required.find((r) => r.id === 'R-C05-no-funding-disclaimer');
+  const introDisclaimer = set.required.find((r) => r.id === 'R-C14-intro-disclaimer')?.text ?? '';
   const hit = (html, route = '/', flagValues = off) => scan(html, { route, flagValues }).map((h) => h.rule);
   const missing = (route, html, generatedImages) =>
     checkRequired([{ route, html, isHtml: true }], set.required, { generatedImages })
@@ -359,10 +378,18 @@ function selfTest() {
     ['the C-21 phrase is allowed on the dedicated-teams page only', () => !hit('<h2>Two companies, one objective</h2>', '/program/dedicated-teams/').includes('C-21-phrase') && hit('<h2>Two companies, one objective</h2>', '/pricing/').includes('C-21-phrase')],
     ['UK spelling is caught', () => hit('<p>A programme for your organisation.</p>').includes('Q-spelling')],
     ['a missing disclaimer is caught', () => disclaimer !== undefined && missing('/pricing/', '<main><p>Pricing.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
-    ['a present disclaimer passes', () => missing('/pricing/', '<main><p>WE makes no promise of funding. This helps.</p></main>', false).length === 0],
+    ['a present disclaimer passes', () => !missing('/pricing/', '<main><p>WE makes no promise of funding. This helps.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
     ['the photo line is not required without a generated image', () => !missing('/about/', '<footer>none</footer>', false).includes('R-photo-disclosure')],
     ['the photo line is required with a generated image', () => missing('/about/', '<footer>none</footer>', true).includes('R-photo-disclosure')],
     ['the photo line passes when present', () => !missing('/about/', `<footer><p>${photoLine}</p></footer>`, true).includes('R-photo-disclosure')],
+    ['a guaranteed-meetings claim is caught', () => hit('<p>WE guarantees introductions to investors.</p>').includes('C-14-guaranteed-meetings')],
+    ['a negated meetings promise passes', () => !hit('<p>WE cannot promise a meeting or funding.</p>').includes('C-14-guaranteed-meetings')],
+    ['a success-based introduction fee is caught', () => hit('<p>A finder\'s fee is due when the round closes.</p>').includes('C-14-success-based')],
+    ['the verbatim introductions disclaimer passes every rule', () => hit(`<p>${introDisclaimer}</p>`).length === 0],
+    ['an investor network claim is caught', () => hit('<p>Join our investor network.</p>').includes('C-14-investor-network')],
+    ['a page that names Investor Introductions without the disclaimer is caught', () => missing('/insights/x/', '<main><p>Investor Introductions is an add-on.</p></main>', false).includes('R-C14-intro-disclaimer-wherever-named')],
+    ['a page that names Investor Introductions with the disclaimer passes', () => !missing('/insights/x/', `<main><p>Investor Introductions is an add-on.</p><p>${introDisclaimer}</p></main>`, false).includes('R-C14-intro-disclaimer-wherever-named')],
+    ['a mention outside <main> does not trigger the disclaimer rule', () => !missing('/about/', '<nav>Investor Introductions</nav><main><p>About.</p></main>', false).includes('R-C14-intro-disclaimer-wherever-named')],
     ['an identity word in a generated image alt is caught', () => checkManifest({ slots: [{ id: 'x', source: 'generated', alt: 'A founder at a desk' }] }, set.manifestRules).length === 1],
     ['an activity alt on a generated image passes', () => checkManifest({ slots: [{ id: 'x', source: 'generated', alt: 'Two hands arranging index cards on a desk' }] }, set.manifestRules).length === 0],
   ];
