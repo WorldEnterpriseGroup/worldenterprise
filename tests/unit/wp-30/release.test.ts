@@ -34,7 +34,8 @@ const SHA = '0123456789abcdef0123456789abcdef01234567';
 // ---- approval gate ---------------------------------------------------------------------------------------------------------------
 
 test('the approval gate is blocked when RELEASE_APPROVED is not set or empty', () => {
-  for (const env of [{ CI_COMMIT_SHA: SHA }, { CI_COMMIT_SHA: SHA, RELEASE_APPROVED: '' }]) {
+  const cases: Record<string, string>[] = [{ CI_COMMIT_SHA: SHA }, { CI_COMMIT_SHA: SHA, RELEASE_APPROVED: '' }];
+  for (const env of cases) {
     const result = run(APPROVAL, env);
     assert.equal(result.status, 1, result.output);
     assert.match(result.output, /blocked\. RELEASE_APPROVED is not set/);
