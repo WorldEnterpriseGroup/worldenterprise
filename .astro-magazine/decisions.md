@@ -325,3 +325,35 @@ Claims ladder: C-14 moves from excluded to publish with guardrails, and still ex
 | `R-C14-flat-fee-statement` | required | The flat-fee sentence on `/investors/`, line F and `/pricing/`. |
 
 The unit tests in `tests/unit/wp-18/` pin every pattern with positive and negative cases, and check that the denylist text equals the component text. Three cross-lane tests encoded the old position and changed with it: `tests/unit/wp-02/services.test.ts` lets line F, and only line F, cite C-14; `tests/unit/wp-08/data.test.ts` counts 18 FAQ entries (the two added are `investor-introductions` and `packages`); `tests/unit/wp-11/network.test.ts` now requires the offer block and the negotiation limits on `/investors/` instead of the sentence "does not arrange meetings with investors". The bans on "guarantee", "client", "portfolio", "mentor" and "alumni" in those lanes are unchanged.
+
+## Decisions made during WP-12b (photography pass, issue #22)
+
+Inputs: `.plan/photo/{art-direction.md,shotlist.json,people-policy.json,model-scout.md}`. CI has no `.plan/`, so the tests read `.astro-magazine/media/shotlist-extract.json`, a compact extract (slot sizes, aspects, srcset widths, people class, proposed alt, subject briefs, the people caps) that records the sha256 of its two sources. Phase A (this change) is plumbing only: no image was generated and every slot is still a vector composition.
+
+### P-1 Masters are 1K at 1x: the 2048 row of the shotlist is waived
+
+The shotlist asked for 2048x1152 masters for the 16:9 bands (band-1, band-2, band-4) and 1536x864 for band-3, so that a 1024 CSS px band is shown at 2x. The chosen model, Boogu-Image-0.1-Turbo, is 1K-native (model scout, risk 3), so every 16:9 master is 1024x576 and the 4:3 cards stay 1024x768. A band therefore renders at 1x on a HiDPI screen: slightly soft on the largest displays, and in exchange there is no upscaling artefact and no second model. The waiver is a rule, not a list: a raster master is the shotlist size scaled to a long edge of at most `MODEL_MAX_EDGE` (1024, `src/assets/photo/slots.ts`); OG cards are composed from SVG at 1200x630 and exempt. `tests/unit/wp-12b/manifest.test.ts` applies that rule to every slot. `PROFILE_SIZE['hero-home']` stays 1024x576, so `tests/unit/foundation/slots.test.ts` is unchanged. The srcset for a band is therefore 640 and 1024 (the shotlist's 1536 and 2048 candidates are wider than the file, and astro:assets can only scale down). Revisit if a native-2K model (SenseNova-U1.5, Krea 2) is adopted: change `MODEL_MAX_EDGE`, `PROFILE_SIZE` and the `hero-home` widths together.
+
+### P-2 One responsive `<img>`, sized by slot
+
+`AvifPicture` is one `<img>` with an AVIF `srcset`, built by `photoImage()` (`src/components/media/photo-image.ts`) from `getImage()`. There is no `<picture>` wrapper: the site serves one format, and a wrapper would change the DOM that `.hero__frame > img` and `.card__image` select on. Each slot in `slots.ts` carries `widths` (card 512/768/1024, landscape 512/1024, band 640/1024) and a `sizes` attribute for the layout it sits in; a caller may pass its own `sizes`. `width` and `height` are the largest CSS display size, not the master size (512x384 for a card, 1024x576 for a band), because `audit:images` takes the 60 KB card or 120 KB band budget, and the 1024 cap, from the width attribute, and `src` is then the 512 file. The cards, the service line aside, the stage cards on `/program/who-its-for/` and the pricing band use `photoImage()`. The hero images stay plain masters: the editorial hero, the atlas hero and the home hero are the likely LCP, already `fetchpriority="high"` with no `loading`, and the only `<link rel="preload">` is the home hero's (an LCP image that is in the first HTML does not need a preload anywhere else). Astro's `priority` option is never forwarded: it sets `decoding="sync"`, which `audit:images` rejects. Not migrated, because the files are outside this lane: the home band (`src/pages/index.astro`, a plain master at 1024x576, inside the band budget).
+
+### P-3 Manifest schema 2
+
+Each manifest row now carries `kind`, `aspect`, `width`, `height`, `widths`, `people` (forbidden, optional or recommended, from the people policy), `figures`, `source` (`vector` or `generated`), `model`, `seed`, `prompt`, `promptSha256`, `generatedAt`, `alt`. The seed rule is unchanged (7000 + raster index, 7100 + OG index); a candidate adds 0, 500 (second object) or 1000 to 2500 (the four figure candidates). The old values `vector-fallback` and `svg-composed` became `vector`. `source: "generated"` is the one value that turns the footer disclosure on, so the tests fail on any other spelling. `assemble-manifest.mjs` carries generated rows over unchanged when the vector fallbacks are rebuilt.
+
+### F-6 SAGE-PLAN 4.6 amendment: figures, chest-down, on the 13 allowed slots only
+
+SAGE-PLAN 4.6 refuses "synthetic people" and "AI-generated faces". The photography pass keeps the refusal for faces, named people, founders, staff, clients and testimonials, and admits one narrow kind of image: an unnamed, illustrative figure photographed chest-down, with the head out of frame, working at a hand-built model or a notebook. Rules (`.plan/photo/people-policy.json`):
+
+| Rule | Value |
+|---|---|
+| Slots that may carry a figure | the 13 `optional` or `recommended` slots: inset-program, inset-playbooks, svc-a, svc-b, svc-d, stage-dream, stage-build, stage-grow, pb-1, pb-2, pb-3, pb-5, research-4. The other 34 never do (about, team, contact, trust, pricing, fundability, apply, network, band-*, svc-c, svc-e, svc-f, svc-g, pb-4, research-1 to 3, the topic covers and the OG cards). |
+| Recommended (5) | inset-playbooks, svc-b, stage-dream, stage-build, stage-grow. The 8 `optional` slots keep an object as their default; a figure is generated only if the owner opts in. |
+| Cap | at most six figure images at launch; at most one per page, except the stage trio, which carries a figure on all three or on none |
+| Framing | chest-down, no head or face in frame; no eye contact with the camera; at most two figures in a card or stage image |
+| Scene | knitwear in navy, grey or white, no suits; no screens, handshakes, pointing or crowds |
+| Alt text | describes the activity ("One person seen from the chest down, working at a tabletop model"), never an identity, role, employer or customer |
+| Disclosure | the footer line from F-3 appears with the first generated slot |
+
+Enforced by `tests/unit/wp-12b/manifest.test.ts` (the people class, the figure count per slot, page and site, the stage set, the alt text of a generated slot), by the claims audit rules `Q-photo-alt` and `R-photo-disclosure` (F-3), and by a human look at every render before it is committed. Figure candidates are generated four to a slot (seeds +1000 to +2500); the single-amber rule passed on only 3 of 10 figure scenes in testing.

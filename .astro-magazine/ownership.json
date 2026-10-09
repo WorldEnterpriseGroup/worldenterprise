@@ -590,6 +590,26 @@
       "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
     },
     {
+      "wp": "WP-12b",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "Photography pass (issue #22): records decisions P-1 to P-3 and F-6 and registers the WP-12b exceptions."
+    },
+    {
+      "wp": "WP-12b",
+      "path": "src/components/services/LineAside.astro",
+      "reason": "Photography pass (issue #22): img markup only (srcset, sizes, width, height) through photoImage(); no copy or layout change."
+    },
+    {
+      "wp": "WP-12b",
+      "path": "src/pages/program/who-its-for.astro",
+      "reason": "Photography pass (issue #22): img markup only (srcset, sizes, width, height) through photoImage(); no copy or layout change."
+    },
+    {
+      "wp": "WP-12b",
+      "path": "src/pages/pricing/index.astro",
+      "reason": "Photography pass (issue #22): img markup only (srcset, sizes, width, height) through photoImage(); no copy or layout change."
+    },
+    {
       "wp": "WP-16",
       "path": ".astro-magazine/ownership.json",
       "reason": "Wave 4 fix-forward: each work package registers its own assignment and exceptions."
