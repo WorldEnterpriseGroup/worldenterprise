@@ -283,3 +283,45 @@ The site description (`site.ts`, meta description, JSON-LD) now ends "WE promise
 `flags.limitsConfirmed` had no reader anywhere (the "does not do" limits render by default under G-LEGAL), so a flag that looked like a gate was not one. It is deleted. Whether the operator has confirmed those statements is tracked in the WP-18 handoff, not in code, so nobody believes a switch protects them.
 
 The footer shows "Illustrative images, some AI-generated. Figures shown are not real people, founders, clients or WE staff." with a link to the editorial policy, only when a slot in `src/assets/photo/manifest.json` has `source: "generated"`. Today none does (38 vector-fallback rasters and 9 composed SVG), so the footer is unchanged. The audit applies the same test: once any slot is generated, every built page must carry the line (`R-photo-disclosure`), and the alt text of a generated slot must describe an activity and never an identity or role (`Q-photo-alt`). `src/lib/photo-disclosure.ts` holds the line and the test for both the footer and the unit tests, so the footer and the audit cannot disagree. Whoever lands the first generated image (WP-12b) only has to write `source: "generated"` in the manifest.
+
+## Owner decisions of 2026-10-09 (applied by WP-18)
+
+The owner delegated both choices to the orchestrator on 2026-10-09. They supersede operator items P1-1 and P1-2 of the WP-18 handoff. Counsel reviews the Investor Introductions wording before the gh-pages release (see the handoff).
+
+### F-4 Owner decision: hybrid pricing model (claim C-10)
+
+The dedicated team seat stays the unit of work. Four packages, Spark, Launch, Accelerate and Studio (names, the company stage each is sized for and its depth, from `whitelab/template/KEY-VALUES.md` section 1), are pre-configured seat plans with a fixed scope. A founder picks a package or a custom seat plan, and seats change by notice either way (C-02). The site publishes no amount: `flags.seatPrice` stays off, and `/pricing/` says how to ask for the current rate (the contact form topic "Request the current seat rate"). The "not packages" denials on `/pricing/`, the FAQ and the program copy are replaced. `/pricing/` carries a package comparison table (package, stage, depth).
+
+C-10 moves from excluded to publish, narrowed to what the owner approved: package names, stage fit and depth. The nine-milestone scheme, the phases, Delivery Hours, every fee, the rate card, the fee-to-equity election and the twelve-month term stay unpublished, and the site does not use the words "Milestones", "Raise-Ready", "Fundability Certification" or "Delivery Hours" for them. No seat count is published per package: KEY-VALUES gives none, so the page says WE confirms the seat plan in writing when the founder asks for the rate.
+
+The twelve-month term is deliberately not stated. It is a fact of the agreement template, not an approved web claim, and "no automatic renewal" would sit uneasily beside "seats change by notice". It is an operator item in the handoff.
+
+### F-5 Owner decision: Investor Introductions as a paid add-on (claim C-14)
+
+WE offers introductions to investors as a separate, paid add-on named "Investor Introductions". The structure is chosen so the service is a flat-fee preparation and curation service and not a transaction-based one:
+
+- A flat fee covers curation and preparation. It does not depend on any investment closing.
+- No success fee, no equity or carried interest, no commission, no transaction-based compensation.
+- WE does not negotiate terms, advise on securities or handle funds.
+- Introductions are curated and limited, and made only after readiness criteria are met. The criteria map to the artifacts of Service Line F (readiness assessment, corporate and cap-table records, evidence index, financial model, data room, pitch materials).
+- No guarantee of a meeting, a reply or funding. C-05 stays: WE makes no promise of funding.
+
+The add-on is not part of any package. A short disclaimer is shown, verbatim, wherever the add-on is named:
+
+> Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
+
+The disclaimer sentence and the sentence "The fee does not depend on whether any investment closes." live in `src/components/blocks/introductions.ts`, and `IntroductionsDisclaimer.astro` and `InvestorIntroductionsOffer.astro` render them. Updated: `/investors/`, `/network/`, Service Line F, `/pricing/`, the FAQ, the Fundable topic page and the investor-choice article. The old "WE arranges no meetings" lines are gone, and so is the word "finder" from line F.
+
+Claims ladder: C-14 moves from excluded to publish with guardrails, and still excludes an investor network, Demo Day outcomes and any success-based or guaranteed wording. Audit rules (`claims-denylist.json`, version 2):
+
+| Rule | Kind | What it does |
+|---|---|---|
+| `C-14-investor-intros`, `C-14-intro-positive` | removed | They denied the add-on. |
+| `C-14-investor-network` | rule | Fails on a claimed investor network. |
+| `C-14-guaranteed-meetings` | rule | Fails on a promise of meetings, introductions or investor contact. Negations pass. |
+| `C-14-success-based` | context rule | Fails on success-based, contingent, commission, finder, carried-interest and equity-for-introductions wording, in the built output. A marked element (`data-claim-allow="C-14-success-based"`) may quote the wording to deny it; JSON-LD cannot be marked, so the verbatim disclaimer is written not to match. |
+| `R-C14-intro-disclaimer` | required | The verbatim disclaimer on `/investors/`, `/network/`, line F, `/pricing/` and `/faq/`. |
+| `R-C14-intro-disclaimer-wherever-named` | required | The same disclaimer on every page whose `<main>` names the add-on (`whenMatches`), so a new page cannot name it without the disclaimer. |
+| `R-C14-flat-fee-statement` | required | The flat-fee sentence on `/investors/`, line F and `/pricing/`. |
+
+The unit tests in `tests/unit/wp-18/` pin every pattern with positive and negative cases, and check that the denylist text equals the component text. Three cross-lane tests encoded the old position and changed with it: `tests/unit/wp-02/services.test.ts` lets line F, and only line F, cite C-14; `tests/unit/wp-08/data.test.ts` counts 18 FAQ entries (the two added are `investor-introductions` and `packages`); `tests/unit/wp-11/network.test.ts` now requires the offer block and the negotiation limits on `/investors/` instead of the sentence "does not arrange meetings with investors". The bans on "guarantee", "client", "portfolio", "mentor" and "alumni" in those lanes are unchanged.

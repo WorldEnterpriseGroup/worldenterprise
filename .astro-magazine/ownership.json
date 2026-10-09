@@ -352,6 +352,9 @@
       "write_set": [
         "scripts/audit-claims.mjs",
         "src/components/blocks/EvidenceLedger.astro",
+        "src/components/blocks/IntroductionsDisclaimer.astro",
+        "src/components/blocks/InvestorIntroductionsOffer.astro",
+        "src/components/blocks/introductions.ts",
         "src/components/diagrams/SeatDiagram.astro",
         "src/components/forms/ContactForm.astro",
         "src/components/islands/we-readiness-check/statements.ts",
@@ -386,6 +389,7 @@
         "src/content/pages/apply/thanks.mdx",
         "src/content/pages/founders/index.mdx",
         "src/content/pages/home/index.mdx",
+        "src/content/pages/insights/topic-fundable.mdx",
         "src/content/pages/investors/index.mdx",
         "src/content/pages/legal/accessibility.md",
         "src/content/pages/legal/privacy.md",
@@ -423,6 +427,9 @@
         "src/pages/services/index.astro",
         "src/pages/styleguide.astro",
         "src/pages/trust/index.astro",
+        "tests/unit/wp-02/services.test.ts",
+        "tests/unit/wp-08/data.test.ts",
+        "tests/unit/wp-11/network.test.ts",
         "tests/unit/wp-18/**",
         ".astro-magazine/handoffs/wp-18*"
       ]
