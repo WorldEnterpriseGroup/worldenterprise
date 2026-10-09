@@ -1,38 +1,35 @@
 ---
-import { Picture } from 'astro:assets';
-import { getPhoto } from '../../assets/photo/index.ts';
 import type { SlotId } from '../../assets/photo/slots.ts';
+import { photoImage } from './photo-image.ts';
 
+/**
+ * One responsive AVIF `<img>` for a photo slot. The site serves a single format, so there is no `<picture>` wrapper and the DOM is
+ * the one a plain `<img>` would give: the same class, the same direct-child selectors. Widths come from the slot's profile, `sizes`
+ * from the layout the slot sits in, and width and height are the display size (see photo-image.ts).
+ */
 interface Props {
   /** Canonical slot id from src/assets/photo/slots.ts. Never a filename. */
   slot: SlotId;
   /** Overrides the manifest alt text. Pass an empty string only when the image is purely decorative on this page. */
   alt?: string;
-  /** Responsive sizes attribute. Defaults to the slot's largest display width. */
+  /** Overrides the slot's `sizes` attribute for a layout the profile does not describe. */
   sizes?: string;
-  /** True for the LCP image only: fetchpriority="high" and no lazy loading. */
+  /** True for the LCP image only: fetchpriority="high" and no lazy loading. Every other image is lazy. */
   priority?: boolean;
   class?: string;
 }
 
 const { slot, alt, sizes, priority = false, class: className } = Astro.props;
-const asset = getPhoto(slot);
-const [maxWidth] = asset.spec.displayMax;
-const native = asset.src.width;
-const widths = [...new Set([Math.min(maxWidth, native), native])].sort((a, b) => a - b);
-const resolvedSizes = sizes ?? `(max-width: ${maxWidth}px) 100vw, ${maxWidth}px`;
-const resolvedAlt = alt ?? asset.alt;
+const image = await photoImage(slot, { sizes });
 ---
 
-<Picture
-  src={asset.src}
-  alt={resolvedAlt}
-  formats={['avif']}
-  fallbackFormat="avif"
-  widths={widths}
-  sizes={resolvedSizes}
-  width={native}
-  height={asset.src.height}
+<img
+  src={image.src}
+  srcset={image.srcset}
+  sizes={image.srcset === undefined ? undefined : image.sizes}
+  width={image.width}
+  height={image.height}
+  alt={alt ?? image.alt}
   loading={priority ? 'eager' : 'lazy'}
   decoding="async"
   fetchpriority={priority ? 'high' : undefined}

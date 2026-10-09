@@ -1,7 +1,7 @@
 ---
-import { getPhoto } from '../../assets/photo/index.ts';
 import type { SlotId } from '../../assets/photo/slots.ts';
 import { href } from '../../lib/url.ts';
+import { photoImage } from '../media/photo-image.ts';
 import Card from '../ui/Card.astro';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { title, summary, path, eyebrow = 'Research brief', photo, headingLevel = 3, meta } = Astro.props;
-const image = photo ? getPhoto(photo) : undefined;
+const image = photo ? await photoImage(photo) : undefined;
 ---
 
 <Card
@@ -23,7 +23,7 @@ const image = photo ? getPhoto(photo) : undefined;
   href={href(path)}
   eyebrow={eyebrow}
   headingLevel={headingLevel}
-  image={image ? { src: image.src.src, width: image.src.width, height: image.src.height, alt: image.alt } : undefined}
+  image={image}
 >
   <p>{summary}</p>
   {meta && <p class="card__meta">{meta}</p>}

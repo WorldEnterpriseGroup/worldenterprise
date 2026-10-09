@@ -7,7 +7,8 @@ interface Props {
   title: string;
   headingLevel?: 2 | 3 | 4;
   eyebrow?: string;
-  image?: { readonly src: string; readonly width: number; readonly height: number; readonly alt: string };
+  /** A photo from `photoImage()`: `srcset` and `sizes` are optional so a plain image still works. */
+  image?: { readonly src: string; readonly width: number; readonly height: number; readonly alt: string; readonly srcset?: string | undefined; readonly sizes?: string | undefined };
 }
 
 const { href: raw, title, headingLevel = 3, eyebrow, image } = Astro.props;
@@ -17,7 +18,7 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
 ---
 
 <article class="card" data-linked={target ? '' : undefined}>
-  {image && <img class="card__image" src={image.src} width={image.width} height={image.height} alt={image.alt} loading="lazy" decoding="async" />}
+  {image && <img class="card__image" src={image.src} srcset={image.srcset} sizes={image.srcset === undefined ? undefined : image.sizes} width={image.width} height={image.height} alt={image.alt} loading="lazy" decoding="async" />}
   <div class="card__body stack">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <Heading class="card__title">{target ? <a class="card__link" href={target}>{title}</a> : title}</Heading>

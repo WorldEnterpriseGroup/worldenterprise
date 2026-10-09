@@ -1,6 +1,6 @@
 ---
-import { getPhoto } from '../../assets/photo/index.ts';
 import { href } from '../../lib/url.ts';
+import { photoImage } from '../media/photo-image.ts';
 import CellTrail from '../ui/CellTrail.astro';
 import { LINE_SLOT, servicePath } from './lines.ts';
 import type { ServiceSummary } from './data.ts';
@@ -12,12 +12,12 @@ interface Props {
 }
 
 const { line, lines } = Astro.props;
-const photo = getPhoto(LINE_SLOT[line]);
+const photo = await photoImage(LINE_SLOT[line], { sizes: '(min-width: 62rem) 32rem, 100vw' });
 const current = lines.findIndex((l) => l.entry.data.line === line);
 const cells = lines.map(({ slug, entry }) => ({ label: entry.data.shortTitle, href: href(servicePath(slug)) }));
 ---
 
-<img class="line-aside__image" src={photo.src.src} width="512" height="384" alt={photo.alt} loading="lazy" decoding="async" />
+<img class="line-aside__image" src={photo.src} srcset={photo.srcset} sizes={photo.srcset === undefined ? undefined : photo.sizes} width={photo.width} height={photo.height} alt={photo.alt} loading="lazy" decoding="async" />
 <CellTrail label="All service lines" cells={cells} current={current >= 0 ? current : undefined} />
 
 <style>

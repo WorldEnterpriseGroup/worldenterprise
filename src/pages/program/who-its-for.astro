@@ -1,6 +1,6 @@
 ---
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
-import { getPhoto } from '../../assets/photo/index.ts';
+import { photoImage } from '../../components/media/photo-image.ts';
 import Card from '../../components/ui/Card.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import { loadPage } from '../../components/program/loadPage.ts';
@@ -54,15 +54,15 @@ const fits = [
     </p>
     <div class="grid grid--min-15">
       {
-        STAGES.map((s) => {
-          const image = getPhoto(s.slot);
+        STAGES.map(async (s) => {
+          const image = await photoImage(s.slot);
           return (
             <Card
               title={`${s.name}: ${s.promise}`}
               href={href(s.path)}
               headingLevel={3}
               eyebrow={`${s.altitude} altitude`}
-              image={{ src: image.src.src, width: image.src.width, height: image.src.height, alt: image.alt }}
+              image={image}
             >
               <p>{s.altitudeNote}</p>
             </Card>

@@ -1,11 +1,11 @@
 ---
 import { getEntry, render } from 'astro:content';
-import { getPhoto } from '../../assets/photo/index.ts';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import FactBand from '../../components/ui/FactBand.astro';
 import { COMPOSE_TEAM } from '../../components/hero/ctas.ts';
+import { photoImage } from '../../components/media/photo-image.ts';
 import { flags } from '../../data/flags.ts';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import { ROLES } from '../../scripts/team-composer.ts';
@@ -15,7 +15,8 @@ if (!entry) throw new Error('Missing content entry pages/pricing/pricing (src/co
 const { Content } = await render(entry);
 const { data } = entry;
 
-const band = getPhoto('band-3');
+// The band sits in a 40rem column from 62rem and fills the container below it.
+const band = await photoImage('band-3', { sizes: '(min-width: 62rem) 40rem, 100vw' });
 
 /** The rate column exists only while the operator has published the seat rate (claim C-06, FLAG-PRICE). */
 const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
@@ -74,7 +75,7 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
   <NoFundingDisclaimer />
 
   <div class="pricing-visual">
-    <img src={band.src.src} width={band.src.width} height={band.src.height} alt={band.alt} loading="lazy" decoding="async" />
+    <img src={band.src} srcset={band.srcset} sizes={band.srcset === undefined ? undefined : band.sizes} width={band.width} height={band.height} alt={band.alt} loading="lazy" decoding="async" />
   </div>
 
   <CtaBand
