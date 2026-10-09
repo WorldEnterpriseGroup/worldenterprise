@@ -80,8 +80,12 @@ test('the breadcrumb is one line, and only the current page gives way, so a font
   const last = rule(item, '&:last-child');
   assert.match(last, /flex:\s*0 1 auto/);
   assert.match(last, /min-inline-size:\s*0/);
-  assert.match(last, /overflow:\s*hidden/);
-  assert.match(last, /text-overflow:\s*ellipsis/);
+  // The span is what is cut, as a block of the item's width: a clipped inline span still has a box past the viewport edge.
+  const current = rule(last, '& > [aria-current]');
+  assert.match(current, /display:\s*block/);
+  assert.match(current, /overflow:\s*hidden/);
+  assert.match(current, /text-overflow:\s*ellipsis/);
+  assert.doesNotMatch(last.replace(current, ''), /overflow:\s*hidden/, 'the item itself does not clip');
 });
 
 test('the byline holds two lines on a phone, where the fallback font wraps it and the web font may not', () => {

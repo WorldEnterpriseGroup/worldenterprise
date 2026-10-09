@@ -66,7 +66,7 @@ test('every error summary is a named group, and the group is what takes focus', 
     const html = readFileSync(fileFor(route), 'utf8');
     for (const tag of html.matchAll(/<div\b[^>]*\bdata-error-summary\b[^>]*>/g)) {
       found += 1;
-      if (!/\brole=(?:"group"|group)\b/.test(tag[0])) failures.push(`${route}: error summary without role="group"`);
+      if (!/\brole=(?:"group"|'group'|group(?=[\s>]))/.test(tag[0])) failures.push(`${route}: error summary without role="group"`);
       if (!/\baria-labelledby=/.test(tag[0])) failures.push(`${route}: error summary without a name`);
     }
   }

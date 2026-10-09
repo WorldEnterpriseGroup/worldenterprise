@@ -696,8 +696,14 @@
       &:last-child {
         flex: 0 1 auto;
         min-inline-size: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
+
+        /* The ellipsis is on the current-page span, made a block the width of the item. If the item clipped an inline span instead, the
+           span's box would still run past the viewport edge, which is exactly what the overflow test is there to catch. */
+        & > [aria-current] {
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
 
       &:not(:last-child)::after {

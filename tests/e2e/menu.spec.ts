@@ -445,19 +445,40 @@ test.describe('the fixed Apply bar', () => {
     let visited = 0;
     for (let i = 0; i < 90; i += 1) {
       await page.keyboard.press('Tab');
+      // The page scrolls smoothly, so a focused control is measured only once the scroll that brought it into view has stopped.
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) => {
+            let last = window.scrollY;
+            let still = 0;
+            let frames = 0;
+            const tick = (): void => {
+              frames += 1;
+              still = Math.abs(window.scrollY - last) < 0.5 ? still + 1 : 0;
+              last = window.scrollY;
+              if (still >= 4 || frames > 240) resolve();
+              else requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          }),
+      );
       const state = await page.evaluate(() => {
         const el = document.activeElement;
         const bar = document.querySelector('.mobile-apply');
         if (el === null || el === document.body || bar === null) return null;
-        if (bar.contains(el)) return { inBar: true, bottom: 0, barTop: 0, name: '' };
+        if (bar.contains(el)) return { inBar: true, top: 0, bottom: 0, barTop: 0, name: '' };
         const r = el.getBoundingClientRect();
-        return { inBar: false, bottom: r.bottom, barTop: bar.getBoundingClientRect().top, name: `${el.tagName.toLowerCase()} ${(el.textContent ?? '').trim().slice(0, 30)}` };
+        return { inBar: false, top: r.top, bottom: r.bottom, barTop: bar.getBoundingClientRect().top, name: `${el.tagName.toLowerCase()} ${(el.textContent ?? '').trim().slice(0, 30)}` };
       });
       if (state === null) continue;
       // The bar comes early in the tab order (it sits in the header markup) and is skipped here: the test is about everything else.
       if (state.inBar) continue;
       visited += 1;
-      if (state.bottom > state.barTop + 0.5) hidden.push(`${state.name} ends at ${Math.round(state.bottom)} under the bar at ${Math.round(state.barTop)}`);
+      // A control that fits above the bar is wholly above it. One taller than the space above the bar (a long table frame) cannot be, so
+      // its start must be above the bar and on screen (WCAG 2.4.11: not entirely hidden).
+      const fits = state.bottom - state.top <= state.barTop;
+      if (fits && state.bottom > state.barTop + 0.5) hidden.push(`${state.name} ends at ${Math.round(state.bottom)} under the bar at ${Math.round(state.barTop)}`);
+      if (!fits && (state.top >= state.barTop || state.top < 0)) hidden.push(`${state.name} starts at ${Math.round(state.top)}, off screen or under the bar at ${Math.round(state.barTop)}`);
     }
     expect(visited, 'tab stops visited').toBeGreaterThan(20);
     expect(hidden).toEqual([]);
