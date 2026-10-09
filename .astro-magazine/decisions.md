@@ -371,3 +371,15 @@ Editorial heroes on a 4:3 slot now report 512x384 as `width` and `height` (the s
 ### P-5 `satteri` and `@astrojs/markdown-satteri` are declared
 
 `astro.config.mjs` and `src/lib/rehype-table-wrap.ts` import them, and `tests/unit/wp-16/table-wrap.test.ts` imports `satteri` itself, but both were only transitive dependencies of Astro. They are now `dependencies` pinned like the rest: `@astrojs/markdown-satteri` 0.4.3 and `satteri` 0.10.5, the latest stable versions of each and the versions the lockfile already resolved, so `npm install --package-lock-only` changed nothing else.
+
+## Decisions made during WP-30 (release pre-stage, issue #20)
+
+### R-1 The release mirror confirms; the mirror CronJob publishes
+
+The launch-sequence `.mirror:github` template pushed gh-pages to GitHub with a long-lived `GITHUB_TOKEN` and `--force`, and ended with `exit 0` when the token was unset, so it had only ever "passed" by doing nothing. GitHub is already fed by the `weg-ghpages-mirror` CronJob (nebula `tools/weg-ghpages-mirror`, daily 03:23 UTC): a fast-forward-only copy of GitLab gh-pages for an allowlist that includes this repository, using a short-lived installation token of the GitHub App `focusapiary-mirror-sync`. A second writer with a PAT would add a long-lived credential and a force push to a branch that already has a safe writer.
+
+Decision: this project holds no GitHub credential. The `mirror` job is manual, gh-pages only, blocked until `RELEASE_APPROVED` is the commit being released (a lowercase hex prefix of `CI_COMMIT_SHA`, at least 12 characters; `true` is refused so a stale variable cannot approve a later release), and then only reads: it passes when public GitHub gh-pages is at this commit and fails when it is not yet mirrored, ahead, diverged, missing or unreadable. `audit:claims` also writes `reports/counsel-review.md` from the built dist for counsel.
+
+Consequences, stated plainly: the cron publishes whatever is on GitLab gh-pages regardless of CI, so the approval gate confirms and cannot prevent. The controls that prevent are the gh-pages protection (only the owner pushes, no force) and the strict GitHub Actions build (`RELEASE_ALLOW` empty). The runbook is `.astro-magazine/release/RELEASE.md`. The launch-sequence template is fixed separately to exit 1 when its variables are unset, with an explicit `GITHUB_MIRROR_EXTERNAL=true` opt-out, in DroidOpsInc/launch-sequence MR !274.
+
+Tested by `tests/unit/wp-30` (the approval gate, the confirmation against local remotes, the job graph, the counsel extract, and the checklist against its sources).
