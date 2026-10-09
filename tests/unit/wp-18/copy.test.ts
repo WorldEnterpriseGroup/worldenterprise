@@ -310,3 +310,16 @@ test('the insights topic page keeps the verbatim disclaimer and a body of 120 to
   assert.ok(words >= 120 && words <= 200, `the body has ${words} words`);
   assert.ok(body.replace(/\s+/g, ' ').includes(INTRODUCTIONS_DISCLAIMER));
 });
+
+test('each use of the Investor Introductions offer has its own id prefix, and none reuses another heading id on the page', () => {
+  const prefixes: string[] = [];
+  for (const file of walk(join(ROOT, 'src'), /\.(astro|mdx)$/)) {
+    for (const match of read(rel(file)).matchAll(/<InvestorIntroductionsOffer\b[^>]*\bidPrefix="([^"]+)"/g)) prefixes.push(match[1] ?? '');
+  }
+  assert.ok(prefixes.length >= 3, 'the pages that pass a prefix');
+  assert.equal(new Set(prefixes).size, prefixes.length, 'prefixes are unique');
+  // The network page also renders NetworkIntro, whose heading id is network-intro-title (audit:a11y found the clash in pipeline 64639).
+  assert.ok(!prefixes.includes('network-intro'));
+  const ids = [...walk(join(ROOT, 'src'), /\.(astro|mdx)$/)].flatMap((file) => [...read(rel(file)).matchAll(/\bid="([a-z0-9-]+)"/g)].map((m) => m[1] ?? ''));
+  for (const prefix of prefixes) for (const suffix of ['title', 'how', 'criteria']) assert.ok(!ids.includes(`${prefix}-${suffix}`), `${prefix}-${suffix} is also a literal id`);
+});

@@ -296,9 +296,22 @@ test('C-14-guaranteed-meetings catches a promise of meetings, introductions or i
     'WE makes no promise of funding.',
     'It never guarantees introductions.',
     'WE can’t promise investor contact.',
+    'It is not a promise of introductions.',
+    // A callout heading and the paragraph after it read as one run of visible text.
+    'A service, not a promise Introductions are a flat-fee service.',
   ]) {
     assert.ok(!ids(`<p>${text}</p>`).includes('C-14-guaranteed-meetings'), text);
   }
+  // The same words without the negation are still caught.
+  assert.ok(ids('<p>A service, a promise Introductions are guaranteed.</p>').includes('C-14-guaranteed-meetings'));
+});
+
+test('the headings the disclaimer component prints before the sentence never form a promise with it', async () => {
+  const fs = await import('node:fs');
+  const source = fs.readFileSync(new URL('../../../src/components/blocks/IntroductionsDisclaimer.astro', import.meta.url), 'utf8');
+  const title = /class="callout__title">([^<]+)</.exec(source)?.[1];
+  assert.ok(title, 'the callout has a title');
+  assert.deepEqual(ids(`<aside><p>${title}</p><p>${INTRO_DISCLAIMER}</p></aside>`), []);
 });
 
 test('C-14-investor-network catches a claimed network and not a denial of one', () => {
