@@ -28,7 +28,7 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
   title={data.title}
   description={data.description}
   eyebrow={data.eyebrow}
-  lead="How a dedicated team seat works, and how to ask for the current rate."
+  lead="How dedicated team seats and packages work, and how to ask for the current rate."
   path="/pricing/"
   photo="inset-pricing"
   primary={{ label: 'Request the current seat rate', href: '/contact/?topic=seat-rate' }}
@@ -43,8 +43,8 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
         label="The seat model at a glance"
         facts={[
           { label: 'Format', value: 'Fully remote' },
-          { label: 'A seat is', value: 'Dedicated to your company' },
-          { label: 'Steered by', value: 'WE' },
+          { label: 'The unit of work', value: 'A seat dedicated to your company' },
+          { label: 'Start with', value: 'A package or a custom seat plan' },
           { label: 'Scaling', value: 'Up or down by notice' },
         ]}
       />
@@ -66,7 +66,7 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
     <DataTable caption="Seat roles and what each seat does" columns={columns} rows={rows} />
     {
       rate === null && (
-        <p class="pricing-note">The seat rate is not listed here. Ask for it and WE shares the current figure.</p>
+        <p class="pricing-note">No rate is listed here. Ask for it and WE shares the current figure for a package, a custom seat plan or the add-on.</p>
       )
     }
   </section>
@@ -79,8 +79,8 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
 
   <CtaBand
     slot="after"
-    title="Ask for the current seat rate"
-    text="Tell WE what you are building and the roles you have in mind. WE replies with the current rate."
+    title="Ask for the current rate"
+    text="Tell WE what you are building, and whether you lean toward a package or a custom seat plan. WE replies with the current rate."
     cta={{ label: 'Request the rate', href: '/contact/?topic=seat-rate' }}
     secondary={{ label: 'Compose your team', href: '/tools/team-composer/' }}
   />

@@ -161,7 +161,7 @@ export const STAGES: readonly Stage[] = [
       'A completed readiness checklist with the remaining gaps listed.',
     ],
     limits: [
-      'WE does not promise introductions to investors and does not run a raise on your behalf.',
+      'WE does not promise a meeting with any investor and does not run a raise on your behalf.',
       'It does not give legal, tax or financial advice. Your counsel and accountant are your own, and WE coordinates with them.',
       'It does not report growth figures for the program or for any company.',
     ],

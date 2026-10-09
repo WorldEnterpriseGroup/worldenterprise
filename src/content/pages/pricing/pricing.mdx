@@ -1,19 +1,40 @@
 ---
 title: Seats and pricing
-description: How dedicated team seats work at World Enterprise Incubator, what drives the number of seats, and how to ask for the current seat rate.
+description: How dedicated team seats and the Spark, Launch, Accelerate and Studio packages work at World Enterprise Incubator, and how to ask for the current rate.
 eyebrow: Pricing
 hero: H3
-updated: 2026-10-06
-claimsUsed: [C-01, C-02, C-03, C-05]
+updated: 2026-10-09
+claimsUsed: [C-01, C-02, C-03, C-05, C-10, C-14]
 ---
+import DataTable from '../../../components/ui/DataTable.astro';
 import Faq from '../../../components/ui/Faq.astro';
+import InvestorIntroductionsOffer from '../../../components/blocks/InvestorIntroductionsOffer.astro';
 import { href } from '../../../lib/url.ts';
 
 ## How seats work
 
 A seat is one dedicated place on your team. A person fills it, works offshore and works only on your company. You choose the roles you need. WE steers the team and manages the subcontractors who fill the seats, so you work with one team instead of coordinating individuals.
 
-You can scale up or down by notice. The notice terms are set out in the written agreement, not on this page.
+The seat is the unit of work. Packages and custom seat plans are two ways to arrange seats. You can scale up or down by notice, whichever you choose. The notice terms are set out in the written agreement, not on this page.
+
+## Choose a package or a custom seat plan
+
+A package is a pre-configured seat plan with a fixed scope, sized for a company stage. WE offers four. Every package covers all seven service lines, A to G, and the packages differ in depth.
+
+<DataTable
+  caption="The four packages, the company stage each is sized for and its depth"
+  columns={['Package', 'Company stage it is sized for', 'Depth in every service line']}
+  rows={[
+    ['Spark', 'An idea or a prototype before revenue, with one or two founders and no institutional capital yet.', 'Core'],
+    ['Launch', 'A first product in build or first pilots under way, at the pre-seed stage.', 'Standard'],
+    ['Accelerate', 'A working product with early customer evidence, preparing a seed round or an equivalent.', 'Extended'],
+    ['Studio', 'A company with several products, or in a regulated or capital-intensive field, that needs an embedded WE team.', 'Embedded'],
+  ]}
+/>
+
+WE sets the seat plan inside each package to match its depth, and confirms it in writing when you ask for the current rate. This page lists no seat counts.
+
+If no package fits, you can build a custom seat plan instead. Choose the roles you need and WE scopes the plan with you. The <a href={href('/tools/team-composer/')}>Team Composer</a> turns your choices into a sketch you can share.
 
 ## What drives the number of seats
 
@@ -24,20 +45,29 @@ The number of seats follows the work in front of you. Four things shape it:
 - **The work in the current cycle.** Seats can grow when there is more to build and shrink when there is less.
 - **How much you can review and decide each week.** A team moves at the speed of its decisions, so the founder's time is part of the plan.
 
-The <a href={href('/tools/team-composer/')}>Team Composer</a> turns these into a sketch you can share.
+<InvestorIntroductionsOffer variant="brief" />
 
 ## What this page does not show
 
-This page does not list a price, a package or a fee schedule. WE shares the current seat rate when you ask, so the figure you receive is the one that applies today. Ask on the <a href={href('/contact/?topic=seat-rate')}>contact form</a>.
+This page lists no amounts. WE shares the current rate for a package, a custom seat plan or the add-on when you ask, so the figure you receive is the one that applies today. Ask on the <a href={href('/contact/?topic=seat-rate')}>contact form</a>.
 
-## Questions about seats
+## Questions about seats and packages
 
 <div class="faq-list">
 <Faq name="pricing-faq" question="Is there a price list?">
-<p>Not on this page. WE shares the current seat rate when you ask for it.</p>
+<p>Not on this page. WE shares the current rate for a package, a custom seat plan or the add-on when you ask for it.</p>
+</Faq>
+<Faq name="pricing-faq" question="What is a package?">
+<p>A package is a pre-configured seat plan with a fixed scope, sized for a company stage. WE offers Spark, Launch, Accelerate and Studio. Each covers all seven service lines at a different depth.</p>
+</Faq>
+<Faq name="pricing-faq" question="Can I use a custom seat plan instead of a package?">
+<p>Yes. Choose the roles you need and WE scopes the plan with you. The Team Composer helps you sketch one.</p>
 </Faq>
 <Faq name="pricing-faq" question="Can I change the number of seats later?">
-<p>Yes. Seats scale up or down by notice. The written agreement sets out how.</p>
+<p>Yes. In a package or a custom plan, seats scale up or down by notice. The written agreement sets out how.</p>
+</Faq>
+<Faq name="pricing-faq" question="Is Investor Introductions part of a package?">
+<p>No. It is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.</p>
 </Faq>
 <Faq name="pricing-faq" question="Who manages the people in a seat?">
 <p>WE does. WE steers the team and manages its subcontractors.</p>
