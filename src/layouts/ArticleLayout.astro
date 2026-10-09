@@ -41,14 +41,14 @@ const article = articleNode({ path: meta.path, headline: meta.title, description
 <BaseLayout {...meta} crumbs={crumbs} ogType="article" published={publishedDate} updated={updatedDate ?? publishedDate} jsonLd={[...(meta.jsonLd ?? []), article]}>
   <div class="reading-progress" aria-hidden="true"></div>
   <article>
-    <HeroArticle crumbs={crumbs} eyebrow={topic} eyebrowHref={topicLive ? `/insights/topic/${topic}/` : undefined} title={meta.title} lead={meta.description}>
+    <HeroArticle crumbs={crumbs} eyebrow={topic} eyebrowLabel="Topic" eyebrowHref={topicLive ? `/insights/topic/${topic}/` : undefined} title={meta.title} lead={meta.description}>
       <p class="byline ui" slot="meta">
-        <span class="byline__part">By World Enterprise Editorial</span>
-        <span class="byline__part">
-          <time datetime={publishedDate.toISOString()}>{dateFormat.format(publishedDate)}</time>
-          {updatedDate && <>, updated <time datetime={updatedDate.toISOString()}>{dateFormat.format(updatedDate)}</time></>}
-        </span>
-        {readingMinutes && <span class="byline__part">{readingMinutes} min read</span>}
+        By World Enterprise Editorial
+        <span aria-hidden="true"> / </span>
+        <time datetime={publishedDate.toISOString()}>{dateFormat.format(publishedDate)}</time>
+        {updatedDate && <span>, updated <time datetime={updatedDate.toISOString()}>{dateFormat.format(updatedDate)}</time></span>}
+        {readingMinutes && <span aria-hidden="true"> / </span>}
+        {readingMinutes && <span>{readingMinutes} min read</span>}
       </p>
     </HeroArticle>
     <div class="section">

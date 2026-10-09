@@ -16,6 +16,8 @@ interface Props {
   eyebrow?: string;
   /** Makes the eyebrow a link, for example to the topic page. */
   eyebrowHref?: string | undefined;
+  /** Context a screen reader hears before a linked eyebrow ("Topic: build"). Visually hidden, so the visible words stay the eyebrow. */
+  eyebrowLabel?: string | undefined;
   title: string;
   lead?: string;
   byline?: string;
@@ -24,7 +26,7 @@ interface Props {
   measure?: HeroMeasure;
 }
 
-const { as: Heading = 'h1', id, crumbs = [], eyebrow, eyebrowHref, title, lead, byline, published, updated, measure = 'rail' } = Astro.props;
+const { as: Heading = 'h1', id, crumbs = [], eyebrow, eyebrowHref, eyebrowLabel, title, lead, byline, published, updated, measure = 'rail' } = Astro.props;
 const fmt = (d: Date): string => d.toISOString().slice(0, 10);
 const containerClass = measure === 'prose' ? 'container container--prose' : 'container';
 const hasMeta = Astro.slots.has('meta');
@@ -35,7 +37,7 @@ const hasByline = byline !== undefined || published !== undefined || updated !==
   <div class:list={[containerClass, 'hero__grid']}>
     <div class="hero__copy stack">
       <Breadcrumbs crumbs={crumbs} />
-      {eyebrow && <p class="eyebrow">{eyebrowHref ? <a href={href(eyebrowHref)}>{eyebrow}</a> : eyebrow}</p>}
+      {eyebrow && <p class="eyebrow">{eyebrowHref ? <a href={href(eyebrowHref)}>{eyebrowLabel && <span class="visually-hidden">{eyebrowLabel}: </span>}{eyebrow}</a> : eyebrow}</p>}
       <Heading id={id}>{title}</Heading>
       <div class="rule" aria-hidden="true"></div>
       {lead && <p class="lead">{lead}</p>}
@@ -45,15 +47,9 @@ const hasByline = byline !== undefined || published !== undefined || updated !==
         ) : (
           hasByline && (
             <p class="byline">
-              {byline && <span class="byline__part">{byline}</span>}
-              {
-                (published || updated) && (
-                  <span class="byline__part">
-                    {published && <time datetime={fmt(published)}>{fmt(published)}</time>}
-                    {updated && <>{published ? ', updated ' : 'Updated '}<time datetime={fmt(updated)}>{fmt(updated)}</time></>}
-                  </span>
-                )
-              }
+              {byline}
+              {published && <time datetime={fmt(published)}>{fmt(published)}</time>}
+              {updated && <span>, updated <time datetime={fmt(updated)}>{fmt(updated)}</time></span>}
             </p>
           )
         )

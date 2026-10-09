@@ -75,7 +75,7 @@ test('every error summary is a named group, and the group is what takes focus', 
 });
 
 test('the topic eyebrow above an article headline is a sentence-sized link: "Topic: build", not a bare word', async ({ page }) => {
-  const route = liveRoutes.find((r) => /^\/insights\/[^/]+\/$/.test(r.path) && readFileSync(fileFor(r.path), 'utf8').includes('page-header--article') && /<p class="?eyebrow"?>\s*<a\b/.test(readFileSync(fileFor(r.path), 'utf8')));
+  const route = liveRoutes.find((r) => /^\/insights\/[^/]+\/$/.test(r.path) && readFileSync(fileFor(r.path), 'utf8').includes('hero--article') && /<p class="?eyebrow"?>\s*<a\b/.test(readFileSync(fileFor(r.path), 'utf8')));
   test.skip(route === undefined, 'no article with a linked topic is built');
   await page.goto(route?.path ?? '/');
   const link = page.locator('article > header .eyebrow a');

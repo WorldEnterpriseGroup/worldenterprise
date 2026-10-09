@@ -173,18 +173,11 @@ test('a service entry that lists artifacts does not also carry its own "What you
   }
 });
 
-test('the breadcrumb trail stays on one row, so a font swap cannot add or remove a line above the title', () => {
-  const css = read('src/styles/components.css');
-  const trail = /\.breadcrumbs\s*\{[\s\S]*?\n  \}\n/.exec(css)?.[0] ?? '';
-  assert.match(trail, /flex-wrap:\s*nowrap/, 'the list never wraps');
-  assert.match(trail, /li:last-child\s*\{[^}]*text-overflow:\s*ellipsis/, 'the current page ends in an ellipsis when it must');
-  assert.doesNotMatch(trail, /flex-wrap:\s*wrap/);
-});
-
-test('the article byline is made of whole parts that stack on a phone', () => {
-  const css = read('src/styles/components.css');
-  assert.match(css, /\.byline\s*\{[^}]*flex-direction:\s*column/, 'a phone gets one part per row');
-  assert.match(css, /\.byline__part\s*\{[^}]*white-space:\s*nowrap/, 'a part never breaks inside');
-  assert.match(read('src/layouts/ArticleLayout.astro'), /class="byline__part"/);
-  assert.match(read('src/components/hero/HeroArticle.astro'), /class="byline__part"/);
+// The breadcrumb (one row, every crumb shrinks) and the byline (two lines held on a phone) are WP-16's rules in components.css, and
+// tests/unit/wp-16/layout-css.test.ts guards them. Here only the markup the hero owns is checked.
+test('the linked topic eyebrow above an article headline carries its hidden "Topic:" context', () => {
+  const article = read('src/layouts/ArticleLayout.astro');
+  assert.match(article, /<HeroArticle[^>]*eyebrowLabel="Topic"/);
+  const hero = read('src/components/hero/HeroArticle.astro');
+  assert.match(hero, /<a href=\{href\(eyebrowHref\)\}>\{eyebrowLabel && <span class="visually-hidden">\{eyebrowLabel\}: <\/span>\}\{eyebrow\}<\/a>/);
 });
