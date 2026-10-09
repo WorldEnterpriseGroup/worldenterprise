@@ -20,7 +20,7 @@ Waiting on the owner or an operator (names only, no values anywhere in Git):
 | `PUBLIC_WE_INTAKE_API_URL` set (https) in GitHub repo variables and in GitLab CI variables | operator | section 5 |
 | `PUBLIC_WE_NEWSLETTER_API_URL` set (https), only if the newsletter should launch | operator | section 5 |
 | GitHub Pages source is "GitHub Actions" and the `github-pages` environment allows `gh-pages` | operator | section 4, step 2 |
-| Resolve the contradiction in the Fundable article that says WE offers no introduction service, then counsel review of the Investor Introductions wording | owner, counsel | section 8, "Open conflict" |
+| Counsel review of the Investor Introductions wording (the contradicting article sentence is already fixed) | counsel | section 8 |
 | `hello@` and `apply@` mailboxes confirmed as existing and monitored | operator | section 7 |
 | A monitored security mailbox, for `security.txt` | operator | section 6 |
 | Terms of use sign-off (C-23) | counsel | section 9 |
@@ -158,13 +158,11 @@ Newsletter (`/newsletter/`): there is no mailto fallback. With no endpoint the f
 
 Counsel reviews this wording before any push to `gh-pages` (claim C-14, owner decision of 2026-10-09). The structure the owner chose: a separate, paid add-on; a flat fee for curation and preparation that does not depend on any investment closing; no success fee, stake or transaction-based pay; WE negotiates no terms, gives no securities advice and handles no funds; a limited number of curated introductions, made only after the readiness criteria are met; no promise of a meeting, a reply or funding.
 
-### Open conflict to resolve before release
+### Resolved conflict: an article denied the add-on
 
-One published article contradicts the add-on. `src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx` says, at line 37, "It does not describe an introduction service, because World Enterprise does not offer one." The same article says, at line 77, that Investor Introductions is a separate, paid add-on. Both render on the same page (the checklist item for that article quotes both). One of them is wrong, and a visitor, or a regulator, reads the denial as a statement about the service the page then sells.
+The Fundable article `src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx` said, at line 37, "It does not describe an introduction service, because World Enterprise does not offer one." while line 77 of the same article says Investor Introductions is a separate, paid add-on. The team decision of 2026-10-09 replaced the line 37 sentence with the one quoted in the checklist item for that article ("It is about your judgment, whether or not you also use our paid Investor Introductions add-on, which is described below."). That is the only edit made to the article, under a scoped ownership exception recorded in `decisions.md` (R-3). Release candidate tags before `release-1-rc2` carry the old sentence and must not be released.
 
-The content file is outside the WP-30 write set, so it was not edited here. The owner and counsel decide the wording, and the fix goes through a normal `demo` merge before the release SHA is chosen. The claims guard (`R-C14-*`) did not catch it: the earlier fix (commit 86899a5) removed the denials it knew about and missed this one.
-
-Counsel should also read the securities-law sentences in the other Fundable articles. They are in `reports/counsel-review.md` (the `audit:claims` artifact, also printed in the job log), not in the checklist below, which covers only the sources that name the add-on.
+A search of `src/content`, `src/pages`, `src/components`, `src/data` and `src/layouts` for other denials of introductions ("does not offer", "no introduction", "does not introduce", "does not connect", "not a matchmaker" and similar) found none. The matches are about securities ("WE does not offer, sell or place securities") or unrelated. Counsel should still read the full rendered text in `reports/counsel-review.md`, which includes the securities-law sentences in the other Fundable articles that the checklist below does not cover.
 
 How to read this checklist:
 
@@ -368,11 +366,11 @@ Source: `src/content/pages/insights/topic-fundable.mdx:3`. Renders on: /insights
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-16. Article: choosing the right first investors for a SaaS company. OPEN CONFLICT: the first quote denies the add-on
+#### CR-16. Article: choosing the right first investors for a SaaS company (the first quote was rewritten to match the add-on, see "Resolved conflict" above)
 
 Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx:37`. Renders on: The article page (body, and the disclaimer box at its end).
 
-> L37: It does not describe an introduction service, because World Enterprise does not offer one.
+> L37: It is about your judgment, whether or not you also use our paid Investor Introductions add-on, which is described below.
 >
 > L77: Investor Introductions is a separate, paid add-on, and nothing else in our program depends on it. Whether or not you use it, expect to do much of the approaching yourself, through your own network, your own outreach and public channels.
 >
