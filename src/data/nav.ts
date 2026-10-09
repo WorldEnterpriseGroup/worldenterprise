@@ -82,6 +82,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
           { label: 'The digital incubation model', href: '/program/digital-incubation-model/', description: 'Fully remote by design: no office, no relocation' },
           { label: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'Offshore seats that work only on your company' },
           { label: "Who it's for", href: '/program/who-its-for/', description: 'The founders and ideas WE builds with' },
+          { label: 'How WE decides', href: '/program/how-we-decide/', description: 'How an application is read' },
         ],
       },
       {
@@ -209,6 +210,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         links: [
           { label: 'Templates and checklists', href: '/library/' },
           { label: 'Team Composer', href: '/tools/team-composer/' },
+          { label: 'Founder tools', href: '/tools/' },
           { label: 'Glossary', href: '/glossary/' },
         ],
       },
@@ -282,6 +284,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         heading: 'Company',
         links: [
           { label: 'About WE', href: '/about/' },
+          { label: 'Facts about WE', href: '/about/facts/' },
           { label: 'Manifesto', href: '/about/manifesto/' },
           { label: 'How WE steers a team: frameworks', href: '/about/frameworks/' },
           { label: 'Editorial policy', href: '/about/editorial-policy/' },

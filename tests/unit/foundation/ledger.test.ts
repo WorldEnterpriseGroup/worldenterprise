@@ -2,27 +2,27 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { DESKS, finalizeRow, INSIGHT_SLUGS, L2_RESERVED, LIBRARY_SLUGS, MACHINE_ROUTES, RESEARCH_SLUGS, routes } from '../../../src/data/routes.ts';
 
-test('the ledger has exactly 90 unique rows', () => {
-  assert.equal(routes.length, 90);
-  assert.equal(new Set(routes.map((r) => r.path)).size, 90);
+test('the ledger has exactly 99 unique rows', () => {
+  assert.equal(routes.length, 99);
+  assert.equal(new Set(routes.map((r) => r.path)).size, 99);
 });
 
-test('86 rows are indexable; the four noindex routes are named', () => {
+test('95 rows are indexable; the four noindex routes are named', () => {
   const noindex = routes.filter((r) => !r.indexable).map((r) => r.path).sort();
   assert.deepEqual(noindex, ['/404.html', '/apply/thanks/', '/search/', '/sitemap/']);
-  assert.equal(routes.filter((r) => r.indexable).length, 86);
+  assert.equal(routes.filter((r) => r.indexable).length, 95);
 });
 
 test('section counts match SAGE-PLAN 5.6', () => {
   const count = (prefix: string): number => routes.filter((r) => r.path.startsWith(prefix)).length;
-  assert.equal(count('/program/'), 8);
+  assert.equal(count('/program/'), 9);
   assert.equal(count('/services/'), 8);
   assert.equal(count('/playbooks/'), 6);
   assert.equal(count('/fundability/'), 5);
   assert.equal(count('/insights/'), 23);
   assert.equal(count('/research/'), 5);
   assert.equal(count('/library/'), 7);
-  assert.equal(count('/about/'), 6);
+  assert.equal(count('/about/'), 8);
   assert.equal(INSIGHT_SLUGS.length, 18);
   assert.equal(DESKS.length, 4);
   assert.equal(RESEARCH_SLUGS.length, 4);
