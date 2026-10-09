@@ -20,7 +20,7 @@ Waiting on the owner or an operator (names only, no values anywhere in Git):
 | `PUBLIC_WE_INTAKE_API_URL` set (https) in GitHub repo variables and in GitLab CI variables | operator | section 5 |
 | `PUBLIC_WE_NEWSLETTER_API_URL` set (https), only if the newsletter should launch | operator | section 5 |
 | GitHub Pages source is "GitHub Actions" and the `github-pages` environment allows `gh-pages` | operator | section 4, step 2 |
-| Counsel review of the Investor Introductions wording | counsel | section 8 |
+| Resolve the contradiction in the Fundable article that says WE offers no introduction service, then counsel review of the Investor Introductions wording | owner, counsel | section 8, "Open conflict" |
 | `hello@` and `apply@` mailboxes confirmed as existing and monitored | operator | section 7 |
 | A monitored security mailbox, for `security.txt` | operator | section 6 |
 | Terms of use sign-off (C-23) | counsel | section 9 |
@@ -151,6 +151,14 @@ Newsletter (`/newsletter/`): there is no mailto fallback. With no endpoint the f
 ## 8. Counsel review: Investor Introductions and investor wording
 
 Counsel reviews this wording before any push to `gh-pages` (claim C-14, owner decision of 2026-10-09). The structure the owner chose: a separate, paid add-on; a flat fee for curation and preparation that does not depend on any investment closing; no success fee, stake or transaction-based pay; WE negotiates no terms, gives no securities advice and handles no funds; a limited number of curated introductions, made only after the readiness criteria are met; no promise of a meeting, a reply or funding.
+
+### Open conflict to resolve before release
+
+One published article contradicts the add-on. `src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx` says, at line 37, "It does not describe an introduction service, because World Enterprise does not offer one." The same article says, at line 77, that Investor Introductions is a separate, paid add-on. Both render on the same page (the checklist item for that article quotes both). One of them is wrong, and a visitor, or a regulator, reads the denial as a statement about the service the page then sells.
+
+The content file is outside the WP-30 write set, so it was not edited here. The owner and counsel decide the wording, and the fix goes through a normal `demo` merge before the release SHA is chosen. The claims guard (`R-C14-*`) did not catch it: the earlier fix (commit 86899a5) removed the denials it knew about and missed this one.
+
+Counsel should also read the securities-law sentences in the other Fundable articles. They are in `reports/counsel-review.md` (the `audit:claims` artifact, also printed in the job log), not in the checklist below, which covers only the sources that name the add-on.
 
 How to read this checklist:
 
@@ -354,10 +362,12 @@ Source: `src/content/pages/insights/topic-fundable.mdx:3`. Renders on: /insights
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-16. Article: choosing the right first investors for a SaaS company
+#### CR-16. Article: choosing the right first investors for a SaaS company. OPEN CONFLICT: the first quote denies the add-on
 
-Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx:77`. Renders on: The article page (body, and the disclaimer box at its end).
+Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx:37`. Renders on: The article page (body, and the disclaimer box at its end).
 
+> L37: It does not describe an introduction service, because World Enterprise does not offer one.
+>
 > L77: Investor Introductions is a separate, paid add-on, and nothing else in our program depends on it. Whether or not you use it, expect to do much of the approaching yourself, through your own network, your own outreach and public channels.
 >
 > L77: Whatever route you use, be accurate about your company, and be careful about what you say regarding an offering.
@@ -367,7 +377,16 @@ Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-17. Grow stage, what WE does not do
+#### CR-17. Founders page, what WE does not do
+
+Source: `src/pages/founders/index.astro:38`. Renders on: /founders/.
+
+> L38: It does not promise funding or investor meetings, or predict whether any company will raise money.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-18. Grow stage, what WE does not do
 
 Source: `src/components/program/stages.ts:164`. Renders on: /program/grow/ and every page that lists the stage limits.
 
@@ -376,7 +395,7 @@ Source: `src/components/program/stages.ts:164`. Renders on: /program/grow/ and e
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-18. Site description (the default meta and Open Graph description, and the Organization JSON-LD)
+#### CR-19. Site description (the default meta and Open Graph description, and the Organization JSON-LD)
 
 Source: `src/data/site.ts:16`. Renders on: Any page that uses the site description.
 
@@ -385,7 +404,7 @@ Source: `src/data/site.ts:16`. Renders on: Any page that uses the site descripti
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-19. FAQ entry (also in the FAQPage JSON-LD of /faq/)
+#### CR-20. FAQ entry (also in the FAQPage JSON-LD of /faq/)
 
 Source: `src/data/faq.yaml:57`. Renders on: /faq/.
 
