@@ -323,3 +323,13 @@ test('each use of the Investor Introductions offer has its own id prefix, and no
   const ids = [...walk(join(ROOT, 'src'), /\.(astro|mdx)$/)].flatMap((file) => [...read(rel(file)).matchAll(/\bid="([a-z0-9-]+)"/g)].map((m) => m[1] ?? ''));
   for (const prefix of prefixes) for (const suffix of ['title', 'how', 'criteria']) assert.ok(!ids.includes(`${prefix}-${suffix}`), `${prefix}-${suffix} is also a literal id`);
 });
+
+test('no page still denies that WE makes investor introductions or arranges investor meetings', () => {
+  // These are the wordings the site used before the owner decision of 2026-10-09; the audit no longer has a rule that denies the add-on, so this guard does.
+  const denial =
+    /arrang\w*\s+(?:investor\s+)?(?:meetings|introductions)|\bmakes?\s+no\s+(?:investor\s+)?introductions|\bno\s+investor\s+introductions\b|\bdoes\s+not\s+(?:introduce|connect|match|broker)[^.]{0,60}\binvestors?\b/i;
+  const exempt = new Set(['src/data/claims.ts']);
+  const offenders = [...walk(join(ROOT, 'src'), /\.(astro|ts|md|mdx|yaml|json)$/)].map(rel).filter((file) => !exempt.has(file) && denial.test(read(file)));
+  assert.deepEqual(offenders, []);
+  for (const old of ['WE does not arrange meetings with investors.', 'WE makes no introductions.', 'WE does not connect founders with investors.']) assert.match(old, denial, old);
+});
