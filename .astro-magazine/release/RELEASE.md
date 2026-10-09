@@ -89,7 +89,7 @@ Not checkable from here, and left to the operator because the unauthenticated Gi
 - The GitHub repo variable values (names are in section 5).
 - The live state of `worldenterprise.org` before the release (record a baseline, section 10).
 
-Observation for the owner: the public GitHub repository `WorldEnterpriseGroup/worldenterprise` has a `demo` branch (head `73cc378`, stale) that exposes the site source, alongside `main` and `gh-pages`. The mirror cron does not create it. Decide whether to delete it from GitHub before launch.
+Owner decision, 2026-10-09: the public GitHub repository `WorldEnterpriseGroup/worldenterprise` has a `demo` branch (head `73cc378`, stale) that exposes the site source, alongside `main` and `gh-pages`. The mirror cron does not create it. The owner chose to keep it. Nobody on the release path touches it, and release steps do not depend on it.
 
 ## 4. Release steps
 
@@ -98,7 +98,14 @@ Do these in order. A step that fails stops the release; fix forward, never force
 1. Settle the checklist in section 1. Counsel's answers on section 8 may change wording; any change goes through a normal `demo` merge and a new candidate tag (`release-N-rc2`), never through moving a tag.
 2. Operator, GitHub settings (once): Settings, Pages, Source set to "GitHub Actions". Settings, Environments, `github-pages`, deployment branches allow `gh-pages`. Settings, Secrets and variables, Actions, Variables: the two variables in section 5.
 3. Operator, GitLab settings (once): Settings, CI/CD, Variables: the two variables in section 5, protected, so they reach the protected release tag and `gh-pages` pipelines and nothing else. No `GITHUB_TOKEN` is needed or wanted. Also Settings, Repository, Protected tags: pattern `release-*`, allowed to create: Maintainers only, so only a maintainer can create a release tag and the `mirror` job (which refuses an unprotected tag) can run.
-4. Cut the tag. A maintainer tags a `demo` commit that has a green `demo` pipeline, as an annotated, protected tag: `git tag -a release-N-rcM -m "..." <sha>` and `git push origin release-N-rcM`. `release-1-rc1` is the first candidate (the commit that merged the WP-30 pre-stage). Never move or delete a pushed release tag.
+4. Cut the tag. A maintainer tags a `demo` commit that has a green `demo` pipeline, as an annotated, protected tag: `git tag -a release-N-rcM -m "..." <sha>` and `git push origin release-N-rcM`. Candidates so far:
+
+   | Tag | Commit | Status |
+   |---|---|---|
+   | `release-1-rc1` | `3a674bc` | Superseded. DO NOT RELEASE: pre-article-fix wording (it still carries the old line-37 sentence in the Fundable article). Left in place because release tags are immutable. |
+   | `release-1-rc2` | `99e3f37` | Current candidate and the counsel review target (section 8). |
+
+   Never move or delete a pushed release tag.
 5. Choose the release tag and read its pipeline. The tag pipeline runs the full qa set strictly, with `verify:release` allowing nothing. Required green: `verify:static`, the audits, the e2e jobs, `qa:lighthouse` and `verify:release`. Note the tagged commit as `<sha>` and confirm `gh-pages` (GitLab, `d7a65dd` today, the legacy site) is an ancestor of it:
 
    ```
@@ -156,7 +163,7 @@ Newsletter (`/newsletter/`): there is no mailto fallback. With no endpoint the f
 
 ## 8. Counsel review: Investor Introductions and investor wording
 
-Counsel reviews this wording before any push to `gh-pages` (claim C-14, owner decision of 2026-10-09). The structure the owner chose: a separate, paid add-on; a flat fee for curation and preparation that does not depend on any investment closing; no success fee, stake or transaction-based pay; WE negotiates no terms, gives no securities advice and handles no funds; a limited number of curated introductions, made only after the readiness criteria are met; no promise of a meeting, a reply or funding.
+Counsel reviews the wording of release candidate `release-1-rc2` (commit `99e3f37`) before any push to `gh-pages` (claim C-14, owner decision of 2026-10-09). The quotes in the checklist below are verbatim at their cited lines in that commit. `release-1-rc1` is superseded and must not be reviewed or released. The structure the owner chose: a separate, paid add-on; a flat fee for curation and preparation that does not depend on any investment closing; no success fee, stake or transaction-based pay; WE negotiates no terms, gives no securities advice and handles no funds; a limited number of curated introductions, made only after the readiness criteria are met; no promise of a meeting, a reply or funding.
 
 ### Resolved conflict: an article denied the add-on
 
@@ -473,7 +480,8 @@ If the problem is a wording problem found after launch, a fix forward through `d
 
 - The mirror cron publishes whatever is on GitLab `gh-pages` regardless of CI results, and the `RELEASE_APPROVED` gate cannot stop it. The push to `gh-pages` is the real gate, which is why section 2 asks that it wait.
 - The GitHub strict build is the safety net for form and route problems, and the audits in `pages.yml` cover the output files. They do not read wording. Wording is covered only by section 8 and the claims audit.
-- The stale GitHub `demo` branch (section 3).
+- The stale GitHub `demo` branch (section 3): kept on purpose by the owner's decision of 2026-10-09. It exposes the site source.
+- `release-1-rc1` is still a protected tag on GitLab and carries the old article wording. It is marked superseded in section 4. Do not push it to `gh-pages`.
 - A release candidate tag pipeline is red on `verify:release` until `PUBLIC_WE_INTAKE_API_URL` is available to it, and the `mirror` job stays blocked behind it. That is the gate working, not a defect. The tag rule `release-*` must be protected before the `mirror` job will run.
 - Protecting `release-*` and the variables above are GitLab settings that this repository cannot set. If a maintainer tags before the rule exists, the `mirror` job refuses the unprotected tag: protect the pattern, then cut the next candidate tag (never move the earlier one).
 - This runbook cannot see the GitHub Pages and environment settings or the live site. Section 4 steps 2 and 10 are the operator's check of them.
