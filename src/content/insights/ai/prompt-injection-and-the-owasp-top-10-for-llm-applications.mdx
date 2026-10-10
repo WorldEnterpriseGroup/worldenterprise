@@ -9,6 +9,7 @@ segments: [technical-founders]
 related: [evaluating-an-llm-feature-before-you-ship-it, human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop, metering-and-budgeting-model-usage]
 evidence: [owasp-llm-top10, owasp-llm01, owasp-llm06, owasp-llm10]
 relatedPlaybook: build-and-ship-v1
+relatedServices: [B]
 relatedTemplate: security-baseline-checklist
 sources:
   - id: owasp-llm-top10
@@ -34,7 +35,6 @@ sources:
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
-import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 If your product sends user text, uploaded files or web pages to a language model, it has a security surface that an ordinary web application does not. The OWASP Gen AI Security Project publishes a Top 10 list of risks for applications built on large language models. Its 2025 edition is the one the project's site presents as the latest on October 10, 2026, the date this article was checked against it.
 
@@ -92,7 +92,7 @@ Each mitigation on the project's page can be turned into a question about your o
 
 The last row uses OWASP's own framing: the project recommends "treating the model as an untrusted user" when testing trust boundaries and access controls. That one phrase is a useful default for the whole design. Whatever you would not let an anonymous user do, do not let the model do on its own authority.
 
-For the output-validation row, the project suggests asking for clear formats, detailed reasoning and source citations, and using deterministic code to check that responses follow the format. For filtering, it points to what it calls the RAG Triad: context relevance, groundedness and question and answer relevance. The article on <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">evaluating an LLM feature before you ship it</MaybeLink> covers how to turn checks like these into repeatable tests.
+For the output-validation row, the project suggests asking for clear formats, detailed reasoning and source citations, and using deterministic code to check that responses follow the format. For filtering, it points to what it calls the RAG Triad: context relevance, groundedness and question and answer relevance. The article on [evaluating an LLM feature before you ship it](/insights/evaluating-an-llm-feature-before-you-ship-it/) covers how to turn checks like these into repeatable tests.
 
 ## Agency decides how bad it gets
 
@@ -106,11 +106,11 @@ Its examples are concrete. An extension meant only to read documents also has th
 
 OWASP's recommended mitigations include minimizing the extensions the model can call, avoiding open-ended ones such as "run a shell command", running actions in the context of the specific user, requiring user approval for high-impact actions, and implementing authorization in downstream systems "rather than relying on an LLM to decide if an action is allowed or not." The last point is the one to remember. A model's judgment is not an access control. Logging, monitoring and rate limiting do not prevent excessive agency, the project says, but they can limit the damage.
 
-The project's worked scenario shows how the pieces combine. A personal assistant reads a mailbox through an extension that can also send messages, and a crafted incoming email carries an indirect injection that tells the model to forward sensitive messages. OWASP lists three removals that would have broken the chain: an extension that can only read, a read-only authorization scope, and a requirement that the user reviews and sends every drafted message. The article on <MaybeLink path="/insights/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop/">human review in an AI feature</MaybeLink> looks at where that last control belongs.
+The project's worked scenario shows how the pieces combine. A personal assistant reads a mailbox through an extension that can also send messages, and a crafted incoming email carries an indirect injection that tells the model to forward sensitive messages. OWASP lists three removals that would have broken the chain: an extension that can only read, a read-only authorization scope, and a requirement that the user reviews and sends every drafted message. The article on [human review in an AI feature](/insights/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop/) looks at where that last control belongs.
 
 ## Cost is a security property too
 
-The Unbounded Consumption entry covers applications that allow excessive and uncontrolled inference. OWASP lists risks that include denial of service, economic losses, model theft and service degradation, and names one pattern "Denial of Wallet": initiating a high volume of operations to exploit the cost-per-use model of cloud-based AI services. Its mitigations include limits on input size, rate limiting and user quotas, and timeouts and throttling for expensive operations. For a company on a small budget, a missing per-user limit is a security gap and a finance gap at once. The article on <MaybeLink path="/insights/metering-and-budgeting-model-usage/">metering and budgeting model usage</MaybeLink> covers the accounting side.
+The Unbounded Consumption entry covers applications that allow excessive and uncontrolled inference. OWASP lists risks that include denial of service, economic losses, model theft and service degradation, and names one pattern "Denial of Wallet": initiating a high volume of operations to exploit the cost-per-use model of cloud-based AI services. Its mitigations include limits on input size, rate limiting and user quotas, and timeouts and throttling for expensive operations. For a company on a small budget, a missing per-user limit is a security gap and a finance gap at once. The article on [metering and budgeting model usage](/insights/metering-and-budgeting-model-usage/) covers the accounting side.
 
 ## A review you can run in an afternoon
 
@@ -127,7 +127,7 @@ Use the list as an agenda rather than a score. For each feature that calls a mod
   Store the answers next to the feature they describe and revisit them whenever a new tool, data source or file type is added to the model's reach.
 </Callout>
 
-The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> and the research note on <MaybeLink path="/research/saas-security-baseline-year-one/">a SaaS security baseline in year one</MaybeLink> cover the conventional application security this list assumes you already have. The <MaybeLink path="/glossary/">glossary</MaybeLink> defines the OWASP ASVS, a separate OWASP standard for web applications.
+The [security baseline checklist](/library/security-baseline-checklist/) and the research note on [a SaaS security baseline in year one](/research/saas-security-baseline-year-one/) cover the conventional application security this list assumes you already have. The [glossary](/glossary/) defines the OWASP ASVS, a separate OWASP standard for web applications.
 
 ## What this article cannot tell you
 

@@ -9,17 +9,18 @@ segments: [technical-founders]
 related: [choosing-a-model-provider-the-questions-that-matter, prompt-injection-and-the-owasp-top-10-for-llm-applications, retrieval-augmented-generation-what-it-is-and-where-it-breaks]
 evidence: [anth-evals, oai-evals, nist-ai100-1, nist-ai600-1, anth-deprec, owasp-llm01]
 relatedPlaybook: build-and-ship-v1
+relatedServices: [B]
 relatedTemplate: security-baseline-checklist
 sources:
   - id: anth-evals
     title: Define success criteria and build evaluations
     publisher: Anthropic
-    url: https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests
+    url: https://platform.claude.com/docs/en/test-and-evaluate/develop-tests
     accessed: 2026-10-10
   - id: oai-evals
     title: Working with evals
     publisher: OpenAI
-    url: https://platform.openai.com/docs/guides/evals
+    url: https://developers.openai.com/api/docs/guides/evals
     accessed: 2026-10-10
   - id: nist-ai100-1
     title: "Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1"
@@ -34,7 +35,7 @@ sources:
   - id: anth-deprec
     title: Model deprecations
     publisher: Anthropic
-    url: https://docs.anthropic.com/en/docs/about-claude/model-deprecations
+    url: https://platform.claude.com/docs/en/about-claude/model-deprecations
     accessed: 2026-10-10
   - id: owasp-llm01
     title: "LLM01:2025 Prompt Injection"
@@ -44,7 +45,6 @@ sources:
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
-import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 A language model feature can look finished after a handful of good demonstrations. Whether it is ready is a different question, and the only way to answer it is to run the feature against a set of cases you wrote down in advance and compare the results with criteria you also wrote down in advance. This article lays out that method in six steps, using the evaluation guides that two model vendors publish and the testing outcomes in the NIST AI Risk Management Framework, as those documents read on October 10, 2026.
 
@@ -88,7 +88,7 @@ Anthropic's first design principle for evals is to be task-specific: mirror your
   ]}
 />
 
-Draw cases from real or realistic material, with permission and with personal data removed or replaced (see <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data</MaybeLink>). Keep a held-out portion that you do not look at while tuning the prompt, and use it once, near the end. OpenAI's guide describes an eval as needing two ingredients: a schema for the test data and the graders that decide whether the output is correct. Anthropic's examples use test sets of different sizes for different tasks, so there is no universal number; the right size is the one at which another run would not change your decision.
+Draw cases from real or realistic material, with permission and with personal data removed or replaced (see [AI features and customer data](/insights/ai-features-and-customer-data-what-to-decide-first/)). Keep a held-out portion that you do not look at while tuning the prompt, and use it once, near the end. OpenAI's guide describes an eval as needing two ingredients: a schema for the test data and the graders that decide whether the output is correct. Anthropic's examples use test sets of different sizes for different tasks, so there is no universal number; the right size is the one at which another run would not change your decision.
 
 ## Step 3: Choose how each case is graded
 
@@ -104,7 +104,7 @@ For a small team, "documented" can be a folder in the repository holding the tes
 
 ## Step 5: Test it as an adversary
 
-A test set drawn from friendly cases will not find injection. OWASP's mitigation list for prompt injection includes adversarial testing, and recommends treating the model as an untrusted user when testing trust boundaries. Add a section to the test set for hostile inputs: instructions hidden in uploaded files, requests to reveal the system prompt, attempts to make the feature take an action it should not. The article on <MaybeLink path="/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/">prompt injection and the OWASP Top 10</MaybeLink> explains the categories.
+A test set drawn from friendly cases will not find injection. OWASP's mitigation list for prompt injection includes adversarial testing, and recommends treating the model as an untrusted user when testing trust boundaries. Add a section to the test set for hostile inputs: instructions hidden in uploaded files, requests to reveal the system prompt, attempts to make the feature take an action it should not. The article on [prompt injection and the OWASP Top 10](/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/) explains the categories.
 
 The NIST Generative AI Profile also suggests evaluating claims of model capabilities using empirically validated methods. Read as a rule for a small team, that means a vendor's capability statement or a public score is a reason to run your own test, not a replacement for one.
 
@@ -112,9 +112,9 @@ The NIST Generative AI Profile also suggests evaluating claims of model capabili
 
 A passing result describes one combination of model, prompt, data and settings. Change any of them and the result no longer applies. Triggers worth writing down:
 
-- the provider retires the model, or you move to a new one (Anthropic's deprecation page recommends testing applications with newer models well before the retirement date, and the article on <MaybeLink path="/insights/choosing-a-model-provider-the-questions-that-matter/">choosing a model provider</MaybeLink> covers notice periods);
+- the provider retires the model, or you move to a new one (Anthropic's deprecation page recommends testing applications with newer models well before the retirement date, and the article on [choosing a model provider](/insights/choosing-a-model-provider-the-questions-that-matter/) covers notice periods);
 - the prompt changes, even slightly;
-- the data behind retrieval changes (see <MaybeLink path="/insights/retrieval-augmented-generation-what-it-is-and-where-it-breaks/">retrieval-augmented generation</MaybeLink>);
+- the data behind retrieval changes (see [retrieval-augmented generation](/insights/retrieval-augmented-generation-what-it-is-and-where-it-breaks/));
 - a new tool, file type or user group is added;
 - a user reports a failure, which should become a new test case.
 
@@ -124,7 +124,7 @@ NIST's Measure 2.4 asks that the functionality and behavior of the system be mon
   Before launch, a named person confirms that the criteria table exists, that every criterion has a recorded result from the current model, prompt and data, that adversarial cases were run, that the untested risks are listed, and that the rollback path works. If any of these is missing, the feature is not ready, however good the demonstration was.
 </Callout>
 
-The <MaybeLink path="/playbooks/build-and-ship-v1/">build and ship playbook</MaybeLink> places this kind of gate within a first release.
+The [build and ship playbook](/playbooks/build-and-ship-v1/) places this kind of gate within a first release.
 
 ## What this article cannot tell you
 

@@ -4,7 +4,7 @@
   "fetches": [
     {
       "id": "anth-deprec",
-      "url": "https://docs.anthropic.com/en/docs/about-claude/model-deprecations",
+      "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations",
       "title": "Model deprecations",
       "publisher": "Anthropic",
       "fetchedAt": "2026-10-10T07:01:26Z",
@@ -13,7 +13,7 @@
     },
     {
       "id": "anth-evals",
-      "url": "https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests",
+      "url": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
       "title": "Define success criteria and build evaluations",
       "publisher": "Anthropic",
       "fetchedAt": "2026-10-10T07:01:31Z",
@@ -22,7 +22,7 @@
     },
     {
       "id": "anth-privacy",
-      "url": "https://privacy.anthropic.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data",
+      "url": "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data",
       "title": "How long do you store my organization's data?",
       "publisher": "Anthropic Privacy Center",
       "fetchedAt": "2026-10-10T07:01:32Z",
@@ -31,7 +31,7 @@
     },
     {
       "id": "anth-ratelimits",
-      "url": "https://docs.anthropic.com/en/api/rate-limits",
+      "url": "https://platform.claude.com/docs/en/api/rate-limits",
       "title": "Rate limits",
       "publisher": "Anthropic",
       "fetchedAt": "2026-10-10T07:01:28Z",
@@ -40,7 +40,7 @@
     },
     {
       "id": "anth-tokencount",
-      "url": "https://docs.anthropic.com/en/docs/build-with-claude/token-counting",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
       "title": "Token counting",
       "publisher": "Anthropic",
       "fetchedAt": "2026-10-10T07:01:29Z",
@@ -157,7 +157,7 @@
     },
     {
       "id": "msft-dataprivacy",
-      "url": "https://learn.microsoft.com/en-us/legal/cognitive-services/openai/data-privacy",
+      "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/data-privacy",
       "title": "Data, privacy, and security for Azure Direct Models in Microsoft Foundry",
       "publisher": "Microsoft Learn",
       "fetchedAt": "2026-10-10T07:01:44Z",
@@ -202,7 +202,7 @@
     },
     {
       "id": "oai-deprec",
-      "url": "https://platform.openai.com/docs/deprecations",
+      "url": "https://developers.openai.com/api/docs/deprecations",
       "title": "Deprecations",
       "publisher": "OpenAI",
       "fetchedAt": "2026-10-10T07:01:35Z",
@@ -211,7 +211,7 @@
     },
     {
       "id": "oai-evals",
-      "url": "https://platform.openai.com/docs/guides/evals",
+      "url": "https://developers.openai.com/api/docs/guides/evals",
       "title": "Working with evals",
       "publisher": "OpenAI",
       "fetchedAt": "2026-10-10T07:01:36Z",
@@ -220,7 +220,7 @@
     },
     {
       "id": "oai-ratelimits",
-      "url": "https://platform.openai.com/docs/guides/rate-limits",
+      "url": "https://developers.openai.com/api/docs/guides/rate-limits",
       "title": "Rate limits",
       "publisher": "OpenAI",
       "fetchedAt": "2026-10-10T07:01:38Z",
@@ -229,7 +229,7 @@
     },
     {
       "id": "oai-yourdata",
-      "url": "https://platform.openai.com/docs/guides/your-data",
+      "url": "https://developers.openai.com/api/docs/guides/your-data",
       "title": "Data controls in the OpenAI platform",
       "publisher": "OpenAI",
       "fetchedAt": "2026-10-10T07:01:33Z",
@@ -307,6 +307,15 @@
       "fetchedAt": "2026-10-10T07:25:43Z",
       "status": 200,
       "tool": "curl"
+    },
+    {
+      "id": "tx-hb149-history",
+      "url": "https://capitol.texas.gov/BillLookup/History.aspx?LegSess=89R&Bill=HB149",
+      "title": "H.B. 149 bill history, 89th Legislature",
+      "publisher": "Texas Legislature Online",
+      "fetchedAt": "2026-10-10T07:42:56Z",
+      "status": 200,
+      "tool": "curl"
     }
   ],
   "documents": [
@@ -372,7 +381,7 @@
         {
           "id": "D8",
           "sentence": "The Google page says not to submit sensitive, confidential or personal information to the unpaid services.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "goog-terms",
           "locator": "Unpaid services",
           "quote": "Do not submit sensitive, confidential, or personal information to the unpaid services."
@@ -543,7 +552,7 @@
           "quote": "have been placed on the market before 2 August 2026 shall take the necessary steps in order to comply with Article 50(2)"
         },
         {
-          "id": "B6b",
+          "id": "B58",
           "sentence": "The date for those systems is December 2, 2026.",
           "kind": "regulation",
           "sourceId": "eu-omnibus-oj",
@@ -705,7 +714,7 @@
         {
           "id": "B26",
           "sentence": "The press release is dated July 31, 2026.",
-          "kind": "statistic",
+          "kind": "paraphrase",
           "sourceId": "eu-transp-news",
           "locator": "Page header",
           "quote": "Publication 31 July 2026"
@@ -957,6 +966,22 @@
           "sourceId": "tx-hb149",
           "locator": "Section 552.105(e)(2)(D)",
           "quote": "an internal review process"
+        },
+        {
+          "id": "B59",
+          "sentence": "The Texas Legislature Online bill history shows it signed by the Governor on June 22, 2025.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149-history",
+          "locator": "Actions",
+          "quote": "Signed by the Governor"
+        },
+        {
+          "id": "B60",
+          "sentence": "The bill history shows a last action of Effective on 1/1/26.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149-history",
+          "locator": "Last Action",
+          "quote": "Effective on 1/1/26"
         }
       ]
     },
@@ -990,7 +1015,7 @@
         {
           "id": "P4",
           "sentence": "The Anthropic privacy center page is dated July 1, 2026.",
-          "kind": "statistic",
+          "kind": "paraphrase",
           "sourceId": "anth-privacy",
           "locator": "page header",
           "quote": "July 1, 2026"
@@ -1030,7 +1055,7 @@
         {
           "id": "P9",
           "sentence": "The Google page says not to submit sensitive, confidential or personal information to the unpaid services.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "goog-terms",
           "locator": "Unpaid services",
           "quote": "Do not submit sensitive, confidential, or personal information to the unpaid services."
@@ -1062,7 +1087,7 @@
         {
           "id": "P13",
           "sentence": "Anthropic says applications relying on its models may need occasional updates to keep working.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "anth-deprec",
           "locator": "intro",
           "quote": "may need occasional updates to keep working"
@@ -1086,7 +1111,7 @@
         {
           "id": "P16",
           "sentence": "OpenAI lists a minimum notice of at least 6 months for generally available models.",
-          "kind": "statistic",
+          "kind": "paraphrase",
           "sourceId": "oai-deprec",
           "locator": "Model deprecation notice periods",
           "quote": "generally available models: at least 6 months"
@@ -1094,7 +1119,7 @@
         {
           "id": "P17",
           "sentence": "OpenAI lists at least 3 months for specialized variants.",
-          "kind": "statistic",
+          "kind": "paraphrase",
           "sourceId": "oai-deprec",
           "locator": "Model deprecation notice periods",
           "quote": "specialized variants of generally available models: at least 3 months"
@@ -1102,7 +1127,7 @@
         {
           "id": "P18",
           "sentence": "Preview models may be retired with notice as short as 2 weeks.",
-          "kind": "statistic",
+          "kind": "paraphrase",
           "sourceId": "oai-deprec",
           "locator": "Model deprecation notice periods",
           "quote": "may be retired with much shorter notice, such as 2 weeks"
@@ -1174,7 +1199,7 @@
         {
           "id": "P27",
           "sentence": "Google's limits are applied per project, not per API key.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "goog-ratelimits",
           "locator": "How rate limits work",
           "quote": "Rate limits are applied per project, not per API key."
@@ -1190,7 +1215,7 @@
         {
           "id": "P29",
           "sentence": "Google's terms say you may use only paid services when making API clients available to users in the EEA, Switzerland or the UK.",
-          "kind": "regulation",
+          "kind": "paraphrase",
           "sourceId": "goog-terms",
           "locator": "Use of the services",
           "quote": "You may use only paid services when making API clients available to users in the European Economic Area, Switzerland, or the United Kingdom."
@@ -1227,7 +1252,7 @@
         {
           "id": "E2",
           "sentence": "OpenAI says writing evals is an essential component to building reliable applications, especially when upgrading or trying new models.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "oai-evals",
           "locator": "intro",
           "quote": "is an essential component to building reliable applications"
@@ -1275,7 +1300,7 @@
         {
           "id": "E8",
           "sentence": "Most use cases need multidimensional evaluation along several success criteria.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "anth-evals",
           "locator": "Common success criteria",
           "quote": "Most use cases need multidimensional evaluation along several success criteria."
@@ -1565,7 +1590,7 @@
         {
           "id": "M1",
           "sentence": "Google's page says that for its models a token is equivalent to about 4 characters.",
-          "kind": "statistic",
+          "kind": "paraphrase",
           "sourceId": "goog-tokens",
           "locator": "intro",
           "quote": "a token is equivalent to about 4 characters"
@@ -1581,7 +1606,7 @@
         {
           "id": "M3",
           "sentence": "The count is an estimate.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "anth-tokencount",
           "locator": "How to count message tokens",
           "quote": "The token count is an estimate."
@@ -1741,7 +1766,7 @@
         {
           "id": "M23",
           "sentence": "Limit both the number of attempts and the total time spent retrying.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "oai-ratelimits",
           "locator": "Retrying with exponential backoff",
           "quote": "Limit both the number of attempts and the total time spent retrying."
@@ -1765,7 +1790,7 @@
         {
           "id": "M26",
           "sentence": "The response has no retry-after header.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "anth-ratelimits",
           "locator": "Spend limit reached",
           "quote": "the response has no retry-after header"
@@ -2167,7 +2192,7 @@
         {
           "id": "R10",
           "sentence": "The study appeared in volume 12 of the Transactions of the Association for Computational Linguistics, 2024.",
-          "kind": "statistic",
+          "kind": "paraphrase",
           "sourceId": "lost-middle",
           "locator": "citation metadata",
           "quote": "Transactions of the Association for Computational Linguistics, Volume 12"
@@ -2372,7 +2397,7 @@
         {
           "id": "N4",
           "sentence": "The document calls the framework voluntary, rights-preserving, non-sector-specific, and use-case agnostic.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "nist-ai100-1",
           "locator": "Section 1.2 / Part 2 intro",
           "quote": "voluntary, rights-preserving, non-sector-specific, and use-case agnostic"
@@ -2428,7 +2453,7 @@
         {
           "id": "N11",
           "sentence": "The actions under the functions do not constitute a checklist, nor are they necessarily an ordered set of steps.",
-          "kind": "quote",
+          "kind": "paraphrase",
           "sourceId": "nist-ai100-1",
           "locator": "Section 5",
           "quote": "do not constitute a checklist, nor are they necessarily an ordered set of steps"
@@ -2588,42 +2613,42 @@
         },
         {
           "sentence": "One article reads the OWASP list of risks for model applications.",
-          "page": "src/content/insights/ai/prompt-injection-and-the-owasp-top-10-for-llm-applications.mdx"
+          "page": "src/content/insights/ai/prompt-injection-and-the-owasp-top-10-for-llm-applications.mdx#what-the-list-contains"
         },
         {
           "sentence": "Another applies the NIST AI Risk Management Framework to a small team.",
-          "page": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx"
+          "page": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx#what-the-framework-is"
         },
         {
-          "sentence": "A third sets out the questions to ask a model provider.",
-          "page": "src/content/insights/ai/choosing-a-model-provider-the-questions-that-matter.mdx"
+          "sentence": "Another sets out the questions to ask a model provider.",
+          "page": "src/content/insights/ai/choosing-a-model-provider-the-questions-that-matter.mdx#a-question-list-you-can-hand-to-a-technical-lead"
         },
         {
-          "sentence": "A fourth shows how to evaluate a feature before launch.",
-          "page": "src/content/insights/ai/evaluating-an-llm-feature-before-you-ship-it.mdx"
+          "sentence": "Another shows how to evaluate a feature before launch.",
+          "page": "src/content/insights/ai/evaluating-an-llm-feature-before-you-ship-it.mdx#why-an-informal-check-is-not-enough"
         },
         {
-          "sentence": "A fifth explains retrieval and where it breaks.",
-          "page": "src/content/insights/ai/retrieval-augmented-generation-what-it-is-and-where-it-breaks.mdx"
+          "sentence": "Another explains retrieval and where it breaks.",
+          "page": "src/content/insights/ai/retrieval-augmented-generation-what-it-is-and-where-it-breaks.mdx#where-it-breaks"
         },
         {
-          "sentence": "A sixth covers metering and budgeting usage.",
-          "page": "src/content/insights/ai/metering-and-budgeting-model-usage.mdx"
+          "sentence": "Another covers metering and budgeting usage.",
+          "page": "src/content/insights/ai/metering-and-budgeting-model-usage.mdx#budget-in-units-you-can-control"
         },
         {
-          "sentence": "A seventh covers decisions about customer data.",
-          "page": "src/content/insights/ai/ai-features-and-customer-data-what-to-decide-first.mdx"
+          "sentence": "Another covers decisions about customer data.",
+          "page": "src/content/insights/ai/ai-features-and-customer-data-what-to-decide-first.mdx#the-one-page-decision-record"
         },
         {
-          "sentence": "An eighth places a person in the loop.",
-          "page": "src/content/insights/ai/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop.mdx"
+          "sentence": "Another places a person in the loop.",
+          "page": "src/content/insights/ai/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop.mdx#three-places-a-person-can-sit"
         },
         {
-          "sentence": "The ninth lists questions to bring to counsel about AI regulation.",
-          "page": "src/content/insights/ai/ai-regulation-for-a-small-saas-company-what-to-ask-counsel.mdx"
+          "sentence": "The last lists questions to bring to counsel about AI regulation.",
+          "page": "src/content/insights/ai/ai-regulation-for-a-small-saas-company-what-to-ask-counsel.mdx#questions-to-bring-to-counsel"
         },
         {
-          "sentence": "Each cites the document it describes and says what it cannot tell you.",
+          "sentence": "Each article cites the document it describes and says what it cannot tell you.",
           "page": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx#what-this-article-cannot-tell-you"
         }
       ]

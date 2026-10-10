@@ -9,6 +9,7 @@ segments: [non-technical-founders, corporate-innovators]
 related: [prompt-injection-and-the-owasp-top-10-for-llm-applications, the-nist-ai-risk-management-framework-for-a-small-team, ai-regulation-for-a-small-saas-company-what-to-ask-counsel]
 evidence: [owasp-llm06, nist-ai100-1, nist-ai600-1, eu-aiact-oj, gdpr-oj]
 relatedPlaybook: build-and-ship-v1
+relatedServices: [B]
 relatedTemplate: security-baseline-checklist
 sources:
   - id: owasp-llm06
@@ -39,7 +40,6 @@ sources:
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
-import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 "There is a human in the loop" is an easy answer to the question of how an AI feature is kept safe, and a hard one to make specific. A person can approve every output before it is used, or look at a sample afterwards, or be called only when the system is unsure. Those are different designs with different costs, and some of them protect nobody.
 
@@ -65,11 +65,11 @@ The right position depends on what a wrong output costs and whether it can be un
 
 OWASP's entry on excessive agency lists "require user approval" among its mitigations: a human-in-the-loop control that requires a human to approve high-impact actions before they are taken. It adds that this may be implemented in a downstream system, outside the scope of the model application, or within the extension itself, and gives the example of an application that creates and posts social media content on a user's behalf, which should include an approval routine.
 
-The point of the downstream option is that approval does not have to depend on the model behaving. In OWASP's mailbox scenario, a crafted incoming email carries an instruction that tells the model to forward sensitive messages. One of the three changes it lists that would have broken the chain is requiring the user to review and send every drafted message. A person at the right step contained the damage even though the model had been steered. The article on <MaybeLink path="/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/">prompt injection and the OWASP Top 10</MaybeLink> describes the scenario in full.
+The point of the downstream option is that approval does not have to depend on the model behaving. In OWASP's mailbox scenario, a crafted incoming email carries an instruction that tells the model to forward sensitive messages. One of the three changes it lists that would have broken the chain is requiring the user to review and send every drafted message. A person at the right step contained the damage even though the model had been steered. The article on [prompt injection and the OWASP Top 10](/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/) describes the scenario in full.
 
 ## What the NIST framework says
 
-NIST's framework addresses oversight in its Map function. Subcategory Map 3.5 asks that processes for human oversight are defined, assessed and documented in accordance with organizational policies from the Govern function. The wording matters: the processes are to be defined and assessed, not merely present. Manage 2.4 asks for mechanisms, with assigned responsibilities, to supersede, disengage or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use. A reviewer who cannot stop the feature is a reader, not an overseer. The article on <MaybeLink path="/insights/the-nist-ai-risk-management-framework-for-a-small-team/">the NIST AI RMF for a small team</MaybeLink> explains how these subcategories fit together.
+NIST's framework addresses oversight in its Map function. Subcategory Map 3.5 asks that processes for human oversight are defined, assessed and documented in accordance with organizational policies from the Govern function. The wording matters: the processes are to be defined and assessed, not merely present. Manage 2.4 asks for mechanisms, with assigned responsibilities, to supersede, disengage or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use. A reviewer who cannot stop the feature is a reader, not an overseer. The article on [the NIST AI RMF for a small team](/insights/the-nist-ai-risk-management-framework-for-a-small-team/) explains how these subcategories fit together.
 
 ## Why review fails
 
@@ -82,19 +82,19 @@ You cannot remove this by choosing a diligent person. You can make it less likel
 - **Give the reviewer time and authority.** A queue sized for a minute per item will produce a glance per item.
 - **Track the override rate.** An override rate that stays at zero is a warning, not good news, and a sudden change is a signal to look at the model or the inputs.
 - **Test the reviewer.** Occasionally include a known-bad output in the queue and see whether it is caught.
-- **Feed the corrections back.** Every override is a candidate test case, which links review to <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">the evaluation described in the article on evaluating an LLM feature</MaybeLink>.
+- **Feed the corrections back.** Every override is a candidate test case, which links review to [the evaluation described in the article on evaluating an LLM feature](/insights/evaluating-an-llm-feature-before-you-ship-it/).
 
 ## What the law says about oversight
 
 Two legal texts speak to human involvement, and neither can be applied to your product without counsel.
 
-The EU Artificial Intelligence Act, Regulation (EU) 2024/1689, addresses human oversight of high-risk AI systems in Article 14. Its first paragraph says high-risk systems shall be designed and developed in such a way, including with appropriate human-machine interface tools, that they can be effectively overseen by natural persons during the period in which they are in use. A later paragraph lists what the people assigned to oversight must be enabled to do, including remaining aware of the possible tendency of automatically relying or over-relying on the output, which the text labels automation bias. The text applies to systems that meet the Act's definition of high-risk, set out in its Article 6 and annexes. Whether a feature meets that definition is a legal question; the article on <MaybeLink path="/insights/ai-regulation-for-a-small-saas-company-what-to-ask-counsel/">AI regulation for a small SaaS company</MaybeLink> lists questions to bring to counsel.
+The EU Artificial Intelligence Act, Regulation (EU) 2024/1689, addresses human oversight of high-risk AI systems in Article 14. Its first paragraph says high-risk systems shall be designed and developed in such a way, including with appropriate human-machine interface tools, that they can be effectively overseen by natural persons during the period in which they are in use. A later paragraph lists what the people assigned to oversight must be enabled to do, including remaining aware of the possible tendency of automatically relying or over-relying on the output, which the text labels automation bias. The text applies to systems that meet the Act's definition of high-risk, set out in its Article 6 and annexes. Whether a feature meets that definition is a legal question; the article on [AI regulation for a small SaaS company](/insights/ai-regulation-for-a-small-saas-company-what-to-ask-counsel/) lists questions to bring to counsel.
 
 The GDPR addresses decisions in Article 22. Its first paragraph says the data subject shall have the right not to be subject to a decision based solely on automated processing, including profiling, which produces legal effects concerning him or her or similarly significantly affects him or her. The next paragraph sets out exceptions. A feature that approves, denies or ranks people can raise this question, and a token human step that does not influence the decision may not change the answer. Counsel can say whether Article 22 applies and what a meaningful review would need to look like.
 
 ## A review plan on one page
 
-For each action the feature can take, write down the position (before, after or on exception), the person or role responsible, what they see, what they can do and how quickly, how the override rate is tracked, and how the feature is switched off. Include the cost: review takes staff time, and a plan that leaves no one to do it is not a plan. Keep the page with the feature, and look at it again whenever the feature gains a new capability. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> covers the access controls these roles depend on.
+For each action the feature can take, write down the position (before, after or on exception), the person or role responsible, what they see, what they can do and how quickly, how the override rate is tracked, and how the feature is switched off. Include the cost: review takes staff time, and a plan that leaves no one to do it is not a plan. Keep the page with the feature, and look at it again whenever the feature gains a new capability. The [security baseline checklist](/library/security-baseline-checklist/) covers the access controls these roles depend on.
 
 <Callout title="Ask before you approve a launch">
   Which actions can the feature take without a person? Who reviews the rest, and what do they see? Could the reviewer stop the feature today? What would be noticed if review quietly stopped working?
