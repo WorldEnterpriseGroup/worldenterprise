@@ -1,0 +1,80 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { SlotId } from '../../assets/photo/slots.ts';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import SourcesList from '../blocks/SourcesList.astro';
+import BrandCallout from '../brand/BrandCallout.astro';
+import Compositions from '../brand/Compositions.astro';
+import Section from '../ui/Section.astro';
+import type { HeroActions } from './actions.ts';
+import { EYEBROWS, FIXED, HEADINGS } from './copy.ts';
+import FamilyHub from './FamilyHub.astro';
+import FamilyItems from './FamilyItems.astro';
+import type { SegmentView } from './view.ts';
+
+/**
+ * A founder segment page (/founders/<segment>/). The structured fields render in a fixed order, so a page cannot omit a section or
+ * reorder one: the fixed sentence, the reader's situation, the challenges, the reading path and the sources. The page's own MDX
+ * body sits above them, in the reading column. The template states no eligibility rule and no number; its one fixed sentence says so.
+ */
+interface Props {
+  page: CollectionEntry<'pages'>;
+  view: SegmentView;
+  path: string;
+  actions: HeroActions;
+  ogSlot: SlotId;
+}
+
+const { page, view, path, actions, ogSlot } = Astro.props;
+const { Content } = await render(page);
+const { title, description, eyebrow, updated, draft } = page.data;
+---
+
+<MarketingLayout
+  title={title}
+  description={description}
+  path={path}
+  lead={description}
+  eyebrow={eyebrow ?? EYEBROWS.segments}
+  updated={updated}
+  draft={draft}
+  ogSlot={ogSlot}
+  schemaType="WebPage"
+  primary={actions.primary}
+  secondary={actions.secondary}
+>
+  <Compositions id="segments" />
+  <BrandCallout tone="limit" title={HEADINGS.shared.about}>
+    <p>{FIXED.segment}</p>
+  </BrandCallout>
+  <Content />
+  <Fragment slot="after">
+    <Section labelledby="seg-who">
+      <div class="stack">
+        <h2 id="seg-who">{HEADINGS.segments.whoFor}</h2>
+        <p>{view.whoFor}</p>
+      </div>
+    </Section>
+    <Section tone="soft" labelledby="seg-challenges">
+      <div class="stack">
+        <h2 id="seg-challenges">{HEADINGS.segments.challenges}</h2>
+        <FamilyItems items={view.challenges} label={HEADINGS.segments.challenges} />
+      </div>
+    </Section>
+    {
+      view.reading.length > 0 && (
+        <Section>
+          <FamilyHub heading={HEADINGS.segments.reading} id="seg-reading" cards={view.reading} />
+        </Section>
+      )
+    }
+    {
+      view.sources.length > 0 && (
+        <Section tone="stone">
+          <SourcesList sources={view.sources} title={HEADINGS.shared.sources} />
+        </Section>
+      )
+    }
+  </Fragment>
+</MarketingLayout>

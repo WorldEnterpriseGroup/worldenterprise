@@ -1,0 +1,114 @@
+---
+import Badge from '../brand/Badge.astro';
+
+/**
+ * A grid of equal items, each a hex mark, a heading, an optional row of facts and a paragraph. Segments use it for challenges and
+ * industries for the regulatory perimeter. Every item has the same shape and weight; the template cannot make one stand out.
+ */
+interface Item {
+  readonly title: string;
+  readonly text: string;
+  /** Short facts about the item, for example a jurisdiction and a date. Rendered as badges. */
+  readonly facts?: readonly string[];
+  /** A pointer to the item's source in the Sources list. */
+  readonly source?: { readonly label: string; readonly href: string };
+}
+
+interface Props {
+  items: readonly Item[];
+  /** Accessible name of the list. */
+  label: string;
+}
+
+const { items, label } = Astro.props;
+---
+
+<ul class="fitems" role="list" aria-label={label}>
+  {
+    items.map((item) => (
+      <li class="fitems__item">
+        <span class="fitems__mark" aria-hidden="true" />
+        <div class="fitems__body">
+          <h3>{item.title}</h3>
+          {
+            item.facts !== undefined && item.facts.length > 0 && (
+              <p class="fitems__facts">
+                {item.facts.map((fact) => (
+                  <Badge>{fact}</Badge>
+                ))}
+              </p>
+            )
+          }
+          <p>{item.text}</p>
+          {
+            item.source !== undefined && (
+              <p class="fitems__source">
+                <a href={item.source.href}>{item.source.label}</a>
+              </p>
+            )
+          }
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .fitems {
+    display: grid;
+    gap: var(--sp-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    container-type: inline-size;
+
+    @container (min-width: 40rem) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .fitems__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-4);
+    align-items: start;
+    padding: var(--sp-5);
+    background: var(--color-bg);
+    border: var(--border-hair);
+    border-radius: var(--radius-md);
+  }
+
+  .fitems__mark {
+    inline-size: var(--sp-5);
+    aspect-ratio: var(--hex-ratio);
+    clip-path: var(--hex-clip);
+    background: var(--color-accent);
+    margin-block-start: var(--sp-1);
+  }
+
+  .fitems__body {
+    display: grid;
+    gap: var(--sp-2);
+  }
+
+  .fitems__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+  }
+
+  .fitems__source {
+    font-size: var(--fs-sm);
+  }
+
+  @media (forced-colors: active) {
+    .fitems__item {
+      border-color: CanvasText;
+    }
+
+    .fitems__mark {
+      forced-color-adjust: none;
+      background: ButtonText;
+    }
+  }
+</style>

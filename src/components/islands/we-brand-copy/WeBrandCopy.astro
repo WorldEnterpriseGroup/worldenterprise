@@ -1,0 +1,53 @@
+---
+/**
+ * <we-brand-copy> island host. The visible text is ordinary page content, so it can be selected and copied without JavaScript;
+ * src/scripts/brand-copy.ts adds the button and the polite status line. Nothing is stored or sent.
+ */
+interface Props {
+  /** The exact string the button copies. Defaults to the visible text of the block. */
+  text?: string;
+  label?: string;
+}
+
+const { text, label = 'Copy' } = Astro.props;
+---
+
+<we-brand-copy data-text={text} data-label={label}>
+  <div class="we-brand-copy__source" data-copy-source><slot /></div>
+  <p class="we-brand-copy__hint" data-copy-hint>Select the text to copy it.</p>
+</we-brand-copy>
+
+<script>
+  import '../../../scripts/brand-copy.ts';
+</script>
+
+<style is:global>
+  @layer components {
+    we-brand-copy {
+      display: block;
+      padding: var(--sp-4);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+
+      & .we-brand-copy__source {
+        overflow-wrap: anywhere;
+      }
+
+      & .we-brand-copy__hint,
+      & .we-brand-copy__status {
+        margin-block: var(--sp-2) 0;
+        color: var(--color-text-muted);
+        font-size: var(--fs-sm);
+      }
+
+      & .we-brand-copy__status {
+        min-block-size: 1.5em;
+      }
+
+      & .btn {
+        margin-block-start: var(--sp-3);
+      }
+    }
+  }
+</style>
