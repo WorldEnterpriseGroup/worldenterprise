@@ -1,0 +1,57 @@
+---
+import Field from './Field.astro';
+import Fieldset from './Fieldset.astro';
+import FormFrame from './FormFrame.astro';
+import { FORM_CONSENT, FORM_NOTICES, FORM_SUBMIT_LABELS, PARTNER_CATEGORY_OPTIONS } from './copy.ts';
+
+const id = 'partner-enquiry';
+---
+
+<FormFrame
+  kind="partner-enquiry"
+  id={id}
+  submitLabel={FORM_SUBMIT_LABELS['partner-enquiry']}
+  thanksPath="/network/partners/enquire/thanks/"
+  consentLabel={FORM_CONSENT['partner-enquiry']}
+>
+  <Fieldset legend="Tell WE what you provide to founders">
+    <p class="field__hint" data-form-notice>{FORM_NOTICES.noPartnership}</p>
+    <Field id={`${id}-name`} name="name" label="Your name" required autocomplete="name" maxlength={120} reserveError />
+    <Field
+      id={`${id}-email`}
+      name="email"
+      label="Email address"
+      type="email"
+      required
+      autocomplete="email"
+      maxlength={254}
+      hint="WE replies to this address."
+      reserveError
+    />
+    <Field id={`${id}-company`} name="company" label="Organization" required autocomplete="organization" maxlength={120} reserveError />
+    <Field
+      id={`${id}-url`}
+      name="companyUrl"
+      label="Organization website"
+      type="url"
+      required
+      autocomplete="url"
+      maxlength={300}
+      hint="Start it with https://"
+      reserveError
+    />
+    <Field id={`${id}-category`} name="partnerCategory" label="What kind of organization is it?" type="select" required options={PARTNER_CATEGORY_OPTIONS} reserveError />
+    <Field
+      id={`${id}-offer`}
+      name="offer"
+      label="What you provide to founders, and on what terms"
+      type="textarea"
+      required
+      rows={6}
+      maxlength={1500}
+      hint="Describe the service or offer and the terms a founder would see."
+      reserveError
+    />
+    <Field id={`${id}-message`} name="message" label="Anything else" type="textarea" rows={4} maxlength={4000} hint="Optional." reserveError />
+  </Fieldset>
+</FormFrame>
