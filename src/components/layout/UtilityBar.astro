@@ -10,6 +10,9 @@ interface Props {
 const { currentPath } = Astro.props;
 const state = await getRouteState();
 const links = resolveUtility(state.isLive);
+// Search is a link to /search/ without JavaScript. Once src/scripts/palette.ts has read the command list it hides that link and shows
+// the button beside it, which opens the command palette. Both read "Search", so the swap moves nothing.
+const SEARCH_PATH = '/search/';
 ---
 
 <div class="utility-bar">
@@ -21,9 +24,14 @@ const links = resolveUtility(state.isLive);
           <ul class="utility-bar__list" role="list">
             {links.map((link) => (
               <li>
-                <a href={href(link.href)} aria-current={link.href === currentPath ? 'page' : undefined}>
+                <a href={href(link.href)} aria-current={link.href === currentPath ? 'page' : undefined} data-palette-fallback={link.href === SEARCH_PATH ? '' : undefined}>
                   {link.label}
                 </a>
+                {link.href === SEARCH_PATH && (
+                  <button type="button" class="utility-bar__search" data-palette-open aria-keyshortcuts="Control+K Meta+K /" hidden>
+                    {link.label}
+                  </button>
+                )}
               </li>
             ))}
           </ul>
@@ -32,3 +40,28 @@ const links = resolveUtility(state.isLive);
     }
   </div>
 </div>
+
+<style>
+  @layer reset, tokens, base, layout, components, utilities, pages, print;
+
+  @layer pages {
+    .utility-bar__search {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: 1.5rem;
+      padding: 0;
+      border: 0;
+      background: none;
+      font: inherit;
+      color: var(--color-text);
+      text-decoration-line: underline;
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.18em;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-link-hover);
+      }
+    }
+  }
+</style>
