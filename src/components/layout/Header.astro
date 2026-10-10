@@ -1,9 +1,13 @@
 ---
 import wordmark from '../../assets/brand/we-logo-wordmark.svg';
-import { applyButton, resolveNav } from '../../data/nav.ts';
+import { applyButton, resolveFooter, resolveNav, resolveUtility } from '../../data/nav.ts';
 import { site } from '../../data/site.ts';
+import { getPublished } from '../../lib/content.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
+import WePalette from '../islands/we-palette/WePalette.astro';
+import { buildPaletteCommands } from '../nav/commands.ts';
+import type { NewestResearch } from '../nav/panels.ts';
 import MegaNav from './MegaNav.astro';
 import MobileNav from './MobileNav.astro';
 
@@ -15,6 +19,15 @@ const { currentPath } = Astro.props;
 const state = await getRouteState();
 const items = resolveNav(state.isLive);
 const apply = state.isLive(applyButton.href) ? applyButton : null;
+
+// The Resources panel's tile names the newest published research brief (`newestResearch` in the navigation data). A brief whose page
+// does not exist is skipped, so the tile never links to a missing page.
+const briefs = (await getPublished('research')).sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
+const newestBrief = briefs.find((entry) => state.isLive(`/research/${entry.id.split('/').at(-1) ?? entry.id}/`));
+const newestResearch: NewestResearch | null =
+  newestBrief === undefined ? null : { title: newestBrief.data.title, href: `/research/${newestBrief.id.split('/').at(-1) ?? newestBrief.id}/` };
+
+const commands = buildPaletteCommands({ items, utility: resolveUtility(state.isLive), apply, footer: resolveFooter(state.isLive) }, state.isLive);
 ---
 
 <header class="site-header">
@@ -22,10 +35,11 @@ const apply = state.isLive(applyButton.href) ? applyButton : null;
     <a href={href('/')} class="site-header__logo" aria-label={`${site.name}, home`}>
       <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="World Enterprise" decoding="async" />
     </a>
-    {items.length > 0 && <MegaNav items={items} currentPath={currentPath} />}
+    {items.length > 0 && <MegaNav items={items} currentPath={currentPath} newestResearch={newestResearch} />}
     {apply && <a class="btn btn--primary site-header__apply" href={href(apply.href)} aria-current={currentPath === apply.href ? 'page' : undefined}>{apply.label}</a>}
-    {items.length > 0 && <MobileNav items={items} apply={apply} currentPath={currentPath} />}
+    {items.length > 0 && <MobileNav items={items} apply={apply} currentPath={currentPath} newestResearch={newestResearch} />}
   </div>
+  <WePalette commands={commands} />
 </header>
 <script>
   import '../../scripts/nav.ts';

@@ -2,20 +2,27 @@
 import type { NavLink, PrimaryNavItem } from '../../data/nav.ts';
 import { activeSectionId } from '../../data/nav.ts';
 import { href } from '../../lib/url.ts';
+import type { NewestResearch } from '../nav/panels.ts';
+import { panelModel } from '../nav/panels.ts';
 
 interface Props {
   items: readonly PrimaryNavItem[];
   apply: NavLink | null;
   currentPath: string;
+  /** The newest published research brief. Passed so a section lists the same pages as its desktop panel. */
+  newestResearch?: NewestResearch | null;
 }
 
-const { items, apply, currentPath } = Astro.props;
+const { items, apply, currentPath, newestResearch = null } = Astro.props;
 const activeId = activeSectionId(currentPath);
 const link = (target: string) => (target === currentPath ? 'page' : undefined);
 // The fixed Apply bar is the call to action on every other page. On the application itself and on Contact it repeats the page, covers the
 // bottom of the form and adds nothing, so it is not rendered there.
 const BARLESS_PREFIXES = ['/apply/', '/contact/'] as const;
 const showApplyBar = apply !== null && !BARLESS_PREFIXES.some((prefix) => currentPath.startsWith(prefix));
+// Search is a link to /search/ without JavaScript. Once src/scripts/palette.ts has read the command list it hides the link and shows
+// the button beside it, which opens the command palette.
+const SEARCH_LABEL = 'Search the site';
 ---
 
 <div class="mobile-nav">
@@ -24,17 +31,26 @@ const showApplyBar = apply !== null && !BARLESS_PREFIXES.some((prefix) => curren
     <div class="mobile-drawer__head">
       <button type="button" class="mobile-nav__toggle" popovertarget="mobile-drawer" popovertargetaction="hide">Close</button>
     </div>
+    <div class="mobile-drawer__search">
+      <a class="mobile-drawer__find" href={href('/search/')} data-palette-fallback>{SEARCH_LABEL}</a>
+      <button type="button" class="mobile-drawer__find" data-palette-open aria-keyshortcuts="Control+K Meta+K /" hidden>{SEARCH_LABEL}</button>
+    </div>
     <nav aria-label="Primary mobile">
       <ul class="mobile-drawer__list" role="list">
         {
-          items.map((item) =>
-            item.kind === 'direct' ? (
-              <li>
-                <a class="mobile-drawer__link" href={href(item.href)} aria-current={link(item.href) ?? (activeId === item.id ? 'true' : undefined)}>
-                  {item.label}
-                </a>
-              </li>
-            ) : (
+          items.map((item) => {
+            if (item.kind === 'direct') {
+              return (
+                <li>
+                  <a class="mobile-drawer__link" href={href(item.href)} aria-current={link(item.href) ?? (activeId === item.id ? 'true' : undefined)}>
+                    {item.label}
+                  </a>
+                </li>
+              );
+            }
+            // The same pages as the desktop panel, each once: the hub first, then the deduplicated columns, then the strip.
+            const panel = panelModel(item, newestResearch);
+            return (
               <li>
                 <details name="mobile-nav" open={activeId === item.id}>
                   <summary aria-current={activeId === item.id ? 'true' : undefined}>{item.label}</summary>
@@ -44,7 +60,7 @@ const showApplyBar = apply !== null && !BARLESS_PREFIXES.some((prefix) => curren
                         {item.leadLink}
                       </a>
                     </li>
-                    {item.columns.flatMap((column) =>
+                    {panel.columns.flatMap((column) =>
                       column.links.map((l) => (
                         <li>
                           <a href={href(l.href)} aria-current={link(l.href)}>
@@ -53,14 +69,28 @@ const showApplyBar = apply !== null && !BARLESS_PREFIXES.some((prefix) => curren
                         </li>
                       )),
                     )}
+                    {panel.strip.map((l) => (
+                      <li>
+                        <a href={href(l.href)} aria-current={link(l.href)}>
+                          {l.label}
+                        </a>
+                      </li>
+                    ))}
                   </ul>
                 </details>
               </li>
-            ),
-          )
+            );
+          })
         }
       </ul>
     </nav>
+    {
+      apply && showApplyBar && (
+        <div class="mobile-drawer__apply">
+          <a class="btn btn--primary" href={href(apply.href)}>{apply.label}</a>
+        </div>
+      )
+    }
   </div>
   {
     apply && showApplyBar && (
@@ -70,3 +100,65 @@ const showApplyBar = apply !== null && !BARLESS_PREFIXES.some((prefix) => curren
     )
   }
 </div>
+
+<style>
+  @layer reset, tokens, base, layout, components, utilities, pages, print;
+
+  /* The drawer is a column of four rows: Close, Search, the sections (the only row that scrolls) and Apply, which therefore never scrolls
+     away. The grid is set only while the popover is open, because an author display value would otherwise defeat the popover's own
+     display: none. Targets are 3rem, the size of a section row. */
+  @layer pages {
+    .mobile-drawer:popover-open {
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+      overflow: hidden;
+    }
+
+    .mobile-drawer > nav {
+      min-block-size: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .mobile-drawer__search {
+      padding-block: var(--sp-2) var(--sp-3);
+    }
+
+    .mobile-drawer__find {
+      display: flex;
+      align-items: center;
+      inline-size: 100%;
+      min-block-size: 3rem;
+      padding-inline: var(--sp-3);
+      border: var(--border-strong);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+      color: var(--color-text);
+      font: inherit;
+      font-family: var(--ff-display);
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        background: var(--color-bg-soft);
+        color: var(--color-link);
+      }
+    }
+
+    .mobile-drawer details a {
+      min-block-size: 3rem;
+    }
+
+    .mobile-drawer__apply {
+      display: grid;
+      padding-block-start: var(--sp-3);
+      border-block-start: var(--border-hair);
+
+      & .btn {
+        justify-content: center;
+        min-block-size: 3rem;
+      }
+    }
+  }
+</style>
