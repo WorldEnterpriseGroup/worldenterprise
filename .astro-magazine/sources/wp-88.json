@@ -217,6 +217,51 @@
       "fetchedAt": "2026-10-10T22:41:35Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "nyc-aedt",
+      "url": "https://www.nyc.gov/site/dca/about/automated-employment-decision-tools.page",
+      "title": "Automated Employment Decision Tools (AEDT)",
+      "publisher": "New York City Department of Consumer and Worker Protection",
+      "fetchedAt": "2026-10-10T22:55:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-1607-3",
+      "url": "https://www.law.cornell.edu/cfr/text/29/1607.3",
+      "title": "29 CFR 1607.3: Discrimination defined: Relationship between use of selection procedures and discrimination",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T22:57:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-1607-4",
+      "url": "https://www.law.cornell.edu/cfr/text/29/1607.4",
+      "title": "29 CFR 1607.4: Information on impact",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T22:55:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-background-checks",
+      "url": "https://www.ftc.gov/business-guidance/resources/background-checks-what-employers-need-know",
+      "title": "Background Checks: What Employers Need to Know",
+      "publisher": "Federal Trade Commission",
+      "fetchedAt": "2026-10-10T22:55:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ec-ai-act",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+      "title": "AI Act",
+      "publisher": "European Commission, Shaping Europe's digital future",
+      "fetchedAt": "2026-10-10T22:55:45Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -986,6 +1031,163 @@
           "sourceId": "ada-web-rule",
           "locator": "Population under 50,000",
           "quote": "Compliance deadline: April 26, 2028"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/sectors/hr-and-recruiting-software-considerations-before-you-build.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "subject to a bias audit within one year of the use of the tool",
+          "kind": "regulation",
+          "sourceId": "nyc-aedt",
+          "locator": "Introduction",
+          "quote": "subject to a bias audit within one year of the use of the tool"
+        },
+        {
+          "id": "A2",
+          "sentence": "information about the bias audit is publicly available",
+          "kind": "regulation",
+          "sourceId": "nyc-aedt",
+          "locator": "Introduction",
+          "quote": "information about the bias audit is publicly available"
+        },
+        {
+          "id": "A3",
+          "sentence": "certain notices have been provided to employees or job candidates",
+          "kind": "regulation",
+          "sourceId": "nyc-aedt",
+          "locator": "Introduction",
+          "quote": "certain notices have been provided to employees or job candidates"
+        },
+        {
+          "id": "A4",
+          "sentence": "the Notice must be provided 10 business days prior to use of an AEDT",
+          "kind": "regulation",
+          "sourceId": "nyc-aedt",
+          "locator": "Roundtables note",
+          "quote": "the Notice must be provided 10 business days prior to use of an AEDT"
+        },
+        {
+          "id": "A5",
+          "sentence": "DCWP will begin enforcement of this law and rule on July 5, 2023",
+          "kind": "paraphrase",
+          "sourceId": "nyc-aedt",
+          "locator": "Introductory note",
+          "quote": "DCWP will begin enforcement of this law and rule on July 5, 2023"
+        },
+        {
+          "id": "A6",
+          "sentence": "will be considered to be discriminatory and inconsistent with these guidelines, unless the procedure has been validated",
+          "kind": "regulation",
+          "sourceId": "cfr-1607-3",
+          "locator": "1607.3(A)",
+          "quote": "will be considered to be discriminatory and inconsistent with these guidelines, unless the procedure has been validated"
+        },
+        {
+          "id": "A7",
+          "sentence": "which has an adverse impact on the hiring, promotion, or other employment or membership opportunities of members of any race, sex, or ethnic group",
+          "kind": "regulation",
+          "sourceId": "cfr-1607-3",
+          "locator": "1607.3(A)",
+          "quote": "The use of any selection procedure which has an adverse impact on the hiring, promotion,"
+        },
+        {
+          "id": "A8",
+          "sentence": "validated in accordance with these guidelines, or the provisions of section 6 below are satisfied",
+          "kind": "regulation",
+          "sourceId": "cfr-1607-3",
+          "locator": "1607.3(A)",
+          "quote": "has been validated in accordance with these guidelines, or the provisions of section 6 below are satisfied"
+        },
+        {
+          "id": "A9",
+          "sentence": "less than four-fifths ( 4/5) (or eighty percent) of the rate for the group with the highest rate",
+          "kind": "regulation",
+          "sourceId": "cfr-1607-4",
+          "locator": "1607.4(D)",
+          "quote": "less than four-fifths ( 4/5) (or eighty percent) of the rate for the group with the highest rate"
+        },
+        {
+          "id": "A10",
+          "sentence": "will generally be regarded by the Federal enforcement agencies as evidence of adverse impact",
+          "kind": "regulation",
+          "sourceId": "cfr-1607-4",
+          "locator": "1607.4(D)",
+          "quote": "will generally be regarded by the Federal enforcement agencies as evidence of adverse impact"
+        },
+        {
+          "id": "A11",
+          "sentence": "Information on impact",
+          "kind": "paraphrase",
+          "sourceId": "cfr-1607-4",
+          "locator": "Section title",
+          "quote": "Information on impact"
+        },
+        {
+          "id": "A12",
+          "sentence": "in writing and in a stand-alone format",
+          "kind": "regulation",
+          "sourceId": "ftc-background-checks",
+          "locator": "Notice",
+          "quote": "in writing and in a stand-alone format"
+        },
+        {
+          "id": "A13",
+          "sentence": "Get the applicant’s or employee’s written permission to do the background check",
+          "kind": "regulation",
+          "sourceId": "ftc-background-checks",
+          "locator": "Permission",
+          "quote": "Get the applicant’s or employee’s written permission to do the background check."
+        },
+        {
+          "id": "A14",
+          "sentence": "a notice that includes a copy of the consumer report you relied on to make your decision",
+          "kind": "regulation",
+          "sourceId": "ftc-background-checks",
+          "locator": "Adverse action",
+          "quote": "a notice that includes a copy of the consumer report you relied on to make your decision"
+        },
+        {
+          "id": "A15",
+          "sentence": "February 2014",
+          "kind": "paraphrase",
+          "sourceId": "ftc-background-checks",
+          "locator": "Page date",
+          "quote": "February 2014"
+        },
+        {
+          "id": "A16",
+          "sentence": "AI tools for employment, management of workers and access to self-employment (e.g. CV-sorting software for recruitment)",
+          "kind": "regulation",
+          "sourceId": "ec-ai-act",
+          "locator": "High-risk use cases",
+          "quote": "AI tools for employment, management of workers and access to self-employment (e.g. CV-sorting software for recruitment)"
+        },
+        {
+          "id": "A17",
+          "sentence": "entered into force on 1 August 2024",
+          "kind": "regulation",
+          "sourceId": "ec-ai-act",
+          "locator": "Timeline",
+          "quote": "entered into force on 1 August 2024"
+        },
+        {
+          "id": "A18",
+          "sentence": "have been extended to 2 December 2027",
+          "kind": "regulation",
+          "sourceId": "ec-ai-act",
+          "locator": "Timeline",
+          "quote": "have been extended to 2 December 2027"
+        },
+        {
+          "id": "A19",
+          "sentence": "3 August 2026",
+          "kind": "paraphrase",
+          "sourceId": "ec-ai-act",
+          "locator": "Page date",
+          "quote": "3 August 2026"
         }
       ]
     }

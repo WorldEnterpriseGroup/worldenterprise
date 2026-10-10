@@ -1,0 +1,98 @@
+---
+title: "HR and recruiting software: considerations before you build"
+seoTitle: HR software considerations
+description: "Questions to settle before you build hiring software: automated tool audits, selection-rate rules, background checks and the EU AI Act, from public texts."
+topic: sectors
+publishedDate: 2026-10-10
+segments: [technical-founders, corporate-innovators]
+related: [ai-features-and-customer-data-what-to-decide-first, privacy-law-basics-for-a-small-product, vertical-saas-depth-over-breadth]
+evidence: [nyc-aedt, cfr-1607-3, cfr-1607-4, ftc-background-checks, ec-ai-act]
+relatedServices: [B, G]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: nyc-aedt
+    title: Automated Employment Decision Tools (AEDT)
+    publisher: New York City Department of Consumer and Worker Protection
+    url: https://www.nyc.gov/site/dca/about/automated-employment-decision-tools.page
+    accessed: 2026-10-10
+  - id: cfr-1607-3
+    title: "29 CFR 1607.3: Discrimination defined: Relationship between use of selection procedures and discrimination"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/29/1607.3
+    accessed: 2026-10-10
+  - id: cfr-1607-4
+    title: "29 CFR 1607.4: Information on impact"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/29/1607.4
+    accessed: 2026-10-10
+  - id: ftc-background-checks
+    title: "Background Checks: What Employers Need to Know"
+    publisher: Federal Trade Commission
+    url: https://www.ftc.gov/business-guidance/resources/background-checks-what-employers-need-know
+    accessed: 2026-10-10
+  - id: ec-ai-act
+    title: AI Act
+    publisher: European Commission, Shaping Europe's digital future
+    url: https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal or financial advice. Written October 10, 2026 and scoped to four bodies of public text: a New York City agency page, two sections of the United States federal employee-selection guidelines, a Federal Trade Commission page on background checks, and a European Commission page on the AI Act. State and national employment laws differ widely and are not covered. Bring the facts of your product to an employment lawyer licensed where your customers hire.*
+
+Hiring software has an unusual property: its customer is the employer, but the people it affects most are applicants who never signed anything with the vendor. Rules about discrimination, screening and records attach to the employer's decisions, and a tool that ranks, filters or scores people can become part of that decision. This article lists the considerations a founder can settle before building, each tied to a public text. It does not say how any rule applies to your product, and it states no result for any employer or applicant.
+
+## Start with the decision your product touches
+
+The first sentence to write is "my product helps a person decide this, about this kind of person, at this stage of hiring". A scheduling tool, a résumé parser, a ranking model and a background-check connector sit in very different places. The closer a product comes to the decision about whether a person advances, the more of the texts below matter. Write down, for each feature, whether it only organizes information for a human or whether it ranks, scores or screens candidates. That answer is also the one an employer's legal team will ask for first.
+
+Then write down where the product will be used. A rule that governs one city, one country or one kind of employer may not reach another, and the pages below belong to different jurisdictions on purpose.
+
+## A city rule for automated tools
+
+New York City's Department of Consumer and Worker Protection publishes a page on automated employment decision tools. Its introduction says an employer may not use such a tool unless it has been "subject to a bias audit within one year of the use of the tool", that information about the bias audit is publicly available, and that certain notices have been provided to employees or job candidates. A note on the page says the Notice must be provided 10 business days prior to use of an AEDT. The page also states that DCWP will begin enforcement of this law and rule on July 5, 2023.
+
+The page does not define the term AEDT; the definition sits in the law and rule it links to, and whether a given product is one is a question for counsel. For a founder, the design consequence is that an employer in this city may ask the vendor for the audit, for the information that has to be made public and for the notice text, and a product that cannot produce them is harder to buy. The dates on the page are from 2023, so it says nothing about any change since, and this article does not either.
+
+## Selection rates and the four-fifths rule
+
+In the United States, federal guidelines on employee selection procedures sit at 29 CFR part 1607, and the Legal Information Institute publishes the text. Section 1607.3 says the use of any selection procedure which has an adverse impact on the hiring, promotion, or other employment or membership opportunities of members of any race, sex, or ethnic group will be considered to be discriminatory and inconsistent with these guidelines, unless the procedure has been validated. The paragraph goes on to say validated in accordance with these guidelines, or the provisions of section 6 below are satisfied.
+
+Section 1607.4 is titled "Information on impact", and its paragraph D, headed the "four-fifths rule", says a selection rate for any race, sex, or ethnic group that is less than four-fifths ( 4/5) (or eighty percent) of the rate for the group with the highest rate will generally be regarded by the Federal enforcement agencies as evidence of adverse impact.
+
+Read together, the two sections show why a screening feature creates a measurement problem for its builder as well as its customer. A tool that filters candidates produces selection rates, and a customer may want to see them by group. Whether the guidelines apply to a given employer, how the rule treats a vendor's tool and what counts as validation are legal questions this article does not answer. The product question is narrower: could the company compute and report selection rates for a customer if it were asked, and does the data model keep the information needed to do it?
+
+## Background checks are a separate regime
+
+Many hiring products connect to background checks. The FTC's page for employers, which was marked February 2014 when read, describes what the Fair Credit Reporting Act asks of an employer using a report from a consumer reporting agency. Before getting a report, the notice must be "in writing and in a stand-alone format", and the employer must Get the applicant’s or employee’s written permission to do the background check. Before an adverse action based on the report, the page says the employer must give a notice that includes a copy of the consumer report you relied on to make your decision.
+
+These are steps in the employer's workflow, and a product that automates them takes on part of the job of getting them right. A consent screen that sits inside an application form is a different thing from a stand-alone notice, so the questions "who writes the notice?" and "who keeps the proof of consent?" belong in the design, not in the terms of service. The page is more than a decade old and describes a statute, so confirm the current text and any state rules with counsel.
+
+## The EU treats some hiring software as high-risk
+
+For customers in the European Union, the Commission's AI Act page lists as high-risk use cases AI tools for employment, management of workers and access to self-employment (e.g. CV-sorting software for recruitment). It says the Act entered into force on 1 August 2024 and that the rules for the high-risk use cases it lists have been extended to 2 December 2027. The page showed 3 August 2026 as its last-updated date when read.
+
+The page does not say whether a particular product is within the high-risk category, what a provider has to produce, or whether dates will move again. A founder planning for European customers should treat the category as a reason to keep records of how the product works, what data it was built on and how a human can override it, and to ask counsel which duties fall on the vendor and which on the employer. <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data: what to decide first</MaybeLink> covers the data decisions that come before this.
+
+## Applicant data is personal data
+
+Whatever else a hiring product does, it holds personal information about people who are not its customers. The <MaybeLink path="/insights/privacy-law-basics-for-a-small-product/">privacy law basics for a small product</MaybeLink> article places the main regimes in general terms. For this sector the practical questions are how long applicant records are kept, who at the customer can see them, whether they are used to improve the product, and how an applicant's request to see or delete information reaches the right person.
+
+## Questions to put to counsel before you build
+
+None of these is advice. They follow from the pages above.
+
+- Does any feature rank, score or screen candidates, and is it an automated tool under any rule that governs a likely customer?
+- Which customers hire in places with their own rules for automated tools, and what would each ask the vendor to provide?
+- Could the product report selection rates by group, and does the guideline apply to the customer?
+- If the product connects to background checks, who is responsible for the notice, the consent record and the adverse-action step?
+- Would any feature be treated as high-risk for a customer in the European Union?
+- What happens to applicant data after a hiring process ends, and may the company use it for anything else?
+- Which answer changes if the product adds a feature that scores people?
+
+Keep the answers in writing. An employer's procurement and legal teams will ask for many of them, and the <MaybeLink path="/insights/answering-a-security-and-privacy-questionnaire/">security and privacy questionnaire</MaybeLink> article describes how that process works in general. <MaybeLink path="/insights/vertical-saas-depth-over-breadth/">Vertical SaaS: depth over breadth</MaybeLink> covers the choice between serving one workflow well and serving many, which a hiring product meets early. The <MaybeLink path="/glossary/">glossary</MaybeLink> defines terms used in these pages.
+
+## What this article cannot tell you
+
+This article does not tell you whether a rule applies to your product or customers, whether a tool is biased or lawful, or what an audit would find. It covers five pages read on October 10, 2026: the New York City page, two sections of 29 CFR part 1607 as published by the Legal Information Institute, the FTC's page on background checks and the Commission's AI Act page. It does not cover state laws on automated hiring beyond that one city, the Americans with Disabilities Act, pay transparency, immigration verification, worker classification, payroll and benefits rules, works councils, data-protection law in any country, or the contents of a bias audit. These texts are amended, and the Commission page itself reports extended dates, so confirm anything you rely on against the current official text with a lawyer licensed where your customers hire.
