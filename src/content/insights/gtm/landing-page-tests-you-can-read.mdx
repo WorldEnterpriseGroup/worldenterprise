@@ -58,7 +58,7 @@ The handbook also notes a second risk that you do not set: "The risk of failing 
 
 ## Reading two proportions
 
-The handbook's page on comparing two proportions says: "The hypothesis of equal proportions can be tested using a z statistic". The statistic is built from counts you already have. Its top is the difference between the two observed proportions. Its bottom is the square root of p times (1 minus p) times (1 divided by n1 plus 1 divided by n2), where p is the pooled proportion, the total number of successes divided by the total number of visitors, and n1 and n2 are the visitors in each version. You then compare the size of the result with a critical value from the normal distribution.
+The handbook's page on comparing two proportions describes testing the hypothesis of equal proportions with a statistic built from the two observed rates. The statistic is built from counts you already have. Its top is the difference between the two observed proportions. Its bottom is the square root of p times (1 minus p) times (1 divided by n1 plus 1 divided by n2), where p is the pooled proportion, the total number of successes divided by the total number of visitors, and n1 and n2 are the visitors in each version. You then compare the size of the result with a critical value from the normal distribution.
 
 The page gives a condition for using it: the normal approximation to the binomial applies when "the samples are reasonably large". The handbook does not set one number for that phrase in the sentence, so treat it as a reason to ask a statistician when your counts are small.
 
@@ -84,7 +84,7 @@ A young product often has traffic like the third case below, and here the normal
 | Version A | 20 | 3 |
 | Version B | 20 | 6 |
 
-The rates here are 0.15 and 0.30, and a sloppy reading would call B twice as good. The z statistic for these counts is about 1.14 again, but with 20 visitors per version it is the wrong tool, and the exact test is the one to run in a statistics package. This article does not give its result, since the point is the choice of tool. Many sets of small counts like these cannot separate two versions at any normal risk level, and that is an honest finding.
+The rates here are 0.15 and 0.30, and a sloppy reading would call B twice as good. The test statistic for these counts is about 1.14 again, but with 20 visitors per version it is the wrong tool, and the exact test is the one to run in a statistics package. This article does not give its result, since the point is the choice of tool. Many sets of small counts like these cannot separate two versions at any normal risk level, and that is an honest finding.
 
 ## Confidence intervals say how much you know
 
