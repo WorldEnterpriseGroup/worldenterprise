@@ -101,7 +101,7 @@ test.describe('with the endpoint connected (mocked)', () => {
     await page.clock.install();
     await page.goto(ROUTE);
     const mode = await page.locator(FORM).getAttribute('data-mode');
-    test.skip(mode !== 'endpoint', `${ROUTE} is not in endpoint mode in this build`);
+    test.skip(mode !== 'endpoint', 'runs in e2e:forms');
   }
 
   async function fill(page: Page): Promise<void> {
@@ -113,7 +113,7 @@ test.describe('with the endpoint connected (mocked)', () => {
     await page.clock.fastForward(3500);
   }
 
-  test('success sends one body of kind investor-interest and opens the thank-you page', async ({ page, baseURL }) => {
+  test('@endpoint success sends one body of kind investor-interest and opens the thank-you page', async ({ page, baseURL }) => {
     const seen = watch(page, baseURL ?? '', [ENDPOINT_ORIGIN]);
     const bodies = await mock(page, (route) => route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: JSON.stringify({ ok: true }) }));
     await open(page);
@@ -126,7 +126,7 @@ test.describe('with the endpoint connected (mocked)', () => {
     expect(seen.thirdParty).toEqual([]);
   });
 
-  test('a rejected request names the problem and keeps what the visitor typed', async ({ page }) => {
+  test('@endpoint a rejected request names the problem and keeps what the visitor typed', async ({ page }) => {
     await mock(page, (route) => route.fulfill({ status: 422, headers: CORS, contentType: 'application/json', body: JSON.stringify({ ok: false, errors: { email: 'invalid' } }) }));
     await open(page);
     await fill(page);
@@ -136,7 +136,34 @@ test.describe('with the endpoint connected (mocked)', () => {
     await expect(page.locator(`${FORM} [data-status]`)).not.toBeEmpty();
   });
 
-  test('a visitor can complete and send the form with the keyboard alone', async ({ page }) => {
+  test('@endpoint a 429 gives the wait from Retry-After in minutes and keeps the answers', async ({ page }) => {
+    await mock(page, (route) => route.fulfill({ status: 429, headers: { ...CORS, 'access-control-expose-headers': 'Retry-After', 'retry-after': '120' }, body: '' }));
+    await open(page);
+    await fill(page);
+    await page.locator(`${FORM} [data-submit]`).click();
+    await expect(page.locator(`${FORM} [data-error-summary]`)).toContainText('Wait 2 minutes');
+    await expect(page.locator(`${FORM} [name="email"]`)).toHaveValue('investor@example.org');
+  });
+
+  test('@endpoint without JavaScript the form either posts natively or says it needs JavaScript', async ({ browser, baseURL }) => {
+    const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
+    const page = await context.newPage();
+    await page.goto(ROUTE);
+    const form = page.locator(FORM);
+    const mode = await form.getAttribute('data-mode');
+    test.skip(mode !== 'endpoint', 'runs in e2e:forms');
+    if ((await form.getAttribute('action')) !== null) {
+      await expect(form.locator('[data-submit]')).toBeEnabled();
+      await expect(form.locator('input[type="hidden"][name="form"]')).toHaveValue('investor-interest');
+      await expect(form.locator('input[type="hidden"][name="redirect"]')).toHaveValue(/\/investors\/interest\/thanks\/$/);
+    } else {
+      await expect(form.locator('[data-submit]')).toBeDisabled();
+      await expect(form.getByText('This form needs JavaScript')).toBeVisible();
+    }
+    await context.close();
+  });
+
+  test('@endpoint a visitor can complete and send the form with the keyboard alone', async ({ page }) => {
     const bodies = await mock(page, (route) => route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: JSON.stringify({ ok: true }) }));
     await open(page);
     const form = page.locator(FORM);
