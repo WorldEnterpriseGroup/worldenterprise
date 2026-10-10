@@ -4,7 +4,7 @@ import { HEADINGS_HUB } from '../../components/families/copy.ts';
 import FamilyHubPage from '../../components/families/FamilyHubPage.astro';
 import { loadIsLive } from '../../components/families/load.ts';
 import { ogSlotFor } from '../../components/families/og.ts';
-import { findHubPage, liveCards } from '../../components/families/paths.ts';
+import { findHubPage, liveCards, pageRefs } from '../../components/families/paths.ts';
 import { INDUSTRIES } from '../../data/families.ts';
 import { getRenderable } from '../../lib/content.ts';
 
@@ -18,7 +18,7 @@ const isLive = await loadIsLive();
   composition="industries"
   page={findHubPage(INDUSTRIES, pages)}
   path="/industries/"
-  cards={liveCards(INDUSTRIES, pages, isLive)}
+  cards={liveCards(INDUSTRIES, pageRefs(pages), isLive)}
   listHeading={HEADINGS_HUB.industries}
   actions={industryActions(isLive)}
   ogSlot={ogSlotFor('industries')}

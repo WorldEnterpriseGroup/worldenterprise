@@ -5,7 +5,7 @@ import FamilyHubPage from '../../components/families/FamilyHubPage.astro';
 import JourneyList from '../../components/families/JourneyList.astro';
 import { loadIsLive } from '../../components/families/load.ts';
 import { ogSlotFor } from '../../components/families/og.ts';
-import { findHubPage, liveCards } from '../../components/families/paths.ts';
+import { findHubPage, liveCards, pageRefs } from '../../components/families/paths.ts';
 import { journeySteps } from '../../components/families/view.ts';
 import { PROGRAM_STEPS } from '../../components/program/steps.ts';
 import { JOURNEY } from '../../data/families.ts';
@@ -27,7 +27,7 @@ const questions = family?.id === 'journey' ? family.questions : [];
   composition="journey"
   page={hub}
   path="/journey/"
-  cards={liveCards(JOURNEY, pages, isLive)}
+  cards={liveCards(JOURNEY, pageRefs(pages), isLive)}
   listHeading={HEADINGS_HUB.journey}
   actions={journeyActions('index', isLive)}
   ogSlot={ogSlotFor('journey')}

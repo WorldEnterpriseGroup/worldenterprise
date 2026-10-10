@@ -75,6 +75,11 @@ export function assertFamilyData<D extends FamilyData>(
   return family as D;
 }
 
+/** A `pages` collection entry reduced to what a hub card needs. */
+export function pageRefs(pages: readonly { readonly id: string; readonly data: { readonly description: string } }[]): readonly PageRef[] {
+  return pages.map((page) => ({ id: page.id, description: page.data.description }));
+}
+
 /** The hub card of a registry entry. An entry that carries a blocked word is described by its label alone (contracts section 8.1). */
 export function cardFor(entry: RegistryEntry, page: PageRef): FamilyLink {
   const link: FamilyLink = { title: entry.label, href: entry.path };
