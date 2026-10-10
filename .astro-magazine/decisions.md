@@ -125,7 +125,7 @@ Source of truth for scope: `.plan/SAGE-PLAN.md` (internal, untracked). Decisions
 - **EX-CSP-META.** GitHub Pages cannot set headers. CSP and referrer policy are delivered through `<meta>` tags; `frame-ancestors`, `Permissions-Policy` and HSTS cannot be enforced and are accepted as limits (R-12). Details and the two directive exceptions are in I-2.
 - **EX-NO-TAILWIND.** No Tailwind or UI framework (D-9): hand-written layered CSS on OKLCH tokens, vanilla custom elements for islands.
 - **EX-CLAUDE-MD.** The operator authorised Astro and a full rebrand, overriding the repo `CLAUDE.md` "no build tools" and "push directly to gh-pages" rules for the construction phase. `CLAUDE.md` and `plan.md` are auto-synced from the org `.github` repo and are never edited here.
-- **EX-SCALE.** Launch scale is 90 routes, 18 articles and 4 briefs (D-10, D-19), not the skill defaults of 150 and 8.
+- **EX-SCALE.** Launch scale was 90 routes, 18 articles and 4 briefs (D-10, D-19), not the skill defaults of 150 and 8. Wave 8 supersedes the counts (D-20): the library grows to about 122 articles in 14 desks, plus a briefs system, investor, partner and customer-journey page families, and the ledger, tests and nav scale by invariant, not by count. Nothing is padded to reach a number: every article carries its own sources (W8-9) and a cut line (plan 4.6) removes the last desks first.
 
 ## Decisions made during WP-00
 
@@ -470,3 +470,168 @@ Seed = 7000 + raster index (shotlist order) plus an offset: objects 0 and +500, 
 2. **Amber accent**: an accent described as part of the structure turns a whole part amber or duplicates it. Written as one small separate tile resting on a named surface it lands once. The templates now use that form.
 3. **Hexagons**: the model draws octagons and heptagons for hexagonal plates; `malformedHexagons` is a QA check, not a prompt fix.
 4. **Amber pre-filter**: hue 25 to 48 matches skin tones, so figure candidates always read `REVIEW`; it ranks object candidates only.
+
+## Decisions made during WP-60 (wave 8 foundation, issue #40)
+
+Inputs: `.astro-magazine/plans/wave8.md` (the plan, with its checker bundle in `.astro-magazine/plans/wave8/`) and `docs/wave8-contracts.md` (binding). Every decision below cites the CEO direction of 2026-10-10: make the site the most complete digital incubator site for startups, investors and partners, with a library of about 122 articles, gated briefs, investor and partner journeys, and a CRM-backed intake. D-20 to D-24 are the headline decisions; W8-1 to W8-29 are the plan decisions that carry them out.
+
+### D-20 Library scale supersedes D-10 and EX-SCALE
+
+**Decision.** The library grows to about 122 articles by editorial work. The route ledger and the tests scale by invariant (unique paths, known layouts and owners, one row per file), not by count. The counts 99, 95, 23 and 18 and the per-desk slug lists leave the tests.
+
+**Why.** CEO direction of 2026-10-10. D-10 capped launch at 28 long-form items because the company had no evidence base beyond its method; the direction is to build the evidence base through sourced editorial work (W8-9), and a count in a test would make every article package edit a frozen file.
+
+### D-21 Inbound investor and partner pages may launch without naming anyone
+
+**Decision.** Amends D-12. Pages for investors and partners may launch without naming any company, person, event or date. The portfolio, delivery partners, founder stories and case studies stay L2 (`launch: false`) until a written record exists. The `/network/partners/` row loses `requires: ['companies']` and gains its own source.
+
+**Why.** CEO direction of 2026-10-10. D-12 exists to prevent fabricated social proof; an inbound page that names nobody has none to fabricate, so it needs no register of names.
+
+### D-22 Intake architecture
+
+**Decision.** The browser posts JSON to one Azure Function endpoint behind the shared Front Door. The function writes to Dataverse with a managed identity and sends email through Azure Communication Services. There is no Logic App hop (contracts section 4).
+
+**Why.** CEO direction of 2026-10-10 (a CRM-backed intake). The globalenterprise.com model is the reference; one function keeps the idempotency key, the Dataverse write and the status of a failed email in one place (W8-2, W8-3).
+
+### D-23 Gated-brief rule
+
+**Decision.** The full text of a brief lives outside every path the build reads (`infra/intake/briefs/`), is delivered only by an emailed short-lived private link, and is proven absent from `dist`, `llms-full.txt`, the Markdown twins and the Pagefind index by a sentinel audit that tests itself (contracts section 5, `scripts/audit-gated-briefs.mjs`).
+
+**Why.** CEO direction of 2026-10-10 (gated briefs). A gate that the build can leak through is not a gate; exclusion by location plus an audit that finds its own planted sentinels is the only form that stays true as the site grows.
+
+### D-24 CTA policy
+
+**Decision.** Honest copy; one primary and at most one secondary action per band; no scarcity or urgency, no exit-intent, no popup, no modal, no sticky bar; no CTA on legal, form, thanks, search, styleguide or 404 pages (contracts section 6).
+
+**Why.** CEO direction of 2026-10-10 (a customer journey with a call to action on every page family). The policy keeps the conversion work inside the truth policy (D-11, D-12) and the accessibility floor.
+
+### W8-1 Separate wave 8 frozen list and test scope
+
+Wave 8 write sets use a separate `frozen_paths_wave8` key (read by `scripts/check-ownership.mjs`; only the owners in `frozen_paths_wave8_owners`, WP-60, may touch it without a registered exception) and a wave 8 test scoped to `WP-6x`, `WP-7x`, `WP-8x` and `WP-9x`. The wave 7 write-set test filters `WP-4x` and `WP-50` and is untouched. One consequence: `tests/unit/wp-40/ownership.test.ts` sampled `src/layouts/BaseLayout.astro` as a file WP-45 may edit; wave 8 froze `src/layouts/**`, so the sample is now a block component (WP-45 is finished and its assignment is unchanged).
+
+### W8-2 One endpoint, six form kinds
+
+One endpoint (`PUBLIC_WE_INTAKE_API_URL`); the `form` field discriminates six kinds; the CSP already derives from the variable.
+
+### W8-3 Idempotency and the order of side effects
+
+`requestId` is the idempotency key (`we_requestid`). The server writes the engagement row to Dataverse before it answers 202; email and webhook run after, with retries; a failed email is a status, not a lost lead (WP-61).
+
+### W8-4 Two names, no collision
+
+The honeypot stays `website` (v1). The real organization URL field is `companyUrl`.
+
+### W8-5 Gated briefs live outside `src`
+
+Gated briefs live in `infra/intake/briefs/` (outside `src`, outside the `astro.config.mjs` globs, never imported). Open abstracts live in a new `briefs` collection and may not reproduce a body sentence (WP-63).
+
+### W8-6 Mid-body CTAs are static HTML from one model
+
+Mid-body CTAs are static HTML emitted by a hast plugin (`src/lib/rehype-mid-cta.ts`) from the same `CtaModel` as the component. A CTA whose target is not a live route is dropped (the `pickRelated` precedent), so no dead link can ship.
+
+### W8-7 Two registries and a plain reader
+
+`src/data/desks.ts`, `src/data/families.ts` and the plain `node:fs` reader `src/lib/content-files.ts` are the only sources for desks, slugs, owners, family slug lists and related-title maps. Invariants replace the counts and the per-desk slug lists.
+
+### W8-8 Rubric and sources ledger as tests
+
+An article rubric test runs over every file in `src/content/insights/**`. A sources ledger test fails on any source without a fetch record.
+
+### W8-9 Source rule
+
+Every source in an article, brief, glossary entry, comparison, industry page or tool explainer was fetched in the writing session, with URL and fetch time recorded. A claim that cannot be sourced is dropped, never softened.
+
+### W8-10 `RELEASE_ALLOW` is narrowed, not widened
+
+`RELEASE_ALLOW` on `demo` and `wp/*` tolerates the disabled form routes and, one anchored pattern per path, wave 8 pages that do not exist yet. It is empty on release tags and `gh-pages`. WP-99 removes the pending patterns when the last page lands.
+
+### W8-11 Release-lane files are serialized
+
+WP-60 adds one `include: local` line to `.gitlab-ci.yml` (guarded by `rules: exists`) after confirming no open wp/30 merge request; WP-99 commits the counsel entries to `RELEASE.md` on the same condition.
+
+### W8-12 Concurrency
+
+Up to 10 authoring agents at once and at most 5 branch pipelines at once (supersedes the v1 five-agent cap). Pools are checked as sets; the pipeline cap is enforced by the push-slot protocol (`.astro-magazine/plans/wave8/push-slot.sh`, tested by `tests/unit/wp-60/push-slot.test.ts`).
+
+### W8-13 Two switches ship OFF
+
+`flags.briefUpdates` (the optional updates checkbox) and `NURTURE_ENABLED` (the day 3, 10 and 21 sequence) ship OFF until the privacy notice covers CRM use and retention and counsel has reviewed the sequence.
+
+### W8-14 Not ported from globalenterprise.com
+
+The corporate-email gate (WE serves founders, who use personal addresses), Plausible and `data-track` attributes (D-14), and Turnstile (third-party). Spam control is the honeypot, a timing check, a per-address rate limit and a Front Door rate rule.
+
+### W8-15 Copy bans beyond the denylist
+
+No "free" in copy about WE; no "perks"; no "accelerator", "cohort", "mentor" or "alumni" in page copy (`C-13-peers`); no "investor network". The nav label "Partners and perks" becomes "Partners". The one exception is the comparison page whose subject is the word (DP-W8-15). WP-60 adds `W8-C13-own-peers` so the first-person form can never pass, even inside a marker.
+
+### W8-16 Open briefs stay open
+
+The four open research briefs and six library templates stay open. Gated briefs are new documents.
+
+### W8-17 Empty portfolio
+
+The portfolio collection stays empty unless the operator supplies a consent record (OP-PORTFOLIO). With no entry the investors page shows one fixed sentence and says nothing about forming groups or dates. The same rule governs the showcase-format page.
+
+### W8-18 Legacy tests
+
+One owner per test file, the package that rewrites what it pins; tests that pin two packages' files are owned by WP-60, which splits them verbatim. Photography and release lane tests are read-only (contracts section 12).
+
+### W8-19 Fourteen desks, two optional fields
+
+The four existing desks plus `funding`, `legal`, `team`, `ai`, `gtm`, `ops`, `starting`, `pathways`, `models` and `sectors`. Articles gain optional `segments` (the segment pages list matching articles from the collection) and `related` (a slug that is not live is dropped at build), and an optional `cta`.
+
+### W8-20 One page-family registry
+
+`src/data/families.ts` is the single registry of founder segments, industries, comparisons, journey pages and brief ids. WP-71 owns the generic route files and components; WP-72, 73, 74 and 75 author content in the `pages` collection only; ledger rows derive from the registry and stay inert until a page exists. Frontmatter for family pages is fixed in contracts section 8.2.
+
+### W8-21 Rolling window and push protocol
+
+Batches are authored locally with commits and pushed once per batch (8 to 10 articles for a content agent); each push holds one of five slots until its pipeline ends. This applies the CEO's concurrency instruction and overrides the habit of pushing after every commit for wave 8 packages.
+
+### W8-22 Brand system stays inside its folders
+
+No global brand stylesheet and no edit to the shared stylesheets; brand styles live inside `src/components/brand/**` and `src/components/families/**`, tokens only. Vector compositions are shipped imagery (W7-9); photography-lane files are not edited. Open Graph images reuse the nine existing cards through `ogSlot` (OP-OG).
+
+### W8-23 Structured data stays package-local
+
+Pages use the existing builders; a new JSON-LD node builder is package-local; no package edits shared `src/lib/seo*` or schema files. `FAQPage` and `DefinedTermSet` nodes come from `src/components/reference/jsonld.ts` (WP-77, import-only elsewhere).
+
+### W8-24 Considerations, never outcomes
+
+Sector, industry, segment and comparison content is "considerations for", never an outcome claim and never a claimed client. Comparison pages name categories, not products. Segment pages never state eligibility beyond `/program/who-its-for/` (OP-SEGMENTS). Marketplace and platform articles say plainly that WE builds SaaS.
+
+### W8-25 The customer journey is a contract
+
+Five stages, one map per audience, a primary and secondary call to action per page family, implemented by WP-62 and the WP-71 templates and proven by the WP-90 suite (contracts section 11). Every page in a map has a forward path.
+
+### W8-26 `llms-full.txt` stays curated
+
+`llms-full.txt` stays a curated key-page list (cap 262,144 bytes, the build throws past it), so article volume does not threaten it. WP-91 carries the cap as an acceptance criterion and decides which Markdown twins exist.
+
+### W8-27 Entry gate
+
+WP-60 starts only after `wp/41`, `wp/46` and `wp/49` are merged to `demo` or closed, and re-runs every checker on the real tree. If a branch is abandoned, the patterns that depend on it are removed from the JSON together with the matching pin acknowledgements.
+
+### W8-28 Reference data grows by addition
+
+Existing FAQ entries, glossary terms, readiness statement ids and the data-room checklist wording are kept verbatim; the tests that pin them stay green without edits.
+
+### W8-29 Content packages add no route file
+
+Packages that add pages author only files in the `pages` collection (plus their component folder). A page family with no template at merge time stays inert, so a package may merge before WP-71 without a dead route.
+
+### W8-30 Frozen-file exceptions are registered once, ahead of the edits
+
+WP-60 edits 14 frozen files across two merge requests. Rather than one exception per edit commit, all 14 are pre-registered in `ownership.json` with the first governance commit, each with a reason. An exception still unused when 60b merges is removed and the handoff says so.
+
+### W8-31 What WP-60 fixed while building the foundation
+
+Six calls that the contracts left open, recorded once so the packages that build on them do not re-decide.
+
+1. **Schemas live in `src/lib/content-schemas.ts`.** `src/content.config.ts` imports `astro:content`, which plain-Node `node --test` cannot load, so the zod schemas moved to a module the article rubric, the families test and the schema tests can import. `content.config.ts` only binds loaders to them. Both files are in the frozen set and WP-60 owns both.
+2. **The 18 articles written before wave 8 are pinned and waived for three rubric rules.** The originals carry related-rail links in the layout rather than body links, the Grow and Fundable ones have no "What this article cannot tell you" section, and five count 1,050 to 1,200 words by `countWords`. `article-rubric.test.ts` waives `cannot-tell-you`, `internal-links` and `words` for exactly the 18 files pinned by sha256 in `existing-articles.json`, and for nothing else. Every other rule applies to them, and a new article gets no waiver.
+3. **Wave 8 claim ids are C-25 to C-29.** C-25 investor meeting with no promise, C-26 partner enquiry creates no partnership, C-27 a requested brief goes to the address given, C-28 form details answer the request as the privacy notice describes, C-29 the digital-incubator-for-SaaS positioning (C-01 to C-03 and C-05 together). All are `publish` and sourced to the CEO direction of 2026-10-10 and D-21.
+4. **`W8-C13-own-peers` is a context rule with no marker and no path allowance.** It catches "our cohort", "WE mentors", "WE runs a cohort" and the like, and passes denials ("WE has no mentors"). It starts green on the demo build (133 files scanned, 0 findings) and has self-test cases in `scripts/audit-claims.mjs` and `tests/unit/wp-60/claims-w8.test.ts`.
+5. **Pending family rows are tolerated by shape, not by path.** `RELEASE_ALLOW` gains one alternative for the five family path shapes (`/founders/<slug>/`, `/industries/...`, `/compare/...`, `/journey/...`, `/briefs/...`), because the registry launches about forty entries before their packages land. Any other missing launched route still fails; a release tag and gh-pages still allow nothing. WP-99 empties the list.
+6. **The sources host allowlist is code in `tests/unit/wp-60/sources.ts`.** Government and regulator suffixes, standards and law bodies, instrument publishers, universities and vendor documentation hosts. A vendor documentation host never sources a statistic or a regulation. OP-HOSTS extends it by a decision that edits that file.
