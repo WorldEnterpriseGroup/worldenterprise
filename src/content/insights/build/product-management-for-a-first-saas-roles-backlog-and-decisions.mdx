@@ -1,0 +1,109 @@
+---
+title: "Product management for a first SaaS: roles, backlog and decisions"
+seoTitle: Product management for a SaaS
+description: "What product management is in a company of one to three people: three jobs, two ways to keep a backlog, and a decision log that outlasts memory."
+topic: build
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [non-technical-founders, first-time-founders]
+relatedServices: [B]
+relatedPlaybook: build-and-ship-v1
+related: [writing-a-product-requirements-document-people-read, estimating-a-first-release-ranges-and-what-they-hide]
+evidence: [scrum-guide, gds-roles, shapeup-bets, gds-user-stories]
+sources:
+  - id: scrum-guide
+    title: The Scrum Guide
+    publisher: Ken Schwaber and Jeff Sutherland, scrumguides.org
+    url: https://scrumguides.org/scrum-guide.html
+    accessed: 2026-10-10
+  - id: gds-roles
+    title: What each role does in a service team
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/the-team/what-each-role-does-in-service-team
+    accessed: 2026-10-10
+  - id: shapeup-bets
+    title: Shape Up, Chapter 7, Bets, Not Backlogs
+    publisher: Basecamp
+    url: https://basecamp.com/shapeup/2.1-chapter-07
+    accessed: 2026-10-10
+  - id: gds-user-stories
+    title: Writing user stories
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/agile-delivery/writing-user-stories
+    accessed: 2026-10-10
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+"Product manager" is a job title in large companies and a set of unowned decisions in small ones. In a first SaaS company with one to three people, nobody is hired to do it, and the decisions get made anyway: by whoever is loudest, by whoever writes the code, or by default. This article describes the practice so that you can make those decisions on purpose, and it says where the practice stops being useful.
+
+It does not describe a methodology you must adopt. It describes three jobs, two ways of keeping a list of work, and one habit, a decision log, that matters more than either.
+
+## Three jobs, not one title
+
+Public descriptions of product work usually split it into three jobs. They can belong to one person, but they are different, and confusing them is where trouble starts.
+
+**Deciding what and why.** The Scrum Guide puts it in one sentence: "The Product Owner is accountable for maximizing the value of the product resulting from the work of the Scrum Team." The guide's word is accountable, not omniscient. The person in this seat chooses what goes first and can explain the choice.
+
+**Setting priorities against the wider goal.** The UK Government Digital Service's service manual describes a product manager as someone who ensures the service fits the priorities of the larger organization, who orders user stories for each work period and who accepts a story when it is complete. For a startup, the "wider goal" is the one customer problem you wrote down, which the <MaybeLink path="/library/one-page-problem-brief/">one-page problem brief</MaybeLink> is for.
+
+**Keeping delivery moving.** The same manual describes a delivery manager as someone who removes obstacles, which it calls blockers, to progress. This is the job of noticing that a decision has been waiting four days and that someone is stuck behind it.
+
+With two founders, one often holds the first two jobs and the other the third. With one founder, you hold all three, and the useful discipline is to say aloud which hat you are wearing. "As the person deciding what, I want the invoice export before the dashboard" is a different sentence from "as the person keeping delivery moving, I need an answer on the export format by Thursday."
+
+## Decision authority is the real subject
+
+The service manual is blunt about one requirement: "Your service owner must have the decision-making authority to deliver on all aspects of a project." A role without authority produces meetings, not products.
+
+If you are a non-technical founder working with engineers you may never meet in person, the division is usually this. You hold the decisions about what the product does and for whom. Your engineers hold the decisions about how. The Scrum Guide is explicit about the second half: "How this is done is at the sole discretion of the Developers." You can ask what a choice costs, what it risks and what the alternatives are. You can decline an option because of its cost. You cannot sensibly prescribe the implementation and also hold the team responsible for the result.
+
+## A backlog: what it is and what it costs
+
+A backlog is the most common tool for the first job. The Scrum Guide defines it as "an emergent, ordered list of what is needed to improve the product." Two words in that sentence do the work. Emergent means the list changes as you learn. Ordered means item one is more important than item two, so a list that is merely sorted by date is not a backlog yet.
+
+Ordering is where product management actually happens. Each item should have a reason a customer would recognize. The service manual recommends writing items as user stories, which "describe a user and the reason why they need to use the service you’re building," and pairing each with acceptance criteria, which it describes as "a list of outcomes that you use as a checklist." That gives you a story in the form "who, what, why" and a short list of observable outcomes that tell you it is done.
+
+A worked example, invented for illustration: a small product that sends appointment reminders for clinics has the story "As a clinic receptionist, I want to see which patients have not confirmed, so that I can phone them before the day." Its acceptance criteria might be that the list shows unconfirmed patients, that it excludes cancelled ones and that it can be sorted by appointment time. Nothing in that story says how to build it.
+
+## The alternative: decide each cycle, keep no pile
+
+A backlog has a known failure. Basecamp's *Shape Up* describes it as follows: "Dozens and eventually hundreds of tasks pile up that we all know we'll never have time for." A long list gives a feeling of being behind when you are not.
+
+Shape Up's alternative is to hold no standing backlog. Before each work cycle, in its words, "stakeholders decide what to do in the next cycle," and if a pitch is not chosen, "we let it go." Ideas that matter return on their own.
+
+Neither practice is correct in general. A backlog suits a team that has many small, well-understood items and needs a shared record. A decide-each-cycle habit suits a team that finds its list is becoming a source of anxiety. Notice that Shape Up was written by and for one particular company, and the Scrum Guide describes a framework for teams of a certain shape. Treat both as descriptions of practices that worked for their authors, not as findings about what works for startups in general.
+
+<DataTable
+  caption="Two ways to hold the list of work"
+  columns={['', 'Standing backlog', 'Decide each cycle']}
+  rows={[
+    ['What it keeps', 'An ordered list that persists between cycles', 'Only the ideas someone brings back'],
+    ['What it costs', 'Time to order and prune the list', 'The risk of forgetting a good idea'],
+    ['Where it can fail', 'The list grows until nobody reads it', 'Decisions depend on who is in the room'],
+    ['Who it suits', 'Teams with many small, known items', 'Teams that find the pile demoralizing']
+  ]}
+/>
+
+## The decision log
+
+Whichever way you hold the list, keep a log of the decisions behind it. It is a short table, not a document: the date, the decision, the options you rejected, the reason, and what evidence would make you revisit it.
+
+A log earns its keep in three situations. A new team member asks why the product has no second user role, and the answer is written down. A customer proposes a feature you rejected, and you can see whether the reason still holds. You are tired, and the log stops you from reopening a settled question by accident.
+
+Keep entries to a few lines. The fourth column, what would change your mind, is the one that makes a log useful, because it turns a rejection into a condition you can check later.
+
+<Callout title="What a product manager does not do">
+  A product manager does not decide alone what customers want. The role orders and explains choices; the evidence comes from customers. The <MaybeLink path="/insights/customer-discovery-interviews-without-false-positives/">article on customer discovery interviews</MaybeLink> is about collecting it.
+</Callout>
+
+## Where this connects to the rest of your work
+
+Product decisions feed on a bounded scope. The <MaybeLink path="/insights/cutting-an-mvp-the-cut-line-test/">cut-line test</MaybeLink> is a way to settle which items sit above the line, and the <MaybeLink path="/playbooks/build-and-ship-v1/">Build and ship v1 playbook</MaybeLink> lays out the stage this role belongs to. Terms such as backlog, user story and acceptance criteria are collected in the <MaybeLink path="/glossary/">glossary</MaybeLink>.
+
+## What this article cannot tell you
+
+This is a description of a practice, drawn from three public documents: the Scrum Guide, the UK Government Digital Service's service manual and Basecamp's *Shape Up*. None of them was written for a two-person software startup, and none of them measured whether the practice it describes produces better products. We make no claim that any method here improves outcomes.
+
+The article does not cover how to hire a product manager, what one should be paid, or how the role changes once a company has several teams. It does not tell you which tool to keep a backlog in. The sources describe a role in a government service team, a framework for software teams and one company's own method; your company, market and team will differ from all three, and your own results are the only test that matters.
