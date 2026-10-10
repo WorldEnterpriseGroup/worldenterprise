@@ -1,75 +1,73 @@
 ---
-import ArticleCard from '../../components/cards/ArticleCard.astro';
-import BriefCard from '../../components/cards/BriefCard.astro';
-import { liveGroups, RESOURCE_STRIP } from '../../components/reference/resources.ts';
-import { entrySlug } from '../../components/library/markdown.ts';
-import Card from '../../components/ui/Card.astro';
-import Grid from '../../components/ui/Grid.astro';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import { kindGroups, liveGroups, metaLookup, RESOURCE_STRIP, RESOURCES_COPY } from '../../components/reference/resources.ts';
+import type { MetaCollection, MetaEntry } from '../../components/reference/resources.ts';
+import { routes } from '../../data/routes.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { getPublished } from '../../lib/content.ts';
+import type { PublicCollection } from '../../lib/content.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
+import ResourceGroup from './_ResourceGroup.astro';
 
 const state = await getRouteState();
-const groups = liveGroups(state.isLive);
-const strip = RESOURCE_STRIP.filter((item) => state.isLive(item.path));
 
-const briefs = (await getPublished('research')).sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
-const newestBrief = briefs[0];
-const insights = (await getPublished('insights'))
-  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime())
-  .slice(0, 3);
+/** The title and description of every content entry a list can link to, read once from the collections. */
+async function entriesOf(collection: MetaCollection & PublicCollection): Promise<MetaEntry[]> {
+  const entries = await getPublished(collection);
+  return entries.map((entry) => ({ collection, id: entry.id, title: entry.data.title, description: entry.data.description }));
+}
+const collections: readonly (MetaCollection & PublicCollection)[] = ['pages', 'library', 'guides', 'playbooks', 'research'];
+const meta = metaLookup((await Promise.all(collections.map(entriesOf))).flat());
+
+const stage = liveGroups(state.isLive, meta);
+const kind = kindGroups(routes, state.isLive, meta);
+const strip = RESOURCE_STRIP.filter((item) => state.isLive(item.path));
+const toc = [
+  ...(stage.length > 0 ? [{ slug: 'resources-stage', text: RESOURCES_COPY.stage.heading }] : []),
+  ...(kind.length > 0 ? [{ slug: 'resources-kind', text: RESOURCES_COPY.kind.heading }] : []),
+];
+const secondary = state.isLive('/library/') ? { label: RESOURCES_COPY.openTemplates, href: '/library/' } : undefined;
 ---
 
 <HubLayout
-  title="Resources"
-  description="Read it, use it, check it: insights, research briefs, templates, a glossary, an FAQ and site search from World Enterprise Incubator."
+  title={RESOURCES_COPY.title}
+  description={RESOURCES_COPY.description}
   path="/resources/"
-  eyebrow="Resources"
-  lead="Read it, use it, check it."
+  eyebrow={RESOURCES_COPY.eyebrow}
+  lead={RESOURCES_COPY.lead}
   ogSlot="og-resources"
   photo="inset-resources"
-  secondary={{ label: 'Open the templates', href: '/library/' }}
+  secondary={secondary}
+  toc={toc}
 >
   {
-    groups.map((group) => (
-      <section class="stack" aria-labelledby={`resources-${group.id}`}>
-        <h2 id={`resources-${group.id}`}>{group.title}</h2>
-        <Grid min="16rem">
-          {group.items.map((item) => (
-            <Card title={item.title} href={href(item.path)} headingLevel={3}>
-              <p>{item.description}</p>
-            </Card>
-          ))}
-        </Grid>
-      </section>
-    ))
-  }
-  {
-    newestBrief !== undefined && (
-      <section class="stack" aria-labelledby="resources-newest">
-        <h2 id="resources-newest">Newest research brief</h2>
-        <Grid min="20rem">
-          <BriefCard title={newestBrief.data.title} summary={newestBrief.data.description} path={`/research/${entrySlug(newestBrief.id)}/`} headingLevel={3} />
-        </Grid>
+    stage.length > 0 && (
+      <section class="stack" aria-labelledby="resources-stage">
+        <h2 id="resources-stage">{RESOURCES_COPY.stage.heading}</h2>
+        <p class="measure">{RESOURCES_COPY.stage.intro}</p>
+        {stage.map((group) => (
+          <ResourceGroup group={group} id={`resources-stage-${group.id}`}>
+            {group.id === 'raise' && <NoFundingDisclaimer />}
+          </ResourceGroup>
+        ))}
       </section>
     )
   }
   {
-    insights.length > 0 && (
-      <section class="stack" aria-labelledby="resources-latest">
-        <h2 id="resources-latest">Latest insights</h2>
-        <Grid min="16rem">
-          {insights.map((entry) => (
-            <ArticleCard title={entry.data.title} summary={entry.data.description} path={`/insights/${entrySlug(entry.id)}/`} headingLevel={3} />
-          ))}
-        </Grid>
+    kind.length > 0 && (
+      <section class="stack" aria-labelledby="resources-kind">
+        <h2 id="resources-kind">{RESOURCES_COPY.kind.heading}</h2>
+        <p class="measure">{RESOURCES_COPY.kind.intro}</p>
+        {kind.map((group) => (
+          <ResourceGroup group={group} id={`resources-kind-${group.id}`} />
+        ))}
       </section>
     )
   }
   {
     strip.length > 0 && (
-      <nav class="cluster" aria-label="About these resources">
+      <nav class="cluster" aria-label={RESOURCES_COPY.stripLabel}>
         {strip.map((item) => (
           <a href={href(item.path)}>{item.title}</a>
         ))}
