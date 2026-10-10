@@ -69,7 +69,10 @@ export class FakeEngagements implements EngagementStore {
   failRead: Error | null = null;
   failUpdate: Error | null = null;
   private sequence = 0;
-  constructor(private readonly clock: Clock) {}
+  private readonly clock: Clock;
+  constructor(clock: Clock) {
+    this.clock = clock;
+  }
 
   private find(predicate: (row: Record<string, unknown>) => boolean): Record<string, unknown> | null {
     for (const row of this.rows.values()) if (predicate(row)) return row;
@@ -147,7 +150,10 @@ export class FakeCrm implements CrmStore {
   failWith: Error | null = null;
   failOptOut: Error | null = null;
   private sequence = 0;
-  constructor(private readonly engagements: FakeEngagements) {}
+  private readonly engagements: FakeEngagements;
+  constructor(engagements: FakeEngagements) {
+    this.engagements = engagements;
+  }
 
   async ensureAccount(plan: AccountPlan): Promise<{ readonly id: string }> {
     this.accountCalls += 1;

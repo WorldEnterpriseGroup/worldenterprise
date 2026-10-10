@@ -21,6 +21,7 @@ import { buildContactFields, buildEngagementRow, planAccount, selectContact, typ
 import { rateKeys } from '../logic/rate.ts';
 import { isHoneypotTripped, readFormKind, validate, type Submission } from '../logic/validate.ts';
 import type { Deps } from './deps.ts';
+import type { BriefEntry } from './ports.ts';
 import { emailHashOf, findBrief, sendRequestedBrief } from './deliver.ts';
 
 const ACK = { ok: true };
@@ -111,7 +112,10 @@ export async function handleIntake(deps: Deps, req: HttpRequestLike): Promise<Ht
   }
 
   const declared = Number(req.header('content-length') ?? '0');
-  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) return done(jsonResult(413, { ok: false, errors: { form: 'The request is too large.' } }));
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+    deps.log.warn('body_too_large', { route: 'intake', client });
+    return done(jsonResult(413, { ok: false, errors: { form: 'The request is too large.' } }));
+  }
   let text: string | null;
   try {
     text = await req.readBody(MAX_BODY_BYTES);
@@ -119,7 +123,10 @@ export async function handleIntake(deps: Deps, req: HttpRequestLike): Promise<Ht
     deps.log.warn('body_unreadable', { route: 'intake', code: errorCode(error), client });
     return done(fieldError(400, 'form', 'The request could not be read.'));
   }
-  if (text === null) return done(jsonResult(413, { ok: false, errors: { form: 'The request is too large.' } }));
+  if (text === null) {
+    deps.log.warn('body_too_large', { route: 'intake', client });
+    return done(jsonResult(413, { ok: false, errors: { form: 'The request is too large.' } }));
+  }
 
   const parsed = parseBody(kindOfBody, text);
   if (!parsed.ok) return done(fieldError(400, 'form', 'The request body is not valid.'));
@@ -140,11 +147,21 @@ export async function handleIntake(deps: Deps, req: HttpRequestLike): Promise<Ht
     ? { ...body, requestId: deps.ids.requestId() }
     : body;
   const validated = validate(deps.contract, kind, candidate, kindOfBody);
-  if (!validated.ok) return done(jsonResult(validated.status, { ok: false, errors: validated.errors }));
+  if (!validated.ok) {
+    deps.log.info('validation_failed', { kind, status: validated.status, client });
+    return done(jsonResult(validated.status, { ok: false, errors: validated.errors }));
+  }
   const submission = validated.submission;
 
-  if (kind === 'brief-request' && (await findBrief(deps, submission.briefId)) === null) {
-    return done(fieldError(422, 'briefId', 'Choose a brief that WE offers.'));
+  let entry: BriefEntry | null = null;
+  if (kind === 'brief-request') {
+    try {
+      entry = await findBrief(deps, submission.briefId);
+    } catch (error) {
+      deps.log.error('registry_read_failed', { requestId: submission.requestId, code: errorCode(error), client });
+      return done(jsonResult(503, { ok: false, error: 'unavailable' }, { 'Retry-After': '30' }));
+    }
+    if (entry === null) return done(fieldError(422, 'briefId', 'Choose a brief that WE offers.'));
   }
 
   const now = deps.clock.now();
@@ -171,7 +188,6 @@ export async function handleIntake(deps: Deps, req: HttpRequestLike): Promise<Ht
     }
 
     const links = await resolveLinks(deps, submission);
-    const entry = kind === 'brief-request' ? await findBrief(deps, submission.briefId) : null;
     const token = deps.ids.token();
     const row = buildEngagementRow(submission, links, {
       now: new Date(now),
