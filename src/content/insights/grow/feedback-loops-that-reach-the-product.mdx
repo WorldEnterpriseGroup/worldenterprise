@@ -1,0 +1,108 @@
+---
+title: "Feedback loops that reach the product"
+seoTitle: Feedback loops for the product
+description: How a small SaaS team can collect customer feedback, sort it and turn it into product decisions, with a weekly routine that needs no research staff.
+topic: grow
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [non-technical-founders, first-time-founders]
+relatedServices: [C]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: customer-interview-guide
+related: [retention-basics-for-a-first-saas, onboarding-is-acquisition-time-to-first-value]
+evidence: [scrum-guide, lean-startup-principles, govuk-user-research]
+claimsUsed: []
+sources:
+  - id: scrum-guide
+    title: The Scrum Guide
+    publisher: Ken Schwaber and Jeff Sutherland, scrumguides.org
+    url: https://scrumguides.org/scrum-guide.html
+    accessed: 2026-10-10
+  - id: lean-startup-principles
+    title: The Lean Startup, methodology
+    publisher: Eric Ries, theleanstartup.com
+    url: https://theleanstartup.com/principles
+    accessed: 2026-10-10
+  - id: govuk-user-research
+    title: User research, Service Manual
+    publisher: GOV.UK
+    url: https://www.gov.uk/service-manual/user-research
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Customers tell you things all the time. They write to support, mention a gap on a call, cancel with a one-line reason, ignore a feature or use it in a way you did not expect. Most of it never reaches the person who decides what to build next. It stays in an inbox, in someone's memory or in a chat thread that scrolls away.
+
+A feedback loop is the path from what a customer says or does to a decision about the product, and back to the customer with an answer. Many first companies have the first half and not the second: they collect plenty and change little. This article describes a small, workable loop for a team of one to five people, with no research staff and no special software.
+
+## Why the loop matters
+
+The Lean Startup method puts the loop at the center. The site describing it says that "A core component of Lean Startup methodology is the build-measure-learn feedback loop." It adds that "All successful startup processes should be geared to accelerate that feedback loop." You do not need to adopt the whole method to take the point. The speed at which what you learn turns into what you build is a main driver of how fast a young product improves.
+
+Notice how that differs from collecting opinions. A pile of requests is not a loop. A loop has a destination, a decision and a reply.
+
+## Where feedback comes from
+
+Four sources cover most of what a first company will see.
+
+**What people say unprompted.** Support messages, replies to emails, comments on calls and remarks in a shared channel. The <MaybeLink path="/insights/support-at-five-customers-not-fifty/">support article</MaybeLink> describes how to keep this stream manageable.
+
+**What people say when you ask.** Interviews and short surveys. Interviews with a handful of customers reveal more than a long survey sent to many, and the <MaybeLink path="/library/customer-interview-guide/">customer interview guide</MaybeLink> sets out questions that avoid leading the answer. The <MaybeLink path="/insights/customer-discovery-interviews-without-false-positives/">discovery interviews article</MaybeLink> explains how to read answers cautiously.
+
+**What people do.** Usage that you can observe: where new users stop, which features go untouched, what customers do before they leave. Behavior often differs from what people say about it, and the two together are more reliable than either alone.
+
+**Why people leave.** A departing customer is often the most honest source. The <MaybeLink path="/insights/retention-basics-for-a-first-saas/">retention basics article</MaybeLink> describes recording the reason each time.
+
+Public guidance on user research makes the same split. The GOV.UK Service Manual's user research section covers planning research, preparing for sessions and sharing what you find. The order matters: preparing before you talk and sharing after are what turn conversations into evidence.
+
+## A weekly routine for a small team
+
+The routine has four steps and takes about an hour a week once it is established.
+
+### Step one: capture in one place
+
+Pick a single place where every piece of feedback goes, such as a spreadsheet, a shared document or a board. Whoever hears something adds a line with four fields: the date, the customer, what they said in their own words and where you heard it. Do not interpret at this stage. Interpretation done in the moment tends to delete the detail that mattered.
+
+### Step two: sort once a week
+
+Once a week, read the new lines and group them. A group has a name that describes the customer's problem, not the feature they asked for. A customer who wants an export button is usually describing a need to get information into another tool, and the problem might be solved in several ways. Write the problem.
+
+### Step three: weigh and decide
+
+For each group, note how many different customers raised it, how serious the consequence was for them and whether it affects customers you most want to keep. Count customers, not mentions: one person who writes five times is still one person. Then make one of four decisions and write it next to the group.
+
+1. **Do it now.** The problem is clear and the fix is small.
+2. **Plan it.** The problem is real and the fix is larger, so it goes on the list of work with a rough order.
+3. **Learn more.** You do not yet understand the problem, so the next step is a conversation.
+4. **Decline.** The problem is real but outside what the product is for. Record why.
+
+Declining is as useful as accepting, and it is honest. A record of declined requests, with reasons, saves the team from reopening the same argument.
+
+The Scrum Guide describes a related idea in its own terms. It says "The Product Backlog is an emergent, ordered list of what is needed to improve the product," and that it is "the single source of work undertaken by the Scrum Team." You do not need Scrum to benefit from the idea of one ordered list. A single list where feedback is turned into work, in an order someone has decided, prevents the common failure in which three people hold three different lists.
+
+### Step four: close the loop with the customer
+
+Tell the customers whose feedback shaped a decision what you decided. A short note is enough: we heard you, here is what we are doing, here is what we are not doing and why. Customers who see an answer give more feedback and with more care. This step is the one most often skipped, and it costs very little.
+
+## Common failures
+
+**Building for the loudest voice.** The person who writes most often may not represent the customers you most want. Count customers and weigh by fit.
+
+**Mistaking a request for a need.** A suggested solution is a clue to a problem, not a specification.
+
+**Collecting without deciding.** If no one owns the weekly review, the spreadsheet becomes an archive. Name an owner.
+
+**Never saying no.** A team that accepts everything builds a product that does nothing well.
+
+**Silence.** Customers who hear nothing assume that nobody read their message, and stop writing.
+
+**Ignoring what people do.** Requests tell you what customers think they want. Behavior shows where the product fails them. Look at both.
+
+## Connecting the loop to onboarding and retention
+
+The earliest feedback is often about the first session. The <MaybeLink path="/insights/onboarding-is-acquisition-time-to-first-value/">onboarding article</MaybeLink> treats the time to a first result as the last step of acquisition, and the people who nearly gave up are the best source of ideas for shortening it. The same routine feeds retention: when a customer leaves, the reason goes into the same list as everything else. The <MaybeLink path="/playbooks/build-repeatable-growth/">build repeatable growth playbook</MaybeLink> places the loop inside a wider plan for finding customers who stay.
+
+## What this article cannot tell you
+
+This article cannot tell you which feedback matters most for your product, how many customers you need to hear from or how quickly any change will pay back. It gives no benchmarks. It draws on three public sources: the Lean Startup site's statement of its loop, the Scrum Guide's description of an ordered list of work and the outline of the GOV.UK user research guidance. The weekly routine, the four decisions and the list of failures are editorial judgment, not research findings. It does not cover privacy rules for recording interviews or storing customer comments, which vary by country and are for a qualified professional. Checked on 2026-10-10.
