@@ -1,6 +1,6 @@
 ---
 title: "Customer references and case studies without breaking FTC rules"
-seoTitle: "Customer references and case studies and the FTC"
+seoTitle: Case studies and FTC rules
 description: "What the FTC Endorsement Guides say about customer quotes, case studies and connections to customers, quoted from the rules, with questions to take to counsel."
 topic: gtm
 publishedDate: 2026-10-10
@@ -33,6 +33,8 @@ sources:
     url: https://www.law.cornell.edu/cfr/text/16/465.2
     accessed: 2026-10-10
 evidence: [cornell-16-cfr-255-1, cornell-16-cfr-255-2, cornell-16-cfr-255-5, ftc-endorsement-guides-qa, cornell-16-cfr-465-2]
+relatedServices: [C, G]
+relatedPlaybook: earn-your-first-customers
 claimsUsed: []
 draft: false
 ---

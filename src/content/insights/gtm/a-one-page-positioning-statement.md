@@ -1,6 +1,6 @@
 ---
 title: "A one-page positioning statement"
-seoTitle: A one-page positioning statement
+seoTitle: One-page positioning statement
 description: "A five-part method for writing down who your product is for, what it replaces and why it differs, with an invented example and a three-buyer test."
 topic: gtm
 publishedDate: 2026-10-10
@@ -19,6 +19,9 @@ sources:
     url: https://www.w3.org/WAI/tips/writing/
     accessed: 2026-10-10
 evidence: [digital-gov-plain, w3c-wai-writing]
+relatedServices: [A, C]
+relatedPlaybook: earn-your-first-customers
+relatedTemplate: customer-interview-guide
 claimsUsed: []
 draft: false
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Founder-led sales calls: a structure"
-seoTitle: "Founder-led sales calls: a structure"
+seoTitle: Founder-led sales calls
 description: "A six-part structure for a first sales call run by a technical founder, a note template, and what the U.S. wiretap statute says about recording."
 topic: gtm
 publishedDate: 2026-10-10
@@ -14,6 +14,9 @@ sources:
     url: https://www.law.cornell.edu/uscode/text/18/2511
     accessed: 2026-10-10
 evidence: [cornell-18-usc-2511]
+relatedServices: [C]
+relatedPlaybook: earn-your-first-customers
+relatedTemplate: customer-interview-guide
 claimsUsed: []
 draft: false
 ---

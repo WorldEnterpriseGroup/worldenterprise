@@ -1,6 +1,6 @@
 ---
 title: "Marketplaces and partner channels: when a listing helps"
-seoTitle: "Marketplaces and partner channels: when a listing helps"
+seoTitle: Marketplaces and partners
 description: "How a technical or remote founder can read marketplace documentation to judge whether a listing helps, with each platform's rules attributed, none ranked."
 topic: gtm
 publishedDate: 2026-10-10
@@ -28,6 +28,8 @@ sources:
     url: https://docs.cloud.google.com/marketplace/docs/partners
     accessed: 2026-10-10
 evidence: [aws-saas-products, aws-saas-pricing, microsoft-plan-saas-offer, google-marketplace-partners]
+relatedServices: [C, B]
+relatedPlaybook: build-repeatable-growth
 claimsUsed: []
 draft: false
 ---

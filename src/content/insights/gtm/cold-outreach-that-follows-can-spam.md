@@ -1,6 +1,6 @@
 ---
 title: "Cold outreach that follows CAN-SPAM"
-seoTitle: Cold outreach that follows CAN-SPAM
+seoTitle: Cold outreach and CAN-SPAM
 description: "What the U.S. CAN-SPAM Act and the FTC compliance guide say about commercial email, quoted from the sources, with questions to bring to counsel."
 topic: gtm
 publishedDate: 2026-10-10
@@ -28,6 +28,8 @@ sources:
     url: https://ised-isde.canada.ca/site/canada-anti-spam-legislation/en
     accessed: 2026-10-10
 evidence: [ftc-canspam, cornell-15-usc-7704, eurlex-2002-58, canada-casl]
+relatedServices: [C]
+relatedPlaybook: earn-your-first-customers
 claimsUsed: []
 draft: false
 ---

@@ -24,6 +24,8 @@ sources:
     url: https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers
     accessed: 2026-10-10
 evidence: [google-seo-starter, ftc-canspam, ftc-disclosures-101]
+relatedServices: [C]
+relatedPlaybook: earn-your-first-customers
 claimsUsed: []
 draft: false
 ---

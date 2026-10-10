@@ -1,6 +1,6 @@
 ---
 title: "Pricing a first SaaS: value, packaging and the questions to ask"
-seoTitle: "Pricing a first SaaS: value, packaging, questions"
+seoTitle: Pricing a first SaaS
 description: "How to find where value sits in a first SaaS, package it into plans, and which questions to put to customers, billing platforms and advisors."
 topic: gtm
 publishedDate: 2026-10-10
@@ -19,6 +19,8 @@ sources:
     url: https://learn.microsoft.com/en-us/partner-center/marketplace-offers/plan-saas-offer
     accessed: 2026-10-10
 evidence: [stripe-pricing-models, microsoft-plan-saas-offer]
+relatedServices: [C]
+relatedPlaybook: earn-your-first-customers
 claimsUsed: []
 draft: false
 ---

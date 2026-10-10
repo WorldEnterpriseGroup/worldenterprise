@@ -1,6 +1,6 @@
 ---
 title: "Trials, demos and self-serve: how a customer first meets the product"
-seoTitle: "Trials, demos and self-serve: first contact"
+seoTitle: Trials, demos and self-serve
 description: "The mechanics of demos, pilots, trials and self-serve, what each asks you to build, and what a U.S. statute says about recurring online charges."
 topic: gtm
 publishedDate: 2026-10-10
@@ -24,6 +24,8 @@ sources:
     url: https://www.law.cornell.edu/uscode/text/15/8403
     accessed: 2026-10-10
 evidence: [stripe-trials, microsoft-plan-saas-offer, cornell-15-usc-8403]
+relatedServices: [C, B]
+relatedPlaybook: earn-your-first-customers
 claimsUsed: []
 draft: false
 ---

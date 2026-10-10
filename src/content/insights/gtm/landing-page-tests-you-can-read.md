@@ -28,6 +28,8 @@ sources:
     url: https://www.itl.nist.gov/div898/handbook/eda/section3/eda3671.htm
     accessed: 2026-10-10
 evidence: [nist-7-1-3, nist-7-1-4, nist-7-3-3, nist-1-3-6-7-1]
+relatedServices: [C]
+relatedPlaybook: build-repeatable-growth
 claimsUsed: []
 draft: false
 ---

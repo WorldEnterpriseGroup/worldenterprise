@@ -1,6 +1,6 @@
 ---
 title: "Writing a landing page that says what the product does"
-seoTitle: "Writing a landing page that says what it does"
+seoTitle: Writing a landing page
 description: "A section-by-section plan for a first landing page in plain language, with accessibility basics from W3C and Digital.gov and a check you can run without code."
 topic: gtm
 publishedDate: 2026-10-10
@@ -33,6 +33,8 @@ sources:
     url: https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html
     accessed: 2026-10-10
 evidence: [digital-gov-plain, w3c-wai-writing, wcag22-page-titled, wcag22-contrast-minimum, wcag22-link-purpose]
+relatedServices: [A, C]
+relatedPlaybook: earn-your-first-customers
 claimsUsed: []
 draft: false
 ---
