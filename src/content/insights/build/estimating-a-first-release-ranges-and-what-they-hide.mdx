@@ -1,0 +1,114 @@
+---
+title: "Estimating a first release: ranges and what they hide"
+seoTitle: Estimating a first release with ranges
+description: Why one number misleads, how a three-point range works with an invented example, and what even a good range hides from you and from the people you tell.
+topic: build
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders, solo-founders]
+related: [product-management-for-a-first-saas-roles-backlog-and-decisions, writing-a-product-requirements-document-people-read]
+evidence: [gao-cost-guide, shapeup-boundaries, shapeup-betting-table, scrum-guide]
+sources:
+  - id: gao-cost-guide
+    title: "Cost Estimating and Assessment Guide: Best Practices for Developing and Managing Program Costs (GAO-20-195G)"
+    publisher: U.S. Government Accountability Office
+    url: https://www.gao.gov/assets/gao-20-195g.pdf
+    accessed: 2026-10-10
+  - id: shapeup-boundaries
+    title: Shape Up, Chapter 3, Set Boundaries
+    publisher: Basecamp
+    url: https://basecamp.com/shapeup/1.2-chapter-03
+    accessed: 2026-10-10
+  - id: shapeup-betting-table
+    title: Shape Up, Chapter 8, The Betting Table
+    publisher: Basecamp
+    url: https://basecamp.com/shapeup/2.2-chapter-08
+    accessed: 2026-10-10
+  - id: scrum-guide
+    title: The Scrum Guide
+    publisher: Ken Schwaber and Jeff Sutherland, scrumguides.org
+    url: https://scrumguides.org/scrum-guide.html
+    accessed: 2026-10-10
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Every founder is asked the same question by someone: when will it be ready? The honest answer is a range, and most of the damage done by estimates comes from squeezing that range into a single number and then treating the number as a promise.
+
+This article is about estimating a first release. It describes what a range is, shows one built from invented figures, and then spends most of its length on what a range still hides. It gives no durations, because nobody can responsibly give you one for your product without knowing the product, the team and the unknowns.
+
+## Three different things called an estimate
+
+Three words get used as if they were one. Keeping them apart removes much of the argument.
+
+An **estimate** is a prediction of the effort or cost of a defined piece of work. An **appetite** is a decision about how much you are willing to spend. A **commitment** is a promise to someone else.
+
+Basecamp's *Shape Up* draws the first distinction sharply: "An appetite is completely different from an estimate." It adds: "Estimates start with a design and end with a number. Appetites start with a number and end with a design." In practice, an estimate asks how long a defined scope will take, and an appetite asks what you can build for a given investment. The first is useful when the scope is firm. The second is more honest when it is not, which at a first release it usually is.
+
+The two are connected, and the <MaybeLink path="/insights/cutting-an-mvp-the-cut-line-test/">cut-line test</MaybeLink> is a way of using the second to shrink the first.
+
+## Why one number misleads
+
+The United States Government Accountability Office publishes a guide to cost estimating for federal programs. It is written for programs far larger than a startup, but its warning about single numbers is general. It observes that analysts "often fail to adequately address risk," and that this "can result in point estimates that give decision-makers no information about their likelihood of success."
+
+The guide's alternative is a range. In its words, "High-quality cost estimates usually fall within a range of possible costs, the point estimate being between the best and worst case extremes."
+
+You can build a rough version of this with three numbers per task. The guide describes the approach used for each element of a program: "Three-point estimates typically use a minimum, most likely, and maximum to describe the range of possible costs."
+
+## An invented example
+
+Imagine a small product that reminds clinic patients to confirm appointments. The table below is an illustration with made-up numbers, in abstract units of effort rather than days, because the point is the shape of the range and not any duration.
+
+<DataTable
+  caption="Invented three-point estimates, in units of effort"
+  columns={['Piece of work', 'Minimum', 'Most likely', 'Maximum']}
+  rows={[
+    ['Send the reminder message', '3', '5', '12'],
+    ['Handle the patient’s reply', '2', '4', '10'],
+    ['Show the list of unconfirmed patients', '2', '3', '6'],
+    ['Set up each clinic by hand', '1', '2', '4'],
+    ['Total', '8', '14', '32']
+  ]}
+/>
+
+Look at what the totals say. The most likely total is 14 units, but the maximum is more than twice that, and the maximum is four times the minimum. A person who hears "about 14" has been given a number that hides most of what you know. A person who hears "between 8 and 32, most likely around 14, with the wide end coming from message delivery and replies" can plan for it.
+
+The wide items are also informative. Two of the four rows carry most of the spread, which tells you where to spend effort first: reduce the uncertainty there, by a small test, before you build anything around it.
+
+## What a range still hides
+
+A range is better than a point, and it still leaves things out. These are the ones that catch first-release teams.
+
+**Shared causes.** The three-point approach looks at each piece separately. If one cause makes several pieces late, such as an unclear requirement or a provider whose interface behaves oddly, the maximums arrive together. The GAO guide lists sources of this kind of risk, including "unexpected design complexity, incomplete requirements, technology uncertainty." Adding the maximums is not a prediction, only a way to see how wide the spread could be.
+
+**What you did not list.** Estimates cover the pieces someone named. Review, fixing what review finds, deployment, data setup, support for the first users, and the work of deciding things are all real, and they are usually missing from the list. Add them as their own rows.
+
+**Uncertainty versus risk.** The GAO guide separates the two. Risk "can be quantified in some definite way, while uncertainty cannot be defined because of ambiguity," and "uncertainty is always present, while risks may or may not occur." For a first release, the practical reading is that some of what you do not know is a named risk you can put a range on, and some is a gap you cannot yet describe. A range covers only the first kind.
+
+**Your own availability.** If you are a solo founder, you are the team and the person answering customers. A range made of effort says nothing about the days on which you were not working on it.
+
+**Learning.** The work changes what you know. A piece estimated as "reply handling" may turn into a different piece once the first clinic shows you what replies look like. The Scrum Guide is frank about this: "In complex environments, what will happen is unknown." It also says: "Selecting how much can be completed within a Sprint may be challenging." That admission comes from a framework built around planning.
+
+## Turning a range into a decision
+
+An estimate is useful when it changes what you do. Three ways it can:
+
+1. **Compare with your appetite.** If even the minimum exceeds what you are willing to spend, you need to cut scope, not estimate harder.
+2. **Find the wide rows.** Reduce the spread where it is widest, with a prototype or a conversation, before building on it.
+3. **Set a stopping rule.** *Shape Up* describes a "circuit breaker": "If they don’t finish, by default the project doesn’t get an extension." The reasoning offered is that "if a project doesn’t finish in the six weeks, it means we did something wrong in the shaping." That is Basecamp's own cycle length, not a recommendation for yours. The transferable idea is to decide in advance what happens when the time runs out, so that the decision is not made under pressure.
+
+<Callout title="Say what the number is">
+  When you share a figure, say which of the three it is. "My appetite is this much" is a statement about you. "My estimate is this range" is a statement about the work. "I commit to this date" is a promise, and you should make it only for work you understand well.
+</Callout>
+
+## Habits that make estimates better
+
+Write the estimate down with its assumptions, and keep it. After the work, compare the range with what happened and note the reason for each large gap. Over a few releases this gives you a record of how your own estimates miss, which no published guide can supply. Keep estimating small pieces, since they are easier to compare. The <MaybeLink path="/playbooks/build-and-ship-v1/">Build and ship v1 playbook</MaybeLink> and the <MaybeLink path="/glossary/">glossary</MaybeLink> give the wider context.
+
+## What this article cannot tell you
+
+The main source is a guide to estimating costs for large government programs. It was not written for software startups, and it does not report how accurate estimates are for first releases. The other two sources are one company's description of its method and a framework for software teams; none of them tested whether the approaches here make a young company's estimates better, and we make no such claim.
+
+The article gives no durations, no conversion between units of effort and calendar time and no rule for how wide a range should be. It does not cover contracts with fixed prices, which carry their own legal and commercial terms that you should take advice on. The example is invented.

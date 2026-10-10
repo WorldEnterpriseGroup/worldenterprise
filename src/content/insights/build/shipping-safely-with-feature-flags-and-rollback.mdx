@@ -1,0 +1,115 @@
+---
+title: Shipping safely with feature flags and rollback
+seoTitle: Shipping safely with feature flags
+description: How feature flags separate deploying code from releasing a feature, what rollback can and cannot undo, and why every flag needs a removal date.
+topic: build
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders]
+related: [observability-for-a-small-team-logs-metrics-and-alerts-you-will-actually-read, a-boring-first-technology-stack]
+evidence: [openfeature-intro, fowler-feature-toggles, gds-deploying-regularly, k8s-deployment]
+sources:
+  - id: openfeature-intro
+    title: OpenFeature, introduction
+    publisher: OpenFeature, a Cloud Native Computing Foundation incubating project
+    url: https://openfeature.dev/docs/reference/intro/
+    accessed: 2026-10-10
+  - id: fowler-feature-toggles
+    title: Feature Toggles (aka Feature Flags)
+    publisher: Pete Hodgson, martinfowler.com
+    url: https://martinfowler.com/articles/feature-toggles.html
+    accessed: 2026-10-10
+  - id: gds-deploying-regularly
+    title: Deploying software regularly
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/technology/deploying-software-regularly
+    accessed: 2026-10-10
+  - id: k8s-deployment
+    title: Deployments
+    publisher: The Kubernetes Authors, kubernetes.io documentation
+    url: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+    accessed: 2026-10-10
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+A first release is the moment when a mistake first reaches a customer, and the cost of a mistake changes shape. Before launch, a bug wastes your time. After launch, it wastes theirs, and what matters most is how quickly you can take it away.
+
+Two practices make that fast: feature flags, which let you turn behavior on and off without shipping new code, and rollback, which returns the running system to an earlier version. They solve different problems, and a small team that mixes them up tends to discover the difference during an incident. This article is for technical founders and the engineers they work with. It describes both practices, what each cannot undo, and the maintenance that keeps flags from becoming a hazard.
+
+## Deploying is not releasing
+
+The idea behind a flag is old and plain. The OpenFeature documentation puts it this way: "In the most basic case, you can think of a feature flag as an if/else statement that can be controlled at runtime." The code for a new feature can be in production, switched off, until you decide otherwise.
+
+That separates two events that usually travel together. Deploying is putting code on servers. Releasing is letting customers use it. When they are the same event, every deployment is a customer-facing decision, and you hesitate to deploy. When they are separate, you can deploy small changes often and release when you are ready.
+
+The UK Government Digital Service's service manual makes the case for frequent, small deployments: "You should deploy software often and with small changes." It also gives a practical reason, that you can "react quickly to urgent fixes, such as security updates and last minute changes." A flag is one way to keep those frequent deployments from becoming frequent releases of half-finished work.
+
+## Four kinds of flag, which behave differently
+
+A single word covers several jobs. An article by Pete Hodgson on Martin Fowler's site sorts toggles into categories, and the distinction is worth keeping because each category has a different life.
+
+<DataTable
+  caption="Four kinds of toggle, in the vocabulary of the Fowler article"
+  columns={['Kind', 'What the source says it does', 'Expected life']}
+  rows={[
+    ['Release toggle', 'Allows "incomplete and un-tested codepaths to be shipped to production"', 'Short. The source says they should generally not stay much beyond a week or two'],
+    ['Experiment toggle', 'Used "to perform multivariate or A/B testing"', 'As long as the experiment runs'],
+    ['Ops toggle', 'Controls "operational aspects of our system’s behavior"', 'Can be long-lived, as a switch to reduce load or disable a feature in trouble'],
+    ['Permissioning toggle', 'Changes "the features or product experience that certain users receive"', 'Long-lived, and closer to a product setting than a release tool']
+  ]}
+/>
+
+For a first SaaS company, the two you will meet first are release toggles, to hide work in progress, and ops toggles, to switch off a feature that misbehaves. Name your flags by kind so that the short-lived ones are easy to find.
+
+## Rollback is a different tool
+
+A rollback does not hide a feature. It replaces the running version with an earlier one. The Kubernetes documentation lists this among the uses of a Deployment: "Rollback to an earlier Deployment revision if the current state of the Deployment is not stable." Other platforms offer an equivalent, and the principle is the same: keep the previous version available and make returning to it a single step.
+
+The service manual connects rollback to the size of your releases. It says that combining auditable deployments with small and frequent releases lets you "roll back to a previous version more easily." The smaller the change, the more likely the earlier version is a safe place to return to.
+
+For a small team, the practical minimum is a one-page note that anyone on the team can follow: where the last known good version lives, the exact step that restores it, who is allowed to take that step and how you will tell afterward that it worked. A rollback that only the person who built the system can perform is not yet a rollback procedure, because that person will not always be reachable.
+
+Use the two tools for what they are good at. A flag is the right answer when the problem is one feature and the rest of the release is fine. A rollback is the right answer when the problem is the release itself, for example a dependency upgrade or a change in how the application starts.
+
+## What neither can undo
+
+This part is general engineering reasoning, not a finding from the sources, and it is where many incidents come from.
+
+**Data that has been written.** If the new version wrote records in a new shape, returning to the old code leaves records the old code does not understand. A common approach is to make schema changes in steps, so that the old and new code can both read the data for a time, and only later remove the old shape. Ask your engineers what happens to data if you roll back an hour after launch.
+
+**Messages that have been sent.** An email, a webhook or a charge to a payment provider is out in the world. Switching the feature off prevents the next one, not the last one.
+
+**Customers who saw it.** A feature that appeared for an afternoon and then vanished still has an effect. If you changed something customers rely on, say so.
+
+<Callout title="Practice the reversal before you need it">
+  Switch one flag off in a staging environment and roll one release back, on a quiet day. The first time should not be an incident, and the exercise shows you which step you had assumed would work.
+</Callout>
+
+## The cost of flags you forget
+
+Flags carry a cost in the code that holds them. The same Fowler article says that "a team must be proactive in removing feature flags that are no longer needed," and that teams should "view their Feature Toggles as inventory which comes with a carrying cost." It also names the compounding problem: "With multiple toggles in play we have a combinatoric explosion of possible toggle states."
+
+A concrete way to see that: with three independent flags, there are eight combinations of on and off, and your tests probably cover two of them. With ten flags there are 1,024. Most of those combinations will never occur in production, which is the problem, because the one that does is the one nobody tested.
+
+Habits that keep this manageable:
+
+- Give every flag an owner and a removal condition when you create it, such as "remove after the feature has run for a full billing cycle without incident."
+- Delete the flag and the dead branch of code together, in one change.
+- Test the default state and the state you plan to release.
+- Decide, and write down, what the code does when it cannot read the flag at all. Choose the safer behavior for the feature in question.
+- Keep a short list of live flags where the team can see it.
+
+## Where to keep the flag
+
+A first release often needs nothing more than an environment variable or a configuration file read at startup. The cost is that changing a flag means redeploying. If you need to flip flags without a deployment, a dedicated service becomes worth considering. OpenFeature describes itself as "an open specification that provides a vendor-agnostic, community-driven API for feature flagging," and it is a Cloud Native Computing Foundation incubating project, so you can write against a common interface and change the provider behind it later. The article names it to describe how the interface works, not to recommend it. Whatever you choose, check how long the choice takes to reverse.
+
+For the surrounding practice, see the <MaybeLink path="/playbooks/build-and-ship-v1/">Build and ship v1 playbook</MaybeLink>, the discussion of which <MaybeLink path="/insights/architecture-decisions-to-defer-in-the-first-six-months/">architecture decisions to defer</MaybeLink> and the <MaybeLink path="/glossary/">glossary</MaybeLink> for terms.
+
+## What this article cannot tell you
+
+This article describes general practice from four public documents. None of them measured whether flags or rollbacks reduce incidents for a small SaaS company, and we make no such claim. The Kubernetes passage describes one platform; your hosting may differ. The rollback and data discussion is engineering reasoning, not a sourced finding.
+
+It does not cover regulated environments, where change control may have formal requirements, nor high-availability designs, database migration tooling or progressive delivery tooling. It does not tell you which flag service to use, and it cannot tell you how many flags your team can manage. That depends on your tests, your team and the pace you keep.
