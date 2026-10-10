@@ -2,13 +2,17 @@
 import type { PrimaryNavItem } from '../../data/nav.ts';
 import { activeSectionId } from '../../data/nav.ts';
 import { href } from '../../lib/url.ts';
+import type { NewestResearch } from '../nav/panels.ts';
+import { panelModel } from '../nav/panels.ts';
 
 interface Props {
   items: readonly PrimaryNavItem[];
   currentPath: string;
+  /** The newest published research brief; it fills the tile of the panel that asks for it. */
+  newestResearch?: NewestResearch | null;
 }
 
-const { items, currentPath } = Astro.props;
+const { items, currentPath, newestResearch = null } = Astro.props;
 const activeId = activeSectionId(currentPath);
 const link = (target: string) => (target === currentPath ? 'page' : undefined);
 ---
@@ -16,14 +20,19 @@ const link = (target: string) => (target === currentPath ? 'page' : undefined);
 <nav class="mega-nav" aria-label="Primary" data-mega-nav>
   <ul class="mega-nav__list" role="list">
     {
-      items.map((item) =>
-        item.kind === 'direct' ? (
-          <li>
-            <a class="mega-nav__link" href={href(item.href)} aria-current={link(item.href) ?? (activeId === item.id ? 'true' : undefined)}>
-              {item.label}
-            </a>
-          </li>
-        ) : (
+      items.map((item) => {
+        if (item.kind === 'direct') {
+          return (
+            <li>
+              <a class="mega-nav__link" href={href(item.href)} aria-current={link(item.href) ?? (activeId === item.id ? 'true' : undefined)}>
+                {item.label}
+              </a>
+            </li>
+          );
+        }
+        // Each page is listed once per panel and a column shows descriptions only when all of its links have one (panelModel).
+        const panel = panelModel(item, newestResearch);
+        return (
           <li>
             <button
               type="button"
@@ -34,21 +43,26 @@ const link = (target: string) => (target === currentPath ? 'page' : undefined);
             >
               {item.label}
             </button>
-            <div id={`mega-${item.id}`} class="mega-panel" popover="auto" aria-label={`${item.label} menu`} role="group" data-mega-panel>
+            <div id={`mega-${item.id}`} class="mega-panel" popover="auto" aria-label={`${item.label} menu`} role="group" data-mega-panel data-panel={item.id}>
               <div class="container mega-panel__inner">
-                <div class="mega-panel__lead stack">
-                  <p class="mega-panel__text">{item.lead}</p>
+                <div class="mega-panel__lead">
+                  <div class="stack">
+                    <p class="eyebrow mega-panel__eyebrow">{item.label}</p>
+                    <p class="mega-panel__text">{item.lead}</p>
+                  </div>
                   <a class="mega-panel__hub" href={href(item.href)} aria-current={link(item.href)}>
                     {item.leadLink}
                   </a>
                 </div>
                 <div class="mega-panel__columns">
-                  {item.columns.map((column, ci) => (
+                  {panel.columns.map((column, ci) => (
                     <section class="mega-panel__column" aria-labelledby={`mega-${item.id}-h${ci}`}>
                       <p class="mega-panel__heading" id={`mega-${item.id}-h${ci}`}>{column.heading}</p>
                       <ul role="list">
-                        {column.links.map((l, li) => {
+                        {column.links.map((source, li) => {
                           const descId = `mega-${item.id}-d${ci}-${li}`;
+                          // A compact column shows labels only: its links are rendered without their descriptions.
+                          const l = column.described ? source : { ...source, description: undefined };
                           // The description sits inside the link so the whole block is one target and one hover area. It is hidden from the link's
                           // name (the name stays the label, which keeps the visible text a prefix of it) and is announced as the link's description.
                           return (
@@ -68,15 +82,15 @@ const link = (target: string) => (target === currentPath ? 'page' : undefined);
                     </section>
                   ))}
                 </div>
-                <aside class="mega-panel__featured" aria-label={item.featured.label}>
-                  <p class="eyebrow">{item.featured.label}</p>
-                  <p class="mega-panel__featured-title">{item.featured.title}</p>
-                  {item.featured.text && <p>{item.featured.text}</p>}
-                  <a href={href(item.featured.cta.href)}>{item.featured.cta.label}</a>
+                <aside class="mega-panel__featured" aria-label={panel.featured.label}>
+                  <p class="eyebrow">{panel.featured.label}</p>
+                  <p class="mega-panel__featured-title">{panel.featured.title}</p>
+                  {panel.featured.text && <p>{panel.featured.text}</p>}
+                  <a href={href(panel.featured.cta.href)} aria-current={link(panel.featured.cta.href)}>{panel.featured.cta.label}</a>
                 </aside>
-                {item.strip.length > 0 && (
+                {panel.strip.length > 0 && (
                   <ul class="mega-panel__strip" role="list">
-                    {item.strip.map((l) => (
+                    {panel.strip.map((l) => (
                       <li>
                         <a href={href(l.href)} aria-current={link(l.href)}>
                           {l.label}
@@ -88,8 +102,54 @@ const link = (target: string) => (target === currentPath ? 'page' : undefined);
               </div>
             </div>
           </li>
-        ),
-      )
+        );
+      })
     }
   </ul>
 </nav>
+
+<style>
+  @layer reset, tokens, base, layout, components, utilities, pages, print;
+
+  /* The panel reads in three tiers: who this section is (a full-width lead row), what is in it (the columns beside one tile), and the
+     quiet extras (the strip as a footer line). The class names and the link anatomy are the ones components.css defines. */
+  @layer pages {
+    .mega-panel__inner {
+      grid-template-columns: minmax(0, 3fr) minmax(14rem, 1fr);
+      gap: var(--sp-5) var(--sp-6);
+      padding-block: var(--sp-5);
+    }
+
+    .mega-panel__lead {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: var(--sp-2) var(--sp-5);
+      padding-block-end: var(--sp-3);
+      padding-inline-end: 0;
+      border-block-end: var(--border-hair);
+    }
+
+    .mega-panel__eyebrow {
+      margin: 0;
+    }
+
+    .mega-panel__text {
+      max-inline-size: 60ch;
+      margin: 0;
+      font-size: var(--fs-base);
+    }
+
+    .mega-panel__columns {
+      align-content: start;
+      gap: var(--sp-4) var(--sp-5);
+    }
+
+    .mega-panel__strip {
+      margin: 0;
+      padding-block-start: var(--sp-2);
+    }
+  }
+</style>

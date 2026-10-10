@@ -3,7 +3,8 @@ import { asset, href } from '../../../lib/url.ts';
 
 /**
  * <we-search> island host. The form is hidden until src/scripts/search.ts has loaded the Pagefind index. The
- * fallback block (links to the site map and key pages) is visible without JavaScript and when the index fails.
+ * fallback block (links to the site map and key pages) is visible without JavaScript and when the index fails. The type chips are built
+ * by the script from the results, so the group is empty and hidden until a search has found more than one type.
  */
 interface FallbackLink {
   readonly label: string;
@@ -26,6 +27,7 @@ const { fallback } = Astro.props;
       <button class="btn btn--primary" type="submit">Search</button>
     </div>
   </form>
+  <div class="we-search__chips" role="group" aria-label="Filter results by type" data-search-chips hidden></div>
   <p class="we-search__status" role="status" data-search-status></p>
   <ol class="we-search__results" role="list" data-search-results></ol>
   <button class="btn btn--secondary" type="button" data-search-more hidden>Show more results</button>
@@ -72,6 +74,49 @@ const { fallback } = Astro.props;
       font: inherit;
     }
 
+    .we-search__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2);
+    }
+
+    .we-search__chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      min-block-size: var(--target-min);
+      padding-inline: var(--sp-4);
+      border: var(--border-strong);
+      border-radius: var(--radius-pill);
+      background: var(--color-bg);
+      color: var(--color-text);
+      font: inherit;
+      cursor: pointer;
+
+      &:hover {
+        background: var(--color-bg-soft);
+      }
+
+      /* The pressed chip is filled, bold and underlined by a bar, so it does not rely on colour alone. */
+      &[aria-pressed='true'] {
+        background: var(--color-text);
+        border-color: var(--color-text);
+        color: var(--color-bg);
+        font-weight: 600;
+        box-shadow: inset 0 -4px 0 var(--color-accent);
+      }
+    }
+
+    .we-search__kind {
+      margin: 0 0 var(--sp-1);
+      font-family: var(--ff-display);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      color: var(--color-text-muted);
+    }
+
     .we-search__status {
       min-block-size: 1.5em;
       margin: 0;
@@ -84,6 +129,12 @@ const { fallback } = Astro.props;
       margin: 0;
       padding: 0;
       list-style: none;
+    }
+
+    /* A new batch pushes the next rows under the pointer; for a moment they ignore it, so the second click of a double click on
+       "Show more" cannot open a result. */
+    .we-search__results[data-settling] {
+      pointer-events: none;
     }
 
     .we-search__title {
@@ -108,6 +159,15 @@ const { fallback } = Astro.props;
       margin: 0;
       padding: 0;
       list-style: none;
+    }
+
+    @media (forced-colors: active) {
+      .we-search__chip[aria-pressed='true'] {
+        forced-color-adjust: none;
+        background: Highlight;
+        border-color: Highlight;
+        color: HighlightText;
+      }
     }
 
     we-search[data-state='ready'] .we-search__fallback {

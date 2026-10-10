@@ -44,3 +44,78 @@ export function resultsStatus(count: number, query: string): string {
   if (count === 0) return `No results for “${query}”.`;
   return count === 1 ? `1 result for “${query}”.` : `${count} results for “${query}”.`;
 }
+
+export type ResultKind = 'article' | 'research' | 'playbook' | 'guide' | 'template' | 'faq' | 'glossary';
+
+interface KindRow {
+  readonly id: ResultKind;
+  /** Plural, as the chip says it. */
+  readonly label: string;
+  /** As a status line and a result badge say it. */
+  readonly singular: string;
+  readonly prefix: string;
+}
+
+/** The result types, in chip order, and the route prefix that says which one a page is. Every other page has no type. */
+export const RESULT_KINDS: readonly KindRow[] = [
+  { id: 'article', label: 'Articles', singular: 'Article', prefix: '/insights/' },
+  { id: 'research', label: 'Research', singular: 'Research', prefix: '/research/' },
+  { id: 'playbook', label: 'Playbooks', singular: 'Playbook', prefix: '/playbooks/' },
+  { id: 'guide', label: 'Guides', singular: 'Guide', prefix: '/fundability/' },
+  { id: 'template', label: 'Templates', singular: 'Template', prefix: '/library/' },
+  { id: 'faq', label: 'FAQ', singular: 'FAQ', prefix: '/faq/' },
+  { id: 'glossary', label: 'Glossary', singular: 'Glossary', prefix: '/glossary/' },
+];
+
+/**
+ * The type of a result, from its URL as Pagefind returns it (site-relative, with or without the preview base path). The base is
+ * removed before the prefix is read, so "/worldenterprise/insights/x/" is an article as "/insights/x/" is. Returns null for any page
+ * that is not one of the types, and for an absolute URL.
+ */
+export function resultKind(url: string, base = ''): ResultKind | null {
+  if (!url.startsWith('/')) return null;
+  const prefix = normalizeBase(base);
+  const path = prefix !== '' && (url === prefix || url.startsWith(`${prefix}/`)) ? url.slice(prefix.length) || '/' : url;
+  const hit = RESULT_KINDS.find((kind) => path === kind.prefix.slice(0, -1) || path.startsWith(kind.prefix));
+  return hit?.id ?? null;
+}
+
+export function isResultKind(value: string): value is ResultKind {
+  return RESULT_KINDS.some((kind) => kind.id === value);
+}
+
+export function kindLabel(kind: ResultKind): string {
+  return RESULT_KINDS.find((row) => row.id === kind)?.singular ?? kind;
+}
+
+/** Reads the `type` parameter. An unknown value is ignored, so a stale link still opens the page. */
+export function readType(search: string): ResultKind | null {
+  const value = new URLSearchParams(search).get('type') ?? '';
+  return isResultKind(value) ? value : null;
+}
+
+/** Returns a URL search string with `type` set or removed, keeping every other parameter. */
+export function withType(search: string, kind: ResultKind | null): string {
+  const params = new URLSearchParams(search);
+  if (kind === null) params.delete('type');
+  else params.set('type', kind);
+  const text = params.toString();
+  return text === '' ? '' : `?${text}`;
+}
+
+/** The kinds present among `urls`, in chip order. */
+export function kindsPresent(urls: readonly string[], base = ''): readonly ResultKind[] {
+  const present = new Set<ResultKind>();
+  for (const url of urls) {
+    const kind = resultKind(url, base);
+    if (kind !== null) present.add(kind);
+  }
+  return RESULT_KINDS.filter((row) => present.has(row.id)).map((row) => row.id);
+}
+
+/** Status line for a list filtered to one type: "3 Playbook results for “x”." */
+export function filteredStatus(count: number, query: string, kind: ResultKind): string {
+  const noun = kindLabel(kind);
+  if (count === 0) return `No ${noun} results for “${query}”.`;
+  return count === 1 ? `1 ${noun} result for “${query}”.` : `${count} ${noun} results for “${query}”.`;
+}
