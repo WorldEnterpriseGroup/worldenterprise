@@ -2,7 +2,12 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import * as claimsAudit from '../../../scripts/audit-claims.mjs';
 import * as toolCopy from '../../../src/components/tools/copy.ts';
+import { RESULT_IDS as CAP_RESULT_IDS } from '../../../src/components/islands/we-cap-table/spec.ts';
+import { CHECK_IDS } from '../../../src/components/islands/we-pricing-checker/spec.ts';
 import { RESULT_IDS } from '../../../src/components/islands/we-runway/spec.ts';
+import { calculate as calculateCap, waitingText as capWaitingText } from '../../../src/scripts/cap-table.ts';
+import type { RawInputs as CapInputs } from '../../../src/scripts/cap-table.ts';
+import { check as checkPricing, waitingText as pricingWaitingText } from '../../../src/scripts/pricing-checker.ts';
 import { calculate, waitingText } from '../../../src/scripts/runway.ts';
 import type { RawInputs } from '../../../src/scripts/runway.ts';
 import { MARKUP_FILES, read, surfaces } from './surfaces.ts';
@@ -100,6 +105,71 @@ test('every result and error the runway calculator can write trips no rule and n
   }
 });
 
+const CAP_SAMPLES: readonly CapInputs[] = [
+  {},
+  { yours: '1,000' },
+  { yours: 'abc', others: '-1', issue: '1.5' },
+  { yours: '1e13', others: '$5', issue: '5%' },
+  { yours: '0', others: '0', issue: '0' },
+  { yours: '0', others: '0', issue: '10' },
+  { yours: '1000', others: '3000', issue: '1000' },
+  { yours: '1', others: '2', issue: '3' },
+  { yours: '999,999,999,999', others: '999,999,999,999', issue: '999,999,999,999' },
+  { yours: '1,000,000,000,001', others: '1' },
+];
+
+test('every result and error the cap table explainer can write trips no rule and names no banned wording', () => {
+  const lines: string[] = [];
+  for (const sample of CAP_SAMPLES) {
+    const outcome = calculateCap(sample);
+    for (const issue of outcome.issues) lines.push(issue.message);
+    for (const result of outcome.results) lines.push(result.display, result.detail);
+  }
+  for (const id of CAP_RESULT_IDS) {
+    const waiting = capWaitingText(id);
+    lines.push(waiting.display, waiting.detail);
+  }
+  for (const line of lines) {
+    assert.deepEqual(hits(line), [], line);
+    for (const [name, pattern] of BANNED) assert.doesNotMatch(line, pattern, `${line} has ${name}`);
+  }
+});
+
+test('every count the pricing page checker can write trips no rule and names no banned wording', () => {
+  const lines: string[] = [];
+  for (let mask = 0; mask < 1 << CHECK_IDS.length; mask += 1) {
+    const outcome = checkPricing(CHECK_IDS.filter((_, index) => (mask & (1 << index)) !== 0));
+    for (const result of outcome.results) lines.push(result.display, result.detail);
+  }
+  const waiting = pricingWaitingText();
+  lines.push(waiting.display, waiting.detail);
+  for (const line of lines) {
+    assert.deepEqual(hits(line), [], line);
+    for (const [name, pattern] of BANNED) assert.doesNotMatch(line, pattern, `${line} has ${name}`);
+  }
+});
+
+test('the cap table explainer names no financing instrument, price or value, and no SAFE term', () => {
+  const FINANCING: ReadonlyArray<readonly [string, RegExp]> = [
+    ['SAFE', /\bSAFEs?\b/],
+    ['convertible note', /convertible note/i],
+    ['valuation', /\bvaluation/i],
+    ['discount', /\bdiscount/i],
+    ['a price', /\bprices?\b|\bpriced\b|\bworth\b/i],
+  ];
+  const texts = surfaces()
+    .filter((surface) => /cap-table|we-cap-table/.test(surface.path))
+    .flatMap((surface) => surface.strings);
+  assert.ok(texts.length > 30);
+  for (const text of texts) {
+    for (const [name, pattern] of FINANCING) {
+      assert.doesNotMatch(text, pattern, `"${text}" has ${name}`);
+    }
+  }
+  const scriptText = [read('src/scripts/cap-table.ts'), read('src/components/islands/we-cap-table/CapTable.astro')].map(visibleText).join(' ');
+  for (const [name, pattern] of FINANCING) assert.doesNotMatch(scriptText, pattern, name);
+});
+
 test('the illustration line is the exact sentence the brief requires, and every result block carries it', () => {
   assert.equal(toolCopy.ILLUSTRATION, 'An illustration from your inputs, not advice.');
   assert.match(read('src/components/tools/ToolResult.astro'), /<dd class="tool-result__tag">\{ILLUSTRATION\}<\/dd>/);
@@ -125,6 +195,8 @@ test('the tool scripts and components make no request, store nothing and touch n
   ];
   for (const rel of [
     'src/scripts/runway.ts',
+    'src/scripts/pricing-checker.ts',
+    'src/scripts/cap-table.ts',
     'src/components/tools/enhance.ts',
     'src/components/tools/numeric.ts',
     'src/components/tools/copy.ts',
@@ -132,6 +204,10 @@ test('the tool scripts and components make no request, store nothing and touch n
     'src/components/tools/ToolResult.astro',
     'src/components/islands/we-runway/RunwayCalculator.astro',
     'src/components/islands/we-runway/spec.ts',
+    'src/components/islands/we-pricing-checker/PricingChecker.astro',
+    'src/components/islands/we-pricing-checker/spec.ts',
+    'src/components/islands/we-cap-table/CapTable.astro',
+    'src/components/islands/we-cap-table/spec.ts',
   ]) {
     const source = read(rel);
     for (const [name, pattern] of FORBIDDEN) assert.doesNotMatch(source, pattern, `${rel} uses ${name}`);
@@ -139,8 +215,14 @@ test('the tool scripts and components make no request, store nothing and touch n
 });
 
 test('the results are one polite live region and the inputs start empty and disabled', () => {
-  const island = read('src/components/islands/we-runway/RunwayCalculator.astro');
-  assert.match(island, /role="status" aria-live="polite"/);
+  for (const rel of [
+    'src/components/islands/we-runway/RunwayCalculator.astro',
+    'src/components/islands/we-pricing-checker/PricingChecker.astro',
+    'src/components/islands/we-cap-table/CapTable.astro',
+  ]) {
+    assert.match(read(rel), /role="status" aria-live="polite"/, rel);
+  }
+  assert.match(read('src/components/islands/we-pricing-checker/PricingChecker.astro'), /type="checkbox" name=\{item\.id\} disabled/);
   const field = read('src/components/tools/ToolField.astro');
   assert.match(field, /^\s+disabled$/m);
   assert.doesNotMatch(field, /\bvalue=/);

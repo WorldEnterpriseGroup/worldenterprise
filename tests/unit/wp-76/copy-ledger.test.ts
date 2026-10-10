@@ -43,9 +43,11 @@ test('every mapping is well formed: one claim, page, decision or label, and an e
   for (const doc of ledger.documents ?? []) assert.deepEqual(checkSentences('WP-76', doc.path, doc.sentences ?? [], repo), []);
 });
 
-test('the funding sentence is the funding claim', () => {
-  const entry = documentFor('src/content/pages/tools/runway-calculator.mdx').find((s) => s.text.includes('WE makes no promise of funding.'));
-  assert.equal(entry?.claim, 'C-05');
+test('each tool page maps its funding sentence to the funding claim', () => {
+  for (const page of ['runway-calculator', 'pricing-page-checker', 'cap-table-explainer']) {
+    const entry = documentFor(`src/content/pages/tools/${page}.mdx`).find((s) => s.text.includes('WE makes no promise of funding.'));
+    assert.equal(entry?.claim, 'C-05', page);
+  }
 });
 
 test('no mapping points at the file it describes without naming a heading, so a sentence never vouches for itself', () => {

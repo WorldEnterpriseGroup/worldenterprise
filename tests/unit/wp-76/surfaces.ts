@@ -9,6 +9,8 @@
 import { readFileSync } from 'node:fs';
 import * as toolCopy from '../../../src/components/tools/copy.ts';
 import { HUB, TOOLS } from '../../../src/components/tools/registry.ts';
+import * as capTable from '../../../src/components/islands/we-cap-table/spec.ts';
+import * as pricing from '../../../src/components/islands/we-pricing-checker/spec.ts';
 import { FORMULAS, FORMULAS_PAGE, INPUTS, ISLAND, PAGE, RESULTS } from '../../../src/components/islands/we-runway/spec.ts';
 
 export interface Surface {
@@ -88,6 +90,8 @@ const unique = (strings: readonly string[]): string[] => [...new Set(strings)];
 export function surfaces(): Surface[] {
   const hub = mdx('src/content/pages/tools/index.mdx');
   const runway = mdx('src/content/pages/tools/runway-calculator.mdx');
+  const pricingPage = mdx('src/content/pages/tools/pricing-page-checker.mdx');
+  const capPage = mdx('src/content/pages/tools/cap-table-explainer.mdx');
   return [
     { path: 'src/components/tools/copy.ts', strings: unique(stringsIn(toolCopy)) },
     {
@@ -116,6 +120,37 @@ export function surfaces(): Surface[] {
       path: 'src/content/pages/tools/runway-calculator.mdx',
       strings: unique([...Object.values(runway.frontmatter).flatMap(sentencesOf), ...runway.body]),
     },
+    {
+      path: 'src/components/islands/we-pricing-checker/spec.ts',
+      strings: unique([
+        ...pricing.CHECKS.flatMap((item) => sentencesOf(item.text)),
+        ...pricing.RESULTS.map((result) => result.name),
+        ...stringsIn(pricing.ISLAND),
+        ...sentencesOf(pricing.WAITING_DETAIL),
+        ...pricing.FORMULAS.flatMap((row) => [row.name, ...sentencesOf(row.formula), ...row.assumptions.flatMap(sentencesOf)]),
+        ...stringsIn(pricing.FORMULAS_PAGE),
+        ...stringsIn(pricing.PAGE),
+      ]),
+    },
+    {
+      path: 'src/content/pages/tools/pricing-page-checker.mdx',
+      strings: unique([...Object.values(pricingPage.frontmatter).flatMap(sentencesOf), ...pricingPage.body]),
+    },
+    {
+      path: 'src/components/islands/we-cap-table/spec.ts',
+      strings: unique([
+        ...capTable.INPUTS.flatMap((input) => [input.label, ...sentencesOf(input.hint)]),
+        ...capTable.RESULTS.map((result) => result.name),
+        ...stringsIn(capTable.ISLAND),
+        ...capTable.FORMULAS.flatMap((row) => [row.name, ...sentencesOf(row.formula), ...row.assumptions.flatMap(sentencesOf)]),
+        ...stringsIn(capTable.FORMULAS_PAGE),
+        ...stringsIn(capTable.PAGE),
+      ]),
+    },
+    {
+      path: 'src/content/pages/tools/cap-table-explainer.mdx',
+      strings: unique([...Object.values(capPage.frontmatter).flatMap(sentencesOf), ...capPage.body]),
+    },
   ];
 }
 
@@ -124,6 +159,10 @@ export const MARKUP_FILES: readonly string[] = [
   'src/pages/tools/index.astro',
   'src/pages/tools/runway-calculator.astro',
   'src/components/islands/we-runway/RunwayCalculator.astro',
+  'src/pages/tools/pricing-page-checker.astro',
+  'src/components/islands/we-pricing-checker/PricingChecker.astro',
+  'src/pages/tools/cap-table-explainer.astro',
+  'src/components/islands/we-cap-table/CapTable.astro',
   'src/components/tools/ToolField.astro',
   'src/components/tools/ToolResult.astro',
   'src/components/tools/ToolPrivacy.astro',

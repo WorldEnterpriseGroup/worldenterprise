@@ -38,6 +38,19 @@ export const TOOLS: readonly ToolEntry[] = [
     eyebrow: 'Calculate',
     summary: 'Type cash, net burn and, if you want it, burn growth, and see runway in months, rounded down, with every step of the working shown.',
   },
+  {
+    title: 'Pricing page checker',
+    href: '/tools/pricing-page-checker/',
+    eyebrow: 'Check',
+    summary:
+      'Tick the statements from the launch checklist in the pricing page article that are true of your own page. See a count of what is marked and what is left.',
+  },
+  {
+    title: 'Cap table explainer',
+    href: '/tools/cap-table-explainer/',
+    eyebrow: 'Calculate',
+    summary: 'Type the shares you hold, the shares others hold and the shares to issue. See your ownership before and after, with every division shown.',
+  },
 ];
 
 export const HUB = {

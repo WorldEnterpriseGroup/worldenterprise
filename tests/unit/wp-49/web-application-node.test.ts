@@ -14,6 +14,8 @@ const TOOLS = [
   { path: '/tools/metrics-calculator/', page: 'src/pages/tools/metrics-calculator.astro', content: 'src/content/pages/tools/metrics-calculator.mdx' },
   { path: '/tools/evidence-room/', page: 'src/pages/tools/evidence-room.astro', content: 'src/content/pages/tools/evidence-room.mdx' },
   { path: '/tools/runway-calculator/', page: 'src/pages/tools/runway-calculator.astro', content: 'src/content/pages/tools/runway-calculator.mdx' },
+  { path: '/tools/pricing-page-checker/', page: 'src/pages/tools/pricing-page-checker.astro', content: 'src/content/pages/tools/pricing-page-checker.mdx' },
+  { path: '/tools/cap-table-explainer/', page: 'src/pages/tools/cap-table-explainer.astro', content: 'src/content/pages/tools/cap-table-explainer.mdx' },
 ];
 
 for (const tool of TOOLS) {
