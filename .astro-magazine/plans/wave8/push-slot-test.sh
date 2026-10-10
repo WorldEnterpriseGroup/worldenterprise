@@ -3,7 +3,9 @@
 # a failed pipeline exits 1, and a missing pipeline exits 3. No git, no network: push and status are mocked.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
-work="$(mktemp -d "${CLAUDE_JOB_DIR:-/home/seantech/.claude/jobs/504efe46}/tmp/slot-test.XXXXXX")"
+base="${CLAUDE_JOB_DIR:+$CLAUDE_JOB_DIR/tmp}"
+work="$(mktemp -d "${base:-${TMPDIR:-/tmp}}/slot-test.XXXXXX")"
+trap 'rm -rf "$work"' EXIT
 export WAVE8_SLOT_DIR="$work/slots"
 export WAVE8_POLL_SECONDS=1
 export WAVE8_APPEAR_SECONDS=4
