@@ -1,0 +1,105 @@
+---
+title: "Privacy law basics for a small product"
+seoTitle: Privacy law basics
+description: "What the GDPR, the CCPA, the COPPA Rule and the FTC Act say about personal data, from the primary sources, with questions to bring to counsel."
+topic: legal
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [first-time-founders, technical-founders]
+related: [terms-of-service-and-privacy-policy-what-each-document-is-for, answering-a-security-and-privacy-questionnaire, open-source-licenses-inside-a-commercial-product]
+sources:
+  - id: eu-gdpr
+    title: "Regulation (EU) 2016/679 (General Data Protection Regulation)"
+    publisher: EUR-Lex, Publications Office of the European Union
+    url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679
+    accessed: 2026-10-10
+  - id: ca-ag-ccpa
+    title: California Consumer Privacy Act (CCPA)
+    publisher: California Department of Justice, Office of the Attorney General
+    url: https://oag.ca.gov/privacy/ccpa
+    accessed: 2026-10-10
+  - id: cfr16-312-2
+    title: "16 CFR section 312.2: Definitions (Children's Online Privacy Protection Rule)"
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/cfr/text/16/312.2
+    accessed: 2026-10-10
+  - id: cfr16-312-3
+    title: "16 CFR section 312.3: Regulation of unfair or deceptive acts or practices in connection with the collection, use, and/or disclosure of personal information from and about children on the internet"
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/cfr/text/16/312.3
+    accessed: 2026-10-10
+  - id: usc15-45
+    title: "15 U.S. Code section 45: Unfair methods of competition unlawful; prevention by Commission"
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/uscode/text/15/45
+    accessed: 2026-10-10
+evidence: [eu-gdpr, ca-ag-ccpa, cfr16-312-2, cfr16-312-3, usc15-45]
+claimsUsed: []
+draft: false
+---
+
+*General information as of October 10, 2026. It is not legal advice, and it describes five primary sources, not the privacy law of every place a product reaches. A lawyer who works on privacy can say which rules apply to a particular product and its users.*
+
+Privacy law does not arrive as one statute. A small product that collects an email address can touch rules from the European Union, from California and from the federal government at the same time, each written for a different purpose and each defining its terms differently. This article reads five primary sources to show what each says about who it covers and what it asks, so that a founder arrives at a lawyer's office with the right questions. It does not say which rules apply to your product.
+
+## Start with what the product collects
+
+Every source below turns on a prior question: what information does the product collect, from whom and for what purpose? The General Data Protection Regulation, the GDPR, defines personal data as any information relating to an identified or identifiable natural person, and it explains that an identifiable person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, an identification number, location data or an online identifier. It defines processing as any operation or set of operations performed on personal data, such as collection, storage, use, disclosure, and erasure.
+
+Those definitions are wide: the definition of personal data names an online identifier, and whether a given piece of data can be linked to a person is a question for counsel. A written list of what the product collects, where each item is stored and who receives it is the raw material for every legal question that follows. The article on [terms of service and privacy policy](/insights/terms-of-service-and-privacy-policy-what-each-document-is-for/) describes the document that tells users what that list contains.
+
+## The GDPR: reach, bases and notice
+
+The GDPR is a regulation of the European Union. Its Article 3 says it applies to processing in the context of the activities of an establishment of a controller or processor in the Union, and, for a controller or processor not established in the Union, to the processing of personal data of data subjects who are in the Union where the processing is related to offering goods or services to them, irrespective of whether payment is required, or to monitoring their behaviour as far as it takes place within the Union.
+
+So the text ties reach to the people processed and to what the company is doing, and not only to where the company sits. Whether a product that is open to the world is offering services to people in the Union is a legal question for counsel, and the regulation's text is where that question starts.
+
+Three other parts shape how the regulation reads in practice.
+
+- **Lawful bases.** Article 6(1) says processing is lawful only if at least one of six conditions applies. They include the data subject's consent to one or more specific purposes, necessity for the performance of a contract with the data subject, compliance with a legal obligation, and the legitimate interests pursued by the controller, except where overridden by the interests or rights of the data subject.
+- **Notice.** Article 13 lists what a controller must provide at the time personal data are obtained from the data subject. It includes the identity and contact details of the controller, the purposes and the legal basis of the processing, the recipients or categories of recipients, and any intended transfer to a third country.
+- **Accountability.** Article 5(2) says the controller shall be responsible for, and be able to demonstrate compliance with, the principles in paragraph 1, which include a principle that personal data be processed in a manner that ensures appropriate security.
+
+Notice that these three connect. The basis a company relies on is itself something the notice must state, so the privacy policy and the choice of basis are one decision seen from two sides.
+
+## The CCPA: a California statute with thresholds
+
+The California Attorney General's page describes the California Consumer Privacy Act as giving consumers more control over the personal information businesses collect about them. It lists rights including the right to know, the right to delete, the right to opt out of the sale or sharing of personal information, the right to non-discrimination for exercising those rights and, since the amendments that began on January 1, 2023, the right to correct inaccurate information and to limit the use of sensitive personal information. It also says businesses subject to the law must respond to consumer requests and give consumers certain notices explaining their privacy practices.
+
+The page states who the law applies to: for-profit businesses that do business in California and meet any of three conditions, namely gross annual revenue of over $25 million, buying, selling or sharing the personal information of 100,000 or more California residents or households, or deriving 50% or more of annual revenue from selling California residents' personal information. It adds that the law generally does not apply to nonprofit organizations or government agencies.
+
+A founder reading that list should notice what it does and does not say. The page is the Attorney General's summary, not the statute, and it carried an update date of August 28, 2026. Counsel can check the current statute and regulations for the figures above and say whether a company is inside or outside each condition.
+
+## COPPA: children under 13
+
+The Children's Online Privacy Protection Rule, at 16 CFR part 312, defines a child as an individual under the age of 13. Its section 312.3 says it is unlawful for an operator of a website or online service directed to children, or an operator that has actual knowledge that it is collecting or maintaining personal information from a child, to collect that information in violation of the rule. Section 312.2 defines an operator as a person who operates a website or online service and collects or maintains personal information from its users, where it is operated for commercial purposes in the ways the definition describes.
+
+The rule then summarizes what an operator must generally do: provide notice of what it collects from children and how it is used and disclosed; obtain verifiable parental consent before collection, use or disclosure; give a parent a reasonable means to review the information and refuse further use; not condition a child's participation in an activity on disclosing more information than is reasonably necessary; and maintain reasonable procedures to protect the confidentiality, security and integrity of the information.
+
+Two phrases carry the weight: directed to children, and actual knowledge. Whether a product is directed to children, and what a company knows about its users' ages, are facts a lawyer will want to ask about.
+
+## The FTC Act: a general rule on deception
+
+Section 5 of the Federal Trade Commission Act, at 15 U.S.C. 45, declares unlawful unfair or deceptive acts or practices in or affecting commerce. It does not mention privacy by name. It is a general prohibition, and it is the reason a company's own statements matter: what a policy says the product does is itself something a regulator can compare with what the product does. Counsel can explain how the Commission has applied that provision to privacy statements, which these sources do not describe.
+
+## What a small team can ask before launch
+
+The sources point to questions more than to answers. The [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) offers a general list; for privacy:
+
+1. What personal data does the product collect, and from which users, in which places?
+2. Are users located in the European Union or in California, and does the product offer services to them in the sense the rules use?
+3. What lawful basis, if the GDPR applies, supports each purpose, and does the notice say so?
+4. Does any threshold in the CCPA apply now, or might it soon?
+5. Is the product directed to children, or could the company have actual knowledge that a user is under 13?
+6. Which vendors receive personal data, and where is it stored?
+7. Do the policy's statements match what the product actually does?
+
+When a prospective investor or customer sends a questionnaire on these subjects, the article on [answering a security and privacy questionnaire](/insights/answering-a-security-and-privacy-questionnaire/) describes the form that request takes. The [seed data room checklist](/library/seed-data-room-checklist/) shows where privacy records are filed.
+
+## What this article cannot tell you
+
+It does not say which of these laws applies to your product. That depends on where your users are, what you collect and what you do with it, and on rules this article does not read: other US states, other countries, sector rules for health or finance, and the laws on breach notification and on direct marketing.
+
+It does not describe penalties or enforcement, it does not explain consent mechanics such as cookie banners, and it gives no view on any specific vendor or tool. It quotes thresholds from a state agency's summary page and not from the statute itself.
+
+The sources were read on October 10, 2026. Statutes and regulations are amended, so a decision should rest on the current text and on a lawyer who has the product in front of them.
