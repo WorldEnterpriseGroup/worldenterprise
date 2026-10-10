@@ -51,6 +51,17 @@
     --color-error: var(--we-error); /* @pair color-error color-bg 4.5 */
     --color-success: var(--we-success); /* @pair color-success color-bg 4.5 */
 
+    /*
+     * Section tints (WP-45). Light washes of the palette for the bands of a page, mixed from existing tokens so no new colour enters the
+     * brand. The hex in each comment is the resolved value in sRGB, for audit-contrast. All four stay within 6 to 12 percent of the
+     * source colour: a tint separates two bands, it never becomes a dark section (D-8).
+     */
+    --tint-blue: color-mix(in oklch, var(--we-blue) 6%, var(--we-white)); /* #F2F7FB @pair color-text tint-blue 4.5 @pair color-text-muted tint-blue 4.5 @pair color-link tint-blue 4.5 */
+    --tint-blue-strong: color-mix(in oklch, var(--we-blue) 12%, var(--we-white)); /* #E5EEF8 @pair color-text tint-blue-strong 4.5 @pair color-text-muted tint-blue-strong 4.5 @pair color-link tint-blue-strong 4.5 */
+    --tint-sand: color-mix(in oklch, var(--we-amber) 10%, var(--we-white)); /* #FDF6ED @pair color-text tint-sand 4.5 @pair color-text-muted tint-sand 4.5 @pair color-link tint-sand 4.5 @pair color-highlight-ink tint-sand 4.5 */
+    --tint-stone: color-mix(in oklch, var(--we-slate) 6%, var(--we-white)); /* #F4F5F5 @pair color-text tint-stone 4.5 @pair color-text-muted tint-stone 4.5 @pair color-link tint-stone 4.5 */
+    --tint-line: color-mix(in oklch, var(--we-blue) 22%, var(--we-white)); /* #CFE1F2, decorative lines only */
+
     /* Typography families (variables provided by the Astro Fonts API) */
     --ff-display: var(--font-display), 'Titillium Web', Arial, sans-serif;
     --ff-serif: var(--font-serif), 'Source Serif 4', Georgia, serif;
