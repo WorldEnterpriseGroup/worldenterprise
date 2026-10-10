@@ -13,7 +13,7 @@ const DIR = new URL('../../../../src/content/pages/founders/', import.meta.url);
 interface SegmentFront {
   title: string;
   description: string;
-  family: { slug: string; whoFor: string; challenges: unknown[] };
+  family?: { id: string; slug: string; whoFor: string; challenges: unknown[] };
 }
 
 function frontOf(file: string): SegmentFront {
@@ -23,10 +23,12 @@ function frontOf(file: string): SegmentFront {
   return parse(front) as SegmentFront;
 }
 
+// The directory also holds the /founders/ hub page (index.mdx), which is not a segment page and carries no `family`.
 const pages = readdirSync(DIR)
   .filter((name) => name.endsWith('.mdx'))
   .sort()
-  .map((name) => ({ route: `/founders/${name.replace(/\.mdx$/, '')}/`, front: frontOf(name) }));
+  .map((name) => ({ route: `/founders/${name.replace(/\.mdx$/, '')}/`, front: frontOf(name) }))
+  .filter(({ front }) => front.family?.id === 'segments');
 
 test('the eight segment pages exist as files', () => {
   expect(pages).toHaveLength(8);
@@ -62,10 +64,10 @@ for (const { route, front } of pages) {
     test('the situation and the challenges render from the frontmatter, three to five of them', async ({ page }) => {
       await page.goto(route);
       await expect(page.locator('#seg-who')).toHaveText('Who this is for');
-      await expect(page.locator('section[aria-labelledby="seg-who"]')).toContainText(front.family.whoFor);
+      await expect(page.locator('section[aria-labelledby="seg-who"]')).toContainText(front.family?.whoFor ?? '');
       const items = page.locator('section[aria-labelledby="seg-challenges"] li.fitems__item');
       const count = await items.count();
-      expect(count).toBe(front.family.challenges.length);
+      expect(count).toBe(front.family?.challenges.length);
       expect(count).toBeGreaterThanOrEqual(3);
       expect(count).toBeLessThanOrEqual(5);
     });
@@ -110,7 +112,10 @@ for (const { route, front } of pages) {
     test('the one path to apply goes to /apply/, and the page makes no third-party request', async ({ page, baseURL }) => {
       const seen = watch(page, baseURL ?? '');
       await page.goto(route);
-      const apply = page.locator('a[href="/apply/"]').first();
+      // The hero's primary action. The header also links /apply/, in a menu that is closed at some widths, so it is not the one to test.
+      const apply = page.locator('a[data-hero-action="primary"]');
+      await expect(apply).toHaveCount(1);
+      await expect(apply).toHaveAttribute('href', /\/apply\/$/);
       await expect(apply).toBeVisible();
       await page.waitForLoadState('networkidle');
       expect(seen.thirdParty, 'requests that left the site while the page loaded').toEqual([]);
