@@ -34,7 +34,7 @@ const secondary = model?.secondary !== undefined && model.secondary.href !== mod
 {
   model !== null && (
     <div class:list={[placement === 'end' && 'cta-wrap container']}>
-      <section class:list={['cta', `cta--${placement}`]} data-cta={placement} data-cta-id={model.id} aria-labelledby={titleId}>
+      <section class:list={['cta', `cta--${placement}`]} data-cta={placement} aria-labelledby={titleId}>
         <Heading id={titleId} class="cta__title">
           {model.heading}
         </Heading>
