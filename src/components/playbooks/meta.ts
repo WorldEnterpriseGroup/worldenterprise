@@ -71,6 +71,30 @@ export const LIBRARY_REFS: Readonly<Record<string, LibraryRef>> = {
     title: 'Seed data room checklist',
     description: 'A folder-by-folder checklist of the records a seed data room usually holds.',
   },
+  'landing-page-brief': {
+    title: 'Landing page brief',
+    description: 'A template for briefing a landing page before it is built.',
+  },
+  'pricing-page-checklist': {
+    title: 'Pricing page checklist',
+    description: 'A checklist for a pricing page before it goes live.',
+  },
+  'job-description-template': {
+    title: 'Job description template',
+    description: 'A template for writing a job description for a first hire.',
+  },
+  'outreach-sequence-worksheet': {
+    title: 'Outreach sequence worksheet',
+    description: 'A worksheet for planning an outbound sequence.',
+  },
+  'interview-synthesis-sheet': {
+    title: 'Interview synthesis sheet',
+    description: 'A sheet for pulling what you heard in interviews into one place.',
+  },
+  'decision-log': {
+    title: 'Decision log',
+    description: 'A running record of decisions, the reason for each and who made it.',
+  },
   'security-baseline-checklist': {
     title: 'Security baseline checklist',
     description: 'A year-one checklist written against public security standards.',
