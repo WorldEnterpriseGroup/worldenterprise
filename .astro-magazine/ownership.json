@@ -1580,6 +1580,11 @@
       "reason": "Created by WP-00, owned by WP-03 (plan 8.4); not frozen."
     },
     {
+      "wp": "WP-60",
+      "path": "src/styles/components.css",
+      "reason": "Wave 8 CI follow-up (#40): the shared breadcrumb rule needs a 24px target-size floor (WCAG 2.2 2.5.8, found by WP-75's e2e). Scoped to the .breadcrumbs li rule; WP-71 cannot edit the shared stylesheet, ruled by the integrator 2026-10-10."
+    },
+    {
       "wp": "WP-14",
       "path": "scripts/{audit-contrast,audit-claims}.mjs",
       "reason": "Created by WP-00; handed to WP-14 after G0 (plan 3.2: policed by WP-14)."
