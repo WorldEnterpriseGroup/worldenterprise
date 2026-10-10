@@ -1,0 +1,35 @@
+---
+import type { ResourceGroup } from '../../components/reference/resources.ts';
+import Card from '../../components/ui/Card.astro';
+import Grid from '../../components/ui/Grid.astro';
+import { href } from '../../lib/url.ts';
+
+/**
+ * One group of the Resources hub: a heading, an optional intro, and a grid of cards. The group is named by its heading so a screen
+ * reader announces it as a group; each card is a single link to the page it describes.
+ */
+interface Props {
+  group: ResourceGroup;
+  /** The id of the group's heading. */
+  id: string;
+}
+
+const { group, id } = Astro.props;
+---
+
+<div class="stack" role="group" aria-labelledby={id}>
+  <h3 id={id}>{group.title}</h3>
+  {group.intro !== undefined && <p class="measure">{group.intro}</p>}
+  <Grid min="16rem" as="ul">
+    {
+      group.items.map((item) => (
+        <li>
+          <Card title={item.title} href={href(item.path)} headingLevel={4}>
+            {item.description !== undefined && <p>{item.description}</p>}
+          </Card>
+        </li>
+      ))
+    }
+  </Grid>
+  <slot />
+</div>
