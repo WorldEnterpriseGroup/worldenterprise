@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { unallowed } from '../../../scripts/lib/release-gate.mjs';
+import { FAMILIES, familyPaths } from '../../../src/data/families.ts';
 import { getRoute, MACHINE_ROUTES } from '../../../src/data/routes.ts';
 
 // WP-40 (issue #29, decisions W7-6 and W7-9): the two wave 7 QA jobs are inert until their files exist, follow the blocking policy of
@@ -135,6 +136,27 @@ test('RELEASE_ALLOW covers the nine pending wave 7 rows, the two machine routes 
     'launch:true route does not exist: /llms.txt.bak',
     'launch:true route does not exist: /robots.txt',
     'draft content remains: src/content/insights/x.mdx',
+  ]) {
+    assert.deepEqual(unallowed([problem], allow), [problem], `${problem} still fails`);
+  }
+});
+
+test('RELEASE_ALLOW covers every pending page-family row of the registry by path shape, and no other launched route (W8-31)', () => {
+  const allow = branchAllow();
+  const families = FAMILIES.flatMap((f) => familyPaths(f));
+  assert.ok(families.length >= 30, 'the registry launches the family paths');
+  for (const path of families) {
+    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [], `${path} is tolerated while pending`);
+  }
+  for (const problem of [
+    'launch:true route does not exist: /pricing/',
+    'launch:true route does not exist: /investors/',
+    'launch:true route does not exist: /founders/',
+    'launch:true route does not exist: /network/partners/',
+    'launch:true route does not exist: /insights/topic/legal/',
+    'launch:true route does not exist: /briefs/a/b/',
+    'launch:true route does not exist: /compare',
+    'launch:true route does not exist: /compare/x/index.html',
   ]) {
     assert.deepEqual(unallowed([problem], allow), [problem], `${problem} still fails`);
   }

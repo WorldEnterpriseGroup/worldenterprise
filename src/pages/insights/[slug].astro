@@ -19,7 +19,7 @@ const { Content, headings } = await render(entry);
 const { data } = entry;
 const state = await getRouteState();
 const siblings = await listInsights(data.topic);
-const related = relatedFor(entry, siblings, (path) => state.isLive(path));
+const related = relatedFor(entry, siblings, (path) => state.isLive(path), await listInsights());
 ---
 
 <ArticleLayout

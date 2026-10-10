@@ -4,6 +4,7 @@ import CiteThis from '../components/geo/CiteThis.astro';
 import HeroArticle from '../components/hero/HeroArticle.astro';
 import RelatedRail from '../components/blocks/RelatedRail.astro';
 import SourcesList from '../components/blocks/SourcesList.astro';
+import type { DeskId } from '../data/desks.ts';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import { articleNode } from '../lib/schema.ts';
 import { href } from '../lib/url.ts';
@@ -20,7 +21,7 @@ interface Source {
 
 type Props = Omit<PageMeta, 'updated'> & {
   title: string;
-  topic: 'dream' | 'build' | 'grow' | 'fundable';
+  topic: DeskId;
   publishedDate: Date;
   updatedDate?: Date | undefined;
   readingMinutes?: number;

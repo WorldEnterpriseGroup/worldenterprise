@@ -99,7 +99,6 @@ test('the registered assignments equal the committed checker input, so the proof
     assert.deepEqual(a.exceptions_declared ?? [], w.exceptionsDeclared ?? [], `${w.id} declared exceptions`);
   }
   assert.deepEqual(ownership.frozen_paths_wave8, committed.frozenWave8);
-  assert.equal(ownership.frozen_paths_wave8.length, 15);
 });
 
 test('pool members are pairwise disjoint and avoid the frozen, wave 8 frozen, photography and release lists (W8-1)', () => {
@@ -109,7 +108,7 @@ test('pool members are pairwise disjoint and avoid the frozen, wave 8 frozen, ph
 
 test('the lists the proof compares against are not empty, so it cannot pass by comparing against nothing', () => {
   assert.ok(ownership.frozen_paths.length >= 20);
-  assert.equal(ownership.frozen_paths_wave8.length, 15);
+  assert.ok(ownership.frozen_paths_wave8.length >= 15);
   assert.ok(lane('photography').length >= 19);
   assert.ok(lane('photography').includes('src/assets/photo/**'));
   assert.ok(lane('release').includes('scripts/release-preflight.mjs'));

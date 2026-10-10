@@ -1,4 +1,5 @@
 import { routes } from '../../data/routes.ts';
+import { listCollectionTitles } from '../../lib/content-files.ts';
 
 export interface RelatedItem {
   readonly kind: string;
@@ -18,22 +19,11 @@ export const SERVICE_PATHS: Readonly<Record<ServiceLine, { readonly title: strin
   G: { title: 'Professional Services Coordination', path: '/services/professional-services-coordination/' },
 };
 
-export const PLAYBOOK_TITLES: Readonly<Record<string, string>> = {
-  'validate-the-problem': 'Validate the problem',
-  'design-the-product': 'Design the product',
-  'build-and-ship-v1': 'Build and ship v1',
-  'earn-your-first-customers': 'Earn your first customers',
-  'build-repeatable-growth': 'Build repeatable growth',
-};
+/** Playbook slug to title, read from src/content/playbooks/ so a new playbook needs no edit here (decision W8-7). */
+export const PLAYBOOK_TITLES: Readonly<Record<string, string>> = listCollectionTitles(process.cwd(), 'playbooks');
 
-export const TEMPLATE_TITLES: Readonly<Record<string, string>> = {
-  'one-page-problem-brief': 'One-page problem brief',
-  'customer-interview-guide': 'Customer interview guide',
-  'mvp-cut-line-worksheet': 'MVP cut-line worksheet',
-  'weekly-investor-update-template': 'Weekly investor update template',
-  'seed-data-room-checklist': 'Seed data room checklist',
-  'security-baseline-checklist': 'Security baseline checklist',
-};
+/** Library template slug to title, read from src/content/library/. */
+export const TEMPLATE_TITLES: Readonly<Record<string, string>> = listCollectionTitles(process.cwd(), 'library');
 
 const ledger = new Set(routes.map((r) => r.path));
 
@@ -69,6 +59,41 @@ export function pickRelated(refs: RelatedRefs, isLive: (path: string) => boolean
     items.push({ kind: 'Template', title, href: assertInLedger(`/library/${refs.template}/`) });
   }
   return items.filter((i) => isLive(i.href));
+}
+
+/** An article that a `related` slug can resolve to. */
+export interface ArticleRef {
+  readonly slug: string;
+  readonly title: string;
+}
+
+/** The most `related` articles one article shows in its rail. */
+export const MAX_RELATED_ARTICLES = 3;
+
+/**
+ * Resolves the `related` frontmatter (article slugs) to rail items, failing closed: a slug with no article, a slug that is not in the
+ * ledger, and an article that is not live are all dropped, never thrown, so a package can name an article that another package has not
+ * merged yet and no dead link can ship (the `pickRelated` precedent). Duplicates and the article itself are dropped too.
+ */
+export function pickRelatedArticles(
+  slugs: readonly string[],
+  articles: readonly ArticleRef[],
+  isLive: (path: string) => boolean,
+  self?: string,
+): RelatedItem[] {
+  const bySlug = new Map(articles.map((a) => [a.slug, a]));
+  const items: RelatedItem[] = [];
+  const seen = new Set<string>();
+  for (const slug of slugs) {
+    if (slug === self || seen.has(slug)) continue;
+    seen.add(slug);
+    const article = bySlug.get(slug);
+    const href = `/insights/${slug}/`;
+    if (article === undefined || !ledger.has(href) || !isLive(href)) continue;
+    items.push({ kind: 'Related article', title: article.title, href });
+    if (items.length === MAX_RELATED_ARTICLES) break;
+  }
+  return items;
 }
 
 /** Deterministic 32-bit hash (FNV-1a) used to seed cover art. */

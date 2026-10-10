@@ -160,7 +160,8 @@ test('the FAQ page uses the shared FaqList with one accordion group per heading'
 });
 
 test('the services schema takes an optional artifacts list and the layout renders it before the body', () => {
-  const config = read('src/content.config.ts');
+  // The schemas moved from content.config.ts to src/lib/content-schemas.ts in wave 8 so plain-Node tests can parse against them.
+  const config = read('src/lib/content-schemas.ts');
   assert.match(config, /artifacts: z\.array\(z\.strictObject\(\{ name: z\.string\(\)\.min\(1\), purpose: z\.string\(\)\.min\(1\) \}\)\)\.default\(\[\]\)/);
   const layout = read('src/layouts/ServiceLayout.astro');
   assert.match(layout, /artifacts\.length > 0/);

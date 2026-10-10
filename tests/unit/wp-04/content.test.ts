@@ -25,14 +25,22 @@ function body(text: string): string {
   return text.replace(/^---\n[\s\S]*?\n---/, '');
 }
 
-test('five playbooks and four fundability guides exist', () => {
-  assert.equal(playbooks.length, 5);
-  assert.equal(guides.length, 4);
+// Playbooks and guides grow with the files (decision D-20): the originals must still exist, and the rules below hold for every file.
+test('the original playbooks and fundability guides still exist', () => {
+  const names = (list: string[]): string[] => list.map((p) => p.replace(/^.*\//, '').replace(/\.mdx$/, ''));
+  for (const slug of ['validate-the-problem', 'design-the-product', 'build-and-ship-v1', 'earn-your-first-customers', 'build-repeatable-growth']) {
+    assert.ok(names(playbooks).includes(slug), slug);
+  }
+  for (const slug of ['investor-readiness-checklist', 'data-room', 'safe-explained', 'investor-updates']) {
+    assert.ok(names(guides).includes(slug), slug);
+  }
 });
 
-test('playbook orders are 1 to 5 with no repeats', () => {
-  const orders = playbooks.map((p) => Number(/^order: (\d+)$/m.exec(frontmatter(readFileSync(p, 'utf8')))?.[1])).sort();
-  assert.deepEqual(orders, [1, 2, 3, 4, 5]);
+test('playbook orders are positive whole numbers with no repeats', () => {
+  const orders = playbooks.map((p) => Number(/^order: (\d+)$/m.exec(frontmatter(readFileSync(p, 'utf8')))?.[1]));
+  for (const order of orders) assert.ok(Number.isInteger(order) && order >= 1, `order ${order}`);
+  assert.equal(new Set(orders).size, orders.length, 'orders are unique');
+  for (const order of [1, 2, 3, 4, 5]) assert.ok(orders.includes(order), `the original playbook ${order} keeps its place`);
 });
 
 test('every fundability guide declares the no-funding disclaimer', () => {
