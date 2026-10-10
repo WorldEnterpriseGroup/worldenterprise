@@ -1,0 +1,117 @@
+---
+title: "AI features and customer data: what to decide first"
+seoTitle: AI features and customer data: decisions first
+description: The decisions to make before customer data reaches a language model: what goes in, which account tier, how long it is kept, and what customers are told.
+topic: ai
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [non-technical-founders, corporate-innovators]
+related: [choosing-a-model-provider-the-questions-that-matter, prompt-injection-and-the-owasp-top-10-for-llm-applications, ai-regulation-for-a-small-saas-company-what-to-ask-counsel]
+evidence: [owasp-llm02, owasp-llm08, gdpr-oj, anth-privacy, oai-yourdata, goog-terms]
+relatedPlaybook: build-and-ship-v1
+relatedTemplate: security-baseline-checklist
+sources:
+  - id: owasp-llm02
+    title: "LLM02:2025 Sensitive Information Disclosure"
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/
+    accessed: 2026-10-10
+  - id: owasp-llm08
+    title: "LLM08:2025 Vector and Embedding Weaknesses"
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm082025-vector-and-embedding-weaknesses/
+    accessed: 2026-10-10
+  - id: gdpr-oj
+    title: Regulation (EU) 2016/679 (General Data Protection Regulation)
+    publisher: Official Journal of the European Union, EUR-Lex
+    url: https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng
+    accessed: 2026-10-10
+  - id: anth-privacy
+    title: How long do you store my organization's data?
+    publisher: Anthropic Privacy Center
+    url: https://privacy.anthropic.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data
+    accessed: 2026-10-10
+  - id: oai-yourdata
+    title: Data controls in the OpenAI platform
+    publisher: OpenAI
+    url: https://platform.openai.com/docs/guides/your-data
+    accessed: 2026-10-10
+  - id: goog-terms
+    title: Gemini API Additional Terms of Service
+    publisher: Google
+    url: https://ai.google.dev/gemini-api/terms
+    accessed: 2026-10-10
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+The moment a feature sends a customer's text, files or records to a language model, your company has made a data-handling decision, whether or not anyone chose it. The decision is easier to make well before launch than to unwind after customers have asked where their information went. This article sets out the decisions in the order to make them, written for people who will approve the feature rather than build it.
+
+It draws on the OWASP Gen AI Security Project, the text of the EU's General Data Protection Regulation (GDPR) as published in the Official Journal, and vendor data pages, as read on October 10, 2026. It is general information and not legal advice; where a decision turns on law, it says so and points to counsel.
+
+## Decision one: what data will the model see?
+
+Start with an inventory, in plain words, of every kind of data the feature will send. OWASP's entry on sensitive information disclosure lists the kinds it has in mind: personal identifiable information, financial details, health records, confidential business data, security credentials and legal documents. Add the categories specific to your product, such as customer contracts, support tickets or uploaded files.
+
+For each kind, record three things: whether it is personal data, whether a customer owns or controls it, and whether the feature needs it. The GDPR defines personal data as any information relating to an identified or identifiable natural person, which is broader than most people expect; a support ticket with a name in the signature qualifies. Whether and how the GDPR applies to you depends on facts such as where your customers and their users are, and that is a question for counsel.
+
+## Decision two: what is the smallest set of data that works?
+
+The GDPR's principles include that personal data be adequate, relevant and limited to what is necessary in relation to the purposes for which it is processed. You do not need to be subject to the GDPR to find the discipline useful. Every field you do not send is a field that cannot be retained by a vendor, echoed in an output or leaked through a log.
+
+OWASP's mitigation list points the same way: sanitize data so that sensitive content is scrubbed or masked, validate inputs, and limit access based on the principle of least privilege. Ask the technical team a plain question: "Which fields does the model actually need to do this job, and can the rest be removed or masked before sending?"
+
+## Decision three: which account and which tier?
+
+Vendors do not treat all of their products alike, and the same company can have several sets of terms. Three examples from vendor pages:
+
+<DataTable
+  caption="Why the account type matters, from vendor pages read on October 10, 2026"
+  columns={['Vendor page', 'What it says', 'The decision it raises']}
+  rows={[
+    ['Anthropic privacy center, on how long organization data is stored', 'The article covers commercial products such as the API and says consumer products are covered separately', 'Is every employee using the business account and not a personal one?'],
+    ['Google Gemini API additional terms', 'Unpaid services may use submitted content to improve products, and the page says not to submit sensitive, confidential or personal information to them', 'Has any prototype used an unpaid key with real customer data?'],
+    ['OpenAI data controls guide', 'Data sent to the API is not used to train or improve models unless you opt in, and abuse monitoring logs are kept for up to 30 days by default', 'Is anyone relying on a stricter setting that requires prior approval?']
+  ]}
+/>
+
+The practical rule is to write down which accounts are approved for which data, and to forbid the rest. A prototype built on a personal or unpaid account is the most common way customer data reaches a place nobody approved. The article on <MaybeLink path="/insights/choosing-a-model-provider-the-questions-that-matter/">choosing a model provider</MaybeLink> compares what several vendors say about retention and training use.
+
+## Decision four: who is a processor, and who has agreed to what?
+
+When your product handles personal data on behalf of customers, your customer agreements may treat you as a processor, and the model provider may then be your own processor. The GDPR text sets out what that chain involves. Article 28 says that where processing is carried out on behalf of a controller, the controller shall use only processors providing sufficient guarantees. It also says that a processor shall not engage another processor without the controller's authorization, and that processing by a processor is governed by a contract or other legal act. It adds that the processor processes the personal data only on documented instructions from the controller.
+
+You do not need to settle the legal characterization yourself. You need a list of questions for counsel and your procurement team: Do the customer agreements permit sending their data to a model provider? Is the provider listed as a sub-processor, and were customers told? Does the agreement with the provider include data protection terms that match the promises made to customers? For a company inside a larger organization, the same questions go to the privacy and procurement teams before a pilot starts, not after.
+
+## Decision five: how long is data kept, and where?
+
+Data does not stay in one place. A single prompt can leave copies in the vendor's systems (retention periods are on the vendor's pages), in your own application logs, in analytics tools, in a cache, and in a vector store if the feature retrieves documents. OWASP's entry on vector and embedding weaknesses warns that inadequate or misaligned access controls can lead to unauthorized access to embeddings containing sensitive information, so that the model could retrieve and disclose personal data to someone who should not see it.
+
+The GDPR's storage principle is that data be kept in a form that permits identification for no longer than is necessary for the purposes of processing. Whatever your jurisdiction, make a table with one row per place data can sit, the retention period for each and the person responsible for it.
+
+## Decision six: how will you honor deletion requests?
+
+Article 17 of the GDPR gives a data subject the right to obtain from the controller the erasure of personal data concerning them without undue delay, where listed grounds apply. A customer who deletes an account may expect more than a database row to go. Walk the table from decision five and ask, for each row, how an item is found and removed, and what the vendor's retention page implies for copies you do not control. The honest answer is sometimes that a copy expires on a schedule rather than on request. Decide in advance what you will tell the customer.
+
+## Decision seven: will anything be used to improve the product?
+
+Using customer content to tune prompts, build test sets or train a model is a separate purpose from answering the customer's request. Decide whether you will do it, whether your customer agreements allow it, and whether you need to ask. OWASP recommends clear terms of use that let users opt out of having their data included in training. For test sets, the simplest policy is to use synthetic or consented examples only; see the article on <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">evaluating an LLM feature</MaybeLink>.
+
+## Decision eight: what will customers be told?
+
+OWASP's guidance on transparency is to maintain clear policies about data retention, usage and deletion. Translate that into three artifacts: a sentence in the product where the feature is used, a section in your privacy notice, and an answer prepared for the security questionnaire a larger customer will send. Each should describe what actually happens. A description that is vaguer than your real practice, or more flattering than it, is a risk of its own.
+
+<Callout title="When a high-risk feature needs a formal assessment">
+  The GDPR requires a data protection impact assessment where processing is likely to result in a high risk to the rights and freedoms of natural persons. Whether a feature meets that threshold is a judgment for counsel and your privacy lead. Ask the question before launch, and keep the answer on file.
+</Callout>
+
+## The one-page decision record
+
+Keep one page per feature with the answer to each decision: the data categories, the minimized field list, the approved accounts, the contracts reviewed, the retention table, the deletion method, the improvement policy, the customer wording, and the name and date of the approver. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> covers the conventional controls these answers depend on, and the <MaybeLink path="/research/saas-security-baseline-year-one/">research note on a first-year security baseline</MaybeLink> explains why they come first.
+
+## What this article cannot tell you
+
+It does not tell you which laws apply to your company or your customers. The GDPR is one regulation among many, and the article does not cover other national or state privacy laws, sector rules for health or financial data, or the contract terms you have signed. It reads vendor pages as they stood on October 10, 2026, and those pages change.
+
+It does not assess any vendor's security, and it says nothing about whether any company's practices meet any standard. It is general information, current as of October 10, 2026, and is not legal advice; counsel should review the decisions that depend on law.
