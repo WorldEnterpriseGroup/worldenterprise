@@ -50,6 +50,7 @@ sources:
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 Retrieval-augmented generation, usually shortened to RAG, is the pattern behind many "chat with your documents" features. Instead of asking a model to answer from memory, the application first looks up relevant material and puts it in front of the model along with the question. The idea is simple. Building a version that stays right when documents change, users differ and attackers show up is not.
 
@@ -93,13 +94,13 @@ Every step can fail independently, and a wrong answer at the end does not say wh
 
 ### Long inputs have a cost
 
-The tempting fix for a missed answer is to retrieve more passages. A study published in the Transactions of the Association for Computational Linguistics analyzed how language models use long contexts on multi-document question answering and key-value retrieval. It found that performance can degrade significantly when the position of the relevant information changes, that it is often highest when that information is at the beginning or end of the input, and that it degrades when models must access it in the middle of long contexts, even for explicitly long-context models. The study tested particular models at a particular time, so read it as a reason to test your own arrangement, not as a rule about any product. Passages also cost money and count toward limits: Anthropic's token-counting page says counts help manage rate limits and costs, and Google's page says the context window defines the combined limit of input and output tokens. The article on [metering and budgeting model usage](/insights/metering-and-budgeting-model-usage/) shows how to track that spend.
+The tempting fix for a missed answer is to retrieve more passages. A study published in the Transactions of the Association for Computational Linguistics analyzed how language models use long contexts on multi-document question answering and key-value retrieval. It found that performance can degrade significantly when the position of the relevant information changes, that it is often highest when that information is at the beginning or end of the input, and that it degrades when models must access it in the middle of long contexts, even for explicitly long-context models. The study tested particular models at a particular time, so read it as a reason to test your own arrangement, not as a rule about any product. Passages also cost money and count toward limits: Anthropic's token-counting page says counts help manage rate limits and costs, and Google's page says the context window defines the combined limit of input and output tokens. The article on <MaybeLink path="/insights/metering-and-budgeting-model-usage/">metering and budgeting model usage</MaybeLink> shows how to track that spend.
 
 ### Your knowledge base is an attack surface
 
 OWASP's entry on vector and embedding weaknesses treats retrieval as a security topic. It describes unauthorized access and data leakage from inadequate or misaligned access controls, cross-context leaks in multi-tenant environments where users share a vector database, and embedding inversion attacks that recover significant amounts of source information. Its poisoning scenario is easy to picture: an attacker creates a resume containing hidden text, such as white text on a white background, with instructions to recommend the candidate, and the screening feature ingests it.
 
-The prompt injection entry makes a related point that matters for planning. OWASP says RAG and fine-tuning aim to make outputs more relevant and accurate, but research shows they do not fully mitigate prompt injection. Adding retrieval does not reduce the injection problem; it adds a new channel for it. The article on [prompt injection and the OWASP Top 10](/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/) covers how to limit what a steered model can do.
+The prompt injection entry makes a related point that matters for planning. OWASP says RAG and fine-tuning aim to make outputs more relevant and accurate, but research shows they do not fully mitigate prompt injection. Adding retrieval does not reduce the injection problem; it adds a new channel for it. The article on <MaybeLink path="/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/">prompt injection and the OWASP Top 10</MaybeLink> covers how to limit what a steered model can do.
 
 OWASP's mitigations for the knowledge base are concrete:
 
@@ -114,13 +115,13 @@ The practical rule is that retrieval must enforce the same permissions as the or
 
 Test retrieval and generation as separate things. For retrieval, assemble questions with a known source passage and check whether it came back, and how highly ranked. For generation, check whether the answer is supported by the passages supplied. OWASP's prompt injection page names three checks it calls the RAG Triad: context relevance, groundedness, and question and answer relevance. They map onto the steps above: was the retrieved context relevant, is the answer grounded in it, and does the answer address the question.
 
-The NIST Generative AI Profile includes a suggested action that fits: verify that fine-tuning or retrieval-augmented generation data is grounded, along with the provenance of training and test data. OWASP's output guidance suggests requesting source citations and using deterministic code to validate the output format; checking that each citation appears in the retrieved set is a cheap extension of that idea, and it is this article's suggestion rather than OWASP's. The article on [evaluating an LLM feature before you ship it](/insights/evaluating-an-llm-feature-before-you-ship-it/) describes how to turn these checks into a repeatable test set, including hostile documents.
+The NIST Generative AI Profile includes a suggested action that fits: verify that fine-tuning or retrieval-augmented generation data is grounded, along with the provenance of training and test data. OWASP's output guidance suggests requesting source citations and using deterministic code to validate the output format; checking that each citation appears in the retrieved set is a cheap extension of that idea, and it is this article's suggestion rather than OWASP's. The article on <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">evaluating an LLM feature before you ship it</MaybeLink> describes how to turn these checks into a repeatable test set, including hostile documents.
 
 <Callout title="Questions to ask before launch">
   Does retrieval enforce per-user permissions? Can a deleted document be removed from the index and from any cache? Who adds documents, and are they checked? Are retrieved passages and their sources logged for debugging, with the retention limits you chose? What happens when nothing relevant is found?
 </Callout>
 
-The last question deserves a design decision, not a default. If no passage meets a relevance threshold you set from your own tests, the feature can say it does not know, rather than letting the model answer from general memory. The deletion question connects to the decisions in [AI features and customer data](/insights/ai-features-and-customer-data-what-to-decide-first/).
+The last question deserves a design decision, not a default. If no passage meets a relevance threshold you set from your own tests, the feature can say it does not know, rather than letting the model answer from general memory. The deletion question connects to the decisions in <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data</MaybeLink>.
 
 ## What this article cannot tell you
 

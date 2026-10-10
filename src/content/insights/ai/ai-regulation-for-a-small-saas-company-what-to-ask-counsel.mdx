@@ -1,5 +1,5 @@
 ---
-title: "AI regulation for a small SaaS company: what to ask counsel about the EU AI Act and state laws"
+title: "AI regulation for a small SaaS company: what to ask counsel about the EU AI Act and the Texas AI statute"
 seoTitle: AI regulation for SaaS teams
 description: Questions a small SaaS company can bring to counsel about the EU AI Act and the Texas AI statute, with dated facts from each primary source.
 topic: ai
@@ -50,6 +50,7 @@ sources:
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 AI law is no longer a draft in the places where a software company is most likely to sell. The European Union's Artificial Intelligence Act has been applicable since this August, with some dates moved. Texas has a general AI statute with a January 2026 effective date. None of these can be applied to a product by reading a summary.
 
@@ -78,7 +79,7 @@ The caveat is that the Act was amended. Regulation (EU) 2026/1744, which the Com
 
 The Act assigns obligations by role. In its original Article 3, a provider is a person that develops an AI system or a general-purpose AI model, or has one developed, and places it on the market or puts it into service under its own name or trademark. A deployer is a person using an AI system under its authority, other than for personal non-professional activity.
 
-On a plain reading of those definitions, a SaaS company that builds a feature on a vendor's model could be both: a deployer of the model and a provider of its own system to customers. That reading is this article's, and counsel may see it differently. Article 25 adds a rule for the value chain. A distributor, importer, deployer or other third party is considered a provider of a high-risk system if it puts its name or trademark on a high-risk system already on the market, among other circumstances. Counsel can say which role fits each feature, and what a vendor's contract allocates to which side. The article on [AI features and customer data](/insights/ai-features-and-customer-data-what-to-decide-first/) covers the data side of that contract.
+On a plain reading of those definitions, a SaaS company that builds a feature on a vendor's model could be both: a deployer of the model and a provider of its own system to customers. That reading is this article's, and counsel may see it differently. Article 25 adds a rule for the value chain. A distributor, importer, deployer or other third party is considered a provider of a high-risk system if it puts its name or trademark on a high-risk system already on the market, among other circumstances. Counsel can say which role fits each feature, and what a vendor's contract allocates to which side. The article on <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data</MaybeLink> covers the data side of that contract.
 
 ## Question two: does the Act reach a company outside the EU?
 
@@ -90,7 +91,7 @@ The Commission's page describes a risk-based structure. It says most AI systems 
 
 In this article's reading, transparency is the tier most likely to touch a SaaS product. The Commission's press release of July 31, 2026 says that from August 2, 2026 chatbots and other interactive AI systems will have to tell users they are dealing with AI, not a human, and that AI-generated or altered content will also have to carry machine-readable marks so it can be detected more easily. Article 50(1) of the original text says the persons concerned must be informed that they are interacting with an AI system, unless this is obvious.
 
-Ask counsel to walk each feature through the structure: is it a chatbot, does it generate content, does it make or support decisions about hiring, credit or access to services? The article on [human review in an AI feature](/insights/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop/) sets out the oversight text that applies to high-risk systems.
+Ask counsel to walk each feature through the structure: is it a chatbot, does it generate content, does it make or support decisions about hiring, credit or access to services? The article on <MaybeLink path="/insights/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop/">human review in an AI feature</MaybeLink> sets out the oversight text that applies to high-risk systems.
 
 ## Texas: a statute with a January 2026 effective date
 
@@ -104,7 +105,7 @@ Four points in the enrolled text are worth putting to counsel.
 
 **What is prohibited.** The text prohibits developing or deploying a system in a manner that intentionally aims to incite or encourage a person to commit self-harm, harm another person, or engage in criminal activity. It also prohibits developing or deploying one with the intent to unlawfully discriminate against a protected class, and adds that a disparate impact is not sufficient by itself to demonstrate that intent.
 
-**How it is enforced.** The attorney general has exclusive authority to enforce the chapter, there is no private right of action, and the attorney general may not bring an action before the 60th day after giving written notice of the alleged violation, with a chance to cure. A civil investigative demand can ask for a high-level description of post-deployment monitoring and user safeguards. The text also says a defendant may not be found liable where it discovers a violation through an internal review process and substantially complies with the most recent version of the NIST Generative AI Profile or another nationally or internationally recognized risk management framework. That is the same profile described in the article on [the NIST framework for a small team](/insights/the-nist-ai-risk-management-framework-for-a-small-team/). How that provision works is a matter for counsel and courts, and this article does not claim that following the profile protects anyone.
+**How it is enforced.** The attorney general has exclusive authority to enforce the chapter, there is no private right of action, and the attorney general may not bring an action before the 60th day after giving written notice of the alleged violation, with a chance to cure. A civil investigative demand can ask for a high-level description of post-deployment monitoring and user safeguards. The text also says a defendant may not be found liable where it discovers a violation through an internal review process and substantially complies with the most recent version of the NIST Generative AI Profile or another nationally or internationally recognized risk management framework. That is the same profile described in the article on <MaybeLink path="/insights/the-nist-ai-risk-management-framework-for-a-small-team/">the NIST framework for a small team</MaybeLink>. How that provision works is a matter for counsel and courts, and this article does not claim that following the profile protects anyone.
 
 ## Questions to bring to counsel
 
@@ -112,7 +113,7 @@ Four points in the enrolled text are worth putting to counsel.
   Which of the product's features are AI systems under each law, and in which role is the company for each? Does any customer's use put output in the EU? Which features interact with people, generate content, or support decisions about hiring, credit or access to services? Which dates apply to each, given the Omnibus amendments? What do the vendor contracts allocate to the vendor and what to the company? What records should exist by the time each law applies, and who keeps them? When should this advice be re-checked?
 </Callout>
 
-Bring a one-page inventory when you go: each AI feature, the model and vendor behind it, who uses it, what it decides or produces, what data it touches, and where the customers are. Counsel can spend the hour on the law instead of on discovering the product. The [security baseline checklist](/library/security-baseline-checklist/) is a companion for the controls side of the same inventory.
+Bring a one-page inventory when you go: each AI feature, the model and vendor behind it, who uses it, what it decides or produces, what data it touches, and where the customers are. Counsel can spend the hour on the law instead of on discovering the product. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> is a companion for the controls side of the same inventory.
 
 ## What this article cannot tell you
 

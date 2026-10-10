@@ -75,6 +75,7 @@ sources:
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 Choosing a model provider feels like a question about models. For a product that will be in front of customers for years, it is mostly a question about terms: what happens to the data you send, how long a model stays available, what limits apply as you grow, and what the contract lets you do. Those answers are written down in each vendor's own documentation, and they differ.
 
@@ -82,7 +83,7 @@ This article lists the questions worth asking and shows what several vendors' pa
 
 ## Start from the feature, not the vendor
 
-Write down what the feature does before comparing anyone. What kind of input goes in (typed text, uploaded files, records from your database)? Does any of it identify a person or belong to a customer? What happens if the output is wrong, or if the service is unavailable for an afternoon? A founder who is not technical can answer most of this, and the answers decide which of the questions below carry weight. The article on [AI features and customer data](/insights/ai-features-and-customer-data-what-to-decide-first/) goes deeper on the data decisions.
+Write down what the feature does before comparing anyone. What kind of input goes in (typed text, uploaded files, records from your database)? Does any of it identify a person or belong to a customer? What happens if the output is wrong, or if the service is unavailable for an afternoon? A founder who is not technical can answer most of this, and the answers decide which of the questions below carry weight. The article on <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data</MaybeLink> goes deeper on the data decisions.
 
 ## Question one: where does your data go, and for how long?
 
@@ -110,13 +111,13 @@ A model is not a permanent dependency. Every vendor publishes a lifecycle, and t
 - OpenAI's page lists minimum notice periods: at least 6 months for generally available models, at least 3 months for specialized variants, and for models with "preview" in the name, notice as short as 2 weeks. It says it does not recommend preview models for business-critical production workloads unless you can migrate on short notice, and it allows faster timelines where safety or compliance concerns require them.
 - Google's page defines deprecation as the announcement that support is ending and shutdown as the point at which the endpoint is no longer available. It says the shutdown dates in its table are the earliest possible dates, and that it will communicate the exact date in advance.
 
-For a small team, the lesson is to treat a retirement notice as a scheduled project. Ask who reads the vendor's notices, how you will find every place the model name appears, and whether you could re-run your tests against a replacement within the notice period. Anthropic's page recommends testing applications with newer models well before the retirement date, and that advice holds whichever vendor you use. The article on [evaluating an LLM feature before you ship it](/insights/evaluating-an-llm-feature-before-you-ship-it/) describes the test set that makes such a migration a routine task rather than a gamble.
+For a small team, the lesson is to treat a retirement notice as a scheduled project. Ask who reads the vendor's notices, how you will find every place the model name appears, and whether you could re-run your tests against a replacement within the notice period. Anthropic's page recommends testing applications with newer models well before the retirement date, and that advice holds whichever vendor you use. The article on <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">evaluating an LLM feature before you ship it</MaybeLink> describes the test set that makes such a migration a routine task rather than a gamble.
 
 ## Question three: what limits apply, and how do they change?
 
 Providers cap usage, and the shape of the cap affects your design. OpenAI's guide lists limits in requests per minute, requests per day, tokens per minute, tokens per day and images per minute. Google's page says limits are usually measured across requests per minute, input tokens per minute and requests per day, that exceeding any one triggers an error, and that limits are applied per project, not per API key. Anthropic's page says limits exist on how much an organization can use the API, to mitigate misuse and manage capacity.
 
-The questions to ask are practical. What are your starting limits? How do they rise, and does the rise depend on spend or on a request? What does your product do when a request is refused: queue it, retry it, or tell the user? If all your customers share one project, they share one limit, so a per-customer cap of your own is worth considering, a topic taken up in [metering and budgeting model usage](/insights/metering-and-budgeting-model-usage/).
+The questions to ask are practical. What are your starting limits? How do they rise, and does the rise depend on spend or on a request? What does your product do when a request is refused: queue it, retry it, or tell the user? If all your customers share one project, they share one limit, so a per-customer cap of your own is worth considering, a topic taken up in <MaybeLink path="/insights/metering-and-budgeting-model-usage/">metering and budgeting model usage</MaybeLink>.
 
 ## Question four: what do the terms let you build?
 
@@ -141,7 +142,7 @@ This is a design question rather than a documentation question, and the followin
   10. What would you tell a customer who asked where their data went?
 </Callout>
 
-Question 9 connects to the conventional controls in the [security baseline checklist](/library/security-baseline-checklist/). The NIST AI Risk Management Framework names the weakness this list guards against, "improper supplier vetting", as part of its value chain risk, and the article on [the framework for a small team](/insights/the-nist-ai-risk-management-framework-for-a-small-team/) explains the framework.
+Question 9 connects to the conventional controls in the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink>. The NIST AI Risk Management Framework names the weakness this list guards against, "improper supplier vetting", as part of its value chain risk, and the article on <MaybeLink path="/insights/the-nist-ai-risk-management-framework-for-a-small-team/">the framework for a small team</MaybeLink> explains the framework.
 
 ## What this article cannot tell you
 
