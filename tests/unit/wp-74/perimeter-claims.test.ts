@@ -58,6 +58,7 @@ test('every claim is a regulation with a locator and a verbatim quote of at most
     assert.ok(claim.locator.trim().length >= 5, `${claim.id} needs a locator`);
     const words = claim.quote.split(/\s+/).filter(Boolean).length;
     assert.ok(words >= 4 && words <= 25, `${claim.id} quote is ${words} words`);
+    assert.ok(claim.quote.length <= 125, `${claim.id} quote is ${claim.quote.length} characters; the brief allows about 125`);
   }
   assert.equal(new Set(claims.map((c) => c.id)).size, claims.length, 'claim ids are unique');
 });
