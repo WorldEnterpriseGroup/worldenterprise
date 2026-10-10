@@ -1,0 +1,427 @@
+{
+  "wp": "WP-72",
+  "note": "The sentence ledger of the four customer-journey pages WP-72 wrote (docs/wave8-contracts.md, sections 8.2 and 11; plan 5.3). Each sentence maps to one claim (C-nn), one existing page with a heading (path#heading), or one decision (W8-nn); a title or heading that states no fact about WE is a label (seven words at most). A question for the founder to put to WE states no fact about WE: it maps to the page that already covers its topic, or to W8-25, the journey contract, where the program pages are silent. The template's own sentences (the note under the hero, the section headings and the checklist note) are WP-71's and are traced in its ledger. tests/unit/wp-72/ enumerates the sentences from the content files, fails on one with no mapping and on a mapping with no sentence, and runs the claims denylist over all of them. The resources hub is the second document group, appended by the same test file. The file has no fetches: it quotes no outside source.",
+  "fetches": [],
+  "documents": [
+    {
+      "path": "src/content/pages/journey/index.mdx",
+      "sentences": [
+        {
+          "text": "The founder journey",
+          "label": true
+        },
+        {
+          "text": "The path from an application to a working team, in five steps, with a page for each stage.",
+          "page": "src/pages/program/how-it-works.astro#five-steps-from-application-to-a-working-team"
+        },
+        {
+          "text": "It states no durations and promises no outcomes.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Which of these five steps am I at today, and what would the next one ask of me?",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Which page below explains the step I am least sure about?",
+          "decision": "W8-25"
+        },
+        {
+          "text": "What would I want to know from WE before I send an application?",
+          "decision": "W8-25"
+        },
+        {
+          "text": "The path starts with an application and runs through the same five steps the program pages describe.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "The pages below take those steps from three angles: what happens after you apply, what you see and decide along the way, and what you can prepare.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "Start with what happens after you apply.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Pass it on",
+          "label": true
+        },
+        {
+          "text": "If you know a founder who is weighing a program like this one, you can pass this page on.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Copy the address from your browser and send it however you usually send a link.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "An organization that helps or equips founders may send WE an enquiry through the partner enquiry form.",
+          "claim": "C-26"
+        },
+        {
+          "text": "Sending one creates no partnership, no referral arrangement and no commitment on either side.",
+          "claim": "C-26"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/journey/after-you-apply.mdx",
+      "sentences": [
+        {
+          "text": "What happens after you apply",
+          "label": true
+        },
+        {
+          "text": "What follows an application, in the order the program pages give it, and the questions to put to WE at each step.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "No durations and no outcomes.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "What will the written scope name as in and out for my company?",
+          "page": "src/pages/program/how-it-works.astro#what-you-receive"
+        },
+        {
+          "text": "Which service lines does my company need, and what will each one not cover?",
+          "page": "src/pages/program/how-it-works.astro#what-you-receive"
+        },
+        {
+          "text": "Which roles does the scope call for, and what will each seat work on?",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "How will I see the goal and the artifacts of each cycle?",
+          "page": "src/pages/program/how-it-works.astro#a-cycle-at-a-glance"
+        },
+        {
+          "text": "What should I bring to a review so that I can decide what the next cycle holds?",
+          "page": "src/pages/program/how-it-works.astro#a-cycle-at-a-glance"
+        },
+        {
+          "text": "How does the agreement set out scaling seats up or down by notice?",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "First, WE reviews the application",
+          "label": true
+        },
+        {
+          "text": "WE reviews each application.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "WE replies to the email address you give.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "WE does not state a response time on this site.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "A clear no is as useful to you as a yes.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "How WE decides lists what an application is read for and what WE does not decide.",
+          "page": "src/pages/program/how-we-decide.astro"
+        },
+        {
+          "text": "Then you and WE agree the scope",
+          "label": true
+        },
+        {
+          "text": "If the idea fits, WE and the founder choose which service lines the company needs and what each one will and will not cover.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "The scope is written down in an agreement, so both companies work from the same page.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "WE shares the written agreement before you commit to anything, and you should read it with your own counsel.",
+          "page": "src/data/faq.yaml"
+        },
+        {
+          "text": "What this page leaves to you",
+          "label": true
+        },
+        {
+          "text": "This page repeats only what the program pages already say.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Where they are silent, the questions below are for you to put to WE.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "Next, read your first months, in order.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "The full path is on How the program works.",
+          "page": "src/components/apply/decide-copy.ts"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/journey/first-months.mdx",
+      "sentences": [
+        {
+          "text": "Your first months, in order",
+          "label": true
+        },
+        {
+          "text": "The five program steps from the founder's side: what you see, what you decide and what to ask, in order.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "No durations and no promised outcomes.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Which of these steps do I want to understand better before I apply?",
+          "decision": "W8-25"
+        },
+        {
+          "text": "What would I want to see written down at each step?",
+          "decision": "W8-25"
+        },
+        {
+          "text": "This page follows the five program steps from the founder's side.",
+          "page": "src/pages/program/how-it-works.astro#five-steps-from-application-to-a-working-team"
+        },
+        {
+          "text": "For each step it says what you see, what you decide and what you can ask WE.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "Apply",
+          "label": true
+        },
+        {
+          "text": "You see a short application that asks only what WE needs to judge fit.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "You decide how to tell WE about the idea, the founder and the stage you are at.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "What does WE need to see in an application to judge fit for my idea?",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "How will WE tell me if my idea is not a fit?",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "Agree the scope",
+          "label": true
+        },
+        {
+          "text": "You see the scope written down in an agreement, so both companies work from the same page.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "You and WE choose which service lines the company needs and what each one will and will not cover.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "You decide whether to commit, and you should read the written agreement with your own counsel first.",
+          "page": "src/data/faq.yaml"
+        },
+        {
+          "text": "Which service lines will the scope name, and what will each one not cover?",
+          "page": "src/pages/program/how-it-works.astro#what-you-receive"
+        },
+        {
+          "text": "How will the agreement describe how WE is paid?",
+          "page": "src/data/faq.yaml"
+        },
+        {
+          "text": "Seat your team",
+          "label": true
+        },
+        {
+          "text": "You see dedicated offshore seats for the roles the scope calls for.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "The seats work only on your company, and WE steers them.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "You do not recruit, contract or manage the people in the seats.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "Which roles does the scope call for, and what will each seat work on?",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "Which subcontractors will WE manage for my company, if any?",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "Work in focused cycles",
+          "label": true
+        },
+        {
+          "text": "You see a stated goal and a visible set of artifacts for each cycle.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "You and WE agree the goal of each cycle in a short written plan.",
+          "page": "src/pages/program/how-it-works.astro#a-cycle-at-a-glance"
+        },
+        {
+          "text": "The work in progress is open to you at any time.",
+          "page": "src/pages/program/how-it-works.astro#a-cycle-at-a-glance"
+        },
+        {
+          "text": "What is the goal of the next cycle, and which artifacts will it produce?",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "How does WE use its ANDROID Ops loop to decide what a cycle contains?",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "Review and decide",
+          "label": true
+        },
+        {
+          "text": "At each review you see what exists now, what changed and what is next.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "You decide what the next cycle holds, and you can scale seats up or down by notice as the agreement sets out.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "What changed since the last review, and what is still open?",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "Which seats should change, and how does the agreement set out the notice?",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "Where to go next",
+          "label": true
+        },
+        {
+          "text": "Use the onboarding checklist to prepare for each step.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "When you are ready, apply to the program.",
+          "decision": "W8-25"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/journey/onboarding-checklist.mdx",
+      "sentences": [
+        {
+          "text": "Onboarding checklist",
+          "label": true
+        },
+        {
+          "text": "A checklist to read before and after you apply, built from the program steps and the library.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "It is guidance, so use the parts that help.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Which of these items do I already have, and which could I start before I apply?",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Write the problem on one page: who has it, what they do today and what you have seen.",
+          "page": "src/content/library/one-page-problem-brief.md"
+        },
+        {
+          "text": "Plan your conversations with people who have the problem, and keep your solution out of them.",
+          "page": "src/content/library/customer-interview-guide.md"
+        },
+        {
+          "text": "Decide what the first release leaves out, and write the cut line down.",
+          "page": "src/content/library/mvp-cut-line-worksheet.md"
+        },
+        {
+          "text": "Read the two fit lists and judge your own fit before you apply.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "Read what the application asks, so your answers describe the idea, the founder and the stage you are at.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "Note the service lines you think the company needs, and what you expect each one not to cover.",
+          "page": "src/pages/program/how-it-works.astro#what-you-receive"
+        },
+        {
+          "text": "Sketch the roles your team needs and how many seats each role takes.",
+          "page": "src/content/pages/tools/team-composer.mdx"
+        },
+        {
+          "text": "Plan to read the written agreement with your own counsel before you commit.",
+          "page": "src/data/faq.yaml"
+        },
+        {
+          "text": "Choose the goal you would give a first cycle, so the plan has something to start from.",
+          "page": "src/pages/program/how-it-works.astro#a-cycle-at-a-glance"
+        },
+        {
+          "text": "Choose the numbers you would track, and test them in the metrics calculator.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx"
+        },
+        {
+          "text": "When you start to prepare evidence for investors, work through the investor readiness checklist.",
+          "page": "src/content/guides/investor-readiness-checklist.mdx"
+        },
+        {
+          "text": "The list collects what a founder can have to hand for each program step.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Each linked item points to a template, a guide or a tool that is already on this site.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "Where to go next",
+          "label": true
+        },
+        {
+          "text": "Open the tools, read the playbooks or browse the library of templates and checklists.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "The resources hub lists everything in one place.",
+          "decision": "W8-25"
+        }
+      ]
+    }
+  ]
+}
