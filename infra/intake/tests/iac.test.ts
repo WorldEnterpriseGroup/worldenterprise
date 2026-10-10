@@ -4,6 +4,7 @@ import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSy
 import { homedir, tmpdir } from 'node:os';
 import { join, relative } from 'node:path';
 import { describe, test } from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 import { checkOrigin, checkPublicHealth, verify } from '../iac/verify.mjs';
 import { evaluateWhatIf, WhatIfFormatError } from '../iac/whatif-gate.mjs';
@@ -245,7 +246,8 @@ describe('repository secret scan', () => {
   test('no file under infra/intake holds a secret value, and only the three known secret names appear', () => {
     const problems: string[] = [];
     const names = new Set<string>();
-    for (const file of files(ROOT)) {
+    const documents = ['docs/intake-runbook.md', 'docs/forms-privacy-facts.md', 'src/content/pages/legal/privacy.md'].map((path) => fileURLToPath(new URL(`../../../${path}`, import.meta.url)));
+    for (const file of [...files(ROOT), ...documents]) {
       if (file.endsWith('iac.test.ts')) continue;
       const text = readFileSync(file, 'utf8');
       for (const [label, pattern] of PATTERNS) if (pattern.test(text)) problems.push(`${relative(ROOT, file)}: ${label}`);
@@ -257,7 +259,7 @@ describe('repository secret scan', () => {
   });
 
   test('the scan catches what it is meant to catch', () => {
-    const planted = ['-----BEGIN RSA ' + 'PRIVATE KEY-----',`${'A'.repeat(86)}==`, '?sv=2024&sig=' + 'a'.repeat(30), `eyJ${'a'.repeat(12)}.${'b'.repeat(12)}.${'c'.repeat(12)}`, `AccountKey=${'x'.repeat(20)}`, `UNSUBSCRIBE_KEY=${'k'.repeat(30)}`];
+    const planted = ['-----BEGIN RSA ' + 'PRIVATE KEY-----', `${'A'.repeat(86)}==`, '?sv=2024&sig=' + 'a'.repeat(30), `eyJ${'a'.repeat(12)}.${'b'.repeat(12)}.${'c'.repeat(12)}`, `AccountKey=${'x'.repeat(20)}`, `UNSUBSCRIBE_KEY=${'k'.repeat(30)}`];
     for (const text of planted) assert.ok(PATTERNS.some(([, pattern]) => pattern.test(text)), text.slice(0, 20));
   });
 });
