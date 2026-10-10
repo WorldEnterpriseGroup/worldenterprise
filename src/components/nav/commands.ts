@@ -1,18 +1,24 @@
+import { AUDIENCE_LINKS } from '../../data/cta/audiences.ts';
+import { DESK_DEFINITIONS, deskPath } from '../../data/desks.ts';
+import { familyLabel, FAMILIES } from '../../data/families.ts';
 import type { FooterColumn, NavLink, PrimaryNavItem } from '../../data/nav.ts';
+import { routes } from '../../data/routes.ts';
+import { FAMILY_LABELS } from '../geo/llms-plan.ts';
+import { isPaletteRoute } from '../islands/we-palette/model.ts';
+import type { PaletteCommand } from '../islands/we-palette/model.ts';
 
 /**
  * The command palette's list (docs/wave7-contracts.md section 4). Pure and free of Astro globals so node --test can run it:
  * the live-route predicate is passed in, the same one resolveNav() takes, so a route without a page never reaches the palette.
  *
- * Everything here is derived from src/data/nav.ts. Nothing is typed by hand in a component.
+ * Everything here is derived from src/data/nav.ts and from the registries (the page families, the insight desks, the audience doors and the
+ * tool routes of the ledger), so a new family page, desk or tool appears with no edit here, and only while its route is live.
+ * Articles are not listed: there are over a hundred, and they come from the Pagefind index when the visitor types.
  */
-export interface PaletteCommand {
-  readonly label: string;
-  /** An internal route with a trailing slash. */
-  readonly href: string;
-  readonly group: string;
-  readonly hint?: string;
-}
+// The item shape and the attribute reader are in the model module: it is the only part the browser loads. This module reads the registries
+// and the route ledger (Node only) and is imported by Header.astro and by tests, never by a client script.
+export { isPaletteRoute, parseCommands } from '../islands/we-palette/model.ts';
+export type { PaletteCommand } from '../islands/we-palette/model.ts';
 
 export interface CommandSources {
   readonly items: readonly PrimaryNavItem[];
@@ -23,10 +29,20 @@ export interface CommandSources {
 
 const START_GROUP = 'Start here';
 const SITE_GROUP = 'Site';
+const AUDIENCE_GROUP = 'Who it is for';
+const DESK_GROUP = 'Insight desks';
+const TOOLS_GROUP = 'Tools';
 
-/** A route the palette can open: a site-relative path with a trailing slash. Files such as /rss.xml are not routes. */
-export function isPaletteRoute(href: string): boolean {
-  return href.startsWith('/') && !href.startsWith('//') && href.endsWith('/') && !/[\\\s]/.test(href);
+/** "runway-calculator" to "Runway calculator": the label of a tool route that the navigation does not name. */
+export function toolLabel(path: string): string {
+  const slug = path.split('/').filter((part) => part !== '').at(-1) ?? '';
+  const words = slug.replace(/-/g, ' ').trim();
+  return words === '' ? '' : `${words.charAt(0).toUpperCase()}${words.slice(1)}`;
+}
+
+/** The tool pages of the route ledger (not the hub), in ledger order. */
+function toolRoutes(): readonly string[] {
+  return routes.filter((row) => row.layout === 'ToolLayout' && row.path.startsWith('/tools/') && row.path !== '/tools/' && isPaletteRoute(row.path)).map((row) => row.path);
 }
 
 /**
@@ -61,38 +77,18 @@ export function buildPaletteCommands(sources: CommandSources, isLive: (href: str
 
   for (const link of sources.utility) add(link.label, link.href, SITE_GROUP, link.description);
   for (const column of sources.footer) for (const link of column.links) add(link.label, link.href, column.heading, link.description);
+
+  // The registries come last: add() keeps the first entry of a path, so a page the navigation or the footer already names keeps its
+  // label and group. Each add() is checked against isLive, so a page that is not built is never listed. A family entry is listed by its
+  // label alone (a blocked word never reaches a page-name list).
+  for (const link of AUDIENCE_LINKS) add(link.label, link.href, AUDIENCE_GROUP, link.text);
+  for (const family of FAMILIES) {
+    const group = FAMILY_LABELS[family.id];
+    if (family.hub !== undefined) add(group, family.hub.path, group);
+    for (const entry of family.entries) if (entry.launch) add(familyLabel(entry), entry.path, group);
+  }
+  for (const desk of DESK_DEFINITIONS) add(desk.name, deskPath(desk.id), DESK_GROUP, desk.blurb);
+  for (const path of toolRoutes()) add(toolLabel(path), path, TOOLS_GROUP);
   return commands;
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-/**
- * Parses the data-commands attribute. A parse error, a value that is not an array and an item that does not have the shape of a
- * PaletteCommand all yield nothing for that item, never an exception: the palette then shows what it could read, or nothing.
- * `onError` receives the reason so the caller can report it once.
- */
-export function parseCommands(raw: string | null, onError?: (reason: string) => void): readonly PaletteCommand[] {
-  if (raw === null || raw.trim() === '') return [];
-  let data: unknown;
-  try {
-    data = JSON.parse(raw);
-  } catch (error) {
-    onError?.(`data-commands is not valid JSON (${error instanceof Error ? error.message : String(error)})`);
-    return [];
-  }
-  if (!Array.isArray(data)) {
-    onError?.('data-commands is not an array');
-    return [];
-  }
-  const commands: PaletteCommand[] = [];
-  for (const entry of data) {
-    if (!isRecord(entry)) continue;
-    const { label, href, group, hint } = entry;
-    if (typeof label !== 'string' || typeof href !== 'string' || typeof group !== 'string') continue;
-    if (label.trim() === '' || !isPaletteRoute(href)) continue;
-    commands.push(typeof hint === 'string' && hint !== '' ? { label, href, group, hint } : { label, href, group });
-  }
-  return commands;
-}

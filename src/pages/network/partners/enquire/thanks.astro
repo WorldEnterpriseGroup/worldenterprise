@@ -1,0 +1,34 @@
+---
+import { render } from 'astro:content';
+import AsideStyles from '../../../../components/forms/AsideStyles.astro';
+import { getPageEntry } from '../../../../components/network/pageEntry.ts';
+import { HREFS, THANKS_PAGE } from '../../../../components/partners/copy.ts';
+import Steps from '../../../../components/ui/Steps.astro';
+import FormLayout from '../../../../layouts/FormLayout.astro';
+import { href } from '../../../../lib/url.ts';
+
+const page = await getPageEntry('network/partners/thanks');
+const { Content } = await render(page);
+---
+
+<FormLayout
+  title={page.data.title}
+  description={page.data.description}
+  eyebrow={page.data.eyebrow}
+  lead={THANKS_PAGE.lead}
+  path={HREFS.thanks}
+  updated={page.data.updated}
+  draft={page.data.draft}
+  ogSlot="og-network"
+>
+  <div class="prose"><Content /></div>
+  <h2 id="partner-thanks-next">{THANKS_PAGE.nextHeading}</h2>
+  <Steps headingLevel={3} steps={THANKS_PAGE.steps} />
+  <Fragment slot="aside">
+    <AsideStyles />
+    <h2 class="aside-title">{THANKS_PAGE.asideHeading}</h2>
+    <ul class="stack" role="list">
+      {THANKS_PAGE.links.map((link) => <li><a href={href(link.href)}>{link.label}</a></li>)}
+    </ul>
+  </Fragment>
+</FormLayout>

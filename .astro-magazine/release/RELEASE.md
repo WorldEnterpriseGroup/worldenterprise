@@ -398,11 +398,11 @@ Source: `src/pages/network/index.astro:69`. Renders on: /network/.
 
 #### CR-11. Network page, body
 
-Source: `src/content/pages/network/index.mdx:34`. Renders on: /network/.
+Source: `src/content/pages/network/index.mdx:40`. Renders on: /network/.
 
-> L34: There is no logo wall, no client list, no investor network and no partner program or perks scheme.
+> L40: There is no logo wall, no client list and no investor network.
 >
-> L34: Investor Introductions is a paid add-on for one company at a time. It is not a membership of any network.
+> L40: Investor Introductions is a separate, paid add-on. It is not a membership of any network.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
