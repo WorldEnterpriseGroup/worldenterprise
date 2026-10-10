@@ -127,6 +127,51 @@
       "fetchedAt": "2026-10-10T22:38:08Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "epa-ghg-factors-hub",
+      "url": "https://www.epa.gov/climateleadership/ghg-emission-factors-hub",
+      "title": "GHG Emission Factors Hub",
+      "publisher": "U.S. Environmental Protection Agency",
+      "fetchedAt": "2026-10-10T22:39:15Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "epa-ghgrp",
+      "url": "https://www.epa.gov/ghgreporting",
+      "title": "Greenhouse Gas Reporting Program (GHGRP)",
+      "publisher": "U.S. Environmental Protection Agency",
+      "fetchedAt": "2026-10-10T22:39:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-green-guides",
+      "url": "https://www.ftc.gov/news-events/topics/truth-advertising/green-guides",
+      "title": "Green Guides",
+      "publisher": "Federal Trade Commission",
+      "fetchedAt": "2026-10-10T22:39:25Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "carb-sb-253-261",
+      "url": "https://ww2.arb.ca.gov/our-work/programs/california-corporate-greenhouse-gas-reporting-and-climate-related-financial-risk",
+      "title": "California Corporate Greenhouse Gas Reporting and Climate Related Financial Risk Disclosure Programs",
+      "publisher": "California Air Resources Board",
+      "fetchedAt": "2026-10-10T22:40:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ec-csrd",
+      "url": "https://finance.ec.europa.eu/capital-markets-union-and-financial-markets/company-reporting-and-auditing/company-reporting/corporate-sustainability-reporting_en",
+      "title": "Corporate sustainability reporting",
+      "publisher": "European Commission, Finance",
+      "fetchedAt": "2026-10-10T22:39:43Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -566,6 +611,187 @@
           "sourceId": "ada-web-rule",
           "locator": "Interim Final Rule",
           "quote": "In April 2026, the Department published an Interim Final Rule (IFR) extending the compliance date"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/sectors/climate-tech-software-considerations-before-you-build.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "the hub was designed to provide organizations with a regularly updated and easy-to-use set of default emission factors",
+          "kind": "regulation",
+          "sourceId": "epa-ghg-factors-hub",
+          "locator": "About the hub",
+          "quote": "was designed to provide organizations with a regularly updated and easy-to-use set of default emission factors."
+        },
+        {
+          "id": "A2",
+          "sentence": "the factors are for organizational greenhouse gas reporting",
+          "kind": "regulation",
+          "sourceId": "epa-ghg-factors-hub",
+          "locator": "Audience",
+          "quote": "emission factors for organizational greenhouse gas reporting."
+        },
+        {
+          "id": "A3",
+          "sentence": "The page showed a last-updated date of January 12, 2026 when read",
+          "kind": "paraphrase",
+          "sourceId": "epa-ghg-factors-hub",
+          "locator": "Page date",
+          "quote": "January 12, 2026"
+        },
+        {
+          "id": "A4",
+          "sentence": "the 2025 annual update as the most recent",
+          "kind": "paraphrase",
+          "sourceId": "epa-ghg-factors-hub",
+          "locator": "Updates",
+          "quote": "The 2025 annual update of the Emission Factors Hub (January 2025)."
+        },
+        {
+          "id": "A5",
+          "sentence": "collects emissions data from large GHG emission sources, fuel and industrial gas suppliers, and CO2 injection sites",
+          "kind": "regulation",
+          "sourceId": "epa-ghgrp",
+          "locator": "About the program",
+          "quote": "from large GHG emission sources, fuel and industrial gas suppliers, and CO2 injection sites"
+        },
+        {
+          "id": "A6",
+          "sentence": "EPA released a proposal to permanently remove program obligations for some source categories",
+          "kind": "regulation",
+          "sourceId": "epa-ghgrp",
+          "locator": "Status",
+          "quote": "EPA released a proposal to permanently remove program obligations for 46 source categories."
+        },
+        {
+          "id": "A7",
+          "sentence": "EPA issued an interim final rule to extend the reporting deadline for reporting year 2025 to March 10, 2027",
+          "kind": "regulation",
+          "sourceId": "epa-ghgrp",
+          "locator": "Status",
+          "quote": "EPA issues interim final rule to extend RY2025 GHGRP reporting deadline to March 10, 2027."
+        },
+        {
+          "id": "A8",
+          "sentence": "The page showed October 8, 2026 as its last-updated date when read",
+          "kind": "paraphrase",
+          "sourceId": "epa-ghgrp",
+          "locator": "Page date",
+          "quote": "October 8, 2026"
+        },
+        {
+          "id": "A9",
+          "sentence": "the guides are designed to help marketers avoid making environmental claims that mislead consumers",
+          "kind": "regulation",
+          "sourceId": "ftc-green-guides",
+          "locator": "About the guides",
+          "quote": "are designed to help marketers avoid making environmental claims that mislead consumers."
+        },
+        {
+          "id": "A10",
+          "sentence": "the guidance covers claims such as \"renewable\" and \"carbon offset\"",
+          "kind": "paraphrase",
+          "sourceId": "ftc-green-guides",
+          "locator": "Claims covered",
+          "quote": "\"renewable,\" and \"carbon offset\" claims"
+        },
+        {
+          "id": "A11",
+          "sentence": "annually disclose their scope 1, 2 and 3 greenhouse gas emissions for the prior fiscal year",
+          "kind": "regulation",
+          "sourceId": "carb-sb-253-261",
+          "locator": "SB 253",
+          "quote": "annually disclose their scope 1, 2 and 3 greenhouse gas (GHG) emissions for the prior fiscal year."
+        },
+        {
+          "id": "A12",
+          "sentence": "total annual revenues in excess of one billion dollars",
+          "kind": "regulation",
+          "sourceId": "carb-sb-253-261",
+          "locator": "SB 253 coverage",
+          "quote": "total annual revenues in excess of one billion dollars."
+        },
+        {
+          "id": "A13",
+          "sentence": "will require companies to publish biennial climate-related financial risk reports",
+          "kind": "regulation",
+          "sourceId": "carb-sb-253-261",
+          "locator": "SB 261",
+          "quote": "will require companies to publish biennial climate-related financial risk reports."
+        },
+        {
+          "id": "A14",
+          "sentence": "both programs are under development by the Board",
+          "kind": "paraphrase",
+          "sourceId": "carb-sb-253-261",
+          "locator": "Status",
+          "quote": "is being developed by the California Air Resources Board (CARB)."
+        },
+        {
+          "id": "A15",
+          "sentence": "would move the scope 1 and 2 reporting deadline from August 10, 2026 to November 10, 2026",
+          "kind": "regulation",
+          "sourceId": "carb-sb-253-261",
+          "locator": "Deadline",
+          "quote": "for entities to report Scope 1 and Scope 2 greenhouse gas emissions from August 10, 2026, to November 10, 2026."
+        },
+        {
+          "id": "A16",
+          "sentence": "if it is approved by the Office of Administrative Law",
+          "kind": "regulation",
+          "sourceId": "carb-sb-253-261",
+          "locator": "Approval",
+          "quote": "if approved by the Office of Administrative Law (OAL)"
+        },
+        {
+          "id": "A17",
+          "sentence": "EU rules require large companies and listed companies to publish regular reports",
+          "kind": "regulation",
+          "sourceId": "ec-csrd",
+          "locator": "Scope",
+          "quote": "EU rules require large companies and listed companies to publish regular reports"
+        },
+        {
+          "id": "A18",
+          "sentence": "on the impact of their activities on people and the environment",
+          "kind": "regulation",
+          "sourceId": "ec-csrd",
+          "locator": "Scope",
+          "quote": "on the impact of their activities on people and the environment"
+        },
+        {
+          "id": "A19",
+          "sentence": "companies subject to the Corporate Sustainability Reporting Directive have to report according to the European Sustainability Reporting Standards",
+          "kind": "regulation",
+          "sourceId": "ec-csrd",
+          "locator": "Standards",
+          "quote": "Companies subject to the CSRD have to report according to European Sustainability Reporting Standards (ESRS)."
+        },
+        {
+          "id": "A20",
+          "sentence": "proposes to apply the directive only to the largest companies",
+          "kind": "regulation",
+          "sourceId": "ec-csrd",
+          "locator": "Omnibus",
+          "quote": "proposes to apply the CSRD only to the largest companies"
+        },
+        {
+          "id": "A21",
+          "sentence": "a political agreement was reached on it",
+          "kind": "regulation",
+          "sourceId": "ec-csrd",
+          "locator": "Omnibus",
+          "quote": "Political agreement between the European Parliament and the Council on Omnibus I simplification package"
+        },
+        {
+          "id": "A22",
+          "sentence": "The page was last updated on 3 July 2026 when read",
+          "kind": "paraphrase",
+          "sourceId": "ec-csrd",
+          "locator": "Page date",
+          "quote": "3 July 2026"
         }
       ]
     }

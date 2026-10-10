@@ -1,0 +1,91 @@
+---
+title: "Climate-tech software: considerations before you build"
+seoTitle: Climate-tech considerations
+description: "Questions to settle before you build software for emissions data and climate reporting, from US federal, California and European Commission pages."
+topic: sectors
+publishedDate: 2026-10-10
+segments: [corporate-innovators, technical-founders]
+related: [vertical-saas-depth-over-breadth, usage-based-seat-based-and-hybrid-pricing-models, b2b-saas-how-the-model-works-and-what-it-asks-of-a-first-company]
+evidence: [epa-ghg-factors-hub, epa-ghgrp, ftc-green-guides, carb-sb-253-261, ec-csrd]
+relatedServices: [B, G]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: epa-ghg-factors-hub
+    title: GHG Emission Factors Hub
+    publisher: U.S. Environmental Protection Agency
+    url: https://www.epa.gov/climateleadership/ghg-emission-factors-hub
+    accessed: 2026-10-10
+  - id: epa-ghgrp
+    title: Greenhouse Gas Reporting Program (GHGRP)
+    publisher: U.S. Environmental Protection Agency
+    url: https://www.epa.gov/ghgreporting
+    accessed: 2026-10-10
+  - id: ftc-green-guides
+    title: Green Guides
+    publisher: Federal Trade Commission
+    url: https://www.ftc.gov/news-events/topics/truth-advertising/green-guides
+    accessed: 2026-10-10
+  - id: carb-sb-253-261
+    title: California Corporate Greenhouse Gas Reporting and Climate Related Financial Risk Disclosure Programs
+    publisher: California Air Resources Board
+    url: https://ww2.arb.ca.gov/our-work/programs/california-corporate-greenhouse-gas-reporting-and-climate-related-financial-risk
+    accessed: 2026-10-10
+  - id: ec-csrd
+    title: Corporate sustainability reporting
+    publisher: European Commission, Finance
+    url: https://finance.ec.europa.eu/capital-markets-union-and-financial-markets/company-reporting-and-auditing/company-reporting/corporate-sustainability-reporting_en
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal or financial advice. Written October 10, 2026 and scoped to three bodies of public text: United States federal pages from the Environmental Protection Agency and the Federal Trade Commission, a California Air Resources Board page, and a European Commission page. Reporting rules in this field are being rewritten, so what follows is a snapshot. Bring the facts of your product to a lawyer licensed where your customers operate.*
+
+Climate software has an unusual demand structure. Some customers buy because a rule requires them to report, some because a customer or lender asks, and some because they want to know. The first group depends on legal texts that are moving, which makes the rules a bigger input to a first product than they are for most software. This article lists the considerations a founder can settle before building. It states no climate benefit for any product, and it says nothing about which rule your customers face.
+
+## Start with the question the customer must answer
+
+The useful first sentence for a climate product is "my customer must produce this number, for this audience, by this date". If you cannot complete it, the product is solving a problem the customer has not been asked to solve, which can be a legitimate business but changes how you plan. If you can, write down who asks for the number: a regulator, an investor, a buyer in the supply chain, or the company itself. The answer fixes the method the number must follow and the evidence it must carry.
+
+Then write the second sentence: "my product produces it by this method, from this data". The gap between the two sentences is where most of the engineering and most of the risk sits.
+
+## Where the factors come from
+
+Emissions software usually turns activity data, such as fuel burned or electricity used, into an emissions figure by applying a factor. The EPA's GHG Emission Factors Hub is one public source of those factors. Its page says the hub was designed to provide organizations with a regularly updated and easy-to-use set of default emission factors, and it says the factors are for organizational greenhouse gas reporting. The page showed a last-updated date of January 12, 2026 when read. It describes the 2025 annual update as the most recent and says archived versions from 2011 through 2024 are available for download.
+
+Two design consequences follow. First, factors change from year to year, and a result is only reproducible if the product records which version of which factor it used. A system that overwrites factors in place cannot show a customer, or an auditor, how last year's number was produced. Second, a default factor is a default. The page's own words call them default emission factors, so a product that serves a customer with better data needs a way to take it in. Neither point is a statement about what any rule requires; both are ways to make a number defensible.
+
+## Reporting rules that create demand, and move
+
+Three public texts show how unsettled the ground is.
+
+At the federal level, the EPA's Greenhouse Gas Reporting Program page says the program collects emissions data from large GHG emission sources, fuel and industrial gas suppliers, and CO2 injection sites. It also reports that EPA released a proposal to permanently remove program obligations for some source categories and that EPA issued an interim final rule to extend the reporting deadline for reporting year 2025 to March 10, 2027. The page showed October 8, 2026 as its last-updated date when read.
+
+In California, the Air Resources Board's page on its corporate reporting programs describes two statutes. The first, SB 253, has covered companies annually disclose their scope 1, 2 and 3 greenhouse gas emissions for the prior fiscal year; the page defines the covered companies as business entities that do business in California and have total annual revenues in excess of one billion dollars. The second, SB 261, will require companies to publish biennial climate-related financial risk reports. The page says both programs are under development by the Board, and that an updated proposed initial regulation would move the scope 1 and 2 reporting deadline from August 10, 2026 to November 10, 2026, if it is approved by the Office of Administrative Law.
+
+In the European Union, the Commission's page says EU rules require large companies and listed companies to publish regular reports on the impact of their activities on people and the environment, and that companies subject to the Corporate Sustainability Reporting Directive have to report according to the European Sustainability Reporting Standards. It lists a simplification package that proposes to apply the directive only to the largest companies, and says a political agreement was reached on it. The page was last updated on 3 July 2026 when read.
+
+Read together, the pages show proposals, extensions and pending approvals in the same year. A product whose value depends on a single regime's current text carries a dependency that the founders should be able to describe to investors. A product whose core is data capture and traceable calculation may serve more than one regime, but that is a design question, not a claim about any rule. <MaybeLink path="/insights/vertical-saas-depth-over-breadth/">Vertical SaaS: depth over breadth</MaybeLink> covers the trade-off between serving one workflow well and serving many.
+
+## What you may say about your own product
+
+A climate product has a second regulatory exposure that has nothing to do with reporting: the claims the company makes. The FTC's Green Guides page says the guides are designed to help marketers avoid making environmental claims that mislead consumers, and the page shows the guidance covers claims such as "renewable" and "carbon offset".
+
+For a startup the practical rule is to describe what the software does and leave the environmental outcome to the customer's own data. "Calculates scope 2 emissions from utility bills using the factors you select" is a statement about the product. A sentence that says the product reduces emissions, or that using it makes a customer greener, is a claim about the world that needs evidence the company may not have. This article makes no such claim about any product, and a company would be wise to have counsel review its own before they are published.
+
+## Questions to put to counsel before you build
+
+None of these is advice.
+
+- Which customers must produce the number your product produces, under which rule, and who else asks for it?
+- If the rule is still being written, which date and which text is the product built against, and who tracks changes?
+- Which emission factors will the product use, how will it record the version, and how will a customer substitute its own?
+- Does the product's output feed a filing, and if so who stands behind the figure the product produced?
+- Which statements about the product's effect belong in marketing, and which need evidence first?
+- Which answer changes if the product adds a country, a customer size or a reporting regime?
+
+Keep the answers in writing. They feed pricing too, since a product priced on emissions volume, facilities or filings behaves differently when the rules change, as <MaybeLink path="/insights/usage-based-seat-based-and-hybrid-pricing-models/">usage-based, seat-based and hybrid pricing models</MaybeLink> explains in general terms. The <MaybeLink path="/insights/b2b-saas-how-the-model-works-and-what-it-asks-of-a-first-company/">B2B SaaS model article</MaybeLink> places a regulated buyer in the wider picture, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines terms used in these pages.
+
+## What this article cannot tell you
+
+This article does not tell you which reporting rule applies to any customer, which emission factors are right for a given use, or whether any claim about a product is acceptable. It covers five pages read on October 10, 2026: two from the EPA, one from the FTC, one from the California Air Resources Board and one from the European Commission. It does not cover the international sustainability standards bodies, the Securities and Exchange Commission's climate disclosure rules, carbon markets and offsets in any depth, building or energy codes, tax credits, grid and utility rules, product-level carbon accounting, or any other state or country. It does not say whether a climate product delivers a climate benefit; the sources do not address it. The rules described are changing, and the pages themselves report proposals, extensions and pending approvals, so confirm anything you rely on against the current official text with a lawyer licensed where your customers operate.
