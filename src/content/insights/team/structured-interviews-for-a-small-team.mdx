@@ -1,0 +1,117 @@
+---
+title: Structured interviews for a small team
+seoTitle: Structured interviews
+description: "What a structured interview is, as a US federal personnel agency describes it, and how a small team can build one: shared questions, anchors and scoring."
+topic: team
+publishedDate: 2026-10-10
+segments: [technical-founders, first-time-founders]
+related: [writing-a-job-description-people-can-answer, offer-letters-what-they-should-state]
+evidence: [opm-structured-interviews, eeoc-disability-inquiries, eeoc-prohibited-practices]
+relatedServices: [D]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: opm-structured-interviews
+    title: Structured interviews
+    publisher: U.S. Office of Personnel Management
+    url: https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews/
+    accessed: 2026-10-10
+  - id: eeoc-disability-inquiries
+    title: Enforcement guidance on disability-related inquiries and medical examinations of employees under the ADA
+    publisher: U.S. Equal Employment Opportunity Commission
+    url: https://www.eeoc.gov/laws/guidance/enforcement-guidance-disability-related-inquiries-and-medical-examinations-employees
+    accessed: 2026-10-10
+  - id: eeoc-prohibited-practices
+    title: Prohibited employment policies and practices
+    publisher: U.S. Equal Employment Opportunity Commission
+    url: https://www.eeoc.gov/prohibited-employment-policiespractices
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal advice. Written October 10, 2026. What you may ask a candidate depends on where you hire, so check your interview questions with your own counsel.*
+
+Most founders interview the way they have been interviewed: a conversation that wanders where the candidate's résumé points. It feels natural, and it has a weakness. Two candidates for the same job get different questions, the interviewer remembers the ones they liked, and the decision rests on an impression that nobody wrote down. Interviewers in a team of three or four can end up arguing from different pieces of evidence.
+
+A structured interview is a way of fixing that without hiring a recruiting department. This article describes what the term means in a public personnel agency's guidance and how a small team can build the same pieces at small scale. It makes no claim about how well any interview method predicts success in a job. The source it relies on does not make that claim on the page read for this article, and an article about interviews should not borrow one.
+
+## What the term means
+
+The United States Office of Personnel Management, a federal agency, describes a structured interview as an assessment method designed to measure job-related competencies of candidates by systematically inquiring about their behavior in past experiences and/or their proposed behavior in hypothetical situations. Two features set it apart from a conversation. First, the page says all candidates are asked the same predetermined questions in the same order. Second, it says all responses are evaluated using the same rating scale and standards for acceptable answers.
+
+The page also states what the agency expects the method to deliver: that structured interviews ensure candidates have equal opportunities to provide information and are assessed accurately and consistently. Treat that as the agency's description of the method's purpose, not as a measured result. What you can take from it is the design aim. Every candidate faces the same set of questions, and every answer is judged against the same yardstick.
+
+## The pieces, scaled down
+
+A small team does not need a formal assessment program. It needs five things, each of which can fit on one page.
+
+<DataTable
+  caption="The pieces of a structured interview at small scale"
+  columns={['Piece', 'What it is', 'Small-team version']}
+  rows={[
+    ['Job-related competencies', 'The abilities the work needs', 'The short "required" list from your job description'],
+    ['Predetermined questions', 'Questions fixed before the first interview', 'Four to six questions, written and shared before you meet anyone'],
+    ['Same order', 'Every candidate gets the same sequence', 'A printed or shared script, followed by each interviewer'],
+    ['Rating scale', 'One scale used for every answer', 'Three or four levels, each described in words'],
+    ['Standards for acceptable answers', 'What a weak, adequate and strong answer contains', 'A few bullet points per question, written before the interviews']
+  ]}
+/>
+
+### Start from the work
+
+The competencies come from the work, which is why <MaybeLink path="/insights/writing-a-job-description-people-can-answer/">writing a job description people can answer</MaybeLink> comes first. Take the required list and ask of each item: what would a candidate say or show that tells me they can do this? If you cannot answer, the item is too vague to interview for and probably too vague to put in the posting.
+
+### Write questions of both kinds
+
+The OPM definition names two kinds of question. One asks about behavior in past experiences ("Tell me about a time a customer was unhappy with something you had written; what did you do?"). The other asks about proposed behavior in a hypothetical situation ("A customer writes in twice in one day with the same problem. What do you do first?"). Use whichever fits the competency, and use the same one for everyone. Keep each question open enough that a candidate can answer from their own experience, and narrow enough that you could tell a strong answer from a weak one.
+
+### Write the anchors before you meet anyone
+
+An anchor is a description of what each level of answer looks like. For the support question above, a strong answer might name the customer's problem in the customer's terms, describe a specific action and say what changed. An adequate answer describes an action but not its effect. A weak answer talks about the customer in general terms or blames them. Write these down first. If you write them after meeting a favorite candidate, they will fit that candidate.
+
+### A worked example for one competency
+
+Suppose the role is the first customer-support hire and one required ability is explaining a problem clearly to someone who is not technical. A script entry for it might look like this.
+
+<DataTable
+  caption="One script entry, written before any interview"
+  columns={['Part', 'Example']}
+  rows={[
+    ['Competency', 'Explains a technical problem clearly to a non-technical person'],
+    ['Question, past behavior', 'Tell me about a time you had to explain something complicated to someone who did not share your background. What did you say, and how did you know it landed?'],
+    ['Question, hypothetical', 'A customer says the export is broken. You find that they chose a date range with no data. How do you reply?'],
+    ['Strong answer includes', 'The customer’s goal in their words, one specific action or sentence, a check that the explanation worked, no blame'],
+    ['Adequate answer includes', 'A clear action but no check that the person understood'],
+    ['Weak answer includes', 'Only general statements about patience, or a reply that blames the customer']
+  ]}
+/>
+
+Notice that the example commits to the answer standards before any candidate speaks. That is what makes the later scores comparable, and it is also what lets a second interviewer who was not in the room read your notes and understand your rating.
+
+### Keep a script and keep to it
+
+Each interviewer asks the same questions in the same order. Follow-up questions are fine to clarify what you heard, such as "What did you do next?", but not to rescue a candidate who is struggling or to lead them to the answer you hoped for. If you want to ask something that is not on the script, write it down for the next candidate as well, or leave it out.
+
+### Score before you talk
+
+When an interview ends, each interviewer rates each answer on the scale, with a sentence of evidence, before anyone speaks to the others. This is a practice choice, not a rule from the source, and it exists for one reason: once one person says "I loved her," the others tend to adjust. Compare the scores afterward and discuss the differences, which are often the most informative part.
+
+## What not to ask
+
+A script helps with another risk, which is asking something you should not. The US Equal Employment Opportunity Commission's page on prohibited employment practices says employers are explicitly prohibited from making pre-offer inquiries about disability. Its enforcement guidance states the rule more fully: at the first stage, before an offer of employment, the ADA prohibits all disability-related inquiries and medical examinations, even if they are related to the job. Putting every question in writing in advance gives your counsel the chance to review the list once, rather than leaving the wording to the moment.
+
+Whether a particular question crosses a line is a legal judgment that turns on where you hire and what the question asks. Rules on age, family status, health, criminal history and salary history vary widely by place. Bring the list to counsel before you use it.
+
+<Callout title="A short test for any question on the script">
+  Does the question ask about something the work requires? Could every candidate answer it from their own experience? Do I know what a strong answer looks like? If any answer is no, rewrite the question or drop it.
+</Callout>
+
+## Keep the record you can defend
+
+Keep the script, the anchors and each interviewer's scores for every candidate, including the ones you did not choose. How long records must be kept, and who may see them, depends on where you operate, so ask your counsel. The record also helps with the next hire: you can see which questions told you something and which did not. When you reach the offer stage, <MaybeLink path="/insights/offer-letters-what-they-should-state/">offer letters</MaybeLink> covers what the paper should say, and <MaybeLink path="/insights/your-first-hire-what-to-settle-before-you-write-the-job/">your first hire</MaybeLink> covers the decisions that come before all of this. The interviews you hold to learn about customers are a different craft, described in <MaybeLink path="/insights/customer-discovery-interviews-without-false-positives/">customer discovery interviews without false positives</MaybeLink>, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines shared terms.
+
+## What this article cannot tell you
+
+This article cannot tell you how well structured interviews predict job performance. The sources it uses are one US federal personnel agency's description of the method and two pages from the US Equal Employment Opportunity Commission, all read on October 10, 2026, and none is quoted here for effectiveness. The question examples and the anchors are illustrations written for this article, not drawn from the sources. The article covers US rules only, says nothing about interviewing in other countries, about assessments other than interviews, or about software that scores candidates, and does not review whether any question is lawful. Ask counsel about the questions before you use them.

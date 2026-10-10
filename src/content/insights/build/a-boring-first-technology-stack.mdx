@@ -1,0 +1,110 @@
+---
+title: A boring first technology stack
+seoTitle: A boring first technology stack
+description: How to choose a first technology stack for a SaaS product by asking about people, documentation and reversibility, with three technologies named as examples.
+topic: build
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders, non-technical-founders]
+relatedServices: [B]
+relatedPlaybook: build-and-ship-v1
+related: [shipping-safely-with-feature-flags-and-rollback, observability-for-a-small-team-logs-metrics-and-alerts-you-will-actually-read]
+evidence: [gds-choosing-technology, postgresql-about, django-overview, rails-getting-started]
+sources:
+  - id: gds-choosing-technology
+    title: "Choosing technology: an introduction"
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/technology/choosing-technology-an-introduction
+    accessed: 2026-10-10
+  - id: postgresql-about
+    title: "PostgreSQL: About"
+    publisher: The PostgreSQL Global Development Group
+    url: https://www.postgresql.org/about/
+    accessed: 2026-10-10
+  - id: django-overview
+    title: Django at a glance
+    publisher: Django Software Foundation, Django documentation
+    url: https://docs.djangoproject.com/en/stable/intro/overview/
+    accessed: 2026-10-10
+  - id: rails-getting-started
+    title: Getting Started with Rails
+    publisher: Ruby on Rails Guides
+    url: https://guides.rubyonrails.org/getting_started.html
+    accessed: 2026-10-10
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+The first technology stack of a startup attracts more attention than it deserves. It is easy to debate, it feels like a defining decision and it is the part of the business founders can argue about without a customer in the room. The decision does matter, but not for the reason people expect. Customers never see it, and it can cost a small team a great deal of learning time when the choice was made for novelty rather than for fit. That is the editorial view of this article, offered as reasoning and not as a measured result.
+
+This article describes what "boring" means in this context and offers questions to ask in place of a ranking. It names three technologies, and only as examples of the questions at work. It does not compare them, rank them or recommend any of them.
+
+## What boring means
+
+A boring technology is not a bad one. It is one whose behavior, failure modes and answers are well known. When something goes wrong at night, you want a problem somebody has had before, written up somewhere you can find.
+
+Three properties make a technology boring in the useful sense. It is documented, so a newcomer can learn it from the official pages. It is maintained, so the problems you hit are eventually fixed. And it is familiar to enough people that you can find help, whether by hiring, by contracting or by asking a colleague.
+
+None of these says anything about elegance or speed. A boring choice is chosen for how little it surprises you, because a first release has plenty of surprises coming from elsewhere.
+
+## Five questions to ask instead of ranking
+
+A ranking of stacks goes out of date and flatters whoever wrote it. Questions travel better.
+
+<DataTable
+  caption="Five questions for a first technology choice"
+  columns={['Question', 'Why it matters for a first release']}
+  rows={[
+    ['Who on the team already knows it?', 'Unfamiliar technology adds a learning cost on top of the product work.'],
+    ['Where is it documented, and who maintains it?', 'You will read the documentation weekly; an unmaintained project becomes your problem.'],
+    ['How easily can you find another person who knows it?', 'A team of two or three is one departure away from a gap.'],
+    ['What does it include that you would otherwise assemble?', 'Every part you assemble yourself is a part you must keep working.'],
+    ['How hard would it be to change later?', 'The answer tells you how much to worry about the choice today.']
+  ]}
+/>
+
+The first question is the strongest. A team that already knows one reasonable technology usually ships faster with it than with a theoretically better one it must learn. If you are a non-technical founder choosing for a team you are only now assembling, the corresponding question to the people you are hiring or contracting is simple: what have you built with this before, and who maintains the thing you will rely on?
+
+## Three examples, read from their own documentation
+
+To make the questions concrete, here are three technologies, described only in the words their own documentation uses. They stand for categories (a database, and two web application frameworks) and many alternatives exist in each.
+
+**A database.** The PostgreSQL project describes it as "a powerful, open source object-relational database system that uses and extends the SQL language." It also gives a date of origin: "The origins of PostgreSQL date back to 1986 as part of the POSTGRES project at the University of California at Berkeley." For the questions above, a long public history and a query language it builds on bear on documentation, on maintenance and on how many people already know it.
+
+**A web framework that includes the common parts.** The Django documentation says that "it comes with an object-relational mapper in which you describe your database layout in Python code," and that it "can automatically create a professional, production ready administrative interface – a website that lets authenticated users add, change and delete objects." That speaks to the fourth question: an administrative interface is something many first products need and would otherwise build.
+
+**Another framework with conventions.** The Rails guides describe a framework "designed to make programming web applications easier by making assumptions about what every developer needs to get started," adding that it "has opinions about the best way to do many things in a web application, and defaults to this set of conventions." A framework with strong conventions reduces the number of decisions you make, which is a benefit and also a constraint.
+
+Two frameworks described in similar terms is the point. The choice between them is mostly a question about your team's existing skills, and a documentation page cannot settle it for you. Neither description says one is better.
+
+## Keep the edges standard
+
+The UK Government Digital Service's guidance on choosing technology makes a point that applies well beyond government. It advises teams to "use open standards to manage the interfaces between parts of your system," and describes the goal of "reducing the chance of getting locked in to long contracts for specific tools and providers," so that you can "change your mind at a later stage."
+
+You can apply that to a startup in a modest way. Choose standard formats for data you export. Use widely supported protocols between your product and the services it calls. Keep business rules in your own code rather than hidden inside a vendor's configuration. These habits make a later change a task rather than a rewrite, and they are cheap while the product is small.
+
+## When the team disagrees
+
+Two capable engineers will often prefer different tools. A tie-breaking rule saves an argument that cannot be won on technical grounds. One that works is to give the casting vote to the person who will carry the pager for the first release, because they will live with the choice at its least convenient moment. Another is to pick whichever option scores better on the fifth question, reversibility, and to write down the date on which you will review the decision. Either rule is fine. What matters is that the disagreement ends on a named day, and that the product, not the stack, becomes the topic again.
+
+## A worked pass, with invented facts
+
+A founder building appointment reminders for small clinics has written web applications in Python for several years, and expects to hire one contractor. The questions give this result. Familiarity points to a Python framework. Documentation and maintenance are met by the framework's own pages. For hiring, the founder has no data on how easy it is to find Python developers in a given market, so checks with the contractor before relying on it. The framework includes an administrative interface, which saves building an internal tool. And for change later, the founder keeps data in a standard relational database and exports it in plain formats.
+
+The result is dull, which is the intent. It is also specific to this founder. A different founder with different experience, correctly applying the same questions, would reach a different stack.
+
+<Callout title="Where boring can cost you">
+  A conventional choice can be wrong when the product depends on something unusual, such as heavy real-time processing, a specialized data model or a constraint from a customer's environment. If a requirement does not fit the conventional tool, say so in your decision log rather than bending the requirement.
+</Callout>
+
+## Decide, record and move on
+
+Write the choice down with the reasons, using the decision-log habit from the <MaybeLink path="/insights/product-management-for-a-first-saas-roles-backlog-and-decisions/">product management article</MaybeLink>, and date it. Then stop debating. For what to buy instead of build, the <MaybeLink path="/insights/build-versus-buy-for-auth-billing-and-email/">article on auth, billing and email</MaybeLink> is the companion piece, and the <MaybeLink path="/insights/architecture-decisions-to-defer-in-the-first-six-months/">article on architecture decisions to defer</MaybeLink> covers what not to decide yet. The <MaybeLink path="/tools/team-composer/">team composer</MaybeLink> lets you sketch the roles around the stack, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines the terms.
+
+## What this article cannot tell you
+
+This article is about a way of choosing, not a conclusion about any technology. The three examples are described in their own documentation, which is by nature favorable, and nobody tested them against one another for this article. We make no claim about performance, cost, security or ease of hiring for any of them.
+
+It does not cover mobile applications, machine learning workloads, regulated data or specific hosting. It cannot say which choice is right for your team, because the most important input, what your people already know, is not something we can see. If your product handles sensitive data, ask qualified advisers about the requirements that apply before you settle the stack.
