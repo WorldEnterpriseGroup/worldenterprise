@@ -700,14 +700,6 @@
         text-overflow: ellipsis;
       }
 
-      /* WCAG 2.2 target size (2.5.8): a crumb link is at least 24px tall (its text line is 23px at 390px). The trail is given the same floor,
-         so its height is 24px whichever font is showing: the floor is a constant, and a font swap cannot move the page below it. */
-      min-block-size: 1.5rem;
-
-      & > a {
-        min-block-size: 1.5rem;
-      }
-
       &:last-child {
         flex-shrink: 100;
       }

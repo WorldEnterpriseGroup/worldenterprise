@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
-// Static checks on the family templates for things a build would only show as a failed audit (audit:seo, the compare table, target size).
+// Static checks on the family templates for things a build would only show as a failed audit (audit:seo, the compare table).
 
 const ROOT = new URL('../../../', import.meta.url).pathname;
 const read = (file: string): string => readFileSync(`${ROOT}${file}`, 'utf8');
@@ -21,10 +21,4 @@ test('the compare table has equal option columns: a fixed layout scoped to the c
   assert.match(source, /<div class="cmp-table">\s*<DataTable/);
   assert.match(source, /\.cmp-table :global\(\.data-table\) \{[^}]*table-layout: fixed;/);
   assert.doesNotMatch(read('src/styles/components.css'), /table-layout/, 'the shared .data-table must keep its automatic layout');
-});
-
-test('a breadcrumb link is at least 24px tall (WCAG 2.2 target size, 2.5.8)', () => {
-  const css = read('src/styles/components.css');
-  const block = /\.breadcrumbs \{[\s\S]*?\n  \}\n/.exec(css)?.[0] ?? '';
-  assert.match(block, /& > a \{\s*min-block-size: 1\.5rem;/);
 });
