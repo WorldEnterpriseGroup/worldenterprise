@@ -1,0 +1,93 @@
+---
+title: "Funding a first SaaS from customer revenue"
+seoTitle: Funding a SaaS from revenue
+description: How customer payments can fund a first SaaS, what billing choices do to the timing of cash, what you owe for prepaid service, and the arithmetic to track it.
+topic: funding
+publishedDate: 2026-10-10
+noStatistics: true
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: seed-data-room-checklist
+segments: [solo-founders, technical-founders]
+related:
+  - runway-and-burn-the-arithmetic
+  - funding-a-software-startup-the-routes
+  - revenue-based-financing-and-venture-debt-when-they-apply
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general information, not legal or financial advice. It was written on October 10, 2026, uses symbols and no figures beyond the twelve months of a year, and cites no benchmark. It does not describe any agreement with World Enterprise. Ask your own accountant how your payments, refunds and taxes should be recorded.*
+
+Of the routes to money for a software company, one needs neither a lender nor an investor: a customer who pays. It is also the route that tests the product most directly, because the money arrives only if someone chooses to pay. This article is about the mechanics, written for a technical founder working alone. It covers what your billing choices do to the timing of cash, why money received is not the same as money earned, which numbers to track, and how the record you keep now serves you if you later raise money. It gives no target, no typical value and no figure for how fast a product should grow, because none of the sources this desk relies on supports one.
+
+## What funded by customers means
+
+A company funded by its customers pays its costs from what customers pay. In the terms of the [metrics calculator](/tools/metrics-calculator/), net burn is cash out less cash in over a month, and the calculator tells you to enter 0 if cash grew. So the test is simple to state: over a month, is more cash coming in than going out? If it is, the bank balance is not falling and your runway, the cash on hand divided by net burn, stops being the number that governs your decisions.
+
+If it is not, customer payments are covering part of your costs and something else covers the rest, which may be your own savings, a loan or an investment. Even then, customer revenue changes your position. It lengthens runway, it gives you evidence of demand, and it changes what you can say to a lender or an investor later. The arithmetic of that is in the runway and burn article on this desk.
+
+## How billing choices move cash
+
+The same customer can pay you in different patterns, and each pattern puts cash in your bank at a different time. Take a customer whose service costs the monthly price P.
+
+- **Billed monthly.** You receive P each month, and each payment covers the month in which it arrives. Cash follows service.
+- **Billed annually in advance.** You receive an annual amount A at the start. Cash arrives at once, and the service it pays for is delivered over the following twelve months. Cash leads service.
+- **One-time fees.** A setup or implementation fee arrives once. The research brief that this site publishes on SaaS metrics excludes one-time fees from MRR, so a fee of this kind improves the bank balance without changing recurring revenue.
+
+None of these is better in general. Monthly billing spreads the cash and keeps your obligation to each customer short. Annual billing brings cash forward, which can matter a great deal to a company with little of it, and it lengthens what you owe. Which suits your product depends on your customers, your costs and your capacity to deliver, and only you can weigh those.
+
+## Money received is not money earned
+
+An annual payment is cash today for service you have not yet delivered. Suppose a customer pays A for twelve months. After m months, you have delivered m twelfths of the service, and (12 minus m) twelfths of A is still owed in service.
+
+That remainder is the figure a founder spending prepaid cash needs to keep in view. The bank balance tells you what you can spend. The unearned remainder tells you what you have promised. A company can hold a healthy balance and be heavily committed at the same time, and a founder who spends the whole balance on growth has spent money that, in effect, belongs to the service still to come.
+
+Two habits help. First, keep two numbers side by side every month: cash on hand, and the total of service still owed across all prepaid customers, each worked out as the remaining months times that customer's monthly equivalent. Second, when you read your runway, ask what it would be if you set aside the unearned remainder. The answer shows how much of the balance is free to spend.
+
+Your accountant may call the unearned remainder deferred or unearned revenue. How it should appear in your own accounts, and when revenue counts as earned, is a question for them. This article gives you the arithmetic to see the position. It does not set the accounting.
+
+## Refunds, continuity and a solo founder
+
+Prepayment carries a promise that is easy to forget when you are the only person running the company. If a customer has paid for a year and you cannot deliver, what do your terms say? If they cancel in month four, what do you refund? Write these answers down in the contract before customers pay, and ask counsel to read them. The terms also decide how the unearned remainder behaves: money that must be refunded on request is not money you can treat as spent.
+
+Work out, too, what keeps the service running without you for a short time: hosting paid ahead, monitored alerts, a person who can act if something breaks. This is an operating question and not a funding one, but prepaid customers make it a financial one.
+
+## Which numbers to track
+
+The research brief on SaaS metrics definitions, linked below, collects public definitions of the figures investors and customers ask for. It describes MRR as the average monthly client payment multiplied by the number of clients, and it says one-time fees are excluded. It does not give a formula for converting MRR to ARR and says multiplying a monthly figure by twelve is a convention, so state which one you use.
+
+For a company with annual customers, the useful discipline is to put every customer on a monthly equivalent and say so in your records. A customer who pays A a year contributes A divided by twelve a month, whether or not you were paid in one lump. Then your recurring revenue figure stays comparable from month to month, even though the cash does not. The [research brief on SaaS metrics definitions](/research/early-stage-saas-metrics-definitions/) and the calculator use the same definitions, so a figure you work out for yourself will match the one an investor works out from your records.
+
+Keep the cash figure separate from the recurring revenue figure. They answer different questions: what can I spend, and what is my business earning each month.
+
+## The time cost for a technical founder
+
+A solo technical founder has one scarce input, which is hours. Customer-funded growth competes with building for those hours: selling, supporting, invoicing, chasing payments and answering questions all take time that the product does not get. The [founder time budget of a raise](/insights/the-founder-time-budget-of-a-raise/) explains why raising money takes founder time, and the same logic applies here. Funding from customers is not free in that sense. It trades one cost for another.
+
+So plan the week as well as the month. List the tasks the revenue route creates, such as billing, refunds, tax filings and support, and decide which you can automate, which you can buy, and which you will do yourself. Do this before the first prepaid customer, not after.
+
+## Keeping the record an investor or lender would ask for
+
+If you raise money later, whether from an investor or a lender, they may ask for evidence of what customers paid and when. The [evidence over narrative article](/insights/evidence-over-narrative-what-diligence-actually-tests/) describes how diligence tests claims against records. Records you keep from the first payment make that easy:
+
+- the contracts and terms each customer accepted, with dates;
+- invoices, payment processor exports and refund records;
+- a monthly record of cash on hand and unearned remainder, with the convention you use for monthly equivalents;
+- the definitions you apply, written down once and used the same way every month.
+
+The [data room guide](/fundability/data-room/) shows where each of these belongs, and the [investor readiness checklist](/fundability/investor-readiness-checklist/) lists the records an investor may ask for.
+
+## Questions for your accountant
+
+- How should payments received before service is delivered appear in my accounts, and when does that revenue count as earned?
+- Which taxes apply to what I sell, where my customers are, and who files them?
+- When does money from my payment processor reach my bank, and which fees and holds apply?
+- How should refunds and chargebacks be recorded?
+- What should I set aside from prepaid receipts, and how do I work out the amount?
+- If a customer pays in a currency other than my own, how do I record it?
+
+## What this article cannot tell you
+
+This article cannot tell you how fast a product should grow, what price to charge, which billing pattern suits your customers, or how your accounts must record prepaid service. It uses symbols and no figures, and no number in it is a benchmark or a target. It does not cover tax, accounting standards, payment processors or the law on refunds, which differ by place. Revenue can cover costs and still leave a company short of cash at a bad moment, and the arithmetic here is a way to see that coming, not a guarantee against it. Nothing here is a recommendation of an accountant, a payment provider, a lender or an investor.
