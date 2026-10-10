@@ -1580,6 +1580,11 @@
       "reason": "Created by WP-00, owned by WP-03 (plan 8.4); not frozen."
     },
     {
+      "wp": "WP-63",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 8 R2: /briefs/ going live exposes a third /briefs/ link in the For you panel (nav-identity allows lead + tile only) and the menu row width at 1100/1140; WP-63 removes the duplicate Startup-column Briefs link, ruled by the integrator 2026-10-10."
+    },
+    {
       "wp": "WP-60",
       "path": "src/styles/components.css",
       "reason": "Wave 8 CI follow-up (#40): the shared breadcrumb rule needs a 24px target-size floor (WCAG 2.2 2.5.8, found by WP-75's e2e). Scoped to the .breadcrumbs li rule; WP-71 cannot edit the shared stylesheet, ruled by the integrator 2026-10-10."
