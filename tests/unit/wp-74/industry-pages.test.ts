@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
-import { readdirSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import test from 'node:test';
 import { SCOPE_HEADING, SCOPE_ITEMS } from '../../../src/components/industries/scope-copy.ts';
+import { TITLE_MAX } from '../../../src/lib/seo.ts';
+import { site } from '../../../src/data/site.ts';
 import { allPagePaths, bodyParagraphs, FOLDER, familyOf, HUB_PATH, industrySlugs, pageFile, pagePath, pageText, parsedPage, root } from './pages.ts';
 
 /**
@@ -28,6 +30,20 @@ test('every page parses under the pages schema; the hub carries no family object
     if (path === HUB_PATH) assert.equal(data.family, undefined, 'the hub has no family object');
     else assert.equal(familyOf(path).slug, path.split('/').pop()?.replace(/\.mdx$/, ''), `${path} names its own slug`);
   }
+});
+
+test('every title fits the 60-character document title once the site suffix is added, and sets no seoTitle the family templates would ignore', () => {
+  const room = TITLE_MAX - ` | ${site.titleSuffix}`.length;
+  for (const path of allPagePaths) {
+    const { data } = parsedPage(path);
+    assert.ok(data.title.length <= room, `${path}: title is ${data.title.length} characters, room is ${room}`);
+    assert.equal(data.seoTitle, undefined, `${path}: the family templates pass title, not seoTitle, to the layout`);
+  }
+});
+
+test('the seat scope component carries no <style> block: an MDX page emits it as an inline style the page CSP does not hash', () => {
+  const source = readFileSync(join(root, 'src/components/industries/SeatScope.astro'), 'utf8');
+  assert.doesNotMatch(source, /^<style[\s>]/m);
 });
 
 test('each perimeter item names a jurisdiction, a date and a source of its page, and the date is the day the source was read', () => {

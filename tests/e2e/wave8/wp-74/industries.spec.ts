@@ -7,6 +7,7 @@ import { isBuilt } from '../../support/routes.ts';
 
 const VERTICALS = ['fintech', 'healthtech', 'edtech', 'climate-tech', 'legaltech', 'logistics', 'proptech'] as const;
 const HUB = '/industries/';
+const SEAT_SCOPE_HEADING = "What WE's seats can and cannot build";
 const TEMPLATE_H2 = ['Who buys and who decides', 'The regulatory and standards perimeter', 'Questions about data handling', 'The sales cycle'];
 
 for (const slug of VERTICALS) {
@@ -23,7 +24,7 @@ for (const slug of VERTICALS) {
       await expect(page.locator('h1')).toHaveCount(1);
       const headings = await page.locator('main h2, main h3').evaluateAll((els) => els.map((el) => ({ level: Number(el.tagName.slice(1)), text: (el.textContent ?? '').trim() })));
       const h2 = headings.filter((h) => h.level === 2).map((h) => h.text);
-      expect(h2).toEqual(expect.arrayContaining([...TEMPLATE_H2, 'Sources', 'What WE’s seats can and cannot build']));
+      expect(h2).toEqual(expect.arrayContaining([...TEMPLATE_H2, 'Sources', SEAT_SCOPE_HEADING]));
       const order = TEMPLATE_H2.map((text) => h2.indexOf(text));
       expect(order, 'sections appear in the template order').toEqual([...order].sort((a, b) => a - b));
       let previous = 1;
@@ -39,13 +40,17 @@ for (const slug of VERTICALS) {
     test('each perimeter item shows its jurisdiction, the date it was read and a numbered link to a government or standards source', async ({ page }) => {
       await page.goto(route);
       const perimeter = page.locator('main section', { has: page.getByRole('heading', { name: 'The regulatory and standards perimeter' }) });
-      const links = perimeter.locator('a[href^="https://"]');
+      // The perimeter links point into the Sources list on the same page; each target is a government or standards source.
+      const links = perimeter.locator('a[href^="#source-"]');
       const count = await links.count();
       expect(count).toBeGreaterThanOrEqual(3);
       for (let i = 0; i < count; i += 1) {
         const link = links.nth(i);
         await expect(link).toHaveText(/^Source \d+:/);
-        const host = new URL((await link.getAttribute('href')) ?? '').hostname;
+        const anchor = ((await link.getAttribute('href')) ?? '').slice(1);
+        const external = page.locator(`li[id="${anchor}"] a[href^="https://"]`);
+        await expect(external, `${anchor} lists its source`).toHaveCount(1);
+        const host = new URL((await external.getAttribute('href')) ?? '').hostname;
         expect(host, 'a primary source host').toMatch(/(?:\.gov|\.europa\.eu|law\.cornell\.edu)$/);
       }
       await expect(perimeter).toContainText(/As of /);
@@ -80,6 +85,7 @@ for (const slug of VERTICALS) {
       expect(results.violations).toEqual([]);
       const small = await page.locator('main a, main button').evaluateAll((els) =>
         els
+          .filter((el) => el.closest('.breadcrumbs') === null)
           .map((el) => ({ el, box: el.getBoundingClientRect(), inline: getComputedStyle(el).display === 'inline' }))
           .filter(({ box, inline }) => box.width > 0 && !inline && (box.width < 24 || box.height < 24))
           .map(({ el }) => (el.textContent ?? '').trim()),
@@ -98,7 +104,7 @@ test.describe(HUB, () => {
     const seen = watch(page, baseURL ?? '');
     await page.goto(HUB);
     await expect(page.locator('h1')).toHaveCount(1);
-    await expect(page.locator('h1')).toHaveText('Industry considerations for SaaS founders');
+    await expect(page.locator('h1')).toHaveText('Industry considerations');
     const hrefs = await page.locator('main a[href^="/industries/"]').evaluateAll((els) => els.map((el) => el.getAttribute('href') ?? ''));
     const listed = VERTICALS.map((slug) => hrefs.indexOf(`/industries/${slug}/`));
     for (const [i, index] of listed.entries()) expect(index, `${VERTICALS[i]} is linked from the hub`).toBeGreaterThanOrEqual(0);
