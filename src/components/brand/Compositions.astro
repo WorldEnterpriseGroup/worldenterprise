@@ -1,0 +1,122 @@
+---
+import { COMPOSITIONS } from '../../assets/brand/compositions.ts';
+import type { CompositionId } from './types.ts';
+
+/**
+ * One of the eight family-hero compositions, drawn inline. With a `label` the figure is an image with that accessible name; without
+ * one it is decoration and hidden from assistive technology. The markup is a constant from src/assets/brand/compositions.ts (a
+ * string built from numbers and fixed class names, never from content), so injecting it is safe and the CSP needs nothing.
+ */
+interface Props {
+  id: CompositionId;
+  label?: string;
+}
+
+const { id, label } = Astro.props;
+const composition = COMPOSITIONS[id];
+---
+
+{
+  label !== undefined ? (
+    <figure class={`composition composition--${id}`} role="img" aria-label={label}>
+      <Fragment set:html={composition.svg} />
+    </figure>
+  ) : (
+    <figure class={`composition composition--${id}`} aria-hidden="true">
+      <Fragment set:html={composition.svg} />
+    </figure>
+  )
+}
+
+<style>
+  .composition {
+    margin: 0;
+    max-inline-size: 30rem;
+    padding: var(--sp-4);
+    border: var(--border-hair);
+    border-radius: var(--radius-lg);
+    background: var(--tint-blue);
+
+    & :global(svg) {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+      aspect-ratio: 4 / 3;
+    }
+
+    & :global(polygon),
+    & :global(circle),
+    & :global(path),
+    & :global(line) {
+      fill: none;
+      stroke: none;
+      stroke-width: 1px;
+    }
+
+    & :global(.c-core) {
+      fill: var(--color-accent);
+    }
+
+    & :global(.c-lead) {
+      fill: var(--color-highlight);
+    }
+
+    & :global(.c-tone) {
+      fill: var(--tint-blue-strong);
+      stroke: var(--color-accent);
+    }
+
+    & :global(.c-soft) {
+      fill: var(--color-bg);
+      stroke: var(--tint-line);
+    }
+
+    & :global(.c-sand) {
+      fill: var(--tint-sand);
+      stroke: var(--color-highlight);
+    }
+
+    & :global(.c-ghost) {
+      stroke: var(--tint-line);
+    }
+
+    & :global(.c-dash) {
+      stroke: var(--color-border-strong);
+      stroke-dasharray: 3 3;
+    }
+
+    & :global(.c-fold) {
+      fill: var(--color-bg);
+      stroke: var(--color-border-strong);
+    }
+
+    & :global(.c-line) {
+      stroke: var(--color-accent);
+      stroke-width: 2px;
+    }
+
+    & :global(.c-hair) {
+      stroke: var(--color-border-strong);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .composition {
+      & :global(.c-core),
+      & :global(.c-lead) {
+        fill: CanvasText;
+      }
+
+      & :global(.c-tone),
+      & :global(.c-soft),
+      & :global(.c-sand),
+      & :global(.c-ghost),
+      & :global(.c-dash),
+      & :global(.c-fold),
+      & :global(.c-line),
+      & :global(.c-hair) {
+        stroke: CanvasText;
+      }
+    }
+  }
+</style>
