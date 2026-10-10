@@ -82,14 +82,14 @@ for (const wp of wps) {
   }
 }
 
-const gatedHits = [];
+const laneExceptionHits = [];
 for (const wp of wps) {
-  for (const g of wp.gated) {
+  for (const g of wp.lane_exceptions) {
     const reserved = map.photographyLane.some((r) => overlaps(g, r));
-    gatedHits.push(`${wp.id} gated ${g} (reserved by photography lane: ${reserved})`);
+    laneExceptionHits.push(`${wp.id} ${g} (reserved by photography lane: ${reserved})`);
     for (const other of wps) {
       if (other.id === wp.id) continue;
-      for (const p of other.writes) if (overlaps(g, p, [], other.exclude)) failures.push(`${wp.id} gated ${g}  <->  ${other.id} ${p}`);
+      for (const p of other.writes) if (overlaps(g, p, [], other.exclude)) failures.push(`${wp.id} lane exception ${g}  <->  ${other.id} ${p}`);
     }
   }
 }
@@ -98,7 +98,7 @@ const stage1 = wps.filter((w) => w.stage === 1).map((w) => w.id);
 console.log(`Stage-1 packages checked pairwise: ${stage1.join(', ')} (${(stage1.length * (stage1.length - 1)) / 2} pairs)`);
 console.log(`Patterns checked: ${wps.reduce((n, w) => n + w.writes.length, 0)}; frozen entries: ${map.frozen.length}; photography-lane entries: ${map.photographyLane.length}`);
 console.log(`release-lane entries (declared, not registered): ${(map.releaseLane ?? []).length}`);
-for (const line of gatedHits) console.log(`gated: ${line}`);
+for (const line of laneExceptionHits) console.log(`lane exception: ${line}`);
 for (const line of releaseSerialize) console.log(`serialize after WP-30: ${line}`);
 if (failures.length === 0) {
   console.log('RESULT: zero overlaps');

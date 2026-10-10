@@ -580,7 +580,7 @@
         ".astro-magazine/handoffs/wp-42*",
         ".astro-magazine/sources/wp-42.json"
       ],
-      "gated": [
+      "lane_exceptions": [
         "src/pages/pricing/index.astro"
       ]
     },
@@ -606,7 +606,7 @@
         ".astro-magazine/handoffs/wp-43*",
         ".astro-magazine/sources/wp-43.json"
       ],
-      "gated": [
+      "lane_exceptions": [
         "src/pages/program/who-its-for.astro"
       ]
     },
@@ -1034,12 +1034,12 @@
     {
       "wp": "WP-42",
       "path": "src/pages/pricing/index.astro",
-      "reason": "Wave 7, gated: reserved by the photography lane (WP-12b exception). Edit only on a branch rebased on a demo that contains WP-12d phase B."
+      "reason": "Wave 7, decision W7-9: the photography lane (WP-12b exception) reserves this page, and phase B photo generation is deferred, so the page is released to this package now. Phase B will rebase onto wave 7."
     },
     {
       "wp": "WP-43",
       "path": "src/pages/program/who-its-for.astro",
-      "reason": "Wave 7, gated: reserved by the photography lane (WP-12b exception). Edit only on a branch rebased on a demo that contains WP-12d phase B."
+      "reason": "Wave 7, decision W7-9: the photography lane (WP-12b exception) reserves this page, and phase B photo generation is deferred, so the page is released to this package now. Phase B will rebase onto wave 7."
     },
     {
       "wp": "WP-12c",
@@ -1108,7 +1108,7 @@
     "The WP-00 content fixtures (src/content/<collection>/_fixtures/) were removed by WP-15; new draft:true entries fail a PUBLIC_RELEASE build.",
     "Package.json and the lockfile are single-writer: WP-00 until G0, then WP-14, then WP-15.",
     "WP-02 also owns src/content/pages/services/** (small addition to the plan spec so the services hub can carry page copy).",
-    "Wave 7 (issue #29): assignments WP-40 to WP-50 carry `stage` (0 foundation, 1 parallel features, 2 integrator). An assignment may carry `exclude` (globs inside its write_set that it must not edit, unless an exception names the path) and `gated` (files it may edit only after WP-12d phase B is on demo; they are also exceptions). scripts/check-ownership.mjs enforces `exclude`; tests/unit/wp-40/write-sets.test.ts proves the stage-1 sets are pairwise disjoint and clear of the frozen paths and the lanes."
+    "Wave 7 (issue #29): assignments WP-40 to WP-50 carry `stage` (0 foundation, 1 parallel features, 2 integrator). An assignment may carry `exclude` (globs inside its write_set that it must not edit, unless an exception names the path) and `lane_exceptions` (photography-lane files it edits through an exception; released by decision W7-9, so nothing waits for WP-12d phase B). scripts/check-ownership.mjs enforces `exclude`; tests/unit/wp-40/write-sets.test.ts proves the stage-1 sets are pairwise disjoint and clear of the frozen paths and the lanes."
   ],
   "lanes": {
     "$comment": "Lanes that wave 7 packages must stay out of. The static floor is read by tests/unit/wp-40/write-sets.test.ts together with the write sets of the registered WP-12* (photography) and WP-30 (release) assignments, so a registration that lands later extends the lane without an edit here.",
