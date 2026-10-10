@@ -2,8 +2,8 @@
 #
 #   preflight  verify:static   type check, unit tests, contrast, production-shaped build, route ledger export
 #              check:ownership  wp/* branches only: the diff stays inside the branch owner's paths
-#   qa         audit:*          static audits of dist/ (claims, images, links, ledger, dist, a11y, seo, schema, tokens; geo once scripts/audit-geo.mjs exists)
-#              e2e:*            Playwright suites against dist/ served by scripts/lib/serve.mjs (six projects; e2e:wave7 adds two once tests/e2e/wave7 has a spec)
+#   qa         audit:*          static audits of dist/ (claims, images, links, ledger, dist, a11y, seo, schema, tokens; geo once scripts/audit-geo.mjs exists; gated once a brief exists in infra/intake/briefs)
+#              e2e:*            Playwright suites against dist/ served by scripts/lib/serve.mjs (six projects; e2e:wave7 and e2e:wave8 add two each once their folder has a spec)
 #              qa:lighthouse    mobile Lighthouse on eight routes with the SAGE-PLAN 6.9 budgets
 #              verify:release   PUBLIC_RELEASE=1 build (RELEASE_ALLOW tolerates operator-gated items)
 #   deploy     pages            internal preview (demo only), built from source with a Node image
@@ -20,6 +20,12 @@ include:
   - project: 'DroidOpsInc/launch-sequence'
     ref: 6c547b757f89ec5552b5d769dfa64700e9bd4289 # immutable Launch Sequence commit, checked 2026-10-06
     file: '/pipelines/static-site.yml'
+  # The intake service (WP-61, contracts section 4) keeps its own jobs in infra/intake/ci.yml. The include is added once, here, and is
+  # inert until that file exists, so WP-61 never edits this file. Nothing under infra/ reaches the GitHub mirror (decision R-2).
+  - local: /infra/intake/ci.yml
+    rules:
+      - exists:
+          - infra/intake/ci.yml
 
 # The include declares preflight, deploy and mirror. qa is added between preflight and deploy.
 stages:
@@ -254,6 +260,50 @@ e2e:wave7:
         - tests/e2e/wave7/**/*.spec.ts
       allow_failure: true
 
+# Wave 8 specs (tests/e2e/wave8/**) at 1440 and 390, in two projects of their own (E2E_WAVE8 adds them to playwright.config.ts), for the
+# same reason as wave 7. The rules repeat .qa-rules, each with `exists:`, so a pipeline without a wave 8 spec has no such job.
+e2e:wave8:
+  extends: [.e2e]
+  variables:
+    E2E_WAVE8: "1"
+  script:
+    - npx playwright test --project=wave8-desktop-1440x900 --project=wave8-mobile-390x844
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^release-/'
+      exists:
+        - tests/e2e/wave8/**/*.spec.ts
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || $QA_STRICT == "1"'
+      exists:
+        - tests/e2e/wave8/**/*.spec.ts
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH'
+      exists:
+        - tests/e2e/wave8/**/*.spec.ts
+      allow_failure: true
+
+# Gated briefs (D-23, contracts section 5.3): no sentinel or probe sentence of a brief in infra/intake/briefs may appear in dist, in
+# any Markdown twin or machine file, in a Pagefind fragment, in src or in docs, and the brief source passes the claims denylist (it never
+# reaches dist, where the normal scan runs). It exists only once a brief does. Its self-test runs in the unit suite on every pipeline.
+audit:gated:
+  extends: [.audit]
+  script:
+    - npm run audit:gated
+    - npm run audit:claims:source
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^release-/'
+      exists:
+        - infra/intake/briefs/*.md
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || $QA_STRICT == "1"'
+      exists:
+        - infra/intake/briefs/*.md
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH'
+      exists:
+        - infra/intake/briefs/*.md
+      allow_failure: true
+
 # GEO audit (WP-41): llms.txt, llms-full.txt, Markdown twins, the Organization graph. WP-41 lands scripts/audit-geo.mjs; until it
 # exists there is no job (the rules below are .qa-rules with `exists:`, kept in step by a unit test), so no stub script is needed.
 audit:geo:
@@ -406,6 +456,12 @@ mirror:
       artifacts: false
     # The wave 7 jobs exist only once their files do, so the release confirmation waits for them when present and skips them when not.
     - job: e2e:wave7
+      artifacts: false
+      optional: true
+    - job: e2e:wave8
+      artifacts: false
+      optional: true
+    - job: audit:gated
       artifacts: false
       optional: true
     - job: audit:geo

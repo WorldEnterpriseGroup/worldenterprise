@@ -70,10 +70,13 @@ test('the mirror confirmation waits for both wave 7 jobs when they exist and ski
 test('no other job can pick up a wave 7 spec: the wave 7 projects exist only with E2E_WAVE7 and the common projects ignore the directory', async () => {
   const config = read('playwright.config.ts');
   assert.match(config, /process\.env\.E2E_WAVE7/);
-  const names = async (env: string | undefined): Promise<{ name: string; testIgnore?: RegExp; testMatch: RegExp | RegExp[] }[]> => {
+  type Project = { name: string; testIgnore?: RegExp | RegExp[]; testMatch: RegExp | RegExp[] };
+  /** Whether a project ignores a path: its testIgnore is one pattern or, since wave 8, a list. */
+  const ignores = (p: Project, path: string): boolean => [p.testIgnore ?? []].flat().some((re) => re.test(path));
+  const names = async (env: string | undefined): Promise<Project[]> => {
     if (env === undefined) delete process.env.E2E_WAVE7;
     else process.env.E2E_WAVE7 = env;
-    const mod = (await import(`../../../playwright.config.ts?e2e-wave7=${env ?? 'off'}`)) as { default: { projects: { name: string; testIgnore?: RegExp; testMatch: RegExp | RegExp[] }[] } };
+    const mod = (await import(`../../../playwright.config.ts?e2e-wave7=${env ?? 'off'}`)) as { default: { projects: Project[] } };
     return mod.default.projects;
   };
   const before = process.env.E2E_WAVE7;
@@ -89,8 +92,8 @@ test('no other job can pick up a wave 7 spec: the wave 7 projects exist only wit
       assert.equal((p.testMatch as RegExp).test('/work/tests/e2e/routes.spec.ts'), false, `${p.name} does not run the common specs`);
     }
     for (const p of on.filter((x) => x.name === 'desktop-1440x900' || x.name === 'mobile-390x844')) {
-      assert.ok(p.testIgnore?.test(spec) && p.testIgnore.test(axeNamed), `${p.name} ignores tests/e2e/wave7/**, even a spec named like a common one`);
-      assert.equal(p.testIgnore?.test('/work/tests/e2e/axe.spec.ts'), false);
+      assert.ok(ignores(p, spec) && ignores(p, axeNamed), `${p.name} ignores tests/e2e/wave7/**, even a spec named like a common one`);
+      assert.equal(ignores(p, '/work/tests/e2e/axe.spec.ts'), false);
     }
   } finally {
     if (before === undefined) delete process.env.E2E_WAVE7;

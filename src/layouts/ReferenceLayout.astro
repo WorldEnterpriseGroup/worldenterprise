@@ -1,11 +1,12 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CtaEnd from '../components/cta/CtaEnd.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 type Props = PageMeta & HeaderProps & { title: string; wide?: boolean };
 
-const { eyebrow, lead, wide = false, primary, secondary, photo, art, measure, ...meta } = Astro.props;
+const { eyebrow, lead, wide = false, primary, secondary, photo, art, measure, cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 ---
 
@@ -26,4 +27,5 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
       <slot />
     </div>
   </div>
+  <slot name="cta-end"><CtaEnd path={meta.path} collection="pages" cta={cta} /></slot>
 </BaseLayout>
