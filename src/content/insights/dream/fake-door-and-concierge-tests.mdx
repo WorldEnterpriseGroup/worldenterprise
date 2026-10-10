@@ -1,0 +1,112 @@
+---
+title: Fake-door and concierge tests
+seoTitle: Fake-door and concierge tests
+description: "Two ways to learn whether people will act before you build: a page for a feature that does not exist, and a service you deliver by hand. With an honesty note."
+topic: dream
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [first-time-founders, solo-founders]
+relatedServices: [C]
+relatedPlaybook: validate-the-problem
+related: [mapping-the-alternatives-a-customer-already-uses, kill-criteria-deciding-in-advance-when-to-stop]
+evidence: [lean-startup-principles, gds-alpha, ftc-deception-statement]
+sources:
+  - id: lean-startup-principles
+    title: The Lean Startup, methodology
+    publisher: Eric Ries, theleanstartup.com
+    url: https://theleanstartup.com/principles
+    accessed: 2026-10-10
+  - id: gds-alpha
+    title: How the alpha phase works
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/agile-delivery/how-the-alpha-phase-works
+    accessed: 2026-10-10
+  - id: ftc-deception-statement
+    title: FTC Policy Statement on Deception
+    publisher: United States Federal Trade Commission
+    url: https://www.ftc.gov/system/files/documents/public_statements/410531/831014deceptionstmt.pdf
+    accessed: 2026-10-10
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Before you write any code, you can often learn something that talking cannot tell you: whether a person who is shown your idea does anything about it. Saying "that sounds useful" costs nothing. Clicking, signing up or handing over a real piece of work costs a little, and the little is the information.
+
+Two cheap techniques do this. A fake-door test puts a front door on something that does not exist yet and measures who knocks. A concierge test delivers the service by hand to a few customers, with a person doing the work that software will later do. Both are common names for practices, not formal standards, and this article describes them in its own words. It also draws one firm line, about honesty, that the rest of the article returns to.
+
+## What both are for
+
+The Lean Startup method describes the purpose of an early product as "developing a minimum viable product (MVP) to begin the process of learning as quickly as possible," and calls its unit of progress "validated learning." The government service manual, describing the early stage of a public service, puts the same idea in practical terms: "Spend alpha building prototypes and testing different ideas," and "build things that are just complex enough to let you test different ideas, not production quality code." It adds that "a crucial part of alpha is identifying your riskiest assumptions and testing them."
+
+Those three passages give the frame. The test is not a smaller product. It is a way to check one risky assumption, with the least build that can check it.
+
+## A fake door
+
+A fake door is a page, a button or an advertisement for a feature or product that is not built. When a visitor acts on it, you record the action and tell them the truth: it is not available yet.
+
+A typical design is simple. A page describes the product in a few lines. A single button invites the visitor to take a next step, such as joining a list to be told when it opens. You count how many visitors take the step and where they came from.
+
+What it can tell you: whether a description of the product is interesting to the people who see it, and which wording draws more interest. What it cannot tell you: whether anyone will use or pay for the real thing. A click is a response to a promise, and promises are cheap.
+
+## A concierge test
+
+In a concierge test you perform the service yourself, manually, for a small number of real customers. If your product will send reminders and summarize responses, you send the reminders from your own account and write the summaries in a spreadsheet. The customer receives the result. You learn which steps matter, which they ignore, what they ask for that you did not expect and how much effort each step takes.
+
+The idea is close to the second question of the <MaybeLink path="/insights/cutting-an-mvp-the-cut-line-test/">cut-line test</MaybeLink>: could we do this by hand for the first customers? A concierge test turns that question into an experiment. Count the minutes you spend on each step, because the count shows you what software would need to save.
+
+<DataTable
+  caption="Choosing between the two"
+  columns={['Question', 'Fake door', 'Concierge']}
+  rows={[
+    ['What you learn', 'Whether a promise draws interest', 'Whether people will use a result, and how the work really goes'],
+    ['Number of people', 'Many visitors', 'A handful of customers'],
+    ['Effort from you', 'A page and a way to count', 'Your own time, every day'],
+    ['Main risk', 'Reading interest as demand', 'Mistaking a few friendly customers for a market'],
+    ['Good for', 'Choosing between ideas or wordings', 'Learning the steps before you automate them']
+  ]}
+/>
+
+## The honesty line
+
+Here the article takes a position. A fake door must not take payment for something you cannot deliver, and it must not leave the visitor believing the thing exists.
+
+That is an ethical line, and consumer-protection law can draw a similar one. The United States Federal Trade Commission's policy statement on deception says that, among the elements it looks for, "there must be a representation, omission or practice that is likely to mislead the consumer." Among practices found misleading or deceptive in specific cases, it lists "failure to perform promised services." A page that takes money for a product that does not exist, or implies that one is available when it is not, fits that description closely.
+
+This is general information about a United States source as of 10 October 2026, not legal advice. The rules in your country, and the rules for the kind of product you sell, may differ. Ask a qualified lawyer before you run any test that involves money, personal data or a regulated product.
+
+What a sound fake door does instead:
+
+- States plainly, once the visitor acts, that the product is not available yet.
+- Asks for no payment and no card details.
+- Collects only what it needs, such as an email address, and says what you will do with it.
+- Does not claim customers, availability or a launch date that you cannot support.
+
+A concierge test has its own version of the same point. If a person does the work, do not tell the customer that software does it. You can say that the service is new and that you are delivering it personally.
+
+## Design the test before you run it
+
+A test is useful only if you decide in advance what result would change your mind. Write down three things before you start: the action you will count, the number of people you will show it to and the result that would make you continue, change direction or stop. The companion piece on <MaybeLink path="/insights/kill-criteria-deciding-in-advance-when-to-stop/">kill criteria</MaybeLink> covers that decision in detail.
+
+Choose who sees the door. Showing a page to friends tells you about your friends. Showing it to people who match the customer you described tells you about the customer, and the <MaybeLink path="/insights/mapping-the-alternatives-a-customer-already-uses/">article on mapping alternatives</MaybeLink> helps you find them. Record where each visitor came from, so that one source does not hide in the total.
+
+## An invented example
+
+A founder wants to know whether independent clinics would use a tool that sends confirmation reminders and lists patients who have not replied. The founder writes a page describing the tool and asks visitors to leave an email address to be told when it opens. The page says, after the click, that the tool is being built and nothing is available yet. Alongside it, the founder offers three clinics a manual version: reminders sent by hand and a spreadsheet at the end of each day. The example is illustrative, not drawn from a client.
+
+After the test, the founder has two kinds of evidence. The page shows which wording drew interest. The manual service shows which steps the receptionists actually use, and the minutes the founder spent each day. Neither says whether the business will work. Each narrows what to build next.
+
+<Callout title="Read the result against the rule you set">
+  If you wrote down in advance that fewer than a certain number of the right visitors taking the step would make you stop, honor it. Moving the goalposts after a weak result is the usual way a cheap test becomes an expensive habit.
+</Callout>
+
+## What to do with the answer
+
+A positive result is a reason to run a harder test, not to build everything. Ask for a bigger step, such as a short call or a real piece of the customer's data. A weak result is a reason to ask why, by talking to the people who did not act. The <MaybeLink path="/playbooks/validate-the-problem/">Validate the problem playbook</MaybeLink> shows where tests like these fit, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines the terms.
+
+## What this article cannot tell you
+
+The Lean Startup site, the UK service manual and the FTC statement support the framing and the honesty note; none of them describes fake-door or concierge tests by name, and none reports how well either predicts demand. We make no claim that a test result predicts later sales.
+
+The article does not cover advertising rules, privacy law, consumer law outside the United States, or industry-specific rules for health, finance or children. The FTC statement is from 1983 and is one agency's description of its approach, not a complete account of any law. For anything that involves money or personal data, take advice from a qualified professional in your jurisdiction.
