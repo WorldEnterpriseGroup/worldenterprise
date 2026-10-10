@@ -12,11 +12,11 @@ interface Props {
 }
 
 const { updated } = Astro.props;
-const count = (source: 'brief' | 'adapted' | 'convention'): number => METRICS.filter((metric) => metric.source === source).length;
+const count = (source: 'brief' | 'reference'): number => METRICS.filter((metric) => metric.source === source).length;
 const numberWord = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 const word = (n: number): string => numberWord[n] ?? String(n);
 const capital = (text: string): string => text.charAt(0).toUpperCase() + text.slice(1);
-const methodology = `Each result is one formula applied to the numbers you type, for one month. ${capital(word(count('brief')))} formulas are the ones published in the SaaS metrics research brief, ${word(count('adapted'))} is adapted from it, and ${word(count('convention'))} are conventions the brief does not define. Each is labelled below.`;
+const methodology = `Each result is one formula applied to the numbers you type, for one month. ${capital(word(count('brief')))} formulas are the ones published in the SaaS metrics research brief. The other ${word(count('reference'))} are not defined there: each is shown as it is commonly calculated, as a convention and not as a WE method, with a link to a public page that states it. Each is labelled below.`;
 const limitations =
   'The calculator checks arithmetic, not your books: it cannot tell whether an entry is right. It uses one month as the period and treats lost revenue like lost customers when it works out lifetime value. It makes no allowance for the time value of money, shows no benchmark or target, and a result is not a prediction of funding or of any other outcome. Figures in the working are rounded for display.';
 ---
@@ -24,8 +24,8 @@ const limitations =
 <section class="formulas stack" aria-labelledby="formulas-title">
   <h2 id="formulas-title">How each number is worked out</h2>
   <p>
-    Every result above comes from the formula in this table. A formula the research brief does not state is a reporting choice, so the
-    table says which are choices. Whichever you report, say which one you used.
+    Every result above comes from the formula in this table. A formula the research brief does not state is a convention, so the
+    table says which are conventions and links a public page for each. Whichever you report, say which one you used.
   </p>
   <div class="table-wrap" tabindex="0" role="region" aria-label="Formulas used by the metrics calculator">
     <table class="data-table">
@@ -46,7 +46,11 @@ const limitations =
               <td>{metric.formula}</td>
               <td>
                 {SOURCE_LABELS[metric.source]}
-                {metric.source === 'adapted' && metric.briefFormula !== null && <span class="formulas__from">. The brief: {metric.briefFormula}</span>}
+                {metric.reference !== null && (
+                  <span class="formulas__from">
+                    . Stated in <a href={metric.reference.url} rel="noopener">{metric.reference.title}</a>, {metric.reference.publisher}
+                  </span>
+                )}
               </td>
               <td>
                 <ul class="formulas__list">

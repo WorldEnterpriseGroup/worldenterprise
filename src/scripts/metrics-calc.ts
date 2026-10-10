@@ -114,7 +114,7 @@ function divide(numerator: number, denominator: number, reasonIfZero: string): C
 export function lifetimeValue(margin: number, retention: number, discount: number): Calc {
   const divisor = 1 + discount - retention;
   if (divisor <= 0) {
-    return bad('No revenue churned, so under this formula a customer is never lost and the lifetime has no end.');
+    return bad('No revenue was lost to churn or downgrades, so under this formula a customer is never lost and the lifetime has no end.');
   }
   return good(margin * (retention / divisor));
 }
@@ -139,8 +139,8 @@ function work(id: MetricId, v: Entered): Worked {
       return { calc: good(value), working: `${s(n('newMrr'))} + ${s(n('expansionMrr'))} - ${s(n('contractionMrr'))} - ${s(n('churnedMrr'))}` };
     }
     case 'revenueChurn': {
-      const calc = divide(n('churnedMrr') * 100, n('startingMrr'), NO_STARTING_MRR);
-      return { calc, working: `(${s(n('churnedMrr'))} / ${s(n('startingMrr'))}) x 100` };
+      const calc = divide((n('churnedMrr') + n('contractionMrr')) * 100, n('startingMrr'), NO_STARTING_MRR);
+      return { calc, working: `((${s(n('churnedMrr'))} + ${s(n('contractionMrr'))}) / ${s(n('startingMrr'))}) x 100` };
     }
     case 'nrr': {
       const calc = divide((n('startingMrr') - n('churnedMrr') - n('contractionMrr') + n('expansionMrr')) * 100, n('startingMrr'), NO_STARTING_MRR);
@@ -168,7 +168,7 @@ function work(id: MetricId, v: Entered): Worked {
       if (n('newCustomers') === 0) return { calc: bad(NO_CUSTOMERS), working: '' };
       if (n('startingMrr') === 0) return { calc: bad(NO_STARTING_MRR), working: '' };
       const margin = (n('newMrr') / n('newCustomers')) * (n('grossMarginPct') / 100);
-      const retention = 1 - n('churnedMrr') / n('startingMrr');
+      const retention = 1 - (n('churnedMrr') + n('contractionMrr')) / n('startingMrr');
       return {
         calc: lifetimeValue(margin, retention, 0),
         working: `${s(margin)} x (${r(retention)} / (1 + 0 - ${r(retention)}))`,

@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { INPUT_IDS, INPUTS, METRIC_IDS, METRICS, PANELS } from '../../../src/components/islands/we-calc/formulas.ts';
+import { INPUT_IDS, INPUTS, METRIC_IDS, METRICS, PANELS, SOURCE_LABELS } from '../../../src/components/islands/we-calc/formulas.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const BRIEF = readFileSync(join(root, 'src/content/research/early-stage-saas-metrics-definitions.md'), 'utf8');
@@ -37,30 +37,42 @@ test('a metric taken from the brief carries the brief formula character for char
   }
 });
 
-test('an adapted metric names its source row and differs from it only by swapping customers for recurring revenue', () => {
+test('a reference metric is one the brief does not define, and says so', () => {
   const table = briefTable();
-  const adapted = METRICS.filter((m) => m.source === 'adapted');
-  assert.deepEqual(adapted.map((m) => m.id), ['revenueChurn']);
-  for (const metric of adapted) {
-    assert.equal(table.get(metric.briefMetric ?? ''), metric.briefFormula);
-    const swapped = (metric.briefFormula ?? '').replace('Customers lost', 'Churned MRR').replace('Total customers during period', 'Starting MRR');
-    assert.equal(metric.formula, swapped);
-  }
-});
-
-test('a convention metric is one the brief does not define, and says so', () => {
-  const table = briefTable();
-  const conventions = METRICS.filter((m) => m.source === 'convention');
-  assert.deepEqual(conventions.map((m) => m.id).sort(), ['cacPayback', 'ltvToCac', 'netNewMrr', 'quickRatio', 'runway']);
+  const references = METRICS.filter((m) => m.source === 'reference');
+  assert.deepEqual(references.map((m) => m.id).sort(), ['cacPayback', 'ltvToCac', 'netNewMrr', 'quickRatio', 'revenueChurn', 'runway']);
   const definedInBrief = [...table.keys()].map((name) => name.toLowerCase());
-  for (const metric of conventions) {
+  for (const metric of references) {
     assert.equal(metric.briefMetric, null);
     assert.equal(metric.briefFormula, null);
-    for (const word of ['quick ratio', 'payback', 'runway', 'net new']) {
+    for (const word of ['quick ratio', 'payback', 'runway', 'net new', 'revenue churn']) {
       if (metric.name.toLowerCase().includes(word)) assert.ok(!definedInBrief.some((name) => name.includes(word)), `${metric.id} is defined in the brief after all`);
     }
     assert.ok(!BRIEF.toLowerCase().includes(metric.name.toLowerCase()), `${metric.id} appears in the brief`);
   }
+});
+
+test('every reference metric links a public https page, and the same page is recorded in the sources file', () => {
+  const recorded = readFileSync(join(root, '.astro-magazine/sources/wp-49.json'), 'utf8');
+  for (const metric of METRICS) {
+    if (metric.source === 'brief') {
+      assert.equal(metric.reference, null, `${metric.id}: a brief formula needs no outside page`);
+      continue;
+    }
+    assert.notEqual(metric.reference, null, `${metric.id} has no public reference`);
+    const reference = metric.reference;
+    if (reference === null) continue;
+    assert.match(reference.url, /^https:\/\/[a-z0-9.-]+\/[\w\-./]+$/, metric.id);
+    assert.ok(reference.title.length > 0 && reference.publisher.length > 0, metric.id);
+    assert.ok(recorded.includes(reference.url), `${metric.id}: ${reference.url} is not in .astro-magazine/sources/wp-49.json`);
+  }
+  const urls = METRICS.flatMap((m) => (m.reference === null ? [] : [m.reference.url]));
+  assert.equal(new Set(urls).size, urls.length, 'each reference is used once');
+});
+
+test('the labels say a reference formula is a convention, not a WE method', () => {
+  assert.match(SOURCE_LABELS.reference, /commonly calculated/i);
+  assert.match(SOURCE_LABELS.reference, /not a WE method/);
 });
 
 test('the brief says ratios of lifetime value to cost are quoted, and publishes no target', () => {

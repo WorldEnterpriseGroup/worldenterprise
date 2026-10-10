@@ -43,13 +43,13 @@ test('a full month works out by hand', () => {
   assertClean(outcome);
   const expected: Readonly<Record<MetricId, number>> = {
     netNewMrr: 1500, // 1500 + 500 - 200 - 300
-    revenueChurn: 3, // 300 / 10000
+    revenueChurn: 5, // (300 + 200) / 10000
     nrr: 100, // (10000 - 300 - 200 + 500) / 10000
     quickRatio: 4, // 2000 / 500
     cac: 600, // 6000 / 10
     cacPayback: 5, // 600 / (150 x 0.8)
-    ltv: 3880, // 120 x (0.97 / (1 + 0 - 0.97))
-    ltvToCac: 3880 / 600,
+    ltv: 2280, // 120 x (0.95 / (1 + 0 - 0.95))
+    ltvToCac: 3.8, // 2280 / 600
     runway: 8, // 120000 / 15000
   };
   for (const id of METRIC_IDS) {
@@ -57,10 +57,11 @@ test('a full month works out by hand', () => {
     assert.equal(r.status, 'ready', id);
     assert.ok(Math.abs((r.value ?? Number.NaN) - expected[id]) < 1e-9, `${id}: ${r.value} vs ${expected[id]}`);
   }
-  assert.equal(result(outcome, 'revenueChurn').display, '3.0%');
+  assert.equal(result(outcome, 'revenueChurn').display, '5.0%');
   assert.equal(result(outcome, 'quickRatio').display, '4.00');
   assert.equal(result(outcome, 'runway').display, '8.0 months');
-  assert.equal(result(outcome, 'ltv').display, '3,880');
+  assert.equal(result(outcome, 'ltv').display, '2,280');
+  assert.equal(result(outcome, 'revenueChurn').detail, '((300 + 200) / 10,000) x 100 = 5.0%');
   assert.equal(result(outcome, 'cac').detail, '6,000 / 10 = 600');
 });
 
@@ -85,10 +86,10 @@ test('the brief CLV formula, with and without a discount, checked against the pu
   }
 });
 
-test('zero churn leaves lifetime value undefined, with a reason', () => {
+test('zero churn and contraction leave lifetime value undefined, with a reason', () => {
   const calc = lifetimeValue(120, 1, 0);
   assert.equal(calc.ok, false);
-  const outcome = calculate(withInputs({ churnedMrr: '0' }));
+  const outcome = calculate(withInputs({ churnedMrr: '0', contractionMrr: '0' }));
   assert.equal(result(outcome, 'ltv').status, 'undefined');
   assert.equal(result(outcome, 'ltvToCac').status, 'undefined');
   assert.match(result(outcome, 'ltv').detail, /never lost/);
@@ -146,6 +147,7 @@ test('a shrinking month gives a negative net new MRR and a quick ratio under one
   assert.equal(result(outcome, 'netNewMrr').display, '-300');
   assert.equal(result(outcome, 'quickRatio').display, '0.00');
   assert.equal(result(outcome, 'nrr').display, '97.0%');
+  assert.equal(result(outcome, 'revenueChurn').display, '3.0%');
 });
 
 test('blank fields hold a result back and name what is missing', () => {

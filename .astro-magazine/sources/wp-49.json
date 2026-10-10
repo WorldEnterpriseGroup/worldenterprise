@@ -1,6 +1,6 @@
 {
   "wp": "WP-49",
-  "note": "WP-49 adds two interactive tools and the /tools/ hub. Every formula, folder, item and statement in the new copy traces to a published page of this site, or is labelled below as a convention or an editorial choice. No amount, benchmark, target, seat count, price, date, statistic, person, company or testimonial is introduced. The entries map each block to its origin.",
+  "note": "WP-49 adds two interactive tools and the /tools/ hub. Every formula, folder, item and statement in the new copy traces to a published page of this site, to a public reference page cited by URL (the six calculator results the research brief does not define), or is labelled below as an editorial choice. No amount, benchmark, target, seat count, price, date, statistic, person, company or testimonial is introduced. The entries map each block to its origin.",
   "sources": [
     {
       "schema_version": "1.0.0",
@@ -15,35 +15,180 @@
       "next_review": "Any change to the brief's formula table",
       "version_or_release": "1.0",
       "relevant_locator": "C-05",
-      "variables_units_scope": "Three formulas are shown exactly as the brief's table publishes them: NRR ('[(Beginning recurring revenue - MRR lost from churn - MRR lost from downgrades + revenue from upgrades) / Beginning recurring revenue] x 100'), simple CAC ('MCC / CA') and CLV ('Margin x (Retention / (1 + Discount - Retention))'). Revenue churn is the brief's customer-churn formula with 'Customers lost' replaced by 'Churned MRR' and 'Total customers during period' replaced by 'Starting MRR'; it is labelled 'Adapted from the research brief'. The six-question reporting checklist on the calculator page is the brief's checklist.",
-      "methodology_limitations": "tests/unit/wp-49/formulas.test.ts parses the brief's table and checks each brief-sourced formula character for character, and the adapted swap. The brief gives no benchmarks and no target values, and neither does the calculator. The discount term in CLV is fixed at zero and the page says so.",
+      "variables_units_scope": "Three formulas are shown exactly as the brief's table publishes them: NRR ('[(Beginning recurring revenue - MRR lost from churn - MRR lost from downgrades + revenue from upgrades) / Beginning recurring revenue] x 100'), simple CAC ('MCC / CA') and CLV ('Margin x (Retention / (1 + Discount - Retention))'). The six other results are not defined in the brief and each cites a public page (the wp49-ref-* sources). The six-question reporting checklist on the calculator page is the brief's checklist.",
+      "methodology_limitations": "tests/unit/wp-49/formulas.test.ts parses the brief's table and checks each brief-sourced formula character for character, and checks that none of the six reference metrics appears in the brief. The brief gives no benchmarks and no target values, and neither does the calculator. The discount term in CLV is fixed at zero and the page says so.",
       "funding_conflicts": "none",
-      "claims_supported": ["C-05"],
-      "claims_not_supported": ["C-06", "C-09"],
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
       "license_access_attribution": "Internal; quoted from the site's own brief",
       "freshness_trigger": "Any change to the brief's formula table or checklist",
       "captured_by": "WP-49"
     },
     {
       "schema_version": "1.0.0",
-      "source_id": "wp49-metrics-conventions",
-      "publisher_or_author": "World Enterprise Group (internal)",
-      "title": "Five calculator results the research brief does not define",
-      "source_tier": "operator-statement",
-      "exact_url_or_locator": "src/components/islands/we-calc/formulas.ts, METRICS entries netNewMrr, quickRatio, cacPayback, ltvToCac, runway",
+      "source_id": "wp49-ref-net-new-mrr",
+      "publisher_or_author": "Baremetrics",
+      "title": "How To Calculate MRR (Baremetrics Academy)",
+      "source_tier": "secondary-explainer",
+      "exact_url_or_locator": "https://baremetrics.com/academy/saas-calculate-mrr",
       "publication_date": "",
-      "last_updated_date": "2026-10-09",
+      "last_updated_date": "",
       "retrieved_at": "2026-10-09",
-      "next_review": "When the research brief is extended to define these results (open request to WP-47 and WP-50)",
+      "next_review": "Before release, or when the page changes or is removed",
       "version_or_release": "n/a",
       "relevant_locator": "C-05",
-      "variables_units_scope": "Net new MRR = new + expansion - contraction - churned MRR. Quick ratio = (new + expansion MRR) / (churned + contraction MRR). CAC payback = CAC / (average new-customer MRR x gross margin), in months. LTV to CAC = LTV / CAC. Runway = cash / net monthly burn, in months. Each is shown on the page labelled 'A convention: the research brief does not define it', with its assumptions, so a reader can recompute it.",
-      "methodology_limitations": "These are common reporting arithmetic, not published definitions the site can cite. The brief says ratios of lifetime value to cost are sometimes quoted and publishes no target; the page repeats that and shows no benchmark. A unit test confirms none of the five names appears in the brief.",
+      "variables_units_scope": "Net New MRR = New MRR + Expansion MRR - Churned MRR. The calculator lists downgrades as a separate Contraction MRR input and subtracts it, which gives the same total as the reference where churned MRR includes downgrades.",
+      "methodology_limitations": "The page is inconsistent about whether churned MRR includes downgrades (one section says cancellations or downgrades, a later one assigns downgrades to contraction). The calculator's input labels state which is which. A vendor explainer, not a standard.",
       "funding_conflicts": "none",
-      "claims_supported": ["C-05"],
-      "claims_not_supported": ["C-06", "C-09"],
-      "license_access_attribution": "Internal",
-      "freshness_trigger": "Any definition added to the brief",
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Linked, not copied. Used to cite how net new MRR is commonly calculated; the page says it is a convention and not a WE method.",
+      "freshness_trigger": "The reference page changing its formula, or going offline",
+      "captured_by": "WP-49"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp49-ref-gross-revenue-churn",
+      "publisher_or_author": "ChartMogul",
+      "title": "Revenue churn (net and gross revenue churn rate)",
+      "source_tier": "secondary-explainer",
+      "exact_url_or_locator": "https://chartmogul.com/saas-metrics/revenue-churn/",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-09",
+      "next_review": "Before release, or when the page changes or is removed",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-05",
+      "variables_units_scope": "Gross MRR Churn Rate = (SUM of Churn & Contraction MRR) / (MRR at start of period). The calculator multiplies by 100 and shows a percent.",
+      "methodology_limitations": "Net revenue churn (expansion subtracted) is a different measure on the same page and is not used; NRR is taken from the research brief instead. A vendor explainer, not a standard.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Linked, not copied. Used to cite how gross revenue churn is commonly calculated; the page says it is a convention and not a WE method.",
+      "freshness_trigger": "The reference page changing its formula, or going offline",
+      "captured_by": "WP-49"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp49-ref-quick-ratio",
+      "publisher_or_author": "Wall Street Prep",
+      "title": "SaaS Quick Ratio",
+      "source_tier": "secondary-explainer",
+      "exact_url_or_locator": "https://www.wallstreetprep.com/knowledge/saas-quick-ratio/",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-09",
+      "next_review": "Before release, or when the page changes or is removed",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-05",
+      "variables_units_scope": "SaaS Quick Ratio = (New MRR + Expansion MRR) / (Churned MRR + Contraction MRR), with the same four component definitions the calculator uses.",
+      "methodology_limitations": "The page names 4.0 as a frequently cited target; the calculator and its page repeat no benchmark or target. The SaaS quick ratio is not the accounting acid-test ratio. A training-provider explainer, not a standard.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Linked, not copied. Used to cite how the SaaS quick ratio is commonly calculated; the page says it is a convention and not a WE method.",
+      "freshness_trigger": "The reference page changing its formula, or going offline",
+      "captured_by": "WP-49"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp49-ref-cac-payback",
+      "publisher_or_author": "Wall Street Prep",
+      "title": "CAC Payback Period",
+      "source_tier": "secondary-explainer",
+      "exact_url_or_locator": "https://www.wallstreetprep.com/knowledge/cac-payback-period/",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-09",
+      "next_review": "Before release, or when the page changes or is removed",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-05",
+      "variables_units_scope": "CAC Payback Period = Sales and Marketing Expense / (New MRR x Gross Margin), in months. The page's worked example divides both sides by the customers acquired (CAC / (average new MRR per customer x gross margin)), which is the per-customer form the calculator uses.",
+      "methodology_limitations": "The reference uses sales and marketing expense; the calculator uses whatever acquisition spend the founder enters and says to label which form it is. Churn during the payback months is ignored. A training-provider explainer, not a standard.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Linked, not copied. Used to cite how CAC payback is commonly calculated; the page says it is a convention and not a WE method.",
+      "freshness_trigger": "The reference page changing its formula, or going offline",
+      "captured_by": "WP-49"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp49-ref-ltv-to-cac",
+      "publisher_or_author": "Wall Street Prep",
+      "title": "LTV/CAC Ratio",
+      "source_tier": "secondary-explainer",
+      "exact_url_or_locator": "https://www.wallstreetprep.com/knowledge/ltv-cac-ratio/",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-09",
+      "next_review": "Before release, or when the page changes or is removed",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-05",
+      "variables_units_scope": "LTV/CAC Ratio = Lifetime Value (LTV) / Customer Acquisition Cost (CAC). LTV in the calculator is the research brief's CLV formula; CAC is the brief's simple CAC.",
+      "methodology_limitations": "The page also states a 3.0x benchmark and thresholds; none is repeated by the calculator or its page. A training-provider explainer, not a standard.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Linked, not copied. Used to cite how the ratio of lifetime value to CAC is commonly calculated; the page says it is a convention and not a WE method.",
+      "freshness_trigger": "The reference page changing its formula, or going offline",
+      "captured_by": "WP-49"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp49-ref-runway",
+      "publisher_or_author": "Corporate Finance Institute",
+      "title": "Cash Runway Explained",
+      "source_tier": "secondary-explainer",
+      "exact_url_or_locator": "https://corporatefinanceinstitute.com/resources/valuation/cash-runway-explained/",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-09",
+      "next_review": "Before release, or when the page changes or is removed",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-05",
+      "variables_units_scope": "Cash Runway = Current Cash Balance / Monthly Net Burn Rate. Net burn is the founder's own input (cash out less cash in over a month).",
+      "methodology_limitations": "Assumes this month's burn repeats; arithmetic, not a forecast. A training-provider explainer, not a standard.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Linked, not copied. Used to cite how runway is commonly calculated; the page says it is a convention and not a WE method.",
+      "freshness_trigger": "The reference page changing its formula, or going offline",
       "captured_by": "WP-49"
     },
     {
@@ -62,8 +207,12 @@
       "variables_units_scope": "Each of the 33 folder items and 5 pre-share checks in the evidence room is a phrase of the guide, and each folder's 'What it shows' line is the guide's sentence. tests/unit/wp-49/evidence-room.test.ts checks every phrase against the guide text.",
       "methodology_limitations": "The guide is general information, not legal advice, and the page says so. The page does not say any investor requires these items.",
       "funding_conflicts": "none",
-      "claims_supported": ["C-05"],
-      "claims_not_supported": ["C-09"],
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
       "license_access_attribution": "Internal",
       "freshness_trigger": "Any change to the guide's folders",
       "captured_by": "WP-49"
@@ -84,8 +233,12 @@
       "variables_units_scope": "The evidence room's readiness group takes each statement's artifact as the item label, the statement as the line it backs, and the statement's gap page as the 'start with' link. The data is imported, not retyped.",
       "methodology_limitations": "A unit test compares label, statement, link and title to the source data.",
       "funding_conflicts": "none",
-      "claims_supported": ["C-05"],
-      "claims_not_supported": ["C-09"],
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
       "license_access_attribution": "Internal; imported",
       "freshness_trigger": "Any change to the readiness statements",
       "captured_by": "WP-49"
@@ -106,8 +259,13 @@
       "variables_units_scope": "Neither guide ranks items by company stage. The stage on each item is WE's own suggested order for gathering evidence, using the three of the four published stage labels (Idea or prototype, First product, Early customer evidence). The fourth stage, 'Several products, or a regulated field', has no filter of its own: the page tells that company to show all items and ask its own counsel what else applies.",
       "methodology_limitations": "Editorial sequencing. The page labels it 'a suggestion, not an investor requirement' and does not claim any investor asks for items in this order.",
       "funding_conflicts": "none",
-      "claims_supported": ["C-10"],
-      "claims_not_supported": ["C-05", "C-09"],
+      "claims_supported": [
+        "C-10"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-09"
+      ],
       "license_access_attribution": "Internal",
       "freshness_trigger": "Any change to the stage labels in src/components/pricing/stages.ts",
       "captured_by": "WP-49"
@@ -128,8 +286,12 @@
       "variables_units_scope": "'Your numbers stay on this page' (calculator: nothing saved, sent or placed in the address) and 'your ticks are kept in the part of the address after the # sign' (evidence room: no storage, no cookie, no request) restate what the code does. The e2e specs record every request after the page loads and fail on any, and read local storage, session storage and cookies after use.",
       "methodology_limitations": "The evidence-room address holds the ticks, so anyone given the address sees them; the page says so.",
       "funding_conflicts": "none",
-      "claims_supported": ["C-05"],
-      "claims_not_supported": ["C-09"],
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
       "license_access_attribution": "Internal",
       "freshness_trigger": "Any change that adds storage or a request",
       "captured_by": "WP-49"
@@ -150,8 +312,12 @@
       "variables_units_scope": "The words 'WE makes no promise of funding.' appear on each of the three pages. The tools add no outcome claim: a result is arithmetic on the visitor's own numbers and is not a prediction.",
       "methodology_limitations": "none",
       "funding_conflicts": "none",
-      "claims_supported": ["C-05"],
-      "claims_not_supported": ["C-09"],
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
       "license_access_attribution": "Internal; verbatim",
       "freshness_trigger": "Any change to the disclaimer",
       "captured_by": "WP-49"

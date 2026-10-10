@@ -4,10 +4,10 @@
  *
  * Where a definition comes from is recorded on every metric. `brief` means the formula is the one published in the research brief
  * /research/early-stage-saas-metrics-definitions/ (src/content/research/early-stage-saas-metrics-definitions.md, appendix table),
- * character for character. `adapted` means the brief's formula with the brief's customer count replaced by recurring revenue.
- * `convention` means the brief does not define the metric; the page says so, in the brief's own words: a formula the references do not
- * state is a reporting choice, so say which one you use. tests/unit/wp-49/formulas.test.ts reads the brief and fails when a `brief`
- * formula drifts from its table row, or when a `convention` metric is one the brief does define.
+ * character for character. `reference` means the brief does not define the metric, so the page says the formula is how the metric is
+ * commonly calculated, a convention and not a WE method, and links the public page that states it (`reference`, with the same page
+ * recorded in .astro-magazine/sources/wp-49.json). A metric with no public definition is not offered. tests/unit/wp-49/formulas.test.ts
+ * reads the brief and fails when a `brief` formula drifts from its table row, or when a `reference` metric is one the brief does define.
  *
  * Pure data: no Astro imports, so `node --test` loads it.
  */
@@ -63,7 +63,14 @@ export const METRIC_IDS = ['netNewMrr', 'revenueChurn', 'nrr', 'quickRatio', 'ca
 export type MetricId = (typeof METRIC_IDS)[number];
 
 export type MetricUnit = 'amount' | 'percent' | 'ratio' | 'months';
-export type MetricSource = 'brief' | 'adapted' | 'convention';
+export type MetricSource = 'brief' | 'reference';
+
+/** A public page that states a metric's formula. Not a WE publication. */
+export interface MetricReference {
+  readonly publisher: string;
+  readonly title: string;
+  readonly url: string;
+}
 
 export interface MetricDefinition {
   readonly id: MetricId;
@@ -74,8 +81,10 @@ export interface MetricDefinition {
   readonly source: MetricSource;
   /** The metric's name in the brief's appendix table, or null when the brief does not define it. */
   readonly briefMetric: string | null;
-  /** The brief's published formula, verbatim, or null. For `adapted` it is the text this definition was adapted from. */
+  /** The brief's published formula, verbatim, or null. */
   readonly briefFormula: string | null;
+  /** The public page behind a `reference` metric, or null for a `brief` one. */
+  readonly reference: MetricReference | null;
   /** Symbols and assumptions, stated so a reader can recompute the number from the inputs. */
   readonly assumptions: readonly string[];
   /** The panel the result is shown in. */
@@ -90,27 +99,32 @@ export const METRICS: readonly MetricDefinition[] = [
     name: 'Net new MRR',
     unit: 'amount',
     formula: 'New MRR + Expansion MRR - Contraction MRR - Churned MRR',
-    source: 'convention',
+    source: 'reference',
     briefMetric: null,
     briefFormula: null,
-    assumptions: ['The change in MRR over the month. Starting MRR is not needed.'],
+    reference: { publisher: 'Baremetrics', title: 'How To Calculate MRR', url: 'https://baremetrics.com/academy/saas-calculate-mrr' },
+    assumptions: [
+      'The change in MRR over the month. Starting MRR is not needed.',
+      'The reference writes it as New MRR + Expansion MRR - Churned MRR, with downgrades counted as churn. Downgrades are entered separately here as Contraction MRR, which gives the same total.',
+    ],
     panel: 'revenue',
     needs: ['newMrr', 'expansionMrr', 'contractionMrr', 'churnedMrr'],
   },
   {
     id: 'revenueChurn',
-    name: 'Revenue churn',
+    name: 'Gross revenue churn',
     unit: 'percent',
-    formula: '(Churned MRR / Starting MRR) x 100',
-    source: 'adapted',
-    briefMetric: 'Customer churn',
-    briefFormula: '(Customers lost / Total customers during period) x 100',
+    formula: '((Churned MRR + Contraction MRR) / Starting MRR) x 100',
+    source: 'reference',
+    briefMetric: null,
+    briefFormula: null,
+    reference: { publisher: 'ChartMogul', title: 'Revenue churn (net and gross revenue churn rate)', url: 'https://chartmogul.com/saas-metrics/revenue-churn/' },
     assumptions: [
-      'The brief states churn for customers. This is the same ratio with recurring revenue in place of customers, so it is labelled revenue churn.',
-      'Only revenue from customers you started the month with counts: Churned MRR cannot be more than Starting MRR.',
+      'The brief defines churn for customers, not for revenue. This is the revenue version: revenue lost to cancellations and downgrades, set against the revenue the month started with. Expansion is not netted off.',
+      'Only revenue from customers you started the month with counts: Churned MRR plus Contraction MRR cannot be more than Starting MRR.',
     ],
     panel: 'revenue',
-    needs: ['startingMrr', 'churnedMrr'],
+    needs: ['startingMrr', 'churnedMrr', 'contractionMrr'],
   },
   {
     id: 'nrr',
@@ -119,6 +133,7 @@ export const METRICS: readonly MetricDefinition[] = [
     formula:
       '[(Beginning recurring revenue - MRR lost from churn - MRR lost from downgrades + revenue from upgrades) / Beginning recurring revenue] x 100',
     source: 'brief',
+    reference: null,
     briefMetric: 'NRR',
     briefFormula:
       '[(Beginning recurring revenue - MRR lost from churn - MRR lost from downgrades + revenue from upgrades) / Beginning recurring revenue] x 100',
@@ -134,10 +149,11 @@ export const METRICS: readonly MetricDefinition[] = [
     name: 'Quick ratio',
     unit: 'ratio',
     formula: '(New MRR + Expansion MRR) / (Churned MRR + Contraction MRR)',
-    source: 'convention',
+    source: 'reference',
     briefMetric: null,
     briefFormula: null,
-    assumptions: ['A ratio of two derived figures. The inputs are shown beside the result so it can be recomputed.'],
+    reference: { publisher: 'Wall Street Prep', title: 'SaaS Quick Ratio', url: 'https://www.wallstreetprep.com/knowledge/saas-quick-ratio/' },
+    assumptions: ['A ratio of gains to losses. The inputs are shown beside the result so it can be recomputed.'],
     panel: 'revenue',
     needs: ['newMrr', 'expansionMrr', 'churnedMrr', 'contractionMrr'],
   },
@@ -147,6 +163,7 @@ export const METRICS: readonly MetricDefinition[] = [
     unit: 'amount',
     formula: 'MCC / CA',
     source: 'brief',
+    reference: null,
     briefMetric: 'CAC, simple',
     briefFormula: 'MCC / CA',
     assumptions: [
@@ -161,10 +178,12 @@ export const METRICS: readonly MetricDefinition[] = [
     name: 'CAC payback',
     unit: 'months',
     formula: 'CAC / (New MRR per customer x Gross margin)',
-    source: 'convention',
+    source: 'reference',
     briefMetric: null,
     briefFormula: null,
+    reference: { publisher: 'Wall Street Prep', title: 'CAC Payback Period', url: 'https://www.wallstreetprep.com/knowledge/cac-payback-period/' },
     assumptions: [
+      'The reference states it for the whole month: spend divided by (New MRR x Gross margin). Dividing both by Customers acquired gives the per-customer form shown here, with the same result.',
       'New MRR per customer is New MRR divided by Customers acquired. Gross margin is entered as a percent and used as a share.',
       'The result is the number of months of gross margin from a new customer that it takes to cover its CAC. Churn during those months is ignored.',
     ],
@@ -177,39 +196,42 @@ export const METRICS: readonly MetricDefinition[] = [
     unit: 'amount',
     formula: 'Margin x (Retention / (1 + Discount - Retention))',
     source: 'brief',
+    reference: null,
     briefMetric: 'CLV',
     briefFormula: 'Margin x (Retention / (1 + Discount - Retention))',
     assumptions: [
       'The brief gives the basic form only. Margin is the monthly gross margin of one new customer: New MRR per customer x Gross margin.',
-      'Retention is one minus revenue churn for the month, as a share. This treats lost revenue like a lost customer.',
+      'Retention is one minus gross revenue churn for the month, as a share. This treats lost revenue like a lost customer.',
       'Discount, the allowance for the time value of money, is set to 0. The calculator makes no allowance for it.',
     ],
     panel: 'acquisition',
-    needs: ['newMrr', 'newCustomers', 'grossMarginPct', 'startingMrr', 'churnedMrr'],
+    needs: ['newMrr', 'newCustomers', 'grossMarginPct', 'startingMrr', 'churnedMrr', 'contractionMrr'],
   },
   {
     id: 'ltvToCac',
     name: 'LTV to CAC ratio',
     unit: 'ratio',
     formula: 'LTV / CAC',
-    source: 'convention',
+    source: 'reference',
     briefMetric: null,
     briefFormula: null,
+    reference: { publisher: 'Wall Street Prep', title: 'LTV/CAC Ratio', url: 'https://www.wallstreetprep.com/knowledge/ltv-cac-ratio/' },
     assumptions: [
-      'The brief notes that a ratio of lifetime value to acquisition cost is sometimes quoted. It publishes no target and neither does this page.',
+      'The brief notes that a ratio of lifetime value to acquisition cost is sometimes quoted. It publishes no target, and the reference page names one that this page does not repeat.',
       'It inherits every assumption of LTV and of CAC.',
     ],
     panel: 'acquisition',
-    needs: ['acquisitionSpend', 'newCustomers', 'newMrr', 'grossMarginPct', 'startingMrr', 'churnedMrr'],
+    needs: ['acquisitionSpend', 'newCustomers', 'newMrr', 'grossMarginPct', 'startingMrr', 'churnedMrr', 'contractionMrr'],
   },
   {
     id: 'runway',
     name: 'Runway',
     unit: 'months',
     formula: 'Cash on hand / Net burn per month',
-    source: 'convention',
+    source: 'reference',
     briefMetric: null,
     briefFormula: null,
+    reference: { publisher: 'Corporate Finance Institute', title: 'Cash Runway Explained', url: 'https://corporatefinanceinstitute.com/resources/valuation/cash-runway-explained/' },
     assumptions: ['Assumes this month’s burn repeats. It is arithmetic, not a forecast, and it says nothing about future fundraising.'],
     panel: 'cash',
     needs: ['cash', 'monthlyBurn'],
@@ -231,13 +253,11 @@ export function metricDefinition(id: MetricId): MetricDefinition {
 /** The sentence under the form. The same words are in the static page so a visitor without JavaScript reads them too. */
 export const SOURCE_LABELS: Readonly<Record<MetricSource, string>> = {
   brief: 'Formula from the research brief',
-  adapted: 'Adapted from the research brief',
-  convention: 'A convention: the research brief does not define it',
+  reference: 'Commonly calculated this way: a convention, not a WE method. The research brief does not define it',
 };
 
 /** The short tag on each result card. */
 export const SOURCE_TAGS: Readonly<Record<MetricSource, string>> = {
   brief: 'Formula from the brief',
-  adapted: 'Adapted from the brief',
-  convention: 'Convention',
+  reference: 'Common convention',
 };

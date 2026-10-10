@@ -10,7 +10,7 @@ import { isBuilt } from '../../support/routes.ts';
 
 const ROUTE = '/tools/metrics-calculator/';
 
-/** One month, as the unit tests use it. Net new MRR 1,500; revenue churn 3.0%; quick ratio 4.00; payback 5.0 months; runway 8.0 months. */
+/** One month, as the unit tests use it. Net new MRR 1,500; gross revenue churn 5.0%; quick ratio 4.00; payback 5.0 months; runway 8.0 months. */
 const MONTH: Readonly<Record<string, string>> = {
   startingMrr: '10,000',
   newMrr: '1500',
@@ -64,12 +64,12 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
     await expect(page.locator('we-calc')).toHaveAttribute('data-enhanced', '');
     await fillMonth(page);
     await expect(value(page, 'netNewMrr')).toHaveText('1,500');
-    await expect(value(page, 'revenueChurn')).toHaveText('3.0%');
+    await expect(value(page, 'revenueChurn')).toHaveText('5.0%');
     await expect(value(page, 'nrr')).toHaveText('100.0%');
     await expect(value(page, 'quickRatio')).toHaveText('4.00');
     await expect(value(page, 'cac')).toHaveText('600');
     await expect(value(page, 'cacPayback')).toHaveText('5.0 months');
-    await expect(value(page, 'ltv')).toHaveText('3,880');
+    await expect(value(page, 'ltv')).toHaveText('2,280');
     await expect(value(page, 'runway')).toHaveText('8.0 months');
     await expect(page.locator('[data-metric="cac"] [data-detail]')).toHaveText('6,000 / 10 = 600');
     expect(new URL(page.url()).search).toBe('');
@@ -197,7 +197,10 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
     await expect(table.locator('tbody tr')).toHaveCount(9);
     await expect(table.getByRole('row', { name: /Customer acquisition cost/ })).toContainText('MCC / CA');
     await expect(table.getByRole('row', { name: /Net revenue retention/ })).toContainText('Beginning recurring revenue');
-    await expect(table.getByRole('row', { name: /Runway/ })).toContainText(/a convention/i);
+    await expect(table.getByRole('row', { name: /Runway/ })).toContainText(/commonly calculated this way: a convention, not a WE method/i);
+    await expect(table.getByRole('row', { name: /Runway/ }).getByRole('link', { name: 'Cash Runway Explained' })).toHaveAttribute('href', 'https://corporatefinanceinstitute.com/resources/valuation/cash-runway-explained/');
+    await expect(table.getByRole('link')).toHaveCount(6);
+    await expect(page.getByRole('link', { name: 'Cash Runway Explained' }).first()).toHaveAttribute('rel', /noopener/);
     await expect(page.getByText('Your numbers stay on this page.').first()).toBeVisible();
     await expect(page.getByRole('link', { name: /research brief on SaaS metrics definitions/ })).toHaveAttribute('href', /\/research\/early-stage-saas-metrics-definitions\/$/);
     await expect(page.locator('main').getByText('WE makes no promise of funding.').first()).toBeVisible();
