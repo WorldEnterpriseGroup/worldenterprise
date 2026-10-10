@@ -1,6 +1,6 @@
 ---
 title: "Answering a security and privacy questionnaire"
-seoTitle: Security and privacy questionnaires
+seoTitle: Security questionnaires
 description: "What the CAIQ, CCM, OWASP ASVS and NIST frameworks are, how a questionnaire answer relates to evidence, and the questions to bring to counsel."
 topic: fundable
 publishedDate: 2026-10-10
@@ -46,6 +46,7 @@ claimsUsed: [C-05]
 draft: false
 ---
 import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 <NoFundingDisclaimer />
 
@@ -69,7 +70,7 @@ None of these is a law, and no source here says a company must complete any of t
 
 ## Where privacy questions come from
 
-Some privacy questions can be read against the law. The General Data Protection Regulation, which [the privacy basics article](/insights/privacy-law-basics-for-a-small-product/) describes, gives two examples.
+Some privacy questions can be read against the law. The General Data Protection Regulation, which <MaybeLink path="/insights/privacy-law-basics-for-a-small-product/">the privacy basics article</MaybeLink> describes, gives two examples.
 
 - **Security of processing.** Article 32 says the controller and the processor shall implement appropriate technical and organisational measures, and it lists, as appropriate, the ability to ensure ongoing confidentiality, integrity, availability and resilience, the ability to restore the availability and access to personal data in a timely manner, and a process for regularly testing, assessing and evaluating effectiveness.
 - **Processors and sub-processors.** Article 28 says processing by a processor shall be governed by a contract or other legal act that sets out, among other things, the subject-matter and duration of the processing, and that a processor shall not engage another processor without prior specific or general written authorisation.
@@ -78,7 +79,7 @@ A questionnaire row asking about restoring data or about sub-processors can ther
 
 ## What an answer is
 
-An answer to a row is a statement the company makes about itself on a given date. If the answer is yes, the next question a careful reader asks is what record shows it. That is the same pairing the article on [ordering a pre-seed evidence pack](/insights/ordering-a-pre-seed-evidence-pack/) describes: a statement and the artifact behind it.
+An answer to a row is a statement the company makes about itself on a given date. If the answer is yes, the next question a careful reader asks is what record shows it. That is the same pairing the article on <MaybeLink path="/insights/ordering-a-pre-seed-evidence-pack/">ordering a pre-seed evidence pack</MaybeLink> describes: a statement and the artifact behind it.
 
 The pairing can be laid out by section:
 
@@ -90,7 +91,7 @@ The pairing can be laid out by section:
 | Vendors | Who handles customer data | A vendor list and the terms read |
 | Logging and response | Who acts on an incident and how | A written plan; a log of a practice run |
 
-The first column uses section names from the [security baseline checklist](/library/security-baseline-checklist/), which has six sections and is a self-assessment in the same shape: yes, partly or no, with an owner and a date. The checklist says it does not certify anything and maps loosely to public references such as OWASP ASVS and the NIST SSDF.
+The first column uses section names from the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink>, which has six sections and is a self-assessment in the same shape: yes, partly or no, with an owner and a date. The checklist says it does not certify anything and maps loosely to public references such as OWASP ASVS and the NIST SSDF.
 
 ## Self-assessment and certification are different objects
 
@@ -100,11 +101,11 @@ Whether any statement in a particular answer is accurate and how it is worded ar
 
 ## Where the answers live afterward
 
-An answered questionnaire is itself a record. The guide to [the seed data room](/fundability/data-room/) has a security and privacy folder holding a data inventory, an access list, the privacy notice and the vendors that handle customer data, and it says every file should carry a date. Dated answers make it possible to say what was true when a form was sent. The [open-source license](/insights/open-source-licenses-inside-a-commercial-product/) article describes the license side of the components a code and build answer refers to.
+An answered questionnaire is itself a record. The guide to <MaybeLink path="/fundability/data-room/">the seed data room</MaybeLink> has a security and privacy folder holding a data inventory, an access list, the privacy notice and the vendors that handle customer data, and it says every file should carry a date. Dated answers make it possible to say what was true when a form was sent. The <MaybeLink path="/insights/open-source-licenses-inside-a-commercial-product/">open-source license</MaybeLink> article describes the license side of the components a code and build answer refers to.
 
 ## Questions to bring to counsel
 
-The [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) is a general list. For a questionnaire:
+The <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> is a general list. For a questionnaire:
 
 1. Which standard or custom form is the sender using, and who wrote the questions?
 2. Which answers are statements about facts we can document, and which are statements about intentions or plans?

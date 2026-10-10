@@ -1,6 +1,6 @@
 ---
 title: "Open-source licenses inside a commercial product"
-seoTitle: Open-source licenses in a product
+seoTitle: Open-source licenses
 description: "What the MIT, Apache 2.0, GPL and AGPL license texts say about copying, shipping and offering software, and the questions to bring to counsel."
 topic: legal
 publishedDate: 2026-10-10
@@ -40,8 +40,11 @@ sources:
     accessed: 2026-10-10
 evidence: [osi-osd, osi-mit, apache-2-0, gnu-gpl-3, gnu-agpl-3, spdx-license-list]
 claimsUsed: []
+relatedServices: [G]
 draft: false
 ---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 *General information as of October 10, 2026. It is not legal advice, and it describes the text of four widely used licenses, not copyright law in any one country. A lawyer who works with software licensing can say what applies to a particular product and a particular way of shipping it.*
 
@@ -104,11 +107,11 @@ The licenses attach conditions to acts, so the questions follow the acts a compa
 
 ## Keeping a record
 
-The SPDX License List includes a standardized short identifier, the full name, the license text and a canonical permanent URL for the licenses it lists. The stated purpose is to enable efficient and reliable identification of such licenses and exceptions in an SPDX document and in source files. The OSI page for the MIT License, for example, shows its SPDX short identifier as MIT. A written inventory naming each component, its version, its license identifier and how it is used is one way to keep the record. The article on [IP, contracts and access diligence](/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/) describes how reviewers read such records, the [seed data room checklist](/library/seed-data-room-checklist/) shows where an inventory is filed, and the article on [founder IP assignment and confidentiality agreements](/insights/founder-ip-assignment-and-confidentiality-agreements/) covers a different question: who owns the code a team writes.
+The SPDX License List includes a standardized short identifier, the full name, the license text and a canonical permanent URL for the licenses it lists. The stated purpose is to enable efficient and reliable identification of such licenses and exceptions in an SPDX document and in source files. The OSI page for the MIT License, for example, shows its SPDX short identifier as MIT. A written inventory naming each component, its version, its license identifier and how it is used is one way to keep the record. The article on <MaybeLink path="/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/">IP, contracts and access diligence</MaybeLink> describes how reviewers read such records, the <MaybeLink path="/library/seed-data-room-checklist/">seed data room checklist</MaybeLink> shows where an inventory is filed, and the article on <MaybeLink path="/insights/founder-ip-assignment-and-confidentiality-agreements/">founder IP assignment and confidentiality agreements</MaybeLink> covers a different question: who owns the code a team writes.
 
 ## Questions to bring to counsel
 
-The [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) offers a general list. For this topic:
+The <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> offers a general list. For this topic:
 
 1. Which components in the product carry which licenses, and where is that written down?
 2. How is the software delivered, and which delivery events in each license are triggered?
