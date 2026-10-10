@@ -1,0 +1,107 @@
+{
+  "wp": "WP-63",
+  "note": "The fetch ledger and the sentence ledger of the gated-briefs package (docs/wave8-contracts.md, section 9). Each brief under infra/intake/briefs/ lists the pages it was written from; every page was fetched with WebFetch in the writing session, and the claims below are the sentences of a brief that restate a source, each with a locator and, for a regulation, a verbatim quote of 25 words or fewer. The remaining documents are page copy: the squeeze, hub and thanks copy module, the two page files and the open abstracts. Each sentence maps to one claim (C-nn), one existing page with a heading (path#heading) or one decision, or is a short control label. tests/unit/wp-63/copy-ledger.test.ts enumerates the sentences from the files that hold them, fails on one with no mapping and on a mapping with no sentence, and runs the claims denylist over all of them. Interface strings built at run time (the depth line under a card) hold a date and a count only and are denylist-scanned by that test.",
+  "fetches": [
+    { "id": "sbir-about", "url": "https://www.sbir.gov/about", "title": "About | SBIR", "publisher": "SBIR.gov, coordinated by the U.S. Small Business Administration", "fetchedAt": "2026-10-10T11:46:05Z", "status": 200, "tool": "WebFetch" },
+    { "id": "yc-safe", "url": "https://www.ycombinator.com/documents", "title": "The SAFE, the open standard for startup fundraising", "publisher": "Y Combinator", "fetchedAt": "2026-10-10T11:46:06Z", "status": 200, "tool": "WebFetch" },
+    { "id": "nvca-model", "url": "https://nvca.org/model-legal-documents/", "title": "Model Legal Documents", "publisher": "National Venture Capital Association", "fetchedAt": "2026-10-10T11:46:07Z", "status": 200, "tool": "WebFetch" },
+    { "id": "sec-exempt", "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings", "title": "Exempt Offerings", "publisher": "U.S. Securities and Exchange Commission", "fetchedAt": "2026-10-10T11:46:08Z", "status": 200, "tool": "WebFetch" },
+    { "id": "sba-loans", "url": "https://www.sba.gov/funding-programs/loans", "title": "Access affordable 7(a), 504, & microloans", "publisher": "U.S. Small Business Administration", "fetchedAt": "2026-10-10T11:46:24Z", "status": 200, "tool": "WebFetch" },
+    { "id": "sec-regcf", "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/regulation-crowdfunding", "title": "Regulation Crowdfunding", "publisher": "U.S. Securities and Exchange Commission", "fetchedAt": "2026-10-10T11:46:25Z", "status": 200, "tool": "WebFetch" },
+    { "id": "sec-506b", "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/private-placements-rule-506b", "title": "Private Placements - Rule 506(b)", "publisher": "U.S. Securities and Exchange Commission", "fetchedAt": "2026-10-10T11:46:26Z", "status": 200, "tool": "WebFetch" },
+    { "id": "usc-1202", "url": "https://www.law.cornell.edu/uscode/text/26/1202", "title": "26 U.S. Code section 1202, Partial exclusion for gain from certain small business stock", "publisher": "Legal Information Institute, Cornell Law School", "fetchedAt": "2026-10-10T11:46:27Z", "status": 200, "tool": "WebFetch" }
+  ],
+  "documents": [
+    {
+      "path": "infra/intake/briefs/funding-paths.md",
+      "claims": [
+        { "id": "FP-01", "sentence": "every offer and sale of securities must either be registered under the Securities Act of 1933 or fall within an exemption", "kind": "regulation", "sourceId": "sec-exempt", "locator": "the page's opening statement of the registration requirement", "quote": "Every offer and sale of securities must either be registered under the Securities Act of 1933" },
+        { "id": "FP-02", "sentence": "an issuer must file a Form D notice no later than 15 days after the first sale of securities in an offering relying on Rule 506(b)", "kind": "regulation", "sourceId": "sec-exempt", "locator": "the Form D notice section", "quote": "an issuer must file this notice within 15 days after the first sale of securities in an offering relying on Rule 506(b)" },
+        { "id": "FP-03", "sentence": "sales to non-accredited investors are limited to no more than 35 in any 90-calendar-day period", "kind": "regulation", "sourceId": "sec-506b", "locator": "the page's statement of who may buy", "quote": "securities may not be sold to more than 35 non-accredited investors in any 90-calendar day period" },
+        { "id": "FP-04", "sentence": "an issuer can sell to an unlimited number of accredited investors", "kind": "regulation", "sourceId": "sec-506b", "locator": "the page's statement of who may buy", "quote": "can sell securities to an unlimited number of accredited investors." },
+        { "id": "FP-05", "sentence": "the rules require all transactions under Regulation Crowdfunding to take place online through an SEC-registered intermediary", "kind": "regulation", "sourceId": "sec-regcf", "locator": "the page's description of the intermediary requirement", "quote": "require all transactions under Regulation Crowdfunding to take place online through an SEC-registered intermediary" },
+        { "id": "FP-06", "sentence": "the rules permit a company to raise a maximum aggregate amount through crowdfunding offerings in a 12-month period", "kind": "regulation", "sourceId": "sec-regcf", "locator": "the page's description of the offering limit; the brief states no amount", "quote": "permit a company to raise a maximum aggregate amount of $5 million through crowdfunding offerings in a 12-month period" },
+        { "id": "FP-07", "sentence": "the stock must be acquired at its original issue, directly or through an underwriter", "kind": "regulation", "sourceId": "usc-1202", "locator": "section 1202, the definition of qualified small business stock", "quote": "such stock is acquired by the taxpayer at its original issue (directly or through an underwriter)" },
+        { "id": "FP-08", "sentence": "each participating agency runs its own program within guidelines established by Congress", "kind": "paraphrase", "sourceId": "sbir-about", "locator": "the page's description of how the program is administered" },
+        { "id": "FP-09", "sentence": "guaranteed loans generally have rates and fees comparable to those on loans without a guarantee", "kind": "paraphrase", "sourceId": "sba-loans", "locator": "the page's statement on the cost of guaranteed loans" },
+        { "id": "FP-10", "sentence": "the SAFE converts into shares automatically when the startup raises a priced round", "kind": "definition", "sourceId": "yc-safe", "locator": "the page's description of the instrument" },
+        { "id": "FP-11", "sentence": "describes them as the industry-embraced model documents to be used in venture capital financings", "kind": "definition", "sourceId": "nvca-model", "locator": "the page's introduction to the model documents" }
+      ]
+    },
+    {
+      "path": "src/components/briefs/copy.ts",
+      "sentences": [
+        { "text": "Executive brief", "label": true },
+        { "text": "Request this brief", "label": true },
+        { "text": "See the outline", "label": true },
+        { "text": "What the brief covers", "label": true },
+        { "text": "The sections of the full brief, in order.", "decision": "W8-5" },
+        { "text": "WE sends the full text by email to the address you give.", "claim": "C-27" },
+        { "text": "About this brief", "label": true },
+        { "text": "Brief details", "label": true },
+        { "text": "Format", "label": true },
+        { "text": "Written brief", "label": true },
+        { "text": "Updated", "label": true },
+        { "text": "Sections", "label": true },
+        { "text": "Request the brief", "label": true },
+        { "text": "Requests are not being accepted yet", "label": true },
+        { "text": "WE is not accepting brief requests on this page yet, and the form cannot be sent.", "decision": "W8-13" },
+        { "text": "This brief gives considerations for founders.", "decision": "W8-24" },
+        { "text": "It is not legal, tax or investment advice.", "decision": "W8-24" },
+        { "text": "Related briefs", "label": true },
+        { "text": "More briefs are on the briefs page.", "label": true },
+        { "text": "All executive briefs", "label": true },
+        { "text": "Have an idea of your own?", "label": true },
+        { "text": "Apply to World Enterprise Incubator", "label": true },
+        { "text": "No executive brief is published yet.", "label": true },
+        { "text": "Open research briefs", "label": true },
+        { "text": "The research briefs on this site are open to read, with no request needed.", "decision": "W8-16" },
+        { "text": "While you wait", "label": true },
+        { "text": "Read about the other executive briefs", "label": true },
+        { "text": "What happens after you apply", "label": true },
+        { "text": "Contact WE", "label": true },
+        { "text": "Executive briefs", "label": true },
+        { "text": "WE also writes longer executive briefs for founders, which are sent by email on request.", "claim": "C-27" },
+        { "text": "See the executive briefs", "label": true }
+      ]
+    },
+    {
+      "path": "src/content/briefs/funding-paths.md",
+      "sentences": [
+        { "text": "What each way of paying for early work asks of the company in return", "page": "infra/intake/briefs/funding-paths.md#the-question-this-brief-answers" },
+        { "text": "Seven ways to pay for early software work, compared by what each asks of the company: customers, awards, loans, shares, convertible instruments and crowds.", "page": "infra/intake/briefs/funding-paths.md#the-paths-side-by-side" },
+        { "text": "Founders are often shown funding as a menu, with the amount of money on offer as the only column.", "page": "infra/intake/briefs/funding-paths.md#the-question-this-brief-answers" },
+        { "text": "This brief reads the same options from the other side and asks what each one requires of the company once the money has arrived.", "page": "infra/intake/briefs/funding-paths.md#the-question-this-brief-answers" },
+        { "text": "It covers seven paths: revenue and savings, federal research awards, loans, private sales of shares, convertible instruments, priced rounds and regulated crowdfunding.", "page": "infra/intake/briefs/funding-paths.md#the-paths-side-by-side" },
+        { "text": "For each path it reports what a public source says the mechanism is, then separates that report from analysis of which kind of company the path tends to suit.", "page": "infra/intake/briefs/funding-paths.md#how-to-read-the-paths" },
+        { "text": "It also lists questions to put to any path before committing, and it sets out the limits of what its sources can show.", "page": "infra/intake/briefs/funding-paths.md#questions-to-ask-before-choosing" },
+        { "text": "Those include rules that change, facts specific to your company and every jurisdiction outside the United States.", "page": "infra/intake/briefs/funding-paths.md#what-this-brief-cannot-tell-you" },
+        { "text": "The brief is general information for founders.", "decision": "W8-24" },
+        { "text": "It is not legal, tax or investment advice.", "decision": "W8-24" }
+      ]
+    },
+    {
+      "path": "src/content/pages/briefs/index.md",
+      "sentences": [
+        { "text": "Executive briefs for founders on funding paths, company setup and building with AI.", "decision": "W8-5" },
+        { "text": "Each has a public outline and is sent by email on request.", "claim": "C-27" },
+        { "text": "Executive briefs are longer written documents for people who need to decide something and want the considerations laid out in one place.", "decision": "W8-24" },
+        { "text": "Each brief has its own page with an outline of what it covers.", "decision": "W8-5" },
+        { "text": "WE sends the full text by email to the address you give when you request it.", "claim": "C-27" },
+        { "text": "Every brief names its sources, states how far the evidence goes and says what it cannot tell you.", "page": "infra/intake/briefs/funding-paths.md#about-the-evidence" },
+        { "text": "A brief is general information for founders.", "decision": "W8-24" },
+        { "text": "It is not legal, tax or investment advice.", "decision": "W8-24" }
+      ]
+    },
+    {
+      "path": "src/content/pages/briefs/thanks.md",
+      "sentences": [
+        { "text": "Your brief request has been sent to WE.", "decision": "W8-2" },
+        { "text": "This page explains where the brief goes and where to read while you wait.", "claim": "C-27" },
+        { "text": "Your request has been sent to WE.", "decision": "W8-2" },
+        { "text": "WE sends the brief by email to the address you gave.", "claim": "C-27" },
+        { "text": "WE does not state a delivery time on this site, so check that the address you entered is one you read, and look in your spam folder if nothing arrives.", "decision": "W7-5" }
+      ]
+    }
+  ]
+}
