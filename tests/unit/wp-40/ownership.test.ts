@@ -5,6 +5,7 @@ import * as checker from '../../../scripts/check-ownership.mjs';
 
 // Wave 7 (WP-40): scripts/check-ownership.mjs learns `exclude`, a list of globs inside an assignment's write_set that the package must not
 // edit unless an exception names the path. WP-45 owns a layout and component sweep that must stay clear of the photography lane.
+// Wave 8 froze src/layouts/** for WP-60 (frozen_paths_wave8), so the allowed-file sample uses a block component rather than a layout.
 
 interface Assignment {
   owner: string;
@@ -31,7 +32,7 @@ test('wave 7 branches map to their packages', () => {
 });
 
 test('WP-45 may edit its sweep but not the three photography-lane files it excludes', () => {
-  assert.deepEqual(api.violations(['src/components/ui/Button.astro', 'src/components/hero/HeroSplit.astro', 'src/styles/global.css', 'src/layouts/BaseLayout.astro'], 'WP-45', ownership), []);
+  assert.deepEqual(api.violations(['src/components/ui/Button.astro', 'src/components/hero/HeroSplit.astro', 'src/styles/global.css', 'src/components/blocks/Callout.astro'], 'WP-45', ownership), []);
   const bad = api.violations(['src/components/ui/Card.astro', 'src/components/hero/HeroAtlas.astro', 'src/components/hero/HeroEditorial.astro'], 'WP-45', ownership);
   assert.deepEqual(bad.map((v) => v.path), ['src/components/ui/Card.astro', 'src/components/hero/HeroAtlas.astro', 'src/components/hero/HeroEditorial.astro']);
   for (const v of bad) assert.match(v.reason, /excluded from the WP-45 write set/);

@@ -20,10 +20,32 @@ function loadDenylist(): readonly DenyRule[] {
   }
 }
 
+// The articles WP-06 wrote. Later articles in the same desks follow tests/unit/wp-60/article-rubric.test.ts; the checks below stay on the
+// originals, whose files are pinned byte for byte by tests/unit/wp-60/existing-articles.test.ts (decision D-20: no count is pinned).
+const ORIGINAL: Record<'grow' | 'fundable', readonly string[]> = {
+  grow: [
+    'onboarding-is-acquisition-time-to-first-value',
+    'pricing-page-fundamentals-for-a-first-saas',
+    'support-at-five-customers-not-fifty',
+    'your-first-ten-customers-a-founder-led-sequence',
+  ],
+  fundable: [
+    'choosing-the-right-first-investors-for-a-saas-company',
+    'evidence-over-narrative-what-diligence-actually-tests',
+    'ip-contracts-and-access-diligence-for-small-engineering-teams',
+    'questions-to-ask-your-counsel-before-you-sign',
+    'the-founder-time-budget-of-a-raise',
+  ],
+};
+
 function articles(desk: 'grow' | 'fundable'): { file: string; raw: string; body: string }[] {
   const dir = join(root, 'src/content/insights', desk);
-  return readdirSync(dir)
-    .filter((f) => /\.mdx?$/.test(f))
+  const present = readdirSync(dir).filter((f) => /\.mdx?$/.test(f));
+  for (const slug of ORIGINAL[desk]) {
+    if (!present.some((f) => f.replace(/\.mdx?$/, '') === slug)) throw new Error(`${desk}/${slug} is missing: an original article was removed or renamed.`);
+  }
+  return present
+    .filter((f) => ORIGINAL[desk].includes(f.replace(/\.mdx?$/, '')))
     .map((file) => {
       const raw = readFileSync(join(dir, file), 'utf8');
       const body = raw.split(/^---$/m).slice(2).join('---').replace(/^import .*$/gm, '');
@@ -34,9 +56,9 @@ function articles(desk: 'grow' | 'fundable'): { file: string; raw: string; body:
 const grow = articles('grow');
 const fundable = articles('fundable');
 
-test('four Grow and five Fundable articles exist', () => {
-  assert.equal(grow.length, 4);
-  assert.equal(fundable.length, 5);
+test('the original Grow and Fundable articles all exist', () => {
+  assert.equal(grow.length, ORIGINAL.grow.length);
+  assert.equal(fundable.length, ORIGINAL.fundable.length);
 });
 
 test('each article is 1,200 to 1,800 words and has two or more sources', () => {
