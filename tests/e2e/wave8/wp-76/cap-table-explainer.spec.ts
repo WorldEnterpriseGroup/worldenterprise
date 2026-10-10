@@ -4,6 +4,7 @@ import type { Page } from '@playwright/test';
 import { findOverflow } from '../../support/overflow.ts';
 import { AXE_TAGS, watch } from '../../support/page-guards.ts';
 import { isBuilt } from '../../support/routes.ts';
+import { trackEgress } from './egress.ts';
 
 // WP-76: the cap table explainer. The shares a founder types never leave the page, nothing is stored, bad entries are described and never
 // become NaN or Infinity, updating a result moves nothing, it works from the keyboard alone, and the formulas stand without JavaScript.
@@ -94,18 +95,7 @@ test.describe('cap table explainer (the project sets the viewport: 1440 and 390)
   test('no request leaves the page after it has loaded, and nothing is stored, however many numbers are typed', async ({ page, baseURL }) => {
     const seen = watch(page, baseURL ?? '');
     await openPage(page);
-    const after: string[] = [];
-    // What is entered must stay in the browser. Only a same-origin GET of a static resource is let through: a lazy image of the page's
-    // own header or footer is not the tool. Every other request, and any request to another origin, is counted.
-    if (baseURL === undefined) throw new Error('the project sets no baseURL');
-    const origin = new URL(baseURL).origin;
-    page.on('request', (request) => {
-      const staticAsset = ['image', 'font', 'stylesheet', 'script', 'media'].includes(request.resourceType());
-      if (request.method() === 'GET' && staticAsset && new URL(request.url()).origin === origin) return;
-      after.push(`${request.method()} ${request.url()}`);
-    });
-    page.on('websocket', (socket) => after.push(`websocket ${socket.url()}`));
-    await page.route('**/*', (route) => route.abort());
+    const after = await trackEgress(page, baseURL);
     await fill(page, { yours: '1000', others: '3000', issue: '500' });
     await expect(value(page, 'after')).toHaveText('22.22%');
     await page.getByRole('button', { name: 'Clear all numbers' }).click();
