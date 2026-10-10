@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import test from 'node:test';
 import * as claimsAudit from '../../../scripts/audit-claims.mjs';
 import { DESK_DEFINITIONS, deskPath } from '../../../src/data/desks.ts';
-import { BRIEFS, COMPARISONS, INDUSTRIES, SEGMENTS } from '../../../src/data/families.ts';
+import { BRIEFS, COMPARISONS, familyLabel, INDUSTRIES, SEGMENTS } from '../../../src/data/families.ts';
 import { routes } from '../../../src/data/routes.ts';
 import { kindGroups, liveGroups, metaLookup, RESOURCE_STRIP, RESOURCES_COPY, routeOfEntry, STATIC_META } from '../../../src/components/reference/resources.ts';
 import type { LedgerRow, MetaEntry, ResourceGroup } from '../../../src/components/reference/resources.ts';
@@ -12,7 +12,7 @@ import { repoViewAt } from '../wp-60/repo-view.ts';
 import { checkSentences } from '../wp-60/sources.ts';
 import type { SourcesFile } from '../wp-60/sources.ts';
 import { readDiskEntries, routeStateOnDisk } from './disk-meta.ts';
-import { derivedSentences, derivedSources, ownedSentences } from './resources-copy.ts';
+import { derivedSentences, derivedSources, FAMILY_ENTRIES, ownedSentences } from './resources-copy.ts';
 
 /**
  * The rebuilt Resources hub (WP-72). The hub lists only routes that are live (fail-closed, D-11), covers every live route of every
@@ -139,10 +139,17 @@ test('against the real content, every stage-path route has a title and is a ledg
   }
 });
 
-test('every title and description comes from the page it links to (no drift)', () => {
+test('every title and description comes from the page it links to, and a family entry from the registry label alone (no drift)', () => {
   const byRoute = new Map<string, MetaEntry>(entries.map((e) => [routeOfEntry(e.collection, e.id), e]));
   for (const group of [...liveGroups(built, meta), ...kindGroups(ledger, built, meta)]) {
     for (const item of group.items) {
+      const family = FAMILY_ENTRIES.get(item.path);
+      if (family !== undefined) {
+        // Listed by label alone, so the page it links to (and any title that page carries) is never the source.
+        assert.equal(item.title, familyLabel(family), item.path);
+        assert.equal(item.description, undefined, item.path);
+        continue;
+      }
       const entry = byRoute.get(item.path);
       if (entry === undefined) continue;
       assert.equal(item.title, entry.title, item.path);
