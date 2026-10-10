@@ -1,0 +1,42 @@
+---
+import { getEntry, render } from 'astro:content';
+import { jumpTo } from '../../components/hero/ctas.ts';
+import MetricsCalculator from '../../components/islands/we-calc/MetricsCalculator.astro';
+import FormulaTable from '../../components/tools/FormulaTable.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+
+const entry = await getEntry('pages', 'tools/metrics-calculator');
+if (!entry) throw new Error('Missing content entry pages/tools/metrics-calculator (src/content/pages/tools/metrics-calculator.mdx).');
+const { Content } = await render(entry);
+const { data } = entry;
+---
+
+<ToolLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead="One month of your numbers in, nine results out, every formula shown."
+  path="/tools/metrics-calculator/"
+  primary={jumpTo('Start calculating', '#calculator')}
+  secondary={{ label: 'Read the formulas', href: '#formulas' }}
+  updated={data.updated}
+  draft={data.draft}
+  crumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Tools', href: '/tools/' },
+    { label: 'Metrics calculator', href: '/tools/metrics-calculator/' },
+  ]}
+  noscript="JavaScript is off. The fields below need JavaScript, but the formulas still work by hand: every one is listed in the table further down."
+>
+  <div id="calculator"><MetricsCalculator /></div>
+  <div id="formulas"><FormulaTable updated={data.updated} /></div>
+  <div class="prose"><Content /></div>
+  <CtaBand
+    slot="after"
+    title="Want the evidence behind the numbers in order?"
+    text="The evidence room turns the data-room and readiness guides into a checklist you can tick off, print or copy."
+    cta={{ label: 'Open the evidence room', href: '/tools/evidence-room/' }}
+    secondary={{ label: 'Fundability and readiness', href: '/fundability/' }}
+  />
+</ToolLayout>

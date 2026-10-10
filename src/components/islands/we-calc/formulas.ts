@@ -234,3 +234,10 @@ export const SOURCE_LABELS: Readonly<Record<MetricSource, string>> = {
   adapted: 'Adapted from the research brief',
   convention: 'A convention: the research brief does not define it',
 };
+
+/** The short tag on each result card. */
+export const SOURCE_TAGS: Readonly<Record<MetricSource, string>> = {
+  brief: 'Formula from the brief',
+  adapted: 'Adapted from the brief',
+  convention: 'Convention',
+};
