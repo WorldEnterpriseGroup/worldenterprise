@@ -1,0 +1,186 @@
+---
+import { href } from '../../lib/url.ts';
+import { STAGES } from './stages.ts';
+import type { StageId } from './stages.ts';
+
+/**
+ * The stage rail: Dream, Build and Grow as three stops on one line, with the stop this page belongs to marked. The line from the
+ * current stop to the next fills as the rail scrolls through the viewport, in browsers that support scroll-driven animations; in the
+ * others, and for a reader who prefers reduced motion, the rail is simply drawn complete up to the current stop. It is a plain list of
+ * links, so it works with no CSS and no script.
+ */
+interface Props {
+  current: StageId;
+  /** Accessible name of the navigation landmark. */
+  label?: string;
+}
+
+const { current, label = 'Where this stage sits in the program' } = Astro.props;
+const currentIndex = STAGES.findIndex((stage) => stage.id === current);
+const stateOf = (index: number): 'done' | 'current' | 'next' => (index < currentIndex ? 'done' : index === currentIndex ? 'current' : 'next');
+---
+
+<nav class="stagerail" aria-label={label} data-pagefind-ignore>
+  <ol role="list">
+    {
+      STAGES.map((stage, index) => (
+        <li class="stagerail__stop" data-state={stateOf(index)}>
+          <a class="stagerail__link" href={href(stage.path)} aria-current={stage.id === current ? 'step' : undefined}>
+            <span class="stagerail__node" aria-hidden="true">{stage.name.charAt(0)}</span>
+            <span class="stagerail__text">
+              <span class="stagerail__name">{stage.name}</span>
+              <span class="stagerail__alt">{stage.altitude} altitude</span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .stagerail ol {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-3);
+    list-style: none;
+    padding: 0;
+  }
+
+  .stagerail__stop {
+    position: relative;
+  }
+
+  /* The node on top, its name under it, so the line to the next stop runs through the node row alone. */
+  .stagerail__link {
+    display: grid;
+    justify-items: start;
+    gap: var(--sp-2);
+    color: var(--color-text);
+    text-decoration: none;
+
+    &:hover .stagerail__name {
+      text-decoration: underline;
+    }
+  }
+
+  .stagerail__node {
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    aspect-ratio: var(--hex-ratio);
+    clip-path: var(--hex-clip);
+    background: var(--color-bg-soft);
+    color: var(--color-text);
+    font-family: var(--ff-display);
+    font-weight: 700;
+  }
+
+  /* The stops up to and including this page are filled; the ones ahead keep the pale cell. */
+  .stagerail__stop:is([data-state='done'], [data-state='current']) .stagerail__node {
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+  }
+
+  .stagerail__stop[data-state='current'] .stagerail__node {
+    background: var(--color-cta);
+  }
+
+  .stagerail__text {
+    display: grid;
+    font-family: var(--ff-display);
+    line-height: var(--lh-tight);
+  }
+
+  .stagerail__name {
+    font-size: var(--fs-lg);
+    font-weight: 700;
+  }
+
+  .stagerail__stop[data-state='current'] .stagerail__name {
+    color: var(--color-link);
+  }
+
+  .stagerail__alt {
+    display: none;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text-muted);
+
+    @media (min-width: 40rem) {
+      display: block;
+    }
+  }
+
+  /* The line from this stop to the next: a track, and over it a fill. Both run through the middle of the node row. */
+  .stagerail__stop:not(:last-child)::before,
+  .stagerail__stop:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    inset-block-start: calc(1.25rem / var(--hex-ratio) - 1.5px);
+    inset-inline: calc(2.5rem + var(--sp-2)) 0;
+    block-size: 3px;
+    background: var(--tint-line);
+    transform-origin: left;
+    pointer-events: none;
+  }
+
+  .stagerail__stop:not(:last-child)::after {
+    background: var(--color-accent);
+    transform: scaleX(0);
+  }
+
+  /* Behind the current stop the line is complete. At the current stop it is half drawn until scrolling fills it. */
+  .stagerail__stop[data-state='done']::after {
+    transform: none;
+  }
+
+  .stagerail__stop[data-state='current']::after {
+    transform: scaleX(0.5);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      /* Longhands on purpose: the build folds `animation` plus `animation-timeline` into one shorthand, and a browser whose
+         `animation` shorthand does not take a timeline yet drops the whole declaration. The longhands survive it. */
+      .stagerail__stop[data-state='current']::after {
+        animation-name: stagerail-fill;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view();
+        animation-range: entry 20% cover 45%;
+      }
+    }
+  }
+
+  @keyframes stagerail-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .stagerail__node {
+      forced-color-adjust: none;
+      background: ButtonFace;
+      color: ButtonText;
+      outline: 1px solid ButtonText;
+    }
+
+    .stagerail__stop:is([data-state='done'], [data-state='current']) .stagerail__node {
+      background: ButtonText;
+      color: ButtonFace;
+    }
+
+    .stagerail__stop:not(:last-child)::before,
+    .stagerail__stop:not(:last-child)::after {
+      forced-color-adjust: none;
+      background: CanvasText;
+    }
+  }
+</style>

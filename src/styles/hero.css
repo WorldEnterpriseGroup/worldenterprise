@@ -48,6 +48,17 @@
     align-items: center;
     gap: var(--sp-3);
     margin-block-start: var(--sp-3);
+
+    /*
+     * On a phone the actions stack, full width. Two buttons side by side leave a few pixels of slack at 390 px with the fallback
+     * font, so when the web font arrives a slightly wider label wraps the second button to a new row and moves the whole hero down
+     * (CLS 0.14 on /program/how-it-works/). A stacked column has the same number of rows with either font, so a font swap cannot
+     * change the line count. The primary action stays first, at the same position.
+     */
+    @media (max-width: 36rem) {
+      flex-direction: column;
+      align-items: stretch;
+    }
   }
 
   /* Media frame: the space is reserved by the ratio, so a late image or a font swap cannot move the page. */
@@ -92,6 +103,34 @@
     & .lead {
       font-family: var(--ff-serif);
       font-style: italic;
+    }
+  }
+
+  /*
+   * Statement variant of the compact hero (WP-45): the title is a claim. One step more type from tablet up (a phone keeps the h1 size
+   * so the primary action stays above the fold), a pale wash behind the copy and a hairline under it, no art.
+   */
+  .hero--statement {
+    background: linear-gradient(180deg, var(--tint-blue), var(--color-bg) 96%);
+    border-block-end: 1px solid var(--tint-line);
+
+    & .hero__copy > h1 {
+      letter-spacing: -0.02em;
+
+      @media (min-width: 52rem) {
+        font-size: calc((var(--fs-3xl) + var(--fs-4xl)) / 2);
+      }
+    }
+
+    /* A hex cell in front of the eyebrow marks the page as a statement of position. */
+    & .eyebrow::before {
+      content: '';
+      display: inline-block;
+      inline-size: 0.7em;
+      margin-inline-end: 0.6em;
+      aspect-ratio: var(--hex-ratio);
+      clip-path: var(--hex-clip);
+      background: var(--color-highlight);
     }
   }
 

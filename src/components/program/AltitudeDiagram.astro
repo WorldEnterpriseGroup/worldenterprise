@@ -117,5 +117,72 @@ const { labelledby } = Astro.props;
     .altitude__promise {
       color: var(--color-text);
     }
+
+    /* The stage rail: one line under the three steps, from Dream to Grow. It is drawn complete by default; where scroll-driven
+       animation is supported and motion is welcome it is drawn left to right as the diagram scrolls into view, and each step
+       rises into its notch a little after the one before. Vertical movement only, so the page never gains a scrollbar. */
+    @media (min-width: 52rem) {
+      .altitude ol::after {
+        content: '';
+        grid-column: 1 / -1;
+        block-size: 4px;
+        margin-block-start: var(--sp-2);
+        background: linear-gradient(90deg, var(--tint-line), var(--color-accent));
+        transform-origin: left;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: view()) {
+        .altitude__link {
+          animation-name: altitude-rise;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
+          animation-timeline: view();
+          animation-range: entry 0% entry 60%;
+        }
+
+        .altitude__step--rise-1 .altitude__link {
+          animation-range: entry 10% entry 70%;
+        }
+
+        .altitude__step--rise-2 .altitude__link {
+          animation-range: entry 20% entry 80%;
+        }
+
+        .altitude ol::after {
+          animation-name: altitude-rail;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
+          animation-timeline: view();
+          animation-range: entry 20% cover 40%;
+        }
+      }
+    }
+
+    @keyframes altitude-rise {
+      from {
+        translate: 0 var(--sp-5);
+      }
+    }
+
+    @keyframes altitude-rail {
+      from {
+        transform: scaleX(0);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .altitude__hex {
+        forced-color-adjust: none;
+        background: ButtonText;
+        color: ButtonFace;
+      }
+
+      .altitude ol::after {
+        forced-color-adjust: none;
+        background: CanvasText;
+      }
+    }
   }
 </style>

@@ -1,0 +1,1656 @@
+{
+  "ui/Accordion.astro": {
+    "props": {
+      "items": {
+        "optional": false,
+        "type": "readonly Item[]"
+      },
+      "name": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/Button.astro": {
+    "props": {
+      "href": {
+        "optional": true,
+        "type": "string"
+      },
+      "variant": {
+        "optional": true,
+        "type": "'primary' | 'secondary' | 'quiet'"
+      },
+      "type": {
+        "optional": true,
+        "type": "'button' | 'submit' | 'reset'"
+      },
+      "class": {
+        "optional": true,
+        "type": "string"
+      },
+      "disabled": {
+        "optional": true,
+        "type": "boolean"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/Callout.astro": {
+    "props": {
+      "tone": {
+        "optional": true,
+        "type": "'info' | 'notice'"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/Card.astro": {
+    "props": {
+      "href": {
+        "optional": true,
+        "type": "string"
+      },
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "headingLevel": {
+        "optional": true,
+        "type": "2 | 3 | 4"
+      },
+      "eyebrow": {
+        "optional": true,
+        "type": "string"
+      },
+      "image": {
+        "optional": true,
+        "type": "{ readonly src: string; readonly width: number; readonly height: number; readonly alt: string; readonly srcset?: string | undefined; readonly sizes?: string | undefined }"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/CellTrail.astro": {
+    "props": {
+      "cells": {
+        "optional": false,
+        "type": "readonly Cell[]"
+      },
+      "current": {
+        "optional": true,
+        "type": "number"
+      },
+      "label": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/Container.astro": {
+    "props": {
+      "width": {
+        "optional": true,
+        "type": "'default' | 'prose'"
+      },
+      "class": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/CtaBand.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "text": {
+        "optional": true,
+        "type": "string"
+      },
+      "cta": {
+        "optional": false,
+        "type": "{ readonly label: string; readonly href: string }"
+      },
+      "secondary": {
+        "optional": true,
+        "type": "{ readonly label: string; readonly href: string }"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/DataTable.astro": {
+    "props": {
+      "caption": {
+        "optional": false,
+        "type": "string"
+      },
+      "columns": {
+        "optional": false,
+        "type": "readonly string[]"
+      },
+      "rows": {
+        "optional": false,
+        "type": "readonly (readonly string[])[]"
+      },
+      "rowHeaders": {
+        "optional": true,
+        "type": "boolean"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/Eyebrow.astro": {
+    "props": {},
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/FactBand.astro": {
+    "props": {
+      "facts": {
+        "optional": false,
+        "type": "readonly Fact[]"
+      },
+      "label": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/Faq.astro": {
+    "props": {
+      "question": {
+        "optional": false,
+        "type": "string"
+      },
+      "name": {
+        "optional": true,
+        "type": "string"
+      },
+      "id": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/Figure.astro": {
+    "props": {
+      "src": {
+        "optional": false,
+        "type": "string"
+      },
+      "width": {
+        "optional": false,
+        "type": "number"
+      },
+      "height": {
+        "optional": false,
+        "type": "number"
+      },
+      "alt": {
+        "optional": false,
+        "type": "string"
+      },
+      "caption": {
+        "optional": true,
+        "type": "string"
+      },
+      "priority": {
+        "optional": true,
+        "type": "boolean"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/Grid.astro": {
+    "props": {
+      "min": {
+        "optional": true,
+        "type": "keyof typeof MIN_CLASS"
+      },
+      "as": {
+        "optional": true,
+        "type": "'div' | 'ul' | 'ol'"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/Hex.astro": {
+    "props": {
+      "tone": {
+        "optional": true,
+        "type": "'mist' | 'tint' | 'blue' | 'deep' | 'amber'"
+      },
+      "size": {
+        "optional": true,
+        "type": "'sm' | 'md' | 'lg'"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/HexAtlas.astro": {
+    "props": {
+      "cells": {
+        "optional": false,
+        "type": "readonly Cell[]"
+      },
+      "label": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/HexIcon.astro": {
+    "props": {
+      "line": {
+        "optional": false,
+        "type": "ServiceLine"
+      },
+      "size": {
+        "optional": true,
+        "type": "number"
+      },
+      "alt": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/Meter.astro": {
+    "props": {
+      "label": {
+        "optional": false,
+        "type": "string"
+      },
+      "value": {
+        "optional": false,
+        "type": "number"
+      },
+      "max": {
+        "optional": true,
+        "type": "number"
+      },
+      "text": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/Prose.astro": {
+    "props": {},
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/PullQuote.astro": {
+    "props": {
+      "cite": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/ReadingProgress.astro": {
+    "props": {},
+    "extends": [],
+    "slots": []
+  },
+  "ui/Rule.astro": {
+    "props": {},
+    "extends": [],
+    "slots": []
+  },
+  "ui/Section.astro": {
+    "props": {
+      "tone": {
+        "optional": true,
+        "type": "'plain' | 'soft'"
+      },
+      "tight": {
+        "optional": true,
+        "type": "boolean"
+      },
+      "defer": {
+        "optional": true,
+        "type": "boolean"
+      },
+      "id": {
+        "optional": true,
+        "type": "string"
+      },
+      "labelledby": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/Stack.astro": {
+    "props": {
+      "gap": {
+        "optional": true,
+        "type": "'tight' | 'loose'"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/Steps.astro": {
+    "props": {
+      "steps": {
+        "optional": false,
+        "type": "readonly Step[]"
+      },
+      "headingLevel": {
+        "optional": true,
+        "type": "2 | 3 | 4"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/Tabs.astro": {
+    "props": {
+      "tabs": {
+        "optional": false,
+        "type": "readonly Tab[]"
+      },
+      "label": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "ui/Tag.astro": {
+    "props": {
+      "tone": {
+        "optional": true,
+        "type": "'neutral' | 'accent' | 'notice'"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "ui/Toc.astro": {
+    "props": {
+      "headings": {
+        "optional": false,
+        "type": "readonly Heading[]"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "blocks/ContextualNext.astro": {
+    "props": {
+      "items": {
+        "optional": false,
+        "type": "readonly NextItem[]"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "blocks/EvidenceLedger.astro": {
+    "props": {
+      "rows": {
+        "optional": false,
+        "type": "readonly Row[]"
+      },
+      "caption": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "blocks/IntroductionsDisclaimer.astro": {
+    "props": {},
+    "extends": [],
+    "slots": []
+  },
+  "blocks/InvestorIntroductionsOffer.astro": {
+    "props": {
+      "variant": {
+        "optional": true,
+        "type": "'full' | 'brief'"
+      },
+      "headingLevel": {
+        "optional": true,
+        "type": "2 | 3"
+      },
+      "idPrefix": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "blocks/LimitsBlock.astro": {
+    "props": {
+      "items": {
+        "optional": false,
+        "type": "readonly string[]"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      },
+      "headingLevel": {
+        "optional": true,
+        "type": "2 | 3"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "blocks/MethodologyBox.astro": {
+    "props": {
+      "methodology": {
+        "optional": false,
+        "type": "string"
+      },
+      "limitations": {
+        "optional": false,
+        "type": "string"
+      },
+      "version": {
+        "optional": false,
+        "type": "string"
+      },
+      "updated": {
+        "optional": true,
+        "type": "Date | undefined"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "blocks/NoFundingDisclaimer.astro": {
+    "props": {},
+    "extends": [],
+    "slots": []
+  },
+  "blocks/RelatedRail.astro": {
+    "props": {
+      "items": {
+        "optional": false,
+        "type": "readonly RelatedItem[]"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "blocks/SourcesList.astro": {
+    "props": {
+      "sources": {
+        "optional": false,
+        "type": "readonly Source[]"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      },
+      "headingLevel": {
+        "optional": true,
+        "type": "2 | 3"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "program/AltitudeDiagram.astro": {
+    "props": {
+      "labelledby": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "program/ArtifactList.astro": {
+    "props": {
+      "items": {
+        "optional": false,
+        "type": "readonly ArtifactLink[]"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "program/ExitEvidence.astro": {
+    "props": {
+      "items": {
+        "optional": false,
+        "type": "readonly string[]"
+      },
+      "labelledby": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "program/SeatDiagram.astro": {
+    "props": {
+      "labelledby": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "program/StageBody.astro": {
+    "props": {
+      "stage": {
+        "optional": false,
+        "type": "Stage"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "program/StageExplorer.astro": {
+    "props": {
+      "headingLevel": {
+        "optional": true,
+        "type": "3 | 4"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "diagrams/AltitudeDiagram.astro": {
+    "props": {
+      "stages": {
+        "optional": true,
+        "type": "readonly Stage[]"
+      },
+      "label": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "diagrams/ConsolePanel.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "note": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "diagrams/HexAtlasArt.astro": {
+    "props": {},
+    "extends": [],
+    "slots": []
+  },
+  "diagrams/RiskRegisterPanel.astro": {
+    "props": {
+      "rows": {
+        "optional": true,
+        "type": "readonly Row[]"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "diagrams/RoadmapPanel.astro": {
+    "props": {
+      "lanes": {
+        "optional": true,
+        "type": "readonly Lane[]"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "diagrams/SeatDiagram.astro": {
+    "props": {
+      "seats": {
+        "optional": false,
+        "type": "readonly string[]"
+      },
+      "company": {
+        "optional": true,
+        "type": "string"
+      },
+      "steering": {
+        "optional": true,
+        "type": "string"
+      },
+      "label": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "diagrams/SeatRosterPanel.astro": {
+    "props": {
+      "seats": {
+        "optional": true,
+        "type": "readonly Seat[]"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "diagrams/ServiceLinesStrip.astro": {
+    "props": {
+      "items": {
+        "optional": false,
+        "type": "readonly Item[]"
+      },
+      "label": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "diagrams/WeeklyReviewPanel.astro": {
+    "props": {
+      "columns": {
+        "optional": true,
+        "type": "readonly Column[]"
+      },
+      "title": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "hero/HeroActions.astro": {
+    "props": {
+      "primary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "secondary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "tone": {
+        "optional": true,
+        "type": "'default' | 'inverse'"
+      },
+      "extra": {
+        "optional": true,
+        "type": "boolean"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "hero/HeroArt.astro": {
+    "props": {},
+    "extends": [
+      "HeroArtProps"
+    ],
+    "slots": []
+  },
+  "hero/HeroArticle.astro": {
+    "props": {
+      "as": {
+        "optional": true,
+        "type": "'h1' | 'h2'"
+      },
+      "id": {
+        "optional": true,
+        "type": "string"
+      },
+      "crumbs": {
+        "optional": true,
+        "type": "readonly Crumb[]"
+      },
+      "eyebrow": {
+        "optional": true,
+        "type": "string"
+      },
+      "eyebrowHref": {
+        "optional": true,
+        "type": "string | undefined"
+      },
+      "eyebrowLabel": {
+        "optional": true,
+        "type": "string | undefined"
+      },
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "lead": {
+        "optional": true,
+        "type": "string"
+      },
+      "byline": {
+        "optional": true,
+        "type": "string"
+      },
+      "published": {
+        "optional": true,
+        "type": "Date"
+      },
+      "updated": {
+        "optional": true,
+        "type": "Date"
+      },
+      "measure": {
+        "optional": true,
+        "type": "HeroMeasure"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "meta"
+    ]
+  },
+  "hero/HeroAtlas.astro": {
+    "props": {
+      "as": {
+        "optional": true,
+        "type": "'h1' | 'h2'"
+      },
+      "eyebrow": {
+        "optional": true,
+        "type": "string"
+      },
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "lead": {
+        "optional": false,
+        "type": "string"
+      },
+      "primary": {
+        "optional": true,
+        "type": "Cta"
+      },
+      "secondary": {
+        "optional": true,
+        "type": "Cta"
+      },
+      "photo": {
+        "optional": true,
+        "type": "SlotId"
+      },
+      "strip": {
+        "optional": true,
+        "type": "boolean"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "strip"
+    ]
+  },
+  "hero/HeroCompact.astro": {
+    "props": {
+      "as": {
+        "optional": true,
+        "type": "'h1' | 'h2'"
+      },
+      "id": {
+        "optional": true,
+        "type": "string"
+      },
+      "crumbs": {
+        "optional": true,
+        "type": "readonly Crumb[]"
+      },
+      "eyebrow": {
+        "optional": true,
+        "type": "string"
+      },
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "lead": {
+        "optional": true,
+        "type": "string"
+      },
+      "primary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "secondary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "measure": {
+        "optional": true,
+        "type": "HeroMeasure"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "actions",
+      "default"
+    ]
+  },
+  "hero/HeroConsole.astro": {
+    "props": {
+      "as": {
+        "optional": true,
+        "type": "'h1' | 'h2'"
+      },
+      "id": {
+        "optional": true,
+        "type": "string"
+      },
+      "crumbs": {
+        "optional": true,
+        "type": "readonly Crumb[]"
+      },
+      "eyebrow": {
+        "optional": true,
+        "type": "string"
+      },
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "lead": {
+        "optional": true,
+        "type": "string"
+      },
+      "primary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "secondary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "measure": {
+        "optional": true,
+        "type": "HeroMeasure"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "hero/HeroEditorial.astro": {
+    "props": {
+      "as": {
+        "optional": true,
+        "type": "'h1' | 'h2'"
+      },
+      "id": {
+        "optional": true,
+        "type": "string"
+      },
+      "crumbs": {
+        "optional": true,
+        "type": "readonly Crumb[]"
+      },
+      "eyebrow": {
+        "optional": true,
+        "type": "string"
+      },
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "lead": {
+        "optional": true,
+        "type": "string"
+      },
+      "primary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "secondary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "photo": {
+        "optional": true,
+        "type": "SlotId | undefined"
+      },
+      "inset": {
+        "optional": true,
+        "type": "SlotId | undefined"
+      },
+      "art": {
+        "optional": true,
+        "type": "HeroArtProps | undefined"
+      },
+      "measure": {
+        "optional": true,
+        "type": "HeroMeasure"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "actions",
+      "default",
+      "media"
+    ]
+  },
+  "hero/PageHero.astro": {
+    "props": {
+      "crumbs": {
+        "optional": true,
+        "type": "readonly Crumb[]"
+      },
+      "eyebrow": {
+        "optional": true,
+        "type": "string | undefined"
+      },
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "lead": {
+        "optional": true,
+        "type": "string | undefined"
+      },
+      "primary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "secondary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "photo": {
+        "optional": true,
+        "type": "SlotId | undefined"
+      },
+      "art": {
+        "optional": true,
+        "type": "HeroArtProps | undefined"
+      },
+      "measure": {
+        "optional": true,
+        "type": "HeroMeasure | undefined"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "actions",
+      "default"
+    ]
+  },
+  "motion/Reveal.astro": {
+    "props": {
+      "as": {
+        "optional": true,
+        "type": "'div' | 'section' | 'ul' | 'ol'"
+      },
+      "stagger": {
+        "optional": true,
+        "type": "boolean"
+      },
+      "class": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "layouts/ArticleHub.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "introduction": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "after",
+      "default"
+    ]
+  },
+  "layouts/ArticleLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "topic": {
+        "optional": false,
+        "type": "'dream' | 'build' | 'grow' | 'fundable'"
+      },
+      "publishedDate": {
+        "optional": false,
+        "type": "Date"
+      },
+      "updatedDate": {
+        "optional": true,
+        "type": "Date | undefined"
+      },
+      "readingMinutes": {
+        "optional": true,
+        "type": "number"
+      },
+      "headings": {
+        "optional": true,
+        "type": "readonly Heading[]"
+      },
+      "sources": {
+        "optional": true,
+        "type": "readonly Source[]"
+      },
+      "related": {
+        "optional": true,
+        "type": "readonly { readonly kind: string; readonly title: string; readonly href: string }[]"
+      }
+    },
+    "extends": [
+      "Omit<PageMeta, 'updated'>"
+    ],
+    "slots": [
+      "default"
+    ]
+  },
+  "layouts/BaseLayout.astro": {
+    "props": {
+      "title": {
+        "optional": true,
+        "type": "string"
+      },
+      "seoTitle": {
+        "optional": true,
+        "type": "string | undefined"
+      },
+      "description": {
+        "optional": false,
+        "type": "string"
+      },
+      "path": {
+        "optional": false,
+        "type": "string"
+      },
+      "ogSlot": {
+        "optional": true,
+        "type": "SlotId"
+      },
+      "ogType": {
+        "optional": true,
+        "type": "'website' | 'article'"
+      },
+      "draft": {
+        "optional": true,
+        "type": "boolean"
+      },
+      "updated": {
+        "optional": true,
+        "type": "Date"
+      },
+      "published": {
+        "optional": true,
+        "type": "Date"
+      },
+      "schemaType": {
+        "optional": true,
+        "type": "PageSchemaType"
+      },
+      "crumbs": {
+        "optional": true,
+        "type": "readonly Crumb[]"
+      },
+      "jsonLd": {
+        "optional": true,
+        "type": "readonly JsonLdNode[]"
+      },
+      "preloadImage": {
+        "optional": true,
+        "type": "PreloadImage"
+      },
+      "mainClass": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": [
+      "default"
+    ]
+  },
+  "layouts/BriefLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "subtitle": {
+        "optional": false,
+        "type": "string"
+      },
+      "publishedDate": {
+        "optional": false,
+        "type": "Date"
+      },
+      "updatedDate": {
+        "optional": true,
+        "type": "Date | undefined"
+      },
+      "version": {
+        "optional": false,
+        "type": "string"
+      },
+      "methodology": {
+        "optional": false,
+        "type": "string"
+      },
+      "limitations": {
+        "optional": false,
+        "type": "string"
+      },
+      "sources": {
+        "optional": false,
+        "type": "readonly Source[]"
+      }
+    },
+    "extends": [
+      "Omit<PageMeta, 'updated'>"
+    ],
+    "slots": [
+      "default"
+    ]
+  },
+  "layouts/FormLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "aside",
+      "default"
+    ]
+  },
+  "layouts/GuideLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "disclaimers": {
+        "optional": true,
+        "type": "readonly ('no-funding' | 'not-legal-advice' | 'generic-definition')[]"
+      },
+      "sources": {
+        "optional": true,
+        "type": "readonly Source[]"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "after",
+      "default"
+    ]
+  },
+  "layouts/HomeLayout.astro": {
+    "props": {
+      "path": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [
+      "Omit<PageMeta, 'path' | 'title'>"
+    ],
+    "slots": [
+      "after",
+      "default",
+      "hero"
+    ]
+  },
+  "layouts/HubLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "subtree": {
+        "optional": true,
+        "type": "readonly HubChild[]"
+      },
+      "toc": {
+        "optional": true,
+        "type": "readonly Pick<Heading, 'slug' | 'text'>[]"
+      },
+      "hero": {
+        "optional": true,
+        "type": "'editorial' | 'console'"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "after",
+      "default",
+      "panel"
+    ]
+  },
+  "layouts/LegalLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "updated": {
+        "optional": false,
+        "type": "Date"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "default"
+    ]
+  },
+  "layouts/MarketingLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "after",
+      "default"
+    ]
+  },
+  "layouts/PlaybookLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "stage": {
+        "optional": true,
+        "type": "'dream' | 'build' | 'grow'"
+      },
+      "steps": {
+        "optional": false,
+        "type": "readonly Step[]"
+      },
+      "artifacts": {
+        "optional": true,
+        "type": "readonly { readonly title: string; readonly href: string; readonly description?: string }[]"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "after",
+      "default"
+    ]
+  },
+  "layouts/ReferenceLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "wide": {
+        "optional": true,
+        "type": "boolean"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "default"
+    ]
+  },
+  "layouts/ServiceLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "heading": {
+        "optional": true,
+        "type": "string"
+      },
+      "line": {
+        "optional": false,
+        "type": "ServiceLine"
+      },
+      "covers": {
+        "optional": true,
+        "type": "readonly string[]"
+      },
+      "artifacts": {
+        "optional": true,
+        "type": "readonly { readonly name: string; readonly purpose: string }[]"
+      },
+      "doesNotCover": {
+        "optional": false,
+        "type": "readonly string[]"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "after",
+      "aside",
+      "default"
+    ]
+  },
+  "layouts/StageLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "stage": {
+        "optional": true,
+        "type": "keyof typeof ALTITUDES"
+      },
+      "next": {
+        "optional": true,
+        "type": "readonly NextItem[]"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "after",
+      "default"
+    ]
+  },
+  "layouts/TemplateLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "markdownHref": {
+        "optional": true,
+        "type": "string"
+      },
+      "instructions": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "actions",
+      "default"
+    ]
+  },
+  "layouts/ToolLayout.astro": {
+    "props": {
+      "title": {
+        "optional": false,
+        "type": "string"
+      },
+      "noscript": {
+        "optional": true,
+        "type": "string"
+      }
+    },
+    "extends": [
+      "HeaderProps",
+      "PageMeta"
+    ],
+    "slots": [
+      "after",
+      "default"
+    ]
+  },
+  "layouts/types.ts#PageMeta": {
+    "props": {
+      "title": {
+        "optional": true,
+        "type": "string"
+      },
+      "seoTitle": {
+        "optional": true,
+        "type": "string | undefined"
+      },
+      "description": {
+        "optional": false,
+        "type": "string"
+      },
+      "path": {
+        "optional": false,
+        "type": "string"
+      },
+      "ogSlot": {
+        "optional": true,
+        "type": "SlotId"
+      },
+      "draft": {
+        "optional": true,
+        "type": "boolean"
+      },
+      "updated": {
+        "optional": true,
+        "type": "Date"
+      },
+      "schemaType": {
+        "optional": true,
+        "type": "PageSchemaType"
+      },
+      "crumbs": {
+        "optional": true,
+        "type": "readonly Crumb[]"
+      },
+      "jsonLd": {
+        "optional": true,
+        "type": "readonly JsonLdNode[]"
+      },
+      "preloadImage": {
+        "optional": true,
+        "type": "PreloadImage"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "layouts/types.ts#HeroProps": {
+    "props": {
+      "primary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "secondary": {
+        "optional": true,
+        "type": "HeroCta | undefined"
+      },
+      "photo": {
+        "optional": true,
+        "type": "SlotId | undefined"
+      },
+      "art": {
+        "optional": true,
+        "type": "HeroArtProps | undefined"
+      },
+      "measure": {
+        "optional": true,
+        "type": "HeroMeasure | undefined"
+      }
+    },
+    "extends": [],
+    "slots": []
+  },
+  "layouts/types.ts#HeaderProps": {
+    "props": {
+      "eyebrow": {
+        "optional": true,
+        "type": "string | undefined"
+      },
+      "lead": {
+        "optional": true,
+        "type": "string | undefined"
+      }
+    },
+    "extends": [
+      "HeroProps"
+    ],
+    "slots": []
+  },
+  "layouts/types.ts#Heading": {
+    "props": {
+      "depth": {
+        "optional": false,
+        "type": "number"
+      },
+      "slug": {
+        "optional": false,
+        "type": "string"
+      },
+      "text": {
+        "optional": false,
+        "type": "string"
+      }
+    },
+    "extends": [],
+    "slots": []
+  }
+}
