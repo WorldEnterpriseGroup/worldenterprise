@@ -15,7 +15,7 @@ type Rule = 'R' | 'O' | '-';
 const MATRIX: Record<Kind, Record<string, Rule>> = {
   apply: { name: 'R', email: 'R', company: 'O', stage: 'R', seats: 'O', topic: '-', message: 'O', briefId: '-', companyUrl: '-', partnerCategory: '-', offer: '-', investorKind: '-', focus: '-', consent: 'R', requestId: 'R' },
   contact: { name: 'R', email: 'R', company: 'O', stage: '-', seats: '-', topic: 'R', message: 'R', briefId: '-', companyUrl: '-', partnerCategory: '-', offer: '-', investorKind: '-', focus: '-', consent: 'R', requestId: 'R' },
-  newsletter: { name: '-', email: 'R', company: '-', stage: '-', seats: '-', topic: '-', message: '-', briefId: '-', companyUrl: '-', partnerCategory: '-', offer: '-', investorKind: '-', focus: '-', consent: 'R', requestId: 'O' },
+  newsletter: { name: '-', email: 'R', company: '-', stage: '-', seats: '-', topic: '-', message: '-', briefId: '-', companyUrl: '-', partnerCategory: '-', offer: '-', investorKind: '-', focus: '-', consent: 'R', requestId: '-' },
   'brief-request': { name: 'R', email: 'R', company: 'O', stage: 'O', seats: '-', topic: '-', message: '-', briefId: 'R', companyUrl: '-', partnerCategory: '-', offer: '-', investorKind: '-', focus: '-', consent: 'R', requestId: 'R' },
   'investor-interest': { name: 'R', email: 'R', company: 'O', stage: '-', seats: '-', topic: '-', message: 'O', briefId: '-', companyUrl: 'O', partnerCategory: '-', offer: '-', investorKind: 'O', focus: 'O', consent: 'R', requestId: 'R' },
   'partner-enquiry': { name: 'R', email: 'R', company: 'R', stage: '-', seats: '-', topic: '-', message: 'O', briefId: '-', companyUrl: 'R', partnerCategory: 'R', offer: 'R', investorKind: '-', focus: '-', consent: 'R', requestId: 'R' },
@@ -23,9 +23,9 @@ const MATRIX: Record<Kind, Record<string, Rule>> = {
 
 const AUDIENCES: Record<Kind, readonly string[]> = {
   apply: ['startup'],
-  contact: ['startup', 'investor', 'partner'],
+  contact: ['startup', 'investor', 'partner', 'corporate'],
   newsletter: [''],
-  'brief-request': ['startup', 'investor', 'partner'],
+  'brief-request': ['startup', 'investor', 'partner', 'corporate'],
   'investor-interest': ['investor'],
   'partner-enquiry': ['partner'],
 };
@@ -115,7 +115,7 @@ describe(`forms contract (${source})`, () => {
       }
 
       test('a wrong audience is 422 on audience, and every allowed audience passes', () => {
-        for (const audience of ['startup', 'investor', 'partner', '', 'everyone']) {
+        for (const audience of ['startup', 'investor', 'partner', 'corporate', '', 'everyone']) {
           const result = validate(contract, kind, payload(kind, { audience }), 'json');
           if (AUDIENCES[kind].includes(audience)) {
             assert.equal(result.ok, true, `${kind}/${audience}`);

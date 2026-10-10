@@ -14,7 +14,7 @@ export interface Clock {
 
 export interface RateStore {
   /** Consumes one unit of `key` in its window under a lease, and says whether the request may proceed. */
-  consume(key: string, now: number, limit?: number): Promise<RateDecision>;
+  consume(key: string, now: number): Promise<RateDecision>;
 }
 
 export interface LockPort {

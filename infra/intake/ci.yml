@@ -49,21 +49,11 @@ intake:test:
     - cd infra/intake
     - npm ci --prefer-offline --no-audit --no-fund
     - npm run typecheck
-    # Once WP-60's schema is on the branch the tests must read it, not the generated fixture.
-    - |
-      if [ -f ../../docs/forms-contract.schema.json ]; then
-        export REQUIRE_REAL_CONTRACT=1
-      fi
-      npm test
+    - npm test
     - node render/render.mjs --self-test --no-pdf
     - node dataverse/apply.ts --validate
-    - |
-      if [ -f ../../docs/forms-contract.schema.json ]; then
-        npm run build
-        ls -l dist/function.zip
-      else
-        echo "docs/forms-contract.schema.json is not on this branch yet; the package build is skipped"
-      fi
+    - npm run build
+    - ls -l dist/function.zip
   artifacts:
     when: always
     expire_in: 1 week
@@ -131,7 +121,7 @@ intake:deploy:
   resource_group: intake-demo
   script:
     - export PATH="/opt/az/bin:${PATH}"
-    - test -f infra/intake/dist/function.zip || { echo "infra/intake/dist/function.zip is missing, so the schema was not on the branch when intake:test ran"; exit 1; }
+    - test -f infra/intake/dist/function.zip || { echo "infra/intake/dist/function.zip is missing, so run intake:test first"; exit 1; }
     - cd infra/intake
     # Every operator input becomes a deployment parameter by name. Optional ones are passed only when set.
     - |

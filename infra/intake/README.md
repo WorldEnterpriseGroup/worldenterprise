@@ -45,7 +45,7 @@ npm run typecheck
 npm test
 ```
 
-They cover the contract matrix against the committed schema, the honeypot, idempotency, both rate limits, Origin and body-cap refusal, form-encoded redirects, a failing mailer (202, `delivery-failed`) and a failing Dataverse write (503, nothing kept), the unsubscribe flow and suppression, `NURTURE_ENABLED=false`, a capture of every log line asserting no body, email, token or SAS appears, the Bicep compile (the pinned `bicep` binary; `REQUIRE_BICEP=1` makes a missing binary an error), the what-if gate on a deleting fixture, and a scan that finds no secret value in the repository. Until `docs/forms-contract.schema.json` exists on a branch, the tests read a fixture copy of the contract and say so; with `REQUIRE_REAL_CONTRACT=1` (which `intake:test` sets once the file exists) a missing file is a failure.
+They cover the contract matrix against the committed schema, the honeypot, idempotency, both rate limits, Origin and body-cap refusal, form-encoded redirects, a failing mailer (202, `delivery-failed`) and a failing Dataverse write (503, nothing kept), the unsubscribe flow and suppression, `NURTURE_ENABLED=false`, a capture of every log line asserting no body, email, token or SAS appears, the Bicep compile (the pinned `bicep` binary; `REQUIRE_BICEP=1` makes a missing binary an error), the what-if gate on a deleting fixture, and a scan that finds no secret value in the repository. The tests read the committed `docs/forms-contract.schema.json`, the same file the Function packages, so a change the server cannot read fails them.
 
 `npm run build` compiles and packages `dist/function.zip`. CI does it; do not run it on a workstation.
 

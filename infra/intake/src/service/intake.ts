@@ -159,6 +159,10 @@ export async function handleIntake(deps: Deps, req: HttpRequestLike, impliedKind
 
   let entry: BriefEntry | null = null;
   if (kind === 'brief-request') {
+    // The contract names every brief and who it is offered to; a brief it does not name, or one offered to another audience, is refused before any lookup.
+    const offeredTo = deps.contract.briefAudiences[submission.briefId];
+    if (offeredTo === undefined) return done(fieldError(422, 'briefId', 'Choose a brief that WE offers.'));
+    if (!offeredTo.includes(submission.audience)) return done(fieldError(422, 'audience', 'That brief is not offered to the audience you chose.'));
     try {
       entry = await findBrief(deps, submission.briefId);
     } catch (error) {
@@ -172,7 +176,7 @@ export async function handleIntake(deps: Deps, req: HttpRequestLike, impliedKind
   let retryAfter = 0;
   try {
     for (const key of rateKeys(kind, keyHash('client', clientAddress((name) => req.header(name))), submission.email === '' ? null : emailHashOf(submission.email))) {
-      const decision = await deps.rate.consume(key, now, deps.contract.kinds[kind].rateLimit.perHour);
+      const decision = await deps.rate.consume(key, now);
       if (!decision.allowed) retryAfter = Math.max(retryAfter, decision.retryAfterSeconds);
     }
   } catch (error) {

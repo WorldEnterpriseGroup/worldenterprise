@@ -43,12 +43,10 @@ export class FakeRate implements RateStore {
   readonly records = new Map<string, RateRecord>();
   failWith: Error | null = null;
   consumeCalls = 0;
-  readonly limits: number[] = [];
-  async consume(key: string, now: number, limit?: number): Promise<RateDecision> {
+  async consume(key: string, now: number): Promise<RateDecision> {
     this.consumeCalls += 1;
-    if (limit !== undefined) this.limits.push(limit);
     if (this.failWith !== null) throw this.failWith;
-    const decision = consume(this.records.get(key) ?? null, now, limit);
+    const decision = consume(this.records.get(key) ?? null, now);
     this.records.set(key, decision.record);
     return decision;
   }

@@ -3,32 +3,24 @@
  * browser by tests/unit/wp-60/forms-schema.test.ts) is the single source: this module is the only place that knows its JSON
  * shape, and it turns that shape into a typed rule table. Everything else (validation, thanks paths, tests) reads the table.
  *
- * Shape consumed:
- *   { "version": 2,
- *     "redirectAllowlist": ["/apply/thanks/"],            (optional, site-relative paths)
- *     "kinds": { "<kind>": { "thanks": "/apply/thanks/" | null,
- *                            "rateLimit": { "perHour": 5 },   (optional, defaults to 5)
- *                            "audience": ["startup", ...] | [""],
- *                            "fields": { "<field>": { "rule": "R" | "O" | "-", "type": "string" | "boolean" | "email" | "url" |
- *                                                     "uuid" | "enum" | "slug" | "iso", "max": 120, "enum": ["..."] } } } } }
+ * Shape consumed (version 2):
+ *   forms                the kinds, exactly the six this service knows
+ *   presence.matrix      per kind, per field: "R" required, "O" optional, "-" must be empty
+ *   enums                allowed values for stage, topic, partnerCategory, investorKind and audience
+ *   limits               maximum length per text field
+ *   audience             per kind the allowed audiences, and `briefs` per brief the audiences it is offered to
+ *   thanks               per kind the site-relative thanks path (a kind without one has no entry)
  *
- * A file that does not fit is a deployment error, not a request error: compileContract throws a ContractError naming the
- * path, and the Function refuses to start rather than guess.
+ * The file does not carry a field type, so the type follows from the field name (see FIELD_TYPES). A file that does not fit is a
+ * deployment error, not a request error: compileContract throws a ContractError naming the path, and the Function refuses to
+ * start rather than guess.
  */
-
-import { RATE_LIMIT } from './rate.ts';
 
 export const KINDS = ['apply', 'contact', 'newsletter', 'brief-request', 'investor-interest', 'partner-enquiry'] as const;
 export type Kind = (typeof KINDS)[number];
 
-export const AUDIENCES = ['startup', 'investor', 'partner'] as const;
-export type Audience = (typeof AUDIENCES)[number];
-
 export type Rule = 'R' | 'O' | '-';
 export type FieldType = 'string' | 'boolean' | 'email' | 'url' | 'uuid' | 'enum' | 'slug' | 'iso';
-
-const RULES: readonly string[] = ['R', 'O', '-'];
-const FIELD_TYPES: readonly string[] = ['string', 'boolean', 'email', 'url', 'uuid', 'enum', 'slug', 'iso'];
 
 export interface FieldRule {
   readonly rule: Rule;
@@ -42,16 +34,30 @@ export interface KindRule {
   /** Allowed audience values. `''` means the kind carries no audience. */
   readonly audience: readonly string[];
   readonly fields: Readonly<Record<string, FieldRule>>;
-  /** Submissions allowed per address and per email in one hour. Defaults to the service-wide limit when the contract omits it. */
-  readonly rateLimit: { readonly perHour: number };
 }
 
 export interface Contract {
   readonly version: number;
   readonly kinds: Readonly<Record<Kind, KindRule>>;
-  /** Site-relative paths a form-encoded `redirect` field may name, beyond each kind's own thanks path. */
-  readonly redirectAllowlist: readonly string[];
+  /** For each brief the contract names, the audiences it is offered to. A brief request must come from one of them. */
+  readonly briefAudiences: Readonly<Record<string, readonly string[]>>;
 }
+
+/** The matrix columns the service understands. A column outside this list, or a missing one, is a deployment error. */
+const MATRIX_FIELDS = [
+  'name', 'email', 'company', 'stage', 'seats', 'topic', 'message', 'briefId', 'companyUrl', 'partnerCategory', 'offer', 'investorKind', 'focus',
+  'audience', 'consent', 'requestId',
+] as const;
+
+/** The type of every field that is not plain text. A field with an entry in `enums` is an enum. */
+const FIELD_TYPES: Readonly<Record<string, FieldType>> = {
+  email: 'email', companyUrl: 'url', requestId: 'uuid', briefId: 'slug', consent: 'boolean',
+};
+
+/** Limits for the fields the contract's `limits` table leaves out (identifiers and flags, not free text). */
+const DEFAULT_LIMITS: Readonly<Record<string, number>> = { requestId: 36, briefId: 64, consent: 5 };
+
+const ENUM_LIMIT = 64;
 
 export class ContractError extends Error {
   readonly path: string;
@@ -74,67 +80,112 @@ function stringList(value: unknown, path: string): readonly string[] {
   });
 }
 
-function compileField(raw: unknown, path: string): FieldRule {
-  if (!isRecord(raw)) throw new ContractError(path, 'expected an object');
-  const rule = raw['rule'];
-  if (typeof rule !== 'string' || !RULES.includes(rule)) throw new ContractError(`${path}.rule`, 'expected "R", "O" or "-"');
-  const type = raw['type'];
-  if (typeof type !== 'string' || !FIELD_TYPES.includes(type)) throw new ContractError(`${path}.type`, `expected one of ${FIELD_TYPES.join(', ')}`);
-  const max = raw['max'];
-  if (max !== undefined && (typeof max !== 'number' || !Number.isInteger(max) || max < 1)) throw new ContractError(`${path}.max`, 'expected a positive integer');
-  const values = raw['enum'] === undefined ? [] : stringList(raw['enum'], `${path}.enum`);
-  if (type === 'enum' && values.length === 0) throw new ContractError(`${path}.enum`, 'an enum field needs at least one value');
-  return { rule: rule as Rule, type: type as FieldType, max: typeof max === 'number' ? max : 4000, enum: values };
+function record(value: unknown, path: string): Record<string, unknown> {
+  if (!isRecord(value)) throw new ContractError(path, 'expected an object');
+  return value;
 }
 
-function compileKind(raw: unknown, path: string): KindRule {
-  if (!isRecord(raw)) throw new ContractError(path, 'expected an object');
-  const thanks = raw['thanks'];
-  if (thanks !== null && (typeof thanks !== 'string' || !thanks.startsWith('/') || thanks.startsWith('//'))) {
-    throw new ContractError(`${path}.thanks`, 'expected a site-relative path or null');
+function sitePath(value: unknown, path: string): string {
+  if (typeof value !== 'string' || !value.startsWith('/') || value.startsWith('//')) throw new ContractError(path, 'expected a site-relative path');
+  return value;
+}
+
+function compileEnums(raw: unknown): Readonly<Record<string, readonly string[]>> {
+  const enums: Record<string, readonly string[]> = {};
+  for (const [name, values] of Object.entries(record(raw, '$.enums'))) {
+    const list = stringList(values, `$.enums.${name}`);
+    if (list.length === 0) throw new ContractError(`$.enums.${name}`, 'an enum needs at least one value');
+    enums[name] = list;
   }
-  const audience = stringList(raw['audience'], `${path}.audience`);
-  if (audience.length === 0) throw new ContractError(`${path}.audience`, 'expected at least one value (use [""] for none)');
-  const rawFields = raw['fields'];
-  if (!isRecord(rawFields)) throw new ContractError(`${path}.fields`, 'expected an object');
+  return enums;
+}
+
+function compileLimits(raw: unknown): Readonly<Record<string, number>> {
+  const limits: Record<string, number> = {};
+  for (const [name, value] of Object.entries(record(raw, '$.limits'))) {
+    if (typeof value !== 'number' || !Number.isInteger(value) || value < 1) throw new ContractError(`$.limits.${name}`, 'expected a positive integer');
+    limits[name] = value;
+  }
+  return limits;
+}
+
+function compileFields(
+  matrix: Record<string, unknown>, kind: Kind, enums: Readonly<Record<string, readonly string[]>>, limits: Readonly<Record<string, number>>,
+): Record<string, FieldRule> {
+  const path = `$.presence.matrix.${kind}`;
+  const row = record(matrix[kind], path);
+  for (const name of Object.keys(row)) {
+    if (!(MATRIX_FIELDS as readonly string[]).includes(name)) throw new ContractError(`${path}.${name}`, 'unknown field');
+  }
   const fields: Record<string, FieldRule> = {};
-  for (const [name, field] of Object.entries(rawFields)) fields[name] = compileField(field, `${path}.fields.${name}`);
-  const rateLimit = raw['rateLimit'];
-  let perHour = RATE_LIMIT;
-  if (rateLimit !== undefined) {
-    if (!isRecord(rateLimit)) throw new ContractError(`${path}.rateLimit`, 'expected an object');
-    const value = rateLimit['perHour'];
-    if (typeof value !== 'number' || !Number.isInteger(value) || value < 1) throw new ContractError(`${path}.rateLimit.perHour`, 'expected a positive integer');
-    perHour = value;
+  for (const name of MATRIX_FIELDS) {
+    const rule = row[name];
+    if (rule !== 'R' && rule !== 'O' && rule !== '-') throw new ContractError(`${path}.${name}`, 'expected "R", "O" or "-"');
+    // The audience column is checked against the kind's audience list, not as a text field.
+    if (name === 'audience') continue;
+    const values = enums[name] ?? [];
+    const type: FieldType = FIELD_TYPES[name] ?? (values.length > 0 ? 'enum' : 'string');
+    const max = limits[name] ?? DEFAULT_LIMITS[name] ?? (type === 'enum' ? ENUM_LIMIT : undefined);
+    if (max === undefined) throw new ContractError(`$.limits.${name}`, 'missing a length limit for a text field');
+    fields[name] = { rule, type, max, enum: values };
   }
-  return { thanks, audience, fields, rateLimit: { perHour } };
+  return fields;
 }
 
-function compileRedirectAllowlist(raw: unknown): readonly string[] {
-  if (raw === undefined) return [];
-  const paths = stringList(raw, '$.redirectAllowlist');
-  paths.forEach((path, index) => {
-    if (!path.startsWith('/') || path.startsWith('//')) throw new ContractError(`$.redirectAllowlist[${index}]`, 'expected a site-relative path');
-  });
-  return paths;
+function compileAudience(raw: Record<string, unknown>, matrix: Record<string, unknown>, kind: Kind): readonly string[] {
+  const column = record(matrix[kind], `$.presence.matrix.${kind}`)['audience'];
+  if (column === '-') return [''];
+  // A brief request takes the audience of the brief asked for, so it accepts any audience a brief is offered to.
+  if (kind === 'brief-request') {
+    const offered = new Set<string>();
+    for (const [brief, audiences] of Object.entries(record(raw['briefs'], '$.audience.briefs'))) {
+      for (const audience of stringList(audiences, `$.audience.briefs.${brief}`)) offered.add(audience);
+    }
+    if (offered.size === 0) throw new ContractError('$.audience.briefs', 'expected at least one brief');
+    return [...offered];
+  }
+  const list = stringList(raw[kind], `$.audience.${kind}`);
+  if (list.length === 0) throw new ContractError(`$.audience.${kind}`, 'expected at least one audience');
+  return list;
 }
 
 /** Turns the parsed JSON into the rule table, or throws a ContractError that names the first problem. */
 export function compileContract(raw: unknown): Contract {
-  if (!isRecord(raw)) throw new ContractError('$', 'expected an object');
-  const version = raw['version'];
+  const root = record(raw, '$');
+  const version = root['version'];
   if (typeof version !== 'number' || !Number.isInteger(version)) throw new ContractError('$.version', 'expected an integer');
-  const kinds = raw['kinds'];
-  if (!isRecord(kinds)) throw new ContractError('$.kinds', 'expected an object');
-  const compiled: Partial<Record<Kind, KindRule>> = {};
+
+  const forms = stringList(root['forms'], '$.forms');
+  for (const form of forms) {
+    if (!(KINDS as readonly string[]).includes(form)) throw new ContractError('$.forms', `unknown form "${form}"`);
+  }
   for (const kind of KINDS) {
-    if (!(kind in kinds)) throw new ContractError(`$.kinds.${kind}`, 'missing kind');
-    compiled[kind] = compileKind(kinds[kind], `$.kinds.${kind}`);
+    if (!forms.includes(kind)) throw new ContractError('$.forms', `missing form "${kind}"`);
   }
-  for (const name of Object.keys(kinds)) {
-    if (!(KINDS as readonly string[]).includes(name)) throw new ContractError(`$.kinds.${name}`, 'unknown kind');
+
+  const matrix = record(record(root['presence'], '$.presence')['matrix'], '$.presence.matrix');
+  const enums = compileEnums(root['enums']);
+  const limits = compileLimits(root['limits']);
+  const audience = record(root['audience'], '$.audience');
+  const thanks = record(root['thanks'], '$.thanks');
+  for (const name of Object.keys(thanks)) {
+    if (!(KINDS as readonly string[]).includes(name)) throw new ContractError(`$.thanks.${name}`, 'unknown form');
   }
-  return { version, kinds: compiled as Record<Kind, KindRule>, redirectAllowlist: compileRedirectAllowlist(raw['redirectAllowlist']) };
+
+  const kinds: Partial<Record<Kind, KindRule>> = {};
+  for (const kind of KINDS) {
+    kinds[kind] = {
+      thanks: thanks[kind] === undefined ? null : sitePath(thanks[kind], `$.thanks.${kind}`),
+      audience: compileAudience(audience, matrix, kind),
+      fields: compileFields(matrix, kind, enums, limits),
+    };
+  }
+
+  const briefAudiences: Record<string, readonly string[]> = {};
+  for (const [brief, audiences] of Object.entries(record(audience['briefs'], '$.audience.briefs'))) {
+    briefAudiences[brief] = stringList(audiences, `$.audience.briefs.${brief}`);
+  }
+  return { version, kinds: kinds as Record<Kind, KindRule>, briefAudiences };
 }
 
 export function parseContract(json: string): Contract {
@@ -147,9 +198,9 @@ export function parseContract(json: string): Contract {
   return compileContract(parsed);
 }
 
-/** The contract's `redirectAllowlist` plus every thanks path it names. The only values a hidden `redirect` field may carry. */
+/** Every thanks path the contract names. The only values a hidden `redirect` field may carry. */
 export function thanksAllowlist(contract: Contract): readonly string[] {
-  const paths = new Set<string>(contract.redirectAllowlist);
+  const paths = new Set<string>();
   for (const kind of KINDS) {
     const thanks = contract.kinds[kind].thanks;
     if (thanks !== null) paths.add(thanks);

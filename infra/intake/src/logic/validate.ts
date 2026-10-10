@@ -109,8 +109,7 @@ function checkValue(field: string, spec: FieldRule, raw: unknown, source: BodySo
   const value = clean(raw, spec.max + 1);
   if (value.length > spec.max) return { error: `${capitalize(label(field))} must be at most ${spec.max} characters.` };
   if (value === '') return { value };
-  // The brief id names a file, so it is always checked as a slug even when the contract types it as plain text.
-  switch (field === 'briefId' && spec.type === 'string' ? 'slug' : spec.type) {
+  switch (spec.type) {
     case 'email':
       return isEmail(value) ? { value: normalizeEmail(value) } : { error: 'Enter one valid email address.' };
     case 'url':
