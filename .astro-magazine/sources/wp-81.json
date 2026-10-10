@@ -1,0 +1,373 @@
+{
+  "wp": "WP-81",
+  "fetches": [
+    {
+      "id": "digital-gov-plain",
+      "url": "https://digital.gov/guides/plain-language/principles/",
+      "title": "Principles of plain language",
+      "publisher": "Digital.gov, U.S. General Services Administration",
+      "fetchedAt": "2026-10-10T07:08:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "w3c-wai-writing",
+      "url": "https://www.w3.org/WAI/tips/writing/",
+      "title": "Writing for Web Accessibility",
+      "publisher": "W3C Web Accessibility Initiative",
+      "fetchedAt": "2026-10-10T07:08:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "google-seo-starter",
+      "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+      "title": "Search Engine Optimization (SEO) Starter Guide",
+      "publisher": "Google Search Central documentation",
+      "fetchedAt": "2026-10-10T07:08:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-canspam",
+      "url": "https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business",
+      "title": "CAN-SPAM Act: A Compliance Guide for Business",
+      "publisher": "U.S. Federal Trade Commission",
+      "fetchedAt": "2026-10-10T07:07:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-disclosures-101",
+      "url": "https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers",
+      "title": "Disclosures 101 for Social Media Influencers",
+      "publisher": "U.S. Federal Trade Commission",
+      "fetchedAt": "2026-10-10T07:07:55Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cornell-15-usc-7704",
+      "url": "https://www.law.cornell.edu/uscode/text/15/7704",
+      "title": "15 U.S. Code 7704 - Other provisions",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T07:12:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eurlex-2002-58",
+      "url": "https://eur-lex.europa.eu/eli/dir/2002/58/oj/eng",
+      "title": "Directive 2002/58/EC on privacy and electronic communications",
+      "publisher": "EUR-Lex, Publications Office of the European Union",
+      "fetchedAt": "2026-10-10T07:14:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cornell-18-usc-2511",
+      "url": "https://www.law.cornell.edu/uscode/text/18/2511",
+      "title": "18 U.S. Code 2511 - Interception and disclosure of wire, oral, or electronic communications prohibited",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T07:20:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "canada-casl",
+      "url": "https://ised-isde.canada.ca/site/canada-anti-spam-legislation/en",
+      "title": "Canada's anti-spam legislation",
+      "publisher": "Innovation, Science and Economic Development Canada",
+      "fetchedAt": "2026-10-10T07:14:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/content/insights/gtm/a-one-page-positioning-statement.md",
+      "claims": [
+        {
+          "id": "P1",
+          "sentence": "The plain-language guidance published through Digital.gov states the first rule of plain language.",
+          "kind": "paraphrase",
+          "sourceId": "digital-gov-plain",
+          "locator": "Overview, Choose your words carefully",
+          "quote": "The first rule of plain language is: write for your audience."
+        },
+        {
+          "id": "P2",
+          "sentence": "The W3C WAI writing tips say to use simple language and formatting as appropriate for the context.",
+          "kind": "paraphrase",
+          "sourceId": "w3c-wai-writing",
+          "locator": "Tip: Keep content clear and concise",
+          "quote": "Use simple language and formatting, as appropriate for the context."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/gtm/choosing-your-first-channels.md",
+      "claims": [
+        {
+          "id": "C1",
+          "sentence": "The FTC compliance guide says the law makes no exception for business-to-business email.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Compliance guide, introduction",
+          "quote": "The law makes no exception for business-to-business email."
+        },
+        {
+          "id": "C2",
+          "sentence": "The FTC guide says a seller that pays or benefits others for traffic or referrals is likely to have CAN-SPAM obligations.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Compliance guide, responsibility for referral and traffic payments",
+          "quote": "the seller is likely to have compliance obligations under the CAN-SPAM Act."
+        },
+        {
+          "id": "C3",
+          "sentence": "The FTC influencer guidance says to disclose financial, employment, personal or family relationships with a brand.",
+          "kind": "paraphrase",
+          "sourceId": "ftc-disclosures-101",
+          "locator": "Disclosures 101, when to disclose",
+          "quote": "Disclose when you have any financial, employment, personal, or family relationship with a brand."
+        },
+        {
+          "id": "C4",
+          "sentence": "Google's guide says some changes take effect in hours and others could take months.",
+          "kind": "statistic",
+          "sourceId": "google-seo-starter",
+          "locator": "SEO starter guide, how long changes take",
+          "quote": "Some changes might take effect in a few hours, others could take several months."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/gtm/cold-outreach-that-follows-can-spam.md",
+      "claims": [
+        {
+          "id": "S1",
+          "sentence": "The law makes no exception for business-to-business email.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, introduction",
+          "quote": "The law makes no exception for business-to-business email."
+        },
+        {
+          "id": "S2",
+          "sentence": "The guide defines a commercial message by its primary purpose.",
+          "kind": "definition",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, what the law covers",
+          "quote": "any electronic mail message the primary purpose of which is the commercial advertisement or promotion"
+        },
+        {
+          "id": "S3",
+          "sentence": "Header information must not be false or misleading.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, requirement 1",
+          "quote": "Don't use false or misleading header information."
+        },
+        {
+          "id": "S4",
+          "sentence": "The statute refers to materially false or misleading header information.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-7704",
+          "locator": "7704(a)(1)",
+          "quote": "header information that is materially false or materially misleading"
+        },
+        {
+          "id": "S5",
+          "sentence": "Subject lines must not be deceptive.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, requirement 2",
+          "quote": "Don't use deceptive subject lines."
+        },
+        {
+          "id": "S6",
+          "sentence": "The statute refers to a subject heading likely to mislead a recipient.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-7704",
+          "locator": "7704(a)(2)",
+          "quote": "a subject heading of the message would be likely to mislead a recipient"
+        },
+        {
+          "id": "S7",
+          "sentence": "The message must be identified as an ad.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, requirement 3",
+          "quote": "Identify the message as an ad."
+        },
+        {
+          "id": "S8",
+          "sentence": "The statute calls for clear and conspicuous identification as an advertisement or solicitation.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-7704",
+          "locator": "7704(a)(5)(A)",
+          "quote": "clear and conspicuous identification that the message is an advertisement or solicitation"
+        },
+        {
+          "id": "S9",
+          "sentence": "The message must include a valid physical postal address.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, requirement 4",
+          "quote": "Your message must include your valid physical postal address."
+        },
+        {
+          "id": "S10",
+          "sentence": "The statute asks for a valid physical postal address of the sender.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-7704",
+          "locator": "7704(a)(5)(A)",
+          "quote": "a valid physical postal address of the sender"
+        },
+        {
+          "id": "S11",
+          "sentence": "Recipients must be told how to opt out.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, requirement 5",
+          "quote": "Tell recipients how to opt out of receiving future marketing email from you."
+        },
+        {
+          "id": "S12",
+          "sentence": "The statute asks for clear and conspicuous notice of the opportunity to decline.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-7704",
+          "locator": "7704(a)(5)(A)",
+          "quote": "clear and conspicuous notice of the opportunity under paragraph (3) to decline to receive further"
+        },
+        {
+          "id": "S13",
+          "sentence": "Opt-out requests must be honored within the stated number of business days.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, requirement 7",
+          "quote": "You must honor a recipient’s opt-out request within 10 business days."
+        },
+        {
+          "id": "S14",
+          "sentence": "A sender must monitor what others do on its behalf.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, requirement 8",
+          "quote": "Monitor what others are doing on your behalf."
+        },
+        {
+          "id": "S15",
+          "sentence": "An opt-out mechanism must process requests for at least 30 days after sending.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, opt-out mechanism",
+          "quote": "Any opt-out mechanism you offer must be able to process opt-out requests for at least 30 days after you send your message."
+        },
+        {
+          "id": "S16",
+          "sentence": "The statute speaks of a functioning return address or Internet-based mechanism.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-7704",
+          "locator": "7704(a)(3)(A)",
+          "quote": "functioning return electronic mail address or other Internet-based mechanism"
+        },
+        {
+          "id": "S17",
+          "sentence": "After an opt-out a sender cannot sell or transfer the address.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, after an opt-out",
+          "quote": "you can’t sell or transfer their email addresses, even in the form of a mailing list."
+        },
+        {
+          "id": "S18",
+          "sentence": "Hiring another company does not transfer legal responsibility.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, requirement 8",
+          "quote": "even if you hire another company to handle your email marketing, you can’t contract away your legal responsibility"
+        },
+        {
+          "id": "S19",
+          "sentence": "The statute treats addresses generated by automated means as an aggravating factor.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-7704",
+          "locator": "7704(b)(1)(A)(ii)",
+          "quote": "obtained using an automated means that generates possible electronic mail addresses"
+        },
+        {
+          "id": "S20",
+          "sentence": "A seller paying or benefiting others for traffic or referrals is likely to have obligations.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, forwarded and referred messages",
+          "quote": "the seller is likely to have compliance obligations under the CAN-SPAM Act."
+        },
+        {
+          "id": "S21",
+          "sentence": "The guide states a per-email penalty figure.",
+          "kind": "statistic",
+          "sourceId": "ftc-canspam",
+          "locator": "Guide, penalties",
+          "quote": "Each separate email in violation of the CAN-SPAM Act is subject to penalties of up to $53,088"
+        },
+        {
+          "id": "S22",
+          "sentence": "Article 13(1) of the ePrivacy Directive refers to prior consent for direct marketing by electronic mail.",
+          "kind": "regulation",
+          "sourceId": "eurlex-2002-58",
+          "locator": "Article 13(1)",
+          "quote": "may only be allowed in respect of subscribers who have given their prior consent."
+        },
+        {
+          "id": "S23",
+          "sentence": "The Government of Canada page refers to businesses obtaining consent before sending commercial electronic messages.",
+          "kind": "paraphrase",
+          "sourceId": "canada-casl",
+          "locator": "Overview",
+          "quote": "requesting amongst other things, that businesses obtain consent before sending commercial electronic messages."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/gtm/founder-led-sales-calls-a-structure.md",
+      "claims": [
+        {
+          "id": "R1",
+          "sentence": "The federal provision says it is not unlawful for a person not acting under color of law to intercept a communication.",
+          "kind": "regulation",
+          "sourceId": "cornell-18-usc-2511",
+          "locator": "2511(2)(d)",
+          "quote": "It shall not be unlawful under this chapter for a person not acting under color of law to intercept"
+        },
+        {
+          "id": "R2",
+          "sentence": "The provision applies where the person is a party to the communication.",
+          "kind": "regulation",
+          "sourceId": "cornell-18-usc-2511",
+          "locator": "2511(2)(d)",
+          "quote": "a wire, oral, or electronic communication where such person is a party to the communication"
+        },
+        {
+          "id": "R3",
+          "sentence": "The provision applies where one party has given prior consent.",
+          "kind": "regulation",
+          "sourceId": "cornell-18-usc-2511",
+          "locator": "2511(2)(d)",
+          "quote": "or where one of the parties to the communication has given prior consent to such interception"
+        },
+        {
+          "id": "R4",
+          "sentence": "The provision excludes interception for a criminal or tortious purpose.",
+          "kind": "regulation",
+          "sourceId": "cornell-18-usc-2511",
+          "locator": "2511(2)(d)",
+          "quote": "unless such communication is intercepted for the purpose of committing any criminal or tortious act"
+        }
+      ]
+    }
+  ],
+  "markers": []
+}
