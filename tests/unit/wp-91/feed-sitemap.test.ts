@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { getRssString } from '@astrojs/rss';
-import { XMLValidator } from 'fast-xml-parser';
+import * as geoAudit from '../../../scripts/audit-geo.mjs';
 import { feedItems } from '../../../src/components/geo/feed.ts';
 import type { FeedEntry } from '../../../src/components/geo/feed.ts';
 import { FAMILY_LABELS } from '../../../src/components/geo/llms-plan.ts';
@@ -10,6 +10,8 @@ import { familyLabel, FAMILIES } from '../../../src/data/families.ts';
 import { routes } from '../../../src/data/routes.ts';
 import { site } from '../../../src/data/site.ts';
 import { groupSitemapRoutes, isSitemapUrl } from '../../../src/lib/seo.ts';
+
+const geo = geoAudit as unknown as { xmlProblem(xml: string): string | null };
 
 const entry = (id: string, title: string, date: string, topic?: string): FeedEntry => ({ id, data: { title, description: `About ${title}.`, publishedDate: new Date(date), topic } });
 
@@ -52,12 +54,12 @@ test('the generated RSS is well-formed XML with one item per live article and an
       items: items.map((i) => ({ title: i.title, description: i.description, link: i.path, pubDate: i.pubDate, categories: [i.category] })),
     });
   const xml = await build(feedItems(insights, research, live));
-  assert.equal(XMLValidator.validate(xml), true);
+  assert.equal(geo.xmlProblem(xml), null);
   assert.equal(xml.match(/<item>/g)?.length, 3);
   assert.ok(xml.includes('rel="self"'));
   assert.ok(xml.includes('<category>Research</category>'));
   assert.ok(!xml.includes('Hidden'));
-  assert.equal(XMLValidator.validate(await build([])), true);
+  assert.equal(geo.xmlProblem(await build([])), null);
 });
 
 const launched = routes.filter((r) => r.launch);

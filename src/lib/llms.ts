@@ -101,7 +101,7 @@ function groupSections(input: LlmsInput): string[] {
   const sections: string[] = [];
   const desks = (input.desks ?? []).flatMap((desk) => (desk.hub === undefined ? [] : [linkTo({ ...desk.hub, title: desk.label }, input.twinRoutes, origin)]));
   if (desks.length > 0) {
-    sections.push(['## Insight desks', '', 'Each desk is a topic page that lists its articles.', '', list(desks)].join('\n'));
+    sections.push(['## Insight desks', '', 'Each desk lists its own articles.', '', list(desks)].join('\n'));
   }
   const families = (input.families ?? []).filter((family) => family.hub !== undefined || family.pages.length > 0);
   if (families.length > 0) {
