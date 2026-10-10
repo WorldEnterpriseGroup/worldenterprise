@@ -13,11 +13,11 @@ interface Assignment {
   stage?: number;
   write_set: string[];
   exclude?: string[];
-  gated?: string[];
+  lane_exceptions?: string[];
 }
 interface Ownership {
   assignments: Assignment[];
-  exceptions: { wp: string; path: string }[];
+  exceptions: { wp: string; path: string; reason: string }[];
   always_allowed: string[];
   frozen_paths: string[];
   lanes: { photography: string[]; release: string[] };
@@ -131,28 +131,33 @@ test('the lanes are not empty, so the checks above cannot pass by comparing agai
   assert.ok(ownership.frozen_paths.length >= 10);
 });
 
-test('a gated file is an exception for its package, reserved by the photography lane, and in no other write set', () => {
-  const gated = wave7.filter((a) => (a.gated ?? []).length > 0);
-  assert.deepEqual(gated.map((a) => a.owner), ['WP-42', 'WP-43']);
-  for (const a of gated) {
-    for (const file of a.gated ?? []) {
-      assert.ok(exceptionPaths(a.owner).includes(file), `${a.owner} gated ${file} must also be an exception`);
-      assert.ok(lane('photography').some((r) => overlaps(file, r)), `${file} is gated because the photography lane reserves it`);
+test('a lane exception is an exception for its package, reserved by the photography lane, and in no other write set (W7-9)', () => {
+  const owners = wave7.filter((a) => (a.lane_exceptions ?? []).length > 0);
+  assert.deepEqual(owners.map((a) => a.owner), ['WP-42', 'WP-43']);
+  for (const a of owners) {
+    for (const file of a.lane_exceptions ?? []) {
+      assert.ok(exceptionPaths(a.owner).includes(file), `${a.owner} lane exception ${file} must also be an exception`);
+      assert.ok(lane('photography').some((r) => overlaps(file, r)), `${file} is an exception because the photography lane reserves it`);
       for (const other of wave7) {
         if (other.owner === a.owner) continue;
-        for (const p of other.write_set) assert.equal(overlaps(file, p, [], other.exclude), false, `${other.owner} ${p} must not reach ${a.owner} gated ${file}`);
+        for (const p of other.write_set) assert.equal(overlaps(file, p, [], other.exclude), false, `${other.owner} ${p} must not reach ${a.owner} lane exception ${file}`);
       }
     }
   }
 });
 
-test('a gated file is not in the owner write set glob by accident: it is edited only through its exception', () => {
-  for (const a of wave7.filter((w) => (w.gated ?? []).length > 0)) {
-    for (const file of a.gated ?? []) {
+test('a lane exception is released: it is edited through its exception on any branch, with no wait for WP-12d phase B (W7-9)', () => {
+  for (const a of wave7.filter((w) => (w.lane_exceptions ?? []).length > 0)) {
+    for (const file of a.lane_exceptions ?? []) {
       const rest = violations([file], a.owner, ownership);
-      assert.deepEqual(rest, [], `${a.owner} may edit its gated file ${file}`);
+      assert.deepEqual(rest, [], `${a.owner} may edit ${file}`);
+      const reason = ownership.exceptions.find((e) => e.wp === a.owner && e.path === file)?.reason ?? '';
+      assert.match(reason, /W7-9/, `${a.owner} exception for ${file} cites decision W7-9`);
+      assert.doesNotMatch(reason, /Edit only on a branch rebased/, 'the phase B gate is gone');
     }
   }
+  assert.equal('gated' in (ownership.assignments.find((a) => a.owner === 'WP-42') ?? {}), false, 'no assignment carries the retired gated field');
+  assert.equal('gated' in (ownership.assignments.find((a) => a.owner === 'WP-43') ?? {}), false);
 });
 
 test('the package-owned exclusions are real: WP-45 reaches layouts and components but not the photography files', () => {
