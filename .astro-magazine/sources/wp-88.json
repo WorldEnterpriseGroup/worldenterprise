@@ -37,6 +37,60 @@
       "fetchedAt": "2026-10-10T22:35:20Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "fda-device-software",
+      "url": "https://www.fda.gov/medical-devices/digital-health-center-excellence/device-software-functions-including-mobile-medical-applications",
+      "title": "Device Software Functions Including Mobile Medical Applications",
+      "publisher": "U.S. Food and Drug Administration",
+      "fetchedAt": "2026-10-10T22:35:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-160-103",
+      "url": "https://www.law.cornell.edu/cfr/text/45/160.103",
+      "title": "45 CFR 160.103: Definitions",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T22:35:45Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-164-504",
+      "url": "https://www.law.cornell.edu/cfr/text/45/164.504",
+      "title": "45 CFR 164.504: Uses and disclosures: Organizational requirements",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T22:35:46Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-164-306",
+      "url": "https://www.law.cornell.edu/cfr/text/45/164.306",
+      "title": "45 CFR 164.306: Security standards: General rules",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T22:35:47Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-164-404",
+      "url": "https://www.law.cornell.edu/cfr/text/45/164.404",
+      "title": "45 CFR 164.404: Notification to individuals",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T22:35:58Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-hbnr",
+      "url": "https://www.ftc.gov/business-guidance/resources/complying-ftcs-health-breach-notification-rule-0",
+      "title": "Complying with FTC's Health Breach Notification Rule",
+      "publisher": "Federal Trade Commission",
+      "fetchedAt": "2026-10-10T22:35:59Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -170,6 +224,147 @@
           "sourceId": "fed-sr-23-4",
           "locator": "Date",
           "quote": "June 7, 2023"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/sectors/healthtech-saas-considerations-before-you-build.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "a health plan, a health care clearinghouse, and a health care provider who transmits any health information in electronic form",
+          "kind": "regulation",
+          "sourceId": "cfr-160-103",
+          "locator": "Covered entity",
+          "quote": "A health care provider who transmits any health information in electronic form"
+        },
+        {
+          "id": "A2",
+          "sentence": "a business associate is, with respect to a covered entity, a person who creates, receives, maintains, or transmits protected health information for a function or activity",
+          "kind": "regulation",
+          "sourceId": "cfr-160-103",
+          "locator": "Business associate",
+          "quote": "creates, receives, maintains, or transmits protected health information for a function or activity"
+        },
+        {
+          "id": "A3",
+          "sentence": "with respect to a covered entity",
+          "kind": "regulation",
+          "sourceId": "cfr-160-103",
+          "locator": "Business associate",
+          "quote": "with respect to a covered entity, a person who:"
+        },
+        {
+          "id": "A4",
+          "sentence": "the contract must meet the requirements of paragraph (e)(2), (e)(3), or (e)(5), as applicable",
+          "kind": "regulation",
+          "sourceId": "cfr-164-504",
+          "locator": "(e)(1)",
+          "quote": "must meet the requirements of paragraph (e)(2), (e)(3), or (e)(5) of this section, as applicable."
+        },
+        {
+          "id": "A5",
+          "sentence": "the contract must establish the permitted and required uses and disclosures of protected health information by the business associate",
+          "kind": "regulation",
+          "sourceId": "cfr-164-504",
+          "locator": "(e)(2)",
+          "quote": "Establish the permitted and required uses and disclosures of protected health information by the business associate."
+        },
+        {
+          "id": "A6",
+          "sentence": "ensure the confidentiality, integrity, and availability of all electronic protected health information",
+          "kind": "regulation",
+          "sourceId": "cfr-164-306",
+          "locator": "(a)(1)",
+          "quote": "Ensure the confidentiality, integrity, and availability of all electronic protected health information"
+        },
+        {
+          "id": "A7",
+          "sentence": "may use any security measures that allow",
+          "kind": "regulation",
+          "sourceId": "cfr-164-306",
+          "locator": "(b)",
+          "quote": "Covered entities and business associates may use any security measures that allow"
+        },
+        {
+          "id": "A8",
+          "sentence": "a covered entity shall, following the discovery of a breach of unsecured protected health information, notify each individual",
+          "kind": "regulation",
+          "sourceId": "cfr-164-404",
+          "locator": "(a)(1)",
+          "quote": "A covered entity shall, following the discovery of a breach of unsecured protected health information, notify each individual"
+        },
+        {
+          "id": "A9",
+          "sentence": "without unreasonable delay and in no case later than 60 calendar days after discovery of a breach",
+          "kind": "regulation",
+          "sourceId": "cfr-164-404",
+          "locator": "(b)",
+          "quote": "without unreasonable delay and in no case later than 60 calendar days after discovery of a breach."
+        },
+        {
+          "id": "A10",
+          "sentence": "a vendor of personal health records, a PHR related entity, or a third party service provider for either",
+          "kind": "regulation",
+          "sourceId": "ftc-hbnr",
+          "locator": "Who it applies to",
+          "quote": "a vendor of personal health records (PHRs);"
+        },
+        {
+          "id": "A11",
+          "sentence": "you are not a vendor of personal health records if you are covered by HIPAA",
+          "kind": "regulation",
+          "sourceId": "ftc-hbnr",
+          "locator": "HIPAA exclusion",
+          "quote": "You’re not a vendor of personal health records if you’re covered by HIPAA."
+        },
+        {
+          "id": "A12",
+          "sentence": "makers of health apps, connected devices, and similar products must comply with the Rule",
+          "kind": "regulation",
+          "sourceId": "ftc-hbnr",
+          "locator": "Health apps",
+          "quote": "makers of health apps, connected devices, and similar products must comply with the Rule."
+        },
+        {
+          "id": "A13",
+          "sentence": "The page showed July 2024 as its date, with an edit in January 2025",
+          "kind": "paraphrase",
+          "sourceId": "ftc-hbnr",
+          "locator": "Page date",
+          "quote": "July 2024"
+        },
+        {
+          "id": "A14",
+          "sentence": "mobile medical apps are medical devices that are mobile apps and that incorporate device software functionality",
+          "kind": "regulation",
+          "sourceId": "fda-device-software",
+          "locator": "Mobile medical apps",
+          "quote": "Mobile medical apps are medical devices that are mobile apps, that incorporate device software functionality"
+        },
+        {
+          "id": "A15",
+          "sentence": "the definition of a device in section 201(h) of the Food, Drug and Cosmetic Act",
+          "kind": "regulation",
+          "sourceId": "fda-device-software",
+          "locator": "Definition",
+          "quote": "that meet the definition of a device in section 201(h) of the Food, Drug & Cosmetic Act"
+        },
+        {
+          "id": "A16",
+          "sentence": "the agency takes a risk-based approach that focuses on the subset of software functions that meet the definition of device",
+          "kind": "regulation",
+          "sourceId": "fda-device-software",
+          "locator": "Risk-based approach",
+          "quote": "The FDA takes a risk-based approach that focuses on the subset of software functions that meet the definition of device"
+        },
+        {
+          "id": "A17",
+          "sentence": "the FDA will exercise enforcement discretion and will not expect manufacturers to submit premarket review",
+          "kind": "regulation",
+          "sourceId": "fda-device-software",
+          "locator": "Enforcement discretion",
+          "quote": "the FDA will exercise enforcement discretion and will not expect manufacturers to submit premarket review"
         }
       ]
     }
