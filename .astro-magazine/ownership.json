@@ -1830,6 +1830,11 @@
       "reason": "Wave 8 (60a.3): scoped to the CR entry for src/data/faq.yaml, a file in this package's own write set. Same rule: the counsel record changes with the copy it quotes. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
     },
     {
+      "wp": "WP-63",
+      "path": "src/styles/components.css",
+      "reason": "Wave 8 R2: the live /briefs/ adds an eighth top-level nav item; WP-63 tightens the 1100-1279.98px .mega-nav__list gap so the header row fits (e2e:menu 1130361, scrollWidth 1123 at 1100), ruled by the integrator 2026-10-10."
+    },
+    {
       "wp": "WP-12c",
       "path": "{src/pages/index.astro,src/components/hero/HeroAtlas.astro,src/components/hero/HeroEditorial.astro,src/components/home/HomeHero.astro}",
       "reason": "Brief grants the home page and the three hero components: they serve the slot srcset and sizes through photoImage()."
