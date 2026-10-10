@@ -48,11 +48,83 @@
       "tool": "WebFetch"
     },
     {
+      "id": "irs-hiring-employees",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/hiring-employees",
+      "title": "Hiring employees",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T11:34:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "uscis-i9",
+      "url": "https://www.uscis.gov/i-9",
+      "title": "Form I-9, Employment Eligibility Verification",
+      "publisher": "U.S. Citizenship and Immigration Services",
+      "fetchedAt": "2026-10-10T11:34:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
       "id": "dir-ca-contractor-faq",
       "url": "https://www.dir.ca.gov/dlse/faq_independentcontractor.htm",
       "title": "Independent contractor frequently asked questions",
       "publisher": "California Department of Industrial Relations",
       "fetchedAt": "2026-10-10T11:35:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eeoc-prohibited-practices",
+      "url": "https://www.eeoc.gov/prohibited-employment-policiespractices",
+      "title": "Prohibited employment policies and practices",
+      "publisher": "U.S. Equal Employment Opportunity Commission",
+      "fetchedAt": "2026-10-10T11:35:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eeoc-reasonable-accommodation",
+      "url": "https://www.eeoc.gov/laws/guidance/enforcement-guidance-reasonable-accommodation-and-undue-hardship-under-ada",
+      "title": "Enforcement guidance on reasonable accommodation and undue hardship under the ADA",
+      "publisher": "U.S. Equal Employment Opportunity Commission",
+      "fetchedAt": "2026-10-10T11:35:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "digital-gov-plain-language",
+      "url": "https://digital.gov/guides/plain-language",
+      "title": "Plain language",
+      "publisher": "Digital.gov, U.S. General Services Administration",
+      "fetchedAt": "2026-10-10T11:35:45Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-29-1630-2",
+      "url": "https://www.law.cornell.edu/cfr/text/29/1630.2",
+      "title": "29 CFR 1630.2, Definitions (Americans with Disabilities Act regulations)",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T11:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "opm-structured-interviews",
+      "url": "https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews/",
+      "title": "Structured interviews",
+      "publisher": "U.S. Office of Personnel Management",
+      "fetchedAt": "2026-10-10T11:36:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eeoc-disability-inquiries",
+      "url": "https://www.eeoc.gov/laws/guidance/enforcement-guidance-disability-related-inquiries-and-medical-examinations-employees",
+      "title": "Enforcement guidance on disability-related inquiries and medical examinations of employees under the ADA",
+      "publisher": "U.S. Equal Employment Opportunity Commission",
+      "fetchedAt": "2026-10-10T11:36:30Z",
       "status": 200,
       "tool": "WebFetch"
     }
@@ -380,6 +452,189 @@
           "sourceId": "govuk-employment-status",
           "locator": "Decisions",
           "quote": "Courts and tribunals can make final decisions on employment status."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/your-first-hire-what-to-settle-before-you-write-the-job.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "An employer must verify the identity and employment authorization of individuals hired for employment in the United States",
+          "kind": "regulation",
+          "sourceId": "irs-hiring-employees",
+          "locator": "Verify eligibility to work",
+          "quote": "Employer must verify the identity and employment authorization of individuals hired for employment in the United States."
+        },
+        {
+          "id": "A2",
+          "sentence": "all US employers must properly complete Form I-9 for every individual they hire for employment in the United States",
+          "kind": "regulation",
+          "sourceId": "uscis-i9",
+          "locator": "Form I-9 overview",
+          "quote": "All U.S. employers must properly complete Form I-9 for every individual they hire for employment in the United States."
+        },
+        {
+          "id": "A3",
+          "sentence": "you are required to get each employee's name and Social Security number and to enter them on Form W-2",
+          "kind": "regulation",
+          "sourceId": "irs-hiring-employees",
+          "locator": "Get each employee's SSN",
+          "quote": "You are required to get each employee's name and Social Security number (SSN) and to enter them on Form W-2."
+        },
+        {
+          "id": "A4",
+          "sentence": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee",
+          "kind": "regulation",
+          "sourceId": "irs-hiring-employees",
+          "locator": "Keep a Form W-4 on file",
+          "quote": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/structured-interviews-for-a-small-team.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "an assessment method designed to measure job-related competencies of candidates",
+          "kind": "definition",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Definition",
+          "quote": "A structured interview is an assessment method designed to measure job-related competencies of candidates"
+        },
+        {
+          "id": "A2",
+          "sentence": "by systematically inquiring about their behavior in past experiences and/or their proposed behavior in hypothetical situations",
+          "kind": "definition",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Definition",
+          "quote": "by systematically inquiring about their behavior in past experiences and/or their proposed behavior"
+        },
+        {
+          "id": "A3",
+          "sentence": "all candidates are asked the same predetermined questions in the same order",
+          "kind": "definition",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Same questions",
+          "quote": "All candidates are asked the same predetermined questions in the same order"
+        },
+        {
+          "id": "A4",
+          "sentence": "all responses are evaluated using the same rating scale and standards for acceptable answers",
+          "kind": "definition",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Standardized scoring",
+          "quote": "All responses are evaluated using the same rating scale and standards for acceptable answers"
+        },
+        {
+          "id": "A5",
+          "sentence": "structured interviews ensure candidates have equal opportunities to provide information",
+          "kind": "paraphrase",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Equal opportunity",
+          "quote": "structured interviews ensure candidates have equal opportunities to provide information"
+        },
+        {
+          "id": "A6",
+          "sentence": "are assessed accurately and consistently",
+          "kind": "paraphrase",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Equal opportunity",
+          "quote": "are assessed accurately and consistently."
+        },
+        {
+          "id": "A7",
+          "sentence": "employers are explicitly prohibited from making pre-offer inquiries about disability",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Pre-employment inquiries",
+          "quote": "Employers are explicitly prohibited from making pre-offer inquiries about disability."
+        },
+        {
+          "id": "A8",
+          "sentence": "at the first stage, before an offer of employment, the ADA prohibits all disability-related inquiries and medical examinations, even if they are related to the job",
+          "kind": "regulation",
+          "sourceId": "eeoc-disability-inquiries",
+          "locator": "Background, general principles A",
+          "quote": "the ADA prohibits all disability-related inquiries and medical examinations, even if they are related to the job."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/writing-a-job-description-people-can-answer.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "the Plain Writing Act of 2010 established the requirement that content for the public is written for its specific audience",
+          "kind": "regulation",
+          "sourceId": "digital-gov-plain-language",
+          "locator": "Plain Writing Act paragraph",
+          "quote": "The Plain Writing Act of 2010 established the requirement that content for the public is written for its specific audience."
+        },
+        {
+          "id": "A2",
+          "sentence": "evidence of whether a particular function is essential includes, but is not limited to, a set of items that begins with the employer's judgment as to which functions are essential",
+          "kind": "regulation",
+          "sourceId": "cfr-29-1630-2",
+          "locator": "(n)(3)",
+          "quote": "Evidence of whether a particular function is essential includes, but is not limited to:"
+        },
+        {
+          "id": "A3",
+          "sentence": "the employer's judgment as to which functions are essential",
+          "kind": "regulation",
+          "sourceId": "cfr-29-1630-2",
+          "locator": "(n)(3)(i)",
+          "quote": "The employer's judgment as to which functions are essential;"
+        },
+        {
+          "id": "A4",
+          "sentence": "written job descriptions prepared before advertising or interviewing applicants for the job",
+          "kind": "regulation",
+          "sourceId": "cfr-29-1630-2",
+          "locator": "(n)(3)(ii)",
+          "quote": "Written job descriptions prepared before advertising or interviewing applicants for the job;"
+        },
+        {
+          "id": "A5",
+          "sentence": "EEOC guidance describes an essential function as a fundamental duty of the position",
+          "kind": "regulation",
+          "sourceId": "eeoc-reasonable-accommodation",
+          "locator": "General principles",
+          "quote": "An employer does not have to eliminate an essential function, i.e., a fundamental duty of the position."
+        },
+        {
+          "id": "A6",
+          "sentence": "it is illegal for an employer to publish a job advertisement that shows a preference for, or discourages someone from applying for a job because of, race, color, religion, sex, national origin, age or disability, or genetic information",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Job advertisements",
+          "quote": "It is illegal for an employer to publish a job advertisement that shows a preference for"
+        },
+        {
+          "id": "A7",
+          "sentence": "or discourages someone from applying for a job because of",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Job advertisements",
+          "quote": "or discourages someone from applying for a job because of his or her race, color, religion,"
+        },
+        {
+          "id": "A8",
+          "sentence": "age as 40 or older",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Job advertisements",
+          "quote": "age (40 or older), disability or genetic information."
+        },
+        {
+          "id": "A9",
+          "sentence": "includes transgender status, sexual orientation and pregnancy within sex",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Job advertisements",
+          "quote": "sex (including transgender status, sexual orientation, and pregnancy), national origin,"
         }
       ]
     }
