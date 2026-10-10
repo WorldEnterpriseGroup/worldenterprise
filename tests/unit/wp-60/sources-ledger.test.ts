@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
-import { parse } from 'yaml';
 import { listCollectionFiles, listInsightFiles } from '../../../src/lib/content-files.ts';
+import { documentFactsAt, documentFactsOf } from './document-facts.ts';
 import { repoViewAt } from './repo-view.ts';
 import { checkMarkers, checkSourcesFile, classifyHost, fetchDate, h2SlugsOf, slugify } from './sources.ts';
 import type { DocumentFacts, FetchRecord, SentenceRecord, SourcesFile } from './sources.ts';
@@ -41,36 +41,8 @@ function loadSourcesFiles(): SourcesFile[] {
   return files;
 }
 
-function isoDate(value: unknown): string {
-  if (value instanceof Date) return value.toISOString().slice(0, 10);
-  return typeof value === 'string' ? value : '';
-}
-
-/** What a content file says about its own sources and markers. */
-function factsFor(path: string): DocumentFacts | undefined {
-  const absolute = join(root, path);
-  if (!existsSync(absolute)) return undefined;
-  const raw = readFileSync(absolute, 'utf8');
-  const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/.exec(raw);
-  if (match === null) return undefined;
-  let data: Record<string, unknown>;
-  try {
-    data = (parse(match[1] ?? '') ?? {}) as Record<string, unknown>;
-  } catch (error) {
-    throw new Error(`${path}: the frontmatter is not valid YAML: ${(error as Error).message}`);
-  }
-  const sources = (Array.isArray(data.sources) ? (data.sources as Record<string, unknown>[]) : []).map((s) => ({
-    id: String(s.id ?? ''),
-    url: String(s.url ?? ''),
-    accessed: isoDate(s.accessed),
-  }));
-  const body = match[2] ?? '';
-  const markers = [
-    ...[...body.matchAll(/data-claim-allow=["']([^"']+)["']/g)].flatMap((m) => (m[1] ?? '').split(/\s+/).filter(Boolean).map((id) => `claim-allow:${id}`)),
-    ...(/\bdata-generic-definition\b/.test(body) ? ['generic-definition'] : []),
-  ];
-  return { path, sources, noStatistics: data.noStatistics === true, markers };
-}
+/** What a content file says about its own sources and markers (top-level `sources` and `family.sources`). */
+const factsFor = (path: string): DocumentFacts | undefined => documentFactsAt(root, path);
 
 const real = loadSourcesFiles();
 const repo = repoViewAt(root);
@@ -398,4 +370,58 @@ test('a marker in a file with no markers entry fails, and a recorded one passes'
 test('factsFor reads the markers of a real file the way the check expects', () => {
   const safe = factsFor('src/content/guides/safe-explained.mdx');
   assert.ok(safe !== undefined && safe.markers.includes('generic-definition'));
+});
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Where a document keeps its sources (60a.4): top-level `sources`, or `family.sources` on a family page (contracts 8.2)
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+const PAGE = 'src/content/pages/industries/fabricated.mdx';
+const sourceLines = (indent: string, ...ids: string[]): string[] => ids.flatMap((id) => [
+  `${indent}- id: ${id}`,
+  `${indent}  title: ${id}`,
+  `${indent}  publisher: P`,
+  `${indent}  url: https://www.${id}.gov/a`,
+  `${indent}  accessed: 2026-10-13`,
+]);
+const mdx = (...frontmatter: string[]): string => ['---', 'title: A page', ...frontmatter, '---', '', 'Body.', ''].join('\n');
+const pageFile = (): SourcesFile => ({
+  wp: 'WP-99',
+  fetches: [fetchRecord({ id: 'irs', url: 'https://www.irs.gov/a' }), fetchRecord({ id: 'sec', url: 'https://www.sec.gov/a' })],
+  documents: [{ path: PAGE, claims: [{ id: 'A1', sentence: 'x', kind: 'paraphrase', sourceId: 'irs', locator: 'p1' }] }],
+});
+const checkPage = (raw: string): string[] => {
+  const found = documentFactsOf(PAGE, raw);
+  return checkSourcesFile(pageFile(), new Map(found === undefined ? [] : [[PAGE, found]]), repo);
+};
+
+test('a family page that keeps its sources in family.sources passes the source rules', () => {
+  const raw = mdx('family:', '  id: industries', '  sources:', ...sourceLines('    ', 'irs', 'sec'));
+  assert.deepEqual(documentFactsOf(PAGE, raw)?.sources.map((s) => s.id), ['irs', 'sec']);
+  assert.deepEqual(checkPage(raw).filter((p) => p.includes('distinct sources') || p.includes('no fetch record')), []);
+});
+
+test('a page with neither top-level sources nor family.sources fails the distinct-sources rule', () => {
+  assert.ok(checkPage(mdx('family:', '  id: industries')).some((p) => p.includes('0 distinct sources')));
+  assert.ok(checkPage(mdx()).some((p) => p.includes('0 distinct sources')));
+});
+
+test('top-level sources and family.sources are a union, and a source listed in both counts once', () => {
+  const split = mdx('sources:', ...sourceLines('  ', 'irs'), 'family:', '  id: industries', '  sources:', ...sourceLines('    ', 'sec'));
+  assert.deepEqual(documentFactsOf(PAGE, split)?.sources.map((s) => s.id), ['irs', 'sec']);
+  const both = mdx('sources:', ...sourceLines('  ', 'irs', 'sec'), 'family:', '  id: industries', '  sources:', ...sourceLines('    ', 'sec'));
+  assert.deepEqual(documentFactsOf(PAGE, both)?.sources.map((s) => s.id), ['irs', 'sec']);
+});
+
+test('one family source is not enough, a family source with no fetch record fails, and a stale accessed date fails', () => {
+  assert.ok(checkPage(mdx('family:', '  id: industries', '  sources:', ...sourceLines('    ', 'irs'))).some((p) => p.includes('1 distinct sources')));
+  const unfetched = mdx('family:', '  id: industries', '  sources:', ...sourceLines('    ', 'irs', 'nist'));
+  assert.ok(checkPage(unfetched).some((p) => p.includes('https://www.nist.gov/a with no fetch record')));
+  const stale = mdx('family:', '  id: industries', '  sources:', ...sourceLines('    ', 'irs', 'sec')).replace('accessed: 2026-10-13', 'accessed: 2026-10-12');
+  assert.ok(checkPage(stale).some((p) => p.includes('was accessed 2026-10-12')));
+});
+
+test('noStatistics still lifts the two-source rule, and a file with no frontmatter has no facts', () => {
+  assert.deepEqual(checkPage(mdx('noStatistics: true', 'family:', '  id: industries')).filter((p) => p.includes('distinct sources')), []);
+  assert.equal(documentFactsOf(PAGE, 'No frontmatter here.'), undefined);
 });
