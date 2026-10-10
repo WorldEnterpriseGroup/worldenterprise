@@ -37,6 +37,12 @@ test('e2e:routes excludes the loose screenshots, which the HTML report already h
   assert.ok(lines.some((l) => /^ {6}- test-results\/screenshots\/\*\*\s*$/.test(l)), 'the screenshots directory is excluded');
 });
 
+test('e2e:routes also excludes the attachment copies Playwright makes under each test directory', () => {
+  const lines = artifactLines('e2e:routes');
+  assert.ok(lines.some((l) => /^ {6}- test-results\/\*\*\/attachments\/\*\*\s*$/.test(l)), 'test-results/**/attachments/** is excluded');
+  assert.ok(!lines.some((l) => /playwright-report/.test(l) && /exclude|^ {6}-/.test(l)), 'the report copy, which is the one kept, is not excluded');
+});
+
 test('the exclude names the directory the route smoke actually writes to', () => {
   assert.match(spec, /`test-results\/screenshots\//, 'routes.spec.ts still writes under test-results/screenshots/');
   assert.match(spec, /info\.attach\(/, 'the screenshots are attached, so the report keeps a copy');
