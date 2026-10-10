@@ -1,0 +1,57 @@
+---
+import { render } from 'astro:content';
+import { ACTIONS, CATEGORIES, HUB, HREFS } from '../../../components/partners/copy.ts';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import Callout from '../../../components/ui/Callout.astro';
+import Card from '../../../components/ui/Card.astro';
+import Grid from '../../../components/ui/Grid.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { href } from '../../../lib/url.ts';
+
+const page = await getPageEntry('network/partners', 'network/partners/index');
+const { Content } = await render(page);
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path={HREFS.hub}
+  eyebrow={page.data.eyebrow}
+  lead={HUB.lead}
+  updated={page.data.updated}
+  ogSlot="og-network"
+  primary={ACTIONS.enquire}
+  secondary={ACTIONS.categories}
+>
+  <Content />
+
+  <h2 id="partner-categories">{HUB.categories.heading}</h2>
+  <p>{HUB.categories.intro}</p>
+  <Grid min="16rem">
+    {CATEGORIES.map((category) => <Card title={category.label} headingLevel={3}><p>{category.summary}</p></Card>)}
+  </Grid>
+  <p>
+    <a href={href(HREFS.categories)}>{HUB.categories.link}</a>
+  </p>
+  <p>{HUB.categories.other}</p>
+
+  <h2 id="partner-offer">{HUB.offer.heading}</h2>
+  <p>{HUB.offer.intro}</p>
+  <ul>
+    {HUB.offer.items.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <h2 id="partner-asks">{HUB.asks.heading}</h2>
+  <ul>
+    {HUB.asks.items.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <h2 id="partner-limits">{HUB.limits.heading}</h2>
+  <ul>
+    {HUB.limits.items.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <Callout title={HUB.passItOn.heading}>
+    <p>{HUB.passItOn.question} <a href={href(HREFS.enquire)}>{HUB.passItOn.action}</a></p>
+  </Callout>
+</MarketingLayout>

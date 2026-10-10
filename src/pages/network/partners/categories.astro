@@ -1,0 +1,42 @@
+---
+import { render } from 'astro:content';
+import { ACTIONS, CATEGORIES, CATEGORIES_PAGE, HREFS } from '../../../components/partners/copy.ts';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+
+const page = await getPageEntry('network/partners/categories');
+const { Content } = await render(page);
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path={HREFS.categories}
+  eyebrow={page.data.eyebrow}
+  lead={CATEGORIES_PAGE.lead}
+  updated={page.data.updated}
+  ogSlot="og-network"
+  primary={ACTIONS.enquire}
+  secondary={ACTIONS.howItWorks}
+>
+  <Content />
+
+  {
+    CATEGORIES.map((category) => (
+      <section aria-labelledby={`category-${category.id}`} class="stack">
+        <h2 id={`category-${category.id}`}>{category.label}</h2>
+        <p>{category.summary}</p>
+        <h3>{CATEGORIES_PAGE.goodHeading}</h3>
+        <ul>
+          {category.goodEnquiry.map((item) => <li>{item}</li>)}
+        </ul>
+        <h3>{CATEGORIES_PAGE.doesNotHeading}</h3>
+        <ul>
+          {category.doesNot.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
+    ))
+  }
+
+  <p>{CATEGORIES_PAGE.close}</p>
+</MarketingLayout>
