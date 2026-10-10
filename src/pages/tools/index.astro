@@ -1,0 +1,53 @@
+---
+import { getEntry, render } from 'astro:content';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import FeatureCard from '../../components/ui/FeatureCard.astro';
+import Grid from '../../components/ui/Grid.astro';
+import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
+import HubLayout from '../../layouts/HubLayout.astro';
+
+const page = await getEntry('pages', 'tools');
+if (!page) throw new Error('Missing content entry: src/content/pages/tools/index.mdx');
+const { Content } = await render(page);
+const { data } = page;
+---
+
+<HubLayout
+  title={data.title}
+  seoTitle={data.seoTitle}
+  description={data.description}
+  path="/tools/"
+  eyebrow={data.eyebrow}
+  lead="Three tools that run in your browser. Your numbers and choices stay on the page."
+  updated={data.updated}
+  draft={data.draft}
+  primary={{ label: 'Open the metrics calculator', href: '/tools/metrics-calculator/' }}
+  secondary={{ label: 'Compose your team', href: '/tools/team-composer/' }}
+>
+  <NoFundingDisclaimer />
+  <div class="prose"><Content /></div>
+  <Grid min="20rem" as="ul">
+    <li>
+      <FeatureCard title="Team Composer" href="/tools/team-composer/" eyebrow="Sketch" mark="1" tone="tint">
+        <p>Choose the roles your SaaS team needs and how many seats each role takes, then carry the sketch to the application. No sign-up, no price.</p>
+      </FeatureCard>
+    </li>
+    <li>
+      <FeatureCard title="Metrics calculator" href="/tools/metrics-calculator/" eyebrow="Calculate" mark="2" tone="tint">
+        <p>Type one month of your numbers and see net new MRR, revenue churn, quick ratio, CAC payback, LTV to CAC and runway, with every formula shown.</p>
+      </FeatureCard>
+    </li>
+    <li>
+      <FeatureCard title="Evidence room builder" href="/tools/evidence-room/" eyebrow="Prepare" mark="3" tone="tint">
+        <p>Work through a checklist built from the data room and investor readiness guides. Filter by stage, tick items off, then print the list or copy it as Markdown.</p>
+      </FeatureCard>
+    </li>
+  </Grid>
+  <SafeCtaBand
+    slot="after"
+    title="Prepare with a team that steers the work"
+    text="Service Line F covers fundability and investor readiness inside the program. WE prepares the evidence. The raise itself, and the legal advice around it, stay with you and your own counsel."
+    primary={{ label: 'See Service Line F', href: '/services/fundability-and-investor-readiness/' }}
+    secondary={{ label: 'Apply', href: '/apply/' }}
+  />
+</HubLayout>
