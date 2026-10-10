@@ -15,10 +15,12 @@
 //                         required before it exists and is held to the rule from the day it is built.
 //   manifestRules        Checks on src/assets/photo/manifest.json, for example alt text of generated images.
 //
-// Usage: node scripts/audit-claims.mjs [dist-dir] [--manifest <file>] [--denylist <file>] | --self-test
+// Usage: node scripts/audit-claims.mjs [dist-dir] [--manifest <file>] [--denylist <file>] | --source <markdown-dir> | --self-test
+// `--source` scans a folder of Markdown that never reaches dist (the gated briefs) as plain text, with the scan rules only.
 // Dependency-free on purpose: the CI audit job runs it without npm ci. It reads src/data/flags.ts through
 // Node's built-in type stripping, as scripts/audit-contrast.mjs does for src/lib/contrast.ts.
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { flags as siteFlags } from '../src/data/flags.ts';
@@ -388,6 +390,37 @@ export function auditDist(dist, options = {}) {
   return { files: files.length, findings };
 }
 
+/**
+ * Audits a folder of Markdown sources that never reach dist, such as the gated briefs in infra/intake/briefs (contracts section 5.3). Each
+ * file is scanned as plain text, without its front matter, as the page `/briefs/<file name>/`, so a rule that is allowed on a path is
+ * allowed here on the same terms, and no data-claim-allow marker can exempt a line. Returns { files, findings } like auditDist.
+ * A folder that does not exist has no files: a brief-less repository has nothing to scan.
+ */
+export function auditSource(dir, options = {}) {
+  const set = options.set ?? DEFAULT_SET;
+  const findings = [];
+  let files = 0;
+  if (!existsSync(dir)) return { files, findings };
+  const visit = (current) => {
+    for (const name of readdirSync(current).sort()) {
+      const path = join(current, name);
+      if (statSync(path).isDirectory()) {
+        visit(path);
+        continue;
+      }
+      if (!name.endsWith('.md')) continue;
+      files += 1;
+      const body = readFileSync(path, 'utf8').replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+      const route = `/briefs/${name.slice(0, -'.md'.length)}/`;
+      for (const hit of scan(body, { route, rules: set.scanRules, flagValues: options.flagValues, plain: true })) {
+        findings.push({ where: path, rule: hit.rule, message: `${hit.rule} (${hit.claim}) matched "${hit.match}" in: ${hit.context}` });
+      }
+    }
+  };
+  visit(dir);
+  return { files, findings };
+}
+
 function selfTest() {
   const set = DEFAULT_SET;
   const off = {};
@@ -462,6 +495,21 @@ function selfTest() {
       },
     ],
     ['a Markdown twin stands for its page route', () => textRouteOf('insights/x.md') === '/insights/x/' && textRouteOf('index.md') === '/' && textRouteOf('llms.txt') === '/llms.txt'],
+    [
+      'a source Markdown folder is scanned as plain text without its front matter',
+      () => {
+        const dir = mkdtempSync(join(tmpdir(), 'audit-claims-source-'));
+        try {
+          writeFileSync(join(dir, 'bad.md'), '---\ntitle: There is no fee\n---\n\n## Cost\n\nThere is no fee to apply.\n');
+          writeFileSync(join(dir, 'good.md'), '---\ntitle: There is no fee\n---\n\n## Cost\n\nDedicated team seats, steered by WE.\n');
+          const found = auditSource(dir).findings;
+          return found.length > 0 && found.every((f) => f.where.endsWith('bad.md')) && found.some((f) => f.rule === 'W7-C09-no-fee');
+        } finally {
+          rmSync(dir, { recursive: true, force: true });
+        }
+      },
+    ],
+    ['a source folder that does not exist has nothing to scan', () => auditSource(join(tmpdir(), 'audit-claims-absent-folder')).files === 0],
     ['an identity word in a generated image alt is caught', () => checkManifest({ slots: [{ id: 'x', source: 'generated', alt: 'A founder at a desk' }] }, set.manifestRules).length === 1],
     ['an activity alt on a generated image passes', () => checkManifest({ slots: [{ id: 'x', source: 'generated', alt: 'Two hands arranging index cards on a desk' }] }, set.manifestRules).length === 0],
   ];
@@ -480,7 +528,7 @@ function parseCli(argv) {
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === '--self-test') cli.selfTest = true;
-    else if (arg === '--manifest' || arg === '--denylist') {
+    else if (arg === '--manifest' || arg === '--denylist' || arg === '--source') {
       const value = argv[i + 1];
       if (value === undefined) throw new Error(`${arg} needs a file path`);
       cli[arg.slice(2)] = value;
@@ -503,10 +551,13 @@ function main() {
   let result;
   try {
     const set = loadDenylist(cli.denylist);
-    const manifest = JSON.parse(readFileSync(cli.manifest, 'utf8'));
-    result = auditDist(cli.dist, { set, manifest });
+    if (cli.source !== undefined) result = auditSource(cli.source, { set });
+    else {
+      const manifest = JSON.parse(readFileSync(cli.manifest, 'utf8'));
+      result = auditDist(cli.dist, { set, manifest });
+    }
   } catch (error) {
-    console.error(`audit-claims: cannot audit ${cli.dist}: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(`audit-claims: cannot audit ${cli.source ?? cli.dist}: ${error instanceof Error ? error.message : String(error)}`);
     process.exit(2);
   }
   for (const finding of result.findings) console.error(`FAIL  ${finding.where}: ${finding.message}`);
