@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { journeyActions } from '../../components/families/actions.ts';
+import JourneyPage from '../../components/families/JourneyPage.astro';
+import { loadIsLive } from '../../components/families/load.ts';
+import { ogSlotFor } from '../../components/families/og.ts';
+import { assertFamilyData, resolveEntries } from '../../components/families/paths.ts';
+import type { JourneyData } from '../../components/families/types.ts';
+import { journeyView } from '../../components/families/view.ts';
+import { PROGRAM_STEPS } from '../../components/program/steps.ts';
+import { JOURNEY } from '../../data/families.ts';
+import { getRenderable } from '../../lib/content.ts';
+
+/** One page per journey step page (/journey/<page>/); the hub is index.astro. Needs the registry slug and a `pages` entry. */
+export const getStaticPaths = (async () => {
+  const pages = await getRenderable('pages');
+  return resolveEntries(JOURNEY, pages).map(({ entry, page }) => ({
+    params: { page: entry.slug },
+    props: { entry: page, slug: entry.slug, path: entry.path },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry, slug, path } = Astro.props;
+const data = assertFamilyData<JourneyData>(JOURNEY, slug, entry.data.family, 'journey');
+const isLive = await loadIsLive();
+const view = journeyView(data, PROGRAM_STEPS, isLive);
+---
+
+<JourneyPage page={entry} view={view} path={path} actions={journeyActions(slug, isLive)} ogSlot={ogSlotFor('journey')} />

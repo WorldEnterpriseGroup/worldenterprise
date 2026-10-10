@@ -1,0 +1,27 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { industryActions } from '../../components/families/actions.ts';
+import IndustryPage from '../../components/families/IndustryPage.astro';
+import { loadIsLive } from '../../components/families/load.ts';
+import { ogSlotFor } from '../../components/families/og.ts';
+import { assertFamilyData, resolveEntries } from '../../components/families/paths.ts';
+import type { IndustryData } from '../../components/families/types.ts';
+import { industryView } from '../../components/families/view.ts';
+import { INDUSTRIES } from '../../data/families.ts';
+import { getRenderable } from '../../lib/content.ts';
+
+/** One page per industry (/industries/<vertical>/): a route exists when the registry names the slug and a `pages` entry holds it. */
+export const getStaticPaths = (async () => {
+  const pages = await getRenderable('pages');
+  return resolveEntries(INDUSTRIES, pages).map(({ entry, page }) => ({
+    params: { vertical: entry.slug },
+    props: { page, slug: entry.slug, path: entry.path },
+  }));
+}) satisfies GetStaticPaths;
+
+const { page, slug, path } = Astro.props;
+const data = assertFamilyData<IndustryData>(INDUSTRIES, slug, page.data.family, 'industries');
+const actions = industryActions(await loadIsLive());
+---
+
+<IndustryPage page={page} view={industryView(data)} path={path} actions={actions} ogSlot={ogSlotFor('industries')} />

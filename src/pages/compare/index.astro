@@ -1,0 +1,25 @@
+---
+import { compareActions } from '../../components/families/actions.ts';
+import { HEADINGS_HUB } from '../../components/families/copy.ts';
+import FamilyHubPage from '../../components/families/FamilyHubPage.astro';
+import { loadIsLive } from '../../components/families/load.ts';
+import { ogSlotFor } from '../../components/families/og.ts';
+import { findHubPage, liveCards } from '../../components/families/paths.ts';
+import { COMPARISONS } from '../../data/families.ts';
+import { getRenderable } from '../../lib/content.ts';
+
+/** The comparison hub (/compare/). A card for a page that carries a blocked word shows its label alone (contracts section 8.1). */
+const pages = await getRenderable('pages');
+const isLive = await loadIsLive();
+---
+
+<FamilyHubPage
+  family="compare"
+  composition="compare"
+  page={findHubPage(COMPARISONS, pages)}
+  path="/compare/"
+  cards={liveCards(COMPARISONS, pages, isLive)}
+  listHeading={HEADINGS_HUB.compare}
+  actions={compareActions(isLive)}
+  ogSlot={ogSlotFor('compare')}
+/>
