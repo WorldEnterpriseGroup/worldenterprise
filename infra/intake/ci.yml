@@ -21,12 +21,15 @@ variables:
 
 .intake-bicep:
   before_script:
-    - curl --fail --silent --show-error --location --output /usr/local/bin/bicep "https://github.com/Azure/bicep/releases/download/${INTAKE_BICEP_VERSION}/bicep-linux-x64"
-    - echo "${INTAKE_BICEP_SHA256}  /usr/local/bin/bicep" | sha256sum --check --status
-    - chmod +x /usr/local/bin/bicep
+    # The job user cannot write to /usr/local/bin, so the binary lives in the project directory and goes on PATH.
+    - mkdir -p "${CI_PROJECT_DIR}/.tools"
+    - curl --fail --silent --show-error --location --output "${CI_PROJECT_DIR}/.tools/bicep" "https://github.com/Azure/bicep/releases/download/${INTAKE_BICEP_VERSION}/bicep-linux-x64"
+    - echo "${INTAKE_BICEP_SHA256}  ${CI_PROJECT_DIR}/.tools/bicep" | sha256sum --check --status
+    - chmod +x "${CI_PROJECT_DIR}/.tools/bicep"
+    - export PATH="${CI_PROJECT_DIR}/.tools:${PATH}"
   variables:
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: "1"
-    BICEP_BIN: /usr/local/bin/bicep
+    BICEP_BIN: "${CI_PROJECT_DIR}/.tools/bicep"
     REQUIRE_BICEP: "1"
 
 intake:test:
