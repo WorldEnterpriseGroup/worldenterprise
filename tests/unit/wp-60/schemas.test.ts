@@ -135,7 +135,7 @@ test('family industries: sources need an accessed date', () => {
 const side = { name: 'Side', whatItIs: text(60), whoItFits: text(60), asksOfFounder: text(60), askThis: [text(20), text(20)] };
 const compare = {
   id: 'compare',
-  slug: 'incubator-vs-accelerator',
+  slug: 'incubator-vs-other-programs',
   sides: [side, side],
   whereEachFits: [text(60), text(60)],
   definitions: ['s1', 's2'].map((sourceId) => ({ term: 'Term', text: text(60), sourceId })),

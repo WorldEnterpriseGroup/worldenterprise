@@ -1,0 +1,32 @@
+---
+import { resolveCta } from '../../data/cta/index.ts';
+import type { CtaCollection, CtaVariant } from '../../data/cta/index.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import CtaBand from './CtaBand.astro';
+
+/**
+ * The default content of the `cta-end` slot of every layout: the band that the default map of `src/data/cta` gives this document,
+ * or nothing. The layouts pass the collection their template serves and the frontmatter `cta` override, if the page has one.
+ */
+interface Props {
+  path: string;
+  collection: CtaCollection;
+  /** The desk id, for an article. */
+  topic?: string | undefined;
+  cta?: { readonly variant: CtaVariant; readonly briefId?: string | undefined } | undefined;
+}
+
+const { path, collection, topic, cta } = Astro.props;
+const state = await getRouteState();
+const model = resolveCta(
+  {
+    path,
+    collection,
+    ...(topic !== undefined ? { topic } : {}),
+    ...(cta !== undefined ? { frontmatterCta: { variant: cta.variant, ...(cta.briefId !== undefined ? { briefId: cta.briefId } : {}) } } : {}),
+  },
+  state.isLive,
+);
+---
+
+<CtaBand model={model} />

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CtaEnd from '../components/cta/CtaEnd.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { APPLY, jumpTo } from '../components/hero/ctas.ts';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
@@ -21,7 +22,7 @@ type Props = PageMeta & HeaderProps & {
   artifacts?: readonly { readonly title: string; readonly href: string; readonly description?: string }[];
 };
 
-const { eyebrow, lead, stage, steps, artifacts = [], primary = jumpTo('Read the steps', '#steps-title'), secondary = APPLY, photo, art, measure, ...meta } = Astro.props;
+const { eyebrow, lead, stage, steps, artifacts = [], primary = jumpTo('Read the steps', '#steps-title'), secondary = APPLY, photo, art, measure, cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 ---
 
@@ -57,4 +58,5 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
     )
   }
   <slot name="after" />
+  <slot name="cta-end">{!Astro.slots.has('after') && <CtaEnd path={meta.path} collection="playbooks" cta={cta} />}</slot>
 </BaseLayout>
