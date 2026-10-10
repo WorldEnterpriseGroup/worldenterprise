@@ -1,0 +1,852 @@
+{
+  "$comment": "Wave 8 write-set map (expanded plan: 32 packages). Pools: P0b = packages that run while the foundation is still landing (WP-60, WP-61, WP-71 and the nine round-1 article packages); P1 = every authoring package of the rolling window (at most ten agents at once, at most five branch pipelines at once); P2 = the stage-2 packages. A pattern that matches no tracked file is a file or folder this wave creates.",
+  "frozen": [
+    "package.json",
+    "package-lock.json",
+    "astro.config.mjs",
+    "tsconfig.json",
+    ".node-version",
+    "src/data/site.ts",
+    "src/data/flags.ts",
+    "src/data/claims.ts",
+    "src/data/routes.ts",
+    "src/data/nav.ts",
+    "src/lib/url.ts",
+    "src/lib/url-core.ts",
+    "src/lib/route-state.ts",
+    "src/lib/content.ts",
+    "src/content.config.ts",
+    "claims-denylist.json",
+    "CNAME",
+    "CLAUDE.md",
+    "plan.md",
+    ".claude/**",
+    ".astro-magazine/ownership.json",
+    ".astro-magazine/decisions.md",
+    "tests/unit/foundation/**",
+    "src/lib/env.ts",
+    "src/lib/route-core.ts",
+    "src/assets/photo/slots.ts"
+  ],
+  "frozenWave8": [
+    "src/data/desks.ts",
+    "src/data/forms.ts",
+    "src/scripts/forms.ts",
+    "src/components/forms/**",
+    "docs/forms-contract.md",
+    "docs/forms-contract.schema.json",
+    "docs/wave8-contracts.md",
+    "src/components/insights/**",
+    "src/lib/rehype-mid-cta.ts",
+    "src/lib/content-files.ts",
+    "src/lib/content-schemas.ts",
+    "src/layouts/**",
+    "src/components/layout/**",
+    "scripts/audit-gated-briefs.mjs",
+    "scripts/lib/gated-briefs.mjs",
+    "src/data/families.ts"
+  ],
+  "photographyLane": [
+    "src/assets/photo/**",
+    "src/assets/og/**",
+    "src/components/media/**",
+    "scripts/build-og.mjs",
+    ".astro-magazine/media/**",
+    ".astro-magazine/handoffs/wp-12*",
+    ".astro-magazine/sources/wp-12b.json",
+    "scripts/photo/**",
+    "tests/unit/wp-12b/**",
+    "tests/unit/wp-12c/**",
+    "tests/unit/wp-12d/**",
+    "src/components/cards/**",
+    "src/components/ui/Card.astro",
+    "src/components/hero/HeroAtlas.astro",
+    "src/components/hero/HeroEditorial.astro",
+    "src/components/home/HomeHero.astro",
+    "src/components/services/LineAside.astro",
+    "src/pages/program/who-its-for.astro",
+    "src/pages/pricing/index.astro"
+  ],
+  "releaseLane": [
+    "scripts/release-preflight.mjs",
+    "scripts/lib/release-gate.mjs",
+    "docs/runbook-release.md",
+    "scripts/ci/**",
+    ".astro-magazine/release/**",
+    ".gitlab-ci.yml",
+    "tests/unit/wp-30/**",
+    ".astro-magazine/handoffs/wp-30*"
+  ],
+  "workPackages": [
+    {
+      "id": "WP-60",
+      "stage": 0,
+      "pools": [
+        "P0b"
+      ],
+      "title": "Foundation: ledger and registries at scale, 14 desks, page-family registry, forms v2, CTA skeleton, nav lens, ownership, count-pin conversion, decisions",
+      "writes": [
+        "package.json",
+        "package-lock.json",
+        "astro.config.mjs",
+        "src/content.config.ts",
+        "src/data/routes.ts",
+        "src/data/nav.ts",
+        "src/data/claims.ts",
+        "src/data/flags.ts",
+        "src/data/desks.ts",
+        "src/data/families.ts",
+        "src/data/forms.ts",
+        "src/data/cta/**",
+        "claims-denylist.json",
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/decisions.md",
+        ".astro-magazine/plans/**",
+        ".gitlab-ci.yml",
+        "playwright.config.ts",
+        "lighthouserc.json",
+        "scripts/check-ownership.mjs",
+        "scripts/audit-claims.mjs",
+        "scripts/audit-route-ledger.mjs",
+        "scripts/run-lighthouse.mjs",
+        "scripts/audit-gated-briefs.mjs",
+        "scripts/lib/audit-dist.mjs",
+        "scripts/lib/export-ledger.mjs",
+        "scripts/lib/ledger.mjs",
+        "scripts/lib/gated-briefs.mjs",
+        "src/lib/route-core.ts",
+        "src/lib/route-state.ts",
+        "src/lib/content-files.ts",
+        "src/lib/content-schemas.ts",
+        "src/content/briefs/.gitkeep",
+        "src/lib/rehype-mid-cta.ts",
+        "src/components/insights/**",
+        "src/components/forms/**",
+        "src/scripts/forms.ts",
+        "src/components/cta/**",
+        "src/components/nav/panels.ts",
+        "src/layouts/**",
+        "src/components/layout/**",
+        "src/styles/motion.css",
+        "src/pages/insights/**",
+        "src/pages/apply/**",
+        "src/pages/contact/**",
+        "src/content/pages/apply/**",
+        "src/content/pages/contact/**",
+        "docs/forms-contract.md",
+        "docs/forms-contract.schema.json",
+        "docs/wave8-contracts.md",
+        "docs/wave7-handoff.md",
+        "docs/wave7-contracts.md",
+        "tests/unit/foundation/**",
+        "tests/unit/wp-03/**",
+        "tests/unit/wp-04/**",
+        "tests/unit/wp-05/**",
+        "tests/unit/wp-06/**",
+        "tests/unit/wp-08/**",
+        "tests/unit/wp-11/**",
+        "tests/unit/wp-18/**",
+        "tests/unit/wp-19/**",
+        "tests/unit/wp-40/**",
+        "tests/unit/wp-43/**",
+        "tests/unit/wp-17/heroes.test.ts",
+        "tests/unit/wp-60/**",
+        "tests/e2e/*.spec.ts",
+        "tests/e2e/support/**",
+        "tests/e2e/wave7/wp-43/**",
+        "tests/e2e/wave8/wp-60/**",
+        ".astro-magazine/handoffs/wp-60*",
+        ".astro-magazine/sources/wp-60.json",
+        "tests/unit/wp-62/legacy-founders-page.test.ts",
+        "tests/unit/wp-64/legacy-investors-page.test.ts"
+      ],
+      "exclude": [],
+      "frozenExceptions": [
+        "package.json",
+        "package-lock.json",
+        "astro.config.mjs",
+        "src/content.config.ts",
+        "src/data/routes.ts",
+        "src/data/nav.ts",
+        "src/data/claims.ts",
+        "src/data/flags.ts",
+        "claims-denylist.json",
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/decisions.md",
+        "tests/unit/foundation/**",
+        "src/lib/route-core.ts",
+        "src/lib/route-state.ts"
+      ],
+      "serializeWithRelease": [
+        ".gitlab-ci.yml"
+      ]
+    },
+    {
+      "id": "WP-61",
+      "stage": 0,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Intake service: Function, Dataverse, Front Door, brief delivery for 10 briefs, four audiences, privacy facts",
+      "writes": [
+        "infra/intake/src/**",
+        "infra/intake/iac/**",
+        "infra/intake/dataverse/**",
+        "infra/intake/render/**",
+        "infra/intake/tests/**",
+        "infra/intake/ci.yml",
+        "infra/intake/package.json",
+        "infra/intake/package-lock.json",
+        "infra/intake/tsconfig.json",
+        "infra/intake/README.md",
+        "docs/intake-runbook.md",
+        "docs/forms-privacy-facts.md",
+        "src/content/pages/legal/privacy.md",
+        "tests/unit/wp-10/**",
+        "tests/unit/wp-61/**",
+        ".astro-magazine/handoffs/wp-61*",
+        ".astro-magazine/sources/wp-61.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-71",
+      "stage": 0,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Brand system and page-family templates: family route files and components, vector compositions, brand story and kit, press, brand consistency audit",
+      "writes": [
+        "src/assets/brand/**",
+        "src/components/brand/**",
+        "src/components/families/**",
+        "src/pages/founders/[segment].astro",
+        "src/pages/industries/**",
+        "src/pages/compare/**",
+        "src/pages/journey/**",
+        "src/pages/about/brand-story/**",
+        "src/content/pages/about/brand-story.mdx",
+        "src/pages/press/**",
+        "src/content/pages/press/**",
+        "src/components/islands/we-brand-copy/**",
+        "src/scripts/brand-copy.ts",
+        "tests/unit/wp-71/**",
+        "tests/e2e/wave8/wp-71/**",
+        ".astro-magazine/handoffs/wp-71*",
+        ".astro-magazine/sources/wp-71.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-66",
+      "stage": 1,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Articles: Funding and capital desk (10)",
+      "writes": [
+        "src/content/insights/funding/**",
+        "src/content/pages/insights/topic-funding.mdx",
+        ".astro-magazine/handoffs/wp-66*",
+        ".astro-magazine/sources/wp-66.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-67",
+      "stage": 1,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Articles: Legal and company basics desk (8) and Fundable (+3)",
+      "writes": [
+        "src/content/insights/legal/**",
+        "src/content/insights/fundable/**",
+        "src/content/pages/insights/topic-legal.mdx",
+        "src/content/pages/insights/topic-fundable.mdx",
+        ".astro-magazine/handoffs/wp-67*",
+        ".astro-magazine/sources/wp-67.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-68",
+      "stage": 1,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Articles: Team and hiring desk (9)",
+      "writes": [
+        "src/content/insights/team/**",
+        "src/content/pages/insights/topic-team.mdx",
+        ".astro-magazine/handoffs/wp-68*",
+        ".astro-magazine/sources/wp-68.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-69",
+      "stage": 1,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Articles: AI-native building desk (9)",
+      "writes": [
+        "src/content/insights/ai/**",
+        "src/content/pages/insights/topic-ai.mdx",
+        ".astro-magazine/handoffs/wp-69*",
+        ".astro-magazine/sources/wp-69.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-81",
+      "stage": 1,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Articles: Go-to-market, pricing and sales desk (10)",
+      "writes": [
+        "src/content/insights/gtm/**",
+        "src/content/pages/insights/topic-gtm.mdx",
+        ".astro-magazine/handoffs/wp-81*",
+        ".astro-magazine/sources/wp-81.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-82",
+      "stage": 1,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Articles: Build (+6, product management among them) and Dream (+3)",
+      "writes": [
+        "src/content/insights/build/**",
+        "src/content/insights/dream/**",
+        "src/content/pages/insights/topic-build.mdx",
+        "src/content/pages/insights/topic-dream.mdx",
+        ".astro-magazine/handoffs/wp-82*",
+        ".astro-magazine/sources/wp-82.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-83",
+      "stage": 1,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Articles: Starting out desk (10): first-time, technical, non-technical, solo, student, second-career, intrapreneur and global founders",
+      "writes": [
+        "src/content/insights/starting/**",
+        "src/content/pages/insights/topic-starting.mdx",
+        ".astro-magazine/handoffs/wp-83*",
+        ".astro-magazine/sources/wp-83.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-84",
+      "stage": 1,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Articles: Pathways desk (10): the routes into a company and the routes to capital",
+      "writes": [
+        "src/content/insights/pathways/**",
+        "src/content/pages/insights/topic-pathways.mdx",
+        ".astro-magazine/handoffs/wp-84*",
+        ".astro-magazine/sources/wp-84.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-85",
+      "stage": 1,
+      "pools": [
+        "P0b",
+        "P1"
+      ],
+      "title": "Articles: Business models desk (8): B2B SaaS, vertical SaaS, marketplaces, platforms; Grow (+2)",
+      "writes": [
+        "src/content/insights/models/**",
+        "src/content/insights/grow/**",
+        "src/content/pages/insights/topic-models.mdx",
+        "src/content/pages/insights/topic-grow.mdx",
+        ".astro-magazine/handoffs/wp-85*",
+        ".astro-magazine/sources/wp-85.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-62",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "CTA system and home: audience variants, hub and page placement, mid-body map, home, founders hub",
+      "writes": [
+        "src/components/cta/**",
+        "src/data/cta/**",
+        "src/components/blocks/ContextualNext.astro",
+        "src/pages/index.astro",
+        "src/pages/founders/index.astro",
+        "src/components/home/audience/**",
+        "src/components/home/LatestInsights.astro",
+        "src/content/pages/home/**",
+        "src/content/pages/founders/index.mdx",
+        "src/content/pages/insights/index.mdx",
+        "tests/unit/wp-01/**",
+        "tests/unit/wp-44/**",
+        "tests/e2e/wave7/wp-44/**",
+        "tests/unit/wp-62/**",
+        "tests/e2e/wave8/wp-62/**",
+        ".astro-magazine/handoffs/wp-62*",
+        ".astro-magazine/sources/wp-62.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-63",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Gated briefs system: squeeze pages, hub, thanks, research links, and the first three startup briefs",
+      "writes": [
+        "src/pages/briefs/**",
+        "src/content/pages/briefs/**",
+        "src/components/briefs/**",
+        "src/content/briefs/funding-paths.md",
+        "infra/intake/briefs/funding-paths.md",
+        "src/content/briefs/company-setup.md",
+        "infra/intake/briefs/company-setup.md",
+        "src/content/briefs/ai-native-build.md",
+        "infra/intake/briefs/ai-native-build.md",
+        "src/pages/research/**",
+        "src/components/research/**",
+        "src/content/pages/research/**",
+        "tests/unit/wp-07/**",
+        "tests/unit/wp-63/**",
+        "tests/e2e/wave8/wp-63/**",
+        ".astro-magazine/handoffs/wp-63*",
+        ".astro-magazine/sources/wp-63.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-64",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Investor journey: invitation, meet the startups, what you can see, readiness criteria, showcase format, FAQ, interest form, consent-gated portfolio",
+      "writes": [
+        "src/pages/investors/**",
+        "src/content/pages/investors/**",
+        "src/components/investors/**",
+        "src/content/portfolio/**",
+        "tests/unit/wp-64/**",
+        "tests/e2e/wave8/wp-64/**",
+        ".astro-magazine/handoffs/wp-64*",
+        ".astro-magazine/sources/wp-64.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-65",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Partner journey: categories, how partners work with founders, partner FAQ, enquiry form, network page rewrite",
+      "writes": [
+        "src/pages/network/**",
+        "src/content/pages/network/**",
+        "src/components/network/**",
+        "src/components/partners/**",
+        "tests/unit/wp-65/**",
+        "tests/e2e/wave8/wp-65/**",
+        ".astro-magazine/handoffs/wp-65*",
+        ".astro-magazine/sources/wp-65.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-72",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Customer journey pages: what happens after you apply, the first months in order, onboarding checklist, journey hub, founder resources hub",
+      "writes": [
+        "src/content/pages/journey/**",
+        "src/components/journey/**",
+        "src/pages/resources/**",
+        "src/content/pages/resources/**",
+        "src/components/reference/resources.ts",
+        "tests/unit/wp-72/**",
+        "tests/e2e/wave8/wp-72/**",
+        ".astro-magazine/handoffs/wp-72*",
+        ".astro-magazine/sources/wp-72.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-73",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Founder segment pages (8), each with its own path to apply: first-time, technical, non-technical, solo, corporate innovators, student, second-career, global remote",
+      "writes": [
+        "src/content/pages/founders/first-time-founders.mdx",
+        "src/content/pages/founders/technical-founders.mdx",
+        "src/content/pages/founders/non-technical-founders.mdx",
+        "src/content/pages/founders/solo-founders.mdx",
+        "src/content/pages/founders/corporate-innovators.mdx",
+        "src/content/pages/founders/student-founders.mdx",
+        "src/content/pages/founders/second-career-founders.mdx",
+        "src/content/pages/founders/global-remote-founders.mdx",
+        "src/components/segments/**",
+        "tests/unit/wp-73/**",
+        "tests/e2e/wave8/wp-73/**",
+        ".astro-magazine/handoffs/wp-73*",
+        ".astro-magazine/sources/wp-73.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-74",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Industry pages (7): considerations for building SaaS for a vertical, no claimed clients",
+      "writes": [
+        "src/content/pages/industries/**",
+        "src/components/industries/**",
+        "tests/unit/wp-74/**",
+        "tests/e2e/wave8/wp-74/**",
+        ".astro-magazine/handoffs/wp-74*",
+        ".astro-magazine/sources/wp-74.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-75",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Comparison pages (7): honest, balanced category comparisons, no named products",
+      "writes": [
+        "src/content/pages/compare/**",
+        "src/components/compare/**",
+        "tests/unit/wp-75/**",
+        "tests/e2e/wave8/wp-75/**",
+        ".astro-magazine/handoffs/wp-75*",
+        ".astro-magazine/sources/wp-75.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-76",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Founder tools: runway calculator, pricing-page checker, cap-table explainer, tools hub",
+      "writes": [
+        "src/pages/tools/index.astro",
+        "src/pages/tools/runway-calculator.astro",
+        "src/pages/tools/pricing-page-checker.astro",
+        "src/pages/tools/cap-table-explainer.astro",
+        "src/content/pages/tools/index.mdx",
+        "src/content/pages/tools/runway-calculator.mdx",
+        "src/content/pages/tools/pricing-page-checker.mdx",
+        "src/content/pages/tools/cap-table-explainer.mdx",
+        "src/components/tools/**",
+        "src/components/islands/we-runway/**",
+        "src/components/islands/we-pricing-checker/**",
+        "src/components/islands/we-cap-table/**",
+        "src/scripts/runway.ts",
+        "src/scripts/pricing-checker.ts",
+        "src/scripts/cap-table.ts",
+        "tests/e2e/wave7/wp-49/**",
+        "tests/unit/wp-49/**",
+        "tests/unit/wp-76/**",
+        "tests/e2e/wave8/wp-76/**",
+        ".astro-magazine/handoffs/wp-76*",
+        ".astro-magazine/sources/wp-76.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-91",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Discoverability at scale: markdown twins, llms files, sitemap, feeds, search and palette for 120 articles and eight page families",
+      "writes": [
+        "src/components/geo/**",
+        "src/lib/llms.ts",
+        "src/lib/markdown-twins.ts",
+        "src/pages/llms.txt.ts",
+        "src/pages/llms-full.txt.ts",
+        "src/pages/[...path].md.ts",
+        "src/pages/sitemap.astro",
+        "src/pages/rss.xml.ts",
+        "src/pages/robots.txt.ts",
+        "src/pages/search/**",
+        "src/components/islands/we-search/**",
+        "src/components/islands/we-palette/**",
+        "src/components/nav/commands.ts",
+        "src/scripts/search.ts",
+        "src/scripts/palette.ts",
+        "scripts/audit-geo.mjs",
+        "tests/unit/wp-41/**",
+        "tests/unit/wp-46/**",
+        "tests/e2e/wave7/wp-41/**",
+        "tests/e2e/wave7/wp-46/**",
+        "tests/unit/wp-91/**",
+        "tests/e2e/wave8/wp-91/**",
+        ".astro-magazine/handoffs/wp-91*",
+        ".astro-magazine/sources/wp-91.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-88",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Articles: Sectors desk (8): considerations for fintech, healthtech, edtech and climate-tech founders, no outcome claims",
+      "writes": [
+        "src/content/insights/sectors/**",
+        "src/content/pages/insights/topic-sectors.mdx",
+        ".astro-magazine/handoffs/wp-88*",
+        ".astro-magazine/sources/wp-88.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-89",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Articles: Founder operations and wellbeing desk (8)",
+      "writes": [
+        "src/content/insights/ops/**",
+        "src/content/pages/insights/topic-ops.mdx",
+        ".astro-magazine/handoffs/wp-89*",
+        ".astro-magazine/sources/wp-89.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-77",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Glossary at scale: 40 to about 120 terms, grouped, generic definitions",
+      "writes": [
+        "src/data/glossary.yaml",
+        "src/pages/glossary/**",
+        "src/components/reference/GlossaryList.astro",
+        "src/components/reference/jsonld.ts",
+        "tests/unit/wp-77/**",
+        ".astro-magazine/handoffs/wp-77*",
+        ".astro-magazine/sources/wp-77.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-78",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "FAQ at scale: 18 to about 60 questions grouped by audience",
+      "writes": [
+        "src/data/faq.yaml",
+        "src/pages/faq/**",
+        "tests/unit/wp-78/**",
+        ".astro-magazine/handoffs/wp-78*",
+        ".astro-magazine/sources/wp-78.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-79",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Gated briefs 4 to 6: first 100 customers, pre-seed evidence pack, first hires",
+      "writes": [
+        "src/content/briefs/first-100-customers.md",
+        "infra/intake/briefs/first-100-customers.md",
+        "src/content/briefs/pre-seed-evidence-pack.md",
+        "infra/intake/briefs/pre-seed-evidence-pack.md",
+        "src/content/briefs/first-hires.md",
+        "infra/intake/briefs/first-hires.md",
+        ".astro-magazine/handoffs/wp-79*",
+        ".astro-magazine/sources/wp-79.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-80",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Gated briefs for investors, partners and corporate innovators (4)",
+      "writes": [
+        "src/content/briefs/early-stage-diligence.md",
+        "infra/intake/briefs/early-stage-diligence.md",
+        "src/content/briefs/ai-company-diligence.md",
+        "infra/intake/briefs/ai-company-diligence.md",
+        "src/content/briefs/partnering-with-founders.md",
+        "infra/intake/briefs/partnering-with-founders.md",
+        "src/content/briefs/corporate-spinouts.md",
+        "infra/intake/briefs/corporate-spinouts.md",
+        ".astro-magazine/handoffs/wp-80*",
+        ".astro-magazine/sources/wp-80.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-86",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Playbooks: depth on five, about five new",
+      "writes": [
+        "src/content/playbooks/**",
+        "src/content/pages/playbooks/**",
+        "src/pages/playbooks/**",
+        "src/components/playbooks/**",
+        "tests/unit/wp-86/**",
+        ".astro-magazine/handoffs/wp-86*",
+        ".astro-magazine/sources/wp-86.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-87",
+      "stage": 1,
+      "pools": [
+        "P1"
+      ],
+      "title": "Guides, templates and readiness check: depth on four guides, about four new, about six new templates (absorbs WP-47)",
+      "writes": [
+        "src/content/guides/**",
+        "src/content/pages/fundability/**",
+        "src/pages/fundability/**",
+        "src/components/fundability/**",
+        "src/content/library/**",
+        "src/pages/library/**",
+        "src/components/library/**",
+        "src/components/islands/we-readiness-check/**",
+        "src/scripts/readiness-check.ts",
+        "tests/unit/wp-87/**",
+        "tests/e2e/wave8/wp-87/**",
+        ".astro-magazine/handoffs/wp-87*",
+        ".astro-magazine/sources/wp-87.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-90",
+      "stage": 2,
+      "pools": [
+        "P1",
+        "P2"
+      ],
+      "title": "Customer-journey end-to-end suite: one map per audience, primary and secondary call to action per page family",
+      "writes": [
+        "tests/e2e/wave8/journeys/**",
+        "tests/unit/wp-90/**",
+        ".astro-magazine/handoffs/wp-90*",
+        ".astro-magazine/sources/wp-90.json"
+      ],
+      "exclude": []
+    },
+    {
+      "id": "WP-99",
+      "stage": 2,
+      "pools": [
+        "P2"
+      ],
+      "title": "Integrator: seams, mega-menu final IA, cut flags, release gate, handoff, close-out",
+      "writes": [
+        "tests/e2e/*.spec.ts",
+        "tests/e2e/support/**",
+        "scripts/lib/wave8/**",
+        "docs/wave8-handoff.md",
+        ".astro-magazine/handoffs/wave8*",
+        "tests/unit/wp-99/**",
+        "tests/e2e/wave8/wp-99/**",
+        ".astro-magazine/handoffs/wp-99*",
+        ".astro-magazine/sources/wp-99.json"
+      ],
+      "exclude": [],
+      "exceptionsDeclared": [
+        "src/data/routes.ts",
+        "src/data/nav.ts",
+        "src/data/families.ts",
+        "src/data/desks.ts",
+        "tests/unit/foundation/fixtures/nav-snapshot.json",
+        ".gitlab-ci.yml",
+        "lighthouserc.json",
+        ".astro-magazine/decisions.md",
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/release/RELEASE.md"
+      ],
+      "serializeWithRelease": [
+        ".gitlab-ci.yml",
+        ".astro-magazine/release/RELEASE.md"
+      ]
+    }
+  ],
+  "legacyPins": {
+    "$comment": "Wave 8 legacy test policy (W8-18). A legacy test is owned by the package that rewrites what it pins. Tests that pin files of two or more packages are owned by WP-60, which splits the page-specific assertions verbatim into the owner's seed file. Tests below are acknowledged: they scan whole directories (invariants every new file must satisfy), belong to a lane, or only name a path inside a string list.",
+    "acknowledged": {
+      "tests/unit/wp-12b/markup.test.ts": "photography lane; scans every page for img markup; invariant",
+      "tests/unit/wp-12c/hero-srcset.test.ts": "photography lane; pins the home hero markup; WP-62 leaves the hero markup alone",
+      "tests/unit/wp-15/ownership.test.ts": "names src/pages/index.astro in a blocked-path list, reads no page",
+      "tests/unit/wp-15/lastmod.test.ts": "fixture strings for the lastmod lookup, reads no page",
+      "tests/unit/wp-15/image-type.test.ts": "invariant: hubs and landing pages carry no raw img so the hero loads the first image; the playbooks and fundability pages stay inside it",
+      "tests/unit/wp-15/seat-roles.test.ts": "pins src/components/network/roles.ts; WP-65 keeps that file's API and content",
+      "tests/unit/wp-16/table-wrap.test.ts": "pins one existing article table; existing articles are extended, never rewritten or renamed",
+      "tests/unit/wp-17/heroes.test.ts": "directory scans over pages, layouts and components; the no-raw-img and hero rules are invariants",
+      "tests/unit/wp-42/composer-package.test.ts": "pins pricing.mdx and team-composer.mdx; no wave 8 package edits them",
+      "tests/unit/wp-42/copy-guard.test.ts": "pins pricing.mdx and team-composer.mdx; no wave 8 package edits them",
+      "tests/unit/wp-45/props.ts": "pinned-props rule: new optional props and new components are free; WP-60 keeps every layout and component API additive",
+      "tests/unit/wp-45/pinned-props.test.ts": "same rule as props.ts",
+      "tests/unit/wp-02/services.test.ts": "reads the playbooks folder only to build a slug set, so added playbooks are safe; no wave 8 package edits the services pages",
+      "tests/unit/wp-41/content.ts": "reads src/data/faq.yaml and src/data/glossary.yaml to build the llms inputs and scans src/content as a corpus; WP-77 and WP-78 keep every existing entry id and wording verbatim (additions only), and WP-91 owns the file if the loader must change",
+      "tests/unit/wp-41/llms.test.ts": "takes the intake-calendar sentence verbatim from the existing FAQ entry; WP-78 keeps that entry unchanged (additions only)",
+      "tests/unit/wp-01/program.test.ts": "pins existing FAQ entries; WP-78 adds entries and never rewords or removes one",
+      "tests/unit/wp-49/evidence-room.test.ts": "pins the readiness statements and the data-room guide that the evidence-room tool reads; WP-87 keeps the existing statement ids and the data-room checklist wording (additions only)"
+    }
+  }
+}

@@ -6,8 +6,13 @@ import { DESKS, DESK_LABELS, listInsights } from '../../../components/insights/a
 import type { Desk } from '../../../components/insights/articles.ts';
 import InsightCard from '../../../components/insights/InsightCard.astro';
 import { insightPath, insightSlug, readingMinutes } from '../../../components/insights/articles.ts';
+import { getRenderable } from '../../../lib/content.ts';
 
-export const getStaticPaths = (() => DESKS.map((topic) => ({ params: { topic } }))) satisfies GetStaticPaths;
+// A desk gets a topic page once it holds an article (route-core.ts DESK_TOPIC_PATTERN): a desk nobody has written for has no page.
+export const getStaticPaths = (async () => {
+  const published = await getRenderable('insights');
+  return DESKS.filter((desk) => published.some((entry) => entry.data.topic === desk)).map((topic) => ({ params: { topic } }));
+}) satisfies GetStaticPaths;
 
 const topic = Astro.params.topic as Desk;
 const label = DESK_LABELS[topic];

@@ -67,6 +67,8 @@ test('"fundable" as an outcome and the peers family appear in source only where 
       // Navigation entries for a route that is not launched; l2 items are never rendered.
       'src/data/nav.ts',
       'src/data/routes.ts',
+      // The comparison page's slug and its blockedWord field: the one registry entry whose label drops the word (families.test.ts proves it).
+      'src/data/families.ts',
     ],
     'C-21-phrase': ['src/data/claims.ts', 'src/pages/program/dedicated-teams.astro'],
   };
