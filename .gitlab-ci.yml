@@ -206,12 +206,33 @@ audit:wired:
       exit "$status"
 
 # Route smoke, element-level layout fit at 1440, 390 and 320 px, folds, shell, screenshots at 1440 and 390 (JPEG, attached as artifacts).
+#
+# Artifact size. Every route and project writes a full-page JPEG to test-results/screenshots/ and attaches it, and the HTML report copies each
+# attachment into playwright-report/data/, so the screenshots were stored twice. The 2026-10-10 archive was 931.5 MB (pipeline 65783), and the next
+# wave 8 articles pushed it past the coordinator's 1 GB upload limit (413 Request Entity Too Large, job 1130973, after all tests passed).
+# The copies in the report are the ones a reviewer opens, so the loose ones are excluded; traces and the rest still upload on failure.
+# Measured on job 1131436 (784.8 MB, after the first exclude): playwright-report/data 391 MB (378 JPEGs) and test-results/<test>/attachments
+# 390 MB (the same 378 JPEGs, which Playwright copies there when a test attaches a file by path); traces, junit and the report shell 3 MB.
+# The attachments copies are excluded too, which leaves the one copy in the report.
+# The archive is kept 3 days, not a week: it is the one large artifact and object storage runs on single-copy volumes after the 2026-10-10 outage.
+#
+# Sharding. The job ran 23 minutes when the runner was quiet and hit the one-hour job timeout under contention (wp/74 pipeline 65894), and
+# every new article adds two route tests, a layout test and a fold test. Playwright splits the tests (fullyParallel is on, so by test, not by
+# file) over three jobs, and each shard uploads its own archive, so no single archive nears the upload limit either. Each shard's
+# playwright-report/ covers only its own tests; they are not merged: a blob merge job would have to download and re-upload the same
+# screenshots, and a failure names its test and shard in the job log. `needs: e2e:routes` waits for all three shards.
 e2e:routes:
   extends: [.e2e]
+  parallel: 3
+  artifacts:
+    exclude:
+      - test-results/screenshots/**
+      - test-results/**/attachments/**
+    expire_in: 3 days
   script:
     # `layout.spec` and not `layout`: the filter is a regular expression on the file path, and `layout` would also pull in layout-shift.spec.ts,
     # which has its own job (e2e:stability) and is timing-sensitive when four workers share the runner with a thousand other tests.
-    - npx playwright test routes layout.spec folds shell
+    - npx playwright test routes layout.spec folds shell --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
 
 # axe on every route and with the navigation open.
 e2e:a11y:
@@ -345,6 +366,10 @@ e2e:forms:
     - npm run audit:csp
     - node scripts/lib/export-ledger.mjs reports/ledger.json
     - npx playwright test forms
+    # Wave 8 form specs run their endpoint-mode cases here, in the only build that has an endpoint: a test titled @endpoint skips itself
+    # elsewhere (it checks the form's data-mode), so e2e:wave8 holds the disabled-mode cases and this command the endpoint ones. E2E_WAVE8 is set
+    # on this command alone, so the command above never loads the wave 8 projects, and --grep keeps every other wave 8 test in e2e:wave8.
+    - E2E_WAVE8=1 npx playwright test --project=wave8-desktop-1440x900 --project=wave8-mobile-390x844 --grep @endpoint --pass-with-no-tests
   artifacts:
     when: always
     expire_in: 1 week

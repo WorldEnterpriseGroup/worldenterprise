@@ -1580,6 +1580,26 @@
       "reason": "Created by WP-00, owned by WP-03 (plan 8.4); not frozen."
     },
     {
+      "wp": "WP-63",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 8 R2: /briefs/ going live exposes a third /briefs/ link in the For you panel (nav-identity allows lead + tile only) and the menu row width at 1100/1140; WP-63 removes the duplicate Startup-column Briefs link, ruled by the integrator 2026-10-10."
+    },
+    {
+      "wp": "WP-60",
+      "path": "tests/unit/wp-16/nav-css.test.ts",
+      "reason": "Wave 8 CI follow-up (#40): the one regex that pins the 1100-1279.98px .mega-nav__list gap moves from --sp-3 to --sp-1 with the css change above, taken over from WP-63 (ruled by the integrator 2026-10-10)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/styles/components.css",
+      "reason": "Wave 8 CI follow-up (#40): the shared breadcrumb rule needs a 24px target-size floor (WCAG 2.2 2.5.8, found by WP-75's e2e). Scoped to the .breadcrumbs li rule and to the .mega-nav__list gap in the 1100-1279.98px block (WP-63's eighth top-level item overflowed the header row at 1100 and 1140 px, taken over from WP-63); WP-71 and WP-63 cannot edit the shared stylesheet, ruled by the integrator 2026-10-10."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/scripts/nav.ts",
+      "reason": "Wave 8 CI follow-up (#40): the hover-intent timer reopened a panel that Escape had just closed (e2e:wave7 nav-identity flake, pipeline 65931). Scoped to cancelling that timer on toggle, click and Escape; ruled by the integrator 2026-10-10."
+    },
+    {
       "wp": "WP-14",
       "path": "scripts/{audit-contrast,audit-claims}.mjs",
       "reason": "Created by WP-00; handed to WP-14 after G0 (plan 3.2: policed by WP-14)."
@@ -1793,6 +1813,36 @@
       "wp": "WP-41",
       "path": ".astro-magazine/release/RELEASE.md",
       "reason": "WP-41 (#30): /about/facts/ names Investor Introductions, so a new counsel-checklist CR entry for src/content/pages/about/facts.mdx is added, marked release 2 (not in release-1-rc2)."
+    },
+    {
+      "wp": "WP-62",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3): scoped to the CR entry for src/pages/founders/index.astro, a file in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-63",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3): scoped to CR entries for files in this package's own write set (src/pages/briefs/**, src/content/pages/briefs/**, src/components/briefs/**, src/content/briefs/*.md, src/pages/research/**, src/content/pages/research/**). No pinned file is there today; a new file under src that names Investor Introductions must be listed (release-doc.test.ts), and this lets its owner add that entry. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-64",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3): scoped to the CR entries for src/content/pages/investors/index.mdx and src/pages/investors/index.astro (and any new file under this package's write set that names Investor Introductions). The rebuilt /investors/ moves the quoted lines, and the counsel record changes in the same commit as the copy it quotes. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-65",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3): scoped to the CR entries for src/pages/network/index.astro and src/content/pages/network/index.mdx (and any new file under this package's write set that names Investor Introductions). The counsel record changes in the same commit as the copy it quotes. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-67",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3): scoped to the CR entries for src/content/pages/insights/topic-fundable.mdx and src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx, both in this package's write set. Same rule: the counsel record changes with the copy it quotes. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-78",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3): scoped to the CR entry for src/data/faq.yaml, a file in this package's own write set. Same rule: the counsel record changes with the copy it quotes. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
     },
     {
       "wp": "WP-12c",

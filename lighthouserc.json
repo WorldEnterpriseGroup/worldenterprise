@@ -1,7 +1,7 @@
 {
-  "$comment": "Read by scripts/run-lighthouse.mjs. Budgets follow SAGE-PLAN 6.9: mobile, simulated throttling, zero third-party requests.",
+  "$comment": "Read by scripts/run-lighthouse.mjs. Budgets follow SAGE-PLAN 6.9: mobile, simulated throttling, zero third-party requests. Each route is judged on the median of up to `runs` runs (timings and scores), so one stall on the shared runner does not fail it; the budgets themselves are unchanged.",
   "formFactor": "mobile",
-  "maxRoutes": 12,
+  "maxRoutes": 15,
   "candidates": [
     "/",
     "/program/",
@@ -15,10 +15,9 @@
     "/about/facts/",
     "/tools/",
     "/tools/metrics-calculator/",
-    "/faq/",
-    "/pricing/",
-    "/playbooks/",
-    "/fundability/"
+    "/tools/runway-calculator/",
+    "/tools/pricing-page-checker/",
+    "/tools/cap-table-explainer/"
   ],
   "scores": { "performance": 0.9, "accessibility": 1, "seo": 1, "best-practices": 0.95 },
   "metrics": { "lcpMs": 2500, "cls": 0.1, "tbtMs": 200 },
@@ -26,5 +25,5 @@
     "maxGzipBytes": 10240,
     "exemptPrefixes": ["/tools/", "/fundability/", "/search/", "/apply/", "/contact/", "/pricing/", "/newsletter/"]
   },
-  "retries": 1
+  "runs": 3
 }

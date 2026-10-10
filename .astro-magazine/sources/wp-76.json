@@ -1,0 +1,936 @@
+{
+  "wp": "WP-76",
+  "fetches": [],
+  "documents": [
+    {
+      "path": "src/components/tools/copy.ts",
+      "sentences": [
+        {
+          "text": "Clear all numbers",
+          "label": true
+        },
+        {
+          "text": "Clear all ticks",
+          "label": true
+        },
+        {
+          "text": "An illustration from your inputs, not advice.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "Needs a fix",
+          "label": true
+        },
+        {
+          "text": "Not defined",
+          "label": true
+        },
+        {
+          "text": "Your numbers stay on this page.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Nothing is saved or sent anywhere, and nothing is put in the address bar.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Your ticks stay on this page.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Waiting",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/components/tools/registry.ts",
+      "sentences": [
+        {
+          "text": "Runway calculator",
+          "label": true
+        },
+        {
+          "text": "Type cash, net burn and, if you want it, burn growth, and see runway in months, rounded down, with every step of the working shown.",
+          "page": "src/content/pages/tools/runway-calculator.mdx#round-down"
+        },
+        {
+          "text": "Tools that run in your browser.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Your numbers and choices stay on the page.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Pricing page checker",
+          "label": true
+        },
+        {
+          "text": "Check",
+          "label": true
+        },
+        {
+          "text": "Tick the statements from the launch checklist in the pricing page article that are true of your own page.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "See a count of what is marked and what is left.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "Cap table explainer",
+          "label": true
+        },
+        {
+          "text": "Type the shares you hold, the shares others hold and the shares to issue.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "See your ownership before and after, with every division shown.",
+          "page": "src/scripts/cap-table.ts"
+        }
+      ]
+    },
+    {
+      "path": "src/components/islands/we-runway/spec.ts",
+      "sentences": [
+        {
+          "text": "Cash on hand",
+          "label": true
+        },
+        {
+          "text": "What the company holds now, in one currency.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Net burn per month",
+          "label": true
+        },
+        {
+          "text": "Cash out less cash in over a month.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Enter 0 if cash grew.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Burn growth per month (%)",
+          "label": true
+        },
+        {
+          "text": "Optional.",
+          "label": true
+        },
+        {
+          "text": "How much faster burn grows each month, from 0 to 100.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Runway at level burn",
+          "label": true
+        },
+        {
+          "text": "Runway with growing burn",
+          "label": true
+        },
+        {
+          "text": "Cash and burn",
+          "label": true
+        },
+        {
+          "text": "What the company holds, how fast it is falling, and, if you want to see it, how fast that fall is speeding up.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Use one currency for every amount.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "The results carry no currency sign.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "Results: runway",
+          "label": true
+        },
+        {
+          "text": "Cash on hand divided by net burn per month, rounded down to one decimal place.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Net burn stays the same every month.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#what-the-arithmetic-hides"
+        },
+        {
+          "text": "Cash on hand is the money in the bank today, not money owed to the company.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Net burn is cash out less cash in over a month, so a month with no net burn has no runway to count.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "The first month uses the net burn you entered.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Each later month uses the month before it multiplied by 1 plus the growth percent divided by 100.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Add up the months until the next one would use more than the cash left.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Runway is the whole months funded plus the cash left divided by that next month’s burn, rounded down to one decimal place.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Burn grows by the same percent every month.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "A burn that falls is not modeled.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Enter 0 for growth and use level burn.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "The count stops at 1,200 months, which is 100 years.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "How each number is worked out",
+          "label": true
+        },
+        {
+          "text": "Every result above comes from the formula in this table.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#where-the-formulas-come-from"
+        },
+        {
+          "text": "Whichever you report, say which one you used and what you assumed.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#report-the-same-way-every-time"
+        },
+        {
+          "text": "Formulas and assumptions for the runway calculator",
+          "label": true
+        },
+        {
+          "text": "Formulas used by the runway calculator",
+          "label": true
+        },
+        {
+          "text": "Result",
+          "label": true
+        },
+        {
+          "text": "Formula",
+          "label": true
+        },
+        {
+          "text": "Assumptions",
+          "label": true
+        },
+        {
+          "text": "Each result is arithmetic on the three numbers you type.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "Level burn is a single division.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Growing burn adds each month’s burn in turn, so the working can be checked by hand, month by month.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Figures in the working are rounded for display, and runway is always rounded down.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "The calculator checks arithmetic, not your books: it cannot tell whether an entry is right.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "It treats cash as the bank balance and net burn as one month repeated, ignores the timing of payments, tax, loans and currency movements, and shows no benchmark or target.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#what-this-article-cannot-tell-you"
+        },
+        {
+          "text": "A result is not a forecast, and it says nothing about whether anyone will invest or lend.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "Cash, burn and, if you want it, burn growth in.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Months of runway out, with every step shown.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "JavaScript is off.",
+          "label": true
+        },
+        {
+          "text": "The fields below need JavaScript, but the formulas still work by hand: every one is listed in the table further down.",
+          "page": "src/pages/tools/metrics-calculator.astro"
+        },
+        {
+          "text": "Start calculating",
+          "label": true
+        },
+        {
+          "text": "Read the formulas",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/tools/index.mdx",
+      "sentences": [
+        {
+          "text": "Tools for an early SaaS founder: sketch a team, work out your numbers, and prepare your evidence.",
+          "page": "src/content/pages/tools/evidence-room.mdx"
+        },
+        {
+          "text": "Each one runs in your browser.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/tools/runway-calculator.mdx",
+      "sentences": [
+        {
+          "text": "Runway calculator",
+          "label": true
+        },
+        {
+          "text": "Enter cash, net burn and optional burn growth to see runway in months, rounded down, with every step shown.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "Nothing leaves the page.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Tool",
+          "label": true
+        },
+        {
+          "text": "Your numbers stay on this page",
+          "label": true
+        },
+        {
+          "text": "The calculator works in your browser.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "It sends nothing, it saves nothing, and it does not put your numbers in the address bar, so closing the tab removes them.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "The page makes no request after it loads, and you can confirm that in your browser's network panel.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "What the results are not",
+          "label": true
+        },
+        {
+          "text": "The results are arithmetic on the numbers you typed.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "They are not advice, a forecast, or a statement about whether anyone will invest, and WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "The calculator cannot tell whether an entry is right.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "It does not say how much runway is enough, because that depends on your plan and no source supports a number.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx"
+        },
+        {
+          "text": "Level burn and growing burn",
+          "label": true
+        },
+        {
+          "text": "Runway at level burn tells you what happens if nothing changes, and something will.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#what-the-arithmetic-hides"
+        },
+        {
+          "text": "It is the same division the metrics calculator uses for runway.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "The second result lets you try a burn that grows by a percent each month, and the working shows each step so you can check it by hand.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Round down",
+          "label": true
+        },
+        {
+          "text": "Runway is rounded down to one decimal place, because a figure rounded up flatters the position.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "The article on runway and burn works through one invented example.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        }
+      ]
+    },
+    {
+      "path": "src/components/islands/we-pricing-checker/spec.ts",
+      "sentences": [
+        {
+          "text": "Each plan has a one-line statement of who it is for.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "The pricing unit is named and explained in one sentence.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "Every limit appears in the units the customer uses.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "The page says what happens at a limit, how billing works and how to cancel.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "The comparison table uses real headers and does not depend on color alone.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "Two real customer questions are answered on the page.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "A way to reach a person is visible.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "The reason for the current price is written down somewhere you will find it later.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "Statements marked true",
+          "label": true
+        },
+        {
+          "text": "Statements not yet marked",
+          "label": true
+        },
+        {
+          "text": "Your pricing page",
+          "label": true
+        },
+        {
+          "text": "Read your own pricing page, then tick each statement that is true of it today.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "True of my pricing page today",
+          "label": true
+        },
+        {
+          "text": "Results: pricing page statements",
+          "label": true
+        },
+        {
+          "text": "Tick a statement to see this.",
+          "label": true
+        },
+        {
+          "text": "The number of statements you have ticked, out of all the statements in the list.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "A tick means the statement is true of your page today, as you judge it.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "Each statement counts once, and no statement counts for more than another.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "The count is not a score, a grade or a percent.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "The numbers, in list order, of the statements you have not ticked.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "The numbers are the ones in the list above.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "A statement that is not ticked is not yet marked true.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "It is not marked false.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "How each count is worked out",
+          "label": true
+        },
+        {
+          "text": "Every result above comes from the rule in this table.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "The statements themselves come from the launch checklist in the article on pricing page fundamentals.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "Rules and assumptions of the pricing checker",
+          "label": true
+        },
+        {
+          "text": "Rules used by the pricing page checker",
+          "label": true
+        },
+        {
+          "text": "Result",
+          "label": true
+        },
+        {
+          "text": "Rule",
+          "label": true
+        },
+        {
+          "text": "Assumptions",
+          "label": true
+        },
+        {
+          "text": "Each result is a count of the ticks you make, or the numbers of the statements you have not ticked.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "Nothing is weighed, ranked or compared, so the same ticks always give the same counts.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "The checker cannot see your page, so it cannot tell whether a tick is true.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "It checks for presence, not quality: a statement can be true of a page that still confuses its buyers.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#test-the-page-with-real-readers"
+        },
+        {
+          "text": "It shows no benchmark or target, and a count is not a forecast of how the page will be read.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "Eight statements from a launch checklist.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "Tick the ones that are true of your page, and see what is left.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "JavaScript is off.",
+          "label": true
+        },
+        {
+          "text": "The ticks below need JavaScript, but the rules still work by hand: every statement is listed, and the table further down explains each count.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "Start checking",
+          "label": true
+        },
+        {
+          "text": "Read the rules",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/tools/pricing-page-checker.mdx",
+      "sentences": [
+        {
+          "text": "Pricing page checker",
+          "label": true
+        },
+        {
+          "text": "Tick the statements that are true of your own pricing page and see a count of what is marked and what is left.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "Nothing leaves the page.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Tool",
+          "label": true
+        },
+        {
+          "text": "Your ticks stay on this page",
+          "label": true
+        },
+        {
+          "text": "The checker works in your browser.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "It sends nothing, it saves nothing, and it does not put your ticks in the address bar, so closing the tab removes them.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "The page makes no request after it loads, and you can confirm that in your browser's network panel.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "What the count is not",
+          "label": true
+        },
+        {
+          "text": "The count is not a score, a grade or a verdict on your page.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "It is arithmetic on the ticks you made, it is not advice, and WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "The checker cannot see your page, so it cannot tell whether a tick is true.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "It checks for presence, not quality.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "Where the statements come from",
+          "label": true
+        },
+        {
+          "text": "The statements are the launch checklist at the end of the article on pricing page fundamentals, in the same order.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#a-launch-checklist-for-the-page"
+        },
+        {
+          "text": "The article explains why each one matters, and it says to test the page with real readers before launch.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#test-the-page-with-real-readers"
+        },
+        {
+          "text": "Read the page as a buyer would",
+          "label": true
+        },
+        {
+          "text": "A tick is your own judgment, so the checker is a prompt to look again, not a test the page passes.",
+          "page": "src/scripts/pricing-checker.ts"
+        },
+        {
+          "text": "Ask three people who match your buyer to read the page without your help, and compare what they say with what you ticked.",
+          "page": "src/content/insights/grow/pricing-page-fundamentals-for-a-first-saas.md#test-the-page-with-real-readers"
+        }
+      ]
+    },
+    {
+      "path": "src/components/islands/we-cap-table/spec.ts",
+      "sentences": [
+        {
+          "text": "Shares you hold",
+          "label": true
+        },
+        {
+          "text": "Whole shares, as your own cap table shows them.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Other shares already issued",
+          "label": true
+        },
+        {
+          "text": "Every issued share that is not yours, as a whole number.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "New shares to issue",
+          "label": true
+        },
+        {
+          "text": "Whole shares to issue to someone else.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Enter 0 to see no change.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Your ownership today",
+          "label": true
+        },
+        {
+          "text": "Your ownership after the issue",
+          "label": true
+        },
+        {
+          "text": "Change in your ownership",
+          "label": true
+        },
+        {
+          "text": "Shares issued after the issue",
+          "label": true
+        },
+        {
+          "text": "Shares",
+          "label": true
+        },
+        {
+          "text": "Count whole shares from your own cap table.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "The new shares go to someone else, not to you.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Results: ownership",
+          "label": true
+        },
+        {
+          "text": "Shares you hold divided by all issued shares, which is your shares plus the other shares already issued, shown as a percent.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Only issued shares are counted.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Every share counts the same, whatever its class.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Shares you hold divided by all issued shares once the new shares are added, shown as a percent.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "The new shares go to someone else.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Nothing else changes: no share is bought back, sold or cancelled.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Your ownership after the issue less your ownership today, in percentage points.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "The difference is worked from the unrounded figures, then rounded.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "A negative change means the shares you hold are a smaller part of a larger total.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Your shares, plus the other shares already issued, plus the new shares.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Whole shares only.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "How each number is worked out",
+          "label": true
+        },
+        {
+          "text": "Every result above comes from the formula in this table.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#where-the-formulas-come-from"
+        },
+        {
+          "text": "Whichever you report, say which one you used and what you assumed.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#report-the-same-way-every-time"
+        },
+        {
+          "text": "Formulas and assumptions of the explainer",
+          "label": true
+        },
+        {
+          "text": "Formulas used by the cap table explainer",
+          "label": true
+        },
+        {
+          "text": "Result",
+          "label": true
+        },
+        {
+          "text": "Formula",
+          "label": true
+        },
+        {
+          "text": "Assumptions",
+          "label": true
+        },
+        {
+          "text": "Each result is arithmetic on the three numbers you type.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "Ownership is one division, the change is one subtraction, and the total is one sum, so every figure can be checked by hand.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Percents are rounded to two decimal places for display.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "The explainer checks arithmetic, not your records: it cannot tell whether an entry matches your signed documents.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "It counts issued shares only, so options, promised options and any other right to shares are left out.",
+          "page": "src/content/insights/funding/cap-table-basics-for-founders.mdx#options-and-other-rights-to-buy-shares"
+        },
+        {
+          "text": "It counts shares, not money, and it shows no benchmark or target.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "A result is not a forecast, and it says nothing about whether anyone will invest.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "The shares you hold, the shares others hold and the new shares in.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Ownership before and after out, with every division shown.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "JavaScript is off.",
+          "label": true
+        },
+        {
+          "text": "The fields below need JavaScript, but the formulas still work by hand: every one is listed in the table further down.",
+          "page": "src/pages/tools/metrics-calculator.astro"
+        },
+        {
+          "text": "Start counting",
+          "label": true
+        },
+        {
+          "text": "Read the formulas",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/tools/cap-table-explainer.mdx",
+      "sentences": [
+        {
+          "text": "Cap table explainer",
+          "label": true
+        },
+        {
+          "text": "Enter the shares you hold, the shares others hold and the shares to issue, and see ownership before and after.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Nothing leaves the page.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Tool",
+          "label": true
+        },
+        {
+          "text": "Your numbers stay on this page",
+          "label": true
+        },
+        {
+          "text": "The explainer works in your browser.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "It sends nothing, it saves nothing, and it does not put your numbers in the address bar, so closing the tab removes them.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "The page makes no request after it loads, and you can confirm that in your browser's network panel.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "What the results are not",
+          "label": true
+        },
+        {
+          "text": "The results are arithmetic on the numbers you typed.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "They are not advice, a forecast, or a statement about whether anyone will invest, and WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "The explainer cannot tell whether an entry matches your signed documents.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "It counts shares only, so it cannot tell you what to issue, to whom or on what terms.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "How issuing shares changes ownership",
+          "label": true
+        },
+        {
+          "text": "Your ownership is the number of shares you hold divided by all the shares issued.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "When the company issues new shares to someone else, the number you hold stays the same, but it becomes a smaller part of a larger total, so your ownership falls.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "That fall is often called dilution.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "The explainer shows each division and the change, so you can check them by hand.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "What it counts and leaves out",
+          "label": true
+        },
+        {
+          "text": "The explainer counts issued shares only.",
+          "page": "src/scripts/cap-table.ts"
+        },
+        {
+          "text": "Options, promised options and any other right to shares are left out, because they are not yet shares.",
+          "page": "src/content/insights/funding/cap-table-basics-for-founders.mdx#options-and-other-rights-to-buy-shares"
+        },
+        {
+          "text": "A fully diluted count adds them in.",
+          "page": "src/content/insights/funding/cap-table-basics-for-founders.mdx#what-fully-diluted-means"
+        },
+        {
+          "text": "The article on cap table basics explains what that count contains.",
+          "page": "src/content/insights/funding/cap-table-basics-for-founders.mdx#what-fully-diluted-means"
+        }
+      ]
+    }
+  ],
+  "markers": []
+}

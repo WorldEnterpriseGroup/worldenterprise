@@ -1,0 +1,86 @@
+---
+import { CLEAR_NUMBERS, NUMBERS_PRIVACY } from '../../tools/copy.ts';
+import ToolField from '../../tools/ToolField.astro';
+import ToolPrivacy from '../../tools/ToolPrivacy.astro';
+import ToolResult from '../../tools/ToolResult.astro';
+import { waitingText } from '../../../scripts/cap-table.ts';
+import { INPUTS, ISLAND, RESULTS } from './spec.ts';
+
+/**
+ * <we-cap-table>: the shares a founder holds, the shares others hold and the new shares to issue in; ownership before and after out, in
+ * the browser. The markup is complete without JavaScript, except that the fields are rendered disabled: a visitor without a script is
+ * not handed controls that do nothing, and the formulas below the explainer stand on their own. The script enables the fields and
+ * fills the results.
+ *
+ * The results region is `role="status"` and polite, and each result is a fixed block, so updating one moves nothing. Nothing is stored
+ * or sent, and the numbers never reach the address bar.
+ */
+---
+
+<we-cap-table class="cap">
+  <ToolPrivacy text={NUMBERS_PRIVACY} />
+  <form class="cap__form" novalidate autocomplete="off">
+    <section class="cap__panel" aria-labelledby="cap-panel-title">
+      <h2 id="cap-panel-title" class="cap__title">{ISLAND.panelTitle}</h2>
+      <p class="cap__intro">{ISLAND.panelIntro}</p>
+      <div class="cap__fields">
+        {INPUTS.map((input) => <ToolField prefix="cap" id={input.id} label={input.label} hint={input.hint} inputmode="numeric" />)}
+      </div>
+      <div class="cap__live" role="status" aria-live="polite" aria-label={ISLAND.liveLabel}>
+        <dl class="cap__results">
+          {
+            RESULTS.map((result) => {
+              const waiting = waitingText(result.id);
+              return <ToolResult id={result.id} name={result.name} display={waiting.display} detail={waiting.detail} />;
+            })
+          }
+        </dl>
+      </div>
+    </section>
+    <div class="cluster">
+      <button class="btn btn--quiet" type="reset" disabled>{CLEAR_NUMBERS}</button>
+    </div>
+  </form>
+</we-cap-table>
+
+<script>
+  import { defineCapTable } from '../../../scripts/cap-table.ts';
+  defineCapTable();
+</script>
+
+<style>
+  @layer pages {
+    .cap {
+      display: grid;
+      gap: var(--sp-6);
+    }
+
+    .cap__form {
+      display: grid;
+      gap: var(--sp-7);
+    }
+
+    .cap__panel {
+      container-type: inline-size;
+      display: grid;
+      gap: var(--sp-4);
+      font-family: var(--ff-sans);
+    }
+
+    .cap__title {
+      font-size: var(--fs-xl);
+    }
+
+    .cap__intro {
+      color: var(--color-text-muted);
+      max-inline-size: 62ch;
+    }
+
+    .cap__fields,
+    .cap__results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: var(--sp-4) var(--sp-5);
+    }
+  }
+</style>

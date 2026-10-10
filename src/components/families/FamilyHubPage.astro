@@ -38,6 +38,7 @@ const Content = page !== undefined ? (await render(page)).Content : undefined;
 
 <HubLayout
   title={page?.data.title ?? fallback.title}
+  seoTitle={page?.data.seoTitle}
   description={page?.data.description ?? fallback.description}
   path={path}
   lead={page?.data.description ?? fallback.lead}
