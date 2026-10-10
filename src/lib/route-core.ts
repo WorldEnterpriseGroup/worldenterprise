@@ -119,7 +119,8 @@ export interface RouteContext {
 function pagesEntryExists(prefixSegments: string[], param: string, ctx: RouteContext): boolean {
   const ids = ctx.entryIds.pages;
   if (ids === undefined) return false;
-  const base = [...prefixSegments, param].join('/');
+  // The root of a rest route (`industries/[...hub]`) has an empty parameter; dropping it keeps the base `industries`, not `industries/`.
+  const base = [...prefixSegments, param].filter((part) => part !== '').join('/');
   return ids.has(base) || ids.has(`${base}/index`);
 }
 
