@@ -2,6 +2,9 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { parse } from 'yaml';
 import { routeOfEntry } from '../../../src/components/reference/resources.ts';
+import { listPageFiles } from '../../../src/lib/page-files.ts';
+import { computeRouteState, entryRouteIds, fileToRoute } from '../../../src/lib/route-core.ts';
+import type { PageFileRoute, RouteState } from '../../../src/lib/route-core.ts';
 import type { MetaCollection, MetaEntry } from '../../../src/components/reference/resources.ts';
 
 /**
@@ -63,4 +66,31 @@ export function routesOf(entries: readonly DiskEntry[]): Map<string, DiskEntry> 
     if (!byRoute.has(route)) byRoute.set(route, entry);
   }
   return byRoute;
+}
+
+/** The collections the build counts as pages (COLLECTION_NAMES in src/lib/route-state.ts). */
+const ROUTE_COLLECTIONS = ['pages', 'services', 'playbooks', 'guides', 'insights', 'research', 'library', 'briefs'] as const;
+
+/**
+ * The route state of the tree on disk, computed by the build's own pure functions: the page files under src/pages and the published
+ * (non-draft) entry ids of each collection. A route the hub lists is live here exactly when it is live in the build.
+ */
+export function routeStateOnDisk(root: string): RouteState {
+  const pageRoutes = listPageFiles(root).flatMap((file): PageFileRoute[] => {
+    const route = fileToRoute(file);
+    return route === null ? [] : [route];
+  });
+  const entryIds: Record<string, Set<string>> = {};
+  for (const collection of ROUTE_COLLECTIONS) {
+    const ids = new Set<string>();
+    const folder = join(root, 'src/content', collection);
+    for (const path of filesUnder(folder)) {
+      const match = /^---\n([\s\S]*?)\n---/.exec(readFileSync(path, 'utf8'));
+      const data = match?.[1] === undefined ? {} : (parse(match[1]) as Frontmatter);
+      if (data.draft === true) continue;
+      for (const id of entryRouteIds(collection, relative(folder, path).replace(/\.mdx?$/, ''))) ids.add(id);
+    }
+    entryIds[collection] = ids;
+  }
+  return computeRouteState({ pageRoutes, entryIds });
 }

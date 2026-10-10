@@ -43,7 +43,7 @@ test.describe('resources hub', () => {
 
   test('every card link resolves to a built page', async ({ page, request }) => {
     await page.goto(ROUTE);
-    const hrefs = await page.locator('main li a[href]').evaluateAll((links) => links.map((a) => (a as HTMLAnchorElement).getAttribute('href') ?? ''));
+    const hrefs = await page.locator('main a.card__link').evaluateAll((links) => links.map((a) => (a as HTMLAnchorElement).getAttribute('href') ?? ''));
     expect(hrefs.length).toBeGreaterThan(0);
     for (const href of new Set(hrefs)) {
       expect(href.startsWith('/'), `${href} is a site link`).toBe(true);
@@ -52,16 +52,16 @@ test.describe('resources hub', () => {
     }
   });
 
-  test('the stage path never lists a page twice, and a card has the title of the page it opens', async ({ page, request }) => {
+  test('the stage path never lists a page twice, and a card is titled as the page it opens', async ({ page }) => {
     await page.goto(ROUTE);
-    const stage = page.locator('main section[aria-labelledby="resources-stage"] li a[href]');
-    const hrefs = await stage.evaluateAll((links) => links.map((a) => (a as HTMLAnchorElement).getAttribute('href') ?? ''));
-    expect(new Set(hrefs).size).toBe(hrefs.length);
-    const first = hrefs[0];
-    if (first === undefined) return;
-    const title = (await stage.first().textContent())?.trim() ?? '';
-    const html = await (await request.get(first)).text();
-    expect(html).toContain(title.split('\n')[0]?.trim() ?? title);
+    const links = page.locator('main section[aria-labelledby="resources-stage"] a.card__link');
+    const cards = await links.evaluateAll((nodes) => nodes.map((a) => ({ href: (a as HTMLAnchorElement).getAttribute('href') ?? '', title: a.textContent?.trim() ?? '' })));
+    expect(new Set(cards.map((c) => c.href)).size).toBe(cards.length);
+    for (const card of cards.slice(0, 3)) {
+      await page.goto(card.href);
+      const opened = await page.evaluate(() => ({ heading: document.querySelector('h1')?.textContent?.trim() ?? '', title: document.title }));
+      expect(opened.heading === card.title || opened.title.includes(card.title), `${card.href} is titled "${opened.heading}", the card says "${card.title}"`).toBe(true);
+    }
   });
 
   test('the funding disclaimer sits with the raise stage', async ({ page }) => {

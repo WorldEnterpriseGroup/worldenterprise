@@ -11,7 +11,7 @@ import type { LedgerRow, MetaEntry, ResourceGroup } from '../../../src/component
 import { repoViewAt } from '../wp-60/repo-view.ts';
 import { checkSentences } from '../wp-60/sources.ts';
 import type { SourcesFile } from '../wp-60/sources.ts';
-import { readDiskEntries } from './disk-meta.ts';
+import { readDiskEntries, routeStateOnDisk } from './disk-meta.ts';
 import { derivedSentences, derivedSources, ownedSentences } from './resources-copy.ts';
 
 /**
@@ -28,9 +28,9 @@ const root = new URL('../../../', import.meta.url).pathname;
 const entries = readDiskEntries(root);
 const meta = metaLookup(entries);
 const ledger: readonly LedgerRow[] = routes;
-const launched = new Set(routes.filter((r) => r.launch).map((r) => r.path));
-/** Stands in for the build's route state: a launched ledger row whose page exists on disk (it has a content entry or a static row). */
-const built = (path: string): boolean => launched.has(path) && meta(path) !== undefined;
+/** The build's own route state, computed over the tree on disk: a route is live when it is launched and its page file and entry exist. */
+const state = routeStateOnDisk(root);
+const built = (path: string): boolean => state.isLive(path);
 const pathsOf = (groups: readonly ResourceGroup[]): string[] => groups.flatMap((g) => g.items.map((i) => i.path));
 
 // A fixture ledger: a few rows of each library-family layout, with one row of each that is not live.
@@ -200,4 +200,11 @@ test('every title and description the hub reads from another page is mapped to t
       assert.equal(row.page, item.page, `"${item.text}" maps to ${row.page}, but it comes from ${item.page}`);
     }
   }
+});
+
+test('the hub states no duration, in its own copy or in the descriptions it shows', () => {
+  const unit = '(?:hours?|days?|weeks?|months?|quarters?|years?)';
+  const patterns = [new RegExp(`\\d+\\s*[-\\u2013]?\\s*${unit}\\b`, 'i'), /\b30\s*[/-]\s*60\s*[/-]\s*90\b/];
+  const texts = [...ownedSentences(), ...derivedSentences(entries, ledger, built).map((d) => d.text)];
+  for (const text of texts) for (const pattern of patterns) assert.doesNotMatch(text, pattern, `"${text}"`);
 });
