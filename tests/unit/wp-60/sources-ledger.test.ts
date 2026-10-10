@@ -4,8 +4,9 @@ import { join } from 'node:path';
 import { test } from 'node:test';
 import { parse } from 'yaml';
 import { listCollectionFiles, listInsightFiles } from '../../../src/lib/content-files.ts';
-import { checkMarkers, checkSourcesFile, classifyHost, fetchDate } from './sources.ts';
-import type { DocumentFacts, FetchRecord, SourcesFile } from './sources.ts';
+import { repoViewAt } from './repo-view.ts';
+import { checkMarkers, checkSourcesFile, classifyHost, fetchDate, h2SlugsOf, slugify } from './sources.ts';
+import type { DocumentFacts, FetchRecord, SentenceRecord, SourcesFile } from './sources.ts';
 
 /**
  * The sources ledger (docs/wave8-contracts.md, section 9). A package that writes a document with sources records, in
@@ -72,6 +73,7 @@ function factsFor(path: string): DocumentFacts | undefined {
 }
 
 const real = loadSourcesFiles();
+const repo = repoViewAt(root);
 
 function factsMap(paths: readonly string[]): Map<string, DocumentFacts> {
   const map = new Map<string, DocumentFacts>();
@@ -89,7 +91,7 @@ function factsMap(paths: readonly string[]): Map<string, DocumentFacts> {
 for (const file of real) {
   test(`${file.wp} sources file holds every sources rule`, () => {
     const facts = factsMap((file.documents ?? []).map((d) => d.path));
-    assert.deepEqual(checkSourcesFile(file, facts), []);
+    assert.deepEqual(checkSourcesFile(file, facts, repo), []);
   });
 }
 
@@ -207,7 +209,7 @@ test('host classes: government, standards, university and vendor documentation h
   assert.equal(classifyHost('https://www.w3.org/x'), 'standards');
   assert.equal(classifyHost('https://www.ycombinator.com/documents'), 'standards');
   assert.equal(classifyHost('https://law.stanford.edu/x'), 'university');
-  assert.equal(classifyHost('https://developer.mozilla.org/x'), 'vendor');
+  assert.equal(classifyHost('https://docs.stripe.com/x'), 'vendor');
   assert.equal(classifyHost('https://irs.gov.evil.example/x'), 'unlisted');
   assert.equal(classifyHost('https://notiso.org/x'), 'unlisted');
   assert.equal(classifyHost('not a url'), 'unlisted');
@@ -216,10 +218,10 @@ test('host classes: government, standards, university and vendor documentation h
 test('a vendor documentation host cannot source a statistic or a regulation, and a regulation needs a statute, agency or standards source', () => {
   const vendor = (kind: 'statistic' | 'regulation'): SourcesFile => ({
     ...base(),
-    fetches: [fetchRecord({ id: 'irs', url: 'https://developer.mozilla.org/a' }), fetchRecord({ id: 'sec', url: 'https://www.sec.gov/b' })],
+    fetches: [fetchRecord({ id: 'irs', url: 'https://docs.stripe.com/a' }), fetchRecord({ id: 'sec', url: 'https://www.sec.gov/b' })],
     documents: [{ path: DOC, claims: [{ id: 'A1', sentence: 'x', kind, sourceId: 'irs', locator: 'p1', quote: 'q' }] }],
   });
-  const f = facts({ sources: [{ id: 'irs', url: 'https://developer.mozilla.org/a', accessed: '2026-10-13' }, { id: 'sec', url: 'https://www.sec.gov/b', accessed: '2026-10-13' }] });
+  const f = facts({ sources: [{ id: 'irs', url: 'https://docs.stripe.com/a', accessed: '2026-10-13' }, { id: 'sec', url: 'https://www.sec.gov/b', accessed: '2026-10-13' }] });
   assert.ok(check(vendor('statistic'), f).some((p) => p.includes('vendor documentation host')));
   assert.ok(check(vendor('regulation'), f).some((p) => p.includes('needs a statute, agency or standards-body source')));
   const university: SourcesFile = { ...vendor('regulation'), fetches: [fetchRecord({ id: 'irs', url: 'https://law.stanford.edu/a' }), fetchRecord({ id: 'sec', url: 'https://www.sec.gov/b' })] };
@@ -228,6 +230,155 @@ test('a vendor documentation host cannot source a statistic or a regulation, and
 
 test('a document that does not exist fails', () => {
   assert.ok(checkSourcesFile(base(), new Map()).some((p) => p.includes('does not exist')));
+});
+
+// Page copy (a component or a data module) is listed with `sentences`, and each sentence needs one mapping.
+const COPY_DOC = 'src/data/cta/targets.ts';
+const copyFile = (sentences: SentenceRecord[]): SourcesFile => ({ wp: 'WP-99', fetches: [], documents: [{ path: COPY_DOC, sentences }] });
+const checkCopy = (sentences: SentenceRecord[]): string[] => checkSourcesFile(copyFile(sentences), new Map(), repo);
+
+test('page copy: a sentence mapped to a claim, a page with a heading, a decision or a short label passes', () => {
+  assert.deepEqual(checkCopy([
+    { text: 'WE makes no promise of funding.', claim: 'C-05' },
+    { text: 'Read what WE does and does not do.', page: 'src/content/pages/investors/index.mdx#What WE does' },
+    { text: 'Read the steps after you apply.', page: 'src/content/pages/apply/apply.mdx' },
+    { text: 'Request the brief', decision: 'W8-6' },
+    { text: 'Open the tools', label: true },
+  ]), []);
+});
+
+test('page copy: an unmapped sentence, a double mapping, a repeated sentence and an empty one fail', () => {
+  assert.ok(checkCopy([{ text: 'Nothing maps this.' }]).some((p) => p.includes('exactly one of')));
+  assert.ok(checkCopy([{ text: 'Two.', claim: 'C-05', decision: 'W8-6' }]).some((p) => p.includes('exactly one of')));
+  assert.ok(checkCopy([{ text: 'Same.', claim: 'C-05' }, { text: 'Same.', claim: 'C-05' }]).some((p) => p.includes('listed twice')));
+  assert.ok(checkCopy([{ text: ' ', claim: 'C-05' }]).some((p) => p.includes('empty sentence')));
+});
+
+test('page copy: a bad claim id, a bad decision id, a page that is missing or has no heading, and a long label fail', () => {
+  assert.ok(checkCopy([{ text: 'a', claim: 'claim-5' }]).some((p) => p.includes('not a claim id')));
+  assert.ok(checkCopy([{ text: 'b', decision: 'because' }]).some((p) => p.includes('not a decision id')));
+  assert.ok(checkCopy([{ text: 'c', page: 'src/content/pages/nothing-here.mdx#Heading' }]).some((p) => p.includes('does not exist')));
+  assert.ok(checkCopy([{ text: 'd', page: 'src/content/pages/investors/index.mdx#Nothing like this' }]).some((p) => p.includes('is not an H2')));
+  assert.ok(checkCopy([{ text: 'd2', page: 'src/content/pages/investors/index.mdx#' }]).some((p) => p.includes('empty heading')));
+  assert.ok(checkCopy([{ text: 'one two three four five six seven eight', label: true }]).some((p) => p.includes('too long to be a label')));
+});
+
+test('page copy: a claim id or a decision id that is not in its registry fails', () => {
+  assert.ok(checkCopy([{ text: 'f', claim: 'C-99' }]).some((p) => p.includes('not in the claims registry')));
+  assert.ok(checkCopy([{ text: 'g', decision: 'W8-999' }]).some((p) => p.includes('not in .astro-magazine/decisions.md')));
+  assert.ok(checkCopy([{ text: 'h', decision: 'D-20' }, { text: 'i', decision: 'W8-1' }]).length === 0, 'a D-nn and a W8-nn decision that exist pass');
+});
+
+test('page copy: a bare page path is valid, and a heading matches an H2 by its slug, not its case or punctuation', () => {
+  assert.deepEqual(checkCopy([{ text: 'j', page: 'src/content/pages/investors/index.mdx' }]), []);
+  assert.deepEqual(checkCopy([{ text: 'k', page: 'src/content/pages/investors/index.mdx#what-we-does' }]), []);
+  assert.deepEqual(checkCopy([{ text: 'l', page: 'src/content/pages/investors/index.mdx#WHAT WE DOES?' }]), []);
+});
+
+test('the H2 reader takes Markdown and HTML headings and ignores deeper ones', () => {
+  assert.deepEqual(h2SlugsOf('# One\n\n## Two & Three\n\n### Four\n\n<h2 class="x">Five <em>six</em></h2>\n'), ['two-three', 'five-six']);
+  assert.equal(slugify('  What WE does! '), 'what-we-does');
+});
+
+// A desk page (src/content/pages/insights/topic-*.mdx) has no sources and a strict schema: it carries sentences and no claims.
+const DESK_PAGE = 'src/content/pages/investors/index.mdx';
+const deskFile = (doc: { claims?: [] }): SourcesFile => ({ wp: 'WP-99', fetches: [], documents: [{ path: DESK_PAGE, ...doc, sentences: [{ text: 'm', page: DESK_PAGE }] }] });
+const deskFacts = new Map([[DESK_PAGE, facts({ path: DESK_PAGE, sources: [], noStatistics: false })]]);
+
+test('a document with only sentences passes the source rules, with `claims` absent or an empty array', () => {
+  assert.deepEqual(checkSourcesFile(deskFile({}), deskFacts, repo), []);
+  assert.deepEqual(checkSourcesFile(deskFile({ claims: [] }), deskFacts, repo), []);
+});
+
+test('a document that carries claims is still held to two sources or noStatistics, even when it also lists sentences', () => {
+  const withClaims: SourcesFile = {
+    wp: 'WP-99',
+    fetches: [fetchRecord()],
+    documents: [{ path: DESK_PAGE, claims: [{ id: 'A1', sentence: 'x', kind: 'definition', sourceId: 'irs', locator: 'p1' }], sentences: [{ text: 'm', page: DESK_PAGE }] }],
+  };
+  assert.ok(checkSourcesFile(withClaims, deskFacts, repo).some((p) => p.includes('0 distinct sources')));
+});
+
+test('a document with neither claims nor sentences must still exist as a content document', () => {
+  const empty: SourcesFile = { wp: 'WP-99', fetches: [], documents: [{ path: 'src/content/pages/nothing.mdx' }] };
+  assert.ok(checkSourcesFile(empty, new Map(), repo).some((p) => p.includes('does not exist or is not a content document')));
+});
+
+test('the host classes of OP-HOSTS: one positive each, the apex of a suffix rule, subdomains, and the path is never looked at', () => {
+  const classes: Record<string, string> = {
+    'https://uscode.house.gov/view.xhtml': 'government',
+    'https://corp.delaware.gov/x': 'government',
+    'https://oag.ca.gov/privacy/ccpa': 'government',
+    'https://eur-lex.europa.eu/eli/reg/2016/679/oj': 'government',
+    'https://ised-isde.canada.ca/site/x': 'government',
+    'https://canada.ca/en/x': 'government',
+    'https://www.gov.uk/service-manual': 'government',
+    'https://gov.uk/x': 'government',
+    'https://www.legislation.gov.uk/ukpga/2018/12': 'government',
+    'https://www.revenue.gov.ie/x': 'government',
+    'https://www.bmf.bund.de/x': 'government',
+    'https://www.bka.gv.at/x': 'government',
+    'https://csrc.nist.gov/pubs': 'government',
+    'https://nvlpubs.nist.gov/x.pdf': 'government',
+    'https://genai.owasp.org/x': 'standards',
+    'https://ico.org.uk/for-organisations': 'standards',
+    'https://www.aicpa-cima.com/x': 'standards',
+    'https://www.ycombinator.com/documents': 'standards',
+    'https://nvca.org/wp-content/uploads/model.docx': 'standards',
+    'https://martinfowler.com/articles/feature-toggles.html': 'standards',
+    'https://basecamp.com/shapeup': 'standards',
+    'https://spdx.org/licenses': 'standards',
+    'https://arxiv.org/abs/1706.03762': 'scholarly',
+    'https://proceedings.neurips.cc/paper/x': 'scholarly',
+    'https://aclanthology.org/x': 'scholarly',
+    'https://www.mit.edu/x': 'university',
+    'https://www.stanford.edu/x': 'university',
+    'https://www.ox.ac.uk/x': 'university',
+    'https://docs.djangoproject.com/en/5.0/': 'vendor',
+    'https://sre.google/sre-book/': 'vendor',
+    'https://platform.claude.com/docs/x': 'vendor',
+    'https://privacy.claude.com/x': 'vendor',
+    'https://developers.openai.com/x': 'vendor',
+    'https://ai.google.dev/x': 'vendor',
+    'https://developers.google.com/x': 'vendor',
+    'https://docs.cloud.google.com/x': 'vendor',
+  };
+  for (const [url, expected] of Object.entries(classes)) assert.equal(classifyHost(url), expected, url);
+});
+
+test('hosts that were never approved are unlisted: a blog, a news site, an encyclopedia, and the hosts OP-HOSTS removed', () => {
+  for (const url of [
+    'https://paulgraham.com/startupideas.html', 'https://en.wikipedia.org/wiki/SAFE', 'https://www.cooleygo.com/x', 'https://www.oecd.org/x',
+    'https://www.wto.org/x', 'https://web.dev/x', 'https://developer.mozilla.org/x', 'https://docs.github.com/x', 'https://www.defense.mil/x',
+    'https://www.state.us/x', 'https://www.education.gov.au.example.com/x', 'https://www.abc.edu.au/x', 'https://www.parliament.uk/x',
+    'https://techcrunch.com/x', 'https://medium.com/x',
+  ]) {
+    assert.equal(classifyHost(url), 'unlisted', url);
+  }
+});
+
+test('a fetch tool is any non-empty string, and WebFetch with a 200 passes', () => {
+  const tooled = (tool: string): SourcesFile => ({ ...base(), fetches: [fetchRecord({ tool }), fetchRecord({ id: 'sec', url: 'https://www.sec.gov/b', tool: 'curl' })] });
+  assert.deepEqual(check(tooled('WebFetch')), []);
+  assert.deepEqual(check(tooled('curl')), []);
+  assert.ok(check(tooled(' ')).some((p) => p.includes('records no tool')));
+});
+
+test('a regulation claim may come from a government or standards host, and not from a scholarly one', () => {
+  const regulation = (url: string): SourcesFile => ({
+    ...base(),
+    fetches: [fetchRecord({ url }), fetchRecord({ id: 'sec', url: 'https://www.sec.gov/b' })],
+    documents: [{ path: DOC, claims: [{ id: 'A1', sentence: 'x', kind: 'regulation', sourceId: 'irs', locator: 'p1', quote: 'q' }] }],
+  });
+  const withUrl = (url: string): DocumentFacts => facts({ sources: [{ id: 'irs', url, accessed: '2026-10-13' }, { id: 'sec', url: 'https://www.sec.gov/b', accessed: '2026-10-13' }] });
+  assert.deepEqual(check(regulation('https://www.ico.org.uk/x'), withUrl('https://www.ico.org.uk/x')), []);
+  assert.ok(check(regulation('https://arxiv.org/abs/1'), withUrl('https://arxiv.org/abs/1')).some((p) => p.includes('needs a statute')));
+});
+
+test('page copy: a listed file that does not exist fails, and a path outside the repository is not a page', () => {
+  const missing: SourcesFile = { wp: 'WP-99', fetches: [], documents: [{ path: 'src/data/cta/not-a-file.ts', sentences: [] }] };
+  assert.ok(checkSourcesFile(missing, new Map(), repo).some((p) => p.includes('does not exist')));
+  assert.ok(checkCopy([{ text: 'e', page: '../outside.md#H' }]).some((p) => p.includes('does not exist')));
 });
 
 test('a marker in a file with no markers entry fails, and a recorded one passes', () => {

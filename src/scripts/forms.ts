@@ -3,56 +3,21 @@
  * payload building, bot checks, the fetch client and the mailto fallback. The second half mounts the logic onto the
  * server-rendered form markup and touches the DOM only when mountIntakeForms() is called.
  */
-import { PACKAGE_NOT_SURE, PACKAGE_PARAM, getPackage, isPackageId, parsePackageParam } from '../data/packages.ts';
+import { PACKAGE_NOT_SURE, PACKAGE_PARAM, parsePackageParam } from '../data/packages.ts';
 import { ApplyStepper } from '../components/apply/stepper.ts';
 import type { ApplyStep } from '../components/apply/steps.ts';
+import { FIELD_NAMES, FORM_KINDS, LIMITS, MAILTO_KINDS, STAGES, TOPICS, composeMessage, normaliseText, packageNote, validate } from '../data/forms.ts';
+import type { FieldError, FieldName, FormKind, FormValues, Stage, Topic } from '../data/forms.ts';
 import { parseTeamFromLocation, describeTeam } from './team-composer.ts';
 
-export type FormKind = 'apply' | 'contact' | 'newsletter';
+/**
+ * The rules (the required matrix, the limits, the validators) live in src/data/forms.ts, so the intake Function's tests and this
+ * client read one table (docs/forms-contract.md section 3.1). They are re-exported here for the callers that import them from the script.
+ */
+export { LIMITS, STAGES, TOPICS, composeMessage, packageNote, validate };
+export type { FieldError, FieldName, FormKind, FormValues, Stage, Topic };
 
-export const STAGES = ['idea', 'validating', 'building', 'launched'] as const;
-export type Stage = (typeof STAGES)[number];
-
-export const TOPICS = ['general', 'seat-rate', 'press', 'correction', 'information'] as const;
-export type Topic = (typeof TOPICS)[number];
-
-export const LIMITS = {
-  name: 120,
-  email: 254,
-  company: 120,
-  seats: 500,
-  message: 4000,
-} as const;
-
-/** Fields that can carry an error message. */
-export type FieldName = 'name' | 'email' | 'company' | 'stage' | 'seats' | 'package' | 'topic' | 'message' | 'consent';
-
-const FIELD_NAMES: readonly FieldName[] = ['name', 'email', 'company', 'stage', 'seats', 'package', 'topic', 'message', 'consent'];
-
-/** Raw values as read from the form controls. */
-export interface FormValues {
-  readonly name: string;
-  readonly email: string;
-  readonly company: string;
-  readonly stage: string;
-  readonly seats: string;
-  readonly topic: string;
-  readonly message: string;
-  readonly consent: boolean;
-  /** Honeypot. Must stay empty. */
-  readonly website: string;
-  /**
-   * Apply only. A package id, `not-sure` or empty. It is never a key of the payload: the intake schema is closed
-   * (docs/forms-contract.md section 3), so buildPayload carries it as one line of `message`.
-   */
-  readonly package?: string;
-}
-
-export interface FieldError {
-  readonly field: FieldName;
-  readonly message: string;
-}
-
+/** The JSON body (docs/forms-contract.md section 3.1). The newsletter keeps its own, shorter body and carries none of the v2 keys. */
 export interface IntakePayload {
   readonly form: FormKind;
   readonly name: string;
@@ -67,28 +32,20 @@ export interface IntakePayload {
   readonly startedAt: string;
   readonly submittedAt: string;
   readonly page: string;
+  readonly requestId?: string;
+  readonly audience?: string;
+  readonly briefId?: string;
+  readonly companyUrl?: string;
+  readonly partnerCategory?: string;
+  readonly offer?: string;
+  readonly investorKind?: string;
+  readonly focus?: string;
+  readonly consentUpdates?: boolean;
 }
 
 export const REQUEST_TIMEOUT_MS = 15_000;
 /** Below this fill time the first submit is paused once and the visitor is asked to check their answers. */
 export const MIN_FILL_MS = 3_000;
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-/** The line of `message` that carries the package choice, or '' when none was made (docs/forms-contract.md section 3). */
-export function packageNote(value: string | undefined): string {
-  if (value === undefined || value === '') return '';
-  if (value === PACKAGE_NOT_SURE) return 'Package interest: not sure yet';
-  return isPackageId(value) ? `Package interest: ${getPackage(value).name}` : '';
-}
-
-/** The message as sent: the visitor's text, then the package line after a blank line. */
-export function composeMessage(message: string, packageValue: string | undefined): string {
-  const text = normaliseText(message);
-  const note = packageNote(packageValue);
-  if (note === '') return text;
-  return text === '' ? note : `${text}\n\n${note}`;
-}
 
 /**
  * Reads the package from a query string. Unknown, empty and repeated values are ignored, never an error, because a stale link must
@@ -102,73 +59,57 @@ export function packageFromSearch(search: string): string | null {
   return parsePackageParam(raw);
 }
 
-function tooLong(label: string, limit: number): string {
-  return `${label} is too long. Shorten it to ${limit} characters or fewer.`;
+/**
+ * A fresh idempotency key (docs/forms-contract.md section 3.1). `crypto.randomUUID()` where the browser has it; the same v4 shape from
+ * `getRandomValues` otherwise. Never derived from the visitor's answers, so it reveals nothing.
+ */
+export function newRequestId(source: Pick<Crypto, 'randomUUID' | 'getRandomValues'> = globalThis.crypto): string {
+  if (typeof source.randomUUID === 'function') return source.randomUUID();
+  const bytes = source.getRandomValues(new Uint8Array(16));
+  bytes[6] = ((bytes[6] ?? 0) & 0x0f) | 0x40;
+  bytes[8] = ((bytes[8] ?? 0) & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
-/** Validates the values for one form. Messages say what to do, not only what is wrong (WCAG 3.3.1, 3.3.3). */
-export function validate(kind: FormKind, values: FormValues): FieldError[] {
-  const errors: FieldError[] = [];
-  const name = values.name.trim();
-  const email = values.email.trim();
-
-  if (name === '' && kind !== 'newsletter') errors.push({ field: 'name', message: 'Enter your name.' });
-  else if (name.length > LIMITS.name) errors.push({ field: 'name', message: tooLong('Your name', LIMITS.name) });
-
-  if (email === '') errors.push({ field: 'email', message: 'Enter your email address so WE can reply.' });
-  else if (!EMAIL_PATTERN.test(email) || email.length > LIMITS.email) {
-    errors.push({ field: 'email', message: 'Enter an email address in the form name@example.org.' });
-  }
-
-  if (values.company.trim().length > LIMITS.company) errors.push({ field: 'company', message: tooLong('The company name', LIMITS.company) });
-
-  if (kind === 'apply') {
-    if (!(STAGES as readonly string[]).includes(values.stage)) {
-      errors.push({ field: 'stage', message: 'Choose the stage that is closest to where your idea is today.' });
-    }
-    if (values.seats.trim().length > LIMITS.seats) errors.push({ field: 'seats', message: tooLong('The team description', LIMITS.seats) });
-    const choice = values.package ?? '';
-    if (choice !== '' && choice !== PACKAGE_NOT_SURE && !isPackageId(choice)) {
-      errors.push({ field: 'package', message: 'Choose one of the packages in the list, or choose Not sure yet.' });
-    }
-  } else if (kind === 'contact') {
-    if (!(TOPICS as readonly string[]).includes(values.topic)) {
-      errors.push({ field: 'topic', message: 'Choose what your message is about.' });
-    }
-    if (values.message.trim() === '') errors.push({ field: 'message', message: 'Write a short message so WE knows how to help.' });
-  }
-  const sent = kind === 'apply' ? composeMessage(values.message, values.package) : values.message.trim();
-  if (sent.length > LIMITS.message) errors.push({ field: 'message', message: tooLong('Your message', LIMITS.message) });
-
-  if (!values.consent) errors.push({ field: 'consent', message: 'Tick the box to confirm that WE may use these details to reply to you.' });
-  return errors;
-}
-
-function normaliseText(value: string): string {
-  return value.replace(/\r\n?/g, '\n').trim();
-}
-
-/** Builds the JSON body defined in docs/forms-contract.md section 3. Form-specific fields are blank on the other form. */
+/**
+ * Builds the JSON body defined in docs/forms-contract.md section 3.1. A field the kind does not use is an empty string. The newsletter
+ * keeps its own contract: it carries none of the v2 keys.
+ */
 export function buildPayload(
   kind: FormKind,
   values: FormValues,
   timing: { readonly startedAt: number; readonly submittedAt: number },
   page: string,
 ): IntakePayload {
-  return {
+  const base = {
     form: kind,
     name: normaliseText(values.name),
     email: values.email.trim(),
     company: normaliseText(values.company),
-    stage: kind === 'apply' ? values.stage : '',
+    stage: kind === 'apply' || kind === 'brief-request' ? values.stage : '',
     seats: kind === 'apply' ? normaliseText(values.seats) : '',
     topic: kind === 'contact' ? values.topic : '',
-    message: kind === 'apply' ? composeMessage(values.message, values.package) : normaliseText(values.message),
+    message: kind === 'apply' ? composeMessage(values.message, values.package) : kind === 'brief-request' ? '' : normaliseText(values.message),
     consent: values.consent,
     website: values.website,
     startedAt: new Date(timing.startedAt).toISOString(),
     submittedAt: new Date(timing.submittedAt).toISOString(),
     page,
+  };
+  if (kind === 'newsletter') return base;
+  const text = (value: string | undefined): string => normaliseText(value ?? '');
+  return {
+    ...base,
+    requestId: text(values.requestId),
+    audience: text(values.audience),
+    briefId: kind === 'brief-request' ? text(values.briefId) : '',
+    companyUrl: kind === 'investor-interest' || kind === 'partner-enquiry' ? text(values.companyUrl) : '',
+    partnerCategory: kind === 'partner-enquiry' ? text(values.partnerCategory) : '',
+    offer: kind === 'partner-enquiry' ? text(values.offer) : '',
+    investorKind: kind === 'investor-interest' ? text(values.investorKind) : '',
+    focus: kind === 'investor-interest' ? text(values.focus) : '',
+    consentUpdates: kind === 'brief-request' && values.consentUpdates === true,
   };
 }
 
@@ -191,14 +132,27 @@ export class SubmitError extends Error {
   readonly failure: SubmitFailure;
   readonly status: number | null;
   readonly fieldErrors: readonly FieldError[];
+  /** Whole seconds from a 429 answer's `Retry-After` header, or null when it sent none or one that is not a number of seconds. */
+  readonly retryAfterSeconds: number | null;
 
-  constructor(failure: SubmitFailure, message: string, options: { status?: number; fieldErrors?: readonly FieldError[]; cause?: unknown } = {}) {
+  constructor(
+    failure: SubmitFailure,
+    message: string,
+    options: { status?: number; fieldErrors?: readonly FieldError[]; retryAfterSeconds?: number | null; cause?: unknown } = {},
+  ) {
     super(message, options.cause === undefined ? undefined : { cause: options.cause });
     this.name = 'SubmitError';
     this.failure = failure;
     this.status = options.status ?? null;
     this.fieldErrors = options.fieldErrors ?? [];
+    this.retryAfterSeconds = options.retryAfterSeconds ?? null;
   }
+}
+
+/** Reads `Retry-After` as delta-seconds. An HTTP date or any other value is ignored: the message then gives no figure. */
+export function parseRetryAfter(value: string | null): number | null {
+  if (value === null || !/^\d{1,6}$/.test(value.trim())) return null;
+  return Number.parseInt(value.trim(), 10);
 }
 
 export interface SubmitOptions {
@@ -284,7 +238,9 @@ export async function submitIntake(endpoint: string, payload: IntakePayload, opt
       }
       return;
     }
-    if (response.status === 429) throw new SubmitError('rate-limited', 'Too many requests.', { status: 429 });
+    if (response.status === 429) {
+      throw new SubmitError('rate-limited', 'Too many requests.', { status: 429, retryAfterSeconds: parseRetryAfter(response.headers.get('Retry-After')) });
+    }
     if (response.status === 400 || response.status === 422) {
       const body = await readJson(response);
       throw new SubmitError('rejected', 'The server did not accept the submission.', { status: response.status, fieldErrors: parseFieldErrors(body) });
@@ -296,6 +252,14 @@ export async function submitIntake(endpoint: string, payload: IntakePayload, opt
   }
 }
 
+/** "Wait N minutes and try again", rounded up to whole minutes from the server's `Retry-After`; a general instruction when it gave none. */
+function waitAdvice(retryAfterSeconds: number | null): string {
+  if (retryAfterSeconds === null || retryAfterSeconds <= 0) return 'Wait a few minutes and try again.';
+  if (retryAfterSeconds < 60) return 'Wait a minute and try again.';
+  const minutes = Math.ceil(retryAfterSeconds / 60);
+  return `Wait ${minutes} minutes and try again.`;
+}
+
 /** Plain-language message for a failed submission. */
 export function failureMessage(error: SubmitError, hasFallback: boolean): string {
   const retry = hasFallback ? ' Your answers are still here. You can try again or send them by email instead.' : ' Your answers are still here. Please try again in a few minutes.';
@@ -305,7 +269,7 @@ export function failureMessage(error: SubmitError, hasFallback: boolean): string
     case 'network':
       return `The form could not be sent. Check your connection.${retry}`;
     case 'rate-limited':
-      return `Too many messages were sent from this connection. Wait a few minutes and try again.${hasFallback ? ' You can also send your answers by email.' : ''}`;
+      return `Too many messages were sent from this connection. ${waitAdvice(error.retryAfterSeconds)}${hasFallback ? ' You can also send your answers by email.' : ''}`;
     case 'rejected':
       return 'The form could not be accepted. Check your answers and send it again.';
     case 'aborted':
@@ -318,8 +282,10 @@ export function failureMessage(error: SubmitError, hasFallback: boolean): string
 
 /** Builds a mailto: link carrying the answers, for the fallback mode and the offered fallback. */
 export function buildMailto(address: string, payload: IntakePayload): string {
+  if (payload.form !== 'apply' && payload.form !== 'contact') {
+    throw new RangeError(`The ${payload.form} form has no mailto fallback: only ${MAILTO_KINDS.join(' and ')} do (docs/forms-contract.md section 4).`);
+  }
   const subject = payload.form === 'apply' ? `Application from ${payload.name}` : `Message from ${payload.name}`;
-  if (payload.form === 'newsletter') throw new RangeError('The newsletter form has no mailto fallback.');
   const lines: string[] = [`Name: ${payload.name}`, `Email: ${payload.email}`];
   if (payload.company !== '') lines.push(`Company: ${payload.company}`);
   if (payload.form === 'apply') {
@@ -352,6 +318,7 @@ function control(form: HTMLFormElement, name: string): HTMLInputElement | HTMLTe
 function readValues(form: HTMLFormElement): FormValues {
   const text = (name: string): string => control(form, name)?.value ?? '';
   const consent = control(form, 'consent');
+  const consentUpdates = control(form, 'consentUpdates');
   return {
     name: text('name'),
     email: text('email'),
@@ -363,7 +330,21 @@ function readValues(form: HTMLFormElement): FormValues {
     consent: consent instanceof HTMLInputElement && consent.checked,
     website: text('website'),
     package: text('package'),
+    requestId: text('requestId'),
+    audience: text('audience'),
+    briefId: text('briefId'),
+    companyUrl: text('companyUrl'),
+    partnerCategory: text('partnerCategory'),
+    offer: text('offer'),
+    investorKind: text('investorKind'),
+    focus: text('focus'),
+    consentUpdates: consentUpdates instanceof HTMLInputElement && consentUpdates.checked,
   };
+}
+
+/** The kind a form declares in `data-kind`. An unknown value is a markup error, so it falls back to the safest kind rather than posting anything. */
+function kindOf(value: string | undefined): FormKind {
+  return (FORM_KINDS as readonly string[]).includes(value ?? '') ? (value as FormKind) : 'contact';
 }
 
 class IntakeFormController {
@@ -381,11 +362,13 @@ class IntakeFormController {
   private warnedFast = false;
   private submitting = false;
   private stepper: ApplyStepper | null = null;
+  /** One idempotency key per submission attempt: kept across retries of a failed send, replaced after a success (contracts section 3.1). */
+  private requestId = newRequestId();
 
   constructor(form: HTMLFormElement) {
     this.form = form;
-    this.kind = form.dataset.kind === 'contact' || form.dataset.kind === 'newsletter' ? form.dataset.kind : 'apply';
-    this.mode = form.dataset.mode ?? 'disabled';
+    this.kind = kindOf(form.dataset.kind);
+    this.mode = form.dataset.mode === 'mailto' && !(MAILTO_KINDS as readonly string[]).includes(this.kind) ? 'disabled' : (form.dataset.mode ?? 'disabled');
     this.endpoint = form.dataset.endpoint ?? '';
     this.mailto = form.dataset.mailto ?? '';
     this.thanks = form.dataset.thanks ?? '';
@@ -422,12 +405,17 @@ class IntakeFormController {
     this.submit?.removeAttribute('disabled');
   }
 
+  /** The answers as the validators and the payload see them: the form's controls plus the script-held request id. */
+  private values(): FormValues {
+    return { ...readValues(this.form), requestId: this.requestId };
+  }
+
   private mountStepper(): void {
     this.stepper = ApplyStepper.mount(this.form, {
       validateStep: (step) => this.errorsForStep(step),
       showErrors: (errors, intro) => this.showErrors(errors, intro),
       clearErrors: () => this.clearErrors(),
-      values: () => readValues(this.form),
+      values: () => this.values(),
     });
   }
 
@@ -465,7 +453,7 @@ class IntakeFormController {
 
   /** The validation errors of one step: validate() runs on every answer and the result is filtered to the step's own fields. */
   private errorsForStep(step: ApplyStep): FieldError[] {
-    return validate(this.kind, readValues(this.form)).filter((error) => step.fields.includes(error.field));
+    return validate(this.kind, this.values()).filter((error) => step.fields.includes(error.field));
   }
 
   /** Under the package select: the stage each package is sized for, from src/data/packages.ts through the option's data attribute. */
@@ -484,7 +472,7 @@ class IntakeFormController {
       if (topic !== null && select instanceof HTMLSelectElement && select.value === '') select.value = topic;
       return;
     }
-    if (this.kind === 'newsletter') return;
+    if (this.kind !== 'apply') return;
     this.prefillPackage();
     const team = parseTeamFromLocation(window.location.hash, window.location.search);
     const text = describeTeam(team);
@@ -602,12 +590,12 @@ class IntakeFormController {
   }
 
   private currentPayload(): IntakePayload {
-    return buildPayload(this.kind, readValues(this.form), { startedAt: this.startedAt, submittedAt: Date.now() }, window.location.pathname);
+    return buildPayload(this.kind, this.values(), { startedAt: this.startedAt, submittedAt: Date.now() }, window.location.pathname);
   }
 
   private async handleSubmit(): Promise<void> {
     if (this.submitting) return;
-    const values = readValues(this.form);
+    const values = this.values();
     const errors = validate(this.kind, values);
     if (errors.length > 0) {
       this.setStatus('');
@@ -648,7 +636,9 @@ class IntakeFormController {
   }
 
   private finishSuccess(): void {
-    if (this.kind === 'apply' && this.thanks !== '') {
+    // The next submission is a new request, whether or not the page is left.
+    this.requestId = newRequestId();
+    if (this.thanks !== '') {
       window.location.assign(this.thanks);
       return;
     }

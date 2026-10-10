@@ -1,0 +1,241 @@
+{
+  "$comment": "Generated from src/data/forms.ts by tests/unit/wp-60/forms-schema.test.ts (UPDATE_SCHEMA=1 regenerates). Do not edit by hand.",
+  "version": 2,
+  "forms": [
+    "apply",
+    "contact",
+    "newsletter",
+    "brief-request",
+    "investor-interest",
+    "partner-enquiry"
+  ],
+  "presence": {
+    "legend": {
+      "R": "required",
+      "O": "optional",
+      "-": "must be empty"
+    },
+    "matrix": {
+      "apply": {
+        "name": "R",
+        "email": "R",
+        "company": "O",
+        "stage": "R",
+        "seats": "O",
+        "topic": "-",
+        "message": "O",
+        "briefId": "-",
+        "companyUrl": "-",
+        "partnerCategory": "-",
+        "offer": "-",
+        "investorKind": "-",
+        "focus": "-",
+        "audience": "R",
+        "consent": "R",
+        "requestId": "R"
+      },
+      "contact": {
+        "name": "R",
+        "email": "R",
+        "company": "O",
+        "stage": "-",
+        "seats": "-",
+        "topic": "R",
+        "message": "R",
+        "briefId": "-",
+        "companyUrl": "-",
+        "partnerCategory": "-",
+        "offer": "-",
+        "investorKind": "-",
+        "focus": "-",
+        "audience": "R",
+        "consent": "R",
+        "requestId": "R"
+      },
+      "brief-request": {
+        "name": "R",
+        "email": "R",
+        "company": "O",
+        "stage": "O",
+        "seats": "-",
+        "topic": "-",
+        "message": "-",
+        "briefId": "R",
+        "companyUrl": "-",
+        "partnerCategory": "-",
+        "offer": "-",
+        "investorKind": "-",
+        "focus": "-",
+        "audience": "R",
+        "consent": "R",
+        "requestId": "R"
+      },
+      "investor-interest": {
+        "name": "R",
+        "email": "R",
+        "company": "O",
+        "stage": "-",
+        "seats": "-",
+        "topic": "-",
+        "message": "O",
+        "briefId": "-",
+        "companyUrl": "O",
+        "partnerCategory": "-",
+        "offer": "-",
+        "investorKind": "O",
+        "focus": "O",
+        "audience": "R",
+        "consent": "R",
+        "requestId": "R"
+      },
+      "partner-enquiry": {
+        "name": "R",
+        "email": "R",
+        "company": "R",
+        "stage": "-",
+        "seats": "-",
+        "topic": "-",
+        "message": "O",
+        "briefId": "-",
+        "companyUrl": "R",
+        "partnerCategory": "R",
+        "offer": "R",
+        "investorKind": "-",
+        "focus": "-",
+        "audience": "R",
+        "consent": "R",
+        "requestId": "R"
+      },
+      "newsletter": {
+        "name": "-",
+        "email": "R",
+        "company": "-",
+        "stage": "-",
+        "seats": "-",
+        "topic": "-",
+        "message": "-",
+        "briefId": "-",
+        "companyUrl": "-",
+        "partnerCategory": "-",
+        "offer": "-",
+        "investorKind": "-",
+        "focus": "-",
+        "audience": "-",
+        "consent": "R",
+        "requestId": "-"
+      }
+    }
+  },
+  "enums": {
+    "stage": [
+      "idea",
+      "validating",
+      "building",
+      "launched"
+    ],
+    "topic": [
+      "general",
+      "seat-rate",
+      "press",
+      "correction",
+      "information"
+    ],
+    "partnerCategory": [
+      "tooling-saas",
+      "cloud-credits",
+      "legal",
+      "finance-accounting",
+      "delivery",
+      "ecosystem",
+      "other"
+    ],
+    "investorKind": [
+      "angel",
+      "fund",
+      "corporate",
+      "family-office",
+      "other"
+    ],
+    "audience": [
+      "startup",
+      "investor",
+      "partner",
+      "corporate"
+    ]
+  },
+  "limits": {
+    "name": 120,
+    "email": 254,
+    "company": 120,
+    "seats": 500,
+    "message": 4000,
+    "companyUrl": 300,
+    "offer": 1500,
+    "focus": 1000
+  },
+  "audience": {
+    "apply": [
+      "startup"
+    ],
+    "contact": [
+      "startup",
+      "investor",
+      "partner",
+      "corporate"
+    ],
+    "investor-interest": [
+      "investor"
+    ],
+    "partner-enquiry": [
+      "partner"
+    ],
+    "briefs": {
+      "funding-paths": [
+        "startup"
+      ],
+      "company-setup": [
+        "startup"
+      ],
+      "ai-native-build": [
+        "startup"
+      ],
+      "first-100-customers": [
+        "startup"
+      ],
+      "pre-seed-evidence-pack": [
+        "startup"
+      ],
+      "first-hires": [
+        "startup"
+      ],
+      "early-stage-diligence": [
+        "investor"
+      ],
+      "ai-company-diligence": [
+        "investor"
+      ],
+      "partnering-with-founders": [
+        "partner"
+      ],
+      "corporate-spinouts": [
+        "corporate"
+      ]
+    }
+  },
+  "thanks": {
+    "apply": "/apply/thanks/",
+    "brief-request": "/briefs/thanks/",
+    "investor-interest": "/investors/interest/thanks/",
+    "partner-enquiry": "/network/partners/enquire/thanks/"
+  },
+  "mailto": [
+    "apply",
+    "contact"
+  ],
+  "requestId": {
+    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+    "requiredExcept": [
+      "newsletter"
+    ]
+  }
+}

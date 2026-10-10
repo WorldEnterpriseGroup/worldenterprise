@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CtaEnd from '../components/cta/CtaEnd.astro';
 import CiteThis from '../components/geo/CiteThis.astro';
 import HeroArticle from '../components/hero/HeroArticle.astro';
 import MethodologyBox from '../components/blocks/MethodologyBox.astro';
@@ -27,7 +28,7 @@ type Props = Omit<PageMeta, 'updated'> & {
   sources: readonly Source[];
 };
 
-const { subtitle, publishedDate, updatedDate, version, methodology, limitations, sources, ...meta } = Astro.props;
+const { subtitle, publishedDate, updatedDate, version, methodology, limitations, sources, cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const report = articleNode({ path: meta.path, headline: meta.title, description: meta.description, published: publishedDate, type: 'Report', citation: briefCitations(sources), ...(updatedDate !== undefined ? { modified: updatedDate } : {}) });
 ---
@@ -46,4 +47,5 @@ const report = articleNode({ path: meta.path, headline: meta.title, description:
       </aside>
     </div>
   </div>
+  <slot name="cta-end"><CtaEnd path={meta.path} collection="research" cta={cta} /></slot>
 </BaseLayout>

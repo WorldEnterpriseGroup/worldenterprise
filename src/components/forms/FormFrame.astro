@@ -1,5 +1,6 @@
 ---
-import { forms, intakeRequiresJs, mailboxFor, planForm } from '../../data/forms.ts';
+import { audiencesFor, forms, intakeRequiresJs, mailboxFor, planForm } from '../../data/forms.ts';
+import type { FormKind } from '../../data/forms.ts';
 import { REVIEW_COPY } from '../apply/fields.ts';
 import { absoluteUrl, href } from '../../lib/url.ts';
 import ErrorSummary from './ErrorSummary.astro';
@@ -8,12 +9,20 @@ import HoneypotField from './HoneypotField.astro';
 import Choice from './Choice.astro';
 
 interface Props {
-  kind: 'apply' | 'contact' | 'newsletter';
+  kind: FormKind;
   /** Unique id prefix on the page. */
   id: string;
   submitLabel: string;
-  /** Route to open after a successful submit (Apply only). */
+  /** Route to open after a successful submit. Contact and the newsletter confirm in the page and have none (docs/forms-contract.md section 3.2). */
   thanksPath?: string;
+  /**
+   * The audience the page presets. A kind with exactly one audience (apply, investor interest, partner enquiry) needs none: it is
+   * derived from the contract. A brief with one audience is preset by its component; contact and a brief with several audiences render
+   * a select instead and pass nothing.
+   */
+  audience?: string;
+  /** Brief request only: the registry id the request is for. */
+  briefId?: string;
   /** Wording of the required consent checkbox. */
   consentLabel: string;
   /**
@@ -23,11 +32,15 @@ interface Props {
   stepped?: boolean;
 }
 
-const { kind, id, submitLabel, thanksPath, consentLabel, stepped = false } = Astro.props;
+const { kind, id, submitLabel, thanksPath, audience, briefId, consentLabel, stepped = false } = Astro.props;
 const config = kind === 'newsletter' ? forms.newsletter : forms.intake;
-const plan = planForm(kind, config, kind === 'newsletter' ? null : mailboxFor(kind), intakeRequiresJs);
+const mailboxKind = kind === 'apply' || kind === 'contact' ? kind : null;
+const plan = planForm(kind, config, mailboxKind === null ? null : mailboxFor(mailboxKind), intakeRequiresJs);
 const { mode, mailbox, nativePost } = plan;
-const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') : null;
+const resolvedThanks = thanksPath ?? (kind === 'apply' ? '/apply/thanks/' : undefined);
+const redirect = resolvedThanks !== undefined ? absoluteUrl(resolvedThanks) : null;
+const fixedAudiences = kind === 'brief-request' ? [] : audiencesFor(kind);
+const presetAudience = audience ?? (fixedAudiences.length === 1 ? fixedAudiences[0] : undefined);
 ---
 
 <form
@@ -40,7 +53,7 @@ const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') 
   data-mode={mode}
   data-endpoint={config.endpoint ?? undefined}
   data-mailto={mailbox ?? undefined}
-  data-thanks={thanksPath !== undefined ? href(thanksPath) : undefined}
+  data-thanks={resolvedThanks !== undefined ? href(resolvedThanks) : undefined}
 >
   {
     mode === 'disabled' && (
@@ -76,6 +89,10 @@ const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') 
 
   {nativePost !== null && <input type="hidden" name="form" value={kind} />}
   {nativePost !== null && redirect !== null && <input type="hidden" name="redirect" value={redirect} />}
+  {/* A no-JavaScript post carries an empty request id and the server generates one (contracts section 3.1). The script keeps its own. */}
+  {nativePost !== null && kind !== 'newsletter' && <input type="hidden" name="requestId" value="" />}
+  {presetAudience !== undefined && <input type="hidden" name="audience" value={presetAudience} />}
+  {briefId !== undefined && <input type="hidden" name="briefId" value={briefId} />}
 
   <slot />
 

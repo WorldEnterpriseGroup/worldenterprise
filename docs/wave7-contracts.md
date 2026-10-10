@@ -132,3 +132,13 @@ All of these are `contextRules` in `claims-denylist.json` (version 3): they appl
 - `audit:geo` (`npm run audit:geo`): runs `scripts/audit-geo.mjs`, which WP-41 writes. Inert until the script exists (`rules: exists: scripts/audit-geo.mjs`, the same blocking policy as every qa job). The npm script is `node scripts/audit-geo.mjs --dist dist`, the same shape as `audit:seo`: WP-41 reads `--dist`. WP-41 validates `llms.txt` structure, that every linked twin exists and matches its page's H1 and canonical, that no twin or llms file contains a denylisted phrase, and that a production `robots.txt` allows the sitemap.
 - `RELEASE_ALLOW` (a branch pipeline only) also tolerates the nine pending routes and the two machine files, each named and anchored (decision W7-6). A release tag and `gh-pages` allow nothing. WP-50 narrows it back to the form routes. The `mirror` job waits for both jobs above when they exist (`optional: true`).
 - `audit:claims` and `audit:dist` already cover the new files through the extensions described in sections 2, 3 and 6.
+
+## 9. WebApplication JSON-LD (folded in by WP-60, from WP-41 and WP-49)
+
+A founder tool page (`/tools/<slug>/`) describes the tool as one `WebApplication` node inside the page graph. The builder is `src/components/tools/webApplicationNode.ts`; the rules live in `scripts/validate-jsonld.mjs` and are proved by `tests/unit/wp-41/jsonld.test.ts`.
+
+- **Required:** `@id`, `name` and `url`. The `@id` is the canonical URL of the page plus `#app`, and `url` is the page's canonical.
+- **Allowed:** `applicationCategory` (the builder sets `BusinessApplication`), `description`, and a `publisher` written as `{ "@id": ... }` that resolves inside the page graph (the organisation node).
+- **Forbidden:** `offers`, `price`, `priceCurrency`, `priceSpecification`, `aggregateRating` and `review`. A tool page makes no price claim and carries no Offer evidence (claim C-18 and section 6). The validator treats these as forbidden keys anywhere in a graph, so a price cannot be nested in.
+- **One list.** `ALLOWED_TYPES` in `src/lib/schema.ts` and the list in the validator are compared by a unit test. A package that adds a type changes both in one commit and amends this section.
+- **Enforcement.** `audit:jsonld` validates every built page, so a tool page with no `@id`, or with `offers`, fails the pipeline.
