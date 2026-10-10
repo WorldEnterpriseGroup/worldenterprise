@@ -1,0 +1,122 @@
+---
+title: "AI regulation for a small SaaS company: what to ask counsel about the EU AI Act and the Texas AI statute"
+seoTitle: AI regulation for SaaS teams
+description: Questions a small SaaS company can bring to counsel about the EU AI Act and the Texas AI statute, with dated facts from each primary source.
+topic: ai
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [global-remote-founders, corporate-innovators]
+related: [the-nist-ai-risk-management-framework-for-a-small-team, ai-features-and-customer-data-what-to-decide-first, human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop]
+evidence: [eu-aiact-ec, eu-omnibus-oj, eu-aiact-oj, eu-transp-news, tx-hb149, tx-hb149-history, nist-ai600-1]
+relatedPlaybook: build-and-ship-v1
+relatedServices: [G]
+relatedTemplate: security-baseline-checklist
+sources:
+  - id: eu-aiact-ec
+    title: AI Act (regulatory framework for AI)
+    publisher: European Commission, Shaping Europe's digital future
+    url: https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai
+    accessed: 2026-10-10
+  - id: eu-omnibus-oj
+    title: Regulation (EU) 2026/1744 (Digital Omnibus on AI)
+    publisher: Official Journal of the European Union, EUR-Lex
+    url: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202601744
+    accessed: 2026-10-10
+  - id: eu-aiact-oj
+    title: Regulation (EU) 2024/1689 (Artificial Intelligence Act), original text
+    publisher: Official Journal of the European Union, EUR-Lex
+    url: https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng
+    accessed: 2026-10-10
+  - id: eu-transp-news
+    title: Commission starts enforcing AI Act rules and new transparency requirements on 2 August
+    publisher: European Commission, Shaping Europe's digital future
+    url: https://digital-strategy.ec.europa.eu/en/news/commission-starts-enforcing-ai-act-rules-and-new-transparency-requirements-2-august
+    accessed: 2026-10-10
+  - id: tx-hb149
+    title: H.B. 149, Texas Responsible Artificial Intelligence Governance Act (enrolled version)
+    publisher: Texas Legislature Online
+    url: https://capitol.texas.gov/tlodocs/89R/billtext/html/HB00149F.htm
+    accessed: 2026-10-10
+  - id: tx-hb149-history
+    title: "H.B. 149 bill history, 89th Legislature"
+    publisher: Texas Legislature Online
+    url: https://capitol.texas.gov/BillLookup/History.aspx?LegSess=89R&Bill=HB149
+    accessed: 2026-10-10
+  - id: nist-ai600-1
+    title: "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile, NIST AI 600-1"
+    publisher: National Institute of Standards and Technology
+    url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf
+    accessed: 2026-10-10
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+AI law is no longer a draft in the places where a software company is most likely to sell. The European Union's Artificial Intelligence Act has been applicable since this August, with some dates moved. Texas has a general AI statute with a January 2026 effective date. None of these can be applied to a product by reading a summary.
+
+This article is a list of questions to bring to a lawyer, with the facts each question rests on, taken from the primary sources as they read on October 10, 2026. It is for a small SaaS company that uses a model inside its product and sells to customers in more than one jurisdiction, including founders who run a company from outside the United States or the European Union. It is general information and not legal advice, and it does not say which obligations apply to any product.
+
+## Start with a timeline, and with its caveat
+
+The European Commission's page on the AI Act says the Act entered into force on August 1, 2024 and became applicable on August 2, 2026, with some exceptions. The exceptions matter, because the dates are staggered.
+
+<DataTable
+  caption="Dates for the EU AI Act as stated on the Commission's page and in the Omnibus regulation, read October 10, 2026"
+  columns={['Date', 'What the sources say applies', 'Source']}
+  rows={[
+    ['February 2, 2025', 'Prohibited AI practices and AI literacy obligations entered into application', 'Commission page'],
+    ['August 2, 2025', 'Governance rules and obligations for general-purpose AI models became applicable', 'Commission page'],
+    ['August 2, 2026', 'The Act became applicable generally; enforcement by the AI Office and national authorities begins; transparency rules start', 'Commission page and press release'],
+    ['December 2, 2026', 'Systems placed on the market before August 2, 2026 are to meet Article 50(2); a prohibition added by the Omnibus takes effect', 'Omnibus regulation and Commission page'],
+    ['December 2, 2027', 'High-risk rules for the use cases in Annex III', 'Omnibus regulation'],
+    ['August 2, 2028', 'High-risk rules for AI in products covered by Annex I', 'Omnibus regulation']
+  ]}
+/>
+
+The caveat is that the Act was amended. Regulation (EU) 2026/1744, which the Commission calls the AI Omnibus, was adopted on July 8, 2026 and entered into force on July 27, 2026. It moved the high-risk dates and replaced Article 4 on AI literacy. The original text asked providers and deployers to ensure a sufficient level of AI literacy; the replacement asks them to take measures to support the development of AI literacy of their staff. The quotations from the Act in this article come from the original 2024 text in the Official Journal, which the Omnibus amends. Ask counsel to confirm any article you rely on against the consolidated version.
+
+## Question one: is the company a provider, a deployer, or both?
+
+The Act assigns obligations by role. In its original Article 3, a provider is a person that develops an AI system or a general-purpose AI model, or has one developed, and places it on the market or puts it into service under its own name or trademark. A deployer is a person using an AI system under its authority, other than for personal non-professional activity.
+
+On a plain reading of those definitions, a SaaS company that builds a feature on a vendor's model could be both: a deployer of the model and a provider of its own system to customers. That reading is this article's, and counsel may see it differently. Article 25 adds a rule for the value chain. A distributor, importer, deployer or other third party is considered a provider of a high-risk system if it puts its name or trademark on a high-risk system already on the market, among other circumstances. Counsel can say which role fits each feature, and what a vendor's contract allocates to which side. The article on <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data</MaybeLink> covers the data side of that contract.
+
+## Question two: does the Act reach a company outside the EU?
+
+Article 2 sets the scope. Among those it covers are providers and deployers that are located in a third country where the output produced by the AI system is used in the Union. For a remote-first company with no EU entity, the practical question is whether any customer's use of the product puts its output in the Union. That is a fact about customers and a legal reading of "output", and neither can be settled from an article.
+
+## Question three: which tier is each feature in?
+
+The Commission's page describes a risk-based structure. It says most AI systems pose limited to no risk and that the Act does not introduce rules for AI that is deemed minimal or no risk. It lists high-risk use cases, among them AI tools for employment such as CV-sorting software for recruitment, and AI used to give access to essential services, with credit scoring that denies someone a loan as an example.
+
+In this article's reading, transparency is the tier most likely to touch a SaaS product. The Commission's press release of July 31, 2026 says that from August 2, 2026 chatbots and other interactive AI systems will have to tell users they are dealing with AI, not a human, and that AI-generated or altered content will also have to carry machine-readable marks so it can be detected more easily. Article 50(1) of the original text says the persons concerned must be informed that they are interacting with an AI system, unless this is obvious.
+
+Ask counsel to walk each feature through the structure: is it a chatbot, does it generate content, does it make or support decisions about hiring, credit or access to services? The article on <MaybeLink path="/insights/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop/">human review in an AI feature</MaybeLink> sets out the oversight text that applies to high-risk systems.
+
+## Texas: a statute with a January 2026 effective date
+
+The enrolled text of House Bill 149, the Texas Responsible Artificial Intelligence Governance Act, says it takes effect January 1, 2026. The Texas Legislature Online bill history shows it signed by the Governor on June 22, 2025, with a last action of "Effective on 1/1/26". The text applies to a person who promotes, advertises, or conducts business in the state, produces a product or service used by its residents, or develops or deploys an AI system there.
+
+Four points in the enrolled text are worth putting to counsel.
+
+**Who must disclose.** The consumer disclosure duty is written for a governmental agency that makes a consumer-facing AI system available, with a separate duty on the provider of a health care service or treatment in which AI is used. Whether a private SaaS company has any disclosure duty under this text depends on a close reading and on who its customers are.
+
+**Who is a consumer.** The text defines a consumer as an individual who is a resident of the state acting only in an individual or household context, and it excludes an individual acting in a commercial or employment context. For a business-to-business product, that exclusion is a question to ask about directly.
+
+**What is prohibited.** The text prohibits developing or deploying a system in a manner that intentionally aims to incite or encourage a person to commit self-harm, harm another person, or engage in criminal activity. It also prohibits developing or deploying one with the intent to unlawfully discriminate against a protected class, and adds that a disparate impact is not sufficient by itself to demonstrate that intent.
+
+**How it is enforced.** The attorney general has exclusive authority to enforce the chapter, there is no private right of action, and the attorney general may not bring an action before the 60th day after giving written notice of the alleged violation, with a chance to cure. A civil investigative demand can ask for a high-level description of post-deployment monitoring and user safeguards. The text also says a defendant may not be found liable where it discovers a violation through an internal review process and substantially complies with the most recent version of the NIST Generative AI Profile or another nationally or internationally recognized risk management framework. That is the same profile described in the article on <MaybeLink path="/insights/the-nist-ai-risk-management-framework-for-a-small-team/">the NIST framework for a small team</MaybeLink>. How that provision works is a matter for counsel and courts, and this article does not claim that following the profile protects anyone.
+
+## Questions to bring to counsel
+
+<Callout title="A short list for the first meeting">
+  Which of the product's features are AI systems under each law, and in which role is the company for each? Does any customer's use put output in the EU? Which features interact with people, generate content, or support decisions about hiring, credit or access to services? Which dates apply to each, given the Omnibus amendments? What do the vendor contracts allocate to the vendor and what to the company? What records should exist by the time each law applies, and who keeps them? When should this advice be re-checked?
+</Callout>
+
+Bring a one-page inventory when you go: each AI feature, the model and vendor behind it, who uses it, what it decides or produces, what data it touches, and where the customers are. Counsel can spend the hour on the law instead of on discovering the product. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> is a companion for the controls side of the same inventory.
+
+## What this article cannot tell you
+
+It does not say whether the EU AI Act or the Texas statute applies to your product, which role your company holds, or what any obligation requires in practice. It covers one state law only, chosen because its primary text could be read; other states have their own laws and bills and are not reviewed here, and neither is any federal law, any EU member state rule or any guidance beyond the pages cited.
+
+The EU quotations come from the original 2024 text, which the Omnibus amends, and the Texas quotations come from the enrolled version of the bill, not a later codification or amendment. Dates and requirements can change after October 10, 2026. This is general information and not legal advice.
