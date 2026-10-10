@@ -206,7 +206,7 @@ export function parseRegistry(text: string): readonly BriefEntry[] {
       throw new StateError('registry_invalid');
     }
     const prefix = `briefs/${id}/v${version}/`;
-    if (!/^[a-z0-9][a-z0-9-]{0,63}$/.test(id) || !/^[0-9]+$/.test(version) || !pdfPath.startsWith(prefix) || !htmlPath.startsWith(prefix) || pdfPath.includes('..') || htmlPath.includes('..')) {
+    if (!/^[a-z0-9][a-z0-9-]{0,63}$/.test(id) || !/^[0-9]+(\.[0-9]+){0,2}$/.test(version) || !pdfPath.startsWith(prefix) || !htmlPath.startsWith(prefix) || pdfPath.includes('..') || htmlPath.includes('..')) {
       throw new StateError('registry_invalid');
     }
     return { id, title, version, pdfPath, htmlPath };
