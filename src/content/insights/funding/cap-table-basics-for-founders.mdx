@@ -1,0 +1,100 @@
+---
+title: "Cap table basics for founders"
+seoTitle: Cap table basics for founders
+description: What a capitalization table records, how options, the option pool and unconverted SAFEs appear in it, and what to ask your counsel before you sign.
+topic: funding
+publishedDate: 2026-10-10
+sources:
+  - id: de-dgcl-151
+    title: Delaware Code, Title 8, section 151, Classes and series of stock; redemption; rights
+    publisher: Delaware General Assembly
+    url: https://delcode.delaware.gov/title8/c001/sc05/index.html
+    accessed: 2026-10-10
+  - id: yc-safe-form
+    title: Post-money SAFE, standard form
+    publisher: Y Combinator
+    url: https://bookface-static.ycombinator.com/assets/ycdc/Postmoney%20Safe%20-%20Valuation%20Cap%20Only%20-%20FINAL-f2a64add6d21039ab347ee2e7194141a4239e364ffed54bad0fe9cf623bf1691.docx
+    accessed: 2026-10-10
+  - id: yc-vs-note
+    title: SAFE vs. convertible note vs. priced equity round
+    publisher: Y Combinator
+    url: https://www.ycombinator.com/safe/safe-vs-convertible-note
+    accessed: 2026-10-10
+  - id: nvca-term-sheet
+    title: NVCA model term sheet for a Series A preferred stock financing
+    publisher: National Venture Capital Association
+    url: https://nvca.org/wp-content/uploads/2020/08/NVCA-2020-Term-Sheet-1.docx
+    accessed: 2026-10-10
+evidence: [de-dgcl-151, yc-safe-form, yc-vs-note, nvca-term-sheet]
+relatedServices: [F]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: seed-data-room-checklist
+segments: [first-time-founders]
+related:
+  - safe-or-convertible-note-how-the-two-instruments-differ
+  - reading-a-term-sheet-line-by-line
+  - funding-a-software-startup-the-routes
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general information, not legal or financial advice. It was written on October 10, 2026, describes public documents, and does not describe any agreement with World Enterprise. Ask your own lawyer how your company's records should be kept and how any instrument would change them.*
+
+In this article, a capitalization table, usually called a cap table, means the record of who holds a company's shares and its rights to shares. A founder meets it early, usually the first time someone asks to see it, and the questions that follow are easier to answer if the record has been kept from the start. This article describes what a cap table has to account for, using the public documents that investors and founders use, and ends with questions for your own counsel. None of the sources fetched for this article defines a cap table in a single sentence, so what follows is built from what those documents say a company's ownership must count.
+
+## Shares: common and preferred
+
+A share is whatever its class says it is. Delaware's General Corporation Law, used here as one example, says in section 151 that every corporation may issue one or more classes of stock, or one or more series of stock within a class. It says a class or series may have voting powers, full or limited, or no voting powers, and designations, preferences and relative, participating, optional or other special rights.
+
+So no general description of common and preferred stock can stand in for your own documents. The model term sheet in the NVCA's Series A package, for example, has the new preferred stock vote together with common stock on an as-converted basis, so read the terms of your own classes. Ask what each class gets, and when.
+
+## Options and other rights to buy shares
+
+A cap table counts more than the shares already issued. Y Combinator's standard form defines Options to include options, restricted stock awards or purchases, restricted stock units, stock appreciation rights, warrants or similar securities, whether vested or unvested. The form treats all of them as part of the company's capitalization.
+
+It also counts promises. A Promised Option is an option that has been promised but not yet granted, under agreements or understandings made before or in connection with the term sheet. For a founder, the lesson is plain: an agreement or understanding that an employee will receive options is the kind of promise the form counts, even before the board grants anything. Keep a list of such promises with the cap table.
+
+## The option pool
+
+An option pool is shares set aside to give to people later. The standard form calls it the Unissued Option Pool: all shares of capital stock that are reserved, available for future grant and not subject to any outstanding or promised options under an equity incentive or similar plan.
+
+The pool matters in two places. In the SAFE form, the Company Capitalization, the figure the conversion price is divided by, includes the unissued option pool, with an exception for increases made in connection with the financing. In the NVCA model term sheet, the pre-money valuation includes an employee option pool, which the model brackets as unallocated and uncommitted, stated as a share of the post-money capitalization. In both documents the pool is part of the count the price is worked out from. Ask for the size of any pool a counterparty proposes and the plan that justifies it.
+
+## What fully diluted means
+
+Both documents count on an as-converted basis, which means each preferred share, convertible security or option is counted as the number of common shares it would become. The NVCA model sheet's anti-dilution formula spells out the same idea: the number of common shares deemed outstanding includes all outstanding common stock, all outstanding preferred stock on an as-converted basis, and all outstanding options on an as-exercised basis. A fully diluted count is therefore larger than the number of shares issued today. When an investor says they will own a stated share of the company, ask whether that share is of the fully diluted count and what that count contains.
+
+## SAFEs and notes: not shares yet, but already in the picture
+
+Y Combinator's comparison calls a SAFE a convertible security and describes a convertible note as debt that converts to equity. Neither is a share until it converts, and both belong on the cap table as converting securities. The standard form defines Converting Securities to include the SAFE itself and other convertible securities the company has issued, including other SAFEs, convertible promissory notes and other convertible debt instruments.
+
+This is the trap Y Combinator describes as losing track of total ownership sold. The terms below are generic descriptions from the publisher's public documents. They are not terms of any agreement involving WE.
+
+<p data-generic-definition>On a post-money SAFE, ownership sold equals the investment amount divided by the valuation cap, and the caps of separate SAFEs add together, so five $100k SAFEs at a $5M cap is 10 percent sold, not 2 percent. The form calculates the conversion price, called the Safe Price, as the Post-Money Valuation Cap divided by the Company Capitalization. The publisher says to track the running total before signing the next SAFE.</p>
+
+The point of the example is not the figures. It is that each instrument you sign changes the ownership picture, and the cap table is where you see the sum. The <MaybeLink path="/fundability/safe-explained/">SAFE guide</MaybeLink> describes the instrument itself, and another article on this desk compares it with the convertible note.
+
+## Founders' stock and vesting
+
+A cap table also needs to show whether shares are subject to conditions. The NVCA model sheet has a bracketed term for founders' stock, a buyback right or vesting that lapses in increments after closing, and a bracketed provision that employee options vest on a schedule. Vesting, and who holds the right to buy back unvested shares, belong in the record next to each holder.
+
+## Keeping the record
+
+Keep the cap table where you keep your other core company records, and update it when anything changes: a grant, an exercise, a SAFE, a note, a transfer. The NVCA model sheet lists, in brackets, an up-to-date capitalization table that the company delivers to major investors promptly after the end of each quarter. Whether you owe any investor one is for your documents to say. The <MaybeLink path="/fundability/data-room/">data room guide</MaybeLink> shows where a cap table belongs, and the <MaybeLink path="/fundability/investor-readiness-checklist/">investor readiness checklist</MaybeLink> lists the records an investor may ask for.
+
+## Questions to bring to your own counsel
+
+- Does my cap table match the signed documents, including every SAFE, note, option grant and promise of options?
+- Which classes of stock exist, and what does each one get on a sale?
+- How large is the option pool, and is it counted before or after new money?
+- What is the full count of shares, options and convertible securities on an as-converted basis?
+- Which shares are subject to vesting or a buyback right, and held by whom?
+- Who is responsible for keeping the table current, and where do the source documents live?
+- Which of the questions in <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> apply to the instrument in front of me?
+
+## What this article cannot tell you
+
+This article cannot tell you what your cap table should look like, how much of the company to sell, or how any investor will read your table. It describes the United States documents named above. The Delaware statute says what a class of stock may carry, and your own company may be formed under another State's law. The Y Combinator form is the post-money version as it stood on October 10, 2026, and the NVCA sheet is a model with bracketed alternatives. The sources do not cover tax treatment of options, valuation methods, or how to build a table in a particular tool. Nothing here is a recommendation of an investor, a lawyer or a platform.
