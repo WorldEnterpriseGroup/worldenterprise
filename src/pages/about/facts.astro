@@ -1,0 +1,72 @@
+---
+import { render } from 'astro:content';
+import { loadPage } from '../../components/about/load-page.ts';
+import CiteThis from '../../components/geo/CiteThis.astro';
+import { qaFromMarkdown } from '../../components/geo/qa.ts';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { getRouteState } from '../../lib/route-state.ts';
+import { faqPageNode } from '../../lib/schema.ts';
+import { href } from '../../lib/url.ts';
+
+/**
+ * /about/facts/: the plain answers about WE, written so a reader or an answer engine can lift one question and its answer on its own.
+ * The questions are the H2 headings of src/content/pages/about/facts.mdx, and the FAQPage node is built from that same text.
+ */
+const path = '/about/facts/';
+const entry = await loadPage('about/facts');
+const { Content } = await render(entry);
+const { title, description, eyebrow, updated, draft } = entry.data;
+const pairs = qaFromMarkdown(entry.body ?? '');
+const state = await getRouteState();
+const decides = state.isLive('/program/how-we-decide/');
+const related = [
+  { path: '/services/', label: 'The seven service lines' },
+  { path: '/pricing/', label: 'Packages and seats' },
+  { path: '/faq/', label: 'Frequently asked questions' },
+  { path: '/about/editorial-policy/', label: 'Editorial policy' },
+].filter((link) => state.isLive(link.path));
+---
+
+<MarketingLayout
+  title={title}
+  description={description}
+  path={path}
+  lead={description}
+  updated={updated}
+  draft={draft}
+  ogSlot="og-about"
+  schemaType="AboutPage"
+  jsonLd={[faqPageNode(path, pairs)]}
+  {...(eyebrow !== undefined ? { eyebrow } : {})}
+>
+  <Content />
+  {
+    decides && (
+      <section aria-labelledby="facts-decide">
+        <h2 id="facts-decide">How does WE decide?</h2>
+        <p>
+          Read <a href={href('/program/how-we-decide/')}>how WE decides</a>.
+        </p>
+      </section>
+    )
+  }
+  {
+    related.length > 0 && (
+      <section aria-labelledby="facts-related">
+        <h2 id="facts-related">Where to read more</h2>
+        <ul>
+          {related.map((link) => (
+            <li>
+              <a href={href(link.path)}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  <CiteThis title={title} path={path} date={updated} />
+  <Fragment slot="after">
+    <CtaBand title="Questions the facts do not answer?" text="Ask WE a question or apply when you are ready." cta={{ label: 'Apply', href: '/apply/' }} secondary={{ label: 'Contact', href: '/contact/' }} />
+  </Fragment>
+</MarketingLayout>
