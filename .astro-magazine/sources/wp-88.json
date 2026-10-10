@@ -172,6 +172,51 @@
       "fetchedAt": "2026-10-10T22:39:43Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "far-part-12",
+      "url": "https://www.acquisition.gov/far/part-12",
+      "title": "Part 12, Acquisition of Commercial Products and Commercial Services",
+      "publisher": "Federal Acquisition Regulation, acquisition.gov",
+      "fetchedAt": "2026-10-10T22:42:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sam-registration",
+      "url": "https://www.sam.gov/content/entity-registration",
+      "title": "Entity Registration",
+      "publisher": "SAM.gov, U.S. General Services Administration",
+      "fetchedAt": "2026-10-10T22:41:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fedramp-rules",
+      "url": "https://www.fedramp.gov/2026/",
+      "title": "FedRAMP Consolidated Rules for 2026",
+      "publisher": "FedRAMP, U.S. General Services Administration",
+      "fetchedAt": "2026-10-10T22:41:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fedramp-20x",
+      "url": "https://www.fedramp.gov/20x",
+      "title": "FedRAMP 20x",
+      "publisher": "FedRAMP, U.S. General Services Administration",
+      "fetchedAt": "2026-10-10T22:41:55Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "section508-laws",
+      "url": "https://www.section508.gov/manage/laws-and-policies/",
+      "title": "IT Accessibility Laws and Policies",
+      "publisher": "Section508.gov, U.S. General Services Administration",
+      "fetchedAt": "2026-10-10T22:41:35Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -792,6 +837,155 @@
           "sourceId": "ec-csrd",
           "locator": "Page date",
           "quote": "3 July 2026"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/sectors/government-software-considerations-for-selling-to-the-public-sector.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "the part implements the Federal Government’s preference for the acquisition of commercial products and commercial services",
+          "kind": "regulation",
+          "sourceId": "far-part-12",
+          "locator": "12.000",
+          "quote": "It implements the Federal Government’s preference for the acquisition of commercial products and commercial services"
+        },
+        {
+          "id": "A2",
+          "sentence": "commercial products, commercial services, or nondevelopmental items are available",
+          "kind": "regulation",
+          "sourceId": "far-part-12",
+          "locator": "12.101(a)",
+          "quote": "determine whether commercial products, commercial services, or nondevelopmental items are available"
+        },
+        {
+          "id": "A3",
+          "sentence": "Registration is for organizations that want to directly bid on government contracts and apply for federal assistance",
+          "kind": "regulation",
+          "sourceId": "sam-registration",
+          "locator": "Who registration is for",
+          "quote": "Registration is for organizations that want to directly bid on government contracts and apply for federal assistance."
+        },
+        {
+          "id": "A4",
+          "sentence": "your Unique Entity ID will be assigned during the registration process",
+          "kind": "regulation",
+          "sourceId": "sam-registration",
+          "locator": "Unique Entity ID",
+          "quote": "your Unique Entity ID will be assigned during the registration process."
+        },
+        {
+          "id": "A5",
+          "sentence": "brings the rules, definitions, timelines, stakeholder guidance, and source material together",
+          "kind": "paraphrase",
+          "sourceId": "fedramp-rules",
+          "locator": "Overview",
+          "quote": "brings the rules, definitions, timelines, stakeholder guidance, and source material together"
+        },
+        {
+          "id": "A6",
+          "sentence": "agencies, cloud service providers, independent assessors, advisors, and FedRAMP can work from the same public reference",
+          "kind": "paraphrase",
+          "sourceId": "fedramp-rules",
+          "locator": "Audience",
+          "quote": "so agencies, cloud service providers, independent assessors, advisors, and FedRAMP can work from the same public reference."
+        },
+        {
+          "id": "A7",
+          "sentence": "We designed FedRAMP 20x for businesses to set their own security goals",
+          "kind": "paraphrase",
+          "sourceId": "fedramp-20x",
+          "locator": "Design",
+          "quote": "We designed FedRAMP 20x for businesses to set their own security goals"
+        },
+        {
+          "id": "A8",
+          "sentence": "FedRAMP 20x simplifies the path to federal cloud adoption",
+          "kind": "paraphrase",
+          "sourceId": "fedramp-20x",
+          "locator": "Overview",
+          "quote": "FedRAMP 20x simplifies the path to federal cloud adoption."
+        },
+        {
+          "id": "A9",
+          "sentence": "FedRAMP 20x is currently in Phase 3",
+          "kind": "paraphrase",
+          "sourceId": "fedramp-20x",
+          "locator": "Status",
+          "quote": "is currently in Phase 3."
+        },
+        {
+          "id": "A10",
+          "sentence": "Future dates are estimates for public awareness, not firm commitments",
+          "kind": "paraphrase",
+          "sourceId": "fedramp-20x",
+          "locator": "Dates note",
+          "quote": "Future dates are estimates for public awareness, not firm commitments"
+        },
+        {
+          "id": "A11",
+          "sentence": "applies to all federal agencies when they develop, procure, maintain, or use electronic and information technology",
+          "kind": "regulation",
+          "sourceId": "section508-laws",
+          "locator": "29 U.S.C. 794d",
+          "quote": "applies to all federal agencies when they develop, procure, maintain, or use electronic and information technology"
+        },
+        {
+          "id": "A12",
+          "sentence": "Under Section 508, agencies must give disabled employees and members of the public access to information",
+          "kind": "regulation",
+          "sourceId": "section508-laws",
+          "locator": "Agency obligations",
+          "quote": "Under Section 508, agencies must give disabled employees and members of the public access to information"
+        },
+        {
+          "id": "A13",
+          "sentence": "Web Content Accessibility Guidelines (WCAG 2.0), a globally recognized voluntary consensus standard",
+          "kind": "paraphrase",
+          "sourceId": "section508-laws",
+          "locator": "Standard",
+          "quote": "Web Content Accessibility Guidelines (WCAG 2.0), a globally recognized voluntary consensus standard"
+        },
+        {
+          "id": "A14",
+          "sentence": "Reviewed/Updated: July 2026",
+          "kind": "paraphrase",
+          "sourceId": "section508-laws",
+          "locator": "Page date",
+          "quote": "Reviewed/Updated: July 2026"
+        },
+        {
+          "id": "A15",
+          "sentence": "the technical requirements are called the Web Content Accessibility Guidelines Version 2.1 Level AA",
+          "kind": "regulation",
+          "sourceId": "ada-web-rule",
+          "locator": "Technical standard",
+          "quote": "The technical requirements are called the Web Content Accessibility Guidelines Version 2.1 Level AA"
+        },
+        {
+          "id": "A16",
+          "sentence": "in April 2026 the Department published an Interim Final Rule extending the compliance date",
+          "kind": "regulation",
+          "sourceId": "ada-web-rule",
+          "locator": "Interim Final Rule",
+          "quote": "In April 2026, the Department published an Interim Final Rule (IFR) extending the compliance date"
+        },
+        {
+          "id": "A17",
+          "sentence": "April 26, 2027 as the compliance date for governments with a population of 50,000 or more",
+          "kind": "regulation",
+          "sourceId": "ada-web-rule",
+          "locator": "Population 50,000 or more",
+          "quote": "Compliance deadline: April 26, 2027"
+        },
+        {
+          "id": "A18",
+          "sentence": "April 26, 2028 for smaller ones and special districts",
+          "kind": "regulation",
+          "sourceId": "ada-web-rule",
+          "locator": "Population under 50,000",
+          "quote": "Compliance deadline: April 26, 2028"
         }
       ]
     }
