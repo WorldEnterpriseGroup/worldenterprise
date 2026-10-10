@@ -1,3 +1,4 @@
+import { chunkEnds, coverageNote, hydrationLimit } from '../components/islands/we-search/hydrate.ts';
 import { loadPagefind } from '../components/islands/we-search/pagefind.ts';
 import type { PagefindApi, PagefindData, PagefindResult } from '../components/islands/we-search/pagefind.ts';
 import {
@@ -22,13 +23,13 @@ import type { ResultKind } from '../components/islands/we-search/query.ts';
  * Astro build. Pagefind is loaded at runtime from the data-pagefind attribute (it does not exist before postbuild).
  * Without JavaScript the search form stays hidden and the page shows links to the site map instead.
  *
- * Result types: Pagefind can only be filtered by URL once a result's data is fetched, so the first HYDRATE_LIMIT results are fetched in the
- * background after the first page is on screen. The chips show the types found among them, and a chip filters that set. A search with
- * more matches than that says its filter covers the first HYDRATE_LIMIT.
+ * Result types: Pagefind can only be filtered by URL once a result's data is fetched, so the results are fetched in chunks in the
+ * background after the first page is on screen (we-search/hydrate.ts). The chips are updated after each chunk, so a type that only the
+ * later results have still gets its chip. A chip filters the whole set that has been read, and a filter stops reading as soon as it has
+ * a page of matches. A search with more matches than the ceiling says its filter covers the first ones.
  */
 const PAGE_SIZE = 10;
 const DEBOUNCE_MS = 200;
-const HYDRATE_LIMIT = 50;
 const SETTLE_MS = 400;
 
 /** Keeps text and <mark> only. Pagefind excerpts are HTML-escaped text with <mark> around matches. */
@@ -207,9 +208,19 @@ class WeSearch extends HTMLElement {
     return Promise.all(Array.from({ length: end }, (_, index) => this.row(index)));
   }
 
-  /** The first HYDRATE_LIMIT results, with their data. */
-  private hydrate(): Promise<PagefindData[]> {
-    return this.rowsUpTo(Math.min(this.pending.length, HYDRATE_LIMIT));
+  /**
+   * Reads results in chunks until `enough` says the rows are enough, or the ceiling is reached. `complete` is true when every result
+   * that will be read has been read, so a count of matches is final.
+   */
+  private async scan(enough: (rows: readonly PagefindData[]) => boolean): Promise<{ readonly rows: PagefindData[]; readonly complete: boolean }> {
+    const ends = chunkEnds(this.pending.length);
+    let rows: PagefindData[] = [];
+    for (const end of ends) {
+      rows = await this.rowsUpTo(end);
+      if (end === hydrationLimit(this.pending.length)) return { rows, complete: true };
+      if (enough(rows)) return { rows, complete: false };
+    }
+    return { rows, complete: true };
   }
 
   /** Puts the status line and the first batch of the current view on screen: every result, or the results of the chosen type. */
@@ -218,21 +229,33 @@ class WeSearch extends HTMLElement {
     this.more.hidden = true;
     this.shown = 0;
     this.rendering = false;
-    const filter = this.filter;
-    if (filter === null) {
-      this.status.textContent = resultsStatus(this.pending.length, this.query);
-    } else {
-      this.status.textContent = 'Filtering.';
-      const rows = await this.hydrate();
-      if (view !== this.view) return;
-      const covered = this.pending.length > HYDRATE_LIMIT ? ` The filter covers the first ${HYDRATE_LIMIT} matches.` : '';
-      this.status.textContent = `${filteredStatus(this.matching(rows, filter).length, this.query, filter)}${covered}`;
-    }
+    if (this.filter === null) this.status.textContent = resultsStatus(this.pending.length, this.query);
+    else this.status.textContent = 'Filtering.';
     await this.renderNext(view);
+    if (view === this.view && this.filter !== null) void this.finishFilter(view);
   }
 
   private matching(rows: readonly PagefindData[], filter: ResultKind): PagefindData[] {
     return rows.filter((row) => resultKind(row.url, this.base) === filter);
+  }
+
+  /** Reads the rest of the results for a filtered view, then states the final count and decides whether "Show more" is needed. */
+  private async finishFilter(view: number): Promise<void> {
+    const filter = this.filter;
+    if (filter === null) return;
+    try {
+      const { rows } = await this.scan(() => false);
+      if (view !== this.view) return;
+      this.announceFilter(this.matching(rows, filter).length, filter);
+    } catch (error) {
+      if (view !== this.view) return;
+      console.warn('we-search: the results could not all be read, so the type count is not final.', error);
+    }
+  }
+
+  private announceFilter(count: number, filter: ResultKind): void {
+    this.status.textContent = `${filteredStatus(count, this.query, filter)}${coverageNote(this.pending.length)}`;
+    this.more.hidden = this.shown >= count;
   }
 
   /**
@@ -252,9 +275,13 @@ class WeSearch extends HTMLElement {
         if (end <= this.shown) return;
         batch = (await this.rowsUpTo(end)).slice(this.shown);
       } else {
-        const matches = this.matching(await this.hydrate(), filter);
-        total = matches.length;
-        batch = matches.slice(this.shown, this.shown + PAGE_SIZE);
+        const wanted = this.shown + PAGE_SIZE;
+        const { rows, complete } = await this.scan((read) => this.matching(read, filter).length >= wanted);
+        const matches = this.matching(rows, filter);
+        // Matches may still be unread: until the scan is complete there is always another page to ask for.
+        total = complete ? matches.length : Number.POSITIVE_INFINITY;
+        batch = matches.slice(this.shown, wanted);
+        if (complete && view === this.view) this.announceFilter(matches.length, filter);
       }
       if (view !== this.view) return;
       const settle = this.shown > 0;
@@ -300,12 +327,14 @@ class WeSearch extends HTMLElement {
     return item;
   }
 
-  /** Reads the types among the first results, after the first page is on screen, and shows the chips for them. */
+  /** Reads the result types chunk by chunk, after the first page is on screen, and shows the chips for the types found so far. */
   private async readTypes(search: number): Promise<void> {
     try {
-      const rows = await this.hydrate();
-      if (search !== this.search) return;
-      this.showChips(kindsPresent(rows.map((row) => row.url), this.base));
+      for (const end of chunkEnds(this.pending.length)) {
+        const rows = await this.rowsUpTo(end);
+        if (search !== this.search) return;
+        this.showChips(kindsPresent(rows.map((row) => row.url), this.base));
+      }
     } catch (error) {
       console.warn('we-search: the result types could not be read, so the type filter is not shown.', error);
     }
@@ -334,7 +363,11 @@ class WeSearch extends HTMLElement {
         button.textContent = row.label;
         return button;
       });
+      const active = document.activeElement;
+      const focused = active !== null && this.chips.contains(active) ? active.getAttribute('data-kind') : null;
       this.chips.replaceChildren(...buttons);
+      // A later chunk can add a type, which rebuilds the row; the chip that had the focus keeps it.
+      if (focused !== null) buttons.find((button) => button.getAttribute('data-kind') === focused)?.focus();
     }
     this.syncChips();
     this.chips.hidden = false;
