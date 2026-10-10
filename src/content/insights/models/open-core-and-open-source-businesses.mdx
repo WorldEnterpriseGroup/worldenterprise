@@ -1,0 +1,113 @@
+---
+title: "Open-core and open-source businesses"
+seoTitle: Open-core and open source
+description: How companies build a business on open-source software, what open core means, what licenses allow, and the questions a technical founder should answer first.
+topic: models
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders]
+relatedServices: [B]
+relatedPlaybook: design-the-product
+relatedTemplate: security-baseline-checklist
+related: [api-first-products-and-developer-tools, platforms-and-ecosystems-when-a-product-becomes-a-platform]
+evidence: [osi-osd, spdx-license-list, apache-2-0, gnu-agpl-3-0]
+claimsUsed: []
+sources:
+  - id: osi-osd
+    title: The Open Source Definition
+    publisher: Open Source Initiative
+    url: https://opensource.org/osd
+    accessed: 2026-10-10
+  - id: spdx-license-list
+    title: SPDX License List
+    publisher: SPDX
+    url: https://spdx.org/licenses/
+    accessed: 2026-10-10
+  - id: apache-2-0
+    title: Apache License, Version 2.0
+    publisher: The Apache Software Foundation
+    url: https://www.apache.org/licenses/LICENSE-2.0
+    accessed: 2026-10-10
+  - id: gnu-agpl-3-0
+    title: GNU Affero General Public License, version 3
+    publisher: Free Software Foundation, GNU Project
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Many technical founders arrive at the same idea from different directions: publish the code, build a community around it and make a business from the project. Some of the best-known infrastructure software started this way. The idea is attractive because it puts the product in front of developers without a sales call, and because developers trust what they can read.
+
+It is also easy to underestimate. Open source is a legal and cultural arrangement as well as a distribution tactic, and the choices you make on the first day, especially the license, are hard to reverse once other people have built on your code. This article describes the models, what licenses actually say, and the questions to answer before you publish.
+
+## Open source is a defined term
+
+The word "open" is used loosely, and the loose use causes trouble. The Open Source Initiative maintains a definition that software licenses are measured against, and it begins with a warning: "Open source doesn’t just mean access to the source code." Being able to read the code is not enough. The definition lists criteria that a license has to meet, and two of them matter most for a business.
+
+The first criterion, titled Free Redistribution, says "The license shall not restrict any party from selling or giving away the software". Anyone who receives the code may pass it on, including commercially. The sixth, titled No Discrimination Against Fields of Endeavor, says "The license must not restrict anyone from making use of the program in a specific field of endeavor."
+
+Those two criteria are where many commercial plans meet the definition. A license that lets everyone use the code but forbids using it to run a competing hosted service is not open source under this definition, however public the code is. Such licenses are sometimes called source-available. They may be legitimate business choices, but calling them open source invites a dispute with the community whose goodwill you were hoping to earn.
+
+## The main business models
+
+The descriptions below are editorial summaries of patterns, not findings from sources, and real companies often combine them.
+
+**Open core.** The core of the product is published under an open-source license. Additional features, often those that larger organizations need, are sold under a commercial license and kept private. Typical paid extras are single sign-on, audit logs, role-based access control, administration and support commitments. The boundary between the open part and the paid part is the central design decision.
+
+**Hosted service.** The code is open, and the company sells a managed version so customers do not have to run it themselves. The paid value is operation: uptime, upgrades, backups and security. This model depends on the license, because the license decides whether another company may also sell a hosted version of your code.
+
+**Support and services.** The code is open, and the company sells expertise, training or support contracts. It is the simplest model to explain and tends to scale with people, not with software.
+
+**Dual licensing.** The same code is offered under two licenses: an open one, usually with strong sharing obligations, and a commercial one for customers who cannot accept them. It requires that the company hold the right to license all the code, which affects how outside contributions are handled.
+
+## What licenses actually do
+
+Licenses differ in what they permit and what they require, and the differences drive the business models above. Two examples illustrate the range.
+
+**A permissive license** lets others use, change and redistribute the code, including in closed products, with few conditions. The Apache License, Version 2.0 is a widely used example. Its text says that "each Contributor hereby grants to You a perpetual, worldwide" license, and it follows with a separate section titled "Grant of Patent License". That separate patent grant is one of the features that companies look at when they choose a license.
+
+**A network copyleft license** requires that changes to the code be shared with those who use it, even when users reach it only over a network. The GNU Affero General Public License exists for that reason. Its preamble says it "is designed specifically to ensure that, in such cases," "the modified source code becomes available to the community." Its section on remote network interaction deals with the case where someone runs a modified version as a service. For a company that wants to sell a hosted version, a license of this kind makes it harder for another company to do the same without sharing its changes. It can also make some customers, particularly larger ones with internal policies, reluctant to use the code at all.
+
+A third category matters for naming. Licenses are catalogued with short identifiers on the SPDX License List, which describes itself this way: "The SPDX License List itself is a list of commonly found licenses and exceptions". Using the standard identifier in your project makes it clear to customers, auditors and automated tools which license you mean.
+
+None of this tells you which license to pick. That choice depends on your goals, your contributors and your customers, and it belongs with a lawyer who knows software licensing.
+
+## Where to draw the line in open core
+
+The hardest question in open core is what stays open. Three tests help.
+
+1. **Would an individual developer need it?** Features a single developer needs to get value from the project usually belong in the open part. Withholding them stalls adoption, and adoption is the reason for publishing the code.
+2. **Does the need appear only at organizational scale?** Controls that matter to teams and companies, such as access management, compliance reporting and central administration, are the commonly paid layer, because those buyers have budgets and procurement processes.
+3. **Would moving a feature behind the paywall later upset the community?** Moving something from open to paid after people have relied on it is one of the quickest ways to lose goodwill. Decide the boundary early and publish it.
+
+Notice that the boundary is also a product statement. It tells people what you believe the project is for and what the company is for, and a vague boundary invites friction from both sides.
+
+## Costs that are easy to miss
+
+- **Maintainer time.** Issues, pull requests and questions arrive whether or not they help the business. Someone has to review them, and review is slow work.
+- **Security response.** Public code is read by people looking for flaws. You need a way to receive reports, fix problems and notify users. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> is a starting point for the internal side.
+- **Contributor rights.** If you ever want to offer a commercial license or change the license, you need the right to do so for every contribution. Decide how contributions are accepted before you accept the first one.
+- **Forking.** Anyone may take permissively licensed code and build a competing product. That is not a malfunction. It is what the license allows.
+- **Slow revenue.** A community takes time to grow, and paying customers appear later than users. Plan for the gap.
+
+## How this connects to the rest of the business
+
+Open source changes the sales conversation: customers arrive having already used the product, which is the product-led pattern described in the article on <MaybeLink path="/insights/product-led-and-sales-led-growth-choosing-between-them/">product-led and sales-led growth</MaybeLink>. It also makes the interface a public commitment, covered in <MaybeLink path="/insights/api-first-products-and-developer-tools/">API-first products and developer tools</MaybeLink>, and invites outside builders, as the article on <MaybeLink path="/insights/platforms-and-ecosystems-when-a-product-becomes-a-platform/">platforms and ecosystems</MaybeLink> describes. The paid layer raises the pricing questions in <MaybeLink path="/insights/usage-based-seat-based-and-hybrid-pricing-models/">usage-based, seat-based and hybrid pricing</MaybeLink>.
+
+## Questions to answer before you publish
+
+1. Why does publishing the code help customers choose you, and what would you lose if it were private?
+2. Which license do you intend to use, and who has read it for you?
+3. What is the line between the open part and the paid part, and have you written it down?
+4. Who may contribute, under what terms, and do you keep the right to relicense?
+5. Could someone else run your code as a competing hosted service, and are you comfortable with that?
+6. Who will triage issues and security reports each week?
+
+The <MaybeLink path="/playbooks/design-the-product/">design the product playbook</MaybeLink> is a good place to write the first answers down.
+
+General information as of 2026-10-10, not legal advice. Licensing, contribution agreements and trademark rules vary, and a lawyer experienced in software licensing should read them against your plan.
+
+## What this article cannot tell you
+
+This article cannot tell you which license to use, whether an open model will win customers in your market or how a project will be received. It gives no adoption figures or revenue examples. The four sources are the Open Source Initiative's definition and three license texts or catalogs, each read for what the document itself says. The business models, the boundary tests and the list of costs are editorial judgment. It does not cover patents, trademarks, export rules or contribution agreements in depth. Checked on 2026-10-10.
