@@ -126,10 +126,22 @@ test('fewer than three internal links to live routes fail, and a link to a route
 });
 
 test('a ledger path whose page is still pending does not count as a link: pending paths belong in `related`', () => {
-  const pending = '/industries/';
+  // No hub is named here: each lands in its own package, so a hard-coded one starts failing the day it goes live. The pending path is derived
+  // from the ledger. While any registered path has no content yet, that real path is used. Once every hub is live, one registered path is
+  // withdrawn from a copy of the live set, which is exactly the state of a path that is registered and has no page.
+  const registered = routes.map((r) => r.path).filter((p) => /^\/[a-z0-9-]+\/$/.test(p) && !['/glossary/', '/faq/'].includes(p));
+  const realPending = registered.find((p) => !ctx.livePaths.has(p));
+  const withdrawn = registered.find((p) => ctx.livePaths.has(p));
+  assert.ok(realPending !== undefined || withdrawn !== undefined, 'the ledger registers at least one top-level path, so the test always has a pending example');
+  const pending = realPending ?? withdrawn ?? '';
+  const livePaths = realPending === undefined ? new Set([...ctx.livePaths].filter((p) => p !== pending)) : ctx.livePaths;
   assert.ok(routes.some((r) => r.path === pending), 'the pending path is a ledger row, so only liveness keeps it out');
-  assert.ok(!ctx.livePaths.has(pending), 'the pending path is not live');
-  assert.ok(rules(doc(FRONT, body({ links: ['/glossary/', '/faq/', pending] }))).includes('internal-links'));
+  assert.ok(!livePaths.has(pending), 'the pending path is not live');
+  const links = ['/glossary/', '/faq/', pending];
+  assert.ok(checkArticle(PATH, doc(FRONT, body({ links })), { ...ctx, livePaths }).some((p) => p.rule === 'internal-links'));
+  const live = registered.find((p) => p !== pending && livePaths.has(p));
+  assert.ok(live !== undefined, 'the ledger registers a live path besides the pending one');
+  assert.ok(!checkArticle(PATH, doc(FRONT, body({ links: ['/glossary/', '/faq/', live ?? ''] })), { ...ctx, livePaths }).some((p) => p.rule === 'internal-links'), 'the same article with a live third link passes, so the pending path is the only cause');
 });
 
 test('a link to another article in the same tree counts, because routes derive from the files', () => {
