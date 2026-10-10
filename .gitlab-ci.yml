@@ -212,8 +212,15 @@ audit:wired:
 # wave 8 articles pushed it past the coordinator's 1 GB upload limit (413 Request Entity Too Large, job 1130973, after all tests passed).
 # The copies in the report are the ones a reviewer opens, so the loose ones are excluded; traces and the rest still upload on failure.
 # The archive is kept 3 days, not a week: it is the one large artifact and object storage runs on single-copy volumes after the 2026-10-10 outage.
+#
+# Sharding. The job ran 23 minutes when the runner was quiet and hit the one-hour job timeout under contention (wp/74 pipeline 65894), and
+# every new article adds two route tests, a layout test and a fold test. Playwright splits the tests (fullyParallel is on, so by test, not by
+# file) over three jobs, and each shard uploads its own archive, so no single archive nears the upload limit either. Each shard's
+# playwright-report/ covers only its own tests; they are not merged: a blob merge job would have to download and re-upload the same
+# screenshots, and a failure names its test and shard in the job log. `needs: e2e:routes` waits for all three shards.
 e2e:routes:
   extends: [.e2e]
+  parallel: 3
   artifacts:
     exclude:
       - test-results/screenshots/**
@@ -221,7 +228,7 @@ e2e:routes:
   script:
     # `layout.spec` and not `layout`: the filter is a regular expression on the file path, and `layout` would also pull in layout-shift.spec.ts,
     # which has its own job (e2e:stability) and is timing-sensitive when four workers share the runner with a thousand other tests.
-    - npx playwright test routes layout.spec folds shell
+    - npx playwright test routes layout.spec folds shell --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
 
 # axe on every route and with the navigation open.
 e2e:a11y:
