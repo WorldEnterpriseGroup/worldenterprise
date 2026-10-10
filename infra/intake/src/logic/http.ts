@@ -72,6 +72,8 @@ export function corsHeaders(origin: string): Record<string, string> {
     'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
+    // Lets the browser read the wait time on a 429 (docs/forms-contract.md section 5).
+    'Access-Control-Expose-Headers': 'Retry-After',
     'Access-Control-Max-Age': '600',
     Vary: 'Origin',
   };

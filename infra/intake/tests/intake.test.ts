@@ -187,6 +187,17 @@ describe('rate limits', () => {
     assert.equal(later.status, 202);
   });
 
+  test('a 429 exposes Retry-After to the browser', async () => {
+    const h = harness();
+    for (let index = 0; index < 5; index += 1) await handleIntake(h.deps, jsonPost(validPayload('contact', { email: `x${index}@example.org` })));
+    const sixth = await handleIntake(h.deps, jsonPost(validPayload('contact', { email: 'x5@example.org' })));
+    assert.equal(sixth.status, 429);
+    const headers = lowerHeaders(sixth.headers);
+    assert.equal(headers['access-control-expose-headers'], 'Retry-After');
+    assert.equal(headers['access-control-allow-origin'], ORIGIN);
+    assert.ok(Number(headers['retry-after']) >= 1);
+  });
+
   test('the sixth request for one email address is 429 even from different addresses', async () => {
     const h = harness();
     for (let index = 0; index < 5; index += 1) {
