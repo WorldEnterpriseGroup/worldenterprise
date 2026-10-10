@@ -1,6 +1,6 @@
 {
   "wp": "WP-69",
-  "note": "Fetches are the primary and vendor pages cited by the nine AI-desk articles, all fetched on 2026-10-10 with curl through the allowlisted hosts. Fetches that failed (status 403, 404 or 406) or were blocked by the host allowlist are listed in the handoff and are not cited. The topic-ai desk page maps each sentence to the article or desk definition it restates.",
+  "note": "Fetches are the primary and vendor pages cited by the nine AI-desk articles, all fetched on 2026-10-10 with curl through the allowlisted hosts. Fetches that failed (status 403, 404 or 406) or were blocked by the host allowlist are listed in the handoff and are not cited. The topic-ai desk page is not a document with sources, so its sentence ledger is the top-level sentences list (each sentence maps to a page and heading it restates), outside documents, where checkSourcesFile would demand two sources of a page that has none.",
   "fetches": [
     {
       "id": "anth-deprec",
@@ -973,7 +973,7 @@
           "kind": "regulation",
           "sourceId": "tx-hb149-history",
           "locator": "Actions",
-          "quote": "Signed by the Governor"
+          "quote": "Signed by the Governor 06/22/2025"
         },
         {
           "id": "B60",
@@ -2603,55 +2603,63 @@
           "quote": "improper supplier vetting"
         }
       ]
+    }
+  ],
+  "sentences": [
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "AI-native building means putting a language model inside a product and running it with the risks stated.",
+      "page": "src/data/desks.ts#ai"
     },
     {
-      "path": "src/content/pages/insights/topic-ai.mdx",
-      "sentences": [
-        {
-          "sentence": "AI-native building means putting a language model inside a product and running it with the risks stated.",
-          "page": "src/data/desks.ts#ai"
-        },
-        {
-          "sentence": "One article reads the OWASP list of risks for model applications.",
-          "page": "src/content/insights/ai/prompt-injection-and-the-owasp-top-10-for-llm-applications.mdx#what-the-list-contains"
-        },
-        {
-          "sentence": "Another applies the NIST AI Risk Management Framework to a small team.",
-          "page": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx#what-the-framework-is"
-        },
-        {
-          "sentence": "Another sets out the questions to ask a model provider.",
-          "page": "src/content/insights/ai/choosing-a-model-provider-the-questions-that-matter.mdx#a-question-list-you-can-hand-to-a-technical-lead"
-        },
-        {
-          "sentence": "Another shows how to evaluate a feature before launch.",
-          "page": "src/content/insights/ai/evaluating-an-llm-feature-before-you-ship-it.mdx#why-an-informal-check-is-not-enough"
-        },
-        {
-          "sentence": "Another explains retrieval and where it breaks.",
-          "page": "src/content/insights/ai/retrieval-augmented-generation-what-it-is-and-where-it-breaks.mdx#where-it-breaks"
-        },
-        {
-          "sentence": "Another covers metering and budgeting usage.",
-          "page": "src/content/insights/ai/metering-and-budgeting-model-usage.mdx#budget-in-units-you-can-control"
-        },
-        {
-          "sentence": "Another covers decisions about customer data.",
-          "page": "src/content/insights/ai/ai-features-and-customer-data-what-to-decide-first.mdx#the-one-page-decision-record"
-        },
-        {
-          "sentence": "Another places a person in the loop.",
-          "page": "src/content/insights/ai/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop.mdx#three-places-a-person-can-sit"
-        },
-        {
-          "sentence": "The last lists questions to bring to counsel about AI regulation.",
-          "page": "src/content/insights/ai/ai-regulation-for-a-small-saas-company-what-to-ask-counsel.mdx#questions-to-bring-to-counsel"
-        },
-        {
-          "sentence": "Each article cites the document it describes and says what it cannot tell you.",
-          "page": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx#what-this-article-cannot-tell-you"
-        }
-      ]
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "One article reads the OWASP list of risks for model applications.",
+      "page": "src/content/insights/ai/prompt-injection-and-the-owasp-top-10-for-llm-applications.mdx#what-the-list-contains"
+    },
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "Another applies the NIST AI Risk Management Framework to a small team.",
+      "page": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx#what-the-framework-is"
+    },
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "Another sets out the questions to ask a model provider.",
+      "page": "src/content/insights/ai/choosing-a-model-provider-the-questions-that-matter.mdx#a-question-list-you-can-hand-to-a-technical-lead"
+    },
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "Another shows how to evaluate a feature before launch.",
+      "page": "src/content/insights/ai/evaluating-an-llm-feature-before-you-ship-it.mdx#why-an-informal-check-is-not-enough"
+    },
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "Another explains retrieval and where it breaks.",
+      "page": "src/content/insights/ai/retrieval-augmented-generation-what-it-is-and-where-it-breaks.mdx#where-it-breaks"
+    },
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "Another covers metering and budgeting usage.",
+      "page": "src/content/insights/ai/metering-and-budgeting-model-usage.mdx#budget-in-units-you-can-control"
+    },
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "Another covers decisions about customer data.",
+      "page": "src/content/insights/ai/ai-features-and-customer-data-what-to-decide-first.mdx#the-one-page-decision-record"
+    },
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "Another places a person in the loop.",
+      "page": "src/content/insights/ai/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop.mdx#three-places-a-person-can-sit"
+    },
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "The last lists questions to bring to counsel about AI regulation.",
+      "page": "src/content/insights/ai/ai-regulation-for-a-small-saas-company-what-to-ask-counsel.mdx#questions-to-bring-to-counsel"
+    },
+    {
+      "document": "src/content/pages/insights/topic-ai.mdx",
+      "sentence": "Each article cites the document it describes and says what it cannot tell you.",
+      "page": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx#what-this-article-cannot-tell-you"
     }
   ],
   "markers": []
