@@ -6,21 +6,36 @@ topic: funding
 publishedDate: 2026-10-10
 sources:
   - id: ecfr-230-501
-    title: Rule 501 definitions, 17 CFR 230.501
+    title: Rule 501 definitions, 17 CFR 230.501 (ecfr.gov/current/title-17/section-230.501)
     publisher: U.S. Securities and Exchange Commission (eCFR)
-    url: https://www.ecfr.gov/current/title-17/chapter-II/part-230/subject-group-ECFR2d9b2f6b4cb3dd9/section-230.501
-    accessed: 2026-10-10
-  - id: investor-private-placements
-    title: Private Placements under Regulation D, Updated Investor Bulletin
-    publisher: SEC Office of Investor Education and Assistance (Investor.gov)
-    url: https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/private
+    url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-17.xml?part=230&section=230.501
     accessed: 2026-10-10
   - id: sec-exempt-offerings
     title: Exempt Offerings
     publisher: U.S. Securities and Exchange Commission
     url: https://www.sec.gov/resources-small-businesses/exempt-offerings
     accessed: 2026-10-10
-evidence: [ecfr-230-501, investor-private-placements, sec-exempt-offerings]
+  - id: sec-rule-506b
+    title: Private Placements - Rule 506(b)
+    publisher: U.S. Securities and Exchange Commission
+    url: https://www.sec.gov/resources-small-businesses/exempt-offerings/private-placements-rule-506b
+    accessed: 2026-10-10
+  - id: sec-rule-506c
+    title: General solicitation, Rule 506(c)
+    publisher: U.S. Securities and Exchange Commission
+    url: https://www.sec.gov/resources-small-businesses/exempt-offerings/general-solicitation-rule-506c
+    accessed: 2026-10-10
+  - id: sec-rule-504
+    title: Exemption for limited offerings not exceeding $10 million, Rule 504 of Regulation D
+    publisher: U.S. Securities and Exchange Commission
+    url: https://www.sec.gov/resources-small-businesses/exempt-offerings/exemption-limited-offerings-not-exceeding-10-million-rule-504-regulation-d
+    accessed: 2026-10-10
+  - id: sec-form-d
+    title: Filing a Form D Notice
+    publisher: U.S. Securities and Exchange Commission
+    url: https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice
+    accessed: 2026-10-10
+evidence: [ecfr-230-501, sec-exempt-offerings, sec-rule-506b, sec-rule-506c, sec-rule-504, sec-form-d]
 relatedPlaybook: build-repeatable-growth
 relatedTemplate: seed-data-room-checklist
 segments: [first-time-founders, non-technical-founders]
@@ -36,11 +51,11 @@ import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.
 
 *This article is general information, not legal or financial advice. It was written on October 10, 2026, from the public sources listed on this page, and it does not describe any agreement with World Enterprise. Securities rules change and have exceptions, so confirm the current position with your own lawyer.*
 
-Founders often sort investors into angels, micro-funds and funds, and ask how each kind decides. No source cited here describes how any of them decides, so this article does not guess. What public sources do describe is the legal frame around every one of these investors: who counts as an accredited investor, which exemptions let a company sell them shares, and what the regulator tells investors to ask before they put money in. Those rules shape what you must do whoever writes the check. For the practical side of choosing, read [choosing the right first investors for a SaaS company](/insights/choosing-the-right-first-investors-for-a-saas-company/).
+Founders often sort investors into angels, micro-funds and funds, and ask how each kind decides. No source cited here describes how any of them decides, so this article does not guess. What public sources do describe is the legal frame around every one of these investors: who counts as an accredited investor, which exemptions let a company sell them shares, and what each exemption asks of the company. Those rules shape what you must do whoever writes the check. For the practical side of choosing, read [choosing the right first investors for a SaaS company](/insights/choosing-the-right-first-investors-for-a-saas-company/).
 
 ## The legal question behind the labels
 
-A private company that sells shares must either register the offering or rely on an exemption. The SEC says every offer and sale of securities must either be registered under the Securities Act of 1933 or rely on an available exemption from registration. Offerings that rely on Securities Act Section 4(a)(2) or its safe harbor under Regulation D are often called private placements, and the SEC's investor bulletin notes that companies, from small start-ups to large, well-established ones, use them to raise funds.
+A private company that sells shares must either register the offering or rely on an exemption. The SEC says every offer and sale of securities must either be registered under the Securities Act of 1933 or rely on an available exemption from registration. Section 4(a)(2) of the Securities Act exempts from registration transactions by an issuer not involving any public offering, and the SEC's page on Rule 506(b) of Regulation D describes that rule as a safe harbor under Section 4(a)(2).
 
 Regulation D leans on a defined term, the accredited investor. The rule defines it as a person who comes within a listed category, or whom the issuer reasonably believes comes within one, at the time of the sale. So the question to ask of any investor is not whether they call themselves an angel or a fund. It is which category, if any, they fall into.
 
@@ -50,7 +65,7 @@ The rule, in 17 CFR 230.501(a), lists the paths for an individual. A natural per
 
 - an individual net worth, or joint net worth with a spouse or spousal equivalent, above $1,000,000, with the primary residence left out of the calculation under conditions the rule sets;
 - individual income above $200,000 in each of the two most recent years, or joint income above $300,000 with a spouse or spousal equivalent, and a reasonable expectation of reaching the same level this year;
-- in good standing, a professional certification, designation or credential that the SEC has designated, which the SEC's bulletin says includes a Series 7, 65 or 82 license.
+- one or more professional certifications, designations or credentials held in good standing, of the kind the rule describes.
 
 The rule also lists any director, executive officer or general partner of the company selling the securities. That category matters to you: a founder who is a director or executive officer of their own company is covered by the rule's text.
 
@@ -71,26 +86,21 @@ A vehicle formed for the specific purpose of acquiring the securities is treated
 
 The exemption a company relies on sets who may invest and what the company must do.
 
-- **Rule 506(b).** The company may sell to an unlimited number of accredited investors and to no more than 35 non-accredited investors in any 90-calendar-day period. It may not generally solicit.
-- **Rule 506(c).** The company may generally solicit or advertise, but only accredited investors may buy, and the company has to take reasonable steps to verify each one's status.
-- **Disclosure.** If the company offers securities to non-accredited investors, it must disclose certain information about itself, including its financial statements. If it sells only to accredited investors, it has discretion over what to disclose, and any information given to accredited investors must also be given to non-accredited ones.
-- **Form D.** Every company relying on a Regulation D exemption must file a Form D no later than 15 days after it first sells the securities. The SEC says a Form D does not represent SEC approval and that the SEC does not approve any offering.
-- **State law.** The bulletin adds that an offering exempt from SEC registration may still have to comply separately with state securities laws.
+- **Rule 506(b).** The company can raise an unlimited amount of money and can sell securities to an unlimited number of accredited investors, but may not sell to more than 35 non-accredited investors in any 90-calendar-day period. The rule allows no general solicitation or advertising to market the securities.
+- **Rule 506(c).** The company may broadly solicit and generally advertise the offering, provided that all purchasers are accredited investors and the company takes reasonable steps to verify each purchaser's accredited investor status.
+- **Disclosure.** If the company sells to non-accredited investors under Rule 506(b), it must give them disclosure documents and the financial statement information that Rule 506 specifies.
+- **Form D.** A company relying on Rule 504, Rule 506(b) or Rule 506(c) is required to file a notice on Form D within 15 days after the first sale of securities in the offering. The SEC's Form D page says the date of first sale is the date on which the first investor is irrevocably contractually committed to invest, and that the SEC does not charge a filing fee for the notice.
+- **State law.** Under Rule 506(c), the SEC says the states still have authority to require notice filings and collect state fees. Under Rule 504, a company must comply with state securities laws and regulations in the states where it offers or sells.
 
-The bulletin states that Rule 506 allows an unlimited amount to be raised. Rule 504 allows certain issuers to sell up to $10 million in any 12-month period. Which one fits your round is a question for counsel.
+Rule 504 exempts from registration the offer and sale of up to $10 million of securities in a 12-month period. Which exemption fits your round is a question for counsel.
 
-## What the regulator tells investors to ask
+## Who cannot use an exemption, and what follows from using one
 
-The SEC's bulletin is addressed to investors, and it is the nearest thing to a public description of what a careful investor weighs. It says a company in a private placement may be early stage and high risk, that the investor should be able to afford a total loss, that the investment is highly illiquid, and that the company is not required to give the disclosure a registered offering requires. It then lists things for the investor to consider, including:
+Exemptions have limits on who may use them. The SEC's Rule 504 page lists the companies that are not eligible: Exchange Act reporting companies, investment companies, companies that have no specific business plan or have indicated their plan is to engage in a merger or acquisition with an unidentified company or companies, and companies disqualified under the rule's "bad actor" provisions. The SEC's pages say Rule 506(b) and Rule 506(c) offerings are subject to bad actor disqualification provisions as well. Which people and roles those provisions cover is a question for your counsel, and the answer should come before you approach an investor, not after.
 
-- whether the company provided financial statements, and whether they are independently audited;
-- whether the claims and expectations are reasonable, and how reasonable the reliance is on a particular technology, customer or product claim;
-- who the competitors are, and the experience and background of management;
-- how long the company has been in business and whether it has made prior offerings;
-- how the company plans to use the money raised;
-- whether the securities carry transfer restrictions, and whether the investor is comfortable holding them indefinitely.
+Purchasers in a Rule 506(b) offering or a Rule 506(c) offering receive restricted securities, the SEC says. What that means for an investor's ability to sell is for counsel to explain. It is one more reason an investor may ask how and when they could exit.
 
-You can read the list as the questions a careful investor may bring. Having answers ready is the point of the [investor readiness checklist](/fundability/investor-readiness-checklist/) and the [data room guide](/fundability/data-room/). The list is staff advice to investors, which the bulletin says has no legal force or effect, and it is not a description of any particular investor.
+The rules above set who may invest and what you must file. They do not list what a careful investor weighs before writing a check, and none of the sources used here does either. Having your answers ready is the point of the [investor readiness checklist](/fundability/investor-readiness-checklist/) and the [data room guide](/fundability/data-room/).
 
 ## Questions for the investor, and for your own counsel
 

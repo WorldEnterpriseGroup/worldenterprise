@@ -2,76 +2,76 @@
   "wp": "WP-66",
   "fetches": [
     {
-      "id": "ecfr-227",
-      "url": "https://www.ecfr.gov/current/title-17/chapter-II/part-227",
-      "title": "Regulation Crowdfunding, 17 CFR Part 227",
-      "publisher": "U.S. Securities and Exchange Commission (eCFR)",
-      "fetchedAt": "2026-10-10T07:04:03Z",
+      "id": "de-dgcl-151",
+      "url": "https://delcode.delaware.gov/title8/c001/sc05/index.html",
+      "title": "Delaware Code, Title 8, section 151, Classes and series of stock; redemption; rights",
+      "publisher": "Delaware General Assembly",
+      "fetchedAt": "2026-10-10T08:20:43Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ecfr-227",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-17.xml?part=227",
+      "title": "Regulation Crowdfunding, 17 CFR Part 227 (ecfr.gov/current/title-17/chapter-II/part-227)",
+      "publisher": "U.S. Securities and Exchange Commission (eCFR)",
+      "fetchedAt": "2026-10-10T08:22:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ecfr-227-304",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-17.xml?part=227&section=227.304",
+      "title": "Regulation Crowdfunding, 17 CFR 227.304 (ecfr.gov/current/title-17/section-227.304)",
+      "publisher": "U.S. Securities and Exchange Commission (eCFR)",
+      "fetchedAt": "2026-10-10T08:21:33Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ecfr-227-501",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-17.xml?part=227&section=227.501",
+      "title": "Regulation Crowdfunding, 17 CFR 227.501 (ecfr.gov/current/title-17/section-227.501)",
+      "publisher": "U.S. Securities and Exchange Commission (eCFR)",
+      "fetchedAt": "2026-10-10T08:21:33Z",
+      "status": 200,
+      "tool": "WebFetch"
     },
     {
       "id": "ecfr-230-501",
-      "url": "https://www.ecfr.gov/current/title-17/chapter-II/part-230/subject-group-ECFR2d9b2f6b4cb3dd9/section-230.501",
-      "title": "Rule 501 definitions, 17 CFR 230.501",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-17.xml?part=230&section=230.501",
+      "title": "Rule 501 definitions, 17 CFR 230.501 (ecfr.gov/current/title-17/section-230.501)",
       "publisher": "U.S. Securities and Exchange Commission (eCFR)",
-      "fetchedAt": "2026-10-10T07:06:37Z",
+      "fetchedAt": "2026-10-10T08:22:02Z",
       "status": 200,
-      "tool": "curl"
-    },
-    {
-      "id": "investor-crowdfunding",
-      "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/updated-11",
-      "title": "Crowdfunding for Investors, Investor Bulletin",
-      "publisher": "SEC Office of Investor Education and Advocacy (Investor.gov)",
-      "fetchedAt": "2026-10-10T07:06:40Z",
-      "status": 200,
-      "tool": "curl"
-    },
-    {
-      "id": "investor-private-placements",
-      "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/private",
-      "title": "Private Placements under Regulation D, Updated Investor Bulletin",
-      "publisher": "SEC Office of Investor Education and Assistance (Investor.gov)",
-      "fetchedAt": "2026-10-10T07:06:27Z",
-      "status": 200,
-      "tool": "curl"
-    },
-    {
-      "id": "investor-stocks",
-      "url": "https://www.investor.gov/introduction-investing/investing-basics/investment-products/stocks",
-      "title": "Stocks - FAQs",
-      "publisher": "U.S. Securities and Exchange Commission (Investor.gov)",
-      "fetchedAt": "2026-10-10T07:33:20Z",
-      "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "nsf-seed",
       "url": "https://seedfund.nsf.gov/",
       "title": "America's Seed Fund, NSF SBIR/STTR",
       "publisher": "U.S. National Science Foundation",
-      "fetchedAt": "2026-10-10T07:03:56Z",
+      "fetchedAt": "2026-10-10T08:22:02Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "nvca-model-documents",
       "url": "https://nvca.org/model-legal-documents/",
       "title": "Model Legal Documents",
       "publisher": "National Venture Capital Association",
-      "fetchedAt": "2026-10-10T06:59:29Z",
+      "fetchedAt": "2026-10-10T08:21:33Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "nvca-term-sheet",
       "url": "https://nvca.org/wp-content/uploads/2020/08/NVCA-2020-Term-Sheet-1.docx",
       "title": "NVCA model term sheet for a Series A preferred stock financing",
       "publisher": "National Venture Capital Association",
-      "fetchedAt": "2026-10-10T07:15:49Z",
+      "fetchedAt": "2026-10-10T07:56:58Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "ny-fsl-801",
@@ -87,27 +87,27 @@
       "url": "https://www.sba.gov/funding-programs/loans",
       "title": "SBA loans",
       "publisher": "U.S. Small Business Administration",
-      "fetchedAt": "2026-10-10T07:04:21Z",
+      "fetchedAt": "2026-10-10T08:21:33Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "sbir-about",
       "url": "https://www.sbir.gov/about",
       "title": "About SBIR and STTR",
       "publisher": "U.S. Small Business Administration, SBIR.gov",
-      "fetchedAt": "2026-10-10T06:59:25Z",
+      "fetchedAt": "2026-10-10T08:21:33Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "sbir-apply",
       "url": "https://www.sbir.gov/apply",
       "title": "How to Apply",
       "publisher": "U.S. Small Business Administration, SBIR.gov",
-      "fetchedAt": "2026-10-10T07:26:41Z",
+      "fetchedAt": "2026-10-10T08:22:02Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "sec-exempt-offerings",
@@ -119,31 +119,76 @@
       "tool": "WebFetch"
     },
     {
+      "id": "sec-form-d",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice",
+      "title": "Filing a Form D Notice",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T08:20:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-regcf",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/regulation-crowdfunding",
+      "title": "Regulation Crowdfunding",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T08:20:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-rule-504",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/exemption-limited-offerings-not-exceeding-10-million-rule-504-regulation-d",
+      "title": "Exemption for limited offerings not exceeding $10 million, Rule 504 of Regulation D",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T08:20:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-rule-506b",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/private-placements-rule-506b",
+      "title": "Private Placements - Rule 506(b)",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T08:20:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-rule-506c",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/general-solicitation-rule-506c",
+      "title": "General solicitation, Rule 506(c)",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T08:20:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
       "id": "yc-safe",
       "url": "https://www.ycombinator.com/safe",
       "title": "The SAFE, the standard way startups raise money",
       "publisher": "Y Combinator",
-      "fetchedAt": "2026-10-10T06:59:17Z",
+      "fetchedAt": "2026-10-10T08:21:33Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "yc-safe-form",
       "url": "https://bookface-static.ycombinator.com/assets/ycdc/Postmoney%20Safe%20-%20Valuation%20Cap%20Only%20-%20FINAL-f2a64add6d21039ab347ee2e7194141a4239e364ffed54bad0fe9cf623bf1691.docx",
       "title": "Post-money SAFE, standard form",
       "publisher": "Y Combinator",
-      "fetchedAt": "2026-10-10T07:08:29Z",
+      "fetchedAt": "2026-10-10T07:56:29Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "yc-vs-note",
       "url": "https://www.ycombinator.com/safe/safe-vs-convertible-note",
       "title": "SAFE vs. convertible note vs. priced equity round",
       "publisher": "Y Combinator",
-      "fetchedAt": "2026-10-10T07:08:26Z",
+      "fetchedAt": "2026-10-10T08:21:33Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -220,7 +265,7 @@
           "kind": "definition",
           "sourceId": "yc-safe",
           "locator": "What is a SAFE",
-          "quote": "a short contract an investor signs to fund your startup now in exchange for the right to shares of stock in your startup later"
+          "quote": "short contract an investor signs to fund your startup now in exchange for the right to shares of stock in your startup later"
         },
         {
           "id": "A10",
@@ -272,19 +317,19 @@
         },
         {
           "id": "A16",
-          "sentence": "the sec's investor education pages say a company cannot make these offers directly.",
+          "sentence": "the sec's regulation crowdfunding page says the rules require all transactions to take place online through an sec-registered intermediary, either a broker-dealer or a funding portal.",
           "kind": "regulation",
-          "sourceId": "investor-crowdfunding",
-          "locator": "How do I make a Regulation Crowdfunding investment?",
-          "quote": "Companies may not offer Regulation Crowdfunding investments to you directly—they must use a broker-dealer or funding portal."
+          "sourceId": "sec-regcf",
+          "locator": "Regulation Crowdfunding",
+          "quote": "require all transactions under Regulation Crowdfunding to take place online through an SEC-registered intermediary"
         },
         {
           "id": "A17",
-          "sentence": "it must use a broker-dealer or funding portal that is registered with the sec.",
+          "sentence": "the sec's regulation crowdfunding page says the rules require all transactions to take place online through an sec-registered intermediary, either a broker-dealer or a funding portal.",
           "kind": "regulation",
-          "sourceId": "investor-crowdfunding",
-          "locator": "How do I make a Regulation Crowdfunding investment?",
-          "quote": "must be registered with the SEC and be a member of the Financial Industry Regulatory Authority (FINRA)"
+          "sourceId": "sec-regcf",
+          "locator": "Regulation Crowdfunding",
+          "quote": "either a broker-dealer or a funding portal"
         },
         {
           "id": "A18",
@@ -296,35 +341,19 @@
         },
         {
           "id": "A19",
-          "sentence": "the sec's investor bulletin on private placements says that offerings exempt under regulation d are often called private placements, that companies from small start-ups to large, well-established ones use them to raise funds, and that a company relying on regulation d files a notice called form d no later than 15 days after it first sells the securities.",
-          "kind": "definition",
-          "sourceId": "investor-private-placements",
-          "locator": "What is a private placement?",
-          "quote": "are often referred to as private placements"
+          "sentence": "the sec's form d page says form d is used to file a notice of an exempt offering of securities with the sec, and that a company must file this notice within 15 days after the first sale of securities in the offering.",
+          "kind": "regulation",
+          "sourceId": "sec-form-d",
+          "locator": "Filing a Form D Notice",
+          "quote": "Form D is used to file a notice of an exempt offering of securities with the SEC."
         },
         {
           "id": "A20",
-          "sentence": "the sec's investor bulletin on private placements says that offerings exempt under regulation d are often called private placements, that companies from small start-ups to large, well-established ones use them to raise funds, and that a company relying on regulation d files a notice called form d no later than 15 days after it first sells the securities.",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "What is a private placement?",
-          "quote": "Private and public companies, including everything from small start-ups to large, well-established companies, engage in private placements to raise funds from investors."
-        },
-        {
-          "id": "A21",
-          "sentence": "the sec's investor bulletin on private placements says that offerings exempt under regulation d are often called private placements, that companies from small start-ups to large, well-established ones use them to raise funds, and that a company relying on regulation d files a notice called form d no later than 15 days after it first sells the securities.",
+          "sentence": "the sec's form d page says form d is used to file a notice of an exempt offering of securities with the sec, and that a company must file this notice within 15 days after the first sale of securities in the offering.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "What should you do before investing?",
-          "quote": "required to file a document called a Form D no later than 15 days after they first sell the securities in the offering"
-        },
-        {
-          "id": "A22",
-          "sentence": "the same bulletin says that form d does not represent sec approval of an offering, and that the sec does not approve any offering.",
-          "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "What should you do before investing?",
-          "quote": "The SEC does not approve any offering."
+          "sourceId": "sec-form-d",
+          "locator": "Filing a Form D Notice",
+          "quote": "A company must file this notice within 15 days after the first sale of securities in the offering."
         }
       ]
     },
@@ -337,7 +366,7 @@
           "kind": "definition",
           "sourceId": "yc-safe",
           "locator": "What is a SAFE",
-          "quote": "a short contract an investor signs to fund your startup now in exchange for the right to shares of stock in your startup later"
+          "quote": "short contract an investor signs to fund your startup now in exchange for the right to shares of stock in your startup later"
         },
         {
           "id": "A2",
@@ -393,10 +422,18 @@
           "kind": "definition",
           "sourceId": "yc-vs-note",
           "locator": "Comparison table, Interest",
-          "quote": "Interest None Accrues"
+          "quote": "Accrues (often 2–8%)"
         },
         {
           "id": "A9",
+          "sentence": "| interest | none | accrues |",
+          "kind": "definition",
+          "sourceId": "yc-safe",
+          "locator": "FAQ, How is a SAFE different from a convertible note",
+          "quote": "it has no interest and no maturity date"
+        },
+        {
+          "id": "A10",
           "sentence": "| maturity date | none | yes, which can force repayment or default |",
           "kind": "definition",
           "sourceId": "yc-vs-note",
@@ -404,7 +441,7 @@
           "quote": "Maturity Date None Yes — can force repayment or default"
         },
         {
-          "id": "A10",
+          "id": "A11",
           "sentence": "| sets a price per share now | no | no, conversion to stock happens later |",
           "kind": "definition",
           "sourceId": "yc-vs-note",
@@ -412,7 +449,7 @@
           "quote": "No — conversion to stock happens later"
         },
         {
-          "id": "A11",
+          "id": "A12",
           "sentence": "| legal cost, as y combinator describes it | lowest, one document | moderate |",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -420,7 +457,7 @@
           "quote": "Legal Cost Lowest — one document Moderate Highest"
         },
         {
-          "id": "A12",
+          "id": "A13",
           "sentence": "| where it ranks if the company is sold or wound down | junior to debt and on par with preferred stock | senior, because debt is repaid first |",
           "kind": "definition",
           "sourceId": "yc-vs-note",
@@ -428,7 +465,7 @@
           "quote": "Junior to debt and on par with preferred stock Senior — debt is repaid first"
         },
         {
-          "id": "A13",
+          "id": "A14",
           "sentence": "the row on ranking is the one that matters if the company is sold or closed: debt is repaid before equity, and the safe sits behind it.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -436,7 +473,7 @@
           "quote": "Debt is repaid before any equity if the company is sold or wound down."
         },
         {
-          "id": "A14",
+          "id": "A15",
           "sentence": "he standard form defines a liquidity event as a change of control, a direct listing or an initial public offering, and a dissolution event as a voluntary termination of operations, an assignment for the benefit of creditors, or any other liquidation or winding up.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -444,7 +481,7 @@
           "quote": "“Liquidity Event” means a Change of Control, a Direct Listing or an Initial Public Offering."
         },
         {
-          "id": "A15",
+          "id": "A16",
           "sentence": "he standard form defines a liquidity event as a change of control, a direct listing or an initial public offering, and a dissolution event as a voluntary termination of operations, an assignment for the benefit of creditors, or any other liquidation or winding up.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -452,15 +489,15 @@
           "quote": "a voluntary termination of operations, (ii) a general assignment for the benefit of the Company’s creditors"
         },
         {
-          "id": "A16",
+          "id": "A17",
           "sentence": "n the publisher's post-money valuation cap form, a liquidity event entitles the investor to the greater of the purchase amount or the amount payable on the shares the purchase amount would have converted into, and a dissolution event entitles the investor to the purchase amount.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
           "locator": "Section 1(b)",
-          "quote": "the greater of (i) the Purchase Amount (the “Cash-Out Amount”) or (ii) the amount payable on the number of shares of Common Stock"
+          "quote": "the greater of (i) the Purchase Amount (the “Cash-Out Amount”) or (ii) the amount payable on the number of"
         },
         {
-          "id": "A17",
+          "id": "A18",
           "sentence": "n the publisher's post-money valuation cap form, a liquidity event entitles the investor to the greater of the purchase amount or the amount payable on the shares the purchase amount would have converted into, and a dissolution event entitles the investor to the purchase amount.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -468,15 +505,15 @@
           "quote": "receive a portion of Proceeds equal to the Cash-Out Amount"
         },
         {
-          "id": "A18",
+          "id": "A19",
           "sentence": "in both cases the form says the right to the cash amount is junior to outstanding indebtedness and creditor claims, including convertible promissory notes that have not converted, and that the safe is intended to operate like standard non-participating preferred stock.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
           "locator": "Section 1(d)(i)",
-          "quote": "Junior to payment of outstanding indebtedness and creditor claims, including contractual claims for payment and convertible promissory notes"
+          "quote": "Junior to payment of outstanding indebtedness and creditor claims, including contractual claims for payment"
         },
         {
-          "id": "A19",
+          "id": "A20",
           "sentence": "in both cases the form says the right to the cash amount is junior to outstanding indebtedness and creditor claims, including convertible promissory notes that have not converted, and that the safe is intended to operate like standard non-participating preferred stock.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -484,7 +521,7 @@
           "quote": "this Safe is intended to operate like standard non-participating Preferred Stock"
         },
         {
-          "id": "A20",
+          "id": "A21",
           "sentence": "the standard form calculates the conversion price, called the safe price, as the post-money valuation cap divided by the company capitalization.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -492,7 +529,7 @@
           "quote": "“Safe Price” means the price per share equal to the Post-Money Valuation Cap divided by the Company Capitalization."
         },
         {
-          "id": "A21",
+          "id": "A22",
           "sentence": "he highest valuation at which a safe converts into shares.",
           "kind": "definition",
           "sourceId": "yc-safe",
@@ -500,7 +537,7 @@
           "quote": "The highest valuation at which a SAFE converts into shares."
         },
         {
-          "id": "A22",
+          "id": "A23",
           "sentence": "if the priced round values the company above the cap, the safe converts at the cap.",
           "kind": "definition",
           "sourceId": "yc-safe",
@@ -508,7 +545,7 @@
           "quote": "If your startup's priced round values the company above the valuation cap, the SAFE converts at the valuation cap"
         },
         {
-          "id": "A23",
+          "id": "A24",
           "sentence": "on a post-money safe, the ownership sold equals the investment amount divided by the valuation cap.",
           "kind": "definition",
           "sourceId": "yc-safe",
@@ -516,7 +553,7 @@
           "quote": "On a post-money SAFE, ownership sold equals the investment amount divided by the valuation cap."
         },
         {
-          "id": "A24",
+          "id": "A25",
           "sentence": "on a 20 percent discount, the safe converts at a price per share 20 percent below the price in the equity financing.",
           "kind": "definition",
           "sourceId": "yc-safe",
@@ -524,23 +561,23 @@
           "quote": "the SAFE investors convert at a price per share that is 20% below the price per share in the equity financing"
         },
         {
-          "id": "A25",
+          "id": "A26",
           "sentence": "an mfn safe has no valuation cap or discount and automatically takes the valuation cap or discount of any safe the company issues later.",
           "kind": "definition",
           "sourceId": "yc-safe",
           "locator": "SAFE terms, defined, MFN",
-          "quote": "An MFN SAFE has no valuation cap or discount; instead it automatically takes the valuation cap or discount of any SAFE you issue later"
+          "quote": "An MFN SAFE has no valuation cap or discount; instead it automatically takes the valuation cap or discount of any SAFE"
         },
         {
-          "id": "A26",
+          "id": "A27",
           "sentence": "he right, not the obligation, for an investor to invest in the company's future priced round to maintain their percentage ownership.",
           "kind": "definition",
           "sourceId": "yc-safe",
           "locator": "SAFE terms, defined, Pro rata rights",
-          "quote": "The right, not the obligation, for an investor to invest money into your startup's future priced round to maintain their percentage ownership"
+          "quote": "The right, not the obligation, for an investor to invest money into your startup's future priced round to maintain"
         },
         {
-          "id": "A27",
+          "id": "A28",
           "sentence": "y combinator says it lives in an optional side letter rather than in the safe.",
           "kind": "definition",
           "sourceId": "yc-safe",
@@ -548,7 +585,7 @@
           "quote": "The pro rata right lives in an optional, standardized side letter rather than in the SAFE itself."
         },
         {
-          "id": "A28",
+          "id": "A29",
           "sentence": "y combinator says it has been its standard since 2018.",
           "kind": "statistic",
           "sourceId": "yc-safe",
@@ -556,7 +593,7 @@
           "quote": "The post-money SAFE has been the YC standard since 2018."
         },
         {
-          "id": "A29",
+          "id": "A30",
           "sentence": "safe whose valuation cap is stated after the investment is made, so it includes the safe money.",
           "kind": "definition",
           "sourceId": "yc-safe",
@@ -564,7 +601,7 @@
           "quote": "meaning it's the valuation of your company after the investment is made"
         },
         {
-          "id": "A30",
+          "id": "A31",
           "sentence": "he publisher gives an example of how this adds up: ownership sold equals the investment divided by the valuation cap, and the caps of separate safes add together, so five $100k safes at a $5m cap is 10 percent sold, not 2 percent.",
           "kind": "statistic",
           "sourceId": "yc-vs-note",
@@ -572,7 +609,7 @@
           "quote": "Five $100k SAFEs at a $5M cap is 10% sold, not 2%."
         },
         {
-          "id": "A31",
+          "id": "A32",
           "sentence": "he publisher gives an example of how this adds up: ownership sold equals the investment divided by the valuation cap, and the caps of separate safes add together, so five $100k safes at a $5m cap is 10 percent sold, not 2 percent.",
           "kind": "definition",
           "sourceId": "yc-vs-note",
@@ -580,7 +617,7 @@
           "quote": "Post-money valuation caps are additive."
         },
         {
-          "id": "A32",
+          "id": "A33",
           "sentence": "the page says debt is senior to equity, so a safe issued before or after a note sits behind it in line.",
           "kind": "definition",
           "sourceId": "yc-vs-note",
@@ -588,7 +625,7 @@
           "quote": "Issue a SAFE before or after a note, and your SAFE investors automatically sit behind it in line."
         },
         {
-          "id": "A33",
+          "id": "A34",
           "sentence": "the publisher says to track the running total before signing the next safe, because the amounts add.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -596,7 +633,7 @@
           "quote": "Track the running total before signing the next one."
         },
         {
-          "id": "A34",
+          "id": "A35",
           "sentence": "the page says they dilute founder ownership differently, and calls pre-money safes legacy.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -604,7 +641,7 @@
           "quote": "Pre-money and post-money SAFEs dilute founder ownership differently."
         },
         {
-          "id": "A35",
+          "id": "A36",
           "sentence": "the page says they dilute founder ownership differently, and calls pre-money safes legacy.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -612,7 +649,7 @@
           "quote": "Pre-money SAFEs are legacy and not recommended."
         },
         {
-          "id": "A36",
+          "id": "A37",
           "sentence": "he publisher also describes the safe as the modern default for early raises and the convertible note as increasingly rare for new raises.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -620,7 +657,7 @@
           "quote": "For almost every early-stage startup, the answer is the SAFE — it's the modern default."
         },
         {
-          "id": "A37",
+          "id": "A38",
           "sentence": "he publisher also describes the safe as the modern default for early raises and the convertible note as increasingly rare for new raises.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -628,7 +665,7 @@
           "quote": "Increasingly rare for new raises."
         },
         {
-          "id": "A38",
+          "id": "A39",
           "sentence": "the sec states that every offer and sale of securities must either be registered under the securities act of 1933 or rely on an available exemption from registration.",
           "kind": "regulation",
           "sourceId": "sec-exempt-offerings",
@@ -636,7 +673,7 @@
           "quote": "Every offer and sale of securities must either be registered under the Securities Act of 1933 or rely on an available exemption from registration"
         },
         {
-          "id": "A39",
+          "id": "A40",
           "sentence": "y combinator's faq adds two points about its own form: safe investors should be accredited, and a company's board of directors must approve issuing safes.",
           "kind": "regulation",
           "sourceId": "yc-safe",
@@ -644,7 +681,7 @@
           "quote": "Yes. SAFE investors should be accredited."
         },
         {
-          "id": "A40",
+          "id": "A41",
           "sentence": "y combinator's faq adds two points about its own form: safe investors should be accredited, and a company's board of directors must approve issuing safes.",
           "kind": "regulation",
           "sourceId": "yc-safe",
@@ -652,7 +689,7 @@
           "quote": "Your startup's board of directors must approve issuing SAFEs."
         },
         {
-          "id": "A41",
+          "id": "A42",
           "sentence": "how is the instrument treated for tax? y combinator says to consult your tax advisor if the tax characterization of the safe is material to your use of it.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -660,7 +697,7 @@
           "quote": "You should consult with your tax advisor if the tax characterization of the SAFE is material to your usage of it."
         },
         {
-          "id": "A42",
+          "id": "A43",
           "sentence": "y combinator's page lists separate versions for companies formed in canada, the cayman islands and singapore, and says to consult a lawyer licensed in the relevant country before using them; this article does not cover those or any other jurisdiction.",
           "kind": "paraphrase",
           "sourceId": "yc-safe",
@@ -668,7 +705,7 @@
           "quote": "companies formed in Canada, the Cayman Islands, and Singapore"
         },
         {
-          "id": "A43",
+          "id": "A44",
           "sentence": "y combinator's page lists separate versions for companies formed in canada, the cayman islands and singapore, and says to consult a lawyer licensed in the relevant country before using them; this article does not cover those or any other jurisdiction.",
           "kind": "paraphrase",
           "sourceId": "yc-safe",
@@ -742,10 +779,18 @@
           "kind": "regulation",
           "sourceId": "nvca-term-sheet",
           "locator": "Preamble",
-          "quote": "the No Shop/Confidentiality provisions of this Term Sheet shall be binding obligations of the Company whether or not the financing is consummated"
+          "quote": "whether or not the financing is consummated"
         },
         {
           "id": "A9",
+          "sentence": "in the model, the no-shop and confidentiality provisions are binding whether or not the financing closes.",
+          "kind": "regulation",
+          "sourceId": "nvca-term-sheet",
+          "locator": "Preamble",
+          "quote": "the No Shop/Confidentiality provisions of this Term Sheet shall be binding obligations of the Company whether or not"
+        },
+        {
+          "id": "A10",
           "sentence": "no other legally binding obligations are created until definitive agreements are signed and delivered by all parties.",
           "kind": "regulation",
           "sourceId": "nvca-term-sheet",
@@ -753,15 +798,15 @@
           "quote": "No other legally binding obligations will be created until definitive agreements are executed and delivered by all parties."
         },
         {
-          "id": "A10",
+          "id": "A11",
           "sentence": "the model also says the sheet is not a commitment to invest and is conditioned on the conditions to closing it lists.",
           "kind": "regulation",
           "sourceId": "nvca-term-sheet",
           "locator": "Preamble",
-          "quote": "This Term Sheet is not a commitment to invest, and is conditioned on the completion of the conditions to closing set forth below."
+          "quote": "This Term Sheet is not a commitment to invest, and is conditioned on the completion of the conditions to closing"
         },
         {
-          "id": "A11",
+          "id": "A12",
           "sentence": "| offering terms | the security, the closing date and conditions, who invests, the amount raised and the pre-money valuation |",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -769,7 +814,7 @@
           "quote": "Offering Terms Security: Series A Preferred Stock"
         },
         {
-          "id": "A12",
+          "id": "A13",
           "sentence": "| charter | dividends, liquidation preference, voting, protective provisions, conversion, anti-dilution, mandatory conversion, and optional pay-to-play and redemption terms |",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -777,7 +822,7 @@
           "quote": "CHARTER Dividends:"
         },
         {
-          "id": "A13",
+          "id": "A14",
           "sentence": "| stock purchase agreement | representations and warranties, and who pays legal costs |",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -785,7 +830,7 @@
           "quote": "STOCK PURCHASE AGREEMENT Representations and Warranties:"
         },
         {
-          "id": "A14",
+          "id": "A15",
           "sentence": "| investors' rights agreement | registration rights, information rights, a right to join future rounds, and matters needing a director's approval |",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -793,7 +838,7 @@
           "quote": "INVESTORS’ RIGHTS AGREEMENT Registration Rights:"
         },
         {
-          "id": "A15",
+          "id": "A16",
           "sentence": "| right of first refusal and co-sale agreement | what happens when an employee holding a large stake wants to sell |",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -801,7 +846,7 @@
           "quote": "RIGHT OF FIRST REFUSAL/CO-SALE AGREEMENT Right of First Refusal/Right of Co-Sale (Take-Me-Along):"
         },
         {
-          "id": "A16",
+          "id": "A17",
           "sentence": "| voting agreement | board composition and a drag-along |",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -809,7 +854,7 @@
           "quote": "VOTING AGREEMENT Board of Directors:"
         },
         {
-          "id": "A17",
+          "id": "A18",
           "sentence": "| other matters | founders' stock, no-shop, expiration |",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -817,7 +862,7 @@
           "quote": "OTHER MATTERS [Founders’ Stock:"
         },
         {
-          "id": "A18",
+          "id": "A19",
           "sentence": "in the model it is series a preferred stock, and the price per share is called the original purchase price.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -825,7 +870,7 @@
           "quote": "The price per share of the Series A Preferred (the “Original Purchase Price”)"
         },
         {
-          "id": "A19",
+          "id": "A20",
           "sentence": "the model sets that price from a fully diluted pre-money valuation, a value for the company before the new money.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -833,15 +878,23 @@
           "quote": "shall be the price determined on the basis of a fully-diluted pre-money valuation of $[_____]"
         },
         {
-          "id": "A20",
+          "id": "A21",
           "sentence": "the model says the pre-money valuation includes an employee option pool, which it brackets as unallocated and uncommitted, stated as a share of the post-money capitalization.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
           "locator": "Offering Terms, Pre-Money Valuation",
-          "quote": "which pre-money valuation shall include an [unallocated and uncommitted] employee option pool representing [__]% of the fullydiluted post-money capitalization"
+          "quote": "representing [__]% of the fullydiluted post-money capitalization"
         },
         {
-          "id": "A21",
+          "id": "A22",
+          "sentence": "the model says the pre-money valuation includes an employee option pool, which it brackets as unallocated and uncommitted, stated as a share of the post-money capitalization.",
+          "kind": "definition",
+          "sourceId": "nvca-term-sheet",
+          "locator": "Offering Terms, Pre-Money Valuation",
+          "quote": "pre-money valuation shall include an [unallocated and uncommitted] employee option pool representing [__]% of the"
+        },
+        {
+          "id": "A23",
           "sentence": "the model lists satisfactory financial and legal due diligence among them.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -849,7 +902,7 @@
           "quote": "satisfactory completion of financial and legal due diligence"
         },
         {
-          "id": "A22",
+          "id": "A24",
           "sentence": "the model's amount-raised line also contemplates safes and bridge notes converting into the round, so read the safe guide before the sheet arrives.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -857,7 +910,7 @@
           "quote": "including $[________] from the conversion of SAFEs/principal [and interest] on bridge notes"
         },
         {
-          "id": "A23",
+          "id": "A25",
           "sentence": "the model offers alternatives: dividends paid with common stock as converted, non-cumulative dividends when and if the board declares them, or a cumulative annual dividend.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -865,7 +918,7 @@
           "quote": "Dividends will be paid on the Series A Preferred on an asconverted basis when, as, and if paid on the Common Stock."
         },
         {
-          "id": "A24",
+          "id": "A26",
           "sentence": "the model offers alternatives: dividends paid with common stock as converted, non-cumulative dividends when and if the board declares them, or a cumulative annual dividend.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -873,7 +926,7 @@
           "quote": "Non-cumulative dividends will be paid on the Series A Preferred"
         },
         {
-          "id": "A25",
+          "id": "A27",
           "sentence": "the model offers alternatives: dividends paid with common stock as converted, non-cumulative dividends when and if the board declares them, or a cumulative annual dividend.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -881,7 +934,7 @@
           "quote": "The Series A Preferred will carry an annual [__]% cumulative dividend"
         },
         {
-          "id": "A26",
+          "id": "A28",
           "sentence": "the model offers three alternatives: a non-participating preference, in which the investor takes its preference or its as-converted amount, whichever is greater; a fully participating preference, in which the investor takes the preference and then shares in the rest with common stock; and a participating preference with a cap.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -889,7 +942,7 @@
           "quote": "or, if greater, the amount that the Series A Preferred would receive on an as-converted basis"
         },
         {
-          "id": "A27",
+          "id": "A29",
           "sentence": "the model offers three alternatives: a non-participating preference, in which the investor takes its preference or its as-converted amount, whichever is greater; a fully participating preference, in which the investor takes the preference and then shares in the rest with common stock; and a participating preference with a cap.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -897,7 +950,7 @@
           "quote": "Thereafter, the Series A Preferred participates with the Common Stock pro rata on an as-converted basis."
         },
         {
-          "id": "A28",
+          "id": "A30",
           "sentence": "the model offers three alternatives: a non-participating preference, in which the investor takes its preference or its as-converted amount, whichever is greater; a fully participating preference, in which the investor takes the preference and then shares in the rest with common stock; and a participating preference with a cap.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -905,7 +958,7 @@
           "quote": "until the holders of Series A Preferred receive an aggregate of [_____] times the Original Purchase Price"
         },
         {
-          "id": "A29",
+          "id": "A31",
           "sentence": "each pays a stated multiple of the original purchase price first.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -913,15 +966,15 @@
           "quote": "First pay [__ times] the Original Purchase Price"
         },
         {
-          "id": "A30",
+          "id": "A32",
           "sentence": "a merger, or a sale or exclusive license of all or substantially all assets, is treated as a liquidation event, so the preference applies on a sale and not only on a shutdown.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
           "locator": "Charter, Liquidation Preference",
-          "quote": "will be treated as a liquidation event (a “Deemed Liquidation Event”), thereby triggering payment of the liquidation preferences described above"
+          "quote": "a liquidation event (a “Deemed Liquidation Event”), thereby triggering payment of the liquidation preferences described above"
         },
         {
-          "id": "A31",
+          "id": "A33",
           "sentence": "the preferred shares vote with common on an as-converted basis, except for board seats they elect, matters required by law, and protective provisions.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -929,7 +982,7 @@
           "quote": "The Series A Preferred shall vote together with the Common Stock on an as-converted basis, and not as a separate class"
         },
         {
-          "id": "A32",
+          "id": "A34",
           "sentence": "the preferred shares vote with common on an as-converted basis, except for board seats they elect, matters required by law, and protective provisions.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -937,7 +990,7 @@
           "quote": "(ii) as required by law, and (iii) as provided in “Protective Provisions” below"
         },
         {
-          "id": "A33",
+          "id": "A35",
           "sentence": "a list of company actions that need the written consent of the holders of the required share of the new preferred stock, listed in the model as including a liquidation or sale, a change to the charter, creating some new classes of securities and creating debt.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -945,7 +998,7 @@
           "quote": "the Company will not, without the written consent of the Requisite Holders"
         },
         {
-          "id": "A34",
+          "id": "A36",
           "sentence": "a list of company actions that need the written consent of the holders of the required share of the new preferred stock, listed in the model as including a liquidation or sale, a change to the charter, creating some new classes of securities and creating debt.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -953,7 +1006,7 @@
           "quote": "liquidate, dissolve or windup the affairs of the Company or effect any Deemed Liquidation Event"
         },
         {
-          "id": "A35",
+          "id": "A37",
           "sentence": "a list of company actions that need the written consent of the holders of the required share of the new preferred stock, listed in the model as including a liquidation or sale, a change to the charter, creating some new classes of securities and creating debt.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -961,15 +1014,15 @@
           "quote": "amend, alter, or repeal any provision of the Charter or Bylaws"
         },
         {
-          "id": "A36",
+          "id": "A38",
           "sentence": "a list of company actions that need the written consent of the holders of the required share of the new preferred stock, listed in the model as including a liquidation or sale, a change to the charter, creating some new classes of securities and creating debt.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
           "locator": "Charter, Protective Provisions (iii)",
-          "quote": "create or authorize the creation of or issue any other security convertible into or exercisable for any equity security unless the same ranks junior"
+          "quote": "create or authorize the creation of or issue any other security convertible into or exercisable for any equity security"
         },
         {
-          "id": "A37",
+          "id": "A39",
           "sentence": "a list of company actions that need the written consent of the holders of the required share of the new preferred stock, listed in the model as including a liquidation or sale, a change to the charter, creating some new classes of securities and creating debt.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -977,7 +1030,7 @@
           "quote": "create or authorize the creation of any debt security"
         },
         {
-          "id": "A38",
+          "id": "A40",
           "sentence": "ptional conversion lets the holder turn preferred into common, initially one for one.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -985,7 +1038,7 @@
           "quote": "The Series A Preferred initially converts 1:1 to Common Stock at any time at option of holder"
         },
         {
-          "id": "A39",
+          "id": "A41",
           "sentence": "mandatory conversion turns every preferred share into common on a qualifying underwritten public offering or on the written consent of the required holders.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -993,7 +1046,7 @@
           "quote": "Each share of Series A Preferred will automatically be converted into Common Stock"
         },
         {
-          "id": "A40",
+          "id": "A42",
           "sentence": "mandatory conversion turns every preferred share into common on a qualifying underwritten public offering or on the written consent of the required holders.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1001,7 +1054,7 @@
           "quote": "the closing of a firm commitment underwritten public offering"
         },
         {
-          "id": "A41",
+          "id": "A43",
           "sentence": "mandatory conversion turns every preferred share into common on a qualifying underwritten public offering or on the written consent of the required holders.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1009,15 +1062,15 @@
           "quote": "upon the written consent of the Requisite Holders"
         },
         {
-          "id": "A42",
+          "id": "A44",
           "sentence": "the anti-dilution clause adjusts the conversion price if the company later sells shares at a lower price, and the model gives a formula for it along with customary exceptions, such as shares issued to employees under a board-approved plan.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
           "locator": "Charter, Anti-dilution Provisions",
-          "quote": "In the event that the Company issues additional securities at a purchase price less than the current Series A Preferred conversion price"
+          "quote": "the Company issues additional securities at a purchase price less than the current Series A Preferred conversion price"
         },
         {
-          "id": "A43",
+          "id": "A45",
           "sentence": "the anti-dilution clause adjusts the conversion price if the company later sells shares at a lower price, and the model gives a formula for it along with customary exceptions, such as shares issued to employees under a board-approved plan.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1025,15 +1078,15 @@
           "quote": "CP2 = CP1 * (A+B) / (A+C)"
         },
         {
-          "id": "A44",
+          "id": "A46",
           "sentence": "the anti-dilution clause adjusts the conversion price if the company later sells shares at a lower price, and the model gives a formula for it along with customary exceptions, such as shares issued to employees under a board-approved plan.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
           "locator": "Charter, Anti-dilution Provisions (iv)",
-          "quote": "issued or issuable to employees or directors of, or consultants to, the Company pursuant to any plan approved by the Company’s Board of Directors"
+          "quote": "employees or directors of, or consultants to, the Company pursuant to any plan approved by the Company’s Board of Directors"
         },
         {
-          "id": "A45",
+          "id": "A47",
           "sentence": "wo further clauses appear in square brackets, which means the model treats them as optional.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -1041,7 +1094,7 @@
           "quote": "[Pay-to-Play: Unless the Requisite Holders elect otherwise"
         },
         {
-          "id": "A46",
+          "id": "A48",
           "sentence": "pay-to-play requires holders to buy their share of a later down round or lose preferred rights.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1049,7 +1102,7 @@
           "quote": "on any subsequent [down] round all holders of Series A Preferred Stock are required to purchase their pro rata share"
         },
         {
-          "id": "A47",
+          "id": "A49",
           "sentence": "pay-to-play requires holders to buy their share of a later down round or lose preferred rights.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1057,7 +1110,7 @@
           "quote": "will automatically convert to Common Stock and lose corresponding preferred stock rights"
         },
         {
-          "id": "A48",
+          "id": "A50",
           "sentence": "redemption lets the required holders ask the company to buy their shares back after a period.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1065,7 +1118,7 @@
           "quote": "redeemable at the option of the Requisite Holders commencing any time after the five (5) year anniversary of the Closing"
         },
         {
-          "id": "A49",
+          "id": "A51",
           "sentence": "the company gives standard representations and warranties customary for its size and industry.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -1073,7 +1126,7 @@
           "quote": "Standard representations and warranties by the Company customary for its size and industry."
         },
         {
-          "id": "A50",
+          "id": "A52",
           "sentence": "the model has the company pay the legal costs of the financing, including reasonable fees of investor counsel, with a bracketed cap on those fees.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1081,7 +1134,7 @@
           "quote": "Company to pay all legal and administrative costs of the financing [at Closing]"
         },
         {
-          "id": "A51",
+          "id": "A53",
           "sentence": "the model has the company pay the legal costs of the financing, including reasonable fees of investor counsel, with a bracketed cap on those fees.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1089,28 +1142,12 @@
           "quote": "reasonable fees (not to exceed $[_____]) and expenses of Investor counsel"
         },
         {
-          "id": "A52",
+          "id": "A54",
           "sentence": "registration rights say when investors can require the company to register their shares for sale.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
           "locator": "Investors' Rights Agreement, Demand Registration",
-          "quote": "persons holding [__]% of the Registrable Securities may request [one][two] (consummated) registrations by the Company of their shares"
-        },
-        {
-          "id": "A53",
-          "sentence": "information rights entitle a major investor to financial statements, an annual budget and, in a bracketed item, an up-to-date capitalization table.",
-          "kind": "definition",
-          "sourceId": "nvca-term-sheet",
-          "locator": "Investors' Rights Agreement, Management and Information Rights",
-          "quote": "The Company will deliver to such [Major] Investor (i) annual, quarterly, [and monthly] financial statements"
-        },
-        {
-          "id": "A54",
-          "sentence": "information rights entitle a major investor to financial statements, an annual budget and, in a bracketed item, an up-to-date capitalization table.",
-          "kind": "definition",
-          "sourceId": "nvca-term-sheet",
-          "locator": "Investors' Rights Agreement, Management and Information Rights",
-          "quote": "a comprehensive operating budget forecasting the Company’s revenues, expenses, and cash position"
+          "quote": "persons holding [__]% of the Registrable Securities may request [one][two] (consummated) registrations"
         },
         {
           "id": "A55",
@@ -1118,10 +1155,26 @@
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
           "locator": "Investors' Rights Agreement, Management and Information Rights",
-          "quote": "[; and (iii) promptly following the end of each quarter an up-to-date capitalization table]"
+          "quote": "The Company will deliver to such [Major] Investor (i) annual, quarterly, [and monthly] financial statements"
         },
         {
           "id": "A56",
+          "sentence": "information rights entitle a major investor to financial statements, an annual budget and, in a bracketed item, an up-to-date capitalization table.",
+          "kind": "definition",
+          "sourceId": "nvca-term-sheet",
+          "locator": "Investors' Rights Agreement, Management and Information Rights",
+          "quote": "a comprehensive operating budget forecasting the Company’s revenues, expenses, and cash position"
+        },
+        {
+          "id": "A57",
+          "sentence": "information rights entitle a major investor to financial statements, an annual budget and, in a bracketed item, an up-to-date capitalization table.",
+          "kind": "definition",
+          "sourceId": "nvca-term-sheet",
+          "locator": "Investors' Rights Agreement, Management and Information Rights",
+          "quote": "[; and (iii) promptly following the end of each quarter an up-to-date capitalization table]"
+        },
+        {
+          "id": "A58",
           "sentence": "a right to join future rounds lets major investors buy their share of later issuances.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1129,7 +1182,7 @@
           "quote": "to participate in subsequent issuances of equity securities of the Company"
         },
         {
-          "id": "A57",
+          "id": "A59",
           "sentence": "| investors' rights agreement | registration rights, information rights, a right to join future rounds, and matters needing a director's approval |",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -1137,7 +1190,7 @@
           "quote": "[Matters Requiring Preferred Director Approval:"
         },
         {
-          "id": "A58",
+          "id": "A60",
           "sentence": "ro rata, in a financing, means in proportion to what a holder already owns.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1145,7 +1198,7 @@
           "quote": "a pro rata right, based on their percentage equity ownership in the Company"
         },
         {
-          "id": "A59",
+          "id": "A61",
           "sentence": "the model sheet describes this right for major investors and adds that, if one declines, the others may buy the remainder.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1153,7 +1206,7 @@
           "quote": "the remaining [Major] Investors shall have the right to purchase the remaining pro rata shares"
         },
         {
-          "id": "A60",
+          "id": "A62",
           "sentence": "the company, then the investors, may buy shares an employee holding a large stake proposes to sell, and investors may sell alongside.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1161,7 +1214,7 @@
           "quote": "Company first and Investors second will have a right of first refusal"
         },
         {
-          "id": "A61",
+          "id": "A63",
           "sentence": "| right of first refusal and co-sale agreement | what happens when an employee holding a large stake wants to sell |",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1169,7 +1222,7 @@
           "quote": "employees holding 1% or more of Company Common Stock"
         },
         {
-          "id": "A62",
+          "id": "A64",
           "sentence": "the company, then the investors, may buy shares an employee holding a large stake proposes to sell, and investors may sell alongside.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1177,7 +1230,7 @@
           "quote": "he will give the Investors an opportunity to participate in such sale"
         },
         {
-          "id": "A63",
+          "id": "A65",
           "sentence": "it fixes the makeup of the board and includes a bracketed drag-along that requires listed holders to vote for a sale that meets the approvals the clause lists.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1185,7 +1238,7 @@
           "quote": "the Board of Directors shall consist of [______] members comprised of"
         },
         {
-          "id": "A64",
+          "id": "A66",
           "sentence": "it fixes the makeup of the board and includes a bracketed drag-along that requires listed holders to vote for a sale that meets the approvals the clause lists.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -1193,7 +1246,7 @@
           "quote": "[Drag Along: Holders of Preferred Stock"
         },
         {
-          "id": "A65",
+          "id": "A67",
           "sentence": "it fixes the makeup of the board and includes a bracketed drag-along that requires listed holders to vote for a sale that meets the approvals the clause lists.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1201,7 +1254,7 @@
           "quote": "such stockholders will vote their shares in favor of a Deemed Liquidation Event"
         },
         {
-          "id": "A66",
+          "id": "A68",
           "sentence": "he model has a bracketed term for founders' stock, a buyback right or vesting that lapses in increments over time.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1209,7 +1262,7 @@
           "quote": "Buyback right/vesting for [__]% for first [12 months] after Closing; thereafter, right lapses in equal [monthly] increments"
         },
         {
-          "id": "A67",
+          "id": "A69",
           "sentence": "it also has a no-shop under which the company and founders will not solicit or encourage competing proposals for a stated number of days.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1217,7 +1270,7 @@
           "quote": "take any action to solicit, initiate, encourage or assist the submission of any proposal"
         },
         {
-          "id": "A68",
+          "id": "A70",
           "sentence": "it also has a no-shop under which the company and founders will not solicit or encourage competing proposals for a stated number of days.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1225,7 +1278,7 @@
           "quote": "for a period of [______] days from the date these terms are accepted"
         },
         {
-          "id": "A69",
+          "id": "A71",
           "sentence": "finally, it has an expiration date after which the sheet lapses if the company has not accepted it.",
           "kind": "definition",
           "sourceId": "nvca-term-sheet",
@@ -1233,7 +1286,7 @@
           "quote": "This Term Sheet expires on [_______ __, 20__] if not accepted by the Company by that date."
         },
         {
-          "id": "A70",
+          "id": "A72",
           "sentence": "it describes one model published by the national venture capital association for a series a financing, with delaware shown in brackets as the state of incorporation.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -1241,7 +1294,7 @@
           "quote": "a [Delaware] corporation"
         },
         {
-          "id": "A71",
+          "id": "A73",
           "sentence": "the term sheet file that was read sits at an address dated 2020, and the association's page lists legal documents updated as recently as june 2026, which this article did not read.",
           "kind": "statistic",
           "sourceId": "nvca-model-documents",
@@ -1299,7 +1352,7 @@
           "kind": "paraphrase",
           "sourceId": "nsf-seed",
           "locator": "Seed capital for early stage product development",
-          "quote": "take no equity in your company — you retain full control over your team, the direction of your work, and your intellectual property"
+          "quote": "take no equity in your company — you retain full control over your team, the direction of your work"
         },
         {
           "id": "A7",
@@ -1387,15 +1440,15 @@
           "kind": "statistic",
           "sourceId": "sbir-apply",
           "locator": "Main SBIR Phases, Phase I",
-          "quote": "Time Frame: 6-12 months Award Amounts: $50,000-$275,000"
+          "quote": "Time Frame: 6-12 months"
         },
         {
           "id": "A18",
-          "sentence": "| phase ii | continues the research and development begun in phase i; typically only phase i awardees are eligible | 24 months | $400,000 to $1.8 million |",
-          "kind": "paraphrase",
+          "sentence": "| phase i | awarded companies create proof-of-concepts for their innovations | 6 to 12 months | $50,000 to $275,000 |",
+          "kind": "statistic",
           "sourceId": "sbir-apply",
-          "locator": "Main SBIR Phases, Phase II",
-          "quote": "continue research and R&D efforts started in Phase I"
+          "locator": "Main SBIR Phases, Phase I",
+          "quote": "Award Amounts: $50,000-$275,000"
         },
         {
           "id": "A19",
@@ -1403,18 +1456,34 @@
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
           "locator": "Main SBIR Phases, Phase II",
-          "quote": "Typically, only Phase I awardees are eligible for Phase II awards."
+          "quote": "continue research and R&D efforts started in Phase I"
         },
         {
           "id": "A20",
           "sentence": "| phase ii | continues the research and development begun in phase i; typically only phase i awardees are eligible | 24 months | $400,000 to $1.8 million |",
-          "kind": "statistic",
+          "kind": "paraphrase",
           "sourceId": "sbir-apply",
           "locator": "Main SBIR Phases, Phase II",
-          "quote": "Time Frame: 24 months Award Amounts: $400,000-$1.8 million"
+          "quote": "Typically, only Phase I awardees are eligible for Phase II awards."
         },
         {
           "id": "A21",
+          "sentence": "| phase ii | continues the research and development begun in phase i; typically only phase i awardees are eligible | 24 months | $400,000 to $1.8 million |",
+          "kind": "statistic",
+          "sourceId": "sbir-apply",
+          "locator": "Main SBIR Phases, Phase II",
+          "quote": "Time Frame: 24 months"
+        },
+        {
+          "id": "A22",
+          "sentence": "| phase ii | continues the research and development begun in phase i; typically only phase i awardees are eligible | 24 months | $400,000 to $1.8 million |",
+          "kind": "statistic",
+          "sourceId": "sbir-apply",
+          "locator": "Main SBIR Phases, Phase II",
+          "quote": "Award Amounts: $400,000-$1.8 million"
+        },
+        {
+          "id": "A23",
           "sentence": "| phase iii | companies pursue commercialization in the private sector or the federal contracting marketplace; no sbir or sttr funding is awarded | not stated | none |",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1422,7 +1491,7 @@
           "quote": "small businesses pursue commercialization in the private sector and/or federal contracting marketplace"
         },
         {
-          "id": "A22",
+          "id": "A24",
           "sentence": "| phase iii | companies pursue commercialization in the private sector or the federal contracting marketplace; no sbir or sttr funding is awarded | not stated | none |",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1430,7 +1499,7 @@
           "quote": "No SBIR/STTR funding is awarded in Phase III."
         },
         {
-          "id": "A23",
+          "id": "A25",
           "sentence": "it says that, as of april 2026, agencies may issue a phase i award up to $323,090 and a phase ii award up to $2,153,927 without seeking sba approval, and that any award above those levels requires a waiver.",
           "kind": "statistic",
           "sourceId": "sbir-about",
@@ -1438,7 +1507,7 @@
           "quote": "agencies may issue a Phase I award (including modifications) up to $ 323,090"
         },
         {
-          "id": "A24",
+          "id": "A26",
           "sentence": "it says that, as of april 2026, agencies may issue a phase i award up to $323,090 and a phase ii award up to $2,153,927 without seeking sba approval, and that any award above those levels requires a waiver.",
           "kind": "statistic",
           "sourceId": "sbir-about",
@@ -1446,7 +1515,7 @@
           "quote": "a Phase II award (including modifications) up to $2,153,927 without seeking SBA approval"
         },
         {
-          "id": "A25",
+          "id": "A27",
           "sentence": "it says that, as of april 2026, agencies may issue a phase i award up to $323,090 and a phase ii award up to $2,153,927 without seeking sba approval, and that any award above those levels requires a waiver.",
           "kind": "regulation",
           "sourceId": "sbir-about",
@@ -1454,7 +1523,7 @@
           "quote": "Any award above those levels will require a waiver."
         },
         {
-          "id": "A26",
+          "id": "A28",
           "sentence": "the nsf page says it invests up to $2 million in seed funding.",
           "kind": "statistic",
           "sourceId": "nsf-seed",
@@ -1462,7 +1531,7 @@
           "quote": "We invest up to $2 million in seed funding."
         },
         {
-          "id": "A27",
+          "id": "A29",
           "sentence": "the sbir page calls the programs an important source of early-stage technology funding for small businesses and speaks of r&d-focused entrepreneurs.",
           "kind": "paraphrase",
           "sourceId": "sbir-about",
@@ -1470,7 +1539,7 @@
           "quote": "The SBIR/STTR programs are an important source of early-stage technology funding for small businesses."
         },
         {
-          "id": "A28",
+          "id": "A30",
           "sentence": "the sbir page calls the programs an important source of early-stage technology funding for small businesses and speaks of r&d-focused entrepreneurs.",
           "kind": "paraphrase",
           "sourceId": "sbir-about",
@@ -1478,7 +1547,7 @@
           "quote": "Learn how the SBIR/STTR programs have helped R&D-focused entrepreneurs"
         },
         {
-          "id": "A29",
+          "id": "A31",
           "sentence": "the nsf page says it offers funding for early stage r&d, supports deep technologies based on discoveries in fundamental science and engineering, and considers a technology's innovativeness, commercial potential and possible societal impact when it reviews applications.",
           "kind": "paraphrase",
           "sourceId": "nsf-seed",
@@ -1486,15 +1555,15 @@
           "quote": "We offer funding for early stage R&D"
         },
         {
-          "id": "A30",
+          "id": "A32",
           "sentence": "the nsf page says it offers funding for early stage r&d, supports deep technologies based on discoveries in fundamental science and engineering, and considers a technology's innovativeness, commercial potential and possible societal impact when it reviews applications.",
           "kind": "paraphrase",
           "sourceId": "nsf-seed",
           "locator": "How we invest",
-          "quote": "We support research and development of deep technologies - those that are based on discoveries in fundamental science and engineering."
+          "quote": "deep technologies - those that are based on discoveries in fundamental science and engineering."
         },
         {
-          "id": "A31",
+          "id": "A33",
           "sentence": "the nsf page says it offers funding for early stage r&d, supports deep technologies based on discoveries in fundamental science and engineering, and considers a technology's innovativeness, commercial potential and possible societal impact when it reviews applications.",
           "kind": "paraphrase",
           "sourceId": "nsf-seed",
@@ -1502,7 +1571,7 @@
           "quote": "we consider your technology’s innovativeness, commercial potential, and possible societal impact"
         },
         {
-          "id": "A32",
+          "id": "A34",
           "sentence": "it names artificial intelligence among the areas it funds, and two of the companies it features describe software products.",
           "kind": "paraphrase",
           "sourceId": "nsf-seed",
@@ -1510,7 +1579,7 @@
           "quote": "markets like artificial intelligence, energy, medical devices, robotics, semiconductors, and many more"
         },
         {
-          "id": "A33",
+          "id": "A35",
           "sentence": "it names artificial intelligence among the areas it funds, and two of the companies it features describe software products.",
           "kind": "paraphrase",
           "sourceId": "nsf-seed",
@@ -1518,7 +1587,7 @@
           "quote": "using an immersive educational software in virtual reality"
         },
         {
-          "id": "A34",
+          "id": "A36",
           "sentence": "it names artificial intelligence among the areas it funds, and two of the companies it features describe software products.",
           "kind": "paraphrase",
           "sourceId": "nsf-seed",
@@ -1526,7 +1595,7 @@
           "quote": "is using artificial intelligence to develop voice biomarker software"
         },
         {
-          "id": "A35",
+          "id": "A37",
           "sentence": "the page says to read the entire solicitation carefully, because that may prevent administrative mistakes that could disqualify a proposal.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1534,7 +1603,7 @@
           "quote": "read the entire solicitation carefully. This may prevent administrative mistakes that could disqualify your proposal."
         },
         {
-          "id": "A36",
+          "id": "A38",
           "sentence": "you check that you meet all eligibility requirements.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1542,7 +1611,7 @@
           "quote": "Make sure you meet all eligibility requirements before you apply."
         },
         {
-          "id": "A37",
+          "id": "A39",
           "sentence": "you submit a proposal through the agency's sbir or sttr program before the closing date, and the page says to give yourself plenty of time to prepare it.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1550,7 +1619,7 @@
           "quote": "Apply through the agency's SBIR or STTR program before the submission closing date."
         },
         {
-          "id": "A38",
+          "id": "A40",
           "sentence": "you submit a proposal through the agency's sbir or sttr program before the closing date, and the page says to give yourself plenty of time to prepare it.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1558,7 +1627,7 @@
           "quote": "Give yourself plenty of time to prepare your proposal."
         },
         {
-          "id": "A39",
+          "id": "A41",
           "sentence": "review times vary, so check with the specific agency.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1566,7 +1635,7 @@
           "quote": "Review process times vary; check with the specific agency."
         },
         {
-          "id": "A40",
+          "id": "A42",
           "sentence": "the page warns that an award amount may not cover all of your r&d expenses.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1574,7 +1643,7 @@
           "quote": "the award amount may not cover all of your R&D expenses."
         },
         {
-          "id": "A41",
+          "id": "A43",
           "sentence": "revious awardees may apply for phase i funding for new innovations and phase ii funding for continuing r&d.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1582,7 +1651,7 @@
           "quote": "Previous awardees may apply for Phase I funding for new innovations and Phase II funding for continuing R&D."
         },
         {
-          "id": "A42",
+          "id": "A44",
           "sentence": "ttr differs from sbir in one main way: the small business must formally partner with a research institution.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1590,7 +1659,7 @@
           "quote": "for STTR, the small business must formally partner with a research institution."
         },
         {
-          "id": "A43",
+          "id": "A45",
           "sentence": "an sttr awardee must subcontract a portion of the award to a research institution, which the page lists as a nonprofit college or university, a domestic nonprofit scientific or research organization, or a federally funded r&d center.",
           "kind": "regulation",
           "sourceId": "sbir-apply",
@@ -1598,23 +1667,39 @@
           "quote": "an STTR awardee must subcontract a portion of the award to a research institution"
         },
         {
-          "id": "A44",
+          "id": "A46",
           "sentence": "an sttr awardee must subcontract a portion of the award to a research institution, which the page lists as a nonprofit college or university, a domestic nonprofit scientific or research organization, or a federally funded r&d center.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
           "locator": "FAQ, What non-profit research institutions qualify",
-          "quote": "Nonprofit college or university Domestic nonprofit scientific/research organization Federally Funded R&D Centers (FFRDC)"
+          "quote": "Nonprofit college or university"
         },
         {
-          "id": "A45",
+          "id": "A47",
+          "sentence": "an sttr awardee must subcontract a portion of the award to a research institution, which the page lists as a nonprofit college or university, a domestic nonprofit scientific or research organization, or a federally funded r&d center.",
+          "kind": "paraphrase",
+          "sourceId": "sbir-apply",
+          "locator": "FAQ, What non-profit research institutions qualify",
+          "quote": "Domestic nonprofit scientific/research organization"
+        },
+        {
+          "id": "A48",
+          "sentence": "an sttr awardee must subcontract a portion of the award to a research institution, which the page lists as a nonprofit college or university, a domestic nonprofit scientific or research organization, or a federally funded r&d center.",
+          "kind": "paraphrase",
+          "sourceId": "sbir-apply",
+          "locator": "FAQ, What non-profit research institutions qualify",
+          "quote": "Federally Funded R&D Centers (FFRDC)"
+        },
+        {
+          "id": "A49",
           "sentence": "he sba also says it works with local partners that help with proposals and sam registration, and that some states run phase 0 programs for new applicants.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
           "locator": "Find Support Near You",
-          "quote": "Use local assistance to find the help you need, including proposal assistance, SAM registration, commercialization support, and industry networking."
+          "quote": "Use local assistance to find the help you need, including proposal assistance, SAM registration, commercialization support"
         },
         {
-          "id": "A46",
+          "id": "A50",
           "sentence": "he sba also says it works with local partners that help with proposals and sam registration, and that some states run phase 0 programs for new applicants.",
           "kind": "paraphrase",
           "sourceId": "sbir-apply",
@@ -1622,7 +1707,7 @@
           "quote": "some states have created what are known as “Phase 0” awards programs"
         },
         {
-          "id": "A47",
+          "id": "A51",
           "sentence": "how does the award handle intellectual property? the nsf page says founders retain it, so ask what that covers in the award terms.",
           "kind": "paraphrase",
           "sourceId": "nsf-seed",
@@ -1644,19 +1729,19 @@
         },
         {
           "id": "A2",
-          "sentence": "offerings that rely on securities act section 4(a)(2) or its safe harbor under regulation d are often called private placements, and the sec's investor bulletin notes that companies, from small start-ups to large, well-established ones, use them to raise funds.",
-          "kind": "definition",
-          "sourceId": "investor-private-placements",
-          "locator": "What is a private placement?",
-          "quote": "or its safe harbor under Regulation D of the Securities Act are often referred to as private placements"
+          "sentence": "section 4(a)(2) of the securities act exempts from registration transactions by an issuer not involving any public offering, and the sec's page on rule 506(b) of regulation d describes that rule as a safe harbor under section 4(a)(2).",
+          "kind": "regulation",
+          "sourceId": "sec-rule-506b",
+          "locator": "Rule 506(b) page",
+          "quote": "Section 4(a)(2) of the Securities Act exempts from registration transactions by an issuer not involving any public offering."
         },
         {
           "id": "A3",
-          "sentence": "offerings that rely on securities act section 4(a)(2) or its safe harbor under regulation d are often called private placements, and the sec's investor bulletin notes that companies, from small start-ups to large, well-established ones, use them to raise funds.",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "What is a private placement?",
-          "quote": "including everything from small start-ups to large, well-established companies, engage in private placements to raise funds from investors"
+          "sentence": "section 4(a)(2) of the securities act exempts from registration transactions by an issuer not involving any public offering, and the sec's page on rule 506(b) of regulation d describes that rule as a safe harbor under section 4(a)(2).",
+          "kind": "regulation",
+          "sourceId": "sec-rule-506b",
+          "locator": "Rule 506(b) page",
+          "quote": "is considered a “safe harbor” under Section 4(a)(2)"
         },
         {
           "id": "A4",
@@ -1680,7 +1765,7 @@
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
           "locator": "230.501(a)(5)",
-          "quote": "Any natural person whose individual net worth, or joint net worth with that person's spouse or spousal equivalent, exceeds $1,000,000"
+          "quote": "individual net worth, or joint net worth with that person's spouse or spousal equivalent, exceeds $1,000,000"
         },
         {
           "id": "A7",
@@ -1716,7 +1801,7 @@
         },
         {
           "id": "A11",
-          "sentence": "in good standing, a professional certification, designation or credential that the sec has designated, which the sec's bulletin says includes a series 7, 65 or 82 license.",
+          "sentence": "one or more professional certifications, designations or credentials held in good standing, of the kind the rule describes.",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
           "locator": "230.501(a)(10)",
@@ -1724,14 +1809,6 @@
         },
         {
           "id": "A12",
-          "sentence": "in good standing, a professional certification, designation or credential that the sec has designated, which the sec's bulletin says includes a series 7, 65 or 82 license.",
-          "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506, Accredited investor",
-          "quote": "holding certain certifications, designations or credentials in good standing, including a Series 7 , 65 or 82 license"
-        },
-        {
-          "id": "A13",
           "sentence": "he rule also lists any director, executive officer or general partner of the company selling the securities.",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
@@ -1739,7 +1816,7 @@
           "quote": "Any director, executive officer, or general partner of the issuer of the securities being offered or sold"
         },
         {
-          "id": "A14",
+          "id": "A13",
           "sentence": "| large entity | an organization, corporation, trust, partnership or limited liability company, not formed for the specific purpose of acquiring the securities offered, with total assets above $5,000,000 |",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
@@ -1747,7 +1824,7 @@
           "quote": "not formed for the specific purpose of acquiring the securities offered, with total assets in excess of $5,000,000"
         },
         {
-          "id": "A15",
+          "id": "A14",
           "sentence": "| owned by accredited investors | any entity in which all of the equity owners are accredited investors |",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
@@ -1755,7 +1832,7 @@
           "quote": "Any entity in which all of the equity owners are accredited investors"
         },
         {
-          "id": "A16",
+          "id": "A15",
           "sentence": "| entity with investments | an entity of a type not listed elsewhere, not formed for the specific purpose of acquiring the securities, owning investments above $5,000,000 |",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
@@ -1763,7 +1840,7 @@
           "quote": "not formed for the specific purpose of acquiring the securities offered, owning investments in excess of $5,000,000"
         },
         {
-          "id": "A17",
+          "id": "A16",
           "sentence": "| regulated institutions | banks, registered brokers and dealers, registered investment advisers, insurance companies, and a small business investment company licensed by the u.s. small business administration, among others |",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
@@ -1771,7 +1848,7 @@
           "quote": "any broker or dealer registered pursuant to section 15 of the Securities Exchange Act of 1934"
         },
         {
-          "id": "A18",
+          "id": "A17",
           "sentence": "| regulated institutions | banks, registered brokers and dealers, registered investment advisers, insurance companies, and a small business investment company licensed by the u.s. small business administration, among others |",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
@@ -1779,7 +1856,7 @@
           "quote": "any Small Business Investment Company licensed by the U.S. Small Business Administration"
         },
         {
-          "id": "A19",
+          "id": "A18",
           "sentence": "| regulated institutions | banks, registered brokers and dealers, registered investment advisers, insurance companies, and a small business investment company licensed by the u.s. small business administration, among others |",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
@@ -1787,15 +1864,15 @@
           "quote": "any insurance company as defined in section 2(a)(13) of the Act"
         },
         {
-          "id": "A20",
+          "id": "A19",
           "sentence": "for counting purchasers under regulation d, an entity organized for the specific purpose of acquiring the securities, and not accredited as an entity owned wholly by accredited investors, is looked through: each beneficial owner counts as a separate purchaser.",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
           "locator": "230.501(e)(2)",
-          "quote": "is organized for the specific purpose of acquiring the securities offered and is not an accredited investor under paragraph (a)(8) of this section"
+          "quote": "is organized for the specific purpose of acquiring the securities offered"
         },
         {
-          "id": "A21",
+          "id": "A20",
           "sentence": "for counting purchasers under regulation d, an entity organized for the specific purpose of acquiring the securities, and not accredited as an entity owned wholly by accredited investors, is looked through: each beneficial owner counts as a separate purchaser.",
           "kind": "regulation",
           "sourceId": "ecfr-230-501",
@@ -1803,236 +1880,212 @@
           "quote": "each beneficial owner of equity securities or equity interests in the entity shall count as a separate purchaser"
         },
         {
-          "id": "A22",
-          "sentence": "the company may sell to an unlimited number of accredited investors and to no more than 35 non-accredited investors in any 90-calendar-day period.",
+          "id": "A21",
+          "sentence": "the company can raise an unlimited amount of money and can sell securities to an unlimited number of accredited investors, but may not sell to more than 35 non-accredited investors in any 90-calendar-day period.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506",
-          "quote": "may sell to an unlimited number of accredited investors , but to no more than 35 non-accredited investors in any 90-calendar-day period"
+          "sourceId": "sec-rule-506b",
+          "locator": "Rule 506(b) page",
+          "quote": "can raise an unlimited amount of money and can sell securities to an unlimited number of accredited investors"
+        },
+        {
+          "id": "A22",
+          "sentence": "the company can raise an unlimited amount of money and can sell securities to an unlimited number of accredited investors, but may not sell to more than 35 non-accredited investors in any 90-calendar-day period.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-506b",
+          "locator": "Rule 506(b) page",
+          "quote": "securities may not be sold to more than 35 non-accredited investors in any 90-calendar day period"
         },
         {
           "id": "A23",
-          "sentence": "it may not generally solicit.",
+          "sentence": "the rule allows no general solicitation or advertising to market the securities.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506",
-          "quote": "Issuers relying on the Rule 506(b) exemption may not generally solicit their offerings."
+          "sourceId": "sec-rule-506b",
+          "locator": "Rule 506(b) page",
+          "quote": "no general solicitation or advertising to market the securities"
         },
         {
           "id": "A24",
-          "sentence": "the company may generally solicit or advertise, but only accredited investors may buy, and the company has to take reasonable steps to verify each one's status.",
+          "sentence": "the company may broadly solicit and generally advertise the offering, provided that all purchasers are accredited investors and the company takes reasonable steps to verify each purchaser's accredited investor status.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506",
-          "quote": "the Rule 506(c) exemption permits the issuer to generally solicit or advertise for potential investors"
+          "sourceId": "sec-rule-506c",
+          "locator": "Rule 506(c) page",
+          "quote": "Rule 506(c) permits issuers to broadly solicit and generally advertise an offering, provided that:"
         },
         {
           "id": "A25",
-          "sentence": "the company may generally solicit or advertise, but only accredited investors may buy, and the company has to take reasonable steps to verify each one's status.",
+          "sentence": "the company may broadly solicit and generally advertise the offering, provided that all purchasers are accredited investors and the company takes reasonable steps to verify each purchaser's accredited investor status.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506",
-          "quote": "Only accredited investors, however, are allowed to purchase in generally solicited offerings under Rule 506(c)"
+          "sourceId": "sec-rule-506c",
+          "locator": "Rule 506(c) page",
+          "quote": "all purchasers in the offering are accredited investors"
         },
         {
           "id": "A26",
-          "sentence": "the company may generally solicit or advertise, but only accredited investors may buy, and the company has to take reasonable steps to verify each one's status.",
+          "sentence": "the company may broadly solicit and generally advertise the offering, provided that all purchasers are accredited investors and the company takes reasonable steps to verify each purchaser's accredited investor status.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506",
-          "quote": "the issuer will have to take reasonable steps to verify your accredited investor status"
+          "sourceId": "sec-rule-506c",
+          "locator": "Rule 506(c) page",
+          "quote": "the issuer takes reasonable steps to verify purchasers’ accredited investor status"
         },
         {
           "id": "A27",
-          "sentence": "if the company offers securities to non-accredited investors, it must disclose certain information about itself, including its financial statements.",
+          "sentence": "if the company sells to non-accredited investors under rule 506(b), it must give them disclosure documents and the financial statement information that rule 506 specifies.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506",
-          "quote": "If the issuer offers securities to non-accredited investors, the issuer must disclose certain information about itself, including its financial statements."
+          "sourceId": "sec-rule-506b",
+          "locator": "Rule 506(b) page",
+          "quote": "must give any non-accredited investors disclosure documents"
         },
         {
           "id": "A28",
-          "sentence": "if it sells only to accredited investors, it has discretion over what to disclose, and any information given to accredited investors must also be given to non-accredited ones.",
+          "sentence": "if the company sells to non-accredited investors under rule 506(b), it must give them disclosure documents and the financial statement information that rule 506 specifies.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506",
-          "quote": "If selling only to accredited investors, the issuer has discretion as to what to disclose to investors."
+          "sourceId": "sec-rule-506b",
+          "locator": "Rule 506(b) page",
+          "quote": "must give any non-accredited investors financial statement information specified in Rule 506 and"
         },
         {
           "id": "A29",
-          "sentence": "if it sells only to accredited investors, it has discretion over what to disclose, and any information given to accredited investors must also be given to non-accredited ones.",
+          "sentence": "a company relying on rule 504, rule 506(b) or rule 506(c) is required to file a notice on form d within 15 days after the first sale of securities in the offering.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506",
-          "quote": "Any information provided to accredited investors also must be provided to non-accredited investors."
+          "sourceId": "sec-rule-506b",
+          "locator": "Rule 506(b) page",
+          "quote": "within 15 days after the first sale of securities in the offering"
         },
         {
           "id": "A30",
-          "sentence": "every company relying on a regulation d exemption must file a form d no later than 15 days after it first sells the securities.",
+          "sentence": "a company relying on rule 504, rule 506(b) or rule 506(c) is required to file a notice on form d within 15 days after the first sale of securities in the offering.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "What should you do before investing?",
-          "quote": "required to file a document called a Form D no later than 15 days after they first sell the securities in the offering"
+          "sourceId": "sec-rule-506c",
+          "locator": "Rule 506(c) page",
+          "quote": "A company is required to file a notice with the Commission on Form D within 15 days after the first sale"
         },
         {
           "id": "A31",
-          "sentence": "the sec says a form d does not represent sec approval and that the sec does not approve any offering.",
+          "sentence": "a company relying on rule 504, rule 506(b) or rule 506(c) is required to file a notice on form d within 15 days after the first sale of securities in the offering.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "What should you do before investing?",
-          "quote": "Form D does not represent SEC approval or registration."
+          "sourceId": "sec-rule-504",
+          "locator": "Rule 504 page",
+          "quote": "A company is required to file a notice with the Commission on Form D within 15 days after the first sale"
         },
         {
           "id": "A32",
-          "sentence": "the sec says a form d does not represent sec approval and that the sec does not approve any offering.",
+          "sentence": "the sec's form d page says the date of first sale is the date on which the first investor is irrevocably contractually committed to invest, and that the sec does not charge a filing fee for the notice.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "What should you do before investing?",
-          "quote": "The SEC does not approve any offering."
+          "sourceId": "sec-form-d",
+          "locator": "Filing a Form D Notice",
+          "quote": "the date of first sale is the date on which the first investor is irrevocably contractually"
         },
         {
           "id": "A33",
-          "sentence": "the bulletin adds that an offering exempt from sec registration may still have to comply separately with state securities laws.",
+          "sentence": "the sec's form d page says the date of first sale is the date on which the first investor is irrevocably contractually committed to invest, and that the sec does not charge a filing fee for the notice.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "What else should I know?",
-          "quote": "even though the offering may be exempt from SEC registration, the offering may have to comply separately with state securities laws"
+          "sourceId": "sec-form-d",
+          "locator": "Filing a Form D Notice",
+          "quote": "committed to invest."
         },
         {
           "id": "A34",
-          "sentence": "he bulletin states that rule 506 allows an unlimited amount to be raised.",
+          "sentence": "the sec's form d page says the date of first sale is the date on which the first investor is irrevocably contractually committed to invest, and that the sec does not charge a filing fee for the notice.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 506",
-          "quote": "Issuers may raise an unlimited amount of money in offerings relying on one of two possible Rule 506 exemptions"
+          "sourceId": "sec-form-d",
+          "locator": "Filing a Form D Notice",
+          "quote": "The SEC does not charge any filing fee for a Form D notice or amendment."
         },
         {
           "id": "A35",
-          "sentence": "rule 504 allows certain issuers to sell up to $10 million in any 12-month period.",
+          "sentence": "under rule 506(c), the sec says the states still have authority to require notice filings and collect state fees.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Rule 504",
-          "quote": "Rule 504 permits certain issuers to offer and sell up to $10 million of securities in any 12-month period."
+          "sourceId": "sec-rule-506c",
+          "locator": "Rule 506(c) page",
+          "quote": "the states still have authority to require notice filings and collect state fees."
         },
         {
           "id": "A36",
-          "sentence": "it says a company in a private placement may be early stage and high risk, that the investor should be able to afford a total loss, that the investment is highly illiquid, and that the company is not required to give the disclosure a registered offering requires.",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Important risk considerations",
-          "quote": "Companies engaging in private placements may be early stage and high risk."
+          "sentence": "under rule 504, a company must comply with state securities laws and regulations in the states where it offers or sells.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-504",
+          "locator": "Rule 504 page",
+          "quote": "a company must comply with state securities laws and regulations in the states in which"
         },
         {
           "id": "A37",
-          "sentence": "it says a company in a private placement may be early stage and high risk, that the investor should be able to afford a total loss, that the investment is highly illiquid, and that the company is not required to give the disclosure a registered offering requires.",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Important risk considerations",
-          "quote": "You should be able to afford the increased risk of loss with such investments, including the potential of a total loss."
+          "sentence": "under rule 504, a company must comply with state securities laws and regulations in the states where it offers or sells.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-504",
+          "locator": "Rule 504 page",
+          "quote": "securities are offered or sold."
         },
         {
           "id": "A38",
-          "sentence": "it says a company in a private placement may be early stage and high risk, that the investor should be able to afford a total loss, that the investment is highly illiquid, and that the company is not required to give the disclosure a registered offering requires.",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Important risk considerations",
-          "quote": "an investment in a private placement is highly illiquid"
+          "sentence": "ule 504 exempts from registration the offer and sale of up to $10 million of securities in a 12-month period.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-504",
+          "locator": "Rule 504 page",
+          "quote": "Rule 504 of Regulation D exempts from registration the offer and sale of up to $10 million of securities"
         },
         {
           "id": "A39",
-          "sentence": "it says a company in a private placement may be early stage and high risk, that the investor should be able to afford a total loss, that the investment is highly illiquid, and that the company is not required to give the disclosure a registered offering requires.",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Important risk considerations",
-          "quote": "Companies engaging in private placements are not required to provide the disclosure that would be required in a registered offering."
+          "sentence": "ule 504 exempts from registration the offer and sale of up to $10 million of securities in a 12-month period.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-504",
+          "locator": "Rule 504 page",
+          "quote": "in a 12-month period."
         },
         {
           "id": "A40",
-          "sentence": "whether the company provided financial statements, and whether they are independently audited;",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "Did the issuer provide financial statements and, if so, what do they tell you about the business?"
+          "sentence": "the sec's rule 504 page lists the companies that are not eligible: exchange act reporting companies, investment companies, companies that have no specific business plan or have indicated their plan is to engage in a merger or acquisition with an unidentified company or companies, and companies disqualified under the rule's \"bad actor\" provisions.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-504",
+          "locator": "Rule 504 page",
+          "quote": "The following companies are not eligible to use Rule 504: Exchange Act reporting companies; investment companies;"
         },
         {
           "id": "A41",
-          "sentence": "whether the company provided financial statements, and whether they are independently audited;",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "Are the financial statements independently audited?"
+          "sentence": "the sec's rule 504 page lists the companies that are not eligible: exchange act reporting companies, investment companies, companies that have no specific business plan or have indicated their plan is to engage in a merger or acquisition with an unidentified company or companies, and companies disqualified under the rule's \"bad actor\" provisions.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-504",
+          "locator": "Rule 504 page",
+          "quote": "companies that have no specific business plan or have indicated their business plan is to engage in a merger or acquisition"
         },
         {
           "id": "A42",
-          "sentence": "whether the claims and expectations are reasonable, and how reasonable the reliance is on a particular technology, customer or product claim;",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "Are the claims and expectations reasonable?"
+          "sentence": "the sec's rule 504 page lists the companies that are not eligible: exchange act reporting companies, investment companies, companies that have no specific business plan or have indicated their plan is to engage in a merger or acquisition with an unidentified company or companies, and companies disqualified under the rule's \"bad actor\" provisions.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-504",
+          "locator": "Rule 504 page",
+          "quote": "with an unidentified company or companies; and companies that are disqualified under Rule 504’s"
         },
         {
           "id": "A43",
-          "sentence": "whether the claims and expectations are reasonable, and how reasonable the reliance is on a particular technology, customer or product claim;",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "How reasonable is the issuer’s reliance on a particular technology, customer, product or natural resources claim?"
+          "sentence": "the sec's rule 504 page lists the companies that are not eligible: exchange act reporting companies, investment companies, companies that have no specific business plan or have indicated their plan is to engage in a merger or acquisition with an unidentified company or companies, and companies disqualified under the rule's \"bad actor\" provisions.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-504",
+          "locator": "Rule 504 page",
+          "quote": "“bad actor” disqualification provisions."
         },
         {
           "id": "A44",
-          "sentence": "who the competitors are, and the experience and background of management;",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "Who are the issuer’s competitors?"
+          "sentence": "the sec's pages say rule 506(b) and rule 506(c) offerings are subject to bad actor disqualification provisions as well.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-506c",
+          "locator": "Rule 506(c) page",
+          "quote": "Rule 506(c) offerings are subject to “bad actor” disqualification provisions."
         },
         {
           "id": "A45",
-          "sentence": "who the competitors are, and the experience and background of management;",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "What is the experience and background of management?"
+          "sentence": "urchasers in a rule 506(b) offering or a rule 506(c) offering receive restricted securities, the sec says.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-506c",
+          "locator": "Rule 506(c) page",
+          "quote": "Purchasers in a Rule 506(c) offering receive “restricted securities.”"
         },
         {
           "id": "A46",
-          "sentence": "how long the company has been in business and whether it has made prior offerings;",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "How long has the issuer been in business and has the issuer conducted prior offerings?"
-        },
-        {
-          "id": "A47",
-          "sentence": "how the company plans to use the money raised;",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "How does the issuer plan to use the money raised?"
-        },
-        {
-          "id": "A48",
-          "sentence": "whether the securities carry transfer restrictions, and whether the investor is comfortable holding them indefinitely.",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "If the securities you are considering purchasing have transfer restrictions"
-        },
-        {
-          "id": "A49",
-          "sentence": "whether the securities carry transfer restrictions, and whether the investor is comfortable holding them indefinitely.",
-          "kind": "paraphrase",
-          "sourceId": "investor-private-placements",
-          "locator": "Some things to consider",
-          "quote": "are you comfortable holding it indefinitely?"
-        },
-        {
-          "id": "A50",
-          "sentence": "the list is staff advice to investors, which the bulletin says has no legal force or effect, and it is not a description of any particular investor.",
+          "sentence": "urchasers in a rule 506(b) offering or a rule 506(c) offering receive restricted securities, the sec says.",
           "kind": "regulation",
-          "sourceId": "investor-private-placements",
-          "locator": "Closing disclaimer",
-          "quote": "This bulletin, like all staff statements, has no legal force or effect"
+          "sourceId": "sec-rule-506b",
+          "locator": "Rule 506(b) page",
+          "quote": "Purchasers in a Rule 506(b) offering receive “restricted securities.”"
         }
       ]
     },
@@ -2041,46 +2094,38 @@
       "claims": [
         {
           "id": "A1",
-          "sentence": "he sec's investor education site says stocks give stockholders a share of ownership in a company.",
-          "kind": "definition",
-          "sourceId": "investor-stocks",
-          "locator": "Stocks, What are stocks",
-          "quote": "Stocks are a type of security that gives stockholders a share of ownership in a company."
+          "sentence": "delaware's general corporation law, used here as one example, says in section 151 that every corporation may issue one or more classes of stock, or one or more series of stock within a class.",
+          "kind": "regulation",
+          "sourceId": "de-dgcl-151",
+          "locator": "Section 151(a)",
+          "quote": "Every corporation may issue 1 or more classes of stock or 1 or more series of stock within any class thereof, any or all"
         },
         {
           "id": "A2",
-          "sentence": "common stock entitles owners to vote at shareholder meetings and receive dividends.",
-          "kind": "definition",
-          "sourceId": "investor-stocks",
-          "locator": "Types of stock",
-          "quote": "Common stock entitles owners to vote at shareholder meetings and receive dividends."
+          "sentence": "it says a class or series may have voting powers, full or limited, or no voting powers, and designations, preferences and relative, participating, optional or other special rights.",
+          "kind": "regulation",
+          "sourceId": "de-dgcl-151",
+          "locator": "Section 151(a)",
+          "quote": "voting powers, full or limited, or no voting powers"
         },
         {
           "id": "A3",
-          "sentence": "preferred stockholders usually do not have voting rights, but they receive dividends before common stockholders do and have priority over common stockholders if the company goes bankrupt and its assets are liquidated.",
-          "kind": "definition",
-          "sourceId": "investor-stocks",
-          "locator": "Types of stock",
-          "quote": "Preferred stockholders usually don’t have voting rights but they receive dividend payments before common stockholders do"
+          "sentence": "it says a class or series may have voting powers, full or limited, or no voting powers, and designations, preferences and relative, participating, optional or other special rights.",
+          "kind": "regulation",
+          "sourceId": "de-dgcl-151",
+          "locator": "Section 151(a)",
+          "quote": "designations, preferences and relative, participating, optional or other special rights"
         },
         {
           "id": "A4",
-          "sentence": "preferred stockholders usually do not have voting rights, but they receive dividends before common stockholders do and have priority over common stockholders if the company goes bankrupt and its assets are liquidated.",
-          "kind": "definition",
-          "sourceId": "investor-stocks",
-          "locator": "Types of stock",
-          "quote": "have priority over common stockholders if the company goes bankrupt and its assets are liquidated"
-        },
-        {
-          "id": "A5",
-          "sentence": "the model term sheet in the nvca's series a package, for example, has the new preferred stock vote together with common stock on an as-converted basis, so read the terms of your own classes and not the textbook summary.",
+          "sentence": "the model term sheet in the nvca's series a package, for example, has the new preferred stock vote together with common stock on an as-converted basis, so read the terms of your own classes.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
           "locator": "Voting Rights",
           "quote": "The Series A Preferred shall vote together with the Common Stock on an as-converted basis, and not as a separate class"
         },
         {
-          "id": "A6",
+          "id": "A5",
           "sentence": "y combinator's standard form defines options to include options, restricted stock awards or purchases, restricted stock units, stock appreciation rights, warrants or similar securities, whether vested or unvested.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -2088,7 +2133,7 @@
           "quote": "includes options, restricted stock awards or purchases, RSUs, SARs, warrants or similar securities, vested or unvested."
         },
         {
-          "id": "A7",
+          "id": "A6",
           "sentence": "the form treats all of them as part of the company's capitalization.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -2096,7 +2141,7 @@
           "quote": "Includes all (i) issued and outstanding Options and (ii) Promised Options"
         },
         {
-          "id": "A8",
+          "id": "A7",
           "sentence": "a promised option is an option that has been promised but not yet granted, under agreements or understandings made before or in connection with the term sheet.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -2104,7 +2149,7 @@
           "quote": "promised but ungranted Options"
         },
         {
-          "id": "A9",
+          "id": "A8",
           "sentence": "a promised option is an option that has been promised but not yet granted, under agreements or understandings made before or in connection with the term sheet.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -2112,7 +2157,7 @@
           "quote": "promised pursuant to agreements or understandings made prior to the execution of, or in connection with, the term sheet"
         },
         {
-          "id": "A10",
+          "id": "A9",
           "sentence": "for a founder, the lesson is plain: an agreement or understanding that an employee will receive options is the kind of promise the form counts, even before the board grants anything.",
           "kind": "paraphrase",
           "sourceId": "yc-safe-form",
@@ -2120,7 +2165,7 @@
           "quote": "promised pursuant to agreements or understandings made prior to the execution of, or in connection with, the term sheet"
         },
         {
-          "id": "A11",
+          "id": "A10",
           "sentence": "n option pool is shares set aside to give to people later.",
           "kind": "paraphrase",
           "sourceId": "yc-safe-form",
@@ -2128,12 +2173,20 @@
           "quote": "reserved, available for future grant"
         },
         {
+          "id": "A11",
+          "sentence": "the standard form calls it the unissued option pool: all shares of capital stock that are reserved, available for future grant and not subject to any outstanding or promised options under an equity incentive or similar plan.",
+          "kind": "definition",
+          "sourceId": "yc-safe-form",
+          "locator": "Section 2, Unissued Option Pool",
+          "quote": "shares of Capital Stock that are reserved, available for future grant and not subject to any outstanding Options or"
+        },
+        {
           "id": "A12",
           "sentence": "the standard form calls it the unissued option pool: all shares of capital stock that are reserved, available for future grant and not subject to any outstanding or promised options under an equity incentive or similar plan.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
           "locator": "Section 2, Unissued Option Pool",
-          "quote": "all shares of Capital Stock that are reserved, available for future grant and not subject to any outstanding Options or Promised Options"
+          "quote": "any outstanding Options or Promised Options"
         },
         {
           "id": "A13",
@@ -2165,10 +2218,18 @@
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
           "locator": "Price",
-          "quote": "which pre-money valuation shall include an [unallocated and uncommitted] employee option pool representing [__]% of the fullydiluted post-money capitalization"
+          "quote": "pre-money valuation shall include an [unallocated and uncommitted] employee option pool representing [__]% of the"
         },
         {
           "id": "A17",
+          "sentence": "in the nvca model term sheet, the pre-money valuation includes an employee option pool, which the model brackets as unallocated and uncommitted, stated as a share of the post-money capitalization.",
+          "kind": "paraphrase",
+          "sourceId": "nvca-term-sheet",
+          "locator": "Price",
+          "quote": "representing [__]% of the fullydiluted post-money capitalization"
+        },
+        {
+          "id": "A18",
           "sentence": "in both documents the pool is part of the count the price is worked out from.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -2176,7 +2237,7 @@
           "quote": "shall be the price determined on the basis of a fully-diluted pre-money valuation of $[_____]"
         },
         {
-          "id": "A18",
+          "id": "A19",
           "sentence": "oth documents count on an as-converted basis, which means each preferred share, convertible security or option is counted as the number of common shares it would become.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -2184,7 +2245,7 @@
           "quote": "calculated on an as-converted to Common Stock basis"
         },
         {
-          "id": "A19",
+          "id": "A20",
           "sentence": "oth documents count on an as-converted basis, which means each preferred share, convertible security or option is counted as the number of common shares it would become.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -2192,24 +2253,16 @@
           "quote": "all shares of outstanding preferred stock on an as-converted basis, and all outstanding options on an as-exercised basis"
         },
         {
-          "id": "A20",
-          "sentence": "the nvca model sheet's anti-dilution formula spells out the same idea: the number of common shares deemed outstanding includes all outstanding common stock, all outstanding preferred stock on an as-converted basis, and all outstanding options on an as-exercised basis.",
-          "kind": "paraphrase",
-          "sourceId": "nvca-term-sheet",
-          "locator": "Anti-dilution Provisions",
-          "quote": "Number of shares of Common Stock deemed to be outstanding immediately prior to new issue (includes all shares of outstanding common stock"
-        },
-        {
           "id": "A21",
           "sentence": "the nvca model sheet's anti-dilution formula spells out the same idea: the number of common shares deemed outstanding includes all outstanding common stock, all outstanding preferred stock on an as-converted basis, and all outstanding options on an as-exercised basis.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
           "locator": "Anti-dilution Provisions",
-          "quote": "all shares of outstanding preferred stock on an as-converted basis, and all outstanding options on an as-exercised basis"
+          "quote": "deemed to be outstanding immediately prior to new issue (includes all shares of outstanding common stock"
         },
         {
           "id": "A22",
-          "sentence": "a fully diluted count is therefore larger than the number of shares issued today.",
+          "sentence": "the nvca model sheet's anti-dilution formula spells out the same idea: the number of common shares deemed outstanding includes all outstanding common stock, all outstanding preferred stock on an as-converted basis, and all outstanding options on an as-exercised basis.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
           "locator": "Anti-dilution Provisions",
@@ -2217,11 +2270,11 @@
         },
         {
           "id": "A23",
-          "sentence": "combinator's comparison calls a safe a convertible security and describes a convertible note as debt that converts to equity.",
-          "kind": "definition",
-          "sourceId": "yc-vs-note",
-          "locator": "Comparison table, Instrument",
-          "quote": "Convertible security Debt that converts to equity"
+          "sentence": "a fully diluted count is therefore larger than the number of shares issued today.",
+          "kind": "paraphrase",
+          "sourceId": "nvca-term-sheet",
+          "locator": "Anti-dilution Provisions",
+          "quote": "all shares of outstanding preferred stock on an as-converted basis, and all outstanding options on an as-exercised basis"
         },
         {
           "id": "A24",
@@ -2233,6 +2286,14 @@
         },
         {
           "id": "A25",
+          "sentence": "combinator's comparison calls a safe a convertible security and describes a convertible note as debt that converts to equity.",
+          "kind": "definition",
+          "sourceId": "yc-vs-note",
+          "locator": "Comparison table, Instrument",
+          "quote": "Convertible security Debt that converts to equity"
+        },
+        {
+          "id": "A26",
           "sentence": "neither is a share until it converts, and both belong on the cap table as converting securities.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -2240,15 +2301,15 @@
           "quote": "Convertible security Debt that converts to equity"
         },
         {
-          "id": "A26",
+          "id": "A27",
           "sentence": "the standard form defines converting securities to include the safe itself and other convertible securities the company has issued, including other safes, convertible promissory notes and other convertible debt instruments.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
           "locator": "Section 2, Converting Securities",
-          "quote": "other convertible securities issued by the Company, including but not limited to: (i) other Safes; (ii) convertible promissory notes"
+          "quote": "other convertible securities issued by the Company, including but not limited to:"
         },
         {
-          "id": "A27",
+          "id": "A28",
           "sentence": "the standard form defines converting securities to include the safe itself and other convertible securities the company has issued, including other safes, convertible promissory notes and other convertible debt instruments.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -2256,7 +2317,7 @@
           "quote": "(i) other Safes; (ii) convertible promissory notes and other convertible debt instruments"
         },
         {
-          "id": "A28",
+          "id": "A29",
           "sentence": "his is the trap y combinator describes as losing track of total ownership sold.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -2264,7 +2325,7 @@
           "quote": "Losing track of total ownership sold"
         },
         {
-          "id": "A29",
+          "id": "A30",
           "sentence": "n a post-money safe, ownership sold equals the investment amount divided by the valuation cap, and the caps of separate safes add together, so five $100k safes at a $5m cap is 10 percent sold, not 2 percent.",
           "kind": "definition",
           "sourceId": "yc-vs-note",
@@ -2272,7 +2333,7 @@
           "quote": "Post-money valuation caps are additive."
         },
         {
-          "id": "A30",
+          "id": "A31",
           "sentence": "n a post-money safe, ownership sold equals the investment amount divided by the valuation cap, and the caps of separate safes add together, so five $100k safes at a $5m cap is 10 percent sold, not 2 percent.",
           "kind": "definition",
           "sourceId": "yc-vs-note",
@@ -2280,7 +2341,7 @@
           "quote": "Ownership sold equals investment divided by valuation cap"
         },
         {
-          "id": "A31",
+          "id": "A32",
           "sentence": "n a post-money safe, ownership sold equals the investment amount divided by the valuation cap, and the caps of separate safes add together, so five $100k safes at a $5m cap is 10 percent sold, not 2 percent.",
           "kind": "statistic",
           "sourceId": "yc-vs-note",
@@ -2288,7 +2349,7 @@
           "quote": "Five $100k SAFEs at a $5M cap is 10% sold, not 2%."
         },
         {
-          "id": "A32",
+          "id": "A33",
           "sentence": "the form calculates the conversion price, called the safe price, as the post-money valuation cap divided by the company capitalization.",
           "kind": "definition",
           "sourceId": "yc-safe-form",
@@ -2296,7 +2357,7 @@
           "quote": "“Safe Price” means the price per share equal to the Post-Money Valuation Cap divided by the Company Capitalization"
         },
         {
-          "id": "A33",
+          "id": "A34",
           "sentence": "the publisher says to track the running total before signing the next safe.",
           "kind": "paraphrase",
           "sourceId": "yc-vs-note",
@@ -2304,7 +2365,7 @@
           "quote": "Track the running total before signing the next one."
         },
         {
-          "id": "A34",
+          "id": "A35",
           "sentence": "the nvca model sheet has a bracketed term for founders' stock, a buyback right or vesting that lapses in increments after closing, and a bracketed provision that employee options vest on a schedule.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -2312,7 +2373,7 @@
           "quote": "Buyback right/vesting for [__]% for first [12 months] after Closing; thereafter, right lapses in equal [monthly] increments"
         },
         {
-          "id": "A35",
+          "id": "A36",
           "sentence": "the nvca model sheet has a bracketed term for founders' stock, a buyback right or vesting that lapses in increments after closing, and a bracketed provision that employee options vest on a schedule.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -2320,7 +2381,7 @@
           "quote": "All [future] employee options to vest as follows"
         },
         {
-          "id": "A36",
+          "id": "A37",
           "sentence": "the nvca model sheet lists, in brackets, an up-to-date capitalization table that the company delivers to major investors promptly after the end of each quarter.",
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
@@ -2458,7 +2519,7 @@
           "kind": "regulation",
           "sourceId": "sba-loans",
           "locator": "Eligibility requirements",
-          "quote": "eligibility is based on what a business does to receive its income, the character of its ownership, and where the business operates"
+          "quote": "what a business does to receive its income, the character of its ownership, and where the business operates"
         },
         {
           "id": "A17",
@@ -2538,7 +2599,7 @@
           "kind": "regulation",
           "sourceId": "nvca-term-sheet",
           "locator": "Protective Provisions",
-          "quote": "create or authorize the creation of any debt security[, if the aggregate indebtedness of the Corporation and its subsidiaries for borrowed money"
+          "quote": "creation of any debt security[, if the aggregate indebtedness of the Corporation and its subsidiaries for borrowed money"
         },
         {
           "id": "A27",
@@ -2546,7 +2607,7 @@
           "kind": "paraphrase",
           "sourceId": "nvca-term-sheet",
           "locator": "Protective Provisions",
-          "quote": "create or authorize the creation of any debt security[, if the aggregate indebtedness of the Corporation and its subsidiaries for borrowed money"
+          "quote": "creation of any debt security[, if the aggregate indebtedness of the Corporation and its subsidiaries for borrowed money"
         },
         {
           "id": "A28",
@@ -2586,7 +2647,7 @@
           "kind": "regulation",
           "sourceId": "nvca-term-sheet",
           "locator": "Matters Requiring Preferred Director Approval",
-          "quote": "guarantee any indebtedness except for trade accounts of the Company or any subsidiary arising in the ordinary course of business"
+          "quote": "guarantee any indebtedness except for trade accounts of the Company or any subsidiary arising in the ordinary course"
         }
       ]
     },
@@ -2595,22 +2656,62 @@
       "claims": [
         {
           "id": "A1",
-          "sentence": "the sec's investor bulletin describes it as a financing method in which money is raised through soliciting relatively small individual investments or contributions from a large number of people.",
+          "sentence": "this article covers one form only: regulation crowdfunding, the united states exemption that, in the sec's words, enables eligible companies to offer and sell securities through crowdfunding.",
           "kind": "definition",
-          "sourceId": "investor-crowdfunding",
-          "locator": "Introduction",
-          "quote": "a financing method in which money is raised through soliciting relatively small individual investments or contributions from a large number of people"
+          "sourceId": "sec-regcf",
+          "locator": "Regulation Crowdfunding",
+          "quote": "Regulation Crowdfunding enables eligible companies to offer and sell securities through crowdfunding."
         },
         {
           "id": "A2",
-          "sentence": "this article covers one form only: regulation crowdfunding, the united states exemption under which a company sells securities to the public on an intermediary's online platform.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "Introduction",
-          "quote": "Companies can use Regulation Crowdfunding to offer and sell securities to the investing public"
+          "sentence": "the sec's regulation crowdfunding page says the rules require all transactions to take place online through an sec-registered intermediary, either a broker-dealer or a funding portal.",
+          "kind": "regulation",
+          "sourceId": "sec-regcf",
+          "locator": "Regulation Crowdfunding",
+          "quote": "require all transactions under Regulation Crowdfunding to take place online through an SEC-registered intermediary"
         },
         {
           "id": "A3",
+          "sentence": "the sec's regulation crowdfunding page says the rules require all transactions to take place online through an sec-registered intermediary, either a broker-dealer or a funding portal.",
+          "kind": "regulation",
+          "sourceId": "sec-regcf",
+          "locator": "Regulation Crowdfunding",
+          "quote": "either a broker-dealer or a funding portal"
+        },
+        {
+          "id": "A4",
+          "sentence": "he sec's regulation crowdfunding page also lists an investor bulletin titled \"be cautious of safes in crowdfunding\".",
+          "kind": "paraphrase",
+          "sourceId": "sec-regcf",
+          "locator": "Regulation Crowdfunding, Additional Information",
+          "quote": "Investor Bulletin: Be Cautious of SAFEs in Crowdfunding"
+        },
+        {
+          "id": "A5",
+          "sentence": "above $618,000, it asks for audited statements, with a different rule for a first-time issuer whose target is up to $1,235,000.",
+          "kind": "statistic",
+          "sourceId": "ecfr-227",
+          "locator": "227.201(t)(3)",
+          "quote": "offerings that have a target offering amount of more than $618,000, but not more than $1,235,000,"
+        },
+        {
+          "id": "A6",
+          "sentence": "above $618,000, it asks for audited statements, with a different rule for a first-time issuer whose target is up to $1,235,000.",
+          "kind": "regulation",
+          "sourceId": "ecfr-227",
+          "locator": "227.201(t)(3)",
+          "quote": "for issuers that have not previously sold securities in reliance on section 4(a)(6)"
+        },
+        {
+          "id": "A7",
+          "sentence": "if the offering changes materially, the commitment is cancelled unless the investor reconfirms within five business days of receiving the notice.",
+          "kind": "regulation",
+          "sourceId": "ecfr-227-304",
+          "locator": "227.304",
+          "quote": "unless the investor reconfirms his or her investment commitment within five business days of receipt of the notice."
+        },
+        {
+          "id": "A8",
           "sentence": "its section 227.100(b) lists issuers to which the exemption does not apply.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2618,7 +2719,7 @@
           "quote": "The crowdfunding exemption shall not apply to transactions involving the offer or sale of securities by any issuer that"
         },
         {
-          "id": "A4",
+          "id": "A9",
           "sentence": "the first is an issuer that is not organized under, and subject to, the laws of a state or territory of the united states or the district of columbia.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2626,7 +2727,7 @@
           "quote": "Is not organized under, and subject to, the laws of a State or territory of the United States or the District of Columbia"
         },
         {
-          "id": "A5",
+          "id": "A10",
           "sentence": "a company formed elsewhere is therefore outside the exemption as the rule is written.",
           "kind": "paraphrase",
           "sourceId": "ecfr-227",
@@ -2634,7 +2735,7 @@
           "quote": "Is not organized under, and subject to, the laws of a State or territory of the United States or the District of Columbia"
         },
         {
-          "id": "A6",
+          "id": "A11",
           "sentence": "is required to file reports under the securities exchange act of 1934;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2642,7 +2743,7 @@
           "quote": "Is subject to the requirement to file reports pursuant to section 13 or section 15(d) of the Securities Exchange Act of 1934"
         },
         {
-          "id": "A7",
+          "id": "A12",
           "sentence": "is an investment company, or is excluded from that definition by particular provisions of the investment company act;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2650,7 +2751,7 @@
           "quote": "Is an investment company, as defined in section 3 of the Investment Company Act of 1940"
         },
         {
-          "id": "A8",
+          "id": "A13",
           "sentence": "is disqualified under section 227.503(a);",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2658,15 +2759,15 @@
           "quote": "as a result of a disqualification as specified in § 227.503(a)"
         },
         {
-          "id": "A9",
+          "id": "A14",
           "sentence": "has sold under the exemption and has not filed the ongoing annual reports the rule requires; or",
           "kind": "regulation",
           "sourceId": "ecfr-227",
           "locator": "227.100(b)(5)",
-          "quote": "has not filed with the Commission and provided to investors, to the extent required, the ongoing annual reports required by this part"
+          "quote": "has not filed with the Commission and provided to investors, to the extent required, the ongoing annual reports"
         },
         {
-          "id": "A10",
+          "id": "A15",
           "sentence": "has no specific business plan, or has said its plan is to merge with or acquire an unidentified company.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2674,7 +2775,7 @@
           "quote": "Has no specific business plan or has indicated that its business plan is to engage in a merger or acquisition"
         },
         {
-          "id": "A11",
+          "id": "A16",
           "sentence": "or counting amounts, the rule treats the issuer as including entities it controls or that are under common control with it, and its predecessors.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2682,7 +2783,7 @@
           "quote": "issuer includes all entities controlled by or under common control with the issuer and any predecessors of the issuer"
         },
         {
-          "id": "A12",
+          "id": "A17",
           "sentence": "n issuer may sell no more than $5,000,000 in total under the exemption in the 12 months before the offer or sale, including the securities in that transaction.",
           "kind": "statistic",
           "sourceId": "ecfr-227",
@@ -2690,7 +2791,7 @@
           "quote": "shall not exceed $5,000,000"
         },
         {
-          "id": "A13",
+          "id": "A18",
           "sentence": "n issuer may sell no more than $5,000,000 in total under the exemption in the 12 months before the offer or sale, including the securities in that transaction.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2698,7 +2799,7 @@
           "quote": "during the 12-month period preceding the date of such offer or sale, including the securities offered in such transaction"
         },
         {
-          "id": "A14",
+          "id": "A19",
           "sentence": "the sec's exempt offerings page describes the route as one that enables certain companies to offer and sell securities on an internet based platform.",
           "kind": "regulation",
           "sourceId": "sec-exempt-offerings",
@@ -2706,7 +2807,7 @@
           "quote": "enables certain companies to offer and sell securities on an internet based platform"
         },
         {
-          "id": "A15",
+          "id": "A20",
           "sentence": "for an investor who is not accredited, the total across all issuers in a 12-month period may not exceed the greater of $2,500 or 5 percent of the greater of the investor's annual income or net worth, if either figure is less than $124,000.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2714,7 +2815,7 @@
           "quote": "Where the purchaser is not an accredited investor"
         },
         {
-          "id": "A16",
+          "id": "A21",
           "sentence": "for an investor who is not accredited, the total across all issuers in a 12-month period may not exceed the greater of $2,500 or 5 percent of the greater of the investor's annual income or net worth, if either figure is less than $124,000.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2722,7 +2823,7 @@
           "quote": "sold to such an investor across all issuers in reliance on section 4(a)(6) of the Securities Act"
         },
         {
-          "id": "A17",
+          "id": "A22",
           "sentence": "for an investor who is not accredited, the total across all issuers in a 12-month period may not exceed the greater of $2,500 or 5 percent of the greater of the investor's annual income or net worth, if either figure is less than $124,000.",
           "kind": "statistic",
           "sourceId": "ecfr-227",
@@ -2730,7 +2831,7 @@
           "quote": "The greater of $2,500, or 5 percent of the greater of the investor's annual income or net worth"
         },
         {
-          "id": "A18",
+          "id": "A23",
           "sentence": "for an investor who is not accredited, the total across all issuers in a 12-month period may not exceed the greater of $2,500 or 5 percent of the greater of the investor's annual income or net worth, if either figure is less than $124,000.",
           "kind": "statistic",
           "sourceId": "ecfr-227",
@@ -2738,7 +2839,7 @@
           "quote": "if either the investor's annual income or net worth is less than $124,000"
         },
         {
-          "id": "A19",
+          "id": "A24",
           "sentence": "if both are $124,000 or more, the limit is 10 percent of the greater figure, and never more than $124,000.",
           "kind": "statistic",
           "sourceId": "ecfr-227",
@@ -2746,7 +2847,7 @@
           "quote": "if both the investor's annual income and net worth are equal to or more than $124,000"
         },
         {
-          "id": "A20",
+          "id": "A25",
           "sentence": "if both are $124,000 or more, the limit is 10 percent of the greater figure, and never more than $124,000.",
           "kind": "statistic",
           "sourceId": "ecfr-227",
@@ -2754,7 +2855,7 @@
           "quote": "Ten percent of the greater of the investor's annual income or net worth, not to exceed an amount sold of $124,000"
         },
         {
-          "id": "A21",
+          "id": "A26",
           "sentence": "if investors are not accredited, a raise near the ceiling would need many of them, because each one's limit is a fraction of their own income or net worth.",
           "kind": "paraphrase",
           "sourceId": "ecfr-227",
@@ -2762,15 +2863,7 @@
           "quote": "Ten percent of the greater of the investor's annual income or net worth, not to exceed an amount sold of $124,000"
         },
         {
-          "id": "A22",
-          "sentence": "the bulletin says accredited investors have no limit.",
-          "kind": "regulation",
-          "sourceId": "investor-crowdfunding",
-          "locator": "Can I make a Regulation Crowdfunding investment?",
-          "quote": "If you are an accredited investor , then there are no limits on how much you can invest."
-        },
-        {
-          "id": "A23",
+          "id": "A27",
           "sentence": "the rule lets an issuer rely on the intermediary's efforts to keep investors within their limits, provided the issuer does not know that an investor has exceeded them.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2778,7 +2871,7 @@
           "quote": "may rely on the efforts of an intermediary required by § 227.303(b)"
         },
         {
-          "id": "A24",
+          "id": "A28",
           "sentence": "the rule lets an issuer rely on the intermediary's efforts to keep investors within their limits, provided the issuer does not know that an investor has exceeded them.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2786,7 +2879,7 @@
           "quote": "provided that the issuer does not know that the investor has exceeded the investor limits"
         },
         {
-          "id": "A25",
+          "id": "A29",
           "sentence": "he transaction must be conducted through an intermediary and exclusively through that intermediary's platform, and an issuer may not run an offering or concurrent offerings through more than one.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2794,7 +2887,7 @@
           "quote": "The transaction is conducted through an intermediary"
         },
         {
-          "id": "A26",
+          "id": "A30",
           "sentence": "he transaction must be conducted through an intermediary and exclusively through that intermediary's platform, and an issuer may not run an offering or concurrent offerings through more than one.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2802,7 +2895,7 @@
           "quote": "conducted exclusively through the intermediary's platform"
         },
         {
-          "id": "A27",
+          "id": "A31",
           "sentence": "he transaction must be conducted through an intermediary and exclusively through that intermediary's platform, and an issuer may not run an offering or concurrent offerings through more than one.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2810,7 +2903,7 @@
           "quote": "An issuer shall not conduct an offering or concurrent offerings in reliance on section 4(a)(6)"
         },
         {
-          "id": "A28",
+          "id": "A32",
           "sentence": "he transaction must be conducted through an intermediary and exclusively through that intermediary's platform, and an issuer may not run an offering or concurrent offerings through more than one.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2818,31 +2911,7 @@
           "quote": "using more than one intermediary."
         },
         {
-          "id": "A29",
-          "sentence": "the bulletin explains that a company may not offer these investments to investors directly.",
-          "kind": "regulation",
-          "sourceId": "investor-crowdfunding",
-          "locator": "How do I make a Regulation Crowdfunding investment?",
-          "quote": "Companies may not offer Regulation Crowdfunding investments to you directly"
-        },
-        {
-          "id": "A30",
-          "sentence": "it must use a broker-dealer or a funding portal, and the intermediary must be registered with the sec and be a member of the financial industry regulatory authority.",
-          "kind": "regulation",
-          "sourceId": "investor-crowdfunding",
-          "locator": "How do I make a Regulation Crowdfunding investment?",
-          "quote": "they must use a broker-dealer or funding portal"
-        },
-        {
-          "id": "A31",
-          "sentence": "it must use a broker-dealer or a funding portal, and the intermediary must be registered with the sec and be a member of the financial industry regulatory authority.",
-          "kind": "regulation",
-          "sourceId": "investor-crowdfunding",
-          "locator": "How do I make a Regulation Crowdfunding investment?",
-          "quote": "must be registered with the SEC and be a member of the Financial Industry Regulatory Authority (FINRA)"
-        },
-        {
-          "id": "A32",
+          "id": "A33",
           "sentence": "our offering documents must name the intermediary with its sec file number and, where applicable, its central registration depository number.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2850,7 +2919,7 @@
           "quote": "The name, SEC file number and Central Registration Depository (CRD) number (as applicable) of the intermediary"
         },
         {
-          "id": "A33",
+          "id": "A34",
           "sentence": "they must also describe the intermediary's financial interests: the compensation to be paid, as a dollar amount or a percentage of the offering amount or a good faith estimate, including referral and other fees, and any direct or indirect interest in your company or arrangement to acquire one.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2858,7 +2927,7 @@
           "quote": "A description of the intermediary's financial interests in the issuer's transaction and in the issuer"
         },
         {
-          "id": "A34",
+          "id": "A35",
           "sentence": "they must also describe the intermediary's financial interests: the compensation to be paid, as a dollar amount or a percentage of the offering amount or a good faith estimate, including referral and other fees, and any direct or indirect interest in your company or arrangement to acquire one.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2866,7 +2935,7 @@
           "quote": "whether as a dollar amount or a percentage of the offering amount, or a good faith estimate"
         },
         {
-          "id": "A35",
+          "id": "A36",
           "sentence": "they must also describe the intermediary's financial interests: the compensation to be paid, as a dollar amount or a percentage of the offering amount or a good faith estimate, including referral and other fees, and any direct or indirect interest in your company or arrangement to acquire one.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2874,20 +2943,12 @@
           "quote": "including the amount of referral and any other fees associated with the offering"
         },
         {
-          "id": "A36",
+          "id": "A37",
           "sentence": "they must also describe the intermediary's financial interests: the compensation to be paid, as a dollar amount or a percentage of the offering amount or a good faith estimate, including referral and other fees, and any direct or indirect interest in your company or arrangement to acquire one.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
           "locator": "227.201(o)(2)",
-          "quote": "Any other direct or indirect interest in the issuer held by the intermediary, or any arrangement for the intermediary to acquire such an interest"
-        },
-        {
-          "id": "A37",
-          "sentence": "efore the offering begins, an issuer files a form c offering statement with the sec and provides it to investors and the intermediary.",
-          "kind": "regulation",
-          "sourceId": "ecfr-227",
-          "locator": "227.203(a)(1)",
-          "quote": "provide to investors and the relevant intermediary a Form C: Offering Statement (Form C)"
+          "quote": "Any other direct or indirect interest in the issuer held by the intermediary, or any arrangement for the intermediary to"
         },
         {
           "id": "A38",
@@ -2895,10 +2956,18 @@
           "kind": "regulation",
           "sourceId": "ecfr-227",
           "locator": "227.203(a)(1)",
-          "quote": "prior to the commencement of the offering of securities"
+          "quote": "provide to investors and the relevant intermediary a Form C: Offering Statement (Form C)"
         },
         {
           "id": "A39",
+          "sentence": "efore the offering begins, an issuer files a form c offering statement with the sec and provides it to investors and the intermediary.",
+          "kind": "regulation",
+          "sourceId": "ecfr-227",
+          "locator": "227.203(a)(1)",
+          "quote": "prior to the commencement of the offering of securities"
+        },
+        {
+          "id": "A40",
           "sentence": "the legal form and jurisdiction of the company, its directors and officers and their business experience over the past three years, and each holder of 20 percent or more of its voting equity;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2906,7 +2975,7 @@
           "quote": "legal status (including its form of organization, jurisdiction in which it is organized and date of organization)"
         },
         {
-          "id": "A40",
+          "id": "A41",
           "sentence": "the legal form and jurisdiction of the company, its directors and officers and their business experience over the past three years, and each holder of 20 percent or more of its voting equity;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2914,7 +2983,7 @@
           "quote": "their business experience during the past three years"
         },
         {
-          "id": "A41",
+          "id": "A42",
           "sentence": "the legal form and jurisdiction of the company, its directors and officers and their business experience over the past three years, and each holder of 20 percent or more of its voting equity;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2922,7 +2991,7 @@
           "quote": "beneficial owner of 20 percent or more of the issuer's outstanding voting equity securities"
         },
         {
-          "id": "A42",
+          "id": "A43",
           "sentence": "a description of the business and the plan, the number of employees, and a discussion of the material factors that make an investment speculative or risky;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2930,7 +2999,7 @@
           "quote": "A description of the business of the issuer and the anticipated business plan of the issuer"
         },
         {
-          "id": "A43",
+          "id": "A44",
           "sentence": "a description of the business and the plan, the number of employees, and a discussion of the material factors that make an investment speculative or risky;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2938,7 +3007,7 @@
           "quote": "The current number of employees of the issuer"
         },
         {
-          "id": "A44",
+          "id": "A45",
           "sentence": "a description of the business and the plan, the number of employees, and a discussion of the material factors that make an investment speculative or risky;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2946,7 +3015,7 @@
           "quote": "A discussion of the material factors that make an investment in the issuer speculative or risky"
         },
         {
-          "id": "A45",
+          "id": "A46",
           "sentence": "the target offering amount and the deadline, with a statement that if commitments do not reach the target by the deadline, no securities will be sold and the money is returned;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2954,7 +3023,7 @@
           "quote": "The target offering amount and the deadline to reach the target offering amount"
         },
         {
-          "id": "A46",
+          "id": "A47",
           "sentence": "the target offering amount and the deadline, with a statement that if commitments do not reach the target by the deadline, no securities will be sold and the money is returned;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2962,7 +3031,7 @@
           "quote": "no securities will be sold in the offering, investment commitments will be cancelled and committed funds will be returned"
         },
         {
-          "id": "A47",
+          "id": "A48",
           "sentence": "the purpose and intended use of the proceeds, and the price or the method for setting it;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2970,7 +3039,7 @@
           "quote": "A description of the purpose and intended use of the offering proceeds"
         },
         {
-          "id": "A48",
+          "id": "A49",
           "sentence": "the purpose and intended use of the proceeds, and the price or the method for setting it;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2978,7 +3047,7 @@
           "quote": "The price to the public of the securities or the method for determining the price"
         },
         {
-          "id": "A49",
+          "id": "A50",
           "sentence": "the terms of the securities offered and each other class, how the offered securities are valued and may be valued later, and the risks of minority ownership;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2986,7 +3055,7 @@
           "quote": "The terms of the securities being offered and each other class of security of the issuer"
         },
         {
-          "id": "A50",
+          "id": "A51",
           "sentence": "the terms of the securities offered and each other class, how the offered securities are valued and may be valued later, and the risks of minority ownership;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -2994,7 +3063,7 @@
           "quote": "How the securities being offered are being valued, and examples of methods for how such securities may be valued"
         },
         {
-          "id": "A51",
+          "id": "A52",
           "sentence": "the terms of the securities offered and each other class, how the offered securities are valued and may be valued later, and the risks of minority ownership;",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -3002,7 +3071,7 @@
           "quote": "The risks to purchasers of the securities relating to minority ownership in the issuer"
         },
         {
-          "id": "A52",
+          "id": "A53",
           "sentence": "the material terms of any indebtedness, any exempt offerings in the past three years, and transactions with insiders above a stated threshold; and",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -3010,7 +3079,7 @@
           "quote": "A description of the material terms of any indebtedness of the issuer"
         },
         {
-          "id": "A53",
+          "id": "A54",
           "sentence": "the material terms of any indebtedness, any exempt offerings in the past three years, and transactions with insiders above a stated threshold; and",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -3018,7 +3087,7 @@
           "quote": "A description of exempt offerings conducted within the past three years"
         },
         {
-          "id": "A54",
+          "id": "A55",
           "sentence": "the material terms of any indebtedness, any exempt offerings in the past three years, and transactions with insiders above a stated threshold; and",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -3026,15 +3095,15 @@
           "quote": "the amount involved exceeds five percent of the aggregate amount of capital raised by the issuer"
         },
         {
-          "id": "A55",
+          "id": "A56",
           "sentence": "a discussion of the company's financial condition, with financial statements.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
           "locator": "227.201(s)",
-          "quote": "A discussion of the issuer's financial condition, including, to the extent material, liquidity, capital resources and historical results of operations"
+          "quote": "A discussion of the issuer's financial condition, including, to the extent material, liquidity, capital resources"
         },
         {
-          "id": "A56",
+          "id": "A57",
           "sentence": "he level of financial statement depends on your target offering amount added to what you sold under the exemption in the preceding 12 months.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -3042,7 +3111,7 @@
           "quote": "have, in the aggregate, the following target offering amounts"
         },
         {
-          "id": "A57",
+          "id": "A58",
           "sentence": "for $124,000 or less, the rule asks for income tax return line items and financial statements certified by the principal executive officer.",
           "kind": "statistic",
           "sourceId": "ecfr-227",
@@ -3050,7 +3119,7 @@
           "quote": "$124,000 or less, the amount of total income, taxable income and total tax, or the equivalent line items"
         },
         {
-          "id": "A58",
+          "id": "A59",
           "sentence": "for $124,000 or less, the rule asks for income tax return line items and financial statements certified by the principal executive officer.",
           "kind": "regulation",
           "sourceId": "ecfr-227",
@@ -3058,7 +3127,7 @@
           "quote": "which shall be certified by the principal executive officer of the issuer"
         },
         {
-          "id": "A59",
+          "id": "A60",
           "sentence": "above $124,000 and up to $618,000, it asks for statements reviewed by an independent public accountant.",
           "kind": "statistic",
           "sourceId": "ecfr-227",
@@ -3066,20 +3135,12 @@
           "quote": "More than $124,000, but not more than $618,000, financial statements of the issuer reviewed by a public accountant"
         },
         {
-          "id": "A60",
+          "id": "A61",
           "sentence": "above $618,000, it asks for audited statements, with a different rule for a first-time issuer whose target is up to $1,235,000.",
           "kind": "statistic",
           "sourceId": "ecfr-227",
           "locator": "227.201(t)(3)",
           "quote": "More than $618,000, financial statements of the issuer audited by a public accountant that is independent of the issuer"
-        },
-        {
-          "id": "A61",
-          "sentence": "above $618,000, it asks for audited statements, with a different rule for a first-time issuer whose target is up to $1,235,000.",
-          "kind": "statistic",
-          "sourceId": "investor-crowdfunding",
-          "locator": "Tiered financial disclosure",
-          "quote": "$618,000.01 to $1.235 million – if first time crowdfunding and audited financial statements are not available"
         },
         {
           "id": "A62",
@@ -3127,7 +3188,7 @@
           "kind": "regulation",
           "sourceId": "ecfr-227",
           "locator": "227.204(e)",
-          "quote": "the amount of securities offered, the nature of the securities, the price of the securities, the closing date of the offering period"
+          "quote": "the amount of securities offered, the nature of the securities, the price of the securities, the closing date"
         },
         {
           "id": "A68",
@@ -3159,7 +3220,7 @@
           "kind": "regulation",
           "sourceId": "ecfr-227",
           "locator": "227.206(a)",
-          "quote": "an issuer may communicate orally or in writing to determine whether there is any interest in a contemplated securities offering"
+          "quote": "communicate orally or in writing to determine whether there is any interest in a contemplated securities offering"
         },
         {
           "id": "A72",
@@ -3183,143 +3244,31 @@
           "kind": "regulation",
           "sourceId": "ecfr-227",
           "locator": "227.205(a)",
-          "quote": "takes reasonable steps to ensure that the person promoting the offering clearly discloses the receipt, past or prospective, of such compensation"
+          "quote": "takes reasonable steps to ensure that the person promoting the offering clearly discloses the receipt, past or prospective,"
         },
         {
           "id": "A75",
-          "sentence": "it lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind?",
-          "quote": "The following are some risks to consider before making a Regulation Crowdfunding investment"
+          "sentence": "an investor may cancel a commitment for any reason until 48 hours before the deadline.",
+          "kind": "regulation",
+          "sourceId": "ecfr-227-304",
+          "locator": "227.304(a)",
+          "quote": "An investor may cancel an investment commitment for any reason until 48 hours prior to the deadline"
         },
         {
           "id": "A76",
-          "sentence": "it lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Speculative",
-          "quote": "Investments in startups and early-stage ventures are speculative and these enterprises often fail."
+          "sentence": "securities sold under the exemption generally may not be transferred during the one-year period beginning when they were issued, with exceptions the rule lists.",
+          "kind": "regulation",
+          "sourceId": "ecfr-227-501",
+          "locator": "227.501(a)",
+          "quote": "may not be transferred by any purchaser of such securities during the one-year period beginning when"
         },
         {
           "id": "A77",
-          "sentence": "it lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Illiquidity",
-          "quote": "You will be limited in your ability to resell your investment for the first year"
-        },
-        {
-          "id": "A78",
-          "sentence": "it lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Cancellation restrictions",
-          "quote": "the ability to cancel your commitment is limited"
-        },
-        {
-          "id": "A79",
-          "sentence": "it lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Valuation and capitalization",
-          "quote": "the valuation of private companies, especially startups, is difficult"
-        },
-        {
-          "id": "A80",
-          "sentence": "it lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Limited disclosure",
-          "quote": "An early-stage company may be able to provide only limited information about its business plan and operations"
-        },
-        {
-          "id": "A81",
-          "sentence": "it lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Investment in personnel",
-          "quote": "An early-stage investment is also an investment in the entrepreneur or management of the company."
-        },
-        {
-          "id": "A82",
-          "sentence": "it lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Possibility of fraud",
-          "quote": "certain opportunities turn out to be money-losing fraudulent schemes"
-        },
-        {
-          "id": "A83",
-          "sentence": "it lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Lack of professional guidance",
-          "quote": "An early-stage company primarily financed through Regulation Crowdfunding may not have the benefit of such professional investors."
-        },
-        {
-          "id": "A84",
-          "sentence": "it says an early-stage company financed primarily through the route may not have the benefit of professional early-stage investors.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Lack of professional guidance",
-          "quote": "An early-stage company primarily financed through Regulation Crowdfunding may not have the benefit of such professional investors."
-        },
-        {
-          "id": "A85",
-          "sentence": "it notes that other classes of equity may carry superior rights, so a clear record of your own classes of stock matters, and another article on this desk covers cap tables.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "What should I keep in mind, Valuation and capitalization",
-          "quote": "there may be additional classes of equity with rights that are superior to the class of equity being sold"
-        },
-        {
-          "id": "A86",
-          "sentence": "an investor may cancel a commitment until 48 hours before the deadline, and the bulletin says that after a material change, investors have five business days to reconfirm.",
+          "sentence": "securities sold under the exemption generally may not be transferred during the one-year period beginning when they were issued, with exceptions the rule lists.",
           "kind": "regulation",
-          "sourceId": "ecfr-227",
-          "locator": "227.201(j)(1)",
-          "quote": "Investors may cancel an investment commitment until 48 hours prior to the deadline identified in the issuer's offering materials"
-        },
-        {
-          "id": "A87",
-          "sentence": "an investor may cancel a commitment until 48 hours before the deadline, and the bulletin says that after a material change, investors have five business days to reconfirm.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "Changing your mind",
-          "quote": "you will be given five business days to reconfirm your investment commitment"
-        },
-        {
-          "id": "A88",
-          "sentence": "securities sold under the exemption generally may not be resold in the first year, with exceptions the rule lists.",
-          "kind": "regulation",
-          "sourceId": "ecfr-227",
-          "locator": "227.501(a)",
-          "quote": "may not be transferred by any purchaser of such securities during the one-year period beginning when the securities were issued"
-        },
-        {
-          "id": "A89",
-          "sentence": "securities sold under the exemption generally may not be resold in the first year, with exceptions the rule lists.",
-          "kind": "regulation",
-          "sourceId": "ecfr-227",
+          "sourceId": "ecfr-227-501",
           "locator": "227.501(a)",
           "quote": "unless such securities are transferred"
-        },
-        {
-          "id": "A90",
-          "sentence": "he bulletin also notes that a safe is a type of security used in this route.",
-          "kind": "paraphrase",
-          "sourceId": "investor-crowdfunding",
-          "locator": "Additional Information",
-          "quote": "To learn about SAFEs, a type of security being used in Regulation Crowdfunding"
-        },
-        {
-          "id": "A91",
-          "sentence": "the investor.gov bulletin is a staff statement that has no legal force or effect.",
-          "kind": "regulation",
-          "sourceId": "investor-crowdfunding",
-          "locator": "Closing disclaimer",
-          "quote": "This bulletin, like all staff statements, has no legal force or effect"
         }
       ]
     },

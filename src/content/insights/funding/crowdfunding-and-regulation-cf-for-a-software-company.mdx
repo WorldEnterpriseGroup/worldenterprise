@@ -6,21 +6,31 @@ topic: funding
 publishedDate: 2026-10-10
 sources:
   - id: ecfr-227
-    title: Regulation Crowdfunding, 17 CFR Part 227
+    title: Regulation Crowdfunding, 17 CFR Part 227 (ecfr.gov/current/title-17/chapter-II/part-227)
     publisher: U.S. Securities and Exchange Commission (eCFR)
-    url: https://www.ecfr.gov/current/title-17/chapter-II/part-227
+    url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-17.xml?part=227
     accessed: 2026-10-10
-  - id: investor-crowdfunding
-    title: Crowdfunding for Investors, Investor Bulletin
-    publisher: SEC Office of Investor Education and Advocacy (Investor.gov)
-    url: https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/updated-11
+  - id: ecfr-227-304
+    title: Regulation Crowdfunding, 17 CFR 227.304 (ecfr.gov/current/title-17/section-227.304)
+    publisher: U.S. Securities and Exchange Commission (eCFR)
+    url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-17.xml?part=227&section=227.304
+    accessed: 2026-10-10
+  - id: ecfr-227-501
+    title: Regulation Crowdfunding, 17 CFR 227.501 (ecfr.gov/current/title-17/section-227.501)
+    publisher: U.S. Securities and Exchange Commission (eCFR)
+    url: https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-17.xml?part=227&section=227.501
+    accessed: 2026-10-10
+  - id: sec-regcf
+    title: Regulation Crowdfunding
+    publisher: U.S. Securities and Exchange Commission
+    url: https://www.sec.gov/resources-small-businesses/exempt-offerings/regulation-crowdfunding
     accessed: 2026-10-10
   - id: sec-exempt-offerings
     title: Exempt Offerings
     publisher: U.S. Securities and Exchange Commission
     url: https://www.sec.gov/resources-small-businesses/exempt-offerings
     accessed: 2026-10-10
-evidence: [ecfr-227, investor-crowdfunding, sec-exempt-offerings]
+evidence: [ecfr-227, ecfr-227-304, ecfr-227-501, sec-regcf, sec-exempt-offerings]
 relatedPlaybook: build-repeatable-growth
 relatedTemplate: seed-data-room-checklist
 segments: [solo-founders, global-remote-founders]
@@ -36,7 +46,7 @@ import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.
 
 *This article is general information, not legal or financial advice. It was written on October 10, 2026, from the public sources listed on this page, and it does not describe any agreement with World Enterprise. Securities rules change and have exceptions, so confirm the current position with your own lawyer.*
 
-Crowdfunding covers several things. The SEC's investor bulletin describes it as a financing method in which money is raised through soliciting relatively small individual investments or contributions from a large number of people. This article covers one form only: Regulation Crowdfunding, the United States exemption under which a company sells securities to the public on an intermediary's online platform. It does not cover donation or rewards campaigns, which none of the fetched sources describe, and it is written for a founder deciding whether the route is open to them at all. For founders outside the United States, that question comes first.
+Crowdfunding covers several things. This article covers one form only: Regulation Crowdfunding, the United States exemption that, in the SEC's words, enables eligible companies to offer and sell securities through crowdfunding. It does not cover donation or rewards campaigns, which none of the fetched sources describe, and it is written for a founder deciding whether the route is open to them at all. For founders outside the United States, that question comes first.
 
 ## Is your company eligible?
 
@@ -56,13 +66,13 @@ For counting amounts, the rule treats the issuer as including entities it contro
 
 An issuer may sell no more than $5,000,000 in total under the exemption in the 12 months before the offer or sale, including the securities in that transaction. The SEC's exempt offerings page describes the route as one that enables certain companies to offer and sell securities on an internet based platform.
 
-Investors have limits too. For an investor who is not accredited, the total across all issuers in a 12-month period may not exceed the greater of $2,500 or 5 percent of the greater of the investor's annual income or net worth, if either figure is less than $124,000. If both are $124,000 or more, the limit is 10 percent of the greater figure, and never more than $124,000. The bulletin says accredited investors have no limit. The rule lets an issuer rely on the intermediary's efforts to keep investors within their limits, provided the issuer does not know that an investor has exceeded them.
+Investors have limits too. For an investor who is not accredited, the total across all issuers in a 12-month period may not exceed the greater of $2,500 or 5 percent of the greater of the investor's annual income or net worth, if either figure is less than $124,000. If both are $124,000 or more, the limit is 10 percent of the greater figure, and never more than $124,000. The rule lets an issuer rely on the intermediary's efforts to keep investors within their limits, provided the issuer does not know that an investor has exceeded them.
 
 For a founder, the limits shape the arithmetic. If investors are not accredited, a raise near the ceiling would need many of them, because each one's limit is a fraction of their own income or net worth. Work out how many investors a target would need before you plan the story.
 
 ## One intermediary, and what it must disclose
 
-The transaction must be conducted through an intermediary and exclusively through that intermediary's platform, and an issuer may not run an offering or concurrent offerings through more than one. The bulletin explains that a company may not offer these investments to investors directly. It must use a broker-dealer or a funding portal, and the intermediary must be registered with the SEC and be a member of the Financial Industry Regulatory Authority.
+The transaction must be conducted through an intermediary and exclusively through that intermediary's platform, and an issuer may not run an offering or concurrent offerings through more than one. The SEC's Regulation Crowdfunding page says the rules require all transactions to take place online through an SEC-registered intermediary, either a broker-dealer or a funding portal.
 
 Your offering documents must name the intermediary with its SEC file number and, where applicable, its Central Registration Depository number. They must also describe the intermediary's financial interests: the compensation to be paid, as a dollar amount or a percentage of the offering amount or a good faith estimate, including referral and other fees, and any direct or indirect interest in your company or arrangement to acquire one. So ask each intermediary you consider to state both in writing before you choose. This article names no platform and does not compare them.
 
@@ -90,9 +100,9 @@ Before the offering statement is filed, section 227.206 allows an issuer to comm
 
 ## What your investors are told
 
-The bulletin is written for investors, and it shows what the crowd is told about you. It lists the risks as speculative, illiquid, subject to cancellation restrictions, hard to value, backed by limited disclosure, an investment in personnel, open to fraud, and lacking professional guidance. It says an early-stage company financed primarily through the route may not have the benefit of professional early-stage investors. It notes that other classes of equity may carry superior rights, so a clear record of your own classes of stock matters, and another article on this desk covers cap tables. An investor may cancel a commitment until 48 hours before the deadline, and the bulletin says that after a material change, investors have five business days to reconfirm. Securities sold under the exemption generally may not be resold in the first year, with exceptions the rule lists.
+The rule decides what the crowd is told about you and what they can do. Your offering statement must include a discussion of the material factors that make an investment in the company speculative or risky, and the risks to purchasers relating to minority ownership. It must also describe the terms of each other class of your securities, so a clear record of your own classes of stock matters, and another article on this desk covers cap tables. An investor may cancel a commitment for any reason until 48 hours before the deadline. If the offering changes materially, the commitment is cancelled unless the investor reconfirms within five business days of receiving the notice. Securities sold under the exemption generally may not be transferred during the one-year period beginning when they were issued, with exceptions the rule lists.
 
-The bulletin also notes that a SAFE is a type of security used in this route. The [SAFE guide](/fundability/safe-explained/) describes the instrument, and the differences between instruments are for your counsel to weigh against the rule's disclosure of the terms of the securities.
+The SEC's Regulation Crowdfunding page also lists an investor bulletin titled "Be Cautious of SAFEs in Crowdfunding". This article does not summarize that bulletin, so read it and ask your counsel whether a SAFE suits this route. The [SAFE guide](/fundability/safe-explained/) describes the instrument, and the differences between instruments are for your counsel to weigh against the rule's disclosure of the terms of the securities.
 
 If a raise of this kind interests you, prepare as you would for any other. The [investor readiness checklist](/fundability/investor-readiness-checklist/) and the [data room guide](/fundability/data-room/) cover the records that the disclosure list above will ask you to state. For comparison with other kinds of investor, read [choosing the right first investors for a SaaS company](/insights/choosing-the-right-first-investors-for-a-saas-company/).
 
@@ -108,4 +118,4 @@ If a raise of this kind interests you, prepare as you would for any other. The [
 
 ## What this article cannot tell you
 
-This article cannot tell you whether crowdfunding suits your company, how much you would raise, or what an intermediary or a filing would cost. It describes the United States rule as published on October 10, 2026, and it summarizes rather than reproduces it. It does not cover state securities law, other countries' rules, tax, or donation and rewards campaigns. The Investor.gov bulletin is a staff statement that has no legal force or effect. Nothing here is a recommendation of an intermediary, a lawyer, an investor or a platform.
+This article cannot tell you whether crowdfunding suits your company, how much you would raise, or what an intermediary or a filing would cost. It describes the United States rule as published on October 10, 2026, and it summarizes rather than reproduces it. It does not cover state securities law, other countries' rules, tax, or donation and rewards campaigns. Nothing here is a recommendation of an intermediary, a lawyer, an investor or a platform.
