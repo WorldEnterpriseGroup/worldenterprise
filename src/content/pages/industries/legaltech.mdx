@@ -1,0 +1,69 @@
+---
+title: "Building SaaS for legaltech: considerations"
+seoTitle: "Legaltech SaaS considerations"
+description: "What a founder weighs before building SaaS for lawyers and legal teams: who buys, the professional rules, data questions and the sales cycle."
+eyebrow: Industry considerations
+hero: H2
+updated: 2026-10-10
+claimsUsed: [C-29]
+family:
+  id: industries
+  slug: legaltech
+  buyer: "The buyer is often a law firm or an in-house legal department, and the lawyers who carry professional obligations are rarely the only people who decide. Name who bears the professional obligation, who owns the budget and who reviews technology before the first demo."
+  perimeter:
+    - title: "Practicing law without a license"
+      text: "New York’s Judiciary Law, section 478, makes it unlawful for a natural person to practice or appear as an attorney-at-law for another person in a court of record without first being licensed and admitted to practice law. Whether a product’s output counts as legal services is a question for counsel in each state where the product is offered."
+      jurisdiction: "New York"
+      asOf: 2026-10-10
+      sourceId: ny-jud-478
+    - title: "Confidentiality of information"
+      text: "The rules of professional conduct at 37 CFR 11.106 require a practitioner to make reasonable efforts to prevent the inadvertent or unauthorized disclosure of information relating to a representation. Other jurisdictions have comparable rules, which this page does not cover."
+      jurisdiction: "US federal, practice before the Patent and Trademark Office"
+      asOf: 2026-10-10
+      sourceId: uspto-37-cfr-11-106
+    - title: "Supervising non-lawyer assistance"
+      text: "The same rules, at 37 CFR 11.503, require a practitioner with supervisory authority to make reasonable efforts to ensure that a non-practitioner assistant’s conduct is compatible with the practitioner’s obligations. A buyer may ask a software vendor how its handling of information supports that duty."
+      jurisdiction: "US federal, practice before the Patent and Trademark Office"
+      asOf: 2026-10-10
+      sourceId: uspto-37-cfr-11-503
+    - title: "Waiver of privilege by disclosure"
+      text: "Federal Rule of Evidence 502 limits waiver of the attorney-client privilege and work-product protection, and says a disclosure made in a federal proceeding or to a federal office or agency does not operate as a waiver if it was inadvertent, reasonable steps were taken to prevent it and the holder acted promptly to correct it."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: fre-502
+  dataQuestions:
+    - "Does the product receive information relating to a representation, and where is it stored and who can reach it?"
+    - "What can the buyer tell its own reviewers about how the vendor handles that information?"
+    - "Could any output look like legal advice to a person who is not a lawyer, and in which jurisdictions is the product offered?"
+    - "If a document is shared by mistake, what steps does the product give the buyer to limit the effect?"
+  salesCycle: "A lawyer who buys software carries professional obligations about confidentiality and about supervising non-lawyer assistance, so a buyer’s review is likely to focus on how information is handled. Plan for that review as a stage of the sale."
+  sources:
+    - id: ny-jud-478
+      title: "Judiciary Law section 478, Practicing or appearing as attorney-at-law without being admitted and registered"
+      publisher: "New York State Senate"
+      url: "https://www.nysenate.gov/legislation/laws/JUD/478"
+      accessed: 2026-10-10
+    - id: uspto-37-cfr-11-106
+      title: "Rules of professional conduct, 37 CFR 11.106 Confidentiality of information"
+      publisher: "Patent and Trademark Office (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-37.xml?part=11&section=11.106"
+      accessed: 2026-10-10
+    - id: uspto-37-cfr-11-503
+      title: "Rules of professional conduct, 37 CFR 11.503 Responsibilities regarding non-practitioner assistance"
+      publisher: "Patent and Trademark Office (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-37.xml?part=11&section=11.503"
+      accessed: 2026-10-10
+    - id: fre-502
+      title: "Federal Rule of Evidence 502, Attorney-Client Privilege and Work Product; Limitations on Waiver"
+      publisher: "Legal Information Institute, Cornell Law School"
+      url: "https://www.law.cornell.edu/rules/fre/rule_502"
+      accessed: 2026-10-10
+---
+
+import SeatScope from '../../../components/industries/SeatScope.astro';
+
+This page sets out what building SaaS for lawyers and legal teams asks of a founder, in general terms.
+
+The perimeter below reads one New York statute and United States federal rules, and the rules of other states are outside this page.
+
+<SeatScope />

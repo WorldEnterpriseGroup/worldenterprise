@@ -1,0 +1,69 @@
+---
+title: "Building SaaS for healthtech: considerations"
+seoTitle: "Healthtech SaaS considerations"
+description: "What a founder weighs before building SaaS for health care: who buys, the regulatory perimeter, data questions and the sales cycle."
+eyebrow: Industry considerations
+hero: H2
+updated: 2026-10-10
+claimsUsed: [C-29]
+family:
+  id: industries
+  slug: healthtech
+  buyer: "In health care the buyer is often a covered entity under federal privacy rules, so the person who wants the product is rarely the only person who must approve it. Name the budget owner, the clinical owner and the reviewer for privacy and security before the first demo."
+  perimeter:
+    - title: "Covered entities and business associates"
+      text: "Under the federal privacy and security rules, a business associate is defined with respect to a covered entity, and covered entities include health plans, health care clearinghouses and certain health care providers. Whether a SaaS company is a business associate depends on its relationship with a covered entity, which the founder should confirm with counsel."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: hhs-45-cfr-160-103
+    - title: "Safeguards for electronic health information"
+      text: "The HIPAA Security Rule, 45 CFR 164.306, requires covered entities and business associates to ensure the confidentiality, integrity and availability of all electronic protected health information that they create, receive, maintain or transmit."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: hhs-45-cfr-164-306
+    - title: "Disclosure to a business associate"
+      text: "A covered entity may disclose protected health information to a business associate if it obtains satisfactory assurance that the business associate will appropriately safeguard the information. A buyer in that position will look for the assurance from its vendor."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: hhs-45-cfr-164-502
+    - title: "Software that may be a medical device"
+      text: "The Food and Drug Administration states that software functions that meet the definition of a device may be deployed on mobile platforms. Whether a given function meets that definition is a question for the founder’s regulatory specialist, not for this page."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: fda-device-software
+  dataQuestions:
+    - "Does the product create, receive, maintain or transmit electronic protected health information, or can it be designed so that it never does?"
+    - "Which assurances about safeguards will a covered entity ask the vendor to give before it shares data?"
+    - "Where is each category of health data stored, and who can see it?"
+    - "Does any function of the product touch diagnosis, treatment or monitoring, which could raise a device question?"
+  salesCycle: "A buyer that is a covered entity will want satisfactory assurance about safeguards before it shares protected health information. Plan for that exchange as a stage of the sale, and ask early who in the buyer’s organization reviews privacy and security."
+  sources:
+    - id: hhs-45-cfr-160-103
+      title: "Definitions, 45 CFR 160.103"
+      publisher: "Department of Health and Human Services (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-45.xml?part=160&section=160.103"
+      accessed: 2026-10-10
+    - id: hhs-45-cfr-164-306
+      title: "Security standards: General rules, 45 CFR 164.306"
+      publisher: "Department of Health and Human Services (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-45.xml?part=164&section=164.306"
+      accessed: 2026-10-10
+    - id: hhs-45-cfr-164-502
+      title: "Uses and disclosures of protected health information: General rules, 45 CFR 164.502"
+      publisher: "Department of Health and Human Services (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-45.xml?part=164&section=164.502"
+      accessed: 2026-10-10
+    - id: fda-device-software
+      title: "Device Software Functions Including Mobile Medical Applications"
+      publisher: "Food and Drug Administration"
+      url: "https://www.fda.gov/medical-devices/digital-health-center-excellence/device-software-functions-including-mobile-medical-applications"
+      accessed: 2026-10-10
+---
+
+import SeatScope from '../../../components/industries/SeatScope.astro';
+
+This page sets out what building SaaS for health care asks of a founder, in general terms.
+
+The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.
+
+<SeatScope />

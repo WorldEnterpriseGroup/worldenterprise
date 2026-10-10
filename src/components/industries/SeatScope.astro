@@ -1,0 +1,38 @@
+---
+/**
+ * What the seats of WE can and cannot build (WP-74). The same list closes the body of every industry page and the hub, so a reader sees the
+ * limits next to the industry's perimeter. The words live in scope-copy.ts, which the sources ledger maps sentence by sentence; nothing here
+ * says that WE holds a certification or meets an industry rule (claim C-15).
+ */
+import { SCOPE_HEADING, SCOPE_ITEMS } from './scope-copy.ts';
+---
+
+<section class="seat-scope" aria-labelledby="seat-scope-title">
+  <h2 id="seat-scope-title">{SCOPE_HEADING}</h2>
+  <ul class="seat-scope__list">
+    {SCOPE_ITEMS.map((item) => <li>{item.text}</li>)}
+  </ul>
+</section>
+
+<style>
+  @layer pages {
+    .seat-scope {
+      display: grid;
+      gap: var(--space-heading);
+      margin-block-start: var(--space-block);
+      padding: var(--sp-5);
+      background: var(--color-amber-wash);
+      border: var(--border-hair);
+      border-inline-start: 6px solid var(--color-highlight);
+      border-radius: var(--radius-md);
+      max-inline-size: var(--prose-max);
+      scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
+    }
+
+    .seat-scope__list {
+      display: grid;
+      gap: var(--sp-2);
+      padding-inline-start: var(--sp-5);
+    }
+  }
+</style>

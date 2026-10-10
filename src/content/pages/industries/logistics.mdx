@@ -1,0 +1,69 @@
+---
+title: "Building SaaS for logistics: considerations"
+seoTitle: "Logistics SaaS considerations"
+description: "What a founder weighs before building SaaS for freight and supply chains: who buys, the regulatory perimeter, data questions and the sales cycle."
+eyebrow: Industry considerations
+hero: H2
+updated: 2026-10-10
+claimsUsed: [C-29]
+family:
+  id: industries
+  slug: logistics
+  buyer: "Buyers include shippers, brokers and motor carriers, and the person who wants the product, often in operations, is not always the person who signs. Name the budget owner, the owner of the existing dispatch or transportation system and the owner of compliance before the first demo."
+  perimeter:
+    - title: "Brokers of property"
+      text: "Federal rules, 49 CFR 371.2, define a broker as a person who, for compensation, arranges or offers to arrange the transportation of property by an authorized motor carrier. A freight-matching product that arranges transportation may raise the question whether its operator falls within that definition."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: fmcsa-49-cfr-371-2
+    - title: "Electronic logging devices"
+      text: "Federal rules, 49 CFR 395.8, require a motor carrier operating commercial motor vehicles to install an electronic logging device and to require each of its drivers to use one to record duty status. Software that touches driver records connects to that requirement."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: fmcsa-49-cfr-395-8
+    - title: "Importer security filing"
+      text: "Customs and Border Protection rules, 19 CFR 149.2, direct the importer or an authorized agent to submit the importer security filing in English, and set a deadline for some of its data of no later than 24 hours before the cargo is laden aboard the vessel at the foreign port."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: cbp-19-cfr-149-2
+    - title: "Carrier liability and bills of lading"
+      text: "Under 49 U.S.C. 14706, a carrier providing transportation or service subject to the covered chapters must issue a receipt or bill of lading for property it receives, and its liability under that paragraph is for the actual loss or injury to the property. A product that produces shipping documents works with records this law names."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: usc-49-14706
+  dataQuestions:
+    - "Does the product store driver duty-status records, and who at the buyer is responsible for them?"
+    - "Which shipment, customs and billing records does the product hold, and how does the buyer retrieve them?"
+    - "Which of the buyer’s existing systems must the product exchange data with, and who owns each connection?"
+    - "If the product arranges transportation, which party is the broker and which party is the carrier?"
+  salesCycle: "Logistics buyers often run new software next to systems they already use, so integration with those systems is part of the sale. Settle early which of the buyer’s systems must be connected and who on the buyer’s side owns each one."
+  sources:
+    - id: fmcsa-49-cfr-371-2
+      title: "Brokers of property, 49 CFR 371.2 Definitions"
+      publisher: "Federal Motor Carrier Safety Administration (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-49.xml?part=371&section=371.2"
+      accessed: 2026-10-10
+    - id: fmcsa-49-cfr-395-8
+      title: "Hours of service of drivers, 49 CFR 395.8 Driver's record of duty status"
+      publisher: "Federal Motor Carrier Safety Administration (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-49.xml?part=395&section=395.8"
+      accessed: 2026-10-10
+    - id: cbp-19-cfr-149-2
+      title: "Importer security filing, 19 CFR 149.2"
+      publisher: "Customs and Border Protection (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-19.xml?part=149&section=149.2"
+      accessed: 2026-10-10
+    - id: usc-49-14706
+      title: "49 U.S. Code 14706, Liability of carriers under receipts and bills of lading"
+      publisher: "Legal Information Institute, Cornell Law School"
+      url: "https://www.law.cornell.edu/uscode/text/49/14706"
+      accessed: 2026-10-10
+---
+
+import SeatScope from '../../../components/industries/SeatScope.astro';
+
+This page sets out what building SaaS for freight and supply chains asks of a founder, in general terms.
+
+The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.
+
+<SeatScope />

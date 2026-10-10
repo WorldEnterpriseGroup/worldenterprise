@@ -1,0 +1,59 @@
+---
+title: "Building SaaS for climate tech: considerations"
+seoTitle: "Climate tech considerations"
+description: "What a founder weighs before building software for climate and emissions work: who buys, the reporting perimeter, data questions and the sales cycle."
+eyebrow: Industry considerations
+hero: H2
+updated: 2026-10-10
+claimsUsed: [C-29]
+family:
+  id: industries
+  slug: climate-tech
+  buyer: "Buyers are often companies or facility operators that must report, and the people who decide may sit in sustainability, finance, operations and legal. Name the person who owns the reporting obligation, and the person who owns the budget, before the first demo."
+  perimeter:
+    - title: "Facility greenhouse gas reporting"
+      text: "The Environmental Protection Agency’s reporting rule, 40 CFR 98.2, applies to the owners and operators of any facility that is located in the United States and that meets the requirements of one of its applicability paragraphs. A product that calculates emissions for such a facility works alongside that rule."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: epa-40-cfr-98-2
+    - title: "Environmental marketing claims"
+      text: "The Federal Trade Commission states, in 16 CFR 260.4, that unqualified general environmental benefit claims are difficult to interpret and likely convey a wide range of meanings. A product that markets an environmental benefit should be able to say what the benefit is and what supports it."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: ftc-16-cfr-260-4
+    - title: "Corporate sustainability reporting"
+      text: "The European Commission states that companies subject to the Corporate Sustainability Reporting Directive have to report according to the European Sustainability Reporting Standards. The Commission’s page also records simplification changes to scope and timing, so check the current text before relying on a date."
+      jurisdiction: "European Union"
+      asOf: 2026-10-10
+      sourceId: ec-csrd
+  dataQuestions:
+    - "Which data feeds the calculation, who owns it at the buyer and how is its source recorded?"
+    - "Which reporting rule or standard does the buyer need the output to support, and will the buyer’s reviewer accept it?"
+    - "Which environmental claims does the product’s own marketing make, and what supports each one?"
+    - "What happens to the buyer’s data and calculation history if the buyer leaves?"
+  salesCycle: "A buyer that reports under a rule will ask whether the output can support the report it must file. Settle which report the product supports, and which it does not, before a pilot begins, and state the date of the rules the product assumes because reporting rules change."
+  sources:
+    - id: epa-40-cfr-98-2
+      title: "Greenhouse gas reporting, 40 CFR 98.2 Who must report?"
+      publisher: "Environmental Protection Agency (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-40.xml?part=98&section=98.2"
+      accessed: 2026-10-10
+    - id: ftc-16-cfr-260-4
+      title: "Environmental marketing claims, 16 CFR 260.4 General environmental benefit claims"
+      publisher: "Federal Trade Commission (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-16.xml?part=260&section=260.4"
+      accessed: 2026-10-10
+    - id: ec-csrd
+      title: "Corporate sustainability reporting"
+      publisher: "European Commission"
+      url: "https://finance.ec.europa.eu/capital-markets-union-and-financial-markets/company-reporting-and-auditing/company-reporting/corporate-sustainability-reporting_en"
+      accessed: 2026-10-10
+---
+
+import SeatScope from '../../../components/industries/SeatScope.astro';
+
+This page sets out what building software for climate and emissions work asks of a founder, in general terms.
+
+The perimeter below reads United States federal and European Union sources, and the rules of other places are outside this page.
+
+<SeatScope />
