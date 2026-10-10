@@ -134,7 +134,7 @@ export const PLAYBOOK_RELATED: Readonly<Record<string, readonly RelatedRef[]>> =
     { kind: 'Service line', title: 'Customer Relations and Market Development', href: '/services/customer-and-market-development/' },
   ],
   'design-the-product': [
-    { kind: 'Insight', title: 'Cutting an MVP: the cut-line test', href: '/insights/cutting-an-mvp-the-cut-line-test/' },
+    { kind: 'Insight', title: 'Cutting an MVP with the cut-line test', href: '/insights/cutting-an-mvp-the-cut-line-test/' },
     { kind: 'Insight', title: 'Build versus buy for auth, billing and email', href: '/insights/build-versus-buy-for-auth-billing-and-email/' },
     { kind: 'Service line', title: 'Product and IT Development', href: '/services/product-and-it-development/' },
   ],
@@ -145,8 +145,8 @@ export const PLAYBOOK_RELATED: Readonly<Record<string, readonly RelatedRef[]>> =
   ],
   'build-and-ship-v1': [
     { kind: 'Insight', title: 'An operating rhythm for a remote offshore team', href: '/insights/an-operating-rhythm-for-a-remote-offshore-team/' },
-    { kind: 'Research brief', title: 'SaaS security baseline for year one', href: '/research/saas-security-baseline-year-one/' },
-    { kind: 'Research brief', title: 'Accessibility as a launch requirement', href: '/research/accessibility-as-a-launch-requirement/' },
+    { kind: 'Research brief', title: 'Security baseline for year one', href: '/research/saas-security-baseline-year-one/' },
+    { kind: 'Research brief', title: 'Accessibility at launch', href: '/research/accessibility-as-a-launch-requirement/' },
   ],
   'hire-your-first-team-member': [
     { kind: 'Insight', title: 'Your first hire: what to settle before you write the job', href: '/insights/your-first-hire-what-to-settle-before-you-write-the-job/' },
@@ -169,7 +169,7 @@ export const PLAYBOOK_RELATED: Readonly<Record<string, readonly RelatedRef[]>> =
     { kind: 'Service line', title: 'Customer Relations and Market Development', href: '/services/customer-and-market-development/' },
   ],
   'build-repeatable-growth': [
-    { kind: 'Research brief', title: 'Early-stage SaaS metrics definitions', href: '/research/early-stage-saas-metrics-definitions/' },
+    { kind: 'Research brief', title: 'SaaS metrics definitions', href: '/research/early-stage-saas-metrics-definitions/' },
     { kind: 'Insight', title: 'Support at five customers, not fifty', href: '/insights/support-at-five-customers-not-fifty/' },
     { kind: 'Service line', title: 'Business Management and Operations', href: '/services/business-management-and-operations/' },
   ],
