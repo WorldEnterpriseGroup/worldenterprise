@@ -1,0 +1,111 @@
+---
+title: "Hiring across borders: employees, contractors and employers of record"
+seoTitle: Hiring across borders
+description: "The three ways a company can engage someone in another country, what each changes, and the questions to bring to an adviser licensed where the person works."
+topic: team
+publishedDate: 2026-10-10
+segments: [global-remote-founders, corporate-innovators]
+related: [contractors-and-employees-the-classification-tests, offer-letters-what-they-should-state, writing-down-how-a-remote-team-works-a-team-handbook]
+evidence: [govuk-right-to-work, irs-w8ben, govuk-employee, govuk-self-employed-contractor]
+relatedServices: [G]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: govuk-right-to-work
+    title: Check if someone can work for you in the UK
+    publisher: GOV.UK
+    url: https://www.gov.uk/check-job-applicant-right-to-work
+    accessed: 2026-10-10
+  - id: irs-w8ben
+    title: Instructions for Form W-8BEN
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/instructions/iw8ben
+    accessed: 2026-10-10
+  - id: govuk-employee
+    title: Employment status, employee
+    publisher: GOV.UK
+    url: https://www.gov.uk/employment-status/employee
+    accessed: 2026-10-10
+  - id: govuk-self-employed-contractor
+    title: Employment status, self-employed and contractor
+    publisher: GOV.UK
+    url: https://www.gov.uk/employment-status/selfemployed-contractor
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal or financial advice. Written October 10, 2026. Employment, tax and immigration rules differ in every country and change over time. Confirm everything here with an adviser licensed where the person will work.*
+
+A company with a customer in one country, a founder in another and a developer in a third has stepped into a question that a single-country company never asks: under whose rules does each person work? The answer is not the same for the person writing code, the person writing invoices and the person you have not hired yet. It also changes what you can promise in an offer, what you must collect before the first payment and what you owe if the relationship ends.
+
+This article sets out the three common ways to engage someone in another country, what each one changes, and the questions to put to an adviser. It does not name a provider, say where it is easy or hard to hire, or rank any country. Each of those depends on facts about you and the person that this article does not have.
+
+## Three ways to engage someone abroad
+
+A company usually has three routes. The table summarizes what each one means and what to ask first.
+
+<DataTable
+  caption="Three ways to engage a person in another country"
+  columns={['Route', 'What it means', 'First question to ask']}
+  rows={[
+    ['Direct employee', 'You, or your own subsidiary, become the legal employer of the person in their country', 'Must the company be registered there to employ anyone, and what does registration require?'],
+    ['Independent contractor', 'The person runs their own business and supplies services to yours under a contract', 'Would the authorities there treat this person as a contractor, given how the work actually happens?'],
+    ['Employer of record', 'A third party employs the person in their country on paper and you direct the day-to-day work', 'Who is liable for what, and what happens to the person if the arrangement ends?']
+  ]}
+/>
+
+None of the three is a safe default. Each moves some legal duty from one party to another, and none removes the duty. Choose after you have asked, not before.
+
+### Direct employment
+
+In a direct employment, your company or a subsidiary hires the person under local law. You become responsible for the local rules on pay, tax withholding, leave, written terms and ending a job. That usually means setting up something locally: a registration, a payroll arrangement, an accountant. The benefit is that the relationship is plainly an employment, and the person's rights follow from that. The cost is the administration, and the time before the first hire can start.
+
+Ask an adviser in that country what must exist before the first employee starts, and what the continuing obligations are. Ask what a subsidiary would require compared with employing the person directly from abroad, since some countries do not permit the latter.
+
+### Independent contractor
+
+A contractor is not your employee. The UK government's guidance on employment status describes the line this way: an employee is someone who works under an employment contract, and a person is self-employed if they run their business for themselves and take responsibility for its success or failure. The same pages note that workers are entitled to most types of statutory pay, but only employees get statutory pay and leave. In practice, what a person is called in a contract does not settle how the authorities treat them. <MaybeLink path="/insights/contractors-and-employees-the-classification-tests/">Contractors and employees: the classification tests</MaybeLink> sets out how four public sources describe the tests, and the same point applies abroad.
+
+Because the test is about the facts of the work, an arrangement that began as a contractor engagement can look like an employment as the person takes on a fixed schedule, one client and a company email address. Before you engage a person as a contractor in another country, ask your adviser how the authorities there decide, and what the exposure is if they decide differently.
+
+### Employer of record
+
+An employer of record is a company that acts as the legal employer of a person in a country, while you direct the person's daily work. The employer of record usually runs the payroll, issues the employment contract and handles the local filings, and you pay it for doing so. The model exists in many forms, and the terms differ from one provider to the next. This article names none, and it does not say whether the model suits any particular country or role.
+
+What you should do with the idea is ask pointed questions, because the contract with the provider decides who carries which risk. Who is the employer for tax and employment law? Who owns the work the person produces, and how does that ownership reach you? What happens if you stop paying, or if you want to hire the person directly later? What is the person told about the arrangement? Does the provider's contract let you give the person the instructions you need to give? Your adviser should read it before you sign.
+
+## Rules that arrive with any route
+
+Whatever you choose, some questions come up for every cross-border hire.
+
+### Permission to work
+
+A person's right to work depends on their own country's rules, and checking it is a duty in many places. The UK government's guidance, for example, says you must check that a job applicant is allowed to work for you in the UK before you employ them, and warns that you could face a civil penalty if you employ an illegal worker and have not carried out a correct right to work check. That is a UK page about UK employers, offered as an example of how specific the duty can be. Ask what the equivalent is in the country where the person will work, and what proof is acceptable.
+
+### Tax paperwork before the first payment
+
+If a company in the United States pays a person who is not a US person, a tax form may be needed first. The IRS instructions for Form W-8BEN say that if you receive certain types of income, you must provide it to establish that you are not a U.S. person. They also say to provide Form W-8BEN to the withholding agent or payer before income is paid or credited to you. Whether that form applies to a particular payment to a particular person is a question for a tax adviser. The practical lesson is to ask what paperwork the payer must collect before the first payment, instead of after.
+
+### Intellectual property and confidentiality
+
+Who owns what a person writes or designs is decided by contract and by the law of the places involved, and the default rules differ from country to country. <MaybeLink path="/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/">IP, contracts and access diligence for small engineering teams</MaybeLink> covers the questions to settle in writing before anyone starts. Ask your adviser how the assignment should be worded for a person in the country where they work.
+
+### Money, time zones and the working day
+
+Currency, banking and payment timing matter more than they seem, and so does the overlap in working hours. If part of a person's day will fall outside your own, the habits that make a distributed team work are worth deciding early, and <MaybeLink path="/insights/an-operating-rhythm-for-a-remote-offshore-team/">an operating rhythm for a remote offshore team</MaybeLink> describes some. If you are comparing ways to put a team together, <MaybeLink path="/research/dedicated-team-agency-or-freelancers/">dedicated team, agency or freelancers</MaybeLink> sets out what each model changes.
+
+## What to prepare before you call an adviser
+
+An adviser can answer faster if you arrive with facts. Write down the country where the person will live and work, the work they will do, how many hours a week, who will direct it, whether other clients exist, how you intend to pay, and what you expect to own. Bring the draft offer from <MaybeLink path="/insights/offer-letters-what-they-should-state/">offer letters</MaybeLink> and the one-page decisions from <MaybeLink path="/insights/your-first-hire-what-to-settle-before-you-write-the-job/">your first hire</MaybeLink>.
+
+<Callout title="Questions for a local adviser">
+  Under local rules, would this person be an employee or a contractor? Must the company be registered locally to engage them? What must be collected before the first payment? What must the written terms state? Who owns the work? What is required to end the arrangement? If an employer of record is involved, what does its contract say about all of the above?
+</Callout>
+
+The <MaybeLink path="/glossary/">glossary</MaybeLink> defines terms used across this desk.
+
+## What this article cannot tell you
+
+This article cannot tell you which route suits you, which country's rules apply, or whether any person you plan to engage is an employee or a contractor. It uses four public pages, two from the UK government on employment status, one from the UK government on right-to-work checks and one set of US tax instructions, all read on October 10, 2026. The UK pages are examples of how a national rule reads and do not describe other countries. The description of an employer of record is a general one and has no public source here. The article covers no particular provider, no immigration or visa process, no social security agreements between countries, no payroll mechanics, and no country-by-country comparison. For any real engagement, ask a qualified adviser in the country where the person will work.
