@@ -1,0 +1,137 @@
+---
+title: Prompt injection and the OWASP Top 10 for LLM applications
+seoTitle: Prompt injection and OWASP
+description: What prompt injection is, how the OWASP Top 10 for LLM applications describes it, and the design questions the list raises for a small SaaS team.
+topic: ai
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders]
+related: [evaluating-an-llm-feature-before-you-ship-it, human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop, metering-and-budgeting-model-usage]
+evidence: [owasp-llm-top10, owasp-llm01, owasp-llm06, owasp-llm10]
+relatedPlaybook: build-and-ship-v1
+relatedServices: [B]
+relatedTemplate: security-baseline-checklist
+sources:
+  - id: owasp-llm-top10
+    title: 2025 Top 10 Risk and Mitigations for LLMs and Gen AI Apps
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llm-top-10/
+    accessed: 2026-10-10
+  - id: owasp-llm01
+    title: "LLM01:2025 Prompt Injection"
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm01-prompt-injection/
+    accessed: 2026-10-10
+  - id: owasp-llm06
+    title: "LLM06:2025 Excessive Agency"
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm062025-excessive-agency/
+    accessed: 2026-10-10
+  - id: owasp-llm10
+    title: "LLM10:2025 Unbounded Consumption"
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/
+    accessed: 2026-10-10
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+If your product sends user text, uploaded files or web pages to a language model, it has a security surface that an ordinary web application does not. The OWASP Gen AI Security Project publishes a Top 10 list of risks for applications built on large language models. Its 2025 edition is the one the project's site presents as the latest on October 10, 2026, the date this article was checked against it.
+
+This article describes that list, looks closely at its first entry, prompt injection, and turns the project's mitigations into questions a small team can put to its own design. It describes a published list. It does not assess any product, and it makes no statement that any product conforms to it.
+
+## What the list contains
+
+The 2025 list has ten entries, each with its own page on the project's site:
+
+1. LLM01 Prompt Injection
+2. LLM02 Sensitive Information Disclosure
+3. LLM03 Supply Chain
+4. LLM04 Data and Model Poisoning
+5. LLM05 Improper Output Handling
+6. LLM06 Excessive Agency
+7. LLM07 System Prompt Leakage
+8. LLM08 Vector and Embedding Weaknesses
+9. LLM09 Misinformation
+10. LLM10 Unbounded Consumption
+
+This article follows three entries that interact when a model sits behind a product feature: prompt injection bears on how the model can be steered, excessive agency on what a steered model can do, and unbounded consumption on what a steered or simply busy model can cost.
+
+## Prompt injection, defined
+
+OWASP defines the problem in one sentence: "A Prompt Injection Vulnerability occurs when user prompts alter the LLM's behavior or output in unintended ways." It adds that these inputs can affect the model even when they are imperceptible to humans, as long as the model parses the content. A hidden line of text in a document is as much an input as a typed message.
+
+The project separates two forms.
+
+- **Direct prompt injection.** A user's own prompt input alters the model's behavior in an unintended way. OWASP notes the input can be deliberate or accidental.
+- **Indirect prompt injection.** The model accepts input from an external source, such as a website or a file, and that content alters its behavior. This form can also be deliberate or accidental.
+
+The second form is the one that surprises teams. Every channel that puts text in front of the model is a possible carrier: a support ticket, a PDF a customer uploads, a page an agent fetches, a document returned by retrieval. OWASP's own example is a user who asks a model to summarize a web page that contains hidden instructions, which cause the model to insert an image linking to a URL and so leak the private conversation.
+
+OWASP also distinguishes jailbreaking, which it describes as a form of prompt injection in which the attacker's input causes the model to disregard its safety protocols entirely. Developers can build safeguards into system prompts and input handling, it says, but effective prevention of jailbreaking requires ongoing updates to the model's training and safety mechanisms.
+
+## Why there is no single fix
+
+Two statements on the entry should shape how you plan. First, OWASP says that retrieval-augmented generation and fine-tuning aim to make outputs more relevant and accurate, but that research shows they do not fully mitigate prompt injection. Adding retrieval does not make the problem smaller, and it adds a new channel for indirect injection. Second, the project says it is unclear whether fool-proof methods of prevention exist, and describes the measures it lists as ones that "can mitigate the impact" of prompt injection.
+
+The practical reading is a design stance. Assume that some input will, sooner or later, steer the model somewhere you did not intend. Then limit what a steered model can reach. The seven mitigations OWASP lists follow the same logic.
+
+## The seven mitigations as design questions
+
+Each mitigation on the project's page can be turned into a question about your own system.
+
+| OWASP mitigation | The question for your design |
+|---|---|
+| Constrain model behavior | Does the system prompt state the model's role, capabilities and limits, and do you treat that as a mitigation rather than a boundary? |
+| Define and validate expected output formats | Is the output format specified, and does ordinary code check it before anything uses it? |
+| Implement input and output filtering | Have you defined sensitive categories and rules for handling them, on the way in and on the way out? |
+| Enforce privilege control | Does the application hold its own credentials and run functions in code, rather than handing that power to the model? |
+| Require human approval for high-risk actions | Which actions need a person to approve them first? |
+| Segregate and identify external content | Is untrusted content separated and clearly marked, so that its influence on the prompt is limited? |
+| Conduct adversarial testing | Do you test the model as if it were an untrusted user, to see whether your trust boundaries hold? |
+
+The last row uses OWASP's own framing: the project recommends "treating the model as an untrusted user" when testing trust boundaries and access controls. That one phrase is a useful default for the whole design. Whatever you would not let an anonymous user do, do not let the model do on its own authority.
+
+For the output-validation row, the project suggests asking for clear formats, detailed reasoning and source citations, and using deterministic code to check that responses follow the format. For filtering, it points to what it calls the RAG Triad: context relevance, groundedness and question and answer relevance. The article on <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">evaluating an LLM feature before you ship it</MaybeLink> covers how to turn checks like these into repeatable tests.
+
+## Agency decides how bad it gets
+
+OWASP says the severity of a successful prompt injection depends largely on the business context and on the agency with which the model is architected. The entry for Excessive Agency spells out what that means. A system has agency when its developer gives it the ability to call functions or reach other systems, and the vulnerability is the ability to perform damaging actions in response to unexpected, ambiguous or manipulated model output. The project names three typical root causes:
+
+- excessive functionality,
+- excessive permissions,
+- excessive autonomy.
+
+Its examples are concrete. An extension meant only to read documents also has the ability to modify and delete them. An extension meant to read data connects to a database with an identity that also has update, insert and delete permissions. An extension that deletes a user's documents does so without asking the user. In each case the fix is to remove what the feature does not need.
+
+OWASP's recommended mitigations include minimizing the extensions the model can call, avoiding open-ended ones such as "run a shell command", running actions in the context of the specific user, requiring user approval for high-impact actions, and implementing authorization in downstream systems "rather than relying on an LLM to decide if an action is allowed or not." The last point is the one to remember. A model's judgment is not an access control. Logging, monitoring and rate limiting do not prevent excessive agency, the project says, but they can limit the damage.
+
+The project's worked scenario shows how the pieces combine. A personal assistant reads a mailbox through an extension that can also send messages, and a crafted incoming email carries an indirect injection that tells the model to forward sensitive messages. OWASP lists three removals that would have broken the chain: an extension that can only read, a read-only authorization scope, and a requirement that the user reviews and sends every drafted message. The article on <MaybeLink path="/insights/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop/">human review in an AI feature</MaybeLink> looks at where that last control belongs.
+
+## Cost is a security property too
+
+The Unbounded Consumption entry covers applications that allow excessive and uncontrolled inference. OWASP lists risks that include denial of service, economic losses, model theft and service degradation, and names one pattern "Denial of Wallet": initiating a high volume of operations to exploit the cost-per-use model of cloud-based AI services. Its mitigations include limits on input size, rate limiting and user quotas, and timeouts and throttling for expensive operations. For a company on a small budget, a missing per-user limit is a security gap and a finance gap at once. The article on <MaybeLink path="/insights/metering-and-budgeting-model-usage/">metering and budgeting model usage</MaybeLink> covers the accounting side.
+
+## A review you can run in an afternoon
+
+Use the list as an agenda rather than a score. For each feature that calls a model, write down the answers to these questions, with an owner and a date.
+
+1. What text reaches the model, and who wrote each part of it?
+2. What can the model's output cause to happen, in your code and in other systems?
+3. What credentials does the model's path hold, and what is the smallest set it needs?
+4. Which actions are high-impact enough to need a person's approval?
+5. What stops one user, or one runaway loop, from consuming an unreasonable amount of model capacity?
+6. How would you notice that the model had been steered, and what would you log to investigate?
+
+<Callout title="Keep the answers with the code">
+  Store the answers next to the feature they describe and revisit them whenever a new tool, data source or file type is added to the model's reach.
+</Callout>
+
+The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> and the research note on <MaybeLink path="/research/saas-security-baseline-year-one/">a SaaS security baseline in year one</MaybeLink> cover the conventional application security this list assumes you already have. The <MaybeLink path="/glossary/">glossary</MaybeLink> defines the OWASP ASVS, a separate OWASP standard for web applications.
+
+## What this article cannot tell you
+
+It describes the 2025 list as the project's pages presented it on October 10, 2026. OWASP revises its lists, and a later edition may reorder, rename or replace entries. The project's site states that its content is provided without warranty of service or accuracy. Nothing here treats the list as a standard that a product can be certified against, and nothing states that any product meets, follows or is audited against it.
+
+This article does not test or rate any model, provider or product, and it does not cover the model-training defenses that OWASP attributes to model providers. It does not address privacy, contract or regulatory duties that apply to the data your feature handles. It is general information, current as of October 10, 2026, and is not security, legal or financial advice. A qualified security professional can assess your own design.

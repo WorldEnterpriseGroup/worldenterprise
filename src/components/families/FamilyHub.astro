@@ -1,0 +1,56 @@
+---
+import FamilyCard from './FamilyCard.astro';
+import type { FamilyLink } from './types.ts';
+
+/**
+ * The list of pages in a family, as equal cards in registry order. The caller passes only the cards whose route is live
+ * (`liveCards` in paths.ts), so a page that is not built leaves no card and no dead link. Renders nothing for an empty list.
+ */
+interface Props {
+  heading: string;
+  /** Id of the heading, so the list is named by it. */
+  id: string;
+  cards: readonly FamilyLink[];
+}
+
+const { heading, id, cards } = Astro.props;
+---
+
+{
+  cards.length > 0 && (
+    <section class="fhub" aria-labelledby={id}>
+      <h2 id={id}>{heading}</h2>
+      <ul class="fhub__list" role="list">
+        {cards.map((card) => (
+          <li>
+            <FamilyCard title={card.title} href={card.href} description={card.description} headingLevel={3} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .fhub {
+    display: grid;
+    gap: var(--space-group);
+    container-type: inline-size;
+  }
+
+  .fhub__list {
+    display: grid;
+    gap: var(--sp-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    @container (min-width: 36rem) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @container (min-width: 60rem) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
