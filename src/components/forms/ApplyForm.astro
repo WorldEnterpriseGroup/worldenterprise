@@ -1,16 +1,10 @@
 ---
+import ApplyProgress from '../apply/ApplyProgress.astro';
+import { APPLY_FIELDS, PACKAGE_OPTIONS, PACKAGE_PRICING_NOTE, REVIEW_COPY, STAGE_OPTIONS } from '../apply/fields.ts';
 import { href } from '../../lib/url.ts';
 import Field from './Field.astro';
 import Fieldset from './Fieldset.astro';
 import FormFrame from './FormFrame.astro';
-
-const stages = [
-  { value: '', label: 'Choose a stage' },
-  { value: 'idea', label: 'An idea that is not yet tested with customers' },
-  { value: 'validating', label: 'Validating the problem with customers' },
-  { value: 'building', label: 'Building the first version' },
-  { value: 'launched', label: 'Live, and looking for the first customers' },
-] as const;
 ---
 
 <FormFrame
@@ -19,53 +13,250 @@ const stages = [
   submitLabel="Send my application"
   thanksPath="/apply/thanks/"
   consentLabel="I agree that WE may use these details to reply to my application, as described in the privacy notice."
+  stepped
 >
-  <Fieldset legend="About you">
-    <Field id="apply-name" name="name" label="Your name" required autocomplete="name" maxlength={120} reserveError />
+  <ApplyProgress slot="top" />
+
+  <Fieldset legend="About you" step="you">
+    <Field id="apply-name" name="name" label={APPLY_FIELDS.name.label} required autocomplete="name" maxlength={120} reserveError />
     <Field
       id="apply-email"
       name="email"
-      label="Email address"
+      label={APPLY_FIELDS.email.label}
       type="email"
       required
       autocomplete="email"
       maxlength={254}
-      hint="WE replies to this address."
+      hint={APPLY_FIELDS.email.hint}
       reserveError
     />
     <Field
       id="apply-company"
       name="company"
-      label="Company or working name"
+      label={APPLY_FIELDS.company.label}
       autocomplete="organization"
       maxlength={120}
-      hint="Optional. Leave it blank if the company has no name yet."
+      hint={APPLY_FIELDS.company.hint}
       reserveError
     />
   </Fieldset>
 
-  <Fieldset legend="About the idea">
-    <Field id="apply-stage" name="stage" label="Where is the idea today?" type="select" required options={stages} reserveError />
+  <Fieldset legend="About the idea" step="idea">
+    <Field id="apply-stage" name="stage" label={APPLY_FIELDS.stage.label} type="select" required options={STAGE_OPTIONS} reserveError />
     <Field
       id="apply-message"
       name="message"
-      label="What are you building, and for whom?"
+      label={APPLY_FIELDS.message.label}
       type="textarea"
       rows={6}
       maxlength={4000}
-      hint="Optional. A few plain sentences are enough: the problem, the customer and what you have learned so far."
+      hint={APPLY_FIELDS.message.hint}
       reserveError
     />
+  </Fieldset>
+
+  <Fieldset legend="Team and package" step="team">
     <Field
       id="apply-seats"
       name="seats"
-      label="Team you have in mind"
+      label={APPLY_FIELDS.seats.label}
       type="textarea"
       rows={3}
       maxlength={500}
-      hint="Optional. Sketch the roles in the Team Composer and they appear here, or describe them yourself."
+      hint={APPLY_FIELDS.seats.hint}
       reserveError
     />
     <p class="field__hint">Want help sketching roles? Use the <a href={href('/tools/team-composer/')}>Team Composer</a> first. It brings your roles back to this form.</p>
+    {/* Script-only: no name, so the browser never posts it. The script carries the choice inside `message` (docs/forms-contract.md section 3). */}
+    <div class="apply-package" data-package-field hidden>
+      <Field
+        id="apply-package"
+        dataField="package"
+        label={APPLY_FIELDS.package.label}
+        type="select"
+        options={PACKAGE_OPTIONS}
+        hint={APPLY_FIELDS.package.hint}
+        reserveError
+      />
+      <p class="field__hint" data-package-fit aria-live="polite"></p>
+      <p class="field__hint">{PACKAGE_PRICING_NOTE.before}<a href={href(PACKAGE_PRICING_NOTE.link.href)}>{PACKAGE_PRICING_NOTE.link.text}</a>{PACKAGE_PRICING_NOTE.after}</p>
+    </div>
   </Fieldset>
+
+  <section class="fieldset review" data-step="review" data-review hidden>
+    <h2 class="fieldset__heading" tabindex="-1" data-step-heading>{REVIEW_COPY.title}</h2>
+    <p class="field__hint">{REVIEW_COPY.intro}</p>
+    <div class="review__list stack" data-review-list></div>
+  </section>
 </FormFrame>
+
+<style is:global>
+  @layer pages {
+    .intake .fieldset[hidden],
+    .intake [data-step][hidden],
+    .intake .btn[hidden],
+    .intake [data-package-field][hidden] {
+      display: none;
+    }
+
+    .intake .fieldset__heading {
+      font: inherit;
+      margin: 0;
+    }
+
+    .apply-package {
+      display: grid;
+      gap: var(--sp-2);
+    }
+
+    .stepper {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--sp-2) var(--sp-5);
+      padding-block: var(--sp-2);
+      border-block-end: var(--border-hair);
+      background: var(--color-bg);
+      font-family: var(--ff-sans);
+    }
+
+    .stepper[hidden] {
+      display: none;
+    }
+
+    .stepper__status {
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .stepper__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2) var(--sp-4);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .stepper__item {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .stepper__item[data-state='current'] {
+      color: var(--color-text);
+      font-weight: 700;
+    }
+
+    .stepper__num {
+      display: inline-grid;
+      place-items: center;
+      inline-size: 1.75rem;
+      block-size: 1.75rem;
+      border: 2px solid var(--color-border-strong);
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      color: var(--color-text);
+      background: var(--color-bg);
+    }
+
+    .stepper__item[data-state='current'] .stepper__num {
+      background: var(--color-cta);
+      border-color: var(--color-cta);
+      color: var(--color-cta-contrast);
+    }
+
+    .stepper__item[data-state='done'] .stepper__num {
+      border-color: var(--color-link);
+      color: var(--color-link);
+    }
+
+    /* A phone gets a sticky two-row bar: the status line, and four segments that fill as the steps are completed. */
+    @media (max-width: 40rem) {
+      .stepper {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: var(--z-header);
+        display: grid;
+        gap: var(--sp-1);
+      }
+
+      .stepper__status {
+        font-size: var(--fs-sm);
+      }
+
+      .stepper__list {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--sp-1);
+      }
+
+      .stepper__item {
+        block-size: 0.375rem;
+        border-radius: var(--radius-pill);
+        background: var(--color-border-strong);
+      }
+
+      .stepper__item[data-state='done'],
+      .stepper__item[data-state='current'] {
+        background: var(--color-cta);
+      }
+
+      .stepper__num,
+      .stepper__label {
+        position: absolute;
+        inline-size: 1px;
+        block-size: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+    }
+
+    /* The bar can cover the top of the viewport on a phone, so a focused control is always scrolled clear of it (WCAG 2.2, 2.4.11).
+       The script writes the bar's measured height to --stepper-bar-h on the form; 4rem covers the two-row bar until it does. */
+    .intake[data-stepper='on'] :is(input, select, textarea, button, a, [tabindex='-1'], .error-summary) {
+      scroll-margin-block-start: calc(var(--stepper-bar-h, 4rem) + var(--sp-4));
+    }
+
+    .review__group {
+      display: grid;
+      gap: var(--sp-2);
+      padding-block-end: var(--sp-3);
+      border-block-end: var(--border-hair);
+    }
+
+    .review__head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-2);
+    }
+
+    .review__title {
+      font-size: var(--fs-base);
+    }
+
+    .review__rows {
+      display: grid;
+      gap: var(--sp-2);
+      margin: 0;
+
+      & dt {
+        font-size: var(--fs-sm);
+        color: var(--color-text-muted);
+      }
+
+      & dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+      }
+    }
+  }
+</style>
