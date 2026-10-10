@@ -42,12 +42,33 @@
     }
   }
 
+  /*
+   * The action row is laid out by the width of its own box, never by the width of its labels. A row of two buttons that fits with
+   * a few pixels to spare under the fallback font wraps when the web font arrives with wider letters, and the line it adds pushes the
+   * whole hero down (CLS 0.14 on /program/how-it-works/). So the wrap decision is made here, by the container, in advance: at or
+   * below 42rem the buttons are a column (one line each under either font), above it the widest label pair on the site (about 600 px
+   * with the web font) leaves 70 px or more. The primary action stays first and does not move. On a phone the column is full width.
+   */
   .hero__actions {
+    container: hero-actions / inline-size;
+    margin-block-start: var(--sp-3);
+  }
+
+  .hero__actions-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--sp-3);
-    margin-block-start: var(--sp-3);
+
+    @container hero-actions (max-width: 42rem) {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+    }
+
+    @container hero-actions (max-width: 30rem) {
+      align-items: stretch;
+    }
   }
 
   /* Media frame: the space is reserved by the ratio, so a late image or a font swap cannot move the page. */

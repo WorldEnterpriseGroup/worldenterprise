@@ -3,6 +3,9 @@
  * payload building, bot checks, the fetch client and the mailto fallback. The second half mounts the logic onto the
  * server-rendered form markup and touches the DOM only when mountIntakeForms() is called.
  */
+import { PACKAGE_NOT_SURE, PACKAGE_PARAM, getPackage, isPackageId, parsePackageParam } from '../data/packages.ts';
+import { ApplyStepper } from '../components/apply/stepper.ts';
+import type { ApplyStep } from '../components/apply/steps.ts';
 import { parseTeamFromLocation, describeTeam } from './team-composer.ts';
 
 export type FormKind = 'apply' | 'contact' | 'newsletter';
@@ -22,9 +25,9 @@ export const LIMITS = {
 } as const;
 
 /** Fields that can carry an error message. */
-export type FieldName = 'name' | 'email' | 'company' | 'stage' | 'seats' | 'topic' | 'message' | 'consent';
+export type FieldName = 'name' | 'email' | 'company' | 'stage' | 'seats' | 'package' | 'topic' | 'message' | 'consent';
 
-const FIELD_NAMES: readonly FieldName[] = ['name', 'email', 'company', 'stage', 'seats', 'topic', 'message', 'consent'];
+const FIELD_NAMES: readonly FieldName[] = ['name', 'email', 'company', 'stage', 'seats', 'package', 'topic', 'message', 'consent'];
 
 /** Raw values as read from the form controls. */
 export interface FormValues {
@@ -38,6 +41,11 @@ export interface FormValues {
   readonly consent: boolean;
   /** Honeypot. Must stay empty. */
   readonly website: string;
+  /**
+   * Apply only. A package id, `not-sure` or empty. It is never a key of the payload: the intake schema is closed
+   * (docs/forms-contract.md section 3), so buildPayload carries it as one line of `message`.
+   */
+  readonly package?: string;
 }
 
 export interface FieldError {
@@ -67,6 +75,33 @@ export const MIN_FILL_MS = 3_000;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/** The line of `message` that carries the package choice, or '' when none was made (docs/forms-contract.md section 3). */
+export function packageNote(value: string | undefined): string {
+  if (value === undefined || value === '') return '';
+  if (value === PACKAGE_NOT_SURE) return 'Package interest: not sure yet';
+  return isPackageId(value) ? `Package interest: ${getPackage(value).name}` : '';
+}
+
+/** The message as sent: the visitor's text, then the package line after a blank line. */
+export function composeMessage(message: string, packageValue: string | undefined): string {
+  const text = normaliseText(message);
+  const note = packageNote(packageValue);
+  if (note === '') return text;
+  return text === '' ? note : `${text}\n\n${note}`;
+}
+
+/**
+ * Reads the package from a query string. Unknown, empty and repeated values are ignored, never an error, because a stale link must
+ * still open the page (docs/wave7-contracts.md section 1). `not-sure` is accepted here too, so a link can say so.
+ */
+export function packageFromSearch(search: string): string | null {
+  const values = new URLSearchParams(search).getAll(PACKAGE_PARAM);
+  if (values.length !== 1) return null;
+  const raw = (values[0] ?? '').trim().toLowerCase();
+  if (raw === PACKAGE_NOT_SURE) return PACKAGE_NOT_SURE;
+  return parsePackageParam(raw);
+}
+
 function tooLong(label: string, limit: number): string {
   return `${label} is too long. Shorten it to ${limit} characters or fewer.`;
 }
@@ -92,13 +127,18 @@ export function validate(kind: FormKind, values: FormValues): FieldError[] {
       errors.push({ field: 'stage', message: 'Choose the stage that is closest to where your idea is today.' });
     }
     if (values.seats.trim().length > LIMITS.seats) errors.push({ field: 'seats', message: tooLong('The team description', LIMITS.seats) });
+    const choice = values.package ?? '';
+    if (choice !== '' && choice !== PACKAGE_NOT_SURE && !isPackageId(choice)) {
+      errors.push({ field: 'package', message: 'Choose one of the packages in the list, or choose Not sure yet.' });
+    }
   } else if (kind === 'contact') {
     if (!(TOPICS as readonly string[]).includes(values.topic)) {
       errors.push({ field: 'topic', message: 'Choose what your message is about.' });
     }
     if (values.message.trim() === '') errors.push({ field: 'message', message: 'Write a short message so WE knows how to help.' });
   }
-  if (values.message.trim().length > LIMITS.message) errors.push({ field: 'message', message: tooLong('Your message', LIMITS.message) });
+  const sent = kind === 'apply' ? composeMessage(values.message, values.package) : values.message.trim();
+  if (sent.length > LIMITS.message) errors.push({ field: 'message', message: tooLong('Your message', LIMITS.message) });
 
   if (!values.consent) errors.push({ field: 'consent', message: 'Tick the box to confirm that WE may use these details to reply to you.' });
   return errors;
@@ -123,7 +163,7 @@ export function buildPayload(
     stage: kind === 'apply' ? values.stage : '',
     seats: kind === 'apply' ? normaliseText(values.seats) : '',
     topic: kind === 'contact' ? values.topic : '',
-    message: normaliseText(values.message),
+    message: kind === 'apply' ? composeMessage(values.message, values.package) : normaliseText(values.message),
     consent: values.consent,
     website: values.website,
     startedAt: new Date(timing.startedAt).toISOString(),
@@ -303,8 +343,9 @@ export function topicFromSearch(search: string): Topic | null {
 // DOM mount. Nothing below runs at import time.
 // ---------------------------------------------------------------------------------------------------------------
 
+/** A control by its form field name, or by `data-field` for one that has no name (the package choice, which the browser must not post). */
 function control(form: HTMLFormElement, name: string): HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null {
-  const el = form.elements.namedItem(name);
+  const el = form.elements.namedItem(name) ?? form.querySelector(`[data-field="${CSS.escape(name)}"]`);
   return el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement ? el : null;
 }
 
@@ -321,6 +362,7 @@ function readValues(form: HTMLFormElement): FormValues {
     message: text('message'),
     consent: consent instanceof HTMLInputElement && consent.checked,
     website: text('website'),
+    package: text('package'),
   };
 }
 
@@ -338,6 +380,7 @@ class IntakeFormController {
   private startedAt = Date.now();
   private warnedFast = false;
   private submitting = false;
+  private stepper: ApplyStepper | null = null;
 
   constructor(form: HTMLFormElement) {
     this.form = form;
@@ -353,18 +396,85 @@ class IntakeFormController {
   }
 
   init(): void {
-    if (this.mode === 'disabled') return;
+    if (this.kind === 'apply') {
+      this.mountStepper();
+      if (this.stepper !== null) this.attachEnterAsNext();
+    }
+    if (this.mode === 'disabled') {
+      // Nothing can be sent. The stepper still works, so a visitor can walk the whole form; the button stays off (planForm).
+      if (this.stepper !== null) this.attachStepperBehaviour();
+      return;
+    }
     this.form.noValidate = true;
     this.form.addEventListener('submit', (event) => {
       event.preventDefault();
+      // Enter in a field of an earlier step means Next, never a send.
+      if (this.stepper !== null && !this.stepper.isFinal) {
+        this.stepper.goNext();
+        return;
+      }
       void this.handleSubmit();
     });
-    this.form.addEventListener('input', (event) => this.clearFieldError(event.target));
-    this.form.addEventListener('change', (event) => this.clearFieldError(event.target));
+    this.attachInputBehaviour();
     this.prefill();
     // The server renders the button disabled unless the browser could post the form natively (planForm in src/data/forms.ts),
     // so a visitor without JavaScript can never submit it as a GET query string. The handlers above are now attached.
     this.submit?.removeAttribute('disabled');
+  }
+
+  private mountStepper(): void {
+    this.stepper = ApplyStepper.mount(this.form, {
+      validateStep: (step) => this.errorsForStep(step),
+      showErrors: (errors, intro) => this.showErrors(errors, intro),
+      clearErrors: () => this.clearErrors(),
+      values: () => readValues(this.form),
+    });
+  }
+
+  /**
+   * Enter in a text field of an earlier step means Next. The browser's own implicit submission cannot be relied on for this: it does
+   * nothing while the submit button is disabled (mode `disabled`), and it would send the form from a step the visitor has not finished.
+   */
+  private attachEnterAsNext(): void {
+    this.form.addEventListener('keydown', (event) => {
+      const stepper = this.stepper;
+      const target = event.target;
+      if (stepper === null || stepper.isFinal || event.key !== 'Enter' || event.isComposing || event.defaultPrevented) return;
+      if (!(target instanceof HTMLInputElement) || (target.type !== 'text' && target.type !== 'email')) return;
+      event.preventDefault();
+      stepper.goNext();
+    });
+  }
+
+  private attachStepperBehaviour(): void {
+    this.form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (this.stepper !== null && !this.stepper.isFinal) this.stepper.goNext();
+    });
+    this.attachInputBehaviour();
+    this.prefill();
+  }
+
+  private attachInputBehaviour(): void {
+    this.form.addEventListener('input', (event) => this.clearFieldError(event.target));
+    this.form.addEventListener('change', (event) => {
+      this.clearFieldError(event.target);
+      if (event.target instanceof HTMLSelectElement && event.target.dataset.field === 'package') this.showPackageFit(event.target);
+    });
+  }
+
+  /** The validation errors of one step: validate() runs on every answer and the result is filtered to the step's own fields. */
+  private errorsForStep(step: ApplyStep): FieldError[] {
+    return validate(this.kind, readValues(this.form)).filter((error) => step.fields.includes(error.field));
+  }
+
+  /** Under the package select: the stage each package is sized for, from src/data/packages.ts through the option's data attribute. */
+  private showPackageFit(select: HTMLSelectElement): void {
+    const note = this.form.querySelector<HTMLElement>('[data-package-fit]');
+    if (note === null) return;
+    const option = select.selectedOptions[0];
+    const fit = option?.dataset.stageFit ?? '';
+    note.textContent = fit === '' ? '' : `${option?.textContent ?? ''} is sized for: ${fit}`;
   }
 
   private prefill(): void {
@@ -375,10 +485,24 @@ class IntakeFormController {
       return;
     }
     if (this.kind === 'newsletter') return;
+    this.prefillPackage();
     const team = parseTeamFromLocation(window.location.hash, window.location.search);
     const text = describeTeam(team);
     const seats = control(this.form, 'seats');
     if (text !== '' && seats !== null && seats.value.trim() === '') seats.value = text;
+  }
+
+  /** `?package=` selects a package. The field is script-only, so it is revealed here and a no-JavaScript visitor never sees it. */
+  private prefillPackage(): void {
+    const field = this.form.querySelector<HTMLElement>('[data-package-field]');
+    const select = control(this.form, 'package');
+    if (field === null || !(select instanceof HTMLSelectElement)) return;
+    field.hidden = false;
+    const chosen = packageFromSearch(window.location.search);
+    if (chosen !== null && select.value === '') {
+      select.value = chosen;
+      this.showPackageFit(select);
+    }
   }
 
   private setStatus(message: string): void {
@@ -416,6 +540,7 @@ class IntakeFormController {
 
   private showErrors(errors: readonly FieldError[], intro: string): void {
     this.clearErrors();
+    this.stepper?.showStepForErrors(errors);
     const list = this.summary?.querySelector('ul');
     for (const error of errors) {
       const el = control(this.form, error.field);
@@ -435,6 +560,8 @@ class IntakeFormController {
         link.addEventListener('click', (event) => {
           if (el === null) return;
           event.preventDefault();
+          // The field may sit on a step that is out of sight; a hidden control cannot take focus.
+          this.stepper?.revealField(el);
           el.focus();
         });
         item.append(link);

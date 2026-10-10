@@ -1,0 +1,152 @@
+---
+import { APPLY_FIELDS, STAGE_OPTIONS } from '../../components/apply/fields.ts';
+import { DECIDE_COPY } from '../../components/apply/decide-copy.ts';
+import { FITS, FIT_HEADING, NOT_FITS, NOT_FIT_HEADING } from '../../components/apply/fit.ts';
+import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
+import { loadPage } from '../../components/program/loadPage.ts';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import Steps from '../../components/ui/Steps.astro';
+import { href } from '../../lib/url.ts';
+import StageLayout from '../../layouts/StageLayout.astro';
+
+const { data, Content } = await loadPage('program/how-we-decide');
+const [primary, secondary] = data.ctas;
+const { read, fit, send, no, decide, cta } = DECIDE_COPY;
+interface SendField {
+  readonly label: string;
+  readonly hint?: string;
+  readonly options?: readonly string[];
+}
+const stages = STAGE_OPTIONS.filter((option) => option.value !== '').map((option) => option.label);
+const fields: readonly SendField[] = [
+  APPLY_FIELDS.name,
+  APPLY_FIELDS.email,
+  APPLY_FIELDS.company,
+  { ...APPLY_FIELDS.stage, options: stages },
+  APPLY_FIELDS.message,
+  APPLY_FIELDS.seats,
+  APPLY_FIELDS.package,
+];
+---
+
+<StageLayout
+  title={data.title}
+  description={data.description}
+  path="/program/how-we-decide/"
+  eyebrow={data.eyebrow}
+  lead={DECIDE_COPY.lead}
+  updated={data.updated}
+  draft={data.draft}
+  primary={primary}
+  secondary={secondary}
+  art={{ variant: 'trail', count: 3 }}
+  ogSlot="og-program"
+  next={DECIDE_COPY.next}
+>
+  <div class="prose measure"><Content /></div>
+
+  <section class="stack" aria-labelledby="decide-read">
+    <h2 id="decide-read">{read.heading}</h2>
+    <p class="measure">{read.intro}</p>
+    <Steps steps={read.steps} headingLevel={3} />
+    <p class="measure">{read.note}</p>
+    <p class="measure">{read.more.before}<a href={href(read.more.link.href)}>{read.more.link.text}</a>{read.more.after}</p>
+  </section>
+
+  <section aria-labelledby="decide-fit">
+    <div class="decide-fit">
+      <div class="stack">
+        <h2 id="decide-fit">{FIT_HEADING}</h2>
+        <p class="measure">{fit.intro}</p>
+        <ul class="fit">
+          {FITS.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <LimitsBlock title={NOT_FIT_HEADING} items={NOT_FITS} />
+    </div>
+  </section>
+
+  <section class="stack" aria-labelledby="decide-send">
+    <h2 id="decide-send">{send.heading}</h2>
+    <p class="measure">{send.intro}</p>
+    <dl class="decide-send measure">
+      {
+        fields.map((field) => (
+          <div class="decide-send__row">
+            <dt>{field.label}</dt>
+            {field.hint !== undefined && <dd>{field.hint}</dd>}
+            {
+              field.options !== undefined && (
+                <dd>
+                  <ul>
+                    {field.options.map((option) => <li>{option}</li>)}
+                  </ul>
+                </dd>
+              )
+            }
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="stack" aria-labelledby="decide-no">
+    <h2 id="decide-no">{no.heading}</h2>
+    {no.lines.map((line) => <p class="measure">{line}</p>)}
+    <p class="measure">{no.more.before}<a href={href(no.more.link.href)}>{no.more.link.text}</a>{no.more.after}</p>
+  </section>
+
+  <section class="stack" aria-labelledby="decide-not">
+    <h2 id="decide-not">{decide.heading}</h2>
+    <dl class="decide-send measure">
+      {
+        decide.rows.map((row) => (
+          <div class="decide-send__row">
+            <dt>{row.term}</dt>
+            <dd>{row.text}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <Fragment slot="after">
+    {primary && <CtaBand title={cta.title} text={cta.text} cta={primary} secondary={secondary} />}
+  </Fragment>
+</StageLayout>
+
+<style>
+  .decide-fit {
+    display: grid;
+    gap: var(--sp-6);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .decide-fit {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .decide-send {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+  }
+
+  .decide-send__row {
+    display: grid;
+    gap: var(--sp-1);
+    padding-block-end: var(--sp-3);
+    border-block-end: var(--border-hair);
+  }
+
+  .decide-send dt {
+    font-weight: 700;
+  }
+
+  .decide-send dd {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+</style>
