@@ -100,6 +100,8 @@ test('the denylist parses and keeps the four sections separate', () => {
       'C-14-success-based',
       'C-05-fundable-outcome',
       'C-13-peers',
+      // Wave 8 (WP-60): first-person peer wording, no marker, no path allowance; tests/unit/wp-60/claims-w8.test.ts pins it.
+      'W8-C13-own-peers',
       'C-21-phrase',
       // Version 3 (wave 7, WP-40): tests/unit/wp-40/denylist.test.ts pins each of these with positive and negative cases.
       'W7-C09-no-fee',
