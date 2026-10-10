@@ -1,0 +1,127 @@
+---
+title: "Open-source licenses inside a commercial product"
+seoTitle: Open-source licenses in a product
+description: "What the MIT, Apache 2.0, GPL and AGPL license texts say about copying, shipping and offering software, and the questions to bring to counsel."
+topic: legal
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders, first-time-founders]
+related: [ip-contracts-and-access-diligence-for-small-engineering-teams, founder-ip-assignment-and-confidentiality-agreements, terms-of-service-and-privacy-policy-what-each-document-is-for]
+sources:
+  - id: osi-osd
+    title: The Open Source Definition
+    publisher: Open Source Initiative
+    url: https://opensource.org/osd
+    accessed: 2026-10-10
+  - id: osi-mit
+    title: The MIT License
+    publisher: Open Source Initiative
+    url: https://opensource.org/license/mit
+    accessed: 2026-10-10
+  - id: apache-2-0
+    title: Apache License, Version 2.0
+    publisher: Apache Software Foundation
+    url: https://www.apache.org/licenses/LICENSE-2.0.txt
+    accessed: 2026-10-10
+  - id: gnu-gpl-3
+    title: GNU General Public License, version 3
+    publisher: Free Software Foundation
+    url: https://www.gnu.org/licenses/gpl-3.0.txt
+    accessed: 2026-10-10
+  - id: gnu-agpl-3
+    title: GNU Affero General Public License, version 3
+    publisher: Free Software Foundation
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+    accessed: 2026-10-10
+  - id: spdx-license-list
+    title: SPDX License List
+    publisher: Software Package Data Exchange, Linux Foundation
+    url: https://spdx.org/licenses/
+    accessed: 2026-10-10
+evidence: [osi-osd, osi-mit, apache-2-0, gnu-gpl-3, gnu-agpl-3, spdx-license-list]
+claimsUsed: []
+draft: false
+---
+
+*General information as of October 10, 2026. It is not legal advice, and it describes the text of four widely used licenses, not copyright law in any one country. A lawyer who works with software licensing can say what applies to a particular product and a particular way of shipping it.*
+
+Every package pulled into a build arrives with a license, and a license is a document with conditions. This article reads four of them in their own words, the MIT License, the Apache License 2.0 and version 3 of the GNU General Public License and of the GNU Affero General Public License, to show what each conditions and on what event. It does not rank them or say which a company should accept.
+
+## Open source is a definition about rights
+
+The Open Source Initiative's definition begins by saying that open source does not just mean access to the source code, and that the distribution terms must meet a list of criteria. Two of them matter for a company. The first says the license shall not restrict any party from selling or giving away the software as a component of an aggregate software distribution containing programs from several different sources, and shall not require a royalty or other fee for such sale. Another says the license must not restrict anyone from making use of the program in a specific field of endeavor, and gives as an example that it may not restrict the program from being used in a business.
+
+A license that meets that definition does not forbid commercial use as such. What each license does is attach conditions to particular acts, and the acts differ.
+
+## Four licenses, four sets of conditions
+
+| License | What the text grants | What the text conditions |
+|---|---|---|
+| MIT | Permission to use, copy, modify, merge, publish, distribute, sublicense and sell copies | The copyright notice and the permission notice must be included in all copies or substantial portions |
+| Apache 2.0 | Copyright license, plus a patent license from each contributor | On redistribution: give recipients a copy of the license, mark modified files, keep notices and carry any NOTICE file text |
+| GPL 3.0 | Permission to run, to make and run copies not conveyed, and to convey under conditions | On conveying: provide Corresponding Source and license the whole work under the GPL |
+| AGPL 3.0 | Parallel sections to the GPL on permissions and conveying, plus section 13 on network use | The GPL conditions, plus an offer of source to remote users of a modified version |
+
+Each row is a summary; the license text is the authority.
+
+## The MIT License
+
+The MIT text is short. It grants permission, free of charge, to deal in the software without restriction, including the rights to use, copy, modify, merge, publish, distribute, sublicense and sell copies. It makes one condition: the copyright notice and the permission notice shall be included in all copies or substantial portions of the software. It then says the software is provided as is, without warranty.
+
+The condition attaches to copies. Where and how notices appear in a shipped product is a question for counsel.
+
+## The Apache License, version 2.0
+
+Apache 2.0 is longer and adds two things the MIT text does not state. Section 3 grants each contributor's patent license, limited to patent claims necessarily infringed by their contribution, alone or combined with the work. It also says that if you institute patent litigation alleging that the work constitutes direct or contributory patent infringement, any patent licenses granted to you under the license for that work terminate as of the date the litigation is filed.
+
+Section 4 sets the redistribution conditions: give recipients a copy of the license, cause modified files to carry prominent notices that you changed them, retain copyright, patent, trademark and attribution notices in the source form of derivative works, and, if the work includes a NOTICE text file, include a readable copy of its attribution notices in one of the places the section lists.
+
+## The GNU General Public License, version 3
+
+The GPL is built around two defined acts. To propagate means to do anything that, without permission, would make you liable for infringement under copyright law, except executing a work on a computer or modifying a private copy. To convey means any kind of propagation that enables other parties to make or receive copies. The text adds that mere interaction with a user through a computer network, with no transfer of a copy, is not conveying.
+
+Section 2 grants unlimited permission to run the unmodified program and says you may make, run and propagate covered works that you do not convey, without conditions, so long as your license remains in force. The conditions arrive with conveying. Section 5 says that when you convey a work based on the program, you must license the entire work, as a whole, under the GPL to anyone who comes into possession of a copy. Section 6 says that when you convey object code, you must also convey the machine-readable Corresponding Source in one of the ways the section lists.
+
+Two definitions shape what that means in practice. Corresponding Source is defined as all the source needed to generate, install, run and modify the object code, and the definition says it includes the source code for shared libraries and dynamically linked subprograms that the work is specifically designed to require, for example by intimate data communication or control flow. The text also distinguishes an aggregate, a compilation of a covered work with other separate and independent works that are not combined with it so as to form a larger program, and says inclusion of a covered work in an aggregate does not cause the license to apply to the other parts. Where a given product falls between a combined work and an aggregate is a legal question the license text alone cannot answer.
+
+Section 8 covers termination: an attempt to propagate or modify a covered work other than as the license permits is void and automatically terminates your rights, and the section describes when a license is reinstated. What that means for a shipped product is a question for counsel.
+
+## The GNU Affero General Public License, version 3
+
+The AGPL text carries the same sections on basic permissions, conveying modified source and conveying non-source forms, and the same statement that mere interaction through a network is not conveying. Its section 13 then adds one clause that applies "notwithstanding any other provision of this License". If you modify the program, your modified version must prominently offer all users interacting with it remotely through a computer network, if your version supports such interaction, an opportunity to receive the Corresponding Source of your version, from a network server at no charge.
+
+Under both texts, interaction through a network with no transfer of a copy is not conveying. Under the AGPL's section 13, network interaction with a modified version carries its own source offer all the same. Companies that offer software as a hosted service should ask counsel to read this clause against their actual architecture.
+
+## Where the questions arise in a product
+
+The licenses attach conditions to acts, so the questions follow the acts a company performs.
+
+- **Shipping a copy.** Is software delivered to customers as an app, a container image or a downloadable file? Ask counsel whether that is a distribution or a conveying in the sense above.
+- **Hosting a service.** Do customers only interact through a network? The GPL text and the AGPL text treat that differently.
+- **Modifying.** Has any covered code been changed? Modified versions carry extra notice and, under the AGPL, source-offer conditions.
+- **Combining.** How does proprietary code connect to the covered code: separate programs, a linked library, a plugin? The definitions of Corresponding Source and aggregate turn on that.
+- **Contributing back.** Do employees or founders submit patches? Apache 2.0 section 5 says a contribution intentionally submitted to the licensor is under the license unless you state otherwise.
+
+## Keeping a record
+
+The SPDX License List gives each commonly found license a standardized short identifier, a full name, the license text and a canonical permanent URL, so that licenses can be identified reliably in an SPDX document, in source files or elsewhere. The OSI page for the MIT License, for example, shows its SPDX short identifier as MIT. A written inventory naming each component, its version, its license identifier and how it is used is one way to keep the record. The article on [IP, contracts and access diligence](/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/) describes how reviewers read such records, the [seed data room checklist](/library/seed-data-room-checklist/) shows where an inventory is filed, and the article on [founder IP assignment and confidentiality agreements](/insights/founder-ip-assignment-and-confidentiality-agreements/) covers a different question: who owns the code a team writes.
+
+## Questions to bring to counsel
+
+The [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) offers a general list. For this topic:
+
+1. Which components in the product carry which licenses, and where is that written down?
+2. How is the software delivered, and which delivery events in each license are triggered?
+3. Does any component carry the GPL or AGPL, and how does proprietary code connect to it?
+4. Which notices must travel with the product, and where do they appear?
+5. If we host a service, what does section 13 of the AGPL mean for our architecture?
+6. Do any components carry patent terms, such as the Apache 2.0 termination clause, that matter to us?
+7. What is the process for adding a new package, and who reviews its license?
+
+## What this article cannot tell you
+
+It does not say which license is safe for your product or which components to use or avoid. It quotes four texts and does not cover the many others on the SPDX list, each of which has its own terms.
+
+It reads the licenses, not the law around them. Whether a particular combination of code is a work based on a program, how courts treat any license clause and how copyright law applies in your country are outside the scope.
+
+It gives no view on whether any specific package in your build is compliant. The license texts were read on October 10, 2026, and projects publish new versions and relicense, so a decision should rest on the license that actually accompanies the version you use and on counsel who has seen the product.
