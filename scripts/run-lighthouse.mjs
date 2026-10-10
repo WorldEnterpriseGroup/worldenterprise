@@ -18,6 +18,15 @@ export function pickRoutes(candidates, built, max) {
   return candidates.filter((c) => built.has(c)).slice(0, max);
 }
 
+/**
+ * The routes to measure and the ones left out, so the log can say why. `missing` are candidates the build does not have (a package
+ * whose pages have not merged yet): skipped, not a failure. `overflow` are built candidates past `max`, which are not measured.
+ */
+export function planRoutes(candidates, built, max) {
+  const present = candidates.filter((c) => built.has(c));
+  return { routes: present.slice(0, max), missing: candidates.filter((c) => !built.has(c)), overflow: present.slice(max) };
+}
+
 /** Reduces a Lighthouse result to the numbers the budgets use. `lhr` is the Lighthouse report object. */
 export function summarise(route, lhr, origin) {
   const num = (id) => lhr.audits?.[id]?.numericValue ?? null;
@@ -225,8 +234,12 @@ async function main() {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist', out: 'reports/lighthouse', config: 'lighthouserc.json' });
   const config = JSON.parse(readFileSync(args.config, 'utf8'));
   const built = builtRoutes(args.dist);
-  const routes = pickRoutes(config.candidates, built, config.maxRoutes);
+  const { routes, missing, overflow } = planRoutes(config.candidates, built, config.maxRoutes);
   if (routes.length === 0) throw new Error('None of the Lighthouse candidate routes exist in dist.');
+  // A candidate that is not in the build yet is skipped, not failed: a package's routes arrive with its own merge request. Say so.
+  if (missing.length > 0) console.log(`skipped, not in this build: ${missing.join(' ')}`);
+  if (overflow.length > 0) console.log(`not measured, over maxRoutes ${config.maxRoutes}: ${overflow.join(' ')}`);
+  console.log(`measuring ${routes.length} routes, up to ${config.runs ?? 3} runs each`);
   mkdirSync(args.out, { recursive: true });
 
   const { createStaticServer, listen } = await import('./lib/serve.mjs');
