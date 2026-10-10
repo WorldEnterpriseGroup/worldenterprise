@@ -3,8 +3,9 @@ import { test } from 'node:test';
 import { CLAIM_IDS, claimRegistry, claims, isClaimUsable } from '../../../src/data/claims.ts';
 import { flags } from '../../../src/data/flags.ts';
 
-test('the registry has C-01 to C-24, each with a source', () => {
-  assert.equal(CLAIM_IDS.length, 24);
+test('the registry numbers its claims from C-01 without a gap, each with a source', () => {
+  CLAIM_IDS.forEach((id, index) => assert.equal(id, `C-${String(index + 1).padStart(2, '0')}`));
+  assert.ok(CLAIM_IDS.length >= 29, 'wave 8 added C-25 to C-29');
   for (const id of CLAIM_IDS) {
     assert.ok(claimRegistry[id].source.length > 0, id);
   }
@@ -34,7 +35,7 @@ test('the seat price currency is an ISO 4217 code and defaults to USD', () => {
 });
 
 test('the mandatory claims are usable', () => {
-  for (const id of ['C-01', 'C-02', 'C-03', 'C-04', 'C-05', 'C-18', 'C-19', 'C-21'] as const) {
+  for (const id of ['C-01', 'C-02', 'C-03', 'C-04', 'C-05', 'C-18', 'C-19', 'C-21', 'C-25', 'C-26', 'C-27', 'C-28', 'C-29'] as const) {
     assert.equal(isClaimUsable(id), true, id);
   }
 });

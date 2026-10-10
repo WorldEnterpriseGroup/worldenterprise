@@ -1,9 +1,10 @@
 ---
+import type { DeskId } from '../../data/desks.ts';
 import { seedFrom } from './related.ts';
 
 interface Props {
   slug: string;
-  topic: 'dream' | 'build' | 'grow' | 'fundable';
+  topic: DeskId;
 }
 
 /** Deterministic decorative hex field seeded from topic and slug. No raster; always aria-hidden. */

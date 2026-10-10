@@ -1,4 +1,5 @@
-import { DESKS, MACHINE_ROUTES, routes } from '../data/routes.ts';
+import { isDeskId } from '../data/desks.ts';
+import { MACHINE_ROUTES, routes } from '../data/routes.ts';
 import type { RouteRow } from '../data/routes.ts';
 
 /**
@@ -14,11 +15,12 @@ export const DYNAMIC_COLLECTIONS: Readonly<Record<string, string>> = {
   '/services/[slug]/': 'services',
   '/playbooks/[slug]/': 'playbooks',
   '/fundability/[slug]/': 'guides',
+  // The squeeze pages: a brief has a route once its open abstract exists, and never before (contracts section 5).
+  '/briefs/[id]/': 'briefs',
 };
 
 /** Dynamic patterns whose parameter comes from a fixed list instead of a collection. */
 export const DYNAMIC_FIXED: Readonly<Record<string, readonly string[]>> = {
-  '/insights/topic/[topic]/': DESKS,
   // src/pages/newsletter/[...slug].astro emits only /newsletter/ itself (an empty rest segment).
   '/newsletter/[...slug]/': [''],
 };
@@ -28,6 +30,21 @@ export const DYNAMIC_FIXED: Readonly<Record<string, readonly string[]>> = {
  * sub-folders (insights/dream/<slug>.mdx) while the URL is flat (/insights/<slug>/).
  */
 const LAST_SEGMENT_COLLECTIONS: ReadonlySet<string> = new Set(['insights']);
+
+/**
+ * The topic page of a desk. The parameter is a desk id from src/data/desks.ts, and the page exists only once the desk holds a
+ * published article (src/pages/insights/topic/[topic].astro emits exactly those desks), so a desk nobody has written for leaves no dead route.
+ */
+export const DESK_TOPIC_PATTERN = '/insights/topic/[topic]/';
+
+/** Whether a published `insights` entry sits in the desk folder (entry ids are `<desk>/<slug>`). */
+function deskHoldsArticle(desk: string, ctx: RouteContext): boolean {
+  const prefix = `${desk}/`;
+  for (const id of ctx.entryIds.insights ?? []) {
+    if (id.startsWith(prefix)) return true;
+  }
+  return false;
+}
 
 /** The ids under which a published entry can satisfy a dynamic route parameter. */
 export function entryRouteIds(collection: string, id: string): readonly string[] {
@@ -114,6 +131,11 @@ export function routeExists(path: string, ctx: RouteContext): boolean {
     }
     const params = matchDynamic(page.pattern, path);
     if (params === null) continue;
+    if (page.pattern === DESK_TOPIC_PATTERN) {
+      const desk = params.topic;
+      if (desk !== undefined && isDeskId(desk) && deskHoldsArticle(desk, ctx)) return true;
+      continue;
+    }
     const fixed = DYNAMIC_FIXED[page.pattern];
     if (fixed !== undefined) {
       if (Object.values(params).every((v) => fixed.includes(v))) return true;

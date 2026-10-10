@@ -2,7 +2,12 @@
  * Navigation as data (SAGE-PLAN 5). Rendered by MegaNav (>= 1100 px) and MobileNav (below).
  * Only items whose route is launched and exists appear; items marked l2 stay hidden until their route ships.
  * Use resolveNav() with a predicate from src/lib/route-state.ts to filter.
+ * Wave 8 (docs/wave8-contracts.md, 1.4) only adds: an audience lens, a Topics column from the desk registry, Briefs, Industries and
+ * Compare, the journey pages and Partners. No item was removed or reordered, and every addition stays hidden until its route is live.
  */
+import { AUDIENCE_LABELS } from './families.ts';
+import { DESK_DEFINITIONS, deskPath } from './desks.ts';
+
 export type ServiceLine = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 
 export interface NavLink {
@@ -79,6 +84,8 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         heading: 'How it works',
         links: [
           { label: 'How it works', href: '/program/how-it-works/', description: 'Apply, scope, seat your team, work in focused cycles' },
+          { label: 'Your journey', href: '/journey/', description: 'From first visit to the first months inside the program' },
+          { label: 'After you apply', href: '/journey/after-you-apply/', description: 'What happens to an application, step by step' },
           { label: 'The digital incubation model', href: '/program/digital-incubation-model/', description: 'Fully remote by design: no office, no relocation' },
           { label: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'Offshore seats that work only on your company' },
           { label: "Who it's for", href: '/program/who-its-for/', description: 'The founders and ideas WE builds with' },
@@ -202,6 +209,9 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         links: [
           { label: 'Insights', href: '/insights/' },
           { label: 'Research briefs', href: '/research/' },
+          { label: 'Briefs', href: '/briefs/' },
+          { label: 'Industries', href: '/industries/' },
+          { label: 'Compare', href: '/compare/' },
           { label: 'Newsletter', href: '/newsletter/' },
         ],
       },
@@ -221,6 +231,10 @@ export const primaryNav: readonly PrimaryNavItem[] = [
           { label: 'Search', href: '/search/' },
           { label: 'Events', href: '/events/', l2: true },
         ],
+      },
+      {
+        heading: 'Topics',
+        links: DESK_DEFINITIONS.map((desk) => ({ label: desk.name, href: deskPath(desk.id) })),
       },
     ],
     featured: {
@@ -257,7 +271,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         links: [
           { label: 'Operators', href: '/network/operators/', description: 'The roles WE places around your team' },
           { label: 'Delivery partners', href: '/network/delivery-partners/', l2: true },
-          { label: 'Partners and perks', href: '/network/partners/', l2: true },
+          { label: 'Partners', href: '/network/partners/' },
         ],
       },
       {
@@ -270,6 +284,54 @@ export const primaryNav: readonly PrimaryNavItem[] = [
       { label: 'Pricing', href: '/pricing/' },
       { label: 'Contact', href: '/contact/' },
     ],
+  },
+  {
+    kind: 'mega',
+    id: 'audiences',
+    label: 'For you',
+    href: '/briefs/',
+    lead: 'Start from who you are: a startup, an investor, a partner or a corporate team.',
+    leadLink: 'Browse the briefs',
+    columns: [
+      {
+        heading: AUDIENCE_LABELS.startup,
+        links: [
+          { label: 'Apply', href: '/apply/' },
+          { label: 'Founder segments', href: '/founders/' },
+          { label: 'What happens after you apply', href: '/journey/after-you-apply/' },
+          { label: 'Briefs', href: '/briefs/' },
+          { label: 'Tools', href: '/tools/' },
+        ],
+      },
+      {
+        heading: AUDIENCE_LABELS.investor,
+        links: [
+          { label: 'For investors', href: '/investors/' },
+          { label: 'Meet the startups', href: '/investors/meet-startups/' },
+          { label: 'What you can see', href: '/investors/what-you-can-see/' },
+          { label: 'Express interest', href: '/investors/interest/' },
+        ],
+      },
+      {
+        heading: AUDIENCE_LABELS.partner,
+        links: [
+          { label: 'Partner with WE', href: '/network/partners/' },
+          { label: 'Categories', href: '/network/partners/categories/' },
+          { label: 'How it works', href: '/network/partners/how-it-works/' },
+          { label: 'Enquire', href: '/network/partners/enquire/' },
+        ],
+      },
+      {
+        heading: AUDIENCE_LABELS.corporate,
+        links: [
+          { label: 'Corporate innovators', href: '/founders/corporate-innovators/' },
+          { label: 'Corporate spinouts brief', href: '/briefs/corporate-spinouts/' },
+          { label: 'Contact', href: '/contact/' },
+        ],
+      },
+    ],
+    featured: { label: 'Start here', title: 'Read a brief', text: 'Free, open abstracts. The full brief arrives by email.', cta: { label: 'Browse the briefs', href: '/briefs/' }, slot: null },
+    strip: [{ label: 'Your journey', href: '/journey/' }],
   },
   { kind: 'direct', id: 'pricing', label: 'Pricing', href: '/pricing/' },
   {
@@ -316,6 +378,7 @@ export const footerNav: readonly FooterColumn[] = [
     heading: 'Program',
     links: [
       { label: 'How it works', href: '/program/how-it-works/' },
+      { label: 'Your journey', href: '/journey/' },
       { label: 'Dedicated teams', href: '/program/dedicated-teams/' },
       { label: 'Pricing', href: '/pricing/' },
       { label: 'Apply', href: '/apply/' },
@@ -341,6 +404,9 @@ export const footerNav: readonly FooterColumn[] = [
       { label: 'Fundability', href: '/fundability/' },
       { label: 'Insights', href: '/insights/' },
       { label: 'Research', href: '/research/' },
+      { label: 'Briefs', href: '/briefs/' },
+      { label: 'Industries', href: '/industries/' },
+      { label: 'Compare', href: '/compare/' },
       { label: 'Templates', href: '/library/' },
       { label: 'Glossary', href: '/glossary/' },
       { label: 'Search', href: '/search/' },
@@ -353,6 +419,7 @@ export const footerNav: readonly FooterColumn[] = [
       { label: 'Manifesto', href: '/about/manifesto/' },
       { label: 'Frameworks', href: '/about/frameworks/' },
       { label: 'Network', href: '/network/' },
+      { label: 'Partners', href: '/network/partners/' },
       { label: 'For investors', href: '/investors/' },
       { label: 'Press', href: '/press/' },
       { label: 'Contact', href: '/contact/' },
