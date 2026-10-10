@@ -7,7 +7,7 @@
 #              qa:lighthouse    mobile Lighthouse on eight routes with the SAGE-PLAN 6.9 budgets
 #              verify:release   PUBLIC_RELEASE=1 build (RELEASE_ALLOW tolerates operator-gated items)
 #   deploy     pages            internal preview (demo only), built from source with a Node image
-#   mirror     mirror           gh-pages only: manual, needs RELEASE_APPROVED, confirms GitHub has the commit (it does not push)
+#   mirror     mirror           release-* tags only (decision DP-1): manual, needs RELEASE_APPROVED, confirms GitHub has the commit (it does not push)
 #
 # Blocking policy. verify:static and check:ownership always block. Every qa job blocks: WP-15 set QA_STRICT=1 below once one wp/15
 # pipeline passed every qa job (decision I-10). Removing that variable returns wp/* branches and demo to allow_failure, which a work
@@ -55,9 +55,11 @@ variables:
       - .npm/
     policy: pull-push
 
-# Strict on gh-pages, on *negatives branches and when QA_STRICT=1; otherwise allowed to fail.
+# Strict on gh-pages, on *negatives branches, on release-* tags and when QA_STRICT=1; otherwise allowed to fail.
 .qa-rules:
   rules:
+    - if: '$CI_COMMIT_TAG =~ /^release-/'
+      allow_failure: false
     - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || $QA_STRICT == "1"'
       allow_failure: false
     - if: '$CI_COMMIT_BRANCH'
@@ -122,7 +124,7 @@ verify:static:
       - dist/
       - reports/ledger.json
   rules:
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH || $CI_COMMIT_TAG =~ /^release-/'
 
 check:ownership:
   stage: preflight
@@ -268,7 +270,8 @@ verify:release:
     paths:
       - reports/release-gate.json
   rules:
-    - if: '$CI_COMMIT_BRANCH == "gh-pages"'
+    # A release tag and gh-pages run the release gate with no allowances, as the GitHub Actions build does.
+    - if: '$CI_COMMIT_TAG =~ /^release-/ || $CI_COMMIT_BRANCH == "gh-pages"'
       variables:
         RELEASE_ALLOW: ""
       allow_failure: false
@@ -295,23 +298,25 @@ pages:
     - job: verify:static
       artifacts: false
 
-# Release confirmation on gh-pages (WP-30, issue #20, decision R-1). This job does not push. GitHub is fed by the nightly
+# Release confirmation on a release tag (WP-30, issue #20, decisions R-1 and DP-1). This job does not push. GitHub is fed by the nightly
 # weg-ghpages-mirror CronJob (nebula, tools/weg-ghpages-mirror): it fast-forwards GitLab gh-pages to GitHub gh-pages with its own
 # short-lived GitHub App installation token, worldenterprise is on its allowlist, and it never forces. So this project holds no
 # GitHub credential (the former GITHUB_TOKEN push, which used --force, is gone) and has no way to overwrite GitHub.
 #
-# The job is manual and blocked until the operator supplies RELEASE_APPROVED=<the commit being released> (the owner runs the job
-# with that variable). It then checks, read-only and without credentials, that GitHub gh-pages is at this pipeline's commit and
-# fails otherwise (not yet mirrored, diverged, unreadable), so a release that did not land never shows green. The template's
+# Release N ships from a tag, not from the head of demo (DP-1): wave work keeps landing on demo while a release is being approved.
+# The job exists only on a pipeline for a tag named release-* (protected, so only maintainers create one and protected variables
+# reach it) and scripts/ci/require-release-approval.sh refuses a branch pipeline and an unprotected tag. It is manual and blocked
+# until the operator supplies RELEASE_APPROVED=<the commit being released> (the owner runs the job with that variable). It then
+# checks, read-only and without credentials, that GitHub gh-pages is at this pipeline's commit and fails otherwise (not yet mirrored, diverged, unreadable), so a release that did not land never shows green. The template's
 # script, which ended with exit 0 ("skipping mirror") when GITHUB_REPO or GITHUB_TOKEN was unset (code-security P1-3), is replaced.
-# The template's rules are replaced too so that `when: manual` is explicit and gh-pages only.
+# The template's rules are replaced too so that `when: manual` is explicit and release tags only.
 #
 # The effective publication controls sit upstream of this job and are listed in .astro-magazine/release/RELEASE.md: only the owner
 # may push gh-pages (protected, no force), and the GitHub Actions build re-runs the release gate with no allowances.
 mirror:
   extends: .mirror:github
   rules:
-    - if: '$CI_COMMIT_BRANCH == "gh-pages"'
+    - if: '$CI_COMMIT_TAG =~ /^release-/'
       when: manual
       allow_failure: false
   script:
