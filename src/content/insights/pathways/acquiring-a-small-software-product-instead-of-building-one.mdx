@@ -39,6 +39,8 @@ sources:
 evidence: [sba-buy, irs-8594, usc15-18a, usc204, usc205]
 ---
 
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
 
 *As of 2026-10-10, this is general information, not legal or financial advice. Buying a business involves contract, tax and sometimes regulatory rules that depend on where the parties are and how the deal is structured. Ask a lawyer and a tax adviser licensed where you will close.*
 
@@ -69,7 +71,7 @@ A product is worth very little if the seller cannot show it owns what it is sell
 - **Open source and third-party licenses.** List every dependency and its license. Some licenses attach conditions to distribution or to how the code may be combined with other code. Ask a technical reviewer to produce the list and counsel to read the conditions.
 - **Prior contracts.** Has the seller promised exclusivity, source code escrow or a license to anyone else?
 
-The [intellectual property and access diligence article](/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/) covers the same questions from the seller's side and is a useful companion.
+The <MaybeLink path="/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/">intellectual property and access diligence article</MaybeLink> covers the same questions from the seller's side and is a useful companion.
 
 ## Check two: does the product work the way it is described
 
@@ -78,7 +80,7 @@ You may not be able to judge code yourself, and that is normal. It does not remo
 - **Get an independent technical review.** Someone who is not paid by the seller should look at the repository, the deployment, the test coverage, the cost of running it and how hard it is to change. Ask the reviewer what the review will cover, what it will not, and how long it will take.
 - **See it run.** Ask for access to a staging copy or a screen-share of the live system, and ask what happens when something breaks.
 - **Look for single points of failure.** If one person holds every password, knows every workaround and answers every message, the product depends on that person. Ask what the seller is willing to do after closing, for how long and on what terms, in writing.
-- **Review security.** A short pass against a baseline such as the [security baseline checklist](/library/security-baseline-checklist/) will show whether basic protections exist.
+- **Review security.** A short pass against a baseline such as the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> will show whether basic protections exist.
 
 ## Check three: are the customers and revenue real
 
@@ -115,7 +117,7 @@ A purchase of a business has paperwork beyond the contract.
 7. Ask counsel and a tax adviser to review the deal documents.
 8. Agree a handover plan in writing.
 
-Compare this path with building: the article on [building versus buying common components](/insights/build-versus-buy-for-auth-billing-and-email/) sets out how to think about the same trade at the component level.
+Compare this path with building: the article on <MaybeLink path="/insights/build-versus-buy-for-auth-billing-and-email/">building versus buying common components</MaybeLink> sets out how to think about the same trade at the component level.
 
 ## What this article cannot tell you
 
