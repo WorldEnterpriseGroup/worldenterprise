@@ -1,10 +1,17 @@
+import { AUDIENCE_LINKS } from '../../data/cta/audiences.ts';
+import { DESK_DEFINITIONS, deskPath } from '../../data/desks.ts';
+import { familyLabel, FAMILIES } from '../../data/families.ts';
 import type { FooterColumn, NavLink, PrimaryNavItem } from '../../data/nav.ts';
+import { routes } from '../../data/routes.ts';
+import { FAMILY_LABELS } from '../geo/llms-plan.ts';
 
 /**
  * The command palette's list (docs/wave7-contracts.md section 4). Pure and free of Astro globals so node --test can run it:
  * the live-route predicate is passed in, the same one resolveNav() takes, so a route without a page never reaches the palette.
  *
- * Everything here is derived from src/data/nav.ts. Nothing is typed by hand in a component.
+ * Everything here is derived from src/data/nav.ts and from the registries (the page families, the insight desks, the audience doors and the
+ * tool routes of the ledger), so a new family page, desk or tool appears with no edit here, and only while its route is live.
+ * Articles are not listed: there are over a hundred, and they come from the Pagefind index when the visitor types.
  */
 export interface PaletteCommand {
   readonly label: string;
@@ -23,6 +30,21 @@ export interface CommandSources {
 
 const START_GROUP = 'Start here';
 const SITE_GROUP = 'Site';
+const AUDIENCE_GROUP = 'Who it is for';
+const DESK_GROUP = 'Insight desks';
+const TOOLS_GROUP = 'Tools';
+
+/** "runway-calculator" to "Runway calculator": the label of a tool route that the navigation does not name. */
+export function toolLabel(path: string): string {
+  const slug = path.split('/').filter((part) => part !== '').at(-1) ?? '';
+  const words = slug.replace(/-/g, ' ').trim();
+  return words === '' ? '' : `${words.charAt(0).toUpperCase()}${words.slice(1)}`;
+}
+
+/** The tool pages of the route ledger (not the hub), in ledger order. */
+function toolRoutes(): readonly string[] {
+  return routes.filter((row) => row.layout === 'ToolLayout' && row.path.startsWith('/tools/') && row.path !== '/tools/' && isPaletteRoute(row.path)).map((row) => row.path);
+}
 
 /** A route the palette can open: a site-relative path with a trailing slash. Files such as /rss.xml are not routes. */
 export function isPaletteRoute(href: string): boolean {
@@ -58,6 +80,17 @@ export function buildPaletteCommands(sources: CommandSources, isLive: (href: str
     for (const column of item.columns) for (const link of column.links) add(link.label, link.href, item.label, link.description);
     for (const link of item.strip) add(link.label, link.href, item.label, link.description);
   }
+
+  // The registries. Each add() is checked against isLive, so a page that is not built is never listed; a path the navigation already
+  // named keeps its place there. A family entry is listed by its label alone (a blocked word never reaches a page-name list).
+  for (const link of AUDIENCE_LINKS) add(link.label, link.href, AUDIENCE_GROUP, link.text);
+  for (const family of FAMILIES) {
+    const group = FAMILY_LABELS[family.id];
+    if (family.hub !== undefined) add(group, family.hub.path, group);
+    for (const entry of family.entries) if (entry.launch) add(familyLabel(entry), entry.path, group);
+  }
+  for (const desk of DESK_DEFINITIONS) add(desk.name, deskPath(desk.id), DESK_GROUP, desk.blurb);
+  for (const path of toolRoutes()) add(toolLabel(path), path, TOOLS_GROUP);
 
   for (const link of sources.utility) add(link.label, link.href, SITE_GROUP, link.description);
   for (const column of sources.footer) for (const link of column.links) add(link.label, link.href, column.heading, link.description);
