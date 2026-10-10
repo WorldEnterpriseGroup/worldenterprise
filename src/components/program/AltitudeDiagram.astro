@@ -169,6 +169,12 @@ const { labelledby } = Astro.props;
     }
 
     @media (forced-colors: active) {
+      .altitude__hex {
+        forced-color-adjust: none;
+        background: ButtonText;
+        color: ButtonFace;
+      }
+
       .altitude ol::after {
         forced-color-adjust: none;
         background: CanvasText;
