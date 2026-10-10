@@ -1,0 +1,105 @@
+---
+title: "Writing down how a remote team works: a team handbook"
+seoTitle: Writing a remote team handbook
+description: "What to put in a short handbook for a remote team: hours, channels, decisions, devices and time off, with public guidance on security and flexible working."
+topic: team
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [solo-founders, global-remote-founders]
+related: [onboarding-a-new-team-member-what-to-prepare-before-day-one, offer-letters-what-they-should-state, hiring-across-borders-employees-contractors-and-employers-of-record]
+evidence: [nist-sp-800-46r2, govuk-flexible-working]
+relatedServices: [D]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: nist-sp-800-46r2
+    title: SP 800-46 Rev. 2, Guide to Enterprise Telework, Remote Access, and Bring Your Own Device (BYOD) Security
+    publisher: National Institute of Standards and Technology
+    url: https://csrc.nist.gov/pubs/sp/800/46/r2/final
+    accessed: 2026-10-10
+  - id: govuk-flexible-working
+    title: Flexible working
+    publisher: GOV.UK
+    url: https://www.gov.uk/flexible-working
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal advice. Written October 10, 2026. A handbook can create obligations under local employment law, and those rules differ by country, so have an adviser licensed where your people work review anything you plan to call policy.*
+
+In an office, a lot of how the company works is learned by watching. Where to ask a question, when it is fine to be away, who decides what: a new person absorbs it in a week. On a remote team, none of that is visible. If it is not written down, each person invents their own version, and the differences surface as friction months later. A founder who works alone, or with one other person, tends to put this off because everything is in their head. The first hire is the moment it stops being enough.
+
+This article describes a short handbook for a small remote team: what to put in it, what to leave out, how public guidance on security and flexible working bears on it, and how to keep it alive. It is a writing guide, not a policy template, and it is not legal review.
+
+## What a handbook is for
+
+A handbook answers the questions a new person would otherwise ask you one by one, and the questions a person on the other side of the world cannot ask at the moment they need the answer. It has three jobs. It tells people how the team works so they can act without waiting. It gives you something to point to when two people remember an arrangement differently. And it forces you to decide things you have only been assuming.
+
+It is not a rulebook, and it is not the contract. An offer letter and any employment agreement carry the legal terms, as <MaybeLink path="/insights/offer-letters-what-they-should-state/">offer letters</MaybeLink> describes. The handbook describes habits. If a handbook sentence and a contract disagree, the disagreement is a problem, so write habits and not promises.
+
+## Keep it short and in one place
+
+Aim for a document a person can read in one sitting, kept somewhere every teammate can find without asking you. A dozen pages is more than a small team needs. People who must search through a long document to find the answer will ask you instead, and the handbook has failed.
+
+Write it in plain sentences about what happens, not in the language of regulation. "Post a short update in the team channel at the end of your day" is better than "employees shall provide daily status communications."
+
+## What to put in it
+
+Six topics cover most of what a small remote team needs. The table lists them with the question each one answers.
+
+<DataTable
+  caption="Six sections for a small remote team's handbook"
+  columns={['Section', 'Question it answers', 'What to decide first']}
+  rows={[
+    ['Hours and availability', 'When can I expect to reach people, and when are they away?', 'Whether there is a window of shared hours, and what happens outside it'],
+    ['Channels and replies', 'Where do I post what, and how fast should I expect an answer?', 'Which channel is for what, and what counts as urgent'],
+    ['Decisions', 'Who decides, and how do I find out what was decided?', 'Where decisions are recorded and who may make them alone'],
+    ['Devices and access', 'What may I use, and how must I protect it?', 'Whether people use their own devices, and what is required of them'],
+    ['Time off and flexibility', 'How do I ask, and who is told?', 'How requests are made and who answers them'],
+    ['Working with customers', 'What may I say, and who speaks for the company?', 'Who owns each customer relationship']
+  ]}
+/>
+
+### Hours, channels and replies
+
+For a team spread across time zones, availability is the section that prevents the most friction. State the hours when a person is generally reachable, in each person's own time zone, and state what the team does with the hours that do not overlap. Say which channel carries which kind of message, and what a reasonable reply time looks like for each. A reply expected by the end of the next working day is a different request from one needed within the hour, and people cannot tell which you mean unless you say.
+
+<MaybeLink path="/insights/an-operating-rhythm-for-a-remote-offshore-team/">An operating rhythm for a remote offshore team</MaybeLink> describes the recurring meetings and written updates that carry this across time zones. The handbook is where the result of those choices is written down so a newcomer does not have to infer it.
+
+### Decisions
+
+Write down who decides what, in a sentence each. "Product priorities are set by the founder after the weekly review" is enough. Add where a decision is recorded, for example a dated note in a shared folder. A remote team without a place for decisions finds that the same question is answered twice in two channels.
+
+### Devices and access
+
+If people work from home, the handbook is the natural place to say what they must do to protect company data. Public guidance gives a sense of what such a section addresses. NIST, the US standards agency, says in its guide to enterprise telework, remote access and bring your own device security that all components of these technologies, including organization-issued and bring your own device (BYOD) client devices, should be secured against expected threats as identified through threat models. The publication also gives advice on creating related security policies. It is written for large organizations, and a small team does not need its full detail, but it shows that device policy is something to decide deliberately.
+
+Data protection regulators publish guidance on home working as well, and the rules differ by country. If your people handle other people's personal data, ask your adviser what your obligations are where you and they operate, and write the practical result into the handbook.
+
+At a minimum, a short section can say which accounts people use for company work, whether personal devices are allowed, what must be switched on to protect a device, and whom to tell if one is lost.
+
+### Time off and flexible working
+
+Rules about leave and flexible working differ widely. As an example of one national rule, the UK government says all employees have the legal right to request flexible working, and that employees can make a request for flexible working from their first day in a job. Its page describes flexible working as including having flexible start and finish times, or working from home. That is a UK rule and an example of how a legal right can shape a handbook. If you employ someone there, or anywhere else, ask your adviser what applies and how requests must be handled.
+
+Write down how a person asks for time away, whom they tell, and how the calendar shows it. Keep the statement of what the law requires out of the handbook unless an adviser has reviewed it, since a wrong statement is worse than none.
+
+## What to leave out
+
+A handbook should not repeat the law, promise outcomes or set rules you do not plan to follow. It should not list consequences you have not thought through. It should not contain anything you would be uncomfortable showing a person who was upset with you. If you are unsure whether a sentence belongs, ask whether it describes how the team actually works. If not, cut it or change the behavior.
+
+## How to keep it alive
+
+A handbook that is never updated becomes a document nobody trusts. Give it an owner, put a review date on the first page, and change it whenever a habit changes. Invite the team to correct it. People who work remotely often see gaps before you do, because they are the ones who hit them. Keep a list of changes at the top so the team can see what moved.
+
+The best test is a new person's first week. <MaybeLink path="/insights/onboarding-a-new-team-member-what-to-prepare-before-day-one/">Onboarding a new team member</MaybeLink> describes what to prepare, and the handbook should be the first thing they read. Note every question they ask that it should have answered, and add it. If you are still deciding on a first hire, <MaybeLink path="/insights/your-first-hire-what-to-settle-before-you-write-the-job/">your first hire</MaybeLink> covers what to settle before you write the job, and if the person will work abroad, <MaybeLink path="/insights/hiring-across-borders-employees-contractors-and-employers-of-record/">hiring across borders</MaybeLink> lists the questions to ask an adviser. The <MaybeLink path="/glossary/">glossary</MaybeLink> defines shared terms.
+
+<Callout title="A starting outline">
+  Page one: what the team does and who is on it. Then hours and time zones, channels and replies, how decisions are recorded, devices and access, time off, and who to ask. Finish with the date of the last review and the name of the owner.
+</Callout>
+
+## What this article cannot tell you
+
+This article cannot tell you what your handbook must say, which rules apply to your people, or whether a particular sentence creates a legal obligation. It draws on two public pages read on October 10, 2026: a US standards publication on telework security and a UK government page on flexible working. The UK page describes a UK rule and is an example, not guidance for other countries. It does not cover monitoring of employees, disciplinary procedures, expenses, data protection law in your jurisdiction, or the security controls your own systems need. Ask a qualified adviser before you adopt any rule as policy.

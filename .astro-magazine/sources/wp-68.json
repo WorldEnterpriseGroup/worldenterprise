@@ -1,0 +1,1202 @@
+{
+  "wp": "WP-68",
+  "note": "Fetches are the primary government, regulator, standards-body and legal-information pages cited by the nine team-desk articles, all fetched on 2026-10-10 with WebFetch (one URL per call). Each quote is a contiguous fragment WebFetch returned inside quotation marks for that page. Fetches that returned 403 or 404 (the California Labor Code page, one EEOC guidance URL, two OPM pages, one ICO page, one DIR page, one GOV.UK page) were dropped with the sentences they would have supported. The topic-team desk page is a sentences-only document.",
+  "fetches": [
+    {
+      "id": "irs-contractor-or-employee",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee",
+      "title": "Independent contractor (self-employed) or employee?",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T11:32:56Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-employment-status",
+      "url": "https://www.gov.uk/employment-status",
+      "title": "Employment status",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:33:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dol-fact-sheet-13",
+      "url": "https://www.dol.gov/agencies/whd/fact-sheets/13-flsa-employment-relationship",
+      "title": "Fact Sheet #13: Employment relationship under the Fair Labor Standards Act (FLSA)",
+      "publisher": "U.S. Department of Labor, Wage and Hour Division",
+      "fetchedAt": "2026-10-10T11:33:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-self-employed-contractor",
+      "url": "https://www.gov.uk/employment-status/selfemployed-contractor",
+      "title": "Employment status, self-employed and contractor",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:34:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-employee",
+      "url": "https://www.gov.uk/employment-status/employee",
+      "title": "Employment status, employee",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:34:15Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-hiring-employees",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/hiring-employees",
+      "title": "Hiring employees",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T11:34:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "uscis-i9",
+      "url": "https://www.uscis.gov/i-9",
+      "title": "Form I-9, Employment Eligibility Verification",
+      "publisher": "U.S. Citizenship and Immigration Services",
+      "fetchedAt": "2026-10-10T11:34:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dir-ca-contractor-faq",
+      "url": "https://www.dir.ca.gov/dlse/faq_independentcontractor.htm",
+      "title": "Independent contractor frequently asked questions",
+      "publisher": "California Department of Industrial Relations",
+      "fetchedAt": "2026-10-10T11:35:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eeoc-prohibited-practices",
+      "url": "https://www.eeoc.gov/prohibited-employment-policiespractices",
+      "title": "Prohibited employment policies and practices",
+      "publisher": "U.S. Equal Employment Opportunity Commission",
+      "fetchedAt": "2026-10-10T11:35:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eeoc-reasonable-accommodation",
+      "url": "https://www.eeoc.gov/laws/guidance/enforcement-guidance-reasonable-accommodation-and-undue-hardship-under-ada",
+      "title": "Enforcement guidance on reasonable accommodation and undue hardship under the ADA",
+      "publisher": "U.S. Equal Employment Opportunity Commission",
+      "fetchedAt": "2026-10-10T11:35:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "digital-gov-plain-language",
+      "url": "https://digital.gov/guides/plain-language",
+      "title": "Plain language",
+      "publisher": "Digital.gov, U.S. General Services Administration",
+      "fetchedAt": "2026-10-10T11:35:45Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-29-1630-2",
+      "url": "https://www.law.cornell.edu/cfr/text/29/1630.2",
+      "title": "29 CFR 1630.2, Definitions (Americans with Disabilities Act regulations)",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T11:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "opm-structured-interviews",
+      "url": "https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews/",
+      "title": "Structured interviews",
+      "publisher": "U.S. Office of Personnel Management",
+      "fetchedAt": "2026-10-10T11:36:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eeoc-disability-inquiries",
+      "url": "https://www.eeoc.gov/laws/guidance/enforcement-guidance-disability-related-inquiries-and-medical-examinations-employees",
+      "title": "Enforcement guidance on disability-related inquiries and medical examinations of employees under the ADA",
+      "publisher": "U.S. Equal Employment Opportunity Commission",
+      "fetchedAt": "2026-10-10T11:36:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "lii-at-will",
+      "url": "https://www.law.cornell.edu/wex/at-will_employment",
+      "title": "At-will employment",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T11:37:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-written-statement",
+      "url": "https://www.gov.uk/employment-contracts-and-conditions/written-statement-of-employment-particulars",
+      "title": "Written statement of employment particulars",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:37:05Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dol-fact-sheet-17a",
+      "url": "https://www.dol.gov/agencies/whd/fact-sheets/17a-overtime",
+      "title": "Fact Sheet #17A: Exemption for executive, administrative, professional, computer and outside sales employees under the FLSA",
+      "publisher": "U.S. Department of Labor, Wage and Hour Division",
+      "fetchedAt": "2026-10-10T11:37:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-w8ben",
+      "url": "https://www.irs.gov/instructions/iw8ben",
+      "title": "Instructions for Form W-8BEN",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T11:37:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-right-to-work",
+      "url": "https://www.gov.uk/check-job-applicant-right-to-work",
+      "title": "Check if someone can work for you in the UK",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:37:35Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-tc427",
+      "url": "https://www.irs.gov/taxtopics/tc427",
+      "title": "Topic no. 427, Stock options",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T11:37:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-26-422",
+      "url": "https://www.law.cornell.edu/uscode/text/26/422",
+      "title": "26 U.S. Code 422, Incentive stock options",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T11:37:55Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-26-1-409a-1",
+      "url": "https://www.law.cornell.edu/cfr/text/26/1.409A-1",
+      "title": "26 CFR 1.409A-1, Definitions and covered plans",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T11:38:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-flexible-working",
+      "url": "https://www.gov.uk/flexible-working",
+      "title": "Flexible working",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:38:45Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-sp-800-46r2",
+      "url": "https://csrc.nist.gov/pubs/sp/800/46/r2/final",
+      "title": "SP 800-46 Rev. 2, Guide to Enterprise Telework, Remote Access, and Bring Your Own Device (BYOD) Security",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T11:38:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/content/insights/team/contractors-and-employees-the-classification-tests.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "a worker may be an employee under the Fair Labor Standards Act regardless of the title or label they are given",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test, titles and labels",
+          "quote": "a worker may be an employee under the FLSA regardless of the title or label they are given."
+        },
+        {
+          "id": "A2",
+          "sentence": "what the worker is called is not relevant",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test, titles and labels",
+          "quote": "What the worker is called is not relevant"
+        },
+        {
+          "id": "A3",
+          "sentence": "the goal of its test is to decide if the worker is economically dependent on the employer for work",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test",
+          "quote": "The goal of the test is to decide if the worker is economically dependent on the employer for work"
+        },
+        {
+          "id": "A4",
+          "sentence": "does the company control or have the right to control what the worker does and how the worker does the job?",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Behavioral",
+          "quote": "Does the company control or have the right to control what the worker does and how the worker does his or her job?"
+        },
+        {
+          "id": "A5",
+          "sentence": "are the business aspects of the worker's job controlled by the payer?",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Financial",
+          "quote": "Are the business aspects of the worker’s job controlled by the payer?"
+        },
+        {
+          "id": "A6",
+          "sentence": "are there written contracts or employee-type benefits such as a pension plan, insurance or vacation pay?",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Type of relationship",
+          "quote": "Are there written contracts or employee type benefits (that is, pension plan, insurance, vacation pay, etc.)?"
+        },
+        {
+          "id": "A7",
+          "sentence": "the keys are to look at the entire relationship and to consider the extent of the right to direct and control the worker",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Summary of the three categories",
+          "quote": "The keys are to look at the entire relationship and consider the extent of the right to direct and control the worker."
+        },
+        {
+          "id": "A8",
+          "sentence": "if it is still unclear whether a worker is an employee or an independent contractor",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Form SS-8",
+          "quote": "If it is still unclear whether a worker is an employee or an independent contractor"
+        },
+        {
+          "id": "A9",
+          "sentence": "a business may consider submitting Form SS-8 to the IRS",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Form SS-8",
+          "quote": "you may consider submitting a Form SS-8"
+        },
+        {
+          "id": "A10",
+          "sentence": "the economic reality test uses multiple factors to see if an employment relationship exists",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test",
+          "quote": "The economic reality test uses multiple factors to see if an employment relationship exists under the FLSA"
+        },
+        {
+          "id": "A11",
+          "sentence": "Opportunity for profit or loss",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 1",
+          "quote": "Opportunity for profit or loss depending on managerial skill,"
+        },
+        {
+          "id": "A12",
+          "sentence": "What has the worker invested, compared with the investment of the business that uses the work?",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 2",
+          "quote": "Investments by the worker and the employer,"
+        },
+        {
+          "id": "A13",
+          "sentence": "Is the relationship open-ended or tied to a defined project?",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 3",
+          "quote": "Permanence of the work relationship,"
+        },
+        {
+          "id": "A14",
+          "sentence": "Nature and degree of control",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 4",
+          "quote": "Nature and degree of control,"
+        },
+        {
+          "id": "A15",
+          "sentence": "Is the work part of what the business itself does?",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 5",
+          "quote": "Whether the work performed is integral to the employer's business, and"
+        },
+        {
+          "id": "A16",
+          "sentence": "Skill and initiative",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 6",
+          "quote": "Skill and initiative."
+        },
+        {
+          "id": "A17",
+          "sentence": "no single factor determines a worker's status",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test",
+          "quote": "No single factor determines a worker’s status"
+        },
+        {
+          "id": "A18",
+          "sentence": "the totality of the circumstances of the working relationship should be considered",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test",
+          "quote": "Instead, the totality of the circumstances of the working relationship should be considered."
+        },
+        {
+          "id": "A19",
+          "sentence": "revised in March 2024",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Revision note",
+          "quote": "Revised March 2024"
+        },
+        {
+          "id": "A20",
+          "sentence": "it calls the legality of the 2024 rule the subject of current litigation",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Status note",
+          "quote": "the legality of which is the subject of current litigation."
+        },
+        {
+          "id": "A21",
+          "sentence": "Field Assistance Bulletin 2025-1, dated May 1, 2025",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Status note",
+          "quote": "Please see Field Assistance Bulletin 2025-1 (May 1, 2025) regarding the Wage and Hour Division’s"
+        },
+        {
+          "id": "A22",
+          "sentence": "on February 26, 2026 the Department announced a notice of proposed rulemaking",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Status note",
+          "quote": "On February 26, 2026, the U.S. Department of Labor (Department) announced a Notice of Proposed Rulemaking (NPRM)"
+        },
+        {
+          "id": "A23",
+          "sentence": "with comments due by April 28, 2026",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Status note",
+          "quote": "by the end of the comment period at 11:59 ET on April 28, 2026."
+        },
+        {
+          "id": "A24",
+          "sentence": "a worker is considered an employee and not an independent contractor",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test",
+          "quote": "Under the ABC test, a worker is considered an employee and not an independent contractor,"
+        },
+        {
+          "id": "A25",
+          "sentence": "unless the hiring entity satisfies all three of its conditions",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test",
+          "quote": "unless the hiring entity satisfies all three of the following conditions:"
+        },
+        {
+          "id": "A26",
+          "sentence": "the worker is free from the control and direction of the hiring entity in connection with the performance of the work",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test, condition A",
+          "quote": "The worker is free from the control and direction of the hiring entity in connection with the performance of the work"
+        },
+        {
+          "id": "A27",
+          "sentence": "the worker performs work that is outside the usual course of the hiring entity's business",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test, condition B",
+          "quote": "performs work that is outside the usual course of the hiring entity's business"
+        },
+        {
+          "id": "A28",
+          "sentence": "the worker is customarily engaged in an independently established trade, occupation or business",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test, condition C",
+          "quote": "is customarily engaged in an independently established trade, occupation, or business"
+        },
+        {
+          "id": "A29",
+          "sentence": "it starts from the position that the worker is an employee",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test",
+          "quote": "Under the ABC test, a worker is considered an employee and not an independent contractor,"
+        },
+        {
+          "id": "A30",
+          "sentence": "the main types of employment status as worker, employee, and self-employed and contractor",
+          "kind": "regulation",
+          "sourceId": "govuk-employment-status",
+          "locator": "Types of employment status",
+          "quote": "The main types of employment status are:"
+        },
+        {
+          "id": "A31",
+          "sentence": "an employee as someone who works under an employment contract",
+          "kind": "regulation",
+          "sourceId": "govuk-employee",
+          "locator": "Employee",
+          "quote": "An employee is someone who works under an employment contract."
+        },
+        {
+          "id": "A32",
+          "sentence": "workers are entitled to most types of statutory pay, but only employees get statutory pay and leave",
+          "kind": "regulation",
+          "sourceId": "govuk-employee",
+          "locator": "Employee",
+          "quote": "For example, workers are entitled to most types of statutory pay, but only employees get statutory pay and leave."
+        },
+        {
+          "id": "A33",
+          "sentence": "a person is self-employed if they run their business for themselves and take responsibility for its success or failure",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed",
+          "quote": "A person is self-employed if they run their business for themselves and take responsibility for its success or failure."
+        },
+        {
+          "id": "A34",
+          "sentence": "Someone is probably self-employed if they are self-employed for tax purposes and most of the following are true",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "Someone is probably self-employed if they’re self-employed for tax purposes and most of the following are true:"
+        },
+        {
+          "id": "A35",
+          "sentence": "they put in bids or give quotes to get work",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they put in bids or give quotes to get work"
+        },
+        {
+          "id": "A36",
+          "sentence": "they are not under direct supervision when working",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they’re not under direct supervision when working"
+        },
+        {
+          "id": "A37",
+          "sentence": "they submit invoices",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they submit invoices for the work they’ve done"
+        },
+        {
+          "id": "A38",
+          "sentence": "they are responsible for their own National Insurance and tax",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they’re responsible for paying their own National Insurance and tax"
+        },
+        {
+          "id": "A39",
+          "sentence": "they do not get holiday or sick pay when they are not working",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they do not get holiday or sick pay when they’re not working"
+        },
+        {
+          "id": "A40",
+          "sentence": "courts and tribunals can make final decisions on employment status",
+          "kind": "regulation",
+          "sourceId": "govuk-employment-status",
+          "locator": "Decisions",
+          "quote": "Courts and tribunals can make final decisions on employment status."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/hiring-across-borders-employees-contractors-and-employers-of-record.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "an employee is someone who works under an employment contract",
+          "kind": "regulation",
+          "sourceId": "govuk-employee",
+          "locator": "Employee",
+          "quote": "An employee is someone who works under an employment contract."
+        },
+        {
+          "id": "A2",
+          "sentence": "a person is self-employed if they run their business for themselves and take responsibility for its success or failure",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed",
+          "quote": "A person is self-employed if they run their business for themselves and take responsibility for its success or failure."
+        },
+        {
+          "id": "A3",
+          "sentence": "workers are entitled to most types of statutory pay, but only employees get statutory pay and leave",
+          "kind": "regulation",
+          "sourceId": "govuk-employee",
+          "locator": "Employee",
+          "quote": "For example, workers are entitled to most types of statutory pay, but only employees get statutory pay and leave."
+        },
+        {
+          "id": "A4",
+          "sentence": "you must check that a job applicant is allowed to work for you in the UK before you employ them",
+          "kind": "regulation",
+          "sourceId": "govuk-right-to-work",
+          "locator": "Before you employ",
+          "quote": "You must check that a job applicant is allowed to work for you in the UK before you employ them."
+        },
+        {
+          "id": "A5",
+          "sentence": "you could face a civil penalty if you employ an illegal worker and have not carried out a correct right to work check",
+          "kind": "regulation",
+          "sourceId": "govuk-right-to-work",
+          "locator": "Civil penalty",
+          "quote": "You could face a civil penalty if you employ an illegal worker and have not carried out a correct right to work check."
+        },
+        {
+          "id": "A6",
+          "sentence": "if you receive certain types of income, you must provide it",
+          "kind": "regulation",
+          "sourceId": "irs-w8ben",
+          "locator": "Who must provide",
+          "quote": "If you receive certain types of income, you must provide Form W-8BEN to:"
+        },
+        {
+          "id": "A7",
+          "sentence": "to establish that you are not a U.S. person",
+          "kind": "regulation",
+          "sourceId": "irs-w8ben",
+          "locator": "Who must provide",
+          "quote": "Establish that you are not a U.S. person;"
+        },
+        {
+          "id": "A8",
+          "sentence": "provide Form W-8BEN to the withholding agent or payer before income is paid or credited to you",
+          "kind": "regulation",
+          "sourceId": "irs-w8ben",
+          "locator": "When to provide",
+          "quote": "Provide Form W-8BEN to the withholding agent or payer before income is paid or credited to you."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/your-first-hire-what-to-settle-before-you-write-the-job.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "An employer must verify the identity and employment authorization of individuals hired for employment in the United States",
+          "kind": "regulation",
+          "sourceId": "irs-hiring-employees",
+          "locator": "Verify eligibility to work",
+          "quote": "Employer must verify the identity and employment authorization of individuals hired for employment in the United States."
+        },
+        {
+          "id": "A2",
+          "sentence": "all US employers must properly complete Form I-9 for every individual they hire for employment in the United States",
+          "kind": "regulation",
+          "sourceId": "uscis-i9",
+          "locator": "Form I-9 overview",
+          "quote": "All U.S. employers must properly complete Form I-9 for every individual they hire for employment in the United States."
+        },
+        {
+          "id": "A3",
+          "sentence": "you are required to get each employee's name and Social Security number and to enter them on Form W-2",
+          "kind": "regulation",
+          "sourceId": "irs-hiring-employees",
+          "locator": "Get each employee's SSN",
+          "quote": "You are required to get each employee's name and Social Security number (SSN) and to enter them on Form W-2."
+        },
+        {
+          "id": "A4",
+          "sentence": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee",
+          "kind": "regulation",
+          "sourceId": "irs-hiring-employees",
+          "locator": "Keep a Form W-4 on file",
+          "quote": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/writing-down-how-a-remote-team-works-a-team-handbook.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "all components of these technologies, including organization-issued and bring your own device (BYOD) client devices",
+          "kind": "paraphrase",
+          "sourceId": "nist-sp-800-46r2",
+          "locator": "Abstract",
+          "quote": "All components of these technologies, including organization-issued and bring your own device (BYOD) client devices"
+        },
+        {
+          "id": "A2",
+          "sentence": "should be secured against expected threats as identified through threat models",
+          "kind": "paraphrase",
+          "sourceId": "nist-sp-800-46r2",
+          "locator": "Abstract",
+          "quote": "should be secured against expected threats as identified through threat models."
+        },
+        {
+          "id": "A3",
+          "sentence": "gives advice on creating related security policies",
+          "kind": "paraphrase",
+          "sourceId": "nist-sp-800-46r2",
+          "locator": "Abstract",
+          "quote": "It also gives advice on creating related security policies."
+        },
+        {
+          "id": "A4",
+          "sentence": "all employees have the legal right to request flexible working",
+          "kind": "regulation",
+          "sourceId": "govuk-flexible-working",
+          "locator": "Your right",
+          "quote": "All employees have the legal right to request flexible working."
+        },
+        {
+          "id": "A5",
+          "sentence": "employees can make a request for flexible working from their first day in a job",
+          "kind": "regulation",
+          "sourceId": "govuk-flexible-working",
+          "locator": "Your right",
+          "quote": "Employees can make a request for flexible working from their first day in a job."
+        },
+        {
+          "id": "A6",
+          "sentence": "having flexible start and finish times, or working from home",
+          "kind": "regulation",
+          "sourceId": "govuk-flexible-working",
+          "locator": "What it can include",
+          "quote": "for example having flexible start and finish times, or working from home."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/structured-interviews-for-a-small-team.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "an assessment method designed to measure job-related competencies of candidates",
+          "kind": "definition",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Definition",
+          "quote": "A structured interview is an assessment method designed to measure job-related competencies of candidates"
+        },
+        {
+          "id": "A2",
+          "sentence": "by systematically inquiring about their behavior in past experiences and/or their proposed behavior in hypothetical situations",
+          "kind": "definition",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Definition",
+          "quote": "by systematically inquiring about their behavior in past experiences and/or their proposed behavior"
+        },
+        {
+          "id": "A3",
+          "sentence": "all candidates are asked the same predetermined questions in the same order",
+          "kind": "definition",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Same questions",
+          "quote": "All candidates are asked the same predetermined questions in the same order"
+        },
+        {
+          "id": "A4",
+          "sentence": "all responses are evaluated using the same rating scale and standards for acceptable answers",
+          "kind": "definition",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Standardized scoring",
+          "quote": "All responses are evaluated using the same rating scale and standards for acceptable answers"
+        },
+        {
+          "id": "A5",
+          "sentence": "structured interviews ensure candidates have equal opportunities to provide information",
+          "kind": "paraphrase",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Equal opportunity",
+          "quote": "structured interviews ensure candidates have equal opportunities to provide information"
+        },
+        {
+          "id": "A6",
+          "sentence": "are assessed accurately and consistently",
+          "kind": "paraphrase",
+          "sourceId": "opm-structured-interviews",
+          "locator": "Equal opportunity",
+          "quote": "are assessed accurately and consistently."
+        },
+        {
+          "id": "A7",
+          "sentence": "employers are explicitly prohibited from making pre-offer inquiries about disability",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Pre-employment inquiries",
+          "quote": "Employers are explicitly prohibited from making pre-offer inquiries about disability."
+        },
+        {
+          "id": "A8",
+          "sentence": "at the first stage, before an offer of employment, the ADA prohibits all disability-related inquiries and medical examinations, even if they are related to the job",
+          "kind": "regulation",
+          "sourceId": "eeoc-disability-inquiries",
+          "locator": "Background, general principles A",
+          "quote": "the ADA prohibits all disability-related inquiries and medical examinations, even if they are related to the job."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/writing-a-job-description-people-can-answer.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "the Plain Writing Act of 2010 established the requirement that content for the public is written for its specific audience",
+          "kind": "regulation",
+          "sourceId": "digital-gov-plain-language",
+          "locator": "Plain Writing Act paragraph",
+          "quote": "The Plain Writing Act of 2010 established the requirement that content for the public is written for its specific audience."
+        },
+        {
+          "id": "A2",
+          "sentence": "evidence of whether a particular function is essential includes, but is not limited to, a set of items that begins with the employer's judgment as to which functions are essential",
+          "kind": "regulation",
+          "sourceId": "cfr-29-1630-2",
+          "locator": "(n)(3)",
+          "quote": "Evidence of whether a particular function is essential includes, but is not limited to:"
+        },
+        {
+          "id": "A3",
+          "sentence": "the employer's judgment as to which functions are essential",
+          "kind": "regulation",
+          "sourceId": "cfr-29-1630-2",
+          "locator": "(n)(3)(i)",
+          "quote": "The employer's judgment as to which functions are essential;"
+        },
+        {
+          "id": "A4",
+          "sentence": "written job descriptions prepared before advertising or interviewing applicants for the job",
+          "kind": "regulation",
+          "sourceId": "cfr-29-1630-2",
+          "locator": "(n)(3)(ii)",
+          "quote": "Written job descriptions prepared before advertising or interviewing applicants for the job;"
+        },
+        {
+          "id": "A5",
+          "sentence": "EEOC guidance describes an essential function as a fundamental duty of the position",
+          "kind": "regulation",
+          "sourceId": "eeoc-reasonable-accommodation",
+          "locator": "General principles",
+          "quote": "An employer does not have to eliminate an essential function, i.e., a fundamental duty of the position."
+        },
+        {
+          "id": "A6",
+          "sentence": "it is illegal for an employer to publish a job advertisement that shows a preference for, or discourages someone from applying for a job because of, race, color, religion, sex, national origin, age or disability, or genetic information",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Job advertisements",
+          "quote": "It is illegal for an employer to publish a job advertisement that shows a preference for"
+        },
+        {
+          "id": "A7",
+          "sentence": "or discourages someone from applying for a job because of",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Job advertisements",
+          "quote": "or discourages someone from applying for a job because of his or her race, color, religion,"
+        },
+        {
+          "id": "A8",
+          "sentence": "age as 40 or older",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Job advertisements",
+          "quote": "age (40 or older), disability or genetic information."
+        },
+        {
+          "id": "A9",
+          "sentence": "includes transgender status, sexual orientation and pregnancy within sex",
+          "kind": "regulation",
+          "sourceId": "eeoc-prohibited-practices",
+          "locator": "Job advertisements",
+          "quote": "sex (including transgender status, sexual orientation, and pregnancy), national origin,"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/offer-letters-what-they-should-state.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "job titles do not determine exempt status",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-17a",
+          "locator": "Exemption tests",
+          "quote": "Job titles do not determine exempt status."
+        },
+        {
+          "id": "A2",
+          "sentence": "employees generally must meet certain tests regarding their job duties and be paid on a salary basis",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-17a",
+          "locator": "Exemption tests",
+          "quote": "employees generally must meet certain tests regarding their job duties and be paid on a salary basis"
+        },
+        {
+          "id": "A3",
+          "sentence": "all US employers must properly complete Form I-9 for every individual they hire for employment in the United States",
+          "kind": "regulation",
+          "sourceId": "uscis-i9",
+          "locator": "Form I-9 overview",
+          "quote": "All U.S. employers must properly complete Form I-9 for every individual they hire for employment in the United States."
+        },
+        {
+          "id": "A4",
+          "sentence": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee",
+          "kind": "regulation",
+          "sourceId": "irs-hiring-employees",
+          "locator": "Keep a Form W-4 on file",
+          "quote": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee."
+        },
+        {
+          "id": "A5",
+          "sentence": "at-will employment is an employment arrangement in which the employee may quit at any time",
+          "kind": "definition",
+          "sourceId": "lii-at-will",
+          "locator": "Definition",
+          "quote": "At-will employment is an employment arrangement in which the employee may quit at any time,"
+        },
+        {
+          "id": "A6",
+          "sentence": "the employer may fire the employee for any reason and at any point",
+          "kind": "definition",
+          "sourceId": "lii-at-will",
+          "locator": "Definition",
+          "quote": "the employer may fire the employee for any reason and at any point,"
+        },
+        {
+          "id": "A7",
+          "sentence": "so long as the dismissal isn't for an unlawful reason",
+          "kind": "definition",
+          "sourceId": "lii-at-will",
+          "locator": "Definition",
+          "quote": "so long as the dismissal isn't for an unlawful reason."
+        },
+        {
+          "id": "A8",
+          "sentence": "in 49 U.S. states, employment is presumed to be at-will if there is no express or implied employment agreement",
+          "kind": "regulation",
+          "sourceId": "lii-at-will",
+          "locator": "Variation by state",
+          "quote": "In 49 U.S. states, employment is presumed to be at-will if there is no express or implied employment agreement"
+        },
+        {
+          "id": "A9",
+          "sentence": "the only exception is Montana, which generally requires employers to have good cause",
+          "kind": "regulation",
+          "sourceId": "lii-at-will",
+          "locator": "Variation by state",
+          "quote": "The only exception is Montana, which generally requires employers to have good cause"
+        },
+        {
+          "id": "A10",
+          "sentence": "an employer must give employees and workers a document stating the main conditions of employment when they start work",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "When it must be given",
+          "quote": "An employer must give employees and workers a document stating the main conditions of employment when they start work."
+        },
+        {
+          "id": "A11",
+          "sentence": "the employer must provide the principal statement on the first day of employment",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "When it must be given",
+          "quote": "The employer must provide the principal statement on the first day of employment"
+        },
+        {
+          "id": "A12",
+          "sentence": "how much and how often an employee or worker will get paid",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "Principal statement",
+          "quote": "how much and how often an employee or worker will get paid"
+        },
+        {
+          "id": "A13",
+          "sentence": "hours and days of work and if and how they may vary",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "Principal statement",
+          "quote": "hours and days of work and if and how they may vary"
+        },
+        {
+          "id": "A14",
+          "sentence": "holiday entitlement",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "Principal statement",
+          "quote": "holiday entitlement"
+        },
+        {
+          "id": "A15",
+          "sentence": "notice periods",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "Principal statement",
+          "quote": "notice periods"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/onboarding-a-new-team-member-what-to-prepare-before-day-one.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "all US employers must properly complete Form I-9 for every individual they hire for employment in the United States",
+          "kind": "regulation",
+          "sourceId": "uscis-i9",
+          "locator": "Form I-9 overview",
+          "quote": "All U.S. employers must properly complete Form I-9 for every individual they hire for employment in the United States."
+        },
+        {
+          "id": "A2",
+          "sentence": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee",
+          "kind": "regulation",
+          "sourceId": "irs-hiring-employees",
+          "locator": "Keep a Form W-4 on file",
+          "quote": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee."
+        },
+        {
+          "id": "A3",
+          "sentence": "you must check that a job applicant is allowed to work for you in the UK before you employ them",
+          "kind": "regulation",
+          "sourceId": "govuk-right-to-work",
+          "locator": "Before you employ",
+          "quote": "You must check that a job applicant is allowed to work for you in the UK before you employ them."
+        },
+        {
+          "id": "A4",
+          "sentence": "an employer must give employees and workers a document stating the main conditions of employment when they start work",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "When it must be given",
+          "quote": "An employer must give employees and workers a document stating the main conditions of employment when they start work."
+        },
+        {
+          "id": "A5",
+          "sentence": "the employer must provide the principal statement on the first day of employment",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "When it must be given",
+          "quote": "The employer must provide the principal statement on the first day of employment"
+        },
+        {
+          "id": "A6",
+          "sentence": "employees can make a request for flexible working from their first day in a job",
+          "kind": "regulation",
+          "sourceId": "govuk-flexible-working",
+          "locator": "Your right",
+          "quote": "Employees can make a request for flexible working from their first day in a job."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/stock-options-for-early-employees-what-an-option-is-and-what-to-ask.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "options granted under an employee stock purchase plan or an incentive stock option (ISO) plan are statutory stock options",
+          "kind": "definition",
+          "sourceId": "irs-tc427",
+          "locator": "Two types of stock options",
+          "quote": "Options granted under an employee stock purchase plan or an incentive stock option (ISO) plan are statutory stock options."
+        },
+        {
+          "id": "A2",
+          "sentence": "stock options that are granted neither under an employee stock purchase plan nor an ISO plan are nonstatutory stock options",
+          "kind": "definition",
+          "sourceId": "irs-tc427",
+          "locator": "Two types of stock options",
+          "quote": "Stock options that are granted neither under an employee stock purchase plan nor an ISO plan are nonstatutory stock options."
+        },
+        {
+          "id": "A3",
+          "sentence": "there's no taxable event when the option is granted",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "When tax applies",
+          "quote": "there's no taxable event when the option is granted."
+        },
+        {
+          "id": "A4",
+          "sentence": "you must include in income the fair market value of the stock received on exercise",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "When tax applies",
+          "quote": "must include in income the fair market value of the stock received on exercise."
+        },
+        {
+          "id": "A5",
+          "sentence": "you have taxable income or deductible loss when you sell the stock you bought by exercising the option",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "When tax applies",
+          "quote": "You have taxable income or deductible loss when you sell the stock you bought by exercising the option."
+        },
+        {
+          "id": "A6",
+          "sentence": "you may be subject to alternative minimum tax in the year you exercise an ISO",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "Alternative minimum tax",
+          "quote": "However, you may be subject to alternative minimum tax in the year you exercise an ISO."
+        },
+        {
+          "id": "A7",
+          "sentence": "if you don't meet special holding period requirements, you'll have to treat income from the sale as ordinary income",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "Holding period",
+          "quote": "However, if you don't meet special holding period requirements, you'll have to treat income from the sale as ordinary income."
+        },
+        {
+          "id": "A8",
+          "sentence": "no disposition of such share is made by him within 2 years from the date of the granting of the option",
+          "kind": "regulation",
+          "sourceId": "usc-26-422",
+          "locator": "Subsection (a)(1)",
+          "quote": "no disposition of such share is made by him within 2 years from the date of the granting of the option"
+        },
+        {
+          "id": "A9",
+          "sentence": "a requirement of employment during the option period",
+          "kind": "paraphrase",
+          "sourceId": "usc-26-422",
+          "locator": "Subsection (a)(2)",
+          "quote": "such individual was an employee of either the corporation granting such option"
+        },
+        {
+          "id": "A10",
+          "sentence": "the option price is not less than the fair market value of the stock at the time such option is granted",
+          "kind": "regulation",
+          "sourceId": "usc-26-422",
+          "locator": "Subsection (b)(4)",
+          "quote": "the option price is not less than the fair market value of the stock at the time such option is granted"
+        },
+        {
+          "id": "A11",
+          "sentence": "a limit on how much can qualify in a year",
+          "kind": "paraphrase",
+          "sourceId": "usc-26-422",
+          "locator": "Subsection (d)",
+          "quote": "exceeds $100,000, such options shall be treated as options which are not incentive stock options"
+        },
+        {
+          "id": "A12",
+          "sentence": "its exercise price may never be less than the fair market value of the underlying stock",
+          "kind": "regulation",
+          "sourceId": "cfr-26-1-409a-1",
+          "locator": "(b)(5)(i)(A)",
+          "quote": "exercise price may never be less than the fair market value of the underlying stock"
+        },
+        {
+          "id": "A13",
+          "sentence": "a value determined by the reasonable application of a reasonable valuation method",
+          "kind": "regulation",
+          "sourceId": "cfr-26-1-409a-1",
+          "locator": "(b)(5)(iv)(B)(1)",
+          "quote": "a value determined by the reasonable application of a reasonable valuation method"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/insights/topic-team.mdx",
+      "sentences": [
+        {
+          "text": "Hiring is a run of decisions, and most are made before anyone is interviewed.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Nine articles follow the path.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "One lists what to settle before you write the job.",
+          "page": "src/content/insights/team/your-first-hire-what-to-settle-before-you-write-the-job.mdx#a-one-page-record-to-produce"
+        },
+        {
+          "text": "Another sets out the tests agencies use to tell a contractor from an employee.",
+          "page": "src/content/insights/team/contractors-and-employees-the-classification-tests.mdx#the-label-is-not-the-test"
+        },
+        {
+          "text": "Another shows how to write a job description a candidate can answer.",
+          "page": "src/content/insights/team/writing-a-job-description-people-can-answer.mdx#write-the-outcome-before-the-tasks"
+        },
+        {
+          "text": "Another describes a structured interview at small scale.",
+          "page": "src/content/insights/team/structured-interviews-for-a-small-team.mdx#the-pieces-scaled-down"
+        },
+        {
+          "text": "Another covers what an offer letter should state.",
+          "page": "src/content/insights/team/offer-letters-what-they-should-state.mdx#the-terms-an-offer-usually-states"
+        },
+        {
+          "text": "Another sets out the questions to ask before hiring in another country.",
+          "page": "src/content/insights/team/hiring-across-borders-employees-contractors-and-employers-of-record.mdx#three-ways-to-engage-someone-abroad"
+        },
+        {
+          "text": "Another explains what an option is and what to ask about one.",
+          "page": "src/content/insights/team/stock-options-for-early-employees-what-an-option-is-and-what-to-ask.mdx#what-an-option-is"
+        },
+        {
+          "text": "Another covers writing down how a remote team works.",
+          "page": "src/content/insights/team/writing-down-how-a-remote-team-works-a-team-handbook.mdx#what-to-put-in-it"
+        },
+        {
+          "text": "The last covers what to prepare before a new person's first day.",
+          "page": "src/content/insights/team/onboarding-a-new-team-member-what-to-prepare-before-day-one.mdx#start-from-what-the-person-needs-to-do-the-work"
+        },
+        {
+          "text": "Legal and tax articles are general information, not advice, and each names its public sources.",
+          "page": "src/content/insights/team/contractors-and-employees-the-classification-tests.mdx#what-this-article-cannot-tell-you"
+        }
+      ]
+    }
+  ],
+  "markers": [
+    {
+      "path": "src/content/insights/team/stock-options-for-early-employees-what-an-option-is-and-what-to-ask.mdx",
+      "rule": "generic-definition",
+      "reason": "A glossary of option terms (option, grant, exercise price, exercise, vesting, cliff, expiration) written as general definitions with no figures; the article states that they are not drawn from a source.",
+      "sourceId": "irs-tc427"
+    }
+  ]
+}
