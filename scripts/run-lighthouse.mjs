@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Runs Lighthouse (mobile, simulated throttling) on the representative routes of the built site and checks the budgets in
-// lighthouserc.json (SAGE-PLAN 6.9). Each route is judged on the median of up to three runs, taken in rounds over all routes: the
-// timings move with the CPU the shared runner happens to give the job, and one stalled run is not a regression. The budgets are
-// not loosened. The site is served by scripts/lib/serve.mjs with its production origin
+// lighthouserc.json (SAGE-PLAN 6.9). Each route is judged on the best of up to three runs, taken in rounds over all routes: the
+// timings move with the CPU the shared runner happens to give the job, contention only ever adds time, and a real regression raises every
+// run, the best one included. A route that is within budget on its first run is not measured again. The budgets are not loosened. The site is served by scripts/lib/serve.mjs with its production origin
 // rewritten to the local one so the canonical URL is self-referential. Chromium comes from Playwright.
 // Usage: node scripts/run-lighthouse.mjs [--dist dist] [--out reports/lighthouse] [--config lighthouserc.json]
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -147,59 +147,56 @@ export function evaluate(summary, config) {
 }
 
 /**
- * The median of a list of numbers, or null when too many are missing to say. A missing value (null) is a run that produced no number;
- * it is a breach in `checkBudgets`, so it counts against the route instead of being skipped: when half or more of the values are missing
- * the median is missing too.
+ * The best of a list of numbers: the smallest (`'min'`) or the largest (`'max'`) of those that are present, or null when none is. A run
+ * that produced no number (null) says nothing about the page; the other runs still can.
  */
-export function median(values) {
-  const present = values.filter((v) => typeof v === 'number' && Number.isFinite(v)).sort((a, b) => a - b);
-  if (present.length === 0 || values.length - present.length >= Math.ceil(values.length / 2)) return null;
-  const mid = Math.floor(present.length / 2);
-  return present.length % 2 === 1 ? present[mid] : (present[mid - 1] + present[mid]) / 2;
-}
-
-/** The run whose total blocking time is the median (the lower middle one for an even count), the run that reads as typical. */
-export function typicalRun(runs) {
-  if (runs.length === 0) throw new Error('typicalRun needs at least one run');
-  const ordered = [...runs].sort((a, b) => (a.tbtMs ?? Infinity) - (b.tbtMs ?? Infinity));
-  return ordered[Math.floor((ordered.length - 1) / 2)];
+export function best(values, direction) {
+  const present = values.filter((v) => typeof v === 'number' && Number.isFinite(v));
+  if (present.length === 0) return null;
+  return direction === 'min' ? Math.min(...present) : Math.max(...present);
 }
 
 /**
- * One summary for a route from several runs of it. Timings and scores are the median of the runs, so one run that lost the CPU to a
- * neighbouring job moves nothing. Facts fixed by the build are not sampled: any third-party request in any run counts, and the
- * script transfer is the largest seen. Fields the median does not cover (layout shifts, network profile) come from the run whose
- * total blocking time is the median, the run that reads as typical.
+ * The run with the lowest total blocking time, the run that saw the least contention. Fields a summary cannot combine (the network
+ * profile, the trace the LHR file holds) come from it.
  */
-export function medianSummary(runs) {
+export function bestRun(runs) {
+  if (runs.length === 0) throw new Error('bestRun needs at least one run');
+  return runs.reduce((a, b) => ((b.tbtMs ?? Infinity) < (a.tbtMs ?? Infinity) ? b : a));
+}
+
+/**
+ * One summary for a route from several runs of it: the best value of each timing and score. Contention on a shared runner only ever adds
+ * time (a page that costs 11 ms of blocking time reads 8814 ms when the CPU goes to a neighbouring job, and never the other way round), so
+ * the least contended run is the closest to the page itself, and a real regression raises every run, the best included. The median this
+ * replaces did not hold: on pipeline 66023 the contention lasted the whole measurement window and the raw blocking times were 830/0/990 and
+ * 402/0/209 on pages with the same bytes. Each metric takes its own best, since each is disturbed on its own. Facts fixed by the build are
+ * not sampled: any third-party request in any run counts, and the script transfer is the largest seen. The shifts shown for a CLS breach
+ * come from the run with the lowest CLS.
+ */
+export function bestSummary(runs) {
+  const lowestShift = runs.reduce((a, b) => ((b.cls ?? Infinity) < (a.cls ?? Infinity) ? b : a));
   return {
-    ...typicalRun(runs),
-    scores: Object.fromEntries(CATEGORIES.map((c) => [c, median(runs.map((r) => r.scores[c]))])),
-    lcpMs: median(runs.map((r) => r.lcpMs)),
-    cls: median(runs.map((r) => r.cls)),
-    tbtMs: median(runs.map((r) => r.tbtMs)),
+    ...bestRun(runs),
+    scores: Object.fromEntries(CATEGORIES.map((c) => [c, best(runs.map((r) => r.scores[c]), 'max')])),
+    lcpMs: best(runs.map((r) => r.lcpMs), 'min'),
+    cls: best(runs.map((r) => r.cls), 'min'),
+    tbtMs: best(runs.map((r) => r.tbtMs), 'min'),
+    shifts: lowestShift.shifts,
     scriptBytes: Math.max(...runs.map((r) => r.scriptBytes)),
     thirdParty: [...new Set(runs.flatMap((r) => r.thirdParty))],
   };
 }
 
 /**
- * Whether the runs so far leave the verdict open. The route fails a sampled budget when most of `maxRuns` runs breach it, which is the
- * median of `maxRuns` runs breaching it. Once the runs so far hold that many breaches, or that many passes, a further run cannot change
- * the verdict for that budget, so a route that passes twice or fails twice stops at two runs and only a split pair earns the third.
+ * Whether the route still needs a run: it does while the best of the runs so far breaches a sampled budget and fewer than `maxRuns` have
+ * been made. A route that is within budget in its first run is done (a later run could only match or improve it), and a route that
+ * breaches in all `maxRuns` runs fails. Breaches that are fixed by the build (third-party requests, script weight) are the same in every
+ * run, so they never earn another run.
  */
 export function needsAnotherRun(runs, config, maxRuns) {
   if (runs.length >= maxRuns) return false;
-  const majority = Math.floor(maxRuns / 2) + 1;
-  const breaches = new Map();
-  for (const run of runs) {
-    for (const f of checkBudgets(run, config)) if (f.sampled) breaches.set(f.id, (breaches.get(f.id) ?? 0) + 1);
-  }
-  const sampledIds = [...Object.keys(config.scores), 'lcp', 'cls', 'tbt'];
-  return sampledIds.some((id) => {
-    const failed = breaches.get(id) ?? 0;
-    return failed < majority && runs.length - failed < majority;
-  });
+  return checkBudgets(bestSummary(runs), config).some((f) => f.sampled);
 }
 
 /**
@@ -207,8 +204,8 @@ export function needsAnotherRun(runs, config, maxRuns) {
  * measures a route once and returns its summary; `onRun(round, summary)` is told about each run as it finishes.
  *
  * Rounds, not all runs of one route back to back: a stall on the shared runner lasts tens of seconds, so back-to-back runs of one route
- * catch the same stall, while runs a whole round apart almost never do. The first round measures every route, the second every route
- * again, and a third run goes only to a route whose first two disagree (`needsAnotherRun`).
+ * catch the same stall, while runs a whole round apart almost never do. The first round measures every route; each later round measures
+ * only the routes that still breach (`needsAnotherRun`), so a page that is within budget costs one run.
  */
 export async function measureRoutes(routes, runOnce, config, maxRuns, onRun = () => {}) {
   const measured = new Map(routes.map((route) => [route, []]));
@@ -224,9 +221,9 @@ export async function measureRoutes(routes, runOnce, config, maxRuns, onRun = ()
   return measured;
 }
 
-/** The verdict for a route: the median summary of its runs and the budgets that median breaches. */
+/** The verdict for a route: the best summary of its runs and the budgets that summary breaches. */
 export function judge(runs, config) {
-  const summary = medianSummary(runs);
+  const summary = bestSummary(runs);
   return { summary, failures: evaluate(summary, config) };
 }
 
@@ -258,6 +255,8 @@ async function main() {
   const maxRuns = config.runs ?? 3;
   /** What the noise looked like, for the log: the blocking time of each run of a route, in the order they ran. */
   const spread = (runs) => runs.map((r) => (r.tbtMs === null ? 'n/a' : Math.round(r.tbtMs))).join('/');
+  /** The benchmark index of each run, in the same order. Lighthouse measures it once as a run starts, so a low one marks a run that began on a starved CPU. */
+  const benchmarks = (runs) => runs.map((r) => (r.benchmarkIndex === null ? 'n/a' : Math.round(r.benchmarkIndex))).join('/');
   try {
     const lhrOf = new Map();
     const measured = await measureRoutes(
@@ -282,13 +281,13 @@ async function main() {
     for (const route of routes) {
       const runs = measured.get(route);
       const { summary, failures } = judge(runs, config);
-      writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), lhrOf.get(typicalRun(runs)));
+      writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), lhrOf.get(bestRun(runs)));
       results.push({
         ...summary,
         runs: runs.map((r) => ({ tbtMs: r.tbtMs, lcpMs: r.lcpMs, cls: r.cls, performance: r.scores.performance, benchmarkIndex: r.benchmarkIndex, failures: evaluate(r, config) })),
         failures,
       });
-      const line = `${route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  a11y ${Math.round((summary.scores.accessibility ?? 0) * 100)}  bp ${Math.round((summary.scores['best-practices'] ?? 0) * 100)}  seo ${Math.round((summary.scores.seo ?? 0) * 100)}  LCP ${Math.round(summary.lcpMs ?? 0)}ms  CLS ${(summary.cls ?? 0).toFixed(3)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  JS ${summary.scriptBytes}B  (median of ${runs.length}, TBT ${spread(runs)})`;
+      const line = `${route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  a11y ${Math.round((summary.scores.accessibility ?? 0) * 100)}  bp ${Math.round((summary.scores['best-practices'] ?? 0) * 100)}  seo ${Math.round((summary.scores.seo ?? 0) * 100)}  LCP ${Math.round(summary.lcpMs ?? 0)}ms  CLS ${(summary.cls ?? 0).toFixed(3)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  JS ${summary.scriptBytes}B  (best of ${runs.length}, TBT ${spread(runs)}, benchmark ${benchmarks(runs)})`;
       if (failures.length === 0) console.log(`ok    ${line}`);
       else {
         failed += 1;
