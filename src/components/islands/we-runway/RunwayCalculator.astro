@@ -1,0 +1,85 @@
+---
+import { CLEAR_NUMBERS, NUMBERS_PRIVACY } from '../../tools/copy.ts';
+import ToolField from '../../tools/ToolField.astro';
+import ToolPrivacy from '../../tools/ToolPrivacy.astro';
+import ToolResult from '../../tools/ToolResult.astro';
+import { waitingText } from '../../../scripts/runway.ts';
+import { INPUTS, ISLAND, RESULTS } from './spec.ts';
+
+/**
+ * <we-runway>: cash, net burn and, if the reader wants it, burn growth in; months of runway out, in the browser. The markup is complete
+ * without JavaScript, except that the fields are rendered disabled: a visitor without a script is not handed controls that do nothing,
+ * and the formulas below the calculator stand on their own. The script enables the fields and fills the results.
+ *
+ * The results region is `role="status"` and polite, and each result is a fixed block, so updating one moves nothing. Nothing is
+ * stored or sent, and the numbers never reach the address bar.
+ */
+---
+
+<we-runway class="runway">
+  <ToolPrivacy text={`${NUMBERS_PRIVACY} ${ISLAND.currency}`} />
+  <form class="runway__form" novalidate autocomplete="off">
+    <section class="runway__panel" aria-labelledby="runway-panel-title">
+      <h2 id="runway-panel-title" class="runway__title">{ISLAND.panelTitle}</h2>
+      <p class="runway__intro">{ISLAND.panelIntro}</p>
+      <div class="runway__fields">
+        {INPUTS.map((input) => <ToolField prefix="runway" id={input.id} label={input.label} hint={input.hint} inputmode="decimal" />)}
+      </div>
+      <div class="runway__live" role="status" aria-live="polite" aria-label={ISLAND.liveLabel}>
+        <dl class="runway__results">
+          {
+            RESULTS.map((result) => {
+              const waiting = waitingText(result.id);
+              return <ToolResult id={result.id} name={result.name} display={waiting.display} detail={waiting.detail} />;
+            })
+          }
+        </dl>
+      </div>
+    </section>
+    <div class="cluster">
+      <button class="btn btn--quiet" type="reset" disabled>{CLEAR_NUMBERS}</button>
+    </div>
+  </form>
+</we-runway>
+
+<script>
+  import { defineRunway } from '../../../scripts/runway.ts';
+  defineRunway();
+</script>
+
+<style>
+  @layer pages {
+    .runway {
+      display: grid;
+      gap: var(--sp-6);
+    }
+
+    .runway__form {
+      display: grid;
+      gap: var(--sp-7);
+    }
+
+    .runway__panel {
+      container-type: inline-size;
+      display: grid;
+      gap: var(--sp-4);
+      font-family: var(--ff-sans);
+    }
+
+    .runway__title {
+      font-size: var(--fs-xl);
+    }
+
+    .runway__intro {
+      color: var(--color-text-muted);
+      max-inline-size: 62ch;
+    }
+
+    .runway__fields,
+    .runway__results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: var(--sp-4) var(--sp-5);
+    }
+  }
+</style>

@@ -13,6 +13,7 @@ const FORBIDDEN_KEYS = ['offers', 'offer', 'price', 'priceCurrency', 'priceRange
 const TOOLS = [
   { path: '/tools/metrics-calculator/', page: 'src/pages/tools/metrics-calculator.astro', content: 'src/content/pages/tools/metrics-calculator.mdx' },
   { path: '/tools/evidence-room/', page: 'src/pages/tools/evidence-room.astro', content: 'src/content/pages/tools/evidence-room.mdx' },
+  { path: '/tools/runway-calculator/', page: 'src/pages/tools/runway-calculator.astro', content: 'src/content/pages/tools/runway-calculator.mdx' },
 ];
 
 for (const tool of TOOLS) {

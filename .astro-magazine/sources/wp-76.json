@@ -1,0 +1,364 @@
+{
+  "wp": "WP-76",
+  "fetches": [],
+  "documents": [
+    {
+      "path": "src/components/tools/copy.ts",
+      "sentences": [
+        {
+          "text": "Clear all numbers",
+          "label": true
+        },
+        {
+          "text": "Clear all ticks",
+          "label": true
+        },
+        {
+          "text": "An illustration from your inputs, not advice.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "Needs a fix",
+          "label": true
+        },
+        {
+          "text": "Not defined",
+          "label": true
+        },
+        {
+          "text": "Your numbers stay on this page.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Nothing is saved or sent anywhere, and nothing is put in the address bar.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Your ticks stay on this page.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Waiting",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/components/tools/registry.ts",
+      "sentences": [
+        {
+          "text": "Runway calculator",
+          "label": true
+        },
+        {
+          "text": "Type cash, net burn and, if you want it, burn growth, and see runway in months, rounded down, with every step of the working shown.",
+          "page": "src/content/pages/tools/runway-calculator.mdx#round-down"
+        },
+        {
+          "text": "Tools that run in your browser.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Your numbers and choices stay on the page.",
+          "page": "src/content/pages/tools/index.mdx"
+        }
+      ]
+    },
+    {
+      "path": "src/components/islands/we-runway/spec.ts",
+      "sentences": [
+        {
+          "text": "Cash on hand",
+          "label": true
+        },
+        {
+          "text": "What the company holds now, in one currency.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Net burn per month",
+          "label": true
+        },
+        {
+          "text": "Cash out less cash in over a month.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Enter 0 if cash grew.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Burn growth per month (%)",
+          "label": true
+        },
+        {
+          "text": "Optional.",
+          "label": true
+        },
+        {
+          "text": "How much faster burn grows each month, from 0 to 100.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Runway at level burn",
+          "label": true
+        },
+        {
+          "text": "Runway with growing burn",
+          "label": true
+        },
+        {
+          "text": "Cash and burn",
+          "label": true
+        },
+        {
+          "text": "What the company holds, how fast it is falling, and, if you want to see it, how fast that fall is speeding up.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Use one currency for every amount.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "The results carry no currency sign.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "Results: runway",
+          "label": true
+        },
+        {
+          "text": "Cash on hand divided by net burn per month, rounded down to one decimal place.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Net burn stays the same every month.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#what-the-arithmetic-hides"
+        },
+        {
+          "text": "Cash on hand is the money in the bank today, not money owed to the company.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Net burn is cash out less cash in over a month, so a month with no net burn has no runway to count.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "The first month uses the net burn you entered.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Each later month uses the month before it multiplied by 1 plus the growth percent divided by 100.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Add up the months until the next one would use more than the cash left.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Runway is the whole months funded plus the cash left divided by that next month’s burn, rounded down to one decimal place.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Burn grows by the same percent every month.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "A burn that falls is not modeled.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Enter 0 for growth and use level burn.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "The count stops at 1,200 months, which is 100 years.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "How each number is worked out",
+          "label": true
+        },
+        {
+          "text": "Every result above comes from the formula in this table.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#where-the-formulas-come-from"
+        },
+        {
+          "text": "Whichever you report, say which one you used and what you assumed.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#report-the-same-way-every-time"
+        },
+        {
+          "text": "Formulas and assumptions for the runway calculator",
+          "label": true
+        },
+        {
+          "text": "Formulas used by the runway calculator",
+          "label": true
+        },
+        {
+          "text": "Result",
+          "label": true
+        },
+        {
+          "text": "Formula",
+          "label": true
+        },
+        {
+          "text": "Assumptions",
+          "label": true
+        },
+        {
+          "text": "Each result is arithmetic on the three numbers you type.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "Level burn is a single division.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "Growing burn adds each month’s burn in turn, so the working can be checked by hand, month by month.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Figures in the working are rounded for display, and runway is always rounded down.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "The calculator checks arithmetic, not your books: it cannot tell whether an entry is right.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "It treats cash as the bank balance and net burn as one month repeated, ignores the timing of payments, tax, loans and currency movements, and shows no benchmark or target.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#what-this-article-cannot-tell-you"
+        },
+        {
+          "text": "A result is not a forecast, and it says nothing about whether anyone will invest or lend.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "Cash, burn and, if you want it, burn growth in.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Months of runway out, with every step shown.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "JavaScript is off.",
+          "label": true
+        },
+        {
+          "text": "The fields below need JavaScript, but the formulas still work by hand: every one is listed in the table further down.",
+          "page": "src/pages/tools/metrics-calculator.astro"
+        },
+        {
+          "text": "Start calculating",
+          "label": true
+        },
+        {
+          "text": "Read the formulas",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/tools/index.mdx",
+      "sentences": [
+        {
+          "text": "Tools for an early SaaS founder: sketch a team, work out your numbers, and prepare your evidence.",
+          "page": "src/content/pages/tools/evidence-room.mdx"
+        },
+        {
+          "text": "Each one runs in your browser.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/tools/runway-calculator.mdx",
+      "sentences": [
+        {
+          "text": "Runway calculator",
+          "label": true
+        },
+        {
+          "text": "Enter cash, net burn and optional burn growth to see runway in months, rounded down, with every step shown.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "Nothing leaves the page.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "Tool",
+          "label": true
+        },
+        {
+          "text": "Your numbers stay on this page",
+          "label": true
+        },
+        {
+          "text": "The calculator works in your browser.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "It sends nothing, it saves nothing, and it does not put your numbers in the address bar, so closing the tab removes them.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "The page makes no request after it loads, and you can confirm that in your browser's network panel.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#your-numbers-stay-on-this-page"
+        },
+        {
+          "text": "What the results are not",
+          "label": true
+        },
+        {
+          "text": "The results are arithmetic on the numbers you typed.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "They are not advice, a forecast, or a statement about whether anyone will invest, and WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "The calculator cannot tell whether an entry is right.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx#what-the-results-are-not"
+        },
+        {
+          "text": "It does not say how much runway is enough, because that depends on your plan and no source supports a number.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx"
+        },
+        {
+          "text": "Level burn and growing burn",
+          "label": true
+        },
+        {
+          "text": "Runway at level burn tells you what happens if nothing changes, and something will.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#what-the-arithmetic-hides"
+        },
+        {
+          "text": "It is the same division the metrics calculator uses for runway.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#the-definitions-this-article-uses"
+        },
+        {
+          "text": "The second result lets you try a burn that grows by a percent each month, and the working shows each step so you can check it by hand.",
+          "page": "src/scripts/runway.ts"
+        },
+        {
+          "text": "Round down",
+          "label": true
+        },
+        {
+          "text": "Runway is rounded down to one decimal place, because a figure rounded up flatters the position.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        },
+        {
+          "text": "The article on runway and burn works through one invented example.",
+          "page": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx#one-invented-example"
+        }
+      ]
+    }
+  ],
+  "markers": []
+}
