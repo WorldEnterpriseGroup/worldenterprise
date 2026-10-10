@@ -30,9 +30,9 @@ export function isPaletteRoute(href: string): boolean {
 }
 
 /**
- * Builds the palette list in reading order: Apply, then each navigation section (its hub, then every live link of its columns and
- * strip), then the utility links, then the footer links the navigation does not carry. A path is listed once, under the first place
- * that names it, so the order of the navigation decides which group a page sits in.
+ * Builds the palette list in reading order: Apply, then each navigation section and direct item, then the live links of every
+ * section's columns and strip, then the utility links, then the footer links the navigation does not carry. A path is listed once,
+ * under the first place that names it, so the order of the navigation decides which group a page sits in.
  * The sources are the resolved navigation (resolveNav, resolveUtility, resolveFooter); `isLive` is checked again here so the list can
  * never name a route without a page, whatever a caller passes.
  */
@@ -47,12 +47,14 @@ export function buildPaletteCommands(sources: CommandSources, isLive: (href: str
 
   if (sources.apply !== null) add(sources.apply.label, sources.apply.href, START_GROUP);
 
+  // The sections and direct items come first, so a page that is both (Pricing is a direct item and a strip link of two panels) is listed
+  // under its own name and a search for "pricing" finds it. Their links follow, in navigation order, into the group of their section.
   for (const item of sources.items) {
-    if (item.kind === 'direct') {
-      add(item.label, item.href, item.label);
-      continue;
-    }
-    add(item.label, item.href, item.label, item.leadLink);
+    if (item.kind === 'direct') add(item.label, item.href, item.label);
+    else add(item.label, item.href, item.label, item.leadLink);
+  }
+  for (const item of sources.items) {
+    if (item.kind === 'direct') continue;
     for (const column of item.columns) for (const link of column.links) add(link.label, link.href, item.label, link.description);
     for (const link of item.strip) add(link.label, link.href, item.label, link.description);
   }
