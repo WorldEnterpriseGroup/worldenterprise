@@ -355,6 +355,10 @@ e2e:forms:
     - npm run audit:csp
     - node scripts/lib/export-ledger.mjs reports/ledger.json
     - npx playwright test forms
+    # Wave 8 form specs run their endpoint-mode cases here, in the only build that has an endpoint: a test titled @endpoint skips itself
+    # elsewhere (it checks the form's data-mode), so e2e:wave8 holds the disabled-mode cases and this command the endpoint ones. E2E_WAVE8 is set
+    # on this command alone, so the command above never loads the wave 8 projects, and --grep keeps every other wave 8 test in e2e:wave8.
+    - E2E_WAVE8=1 npx playwright test --project=wave8-desktop-1440x900 --project=wave8-mobile-390x844 --grep @endpoint --pass-with-no-tests
   artifacts:
     when: always
     expire_in: 1 week
