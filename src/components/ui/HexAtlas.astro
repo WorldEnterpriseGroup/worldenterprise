@@ -62,4 +62,34 @@ const { cells, label } = Astro.props;
   .hexatlas li:nth-child(4n + 1) .hexatlas__shape {
     background: var(--we-mist);
   }
+
+  /* The cells assemble as the atlas scrolls into view: each one settles from slightly small and low, the next a little after it, so
+     the map reads as built up cell by cell. The animation sits on the list item so it never competes with the shape's hover
+     transform. Without scroll-driven animation, or with reduced motion, the atlas is simply drawn finished. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .hexatlas li {
+        animation-name: hexatlas-assemble;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 55%;
+
+        &:nth-child(3n + 2) {
+          animation-range: entry 8% entry 63%;
+        }
+
+        &:nth-child(3n) {
+          animation-range: entry 16% entry 71%;
+        }
+      }
+    }
+  }
+
+  @keyframes hexatlas-assemble {
+    from {
+      scale: 0.82;
+      translate: 0 var(--sp-4);
+    }
+  }
 </style>

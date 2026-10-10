@@ -4,7 +4,11 @@ import Breadcrumbs from '../layout/Breadcrumbs.astro';
 import HeroActions from './HeroActions.astro';
 import type { HeroCta, HeroMeasure } from './types.ts';
 
-/** Compact hero for reading, reference and utility pages: the same copy stack as the others, with no media frame. */
+/**
+ * Compact hero for reading, reference and utility pages: the same copy stack as the others, with no media frame.
+ * `variant="statement"` (WP-45) turns the title into a claim: larger type, a pale wash behind the copy and a closing hairline, still
+ * with no art. It stays a compact hero (`data-hero="compact"`) for the suites that sort pages by hero mode; `data-variant` says which.
+ */
 interface Props {
   /** Heading element for the title. Only the styleguide uses h2, to show several heroes on one page. */
   as?: 'h1' | 'h2';
@@ -16,14 +20,15 @@ interface Props {
   primary?: HeroCta | undefined;
   secondary?: HeroCta | undefined;
   measure?: HeroMeasure;
+  variant?: 'default' | 'statement';
 }
 
-const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, secondary, measure = 'default' } = Astro.props;
+const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, secondary, measure = 'default', variant = 'default' } = Astro.props;
 const hasActions = Astro.slots.has('actions');
 const containerClass = { default: 'container', prose: 'container container--prose', rail: 'container' }[measure];
 ---
 
-<section class="hero hero--compact" data-hero="compact" data-measure={measure}>
+<section class:list={['hero', 'hero--compact', variant === 'statement' && 'hero--statement']} data-hero="compact" data-variant={variant} data-measure={measure}>
   <div class:list={[containerClass, 'hero__grid']}>
     <div class="hero__copy stack">
       <Breadcrumbs crumbs={crumbs} />

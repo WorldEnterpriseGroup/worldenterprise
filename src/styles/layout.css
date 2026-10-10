@@ -20,9 +20,30 @@
     padding-block: calc(var(--section-y) / 2);
   }
 
+  /*
+   * Tinted bands (WP-45) are soft bands with a different wash: they carry .section--soft too, so every rule written for a soft band
+   * still holds, and .section--tint-* only swaps the colour. A tint is one of four light washes mixed from the palette (tokens.css),
+   * never a dark band. Two tinted bands keep both paddings, because a wash change is a tone change.
+   */
+  .section--tinted {
+    border-block: 1px solid var(--tint-line);
+  }
+
+  .section--tint-blue {
+    background: var(--tint-blue);
+  }
+
+  .section--tint-sand {
+    background: var(--tint-sand);
+  }
+
+  .section--tint-stone {
+    background: var(--tint-stone);
+  }
+
   /* Bands of the same tone share one gap (one --section-y) instead of stacking two paddings. A tone change keeps both paddings. */
   .section:not(.section--soft, .section--tight) + .section:not(.section--soft),
-  .section--soft:not(.section--tight) + .section--soft {
+  .section--soft:not(.section--tight, .section--tinted) + .section--soft:not(.section--tinted) {
     padding-block-start: 0;
   }
 

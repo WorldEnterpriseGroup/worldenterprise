@@ -1,6 +1,19 @@
 ---
+/**
+ * A full-width band. `soft` is the mist wash the site has always used. `tint`, `sand` and `stone` are the lighter section tints
+ * (tokens.css, WP-45): a pale blue for evidence and process, a warm wash for notes and limits, a neutral grey for reference. All are
+ * light, and a tinted band behaves as a soft one for spacing.
+ */
+const TONES: Record<'plain' | 'soft' | 'tint' | 'sand' | 'stone', string> = {
+  plain: '',
+  soft: 'section--soft',
+  tint: 'section--soft section--tinted section--tint-blue',
+  sand: 'section--soft section--tinted section--tint-sand',
+  stone: 'section--soft section--tinted section--tint-stone',
+};
+
 interface Props {
-  tone?: 'plain' | 'soft';
+  tone?: 'plain' | 'soft' | 'tint' | 'sand' | 'stone';
   tight?: boolean;
   defer?: boolean;
   id?: string;
@@ -9,9 +22,7 @@ interface Props {
 }
 
 const { tone = 'plain', tight = false, defer = false, id, labelledby } = Astro.props;
-const classes = ['section', tone === 'soft' ? 'section--soft' : '', tight ? 'section--tight' : '', defer ? 'section--defer' : '']
-  .filter(Boolean)
-  .join(' ');
+const classes = ['section', TONES[tone], tight ? 'section--tight' : '', defer ? 'section--defer' : ''].filter(Boolean).join(' ');
 ---
 
 <section class={classes} id={id} aria-labelledby={labelledby}>
