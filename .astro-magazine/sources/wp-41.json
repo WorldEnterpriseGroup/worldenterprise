@@ -87,6 +87,88 @@
     },
     {
       "schema_version": "1.0.0",
+      "source_id": "wp41-seat-explainer",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The seat explainer on the pricing page",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/components/pricing/SeatExplainer.astro",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-09",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-02, C-03",
+      "variables_units_scope": "What a seat is, who fills it, who steers the team; the unit of work",
+      "methodology_limitations": "Copied, not re-derived. One sentence joins two facts of the list.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-02",
+        "C-03"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-41"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp41-package-cards",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The package cards on the pricing page",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/components/pricing/PackageCards.astro",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-09",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-10",
+      "variables_units_scope": "Every package covers all seven lines; the packages differ in depth",
+      "methodology_limitations": "Edited: the line letters and the sentence break are removed.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-10"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-41"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp41-pricing-page",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The pricing page lead",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/pages/pricing/index.astro",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-09",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-10",
+      "variables_units_scope": "There are four packages",
+      "methodology_limitations": "Edited: the call to action becomes a statement.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-10"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-41"
+    },
+    {
+      "schema_version": "1.0.0",
       "source_id": "wp41-packages",
       "publisher_or_author": "World Enterprise Group (internal)",
       "title": "The package data module",
@@ -382,29 +464,29 @@
     },
     {
       "sentence": "The seat is the unit of work.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
+      "source_id": "wp41-seat-explainer",
+      "file": "src/components/pricing/SeatExplainer.astro",
       "locator": "The seat is the unit of work.",
       "derivation": "verbatim"
     },
     {
       "sentence": "A seat is one dedicated place on your team.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
+      "source_id": "wp41-seat-explainer",
+      "file": "src/components/pricing/SeatExplainer.astro",
       "locator": "A seat is one dedicated place on your team.",
       "derivation": "verbatim"
     },
     {
       "sentence": "A person fills it, works offshore and works only on your company.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "A person fills it, works offshore and works only on your company.",
-      "derivation": "verbatim"
+      "source_id": "wp41-seat-explainer",
+      "file": "src/components/pricing/SeatExplainer.astro",
+      "locator": "A person fills the seat and works only on your company.",
+      "derivation": "edited"
     },
     {
       "sentence": "WE steers the team and manages the subcontractors who fill the seats, so you work with one team instead of coordinating individuals.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
+      "source_id": "wp41-seat-explainer",
+      "file": "src/components/pricing/SeatExplainer.astro",
       "locator": "WE steers the team and manages the subcontractors who fill the seats, so you work with one team instead of coordinating individuals.",
       "derivation": "verbatim"
     },
@@ -431,16 +513,16 @@
     },
     {
       "sentence": "WE offers four.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "WE offers four.",
-      "derivation": "verbatim"
+      "source_id": "wp41-pricing-page",
+      "file": "src/pages/pricing/index.astro",
+      "locator": "Compare the four packages",
+      "derivation": "edited"
     },
     {
       "sentence": "Every package covers all seven service lines, and the packages differ in depth.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "Every package covers all seven service lines, A to G, and the packages differ in depth.",
+      "source_id": "wp41-package-cards",
+      "file": "src/components/pricing/PackageCards.astro",
+      "locator": "Every package covers all seven service lines, A to G. The packages differ in depth.",
       "derivation": "edited"
     },
     {
