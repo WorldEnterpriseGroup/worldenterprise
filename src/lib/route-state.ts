@@ -10,7 +10,7 @@ import type { PageFileRoute, RouteContext, RouteState } from './route-core.ts';
  * Build-time route state: which launch:true ledger rows actually exist. Nav, sitemap, RSS, search and the
  * HTML site map must be generated from `state.live`, never from the raw ledger.
  */
-export const COLLECTION_NAMES = ['pages', 'services', 'playbooks', 'guides', 'insights', 'research', 'library'] as const;
+export const COLLECTION_NAMES = ['pages', 'services', 'playbooks', 'guides', 'insights', 'research', 'library', 'briefs'] as const;
 
 
 function pageRoutes(): PageFileRoute[] {
