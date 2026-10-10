@@ -30,6 +30,8 @@ claimsUsed: []
 draft: false
 ---
 
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
 Before a buyer pays, they meet the product somehow. A person from your side may walk them through it, they may use it for a set period, or they may sign up and use it alone. Each of those is a design decision with consequences for what you build, what you can learn and what rules apply. Founders who write their own software often choose by instinct, usually the option that is cheapest to build. This article lays out the four common ways, the mechanics each one needs, and the questions to answer before choosing. It does not recommend one, and the terms "free trial" and "freemium" appear only as names of pricing models in general.
 
 ## Four doors
@@ -41,7 +43,7 @@ Before a buyer pays, they meet the product somehow. A person from your side may 
 | Trial | Uses the product alone for a set period | Start and end rules, what happens at the end, access control | Whether they reach the first useful result without you |
 | Self-serve | Signs up and uses it, with no conversation | Sign-up, onboarding, a way to ask for help, and often a pricing page | What a stranger does when nobody explains |
 
-Most products end up with more than one door. A founder might use demos and pilots for larger buyers and a trial or self-serve path for individuals. The decision is which door suits which buyer, and the buyer types you wrote down in the [pricing article](/insights/pricing-a-first-saas-value-packaging-and-the-questions-to-ask/) are the place to start.
+Most products end up with more than one door. A founder might use demos and pilots for larger buyers and a trial or self-serve path for individuals. The decision is which door suits which buyer, and the buyer types you wrote down in the <MaybeLink path="/insights/pricing-a-first-saas-value-packaging-and-the-questions-to-ask/">pricing article</MaybeLink> are the place to start.
 
 ## Defining the terms
 
@@ -52,7 +54,7 @@ In this article, a trial means time-limited access to a product, with defined st
 If you choose a trial, each of these is a decision, and several have to be made in code.
 
 - **How it starts.** Some trials ask for payment details at sign-up and some do not. Stripe's documentation on trial offers describes them this way: "Offer free or paid trials for items in a subscription." The option you choose changes who signs up and what you must tell them.
-- **How long it lasts.** Choose a length by asking how long a buyer needs to reach the first useful result, using what you learned from the [sales call structure](/insights/founder-led-sales-calls-a-structure/) notes. This article gives no figure.
+- **How long it lasts.** Choose a length by asking how long a buyer needs to reach the first useful result, using what you learned from the <MaybeLink path="/insights/founder-led-sales-calls-a-structure/">sales call structure</MaybeLink> notes. This article gives no figure.
 - **What happens at the end.** Stripe's documentation says: "When the trial ends, the subscription automatically transitions to the regular price or another price you configure." For a trial that has no payment method attached, it lists three options for what the platform does: it creates an invoice, it cancels, or it pauses. The cancel option "Cancels the subscription." and the pause option "Pauses the subscription until you resume it." Which one fits depends on your product and on what your customers have been told.
 - **What your product does at each state.** A trial that ends in a pause or cancel needs your own code to remove or limit access. Stripe's documentation says the event for a paused subscription is a moment to "revoke the customer’s access to the product". Test each state with a throwaway account before any buyer sees it.
 - **What you tell the customer, and when.** The same page describes an event sent before a trial ends and says: "Use this event to send your own reminder email." Whether to send a reminder, and what it says, is partly a compliance question, covered below.
@@ -67,7 +69,7 @@ A pilot needs a written scope. Before starting, both sides should agree in writi
 
 ## Mechanics of self-serve
 
-A self-serve path means a stranger should reach a useful result without you. That puts weight on onboarding: the first screen after sign-up, the first task, and the first moment the product does something the person wanted. The earlier article on [onboarding as acquisition](/insights/onboarding-is-acquisition-time-to-first-value/) covers that sequence, and the [landing page article](/insights/writing-a-landing-page-that-says-what-the-product-does/) covers what the visitor reads before signing up.
+A self-serve path means a stranger should reach a useful result without you. That puts weight on onboarding: the first screen after sign-up, the first task, and the first moment the product does something the person wanted. The earlier article on <MaybeLink path="/insights/onboarding-is-acquisition-time-to-first-value/">onboarding as acquisition</MaybeLink> covers that sequence, and the <MaybeLink path="/insights/writing-a-landing-page-that-says-what-the-product-does/">landing page article</MaybeLink> covers what the visitor reads before signing up.
 
 Instrument one event that marks the first useful result, in plain terms such as "created first project" or "sent first invoice", and record where people stop. A log that names the step where a sign-up stalled is worth more than a count of sign-ups. Keep a visible way to ask for help, and read every message that arrives on a new path, since each one tells you what the product failed to explain.
 
@@ -90,7 +92,7 @@ Those are excerpts, and the statute contains more, including definitions. The st
 - What does the platform you use for billing support, and what is left to your code?
 - What have you told customers about charges, and does the flow match what you told them?
 
-Write the answers next to each buyer type. If a type has no good door, the gap is useful information: it may mean the product is not ready for that buyer, or that a different buyer fits better. The [glossary](/glossary/) defines terms such as activation and time to first value, which are the usual names for the moments this article describes.
+Write the answers next to each buyer type. If a type has no good door, the gap is useful information: it may mean the product is not ready for that buyer, or that a different buyer fits better. The <MaybeLink path="/glossary/">glossary</MaybeLink> defines terms such as activation and time to first value, which are the usual names for the moments this article describes.
 
 ## What this article cannot tell you
 
