@@ -1,0 +1,81 @@
+---
+import { ILLUSTRATION } from './copy.ts';
+
+/**
+ * One result block of a founder tool: the name, one line for the value, room for four lines of working or reason, and the line that
+ * says what the number is. The block has a fixed shape, so updating it moves nothing. The island's script writes `[data-value]` and
+ * `[data-detail]` and sets `data-status` to `ready`, `waiting` or `undefined`.
+ */
+interface Props {
+  id: string;
+  name: string;
+  display: string;
+  detail: string;
+}
+
+const { id, name, display, detail } = Astro.props;
+---
+
+<div class="tool-result" data-result={id} data-status="waiting">
+  <dt class="tool-result__name">{name}</dt>
+  <dd class="tool-result__value" data-value>{display}</dd>
+  <dd class="tool-result__detail" data-detail>{detail}</dd>
+  <dd class="tool-result__tag">{ILLUSTRATION}</dd>
+</div>
+
+<style>
+  @layer pages {
+    .tool-result {
+      display: grid;
+      grid-template-rows: auto 1lh minmax(4lh, auto) auto;
+      gap: var(--sp-2);
+      padding: var(--sp-4);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-inline-start: 4px solid var(--color-border-strong);
+      border-radius: var(--radius-md);
+
+      &[data-status='ready'] {
+        border-inline-start-color: var(--color-accent);
+      }
+    }
+
+    .tool-result__name {
+      font-weight: 600;
+    }
+
+    .tool-result__value {
+      margin: 0;
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .tool-result:not([data-status='ready']) .tool-result__value {
+      color: var(--color-text-muted);
+    }
+
+    .tool-result__detail {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+
+    .tool-result__tag {
+      margin: 0;
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+
+    @media (forced-colors: active) {
+      .tool-result {
+        border: 1px solid CanvasText;
+      }
+    }
+  }
+</style>

@@ -1,6 +1,8 @@
 ---
 import { getEntry, render } from 'astro:content';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import { liveItems } from '../../components/playbooks/links.ts';
+import { HUB, TOOLS } from '../../components/tools/registry.ts';
 import FeatureCard from '../../components/ui/FeatureCard.astro';
 import Grid from '../../components/ui/Grid.astro';
 import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
@@ -10,6 +12,9 @@ const page = await getEntry('pages', 'tools');
 if (!page) throw new Error('Missing content entry: src/content/pages/tools/index.mdx');
 const { Content } = await render(page);
 const { data } = page;
+
+// A tool is listed only when its route is live in this build, so a tool that has not merged is never linked.
+const tools = await liveItems(TOOLS);
 ---
 
 <HubLayout
@@ -18,36 +23,30 @@ const { data } = page;
   description={data.description}
   path="/tools/"
   eyebrow={data.eyebrow}
-  lead="Three tools that run in your browser. Your numbers and choices stay on the page."
+  lead={HUB.lead}
   updated={data.updated}
   draft={data.draft}
-  primary={{ label: 'Open the metrics calculator', href: '/tools/metrics-calculator/' }}
-  secondary={{ label: 'Compose your team', href: '/tools/team-composer/' }}
+  primary={{ label: HUB.primary, href: '/tools/metrics-calculator/' }}
+  secondary={{ label: HUB.secondary, href: '/tools/team-composer/' }}
 >
   <NoFundingDisclaimer />
   <div class="prose"><Content /></div>
   <Grid min="20rem" as="ul">
-    <li>
-      <FeatureCard headingLevel={2} title="Team Composer" href="/tools/team-composer/" eyebrow="Sketch" mark="1" tone="tint">
-        <p>Choose the roles your SaaS team needs and how many seats each role takes, then carry the sketch to the application. No sign-up, no price.</p>
-      </FeatureCard>
-    </li>
-    <li>
-      <FeatureCard headingLevel={2} title="Metrics calculator" href="/tools/metrics-calculator/" eyebrow="Calculate" mark="2" tone="tint">
-        <p>Type one month of your numbers and see net new MRR, gross revenue churn, quick ratio, CAC payback, LTV to CAC and runway, with every formula shown.</p>
-      </FeatureCard>
-    </li>
-    <li>
-      <FeatureCard headingLevel={2} title="Evidence room builder" href="/tools/evidence-room/" eyebrow="Prepare" mark="3" tone="tint">
-        <p>Work through a checklist built from the data room and investor readiness guides. Filter by stage, tick items off, then print the list or copy it as Markdown.</p>
-      </FeatureCard>
-    </li>
+    {
+      tools.map((tool, index) => (
+        <li>
+          <FeatureCard headingLevel={2} title={tool.title} href={tool.href} eyebrow={tool.eyebrow} mark={String(index + 1)} tone="tint">
+            <p>{tool.summary}</p>
+          </FeatureCard>
+        </li>
+      ))
+    }
   </Grid>
   <SafeCtaBand
     slot="after"
-    title="Prepare with a team that steers the work"
-    text="Service Line F covers fundability and investor readiness inside the program. WE prepares the evidence. The raise itself, and the legal advice around it, stay with you and your own counsel."
-    primary={{ label: 'See Service Line F', href: '/services/fundability-and-investor-readiness/' }}
-    secondary={{ label: 'Apply', href: '/apply/' }}
+    title={HUB.ctaTitle}
+    text={HUB.ctaText}
+    primary={{ label: HUB.ctaPrimary, href: '/services/fundability-and-investor-readiness/' }}
+    secondary={{ label: HUB.ctaSecondary, href: '/apply/' }}
   />
 </HubLayout>

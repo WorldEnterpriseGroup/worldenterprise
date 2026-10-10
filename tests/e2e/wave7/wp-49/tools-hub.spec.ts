@@ -4,16 +4,21 @@ import { findOverflow } from '../../support/overflow.ts';
 import { AXE_TAGS, watch } from '../../support/page-guards.ts';
 import { isBuilt } from '../../support/routes.ts';
 
-// WP-49: the /tools/ hub lists the Team Composer and the two new tools, each a link that works without a script.
+// WP-49: the /tools/ hub lists the Team Composer and the tools after it, each a link that works without a script. WP-76 adds the runway
+// calculator, the pricing page checker and the cap table explainer: the hub lists a tool only when its page is built, so each of those
+// is checked only where its route is.
 
 const HUB = '/tools/';
 const TOOLS = [
   { name: 'Team Composer', route: '/tools/team-composer/' },
   { name: 'Metrics calculator', route: '/tools/metrics-calculator/' },
   { name: 'Evidence room builder', route: '/tools/evidence-room/' },
+  { name: 'Runway calculator', route: '/tools/runway-calculator/' },
+  { name: 'Pricing page checker', route: '/tools/pricing-page-checker/' },
+  { name: 'Cap table explainer', route: '/tools/cap-table-explainer/' },
 ] as const;
 
-// The two tool pages describe themselves as a WebApplication. The JSON-LD validator requires an id, a name and a url and forbids a price.
+// Each tool page describes itself as a WebApplication. The JSON-LD validator requires an id, a name and a url and forbids a price.
 for (const tool of TOOLS.filter((t) => t.route !== '/tools/team-composer/')) {
   test(`${tool.route} carries one WebApplication node with an id, a name and a url, and no price`, async ({ page }) => {
     test.skip(!isBuilt(tool.route), `${tool.route} is not built`);
@@ -45,7 +50,9 @@ test.describe('tools hub (the project sets the viewport: 1440 and 390)', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Founder tools');
     for (const tool of TOOLS) {
-      await expect(page.locator('main').getByRole('link', { name: tool.name, exact: true })).toHaveAttribute('href', new RegExp(`${tool.route}$`));
+      const link = page.locator('main').getByRole('link', { name: tool.name, exact: true });
+      if (isBuilt(tool.route)) await expect(link).toHaveAttribute('href', new RegExp(`${tool.route}$`));
+      else await expect(link).toHaveCount(0);
     }
     await expect(page.locator('main').getByText('WE makes no promise of funding.').first()).toBeVisible();
     expect(seen.consoleErrors).toEqual([]);
@@ -54,8 +61,7 @@ test.describe('tools hub (the project sets the viewport: 1440 and 390)', () => {
   });
 
   test('each link opens its tool', async ({ page }) => {
-    for (const tool of TOOLS) {
-      test.skip(!isBuilt(tool.route), `${tool.route} is not built`);
+    for (const tool of TOOLS.filter((t) => isBuilt(t.route))) {
       await page.goto(HUB);
       await page.locator('main').getByRole('link', { name: tool.name, exact: true }).click();
       await expect(page).toHaveURL(new RegExp(`${tool.route}$`));
