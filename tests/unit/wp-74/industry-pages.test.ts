@@ -63,6 +63,14 @@ test('each perimeter item names a jurisdiction, a date and a source of its page,
   }
 });
 
+test('a jurisdiction stays short: it renders as a badge that never wraps, and a long one pushes the perimeter list past a 320px screen', () => {
+  for (const slug of industrySlugs) {
+    for (const item of familyOf(pagePath(slug)).perimeter) {
+      assert.ok(item.jurisdiction.length <= 30, `${slug}: "${item.jurisdiction}" is ${item.jurisdiction.length} characters`);
+    }
+  }
+});
+
 test('every source is a government or standards publisher on https, and the title says what was read', () => {
   for (const slug of industrySlugs) {
     for (const source of familyOf(pagePath(slug)).sources) {
