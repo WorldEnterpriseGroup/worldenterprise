@@ -1,0 +1,50 @@
+---
+import { getEntry, render } from 'astro:content';
+import { jumpTo } from '../../components/hero/ctas.ts';
+import RunwayCalculator from '../../components/islands/we-runway/RunwayCalculator.astro';
+import { FORMULAS, FORMULAS_PAGE, PAGE } from '../../components/islands/we-runway/spec.ts';
+import ToolFormulas from '../../components/tools/ToolFormulas.astro';
+import { webApplicationNode } from '../../components/tools/webApplicationNode.ts';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+
+const entry = await getEntry('pages', 'tools/runway-calculator');
+if (!entry) throw new Error('Missing content entry pages/tools/runway-calculator (src/content/pages/tools/runway-calculator.mdx).');
+const { Content } = await render(entry);
+const { data } = entry;
+const PATH = '/tools/runway-calculator/';
+---
+
+<ToolLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead={PAGE.lead}
+  path={PATH}
+  primary={jumpTo(PAGE.jump, '#calculator')}
+  secondary={{ label: PAGE.secondary, href: '#formulas' }}
+  updated={data.updated}
+  draft={data.draft}
+  jsonLd={[webApplicationNode({ path: PATH, name: data.title, description: data.description })]}
+  crumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Tools', href: '/tools/' },
+    { label: 'Runway calculator', href: PATH },
+  ]}
+  noscript={PAGE.noscript}
+>
+  <div id="calculator"><RunwayCalculator /></div>
+  <div id="formulas">
+    <ToolFormulas
+      title={FORMULAS_PAGE.title}
+      intro={FORMULAS_PAGE.intro}
+      caption={FORMULAS_PAGE.caption}
+      regionLabel={FORMULAS_PAGE.regionLabel}
+      headers={FORMULAS_PAGE.headers}
+      rows={FORMULAS.map((row) => ({ id: row.id, name: row.name, second: row.formula, third: row.assumptions }))}
+      methodology={FORMULAS_PAGE.methodology}
+      limitations={FORMULAS_PAGE.limitations}
+      updated={data.updated}
+    />
+  </div>
+  <div class="prose"><Content /></div>
+</ToolLayout>
