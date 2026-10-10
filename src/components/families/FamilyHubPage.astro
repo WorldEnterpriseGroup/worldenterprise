@@ -1,0 +1,58 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { SlotId } from '../../assets/photo/slots.ts';
+import HubLayout from '../../layouts/HubLayout.astro';
+import BrandCallout from '../brand/BrandCallout.astro';
+import Compositions from '../brand/Compositions.astro';
+import type { CompositionId } from '../brand/types.ts';
+import type { HeroActions } from './actions.ts';
+import { EYEBROWS, FIXED, HEADINGS, HUB_FALLBACK } from './copy.ts';
+import FamilyHub from './FamilyHub.astro';
+import type { FamilyLink } from './types.ts';
+
+/**
+ * The hub of a family (/industries/, /compare/, /journey/): the console hero with the family's composition in its panel, the hub
+ * page's own MDX body if the content owner wrote one, an optional block of structure above the list (the journey hub puts the
+ * ordered steps there) and the list of the family's pages as equal cards. The hub exists as soon as the template does; its list holds
+ * only the pages that are live, so a family with no page yet shows its intro and no cards.
+ */
+interface Props {
+  family: 'industries' | 'compare' | 'journey';
+  composition: CompositionId;
+  /** The hub's own `index` page, when the content owner has written it. */
+  page?: CollectionEntry<'pages'> | undefined;
+  path: string;
+  cards: readonly FamilyLink[];
+  /** Heading of the list of cards. */
+  listHeading: string;
+  actions: HeroActions;
+  ogSlot: SlotId;
+}
+
+const { family, composition, page, path, cards, listHeading, actions, ogSlot } = Astro.props;
+const fallback = HUB_FALLBACK[family];
+const fixed = FIXED[family === 'compare' ? 'compare' : family === 'industries' ? 'industry' : 'journey'];
+const Content = page !== undefined ? (await render(page)).Content : undefined;
+---
+
+<HubLayout
+  title={page?.data.title ?? fallback.title}
+  description={page?.data.description ?? fallback.description}
+  path={path}
+  lead={page?.data.description ?? fallback.lead}
+  eyebrow={page?.data.eyebrow ?? EYEBROWS[family]}
+  {...(page !== undefined ? { updated: page.data.updated, draft: page.data.draft } : {})}
+  ogSlot={ogSlot}
+  hero="console"
+  primary={actions.primary}
+  secondary={actions.secondary}
+>
+  <div slot="panel"><Compositions id={composition} /></div>
+  <BrandCallout tone="note" title={HEADINGS.shared.about}>
+    <p>{fixed}</p>
+  </BrandCallout>
+  {Content !== undefined && <div class="prose"><Content /></div>}
+  <slot />
+  <FamilyHub heading={listHeading} id={`${family}-pages`} cards={cards} />
+</HubLayout>

@@ -1,0 +1,136 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { SlotId } from '../../assets/photo/slots.ts';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import SourcesList from '../blocks/SourcesList.astro';
+import BrandCallout from '../brand/BrandCallout.astro';
+import Compositions from '../brand/Compositions.astro';
+import Section from '../ui/Section.astro';
+import type { HeroActions } from './actions.ts';
+import { EYEBROWS, FIXED, HEADINGS, stepEyebrow } from './copy.ts';
+import JourneyList from './JourneyList.astro';
+import type { JourneyView } from './view.ts';
+
+/**
+ * A journey page (/journey/after-you-apply/, /journey/first-months/, /journey/onboarding-checklist/). An ordered list of the
+ * program's steps with this page's step marked, then the questions a founder can ask at that step and, on the onboarding page, the
+ * checklist. The steps are the program's own; the page adds no step, no duration and no outcome. A checklist target that is not live
+ * renders as plain text, never as a dead link.
+ */
+interface Props {
+  page: CollectionEntry<'pages'>;
+  view: JourneyView;
+  path: string;
+  actions: HeroActions;
+  ogSlot: SlotId;
+}
+
+const { page, view, path, actions, ogSlot } = Astro.props;
+const { Content } = await render(page);
+const { title, description, eyebrow, updated, draft } = page.data;
+const kicker = eyebrow ?? (view.current !== undefined ? stepEyebrow(view.current, view.steps.length) : EYEBROWS.journey);
+---
+
+<MarketingLayout
+  title={title}
+  description={description}
+  path={path}
+  lead={description}
+  eyebrow={kicker}
+  updated={updated}
+  draft={draft}
+  ogSlot={ogSlot}
+  schemaType="WebPage"
+  primary={actions.primary}
+  secondary={actions.secondary}
+>
+  <Compositions id="journey" />
+  <BrandCallout tone="note" title={HEADINGS.shared.about}>
+    <p>{FIXED.journey}</p>
+  </BrandCallout>
+  <Content />
+  <Fragment slot="after">
+    <Section labelledby="jny-steps">
+      <div class="stack">
+        <h2 id="jny-steps">{HEADINGS.journey.steps}</h2>
+        <JourneyList steps={view.steps} label={HEADINGS.journey.steps} />
+      </div>
+    </Section>
+    {
+      view.questions.length > 0 && (
+        <Section tone="soft" labelledby="jny-questions">
+          <div class="stack">
+            <h2 id="jny-questions">{HEADINGS.journey.questions}</h2>
+            <ul>
+              {view.questions.map((question) => (
+                <li>{question}</li>
+              ))}
+            </ul>
+          </div>
+        </Section>
+      )
+    }
+    {
+      view.checklist.length > 0 && (
+        <Section labelledby="jny-checklist">
+          <div class="stack">
+            <h2 id="jny-checklist">{HEADINGS.journey.checklist}</h2>
+            <BrandCallout tone="limit">
+              <p>{FIXED.checklist}</p>
+            </BrandCallout>
+            <ul class="jny-check" role="list">
+              {view.checklist.map((item) => (
+                <li class="jny-check__item">
+                  <span class="jny-check__box" aria-hidden="true" />
+                  {item.href !== undefined ? <a href={item.href}>{item.text}</a> : <span>{item.text}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Section>
+      )
+    }
+    {
+      view.sources.length > 0 && (
+        <Section tone="stone">
+          <SourcesList sources={view.sources} title={HEADINGS.shared.sources} />
+        </Section>
+      )
+    }
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  .jny-check {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .jny-check__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-3);
+    align-items: start;
+  }
+
+  /* A muted cell: the list is guidance to read, not boxes to tick, so nothing here stores a state. */
+  .jny-check__box {
+    inline-size: var(--sp-5);
+    aspect-ratio: var(--hex-ratio);
+    clip-path: var(--hex-clip);
+    background: var(--color-accent);
+    margin-block-start: var(--sp-1);
+    opacity: 0.5;
+  }
+
+  @media (forced-colors: active) {
+    .jny-check__box {
+      forced-color-adjust: none;
+      background: ButtonText;
+    }
+  }
+</style>

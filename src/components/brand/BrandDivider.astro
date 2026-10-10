@@ -1,0 +1,86 @@
+---
+/**
+ * A quiet break between two parts of a page, decorative. `trail` is five cells in a rising line, the middle one amber, the turn
+ * between two parts of a long page. `bar` is a short rule with a hex cut at each end. It is not the shared `Divider`: a family page
+ * uses this one so its breaks share one design.
+ */
+interface Props {
+  variant?: 'trail' | 'bar';
+}
+
+const { variant = 'trail' } = Astro.props;
+---
+
+<div class={`bdivider bdivider--${variant}`} aria-hidden="true">
+  {
+    variant === 'trail' ? (
+      <>
+        <span class="bdivider__cell"></span>
+        <span class="bdivider__cell"></span>
+        <span class="bdivider__cell bdivider__cell--lit"></span>
+        <span class="bdivider__cell"></span>
+        <span class="bdivider__cell"></span>
+      </>
+    ) : (
+      <>
+        <span class="bdivider__cell"></span>
+        <span class="bdivider__rule"></span>
+        <span class="bdivider__cell"></span>
+      </>
+    )
+  }
+</div>
+
+<style>
+  .bdivider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    margin-block: var(--space-block);
+  }
+
+  .bdivider__cell {
+    flex: none;
+    inline-size: var(--sp-3);
+    aspect-ratio: var(--hex-ratio);
+    clip-path: var(--hex-clip);
+    background: var(--tint-line);
+  }
+
+  .bdivider__cell--lit {
+    inline-size: var(--sp-4);
+    background: var(--color-highlight);
+  }
+
+  /* The two cells beside the lit one take the accent colour; the outer two stay pale. */
+  .bdivider--trail {
+    & .bdivider__cell:nth-child(2),
+    & .bdivider__cell:nth-child(4) {
+      background: var(--color-accent);
+    }
+  }
+
+  .bdivider--bar {
+    max-inline-size: var(--measure);
+    margin-inline: auto;
+
+    & .bdivider__rule {
+      flex: 1;
+      block-size: 1px;
+      background: var(--color-border-strong);
+    }
+
+    & .bdivider__cell {
+      background: var(--color-accent);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .bdivider__cell,
+    .bdivider__rule {
+      forced-color-adjust: none;
+      background: CanvasText;
+    }
+  }
+</style>

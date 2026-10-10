@@ -1,0 +1,31 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { compareActions } from '../../components/families/actions.ts';
+import { HEADINGS_HUB } from '../../components/families/copy.ts';
+import FamilyHubPage from '../../components/families/FamilyHubPage.astro';
+import { loadIsLive } from '../../components/families/load.ts';
+import { ogSlotFor } from '../../components/families/og.ts';
+import { findHubPage, hubStaticPaths, liveCards, pageRefs } from '../../components/families/paths.ts';
+import { COMPARISONS } from '../../data/families.ts';
+import { getRenderable } from '../../lib/content.ts';
+
+/**
+ * The comparison hub (/compare/). A card for a page that carries a blocked word shows its label alone (contracts section 8.1). The hub is
+ * a rest route that yields only the root, so it is built only when its `compare/index` entry exists (pending otherwise, never an empty page).
+ */
+export const getStaticPaths = (async () => hubStaticPaths(COMPARISONS, await getRenderable('pages'))) satisfies GetStaticPaths;
+
+const pages = await getRenderable('pages');
+const isLive = await loadIsLive();
+---
+
+<FamilyHubPage
+  family="compare"
+  composition="compare"
+  page={findHubPage(COMPARISONS, pages)}
+  path="/compare/"
+  cards={liveCards(COMPARISONS, pageRefs(pages), isLive)}
+  listHeading={HEADINGS_HUB.compare}
+  actions={compareActions(isLive)}
+  ogSlot={ogSlotFor('compare')}
+/>

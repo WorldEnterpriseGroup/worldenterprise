@@ -1,0 +1,104 @@
+---
+title: "What a first-time founder should settle first"
+seoTitle: "A first-timer's first decisions"
+description: "A checklist of decisions a first-time SaaS founder can settle early: the problem, the owners, the legal form, who owns the code, and who reviews your work."
+topic: starting
+publishedDate: 2026-10-10
+noStatistics: true
+sources:
+  - id: sba-structure
+    title: Choose a business structure
+    publisher: U.S. Small Business Administration
+    url: https://www.sba.gov/counseling/launch-your-business/#business-structure
+    accessed: 2026-10-10
+  - id: irs-ein
+    title: Get an employer identification number
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number
+    accessed: 2026-10-10
+  - id: usc-204
+    title: "17 U.S. Code section 204, Execution of transfers of copyright ownership"
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/uscode/text/17/204
+    accessed: 2026-10-10
+  - id: gds-discovery
+    title: How the discovery phase works
+    publisher: GOV.UK Service Manual, Government Digital Service
+    url: https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works
+    accessed: 2026-10-10
+evidence: [sba-structure, irs-ein, usc-204, gds-discovery]
+relatedServices: [E]
+relatedPlaybook: validate-the-problem
+relatedTemplate: one-page-problem-brief
+segments: [first-time-founders]
+related: [founders-inside-a-company-intellectual-property-and-employment-agreements, solo-founders-where-a-second-pair-of-eyes-comes-from]
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*This article is general information, not legal or financial advice. It was written on October 10, 2026 and describes United States sources only. Ask your own counsel and accountant what applies to you.*
+
+A first company asks you to make dozens of decisions at once, and most advice arrives as a timeline: do this in month one, that in month two. A timeline is a poor fit for a first-time founder, because you do not yet know how long anything takes. A checklist of decisions is more honest. Each item below is something that gets harder to change once people, money or code depend on it. You do not have to finish the list in a fixed order, but you should know which items are still open.
+
+The list is about decisions, not tasks. For each one, the useful output is a sentence or two written down and dated, so that you and anyone who joins later can see what was decided and why.
+
+## The problem, and the person who has it
+
+The first decision is what problem you are working on and for whom. This sounds obvious and is the most commonly skipped, because building feels like progress and describing a problem does not.
+
+The GOV.UK Service Manual, which was written for public services rather than startups, puts the order of work plainly: "Before you commit to building a service, you need to understand the problem that needs to be solved." The guidance is useful here because it was written for teams that must justify spending before they build.
+
+Write the problem down in a form someone else can challenge. The <MaybeLink path="/insights/write-the-problem-brief-before-the-code/">problem brief</MaybeLink> article describes one structure, and the <MaybeLink path="/library/one-page-problem-brief/">one-page problem brief</MaybeLink> template gives you the blank page. If you cannot yet name a person with the problem, the <MaybeLink path="/playbooks/validate-the-problem/">validate the problem playbook</MaybeLink> is the place to start.
+
+## Who the owners are, and what each one puts in
+
+If more than one person is starting the company, settle three things before anything is built. Who owns what share of the company? What does each person commit, in time, money and work? What happens if someone leaves early?
+
+The last question is the one first-time founders avoid, because it feels pessimistic. It is also the one that matters most if the answer was never written. Counsel can explain how ownership is usually recorded and what terms are common for people who leave. This article cannot tell you which terms suit you. What you can do alone is write down your own answers to the three questions and bring them to the first meeting with counsel. A list of <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask counsel before you sign</MaybeLink> is available for that meeting.
+
+If you are the only founder, the same decision applies in a different form: how will anyone else ever hold a share of what you build? That is worth one paragraph in your notes even if the answer is "not yet."
+
+## The legal form of the company
+
+The form of the business decides who is responsible for its debts and how its profits are taxed. The U.S. Small Business Administration (SBA) describes the common choices. A sole proprietorship, it says, is automatic: "You're automatically considered to be a sole proprietorship if you do business activities but don't register as any other kind of business." The SBA adds that a sole proprietorship does not produce a separate business entity, so your business assets and liabilities are not separate from your personal ones.
+
+That sentence is the practical reason to decide early. If you start selling software before choosing a form, you may already have one by default. The SBA also describes partnerships and limited liability companies, and notes that members of an LLC are considered self-employed and must pay self-employment tax. Its own page says that consulting with business counselors, attorneys and accountants can prove helpful, and this is the choice where that applies most.
+
+This article does not recommend a form. It does not cover every form, nor the rules of every state. What you can decide on your own is the question to bring: do you expect outside investors, employees or a sale of the company, and have you told your counsel so? Those expectations change what the form needs to support.
+
+### Tax identification
+
+Once an entity exists, it generally needs a tax identification number. The IRS states that you generally need an employer identification number (EIN) to hire employees and to operate a partnership or corporation. Its page also gives an order of operations: "If you are creating a corporation or LLC, form your entity through the secretary of state before you apply for an EIN." The page describes an online tool for applicants in the United States and says that applicants whose principal place of business is outside the U.S. apply by phone, fax or mail. If you have not yet formed an entity, note that the order matters and check the current page when you are ready.
+
+## Who owns what you build
+
+Software is the main asset of a SaaS company, so ownership of the code is a decision, not an assumption. The rule in the Copyright Act is about writing. U.S. Code title 17, section 204, says that a transfer of copyright ownership "is not valid unless an instrument of conveyance, or a note or memorandum of the transfer, is in writing" and signed by the owner of the rights.
+
+In practice that raises questions counsel will ask. Was any of the code or design written before the company existed, and has it been assigned to the company in writing? Has anyone outside the founders, such as a freelancer, a friend or a short-term contractor, written part of it? Do you hold a signed document from each of them? The <MaybeLink path="/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/">IP, contracts and access</MaybeLink> article lists the records a reviewer asks to see. The list is easier to build as you go than to reconstruct later.
+
+## Money, time and the point at which you stop
+
+Decide, in numbers you choose yourself, how much money and how much of your time you are willing to commit before you reassess. These are personal decisions, and no source can make them for you. The value of writing them down is that a later conversation is about a number you set while calm, not one you negotiated with yourself while committed.
+
+A useful companion is a short list of the evidence that would make you continue, and the evidence that would make you stop or change course. Evidence here means things you can observe: customers who describe the problem unprompted, people who agree to a pilot, a price someone accepts. The <MaybeLink path="/insights/customer-discovery-interviews-without-false-positives/">customer discovery interviews</MaybeLink> article explains how to collect that evidence without leading the person you are asking.
+
+## Who will look at your work besides you
+
+First-time founders often work with no one who has seen the process before and no one willing to say that something is wrong. Decide who that person or group will be. It might be a customer who will give blunt feedback, a specialist you pay for a fixed review, or a fellow founder you meet regularly. The question for this checklist is not who is best, but whether anyone is in place at all. The solo founders article on this desk covers where that second pair of eyes can come from.
+
+## A one-page version
+
+When you have answered the sections above, you can compress them to a page:
+
+1. The problem, the person who has it, and the evidence you have so far.
+2. The owners, what each commits, and what is still undecided with counsel.
+3. The form of the company, or the date by which you will decide.
+4. A list of who has written code or design, with the status of each assignment.
+5. The money and time you will commit, and what would make you stop.
+6. The person or group who will review your work.
+
+Date the page, and revisit it when something changes. A page that is out of date is still useful, because it shows what you believed and when.
+
+## What this article cannot tell you
+
+This article describes United States sources only, read on October 10, 2026. It does not cover the law of any particular state, nor of any other country, and a founder outside the United States will find that entity, tax and ownership rules differ. It does not recommend a legal form, an ownership split or any terms for people who leave, and it cannot tell you whether the SBA's summary fits your situation. The GOV.UK quotation comes from guidance for public services and is used here as one plain statement of order, not as proof that any method works for startups. The sources do not measure how founders fare after settling these items, and this article makes no claim about outcomes. Check the current text of each source before relying on it, and take the legal and tax questions to qualified professionals.

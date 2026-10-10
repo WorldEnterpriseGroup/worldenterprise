@@ -1,0 +1,134 @@
+---
+title: Evaluating an LLM feature before you ship it
+seoTitle: Evaluating an LLM feature
+description: "A method for testing a language model feature before launch: written success criteria, a test set with edge cases, grading choices and re-runs after changes."
+topic: ai
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders]
+related: [choosing-a-model-provider-the-questions-that-matter, prompt-injection-and-the-owasp-top-10-for-llm-applications, retrieval-augmented-generation-what-it-is-and-where-it-breaks]
+evidence: [anth-evals, oai-evals, nist-ai100-1, nist-ai600-1, anth-deprec, owasp-llm01]
+relatedPlaybook: build-and-ship-v1
+relatedServices: [B]
+relatedTemplate: security-baseline-checklist
+sources:
+  - id: anth-evals
+    title: Define success criteria and build evaluations
+    publisher: Anthropic
+    url: https://platform.claude.com/docs/en/test-and-evaluate/develop-tests
+    accessed: 2026-10-10
+  - id: oai-evals
+    title: Working with evals
+    publisher: OpenAI
+    url: https://developers.openai.com/api/docs/guides/evals
+    accessed: 2026-10-10
+  - id: nist-ai100-1
+    title: "Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1"
+    publisher: National Institute of Standards and Technology
+    url: https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf
+    accessed: 2026-10-10
+  - id: nist-ai600-1
+    title: "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile, NIST AI 600-1"
+    publisher: National Institute of Standards and Technology
+    url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf
+    accessed: 2026-10-10
+  - id: anth-deprec
+    title: Model deprecations
+    publisher: Anthropic
+    url: https://platform.claude.com/docs/en/about-claude/model-deprecations
+    accessed: 2026-10-10
+  - id: owasp-llm01
+    title: "LLM01:2025 Prompt Injection"
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm01-prompt-injection/
+    accessed: 2026-10-10
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+A language model feature can look finished after a handful of good demonstrations. Whether it is ready is a different question, and the only way to answer it is to run the feature against a set of cases you wrote down in advance and compare the results with criteria you also wrote down in advance. This article lays out that method in six steps, using the evaluation guides that two model vendors publish and the testing outcomes in the NIST AI Risk Management Framework, as those documents read on October 10, 2026.
+
+It contains no scores, rankings or speed figures. A published number measures someone else's task; the point here is to build the evidence about yours.
+
+## Why an informal check is not enough
+
+OpenAI's guide on evaluations describes evals as tests of model outputs against style and content criteria you specify, and says writing them is "an essential component to building reliable applications", particularly when upgrading or trying new models. Anthropic's guide frames the same idea as a cycle: define success criteria, develop test cases, test a prompt against them, refine it, test against held-out evaluations, then ship. Both treat the evaluation as part of building the feature, not a ceremony at the end.
+
+NIST's framework agrees on timing. Its Measure function says AI systems should be tested before their deployment and regularly while in operation. Keep that second half in mind; step six returns to it.
+
+## Step 1: Write the success criteria first
+
+Anthropic's guide says good success criteria are specific, measurable, achievable and relevant. "Good performance" is none of those; "accurate classification of support tickets into the three categories your team routes on" is. The guide lists dimensions that commonly matter, and a feature rarely needs all of them:
+
+- task fidelity, including edge cases,
+- consistency across similar inputs,
+- relevance and coherence,
+- tone and style,
+- privacy preservation,
+- context utilization,
+- latency,
+- price.
+
+It also says most use cases need evaluation along several criteria at once. The practical consequence is a short written table, one row per criterion, each with a way to measure it and a threshold your team agrees on before the first run. Choosing the threshold after seeing the results invites the result to set the bar.
+
+NIST's Measure 1.1 adds a discipline that suits small teams: the risks or trustworthiness characteristics that will not, or cannot, be measured should be documented. An honest list of what you did not test is part of the record.
+
+## Step 2: Build a test set that looks like real use
+
+Anthropic's first design principle for evals is to be task-specific: mirror your real-world task distribution, and do not forget edge cases. The guide's examples of edge cases are worth copying into a checklist:
+
+<DataTable
+  caption="Edge cases named in Anthropic's guide, with a prompt for your own test set"
+  columns={['Edge case in the guide', 'A question for your test set']}
+  rows={[
+    ['Irrelevant or nonexistent input data', 'What happens when the user submits an empty field or text unrelated to the task?'],
+    ['Overly long input data or user input', 'What happens with the longest document a customer could plausibly upload?'],
+    ['Poor, harmful or irrelevant user input (chat use cases)', 'What does the feature do when the user is rude, off-topic or hostile?'],
+    ['Ambiguous cases where even humans would struggle to agree', 'Which examples would two of your own people label differently, and what should the feature do with them?']
+  ]}
+/>
+
+Draw cases from real or realistic material, with permission and with personal data removed or replaced (see <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data</MaybeLink>). Keep a held-out portion that you do not look at while tuning the prompt, and use it once, near the end. OpenAI's guide describes an eval as needing two ingredients: a schema for the test data and the graders that decide whether the output is correct. Anthropic's examples use test sets of different sizes for different tasks, so there is no universal number; the right size is the one at which another run would not change your decision.
+
+## Step 3: Choose how each case is graded
+
+Anthropic's guide recommends structuring questions to allow automated grading where possible, and names multiple-choice, string match, code-graded and LLM-graded approaches. Its worked examples pair each criterion with a method: exact match for categorical labels, embedding similarity for consistency, an overlap metric for summaries, a model-graded rating scale for tone, and a model-graded yes-or-no classification for privacy checks. The guide also states a preference: more questions with slightly lower signal from automated grading beat fewer questions with high-quality human hand-grading.
+
+Two cautions follow from the guide's own examples. Where one model grades another's output, the example code comments that it is generally good practice to use a different model to evaluate than the model used to generate the output. And a model grader is itself a component that can be wrong, so read a sample of its judgments by hand. That last point is the article's suggestion, not the vendor's. For code-checkable properties, such as "the output is valid JSON with these fields", prefer a deterministic test; the OWASP guidance on prompt injection says the same about output formats.
+
+## Step 4: Run it, and keep the record
+
+OpenAI's guide describes the loop as describe the task as an eval, run it with test inputs, analyze the results, then iterate on the prompt, and compares it to behavior-driven development: specify how the system should behave before implementing and testing it. NIST asks for the same artifacts. Measure 2.1 says test sets, metrics and details about the tools used during testing, evaluation, verification and validation are documented, and Measure 2.3 asks that performance be demonstrated for conditions similar to the deployment settings.
+
+For a small team, "documented" can be a folder in the repository holding the test set, the grader code, the criteria table and one results file per run with the date, the model identifier and the prompt version. Nothing more elaborate is required to make a later change comparable with an earlier one.
+
+## Step 5: Test it as an adversary
+
+A test set drawn from friendly cases will not find injection. OWASP's mitigation list for prompt injection includes adversarial testing, and recommends treating the model as an untrusted user when testing trust boundaries. Add a section to the test set for hostile inputs: instructions hidden in uploaded files, requests to reveal the system prompt, attempts to make the feature take an action it should not. The article on <MaybeLink path="/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/">prompt injection and the OWASP Top 10</MaybeLink> explains the categories.
+
+The NIST Generative AI Profile also suggests evaluating claims of model capabilities using empirically validated methods. Read as a rule for a small team, that means a vendor's capability statement or a public score is a reason to run your own test, not a replacement for one.
+
+## Step 6: Re-run when anything changes
+
+A passing result describes one combination of model, prompt, data and settings. Change any of them and the result no longer applies. Triggers worth writing down:
+
+- the provider retires the model, or you move to a new one (Anthropic's deprecation page recommends testing applications with newer models well before the retirement date, and the article on <MaybeLink path="/insights/choosing-a-model-provider-the-questions-that-matter/">choosing a model provider</MaybeLink> covers notice periods);
+- the prompt changes, even slightly;
+- the data behind retrieval changes (see <MaybeLink path="/insights/retrieval-augmented-generation-what-it-is-and-where-it-breaks/">retrieval-augmented generation</MaybeLink>);
+- a new tool, file type or user group is added;
+- a user reports a failure, which should become a new test case.
+
+NIST's Measure 2.4 asks that the functionality and behavior of the system be monitored when in production. In practice that means sampling real traffic with the privacy limits you set, checking it against your criteria and feeding the failures back into the test set.
+
+<Callout title="A release gate in one paragraph">
+  Before launch, a named person confirms that the criteria table exists, that every criterion has a recorded result from the current model, prompt and data, that adversarial cases were run, that the untested risks are listed, and that the rollback path works. If any of these is missing, the feature is not ready, however good the demonstration was.
+</Callout>
+
+The <MaybeLink path="/playbooks/build-and-ship-v1/">build and ship playbook</MaybeLink> places this kind of gate within a first release.
+
+## What this article cannot tell you
+
+It describes vendor and NIST guidance as read on October 10, 2026, and those documents change. It does not tell you which metric suits your feature, how large your test set should be, or what threshold is acceptable; those depend on what a wrong answer costs your customers. It does not cover training or fine-tuning a model, or evaluation of safety-critical or regulated uses, where specialist review is needed.
+
+Nothing here states that any product has been evaluated to a standard. This is general information, current as of October 10, 2026, and is not legal, safety or financial advice.
