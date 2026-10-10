@@ -1,0 +1,101 @@
+---
+title: "Revenue-based financing and venture debt: when they apply"
+seoTitle: Revenue-based financing, debt
+description: What public sources say about sales-based financing, loans and debt beside equity, and what to ask a provider before you agree to repay money from revenue.
+topic: funding
+publishedDate: 2026-10-10
+sources:
+  - id: ny-fsl-801
+    title: Financial Services Law, article 8, section 801, Definitions
+    publisher: New York State Senate
+    url: https://www.nysenate.gov/legislation/laws/FIS/801
+    accessed: 2026-10-10
+  - id: sba-loans
+    title: SBA loans
+    publisher: U.S. Small Business Administration
+    url: https://www.sba.gov/funding-programs/loans
+    accessed: 2026-10-10
+  - id: yc-vs-note
+    title: SAFE vs. convertible note vs. priced equity round
+    publisher: Y Combinator
+    url: https://www.ycombinator.com/safe/safe-vs-convertible-note
+    accessed: 2026-10-10
+  - id: nvca-term-sheet
+    title: NVCA model term sheet for a Series A preferred stock financing
+    publisher: National Venture Capital Association
+    url: https://nvca.org/wp-content/uploads/2020/08/NVCA-2020-Term-Sheet-1.docx
+    accessed: 2026-10-10
+  - id: yc-safe-form
+    title: Post-money SAFE, standard form
+    publisher: Y Combinator
+    url: https://bookface-static.ycombinator.com/assets/ycdc/Postmoney%20Safe%20-%20Valuation%20Cap%20Only%20-%20FINAL-f2a64add6d21039ab347ee2e7194141a4239e364ffed54bad0fe9cf623bf1691.docx
+    accessed: 2026-10-10
+evidence: [ny-fsl-801, sba-loans, yc-vs-note, nvca-term-sheet, yc-safe-form]
+relatedServices: [F]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: seed-data-room-checklist
+segments: [technical-founders, solo-founders]
+related:
+  - funding-a-software-startup-the-routes
+  - funding-a-first-saas-from-customer-revenue
+  - safe-or-convertible-note-how-the-two-instruments-differ
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general information, not legal or financial advice. It was written on October 10, 2026, from the public sources listed on this page, and it does not describe any agreement with World Enterprise. Lending and financing rules differ by place and by provider, so ask your own lawyer and accountant before you agree to repay money.*
+
+Founders hear revenue-based financing and venture debt described as if they were named products with settled terms. None of the sources fetched for this article defines either phrase as a product, so this article does not either. What the sources do contain is one US state's legal definition of financing that is repaid from sales, a federal agency's description of the loans it backs, and two sets of investor documents that show where debt sits next to equity. Those are enough to say what to read and what to ask. They are not enough to say that a company should borrow, what any product costs, or which provider to use.
+
+## What one statute means by sales-based financing
+
+Section 801 of article 8 of New York's Financial Services Law is a definitions section. It defines commercial financing to include open-end financing, closed-end financing, sales-based financing, factoring transactions or another form of financing, where the recipient does not intend to use the proceeds primarily for personal, family or household purposes. It defines a provider as a person who extends a specific offer of commercial financing to a recipient.
+
+The definition that matters here is sales-based financing. The statute describes it as a transaction that is repaid by the recipient to the provider, over time, as a percentage of sales or revenue, where the payment amount may increase or decrease according to the volume of sales made or revenue received. It also covers a second shape, a true-up: the financing is repaid as a fixed payment, but a reconciliation process adjusts the payment to an amount that is a percentage of sales or revenue.
+
+Three cautions apply. The page fetched for this article is the definitions section of one state's statute, and it does not say what a provider must do. It does not cover other states or countries, whose laws may use other words. And a definition in a statute is not a description of any particular offer, so read the contract in front of you.
+
+Two practical points follow from the wording. First, the payment is tied to sales or revenue, so the contract's own definition of revenue decides what you pay. Second, a deal described as a fixed payment may still adjust to your revenue through a reconciliation, so ask how any fixed payment is checked afterward.
+
+## The arithmetic, without numbers
+
+For a founder who thinks in formulas, the difference between the two shapes is short to state. A fixed payment is the same amount each period whatever your revenue does. A payment tied to revenue is the agreed share multiplied by the revenue the contract counts, so it falls when counted revenue falls and rises when it rises.
+
+Which is easier to carry depends on how steady your revenue is, and only your own figures can tell you. Repayments are cash leaving the company, so they enter the <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> as cash out, and the calculator's net burn and runway then show what the repayments do to your position in a given month. Run it on your real past months, with the contract's definition of revenue applied, and compare the results month by month rather than trusting one.
+
+The definition is where care goes. The <MaybeLink path="/research/early-stage-saas-metrics-definitions/">research brief on SaaS metrics definitions</MaybeLink> shows how recurring revenue is defined in public references. A contract may define revenue differently: gross receipts, receipts less refunds, or only some products. A customer who pays a year in advance may count in one month or in every month, depending on the wording. Get the definition in writing and test it against your own records before you sign.
+
+## What a loan asks of the company
+
+The SBA's loan page describes loans backed by the agency, delivered by lenders. It says lenders and loan programs have unique eligibility requirements. In general, it says, eligibility depends on what a business does to receive its income, the character of its ownership and where the business operates, and normally a business must meet SBA size standards, be able to repay, and have a sound business purpose. It adds that the lender provides the full list of requirements for a given loan, and it points to a matching tool the agency runs for finding lenders.
+
+For a software company, the phrase to notice is be able to repay. The page does not say how a lender judges that, so before you apply, know your monthly net burn and how repayments would change it. Ask any lender what evidence of repayment capacity it accepts from a company at your stage, and ask whether it will want a guarantee from you personally. The page does not answer that last question, and it is one a solo founder should have answered in writing.
+
+## Debt beside equity
+
+Debt changes the order in which people are paid, and investors' documents say so. Y Combinator's comparison page says a convertible promissory note is debt and debt is senior to equity, including convertible equity like the SAFE. It says debt is repaid before any equity if the company is sold or wound down, and that a SAFE issued before or after a note sits behind it in line. The standard SAFE form is consistent: the investor's right to its cash amount is junior to payment of outstanding indebtedness and creditor claims. Those statements are about debt in general. How a particular loan or financing ranks is for its own documents to say, so ask your counsel to read them.
+
+Debt can also run into the rights that investors ask for later. The NVCA's model term sheet, with brackets that mark terms the parties negotiate, lists protective provisions that require the written consent of the requisite holders of the preferred stock to create or authorize any debt security if total borrowing for money would exceed a bracketed amount. A separate list of matters requires board approval, including the approval of a preferred director, for incurring aggregate indebtedness above a bracketed amount that is not in a board-approved budget, other than ordinary trade credit, and for guaranteeing indebtedness other than trade accounts.
+
+These are model terms, not agreed terms, and no source says that any investor will ask for them. They show something narrower: the NVCA model treats borrowing above a set level as a matter that needs a vote. Before you borrow, have counsel read your existing SAFEs, notes and side letters for restrictions. Keep the signed debt terms with your other contracts, where the <MaybeLink path="/fundability/data-room/">data room guide</MaybeLink> says they belong.
+
+## Questions to bring to the provider and to your counsel
+
+- How does the contract define revenue, and which of my receipts and refunds count?
+- Is repayment a share of revenue, a fixed amount, or a fixed amount with a reconciliation, and how often is the reconciliation done?
+- What would I repay in total if revenue held steady, and if it fell? Please show the arithmetic in writing.
+- What happens if a payment is missed, or if revenue stops?
+- Does the provider take security over assets such as receivables or intellectual property, and does the contract limit what I may sign next?
+- Does it require a personal guarantee, or a right to buy shares in the company?
+- What do my existing agreements say about borrowing, and who must consent?
+- Is the provider licensed or registered where I operate, and which disclosures does the law there require me to receive?
+- Which of the questions in <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> apply to this contract?
+
+The <MaybeLink path="/fundability/investor-readiness-checklist/">investor readiness checklist</MaybeLink> lists the records an investor may ask for, and signed debt terms belong among them.
+
+## What this article cannot tell you
+
+This article cannot tell you whether to borrow, whether you would qualify, or what any financing costs. No source fetched for this article defines revenue-based financing or venture debt as a product, and none compares providers or prices. It reads one definitions section of New York law and one federal lender page, and it says nothing of other states, non-US law, tax or accounting treatment. The investor terms it cites are model terms with brackets. Nothing here is a recommendation of a lender, a provider, an investor or a lawyer.
