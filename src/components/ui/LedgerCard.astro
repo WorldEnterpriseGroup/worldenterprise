@@ -1,0 +1,112 @@
+---
+import { href as resolve } from '../../lib/url.ts';
+
+interface LedgerRow {
+  /** The statement as published. */
+  readonly claim: string;
+  /** Where it can be checked: a page, a document or a framework, named for the reader. */
+  readonly source: string;
+  /** Site path or URL of the source, when it has one. */
+  readonly href?: string;
+}
+
+/**
+ * The ledger card: each row is a claim, a dotted leader and the source that backs it, like a line in an account book. It is the
+ * compact form of `EvidenceLedger` for a short list (two to six rows) inside a column or a grid cell. The rows are a description
+ * list, so a screen reader hears "claim, source" in pairs; the leader is decoration. Below 30rem of card width a row stacks, claim
+ * over source, and the leader drops out.
+ */
+interface Props {
+  title: string;
+  rows: readonly LedgerRow[];
+  headingLevel?: 2 | 3 | 4;
+  /** Small label above the title, for example "What WE says". */
+  eyebrow?: string;
+}
+
+const { title, rows, headingLevel = 3, eyebrow } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+
+<section class="ledgercard">
+  <div class="ledgercard__inner stack">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <Heading class="ledgercard__title">{title}</Heading>
+    <dl class="ledgercard__rows">
+      {
+        rows.map((row) => (
+          <div class="ledgercard__row">
+            <dt class="ledgercard__claim">{row.claim}</dt>
+            <dd class="ledgercard__source">{row.href ? <a href={resolve(row.href)}>{row.source}</a> : row.source}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .ledgercard {
+    container-type: inline-size;
+    background: var(--color-bg);
+    border: var(--border-hair);
+    border-block-start: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+  }
+
+  .ledgercard__inner {
+    padding: var(--sp-5);
+  }
+
+  .ledgercard__title {
+    font-size: var(--fs-lg);
+  }
+
+  .ledgercard__rows {
+    display: grid;
+  }
+
+  .ledgercard__row {
+    display: grid;
+    gap: var(--sp-1);
+    padding-block: var(--sp-3);
+    border-block-start: var(--border-hair);
+
+    &:first-child {
+      border-block-start: 0;
+    }
+
+    @container (min-width: 30rem) {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      column-gap: var(--sp-3);
+    }
+  }
+
+  .ledgercard__claim {
+    font-weight: 600;
+
+    @container (min-width: 30rem) {
+      display: flex;
+      align-items: baseline;
+      gap: var(--sp-3);
+
+      /* The leader: a dotted line from the end of the claim to the source. */
+      &::after {
+        content: '';
+        flex: 1 1 var(--sp-5);
+        min-inline-size: var(--sp-5);
+        border-block-end: 2px dotted var(--color-border-strong);
+        translate: 0 -0.25em;
+      }
+    }
+  }
+
+  .ledgercard__source {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    max-inline-size: 22rem;
+    text-align: start;
+  }
+</style>

@@ -106,6 +106,34 @@
     }
   }
 
+  /*
+   * Statement variant of the compact hero (WP-45): the title is a claim. One step more type from tablet up (a phone keeps the h1 size
+   * so the primary action stays above the fold), a pale wash behind the copy and a hairline under it, no art.
+   */
+  .hero--statement {
+    background: linear-gradient(180deg, var(--tint-blue), var(--color-bg) 96%);
+    border-block-end: 1px solid var(--tint-line);
+
+    & .hero__copy > h1 {
+      letter-spacing: -0.02em;
+
+      @media (min-width: 52rem) {
+        font-size: calc((var(--fs-3xl) + var(--fs-4xl)) / 2);
+      }
+    }
+
+    /* A hex cell in front of the eyebrow marks the page as a statement of position. */
+    & .eyebrow::before {
+      content: '';
+      display: inline-block;
+      inline-size: 0.7em;
+      margin-inline-end: 0.6em;
+      aspect-ratio: var(--hex-ratio);
+      clip-path: var(--hex-clip);
+      background: var(--color-highlight);
+    }
+  }
+
   /* The article copy starts at the left edge of the article body and holds the reading measure. */
   .hero[data-measure='rail'] .hero__copy {
     max-inline-size: var(--prose-max);

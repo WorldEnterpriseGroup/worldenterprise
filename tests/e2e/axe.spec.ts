@@ -45,11 +45,15 @@ test('axe on every mega menu panel', async ({ page, isMobile }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   const count = await page.locator('[data-mega-trigger]').count();
+  // One scan per panel, so the budget grows with the panel count: runner load must not turn a slow minute into a failed test.
+  test.setTimeout(30_000 + count * 15_000);
   const failures: string[] = [];
   for (let i = 0; i < count; i += 1) {
     await page.locator('[data-mega-trigger]').nth(i).click();
     await expect(page.locator('[data-mega-panel]:popover-open')).toBeVisible();
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    // The scan is scoped to the open panel. The page behind it is covered by "axe <route>" and "axe with the navigation open",
+    // so a full-page analyze() per panel would repeat that work and cost about 10 s each on a loaded runner.
+    const results = await new AxeBuilder({ page }).include('[data-mega-panel]:popover-open').withTags(AXE_TAGS).analyze();
     failures.push(...summarise(results.violations).map((line) => `panel ${i}: ${line}`));
     await page.keyboard.press('Escape');
   }
