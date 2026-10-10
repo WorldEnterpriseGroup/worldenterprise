@@ -11,7 +11,7 @@ import { PROGRAM_STEPS } from '../../components/program/steps.ts';
 import { JOURNEY } from '../../data/families.ts';
 import { getRenderable } from '../../lib/content.ts';
 
-/** One page per journey step page (/journey/<page>/); the hub is index.astro. Needs the registry slug and a `pages` entry. */
+/** One page per journey step page (/journey/<page>/); the hub is [...hub].astro. Needs the registry slug and a `pages` entry. */
 export const getStaticPaths = (async () => {
   const pages = await getRenderable('pages');
   return resolveEntries(JOURNEY, pages).map(({ entry, page }) => ({

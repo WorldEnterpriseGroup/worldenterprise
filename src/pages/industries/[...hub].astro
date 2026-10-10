@@ -1,14 +1,21 @@
 ---
+import type { GetStaticPaths } from 'astro';
 import { industryActions } from '../../components/families/actions.ts';
 import { HEADINGS_HUB } from '../../components/families/copy.ts';
 import FamilyHubPage from '../../components/families/FamilyHubPage.astro';
 import { loadIsLive } from '../../components/families/load.ts';
 import { ogSlotFor } from '../../components/families/og.ts';
-import { findHubPage, liveCards, pageRefs } from '../../components/families/paths.ts';
+import { findHubPage, hubStaticPaths, liveCards, pageRefs } from '../../components/families/paths.ts';
 import { INDUSTRIES } from '../../data/families.ts';
 import { getRenderable } from '../../lib/content.ts';
 
-/** The industries hub (/industries/): the structure is the template's, the intro is the content owner's `industries/index` page. */
+/**
+ * The industries hub (/industries/): the structure is the template's, the intro is the content owner's `industries/index` page. The hub
+ * is a rest route that yields only the root, so it is built only when that entry exists: until then it is pending like any other
+ * launched route without a page, and a release build does not ship an empty hub on fallback copy.
+ */
+export const getStaticPaths = (async () => hubStaticPaths(INDUSTRIES, await getRenderable('pages'))) satisfies GetStaticPaths;
+
 const pages = await getRenderable('pages');
 const isLive = await loadIsLive();
 ---

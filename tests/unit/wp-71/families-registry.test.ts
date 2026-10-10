@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import test from 'node:test';
-import { assertFamilyData, cardFor, liveCards, resolveEntries } from '../../../src/components/families/paths.ts';
+import { assertFamilyData, cardFor, hubStaticPaths, liveCards, resolveEntries } from '../../../src/components/families/paths.ts';
 import type { CompareData, IndustryData, JourneyData, Registry, SegmentData } from '../../../src/components/families/types.ts';
 import { compareView, industryView, journeyView, segmentView } from '../../../src/components/families/view.ts';
 import { PROGRAM_STEPS } from '../../../src/components/program/steps.ts';
@@ -114,19 +114,39 @@ test('every family folder has its route file, and each route file routes through
     ['src/pages/industries/[vertical].astro', 'INDUSTRIES'],
     ['src/pages/compare/[pair].astro', 'COMPARISONS'],
     ['src/pages/journey/[page].astro', 'JOURNEY'],
-    ['src/pages/industries/index.astro', 'INDUSTRIES'],
-    ['src/pages/compare/index.astro', 'COMPARISONS'],
-    ['src/pages/journey/index.astro', 'JOURNEY'],
+    ['src/pages/industries/[...hub].astro', 'INDUSTRIES'],
+    ['src/pages/compare/[...hub].astro', 'COMPARISONS'],
+    ['src/pages/journey/[...hub].astro', 'JOURNEY'],
   ];
   for (const [file, registry] of files) {
     assert.ok(existsSync(`${ROOT}${file}`), `${file} is missing`);
     const source = readFileSync(`${ROOT}${file}`, 'utf8');
     assert.match(source, new RegExp(`\\b${registry}\\b`), `${file} does not use ${registry}`);
     assert.match(source, /ogSlotFor\(/, `${file} does not set its open graph card`);
-    if (file.includes('[')) {
+    if (file.includes('[...hub]')) {
+      assert.match(source, /hubStaticPaths\(/, `${file} does not gate itself on its hub entry`);
+    } else {
       assert.match(source, /resolveEntries\(/, `${file} does not route through resolveEntries`);
       assert.match(source, /assertFamilyData</, `${file} does not check its family object`);
     }
+  }
+});
+
+test('a hub is built only when its own index entry exists: no entry, no static path, never an empty page', () => {
+  for (const registry of [INDUSTRIES, COMPARISONS, JOURNEY]) {
+    const others = pagesFor(registry);
+    assert.deepEqual(hubStaticPaths(registry, []), [], `${registry.folder}: built with no pages at all`);
+    assert.deepEqual(hubStaticPaths(registry, others), [], `${registry.folder}: built from its detail pages alone`);
+    assert.deepEqual(hubStaticPaths(registry, [{ id: 'about/index' }]), [], `${registry.folder}: built from another folder's index`);
+    assert.deepEqual(hubStaticPaths(registry, [...others, { id: `${registry.folder}/index` }]), [{ params: { hub: undefined } }], `${registry.folder}: not built with its entry`);
+    assert.deepEqual(hubStaticPaths(registry, [{ id: registry.folder }]), [{ params: { hub: undefined } }], `${registry.folder}: collapsed id not accepted`);
+  }
+});
+
+test('the hub route files are rest routes, so a static index page cannot ship an empty hub', () => {
+  for (const folder of ['industries', 'compare', 'journey']) {
+    assert.ok(existsSync(`${ROOT}src/pages/${folder}/[...hub].astro`), `${folder}/[...hub].astro is missing`);
+    assert.ok(!existsSync(`${ROOT}src/pages/${folder}/index.astro`), `${folder}/index.astro would build the hub whatever its entry`);
   }
 });
 

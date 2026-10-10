@@ -55,6 +55,14 @@ export function findHubPage<P extends { readonly id: string }>(registry: Registr
   return pages.find((page) => wanted.includes(page.id));
 }
 
+/**
+ * The static paths of a family hub, which is a rest route (`[...hub].astro`) so that it can be absent: the root route when the hub's own
+ * `<folder>/index` entry exists, none otherwise. A pending hub is therefore not built, the same as any launched route without a page.
+ */
+export function hubStaticPaths<P extends { readonly id: string }>(registry: Registry, pages: readonly P[]): { params: { hub: undefined } }[] {
+  return findHubPage(registry, pages) === undefined ? [] : [{ params: { hub: undefined } }];
+}
+
 /** A family object must belong to the registry and the slug of the route that renders it. Throws a precise message otherwise. */
 export function assertFamilyData<D extends FamilyData>(
   registry: Registry,
