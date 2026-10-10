@@ -773,6 +773,28 @@
         ".astro-magazine/handoffs/wave7*",
         ".astro-magazine/sources/wp-50.json"
       ]
+    },
+    {
+      "owner": "WP-12c",
+      "title": "Responsive heroes and declared dependencies",
+      "branch": "wp/12c",
+      "write_set": [
+        ".astro-magazine/handoffs/wp-12c*",
+        "tests/unit/wp-12c/**"
+      ]
+    },
+    {
+      "owner": "WP-30",
+      "title": "Release engineer: mirror confirmation, release gate, runbook, pre-flight",
+      "branch": "wp/30",
+      "write_set": [
+        ".gitlab-ci.yml",
+        "scripts/ci/**",
+        ".astro-magazine/release/**",
+        "tests/unit/wp-30/**",
+        ".astro-magazine/handoffs/wp-30*",
+        "docs/runbook-release.md"
+      ]
     }
   ],
   "active_leases": [],
@@ -1008,6 +1030,56 @@
       "wp": "WP-43",
       "path": "src/pages/program/who-its-for.astro",
       "reason": "Wave 7, gated: reserved by the photography lane (WP-12b exception). Edit only on a branch rebased on a demo that contains WP-12d phase B."
+    },
+    {
+      "wp": "WP-12c",
+      "path": "{src/pages/index.astro,src/components/hero/HeroAtlas.astro,src/components/hero/HeroEditorial.astro,src/components/home/HomeHero.astro}",
+      "reason": "Brief grants the home page and the three hero components: they serve the slot srcset and sizes through photoImage()."
+    },
+    {
+      "wp": "WP-12c",
+      "path": "{src/components/seo/SeoHead.astro,src/layouts/BaseLayout.astro,src/layouts/types.ts,src/lib/image-type.ts}",
+      "reason": "Preload with imagesrcset and imagesizes: the head, its layout props and the preload helper carry the srcset and sizes of the LCP image."
+    },
+    {
+      "wp": "WP-12c",
+      "path": "src/components/media/photo-image.ts",
+      "reason": "One additive field (format) so a preload names the type of the files photoImage returns."
+    },
+    {
+      "wp": "WP-12c",
+      "path": "scripts/audit-images.mjs",
+      "reason": "audit:images checks that a preload with imagesrcset matches the srcset and sizes of an <img> on the page."
+    },
+    {
+      "wp": "WP-12c",
+      "path": "{tests/unit/wp-12b/markup.test.ts,tests/unit/wp-15/image-type.test.ts,tests/unit/wp-17/heroes.test.ts}",
+      "reason": "The tests that pinned the old hero and preload markup assert the new srcset contract instead."
+    },
+    {
+      "wp": "WP-12c",
+      "path": "{package.json,package-lock.json}",
+      "reason": "Brief grants dependency declarations: satteri and @astrojs/markdown-satteri are imported directly and are now declared."
+    },
+    {
+      "wp": "WP-12c",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "Registers the WP-12c assignment and records decision P-4."
+    },
+    {
+      "wp": "WP-30",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "Issue #20: registers the WP-30 assignment and records decision R-1 (the release path and its gates)."
+    },
+    {
+      "wp": "WP-30",
+      "path": "tests/unit/wp-19/release-security.test.ts",
+      "reason": "Issue #20: the mirror job tests moved to tests/unit/wp-30 with the job; the GitHub workflow tests stay."
+    },
+    {
+      "wp": "WP-30",
+      "path": "src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx",
+      "reason": "Issue #20, team decision of 2026-10-09: line 37 denied that WE offers an introduction service while line 77 sells the paid add-on. Only that sentence is replaced, so the page matches the add-on before counsel reviews the tagged text."
     }
   ],
   "notes": [

@@ -1,8 +1,8 @@
 ---
-import { getPhoto } from '../../assets/photo/index.ts';
 import type { SlotId } from '../../assets/photo/slots.ts';
 import { href } from '../../lib/url.ts';
 import HexAtlasArt from '../diagrams/HexAtlasArt.astro';
+import { photoImage } from '../media/photo-image.ts';
 
 interface Cta {
   readonly label: string;
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const { as: Heading = 'h1', eyebrow, title, lead, primary, secondary, photo = 'band-1', strip = false } = Astro.props;
-const image = getPhoto(photo);
+const image = await photoImage(photo);
 ---
 
 <section class="hero hero--atlas">
@@ -40,7 +40,7 @@ const image = getPhoto(photo);
     </div>
     <div class="hero__media hex-frame">
       <HexAtlasArt />
-      <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} fetchpriority="high" decoding="async" />
+      <img src={image.src} srcset={image.srcset} sizes={image.srcset === undefined ? undefined : image.sizes} width={image.width} height={image.height} alt={image.alt} fetchpriority="high" decoding="async" />
     </div>
   </div>
   {strip && <div class="container hero__strip"><slot name="strip" /></div>}

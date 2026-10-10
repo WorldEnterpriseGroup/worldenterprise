@@ -1,6 +1,7 @@
 import type { SlotId } from '../assets/photo/slots.ts';
 import type { HeroArtProps, HeroCta, HeroMeasure } from '../components/hero/types.ts';
 import type { Crumb } from '../lib/breadcrumbs.ts';
+import type { PreloadImage } from '../lib/image-type.ts';
 import type { JsonLdNode, PageSchemaType } from '../lib/schema.ts';
 
 /** Props every layout accepts and forwards to BaseLayout. */
@@ -25,7 +26,7 @@ export interface PageMeta {
   /** Extra JSON-LD nodes for this page. */
   jsonLd?: readonly JsonLdNode[];
   /** LCP image to preload. */
-  preloadImage?: { readonly href: string; readonly type: string };
+  preloadImage?: PreloadImage;
 }
 
 /** Hero options for the layouts that open with a hero. Each layout supplies the defaults that suit its template. */

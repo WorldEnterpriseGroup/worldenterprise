@@ -1,6 +1,7 @@
 ---
 import { Font } from 'astro:assets';
 import { site } from '../../data/site.ts';
+import type { PreloadImage } from '../../lib/image-type.ts';
 import { asset, href } from '../../lib/url.ts';
 import { canonicalUrl } from '../../lib/seo.ts';
 import type { RobotsDirective } from '../../lib/seo.ts';
@@ -22,7 +23,7 @@ interface Props {
   ogType?: 'website' | 'article';
   ogImage?: OgImage;
   /** LCP image to preload. The page must also mark the image fetchpriority="high". */
-  preloadImage?: { readonly href: string; readonly type: string };
+  preloadImage?: PreloadImage;
   /** Optional article metadata for og:article tags. */
   published?: Date;
   modified?: Date;
@@ -65,7 +66,7 @@ const canonical = canonicalUrl(path);
 <meta name="twitter:description" content={description} />
 {ogImage && <meta name="twitter:image" content={ogImage.url} />}
 
-{preloadImage && <link rel="preload" as="image" href={preloadImage.href} type={preloadImage.type} fetchpriority="high" />}
+{preloadImage && <link rel="preload" as="image" href={preloadImage.href} imagesrcset={preloadImage.srcset} imagesizes={preloadImage.sizes} type={preloadImage.type} fetchpriority="high" />}
 
 <Font cssVariable="--font-display" preload={[{ weight: '700', style: 'normal' }]} />
 <Font cssVariable="--font-serif" preload={[{ weight: '400', style: 'normal' }]} />

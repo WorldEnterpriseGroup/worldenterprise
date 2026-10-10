@@ -1,5 +1,5 @@
 ---
-import { getPhoto } from '../../assets/photo/index.ts';
+import type { PhotoImage } from '../media/photo-image.ts';
 import CellTrail from '../ui/CellTrail.astro';
 import { STAGES } from '../program/stages.ts';
 import { href } from '../../lib/url.ts';
@@ -15,10 +15,11 @@ interface Props {
   lead: string;
   primary: Cta;
   secondary?: Cta;
+  /** The LCP image. The page builds it once and also derives the head preload from it, so the two name the same srcset and sizes. */
+  image: PhotoImage;
 }
 
-const { eyebrow, title, lead, primary, secondary } = Astro.props;
-const image = getPhoto('band-1');
+const { eyebrow, title, lead, primary, secondary, image } = Astro.props;
 const trail = STAGES.map((s) => ({ label: s.name, href: href(s.path) }));
 ---
 
@@ -35,7 +36,7 @@ const trail = STAGES.map((s) => ({ label: s.name, href: href(s.path) }));
       <CellTrail label="The three stages" cells={trail} />
     </div>
     <div class="home-hero__media hex-frame">
-      <img src={image.src.src} width={image.src.width} height={image.src.height} alt={image.alt} fetchpriority="high" decoding="async" />
+      <img src={image.src} srcset={image.srcset} sizes={image.srcset === undefined ? undefined : image.sizes} width={image.width} height={image.height} alt={image.alt} fetchpriority="high" decoding="async" />
     </div>
   </div>
 </section>
