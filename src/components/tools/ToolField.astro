@@ -1,0 +1,66 @@
+---
+/**
+ * One labelled text field of a founder tool, with its two-line note slot. The note shows the hint, and the error message when the entry
+ * has a problem, so the form never changes height. The field is rendered disabled: without JavaScript a visitor is not handed a control
+ * that does nothing, and the island's script enables it. There is no placeholder, because a number shown in an empty field reads as a
+ * typical value.
+ */
+interface Props {
+  /** The id of the input is `${prefix}-${id}`. */
+  prefix: string;
+  id: string;
+  label: string;
+  hint: string;
+  inputmode: 'numeric' | 'decimal' | 'text';
+  maxlength?: number | undefined;
+}
+
+const { prefix, id, label, hint, inputmode, maxlength } = Astro.props;
+---
+
+<div class="field tool-field">
+  <label for={`${prefix}-${id}`}>{label}</label>
+  <input
+    class="tool-field__input"
+    id={`${prefix}-${id}`}
+    name={id}
+    type="text"
+    inputmode={inputmode}
+    autocomplete="off"
+    spellcheck="false"
+    maxlength={maxlength}
+    aria-describedby={`${prefix}-${id}-note`}
+    disabled
+  />
+  <p class="field__hint tool-field__note" id={`${prefix}-${id}-note`} data-note={id} data-hint={hint}>{hint}</p>
+</div>
+
+<style>
+  @layer pages {
+    .tool-field__input {
+      font-variant-numeric: tabular-nums;
+
+      &:disabled {
+        background: var(--color-bg-soft);
+        cursor: not-allowed;
+      }
+
+      &:focus-visible {
+        outline: 3px solid var(--color-focus);
+        outline-offset: 2px;
+      }
+    }
+
+    /* Two lines are always reserved, so a message in place of the hint changes nothing below it. */
+    .tool-field__note {
+      min-block-size: 2lh;
+
+      &[data-error] {
+        color: var(--color-error);
+        font-weight: 600;
+        border-inline-start: 3px solid var(--color-error);
+        padding-inline-start: var(--sp-2);
+      }
+    }
+  }
+</style>
