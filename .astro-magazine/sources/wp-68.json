@@ -127,6 +127,33 @@
       "fetchedAt": "2026-10-10T11:36:30Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "lii-at-will",
+      "url": "https://www.law.cornell.edu/wex/at-will_employment",
+      "title": "At-will employment",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T11:37:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-written-statement",
+      "url": "https://www.gov.uk/employment-contracts-and-conditions/written-statement-of-employment-particulars",
+      "title": "Written statement of employment particulars",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:37:05Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dol-fact-sheet-17a",
+      "url": "https://www.dol.gov/agencies/whd/fact-sheets/17a-overtime",
+      "title": "Fact Sheet #17A: Exemption for executive, administrative, professional, computer and outside sales employees under the FLSA",
+      "publisher": "U.S. Department of Labor, Wage and Hour Division",
+      "fetchedAt": "2026-10-10T11:37:10Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -635,6 +662,131 @@
           "sourceId": "eeoc-prohibited-practices",
           "locator": "Job advertisements",
           "quote": "sex (including transgender status, sexual orientation, and pregnancy), national origin,"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/offer-letters-what-they-should-state.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "job titles do not determine exempt status",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-17a",
+          "locator": "Exemption tests",
+          "quote": "Job titles do not determine exempt status."
+        },
+        {
+          "id": "A2",
+          "sentence": "employees generally must meet certain tests regarding their job duties and be paid on a salary basis",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-17a",
+          "locator": "Exemption tests",
+          "quote": "employees generally must meet certain tests regarding their job duties and be paid on a salary basis"
+        },
+        {
+          "id": "A3",
+          "sentence": "all US employers must properly complete Form I-9 for every individual they hire for employment in the United States",
+          "kind": "regulation",
+          "sourceId": "uscis-i9",
+          "locator": "Form I-9 overview",
+          "quote": "All U.S. employers must properly complete Form I-9 for every individual they hire for employment in the United States."
+        },
+        {
+          "id": "A4",
+          "sentence": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee",
+          "kind": "regulation",
+          "sourceId": "irs-hiring-employees",
+          "locator": "Keep a Form W-4 on file",
+          "quote": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee."
+        },
+        {
+          "id": "A5",
+          "sentence": "at-will employment is an employment arrangement in which the employee may quit at any time",
+          "kind": "definition",
+          "sourceId": "lii-at-will",
+          "locator": "Definition",
+          "quote": "At-will employment is an employment arrangement in which the employee may quit at any time,"
+        },
+        {
+          "id": "A6",
+          "sentence": "the employer may fire the employee for any reason and at any point",
+          "kind": "definition",
+          "sourceId": "lii-at-will",
+          "locator": "Definition",
+          "quote": "the employer may fire the employee for any reason and at any point,"
+        },
+        {
+          "id": "A7",
+          "sentence": "so long as the dismissal isn't for an unlawful reason",
+          "kind": "definition",
+          "sourceId": "lii-at-will",
+          "locator": "Definition",
+          "quote": "so long as the dismissal isn't for an unlawful reason."
+        },
+        {
+          "id": "A8",
+          "sentence": "in 49 U.S. states, employment is presumed to be at-will if there is no express or implied employment agreement",
+          "kind": "regulation",
+          "sourceId": "lii-at-will",
+          "locator": "Variation by state",
+          "quote": "In 49 U.S. states, employment is presumed to be at-will if there is no express or implied employment agreement"
+        },
+        {
+          "id": "A9",
+          "sentence": "the only exception is Montana, which generally requires employers to have good cause",
+          "kind": "regulation",
+          "sourceId": "lii-at-will",
+          "locator": "Variation by state",
+          "quote": "The only exception is Montana, which generally requires employers to have good cause"
+        },
+        {
+          "id": "A10",
+          "sentence": "an employer must give employees and workers a document stating the main conditions of employment when they start work",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "When it must be given",
+          "quote": "An employer must give employees and workers a document stating the main conditions of employment when they start work."
+        },
+        {
+          "id": "A11",
+          "sentence": "the employer must provide the principal statement on the first day of employment",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "When it must be given",
+          "quote": "The employer must provide the principal statement on the first day of employment"
+        },
+        {
+          "id": "A12",
+          "sentence": "how much and how often an employee or worker will get paid",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "Principal statement",
+          "quote": "how much and how often an employee or worker will get paid"
+        },
+        {
+          "id": "A13",
+          "sentence": "hours and days of work and if and how they may vary",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "Principal statement",
+          "quote": "hours and days of work and if and how they may vary"
+        },
+        {
+          "id": "A14",
+          "sentence": "holiday entitlement",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "Principal statement",
+          "quote": "holiday entitlement"
+        },
+        {
+          "id": "A15",
+          "sentence": "notice periods",
+          "kind": "regulation",
+          "sourceId": "govuk-written-statement",
+          "locator": "Principal statement",
+          "quote": "notice periods"
         }
       ]
     }
