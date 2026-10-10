@@ -81,8 +81,12 @@ export function buildPaletteCommands(sources: CommandSources, isLive: (href: str
     for (const link of item.strip) add(link.label, link.href, item.label, link.description);
   }
 
-  // The registries. Each add() is checked against isLive, so a page that is not built is never listed; a path the navigation already
-  // named keeps its place there. A family entry is listed by its label alone (a blocked word never reaches a page-name list).
+  for (const link of sources.utility) add(link.label, link.href, SITE_GROUP, link.description);
+  for (const column of sources.footer) for (const link of column.links) add(link.label, link.href, column.heading, link.description);
+
+  // The registries come last: add() keeps the first entry of a path, so a page the navigation or the footer already names keeps its
+  // label and group. Each add() is checked against isLive, so a page that is not built is never listed. A family entry is listed by its
+  // label alone (a blocked word never reaches a page-name list).
   for (const link of AUDIENCE_LINKS) add(link.label, link.href, AUDIENCE_GROUP, link.text);
   for (const family of FAMILIES) {
     const group = FAMILY_LABELS[family.id];
@@ -91,9 +95,6 @@ export function buildPaletteCommands(sources: CommandSources, isLive: (href: str
   }
   for (const desk of DESK_DEFINITIONS) add(desk.name, deskPath(desk.id), DESK_GROUP, desk.blurb);
   for (const path of toolRoutes()) add(toolLabel(path), path, TOOLS_GROUP);
-
-  for (const link of sources.utility) add(link.label, link.href, SITE_GROUP, link.description);
-  for (const column of sources.footer) for (const link of column.links) add(link.label, link.href, column.heading, link.description);
   return commands;
 }
 

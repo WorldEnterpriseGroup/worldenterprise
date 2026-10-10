@@ -22,10 +22,23 @@ test.describe('machine surfaces', () => {
       const text = await response.text();
       for (const path of thankYouPages) expect(text, `${surface} must not name ${path}`).not.toContain(path);
     }
-    const sitemap = await request.get('/sitemap-0.xml');
-    if (sitemap.ok()) {
-      const text = await sitemap.text();
-      for (const path of thankYouPages) expect(text, `the sitemap must not name ${path}`).not.toContain(path);
+  });
+
+  test('a thank-you page is not in the sitemap', async ({ request, baseURL }) => {
+    test.skip(thankYouPages.length === 0, 'no thank-you page is built');
+    // A preview build blocks every crawler and its sitemap is not filtered by the base path (reported in the handoff); audit-geo skips
+    // the same comparison there.
+    const robots = await (await request.get('/robots.txt')).text();
+    test.skip(/^User-agent: \*\nDisallow: \/\n$/.test(robots), 'a preview build; the sitemap check runs on the production build');
+    const index = await request.get('/sitemap-index.xml');
+    expect(index.ok(), 'sitemap-index.xml is served').toBe(true);
+    const files = [...(await index.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => new URL(match[1] ?? '').pathname);
+    expect(files.length, 'the index names a sitemap file').toBeGreaterThan(0);
+    for (const file of files) {
+      const response = await request.get(new URL(file, baseURL).href);
+      expect(response.ok(), `${file} is served`).toBe(true);
+      const text = await response.text();
+      for (const path of thankYouPages) expect(text, `${file} must not name ${path}`).not.toContain(path);
     }
   });
 
@@ -92,7 +105,7 @@ test.describe('search chips read every result', () => {
 
   const chipNames = (page: Page): Promise<string[]> => page.locator('[data-search-chips] button').allInnerTexts();
 
-  test('a broad search shows a chip for a type whose first result is beyond the 50th', async ({ page, baseURL }) => {
+  test('a broad search shows the chips of the types found, and a chip filters the list', async ({ page, baseURL }) => {
     const seen = watch(page, baseURL ?? '');
     await page.goto('/search/');
     const input = page.locator('#we-search-input');
@@ -102,7 +115,7 @@ test.describe('search chips read every result', () => {
     await expect(page.locator('[data-search-chips]')).toBeVisible({ timeout: 10_000 });
     const chips = await chipNames(page);
     expect(chips[0]).toMatch(/^All/);
-    // Every type the site has appears once the chunks are read, not only the types among the first 50 results.
+    // The chunked read itself (a type past the 50th result gets its chip) is held by tests/unit/wp-91/search.test.ts.
     expect(chips.length, 'All and at least two types').toBeGreaterThanOrEqual(3);
     // A type chip filters the list to rows of that type and the status line says how many.
     await page.locator('[data-search-chips] button').nth(1).click();

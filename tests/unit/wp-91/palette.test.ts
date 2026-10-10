@@ -3,11 +3,18 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { buildPaletteCommands, toolLabel } from '../../../src/components/nav/commands.ts';
 import type { PaletteCommand } from '../../../src/components/nav/commands.ts';
+import { rankCommands } from '../../../src/components/islands/we-palette/match.ts';
 import { DESK_DEFINITIONS, deskPath } from '../../../src/data/desks.ts';
 import { FAMILIES } from '../../../src/data/families.ts';
 import { applyButton, resolveFooter, resolveNav, resolveUtility } from '../../../src/data/nav.ts';
 import { routes } from '../../../src/data/routes.ts';
 import { ROOT } from '../wp-41/content.ts';
+
+interface Rule {
+  readonly id: string;
+  readonly pattern: string;
+  readonly flags: string;
+}
 
 /**
  * The palette list as Header.astro builds it: the navigation plus the registries. Every test passes the same live predicate to the
@@ -74,14 +81,23 @@ test('a thank-you page and a route the ledger does not launch are never listed',
 });
 
 test('a path is listed once, and no list carries a label or hint with a word the denylist blocks', () => {
-  const denylist = JSON.parse(readFileSync(`${ROOT}claims-denylist.json`, 'utf8')) as { contextRules: { id: string; pattern: string; flags: string }[] };
-  const peers = denylist.contextRules.find((rule) => rule.id === 'C-13-peers');
-  assert.ok(peers !== undefined);
-  const pattern = new RegExp(peers.pattern, peers.flags);
+  const denylist = JSON.parse(readFileSync(`${ROOT}claims-denylist.json`, 'utf8')) as { rules: Rule[]; contextRules: Rule[] };
+  const patterns = [...denylist.rules, ...denylist.contextRules].map((rule) => ({ id: rule.id, pattern: new RegExp(rule.pattern, rule.flags) }));
+  assert.ok(patterns.some((rule) => rule.id === 'C-13-peers'), 'the peers rule is among the patterns');
   for (const isLive of [allLive, ledgerLive]) {
     const commands = build(isLive);
     assert.equal(new Set(commands.map((command) => command.href)).size, commands.length);
-    for (const command of commands) assert.ok(!pattern.test(`${command.label} ${command.group} ${command.hint ?? ''}`), command.href);
+    for (const command of commands) {
+      const text = `${command.label} ${command.group} ${command.hint ?? ''}`;
+      for (const rule of patterns) assert.ok(!rule.pattern.test(text), `${command.href} matches ${rule.id}`);
+    }
+  }
+});
+
+test('the registry entries do not change what the existing entries rank: "pricing" still ranks Pricing first on the real list', () => {
+  for (const isLive of [allLive, ledgerLive]) {
+    const ranked = rankCommands(build(isLive), 'pricing');
+    assert.equal(ranked[0]?.command.href, '/pricing/');
   }
 });
 
