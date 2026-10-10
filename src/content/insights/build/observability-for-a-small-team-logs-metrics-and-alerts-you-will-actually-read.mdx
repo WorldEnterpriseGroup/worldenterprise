@@ -1,0 +1,117 @@
+---
+title: "Observability for a small team: logs, metrics and alerts you will actually read"
+seoTitle: Observability for a small team
+description: A starting set of logs, metrics and alerts for a two- or three-person SaaS team, built on four signals and one rule: every alert must be something you can act on.
+topic: build
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders]
+related: [shipping-safely-with-feature-flags-and-rollback, a-boring-first-technology-stack]
+evidence: [otel-observability-primer, google-sre-monitoring, gds-monitoring, w3c-trace-context]
+sources:
+  - id: otel-observability-primer
+    title: Observability primer
+    publisher: OpenTelemetry project documentation
+    url: https://opentelemetry.io/docs/concepts/observability-primer/
+    accessed: 2026-10-10
+  - id: google-sre-monitoring
+    title: Monitoring Distributed Systems, in Site Reliability Engineering
+    publisher: Google, published by O'Reilly Media
+    url: https://sre.google/sre-book/monitoring-distributed-systems/
+    accessed: 2026-10-10
+  - id: gds-monitoring
+    title: Monitoring the status of your service
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/technology/monitoring-the-status-of-your-service
+    accessed: 2026-10-10
+  - id: w3c-trace-context
+    title: Trace Context, W3C Recommendation
+    publisher: World Wide Web Consortium
+    url: https://www.w3.org/TR/trace-context/
+    accessed: 2026-10-10
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+The first time a customer tells you the product is broken before your own systems do, you learn what you were not watching. Small teams usually respond in one of two ways. Some build nothing and rely on customers to report problems. Others install every tool they can find, produce a screen of charts and an inbox of alerts, and soon stop looking at either.
+
+Both are failures of the same kind. Observability is not a collection of tools. It is the ability to answer a question about your running system when you need to. This article sets out a deliberately small starting set for a team of two or three, and a rule for keeping it useful. It is written for technical founders and the engineers who work with them.
+
+## What you are collecting
+
+The OpenTelemetry documentation defines the goal plainly: "Observability lets you understand a system from the outside." It then names three kinds of signal.
+
+- **Logs.** "A log is a timestamped message emitted by services or other components."
+- **Metrics.** "Metrics are aggregations over a period of time of numeric data about your infrastructure or application."
+- **Traces.** "A distributed trace, more commonly known as a trace, records the path taken by a single request."
+
+Each answers a different question. A metric tells you that something is happening, such as errors rising. A log tells you what a particular component said at a particular time. A trace tells you where a single request spent its time. A first release rarely needs all three in depth. Metrics and logs come first; traces earn their place when a request passes through several services and you cannot tell where it slowed down.
+
+## Start from the customer's questions
+
+Before choosing tools, write down what you would want to know at three in the morning. For most SaaS products the list is short: is it up, is it slow, is it failing for someone, and is something running out? These match the four signals Google's *Site Reliability Engineering* book proposes for any user-facing system: "The four golden signals of monitoring are latency, traffic, errors, and saturation."
+
+The UK Government Digital Service adds a point that small teams often skip: "You must track user-related metrics, as well as technical and security metrics." A server can be healthy while customers cannot complete the one task they came to do, so include at least one measure of that task, such as whether sign-ups and reminders are succeeding.
+
+<DataTable
+  caption="A starting set for a small SaaS product, invented for illustration"
+  columns={['Question', 'Signal', 'Where you look', 'Alert a person?']}
+  rows={[
+    ['Is it up for customers?', 'A scheduled request from outside to a page or health endpoint', 'A single status view', 'Yes, if several checks in a row fail'],
+    ['Is it slow?', 'Latency of the main requests, as a high percentile', 'A chart of the main requests', 'Only when it stays bad'],
+    ['Is it failing?', 'The rate of error responses and failed background jobs', 'A chart and the error log', 'Yes, when the rate stays above a level you chose'],
+    ['Is something running out?', 'Disk, memory and database connections', 'A chart, reviewed weekly', 'Only before it reaches the limit'],
+    ['Is the core task working?', 'Count of completed core actions per hour', 'A simple counter', 'Yes, if it drops to zero during working hours']
+  ]}
+/>
+
+Five rows are a complete start. Adding a sixth should require a reason from a real incident.
+
+## One rule for alerts
+
+The SRE book is firm about the cost of an alert that does not need a response. "Every page should be actionable," it says, and "pages should be about a novel problem or an event that hasn’t been seen before." It also describes what happens when the rule is ignored: "When pages occur too frequently, employees second-guess, skim, or even ignore incoming alerts."
+
+That is the mechanism by which a well-meant alerting setup fails. Each alert that fires without needing action teaches the team to ignore the next one. For a team of two or three, where one person may be asleep and the other away, the damage comes quickly.
+
+Apply the rule with three tests before an alert is allowed to wake someone:
+
+1. **Is it a symptom?** The book says monitoring should answer "what’s broken, and why?" Alert on symptoms a customer would feel, such as errors and slowness, and keep causes, such as a busy disk, on a chart you look at when investigating.
+2. **Is there something to do?** If the honest answer is "look at it and wait," it belongs on a dashboard or in a daily summary, not in a page.
+3. **Does it need a response now?** The service manual says that if someone is called out of hours, "you should make sure the issue needs that level of response." Anything that can wait until morning should be sent as a message, not a call.
+
+Write each alert so that the person reading it half asleep can act. The same manual asks for alert messages that are "clear and concise" and "easy to understand for team members who might be woken up in the night to fix a problem." An alert should say what is wrong, how to confirm it and where to look first.
+
+## Logs you will be glad to have
+
+Logs are the easiest signal to produce and the hardest to use well. Four habits help.
+
+Write logs as structured records, with named fields, rather than free text, so that you can search for one customer or one request. Include an identifier that follows a request through the system. Log events that matter to a diagnosis, such as a failed payment attempt or a rejected request, and not every step of normal work. And decide, before you begin, what must never appear in a log. Logs often end up holding personal data by accident, and which rules apply depends on where your customers are, so ask your counsel what you need to know before you collect anything sensitive.
+
+If your request passes through more than one component, the identifier needs a common format. The W3C publishes a recommendation, Trace Context, which "defines standard HTTP headers and a value format to propagate context information." You do not need to adopt it on day one, but a single service can later join a trace more easily if its identifiers already follow a shared convention.
+
+## A weekly habit that keeps it honest
+
+Choose one fixed time each week and spend a short stretch on the following.
+
+- List every alert that fired. For each, write whether someone acted. Delete or downgrade any that nobody acted on.
+- Look at the charts for the five questions above. Note any trend that is moving the wrong way slowly.
+- Read the most common error messages. One of them is probably the next thing to fix.
+- Check that alerts still reach a person, by triggering a harmless test.
+
+The last item matters more than it sounds. An alert that goes to an unmonitored inbox is worse than no alert, because it gives you confidence you have not earned. The service manual makes a related practical point: "Make sure every member of your team has a local copy of the documentation." The people who are woken up need the instructions without needing the system that is failing.
+
+<Callout title="Keep the setup proportional">
+  A team of two does not need a rota, a status page and a dozen dashboards. It needs a way to learn quickly that customers are affected, and a person who knows it is their turn. Add structure when an incident shows you the gap, not before.
+</Callout>
+
+## Where this fits
+
+Observability supports the practices in the <MaybeLink path="/insights/shipping-safely-with-feature-flags-and-rollback/">article on feature flags and rollback</MaybeLink>: you cannot roll back what you do not know is broken. The <MaybeLink path="/playbooks/build-and-ship-v1/">Build and ship v1 playbook</MaybeLink> places it in the stage before launch, and the <MaybeLink path="/research/saas-security-baseline-year-one/">security baseline research</MaybeLink> covers the neighboring topic of detecting misuse. Terms are defined in the <MaybeLink path="/glossary/">glossary</MaybeLink>.
+
+## What this article cannot tell you
+
+The article draws on four public documents: a vendor-neutral observability primer, a book from Google's reliability engineers, a government service manual and a web standard. None studied small SaaS teams, and the book describes practices developed for large systems. We make no claim that following them prevents incidents.
+
+It names no monitoring product, gives no threshold for any alert and does not cover security monitoring, compliance logging, retention periods or on-call arrangements for larger teams. The thresholds in the example table are yours to choose from your own traffic. If your product is regulated, your obligations for logs and incident response may be set by rules the sources here do not cover.
