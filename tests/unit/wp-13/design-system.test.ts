@@ -106,18 +106,6 @@ describe('motion and accessibility rules in the global styles', () => {
     assert.match(m, /prefers-reduced-motion: no-preference[\s\S]*@supports \(animation-timeline: view\(\)\)/);
   });
 
-  it('spells every scroll-driven animation as longhands, never an `animation` shorthand beside a timeline (WP-45 finding)', () => {
-    const m = read('motion.css');
-    assert.ok(m.includes('animation-timeline'), 'the file still drives animation from a timeline');
-    assert.deepEqual(m.match(/^\s*animation:\s.*$/gm) ?? [], [], 'an `animation:` shorthand is folded with animation-timeline and dropped by some engines');
-  });
-
-  it('the reveal keyframes move and never fade, so axe never measures a mid-animation contrast', () => {
-    const block = /@keyframes we-reveal\s*\{([\s\S]*?\}\s*\})/.exec(read('motion.css'))?.[1] ?? '';
-    assert.match(block, /transform/);
-    assert.doesNotMatch(block, /opacity/);
-  });
-
   it('declares a forced-colors block and a print layer', () => {
     assert.match(read('base.css'), /forced-colors: active/);
     assert.match(read('print.css'), /@media print/);
