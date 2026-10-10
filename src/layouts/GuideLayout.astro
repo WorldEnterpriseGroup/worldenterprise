@@ -4,6 +4,7 @@ import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
+import CiteThis from '../components/geo/CiteThis.astro';
 import SourcesList from '../components/blocks/SourcesList.astro';
 
 interface Source {
@@ -40,6 +41,7 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
         )
       }
       <SourcesList sources={sources} />
+      <CiteThis title={meta.title} path={meta.path} date={meta.updated} />
     </div>
   </div>
   <slot name="after" />

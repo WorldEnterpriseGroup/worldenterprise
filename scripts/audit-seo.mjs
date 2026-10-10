@@ -5,7 +5,7 @@
 //
 // Checks per page: title (length, suffix), meta description (length), canonical (single, absolute, self-referential),
 // robots meta (noindex rules), one h1 and heading order inside <main>, Open Graph and Twitter tags, JSON-LD presence,
-// html lang. Cross-page: unique titles and descriptions among indexable pages, and sitemap-0.xml membership.
+// html lang, and the Markdown twin link (rel="alternate" type="text/markdown") when a page has one. Cross-page: unique titles and descriptions among indexable pages, and sitemap-0.xml membership.
 // Exit code 1 on any error. Warnings (for example og:image absent while the OG slots are placeholders, FLAG-OG) never fail.
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
@@ -83,6 +83,19 @@ export function canonicalLinks(html) {
     .map((tag) => attrOf(tag, /<link\b[^>]*>/gi, 'href'));
 }
 
+/** The href of every <link rel="alternate" type="text/markdown"> of a page, in order. */
+export function markdownAlternateLinks(html) {
+  return [...html.matchAll(/<link\b[^>]*>/gi)]
+    .map((m) => m[0])
+    .filter((tag) => /\srel\s*=\s*("alternate"|'alternate')/i.test(tag) && /\stype\s*=\s*("text\/markdown"|'text\/markdown')/i.test(tag))
+    .map((tag) => attrOf(tag, /<link\b[^>]*>/gi, 'href'));
+}
+
+/** The twin URL of a page route (docs/wave7-contracts.md, section 2): /insights/x/ is /insights/x.md, / is /index.md. */
+export function twinUrlOf(path) {
+  return `${ORIGIN}${path === '/' ? '/index.md' : `${path.replace(/\/+$/, '')}.md`}`;
+}
+
 export function titleOf(html) {
   const m = /<title>([\s\S]*?)<\/title>/i.exec(html);
   return m ? decode(m[1]).trim() : undefined;
@@ -145,6 +158,10 @@ export function auditPage({ path, html }, options) {
     if (canonicals[0] !== expected) err(`canonical is "${canonicals[0]}", expected "${expected}"`);
     if (path !== '/404.html' && !canonicals[0]?.endsWith('/')) err('canonical must end with a trailing slash');
   }
+
+  const twins = markdownAlternateLinks(html);
+  if (twins.length > 1) err(`expected at most one Markdown alternate link, found ${twins.length}`);
+  else if (twins.length === 1 && twins[0] !== twinUrlOf(path)) err(`Markdown alternate link is "${twins[0] ?? ''}", expected "${twinUrlOf(path)}"`);
 
   const robots = metaContent(html, 'name', 'robots');
   if (robots === undefined) {

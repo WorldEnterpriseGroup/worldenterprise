@@ -1,10 +1,11 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CiteThis from '../components/geo/CiteThis.astro';
 import HeroArticle from '../components/hero/HeroArticle.astro';
 import MethodologyBox from '../components/blocks/MethodologyBox.astro';
 import SourcesList from '../components/blocks/SourcesList.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
-import { articleNode } from '../lib/schema.ts';
+import { articleNode, briefCitations } from '../lib/schema.ts';
 import type { PageMeta } from './types.ts';
 
 interface Source {
@@ -28,7 +29,7 @@ type Props = Omit<PageMeta, 'updated'> & {
 
 const { subtitle, publishedDate, updatedDate, version, methodology, limitations, sources, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
-const report = articleNode({ path: meta.path, headline: meta.title, description: meta.description, published: publishedDate, type: 'Report', ...(updatedDate !== undefined ? { modified: updatedDate } : {}) });
+const report = articleNode({ path: meta.path, headline: meta.title, description: meta.description, published: publishedDate, type: 'Report', citation: briefCitations(sources), ...(updatedDate !== undefined ? { modified: updatedDate } : {}) });
 ---
 
 <BaseLayout {...meta} crumbs={crumbs} ogType="article" published={publishedDate} updated={updatedDate ?? publishedDate} jsonLd={[...(meta.jsonLd ?? []), report]}>
@@ -38,6 +39,7 @@ const report = articleNode({ path: meta.path, headline: meta.title, description:
       <div class="prose">
         <slot />
         <SourcesList sources={sources} />
+        <CiteThis title={meta.title} path={meta.path} date={updatedDate ?? publishedDate} />
       </div>
       <aside class="rail" aria-label="About this brief">
         <MethodologyBox methodology={methodology} limitations={limitations} version={version} updated={updatedDate ?? publishedDate} />
