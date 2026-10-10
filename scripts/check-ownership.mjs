@@ -48,9 +48,14 @@ export function violations(files, owner, ownership) {
   // `exclude` carves files out of a broad glob in write_set (wave 7: a layout glob that must not reach a photography-lane file).
   // An exception that names the path still wins.
   const excluded = assignment.exclude ?? [];
+  // Wave 8 frozen additions: only the stage 0 owner (frozen_paths_wave8_owners, WP-60) edits them freely; any other package, WP-99
+  // included, needs a registered exception that names the path.
+  const wave8Frozen = ownership.frozen_paths_wave8 ?? [];
+  const wave8Owners = ownership.frozen_paths_wave8_owners ?? [];
   const found = [];
   for (const path of files) {
     if (matches(path, ownership.frozen_paths) && !matches(path, extra)) found.push({ path, reason: 'frozen path' });
+    else if (matches(path, wave8Frozen) && !wave8Owners.includes(owner) && !matches(path, extra)) found.push({ path, reason: 'wave 8 frozen path' });
     else if (matches(path, excluded) && !matches(path, extra)) found.push({ path, reason: `excluded from the ${owner} write set` });
     else if (!matches(path, allowed)) found.push({ path, reason: `outside the ${owner} write set` });
   }

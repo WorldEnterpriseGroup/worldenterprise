@@ -62,10 +62,21 @@ test('dynamic pages need both the page file and a published entry', () => {
   assert.equal(routeExists('/insights/a/', ctx([], { insights: ['a'] })), false);
 });
 
-test('topic hubs exist for the four desks only', () => {
+test('a topic hub exists for a desk of the registry that holds a published article, and for no other', () => {
   const files = ['/src/pages/insights/topic/[topic].astro'];
-  assert.equal(routeExists('/insights/topic/dream/', ctx(files)), true);
-  assert.equal(routeExists('/insights/topic/finance/', ctx(files)), false);
+  const held = ctx(files, { insights: ['dream/first-idea', 'funding/safe-notes'] });
+  assert.equal(routeExists('/insights/topic/dream/', held), true);
+  assert.equal(routeExists('/insights/topic/funding/', held), true);
+  assert.equal(routeExists('/insights/topic/legal/', held), false, 'a desk with no article leaves no dead route');
+  assert.equal(routeExists('/insights/topic/finance/', held), false, 'a name that is not a desk never exists');
+  assert.equal(routeExists('/insights/topic/dream/', ctx(files)), false);
+});
+
+test('a brief route exists once its abstract is published, and never before', () => {
+  const files = ['/src/pages/briefs/[id].astro'];
+  assert.equal(routeExists('/briefs/funding-paths/', ctx(files, { briefs: ['funding-paths'] })), true);
+  assert.equal(routeExists('/briefs/company-setup/', ctx(files, { briefs: ['funding-paths'] })), false);
+  assert.equal(routeExists('/briefs/funding-paths/', ctx(files)), false);
 });
 
 test('an unmapped dynamic page falls back to a pages entry that mirrors the path', () => {
