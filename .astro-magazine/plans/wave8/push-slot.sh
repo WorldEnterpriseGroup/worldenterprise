@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
-# Wave 8 push slot. Holds one of N slots (default 5) from before `git push` until the pipeline of the pushed commit ends,
+# Wave 8 push slot. Holds one of N slots (default 3) from before `git push` until the pipeline of the pushed commit ends,
 # so that at most N branch pipelines of wave 8 run at once across every worktree of this clone (plan section 4.2, W8-21).
+#
+# The default is 3, down from 5, while FocusApiary/gitlab-k8s#16 is open: the runner gives each job pod 100m of CPU against a 1500m limit,
+# and with five pipelines at once the Playwright and Lighthouse jobs of every pipeline starved each other (e2e:routes took 51 minutes with
+# loop-test timeouts on pipeline 65962; qa:lighthouse failed 5 of 12 routes on pipeline 66023). Raise it again when that issue is fixed.
+# The cap is read from the copy of this script a worktree has, so it takes effect in a worktree once that branch has merged demo; pass
+# `--slots 3` until then.
 #
 # usage:
 #   push-slot.sh push  <branch> [--slots N]   wait for a free slot, push the branch, wait for its pipeline, release the slot
@@ -24,7 +30,7 @@ if [ $# -gt 0 ] && [[ "$1" != --* ]]; then
   target="$1"
   shift
 fi
-slots=5
+slots=3
 while [ $# -gt 0 ]; do
   case "$1" in
     --slots) slots="${2:?--slots needs a number}"; shift 2 ;;
