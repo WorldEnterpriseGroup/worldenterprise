@@ -110,7 +110,6 @@ import FormFrame from './FormFrame.astro';
     }
 
     .stepper {
-      --stepper-bar-h: 4rem;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -218,7 +217,8 @@ import FormFrame from './FormFrame.astro';
       }
     }
 
-    /* The bar can cover the top of the viewport on a phone, so a focused control is always scrolled clear of it (WCAG 2.2, 2.4.11). */
+    /* The bar can cover the top of the viewport on a phone, so a focused control is always scrolled clear of it (WCAG 2.2, 2.4.11).
+       The script writes the bar's measured height to --stepper-bar-h on the form; 4rem covers the two-row bar until it does. */
     .intake[data-stepper='on'] :is(input, select, textarea, button, a, [tabindex='-1'], .error-summary) {
       scroll-margin-block-start: calc(var(--stepper-bar-h, 4rem) + var(--sp-4));
     }

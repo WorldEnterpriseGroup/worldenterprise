@@ -396,7 +396,10 @@ class IntakeFormController {
   }
 
   init(): void {
-    if (this.kind === 'apply') this.mountStepper();
+    if (this.kind === 'apply') {
+      this.mountStepper();
+      if (this.stepper !== null) this.attachEnterAsNext();
+    }
     if (this.mode === 'disabled') {
       // Nothing can be sent. The stepper still works, so a visitor can walk the whole form; the button stays off (planForm).
       if (this.stepper !== null) this.attachStepperBehaviour();
@@ -425,6 +428,21 @@ class IntakeFormController {
       showErrors: (errors, intro) => this.showErrors(errors, intro),
       clearErrors: () => this.clearErrors(),
       values: () => readValues(this.form),
+    });
+  }
+
+  /**
+   * Enter in a text field of an earlier step means Next. The browser's own implicit submission cannot be relied on for this: it does
+   * nothing while the submit button is disabled (mode `disabled`), and it would send the form from a step the visitor has not finished.
+   */
+  private attachEnterAsNext(): void {
+    this.form.addEventListener('keydown', (event) => {
+      const stepper = this.stepper;
+      const target = event.target;
+      if (stepper === null || stepper.isFinal || event.key !== 'Enter' || event.isComposing || event.defaultPrevented) return;
+      if (!(target instanceof HTMLInputElement) || (target.type !== 'text' && target.type !== 'email')) return;
+      event.preventDefault();
+      stepper.goNext();
     });
   }
 

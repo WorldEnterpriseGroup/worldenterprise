@@ -147,6 +147,7 @@ export class ApplyStepper {
     this.form.noValidate = true;
     this.form.dataset.stepper = 'on';
     this.bar.hidden = false;
+    this.followBarHeight();
     this.back?.addEventListener('click', () => this.goBack());
     this.next?.addEventListener('click', () => this.goNext());
     this.review?.addEventListener('click', (event) => {
@@ -161,6 +162,16 @@ export class ApplyStepper {
       }
     });
     this.render(false);
+  }
+
+  /**
+   * On a phone the bar is sticky and covers the top of the viewport. A focused control is scrolled below it by a scroll-margin that reads
+   * --stepper-bar-h, so the variable follows the bar's real height: the status line can wrap at a narrow width or a large text size.
+   */
+  private followBarHeight(): void {
+    const sync = (): void => this.form.style.setProperty('--stepper-bar-h', `${this.bar.offsetHeight}px`);
+    sync();
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(sync).observe(this.bar);
   }
 
   /** Advances after validating the current step. Returns false, with the errors shown, when the step has problems. */
