@@ -1,0 +1,112 @@
+---
+title: "Runway and burn: the arithmetic"
+seoTitle: Runway and burn
+description: How to work out burn and runway with one worked example, what the arithmetic hides, and how to read the result before a decision about spending or raising.
+topic: funding
+publishedDate: 2026-10-10
+noStatistics: true
+relatedServices: [F]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: seed-data-room-checklist
+segments: [solo-founders, non-technical-founders]
+related:
+  - funding-a-software-startup-the-routes
+  - funding-a-first-saas-from-customer-revenue
+  - safe-or-convertible-note-how-the-two-instruments-differ
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general information, not legal or financial advice. It was written on October 10, 2026. It uses one invented example and cites no benchmark. Ask your own accountant how your company's cash and costs should be counted.*
+
+Runway is the number of months a company can keep operating on the cash it has. Burn is how fast the cash goes. The arithmetic takes a minute, and it is worth doing early and often, because every funding decision depends on it: when to raise, how much to spend, and whether to wait. This article shows the calculation with one invented example, explains what it leaves out, and says how to read the result. It does not say how much runway is enough. That depends on your plan, and no source cited here supports a number.
+
+## The definitions this article uses
+
+Four quantities do all the work. Net burn and runway are the ones the <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> uses, and its formula table lists the formula for each.
+
+- **Cash on hand.** The money in the company's bank accounts today, not the money you are owed.
+- **Gross burn.** All the cash that leaves the company in a month: salaries, contractors, hosting, software, rent, taxes and loan repayments.
+- **Net burn.** Cash out less cash in over a month. The calculator describes it as cash out less cash in, and says to enter 0 if cash grew.
+- **Runway.** Cash on hand divided by net burn per month, the formula the calculator shows.
+
+Runway uses net burn because customer payments offset spending. Gross burn answers a different question, which is how long the cash would last if every payment stopped.
+
+## One invented example
+
+The figures below are invented for this illustration. They are round numbers chosen to make the arithmetic easy to follow, in whatever currency you use. They are not a benchmark, they do not describe a typical company, and they are not a target.
+
+Suppose a company has 100,000 in the bank. In a month it pays out 18,000 and receives 8,000 from customers.
+
+| Quantity | How it is worked out | Result |
+|---|---|---|
+| Gross burn | All cash out | 18,000 a month |
+| Net burn | 18,000 out less 8,000 in | 10,000 a month |
+| Runway | 100,000 divided by 10,000 | 10 months |
+| Runway if all payments stopped | 100,000 divided by 18,000 | 5.6 months, which is five when rounded down |
+
+When a division does not come out evenly, round the answer down. A figure rounded up flatters you, and the point of the exercise is to see the position as it is.
+
+## What happens when one number changes
+
+The useful habit is to change one input at a time and rerun the division. Using the same invented company:
+
+| Change | Cash | Net burn | Runway |
+|---|---|---|---|
+| Starting position | 100,000 | 10,000 | 10 months |
+| A hire adds 4,000 of monthly cost | 100,000 | 14,000 | 7.1 months |
+| A customer paying 2,000 a month leaves | 100,000 | 12,000 | 8.3 months |
+| New customers add 2,000 a month | 100,000 | 8,000 | 12.5 months |
+
+Reading down the third column, each decision moves runway by months, not days. A hire that looks small beside a salary line can remove about three of the ten months. Those effects are why this arithmetic belongs in a spending decision before the decision is made, not after.
+
+## What the arithmetic hides
+
+The division is simple. The inputs are where the care goes.
+
+**Cash arrives unevenly.** A customer who pays a year in advance makes one month look rich and eleven look poor. One month's net burn can mislead. The metrics calculator takes one month of numbers, so run it for several months and compare the results. If they differ widely, find out why before you trust any of them.
+
+**Some costs arrive later.** Tax payments, annual renewals, an annual software bill and the cost of a hire you have already agreed to may not appear in the month you measure. List them and add each in the month it will land, then recompute. Loan repayments are cash out, so they count toward burn when they fall due.
+
+**The result assumes the month repeats.** The calculator says its runway figure assumes this month's burn repeats, that it is arithmetic and not a forecast, and that it says nothing about future fundraising. That is the right way to hold it. Runway tells you what happens if nothing changes, and something will.
+
+**Prepayment is not profit.** Cash received for service you still owe is cash on hand today, but you have promised the work. Ask your accountant how to treat prepaid revenue in your own accounts, and keep the two ideas apart: the bank balance tells you what you can spend, and the contracts tell you what you owe.
+
+## Reading runway against a plan
+
+A runway figure means nothing alone. It means something against what you intend to do with the time. One way to frame it is to ask whether your runway covers three things:
+
+1. the months of work to reach the next milestone you have chosen;
+2. the months you expect to spend raising money, reaching break-even or doing both;
+3. a buffer for the things the arithmetic hides.
+
+If the runway is shorter than the sum of those, the plan has to change: spend less, earn more, or start raising earlier. How long each of those items takes is for you to estimate from your own history and your own advisers. This article gives no figure for how long a raise takes, because no source it cites supports one, and the <MaybeLink path="/insights/the-founder-time-budget-of-a-raise/">founder time budget of a raise</MaybeLink> explains why raising takes founder time that the work itself then lacks.
+
+Raising is only one of the routes to money, and the other articles on this desk map the rest. A change in spending or in revenue moves runway as surely as a new investment does.
+
+## A monthly routine
+
+Do the same five steps each month, ideally on the same day:
+
+1. Record cash on hand from the bank, not from your accounting software.
+2. Record cash out and cash in for the month, and list one-off items separately.
+3. Work out net burn and runway, rounding runway down.
+4. Write one line on what changed from last month and why.
+5. Write down the next three months of known large payments and renewals.
+
+Keep the record where you keep your other company records. The <MaybeLink path="/fundability/data-room/">data room guide</MaybeLink> shows where such records belong if an investor later asks to see them, and the <MaybeLink path="/fundability/investor-readiness-checklist/">investor readiness checklist</MaybeLink> lists the figures an investor may expect you to know without looking them up. For the definitions the calculator relies on, see the <MaybeLink path="/research/early-stage-saas-metrics-definitions/">research brief on SaaS metrics definitions</MaybeLink>.
+
+## Questions for your accountant
+
+- Which of my costs and receipts belong in burn, and which are one-off?
+- How should prepaid customer payments and refunds be treated in my cash figures?
+- Which taxes and filings fall due in the next twelve months, and when?
+- If I borrow, how do the repayments change net burn month by month?
+- How should I account for contractors and for founders who take no salary?
+
+## What this article cannot tell you
+
+This article cannot tell you how much runway you need, how long a raise or a sales cycle takes, or what to cut. Its figures are invented to make the sums visible, and they say nothing about any real company, including any company that works with WE. It treats cash as the bank balance and does not cover accrual accounting, tax, currency movements or the treatment of loans and grants. Runway is arithmetic on past figures, not a forecast. Nothing here is a recommendation of an accountant, a lender, an investor or a platform.
