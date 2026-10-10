@@ -1,0 +1,126 @@
+---
+title: "SAFE or convertible note: how the two instruments differ"
+seoTitle: SAFE or convertible note
+description: How a SAFE and a convertible note differ, from debt and interest to what happens on a sale, with the questions to bring to your own counsel.
+topic: funding
+publishedDate: 2026-10-10
+sources:
+  - id: yc-safe
+    title: The SAFE, the standard way startups raise money
+    publisher: Y Combinator
+    url: https://www.ycombinator.com/safe
+    accessed: 2026-10-10
+  - id: yc-vs-note
+    title: SAFE vs. convertible note vs. priced equity round
+    publisher: Y Combinator
+    url: https://www.ycombinator.com/safe/safe-vs-convertible-note
+    accessed: 2026-10-10
+  - id: yc-safe-form
+    title: Post-money SAFE, standard form
+    publisher: Y Combinator
+    url: https://bookface-static.ycombinator.com/assets/ycdc/Postmoney%20Safe%20-%20Valuation%20Cap%20Only%20-%20FINAL-f2a64add6d21039ab347ee2e7194141a4239e364ffed54bad0fe9cf623bf1691.docx
+    accessed: 2026-10-10
+  - id: sec-exempt-offerings
+    title: Exempt Offerings
+    publisher: U.S. Securities and Exchange Commission
+    url: https://www.sec.gov/resources-small-businesses/exempt-offerings
+    accessed: 2026-10-10
+evidence: [yc-safe, yc-vs-note, yc-safe-form, sec-exempt-offerings]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: seed-data-room-checklist
+segments: [first-time-founders, technical-founders]
+related:
+  - funding-a-software-startup-the-routes
+  - cap-table-basics-for-founders
+  - reading-a-term-sheet-line-by-line
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general information, not legal or financial advice. It was written on October 10, 2026, describes public standard forms, and does not describe any agreement with World Enterprise. Ask your own lawyer how any instrument would work for your company.*
+
+Two instruments come up first when a founder starts to take early investment: the SAFE and the convertible note. Both let an investor put money in now and receive shares later. They are different kinds of contract with different consequences, and the differences matter most in the situations a founder hopes never to be in. This article describes each instrument using its publisher's own documents, sets them side by side, and ends with questions for counsel. It does not say which one a company should use.
+
+## Where the information comes from
+
+Y Combinator publishes the SAFE, and the page that compares the SAFE with the convertible note is its own. That makes it the authoritative description of what the SAFE says and an interested description of how the SAFE compares. Read the comparison below with that in mind. Where this article reports a comparison, it says so and attributes it. The mechanics were checked against the text of the publisher's standard post-money form.
+
+## What each instrument is
+
+Y Combinator describes a SAFE (Simple Agreement for Future Equity) as a short contract an investor signs to fund your startup now in exchange for the right to shares of stock in your startup later. It says a SAFE is not a debt and not a loan, and that it has no interest and no maturity date. It also says a SAFE is not stock until it converts into preferred shares, which happens automatically when the company raises an equity financing.
+
+A convertible note is a different instrument. Y Combinator describes it as debt: interest accrues and the note has a maturity date set for repayment or forced conversion. The investor lends the company money, and the loan can later turn into shares. Whatever the label on the document, whether a particular instrument is debt, equity or something else is a legal question, and the answer drives the consequences below.
+
+## The two side by side
+
+The table follows the comparison on Y Combinator's page. The right-hand column is the publisher's description of the note, not an independent finding.
+
+| Feature | SAFE | Convertible note |
+|---|---|---|
+| What it is | A convertible security | Debt that converts to equity |
+| Interest | None | Accrues |
+| Maturity date | None | Yes, which can force repayment or default |
+| Sets a price per share now | No | No, conversion to stock happens later |
+| Legal cost, as Y Combinator describes it | Lowest, one document | Moderate |
+| Where it ranks if the company is sold or wound down | Junior to debt and on par with preferred stock | Senior, because debt is repaid first |
+
+Two rows deserve a second look. The row on maturity matters because, on the publisher's description, a date that can force repayment or default is a date the company has to plan around. The row on ranking is the one that matters if the company is sold or closed: debt is repaid before equity, and the SAFE sits behind it.
+
+## What the SAFE itself says on a sale or a shutdown
+
+The standard form defines a Liquidity Event as a change of control, a direct listing or an initial public offering, and a Dissolution Event as a voluntary termination of operations, an assignment for the benefit of creditors, or any other liquidation or winding up. The terms below are generic descriptions of the publisher's public form. They are not the terms of any agreement involving WE.
+
+<p data-generic-definition>In the publisher's post-money valuation cap form, a Liquidity Event entitles the investor to the greater of the purchase amount or the amount payable on the shares the purchase amount would have converted into, and a Dissolution Event entitles the investor to the purchase amount. In both cases the form says the right to the cash amount is junior to outstanding indebtedness and creditor claims, including convertible promissory notes that have not converted, and that the SAFE is intended to operate like standard non-participating preferred stock.</p>
+
+The sentence about convertible promissory notes is the one to read twice. A company that holds both instruments has created a queue, and the SAFE form says where it stands in it.
+
+## Terms you will meet in a SAFE
+
+These generic definitions come from the publisher's own description of the form. They help you recognize the words when you read a real document, and the [glossary](/glossary/) is the place to look up other unfamiliar terms.
+
+<dl data-generic-definition>
+  <dt>Valuation cap</dt>
+  <dd>The highest valuation at which a SAFE converts into shares. If the priced round values the company above the cap, the SAFE converts at the cap. On a post-money SAFE, the ownership sold equals the investment amount divided by the valuation cap.</dd>
+  <dt>Discount rate</dt>
+  <dd>A reduction applied to the price per share in the priced round. On a 20 percent discount, the SAFE converts at a price per share 20 percent below the price in the equity financing. The 20 percent is Y Combinator's own example.</dd>
+  <dt>MFN</dt>
+  <dd>Short for most favored nation. An MFN SAFE has no valuation cap or discount and automatically takes the valuation cap or discount of any SAFE the company issues later.</dd>
+  <dt>Pro rata right</dt>
+  <dd>The right, not the obligation, for an investor to invest in the company's future priced round to maintain their percentage ownership. Y Combinator says it lives in an optional side letter rather than in the SAFE.</dd>
+  <dt>Post-money SAFE</dt>
+  <dd>A SAFE whose valuation cap is stated after the investment is made, so it includes the SAFE money. Y Combinator says it has been its standard since 2018.</dd>
+</dl>
+
+<p data-generic-definition>The publisher gives an example of how this adds up: ownership sold equals the investment divided by the valuation cap, and the caps of separate SAFEs add together, so five $100k SAFEs at a $5M cap is 10 percent sold, not 2 percent. The standard form calculates the conversion price, called the Safe Price, as the Post-Money Valuation Cap divided by the Company Capitalization.</p>
+
+## Traps the publisher names, and what they say about the instruments
+
+Y Combinator lists several mistakes founders make, and each one shows a real difference between the instruments:
+
+- **Stacking a note under or over SAFEs.** The page says debt is senior to equity, so a SAFE issued before or after a note sits behind it in line.
+- **Losing track of total ownership sold.** The publisher says to track the running total before signing the next SAFE, because the amounts add.
+- **Mixing pre-money and post-money SAFEs.** The page says they dilute founder ownership differently, and calls pre-money SAFEs legacy.
+
+The publisher also describes the SAFE as the modern default for early raises and the convertible note as increasingly rare for new raises. That is the publisher's view of its own instrument. Your counsel can tell you what investors in your market and your jurisdiction expect, and what your existing agreements allow.
+
+## The rules that apply to both
+
+Neither instrument escapes securities law. The SEC states that every offer and sale of securities must either be registered under the Securities Act of 1933 or rely on an available exemption from registration. Y Combinator's FAQ adds two points about its own form: SAFE investors should be accredited, and a company's board of directors must approve issuing SAFEs. Whether the instrument you are considering is a security, which exemption an offering relies on and what you must file are questions for your lawyer. The plain-language [SAFE guide](/fundability/safe-explained/) on this site walks through the vocabulary, and the [data room](/fundability/data-room/) guide lists where signed instruments belong in your records.
+
+## Questions to bring to your own counsel
+
+- How would this instrument convert in my company under several different future rounds, and what would my ownership be after each?
+- If the company already holds a note or a SAFE, how does a second instrument change the queue on a sale?
+- What date or event ends the instrument, and what happens if that never occurs?
+- Is each investor accredited, and who verifies it?
+- What approvals and filings does issuing the instrument need, including from the board?
+- How is the instrument treated for tax? Y Combinator says to consult your tax advisor if the tax characterization of the SAFE is material to your use of it.
+- Which of the questions in [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) apply here?
+
+## What this article cannot tell you
+
+This article cannot tell you which instrument fits your company, what terms are fair, or what any investor will accept. It describes United States documents. Y Combinator's page lists separate versions for companies formed in Canada, the Cayman Islands and Singapore, and says to consult a lawyer licensed in the relevant country before using them; this article does not cover those or any other jurisdiction.
+
+The note column rests on the same publisher page. No note form from a neutral body was fetched for this article, so what a particular note says about interest, maturity and conversion is for the document in front of you. The form that was read is the post-money version, as it stood on October 10, 2026, and the publisher revises its forms. The sources do not cover tax, state securities law, or how an instrument behaves in a company with an existing preferred class. Nothing here is a recommendation of an investor, a lawyer or a platform.
