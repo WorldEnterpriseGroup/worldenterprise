@@ -2,13 +2,15 @@
 interface Props {
   legend: string;
   hint?: string;
+  /** Marks the fieldset as one step of a stepped form (src/components/apply/steps.ts). The legend then holds a focusable heading. */
+  step?: string;
 }
 
-const { legend, hint } = Astro.props;
+const { legend, hint, step } = Astro.props;
 ---
 
-<fieldset class="fieldset">
-  <legend>{legend}</legend>
+<fieldset class="fieldset" data-step={step}>
+  <legend>{step !== undefined ? <h2 class="fieldset__heading" tabindex="-1" data-step-heading>{legend}</h2> : legend}</legend>
   {hint && <p class="field__hint">{hint}</p>}
   <slot />
 </fieldset>
