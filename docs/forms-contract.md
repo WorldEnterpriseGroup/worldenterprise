@@ -130,7 +130,7 @@ Response bodies are parsed defensively. A body that is not JSON never breaks the
 
 ## 5. Server obligations (B-2, owned outside this repository)
 
-1. **CORS.** Answer the `OPTIONS` preflight and the `POST` with `Access-Control-Allow-Origin` set to a single allowed origin from an allowlist: `https://worldenterprise.org` in production and the GitLab Pages preview origin for preview builds. Never `*`. Allow header `Content-Type`. Do not set `Access-Control-Allow-Credentials`.
+1. **CORS.** Answer the `OPTIONS` preflight and the `POST` with `Access-Control-Allow-Origin` set to a single allowed origin from an allowlist: `https://worldenterprise.org` in production and the GitLab Pages preview origin for preview builds. Never `*`. Allow header `Content-Type`. Expose `Retry-After` with `Access-Control-Expose-Headers: Retry-After`, because the endpoint is cross-origin and a browser hides every other response header from the page. Do not set `Access-Control-Allow-Credentials`.
 2. **Origin check.** Reject a request whose `Origin` header is not on the allowlist.
 3. **Rate limiting.** 5 per hour per client address and 5 per hour per email address, per kind. Return `429` with `Retry-After`.
 4. **Honeypot.** When `website` is non-empty, return `200` and discard the request silently.

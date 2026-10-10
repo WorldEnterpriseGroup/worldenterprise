@@ -134,7 +134,7 @@ for (const kind of KINDS) {
     });
 
     test('a 429 gives the wait from Retry-After in minutes and keeps the answers', async ({ page }) => {
-      await mockEndpoint(page, (route) => route.fulfill({ status: 429, headers: { ...CORS, 'retry-after': '120' }, body: '' }));
+      await mockEndpoint(page, (route) => route.fulfill({ status: 429, headers: { ...CORS, 'access-control-expose-headers': 'Retry-After', 'retry-after': '120' }, body: '' }));
       await open(page, kind);
       await fillValid(page, kind);
       await settle(page);
