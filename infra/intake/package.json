@@ -1,0 +1,26 @@
+{
+  "name": "worldenterprise-intake",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "World Enterprise Incubator intake service: an Azure Function that writes form submissions to Dataverse and emails gated briefs.",
+  "main": "dist/functions.js",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json && node iac/package-function.mjs",
+    "test": "node --test \"tests/**/*.test.ts\""
+  },
+  "dependencies": {
+    "@azure/communication-email": "1.1.0",
+    "@azure/functions": "4.16.5",
+    "@azure/identity": "4.13.3",
+    "@azure/storage-blob": "12.34.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "6.0.3"
+  }
+}
