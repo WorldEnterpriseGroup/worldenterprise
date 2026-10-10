@@ -1,7 +1,7 @@
 ---
 title: "Founder-led sales calls: a structure"
 seoTitle: "Founder-led sales calls: a structure"
-description: "A six-part structure for a first sales call run by the founder, written for engineers who build alone, with a note template and what the U.S. wiretap statute says about recording."
+description: "A six-part structure for a first sales call run by a technical founder, a note template, and what the U.S. wiretap statute says about recording."
 topic: gtm
 publishedDate: 2026-10-10
 noStatistics: true

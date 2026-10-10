@@ -1,7 +1,7 @@
 ---
 title: "Cold outreach that follows CAN-SPAM"
 seoTitle: Cold outreach that follows CAN-SPAM
-description: "What the U.S. CAN-SPAM Act and the FTC compliance guide say about commercial email, in the agency's own words, with questions to bring to counsel before a first send."
+description: "What the U.S. CAN-SPAM Act and the FTC compliance guide say about commercial email, quoted from the sources, with questions to bring to counsel."
 topic: gtm
 publishedDate: 2026-10-10
 segments: [first-time-founders, non-technical-founders]

@@ -1,7 +1,7 @@
 ---
 title: "Choosing your first channels"
 seoTitle: Choosing your first channels
-description: "How to pick one or two places to look for first customers by starting from the buyer, scoring what each channel asks of you and writing each test down before you run it."
+description: "Pick one or two places to look for first customers: start from the buyer, score what each channel asks of you and write each test down before you run it."
 topic: gtm
 publishedDate: 2026-10-10
 noStatistics: true

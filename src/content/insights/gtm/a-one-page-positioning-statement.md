@@ -1,7 +1,7 @@
 ---
 title: "A one-page positioning statement"
 seoTitle: A one-page positioning statement
-description: "A five-part method for writing down who your product is for, what it replaces and why it is different, with an invented example and a test you can run on three buyers."
+description: "A five-part method for writing down who your product is for, what it replaces and why it differs, with an invented example and a three-buyer test."
 topic: gtm
 publishedDate: 2026-10-10
 noStatistics: true

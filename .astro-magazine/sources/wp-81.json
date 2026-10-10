@@ -74,6 +74,42 @@
       "tool": "WebFetch"
     },
     {
+      "id": "stripe-pricing-models",
+      "url": "https://docs.stripe.com/products-prices/pricing-models",
+      "title": "Recurring pricing models",
+      "publisher": "Stripe Documentation",
+      "fetchedAt": "2026-10-10T07:22:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "microsoft-plan-saas-offer",
+      "url": "https://learn.microsoft.com/en-us/partner-center/marketplace-offers/plan-saas-offer",
+      "title": "Plan a SaaS offer for Microsoft Marketplace",
+      "publisher": "Microsoft Learn, Partner Center documentation",
+      "fetchedAt": "2026-10-10T07:22:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "stripe-trials",
+      "url": "https://docs.stripe.com/billing/subscriptions/trials",
+      "title": "Configure trial offers on subscriptions",
+      "publisher": "Stripe Documentation",
+      "fetchedAt": "2026-10-10T07:27:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cornell-15-usc-8403",
+      "url": "https://www.law.cornell.edu/uscode/text/15/8403",
+      "title": "15 U.S. Code 8403 - Negative option marketing on the Internet",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T07:30:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
       "id": "canada-casl",
       "url": "https://ised-isde.canada.ca/site/canada-anti-spam-legislation/en",
       "title": "Canada's anti-spam legislation",
@@ -365,6 +401,192 @@
           "sourceId": "cornell-18-usc-2511",
           "locator": "2511(2)(d)",
           "quote": "unless such communication is intercepted for the purpose of committing any criminal or tortious act"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/gtm/pricing-a-first-saas-value-packaging-and-the-questions-to-ask.md",
+      "claims": [
+        {
+          "id": "V1",
+          "sentence": "Stripe describes flat rate as customers choosing a service tier and paying a flat rate for it.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-pricing-models",
+          "locator": "Table, Flat rate",
+          "quote": "Customers choose a service tier (for example, Basic, Starter, or Enterprise) and pay a flat rate for it."
+        },
+        {
+          "id": "V2",
+          "sentence": "Stripe describes per-seat pricing as one pricing unit per user.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-pricing-models",
+          "locator": "Table, Per-seat",
+          "quote": "Each pricing unit represents one user."
+        },
+        {
+          "id": "V3",
+          "sentence": "Stripe describes tiered pricing as unit cost that changes with quantity or usage.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-pricing-models",
+          "locator": "Table, Tiered",
+          "quote": "The unit cost changes with quantity (volume-based pricing) or usage (graduated pricing)."
+        },
+        {
+          "id": "V4",
+          "sentence": "Stripe describes usage-based pricing as charging by usage.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-pricing-models",
+          "locator": "Table, Usage-based",
+          "quote": "Charge customers based on their usage of your product or service."
+        },
+        {
+          "id": "V5",
+          "sentence": "Microsoft Marketplace allows one of two pricing models per plan in a SaaS offer.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Plans, SaaS pricing models",
+          "quote": "SaaS offers can use one of two pricing models with each plan"
+        },
+        {
+          "id": "V6",
+          "sentence": "All plans in the same Microsoft Marketplace offer must use the same pricing model.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Plans, SaaS pricing models",
+          "quote": "All plans in the same offer must use the same pricing model."
+        },
+        {
+          "id": "V7",
+          "sentence": "After publishing a Microsoft Marketplace offer the pricing model cannot be changed.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Plans, SaaS pricing models, Important",
+          "quote": "After you publish your offer, you can't change the pricing model."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/gtm/trials-demos-and-self-serve-how-a-customer-first-meets-the-product.md",
+      "claims": [
+        {
+          "id": "T1",
+          "sentence": "Stripe's trial offers documentation describes trials for items in a subscription.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-trials",
+          "locator": "Page subtitle",
+          "quote": "Offer free or paid trials for items in a subscription."
+        },
+        {
+          "id": "T2",
+          "sentence": "When a trial ends the subscription transitions to the regular or another configured price.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-trials",
+          "locator": "How trial offers work",
+          "quote": "When the trial ends, the subscription automatically transitions to the regular price or another price you configure."
+        },
+        {
+          "id": "T3",
+          "sentence": "One end-of-trial option for a missing payment method is to cancel.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-trials",
+          "locator": "Missing payment method behavior",
+          "quote": "Cancels the subscription."
+        },
+        {
+          "id": "T4",
+          "sentence": "Another end-of-trial option for a missing payment method is to pause.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-trials",
+          "locator": "Missing payment method behavior",
+          "quote": "Pauses the subscription until you resume it."
+        },
+        {
+          "id": "T5",
+          "sentence": "On the paused event a seller can revoke the customer's access.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-trials",
+          "locator": "Events table, subscription paused",
+          "quote": "you can revoke the customer’s access to the product"
+        },
+        {
+          "id": "T6",
+          "sentence": "Stripe suggests using the trial-ending event to send a reminder email.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-trials",
+          "locator": "Events table, trial_will_end",
+          "quote": "Use this event to send your own reminder email."
+        },
+        {
+          "id": "M1",
+          "sentence": "For one listing option the publisher manages the trial experience and the move to paid.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Listing options, Free trial",
+          "quote": "You manage the trial experience, including the transition to paid outside of the marketplace."
+        },
+        {
+          "id": "M2",
+          "sentence": "Customers can cancel before a trial ends to avoid converting to paid.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Plans, Free trial",
+          "quote": "Customers can cancel before the trial ends to avoid converting to a paid subscription."
+        },
+        {
+          "id": "N1",
+          "sentence": "Section 8403 is headed Negative option marketing on the Internet.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-8403",
+          "locator": "Section heading",
+          "quote": "Negative option marketing on the Internet"
+        },
+        {
+          "id": "N2",
+          "sentence": "The section opens with a prohibition on charging any consumer.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-8403",
+          "locator": "8403, opening",
+          "quote": "It shall be unlawful for any person to charge or attempt to charge any consumer for any goods or services"
+        },
+        {
+          "id": "N3",
+          "sentence": "The statute points to the FTC Telemarketing Sales Rule, 16 C.F.R. part 310, for the meaning of negative option feature.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-8403",
+          "locator": "8403, definition pointer",
+          "quote": "negative option feature"
+        },
+        {
+          "id": "N4",
+          "sentence": "Condition one concerns disclosure of material terms.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-8403",
+          "locator": "8403, condition 1",
+          "quote": "provides text that clearly and conspicuously discloses all material terms of the transaction"
+        },
+        {
+          "id": "N5",
+          "sentence": "The disclosure is required before billing information is obtained.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-8403",
+          "locator": "8403, condition 1",
+          "quote": "obtaining the consumer's billing information"
+        },
+        {
+          "id": "N6",
+          "sentence": "Condition two concerns express informed consent before charging.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-8403",
+          "locator": "8403, condition 2",
+          "quote": "obtains a consumer's express informed consent before charging the consumer's credit card"
+        },
+        {
+          "id": "N7",
+          "sentence": "Condition three concerns simple mechanisms to stop recurring charges.",
+          "kind": "regulation",
+          "sourceId": "cornell-15-usc-8403",
+          "locator": "8403, condition 3",
+          "quote": "provides simple mechanisms for a consumer to stop recurring charges from being placed on the consumer's credit card"
         }
       ]
     }
