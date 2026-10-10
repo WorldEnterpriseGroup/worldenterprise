@@ -85,7 +85,6 @@ for (const slug of VERTICALS) {
       expect(results.violations).toEqual([]);
       const small = await page.locator('main a, main button').evaluateAll((els) =>
         els
-          .filter((el) => el.closest('.breadcrumbs') === null)
           .map((el) => ({ el, box: el.getBoundingClientRect(), inline: getComputedStyle(el).display === 'inline' }))
           .filter(({ box, inline }) => box.width > 0 && !inline && (box.width < 24 || box.height < 24))
           .map(({ el }) => (el.textContent ?? '').trim()),
