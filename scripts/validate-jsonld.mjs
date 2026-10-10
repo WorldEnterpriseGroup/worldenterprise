@@ -4,7 +4,9 @@
 //   node scripts/validate-jsonld.mjs [--dist dist]
 //
 // Per page: every ld+json block parses; @context is schema.org; every @type is on the allowlist (mirrors ALLOWED_TYPES in
-// src/lib/schema.ts); Offer, Review, AggregateRating, Person and Event never appear; required properties per type exist;
+// src/lib/schema.ts); Offer, Review, AggregateRating, Person and Event never appear (the one exception is an Offer that is an item of
+// the organisation's OfferCatalog, and it never carries a price); a WebApplication (the tools) names @id, name and url and carries no
+// offers; required properties per type exist;
 // every { "@id": ... } reference resolves inside the page graph; @id values are unique; the page node's url matches the
 // canonical; an Article or Report has the page's og:image as its image; the logo is not a hashed asset. The organisation node
 // carries no EIN, SIN, PSC, SIC, founding date or street address (claim C-18).
@@ -24,13 +26,14 @@ export const ALLOWED_TYPES = new Set([
   'Service', 'Article', 'Report',
   'FAQPage', 'Question', 'Answer',
   'DefinedTermSet', 'DefinedTerm',
+  'OfferCatalog', 'WebApplication', 'CreativeWork',
 ]);
 
 export const FORBIDDEN_TYPES = new Set(['Offer', 'AggregateOffer', 'Review', 'AggregateRating', 'Rating', 'Person', 'Event']);
 
 /** Properties that must never appear anywhere (no Offer evidence, no identifiers, no street address). */
 const FORBIDDEN_KEYS = new Set([
-  'offers', 'price', 'priceCurrency', 'review', 'aggregateRating',
+  'offers', 'price', 'priceCurrency', 'priceSpecification', 'review', 'aggregateRating',
   'foundingDate', 'taxID', 'vatID', 'duns', 'leiCode', 'iso6523Code', 'isicV4', 'streetAddress', 'postalCode', 'telephone', 'email',
 ]);
 
@@ -57,7 +60,24 @@ const REQUIRED = {
   PostalAddress: [],
   EntryPoint: ['urlTemplate'],
   Organization: ['name'],
+  OfferCatalog: ['name', 'itemListElement'],
+  // Offer is allowed only inside the organisation's OfferCatalog (isCatalogOffer); there it names a package and the Service it stands for.
+  Offer: ['name', 'itemOffered'],
+  // The WebApplication contract for the tools (WP-49): an id, a name and a url, and no offers or price (forbidden keys apply).
+  WebApplication: ['@id', 'name', 'url'],
+  CreativeWork: ['name', 'url'],
 };
+
+/**
+ * True when the object at `path` is an item of the organisation's OfferCatalog: $[n].hasOfferCatalog.itemListElement[m], where
+ * graph node n is the ProfessionalService. Any other Offer is a forbidden type. The forbidden keys still apply to it, so a price fails.
+ */
+function isCatalogOffer(path, graph) {
+  const match = /^\$\[(\d+)\]\.hasOfferCatalog\.itemListElement\[\d+\]$/.exec(path);
+  if (match === null) return false;
+  const owner = graph[Number(match[1])];
+  return owner !== undefined && typesOf(owner).includes('ProfessionalService');
+}
 
 /** Extracts and parses every ld+json block. Parse failures are returned as errors, never thrown. */
 export function extractJsonLd(html) {
@@ -121,8 +141,10 @@ export function validateDocument(doc) {
       return;
     }
     for (const type of types) {
-      if (FORBIDDEN_TYPES.has(type)) errors.push(`${path}: forbidden @type ${type}`);
-      else if (!ALLOWED_TYPES.has(type)) errors.push(`${path}: @type ${type} is not on the allowlist`);
+      // An Offer that is an item of the package catalog is the one allowed Offer; it still gets its required-property check below.
+      const catalogOffer = type === 'Offer' && isCatalogOffer(path, graph);
+      if (!catalogOffer && FORBIDDEN_TYPES.has(type)) errors.push(`${path}: forbidden @type ${type}`);
+      else if (!catalogOffer && !ALLOWED_TYPES.has(type)) errors.push(`${path}: @type ${type} is not on the allowlist`);
       for (const prop of REQUIRED[type] ?? []) {
         if (obj[prop] === undefined || obj[prop] === '' || (Array.isArray(obj[prop]) && obj[prop].length === 0)) {
           errors.push(`${path}: ${type} is missing required property "${prop}"`);

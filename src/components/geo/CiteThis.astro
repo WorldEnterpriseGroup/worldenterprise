@@ -1,0 +1,58 @@
+---
+/**
+ * "Cite this page": a suggested citation (title, World Enterprise Editorial, updated date, canonical URL) with a copy button.
+ * The button is the existing <we-copy> island (src/scripts/copy.ts), with no `source`: the island then copies the plain text of the
+ * target, which is the citation itself. Without JavaScript the button is absent and the citation is still on the page to select.
+ * No new script and no third-party request.
+ */
+import { citationText } from './cite.ts';
+
+interface Props {
+  /** The page title as the H1 shows it. */
+  title: string;
+  /** Route path of the page. */
+  path: string;
+  /** Last update, or the publication date when there was no update. */
+  date?: Date | undefined;
+}
+
+const { title, path, date } = Astro.props;
+const slug = path.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') || 'home';
+const headingId = `cite-title-${slug}`;
+const textId = `cite-text-${slug}`;
+---
+
+<aside class="callout cite-this" aria-labelledby={headingId} data-cite-this>
+  <h2 class="callout__title" id={headingId}>Cite this page</h2>
+  <p class="ui">Suggested citation:</p>
+  <p class="cite-this__text" id={textId}>{citationText({ title, path, date })}</p>
+  <we-copy target={`#${textId}`} label="Copy citation"></we-copy>
+</aside>
+
+<script>
+  import '../../scripts/copy.ts';
+</script>
+
+<style is:global>
+  @layer components {
+    we-copy {
+      display: block;
+    }
+
+    .we-copy__status {
+      min-block-size: 1.5em;
+      margin-block: var(--sp-2) 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .cite-this {
+      margin-block-start: var(--sp-6);
+
+      & .cite-this__text {
+        margin-block: var(--sp-2) var(--sp-3);
+        overflow-wrap: anywhere;
+      }
+    }
+  }
+</style>
