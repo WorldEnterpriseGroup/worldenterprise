@@ -1,0 +1,79 @@
+---
+/**
+ * The number of a step, set in a hex cell. It is decorative: the ordered list around it carries the numbering for assistive
+ * technology, so the cell is hidden from it. State is shown by fill and by shape, not colour alone: a step behind you is a solid
+ * cell, the current one is a solid amber cell, one still ahead is an outline cell.
+ */
+interface Props {
+  n: number;
+  state?: 'done' | 'current' | 'next';
+}
+
+const { n, state = 'next' } = Astro.props;
+---
+
+<span class={`marker marker--${state}`} aria-hidden="true"><span class="marker__cell"><span class="marker__n">{n}</span></span></span>
+
+<style>
+  .marker {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    inline-size: var(--sp-7);
+    aspect-ratio: var(--hex-ratio);
+  }
+
+  .marker__cell {
+    position: relative;
+    display: grid;
+    place-items: center;
+    inline-size: 100%;
+    block-size: 100%;
+    clip-path: var(--hex-clip);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .marker__n {
+    position: relative;
+    z-index: 1;
+  }
+
+  .marker--current .marker__cell {
+    background: var(--color-highlight);
+    color: var(--color-text);
+  }
+
+  /* An outline cell: the outer cell is the border colour and an inner pane, cut the same way, is the ground. */
+  .marker--next .marker__cell {
+    color: var(--color-text);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      clip-path: var(--hex-clip);
+      background: var(--color-bg);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .marker__cell {
+      forced-color-adjust: none;
+      background: ButtonText;
+      color: ButtonFace;
+    }
+
+    .marker--next .marker__cell {
+      color: ButtonText;
+
+      &::after {
+        background: Canvas;
+      }
+    }
+  }
+</style>

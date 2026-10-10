@@ -1,0 +1,53 @@
+---
+import wordmark from '../../assets/brand/we-logo-wordmark.svg';
+import { assertLockupGround } from './lockup.ts';
+import type { LockupSize } from './lockup.ts';
+import type { Ground } from './types.ts';
+
+/**
+ * The World Enterprise wordmark with its clear space, for the pages that teach or show the brand (the brand kit). The site header owns
+ * the one lockup every page carries; a family page never adds a second. On a dark ground the component throws at build time: the
+ * logo is dark on light only (decision D-8) and no reversed version exists.
+ */
+interface Props {
+  ground?: Ground;
+  size?: LockupSize;
+}
+
+const { ground = 'light', size = 'md' } = Astro.props;
+assertLockupGround(ground);
+---
+
+<span class={`lockup lockup--${size} lockup--${ground}`}>
+  <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="World Enterprise" decoding="async" />
+</span>
+
+<style>
+  .lockup {
+    --lockup-h: var(--sp-6);
+    display: inline-block;
+    /* One cell of clear space on every side. */
+    padding: var(--lockup-h);
+    background: var(--color-bg);
+    line-height: 0;
+
+    & img {
+      display: block;
+      block-size: var(--lockup-h);
+      inline-size: auto;
+      max-inline-size: 100%;
+    }
+  }
+
+  .lockup--tint {
+    background: var(--tint-blue);
+  }
+
+  .lockup--sm {
+    --lockup-h: var(--sp-5);
+  }
+
+  .lockup--lg {
+    --lockup-h: var(--sp-7);
+  }
+</style>
