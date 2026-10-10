@@ -5,7 +5,9 @@
  *
  * Shape consumed:
  *   { "version": 2,
+ *     "redirectAllowlist": ["/apply/thanks/"],            (optional, site-relative paths)
  *     "kinds": { "<kind>": { "thanks": "/apply/thanks/" | null,
+ *                            "rateLimit": { "perHour": 5 },   (optional, defaults to 5)
  *                            "audience": ["startup", ...] | [""],
  *                            "fields": { "<field>": { "rule": "R" | "O" | "-", "type": "string" | "boolean" | "email" | "url" |
  *                                                     "uuid" | "enum" | "slug" | "iso", "max": 120, "enum": ["..."] } } } } }
@@ -13,6 +15,8 @@
  * A file that does not fit is a deployment error, not a request error: compileContract throws a ContractError naming the
  * path, and the Function refuses to start rather than guess.
  */
+
+import { RATE_LIMIT } from './rate.ts';
 
 export const KINDS = ['apply', 'contact', 'newsletter', 'brief-request', 'investor-interest', 'partner-enquiry'] as const;
 export type Kind = (typeof KINDS)[number];
@@ -38,11 +42,15 @@ export interface KindRule {
   /** Allowed audience values. `''` means the kind carries no audience. */
   readonly audience: readonly string[];
   readonly fields: Readonly<Record<string, FieldRule>>;
+  /** Submissions allowed per address and per email in one hour. Defaults to the service-wide limit when the contract omits it. */
+  readonly rateLimit: { readonly perHour: number };
 }
 
 export interface Contract {
   readonly version: number;
   readonly kinds: Readonly<Record<Kind, KindRule>>;
+  /** Site-relative paths a form-encoded `redirect` field may name, beyond each kind's own thanks path. */
+  readonly redirectAllowlist: readonly string[];
 }
 
 export class ContractError extends Error {
@@ -91,7 +99,24 @@ function compileKind(raw: unknown, path: string): KindRule {
   if (!isRecord(rawFields)) throw new ContractError(`${path}.fields`, 'expected an object');
   const fields: Record<string, FieldRule> = {};
   for (const [name, field] of Object.entries(rawFields)) fields[name] = compileField(field, `${path}.fields.${name}`);
-  return { thanks, audience, fields };
+  const rateLimit = raw['rateLimit'];
+  let perHour = RATE_LIMIT;
+  if (rateLimit !== undefined) {
+    if (!isRecord(rateLimit)) throw new ContractError(`${path}.rateLimit`, 'expected an object');
+    const value = rateLimit['perHour'];
+    if (typeof value !== 'number' || !Number.isInteger(value) || value < 1) throw new ContractError(`${path}.rateLimit.perHour`, 'expected a positive integer');
+    perHour = value;
+  }
+  return { thanks, audience, fields, rateLimit: { perHour } };
+}
+
+function compileRedirectAllowlist(raw: unknown): readonly string[] {
+  if (raw === undefined) return [];
+  const paths = stringList(raw, '$.redirectAllowlist');
+  paths.forEach((path, index) => {
+    if (!path.startsWith('/') || path.startsWith('//')) throw new ContractError(`$.redirectAllowlist[${index}]`, 'expected a site-relative path');
+  });
+  return paths;
 }
 
 /** Turns the parsed JSON into the rule table, or throws a ContractError that names the first problem. */
@@ -109,7 +134,7 @@ export function compileContract(raw: unknown): Contract {
   for (const name of Object.keys(kinds)) {
     if (!(KINDS as readonly string[]).includes(name)) throw new ContractError(`$.kinds.${name}`, 'unknown kind');
   }
-  return { version, kinds: compiled as Record<Kind, KindRule> };
+  return { version, kinds: compiled as Record<Kind, KindRule>, redirectAllowlist: compileRedirectAllowlist(raw['redirectAllowlist']) };
 }
 
 export function parseContract(json: string): Contract {
@@ -122,9 +147,9 @@ export function parseContract(json: string): Contract {
   return compileContract(parsed);
 }
 
-/** Every thanks path the contract names. The only values a hidden `redirect` field may carry. */
+/** The contract's `redirectAllowlist` plus every thanks path it names. The only values a hidden `redirect` field may carry. */
 export function thanksAllowlist(contract: Contract): readonly string[] {
-  const paths = new Set<string>();
+  const paths = new Set<string>(contract.redirectAllowlist);
   for (const kind of KINDS) {
     const thanks = contract.kinds[kind].thanks;
     if (thanks !== null) paths.add(thanks);

@@ -63,11 +63,11 @@ export class BlobRateStore implements RateStore {
     this.blobs = blobs;
   }
 
-  async consume(key: string, now: number): Promise<RateDecision> {
+  async consume(key: string, now: number, limit?: number): Promise<RateDecision> {
     const name = `rate/${sha256Hex(key)}.json`;
     for (let attempt = 0; attempt < CAS_ATTEMPTS; attempt += 1) {
       const existing = await this.blobs.get(name);
-      const decision = consume(existing === null ? null : readCounter(existing.text), now);
+      const decision = consume(existing === null ? null : readCounter(existing.text), now, limit);
       // A refused request changes nothing, so it writes nothing.
       if (!decision.allowed) return decision;
       const written = await this.blobs.put(name, JSON.stringify(decision.record), existing === null ? { kind: 'absent' } : { kind: 'etag', etag: existing.etag });

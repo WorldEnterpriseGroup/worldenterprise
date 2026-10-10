@@ -172,7 +172,7 @@ export async function handleIntake(deps: Deps, req: HttpRequestLike, impliedKind
   let retryAfter = 0;
   try {
     for (const key of rateKeys(kind, keyHash('client', clientAddress((name) => req.header(name))), submission.email === '' ? null : emailHashOf(submission.email))) {
-      const decision = await deps.rate.consume(key, now);
+      const decision = await deps.rate.consume(key, now, deps.contract.kinds[kind].rateLimit.perHour);
       if (!decision.allowed) retryAfter = Math.max(retryAfter, decision.retryAfterSeconds);
     }
   } catch (error) {
