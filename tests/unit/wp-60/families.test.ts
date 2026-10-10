@@ -4,7 +4,8 @@ import { join } from 'node:path';
 import { test } from 'node:test';
 import { parse } from 'yaml';
 import { DESKS, isDeskId } from '../../../src/data/desks.ts';
-import { AUDIENCES, BRIEFS, FAMILIES, familyLabel, familyPaths, RESERVED_SLUGS, SEGMENTS, SEGMENT_SHORT_NAMES, SEGMENT_SLUGS } from '../../../src/data/families.ts';
+import { loadDenylist as loadClaims, scan } from '../../../scripts/audit-claims.mjs';
+import { AUDIENCES, BRIEFS, COMPARISONS, FAMILIES, familyLabel, familyPaths, RESERVED_SLUGS, SEGMENTS, SEGMENT_SHORT_NAMES, SEGMENT_SLUGS } from '../../../src/data/families.ts';
 import type { FamilyDefinition } from '../../../src/data/families.ts';
 import { routes } from '../../../src/data/routes.ts';
 import { listBriefIds, listCollectionFiles, listInsightFiles, listPageSlugs } from '../../../src/lib/content-files.ts';
@@ -148,16 +149,41 @@ test('a registry label never carries a word the claims denylist blocks, so no ge
   }
 });
 
-test('the blocked-word entry is exactly one, named in the registry, and its slug is the only place the word shows', () => {
+test('the blocked-word entry is exactly one, named in the registry, and neither its label nor its slug carries the word (Q-7)', () => {
   const blocked = FAMILIES.flatMap((f) => f.entries.filter((e) => e.blockedWord !== undefined));
-  assert.deepEqual(blocked.map((e) => e.slug), ['incubator-vs-accelerator']);
+  assert.deepEqual(blocked.map((e) => e.slug), ['incubator-vs-other-programs']);
   const [entry] = blocked;
   assert.ok(entry !== undefined);
-  assert.ok(matches(entry.slug).includes('C-13-peers'), 'the slug trips the C-13-peers rule, which is why the entry is flagged');
   assert.ok(!entry.label.toLowerCase().includes(entry.blockedWord ?? ''), 'the label drops the word');
+  assert.ok(!entry.slug.includes(entry.blockedWord ?? ''), 'the slug drops the word too: the audit scans a URL in a sitemap, a feed, JSON-LD and an og:url meta');
   for (const family of FAMILIES) {
-    for (const e of family.entries) {
-      if (e.blockedWord === undefined) assert.deepEqual(matches(e.slug), [], `${family.id}/${e.slug}: the slug trips a rule but the entry is not flagged`);
-    }
+    for (const e of family.entries) assert.deepEqual(matches(e.slug), [], `${family.id}/${e.slug}: a slug trips a denylist rule`);
   }
+});
+
+test('the denylist exempts the one comparison page whose subject is the word, and no other path gains an exception (DP-W8-15)', () => {
+  const rule = loadClaims().scanRules.find((r: { id: string }) => r.id === 'C-13-peers');
+  assert.ok(rule !== undefined);
+  const allowed = (path: string): boolean => rule.allow.some((re: RegExp) => re.test(path));
+  const entry = COMPARISONS.entries.find((e) => e.blockedWord !== undefined);
+  assert.ok(entry !== undefined);
+  assert.equal(allowed(`/compare/${entry.slug}/`), true, 'the page is allowed (its Markdown twin maps to the same route)');
+  for (const path of ['/compare/', '/compare/incubator-vs-venture-studio/', '/compare/build-vs-buy/', '/about/', '/insights/x/', '/']) assert.equal(allowed(path), false, `${path} stays blocked`);
+  assert.equal(rule.allow.length, 4, 'the FAQ, the metrics definitions page, the comparison page and the llms files: four patterns');
+  const strict = loadClaims().scanRules.find((r: { id: string }) => r.id === 'W8-C13-own-peers');
+  assert.equal(strict?.allow.length, 0, 'first-person peer wording has no exempt path, not even the comparison page');
+});
+
+test('Q-7: the audit ignores an href but reads a URL in JSON-LD, an og:url meta, a sitemap and a feed, so a slug must not carry a blocked word', () => {
+  const url = 'https://worldenterprise.org/compare/incubator-vs-accelerator/';
+  const hits = (text: string, route: string, plain = false): string[] => (scan(text, { route, plain, flagValues: {} }) as { rule: string }[]).map((h) => h.rule);
+  assert.deepEqual(hits(`<main><p><a href="${url}">Compare</a></p></main>`, '/compare/'), [], 'an href is not scanned');
+  assert.deepEqual(hits(`[Compare](${url})`, '/llms.txt', true), [], 'a link address in plain text is not scanned');
+  assert.ok(hits(`<script type="application/ld+json">{"item":"${url}"}</script>`, '/compare/').includes('C-13-peers'));
+  assert.deepEqual(hits(`<head><link rel="canonical" href="${url}"></head><body><main>x</main></body>`, '/x/'), [], 'a link element is not scanned');
+  assert.ok(hits(`<head><meta property="og:url" content="${url}"></head><body><main>x</main></body>`, '/x/').includes('C-13-peers'));
+  assert.ok(hits(`<urlset><url><loc>${url}</loc></url></urlset>`, '/sitemap-0.xml').includes('C-13-peers'));
+  assert.ok(hits(`<rss><channel><item><link>${url}</link></item></channel></rss>`, '/rss.xml').includes('C-13-peers'));
+  const renamed = url.replace('incubator-vs-accelerator', 'incubator-vs-other-programs');
+  assert.deepEqual(hits(`<urlset><url><loc>${renamed}</loc></url></urlset>`, '/sitemap-0.xml'), [], 'the renamed slug is clean in a sitemap');
 });
