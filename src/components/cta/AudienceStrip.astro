@@ -1,0 +1,36 @@
+---
+import { AUDIENCE_LINKS } from '../../data/cta/audiences.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+import './cta.css';
+
+/**
+ * Four links, one per audience, for the home page and the hubs. A link to a page that is not live is left out (the same fail-closed rule
+ * as the bands), and the strip is not drawn when fewer than two doors are open.
+ */
+interface Props {
+  /** The heading above the strip is the caller's; this names the list for a screen reader. */
+  label?: string;
+}
+
+const { label = 'Where to start' } = Astro.props;
+const state = await getRouteState();
+const links = AUDIENCE_LINKS.filter((link) => state.isLive(link.href));
+---
+
+{
+  links.length >= 2 && (
+    <nav aria-label={label}>
+      <ul class="audience-strip" role="list">
+        {links.map((link) => (
+          <li>
+            <a href={href(link.href)}>
+              <span class="audience-strip__label">{link.label}</span>
+              <span class="audience-strip__text">{link.text}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

@@ -1,12 +1,13 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CtaEnd from '../components/cta/CtaEnd.astro';
 import HeroCompact from '../components/hero/HeroCompact.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 type Props = PageMeta & HeaderProps & { title: string };
 
-const { eyebrow, lead, primary, secondary, photo, art, measure, ...meta } = Astro.props;
+const { eyebrow, lead, primary, secondary, photo, art, measure, cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 // A page that brings a photo or art gets the wider editorial frame. Without media a marketing page states its position, so it opens
 // with the statement hero: the title is the claim, set large over the reading column, and the page needs no art to carry it.
@@ -29,4 +30,5 @@ const heroMeasure = measure ?? (hasMedia ? 'default' : 'prose');
     </div>
   </div>
   <slot name="after" />
+  <slot name="cta-end">{!Astro.slots.has('after') && <CtaEnd path={meta.path} collection="pages" cta={cta} />}</slot>
 </BaseLayout>

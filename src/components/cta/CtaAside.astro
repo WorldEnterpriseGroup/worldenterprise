@@ -1,0 +1,19 @@
+---
+import type { Audience, CtaModel, CtaVariant } from '../../data/cta/index.ts';
+import CtaBand from './CtaBand.astro';
+
+/**
+ * The compact call to action for a rail or an aside: the same model and the same rules as `CtaBand`, with a smaller heading that sits
+ * at h3 so it never breaks the outline of the page it is beside.
+ */
+interface Props {
+  model?: CtaModel | null | undefined;
+  audience?: Audience | undefined;
+  variant?: CtaVariant | undefined;
+  briefId?: string | undefined;
+}
+
+const { model, audience, variant, briefId } = Astro.props;
+---
+
+<CtaBand model={model} audience={audience} variant={variant} briefId={briefId} placement="aside" headingLevel={3} />
