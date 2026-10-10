@@ -64,7 +64,12 @@ test('"What you can send" lists the form fields under the words the form uses', 
 test('states no funding promise, names no time, count, price or fee, and keeps Investor Introductions off the page', async ({ page }) => {
   await page.goto(ROUTE);
   // The page body: the slot of StageLayout, without the hero, the closing band and the next-reading cards.
-  const text = await page.locator('main .section > .container').first().innerText();
+  // The step numbers are decoration (aria-hidden, 1 to 3), so the digit check reads the copy without them.
+  const text = await page.locator('main .section > .container').first().evaluate((el) => {
+    const copy = el.cloneNode(true) as HTMLElement;
+    copy.querySelectorAll('.steps__index').forEach((index) => index.remove());
+    return copy.innerText ?? copy.textContent ?? '';
+  });
   expect(text).toContain('WE makes no promise of funding.');
   expect(text).toContain('WE does not state a response time on this site.');
   expect(text).not.toMatch(/\d/);

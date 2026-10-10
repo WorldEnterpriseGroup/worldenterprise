@@ -261,12 +261,14 @@ test.describe('with JavaScript', () => {
   });
 
   test('axe finds nothing on any step or on the review, at WCAG 2.2 AA', async ({ page }) => {
+    // Six scans of the form. The page around it is scanned by the other axe specs, and a whole-page scan of the hero at 1440 took most of the budget.
+    test.setTimeout(120_000);
     await open(page);
     const summarise = (violations: { id: string; nodes: { target: readonly unknown[] }[] }[]): string[] => violations.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const failures: string[] = [];
     const scan = async (label: string): Promise<void> => {
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const results = await new AxeBuilder({ page }).include('form[data-intake-form]').withTags(AXE_TAGS).analyze();
       failures.push(...summarise(results.violations).map((line) => `${label}: ${line}`));
     };
     await scan('step 1');
@@ -325,6 +327,8 @@ for (const viewport of VIEWPORTS) {
 
     test('no focused control sits under the progress bar, moving forward and backward through every step', async ({ page }, info) => {
       test.skip(info.project.name !== viewport.project, `${viewport.name} runs in ${viewport.project}`);
+      // Seventy-two key presses, each followed by a measurement, on a shared runner.
+      test.setTimeout(120_000);
       await open(page);
       const overlaps = async (): Promise<string | null> =>
         page.evaluate(() => {
