@@ -299,7 +299,6 @@ export const primaryNav: readonly PrimaryNavItem[] = [
           { label: 'Apply', href: '/apply/' },
           { label: 'Founder segments', href: '/founders/' },
           { label: 'What happens after you apply', href: '/journey/after-you-apply/' },
-          { label: 'Briefs', href: '/briefs/' },
           { label: 'Tools', href: '/tools/' },
         ],
       },
