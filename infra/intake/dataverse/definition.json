@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "publisher": {
+    "uniqueName": "worldenterprise",
+    "friendlyName": "World Enterprise",
+    "customizationPrefix": "we",
+    "customizationOptionValuePrefix": 10000
+  },
+  "solution": {
+    "uniqueName": "worldenterprise_intake",
+    "friendlyName": "World Enterprise Intake",
+    "version": "1.0.0.0"
+  },
+  "businessUnit": {
+    "name": "World Enterprise"
+  },
+  "ownerTeam": {
+    "name": "World Enterprise Intake"
+  },
+  "role": {
+    "name": "World Enterprise Intake Service",
+    "depth": "Local",
+    "privileges": [
+      { "table": "we_Engagement", "actions": ["Create", "Read", "Write", "Append", "AppendTo"] },
+      { "table": "Contact", "actions": ["Create", "Read", "Write", "Append", "AppendTo"] },
+      { "table": "Account", "actions": ["Create", "Read", "Write", "AppendTo"] }
+    ]
+  },
+  "applicationUser": {
+    "firstName": "WE Intake",
+    "lastName": "Service"
+  },
+  "tables": [
+    {
+      "schemaName": "we_Engagement",
+      "logicalName": "we_engagement",
+      "entitySetName": "we_engagements",
+      "displayName": "WE Engagement",
+      "pluralDisplayName": "WE Engagements",
+      "description": "One row per form submission received by the World Enterprise intake service. Written by the intake Function; never holds an unsubscribe token in clear, a signed link or a request body outside the named columns.",
+      "primaryName": { "schemaName": "we_name", "displayName": "Name", "maxLength": 100 },
+      "columns": [
+        { "schemaName": "we_requestid", "displayName": "Request id", "type": "string", "maxLength": 36 },
+        { "schemaName": "we_kind", "displayName": "Form", "type": "string", "maxLength": 32 },
+        { "schemaName": "we_audience", "displayName": "Audience", "type": "string", "maxLength": 16 },
+        { "schemaName": "we_briefid", "displayName": "Brief id", "type": "string", "maxLength": 64 },
+        { "schemaName": "we_briefversion", "displayName": "Brief version", "type": "string", "maxLength": 16 },
+        { "schemaName": "we_stage", "displayName": "Company stage", "type": "string", "maxLength": 32 },
+        { "schemaName": "we_partnercategory", "displayName": "Partner category", "type": "string", "maxLength": 64 },
+        { "schemaName": "we_investorkind", "displayName": "Investor kind", "type": "string", "maxLength": 64 },
+        { "schemaName": "we_sourcepage", "displayName": "Source page", "type": "string", "maxLength": 300 },
+        { "schemaName": "we_consent_at", "displayName": "Consent given at", "type": "datetime" },
+        { "schemaName": "we_consentupdates", "displayName": "Agreed to follow-up emails", "type": "boolean" },
+        {
+          "schemaName": "we_status",
+          "displayName": "Status",
+          "type": "picklist",
+          "options": [
+            { "name": "received", "value": 100000000, "label": "Received" },
+            { "name": "delivered", "value": 100000001, "label": "Delivered" },
+            { "name": "delivery-failed", "value": 100000002, "label": "Delivery failed" },
+            { "name": "unsubscribed", "value": 100000003, "label": "Unsubscribed" }
+          ]
+        },
+        {
+          "schemaName": "we_review",
+          "displayName": "Needs review",
+          "type": "picklist",
+          "options": [
+            { "name": "none", "value": 100000000, "label": "None" },
+            { "name": "contact-ambiguous", "value": 100000001, "label": "More than one contact has this address" }
+          ]
+        },
+        { "schemaName": "we_contactname", "displayName": "Name given", "type": "string", "maxLength": 200 },
+        { "schemaName": "we_email", "displayName": "Email given", "type": "string", "maxLength": 254 },
+        { "schemaName": "we_company", "displayName": "Company given", "type": "string", "maxLength": 200 },
+        { "schemaName": "we_companyurl", "displayName": "Company website given", "type": "string", "maxLength": 300 },
+        { "schemaName": "we_seats", "displayName": "Seats asked about", "type": "string", "maxLength": 500 },
+        { "schemaName": "we_topic", "displayName": "Topic", "type": "string", "maxLength": 32 },
+        { "schemaName": "we_message", "displayName": "Message", "type": "memo", "maxLength": 4000 },
+        { "schemaName": "we_focus", "displayName": "Investment focus", "type": "memo", "maxLength": 1000 },
+        { "schemaName": "we_offer", "displayName": "Partner offer", "type": "memo", "maxLength": 1500 },
+        { "schemaName": "we_deliveryattempts", "displayName": "Delivery attempts", "type": "integer" },
+        { "schemaName": "we_lastattemptat", "displayName": "Last delivery attempt", "type": "datetime" },
+        { "schemaName": "we_deliveredat", "displayName": "Delivered at", "type": "datetime" },
+        { "schemaName": "we_nurturestage", "displayName": "Follow-ups sent", "type": "integer" },
+        { "schemaName": "we_nurturenextat", "displayName": "Next follow-up due", "type": "datetime" },
+        { "schemaName": "we_unsubscribetoken", "displayName": "Unsubscribe token (encrypted)", "type": "string", "maxLength": 200 },
+        { "schemaName": "we_tokenhash", "displayName": "Unsubscribe token hash", "type": "string", "maxLength": 64 }
+      ],
+      "lookups": [
+        { "schemaName": "we_Contact", "displayName": "Contact", "target": "contact", "relationship": "we_contact_we_engagement" },
+        { "schemaName": "we_Account", "displayName": "Account", "target": "account", "relationship": "we_account_we_engagement" }
+      ],
+      "keys": [
+        { "schemaName": "we_engagement_requestid", "displayName": "Request id", "attributes": ["we_requestid"] },
+        { "schemaName": "we_engagement_tokenhash", "displayName": "Unsubscribe token hash", "attributes": ["we_tokenhash"] }
+      ]
+    }
+  ],
+  "extensions": [
+    {
+      "table": "account",
+      "tableSchemaName": "Account",
+      "columns": [
+        { "schemaName": "we_accountkey", "displayName": "WE account key", "type": "string", "maxLength": 300 }
+      ],
+      "keys": [
+        { "schemaName": "account_we_accountkey", "displayName": "WE account key", "attributes": ["we_accountkey"] }
+      ]
+    }
+  ]
+}
