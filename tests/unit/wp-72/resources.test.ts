@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import test from 'node:test';
 import * as claimsAudit from '../../../scripts/audit-claims.mjs';
 import { DESK_DEFINITIONS, deskPath } from '../../../src/data/desks.ts';
@@ -6,7 +8,11 @@ import { BRIEFS, COMPARISONS, INDUSTRIES, SEGMENTS } from '../../../src/data/fam
 import { routes } from '../../../src/data/routes.ts';
 import { kindGroups, liveGroups, metaLookup, RESOURCE_STRIP, RESOURCES_COPY, routeOfEntry, STATIC_META } from '../../../src/components/reference/resources.ts';
 import type { LedgerRow, MetaEntry, ResourceGroup } from '../../../src/components/reference/resources.ts';
+import { repoViewAt } from '../wp-60/repo-view.ts';
+import { checkSentences } from '../wp-60/sources.ts';
+import type { SourcesFile } from '../wp-60/sources.ts';
 import { readDiskEntries } from './disk-meta.ts';
+import { derivedSentences, derivedSources, ownedSentences } from './resources-copy.ts';
 
 /**
  * The rebuilt Resources hub (WP-72). The hub lists only routes that are live (fail-closed, D-11), covers every live route of every
@@ -157,5 +163,41 @@ test('no sentence of the hub trips the claims denylist', () => {
   for (const text of new Set(texts)) {
     const hits = audit.scan(text, { route: '/resources/', plain: true, flagValues: {} });
     assert.deepEqual(hits.map((h) => h.rule), [], `"${text}"`);
+  }
+});
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// The sentence ledger (.astro-magazine/sources/wp-72.json, document src/pages/resources/index.astro)
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+const HUB = 'src/pages/resources/index.astro';
+const sources = JSON.parse(readFileSync(join(root, '.astro-magazine/sources/wp-72.json'), 'utf8')) as SourcesFile;
+const hubRows = sources.documents?.find((d) => d.path === HUB)?.sentences ?? [];
+const mapped = new Set(hubRows.map((r) => r.text));
+
+test('the hub is a document of the WP-72 sources file and every mapping is well formed', () => {
+  assert.ok(hubRows.length > 0, `${HUB} is not in the WP-72 sources file`);
+  assert.deepEqual(checkSentences('WP-72', HUB, hubRows, repoViewAt(root)), []);
+});
+
+test('every sentence the hub owns is mapped, and no owned mapping is stale', () => {
+  const owned = ownedSentences();
+  const missing = owned.filter((text) => !mapped.has(text));
+  assert.deepEqual(missing, [], `Unmapped in ${HUB}. Add each to .astro-magazine/sources/wp-72.json:\n${missing.map((m) => `  ${JSON.stringify(m)}`).join('\n')}`);
+  const derived = new Set(derivedSentences(entries, ledger, built).map((d) => d.text));
+  const sources = derivedSources(entries);
+  const stale = hubRows.filter((r) => !owned.includes(r.text) && !derived.has(r.text) && !(r.page !== undefined && sources.has(r.page.replace(/#.*$/, ''))));
+  assert.deepEqual(stale.map((r) => r.text), [], 'Stale rows: a mapped sentence the hub no longer shows');
+});
+
+test('every title and description the hub reads from another page is mapped to the file it came from', () => {
+  for (const item of derivedSentences(entries, ledger, built)) {
+    const row = hubRows.find((r) => r.text === item.text);
+    // A sentence the hub also owns keeps the owned mapping; one a later package adds is accepted only when its own file holds it.
+    if (row === undefined) {
+      assert.ok(readFileSync(join(root, item.page), 'utf8').includes(item.text) || item.page.endsWith('.ts'), `"${item.text}" is not in ${item.page}`);
+    } else if (!ownedSentences().includes(item.text)) {
+      assert.equal(row.page, item.page, `"${item.text}" maps to ${row.page}, but it comes from ${item.page}`);
+    }
   }
 });

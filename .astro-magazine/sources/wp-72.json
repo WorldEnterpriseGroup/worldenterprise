@@ -1,6 +1,6 @@
 {
   "wp": "WP-72",
-  "note": "The sentence ledger of the four customer-journey pages WP-72 wrote (docs/wave8-contracts.md, sections 8.2 and 11; plan 5.3). Each sentence maps to one claim (C-nn), one existing page with a heading (path#heading), or one decision (W8-nn); a title or heading that states no fact about WE is a label (seven words at most). A question for the founder to put to WE states no fact about WE: it maps to the page that already covers its topic, or to W8-25, the journey contract, where the program pages are silent. The template's own sentences (the note under the hero, the section headings and the checklist note) are WP-71's and are traced in its ledger. tests/unit/wp-72/ enumerates the sentences from the content files, fails on one with no mapping and on a mapping with no sentence, and runs the claims denylist over all of them. The resources hub is the second document group, appended by the same test file. The file has no fetches: it quotes no outside source.",
+  "note": "The sentence ledger of the four customer-journey pages WP-72 wrote (docs/wave8-contracts.md, sections 8.2 and 11; plan 5.3). Each sentence maps to one claim (C-nn), one existing page with a heading (path#heading), or one decision (W8-nn); a title or heading that states no fact about WE is a label (seven words at most). A question for the founder to put to WE states no fact about WE: it maps to the page that already covers its topic, or to W8-25, the journey contract, where the program pages are silent. The template's own sentences (the note under the hero, the section headings and the checklist note) are WP-71's and are traced in its ledger. tests/unit/wp-72/ enumerates the sentences from the content files, fails on one with no mapping and on a mapping with no sentence, and runs the claims denylist over all of them. The resources hub (src/pages/resources/index.astro) is the fifth document. Its own copy (page strings, group titles and intros, the strip) is held strictly; each item title and description is read from the page the item links to and is mapped to that page's file, so a page another package adds changes the list without editing this file (tests/unit/wp-72/resources.test.ts). The file has no fetches: it quotes no outside source.",
   "fetches": [],
   "documents": [
     {
@@ -420,6 +420,467 @@
         {
           "text": "The resources hub lists everything in one place.",
           "decision": "W8-25"
+        }
+      ]
+    },
+    {
+      "path": "src/pages/resources/index.astro",
+      "sentences": [
+        {
+          "text": "Resources",
+          "label": true
+        },
+        {
+          "text": "Playbooks, templates, guides, tools, research, briefs and reference pages for founders, arranged by where you are and by kind.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Find the playbook, template, guide or tool for the stage you are at.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Start where you are",
+          "label": true
+        },
+        {
+          "text": "Pick the stage that sounds like you.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Each list points to pages already on this site.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Everything, by kind",
+          "label": true
+        },
+        {
+          "text": "Every playbook, template, guide, tool, brief and article desk that is live on this site.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "About these resources",
+          "label": true
+        },
+        {
+          "text": "Open the templates",
+          "label": true
+        },
+        {
+          "text": "Before you apply",
+          "label": true
+        },
+        {
+          "text": "Understand the program and test your own idea first.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "While you build",
+          "label": true
+        },
+        {
+          "text": "Templates, playbooks and tools for making a first release.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "When you prepare to raise",
+          "label": true
+        },
+        {
+          "text": "Evidence, updates and the terms investors use.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Templates and checklists",
+          "label": true
+        },
+        {
+          "text": "Documents you can use today.",
+          "page": "src/pages/library/index.astro"
+        },
+        {
+          "text": "Copy them, print them or download them as Markdown.",
+          "page": "src/pages/library/index.astro"
+        },
+        {
+          "text": "Playbooks",
+          "label": true
+        },
+        {
+          "text": "Step-by-step playbooks for building a SaaS company, from validating the problem to repeatable growth.",
+          "page": "src/content/pages/playbooks/index.mdx"
+        },
+        {
+          "text": "Investor readiness guides",
+          "label": true
+        },
+        {
+          "text": "What investor readiness means for an early SaaS company, and guides to the checklist, the data room, SAFEs and investor updates.",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "Tools",
+          "label": true
+        },
+        {
+          "text": "Tools that run in your browser.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Your numbers and choices stay on the page.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Research briefs",
+          "label": true
+        },
+        {
+          "text": "Designed reports with methodology, limitations and sources, for founders building software.",
+          "page": "src/content/pages/research/index.md"
+        },
+        {
+          "text": "Briefs by topic",
+          "label": true
+        },
+        {
+          "text": "Articles by desk",
+          "label": true
+        },
+        {
+          "text": "Practical, sourced articles on validating, building, growing and preparing a SaaS company.",
+          "page": "src/content/pages/insights/index.mdx"
+        },
+        {
+          "text": "By founder situation",
+          "label": true
+        },
+        {
+          "text": "By industry",
+          "label": true
+        },
+        {
+          "text": "Compare your options",
+          "label": true
+        },
+        {
+          "text": "Reference",
+          "label": true
+        },
+        {
+          "text": "All briefs",
+          "label": true
+        },
+        {
+          "text": "All industries",
+          "label": true
+        },
+        {
+          "text": "All comparisons",
+          "label": true
+        },
+        {
+          "text": "Editorial policy",
+          "label": true
+        },
+        {
+          "text": "RSS feed",
+          "label": true
+        },
+        {
+          "text": "The founder journey",
+          "page": "src/content/pages/journey/index.mdx"
+        },
+        {
+          "text": "The path from an application to a working team, in five steps, with a page for each stage.",
+          "page": "src/content/pages/journey/index.mdx"
+        },
+        {
+          "text": "It states no durations and promises no outcomes.",
+          "page": "src/content/pages/journey/index.mdx"
+        },
+        {
+          "text": "How the program works",
+          "page": "src/content/pages/program/how-it-works.mdx"
+        },
+        {
+          "text": "From application to a working team: apply, agree the scope, seat the team, work in reviewed cycles and decide what comes next.",
+          "page": "src/content/pages/program/how-it-works.mdx"
+        },
+        {
+          "text": "Fully remote.",
+          "page": "src/content/pages/program/how-it-works.mdx"
+        },
+        {
+          "text": "Validate the problem",
+          "page": "src/content/playbooks/validate-the-problem.mdx"
+        },
+        {
+          "text": "Test whether a real, painful problem exists before you write code: a problem brief, honest interviews and a written decision.",
+          "page": "src/content/playbooks/validate-the-problem.mdx"
+        },
+        {
+          "text": "One-page problem brief",
+          "page": "src/content/library/one-page-problem-brief.md"
+        },
+        {
+          "text": "A single-page template that states the problem, the customer, the evidence and the next test, so a team can agree on what it is solving before it builds.",
+          "page": "src/content/library/one-page-problem-brief.md"
+        },
+        {
+          "text": "Team Composer",
+          "page": "src/content/pages/tools/team-composer.mdx"
+        },
+        {
+          "text": "Sketch the roles your SaaS team needs and how many seats each role takes.",
+          "page": "src/content/pages/tools/team-composer.mdx"
+        },
+        {
+          "text": "No sign-up, no price, nothing stored.",
+          "page": "src/content/pages/tools/team-composer.mdx"
+        },
+        {
+          "text": "Carry the sketch to the application.",
+          "page": "src/content/pages/tools/team-composer.mdx"
+        },
+        {
+          "text": "FAQ",
+          "page": "src/pages/faq/index.astro"
+        },
+        {
+          "text": "Short, plain answers about World Enterprise Incubator: what a seat is, how the remote model works, what WE does not do, and how to apply.",
+          "page": "src/pages/faq/index.astro"
+        },
+        {
+          "text": "Build and ship v1",
+          "page": "src/content/playbooks/build-and-ship-v1.mdx"
+        },
+        {
+          "text": "Build the first release in short cycles, keep a release checklist, review against the cut line and put it in front of a small group.",
+          "page": "src/content/playbooks/build-and-ship-v1.mdx"
+        },
+        {
+          "text": "MVP cut-line worksheet",
+          "page": "src/content/library/mvp-cut-line-worksheet.md"
+        },
+        {
+          "text": "A worksheet for deciding which features belong in a first release and which wait, using the customer job, the riskiest assumption and a clear cut line.",
+          "page": "src/content/library/mvp-cut-line-worksheet.md"
+        },
+        {
+          "text": "SaaS Metrics Calculator",
+          "page": "src/content/pages/tools/metrics-calculator.mdx"
+        },
+        {
+          "text": "Enter one month of SaaS numbers to see net new MRR, churn, quick ratio, CAC payback, LTV to CAC and runway.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx"
+        },
+        {
+          "text": "Every formula is shown.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx"
+        },
+        {
+          "text": "Nothing leaves the page.",
+          "page": "src/content/pages/tools/metrics-calculator.mdx"
+        },
+        {
+          "text": "Earn your first customers",
+          "page": "src/content/playbooks/earn-your-first-customers.mdx"
+        },
+        {
+          "text": "Win your first customers with personal outreach, a scoped pilot, fast onboarding and a conversation log that records why people said yes or no.",
+          "page": "src/content/playbooks/earn-your-first-customers.mdx"
+        },
+        {
+          "text": "Glossary",
+          "page": "src/pages/glossary/index.astro"
+        },
+        {
+          "text": "Plain definitions of the funding, finance, product, legal and security terms early-stage SaaS founders meet, plus the words WE uses.",
+          "page": "src/pages/glossary/index.astro"
+        },
+        {
+          "text": "Fundability and investor readiness",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "What investor readiness means for an early SaaS company, a twelve-statement self-check, and four guides: checklist, data room, SAFE and investor updates.",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "Investor readiness checklist",
+          "page": "src/content/guides/investor-readiness-checklist.mdx"
+        },
+        {
+          "text": "Twelve statements that show a SaaS company has its evidence in order, each with the artifact that proves it and where to start if it is missing.",
+          "page": "src/content/guides/investor-readiness-checklist.mdx"
+        },
+        {
+          "text": "Seed data room checklist",
+          "page": "src/content/library/seed-data-room-checklist.md"
+        },
+        {
+          "text": "A checklist of the documents a seed-stage company usually organizes before investor due diligence, grouped by folder, with an owner and status for each.",
+          "page": "src/content/library/seed-data-room-checklist.md"
+        },
+        {
+          "text": "Evidence Room Builder",
+          "page": "src/content/pages/tools/evidence-room.mdx"
+        },
+        {
+          "text": "A checklist of the records an early SaaS company gathers before due diligence.",
+          "page": "src/content/pages/tools/evidence-room.mdx"
+        },
+        {
+          "text": "Filter by stage, tick items off, then print the list or copy it as Markdown.",
+          "page": "src/content/pages/tools/evidence-room.mdx"
+        },
+        {
+          "text": "Weekly investor update template",
+          "page": "src/content/library/weekly-investor-update-template.md"
+        },
+        {
+          "text": "A short, repeatable update format that reports progress, decisions, risks and requests in plain language, without inflating results.",
+          "page": "src/content/library/weekly-investor-update-template.md"
+        },
+        {
+          "text": "SAFEs in plain language",
+          "page": "src/content/guides/safe-explained.mdx"
+        },
+        {
+          "text": "A plain-language explanation of the SAFE, a short contract for future shares: how it works, the terms to know and questions for your own lawyer.",
+          "page": "src/content/guides/safe-explained.mdx"
+        },
+        {
+          "text": "Customer interview guide",
+          "page": "src/content/library/customer-interview-guide.md"
+        },
+        {
+          "text": "A script and note sheet for discovery interviews that surface real behavior and past events instead of opinions about your idea.",
+          "page": "src/content/library/customer-interview-guide.md"
+        },
+        {
+          "text": "Security baseline checklist",
+          "page": "src/content/library/security-baseline-checklist.md"
+        },
+        {
+          "text": "A first-year security checklist for early-stage SaaS teams covering access, code, data, vendors and response, written as questions about your own product.",
+          "page": "src/content/library/security-baseline-checklist.md"
+        },
+        {
+          "text": "Founder playbooks",
+          "page": "src/content/pages/playbooks/index.mdx"
+        },
+        {
+          "text": "Five step-by-step playbooks for building a SaaS company, from validating the problem to repeatable growth, each with artifacts and common mistakes.",
+          "page": "src/content/pages/playbooks/index.mdx"
+        },
+        {
+          "text": "Design the product",
+          "page": "src/content/playbooks/design-the-product.mdx"
+        },
+        {
+          "text": "Turn a validated problem into a version-one design: the shortest path to value, a written cut line and the decisions you will defer.",
+          "page": "src/content/playbooks/design-the-product.mdx"
+        },
+        {
+          "text": "Build repeatable growth",
+          "page": "src/content/playbooks/build-repeatable-growth.mdx"
+        },
+        {
+          "text": "Define your metrics in writing, run one channel long enough to learn, fix leaks before adding traffic and turn the results into a monthly review.",
+          "page": "src/content/playbooks/build-repeatable-growth.mdx"
+        },
+        {
+          "text": "The seed data room",
+          "page": "src/content/guides/data-room.mdx"
+        },
+        {
+          "text": "What a seed-stage data room is, the folders it usually holds, and how to keep it organized and current without exposing anything it should not.",
+          "page": "src/content/guides/data-room.mdx"
+        },
+        {
+          "text": "Investor updates",
+          "page": "src/content/guides/investor-updates.mdx"
+        },
+        {
+          "text": "How to write a short, consistent progress update for investors, advisers and supporters, with a fixed structure and honest numbers.",
+          "page": "src/content/guides/investor-updates.mdx"
+        },
+        {
+          "text": "Founder tools",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Three tools for an early SaaS founder: sketch a team, work out your monthly metrics, and build an evidence checklist.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Each one runs in your browser.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Four designed reports with methodology, limitations and sources: security, accessibility, staffing models and SaaS metrics, for founders building software.",
+          "page": "src/content/pages/research/index.md"
+        },
+        {
+          "text": "Security baseline for year one",
+          "page": "src/content/research/saas-security-baseline-year-one.md"
+        },
+        {
+          "text": "What a first-year SaaS security baseline can draw from OWASP ASVS, NIST SSDF and the AICPA Trust Services Criteria, and how to sequence the work.",
+          "page": "src/content/research/saas-security-baseline-year-one.md"
+        },
+        {
+          "text": "Accessibility at launch",
+          "page": "src/content/research/accessibility-as-a-launch-requirement.md"
+        },
+        {
+          "text": "A source-based reading of WCAG 2.2, Section508.gov and the DOJ ADA Title II web rule, with a labelled analysis of why accessibility belongs in launch scope.",
+          "page": "src/content/research/accessibility-as-a-launch-requirement.md"
+        },
+        {
+          "text": "Team, agency or freelancers",
+          "page": "src/content/research/dedicated-team-agency-or-freelancers.md"
+        },
+        {
+          "text": "A criteria-based decision framework for choosing between a dedicated team, an agency and freelancers, with the legal basics that apply to each.",
+          "page": "src/content/research/dedicated-team-agency-or-freelancers.md"
+        },
+        {
+          "text": "SaaS metrics definitions",
+          "page": "src/content/research/early-stage-saas-metrics-definitions.md"
+        },
+        {
+          "text": "Definitions and a formula appendix for MRR, ARR, churn, NRR, CAC and LTV, drawn from public references, with a reporting discipline and no benchmarks.",
+          "page": "src/content/research/early-stage-saas-metrics-definitions.md"
+        },
+        {
+          "text": "Insights",
+          "page": "src/content/pages/insights/index.mdx"
+        },
+        {
+          "text": "Practical, sourced articles on validating, building, growing and preparing a SaaS company, written by World Enterprise Editorial.",
+          "page": "src/content/pages/insights/index.mdx"
+        },
+        {
+          "text": "Who WE builds with",
+          "page": "src/content/pages/founders/index.mdx"
+        },
+        {
+          "text": "What WE asks of a founder, what a founder keeps doing, and the evidence WE looks for before scoping a dedicated team.",
+          "page": "src/content/pages/founders/index.mdx"
+        },
+        {
+          "text": "Criteria, not stories.",
+          "page": "src/content/pages/founders/index.mdx"
+        },
+        {
+          "text": "Search",
+          "page": "src/pages/search/index.astro"
+        },
+        {
+          "text": "Search every public page of World Enterprise Incubator: program, services, playbooks, templates, research and reference.",
+          "page": "src/pages/search/index.astro"
         }
       ]
     }
