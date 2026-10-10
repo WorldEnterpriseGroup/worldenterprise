@@ -1,0 +1,388 @@
+{
+  "wp": "WP-68",
+  "note": "Fetches are the primary government, regulator, standards-body and legal-information pages cited by the nine team-desk articles, all fetched on 2026-10-10 with WebFetch (one URL per call). Each quote is a contiguous fragment WebFetch returned inside quotation marks for that page. Fetches that returned 403 or 404 (the California Labor Code page, one EEOC guidance URL, two OPM pages, one ICO page, one DIR page, one GOV.UK page) were dropped with the sentences they would have supported. The topic-team desk page is a sentences-only document.",
+  "fetches": [
+    {
+      "id": "irs-contractor-or-employee",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee",
+      "title": "Independent contractor (self-employed) or employee?",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T11:32:56Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-employment-status",
+      "url": "https://www.gov.uk/employment-status",
+      "title": "Employment status",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:33:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dol-fact-sheet-13",
+      "url": "https://www.dol.gov/agencies/whd/fact-sheets/13-flsa-employment-relationship",
+      "title": "Fact Sheet #13: Employment relationship under the Fair Labor Standards Act (FLSA)",
+      "publisher": "U.S. Department of Labor, Wage and Hour Division",
+      "fetchedAt": "2026-10-10T11:33:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-self-employed-contractor",
+      "url": "https://www.gov.uk/employment-status/selfemployed-contractor",
+      "title": "Employment status, self-employed and contractor",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:34:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-employee",
+      "url": "https://www.gov.uk/employment-status/employee",
+      "title": "Employment status, employee",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:34:15Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dir-ca-contractor-faq",
+      "url": "https://www.dir.ca.gov/dlse/faq_independentcontractor.htm",
+      "title": "Independent contractor frequently asked questions",
+      "publisher": "California Department of Industrial Relations",
+      "fetchedAt": "2026-10-10T11:35:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/content/insights/team/contractors-and-employees-the-classification-tests.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "a worker may be an employee under the Fair Labor Standards Act regardless of the title or label they are given",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test, titles and labels",
+          "quote": "a worker may be an employee under the FLSA regardless of the title or label they are given."
+        },
+        {
+          "id": "A2",
+          "sentence": "what the worker is called is not relevant",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test, titles and labels",
+          "quote": "What the worker is called is not relevant"
+        },
+        {
+          "id": "A3",
+          "sentence": "the goal of its test is to decide if the worker is economically dependent on the employer for work",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test",
+          "quote": "The goal of the test is to decide if the worker is economically dependent on the employer for work"
+        },
+        {
+          "id": "A4",
+          "sentence": "does the company control or have the right to control what the worker does and how the worker does the job?",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Behavioral",
+          "quote": "Does the company control or have the right to control what the worker does and how the worker does his or her job?"
+        },
+        {
+          "id": "A5",
+          "sentence": "are the business aspects of the worker's job controlled by the payer?",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Financial",
+          "quote": "Are the business aspects of the worker’s job controlled by the payer?"
+        },
+        {
+          "id": "A6",
+          "sentence": "are there written contracts or employee-type benefits such as a pension plan, insurance or vacation pay?",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Type of relationship",
+          "quote": "Are there written contracts or employee type benefits (that is, pension plan, insurance, vacation pay, etc.)?"
+        },
+        {
+          "id": "A7",
+          "sentence": "the keys are to look at the entire relationship and to consider the extent of the right to direct and control the worker",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Summary of the three categories",
+          "quote": "The keys are to look at the entire relationship and consider the extent of the right to direct and control the worker."
+        },
+        {
+          "id": "A8",
+          "sentence": "if it is still unclear whether a worker is an employee or an independent contractor",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Form SS-8",
+          "quote": "If it is still unclear whether a worker is an employee or an independent contractor"
+        },
+        {
+          "id": "A9",
+          "sentence": "a business may consider submitting Form SS-8 to the IRS",
+          "kind": "regulation",
+          "sourceId": "irs-contractor-or-employee",
+          "locator": "Form SS-8",
+          "quote": "you may consider submitting a Form SS-8"
+        },
+        {
+          "id": "A10",
+          "sentence": "the economic reality test uses multiple factors to see if an employment relationship exists",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test",
+          "quote": "The economic reality test uses multiple factors to see if an employment relationship exists under the FLSA"
+        },
+        {
+          "id": "A11",
+          "sentence": "Opportunity for profit or loss",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 1",
+          "quote": "Opportunity for profit or loss depending on managerial skill,"
+        },
+        {
+          "id": "A12",
+          "sentence": "What has the worker invested, compared with the investment of the business that uses the work?",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 2",
+          "quote": "Investments by the worker and the employer,"
+        },
+        {
+          "id": "A13",
+          "sentence": "Is the relationship open-ended or tied to a defined project?",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 3",
+          "quote": "Permanence of the work relationship,"
+        },
+        {
+          "id": "A14",
+          "sentence": "Nature and degree of control",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 4",
+          "quote": "Nature and degree of control,"
+        },
+        {
+          "id": "A15",
+          "sentence": "Is the work part of what the business itself does?",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 5",
+          "quote": "Whether the work performed is integral to the employer's business, and"
+        },
+        {
+          "id": "A16",
+          "sentence": "Skill and initiative",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Factors, 6",
+          "quote": "Skill and initiative."
+        },
+        {
+          "id": "A17",
+          "sentence": "no single factor determines a worker's status",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test",
+          "quote": "No single factor determines a worker’s status"
+        },
+        {
+          "id": "A18",
+          "sentence": "the totality of the circumstances of the working relationship should be considered",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Economic reality test",
+          "quote": "Instead, the totality of the circumstances of the working relationship should be considered."
+        },
+        {
+          "id": "A19",
+          "sentence": "revised in March 2024",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Revision note",
+          "quote": "Revised March 2024"
+        },
+        {
+          "id": "A20",
+          "sentence": "it calls the legality of the 2024 rule the subject of current litigation",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Status note",
+          "quote": "the legality of which is the subject of current litigation."
+        },
+        {
+          "id": "A21",
+          "sentence": "Field Assistance Bulletin 2025-1, dated May 1, 2025",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Status note",
+          "quote": "Please see Field Assistance Bulletin 2025-1 (May 1, 2025) regarding the Wage and Hour Division’s"
+        },
+        {
+          "id": "A22",
+          "sentence": "on February 26, 2026 the Department announced a notice of proposed rulemaking",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Status note",
+          "quote": "On February 26, 2026, the U.S. Department of Labor (Department) announced a Notice of Proposed Rulemaking (NPRM)"
+        },
+        {
+          "id": "A23",
+          "sentence": "with comments due by April 28, 2026",
+          "kind": "regulation",
+          "sourceId": "dol-fact-sheet-13",
+          "locator": "Status note",
+          "quote": "by the end of the comment period at 11:59 ET on April 28, 2026."
+        },
+        {
+          "id": "A24",
+          "sentence": "a worker is considered an employee and not an independent contractor",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test",
+          "quote": "Under the ABC test, a worker is considered an employee and not an independent contractor,"
+        },
+        {
+          "id": "A25",
+          "sentence": "unless the hiring entity satisfies all three of its conditions",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test",
+          "quote": "unless the hiring entity satisfies all three of the following conditions:"
+        },
+        {
+          "id": "A26",
+          "sentence": "the worker is free from the control and direction of the hiring entity in connection with the performance of the work",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test, condition A",
+          "quote": "The worker is free from the control and direction of the hiring entity in connection with the performance of the work"
+        },
+        {
+          "id": "A27",
+          "sentence": "the worker performs work that is outside the usual course of the hiring entity's business",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test, condition B",
+          "quote": "performs work that is outside the usual course of the hiring entity's business"
+        },
+        {
+          "id": "A28",
+          "sentence": "the worker is customarily engaged in an independently established trade, occupation or business",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test, condition C",
+          "quote": "is customarily engaged in an independently established trade, occupation, or business"
+        },
+        {
+          "id": "A29",
+          "sentence": "it starts from the position that the worker is an employee",
+          "kind": "regulation",
+          "sourceId": "dir-ca-contractor-faq",
+          "locator": "ABC test",
+          "quote": "Under the ABC test, a worker is considered an employee and not an independent contractor,"
+        },
+        {
+          "id": "A30",
+          "sentence": "the main types of employment status as worker, employee, and self-employed and contractor",
+          "kind": "regulation",
+          "sourceId": "govuk-employment-status",
+          "locator": "Types of employment status",
+          "quote": "The main types of employment status are:"
+        },
+        {
+          "id": "A31",
+          "sentence": "an employee as someone who works under an employment contract",
+          "kind": "regulation",
+          "sourceId": "govuk-employee",
+          "locator": "Employee",
+          "quote": "An employee is someone who works under an employment contract."
+        },
+        {
+          "id": "A32",
+          "sentence": "workers are entitled to most types of statutory pay, but only employees get statutory pay and leave",
+          "kind": "regulation",
+          "sourceId": "govuk-employee",
+          "locator": "Employee",
+          "quote": "For example, workers are entitled to most types of statutory pay, but only employees get statutory pay and leave."
+        },
+        {
+          "id": "A33",
+          "sentence": "a person is self-employed if they run their business for themselves and take responsibility for its success or failure",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed",
+          "quote": "A person is self-employed if they run their business for themselves and take responsibility for its success or failure."
+        },
+        {
+          "id": "A34",
+          "sentence": "Someone is probably self-employed if they are self-employed for tax purposes and most of the following are true",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "Someone is probably self-employed if they’re self-employed for tax purposes and most of the following are true:"
+        },
+        {
+          "id": "A35",
+          "sentence": "they put in bids or give quotes to get work",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they put in bids or give quotes to get work"
+        },
+        {
+          "id": "A36",
+          "sentence": "they are not under direct supervision when working",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they’re not under direct supervision when working"
+        },
+        {
+          "id": "A37",
+          "sentence": "they submit invoices",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they submit invoices for the work they’ve done"
+        },
+        {
+          "id": "A38",
+          "sentence": "they are responsible for their own National Insurance and tax",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they’re responsible for paying their own National Insurance and tax"
+        },
+        {
+          "id": "A39",
+          "sentence": "they do not get holiday or sick pay when they are not working",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed indicators",
+          "quote": "they do not get holiday or sick pay when they’re not working"
+        },
+        {
+          "id": "A40",
+          "sentence": "courts and tribunals can make final decisions on employment status",
+          "kind": "regulation",
+          "sourceId": "govuk-employment-status",
+          "locator": "Decisions",
+          "quote": "Courts and tribunals can make final decisions on employment status."
+        }
+      ]
+    }
+  ],
+  "markers": []
+}
