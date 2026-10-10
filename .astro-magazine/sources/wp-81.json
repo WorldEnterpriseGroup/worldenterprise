@@ -49,7 +49,7 @@
     {
       "id": "cornell-15-usc-7704",
       "url": "https://www.law.cornell.edu/uscode/text/15/7704",
-      "title": "15 U.S. Code 7704 - Other provisions",
+      "title": "15 U.S. Code 7704",
       "publisher": "Legal Information Institute, Cornell Law School",
       "fetchedAt": "2026-10-10T07:12:10Z",
       "status": 200,
@@ -67,7 +67,7 @@
     {
       "id": "cornell-18-usc-2511",
       "url": "https://www.law.cornell.edu/uscode/text/18/2511",
-      "title": "18 U.S. Code 2511 - Interception and disclosure of wire, oral, or electronic communications prohibited",
+      "title": "18 U.S. Code 2511",
       "publisher": "Legal Information Institute, Cornell Law School",
       "fetchedAt": "2026-10-10T07:20:10Z",
       "status": 200,
@@ -106,6 +106,78 @@
       "title": "15 U.S. Code 8403 - Negative option marketing on the Internet",
       "publisher": "Legal Information Institute, Cornell Law School",
       "fetchedAt": "2026-10-10T07:30:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "wcag22-page-titled",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/page-titled.html",
+      "title": "Understanding Success Criterion 2.4.2: Page Titled",
+      "publisher": "W3C Web Accessibility Initiative",
+      "fetchedAt": "2026-10-10T07:35:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "wcag22-contrast-minimum",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+      "title": "Understanding Success Criterion 1.4.3: Contrast (Minimum)",
+      "publisher": "W3C Web Accessibility Initiative",
+      "fetchedAt": "2026-10-10T07:35:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "wcag22-link-purpose",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html",
+      "title": "Understanding Success Criterion 2.4.4: Link Purpose (In Context)",
+      "publisher": "W3C Web Accessibility Initiative",
+      "fetchedAt": "2026-10-10T07:35:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cornell-16-cfr-255-1",
+      "url": "https://www.law.cornell.edu/cfr/text/16/255.1",
+      "title": "16 CFR 255.1",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T07:40:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cornell-16-cfr-255-2",
+      "url": "https://www.law.cornell.edu/cfr/text/16/255.2",
+      "title": "16 CFR 255.2",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T07:40:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cornell-16-cfr-255-5",
+      "url": "https://www.law.cornell.edu/cfr/text/16/255.5",
+      "title": "16 CFR 255.5",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T07:40:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-endorsement-guides-qa",
+      "url": "https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking",
+      "title": "FTC's Endorsement Guides: What People Are Asking",
+      "publisher": "U.S. Federal Trade Commission",
+      "fetchedAt": "2026-10-10T07:41:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cornell-16-cfr-465-2",
+      "url": "https://www.law.cornell.edu/cfr/text/16/465.2",
+      "title": "16 CFR 465.2",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T07:41:30Z",
       "status": 200,
       "tool": "WebFetch"
     },
@@ -587,6 +659,232 @@
           "sourceId": "cornell-15-usc-8403",
           "locator": "8403, condition 3",
           "quote": "provides simple mechanisms for a consumer to stop recurring charges from being placed on the consumer's credit card"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/gtm/writing-a-landing-page-that-says-what-the-product-does.md",
+      "claims": [
+        {
+          "id": "W1",
+          "sentence": "Digital.gov states the first rule of plain language.",
+          "kind": "paraphrase",
+          "sourceId": "digital-gov-plain",
+          "locator": "Overview, Choose your words carefully",
+          "quote": "The first rule of plain language is: write for your audience."
+        },
+        {
+          "id": "W2",
+          "sentence": "Digital.gov recommends the active voice.",
+          "kind": "paraphrase",
+          "sourceId": "digital-gov-plain",
+          "locator": "Overview, Follow plain language guidelines",
+          "quote": "Use the active voice. Active voice helps the message stay clear and easy-to-read."
+        },
+        {
+          "id": "W3",
+          "sentence": "Digital.gov recommends lists.",
+          "kind": "paraphrase",
+          "sourceId": "digital-gov-plain",
+          "locator": "Overview, Follow plain language guidelines",
+          "quote": "Use lists. They can help you convey detailed information quickly without overloading your readers."
+        },
+        {
+          "id": "W4",
+          "sentence": "The WAI tip on page titles.",
+          "kind": "paraphrase",
+          "sourceId": "w3c-wai-writing",
+          "locator": "Tip: page titles",
+          "quote": "For each web page, provide a short title that describes the page content and distinguishes it from other pages."
+        },
+        {
+          "id": "W5",
+          "sentence": "The WAI tip on headings.",
+          "kind": "paraphrase",
+          "sourceId": "w3c-wai-writing",
+          "locator": "Tip: headings",
+          "quote": "Use short headings to group related paragraphs and clearly describe the sections."
+        },
+        {
+          "id": "W6",
+          "sentence": "The WAI tip on link text.",
+          "kind": "paraphrase",
+          "sourceId": "w3c-wai-writing",
+          "locator": "Tip: link text",
+          "quote": "Write link text so that it describes the content of the link target."
+        },
+        {
+          "id": "W7",
+          "sentence": "The WAI tip on image text alternatives.",
+          "kind": "paraphrase",
+          "sourceId": "w3c-wai-writing",
+          "locator": "Tip: text alternatives",
+          "quote": "For every image, write alternative text that provides the information or function of the image."
+        },
+        {
+          "id": "W8",
+          "sentence": "The WAI tip on instructions and error messages.",
+          "kind": "paraphrase",
+          "sourceId": "w3c-wai-writing",
+          "locator": "Tip: clear instructions",
+          "quote": "Ensure that instructions, guidance, and error messages are clear, easy to understand, and avoid unnecessarily technical language."
+        },
+        {
+          "id": "W9",
+          "sentence": "The WAI tip on clear and concise content.",
+          "kind": "paraphrase",
+          "sourceId": "w3c-wai-writing",
+          "locator": "Tip: clear and concise",
+          "quote": "Use simple language and formatting, as appropriate for the context."
+        },
+        {
+          "id": "W10",
+          "sentence": "WCAG 2.4.2 requires titles that describe topic or purpose.",
+          "kind": "regulation",
+          "sourceId": "wcag22-page-titled",
+          "locator": "Success criterion 2.4.2",
+          "quote": "Web pages have titles that describe topic or purpose."
+        },
+        {
+          "id": "W11",
+          "sentence": "The Understanding page explains why titles help in lists of results.",
+          "kind": "paraphrase",
+          "sourceId": "wcag22-page-titled",
+          "locator": "Intent",
+          "quote": "When titles appear in site maps or lists of search results, users can more quickly identify the content they need."
+        },
+        {
+          "id": "W12",
+          "sentence": "WCAG 2.4.4 concerns link purpose determined from link text.",
+          "kind": "regulation",
+          "sourceId": "wcag22-link-purpose",
+          "locator": "Success criterion 2.4.4",
+          "quote": "The purpose of each link can be determined from the link text alone"
+        },
+        {
+          "id": "W13",
+          "sentence": "WCAG 1.4.3 sets a contrast ratio of at least 4.5:1 for text.",
+          "kind": "statistic",
+          "sourceId": "wcag22-contrast-minimum",
+          "locator": "Success criterion 1.4.3",
+          "quote": "The visual presentation of text and images of text has a contrast ratio of at least 4.5:1, except for the following:"
+        },
+        {
+          "id": "W14",
+          "sentence": "WCAG 1.4.3 sets a contrast ratio of at least 3:1 for large-scale text.",
+          "kind": "statistic",
+          "sourceId": "wcag22-contrast-minimum",
+          "locator": "Success criterion 1.4.3",
+          "quote": "Large-scale text and images of large-scale text have a contrast ratio of at least 3:1;"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/gtm/customer-references-and-case-studies-without-breaking-ftc-rules.md",
+      "claims": [
+        {
+          "id": "E1",
+          "sentence": "The FTC says the Guides do not have the force of law.",
+          "kind": "regulation",
+          "sourceId": "ftc-endorsement-guides-qa",
+          "locator": "Q&A, force of law",
+          "quote": "The Guides themselves don’t have the force of law."
+        },
+        {
+          "id": "E2",
+          "sentence": "The FTC says practices inconsistent with the Guides may result in Section 5 actions.",
+          "kind": "regulation",
+          "sourceId": "ftc-endorsement-guides-qa",
+          "locator": "Q&A, force of law",
+          "quote": "practices inconsistent with the Guides may result in law enforcement actions alleging Section 5 violations."
+        },
+        {
+          "id": "E3",
+          "sentence": "Section 465.2(a) addresses a business that would write, create or sell a consumer review.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-465-2",
+          "locator": "465.2(a)",
+          "quote": "for a business to write, create, or sell a consumer review"
+        },
+        {
+          "id": "E4",
+          "sentence": "Endorsements must reflect the endorser's honest opinions or experience.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-1",
+          "locator": "255.1(a)",
+          "quote": "Endorsements must reflect the honest opinions, findings, beliefs, or experience of the endorser."
+        },
+        {
+          "id": "E5",
+          "sentence": "An endorsement may not be presented out of context or reworded to distort.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-1",
+          "locator": "255.1",
+          "quote": "may not be presented out of context or reworded so as to distort"
+        },
+        {
+          "id": "E6",
+          "sentence": "Advertisers are subject to liability for misleading or unsubstantiated statements made through endorsements.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-1",
+          "locator": "255.1(d)",
+          "quote": "Advertisers are subject to liability for misleading or unsubstantiated statements made through endorsements."
+        },
+        {
+          "id": "E7",
+          "sentence": "A consumer endorsement may be read as representing what consumers will generally achieve.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-2",
+          "locator": "255.2(b)",
+          "quote": "representative of what consumers will generally achieve"
+        },
+        {
+          "id": "E8",
+          "sentence": "Without substantiation the ad should disclose generally expected performance.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-2",
+          "locator": "255.2(b)",
+          "quote": "clearly and conspicuously disclose the generally expected performance in the depicted circumstances"
+        },
+        {
+          "id": "E9",
+          "sentence": "A connection between endorser and seller must be disclosed when it might affect weight or credibility.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-5",
+          "locator": "255.5(a)",
+          "quote": "When there exists a connection between the endorser and the seller of the advertised product"
+        },
+        {
+          "id": "E10",
+          "sentence": "The connection must be disclosed clearly and conspicuously.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-5",
+          "locator": "255.5(a)",
+          "quote": "such connection must be disclosed clearly and conspicuously"
+        },
+        {
+          "id": "E11",
+          "sentence": "The connection is one that might materially affect weight or credibility.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-5",
+          "locator": "255.5(a)",
+          "quote": "that might materially affect the weight or credibility of the endorsement"
+        },
+        {
+          "id": "E12",
+          "sentence": "Material connections can include a business, family or personal relationship.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-5",
+          "locator": "255.5(a)",
+          "quote": "Material connections can include a business, family, or personal relationship."
+        },
+        {
+          "id": "E13",
+          "sentence": "Material connections can include monetary payment.",
+          "kind": "regulation",
+          "sourceId": "cornell-16-cfr-255-5",
+          "locator": "255.5(a)",
+          "quote": "monetary payment"
         }
       ]
     }

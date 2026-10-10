@@ -13,7 +13,7 @@ sources:
     url: https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business
     accessed: 2026-10-10
   - id: cornell-15-usc-7704
-    title: "15 U.S. Code 7704 - Other provisions"
+    title: "15 U.S. Code 7704"
     publisher: Legal Information Institute, Cornell Law School
     url: https://www.law.cornell.edu/uscode/text/15/7704
     accessed: 2026-10-10

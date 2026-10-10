@@ -9,7 +9,7 @@ segments: [technical-founders, solo-founders]
 related: [trials-demos-and-self-serve-how-a-customer-first-meets-the-product, pricing-a-first-saas-value-packaging-and-the-questions-to-ask]
 sources:
   - id: cornell-18-usc-2511
-    title: "18 U.S. Code 2511 - Interception and disclosure of wire, oral, or electronic communications prohibited"
+    title: "18 U.S. Code 2511"
     publisher: Legal Information Institute, Cornell Law School
     url: https://www.law.cornell.edu/uscode/text/18/2511
     accessed: 2026-10-10
