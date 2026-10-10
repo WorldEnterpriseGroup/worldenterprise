@@ -1,6 +1,8 @@
 #!/usr/bin/env node
-// Runs Lighthouse (mobile, simulated throttling) on up to eight representative routes of the built site and checks the
-// budgets in lighthouserc.json (SAGE-PLAN 6.9). The site is served by scripts/lib/serve.mjs with its production origin
+// Runs Lighthouse (mobile, simulated throttling) on the representative routes of the built site and checks the budgets in
+// lighthouserc.json (SAGE-PLAN 6.9). Each route is judged on the median of up to three runs, taken in rounds over all routes: the
+// timings move with the CPU the shared runner happens to give the job, and one stalled run is not a regression. The budgets are
+// not loosened. The site is served by scripts/lib/serve.mjs with its production origin
 // rewritten to the local one so the canonical URL is self-referential. Chromium comes from Playwright.
 // Usage: node scripts/run-lighthouse.mjs [--dist dist] [--out reports/lighthouse] [--config lighthouserc.json]
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -14,6 +16,15 @@ const CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
 /** Picks up to `max` candidate routes that exist in the build, keeping the configured order. */
 export function pickRoutes(candidates, built, max) {
   return candidates.filter((c) => built.has(c)).slice(0, max);
+}
+
+/**
+ * The routes to measure and the ones left out, so the log can say why. `missing` are candidates the build does not have (a package
+ * whose pages have not merged yet): skipped, not a failure. `overflow` are built candidates past `max`, which are not measured.
+ */
+export function planRoutes(candidates, built, max) {
+  const present = candidates.filter((c) => built.has(c));
+  return { routes: present.slice(0, max), missing: candidates.filter((c) => !built.has(c)), overflow: present.slice(max) };
 }
 
 /** Reduces a Lighthouse result to the numbers the budgets use. `lhr` is the Lighthouse report object. */
@@ -111,28 +122,124 @@ export function layoutShifts(traceEvents) {
     }));
 }
 
-/** Compares one summary with the budgets. Returns a list of human-readable failures (empty when within budget). */
-export function evaluate(summary, config) {
+/**
+ * Compares one summary with the budgets. Returns one entry per breach: `id` names the budget, `message` is the human-readable line, and
+ * `sampled` says whether the number varies from run to run (scores and timings) or is fixed by the build (third-party requests, JavaScript bytes).
+ */
+export function checkBudgets(summary, config) {
   const failures = [];
   for (const [category, min] of Object.entries(config.scores)) {
     const score = summary.scores[category];
-    if (score === null || score < min) failures.push(`${category} score ${score === null ? 'missing' : Math.round(score * 100)} is below ${Math.round(min * 100)}`);
+    if (score === null || score < min) failures.push({ id: category, sampled: true, message: `${category} score ${score === null ? 'missing' : Math.round(score * 100)} is below ${Math.round(min * 100)}` });
   }
-  if (summary.lcpMs === null || summary.lcpMs >= config.metrics.lcpMs) failures.push(`LCP ${summary.lcpMs === null ? 'missing' : `${Math.round(summary.lcpMs)} ms`} is not under ${config.metrics.lcpMs} ms`);
-  if (summary.cls === null || summary.cls >= config.metrics.cls) failures.push(`CLS ${summary.cls ?? 'missing'} is not under ${config.metrics.cls}`);
-  if (summary.tbtMs === null || summary.tbtMs >= config.metrics.tbtMs) failures.push(`TBT ${summary.tbtMs === null ? 'missing' : `${Math.round(summary.tbtMs)} ms`} is not under ${config.metrics.tbtMs} ms`);
-  if (summary.thirdParty.length > 0) failures.push(`third-party requests: ${summary.thirdParty.slice(0, 3).join(', ')}`);
+  if (summary.lcpMs === null || summary.lcpMs >= config.metrics.lcpMs) failures.push({ id: 'lcp', sampled: true, message: `LCP ${summary.lcpMs === null ? 'missing' : `${Math.round(summary.lcpMs)} ms`} is not under ${config.metrics.lcpMs} ms` });
+  if (summary.cls === null || summary.cls >= config.metrics.cls) failures.push({ id: 'cls', sampled: true, message: `CLS ${summary.cls ?? 'missing'} is not under ${config.metrics.cls}` });
+  if (summary.tbtMs === null || summary.tbtMs >= config.metrics.tbtMs) failures.push({ id: 'tbt', sampled: true, message: `TBT ${summary.tbtMs === null ? 'missing' : `${Math.round(summary.tbtMs)} ms`} is not under ${config.metrics.tbtMs} ms` });
+  if (summary.thirdParty.length > 0) failures.push({ id: 'third-party', sampled: false, message: `third-party requests: ${summary.thirdParty.slice(0, 3).join(', ')}` });
   const exempt = config.javascript.exemptPrefixes.some((p) => summary.route.startsWith(p));
-  if (!exempt && summary.scriptBytes > config.javascript.maxGzipBytes) failures.push(`JavaScript transfer ${summary.scriptBytes} bytes exceeds ${config.javascript.maxGzipBytes}`);
+  if (!exempt && summary.scriptBytes > config.javascript.maxGzipBytes) failures.push({ id: 'javascript', sampled: false, message: `JavaScript transfer ${summary.scriptBytes} bytes exceeds ${config.javascript.maxGzipBytes}` });
   return failures;
+}
+
+/** Compares one summary with the budgets. Returns a list of human-readable failures (empty when within budget). */
+export function evaluate(summary, config) {
+  return checkBudgets(summary, config).map((f) => f.message);
+}
+
+/**
+ * The median of a list of numbers, or null when too many are missing to say. A missing value (null) is a run that produced no number;
+ * it is a breach in `checkBudgets`, so it counts against the route instead of being skipped: when half or more of the values are missing
+ * the median is missing too.
+ */
+export function median(values) {
+  const present = values.filter((v) => typeof v === 'number' && Number.isFinite(v)).sort((a, b) => a - b);
+  if (present.length === 0 || values.length - present.length >= Math.ceil(values.length / 2)) return null;
+  const mid = Math.floor(present.length / 2);
+  return present.length % 2 === 1 ? present[mid] : (present[mid - 1] + present[mid]) / 2;
+}
+
+/** The run whose total blocking time is the median (the lower middle one for an even count), the run that reads as typical. */
+export function typicalRun(runs) {
+  if (runs.length === 0) throw new Error('typicalRun needs at least one run');
+  const ordered = [...runs].sort((a, b) => (a.tbtMs ?? Infinity) - (b.tbtMs ?? Infinity));
+  return ordered[Math.floor((ordered.length - 1) / 2)];
+}
+
+/**
+ * One summary for a route from several runs of it. Timings and scores are the median of the runs, so one run that lost the CPU to a
+ * neighbouring job moves nothing. Facts fixed by the build are not sampled: any third-party request in any run counts, and the
+ * script transfer is the largest seen. Fields the median does not cover (layout shifts, network profile) come from the run whose
+ * total blocking time is the median, the run that reads as typical.
+ */
+export function medianSummary(runs) {
+  return {
+    ...typicalRun(runs),
+    scores: Object.fromEntries(CATEGORIES.map((c) => [c, median(runs.map((r) => r.scores[c]))])),
+    lcpMs: median(runs.map((r) => r.lcpMs)),
+    cls: median(runs.map((r) => r.cls)),
+    tbtMs: median(runs.map((r) => r.tbtMs)),
+    scriptBytes: Math.max(...runs.map((r) => r.scriptBytes)),
+    thirdParty: [...new Set(runs.flatMap((r) => r.thirdParty))],
+  };
+}
+
+/**
+ * Whether the runs so far leave the verdict open. The route fails a sampled budget when most of `maxRuns` runs breach it, which is the
+ * median of `maxRuns` runs breaching it. Once the runs so far hold that many breaches, or that many passes, a further run cannot change
+ * the verdict for that budget, so a route that passes twice or fails twice stops at two runs and only a split pair earns the third.
+ */
+export function needsAnotherRun(runs, config, maxRuns) {
+  if (runs.length >= maxRuns) return false;
+  const majority = Math.floor(maxRuns / 2) + 1;
+  const breaches = new Map();
+  for (const run of runs) {
+    for (const f of checkBudgets(run, config)) if (f.sampled) breaches.set(f.id, (breaches.get(f.id) ?? 0) + 1);
+  }
+  const sampledIds = [...Object.keys(config.scores), 'lcp', 'cls', 'tbt'];
+  return sampledIds.some((id) => {
+    const failed = breaches.get(id) ?? 0;
+    return failed < majority && runs.length - failed < majority;
+  });
+}
+
+/**
+ * Runs every route up to `maxRuns` times, in rounds over all routes, and returns a Map of route to its run summaries. `runOnce(route)`
+ * measures a route once and returns its summary; `onRun(round, summary)` is told about each run as it finishes.
+ *
+ * Rounds, not all runs of one route back to back: a stall on the shared runner lasts tens of seconds, so back-to-back runs of one route
+ * catch the same stall, while runs a whole round apart almost never do. The first round measures every route, the second every route
+ * again, and a third run goes only to a route whose first two disagree (`needsAnotherRun`).
+ */
+export async function measureRoutes(routes, runOnce, config, maxRuns, onRun = () => {}) {
+  const measured = new Map(routes.map((route) => [route, []]));
+  let pending = routes;
+  for (let round = 1; pending.length > 0 && round <= maxRuns; round += 1) {
+    for (const route of pending) {
+      const summary = await runOnce(route);
+      measured.get(route).push(summary);
+      onRun(round, summary);
+    }
+    pending = pending.filter((route) => needsAnotherRun(measured.get(route), config, maxRuns));
+  }
+  return measured;
+}
+
+/** The verdict for a route: the median summary of its runs and the budgets that median breaches. */
+export function judge(runs, config) {
+  const summary = medianSummary(runs);
+  return { summary, failures: evaluate(summary, config) };
 }
 
 async function main() {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist', out: 'reports/lighthouse', config: 'lighthouserc.json' });
   const config = JSON.parse(readFileSync(args.config, 'utf8'));
   const built = builtRoutes(args.dist);
-  const routes = pickRoutes(config.candidates, built, config.maxRoutes);
+  const { routes, missing, overflow } = planRoutes(config.candidates, built, config.maxRoutes);
   if (routes.length === 0) throw new Error('None of the Lighthouse candidate routes exist in dist.');
+  // A candidate that is not in the build yet is skipped, not failed: a package's routes arrive with its own merge request. Say so.
+  if (missing.length > 0) console.log(`skipped, not in this build: ${missing.join(' ')}`);
+  if (overflow.length > 0) console.log(`not measured, over maxRoutes ${config.maxRoutes}: ${overflow.join(' ')}`);
+  console.log(`measuring ${routes.length} routes, up to ${config.runs ?? 3} runs each`);
   mkdirSync(args.out, { recursive: true });
 
   const { createStaticServer, listen } = await import('./lib/serve.mjs');
@@ -148,24 +255,40 @@ async function main() {
   const { default: lighthouse } = await import('lighthouse');
   const results = [];
   let failed = 0;
+  const maxRuns = config.runs ?? 3;
+  /** What the noise looked like, for the log: the blocking time of each run of a route, in the order they ran. */
+  const spread = (runs) => runs.map((r) => (r.tbtMs === null ? 'n/a' : Math.round(r.tbtMs))).join('/');
   try {
-    for (const route of routes) {
-      let summary = null;
-      let failures = [];
-      for (let attempt = 0; attempt <= (config.retries ?? 0); attempt += 1) {
+    const lhrOf = new Map();
+    const measured = await measureRoutes(
+      routes,
+      async (route) => {
         const run = await lighthouse(`${origin}${route}`, { port: debugPort, output: 'json', logLevel: 'error', onlyCategories: CATEGORIES, formFactor: config.formFactor });
         if (run === undefined) throw new Error(`Lighthouse returned no result for ${route}`);
-        summary = summarise(route, run.lhr, origin);
-        failures = evaluate(summary, config);
+        const summary = summarise(route, run.lhr, origin);
         const events = run.artifacts?.Trace?.traceEvents ?? run.artifacts?.traces?.defaultPass?.traceEvents ?? [];
         summary.shifts = layoutShifts(events);
         summary.traceEvents = events.length;
         summary.network = networkProfile(run.lhr);
-        writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), `${JSON.stringify(run.lhr)}\n`);
-        if (failures.length === 0) break;
-      }
-      results.push({ ...summary, failures });
-      const line = `${route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  a11y ${Math.round((summary.scores.accessibility ?? 0) * 100)}  bp ${Math.round((summary.scores['best-practices'] ?? 0) * 100)}  seo ${Math.round((summary.scores.seo ?? 0) * 100)}  LCP ${Math.round(summary.lcpMs ?? 0)}ms  CLS ${(summary.cls ?? 0).toFixed(3)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  JS ${summary.scriptBytes}B`;
+        summary.benchmarkIndex = run.lhr.environment?.benchmarkIndex ?? null;
+        lhrOf.set(summary, `${JSON.stringify(run.lhr)}\n`);
+        return summary;
+      },
+      config,
+      maxRuns,
+      (round, summary) => console.log(`run ${round}/${maxRuns}  ${summary.route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  benchmark ${summary.benchmarkIndex === null ? 'n/a' : Math.round(summary.benchmarkIndex)}`),
+    );
+
+    for (const route of routes) {
+      const runs = measured.get(route);
+      const { summary, failures } = judge(runs, config);
+      writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), lhrOf.get(typicalRun(runs)));
+      results.push({
+        ...summary,
+        runs: runs.map((r) => ({ tbtMs: r.tbtMs, lcpMs: r.lcpMs, cls: r.cls, performance: r.scores.performance, benchmarkIndex: r.benchmarkIndex, failures: evaluate(r, config) })),
+        failures,
+      });
+      const line = `${route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  a11y ${Math.round((summary.scores.accessibility ?? 0) * 100)}  bp ${Math.round((summary.scores['best-practices'] ?? 0) * 100)}  seo ${Math.round((summary.scores.seo ?? 0) * 100)}  LCP ${Math.round(summary.lcpMs ?? 0)}ms  CLS ${(summary.cls ?? 0).toFixed(3)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  JS ${summary.scriptBytes}B  (median of ${runs.length}, TBT ${spread(runs)})`;
       if (failures.length === 0) console.log(`ok    ${line}`);
       else {
         failed += 1;

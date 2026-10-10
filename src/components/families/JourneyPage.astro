@@ -28,12 +28,13 @@ interface Props {
 
 const { page, view, path, actions, ogSlot } = Astro.props;
 const { Content } = await render(page);
-const { title, description, eyebrow, updated, draft } = page.data;
+const { title, seoTitle, description, eyebrow, updated, draft } = page.data;
 const kicker = eyebrow ?? (view.current !== undefined ? stepEyebrow(view.current, view.steps.length) : EYEBROWS.journey);
 ---
 
 <MarketingLayout
   title={title}
+  seoTitle={seoTitle}
   description={description}
   path={path}
   lead={description}

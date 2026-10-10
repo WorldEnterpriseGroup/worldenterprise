@@ -34,6 +34,10 @@ for (const t of triggers) {
   panel.addEventListener('beforetoggle', (e) => {
     const next = (e as ToggleEvent).newState === 'open';
     if (next) placePanel(panel);
+    // A hover-intent timer that is still pending belongs to a panel the user has now opened or closed themselves. Left armed, it would
+    // reopen a panel that Escape, light dismiss or a click had just closed. beforetoggle runs synchronously with the change, which the
+    // toggle event (queued as a task) does not, so a timer due in between cannot slip through. Only a fresh pointerenter arms it again.
+    window.clearTimeout(hoverTimer);
     syncExpanded(t, next);
   });
   panel.addEventListener('toggle', (e) => {
@@ -75,7 +79,12 @@ for (const t of triggers) {
     if ((e as ToggleEvent).newState === 'closed') openedByHover = false;
   });
   t.addEventListener('click', () => {
+    window.clearTimeout(hoverTimer);
     openedByHover = false;
+  });
+  // Escape with nothing open dismisses nothing, so it fires no toggle; the pending timer is the thing to cancel.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') window.clearTimeout(hoverTimer);
   });
 
   // Keyboard users who Tab past the last link leave the panel; close it so it does not linger over the page.

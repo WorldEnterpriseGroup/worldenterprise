@@ -57,6 +57,7 @@ const PAGES = [
   'src/components/islands/we-calc/MetricsCalculator.astro',
   'src/components/islands/we-evidence-room/EvidenceRoom.astro',
   'src/components/tools/FormulaTable.astro',
+  'src/components/tools/registry.ts',
 ];
 
 const CONTENT = ['src/content/pages/tools/index.mdx', 'src/content/pages/tools/metrics-calculator.mdx', 'src/content/pages/tools/evidence-room.mdx'];

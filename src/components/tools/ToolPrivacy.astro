@@ -1,0 +1,29 @@
+---
+/** The note at the top of a founder tool: what stays on the page. The sentences come from copy.ts so the ledger maps them once. */
+interface Props {
+  /** The sentences, joined with a space. */
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<p class="tool-privacy">{text}</p>
+
+<style>
+  @layer pages {
+    .tool-privacy {
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--tint-blue);
+      border-inline-start: 4px solid var(--color-accent);
+      border-radius: var(--radius-sm);
+      font-family: var(--ff-sans);
+    }
+
+    @media (forced-colors: active) {
+      .tool-privacy {
+        border: 1px solid CanvasText;
+      }
+    }
+  }
+</style>
