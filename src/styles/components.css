@@ -134,10 +134,9 @@
     inline-size: clamp(11rem, 30vw, 16rem);
   }
 
-  /* From 1100px the header row holds the logo, eight items and Apply (the eighth, For you, appears once /briefs/ is live). The logo may
-     not shrink to make room (it was 117px at 1100, under the 160px brand minimum): it grows from 160px at 1100 to its full 256px at 1279,
-     and the nav gives instead: 16px type (the fluid size is 18px there) and a 4px gap between items, each of which keeps its own 8px of
-     side padding. At 18px type the row was 21px wider than the viewport at 1100px, which the old page frame clipped. */
+  /* From 1100px the header row holds the logo, seven items and Apply. The logo may not shrink to make room (it was 117px at 1100, under
+     the 160px brand minimum): it grows from 160px at 1100 to its full 256px at 1279, and the nav gives instead: 16px type (the fluid size
+     is 18px there) and items 4px closer. At 18px type the row was 21px wider than the viewport at 1100px, which the old page frame clipped. */
   @media (min-width: 1100px) {
     .site-header__logo {
       flex: 0 0 auto;
@@ -148,7 +147,7 @@
   /* The items inherit their size (font: inherit), so the size is set on the list. */
   @media (min-width: 1100px) and (max-width: 1279.98px) {
     .mega-nav__list {
-      gap: var(--sp-1);
+      gap: var(--sp-3);
       font-size: 1rem;
     }
   }

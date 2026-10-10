@@ -30,7 +30,7 @@ test('the logo cannot be squeezed by the flex row from 1100px, and the nav type 
   const css = stripComments(read('src/styles/components.css'));
   assert.match(css, /@media \(min-width: 1100px\) \{\s*\.site-header__logo \{\s*flex: 0 0 auto;/);
   // The items take their size from the list (`font: inherit`), so the step-down is set on the list, not on the items.
-  assert.match(css, /@media \(min-width: 1100px\) and \(max-width: 1279\.98px\) \{\s*\.mega-nav__list \{\s*gap: var\(--sp-1\);\s*font-size: 1rem;/);
+  assert.match(css, /@media \(min-width: 1100px\) and \(max-width: 1279\.98px\) \{\s*\.mega-nav__list \{\s*gap: var\(--sp-3\);\s*font-size: 1rem;/);
 });
 
 test('--apply-bar-h is defined once and drives the bar, the scroll padding and the footer', () => {
