@@ -1,0 +1,122 @@
+---
+title: "Acquiring a small software product instead of building one: what to check"
+seoTitle: Acquiring a small software product
+description: "A checklist of what to verify before buying a small software product: the ownership chain, accounts and data, customer contracts, tax reporting and filings."
+topic: pathways
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [non-technical-founders, solo-founders]
+related:
+  - acquisitions-acqui-hires-and-wind-downs-the-exits-to-recognize
+  - customers-as-capital-pilots-prepayment-and-design-partners
+sources:
+  - id: sba-buy
+    title: Buy an existing business or franchise
+    publisher: U.S. Small Business Administration
+    url: https://www.sba.gov/business-guide/plan-your-business/buy-existing-business-or-franchise
+    accessed: 2026-10-10
+  - id: irs-8594
+    title: About Form 8594, Asset Acquisition Statement Under Section 1060
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/forms-pubs/about-form-8594
+    accessed: 2026-10-10
+  - id: usc15-18a
+    title: "15 U.S. Code section 18a, Premerger notification and waiting period"
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/uscode/text/15/18a
+    accessed: 2026-10-10
+  - id: usc204
+    title: "17 U.S. Code section 204, Execution of transfers of copyright ownership"
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/uscode/text/17/204
+    accessed: 2026-10-10
+  - id: copyright-circ12
+    title: "Circular 12, Recordation of Transfers and Other Documents"
+    publisher: U.S. Copyright Office
+    url: https://www.copyright.gov/circs/circ12.pdf
+    accessed: 2026-10-10
+evidence: [sba-buy, irs-8594, usc15-18a, usc204, copyright-circ12]
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*As of 2026-10-10, this is general information, not legal or financial advice. Buying a business involves contract, tax and sometimes regulatory rules that depend on where the parties are and how the deal is structured. Ask a lawyer and a tax adviser licensed where you will close.*
+
+Some founders reach a company by buying one. A small software product already exists, has a codebase and perhaps some customers, and its owner wants to move on. For someone without a technical team, or for a solo founder who would rather start from something that works, the idea is attractive: skip the building and take over the running.
+
+The U.S. Small Business Administration makes the general point in its guidance on buying an existing business: when you buy an existing business, you typically get complete control over its direction, but with no set vision, infrastructure or outside guidance you could struggle to work out how to run it. That is the right balance to keep in mind. You are buying a set of facts, and the work is finding out which of them are true.
+
+This article is a list of what to check. It does not discuss price, because a number without the facts behind it says nothing, and it names no marketplace or broker.
+
+## What exactly is being sold
+
+Before you look at anything else, ask what the deal transfers. Three shapes are common.
+
+| Shape | What it is | What to ask counsel |
+|---|---|---|
+| Asset purchase | You buy listed assets: code, domain, accounts, contracts | Which assets, which liabilities stay behind, and how each transfer is documented |
+| Share or equity purchase | You buy the company that owns the product | What the company has already promised, owed or been sued for |
+| A mix, or a license | You get some assets, and a right to use others | Exactly what the license allows, for how long and whether it can be revoked |
+
+The shape matters because it decides what you inherit. In an asset purchase you generally choose what comes with the deal. In a purchase of the company, you take its history as well. Ask counsel which fits the facts and which risks follow.
+
+## Check one: does the seller own the code
+
+A product is worth very little if the seller cannot show it owns what it is selling.
+
+- **The author chain.** Who wrote the code: the seller, employees, freelancers, an agency, a former partner? For each, is there a signed document that assigns the work to the seller or the company? In United States law, a transfer of copyright ownership, other than by operation of law, is not valid unless an instrument of conveyance, or a note or memorandum of the transfer, is in writing and signed by the owner of the rights conveyed or the owner's duly authorized agent. So the question is not whether people think the seller owns it; it is whether a signed writing exists.
+- **The transfer to you.** The same rule applies when the seller assigns the code to you. Ask that the assignment be a signed document that names what is conveyed. The U.S. Copyright Office notes that recording a transfer of copyright ownership with the Office is voluntary, and that the law confers certain legal advantages to encourage recordation, including priority between conflicting transfers. Ask counsel whether recording makes sense for your deal and your location.
+- **Open source and third-party licenses.** List every dependency and its license. Some licenses attach conditions to distribution or to how the code may be combined with other code. Ask a technical reviewer to produce the list and counsel to read the conditions.
+- **Prior contracts.** Has the seller promised exclusivity, source code escrow or a license to anyone else?
+
+The <MaybeLink path="/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/">intellectual property and access diligence article</MaybeLink> covers the same questions from the seller's side and is a useful companion.
+
+## Check two: does the product work the way it is described
+
+You may not be able to judge code yourself, and that is normal. It does not remove the need to check.
+
+- **Get an independent technical review.** Someone who is not paid by the seller should look at the repository, the deployment, the test coverage, the cost of running it and how hard it is to change. Ask the reviewer what the review will cover, what it will not, and how long it will take.
+- **See it run.** Ask for access to a staging copy or a screen-share of the live system, and ask what happens when something breaks.
+- **Look for single points of failure.** If one person holds every password, knows every workaround and answers every message, the product depends on that person. Ask what the seller is willing to do after closing, for how long and on what terms, in writing.
+- **Review security.** A short pass against a baseline such as the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> will show whether basic protections exist.
+
+## Check three: are the customers and revenue real
+
+Revenue figures from the seller are claims, not facts. Ask for the records behind them.
+
+- **Payment records.** Request statements from the payment processor and the bank, not only a spreadsheet the seller built.
+- **Customer list and contracts.** Who are the customers, what did each agree to and for how long? Can the contracts be assigned to you, or do they need the customer's consent, or end when ownership changes?
+- **Refunds, disputes and credits.** Ask for the history, because it describes how customers behave better than a headline figure does.
+- **Customer data.** If the product holds personal data, ask what the seller promised customers about it and whether those promises survive a sale. Counsel can say whether the transfer needs notice or consent where the customers live.
+- **How customers were found.** Ask where each customer came from. A product whose customers all came through the seller's personal network is a different thing from one that has a repeatable channel.
+
+You will not find a universal figure here. No rule of thumb replaces the records, and this article gives no multiple of revenue or profit.
+
+## Check four: what comes with the accounts
+
+A software product is also a set of accounts. List each one and ask how it transfers: domain names, hosting, source repositories, app store listings, payment processor, email sending, analytics, customer support tools and any third-party interfaces whose keys are tied to the seller's identity. For each, ask whether the account can be transferred, whether the terms of service allow it, and what stops working during the move.
+
+## Check five: money, tax and filings
+
+A purchase of a business has paperwork beyond the contract.
+
+- **Tax reporting.** The IRS states that both the seller and the purchaser of a group of assets that makes up a trade or business must use Form 8594 to report such a sale when certain conditions apply. Ask a tax adviser whether your deal falls under it, and how the purchase price is to be allocated among the assets.
+- **Government filings.** U.S. law bars a person from acquiring, directly or indirectly, voting securities or assets of another person unless both file a notification and a waiting period expires, if conditions about commerce and the size of the acquisition are met. The statute sets those conditions. Ask counsel whether any filing applies, and in what jurisdictions.
+- **Financing.** If you plan to borrow, the lender will have its own requirements. Ask early.
+
+## A short sequence that keeps the work orderly
+
+1. Write down what you think you are buying and why, in one page.
+2. Ask for a list of assets, liabilities and contracts.
+3. Check ownership of the code and the right to transfer it.
+4. Commission the independent technical review.
+5. Verify revenue against payment records.
+6. Map every account and how it moves.
+7. Ask counsel and a tax adviser to review the deal documents.
+8. Agree a handover plan in writing.
+
+Compare this path with building: the article on <MaybeLink path="/insights/build-versus-buy-for-auth-billing-and-email/">building versus buying common components</MaybeLink> sets out how to think about the same trade at the component level.
+
+## What this article cannot tell you
+
+It cannot tell you whether a particular product is worth buying, what to pay, or whether a deal will close. The five sources are an SBA guidance page, an IRS page on one tax form, one federal antitrust statute, one provision of the U.S. Copyright Act and a Copyright Office circular; they cover United States rules only, and they do not address state business law, contract law, trademark, patents, privacy law, export rules or the rules in other countries. The article names no valuation method and no multiple, and it does not describe any marketplace, broker or financing product. Whether a government filing applies depends on sizes and conditions that this article does not state. Deals also differ with the size of the product, the seller's situation and the buyer's experience, and none of that is visible from here.

@@ -1,0 +1,122 @@
+---
+title: "From client work to a product: productizing a service business"
+seoTitle: Productizing a service business
+description: "How a service business can turn repeated client work into a product: what to check about ownership, client data and pricing before the first version ships."
+topic: pathways
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [second-career-founders, technical-founders]
+related:
+  - customers-as-capital-pilots-prepayment-and-design-partners
+  - three-ways-to-start-an-idea-a-skill-a-lived-problem
+sources:
+  - id: usc201
+    title: "17 U.S. Code section 201, Ownership of copyright"
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/uscode/text/17/201
+    accessed: 2026-10-10
+  - id: usc204
+    title: "17 U.S. Code section 204, Execution of transfers of copyright ownership"
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/uscode/text/17/204
+    accessed: 2026-10-10
+  - id: circ30
+    title: "Circular 30, Works Made for Hire"
+    publisher: U.S. Copyright Office
+    url: https://www.copyright.gov/circs/circ30.pdf
+    accessed: 2026-10-10
+evidence: [usc201, usc204, circ30]
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*As of 2026-10-10, this is general information, not legal or financial advice. Ownership of work you built for a client turns on the contract and on the law where each party sits. Ask a lawyer licensed where you work.*
+
+A consultancy, an agency or a freelancer has a head start that many first-time founders envy: paying customers, a feel for what the work involves and a list of problems that keep coming back. The tempting next step is to take the thing you keep rebuilding for clients and turn it into a product that many customers can use.
+
+That step is not a rebrand. A service sells hours or deliverables to one client at a time. A product sells a repeatable result to many. The change touches ownership, pricing, support, how you spend your time and what your existing clients expect of you. This article walks through those changes as questions, so that the early decisions are made on purpose.
+
+## What changes when a service becomes a product
+
+| | Service business | Product business |
+|---|---|---|
+| What the customer buys | Your time or a custom deliverable | Access to something that already exists |
+| Who owns the work | Often settled by the client contract | The company, which must be able to show it |
+| Price | Tied to effort or a project | Tied to the value of access over time |
+| The customer's data | Handled inside the client's own systems | Held by you, for many customers at once |
+| Your obligation after the first sale | Usually ends with the project | Continues for as long as the customer uses it |
+| Where the learning comes from | One client's needs at a time | Patterns across customers |
+
+Neither side of the table is better. They are different businesses, and moving from one to the other means taking on the obligations of the second while still serving the first.
+
+## Step one: find out who owns what you have already built
+
+This is the question that surprises people most often. Work built for a client is not automatically yours just because you wrote it.
+
+**The default rule.** In United States copyright law, copyright in a work vests initially in the author or authors of the work. The person who writes the code is, by default, the first owner. That default can be changed in two main ways.
+
+**Work made for hire.** The statute says that when a work is made for hire, the hiring party is considered the author. The U.S. Copyright Office explains that a specially ordered or commissioned work counts as a work made for hire only if it satisfies four criteria: it falls within one of nine listed categories, there is a written agreement, the agreement expressly says the work is a work made for hire, and all parties sign it. The Office adds that a work failing any one of those requirements is not a work made for hire. The nine categories it lists are a contribution to a collective work, part of a motion picture or other audiovisual work, a translation, a supplementary work, a compilation, an instructional text, a test, answer material for a test, and an atlas. The list does not name software as a category. Whether a particular deliverable fits any category, and how the rules apply outside the United States, is a question for counsel.
+
+**Assignment.** The second way to change ownership is a transfer. The statute says that a transfer of copyright ownership, other than by operation of law, is not valid unless an instrument of conveyance, or a note or memorandum of the transfer, is in writing and signed by the owner of the rights conveyed or the owner's duly authorized agent. So if a client contract says the client owns the deliverables, ask whether it says so in a signed writing that actually transfers rights. If it says nothing, ask what the default means for you.
+
+Three outcomes are common, and each leads to a different conversation:
+
+1. **You own the work and license it to the client.** You can usually build on it, subject to what the license says.
+2. **The client owns the work.** You may need the client's permission, or a new license back to you, before reusing it.
+3. **The contract is unclear.** This is the case counsel most wants to see early, because a gap discovered by an investor or a buyer is harder to repair.
+
+## Step two: separate what is reusable from what is not
+
+Even when you own your code, much of what sits in a client project is not yours to carry into a product. Make a plain inventory:
+
+- **Your own tools and libraries**, built before or outside the engagement.
+- **Client-specific logic**, such as their rules, workflows, templates and branding.
+- **Client data**, including test data copied from production, screenshots and exports.
+- **Third-party components**, each with its own license terms.
+- **Confidential information**, which the contract may bar you from using for anyone else.
+
+The inventory tells you what you can start from, what you must rebuild and what you must delete. Rebuilding is sometimes the cleaner path: a product written from scratch, by people who have not copied a client's materials, is easier to explain than one with a tangled history.
+
+## Step three: look at the clients you already have
+
+Existing clients are your first audience and your first risk.
+
+- **Will any of them object?** Ask whether the contract restricts you from serving others with a similar tool, or from competing with the client.
+- **Could one of them be the first customer?** Moving a service client onto a product can be natural, but it changes the relationship from a bespoke one to a standard one. Say so plainly to the client, and in writing.
+- **Could one of them fund the work?** Some clients pay for features and keep a license. That arrangement, and its terms, is the subject of the article on <MaybeLink path="/insights/your-first-ten-customers-a-founder-led-sequence/">founder-led sales to the first ten customers</MaybeLink> and of the desk article on customers as capital.
+- **Who owns the relationship?** If you did the work through an employer or an agency, ask whether your agreement lets you approach their clients.
+
+## Step four: change the commercial shape
+
+Moving from a project fee to a product price is not a matter of dividing the project by twelve. Questions to work through before the first price is published:
+
+- What is the unit that a customer pays for: a seat, a use, a site, an account?
+- What does the customer get on day one, and what must they do themselves?
+- What will it cost you to serve one more customer, and what stays fixed?
+- What do you promise about support, and how will you meet it with the team you have?
+
+The <MaybeLink path="/insights/pricing-page-fundamentals-for-a-first-saas/">pricing page fundamentals</MaybeLink> article covers what a first public price page needs to say. The decision about price is yours and your customers' to make; no article can set it for you.
+
+## Step five: protect the work you still owe
+
+A service business that begins building a product usually keeps taking client work for a while, because it pays the bills. That is a legitimate position with a real cost: attention. Some founders set aside defined hours or a fixed share of the team for the product. Others set a date by which the service work will be reduced or ended. Either is a choice about your own company, and both need honest accounting of what the service work is worth against what the product might become.
+
+Two matters deserve a written note, whatever you choose:
+
+- **Delivery promises to clients.** Do not let the product work quietly consume the time you promised to a client.
+- **The team's own understanding.** If employees or contractors build the product, their agreements should say who owns it. The same rules about written assignment apply to them.
+
+## A short list of questions for counsel
+
+These add to the general list in <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink>.
+
+1. Under my client contracts and the law that applies, who owns each deliverable I want to reuse?
+2. Is there any signed writing that transfers rights, and does it cover what I think it covers?
+3. Are there restrictions on competing, soliciting or reusing confidential material?
+4. Which parts of my codebase carry third-party licenses that affect a product?
+5. What should my contracts with new clients say so that the question does not arise again?
+6. How should I record the reuse of my own earlier tools so that a later reviewer can follow it?
+
+## What this article cannot tell you
+
+It cannot tell you who owns your deliverables or whether your clients will accept the change. The three sources cited are the U.S. Copyright Act provisions on ownership and transfer and a Copyright Office circular on works made for hire; they cover copyright in the United States, not patents, trade secrets, trademarks, tax, privacy law or the rules of any other country. The article does not say whether software falls inside any category in the circular's list, only that the list does not name it. It also does not estimate how long a move from services to product takes, what it costs or how many service businesses succeed at it, because no cited source measures that. Contracts, jurisdictions and the size of your client base will change every answer here.
