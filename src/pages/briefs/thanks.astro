@@ -1,0 +1,40 @@
+---
+import { getEntry, render } from 'astro:content';
+import { THANKS_COPY } from '../../components/briefs/copy.ts';
+import AsideStyles from '../../components/forms/AsideStyles.astro';
+import FormLayout from '../../layouts/FormLayout.astro';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+// The page reads nothing from the query string: it never learns which brief was requested, so no title can be injected into it.
+const entry = await getEntry('pages', 'briefs/thanks');
+if (!entry) throw new Error('Missing content entry pages/briefs/thanks (src/content/pages/briefs/thanks.md).');
+const { Content } = await render(entry);
+const { data } = entry;
+// Every link is checked against the live routes, so a page that has not shipped is skipped and no link is dead.
+const state = await getRouteState();
+const links = [
+  { path: '/briefs/', label: THANKS_COPY.moreBriefs },
+  { path: '/journey/after-you-apply/', label: THANKS_COPY.afterApply },
+  { path: '/apply/', label: THANKS_COPY.apply },
+  { path: '/contact/', label: THANKS_COPY.contact },
+].filter((link) => state.isLive(link.path));
+---
+
+<FormLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  path="/briefs/thanks/"
+  updated={data.updated}
+  draft={data.draft}
+>
+  <div class="prose"><Content /></div>
+  <Fragment slot="aside">
+    <AsideStyles />
+    <h2 class="aside-title">{THANKS_COPY.asideHeading}</h2>
+    <ul class="stack" role="list">
+      {links.map((link) => <li><a href={href(link.path)}>{link.label}</a></li>)}
+    </ul>
+  </Fragment>
+</FormLayout>

@@ -1,0 +1,59 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import BriefDepth from '../../components/briefs/BriefDepth.astro';
+import BriefOutline from '../../components/briefs/BriefOutline.astro';
+import BriefRequestPanel from '../../components/briefs/BriefRequestPanel.astro';
+import RelatedBriefs from '../../components/briefs/RelatedBriefs.astro';
+import { BRIEF_COPY } from '../../components/briefs/copy.ts';
+import { liveBriefs, relatedFor, sectionCount, staticPaths } from '../../components/briefs/plan.ts';
+import { jumpTo } from '../../components/hero/ctas.ts';
+import Section from '../../components/ui/Section.astro';
+import { BRIEFS } from '../../data/families.ts';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { isReleaseBuild } from '../../lib/route-state.ts';
+
+/**
+ * The squeeze page of a gated brief. One page per open abstract in the `briefs` collection whose registry entry launches. The page holds the
+ * abstract and the outline only: the text of the brief lives under infra/intake/briefs/, which no build path reads (D-23).
+ */
+export const getStaticPaths = (async () => {
+  const abstracts = await getCollection('briefs');
+  return [...staticPaths(BRIEFS.entries, abstracts, { includeDrafts: !isReleaseBuild() })];
+}) satisfies GetStaticPaths;
+
+const { brief } = Astro.props;
+const { abstract, row } = brief;
+const { Content } = await render(abstract);
+const { data } = abstract;
+const live = liveBriefs(BRIEFS.entries, await getCollection('briefs'), { includeDrafts: !isReleaseBuild() });
+const related = relatedFor(row.slug, live);
+---
+
+<MarketingLayout
+  title={data.title}
+  description={data.description}
+  path={row.path}
+  eyebrow={BRIEF_COPY.eyebrow}
+  lead={data.subtitle}
+  primary={jumpTo(BRIEF_COPY.heroPrimary, 'request')}
+  secondary={jumpTo(BRIEF_COPY.heroSecondary, 'outline')}
+  updated={data.updated}
+  draft={data.draft}
+>
+  <Content />
+  <Fragment slot="after">
+    <Section tone="soft">
+      <div class="stack">
+        <BriefDepth updated={data.updated} sections={sectionCount(abstract)} />
+        <BriefOutline outline={data.outline} />
+      </div>
+    </Section>
+    <Section>
+      <BriefRequestPanel briefId={row.slug} />
+    </Section>
+    <Section tone="soft">
+      <RelatedBriefs related={related} />
+    </Section>
+  </Fragment>
+</MarketingLayout>

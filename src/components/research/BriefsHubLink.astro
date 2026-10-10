@@ -1,0 +1,20 @@
+---
+import { RESEARCH_LINK_COPY } from '../briefs/copy.ts';
+import Callout from '../ui/Callout.astro';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+// Fail-closed: the link renders only while the briefs hub is a live route, so a build without the hub never carries a dead link.
+const state = await getRouteState();
+const live = state.isLive('/briefs/');
+---
+
+{
+  live && (
+    <Callout title={RESEARCH_LINK_COPY.heading}>
+      <p>
+        {RESEARCH_LINK_COPY.text} <a href={href('/briefs/')}>{RESEARCH_LINK_COPY.link}</a>.
+      </p>
+    </Callout>
+  )
+}

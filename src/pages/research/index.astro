@@ -1,6 +1,7 @@
 ---
 import { getEntry, render } from 'astro:content';
 import BriefCard from '../../components/cards/BriefCard.astro';
+import BriefsHubLink from '../../components/research/BriefsHubLink.astro';
 import { BRIEF_META, briefMeta, readingMinutes } from '../../components/research/briefs.ts';
 import Grid from '../../components/ui/Grid.astro';
 import HubLayout from '../../layouts/HubLayout.astro';
@@ -48,4 +49,5 @@ const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'l
       })
     }
   </Grid>
+  <BriefsHubLink />
 </HubLayout>
