@@ -1,5 +1,5 @@
 ---
-title: Funding paths for an early software company
+title: Funding paths for founders
 subtitle: What each way of paying for early work asks of the company in return
 description: "Seven ways to pay for early software work, compared by what each asks of the company: customers, awards, loans, shares, convertible instruments and crowds."
 topics: [funding]

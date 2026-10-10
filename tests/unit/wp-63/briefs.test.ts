@@ -3,6 +3,8 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import test from 'node:test';
 import { BRIEFS } from '../../../src/data/families.ts';
+import { pageTitle } from '../../../src/data/site.ts';
+import { TITLE_MAX } from '../../../src/lib/seo.ts';
 import type { ClaimRecord, SourcesFile } from '../wp-60/sources.ts';
 import { checkBrief, MAX_ABSTRACT_WORDS, MAX_BRIEF_WORDS, MIN_BRIEF_WORDS } from './brief-rules.ts';
 import type { BriefFacts } from './brief-rules.ts';
@@ -59,6 +61,16 @@ test('every brief that is written has an open abstract, and no abstract exists w
   for (const id of written()) assert.ok(abstracts.includes(id), `${id} has no abstract`);
   for (const id of abstracts.filter((n) => BRIEFS.entries.find((e) => e.slug === n)?.owner === 'WP-63')) {
     assert.ok(written().includes(id), `src/content/briefs/${id}.md has no brief under infra/intake/briefs/`);
+  }
+});
+
+test('every abstract title, with the site suffix, fits the 60-character title limit of the SEO audit', () => {
+  const abstracts = existsSync(ABSTRACTS_DIR) ? readdirSync(ABSTRACTS_DIR).filter((n) => n.endsWith('.md')) : [];
+  for (const name of abstracts) {
+    const title = /^title: (.+)$/m.exec(read(join(ABSTRACTS_DIR, name)))?.[1]?.replace(/^"(.*)"$/, '$1');
+    assert.ok(title !== undefined, `${name} has no title`);
+    const full = pageTitle(title);
+    assert.ok(full.length <= TITLE_MAX, `${name}: "${full}" is ${full.length} characters, over ${TITLE_MAX}`);
   }
 });
 

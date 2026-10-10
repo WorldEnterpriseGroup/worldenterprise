@@ -1,5 +1,5 @@
 ---
-title: Company setup for a first-time founder
+title: Company setup for founders
 subtitle: The legal and administrative choices that turn a project into a company, and what each one settles
 description: "Seven choices a first-time founder makes when forming a company: legal form, state, tax treatment, founder shares, ownership of the work, name and tax number."
 topics: [legal]
