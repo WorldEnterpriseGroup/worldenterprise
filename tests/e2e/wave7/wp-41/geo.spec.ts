@@ -95,16 +95,20 @@ test.describe('Markdown twins', () => {
     expect(squash(markdown)).toContain(NO_FUNDING);
   });
 
-  test('every live page that advertises a twin names a twin that exists', async ({ page, request, baseURL }) => {
+  test('every live page that advertises a twin names a twin that exists', async ({ request, baseURL }) => {
     const candidates = liveRoutes.filter((r) => r.indexable && /^\/(?:about|services|playbooks|glossary|faq)\//.test(r.path)).slice(0, 12);
     test.skip(candidates.length === 0, 'no candidate page is built');
+    let advertised = 0;
     for (const route of candidates) {
-      await page.goto(route.path);
-      const href = await page.locator('link[rel="alternate"][type="text/markdown"]').first().getAttribute('href');
-      if (href === null) continue;
+      const html = await (await request.get(new URL(route.path, baseURL).href)).text();
+      const tag = [...html.matchAll(/<link\b[^>]*>/gi)].map((m) => m[0]).find((t) => /rel="alternate"/.test(t) && /type="text\/markdown"/.test(t));
+      const href = tag === undefined ? undefined : /href="([^"]+)"/.exec(tag)?.[1];
+      if (href === undefined) continue;
+      advertised += 1;
       const response = await request.get(new URL(new URL(href).pathname, baseURL).href);
       expect(response.status(), `${route.path} advertises ${href}`).toBe(200);
     }
+    expect(advertised, 'at least one candidate advertises a twin').toBeGreaterThan(0);
   });
 });
 
