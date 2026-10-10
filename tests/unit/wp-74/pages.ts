@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { parse } from 'yaml';
 import { INDUSTRIES } from '../../../src/data/families.ts';
 import { pagesSchema } from '../../../src/lib/content-schemas.ts';
-import type { SourcesFile } from '../wp-60/sources.ts';
+import type { ClaimRecord, SourcesFile } from '../wp-60/sources.ts';
 
 /** What the WP-74 tests share: the page files, their frontmatter as the build parses it, and the sentences a reader sees. */
 export const root = new URL('../../../', import.meta.url).pathname;
@@ -81,15 +81,14 @@ export function pageText(path: string): string {
 
 export const allPagePaths: readonly string[] = [...industrySlugs.map(pagePath), HUB_PATH];
 
-export const ledger = (): SourcesFile & { readonly perimeterClaims: readonly PerimeterClaim[] } =>
-  JSON.parse(read(LEDGER_PATH)) as SourcesFile & { readonly perimeterClaims: readonly PerimeterClaim[] };
+export const ledger = (): SourcesFile => JSON.parse(read(LEDGER_PATH)) as SourcesFile;
 
-export interface PerimeterClaim {
+/** A regulatory statement of a page, with the path of the page that holds it. */
+export interface PerimeterClaim extends ClaimRecord {
   readonly path: string;
-  readonly id: string;
-  readonly sentence: string;
-  readonly kind: 'statistic' | 'regulation' | 'definition' | 'paraphrase';
-  readonly sourceId: string;
-  readonly locator: string;
-  readonly quote: string;
+}
+
+/** The `claims` of every document of the ledger, each with its page path. */
+export function perimeterClaims(file: SourcesFile = ledger()): PerimeterClaim[] {
+  return (file.documents ?? []).flatMap((doc) => (doc.claims ?? []).map((claim) => ({ ...claim, path: doc.path })));
 }

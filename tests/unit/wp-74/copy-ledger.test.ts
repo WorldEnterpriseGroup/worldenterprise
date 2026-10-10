@@ -5,7 +5,7 @@ import { SCOPE_HEADING, SCOPE_ITEMS } from '../../../src/components/industries/s
 import { repoViewAt } from '../wp-60/repo-view.ts';
 import { checkSentences } from '../wp-60/sources.ts';
 import type { SentenceRecord } from '../wp-60/sources.ts';
-import { allPagePaths, HUB_PATH, industrySlugs, ledger, pagePath, pageSentences, root, SCOPE_PATH } from './pages.ts';
+import { allPagePaths, HUB_PATH, industrySlugs, ledger, pagePath, pageSentences, perimeterClaims, root, SCOPE_PATH } from './pages.ts';
 
 /**
  * The sentence ledger of WP-74's copy (docs/wave8-contracts.md, section 9; the WP-60 pattern). The sentences are read from the files that hold
@@ -55,7 +55,7 @@ test('every mapping is well formed: one claim, page, decision or label, and an e
 });
 
 test('a perimeter sentence restates a source (W8-9); every other sentence of an industry page is a consideration (W8-24) or the title label', () => {
-  const claimed = new Set((file.perimeterClaims ?? []).map((c) => c.sentence));
+  const claimed = new Set(perimeterClaims(file).map((c) => c.sentence));
   for (const slug of industrySlugs) {
     for (const record of documentFor(pagePath(slug))) {
       if (record.label === true) continue;

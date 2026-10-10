@@ -1,6 +1,6 @@
 {
   "wp": "WP-74",
-  "note": "The sentence ledger and the fetch record of the seven industry pages and the /industries/ hub (docs/wave8-contracts.md section 8.2 and section 9, W8-9 and W8-24). Every outside fact is a regulatory statement in the perimeter of one page. Each was read in the writing session of 2026-10-10 with WebFetch from the government or standards host named in `fetches`; the verbatim quote (25 words at most) and the locator of each are under `perimeterClaims`, keyed by the page path. The claims sit beside `documents`, not inside it, because the family pages hold their sources in the `family.sources` frontmatter and the repository-wide reader (tests/unit/wp-60/sources-ledger.test.ts, `factsFor`) reads only a top-level `sources` key: tests/unit/wp-74/perimeter-claims.test.ts runs the same `checkSourcesFile` with the family sources. The sentences list is the page copy: each sentence names decision W8-9 (it restates a source read in the session), decision W8-24 (a consideration, not an outcome), a claim or an existing services page. fetchedAt carries the exact date and an approximate time of day: the date is what the ledger checks.",
+  "note": "The ledger of the seven industry pages and the /industries/ hub (docs/wave8-contracts.md sections 8.2 and 9; W8-9 and W8-24). Every outside fact is a regulatory statement in the perimeter of one page. Each was read in the writing session of 2026-10-10 with WebFetch from the government or standards host named in `fetches`; the locator and the verbatim quote (25 words at most) of each are in the `claims` of its page, and the page keeps its sources in `family.sources`. The sentences list is the page copy: each sentence names decision W8-9 (it restates a source read in the session), decision W8-24 (a consideration, not an outcome), a claim or an existing services page. fetchedAt carries the exact date and an approximate time of day: the date is what the ledger checks.",
   "fetches": [
     {
       "id": "ftc-16-cfr-314-4",
@@ -240,6 +240,48 @@
   "documents": [
     {
       "path": "src/content/pages/industries/fintech.mdx",
+      "claims": [
+        {
+          "id": "fin-1",
+          "sentence": "The Federal Trade Commission’s Safeguards Rule, 16 CFR 314.4, requires a financial institution to designate a qualified individual to oversee and implement its information security program.",
+          "kind": "regulation",
+          "sourceId": "ftc-16-cfr-314-4",
+          "locator": "16 CFR 314.4(a)",
+          "quote": "Designate a qualified individual responsible for overseeing and implementing your information security program"
+        },
+        {
+          "id": "fin-2",
+          "sentence": "Federal anti-money-laundering rules, 31 CFR 1010.100, define a money services business to include a money transmitter, which is a person that provides money transmission services.",
+          "kind": "regulation",
+          "sourceId": "fincen-31-cfr-1010-100",
+          "locator": "31 CFR 1010.100(ff)(5)",
+          "quote": "A person that provides money transmission services."
+        },
+        {
+          "id": "fin-3a",
+          "sentence": "Regulation E, 12 CFR 1005, carries out the Electronic Fund Transfer Act.",
+          "kind": "regulation",
+          "sourceId": "cfpb-12-cfr-1005-1",
+          "locator": "12 CFR 1005.1(b)",
+          "quote": "This part carries out the purposes of the Electronic Fund Transfer Act"
+        },
+        {
+          "id": "fin-3b",
+          "sentence": "The Act sets the basic rights, liabilities and responsibilities of consumers who use electronic fund transfer and remittance transfer services and of the financial institutions or other persons that offer them.",
+          "kind": "regulation",
+          "sourceId": "cfpb-12-cfr-1005-1",
+          "locator": "12 CFR 1005.1(b)",
+          "quote": "establishes the basic rights, liabilities, and responsibilities of consumers who use electronic fund transfer"
+        },
+        {
+          "id": "fin-4",
+          "sentence": "In June 2023 the federal banking agencies issued joint guidance on managing risks associated with third-party relationships.",
+          "kind": "regulation",
+          "sourceId": "fed-sr-23-4",
+          "locator": "SR 23-4, June 7, 2023",
+          "quote": "The guidance is intended to assist banking organizations in identifying and managing risks"
+        }
+      ],
       "sentences": [
         {
           "text": "Building SaaS for fintech: considerations",
@@ -325,6 +367,40 @@
     },
     {
       "path": "src/content/pages/industries/healthtech.mdx",
+      "claims": [
+        {
+          "id": "hea-1",
+          "sentence": "Under the federal privacy and security rules, a business associate is defined with respect to a covered entity, and covered entities include health plans, health care clearinghouses and certain health care providers.",
+          "kind": "regulation",
+          "sourceId": "hhs-45-cfr-160-103",
+          "locator": "45 CFR 160.103, Business associate and Covered entity",
+          "quote": "business associate means, with respect to a covered entity, a person who:"
+        },
+        {
+          "id": "hea-2",
+          "sentence": "The HIPAA Security Rule, 45 CFR 164.306, requires covered entities and business associates to ensure the confidentiality, integrity and availability of all electronic protected health information that they create, receive, maintain or transmit.",
+          "kind": "regulation",
+          "sourceId": "hhs-45-cfr-164-306",
+          "locator": "45 CFR 164.306(a)(1)",
+          "quote": "Ensure the confidentiality, integrity, and availability of all electronic protected health information"
+        },
+        {
+          "id": "hea-3",
+          "sentence": "A covered entity may disclose protected health information to a business associate if it obtains satisfactory assurance that the business associate will appropriately safeguard the information.",
+          "kind": "regulation",
+          "sourceId": "hhs-45-cfr-164-502",
+          "locator": "45 CFR 164.502(e)(1)",
+          "quote": "A covered entity may disclose protected health information to a business associate"
+        },
+        {
+          "id": "hea-4",
+          "sentence": "The Food and Drug Administration states that software functions that meet the definition of a device may be deployed on mobile platforms.",
+          "kind": "regulation",
+          "sourceId": "fda-device-software",
+          "locator": "FDA page, opening paragraphs",
+          "quote": "Software functions that meet the definition of a device may be deployed on mobile platforms"
+        }
+      ],
       "sentences": [
         {
           "text": "Building SaaS for healthtech: considerations",
@@ -406,6 +482,32 @@
     },
     {
       "path": "src/content/pages/industries/edtech.mdx",
+      "claims": [
+        {
+          "id": "edu-1",
+          "sentence": "Under the Family Educational Rights and Privacy Act regulations, 34 CFR 99.31, a school may treat an outside party as a school official if the party performs a function the school would otherwise staff, is under the school’s direct control over education records and is subject to the rules on redisclosure.",
+          "kind": "regulation",
+          "sourceId": "ed-34-cfr-99-31",
+          "locator": "34 CFR 99.31(a)(1)(i)(B)",
+          "quote": "Is under the direct control of the agency or institution with respect to the use and maintenance of education records"
+        },
+        {
+          "id": "edu-2",
+          "sentence": "The Children’s Online Privacy Protection Rule, 16 CFR 312.3, applies to an operator of a website or online service directed to children and requires the operator to provide notice of what information it collects from children.",
+          "kind": "regulation",
+          "sourceId": "ftc-16-cfr-312-3",
+          "locator": "16 CFR 312.3(a)",
+          "quote": "Provide notice on the website or online service of what information it collects from children"
+        },
+        {
+          "id": "edu-3",
+          "sentence": "A Department of Justice rule, 28 CFR 35.200, covers web content and mobile apps that a public entity provides or makes available directly or through contractual, licensing or other arrangements, and sets WCAG 2.1 Level AA as the standard, with dates that depend on the size of the entity.",
+          "kind": "regulation",
+          "sourceId": "doj-28-cfr-35-200",
+          "locator": "28 CFR 35.200(a) and (b)",
+          "quote": "comply with Level A and Level AA success criteria and conformance requirements specified in WCAG 2.1"
+        }
+      ],
       "sentences": [
         {
           "text": "Building SaaS for edtech: considerations",
@@ -479,6 +581,32 @@
     },
     {
       "path": "src/content/pages/industries/climate-tech.mdx",
+      "claims": [
+        {
+          "id": "cli-1",
+          "sentence": "The Environmental Protection Agency’s reporting rule, 40 CFR 98.2, applies to the owners and operators of any facility that is located in the United States and that meets the requirements of one of its applicability paragraphs.",
+          "kind": "regulation",
+          "sourceId": "epa-40-cfr-98-2",
+          "locator": "40 CFR 98.2(a)",
+          "quote": "to the owners and operators of any facility that is located in the United States"
+        },
+        {
+          "id": "cli-2",
+          "sentence": "The Federal Trade Commission states, in 16 CFR 260.4, that unqualified general environmental benefit claims are difficult to interpret and likely convey a wide range of meanings.",
+          "kind": "regulation",
+          "sourceId": "ftc-16-cfr-260-4",
+          "locator": "16 CFR 260.4(b)",
+          "quote": "Unqualified general environmental benefit claims are difficult to interpret and likely convey a wide range of meanings."
+        },
+        {
+          "id": "cli-3",
+          "sentence": "The European Commission states that companies subject to the Corporate Sustainability Reporting Directive have to report according to the European Sustainability Reporting Standards.",
+          "kind": "regulation",
+          "sourceId": "ec-csrd",
+          "locator": "Page text, last updated July 3, 2026",
+          "quote": "Companies subject to the CSRD have to report according to European Sustainability Reporting Standards (ESRS)."
+        }
+      ],
       "sentences": [
         {
           "text": "Building SaaS for climate tech: considerations",
@@ -556,6 +684,40 @@
     },
     {
       "path": "src/content/pages/industries/legaltech.mdx",
+      "claims": [
+        {
+          "id": "leg-1",
+          "sentence": "New York’s Judiciary Law, section 478, makes it unlawful for a natural person to practice or appear as an attorney-at-law for another person in a court of record without first being licensed and admitted to practice law.",
+          "kind": "regulation",
+          "sourceId": "ny-jud-478",
+          "locator": "Judiciary Law 478",
+          "quote": "It shall be unlawful for any natural person to practice or appear as an attorney-at-law or as an attorney and"
+        },
+        {
+          "id": "leg-2",
+          "sentence": "The rules of professional conduct at 37 CFR 11.106 require a practitioner to make reasonable efforts to prevent the inadvertent or unauthorized disclosure of information relating to a representation.",
+          "kind": "regulation",
+          "sourceId": "uspto-37-cfr-11-106",
+          "locator": "37 CFR 11.106(d)",
+          "quote": "A practitioner shall make reasonable efforts to prevent the inadvertent or unauthorized disclosure of"
+        },
+        {
+          "id": "leg-3",
+          "sentence": "The same rules, at 37 CFR 11.503, require a practitioner with supervisory authority to make reasonable efforts to ensure that a non-practitioner assistant’s conduct is compatible with the practitioner’s obligations.",
+          "kind": "regulation",
+          "sourceId": "uspto-37-cfr-11-503",
+          "locator": "37 CFR 11.503(b)",
+          "quote": "shall make reasonable efforts to ensure that the person's conduct is compatible"
+        },
+        {
+          "id": "leg-4",
+          "sentence": "Federal Rule of Evidence 502 limits waiver of the attorney-client privilege and work-product protection, and says a disclosure made in a federal proceeding or to a federal office or agency does not operate as a waiver if it was inadvertent, reasonable steps were taken to prevent it and the holder acted promptly to correct it.",
+          "kind": "regulation",
+          "sourceId": "fre-502",
+          "locator": "Rule 502(b)",
+          "quote": "the disclosure does not operate as a waiver in a federal or state proceeding if:"
+        }
+      ],
       "sentences": [
         {
           "text": "Building SaaS for legaltech: considerations",
@@ -637,6 +799,40 @@
     },
     {
       "path": "src/content/pages/industries/logistics.mdx",
+      "claims": [
+        {
+          "id": "log-1",
+          "sentence": "Federal rules, 49 CFR 371.2, define a broker as a person who, for compensation, arranges or offers to arrange the transportation of property by an authorized motor carrier.",
+          "kind": "regulation",
+          "sourceId": "fmcsa-49-cfr-371-2",
+          "locator": "49 CFR 371.2(a)",
+          "quote": "Broker means a person who, for compensation, arranges, or offers to arrange, the transportation of property"
+        },
+        {
+          "id": "log-2",
+          "sentence": "Federal rules, 49 CFR 395.8, require a motor carrier operating commercial motor vehicles to install an electronic logging device and to require each of its drivers to use one to record duty status.",
+          "kind": "regulation",
+          "sourceId": "fmcsa-49-cfr-395-8",
+          "locator": "49 CFR 395.8(a)(1)(i)",
+          "quote": "a motor carrier operating commercial motor vehicles must install and require each of its drivers to use an ELD."
+        },
+        {
+          "id": "log-3",
+          "sentence": "Customs and Border Protection rules, 19 CFR 149.2, direct the importer or an authorized agent to submit the importer security filing in English, and set a deadline for some of its data of no later than 24 hours before the cargo is laden aboard the vessel at the foreign port.",
+          "kind": "regulation",
+          "sourceId": "cbp-19-cfr-149-2",
+          "locator": "19 CFR 149.2(a) and (b)",
+          "quote": "no later than 24 hours before the cargo is laden aboard the vessel at the foreign port."
+        },
+        {
+          "id": "log-4",
+          "sentence": "Under 49 U.S.C. 14706, a carrier providing transportation or service subject to the covered chapters must issue a receipt or bill of lading for property it receives, and its liability under that paragraph is for the actual loss or injury to the property.",
+          "kind": "regulation",
+          "sourceId": "usc-49-14706",
+          "locator": "49 U.S.C. 14706(a)(1)",
+          "quote": "The liability imposed under this paragraph is for the actual loss or injury to the property"
+        }
+      ],
       "sentences": [
         {
           "text": "Building SaaS for logistics: considerations",
@@ -718,6 +914,40 @@
     },
     {
       "path": "src/content/pages/industries/proptech.mdx",
+      "claims": [
+        {
+          "id": "pro-1",
+          "sentence": "The Fair Housing Act, 42 U.S.C. 3604, makes it unlawful to make, print or publish, or cause to be made, printed or published, any notice, statement or advertisement that indicates any preference, limitation or discrimination.",
+          "kind": "regulation",
+          "sourceId": "usc-42-3604",
+          "locator": "42 U.S.C. 3604(c)",
+          "quote": "To make, print, or publish, or cause to be made, printed, or published any notice, statement, or advertisement,"
+        },
+        {
+          "id": "pro-2",
+          "sentence": "The Fair Credit Reporting Act defines a consumer reporting agency as a person that regularly assembles or evaluates consumer credit information or other information on consumers to furnish consumer reports to third parties.",
+          "kind": "regulation",
+          "sourceId": "usc-15-1681a",
+          "locator": "15 U.S.C. 1681a(f)",
+          "quote": "regularly engages in whole or in part in the practice of assembling or evaluating consumer credit information"
+        },
+        {
+          "id": "pro-3",
+          "sentence": "A federal statute, 15 U.S.C. 7001, provides that a signature, contract or other record relating to a transaction in or affecting interstate or foreign commerce may not be denied legal effect, validity or enforceability solely because it is in electronic form.",
+          "kind": "regulation",
+          "sourceId": "usc-15-7001",
+          "locator": "15 U.S.C. 7001(a)",
+          "quote": "a signature, contract, or other record relating to such transaction may not be denied legal effect,"
+        },
+        {
+          "id": "pro-4",
+          "sentence": "Regulation X, 12 CFR 1024, is issued by the Consumer Financial Protection Bureau to implement the Real Estate Settlement Procedures Act of 1974.",
+          "kind": "regulation",
+          "sourceId": "cfpb-12-cfr-1024-1",
+          "locator": "12 CFR 1024.1",
+          "quote": "to implement the Real Estate Settlement Procedures Act of 1974, as amended, 12 U.S.C. 2601 et. seq."
+        }
+      ],
       "sentences": [
         {
           "text": "Building SaaS for proptech: considerations",
@@ -858,251 +1088,6 @@
           "page": "src/content/services/professional-services-coordination.mdx"
         }
       ]
-    }
-  ],
-  "perimeterClaims": [
-    {
-      "path": "src/content/pages/industries/fintech.mdx",
-      "id": "fin-1",
-      "sentence": "The Federal Trade Commission’s Safeguards Rule, 16 CFR 314.4, requires a financial institution to designate a qualified individual to oversee and implement its information security program.",
-      "kind": "regulation",
-      "sourceId": "ftc-16-cfr-314-4",
-      "locator": "16 CFR 314.4(a)",
-      "quote": "Designate a qualified individual responsible for overseeing and implementing your information security program"
-    },
-    {
-      "path": "src/content/pages/industries/fintech.mdx",
-      "id": "fin-2",
-      "sentence": "Federal anti-money-laundering rules, 31 CFR 1010.100, define a money services business to include a money transmitter, which is a person that provides money transmission services.",
-      "kind": "regulation",
-      "sourceId": "fincen-31-cfr-1010-100",
-      "locator": "31 CFR 1010.100(ff)(5)",
-      "quote": "A person that provides money transmission services."
-    },
-    {
-      "path": "src/content/pages/industries/fintech.mdx",
-      "id": "fin-3a",
-      "sentence": "Regulation E, 12 CFR 1005, carries out the Electronic Fund Transfer Act.",
-      "kind": "regulation",
-      "sourceId": "cfpb-12-cfr-1005-1",
-      "locator": "12 CFR 1005.1(b)",
-      "quote": "This part carries out the purposes of the Electronic Fund Transfer Act"
-    },
-    {
-      "path": "src/content/pages/industries/fintech.mdx",
-      "id": "fin-3b",
-      "sentence": "The Act sets the basic rights, liabilities and responsibilities of consumers who use electronic fund transfer and remittance transfer services and of the financial institutions or other persons that offer them.",
-      "kind": "regulation",
-      "sourceId": "cfpb-12-cfr-1005-1",
-      "locator": "12 CFR 1005.1(b)",
-      "quote": "establishes the basic rights, liabilities, and responsibilities of consumers who use electronic fund transfer"
-    },
-    {
-      "path": "src/content/pages/industries/fintech.mdx",
-      "id": "fin-4",
-      "sentence": "In June 2023 the federal banking agencies issued joint guidance on managing risks associated with third-party relationships.",
-      "kind": "regulation",
-      "sourceId": "fed-sr-23-4",
-      "locator": "SR 23-4, June 7, 2023",
-      "quote": "The guidance is intended to assist banking organizations in identifying and managing risks"
-    },
-    {
-      "path": "src/content/pages/industries/healthtech.mdx",
-      "id": "hea-1",
-      "sentence": "Under the federal privacy and security rules, a business associate is defined with respect to a covered entity, and covered entities include health plans, health care clearinghouses and certain health care providers.",
-      "kind": "regulation",
-      "sourceId": "hhs-45-cfr-160-103",
-      "locator": "45 CFR 160.103, Business associate and Covered entity",
-      "quote": "business associate means, with respect to a covered entity, a person who:"
-    },
-    {
-      "path": "src/content/pages/industries/healthtech.mdx",
-      "id": "hea-2",
-      "sentence": "The HIPAA Security Rule, 45 CFR 164.306, requires covered entities and business associates to ensure the confidentiality, integrity and availability of all electronic protected health information that they create, receive, maintain or transmit.",
-      "kind": "regulation",
-      "sourceId": "hhs-45-cfr-164-306",
-      "locator": "45 CFR 164.306(a)(1)",
-      "quote": "Ensure the confidentiality, integrity, and availability of all electronic protected health information"
-    },
-    {
-      "path": "src/content/pages/industries/healthtech.mdx",
-      "id": "hea-3",
-      "sentence": "A covered entity may disclose protected health information to a business associate if it obtains satisfactory assurance that the business associate will appropriately safeguard the information.",
-      "kind": "regulation",
-      "sourceId": "hhs-45-cfr-164-502",
-      "locator": "45 CFR 164.502(e)(1)",
-      "quote": "A covered entity may disclose protected health information to a business associate"
-    },
-    {
-      "path": "src/content/pages/industries/healthtech.mdx",
-      "id": "hea-4",
-      "sentence": "The Food and Drug Administration states that software functions that meet the definition of a device may be deployed on mobile platforms.",
-      "kind": "regulation",
-      "sourceId": "fda-device-software",
-      "locator": "FDA page, opening paragraphs",
-      "quote": "Software functions that meet the definition of a device may be deployed on mobile platforms"
-    },
-    {
-      "path": "src/content/pages/industries/edtech.mdx",
-      "id": "edu-1",
-      "sentence": "Under the Family Educational Rights and Privacy Act regulations, 34 CFR 99.31, a school may treat an outside party as a school official if the party performs a function the school would otherwise staff, is under the school’s direct control over education records and is subject to the rules on redisclosure.",
-      "kind": "regulation",
-      "sourceId": "ed-34-cfr-99-31",
-      "locator": "34 CFR 99.31(a)(1)(i)(B)",
-      "quote": "Is under the direct control of the agency or institution with respect to the use and maintenance of education records"
-    },
-    {
-      "path": "src/content/pages/industries/edtech.mdx",
-      "id": "edu-2",
-      "sentence": "The Children’s Online Privacy Protection Rule, 16 CFR 312.3, applies to an operator of a website or online service directed to children and requires the operator to provide notice of what information it collects from children.",
-      "kind": "regulation",
-      "sourceId": "ftc-16-cfr-312-3",
-      "locator": "16 CFR 312.3(a)",
-      "quote": "Provide notice on the website or online service of what information it collects from children"
-    },
-    {
-      "path": "src/content/pages/industries/edtech.mdx",
-      "id": "edu-3",
-      "sentence": "A Department of Justice rule, 28 CFR 35.200, covers web content and mobile apps that a public entity provides or makes available directly or through contractual, licensing or other arrangements, and sets WCAG 2.1 Level AA as the standard, with dates that depend on the size of the entity.",
-      "kind": "regulation",
-      "sourceId": "doj-28-cfr-35-200",
-      "locator": "28 CFR 35.200(a) and (b)",
-      "quote": "comply with Level A and Level AA success criteria and conformance requirements specified in WCAG 2.1"
-    },
-    {
-      "path": "src/content/pages/industries/climate-tech.mdx",
-      "id": "cli-1",
-      "sentence": "The Environmental Protection Agency’s reporting rule, 40 CFR 98.2, applies to the owners and operators of any facility that is located in the United States and that meets the requirements of one of its applicability paragraphs.",
-      "kind": "regulation",
-      "sourceId": "epa-40-cfr-98-2",
-      "locator": "40 CFR 98.2(a)",
-      "quote": "to the owners and operators of any facility that is located in the United States"
-    },
-    {
-      "path": "src/content/pages/industries/climate-tech.mdx",
-      "id": "cli-2",
-      "sentence": "The Federal Trade Commission states, in 16 CFR 260.4, that unqualified general environmental benefit claims are difficult to interpret and likely convey a wide range of meanings.",
-      "kind": "regulation",
-      "sourceId": "ftc-16-cfr-260-4",
-      "locator": "16 CFR 260.4(b)",
-      "quote": "Unqualified general environmental benefit claims are difficult to interpret and likely convey a wide range of meanings."
-    },
-    {
-      "path": "src/content/pages/industries/climate-tech.mdx",
-      "id": "cli-3",
-      "sentence": "The European Commission states that companies subject to the Corporate Sustainability Reporting Directive have to report according to the European Sustainability Reporting Standards.",
-      "kind": "regulation",
-      "sourceId": "ec-csrd",
-      "locator": "Page text, last updated July 3, 2026",
-      "quote": "Companies subject to the CSRD have to report according to European Sustainability Reporting Standards (ESRS)."
-    },
-    {
-      "path": "src/content/pages/industries/legaltech.mdx",
-      "id": "leg-1",
-      "sentence": "New York’s Judiciary Law, section 478, makes it unlawful for a natural person to practice or appear as an attorney-at-law for another person in a court of record without first being licensed and admitted to practice law.",
-      "kind": "regulation",
-      "sourceId": "ny-jud-478",
-      "locator": "Judiciary Law 478",
-      "quote": "It shall be unlawful for any natural person to practice or appear as an attorney-at-law or as an attorney and"
-    },
-    {
-      "path": "src/content/pages/industries/legaltech.mdx",
-      "id": "leg-2",
-      "sentence": "The rules of professional conduct at 37 CFR 11.106 require a practitioner to make reasonable efforts to prevent the inadvertent or unauthorized disclosure of information relating to a representation.",
-      "kind": "regulation",
-      "sourceId": "uspto-37-cfr-11-106",
-      "locator": "37 CFR 11.106(d)",
-      "quote": "A practitioner shall make reasonable efforts to prevent the inadvertent or unauthorized disclosure of"
-    },
-    {
-      "path": "src/content/pages/industries/legaltech.mdx",
-      "id": "leg-3",
-      "sentence": "The same rules, at 37 CFR 11.503, require a practitioner with supervisory authority to make reasonable efforts to ensure that a non-practitioner assistant’s conduct is compatible with the practitioner’s obligations.",
-      "kind": "regulation",
-      "sourceId": "uspto-37-cfr-11-503",
-      "locator": "37 CFR 11.503(b)",
-      "quote": "shall make reasonable efforts to ensure that the person's conduct is compatible"
-    },
-    {
-      "path": "src/content/pages/industries/legaltech.mdx",
-      "id": "leg-4",
-      "sentence": "Federal Rule of Evidence 502 limits waiver of the attorney-client privilege and work-product protection, and says a disclosure made in a federal proceeding or to a federal office or agency does not operate as a waiver if it was inadvertent, reasonable steps were taken to prevent it and the holder acted promptly to correct it.",
-      "kind": "regulation",
-      "sourceId": "fre-502",
-      "locator": "Rule 502(b)",
-      "quote": "the disclosure does not operate as a waiver in a federal or state proceeding if:"
-    },
-    {
-      "path": "src/content/pages/industries/logistics.mdx",
-      "id": "log-1",
-      "sentence": "Federal rules, 49 CFR 371.2, define a broker as a person who, for compensation, arranges or offers to arrange the transportation of property by an authorized motor carrier.",
-      "kind": "regulation",
-      "sourceId": "fmcsa-49-cfr-371-2",
-      "locator": "49 CFR 371.2(a)",
-      "quote": "Broker means a person who, for compensation, arranges, or offers to arrange, the transportation of property"
-    },
-    {
-      "path": "src/content/pages/industries/logistics.mdx",
-      "id": "log-2",
-      "sentence": "Federal rules, 49 CFR 395.8, require a motor carrier operating commercial motor vehicles to install an electronic logging device and to require each of its drivers to use one to record duty status.",
-      "kind": "regulation",
-      "sourceId": "fmcsa-49-cfr-395-8",
-      "locator": "49 CFR 395.8(a)(1)(i)",
-      "quote": "a motor carrier operating commercial motor vehicles must install and require each of its drivers to use an ELD."
-    },
-    {
-      "path": "src/content/pages/industries/logistics.mdx",
-      "id": "log-3",
-      "sentence": "Customs and Border Protection rules, 19 CFR 149.2, direct the importer or an authorized agent to submit the importer security filing in English, and set a deadline for some of its data of no later than 24 hours before the cargo is laden aboard the vessel at the foreign port.",
-      "kind": "regulation",
-      "sourceId": "cbp-19-cfr-149-2",
-      "locator": "19 CFR 149.2(a) and (b)",
-      "quote": "no later than 24 hours before the cargo is laden aboard the vessel at the foreign port."
-    },
-    {
-      "path": "src/content/pages/industries/logistics.mdx",
-      "id": "log-4",
-      "sentence": "Under 49 U.S.C. 14706, a carrier providing transportation or service subject to the covered chapters must issue a receipt or bill of lading for property it receives, and its liability under that paragraph is for the actual loss or injury to the property.",
-      "kind": "regulation",
-      "sourceId": "usc-49-14706",
-      "locator": "49 U.S.C. 14706(a)(1)",
-      "quote": "The liability imposed under this paragraph is for the actual loss or injury to the property"
-    },
-    {
-      "path": "src/content/pages/industries/proptech.mdx",
-      "id": "pro-1",
-      "sentence": "The Fair Housing Act, 42 U.S.C. 3604, makes it unlawful to make, print or publish, or cause to be made, printed or published, any notice, statement or advertisement that indicates any preference, limitation or discrimination.",
-      "kind": "regulation",
-      "sourceId": "usc-42-3604",
-      "locator": "42 U.S.C. 3604(c)",
-      "quote": "To make, print, or publish, or cause to be made, printed, or published any notice, statement, or advertisement,"
-    },
-    {
-      "path": "src/content/pages/industries/proptech.mdx",
-      "id": "pro-2",
-      "sentence": "The Fair Credit Reporting Act defines a consumer reporting agency as a person that regularly assembles or evaluates consumer credit information or other information on consumers to furnish consumer reports to third parties.",
-      "kind": "regulation",
-      "sourceId": "usc-15-1681a",
-      "locator": "15 U.S.C. 1681a(f)",
-      "quote": "regularly engages in whole or in part in the practice of assembling or evaluating consumer credit information"
-    },
-    {
-      "path": "src/content/pages/industries/proptech.mdx",
-      "id": "pro-3",
-      "sentence": "A federal statute, 15 U.S.C. 7001, provides that a signature, contract or other record relating to a transaction in or affecting interstate or foreign commerce may not be denied legal effect, validity or enforceability solely because it is in electronic form.",
-      "kind": "regulation",
-      "sourceId": "usc-15-7001",
-      "locator": "15 U.S.C. 7001(a)",
-      "quote": "a signature, contract, or other record relating to such transaction may not be denied legal effect,"
-    },
-    {
-      "path": "src/content/pages/industries/proptech.mdx",
-      "id": "pro-4",
-      "sentence": "Regulation X, 12 CFR 1024, is issued by the Consumer Financial Protection Bureau to implement the Real Estate Settlement Procedures Act of 1974.",
-      "kind": "regulation",
-      "sourceId": "cfpb-12-cfr-1024-1",
-      "locator": "12 CFR 1024.1",
-      "quote": "to implement the Real Estate Settlement Procedures Act of 1974, as amended, 12 U.S.C. 2601 et. seq."
     }
   ]
 }

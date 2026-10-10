@@ -3,17 +3,17 @@ import test from 'node:test';
 import { repoViewAt } from '../wp-60/repo-view.ts';
 import { checkSourcesFile, classifyHost, fetchDate } from '../wp-60/sources.ts';
 import type { ClaimRecord, DocumentFacts, DocumentRecord, SourcesFile } from '../wp-60/sources.ts';
-import { familyOf, industrySlugs, ledger, pagePath, root, sentencesOf } from './pages.ts';
+import { familyOf, industrySlugs, ledger, pagePath, perimeterClaims, root, sentencesOf } from './pages.ts';
 import type { PerimeterClaim } from './pages.ts';
 
 /**
  * The outside facts of the industry pages (W8-9: every source fetched in the writing session, with URL and fetch time). A family page keeps
- * its sources in `family.sources`, a place the repository-wide reader (sources-ledger.test.ts, `factsFor`) does not read, so the claims are
- * kept under `perimeterClaims` and checked here with the same `checkSourcesFile`, given the family sources as the document's own.
+ * its sources in `family.sources`. The repository-wide reader (sources-ledger.test.ts, `factsFor`) reads them from 60a.4 on; this file
+ * runs the same `checkSourcesFile` with the family sources as the document's own, so the rules hold on a branch that predates it.
  */
 const repo = repoViewAt(root);
 const file = ledger();
-const claims = file.perimeterClaims;
+const claims = perimeterClaims(file);
 
 function factsOf(path: string): DocumentFacts {
   const slug = path.split('/').pop()?.replace(/\.mdx$/, '') ?? '';
@@ -21,7 +21,7 @@ function factsOf(path: string): DocumentFacts {
   return { path, sources: family.sources.map((s) => ({ id: s.id, url: s.url, accessed: s.accessed.toISOString().slice(0, 10) })), noStatistics: false, markers: [] };
 }
 
-const toRecord = (c: PerimeterClaim): ClaimRecord => ({ id: c.id, sentence: c.sentence, kind: c.kind, sourceId: c.sourceId, locator: c.locator, quote: c.quote });
+const toRecord = ({ path: _path, ...claim }: PerimeterClaim): ClaimRecord => claim;
 
 function asLedger(source: SourcesFile, perimeter: readonly PerimeterClaim[]): { file: SourcesFile; facts: Map<string, DocumentFacts> } {
   const paths = [...new Set(perimeter.map((c) => c.path))];
@@ -56,9 +56,10 @@ test('every claim is a regulation with a locator and a verbatim quote of at most
   for (const claim of claims) {
     assert.equal(claim.kind, 'regulation', claim.id);
     assert.ok(claim.locator.trim().length >= 5, `${claim.id} needs a locator`);
-    const words = claim.quote.split(/\s+/).filter(Boolean).length;
+    const quote = claim.quote ?? '';
+    const words = quote.split(/\s+/).filter(Boolean).length;
     assert.ok(words >= 4 && words <= 25, `${claim.id} quote is ${words} words`);
-    assert.ok(claim.quote.length <= 125, `${claim.id} quote is ${claim.quote.length} characters; the brief allows about 125`);
+    assert.ok(quote.length <= 125, `${claim.id} quote is ${quote.length} characters; the brief allows about 125`);
   }
   assert.equal(new Set(claims.map((c) => c.id)).size, claims.length, 'claim ids are unique');
 });
