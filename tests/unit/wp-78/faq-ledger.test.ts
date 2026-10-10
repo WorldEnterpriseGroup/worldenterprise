@@ -49,7 +49,7 @@ test('a label is a bare yes or no: it states no fact about WE', () => {
   // A sentence that says what WE does or does not do is a fact and needs a claim, a page or a decision, however short it is.
   for (const sentence of mapped) {
     if (sentence.label !== true) continue;
-    assert.match(sentence.text, /^(Yes|No|You do)\.$/, `"${sentence.text}" is not a bare yes or no`);
+    assert.match(sentence.text, /^(Yes|No)\.$/, `"${sentence.text}" is not a bare yes or no`);
   }
 });
 

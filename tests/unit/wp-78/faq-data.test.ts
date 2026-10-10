@@ -121,13 +121,13 @@ test('a group name is not shared between the audience entries and the originals 
   }
 });
 
-test('an investor answer that touches funding says "WE makes no promise of funding." and at least one investor answer does', () => {
+test('every investor-facing answer keeps "WE makes no promise of funding."', () => {
   const investors = added.filter((r) => r.audience === 'investor');
-  assert.ok(investors.length > 0);
-  for (const row of investors.filter((r) => r.claimsUsed.includes('C-05') || /fund/i.test(r.answer))) {
-    assert.ok(row.answer.includes('WE makes no promise of funding.'), `${row.id} mentions funding without the promise sentence`);
+  assert.equal(investors.length, 9);
+  for (const row of investors) {
+    assert.ok(row.answer.includes('WE makes no promise of funding.'), `${row.id} lacks the funding sentence`);
+    assert.ok(row.claimsUsed.includes('C-05'), `${row.id} carries the sentence without naming C-05`);
   }
-  assert.ok(investors.some((r) => r.answer.includes('WE makes no promise of funding.')));
 });
 
 test('the new answers use no word the program does not use for itself, and no amount, count or time', () => {
