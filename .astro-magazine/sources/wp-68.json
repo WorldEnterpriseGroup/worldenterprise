@@ -199,6 +199,24 @@
       "fetchedAt": "2026-10-10T11:38:30Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-flexible-working",
+      "url": "https://www.gov.uk/flexible-working",
+      "title": "Flexible working",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:38:45Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-sp-800-46r2",
+      "url": "https://csrc.nist.gov/pubs/sp/800/46/r2/final",
+      "title": "SP 800-46 Rev. 2, Guide to Enterprise Telework, Remote Access, and Bring Your Own Device (BYOD) Security",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T11:38:50Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -630,6 +648,59 @@
           "sourceId": "irs-hiring-employees",
           "locator": "Keep a Form W-4 on file",
           "quote": "you should have a Form W-4, Employee's Withholding Certificate, on file for each employee."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/writing-down-how-a-remote-team-works-a-team-handbook.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "all components of these technologies, including organization-issued and bring your own device (BYOD) client devices",
+          "kind": "paraphrase",
+          "sourceId": "nist-sp-800-46r2",
+          "locator": "Abstract",
+          "quote": "All components of these technologies, including organization-issued and bring your own device (BYOD) client devices"
+        },
+        {
+          "id": "A2",
+          "sentence": "should be secured against expected threats as identified through threat models",
+          "kind": "paraphrase",
+          "sourceId": "nist-sp-800-46r2",
+          "locator": "Abstract",
+          "quote": "should be secured against expected threats as identified through threat models."
+        },
+        {
+          "id": "A3",
+          "sentence": "gives advice on creating related security policies",
+          "kind": "paraphrase",
+          "sourceId": "nist-sp-800-46r2",
+          "locator": "Abstract",
+          "quote": "It also gives advice on creating related security policies."
+        },
+        {
+          "id": "A4",
+          "sentence": "all employees have the legal right to request flexible working",
+          "kind": "regulation",
+          "sourceId": "govuk-flexible-working",
+          "locator": "Your right",
+          "quote": "All employees have the legal right to request flexible working."
+        },
+        {
+          "id": "A5",
+          "sentence": "employees can make a request for flexible working from their first day in a job",
+          "kind": "regulation",
+          "sourceId": "govuk-flexible-working",
+          "locator": "Your right",
+          "quote": "Employees can make a request for flexible working from their first day in a job."
+        },
+        {
+          "id": "A6",
+          "sentence": "having flexible start and finish times, or working from home",
+          "kind": "regulation",
+          "sourceId": "govuk-flexible-working",
+          "locator": "What it can include",
+          "quote": "for example having flexible start and finish times, or working from home."
         }
       ]
     },
