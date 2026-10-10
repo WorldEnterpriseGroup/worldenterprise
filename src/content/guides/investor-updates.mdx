@@ -5,7 +5,18 @@ description: How to write a short, consistent progress update for investors, adv
 disclaimers:
   - no-funding
   - not-legal-advice
-updated: 2026-10-06
+sources:
+  - id: cornell-10b5
+    title: 17 CFR 240.10b-5, Employment of manipulative and deceptive devices
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/cfr/text/17/240.10b-5
+    accessed: 2026-10-10
+  - id: digital-gov-writing
+    title: Plain language guide, Writing
+    publisher: Digital.gov, U.S. General Services Administration
+    url: https://digital.gov/guides/plain-language/writing
+    accessed: 2026-10-10
+updated: 2026-10-10
 ---
 import DataTable from '../../components/ui/DataTable.astro';
 
@@ -40,12 +51,48 @@ Weekly and monthly both work. What matters is that you choose a rhythm you can k
 - **Label estimates.** Say which numbers are measured, which are estimated and which are plans.
 - **Make one clear ask.** Many readers want to help and do not know how.
 
+## Write it so it can be read quickly
+
+Most readers open an update between other tasks. Write the headline last, so that it matches what you ended up saying, and put the point of each part in its first sentence. Name who did what. The U.S. government's plain language guidance puts the reason briefly: [active voice makes it clear who should do what](https://digital.gov/guides/plain-language/writing). "The contractor finished the import tool" tells a reader more than "the import tool was finished".
+
+Write the numbers section as a small table you can reuse: the measure, this period, last period, and one line on why it moved. If a number is bad, give it the same space as a good one. If you have no number for something yet, say so and say when you expect to.
+
+## A worked example
+
+The example below is made up to show the format. It is not a real company, and none of its figures describe any real business.
+
+> **Illustrative example, not a real company.** A fictional scheduling tool for small dental offices, monthly update.
+>
+> **Headline.** Two pilots went live and one stalled.
+>
+> **Progress.** Last month's goals were to launch with two offices, ship appointment reminders and interview five more office managers. Two offices are live and reminders shipped. The team completed three of the five interviews. The other two slipped because both managers rescheduled twice.
+>
+> **Numbers.** Paying accounts: 2, up from 0. Weekly active offices: 2, up from 0. Reminders sent: counted from the first live day. Definitions are linked below, and none changed this month.
+>
+> **Problems.** The third pilot office has not logged in since the first week. The team does not yet know whether the cause is onboarding or fit.
+>
+> **Asks.** An introduction to an office manager at a group of five or more locations, and a reviewer for the reminder wording.
+>
+> **Next period.** Call the third pilot office, finish the five interviews and publish the metric definitions.
+
+Notice that the stalled pilot and the missed interviews are stated in the same plain tone as the wins. That is the habit that makes later updates believable. The [weekly investor update template](/library/weekly-investor-update-template/) gives you the empty version.
+
+## Keep the update consistent with your records
+
+An update is a claim, and your data room is where someone checks it. Before you send, compare each number with the source it came from, and make sure the update agrees with your [metrics definitions](/research/early-stage-saas-metrics-definitions/). The [runway calculator](/tools/runway-calculator/) is a quick way to check that your cash figure and your burn figure describe the same period. When the update and the records disagree, fix the records or fix the update before it goes out.
+
 ## Care with statements about the future
 
 An update that talks about future results can be read as a statement to people who may put money into your company. Describe plans as plans, give the assumptions behind them and avoid anything that sounds like a promise. Ask your own counsel how to word forward-looking statements, and what you should and should not say to people who are not yet investors.
 
+The federal antifraud rule for securities, Rule 10b-5, makes it unlawful in connection with the purchase or sale of any security [to make any untrue statement of a material fact or to omit to state a material fact necessary](https://www.law.cornell.edu/cfr/text/17/240.10b-5) to make the statements made not misleading. Whether a particular update falls within the rule depends on the facts, and that is a question for your counsel. The working habit that follows from it is simple: do not state what you do not know, and do not leave out what changes the meaning of what you did state.
+
 ## Where the update lives
 
 Add each update to folder 9 of your [seed data room](/fundability/data-room/). The [weekly investor update template](/library/weekly-investor-update-template/) holds the structure above in a copyable form, and works at a weekly or monthly rhythm.
+
+## About the evidence
+
+Two outside sources back this guide, both read on the dates listed under Sources: the text of Rule 10b-5 in the Code of Federal Regulations, and the U.S. government's plain language guide on writing. The six-part structure, the rhythm and the worked example are working practice and not a rule, and the example is invented. A regulation can change, so check the current text before you rely on it.
 
 This guide is general information and not legal advice.

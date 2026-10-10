@@ -1,0 +1,90 @@
+---
+section: fundability
+title: Term sheet checklist
+description: A checklist of questions to answer before you sign a term sheet: what each section covers, what to ask, and what to bring to your own counsel.
+disclaimers:
+  - no-funding
+  - not-legal-advice
+sources:
+  - id: nvca-model-docs
+    title: Model Legal Documents
+    publisher: National Venture Capital Association
+    url: https://nvca.org/model-legal-documents/
+    accessed: 2026-10-10
+  - id: dgcl-151
+    title: Delaware Code, Title 8, section 151, Classes and series of stock; redemption; rights
+    publisher: Delaware General Assembly
+    url: https://delcode.delaware.gov/title8/c001/sc05/index.html
+    accessed: 2026-10-10
+updated: 2026-10-10
+---
+import DataTable from '../../components/ui/DataTable.astro';
+
+A term sheet is a short summary of the main terms an investor proposes, written before the long legal documents are drafted. It is where most of the real decisions are made, because the long documents follow it. Some parts of a term sheet can bind the parties even when the rest does not, so ask your counsel which parts of yours do before you sign anything.
+
+This guide is a list of questions, not a set of recommendations. It does not tell you which terms to accept, and it describes no agreement between a founder and World Enterprise. If you receive a term sheet, your own lawyer reads it, and this page helps you arrive at that conversation prepared.
+
+## Before the term sheet arrives
+
+Most of the preparation can be done while no one has offered you anything. Four steps help.
+
+1. **Bring the cap table up to date.** Every term in a term sheet changes who owns what, and you cannot judge a change without the starting point. The article on [cap table basics for founders](/insights/cap-table-basics-for-founders/) explains the columns, and the [cap table explainer](/tools/cap-table-explainer/) lets you try your own layout.
+2. **Know your runway.** The [runway calculator](/tools/runway-calculator/) shows how long your cash lasts at your current burn. A founder who knows the number negotiates differently from one who is guessing.
+3. **Choose your counsel.** Pick a lawyer who works for you, not for the investor, and ask what they charge to review a term sheet before you need them.
+4. **Decide what matters most to you.** Control, price, speed and the character of the investor are different goals, and the term sheet will trade some against others. Write your order down before the conversation starts.
+
+## A published model to compare against
+
+Published model documents give you something to compare a proposal against. The National Venture Capital Association describes its model legal documents as [the industry-embraced model documents to be used in venture capital financings](https://nvca.org/model-legal-documents/), and says each one is intended to serve as a starting point only and should be tailored to specific requirements. Reading a model next to your term sheet shows you where the proposal departs from a common form. Whether a departure is usual or unusual is a question for your counsel, who will have seen many deals.
+
+## The checklist
+
+Read your term sheet one row at a time. For each row, find the sentence that covers it, and if no sentence does, treat that as a question to ask.
+
+<DataTable
+  caption="A term sheet, section by section"
+  columns={['Section', 'What to find', 'Questions to ask']}
+  rows={[
+    ['Price and amount', 'The amount of money, the company valuation before the investment and the share of the company the investor will hold afterward.', 'Is the pool of shares set aside for future employees counted before or after the investment? What is the resulting ownership for each holder?'],
+    ['Type of security', 'What the investor receives: a class of stock, or a contract that converts into stock later.', 'What rights does this class carry that common stock does not?'],
+    ['Liquidation preference', 'Who is paid first, and how much, if the company is sold or wound up.', 'Is the preference a single return of the investment or a multiple? Does the investor also share in what is left? Ask for the payout at three sale prices.'],
+    ['Voting and the board', 'Who sits on the board, who appoints each seat, and which decisions need an investor to agree.', 'Which decisions can the investor block? Can the board still act quickly on ordinary business?'],
+    ['Protection against a lower price later', 'Whether an investor is compensated if a later round is priced lower.', 'How is the compensation calculated, and how much would it change your ownership in a bad case?'],
+    ['Information rights', 'What reports the investor can require, and how often.', 'Can you meet the reporting requirement with your regular update? See the guide on investor updates.'],
+    ['Founder terms', 'How the founders\' own shares vest, and what happens to unvested shares if a founder leaves or the company is sold.', 'Does the vesting restart, and does anything accelerate on a sale?'],
+    ['Later rounds', 'Whether the investor may take part in future financings, and on what terms.', 'Does the right continue indefinitely, or does it end at a stated point?'],
+    ['Exclusivity', 'Any period in which you agree not to talk to other investors.', 'How long does it last, and what happens if the investor does not close?'],
+    ['Costs and conditions', 'Who pays the legal fees, and what must happen before the deal closes.', 'Is the deal conditional on a review you have not seen? What happens to the fees if it falls through?'],
+  ]}
+/>
+
+## Voting rights are set in your documents
+
+When a term sheet says a class of stock has special voting rights, those rights are written into the company's formation documents. Under Delaware law, section 151 lets a corporation create classes and series of stock, and says which may have [voting powers, full or limited, or no voting powers](https://delcode.delaware.gov/title8/c001/sc05/index.html). The practical point holds anywhere: the words in the term sheet become the words in the charter, so read the term sheet as if each phrase were permanent. If your company is not a Delaware corporation, ask your counsel how your own law handles classes of stock.
+
+## A worked example of the payout question
+
+The example below is invented to show why the checklist asks for payouts at several sale prices. Its terms are chosen for the illustration and are not typical of any real deal.
+
+> **Illustrative example, not a real company.** A fictional company raises an investment of 10 units. In exchange, the investor holds 25 percent of the company and has a preference: on a sale, the investor receives either its 10 units back or its 25 percent share of the sale price, whichever is larger, and does not receive both.
+>
+> At a sale price of 8 units, the investor takes all 8 and the founders receive nothing. At a sale price of 30 units, the 25 percent share is 7.5 units, so the investor takes its 10 units back and the founders share the remaining 20. At a sale price of 100 units, the 25 percent share is 25 units, which is more than 10, so the investor takes the share and the founders share the remaining 75.
+
+If the preference also let the investor share in what remains after taking its money back, the figures would differ at every price. That is the reason to ask for the worked table. A term sheet that cannot show you the payout at a low, a middle and a high sale price has not yet told you what the terms mean.
+
+## Terms to ask about twice
+
+- **"To be agreed."** A term left open is a term that will be set later, usually by whoever has more leverage then. Ask what the default is.
+- **Anything described in one word.** "Standard" and "customary" mean something to your lawyer and little to you. Ask for the sentence in full.
+- **A deadline to sign.** Time pressure is common. Ask what changes if you take a few days to have counsel read it.
+- **Terms that interact.** A valuation that looks high can come with preferences or control terms that change who benefits. Read the rows together, not one at a time.
+
+## What to bring to your counsel
+
+Bring the term sheet, your current cap table, your formation documents, a one-page summary of where the company stands, and your written priorities. The article on [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) lists what to ask, and the article on [reading a term sheet line by line](/insights/reading-a-term-sheet-line-by-line/) goes through the clauses one at a time. The guide on [SAFEs in plain language](/fundability/safe-explained/) covers the other common instrument.
+
+## About the evidence
+
+Two outside sources back this guide, both read on the dates listed under Sources: the National Venture Capital Association's page on its model legal documents, and section 151 of Title 8 of the Delaware Code. The checklist rows, the questions and the example are working practice, and the example is invented. The guide cannot tell you what is usual in any particular market or round. Terms vary, laws change, and the only person who can advise on your term sheet is a lawyer who has read it.
+
+This guide is general information and not legal advice.
