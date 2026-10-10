@@ -1,0 +1,115 @@
+---
+title: The NIST AI Risk Management Framework for a small team
+seoTitle: NIST AI RMF for a small team
+description: What the NIST AI Risk Management Framework contains, how its four functions read at the scale of a small team, and what the framework does not say.
+topic: ai
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders, corporate-innovators]
+related: [choosing-a-model-provider-the-questions-that-matter, evaluating-an-llm-feature-before-you-ship-it, human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop, ai-regulation-for-a-small-saas-company-what-to-ask-counsel]
+evidence: [nist-airmf, nist-ai100-1, nist-ai600-1, nist-airmf-playbook]
+relatedPlaybook: build-and-ship-v1
+relatedServices: [B]
+sources:
+  - id: nist-airmf
+    title: AI Risk Management Framework
+    publisher: National Institute of Standards and Technology
+    url: https://www.nist.gov/itl/ai-risk-management-framework
+    accessed: 2026-10-10
+  - id: nist-ai100-1
+    title: "Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1"
+    publisher: National Institute of Standards and Technology
+    url: https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf
+    accessed: 2026-10-10
+  - id: nist-ai600-1
+    title: "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile, NIST AI 600-1"
+    publisher: National Institute of Standards and Technology
+    url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf
+    accessed: 2026-10-10
+  - id: nist-airmf-playbook
+    title: NIST AI RMF Playbook
+    publisher: NIST AI Resource Center
+    url: https://airc.nist.gov/airmf-resources/playbook/
+    accessed: 2026-10-10
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+The NIST AI Risk Management Framework, usually shortened to the AI RMF, is a document from the U.S. National Institute of Standards and Technology about managing the risks of artificial intelligence systems. It is written for organizations of every size, and a small team that ships a feature built on a language model will find its vocabulary useful and its length daunting. This article describes what the framework contains, offers one way to read it at the scale of a few people, and says what it leaves out.
+
+It describes a published document, as the NIST pages read on October 10, 2026. It does not state that any company follows it, conforms to it or has been assessed against it.
+
+## What the framework is
+
+NIST describes the AI RMF as a framework developed to better manage risks to individuals, organizations and society associated with AI, and says it is intended for voluntary use. It was released on January 26, 2023. The document itself calls the framework "voluntary, rights-preserving, non-sector-specific, and use-case agnostic", with flexibility for organizations of all sizes and in all sectors.
+
+The framework has two parts. The first frames AI risk and describes the characteristics of a trustworthy AI system: valid and reliable, safe, secure and resilient, accountable and transparent, explainable and interpretable, privacy-enhanced, and fair with harmful bias managed. The second part is the core, which describes four functions, and the profiles that apply it to a setting.
+
+One point is easy to miss and shapes everything below. NIST's AI RMF page says that the AI RMF 1.0 is being revised as part of the White House AI Action Plan, and the Playbook page says it will be updated after the framework is revised. Treat the current text as a snapshot.
+
+## The four functions
+
+The core organizes AI risk management into four functions: Govern, Map, Measure and Manage. The document says that Govern applies to all stages of an organization's AI risk management, while the other three can be applied in AI system-specific contexts and at specific stages of the AI lifecycle. It also warns that the actions under the functions "do not constitute a checklist, nor are they necessarily an ordered set of steps."
+
+<DataTable
+  caption="The four functions as NIST describes them, with one reading for a small team"
+  columns={['Function', 'What the document says it does', 'A small-team reading (this article, not NIST)']}
+  rows={[
+    ['Govern', 'Cultivates and implements a culture of risk management; it is a cross-cutting function infused throughout the others', 'Name who decides whether an AI feature ships and who can stop it; keep the list of rules that apply in one place'],
+    ['Map', 'Establishes the context to frame risks related to an AI system', 'Write down the purpose, the users, the data and the third-party components before building further'],
+    ['Measure', 'Employs quantitative, qualitative or mixed-method tools to analyze, assess, benchmark and monitor AI risk', 'Keep test sets, metrics and results for each release, and re-run them while the feature is live'],
+    ['Manage', 'Allocates risk resources to mapped and measured risks and covers plans to respond to and recover from incidents', 'Decide in advance how the feature is switched off, who is told of an error and how it is recorded']
+  ]}
+/>
+
+Some subcategories in the document read as plainly useful at any size. Govern 2.1 asks that roles, responsibilities and lines of communication for mapping, measuring and managing AI risks are documented and clear to individuals and teams throughout the organization. Map 1.1 asks that intended purposes, potentially beneficial uses, specific laws, norms and expectations, and prospective deployment settings are understood and documented. Measure 2.1 asks that test sets, metrics and details about the tools used during testing, evaluation, verification and validation are documented. Manage 2.4 asks that mechanisms are in place, with responsibilities assigned, to supersede, disengage or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use. Manage 4.3 asks that incidents and errors are communicated to relevant AI actors, and that processes for tracking, responding to and recovering from them are followed and documented.
+
+On measurement the framework is direct. The Measure function says AI systems should be tested before their deployment and regularly while in operation. The article on <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">evaluating an LLM feature before you ship it</MaybeLink> turns that sentence into a working method.
+
+## The Playbook
+
+NIST publishes a companion Playbook that provides suggested actions for achieving the outcomes in the core. The Playbook page states that it is neither a checklist nor a set of steps to be followed in its entirety, and that its suggestions are voluntary. It is the place to look for concrete practices once a subcategory has caught your attention, and the page notes that it will be updated after the framework is revised.
+
+## The Generative AI Profile
+
+On July 26, 2024 NIST released NIST AI 600-1, the Generative Artificial Intelligence Profile. The document explains that a profile is an implementation of the AI RMF functions, categories and subcategories for a specific setting, application or technology, and here the technology is generative AI. It lists twelve risks it describes as unique to or exacerbated by generative AI:
+
+- CBRN information or capabilities
+- confabulation
+- dangerous, violent or hateful content
+- data privacy
+- environmental impacts
+- harmful bias or homogenization
+- human-AI configuration
+- information integrity
+- information security
+- intellectual property
+- obscene, degrading and abusive content
+- value chain and component integration
+
+Three of these describe situations a small team building on a third-party model is likely to meet. The profile defines confabulation as "the production of confidently stated but erroneous or false content". It describes human-AI configuration as arrangements of a human and an AI system that can result in, among other things, automation bias or over-reliance. And it describes value chain and component integration as including non-transparent or untraceable integration of upstream third-party components and improper supplier vetting. The first is a reason to test, the second a reason to keep a person in the loop (see <MaybeLink path="/insights/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop/">human review in an AI feature</MaybeLink>), and the third a reason to ask hard questions of a provider (see <MaybeLink path="/insights/choosing-a-model-provider-the-questions-that-matter/">choosing a model provider</MaybeLink>). For the information security entry, see <MaybeLink path="/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/">prompt injection and the OWASP Top 10</MaybeLink>.
+
+## A one-page worksheet
+
+The framework does not prescribe a template, so any worksheet is your own. One page per AI feature, with these headings, covers a lot of what the subcategories above ask for in spirit.
+
+1. **Purpose and users.** What is the feature for, who uses it and what do they expect?
+2. **Owner.** Who decides that it ships, and who can switch it off?
+3. **Components.** Which models, data sources and third-party services does it depend on?
+4. **Tests.** Which test sets and metrics did you run, with what results, on what date?
+5. **Human oversight.** Where does a person review or override the output?
+6. **Incidents.** How are errors recorded and communicated, and how is the feature rolled back?
+7. **Review date.** When will you read this page again?
+
+<Callout title="Describe what you did">
+  If a customer or investor asks about AI risk, answer with the page above and its dates. A description of your own practice is easier to defend than a statement that you follow a named framework.
+</Callout>
+
+Pair the worksheet with the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> for the conventional security work it assumes, and see the <MaybeLink path="/playbooks/build-and-ship-v1/">build and ship playbook</MaybeLink> for where such a page fits in a first release.
+
+## What this article cannot tell you
+
+The AI RMF and its Generative AI Profile are voluntary U.S. federal documents. They are not law, and they do not tell you what any statute or regulation requires of your product; that is a question for counsel, and the article on <MaybeLink path="/insights/ai-regulation-for-a-small-saas-company-what-to-ask-counsel/">AI regulation for a small SaaS company</MaybeLink> lists questions to bring. The framework is under revision, so details here may change. This article summarizes the text as read on October 10, 2026 and does not reproduce it.
+
+Nothing in this article states or implies that any organization follows, conforms to or is certified under the framework or the profile. The worksheet is a suggestion by this article, not NIST guidance. This is general information, current as of October 10, 2026, and is not legal or financial advice.

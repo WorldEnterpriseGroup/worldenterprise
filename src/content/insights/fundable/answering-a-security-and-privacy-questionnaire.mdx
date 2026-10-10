@@ -1,0 +1,124 @@
+---
+title: "Answering a security and privacy questionnaire"
+seoTitle: Security questionnaires
+description: "What the CAIQ, CCM, OWASP ASVS and NIST frameworks are, how a questionnaire answer relates to evidence, and the questions to bring to counsel."
+topic: fundable
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders]
+related: [ordering-a-pre-seed-evidence-pack, privacy-law-basics-for-a-small-product, ip-contracts-and-access-diligence-for-small-engineering-teams]
+sources:
+  - id: csa-caiq
+    title: Consensus Assessment Initiative Questionnaire (CAIQ) v3.1
+    publisher: Cloud Security Alliance
+    url: https://cloudsecurityalliance.org/artifacts/consensus-assessments-initiative-questionnaire-v3-1
+    accessed: 2026-10-10
+  - id: csa-ccm
+    title: Cloud Controls Matrix (CCM)
+    publisher: Cloud Security Alliance
+    url: https://cloudsecurityalliance.org/research/cloud-controls-matrix
+    accessed: 2026-10-10
+  - id: owasp-asvs
+    title: OWASP Application Security Verification Standard (ASVS)
+    publisher: OWASP Foundation
+    url: https://owasp.org/projects/asvs
+    accessed: 2026-10-10
+  - id: nist-csf
+    title: Cybersecurity Framework
+    publisher: National Institute of Standards and Technology
+    url: https://www.nist.gov/cyberframework
+    accessed: 2026-10-10
+  - id: nist-ssdf
+    title: Secure Software Development Framework (SSDF)
+    publisher: National Institute of Standards and Technology
+    url: https://csrc.nist.gov/projects/ssdf
+    accessed: 2026-10-10
+  - id: eu-gdpr
+    title: "Regulation (EU) 2016/679 (General Data Protection Regulation)"
+    publisher: EUR-Lex, Publications Office of the European Union
+    url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679
+    accessed: 2026-10-10
+evidence: [csa-caiq, csa-ccm, owasp-asvs, nist-csf, nist-ssdf, eu-gdpr]
+relatedServices: [F]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: seed-data-room-checklist
+claimsUsed: [C-05]
+draft: false
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+<NoFundingDisclaimer />
+
+*General information as of October 10, 2026. It is education written by World Enterprise Editorial, not legal, security or financial advice, and not an offer or solicitation of any kind. A lawyer and a qualified security professional can say what applies to your company and your answers.*
+
+A customer or an investor's adviser sends a spreadsheet with a few hundred rows: do you encrypt data at rest, do you have an incident response plan, who are your sub-processors. This article describes the common questionnaire formats and the standards behind them as formats, explains what an answer to a question is, and lists questions to bring to counsel. It does not tell you how to answer, and it does not suggest your company holds, or lacks, any certification.
+
+## The formats, described
+
+A sender can use a form published by a standards body or write its own. The sources read for this article describe the published ones.
+
+**The CAIQ.** The Cloud Security Alliance, the CSA, describes its Consensus Assessments Initiative Questionnaire as an industry-accepted way to document what security controls exist in cloud services, offering a set of yes or no questions a cloud consumer and cloud auditor may wish to ask of a cloud provider. The page for version 3.1 says that version is no longer accepted to the CSA's STAR Registry and points to version 4, which it says has been combined with the Cloud Controls Matrix.
+
+**The CCM.** The CSA's Cloud Controls Matrix is a cybersecurity control framework for cloud computing, which the CSA says is composed of 197 control objectives structured in 17 domains. Its page says the CAIQ is built into the CCM and that version 4.1 of the two is now combined.
+
+**OWASP ASVS.** OWASP says the Application Security Verification Standard provides a basis for testing web application technical security controls.
+
+**NIST frameworks.** NIST describes its Cybersecurity Framework as helping organizations better understand and improve their management of cybersecurity risk. Its page on the Secure Software Development Framework refers to established secure software development practice documents from organizations such as BSA, OWASP and SAFECode.
+
+None of these is a law, and no source here says a company must complete any of them. A sender may ask a question in the words of one standard, several or none. Which standard a sender is working from is a question to ask the sender.
+
+## Where privacy questions come from
+
+Some privacy questions can be read against the law. The General Data Protection Regulation, which <MaybeLink path="/insights/privacy-law-basics-for-a-small-product/">the privacy basics article</MaybeLink> describes, gives two examples.
+
+- **Security of processing.** Article 32 says the controller and the processor shall implement appropriate technical and organisational measures, and it lists, as appropriate, the ability to ensure ongoing confidentiality, integrity, availability and resilience, the ability to restore the availability and access to personal data in a timely manner, and a process for regularly testing, assessing and evaluating effectiveness.
+- **Processors and sub-processors.** Article 28 says processing by a processor shall be governed by a contract or other legal act that sets out, among other things, the subject-matter and duration of the processing, and that a processor shall not engage another processor without prior specific or general written authorisation.
+
+A questionnaire row asking about restoring data or about sub-processors can therefore be read as a question about whether the company has those things in place and can show them. Whether the regulation applies to your company is a question for counsel.
+
+## What an answer is
+
+An answer to a row is a statement the company makes about itself on a given date. If the answer is yes, the next question a careful reader asks is what record shows it. That is the same pairing the article on <MaybeLink path="/insights/ordering-a-pre-seed-evidence-pack/">ordering a pre-seed evidence pack</MaybeLink> describes: a statement and the artifact behind it.
+
+The pairing can be laid out by section:
+
+| Checklist section | What the answer states | A record that would back it |
+|---|---|---|
+| Accounts and access | Who can reach which systems | An access list; the sign-in settings |
+| Code and build | How changes are reviewed and released | Review settings; the release log |
+| Data | What is held, where, and how it is protected | A data inventory; a backup test note |
+| Vendors | Who handles customer data | A vendor list and the terms read |
+| Logging and response | Who acts on an incident and how | A written plan; a log of a practice run |
+
+The first column uses section names from the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink>, which has six sections and is a self-assessment in the same shape: yes, partly or no, with an owner and a date. The checklist says it does not certify anything and maps loosely to public references such as OWASP ASVS and the NIST SSDF.
+
+## Self-assessment and certification are different objects
+
+A self-assessment and a certification or third-party attestation are different objects. That distinction is the one a questionnaire reader cares about. A completed form is a self-statement. A certificate or a report from an outside assessor is something else. The records for each kind differ, and so do the words that describe them accurately.
+
+Whether any statement in a particular answer is accurate and how it is worded are questions for counsel and a security professional. These sources do not describe how a company's answers have been treated in disputes.
+
+## Where the answers live afterward
+
+An answered questionnaire is itself a record. The guide to <MaybeLink path="/fundability/data-room/">the seed data room</MaybeLink> has a security and privacy folder holding a data inventory, an access list, the privacy notice and the vendors that handle customer data, and it says every file should carry a date. Dated answers make it possible to say what was true when a form was sent. The <MaybeLink path="/insights/open-source-licenses-inside-a-commercial-product/">open-source license</MaybeLink> article describes the license side of the components a code and build answer refers to.
+
+## Questions to bring to counsel
+
+The <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> is a general list. For a questionnaire:
+
+1. Which standard or custom form is the sender using, and who wrote the questions?
+2. Which answers are statements about facts we can document, and which are statements about intentions or plans?
+3. Is the questionnaire part of a contract, or does a signature or an attestation attach to it?
+4. Do any answers describe our use of personal data, and do they agree with our privacy notice?
+5. Which questions touch laws that may or may not apply to us, such as the GDPR?
+6. Who reviews the draft answers before they are sent, and where is the sent version kept?
+7. How do we word an answer when the honest reply is partly, no or not yet?
+
+## What this article cannot tell you
+
+It does not say how to answer any question, which standard to adopt or whether any certification is worth holding. It does not describe the content of the CCM's controls, of ASVS or of the NIST frameworks beyond what their own pages say.
+
+It describes the formats and does not assess a company's security. A completed questionnaire is a statement and not a test, and nothing here suggests a company meets any standard. It does not cover contract terms, insurance, or industry-specific rules for health or finance.
+
+The sources were read on October 10, 2026. Questionnaire versions are retired and replaced, as the CAIQ page itself shows, so a decision should rest on the version the sender actually uses and on a professional who has seen your systems.
