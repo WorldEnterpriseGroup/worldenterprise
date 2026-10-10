@@ -77,10 +77,31 @@ export function withLastmod<T extends SitemapItemLike>(item: T, lookup: (pathnam
   return { ...item, lastmod: found.toISOString() };
 }
 
-/** robots.txt body. Preview builds disallow everything and advertise no sitemap; production allows all. */
+/**
+ * Documented AI crawler and assistant user-agent tokens, grouped by vendor. Production names each one with an explicit
+ * allow (DP-2), so the policy is stated rather than implied by the wildcard group. The list is recalled from vendor
+ * documentation, not fetched; the handoff names the vendor page to re-check each family against.
+ */
+export const AI_CRAWLER_GROUPS: readonly { readonly vendor: string; readonly agents: readonly string[] }[] = [
+  { vendor: 'OpenAI', agents: ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User'] },
+  { vendor: 'Anthropic', agents: ['ClaudeBot', 'Claude-User', 'Claude-SearchBot', 'anthropic-ai'] },
+  { vendor: 'Google (AI training and Gemini grounding control)', agents: ['Google-Extended'] },
+  { vendor: 'Apple (AI training control)', agents: ['Applebot-Extended'] },
+  { vendor: 'Perplexity', agents: ['PerplexityBot', 'Perplexity-User'] },
+  { vendor: 'Common Crawl', agents: ['CCBot'] },
+];
+
+/** Every AI crawler token named in robots.txt, in file order. */
+export const AI_CRAWLER_AGENTS: readonly string[] = AI_CRAWLER_GROUPS.flatMap((group) => group.agents);
+
+/**
+ * robots.txt body. Preview builds disallow everything (named crawlers included, through the wildcard group) and
+ * advertise no sitemap. Production allows all and names each AI crawler with its own allow group.
+ */
 export function robotsTxt(preview: boolean): string {
   if (preview) return 'User-agent: *\nDisallow: /\n';
-  return `User-agent: *\nAllow: /\n\nSitemap: ${site.origin}/sitemap-index.xml\n`;
+  const named = AI_CRAWLER_GROUPS.map((group) => [`# ${group.vendor}`, ...group.agents.flatMap((agent) => [`User-agent: ${agent}`, 'Allow: /', ''])].join('\n')).join('\n');
+  return `User-agent: *\nAllow: /\n\n${named}\nSitemap: ${site.origin}/sitemap-index.xml\n`;
 }
 
 export interface SecurityTxtInput {

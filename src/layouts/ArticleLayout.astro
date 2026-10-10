@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CiteThis from '../components/geo/CiteThis.astro';
 import HeroArticle from '../components/hero/HeroArticle.astro';
 import RelatedRail from '../components/blocks/RelatedRail.astro';
 import SourcesList from '../components/blocks/SourcesList.astro';
@@ -56,6 +57,7 @@ const article = articleNode({ path: meta.path, headline: meta.title, description
         <div class="prose">
           <slot />
           <SourcesList sources={sources} />
+          <CiteThis title={meta.title} path={meta.path} date={updatedDate ?? publishedDate} />
           {
             policyLive && (
               <p class="muted ui">
