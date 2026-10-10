@@ -136,6 +136,11 @@ export const HUB = {
       NO_PARTNERSHIP,
     ],
   },
+  more: {
+    heading: 'Before you send an enquiry',
+    howItWorks: 'How an enquiry is read',
+    faq: 'Read the partner FAQ',
+  },
   passItOn: {
     heading: 'Pass it on',
     question: 'Know an organization that helps founders?',

@@ -133,10 +133,14 @@ test.describe('the six routes', () => {
     test.skip(!isBuilt('/network/partners/faq/'), 'the FAQ is not built');
     await page.goto('/network/partners/faq/');
     const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
-    const faq = blocks.filter((text) => text.includes('"FAQPage"'));
+    // A page's blocks may wrap their nodes in an @graph; flatten both shapes.
+    const nodes = blocks.flatMap((text) => {
+      const parsed = JSON.parse(text) as { '@graph'?: unknown[] };
+      return Array.isArray(parsed['@graph']) ? parsed['@graph'] : [parsed];
+    }) as { '@type'?: string; mainEntity?: unknown[] }[];
+    const faq = nodes.filter((node) => node['@type'] === 'FAQPage');
     expect(faq).toHaveLength(1);
-    const parsed = JSON.parse(faq[0] ?? '{}') as { mainEntity?: unknown[] };
-    expect((parsed.mainEntity ?? []).length).toBeGreaterThanOrEqual(6);
+    expect((faq[0]?.mainEntity ?? []).length).toBeGreaterThanOrEqual(6);
   });
 });
 

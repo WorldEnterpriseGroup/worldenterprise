@@ -51,6 +51,12 @@ const { Content } = await render(page);
     {HUB.limits.items.map((item) => <li>{item}</li>)}
   </ul>
 
+  <h2 id="partner-more">{HUB.more.heading}</h2>
+  <ul>
+    <li><a href={href(HREFS.howItWorks)}>{HUB.more.howItWorks}</a></li>
+    <li><a href={href(HREFS.faq)}>{HUB.more.faq}</a></li>
+  </ul>
+
   <Callout title={HUB.passItOn.heading}>
     <p>{HUB.passItOn.question} <a href={href(HREFS.enquire)}>{HUB.passItOn.action}</a></p>
   </Callout>
