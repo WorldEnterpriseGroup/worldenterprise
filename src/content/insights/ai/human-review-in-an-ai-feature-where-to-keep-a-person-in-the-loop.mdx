@@ -1,0 +1,107 @@
+---
+title: "Human review in an AI feature: where to keep a person in the loop"
+seoTitle: Human review in an AI feature: where to place it
+description: Where a person should review an AI feature's output, how review fails when it becomes a rubber stamp, and what standards and laws say about oversight.
+topic: ai
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [non-technical-founders, corporate-innovators]
+related: [prompt-injection-and-the-owasp-top-10-for-llm-applications, the-nist-ai-risk-management-framework-for-a-small-team, ai-regulation-for-a-small-saas-company-what-to-ask-counsel]
+evidence: [owasp-llm06, nist-ai100-1, nist-ai600-1, eu-aiact-oj, gdpr-oj]
+relatedPlaybook: build-and-ship-v1
+relatedTemplate: security-baseline-checklist
+sources:
+  - id: owasp-llm06
+    title: "LLM06:2025 Excessive Agency"
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm062025-excessive-agency/
+    accessed: 2026-10-10
+  - id: nist-ai100-1
+    title: "Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1"
+    publisher: National Institute of Standards and Technology
+    url: https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf
+    accessed: 2026-10-10
+  - id: nist-ai600-1
+    title: "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile, NIST AI 600-1"
+    publisher: National Institute of Standards and Technology
+    url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf
+    accessed: 2026-10-10
+  - id: eu-aiact-oj
+    title: Regulation (EU) 2024/1689 (Artificial Intelligence Act)
+    publisher: Official Journal of the European Union, EUR-Lex
+    url: https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng
+    accessed: 2026-10-10
+  - id: gdpr-oj
+    title: Regulation (EU) 2016/679 (General Data Protection Regulation)
+    publisher: Official Journal of the European Union, EUR-Lex
+    url: https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng
+    accessed: 2026-10-10
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+"There is a human in the loop" is an easy answer to the question of how an AI feature is kept safe, and a hard one to make specific. A person can approve every output before it is used, or look at a sample afterwards, or be called only when the system is unsure. Those are different designs with different costs, and some of them protect nobody.
+
+This article is for the people who decide how a feature should be reviewed, not the people who build it. It lays out where a person can sit, why review fails when it is poorly designed, and what the OWASP Gen AI Security Project, the NIST AI Risk Management Framework, the EU Artificial Intelligence Act and the GDPR say about human oversight, as those documents read on October 10, 2026. It is general information and not legal advice.
+
+## Three places a person can sit
+
+The following framing is this article's own, offered as a way to ask a clear question.
+
+<DataTable
+  caption="Where a person can review an AI feature's output, with an illustration of each"
+  columns={['Position', 'What it means', 'An illustration']}
+  rows={[
+    ['Before the output is used', 'A person approves each output, or each high-impact action, before it takes effect', 'A drafted customer email waits for a person to read and send it'],
+    ['After the output is used', 'A person reviews a sample or all outputs after the fact, and can reverse them', 'A weekly review of a sample of automated ticket categorizations'],
+    ['On exception', 'The system routes uncertain or flagged cases to a person and handles the rest automatically', 'Requests that touch a refund or an account closure are sent to staff']
+  ]}
+/>
+
+The right position depends on what a wrong output costs and whether it can be undone. A rough way to choose is to ask three questions of each action the feature can take. How bad is it if this is wrong? Can it be reversed? Who is affected, and can they tell something went wrong? Actions that are harmful, hard to reverse or visible to a customer or the public belong in the first row. Cheap, reversible actions can often sit in the second.
+
+## What the security guidance says
+
+OWASP's entry on excessive agency lists "require user approval" among its mitigations: a human-in-the-loop control that requires a human to approve high-impact actions before they are taken. It adds that this may be implemented in a downstream system, outside the scope of the model application, or within the extension itself, and gives the example of an application that creates and posts social media content on a user's behalf, which should include an approval routine.
+
+The point of the downstream option is that approval does not have to depend on the model behaving. In OWASP's mailbox scenario, a crafted incoming email carries an instruction that tells the model to forward sensitive messages. One of the three changes it lists that would have broken the chain is requiring the user to review and send every drafted message. A person at the right step contained the damage even though the model had been steered. The article on <MaybeLink path="/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/">prompt injection and the OWASP Top 10</MaybeLink> describes the scenario in full.
+
+## What the NIST framework says
+
+NIST's framework addresses oversight in its Map function. Subcategory Map 3.5 asks that processes for human oversight are defined, assessed and documented in accordance with organizational policies from the Govern function. The wording matters: the processes are to be defined and assessed, not merely present. Manage 2.4 asks for mechanisms, with assigned responsibilities, to supersede, disengage or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use. A reviewer who cannot stop the feature is a reader, not an overseer. The article on <MaybeLink path="/insights/the-nist-ai-risk-management-framework-for-a-small-team/">the NIST AI RMF for a small team</MaybeLink> explains how these subcategories fit together.
+
+## Why review fails
+
+The NIST Generative AI Profile names the problem directly. One of its twelve risks is human-AI configuration: arrangements of or interactions between a human and an AI system which can result in the human inappropriately anthropomorphizing the system, or experiencing algorithmic aversion, automation bias, over-reliance or emotional entanglement. Two of those matter most for review. Automation bias and over-reliance describe a reviewer who stops checking because the output usually looks right. Algorithmic aversion describes the opposite: a reviewer who rejects good output out of distrust. Either way the review no longer measures what you believed it measured.
+
+You cannot remove this by choosing a diligent person. You can make it less likely by design. These are suggestions of this article, not requirements from any source:
+
+- **Show the evidence next to the output.** A reviewer who sees the source passage or the input can check; one who sees only a confident paragraph can only agree.
+- **Make rejection cheap.** If overriding takes five clicks and approving takes one, the numbers will say the model is better than it is.
+- **Give the reviewer time and authority.** A queue sized for a minute per item will produce a glance per item.
+- **Track the override rate.** An override rate that stays at zero is a warning, not good news, and a sudden change is a signal to look at the model or the inputs.
+- **Test the reviewer.** Occasionally include a known-bad output in the queue and see whether it is caught.
+- **Feed the corrections back.** Every override is a candidate test case, which links review to <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">the evaluation described in the article on evaluating an LLM feature</MaybeLink>.
+
+## What the law says about oversight
+
+Two legal texts speak to human involvement, and neither can be applied to your product without counsel.
+
+The EU Artificial Intelligence Act, Regulation (EU) 2024/1689, addresses human oversight of high-risk AI systems in Article 14. Its first paragraph says high-risk systems shall be designed and developed in such a way, including with appropriate human-machine interface tools, that they can be effectively overseen by natural persons during the period in which they are in use. A later paragraph lists what the people assigned to oversight must be enabled to do, including remaining aware of the possible tendency of automatically relying or over-relying on the output, which the text labels automation bias. The text applies to systems that meet the Act's definition of high-risk, set out in its Article 6 and annexes. Whether a feature meets that definition is a legal question; the article on <MaybeLink path="/insights/ai-regulation-for-a-small-saas-company-what-to-ask-counsel/">AI regulation for a small SaaS company</MaybeLink> lists questions to bring to counsel.
+
+The GDPR addresses decisions in Article 22. Its first paragraph says the data subject shall have the right not to be subject to a decision based solely on automated processing, including profiling, which produces legal effects concerning him or her or similarly significantly affects him or her. The next paragraph sets out exceptions. A feature that approves, denies or ranks people can raise this question, and a token human step that does not influence the decision may not change the answer. Counsel can say whether Article 22 applies and what a meaningful review would need to look like.
+
+## A review plan on one page
+
+For each action the feature can take, write down the position (before, after or on exception), the person or role responsible, what they see, what they can do and how quickly, how the override rate is tracked, and how the feature is switched off. Include the cost: review takes staff time, and a plan that leaves no one to do it is not a plan. Keep the page with the feature, and look at it again whenever the feature gains a new capability. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> covers the access controls these roles depend on.
+
+<Callout title="Ask before you approve a launch">
+  Which actions can the feature take without a person? Who reviews the rest, and what do they see? Could the reviewer stop the feature today? What would be noticed if review quietly stopped working?
+</Callout>
+
+## What this article cannot tell you
+
+It does not tell you which review position suits your feature, how many reviewers you need or what override rate is healthy; those depend on the cost of errors in your setting. The three positions and the design suggestions are this article's own framing, not drawn from a standard.
+
+It does not say whether the EU AI Act or Article 22 of the GDPR applies to your product, and it quotes the texts as published in the Official Journal and read on October 10, 2026, without covering amendments, guidance or case law. It makes no statement that any product's review process meets any framework. It is general information, current as of October 10, 2026, and is not legal advice.
