@@ -131,6 +131,12 @@ const { fallback } = Astro.props;
       list-style: none;
     }
 
+    /* A new batch pushes the next rows under the pointer; for a moment they ignore it, so the second click of a double click on
+       "Show more" cannot open a result. */
+    .we-search__results[data-settling] {
+      pointer-events: none;
+    }
+
     .we-search__title {
       margin-block-end: var(--sp-2);
       font-size: var(--fs-lg);

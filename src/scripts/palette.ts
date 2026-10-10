@@ -97,11 +97,6 @@ class WePalette extends HTMLElement {
     input.addEventListener('input', () => this.onInput());
     input.addEventListener('keydown', (event) => this.onInputKeydown(event));
     list.addEventListener('pointermove', (event) => this.onPointerMove(event));
-    // A plain click on an option follows its link; the palette closes so a page restored from the history never shows it open. A click
-    // that asks for a new tab or window leaves the palette where it is.
-    list.addEventListener('click', (event) => {
-      if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) this.dialog.close();
-    });
     // The dialog fills its own box, so a click that lands on the dialog itself is a click on the backdrop.
     dialog.addEventListener('click', (event) => {
       if (event.target === dialog) dialog.close();
@@ -256,11 +251,14 @@ class WePalette extends HTMLElement {
     if (scroll) next.element.scrollIntoView({ block: 'nearest' });
   }
 
-  /** Enter opens the active option. A click on a link is left to the browser, so a modified click works as it does anywhere. */
+  /**
+   * Enter opens the active option. A click on a link is left to the browser, so a modified click works as it does anywhere. The dialog
+   * is not closed here: the page is left with it open, which keeps the document unchanged between the key press and the navigation (a
+   * cross-document view transition is captured from it), and pagehide closes it so a page restored from the history never shows it open.
+   */
   private activate(): void {
     const option = this.options[this.active];
     if (!option) return;
-    this.dialog.close();
     option.element.click();
   }
 

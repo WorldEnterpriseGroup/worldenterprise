@@ -29,6 +29,7 @@ import type { ResultKind } from '../components/islands/we-search/query.ts';
 const PAGE_SIZE = 10;
 const DEBOUNCE_MS = 200;
 const HYDRATE_LIMIT = 50;
+const SETTLE_MS = 400;
 
 /** Keeps text and <mark> only. Pagefind excerpts are HTML-escaped text with <mark> around matches. */
 function excerptFragment(html: string): DocumentFragment {
@@ -72,6 +73,7 @@ class WeSearch extends HTMLElement {
   /** Counts views (a search, or a chip). The rows that are rendered belong to one view. */
   private view = 0;
   private timer: number | undefined;
+  private settling: number | undefined;
   /** A batch of rows is being fetched. A second click on "Show more" meanwhile must not start the same batch again. */
   private rendering = false;
   /** The kinds the chips were built for, so a new search with the same kinds keeps the buttons (and the focus on one). */
@@ -127,6 +129,8 @@ class WeSearch extends HTMLElement {
 
   disconnectedCallback(): void {
     window.clearTimeout(this.timer);
+    window.clearTimeout(this.settling);
+    if (this.initialised) this.list.removeAttribute('data-settling');
   }
 
   private async start(): Promise<void> {
@@ -253,13 +257,25 @@ class WeSearch extends HTMLElement {
         batch = matches.slice(this.shown, this.shown + PAGE_SIZE);
       }
       if (view !== this.view) return;
+      const settle = this.shown > 0;
       for (const row of batch) this.list.append(this.renderRow(row));
       this.shown += batch.length;
+      if (settle) this.settle();
       this.more.hidden = this.shown >= total;
     } finally {
       // A newer view has already reset the flag for its own batches; only the batch that still owns it may release it.
       if (view === this.view) this.rendering = false;
     }
+  }
+
+  /**
+   * After "Show more" the new rows move the button and put result links where the pointer was. A double click's second click would
+   * open one of them, so the list ignores the pointer for SETTLE_MS (see the stylesheet).
+   */
+  private settle(): void {
+    this.list.setAttribute('data-settling', '');
+    window.clearTimeout(this.settling);
+    this.settling = window.setTimeout(() => this.list.removeAttribute('data-settling'), SETTLE_MS);
   }
 
   private renderRow(data: PagefindData): HTMLLIElement {
