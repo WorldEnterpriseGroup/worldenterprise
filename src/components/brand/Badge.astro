@@ -1,0 +1,54 @@
+---
+/**
+ * A short label set in small capitals, cut like a hex cell on its leading edge. The tone is a wash of a brand colour; the text carries
+ * the meaning, so the badge never relies on colour alone. Use it for a fact about the page ("As of 2026"), not for a status claim.
+ */
+interface Props {
+  tone?: 'blue' | 'amber' | 'stone';
+}
+
+const { tone = 'stone' } = Astro.props;
+---
+
+<span class={`badge badge--${tone}`}><slot /></span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--sp-5);
+    padding-block: var(--sp-1);
+    padding-inline: var(--sp-3);
+    border: var(--border-hair);
+    border-radius: var(--radius-sm);
+    border-inline-start: 3px solid currentColor;
+    background: var(--tint-stone);
+    color: var(--color-text);
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-caps);
+    line-height: var(--lh-tight);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .badge--blue {
+    background: var(--tint-blue);
+    color: var(--color-link);
+  }
+
+  .badge--amber {
+    background: var(--tint-sand);
+    color: var(--color-highlight-ink);
+  }
+
+  @media (forced-colors: active) {
+    .badge {
+      forced-color-adjust: none;
+      border-color: CanvasText;
+      background: Canvas;
+      color: CanvasText;
+    }
+  }
+</style>

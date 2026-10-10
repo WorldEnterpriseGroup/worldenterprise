@@ -1,0 +1,151 @@
+---
+title: "Choosing a model provider: the questions that matter"
+seoTitle: Choosing a model provider
+description: Questions to put to any language model provider before you build on it, drawn from vendor documentation on data use, retirement notice, limits and terms.
+topic: ai
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders, non-technical-founders]
+related: [evaluating-an-llm-feature-before-you-ship-it, ai-features-and-customer-data-what-to-decide-first, metering-and-budgeting-model-usage]
+evidence: [anth-privacy, oai-yourdata, goog-terms, msft-dataprivacy, aws-bedrock-dp, anth-deprec, oai-deprec, goog-deprec, anth-ratelimits, oai-ratelimits, goog-ratelimits, nist-ai600-1]
+relatedPlaybook: build-and-ship-v1
+relatedServices: [B]
+relatedTemplate: security-baseline-checklist
+sources:
+  - id: anth-privacy
+    title: How long do you store my organization's data?
+    publisher: Anthropic Privacy Center
+    url: https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data
+    accessed: 2026-10-10
+  - id: oai-yourdata
+    title: Data controls in the OpenAI platform
+    publisher: OpenAI
+    url: https://developers.openai.com/api/docs/guides/your-data
+    accessed: 2026-10-10
+  - id: goog-terms
+    title: Gemini API Additional Terms of Service
+    publisher: Google
+    url: https://ai.google.dev/gemini-api/terms
+    accessed: 2026-10-10
+  - id: msft-dataprivacy
+    title: Data, privacy, and security for Azure Direct Models in Microsoft Foundry
+    publisher: Microsoft Learn
+    url: https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/data-privacy
+    accessed: 2026-10-10
+  - id: aws-bedrock-dp
+    title: Data protection in Amazon Bedrock
+    publisher: Amazon Web Services
+    url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html
+    accessed: 2026-10-10
+  - id: anth-deprec
+    title: Model deprecations
+    publisher: Anthropic
+    url: https://platform.claude.com/docs/en/about-claude/model-deprecations
+    accessed: 2026-10-10
+  - id: oai-deprec
+    title: Deprecations
+    publisher: OpenAI
+    url: https://developers.openai.com/api/docs/deprecations
+    accessed: 2026-10-10
+  - id: goog-deprec
+    title: Gemini deprecations
+    publisher: Google
+    url: https://ai.google.dev/gemini-api/docs/deprecations
+    accessed: 2026-10-10
+  - id: anth-ratelimits
+    title: Rate limits
+    publisher: Anthropic
+    url: https://platform.claude.com/docs/en/api/rate-limits
+    accessed: 2026-10-10
+  - id: oai-ratelimits
+    title: Rate limits
+    publisher: OpenAI
+    url: https://developers.openai.com/api/docs/guides/rate-limits
+    accessed: 2026-10-10
+  - id: goog-ratelimits
+    title: Rate limits
+    publisher: Google
+    url: https://ai.google.dev/gemini-api/docs/rate-limits
+    accessed: 2026-10-10
+  - id: nist-ai600-1
+    title: "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile, NIST AI 600-1"
+    publisher: National Institute of Standards and Technology
+    url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf
+    accessed: 2026-10-10
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Choosing a model provider feels like a question about models. For a product that will be in front of customers for years, it is mostly a question about terms: what happens to the data you send, how long a model stays available, what limits apply as you grow, and what the contract lets you do. Those answers are written down in each vendor's own documentation, and they differ.
+
+This article lists the questions worth asking and shows what several vendors' pages say about them as read on October 10, 2026. It does not rank providers or call any of them the right choice, and it quotes no prices, benchmark scores or speeds. Vendor pages change, so treat each statement below as a dated reading and confirm it before you rely on it.
+
+## Start from the feature, not the vendor
+
+Write down what the feature does before comparing anyone. What kind of input goes in (typed text, uploaded files, records from your database)? Does any of it identify a person or belong to a customer? What happens if the output is wrong, or if the service is unavailable for an afternoon? A founder who is not technical can answer most of this, and the answers decide which of the questions below carry weight. The article on <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data</MaybeLink> goes deeper on the data decisions.
+
+## Question one: where does your data go, and for how long?
+
+Each vendor answers this in a different document, using different words. Reading them side by side shows how little can be assumed.
+
+<DataTable
+  caption="What each vendor's own pages say about data, as read on October 10, 2026"
+  columns={['Vendor and page', 'What the page says', 'What it leaves for you to ask']}
+  rows={[
+    ['Anthropic API (privacy center page dated July 1, 2026)', 'Inputs and outputs are automatically deleted from the backend within 30 days, with listed exceptions, among them a zero data retention agreement and enforcement of the usage policy', 'Whether an agreement applies to your account, and what the exceptions mean for your data'],
+    ['OpenAI API (data controls guide)', 'Data sent to the API is not used to train or improve models unless you opt in; abuse monitoring logs are kept up to 30 days by default; zero data retention is subject to prior approval', 'Whether you qualify for the stricter controls and who applies for them'],
+    ['Google Gemini API (additional terms)', 'Unpaid services may use submitted content to improve products and human reviewers may read it; for paid services the terms say prompts and responses are not used to improve products', 'Which quota your production traffic really uses, and whether a development key was ever used with real data'],
+    ['Microsoft Foundry (data privacy page)', 'Prompts, completions and embeddings are not available to other customers or to the providers of models sold by Azure', 'How the deployment type affects where processing takes place'],
+    ['Amazon Bedrock (data protection page)', 'Model providers do not have access to the deployment accounts, so they do not have access to Bedrock logs or customer prompts', 'What AWS itself retains, and under what controls']
+  ]}
+/>
+
+Three lessons come out of the table. The same word can mean different things: "not used to train" is not the same statement as "deleted after 30 days." Unpaid and paid tiers can sit under different terms, as Google's document shows, and the Google page says in so many words not to submit sensitive, confidential or personal information to the unpaid services. And the right-hand column is where the diligence happens, because a vendor page describes defaults and your situation may not be the default.
+
+## Question two: what happens when the model is retired?
+
+A model is not a permanent dependency. Every vendor publishes a lifecycle, and the commitments differ.
+
+- Anthropic's page says it regularly retires older models, that applications relying on them "may need occasional updates to keep working", and that it gives at least 60 days' notice before retirement for publicly released models. It adds that dates on the page apply to Anthropic-operated platforms, while partner-operated platforms set their own retirement schedules.
+- OpenAI's page lists minimum notice periods: at least 6 months for generally available models, at least 3 months for specialized variants, and for models with "preview" in the name, notice as short as 2 weeks. It says it does not recommend preview models for business-critical production workloads unless you can migrate on short notice, and it allows faster timelines where safety or compliance concerns require them.
+- Google's page defines deprecation as the announcement that support is ending and shutdown as the point at which the endpoint is no longer available. It says the shutdown dates in its table are the earliest possible dates, and that it will communicate the exact date in advance.
+
+For a small team, the lesson is to treat a retirement notice as a scheduled project. Ask who reads the vendor's notices, how you will find every place the model name appears, and whether you could re-run your tests against a replacement within the notice period. Anthropic's page recommends testing applications with newer models well before the retirement date, and that advice holds whichever vendor you use. The article on <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">evaluating an LLM feature before you ship it</MaybeLink> describes the test set that makes such a migration a routine task rather than a gamble.
+
+## Question three: what limits apply, and how do they change?
+
+Providers cap usage, and the shape of the cap affects your design. OpenAI's guide lists limits in requests per minute, requests per day, tokens per minute, tokens per day and images per minute. Google's page says limits are usually measured across requests per minute, input tokens per minute and requests per day, that exceeding any one triggers an error, and that limits are applied per project, not per API key. Anthropic's page says limits exist on how much an organization can use the API, to mitigate misuse and manage capacity.
+
+The questions to ask are practical. What are your starting limits? How do they rise, and does the rise depend on spend or on a request? What does your product do when a request is refused: queue it, retry it, or tell the user? If all your customers share one project, they share one limit, so a per-customer cap of your own is worth considering, a topic taken up in <MaybeLink path="/insights/metering-and-budgeting-model-usage/">metering and budgeting model usage</MaybeLink>.
+
+## Question four: what do the terms let you build?
+
+Terms of service are product constraints. Google's Gemini terms, for example, say you may use only paid services when making API clients available to users in the European Economic Area, Switzerland or the United Kingdom, and that you may not use the services to develop models that compete with them. Other vendors have their own terms, which this article did not review clause by clause. Before building a feature, a person with authority to sign should read the current terms for the use you intend: your customers' regions, whether you resell access, whether outputs may be used to improve your own systems, and what the terms say about regulated data.
+
+## Question five: how hard would it be to leave?
+
+This is a design question rather than a documentation question, and the following is the article's own suggestion. Keep the provider's name, model identifier and prompt text in configuration you control rather than scattered through the code. Keep a record of the test set you used to choose. Then a retirement notice, a terms change or a better fit later is a change you can make, not a rewrite.
+
+## A question list you can hand to a technical lead
+
+<Callout title="Ten questions, each with an owner and a date">
+  1. What data goes to the provider, and which of it is personal or confidential?
+  2. Which document describes retention and training use, and when was it last read?
+  3. Is the account on the terms and quota you assume?
+  4. Who receives retirement notices, and what is the plan for a replacement?
+  5. What are the starting limits, and what happens to a user when one is reached?
+  6. Do the terms permit your regions, your resale and your use of outputs?
+  7. Where are the model name and the prompts kept, and can they be changed without a release?
+  8. Which test set decides whether a replacement is good enough?
+  9. Who is allowed to create a provider account, and where are the keys stored?
+  10. What would you tell a customer who asked where their data went?
+</Callout>
+
+Question 9 connects to the conventional controls in the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink>. The NIST AI Risk Management Framework names the weakness this list guards against, "improper supplier vetting", as part of its value chain risk, and the article on <MaybeLink path="/insights/the-nist-ai-risk-management-framework-for-a-small-team/">the framework for a small team</MaybeLink> explains the framework.
+
+## What this article cannot tell you
+
+It reports what a handful of vendor pages said on October 10, 2026. It does not cover every provider, hosted open-weight model or reseller, and it does not review each vendor's full contract, data processing terms or security documentation. Those pages change, so confirm the current text.
+
+It does not say which provider suits your product, and it makes no comparison of quality, cost or speed; your own tests are the only evidence about your task. Nothing here is legal advice on data protection, contracts or regulated data, and counsel can read the actual agreements you would sign. This is general information, current as of October 10, 2026.

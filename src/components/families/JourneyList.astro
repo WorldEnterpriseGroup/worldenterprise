@@ -1,0 +1,29 @@
+---
+import JourneyStep from './JourneyStep.astro';
+import type { JourneyStepView } from './view.ts';
+
+/**
+ * The ordered list of the program's steps. It adds no step and no duration: the titles and bodies are PROGRAM_STEPS, passed in by the
+ * caller through `journeySteps`. A page that names its own step marks it current, earlier steps done and later steps next.
+ */
+interface Props {
+  steps: readonly JourneyStepView[];
+  /** Accessible name of the list. */
+  label: string;
+}
+
+const { steps, label } = Astro.props;
+---
+
+<ol class="jlist" role="list" aria-label={label}>
+  {steps.map((step) => <JourneyStep step={step} />)}
+</ol>
+
+<style>
+  .jlist {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>
