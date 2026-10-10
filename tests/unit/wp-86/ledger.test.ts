@@ -83,7 +83,7 @@ test('every mapping is exactly one of claim, page, decision or label, and the pa
 
 test('every sentence in the ledger passes the claims denylist', () => {
   for (const doc of ledger.documents ?? []) {
-    const route = doc.path.includes('/playbooks/') && !doc.path.endsWith('index.mdx') && !doc.path.endsWith('index.astro') ? `/playbooks/${doc.path.split('/').pop()?.replace('.mdx', '')}/` : '/playbooks/';
+    const route = doc.path.startsWith('src/content/playbooks/') ? `/playbooks/${doc.path.split('/').pop()?.replace('.mdx', '')}/` : '/playbooks/';
     for (const sentence of doc.sentences ?? []) {
       assert.deepEqual(audit.scan(sentence.text, { route, plain: true, flagValues: {} }), [], `${doc.path}: "${sentence.text}"`);
     }

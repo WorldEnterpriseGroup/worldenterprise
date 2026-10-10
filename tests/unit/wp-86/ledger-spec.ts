@@ -209,7 +209,7 @@ export const PLAYBOOKS: Readonly<Record<string, AreaPages>> = {
 
 /** The hub page: its sentences are about the playbooks as a set, so they map to the chain registry and the playbook template. */
 export const HUB_PAGE = 'src/content/pages/playbooks/index.mdx';
-export const HUB_COPY = 'src/pages/playbooks/index.astro';
+export const HUB_COPY = 'src/components/playbooks/meta.ts';
 export const HUB_LEAD = 'Step-by-step playbooks for building a SaaS company, in the order the work usually comes. Each one gives the steps, what good looks like, a decision aid, the mistakes that cost founders the most time and the evidence to check before you move on.';
 export const CHAIN_REGISTRY = 'src/components/playbooks/meta.ts';
 export const TEMPLATE_PLAYBOOK = 'src/content/playbooks/validate-the-problem.mdx';

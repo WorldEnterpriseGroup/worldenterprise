@@ -10,6 +10,10 @@ export interface PlaybookRef {
   readonly slot?: SlotId;
 }
 
+/** The lead of the playbooks hub page. */
+export const PLAYBOOKS_HUB_LEAD =
+  'Step-by-step playbooks for building a SaaS company, in the order the work usually comes. Each one gives the steps, what good looks like, a decision aid, the mistakes that cost founders the most time and the evidence to check before you move on.';
+
 /**
  * The ten playbooks in reading order, one chain with one terminal. The order here and the `order` field of each playbook file agree
  * (the unit tests hold them to it). A playbook whose route is not live in a build drops out of the chain at render time: the one
@@ -23,9 +27,9 @@ export const PLAYBOOK_SEQUENCE: readonly PlaybookRef[] = [
   { slug: 'hire-your-first-team-member', short: 'Hire your first team member' },
   { slug: 'price-your-first-saas-product', short: 'Price your first SaaS product' },
   { slug: 'earn-your-first-customers', short: 'Earn your first customers', slot: 'pb-4' },
-  { slug: 'run-your-first-outbound-sequence', short: 'Run your first outbound sequence' },
+  { slug: 'run-your-first-outbound-sequence', short: 'Run a first outbound sequence' },
   { slug: 'build-repeatable-growth', short: 'Build repeatable growth', slot: 'pb-5' },
-  { slug: 'prepare-for-investor-conversations', short: 'Prepare for investor conversations' },
+  { slug: 'prepare-for-investor-conversations', short: 'Prepare for investor talks' },
 ];
 
 /** The playbooks whose route is live, in reading order. `isLive` is the route-state predicate of the build. */
