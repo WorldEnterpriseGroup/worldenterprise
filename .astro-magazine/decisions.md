@@ -391,3 +391,30 @@ Wave 7 lands on `demo` while release 1 is being approved, so the head of `demo` 
 ### R-3 One sentence of a Fundable article is corrected under a scoped exception
 
 `src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx` line 37 said "It does not describe an introduction service, because World Enterprise does not offer one." The same article, at line 77, describes Investor Introductions as a separate, paid add-on, and the claims guard (`R-C14-*`) had not caught the denial. By team decision the sentence is replaced with "It is about your judgment, whether or not you also use our paid Investor Introductions add-on, which is described below." The policy is unchanged: a flat fee, no success fee, no published amounts. WP-30 holds an ownership exception for that one file (`ownership.json`), limited to that sentence. A search of `src/content`, `src/pages`, `src/components`, `src/data` and `src/layouts` for other denials found none. Because the first release candidate tag, `release-1-rc1`, already carries the old sentence and tags are never moved (R-2), the corrected text ships in `release-1-rc2`.
+
+## Decisions made during WP-12d (photo-generation rig, issues #22 and #27)
+
+The rig lives in `scripts/photo/` (dev tooling: never imported by `src/`, never copied to `dist/`). Phase B is `scripts/photo/phase-b.sh --model boogu_image_turbo`, a QA pass, and `node scripts/photo/promote.mjs --from-qa`. Run end to end on `mage_flow_turbo` for three slots (an object, a figure, a band); no dry-run image was committed and no manifest row was flipped.
+
+### P-6 Model quirks live in `models.json`, never in the prompt
+
+The prompt is model-agnostic (art-direction section 7). Everything model-specific (router id, manifest name, size limit) is in `scripts/photo/models.json`; the default is `boogu_image_turbo`, and `mage_flow_turbo` is the stand-in that was serving during the dry run. The router accepts only exact `1024x768` and `1024x576`, so the runner requests the master size and never resizes up. Candidates sit in an uncommitted staging directory outside the repo (`PHOTO_STAGING`, default `~/.cache/we-photo-staging`); a candidate is skipped on resume only if its prompt hash still matches.
+
+### P-7 Seeds, candidates, serial runs
+
+Seed = 7000 + raster index (shotlist order) plus an offset: objects 0 and +500, figures +1000, +1500, +2000, +2500; `checkManifest` enforces it. The runner is strictly serial (four concurrent requests wedged the router), retries 5xx and network errors with 5/15/45/90 s backoff, waits 1, 3 or 5 minutes on 503/429, treats a frame under 30 KB as the wedged blank frame, and aborts after three consecutive failures. The key is read from `HARDMAGIC_INTERNAL_KEY` or Azure Key Vault (`omlab-secrets`, secret `hardmagic-internal-api-key`) and is never printed.
+
+### P-8 Promotion is a batch, validated as a whole, and rolls back
+
+`promote.mjs` encodes the chosen candidate at the slot's exact master size (crop-fill, never upscale, AVIF quality 80), rewrites the manifest rows (`source: "generated"`, model, seed, prompt, `promptSha256`, `generatedAt`, alt, bytes, quality), validates the whole manifest with the WP-12b `checkManifest`, writes, runs `tests/unit/wp-12b/`, and restores the files if they fail. A batch applies as a unit so the stage trio (all or none) and the six-figure cap stay satisfiable. `generation.status` is left `pending` for the owner to flip. Only the master is committed (decision P-2: Astro builds the srcset); the smaller widths exist only on the QA sheets. Promotion writes under `src/assets/photo/**`, which is the WP-12b write set.
+
+### P-9 QA is a rubric plus a JSON result, over JPEG sheets
+
+`scripts/photo/qa-rubric.md` and `qa-result.schema.json` define the check (copy match, palette with exactly one amber object, people policy, artifacts, crop safety at every srcset width). `qa-sheet.mjs` builds one JPEG per candidate (master with the safe zone drawn on, the page crops, each srcset width at its own pixel width), capped at 1600 px so the Read tool can open it (a PNG sheet reached 2.4 MB). `validateQaResult` makes a `pass` impossible with a failing check, a second amber object, a face, text, fingers or a malformed hexagon, and `selectFromQa` applies the figure policy.
+
+### P-10 Dry-run findings that changed the prompts
+
+1. **Figure framing**: "framed from the chest down" does not keep the head out of frame on `mage_flow_turbo`. Describing a close-up at table height of only forearms and hands, with the top edge cutting through the middle of the torso, removes the face but a chin can still reach the top edge. The `facesVisible` gate in QA is therefore mandatory, and all four figure candidates per slot are generated. Boogu has not been tried; verify the figure template on one slot first.
+2. **Amber accent**: an accent described as part of the structure turns a whole part amber or duplicates it. Written as one small separate tile resting on a named surface it lands once. The templates now use that form.
+3. **Hexagons**: the model draws octagons and heptagons for hexagonal plates; `malformedHexagons` is a QA check, not a prompt fix.
+4. **Amber pre-filter**: hue 25 to 48 matches skin tones, so figure candidates always read `REVIEW`; it ranks object candidates only.
