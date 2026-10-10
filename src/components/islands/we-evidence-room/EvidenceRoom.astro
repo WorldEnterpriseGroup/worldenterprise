@@ -1,0 +1,225 @@
+---
+import { href } from '../../../lib/url.ts';
+import NoFundingDisclaimer from '../../blocks/NoFundingDisclaimer.astro';
+import { isLinkable } from '../../playbooks/links.ts';
+import { EVIDENCE_GROUPS, STAGE_FILTERS, itemsInGroup, stageName } from './items.ts';
+
+/**
+ * <we-evidence-room>: the data-room and readiness guides as one checklist to tick off, filter by stage, print or copy as Markdown. The
+ * whole checklist is server-rendered, so a visitor without JavaScript still reads it and can print it. The script enables the stage
+ * filter and the buttons (rendered disabled, so nothing appears or moves when it runs), and keeps the ticks in the part of the address after the "#". Nothing is saved or sent.
+ *
+ * The no-funding statement is rendered here so a page cannot drop it. The two reserved lines (progress and message) keep the page from
+ * changing height when they update.
+ */
+const groups = await Promise.all(
+  EVIDENCE_GROUPS.map(async (group) => ({
+    ...group,
+    items: await Promise.all(
+      itemsInGroup(group.id).map(async (item) => ({
+        ...item,
+        target: item.gapHref !== undefined && (await isLinkable(item.gapHref)) ? href(item.gapHref) : '',
+      })),
+    ),
+  })),
+);
+---
+
+<we-evidence-room class="evroom">
+  <NoFundingDisclaimer />
+  <p class="evroom__privacy">
+    Your ticks stay in this page. They are kept in the part of the address after the # sign, which your browser does not send to any
+    server, and nothing is saved on this device. Copy the address to keep your place, and know that anyone you give it to can see which
+    boxes you ticked.
+  </p>
+
+  <div class="evroom__controls" data-controls>
+    <fieldset class="fieldset evroom__stages">
+      <legend>Show the items suggested for your stage</legend>
+      <div class="evroom__stage-options">
+        {
+          STAGE_FILTERS.map((stage) => (
+            <div class="choice">
+              <input id={`evroom-stage-${stage}`} type="radio" name="stage" value={stage} checked={stage === 'all'} disabled />
+              <label for={`evroom-stage-${stage}`}>{stageName(stage)}</label>
+            </div>
+          ))
+        }
+      </div>
+      <p class="field__hint">
+        The stages are WE's own suggested order for gathering evidence. They are a suggestion, not an investor requirement. A company with several
+        products, or in a regulated field, should show all items and ask its own counsel what else applies.
+      </p>
+    </fieldset>
+    <div class="cluster evroom__buttons">
+      <button class="btn btn--primary" type="button" data-copy disabled>Copy as Markdown</button>
+      <button class="btn btn--secondary" type="button" data-print disabled>Print this list</button>
+      <button class="btn btn--quiet" type="button" data-clear disabled>Clear all ticks</button>
+    </div>
+    <p class="evroom__progress" role="status" aria-live="polite" data-progress></p>
+    <p class="evroom__message" role="status" aria-live="polite" data-message></p>
+    <details class="evroom__fallback" data-fallback>
+      <summary>Show the Markdown to copy by hand</summary>
+      <label class="visually-hidden" for="evroom-markdown">Checklist as Markdown</label>
+      <textarea id="evroom-markdown" class="evroom__markdown" rows="10" readonly data-markdown></textarea>
+    </details>
+  </div>
+
+  {
+    groups.map((group) => (
+      <section class="evroom__group" aria-labelledby={`evroom-group-${group.id}`} data-group={group.id}>
+        <h2 id={`evroom-group-${group.id}`} class="evroom__group-title">{group.title}</h2>
+        <p class="evroom__group-intro">{group.intro}</p>
+        <ul class="evroom__items" role="list">
+          {group.items.map((item) => (
+            <li class="evroom__item" data-item={item.code}>
+              <div class="choice">
+                <input id={`evroom-${item.code}`} type="checkbox" name={item.code} data-code={item.code} />
+                <label for={`evroom-${item.code}`}>{item.label}</label>
+              </div>
+              <p class="evroom__meta field__hint">
+                Suggested from: {stageName(item.stage)}.
+                {item.backs !== undefined && <span> It backs the statement: &ldquo;{item.backs}&rdquo;</span>}
+                {item.target !== '' && item.gapTitle !== undefined && (
+                  <span>
+                    {' '}If it is missing, start with <a href={item.target}>{item.gapTitle}</a>.
+                  </span>
+                )}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</we-evidence-room>
+
+<script>
+  import { defineEvidenceRoom } from '../../../scripts/evidence-room.ts';
+  defineEvidenceRoom();
+</script>
+
+<style>
+  @layer pages {
+    .evroom {
+      display: grid;
+      gap: var(--sp-6);
+      font-family: var(--ff-sans);
+    }
+
+    .evroom__privacy {
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--tint-blue);
+      border-inline-start: 4px solid var(--color-accent);
+      border-radius: var(--radius-sm);
+    }
+
+    .evroom__controls {
+      display: grid;
+      gap: var(--sp-4);
+      padding: var(--sp-5);
+      background: var(--color-bg-soft);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
+
+    .evroom__stage-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2) var(--sp-5);
+    }
+
+    .evroom__progress {
+      margin: 0;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      min-block-size: 1lh;
+    }
+
+    /* Two lines are always reserved, so a message appearing or going away changes nothing below it. */
+    .evroom__message {
+      margin: 0;
+      min-block-size: 2lh;
+      color: var(--color-text-muted);
+    }
+
+    .evroom__markdown {
+      inline-size: 100%;
+      font-family: var(--ff-mono);
+      font-size: var(--fs-sm);
+    }
+
+    .evroom__group {
+      display: grid;
+      gap: var(--sp-3);
+
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    .evroom__group-title {
+      font-size: var(--fs-xl);
+    }
+
+    .evroom__group-intro {
+      color: var(--color-text-muted);
+      max-inline-size: 62ch;
+    }
+
+    .evroom__items {
+      display: grid;
+      gap: var(--sp-4);
+      list-style: none;
+      padding: 0;
+    }
+
+    .evroom__item {
+      display: grid;
+      gap: var(--sp-1);
+
+      &[hidden] {
+        display: none;
+      }
+
+      & .choice {
+        align-items: flex-start;
+      }
+
+      & .choice input {
+        flex: none;
+        margin-block-start: var(--sp-1);
+      }
+    }
+
+    .evroom__meta {
+      padding-inline-start: calc(1.25rem + var(--sp-3));
+    }
+
+    .evroom__item input[type='checkbox']:checked + label {
+      font-weight: 600;
+    }
+
+    @media (forced-colors: active) {
+      .evroom__privacy,
+      .evroom__controls {
+        border: 1px solid CanvasText;
+      }
+    }
+
+    @media print {
+      .evroom__controls,
+      .evroom__privacy {
+        display: none;
+      }
+
+      .evroom__item {
+        break-inside: avoid;
+      }
+
+      .evroom__group {
+        break-inside: avoid-page;
+      }
+    }
+  }
+</style>

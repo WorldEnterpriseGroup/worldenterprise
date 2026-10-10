@@ -1,0 +1,207 @@
+---
+import { INPUTS, METRICS, PANELS, SOURCE_TAGS } from './formulas.ts';
+import { waitingText } from '../../../scripts/metrics-calc.ts';
+
+/**
+ * <we-calc>: one month of a company's numbers in, nine results out, in the browser. The markup is complete without JavaScript, except
+ * that the fields are rendered disabled: a visitor without a script is not handed controls that do nothing, and the formulas below the
+ * calculator (FormulaTable) stand on their own. The script enables the fields and fills the results.
+ *
+ * Each field has one two-line note slot that shows its hint, and its error message when the entry has a problem, so the form never
+ * changes height. Each result is a fixed block, so updating one moves nothing. Every group of results is a `role="status"` region.
+ * Nothing is stored or sent, and the numbers never reach the address bar.
+ */
+---
+
+<we-calc class="calc">
+  <p class="calc__privacy">
+    Your numbers stay on this page. Nothing is saved or sent anywhere, and nothing is put in the address bar. Use one currency for every
+    amount. The results carry no currency sign.
+  </p>
+  <form class="calc__form" novalidate autocomplete="off">
+    {
+      PANELS.map((panel) => (
+        <section class="calc__panel" aria-labelledby={`calc-panel-${panel.id}`}>
+          <h2 id={`calc-panel-${panel.id}`} class="calc__panel-title">{panel.title}</h2>
+          <p class="calc__panel-intro">{panel.intro}</p>
+          <div class="calc__fields">
+            {INPUTS.filter((input) => input.panel === panel.id).map((input) => (
+              <div class="field calc__field">
+                <label for={`calc-${input.id}`}>{input.label}</label>
+                <input
+                  class="calc__input"
+                  id={`calc-${input.id}`}
+                  name={input.id}
+                  type="text"
+                  inputmode={input.kind === 'count' ? 'numeric' : 'decimal'}
+                  autocomplete="off"
+                  spellcheck="false"
+                  aria-describedby={`calc-${input.id}-note`}
+                  disabled
+                />
+                <p class="field__hint calc__note" id={`calc-${input.id}-note`} data-note={input.id} data-hint={input.hint}>
+                  {input.hint}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div class="calc__live" role="status" aria-live="polite" aria-label={`Results: ${panel.title}`}>
+            <dl class="calc__results">
+              {METRICS.filter((metric) => metric.panel === panel.id).map((metric) => {
+                const waiting = waitingText(metric.id);
+                return (
+                  <div class="calc__result" data-metric={metric.id} data-status="waiting">
+                    <dt class="calc__name">{metric.name}</dt>
+                    <dd class="calc__value" data-value>{waiting.display}</dd>
+                    <dd class="calc__detail" data-detail>{waiting.detail}</dd>
+                    <dd class="calc__tag">{SOURCE_TAGS[metric.source]}</dd>
+                  </div>
+                );
+              })}
+            </dl>
+          </div>
+        </section>
+      ))
+    }
+    <div class="cluster">
+      <button class="btn btn--quiet" type="reset" disabled>Clear all numbers</button>
+    </div>
+  </form>
+</we-calc>
+
+<script>
+  import { defineMetricsCalculator } from '../../../scripts/metrics-calc.ts';
+  defineMetricsCalculator();
+</script>
+
+<style>
+  @layer pages {
+    .calc {
+      display: grid;
+      gap: var(--sp-6);
+    }
+
+    .calc__privacy {
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--tint-blue);
+      border-inline-start: 4px solid var(--color-accent);
+      border-radius: var(--radius-sm);
+      font-family: var(--ff-sans);
+    }
+
+    .calc__form {
+      display: grid;
+      gap: var(--sp-7);
+    }
+
+    .calc__panel {
+      container-type: inline-size;
+      display: grid;
+      gap: var(--sp-4);
+      font-family: var(--ff-sans);
+    }
+
+    .calc__panel-title {
+      font-size: var(--fs-xl);
+    }
+
+    .calc__panel-intro {
+      color: var(--color-text-muted);
+      max-inline-size: 62ch;
+    }
+
+    .calc__fields {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: var(--sp-4) var(--sp-5);
+    }
+
+    .calc__input {
+      font-variant-numeric: tabular-nums;
+
+      &:disabled {
+        background: var(--color-bg-soft);
+        cursor: not-allowed;
+      }
+
+      &:focus-visible {
+        outline: 3px solid var(--color-focus);
+        outline-offset: 2px;
+      }
+    }
+
+    /* Two lines are always reserved, so a message in place of the hint changes nothing below it. */
+    .calc__note {
+      min-block-size: 2lh;
+
+      &[data-error] {
+        color: var(--color-error);
+        font-weight: 600;
+        border-inline-start: 3px solid var(--color-error);
+        padding-inline-start: var(--sp-2);
+      }
+    }
+
+    .calc__results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: var(--sp-4);
+    }
+
+    /* A result is a fixed block: the name, one line for the value, room for four lines of working or reason, and the source tag. The
+       working row grows only when an unusually long number needs more than four lines, so text never runs into the tag below it. */
+    .calc__result {
+      display: grid;
+      grid-template-rows: auto 1lh minmax(4lh, auto) auto;
+      gap: var(--sp-2);
+      padding: var(--sp-4);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-inline-start: 4px solid var(--color-border-strong);
+      border-radius: var(--radius-md);
+
+      &[data-status='ready'] {
+        border-inline-start-color: var(--color-accent);
+      }
+    }
+
+    .calc__name {
+      font-weight: 600;
+    }
+
+    .calc__value {
+      margin: 0;
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .calc__result:not([data-status='ready']) .calc__value {
+      color: var(--color-text-muted);
+    }
+
+    .calc__detail {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+
+    .calc__tag {
+      margin: 0;
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+
+    @media (forced-colors: active) {
+      .calc__result,
+      .calc__privacy {
+        border: 1px solid CanvasText;
+      }
+    }
+  }
+</style>
