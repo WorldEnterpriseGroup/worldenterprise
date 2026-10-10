@@ -1,321 +1,312 @@
 {
   "wp": "WP-69",
-  "note": "Fetches are the primary and vendor pages cited by the nine AI-desk articles, all fetched on 2026-10-10 with curl through the allowlisted hosts. Fetches that failed (status 403, 404 or 406) or were blocked by the host allowlist are listed in the handoff and are not cited. The topic-ai desk page is a sentences-only document: each sentence maps to the page and heading it restates.",
+  "note": "Fetches are the primary and vendor pages cited by the nine AI-desk articles, all fetched on 2026-10-10 with the WebFetch tool, each quote re-checked against that fetch. The two NIST publications are PDFs: WebFetch saved the file and the quotes were checked against text extracted from that saved file. Sources that could not be fetched this way were dropped and are listed in the handoff. The topic-ai desk page is a sentences-only document: each sentence maps to the page and heading it restates.",
   "fetches": [
     {
       "id": "anth-deprec",
       "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations",
       "title": "Model deprecations",
       "publisher": "Anthropic",
-      "fetchedAt": "2026-10-10T07:01:26Z",
+      "fetchedAt": "2026-10-10T07:55:23Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "anth-evals",
       "url": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
       "title": "Define success criteria and build evaluations",
       "publisher": "Anthropic",
-      "fetchedAt": "2026-10-10T07:01:31Z",
+      "fetchedAt": "2026-10-10T07:56:16Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "anth-privacy",
       "url": "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data",
       "title": "How long do you store my organization's data?",
       "publisher": "Anthropic Privacy Center",
-      "fetchedAt": "2026-10-10T07:01:32Z",
+      "fetchedAt": "2026-10-10T07:56:23Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "anth-ratelimits",
       "url": "https://platform.claude.com/docs/en/api/rate-limits",
       "title": "Rate limits",
       "publisher": "Anthropic",
-      "fetchedAt": "2026-10-10T07:01:28Z",
+      "fetchedAt": "2026-10-10T07:56:12Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "anth-tokencount",
       "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
       "title": "Token counting",
       "publisher": "Anthropic",
-      "fetchedAt": "2026-10-10T07:01:29Z",
+      "fetchedAt": "2026-10-10T07:56:15Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "aws-bedrock-dp",
       "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html",
       "title": "Data protection in Amazon Bedrock",
       "publisher": "Amazon Web Services",
-      "fetchedAt": "2026-10-10T07:01:45Z",
+      "fetchedAt": "2026-10-10T07:55:30Z",
       "status": 200,
-      "tool": "curl"
-    },
-    {
-      "id": "co-ag-ai",
-      "url": "https://coag.gov/ai/",
-      "title": "Colorado Automated Decision-Making Technology and Chatbot Safety Rulemaking",
-      "publisher": "Colorado Attorney General",
-      "fetchedAt": "2026-10-10T07:26:09Z",
-      "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "eu-aiact-ec",
       "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
       "title": "AI Act (regulatory framework for AI)",
       "publisher": "European Commission, Shaping Europe's digital future",
-      "fetchedAt": "2026-10-10T07:02:34Z",
+      "fetchedAt": "2026-10-10T08:05:00Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "eu-aiact-oj",
       "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng",
       "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act), original text",
       "publisher": "Official Journal of the European Union, EUR-Lex",
-      "fetchedAt": "2026-10-10T07:02:32Z",
+      "fetchedAt": "2026-10-10T08:06:31Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "eu-omnibus-oj",
       "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202601744",
       "title": "Regulation (EU) 2026/1744 (Digital Omnibus on AI)",
       "publisher": "Official Journal of the European Union, EUR-Lex",
-      "fetchedAt": "2026-10-10T07:25:36Z",
+      "fetchedAt": "2026-10-10T08:06:24Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "eu-transp-news",
       "url": "https://digital-strategy.ec.europa.eu/en/news/commission-starts-enforcing-ai-act-rules-and-new-transparency-requirements-2-august",
       "title": "Commission starts enforcing AI Act rules and new transparency requirements on 2 August",
       "publisher": "European Commission, Shaping Europe's digital future",
-      "fetchedAt": "2026-10-10T07:25:35Z",
+      "fetchedAt": "2026-10-10T08:04:58Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "gdpr-oj",
       "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
       "title": "Regulation (EU) 2016/679 (General Data Protection Regulation)",
       "publisher": "Official Journal of the European Union, EUR-Lex",
-      "fetchedAt": "2026-10-10T07:02:36Z",
+      "fetchedAt": "2026-10-10T08:06:27Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "goog-deprec",
       "url": "https://ai.google.dev/gemini-api/docs/deprecations",
       "title": "Gemini deprecations",
       "publisher": "Google",
-      "fetchedAt": "2026-10-10T07:01:39Z",
+      "fetchedAt": "2026-10-10T07:58:24Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "goog-ratelimits",
       "url": "https://ai.google.dev/gemini-api/docs/rate-limits",
       "title": "Rate limits",
       "publisher": "Google",
-      "fetchedAt": "2026-10-10T07:01:43Z",
+      "fetchedAt": "2026-10-10T07:58:24Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "goog-terms",
       "url": "https://ai.google.dev/gemini-api/terms",
       "title": "Gemini API Additional Terms of Service",
       "publisher": "Google",
-      "fetchedAt": "2026-10-10T07:01:42Z",
+      "fetchedAt": "2026-10-10T07:58:32Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "goog-tokens",
       "url": "https://ai.google.dev/gemini-api/docs/tokens",
       "title": "Understand and count tokens",
       "publisher": "Google",
-      "fetchedAt": "2026-10-10T07:01:40Z",
+      "fetchedAt": "2026-10-10T07:55:40Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "lost-middle",
       "url": "https://aclanthology.org/2024.tacl-1.9/",
       "title": "Lost in the Middle: How Language Models Use Long Contexts",
       "publisher": "ACL Anthology (Transactions of the Association for Computational Linguistics, volume 12, 2024)",
-      "fetchedAt": "2026-10-10T07:02:26Z",
+      "fetchedAt": "2026-10-10T08:04:59Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "msft-dataprivacy",
       "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/data-privacy",
       "title": "Data, privacy, and security for Azure Direct Models in Microsoft Foundry",
       "publisher": "Microsoft Learn",
-      "fetchedAt": "2026-10-10T07:01:44Z",
+      "fetchedAt": "2026-10-10T07:55:34Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "nist-ai100-1",
       "url": "https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf",
       "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1",
       "publisher": "National Institute of Standards and Technology",
-      "fetchedAt": "2026-10-10T07:00:46Z",
+      "fetchedAt": "2026-10-10T08:02:05Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "nist-ai600-1",
       "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
       "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile, NIST AI 600-1",
       "publisher": "National Institute of Standards and Technology",
-      "fetchedAt": "2026-10-10T07:00:47Z",
+      "fetchedAt": "2026-10-10T08:02:06Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "nist-airmf",
       "url": "https://www.nist.gov/itl/ai-risk-management-framework",
       "title": "AI Risk Management Framework",
       "publisher": "National Institute of Standards and Technology",
-      "fetchedAt": "2026-10-10T07:00:00Z",
+      "fetchedAt": "2026-10-10T08:02:01Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "nist-airmf-playbook",
       "url": "https://airc.nist.gov/airmf-resources/playbook/",
       "title": "NIST AI RMF Playbook",
       "publisher": "NIST AI Resource Center",
-      "fetchedAt": "2026-10-10T07:03:33Z",
+      "fetchedAt": "2026-10-10T08:02:01Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "oai-deprec",
       "url": "https://developers.openai.com/api/docs/deprecations",
       "title": "Deprecations",
       "publisher": "OpenAI",
-      "fetchedAt": "2026-10-10T07:01:35Z",
+      "fetchedAt": "2026-10-10T07:58:30Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "oai-evals",
       "url": "https://developers.openai.com/api/docs/guides/evals",
       "title": "Working with evals",
       "publisher": "OpenAI",
-      "fetchedAt": "2026-10-10T07:01:36Z",
+      "fetchedAt": "2026-10-10T07:58:31Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "oai-ratelimits",
       "url": "https://developers.openai.com/api/docs/guides/rate-limits",
       "title": "Rate limits",
       "publisher": "OpenAI",
-      "fetchedAt": "2026-10-10T07:01:38Z",
+      "fetchedAt": "2026-10-10T07:58:33Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "oai-yourdata",
       "url": "https://developers.openai.com/api/docs/guides/your-data",
       "title": "Data controls in the OpenAI platform",
       "publisher": "OpenAI",
-      "fetchedAt": "2026-10-10T07:01:33Z",
+      "fetchedAt": "2026-10-10T07:58:36Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "owasp-llm-top10",
       "url": "https://genai.owasp.org/llm-top-10/",
       "title": "2025 Top 10 Risk and Mitigations for LLMs and Gen AI Apps",
       "publisher": "OWASP Gen AI Security Project",
-      "fetchedAt": "2026-10-10T06:59:41Z",
+      "fetchedAt": "2026-10-10T08:01:12Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "owasp-llm01",
       "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
       "title": "LLM01:2025 Prompt Injection",
       "publisher": "OWASP Gen AI Security Project",
-      "fetchedAt": "2026-10-10T06:59:52Z",
+      "fetchedAt": "2026-10-10T08:01:16Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "owasp-llm02",
       "url": "https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/",
       "title": "LLM02:2025 Sensitive Information Disclosure",
       "publisher": "OWASP Gen AI Security Project",
-      "fetchedAt": "2026-10-10T07:00:35Z",
+      "fetchedAt": "2026-10-10T08:01:05Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "owasp-llm06",
       "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
       "title": "LLM06:2025 Excessive Agency",
       "publisher": "OWASP Gen AI Security Project",
-      "fetchedAt": "2026-10-10T07:00:34Z",
+      "fetchedAt": "2026-10-10T08:01:20Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "owasp-llm08",
       "url": "https://genai.owasp.org/llmrisk/llm082025-vector-and-embedding-weaknesses/",
       "title": "LLM08:2025 Vector and Embedding Weaknesses",
       "publisher": "OWASP Gen AI Security Project",
-      "fetchedAt": "2026-10-10T07:00:36Z",
+      "fetchedAt": "2026-10-10T08:01:19Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "owasp-llm10",
       "url": "https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/",
       "title": "LLM10:2025 Unbounded Consumption",
       "publisher": "OWASP Gen AI Security Project",
-      "fetchedAt": "2026-10-10T07:00:35Z",
+      "fetchedAt": "2026-10-10T08:01:19Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "rag-arxiv",
       "url": "https://arxiv.org/abs/2005.11401",
       "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
       "publisher": "arXiv (Lewis et al., NeurIPS 2020)",
-      "fetchedAt": "2026-10-10T07:02:24Z",
+      "fetchedAt": "2026-10-10T08:05:04Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "tx-hb149",
       "url": "https://capitol.texas.gov/tlodocs/89R/billtext/html/HB00149F.htm",
       "title": "H.B. 149, Texas Responsible Artificial Intelligence Governance Act (enrolled version)",
       "publisher": "Texas Legislature Online",
-      "fetchedAt": "2026-10-10T07:25:43Z",
+      "fetchedAt": "2026-10-10T08:06:22Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     },
     {
       "id": "tx-hb149-history",
       "url": "https://capitol.texas.gov/BillLookup/History.aspx?LegSess=89R&Bill=HB149",
       "title": "H.B. 149 bill history, 89th Legislature",
       "publisher": "Texas Legislature Online",
-      "fetchedAt": "2026-10-10T07:42:56Z",
+      "fetchedAt": "2026-10-10T07:54:46Z",
       "status": 200,
-      "tool": "curl"
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -376,7 +367,7 @@
           "kind": "paraphrase",
           "sourceId": "goog-terms",
           "locator": "Unpaid services",
-          "quote": "unpaid quota in Gemini API are unpaid services"
+          "quote": "Any Services that are offered free of charge like direct interactions with Google AI Studio or unpaid quota in Gemini API"
         },
         {
           "id": "D8",
@@ -384,7 +375,7 @@
           "kind": "paraphrase",
           "sourceId": "goog-terms",
           "locator": "Unpaid services",
-          "quote": "Do not submit sensitive, confidential, or personal information to the unpaid services."
+          "quote": "Do not submit sensitive, confidential, or personal information to the Unpaid Services."
         },
         {
           "id": "D9",
@@ -448,7 +439,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm08",
           "locator": "Common examples of risks, 1",
-          "quote": "inadequate or misaligned access controls can lead to unauthorized access to embeddings containing sensitive information"
+          "quote": "Inadequate or misaligned access controls can lead to unauthorized access to embeddings containing sensitive information"
         },
         {
           "id": "D17",
@@ -533,7 +524,7 @@
           "kind": "regulation",
           "sourceId": "eu-transp-news",
           "locator": "Opening paragraph",
-          "quote": "the European Commission's AI Office, together with national authorities, will begin enforcing"
+          "quote": "the European Commission’s AI Office, together with national authorities, will begin enforcing"
         },
         {
           "id": "B5",
@@ -726,86 +717,6 @@
           "sourceId": "eu-aiact-oj",
           "locator": "Article 50(1)",
           "quote": "informed that they are interacting with an AI system, unless this is obvious"
-        },
-        {
-          "id": "B28",
-          "sentence": "Senate Bill 26-189 was signed in May 2026 and repeals and reenacts the provisions of Senate Bill 24-205.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Opening",
-          "quote": "Senate Bill 26-189 was signed into law May 2026 and repeals and reenacts those provisions"
-        },
-        {
-          "id": "B29",
-          "sentence": "It creates requirements for developers of ADMT used to materially influence a consequential decision and for deployers who use it.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Opening",
-          "quote": "creates certain requirements for both developers of ADMT that is used to materially influence a consequential decision and deployers who use ADMT"
-        },
-        {
-          "id": "B30",
-          "sentence": "It gives consumers the right to request and correct inaccurate personal data used by that technology.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Opening",
-          "quote": "gives consumers the right to request and correct inaccurate personal data used by ADMT"
-        },
-        {
-          "id": "B31",
-          "sentence": "The page says the new law takes effect on January 1, 2027.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Opening",
-          "quote": "This new law and its provisions go into effect January 1, 2027."
-        },
-        {
-          "id": "B32",
-          "sentence": "House Bill 26-1263, the Chatbot Safety Act, was signed on July 1, 2026.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Chatbot Safety Act",
-          "quote": "House Bill 26-1263 was signed into law on July 1, 2026"
-        },
-        {
-          "id": "B33",
-          "sentence": "It requires chatbot operators to disclose that users are interacting with AI and not humans.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Chatbot Safety Act",
-          "quote": "disclose that users are interacting with AI and not humans"
-        },
-        {
-          "id": "B34",
-          "sentence": "The Chatbot Safety Act takes effect on January 1, 2027.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Chatbot Safety Act",
-          "quote": "goes effect January 1, 2027"
-        },
-        {
-          "id": "B35",
-          "sentence": "The Attorney General's office filed proposed draft rules on August 11, 2026.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Rulemaking",
-          "quote": "On August 11, 2026, the DOL filed"
-        },
-        {
-          "id": "B36",
-          "sentence": "It released an interim draft on October 6, 2026.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Rulemaking",
-          "quote": "On October 6, 2026, the DOL released an interim draft of the rules"
-        },
-        {
-          "id": "B37",
-          "sentence": "It invites written comments through October 26, 2026.",
-          "kind": "regulation",
-          "sourceId": "co-ag-ai",
-          "locator": "Rulemaking",
-          "quote": "You may submit written comments using the comment form below through October 26, 2026."
         },
         {
           "id": "B38",
@@ -1002,7 +913,7 @@
           "kind": "paraphrase",
           "sourceId": "anth-privacy",
           "locator": "Standard retention timeframe",
-          "quote": "when you and we have agreed otherwise (e.g. zero data retention agreement)"
+          "quote": "When you and we have agreed otherwise (e.g. zero data retention agreement)"
         },
         {
           "id": "P3",
@@ -1010,7 +921,7 @@
           "kind": "paraphrase",
           "sourceId": "anth-privacy",
           "locator": "Standard retention timeframe",
-          "quote": "to enforce our usage policy"
+          "quote": "to enforce our Usage Policy"
         },
         {
           "id": "P4",
@@ -1058,7 +969,7 @@
           "kind": "paraphrase",
           "sourceId": "goog-terms",
           "locator": "Unpaid services",
-          "quote": "Do not submit sensitive, confidential, or personal information to the unpaid services."
+          "quote": "Do not submit sensitive, confidential, or personal information to the Unpaid Services."
         },
         {
           "id": "P10",
@@ -1074,7 +985,7 @@
           "kind": "paraphrase",
           "sourceId": "msft-dataprivacy",
           "locator": "Important box",
-          "quote": "are not available to OpenAI or other providers of models sold by Azure"
+          "quote": "are NOT available to OpenAI or other providers of Models sold by Azure"
         },
         {
           "id": "P12",
@@ -1114,7 +1025,7 @@
           "kind": "paraphrase",
           "sourceId": "oai-deprec",
           "locator": "Model deprecation notice periods",
-          "quote": "generally available models: at least 6 months"
+          "quote": "Generally available models: At least 6 months"
         },
         {
           "id": "P17",
@@ -1122,7 +1033,7 @@
           "kind": "paraphrase",
           "sourceId": "oai-deprec",
           "locator": "Model deprecation notice periods",
-          "quote": "specialized variants of generally available models: at least 3 months"
+          "quote": "Specialized variants of generally available models: At least 3 months"
         },
         {
           "id": "P18",
@@ -1138,7 +1049,7 @@
           "kind": "paraphrase",
           "sourceId": "oai-deprec",
           "locator": "Model deprecation notice periods",
-          "quote": "we don't recommend using preview models for business-critical production workloads unless you can migrate on short notice"
+          "quote": "We don't recommend using preview models for business-critical production workloads unless you can migrate on short notice"
         },
         {
           "id": "P20",
@@ -1146,7 +1057,7 @@
           "kind": "paraphrase",
           "sourceId": "oai-deprec",
           "locator": "Model deprecation notice periods",
-          "quote": "unless safety or compliance concerns require a faster timeline"
+          "quote": "Unless safety or compliance concerns require a faster timeline"
         },
         {
           "id": "P21",
@@ -1154,7 +1065,7 @@
           "kind": "definition",
           "sourceId": "goog-deprec",
           "locator": "intro",
-          "quote": "a \"deprecation\" is the announcement that we no longer provide support for a model"
+          "quote": "A \"deprecation\" is the announcement that we no longer provide support for a model"
         },
         {
           "id": "P22",
@@ -1186,7 +1097,7 @@
           "kind": "paraphrase",
           "sourceId": "oai-ratelimits",
           "locator": "How do these rate limits work?",
-          "quote": "rpm (requests per minute), rpd (requests per day), tpm (tokens per minute), tpd (tokens per day), ipm (images per minute)"
+          "quote": "RPM (requests per minute), RPD (requests per day), TPM (tokens per minute), TPD (tokens per day), IPM (images per minute)"
         },
         {
           "id": "P26",
@@ -1209,8 +1120,8 @@
           "sentence": "Anthropic's page says limits exist on how much an organization can use the API, to mitigate misuse and manage capacity.",
           "kind": "paraphrase",
           "sourceId": "anth-ratelimits",
-          "locator": "intro",
-          "quote": "to mitigate misuse and manage capacity on the API, limits are in place on how much an organization can use the Claude API"
+          "locator": "page description",
+          "quote": "To mitigate misuse and manage capacity on the API, limits are in place on how much an organization can use the Claude API"
         },
         {
           "id": "P29",
@@ -1218,7 +1129,7 @@
           "kind": "paraphrase",
           "sourceId": "goog-terms",
           "locator": "Use of the services",
-          "quote": "You may use only paid services when making API clients available to users in the European Economic Area, Switzerland, or the United Kingdom."
+          "quote": "You may use only Paid Services when making API Clients available to users in the European Economic Area, Switzerland,"
         },
         {
           "id": "P30",
@@ -1226,7 +1137,7 @@
           "kind": "paraphrase",
           "sourceId": "goog-terms",
           "locator": "Use of the services",
-          "quote": "You may not use the services to develop models that compete with the services"
+          "quote": "You may not use the Services to develop models that compete with the Services"
         },
         {
           "id": "P31",
@@ -1311,7 +1222,7 @@
           "kind": "paraphrase",
           "sourceId": "nist-ai100-1",
           "locator": "Table 3, Measure 1.1",
-          "quote": "will not - or cannot - be measured are properly documented"
+          "quote": "will not – or cannot – be measured are properly documented"
         },
         {
           "id": "E10",
@@ -1359,7 +1270,7 @@
           "kind": "paraphrase",
           "sourceId": "oai-evals",
           "locator": "Create an eval",
-          "quote": "testing_criteria: the graders that determine if the model output is correct"
+          "quote": "testing_criteria: The graders that determine if the model output is correct"
         },
         {
           "id": "E16",
@@ -1399,7 +1310,7 @@
           "kind": "paraphrase",
           "sourceId": "oai-evals",
           "locator": "Getting started",
-          "quote": "analyze the results, then iterate and improve on your prompt"
+          "quote": "Analyze the results, then iterate and improve on your prompt"
         },
         {
           "id": "E21",
@@ -1447,7 +1358,7 @@
           "kind": "paraphrase",
           "sourceId": "nist-ai600-1",
           "locator": "Suggested action MS-2.3-002",
-          "quote": "evaluate claims of model capabilities using empirically validated methods"
+          "quote": "Evaluate claims of model capabilities using empirically validated methods"
         },
         {
           "id": "E27",
@@ -1492,7 +1403,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm06",
           "locator": "Prevention and mitigation, 6",
-          "quote": "should include a user approval routine within the extension that implements the 'post' operation"
+          "quote": "should include a user approval routine within the extension that implements the ‘post’ operation"
         },
         {
           "id": "H4",
@@ -1500,7 +1411,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm06",
           "locator": "Example attack scenarios",
-          "quote": "requiring the user to manually review and hit 'send' on every mail drafted by the LLM extension"
+          "quote": "requiring the user to manually review and hit ‘send’ on every mail drafted by the LLM extension"
         },
         {
           "id": "H5",
@@ -1508,7 +1419,7 @@
           "kind": "paraphrase",
           "sourceId": "nist-ai100-1",
           "locator": "Table 2, Map 3.5",
-          "quote": "processes for human oversight are defined, assessed, and documented in accordance with organizational policies from the GOVERN function"
+          "quote": "Processes for human oversight are defined, assessed, and documented in accordance with organizational policies from the GOVERN function"
         },
         {
           "id": "H6",
@@ -1524,7 +1435,7 @@
           "kind": "definition",
           "sourceId": "nist-ai600-1",
           "locator": "Section 2.7",
-          "quote": "arrangements of or interactions between a human and an AI system"
+          "quote": "Arrangements of or interactions between a human and an AI system"
         },
         {
           "id": "H8",
@@ -1870,7 +1781,7 @@
           "kind": "definition",
           "sourceId": "owasp-llm01",
           "locator": "first paragraph",
-          "quote": "A Prompt Injection Vulnerability occurs when user prompts alter the LLM's behavior or output in unintended ways."
+          "quote": "A Prompt Injection Vulnerability occurs when user prompts alter the LLM’s behavior or output in unintended ways."
         },
         {
           "id": "A4",
@@ -1886,7 +1797,7 @@
           "kind": "definition",
           "sourceId": "owasp-llm01",
           "locator": "Types of Prompt Injection Vulnerabilities, Direct",
-          "quote": "Direct prompt injections occur when a user's prompt input directly alters the behavior of the model in unintended or unexpected ways."
+          "quote": "Direct prompt injections occur when a user’s prompt input directly alters the behavior of the model in unintended or unexpected ways."
         },
         {
           "id": "A6",
@@ -1926,7 +1837,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm01",
           "locator": "third paragraph",
-          "quote": "effective prevention of jailbreaking requires ongoing updates to the model's training and safety mechanisms"
+          "quote": "effective prevention of jailbreaking requires ongoing updates to the model’s training and safety mechanisms"
         },
         {
           "id": "A11",
@@ -2070,7 +1981,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm06",
           "locator": "Example Attack Scenarios",
-          "quote": "eliminating excessive autonomy by requiring the user to manually review and hit 'send' on every mail drafted by the LLM extension"
+          "quote": "eliminating excessive autonomy by requiring the user to manually review and hit ‘send’ on every mail drafted by the LLM extension"
         },
         {
           "id": "A29",
@@ -2219,7 +2130,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm08",
           "locator": "Common examples of risks, 1",
-          "quote": "inadequate or misaligned access controls can lead to unauthorized access to embeddings containing sensitive information"
+          "quote": "Inadequate or misaligned access controls can lead to unauthorized access to embeddings containing sensitive information"
         },
         {
           "id": "R14",
@@ -2227,7 +2138,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm08",
           "locator": "Common examples of risks, 2",
-          "quote": "there's a risk of context leakage between users or queries"
+          "quote": "there’s a risk of context leakage between users or queries"
         },
         {
           "id": "R15",
@@ -2267,7 +2178,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm08",
           "locator": "Common examples of risks, 2",
-          "quote": "can't supersede old knowledge that it has learned while training"
+          "quote": "can’t supersede old knowledge that it has learned while training"
         },
         {
           "id": "R20",
@@ -2315,7 +2226,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm08",
           "locator": "Mitigation 3",
-          "quote": "tag and classify data within the knowledge base to control access levels"
+          "quote": "Tag and classify data within the knowledge base to control access levels"
         },
         {
           "id": "R26",
@@ -2323,7 +2234,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm08",
           "locator": "Mitigation 4",
-          "quote": "maintain detailed immutable logs of retrieval activities"
+          "quote": "Maintain detailed immutable logs of retrieval activities"
         },
         {
           "id": "R27",
@@ -2331,7 +2242,7 @@
           "kind": "paraphrase",
           "sourceId": "owasp-llm01",
           "locator": "Mitigation 3",
-          "quote": "assess context relevance, groundedness, and question/answer relevance"
+          "quote": "Assess context relevance, groundedness, and question/answer relevance"
         },
         {
           "id": "R28",
@@ -2339,7 +2250,7 @@
           "kind": "definition",
           "sourceId": "nist-ai600-1",
           "locator": "Section 2.2",
-          "quote": "the production of confidently stated but erroneous or false content"
+          "quote": "The production of confidently stated but erroneous or false content"
         },
         {
           "id": "R29",
@@ -2448,7 +2359,7 @@
           "kind": "paraphrase",
           "sourceId": "nist-ai100-1",
           "locator": "Section 5",
-          "quote": "while GOVERN applies to all stages of organizations' AI risk management processes and procedures"
+          "quote": "While GOVERN applies to all stages of organizations’ AI risk management processes and procedures"
         },
         {
           "id": "N11",
@@ -2584,7 +2495,7 @@
           "kind": "definition",
           "sourceId": "nist-ai600-1",
           "locator": "Section 2.2",
-          "quote": "the production of confidently stated but erroneous or false content"
+          "quote": "The production of confidently stated but erroneous or false content"
         },
         {
           "id": "N28",
