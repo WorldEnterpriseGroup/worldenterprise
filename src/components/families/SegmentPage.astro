@@ -28,11 +28,12 @@ interface Props {
 
 const { page, view, path, actions, ogSlot } = Astro.props;
 const { Content } = await render(page);
-const { title, description, eyebrow, updated, draft } = page.data;
+const { title, seoTitle, description, eyebrow, updated, draft } = page.data;
 ---
 
 <MarketingLayout
   title={title}
+  seoTitle={seoTitle}
   description={description}
   path={path}
   lead={description}

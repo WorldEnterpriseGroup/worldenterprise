@@ -1,0 +1,75 @@
+---
+import MethodologyBox from '../blocks/MethodologyBox.astro';
+
+/**
+ * A founder tool's working as static content: what each result or check is, the formula or the source behind it, and the assumptions
+ * that go with it. It is the no-JavaScript fallback, and it is what a reader checks a result against. The first column is the row
+ * header; the second is the formula (or, for a checklist, where the check comes from); the third, when there is one, lists assumptions.
+ */
+interface Row {
+  readonly id: string;
+  readonly name: string;
+  readonly second: string;
+  readonly third?: readonly string[] | undefined;
+}
+
+interface Props {
+  title: string;
+  intro: string;
+  caption: string;
+  regionLabel: string;
+  headers: readonly [string, string] | readonly [string, string, string];
+  rows: readonly Row[];
+  methodology: string;
+  limitations: string;
+  updated?: Date | undefined;
+}
+
+const { title, intro, caption, regionLabel, headers, rows, methodology, limitations, updated } = Astro.props;
+---
+
+<section class="formulas stack" aria-labelledby="formulas-title">
+  <h2 id="formulas-title">{title}</h2>
+  <p>{intro}</p>
+  <div class="table-wrap" tabindex="0" role="region" aria-label={regionLabel}>
+    <table class="data-table">
+      <caption>{caption}</caption>
+      <thead>
+        <tr>
+          {headers.map((header) => <th scope="col">{header}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr id={`formula-${row.id}`}>
+              <th scope="row">{row.name}</th>
+              <td>{row.second}</td>
+              {row.third !== undefined && (
+                <td>
+                  <ul class="formulas__list">
+                    {row.third.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </td>
+              )}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <MethodologyBox methodology={methodology} limitations={limitations} version="1.0" updated={updated} />
+</section>
+
+<style>
+  @layer pages {
+    .formulas__list {
+      display: grid;
+      gap: var(--sp-2);
+      padding-inline-start: var(--sp-4);
+      font-size: var(--fs-sm);
+    }
+  }
+</style>
