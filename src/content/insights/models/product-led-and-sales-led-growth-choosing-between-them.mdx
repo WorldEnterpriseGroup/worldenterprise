@@ -1,0 +1,96 @@
+---
+title: "Product-led and sales-led growth: choosing between them"
+seoTitle: Product-led or sales-led growth
+description: What product-led and sales-led growth mean, what each asks of a small team and its product, and a set of questions for choosing a motion without benchmarks.
+topic: models
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [first-time-founders, solo-founders]
+relatedServices: [C]
+relatedPlaybook: earn-your-first-customers
+relatedTemplate: customer-interview-guide
+related: [usage-based-seat-based-and-hybrid-pricing-models, b2b-saas-how-the-model-works-and-what-it-asks-of-a-first-company]
+evidence: [stripe-trials, csa-caiq, lean-startup-principles]
+claimsUsed: []
+sources:
+  - id: stripe-trials
+    title: Configure trial offers on subscriptions
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/billing/subscriptions/trials
+    accessed: 2026-10-10
+  - id: csa-caiq
+    title: Consensus Assessments Initiative Questionnaire (CAIQ)
+    publisher: Cloud Security Alliance
+    url: https://cloudsecurityalliance.org/artifacts/consensus-assessments-initiative-questionnaire-v3-0-1
+    accessed: 2026-10-10
+  - id: lean-startup-principles
+    title: The Lean Startup, methodology
+    publisher: Eric Ries, theleanstartup.com
+    url: https://theleanstartup.com/principles
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Every software company needs a way to turn interested people into paying customers. Two motions are named most often. In a product-led motion, the product itself does most of the persuading: people start using it without talking to anyone, reach a first result, and pay when they want more. In a sales-led motion, people do most of the persuading: someone talks to the buyer, shows the product, answers questions and helps the buyer through a purchase.
+
+The choice is often presented as a matter of taste or fashion. It is better treated as a fit question, with an answer that depends on what you sell, to whom and at what price. This article sets out what each motion asks of a small company, the questions that separate them, and a way to learn which one fits without relying on benchmarks, which this article does not give.
+
+## Two motions, described plainly
+
+### Product-led
+
+A product-led company lets a prospective customer use the product before they commit. The usual forms are a sign-up with no sales contact, a time-limited trial or a limited tier. The product has to explain itself, deliver value quickly and make the step to paying simple.
+
+Billing documentation shows how this looks in practice. Stripe's documentation on trial offers says they "enable you to qualify high-intent leads, reduce trial abuse, and provide discounted rates to your customers for a limited duration". That sentence is one vendor describing its own feature, but it names the three design questions any product-led company has to answer: how to tell who is serious, how to prevent misuse and how long the customer gets before the price applies.
+
+### Sales-led
+
+A sales-led company puts a person between the product and the purchase. The person finds the buyer, learns the problem, runs a demonstration, handles objections, involves the other people who must approve, and arranges the contract. The product may still have a trial, but the trial is part of a conversation, not a replacement for it.
+
+The purchase may involve work that has nothing to do with features. Larger buyers send security questionnaires. The Cloud Security Alliance describes its widely used questionnaire as offering "an industry-accepted way to document what security controls exist in IaaS, PaaS, and SaaS services". A sales-led company needs someone to complete these accurately and to explain the answers, and that someone is often the founder.
+
+### Hybrids
+
+Most companies end up mixing the two. A product-led entry point feeds accounts that later need a conversation, and a sales-led company offers a trial to speed up a decision. The useful question is where the buyer is first asked to take a step, and who helps them take it.
+
+## What each motion asks of a small team
+
+| Area | Product-led asks for | Sales-led asks for |
+|---|---|---|
+| The product | Onboarding that reaches a first result with no help | A demonstration that shows the main value in a short meeting |
+| Time and people | Instrumentation, support that scales and a self-serve purchase path | Founder or sales time on every account |
+| Pricing | A price a user can approve alone | Room to discuss scope, terms and approval |
+| Learning | Behavior data from many small users | Detailed feedback from a few large buyers |
+| Risk | Users who never reach value and never tell you why | A pipeline that depends on one person's calendar |
+
+The table is editorial judgment, not a finding from a source.
+
+Notice that the asks differ in kind. A product-led motion pushes work into the product, where it is built once and used by many. A sales-led motion keeps work in people, where it grows with the number of accounts. A solo founder has little spare time, which argues for pushing work into the product, but only if the product can in fact carry it. The <MaybeLink path="/insights/onboarding-is-acquisition-time-to-first-value/">onboarding article</MaybeLink> explains why that last condition is harder than it sounds.
+
+## Questions that separate the two
+
+Work through these with your own situation in mind.
+
+1. **Who can buy?** If the person who feels the problem can pay on their own, a self-serve path is possible. If a budget holder must approve, a conversation is almost certain, whatever the product does.
+2. **How quickly does a new user reach a result?** A product that needs weeks of setup, data connection or training cannot persuade by itself in a first session.
+3. **How many people must agree?** Each additional approver adds a conversation.
+4. **What does a customer risk by trying you?** A tool that touches sensitive data or core operations triggers reviews before anyone will try it, which pulls the motion toward people.
+5. **How large is the price relative to the buyer's authority to spend?** A price a person can put on a card without asking behaves differently from one that needs a purchase order.
+6. **What are you good at?** A founder who is at ease on calls and weak at designing self-serve flows will learn faster in a sales-led motion, and the reverse also holds. Fit with the founder's strengths is a legitimate input, as long as it is not the only one.
+
+If most answers point one way, start there. If they split, note which questions split, because those are the assumptions to test.
+
+## Learn the answer before you build the motion
+
+The surest mistake is to build an elaborate motion before you know which one works. A product-led company builds a self-serve path nobody walks. A sales-led company hires someone to sell a product whose pitch is still unclear.
+
+The Lean Startup method puts the alternative plainly. The Lean Startup site says that "A core component of Lean Startup methodology is the build-measure-learn feedback loop." Applied here, the loop is short. Sell by hand to the first customers, whatever motion you intend to use later. The <MaybeLink path="/insights/your-first-ten-customers-a-founder-led-sequence/">founder-led sequence for the first ten customers</MaybeLink> describes how. Watch where each one hesitates. If they would have gone ahead alone, a product-led path may fit. If every one needed a conversation to get past a specific doubt, those doubts are what a sales-led motion exists to resolve. Either answer is evidence, and both are cheaper than building the wrong machine.
+
+## Pricing and the motion are linked
+
+A price shapes the motion more than most founders expect. A low price with a self-serve path cannot pay for a sales call. A high price with only a sign-up form leaves out the buyer who needs reassurance. The article on <MaybeLink path="/insights/usage-based-seat-based-and-hybrid-pricing-models/">usage-based, seat-based and hybrid pricing</MaybeLink> and the <MaybeLink path="/insights/pricing-page-fundamentals-for-a-first-saas/">pricing page fundamentals</MaybeLink> help with that side of the decision, and the <MaybeLink path="/playbooks/earn-your-first-customers/">earn your first customers playbook</MaybeLink> places both inside a sequence you can follow.
+
+## What this article cannot tell you
+
+This article cannot tell you which motion will work for your product, how many sign-ups become customers, how long a sale will take or what a salesperson costs. It gives no benchmarks and no conversion figures, because no primary source that was fetched for it covers your category. It cites one payments vendor's description of its own trial feature, one security body's description of a questionnaire and one method's own statement of its loop, each attributed to its publisher. It does not cover marketing channels, outbound methods, partner-led selling or the legal rules on contacting prospects, all of which vary by country. Checked on 2026-10-10.

@@ -1,0 +1,93 @@
+---
+title: "Vertical SaaS: depth over breadth"
+seoTitle: "Vertical SaaS: going deep"
+description: What vertical SaaS is, how building for one industry changes the product, the sale and the rules you work under, and the trade-offs to weigh before you narrow.
+topic: models
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [second-career-founders, corporate-innovators]
+relatedServices: [C, B]
+relatedPlaybook: validate-the-problem
+relatedTemplate: customer-interview-guide
+related: [b2b-saas-how-the-model-works-and-what-it-asks-of-a-first-company, marketplaces-the-two-sided-start-up-problem]
+evidence: [cfr-160-103, ferpa-definition]
+claimsUsed: [C-29]
+sources:
+  - id: cfr-160-103
+    title: 45 CFR 160.103, Definitions (HIPAA administrative requirements)
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/cfr/text/45/160.103
+    accessed: 2026-10-10
+  - id: ferpa-definition
+    title: What is FERPA
+    publisher: Student Privacy Policy Office, U.S. Department of Education
+    url: https://studentprivacy.ed.gov/faq/what-ferpa
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Horizontal software serves a function that exists in every industry, such as accounting, scheduling or messaging. Vertical software serves one industry across the functions that industry needs: a clinic, a construction firm, a school, a freight broker. The bet behind it is simple. A product that fits one industry's work closely enough can be worth more to those customers than a general tool they have to bend, and it can earn the right to be the system they run the business on.
+
+That bet has a price. Narrowing the market narrows the number of buyers, and it asks you to learn a domain you may not have worked in. This article explains what depth means in practice, what it asks of a first company, and how to test whether a vertical is worth the narrowing.
+
+## What depth actually means
+
+Depth is not a longer feature list. It shows up in five places, and a vertical product usually needs most of them.
+
+**The workflow.** A general scheduling tool lets anyone book a slot. A product for a veterinary practice knows that an appointment has an animal, an owner, a procedure, a room, a vaccine record and a follow-up. The depth is in encoding the real sequence of work, including its exceptions.
+
+**The data model.** Each industry has things that matter to it and no one else: a job site, a case file, a course section, a shipment. When the objects in your product are the objects your customers already talk about, onboarding gets shorter, because nobody has to translate.
+
+**The vocabulary.** Buyers trust software that uses their words correctly. A product that names things the way a general tool would signals that its makers have not done the work.
+
+**The integrations.** Industries run on a small set of other systems, such as a records system, an accounting package or a registry. In a vertical, connecting to those systems is often part of the product, not an extra.
+
+**The rules.** Many industries work under laws and standards that shape what software may do with data. We return to this below because it changes the cost of building.
+
+## What the model asks of a first company
+
+### Domain knowledge you can show
+
+A vertical buyer will test whether you understand the work in the first conversation. Founders who came from the industry, which is a common route for second-career founders, start with that credibility. Founders who come from outside, including corporate teams building for a market their employer does not serve, need to earn it by spending time with practitioners before building. The <MaybeLink path="/insights/customer-discovery-interviews-without-false-positives/">discovery interviews article</MaybeLink> and the <MaybeLink path="/library/customer-interview-guide/">customer interview guide</MaybeLink> are written for exactly this stage.
+
+### A sale that follows the industry's habits
+
+How an industry buys is part of the vertical. Some buy through an association, a trade show or a reseller. Others buy only after a peer has used the product. Others go through a procurement office. None of this is visible from outside, so the first customers are also your best source of information about the buying path. Ask each of them how they found the last tool they adopted.
+
+### A smaller ceiling, and a clearer picture of it
+
+A vertical has a countable market. That is an advantage when you size it from the bottom up, because you can name the segments and estimate how many organizations are in each, as the <MaybeLink path="/insights/bottom-up-market-sizing-for-a-first-saas/">market sizing article</MaybeLink> describes. It is a limit when the count turns out to be small. A narrow market that you can win is different from a narrow market that cannot support the company, and only your own numbers can tell you which one you are in.
+
+## Rules as part of the product
+
+Two examples from the United States show how an industry's rules turn into product requirements. They are examples of how rules work, not a list of what applies to you.
+
+In health care, the federal regulations define a "business associate" in part as a person who, on behalf of a covered entity, "creates, receives, maintains, or transmits protected health information" for certain functions and activities. A software company whose product handles that information for a health care provider can therefore be drawn into the rules through the provider's own obligations. Whether a given product makes its maker a business associate is a question of facts, and it is one to put to counsel before you sign a first contract with a provider.
+
+In education, the Department of Education's Student Privacy Policy Office describes the Family Educational Rights and Privacy Act (FERPA) as "a federal law" that gives parents rights over their children's education records, rights that pass to the student at 18 or on entering a postsecondary institution. A product sold to schools meets those rules through its customers' obligations, and schools will ask how you handle student records.
+
+Notice what both examples have in common. The rules apply to the customer first and reach the vendor through the contract. That is why vertical buyers send detailed questionnaires, and why a vertical founder benefits from reading the rules for the first customer's sector early. It is also why you describe a framework as a framework: a product may be built to support what HIPAA requires of a customer, but you should say that in those words, and not that the product is certified or approved, unless an independent party has actually assessed it.
+
+General information as of 2026-10-10, not legal or financial advice. Rules differ by country and by state, and a qualified professional who knows your sector should read them against your product.
+
+## A test for whether to narrow
+
+Before committing to a vertical, answer these in writing.
+
+1. Can you name ten organizations in the vertical, and have you spoken to at least some of them about the problem, not the product?
+2. Which workflow would you encode first, and who does it today?
+3. What is the other system your product must connect to, and is it possible to do so?
+4. Which rules touch the data you will hold, and who will read them for you?
+5. If the first segment is smaller than you hoped, what adjacent segment shares the same workflow?
+6. Why would a general tool not be good enough for these buyers?
+
+The last question matters most. If the honest answer is "it would be good enough", you have a feature of a horizontal product, which the article on <MaybeLink path="/insights/is-your-saas-idea-a-business-or-a-feature/">whether an idea is a business or a feature</MaybeLink> helps you test. If the answer names a specific workflow, a specific rule or a specific integration that general tools handle badly, you have the beginning of depth.
+
+## Depth in the first year
+
+A first company rarely needs to be deep everywhere. It needs to be deep in one workflow for one kind of customer, deep enough that the customer would notice if it were taken away. Choose that workflow from what your first customers describe, build it fully and leave the other thirty requests on a list. Breadth can follow once the first workflow earns its place. The <MaybeLink path="/playbooks/validate-the-problem/">validate the problem playbook</MaybeLink> takes you through the evidence to gather first.
+
+## What this article cannot tell you
+
+This article cannot tell you which industry to pick, how large any vertical is, how a particular industry buys, or which rules apply to your product. It cites two United States sources, the health regulation definition on the Legal Information Institute site and the Department of Education's description of the education records law, and only for how rules reach vendors through customers. It says nothing about other countries, about financial or other regulated sectors, or about any private standard. Checked on 2026-10-10.

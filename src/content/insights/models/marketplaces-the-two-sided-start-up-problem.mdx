@@ -1,0 +1,93 @@
+---
+title: "Marketplaces: the two-sided start-up problem"
+seoTitle: Marketplace start-up problem
+description: How a two-sided marketplace works, why the first buyers and sellers are hard to win together, and the payments, trust and legal questions the model adds.
+topic: models
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [first-time-founders, non-technical-founders]
+relatedServices: [C]
+relatedPlaybook: validate-the-problem
+related: [platforms-and-ecosystems-when-a-product-becomes-a-platform, vertical-saas-depth-over-breadth]
+evidence: [stripe-connect, stripe-marketplace, irs-1099k]
+claimsUsed: [C-29]
+sources:
+  - id: stripe-connect
+    title: Connect, embedded finance for platforms and marketplaces
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/connect
+    accessed: 2026-10-10
+  - id: irs-1099k
+    title: Understanding your Form 1099-K
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/businesses/understanding-your-form-1099-k
+    accessed: 2026-10-10
+  - id: stripe-marketplace
+    title: Build a marketplace
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/connect/marketplace
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+A marketplace connects two groups that need each other: people who want something and people who can provide it. Guests and hosts, shoppers and shops, clients and freelancers. The company does not make the thing being exchanged. It makes the exchange possible, and it earns a share of what passes through.
+
+Before going further, a plain statement about WE. WE builds SaaS: it is a digital incubator for SaaS companies, with dedicated offshore team seats steered by WE. WE does not build or run marketplaces as a service for anyone. This article explains the marketplace model so that you can judge your idea honestly, and it is not a description of anything WE offers. A founder with a marketplace idea can still use it to decide whether the idea is a marketplace business or a SaaS product that happens to include a marketplace feature.
+
+## The problem every marketplace starts with
+
+A marketplace has no value until both sides are present. Buyers will not come if there is nothing to buy. Sellers will not stay if nobody is buying. The usual name for this is the chicken-and-egg problem, and the two-sided structure makes it harder than the same problem for ordinary software, where a single customer can get value alone.
+
+Three ideas help in thinking about it.
+
+**Liquidity is local and specific.** What a buyer experiences is whether they find a good match quickly, not how many listings exist overall. A thousand sellers spread across fifty cities and twenty categories can feel empty to every buyer. This is why many marketplaces begin in one place and one category and widen only after matches are happening reliably.
+
+**One side usually has to be earned first.** Whichever side is harder to attract, or whose presence makes the other side's decision easy, is the side to win first. Some founders supply the first listings themselves, by hand, before software does anything. The <MaybeLink path="/insights/customer-discovery-interviews-without-false-positives/">discovery interviews article</MaybeLink> describes how to talk to each side without collecting false encouragement, and you will need to do it twice.
+
+**The single-player test.** Ask whether the product is useful to one side with nobody on the other. A tool that helps sellers manage their own business, whether or not buyers ever arrive, gives you a reason for sellers to show up. This is the bridge between a SaaS product and a marketplace, and it is why some marketplaces are best seen as software with a market added later.
+
+## Is this a marketplace or a feature?
+
+Many ideas described as marketplaces are better understood as a directory, a lead form or a software tool for one side. The questions below separate them.
+
+1. Does money change hands through your product, or only contact details?
+2. Does your product add value that the two sides could not get from a spreadsheet and a phone call?
+3. Would buyers and sellers both be worse off if you disappeared?
+4. What stops them from taking the first transaction on your platform and every later one elsewhere?
+
+The last one deserves attention. Once a buyer and seller have met, each has a reason to deal directly and keep the fee. Marketplaces answer this with something they add after the introduction: payment protection, scheduling, insurance, reviews, repeat-order tools. If the introduction is all you provide, expect leakage. The <MaybeLink path="/insights/is-your-saas-idea-a-business-or-a-feature/">business-or-feature article</MaybeLink> gives a wider set of tests.
+
+## What a marketplace adds to the work
+
+### Payments between three parties
+
+In a marketplace the company usually collects money from the buyer and passes a portion to the seller. Stripe's documentation describes the category in its own terms: "Use Connect to build a platform, marketplace, fintech, or other business that requires you to model multiple accounts and move money between parties." Its guide to building a marketplace describes the flow this way: "Customers pay the marketplace, and see the marketplace’s name on their receipt. The marketplace then pays the sellers." This is one vendor's description of its own product, given here to show what the problem looks like, and the article does not recommend it or any other provider.
+
+The same documentation lists, as separate tasks, collecting verification information for each connected account and onboarding those accounts. Each seller is a party you may need to identify before paying. That is work a single-customer SaaS product rarely does.
+
+### Tax reporting
+
+When payments flow through a platform, tax reporting duties can attach to it. The United States Internal Revenue Service describes Form 1099-K as "a report of payments you received for goods or services during the year", and the page lists "Payment apps or online marketplaces, also called third party settlement organizations or TPSOs" among the sources that issue it. Whether and how this applies to a particular marketplace depends on the facts and the year, and it is a question for an accountant.
+
+### Trust between strangers
+
+Strangers will transact only if they can judge each other. Reviews, ratings and verified profiles do that work, and they bring questions of their own: who may post a review, how you detect reviews that are not genuine, and what you must disclose about how ratings are calculated. The rules on how reviews are collected and displayed differ by country and by category, so they belong on the list of questions for counsel, and a design that invents or buys reviews to make a young marketplace look busy is a design to avoid.
+
+### Disputes, safety and moderation
+
+Somebody will be late, wrong or dishonest. A marketplace needs a way to settle disagreements, remove bad actors and deal with content it should not host. These are operating functions that continue every day and need people, not just code.
+
+### How the company earns
+
+Most marketplaces take a share of each transaction, charge sellers for listings or promotion, or charge a subscription for tools. The same Stripe guide lists three ways a marketplace can earn: "Keeping part of the transaction amount", white-labeling financial products under its own brand and "Collecting subscription fees". A per-transaction fee is easy to explain, and it is also the easiest to avoid once the parties know each other. Whatever you choose, the fee has to be small enough that each side still gains from using you, and the article on <MaybeLink path="/insights/usage-based-seat-based-and-hybrid-pricing-models/">usage-based, seat-based and hybrid pricing</MaybeLink> covers the vocabulary of charging by volume.
+
+General information as of 2026-10-10, not legal or financial advice. Questions about payment licensing, tax reporting, consumer protection and whether sellers are employees or independent contractors are for a qualified professional who knows your market and country.
+
+## A cheaper way to learn first
+
+Before building a platform, run the transaction by hand. Find ten buyers and ten sellers in one place, introduce them yourself, take payment however you can, and watch what happens. You learn whether the match is valuable, what each side asks for and where trust breaks. The <MaybeLink path="/playbooks/validate-the-problem/">validate the problem playbook</MaybeLink> describes evidence of this kind, and the <MaybeLink path="/program/digital-incubation-model/">digital incubation model page</MaybeLink> says what WE is, in case you are deciding whether a SaaS idea is the better fit.
+
+## What this article cannot tell you
+
+This article cannot tell you whether your marketplace will find liquidity, which side to win first or what fee the market will bear. It cites no market statistics, because the sources fetched for it describe how payment tools and rules work, not how marketplaces perform. The payments passage is one vendor's description of its own product, the tax passage is a United States federal page, and the passages on reviews and disputes are general and unsourced. Rules in other countries, and rules specific to categories such as lodging, lending or health care, are outside it. WE does not build marketplaces as a service, and nothing here is an offer to. Checked on 2026-10-10.
