@@ -4,11 +4,11 @@ import { join, relative } from 'node:path';
 import test from 'node:test';
 import { parse } from 'yaml';
 import * as auditMod from '../../../scripts/audit-claims.mjs';
-import { INTRODUCTIONS_DISCLAIMER, INTRODUCTIONS_FLAT_FEE } from '../../../src/components/blocks/introductions.ts';
+import { INTRODUCTIONS_DISCLAIMER } from '../../../src/components/blocks/introductions.ts';
 import { isClaimUsable } from '../../../src/data/claims.ts';
 import { flags } from '../../../src/data/flags.ts';
 import { site } from '../../../src/data/site.ts';
-import { founderStageRows, FOUNDER_ENTRY_POINTS, stageLineList, stageLinePhrase } from '../../../src/components/program/stages.ts';
+import { stageLineList, stageLinePhrase } from '../../../src/components/program/stages.ts';
 import { GENERATED_SOURCE, hasGeneratedImages, PHOTO_DISCLOSURE, PHOTO_DISCLOSURE_HREF } from '../../../src/lib/photo-disclosure.ts';
 
 interface Rule {
@@ -138,25 +138,7 @@ test('the stage helpers read the mapping in stages.ts', () => {
   assert.equal(stageLinePhrase('grow'), 'lines C, F and G');
 });
 
-test('the founders table has one row per entry point and states the same lines the stage data does', () => {
-  const rows = founderStageRows();
-  assert.equal(rows.length, FOUNDER_ENTRY_POINTS.length);
-  assert.deepEqual(rows.map((row) => row[0]), ['Idea (Dream)', 'Prototype (Build)', 'First customers (Grow)']);
-  assert.match(rows[0]?.[1] ?? '', /service lines C and E fit here/);
-  assert.match(rows[1]?.[1] ?? '', /service lines B and D fit here/);
-  assert.match(rows[2]?.[1] ?? '', /service lines C, F and G fit here/);
-});
-
-test('the founders page and the services hub build their stage text from the helpers', () => {
-  const founders = read('src/pages/founders/index.astro');
-  const services = read('src/pages/services/index.astro');
-  assert.match(founders, /founderStageRows\(\)/);
-  assert.match(services, /stageLinePhrase\('dream'\)/);
-  assert.match(services, /stageLinePhrase\('build'\)/);
-  for (const [name, text] of [['founders', founders], ['services', services]] as const) {
-    assert.doesNotMatch(text, /Dream, with lines?|Build, with lines?|\blines? [A-G] and [A-G]\b/, `${name} hard-codes a stage mapping`);
-  }
-});
+// The founders table blocks moved verbatim to tests/unit/wp-62/legacy-founders-page.test.ts (W8-18).
 
 // ---- P0-3: the photo disclosure ----
 
@@ -270,16 +252,7 @@ test('every source page that names Investor Introductions shows the verbatim dis
   assert.ok(topic.includes(INTRODUCTIONS_DISCLAIMER), 'the fundable topic page carries the disclaimer in its text');
 });
 
-test('the investors page and Service Line F state the flat fee and no longer deny introductions', () => {
-  const investors = read('src/pages/investors/index.astro') + read('src/content/pages/investors/index.mdx');
-  const service = read('src/content/services/fundability-and-investor-readiness.mdx');
-  assert.doesNotMatch(investors, /does not (?:arrange|broker|make)[^.]*(?:meetings|introductions)/i);
-  assert.doesNotMatch(investors, /no introductions/i);
-  assert.match(investors + service, /InvestorIntroductionsOffer/);
-  assert.ok(INTRODUCTIONS_FLAT_FEE.length > 0);
-  assert.doesNotMatch(service, /\bfinder\b/i, 'the finder wording is removed from line F');
-  assert.match(service, /broker-dealer or investment adviser/);
-});
+// The investors page and Service Line F block moved verbatim to tests/unit/wp-64/legacy-investors-page.test.ts (W8-18).
 
 test('the FAQ answers the two new questions, and the add-on answer carries the disclaimer', () => {
   const list = parse(read('src/data/faq.yaml')) as readonly { id: string; question: string; answer: string; claimsUsed: readonly string[] }[];

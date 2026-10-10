@@ -330,7 +330,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         ],
       },
     ],
-    featured: { label: 'Start here', title: 'Read a brief', text: 'Free, open abstracts. The full brief arrives by email.', cta: { label: 'Browse the briefs', href: '/briefs/' }, slot: null },
+    featured: { label: 'Start here', title: 'Read a brief', text: 'Open abstracts. The full brief arrives by email.', cta: { label: 'Browse the briefs', href: '/briefs/' }, slot: null },
     strip: [{ label: 'Your journey', href: '/journey/' }],
   },
   { kind: 'direct', id: 'pricing', label: 'Pricing', href: '/pricing/' },

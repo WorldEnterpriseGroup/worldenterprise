@@ -9,6 +9,7 @@ import { buildCsp } from './src/lib/csp.ts';
 import { resolveEndpoints } from './src/lib/endpoints.ts';
 import { createLastmodLookup } from './src/lib/lastmod.ts';
 import { isSitemapUrl, withLastmod } from './src/lib/seo.ts';
+import { midCtaPlugin } from './src/lib/rehype-mid-cta.ts';
 import { tableWrapPlugin } from './src/lib/rehype-table-wrap.ts';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
@@ -105,8 +106,9 @@ export default defineConfig({
     },
   ],
   // Markdown and MDX tables get the same scroll frame as the tables the templates write (src/lib/rehype-table-wrap.ts). Astro 7 renders
-  // both formats with Sätteri, and @astrojs/mdx inherits this processor, so one plugin list covers .md and .mdx.
-  markdown: { processor: satteri({ hastPlugins: [tableWrapPlugin] }) },
+  // both formats with Sätteri, and @astrojs/mdx inherits this processor, so one plugin list covers .md and .mdx. The second plugin adds the
+  // mid-body call to action to long articles and guides (src/lib/rehype-mid-cta.ts).
+  markdown: { processor: satteri({ hastPlugins: [tableWrapPlugin, midCtaPlugin] }) },
   security,
   devToolbar: { enabled: false },
   integrations: [mdx(), sitemap({ filter: isSitemapUrl, serialize: (item) => withLastmod(item, lastmod) })],

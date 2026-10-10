@@ -96,8 +96,9 @@ const INDUSTRY_INPUTS: readonly EntryInput[] = [
 ];
 
 const COMPARE_INPUTS: readonly EntryInput[] = [
-  // The label never carries the blocked word: every generated list renders from the label alone (contracts section 8.1).
-  { slug: 'incubator-vs-accelerator', label: 'Incubators and other startup programs', owner: 'WP-75', core: true, blockedWord: 'accelerator' },
+  // The label never carries the blocked word: every generated list renders from the label alone (contracts section 8.1). The slug does not
+  // carry it either: the audit scans the URL in a sitemap, a feed, JSON-LD and an og:url meta, so the slug was renamed (Q-7, 60b item 13).
+  { slug: 'incubator-vs-other-programs', label: 'Incubators and other startup programs', owner: 'WP-75', core: true, blockedWord: 'accelerator' },
   { slug: 'incubator-vs-venture-studio', label: 'Incubators and venture studios', owner: 'WP-75', core: true },
   { slug: 'dedicated-team-vs-agency', label: 'A dedicated team or an agency', owner: 'WP-75', core: true },
   { slug: 'dedicated-team-vs-freelancers', label: 'A dedicated team or freelancers', owner: 'WP-75', core: true },

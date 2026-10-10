@@ -14,6 +14,15 @@ const wave7Projects = process.env.E2E_WAVE7
       { name: 'wave7-mobile-390x844', testMatch: WAVE7_SPECS, use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
     ]
   : [];
+// Wave 8 specs follow the same rule in tests/e2e/wave8/** (job e2e:wave8, E2E_WAVE8).
+const WAVE8_DIR = /\/e2e\/wave8\//;
+const WAVE8_SPECS = /\/e2e\/wave8\/.+\.spec\.ts$/;
+const wave8Projects = process.env.E2E_WAVE8
+  ? [
+      { name: 'wave8-desktop-1440x900', testMatch: WAVE8_SPECS, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
+      { name: 'wave8-mobile-390x844', testMatch: WAVE8_SPECS, use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
+    ]
+  : [];
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -39,13 +48,14 @@ export default defineConfig({
     timeout: 30_000,
   },
   projects: [
-    { name: 'desktop-1440x900', testMatch: COMMON, testIgnore: WAVE7_DIR, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
-    { name: 'mobile-390x844', testMatch: COMMON, testIgnore: WAVE7_DIR, use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
+    { name: 'desktop-1440x900', testMatch: COMMON, testIgnore: [WAVE7_DIR, WAVE8_DIR], use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
+    { name: 'mobile-390x844', testMatch: COMMON, testIgnore: [WAVE7_DIR, WAVE8_DIR], use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
     // 320 px is the WCAG 1.4.10 reflow width. Only the layout spec runs here: it is the suite that measures where elements sit.
     { name: 'mobile-320x568', testMatch: /\/layout\.spec\.ts$/, use: { ...devices['Pixel 7'], viewport: { width: 320, height: 568 } } },
     { name: 'no-js', testMatch: /\/modes\.spec\.ts$/, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 }, javaScriptEnabled: false } },
     { name: 'forced-colors', testMatch: /\/modes\.spec\.ts$/, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 }, forcedColors: 'active', colorScheme: 'light' } },
     { name: 'zoom-200', testMatch: /\/modes\.spec\.ts$/, use: { ...devices['Desktop Chrome'], viewport: { width: 720, height: 450 } } },
     ...wave7Projects,
+    ...wave8Projects,
   ],
 });

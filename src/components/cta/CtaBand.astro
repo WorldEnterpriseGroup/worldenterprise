@@ -1,0 +1,56 @@
+---
+import { ctaForTarget } from '../../data/cta/index.ts';
+import type { Audience, CtaModel, CtaPlacement, CtaVariant } from '../../data/cta/index.ts';
+import Button from '../ui/Button.astro';
+import './cta.css';
+
+/**
+ * The call to action (docs/wave8-contracts.md, section 6.1). Give it a resolved `model` (a layout passes `resolveCta(...)`), or a
+ * `variant` (and a `briefId` for the brief variant) to build one. A model that is null or whose primary target is not live renders
+ * nothing: a band is never a dead link. A secondary link is never the same page as the primary.
+ *
+ * The component keeps to the policy of section 6.1: one primary and at most one secondary action, no urgency or scarcity wording, no
+ * popup, no sticky bar, no autofocus, nothing that moves after load.
+ */
+interface Props {
+  model?: CtaModel | null | undefined;
+  audience?: Audience | undefined;
+  variant?: CtaVariant | undefined;
+  briefId?: string | undefined;
+  placement?: CtaPlacement | undefined;
+  headingLevel?: 2 | 3 | undefined;
+}
+
+const { model: given, audience, variant, briefId, placement = 'end', headingLevel = 2 } = Astro.props;
+
+const model: CtaModel | null =
+  given ?? (variant === undefined ? null : ctaForTarget(variant, { ...(briefId !== undefined ? { briefId } : {}), ...(audience !== undefined ? { audience } : {}) }));
+
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const titleId = model === null ? '' : `cta-${placement}-${model.id.replace(/[^a-z0-9]+/gi, '-')}`;
+const secondary = model?.secondary !== undefined && model.secondary.href !== model.primary.href ? model.secondary : undefined;
+---
+
+{
+  model !== null && (
+    <div class:list={[placement === 'end' && 'cta-wrap container']}>
+      <section class:list={['cta', `cta--${placement}`]} data-cta={placement} data-cta-id={model.id} aria-labelledby={titleId}>
+        <Heading id={titleId} class="cta__title">
+          {model.heading}
+        </Heading>
+        <p class="cta__body">{model.body}</p>
+        {model.note !== undefined && <p class="cta__note">{model.note}</p>}
+        <div class="cta__actions">
+          <Button href={model.primary.href} variant="primary">
+            {model.primary.label}
+          </Button>
+          {secondary !== undefined && (
+            <Button href={secondary.href} variant="secondary">
+              {secondary.label}
+            </Button>
+          )}
+        </div>
+      </section>
+    </div>
+  )
+}
