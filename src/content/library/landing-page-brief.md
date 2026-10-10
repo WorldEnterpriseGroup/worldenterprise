@@ -1,6 +1,6 @@
 ---
 title: Landing page brief
-description: A one-page brief for a landing page: who it is for, the single action, the proof you can show and the sentences to test before anyone builds it.
+description: "A one-page brief for a landing page: who it is for, the single action, the proof you can show and the sentences to test before anyone builds it."
 kind: template
 instructions: Answer each section in plain sentences before anyone designs or builds the page. If you cannot answer a section with evidence, stop there and go and get the evidence first.
 updated: 2026-10-10

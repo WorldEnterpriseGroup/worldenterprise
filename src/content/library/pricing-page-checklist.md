@@ -1,6 +1,6 @@
 ---
 title: Pricing page checklist
-description: A checklist for a SaaS pricing page: what it must say, how it handles unknowns and what to confirm before you publish or change a price.
+description: "A checklist for a SaaS pricing page: what it must say, how it handles unknowns and what to confirm before you publish or change a price."
 kind: checklist
 instructions: Tick each item that is true of your page today. Every item left unticked is a question to answer before you publish a price or change one.
 updated: 2026-10-10
@@ -18,7 +18,7 @@ updated: 2026-10-10
 ## 2. Honesty
 
 - \[ \] The price is shown, or the page says plainly how a visitor gets a quote.
-- \[ \] No fee appears only at checkout.
+- \[ \] Every fee is shown before checkout, not first at checkout.
 - \[ \] Any trial states exactly what it includes, when it ends and what happens at the end.
 - \[ \] Any discount states its conditions on the same screen.
 - \[ \] Taxes are described accurately for the places you sell to. Ask your counsel or accountant what applies.

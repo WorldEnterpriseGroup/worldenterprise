@@ -1,6 +1,6 @@
 ---
 title: Job description template
-description: A template for a job description a candidate can answer: the outcomes of the role, the real requirements, how you will decide and what happens next.
+description: "A template for a job description a candidate can answer: the outcomes of the role, the real requirements, how you will decide and what happens next."
 kind: template
 instructions: Replace each bracketed prompt with your own words. Write outcomes before tasks, separate what a person must have from what they can learn, and state how you will decide.
 updated: 2026-10-10

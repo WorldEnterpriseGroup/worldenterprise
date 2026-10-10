@@ -1,6 +1,6 @@
 ---
 title: Decision log
-description: A running log of the decisions a small team makes: what was decided, the options, the reason, who decided and when to look at it again.
+description: "A running log of the decisions a small team makes: what was decided, the options, the reason, who decided and when to look at it again."
 kind: template
 instructions: Add a row when a decision is made, not afterward. Never edit an old row. If a decision changes, add a new row that replaces it and mark the old one superseded.
 updated: 2026-10-10

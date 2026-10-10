@@ -1,6 +1,6 @@
 ---
 title: Outreach sequence worksheet
-description: A worksheet for planning a short sequence of outreach messages: the person, the reason, the offer, the follow-ups and the rule for when to stop.
+description: "A worksheet for planning a short sequence of outreach messages: the person, the reason, the offer, the follow-ups and the rule for when to stop."
 kind: worksheet
 instructions: Fill in the person and the reason first, then write each message as a separate row. Decide the stopping rule before you send anything, and keep a record of every message.
 updated: 2026-10-10

@@ -1,6 +1,6 @@
 ---
 title: Interview synthesis sheet
-description: A one-page sheet for turning customer interview notes into findings: coded observations, clusters, a findings table and a list of what you do not know.
+description: "A one-page sheet for turning customer interview notes into findings: coded observations, clusters, a findings table and a list of what you do not know."
 kind: worksheet
 instructions: Fill in one sheet per round of interviews, soon after the round ends. Write observations before interpretations, and keep the raw notes untouched in their own file.
 updated: 2026-10-10
