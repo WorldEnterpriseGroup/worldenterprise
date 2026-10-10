@@ -87,7 +87,7 @@ Write each alert so that the person reading it half asleep can act. The same man
 
 Logs are the easiest signal to produce and the hardest to use well. Four habits help.
 
-Write logs as structured records, with named fields, rather than free text, so that you can search for one customer or one request. Include an identifier that follows a request through the system. Log events that matter to a diagnosis, such as a failed payment attempt or a rejected request, and not every step of normal work. And decide, before you begin, what must never appear in a log. Logs often end up holding personal data by accident, and which rules apply depends on where your customers are, so ask your counsel what you need to know before you collect anything sensitive.
+Write logs as structured records, with named fields, rather than unstructured sentences, so that you can search for one customer or one request. Include an identifier that follows a request through the system. Log events that matter to a diagnosis, such as a failed payment attempt or a rejected request, and not every step of normal work. And decide, before you begin, what must never appear in a log. Logs can end up holding personal data by accident, and which rules apply depends on where your customers are, so ask your counsel what you need to know before you collect anything sensitive.
 
 If your request passes through more than one component, the identifier needs a common format. The W3C publishes a recommendation, Trace Context, which "defines standard HTTP headers and a value format to propagate context information." You do not need to adopt it on day one, but a single service can later join a trace more easily if its identifiers already follow a shared convention.
 

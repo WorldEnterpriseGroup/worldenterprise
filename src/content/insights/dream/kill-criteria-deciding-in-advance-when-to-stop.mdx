@@ -1,0 +1,130 @@
+---
+title: "Kill criteria: deciding in advance when to stop"
+seoTitle: Kill criteria for an early idea
+description: How to write down, before you start, the evidence that would make you stop, change direction or continue, and why that decision belongs to your calmer self.
+topic: dream
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [solo-founders, first-time-founders]
+related: [fake-door-and-concierge-tests, mapping-the-alternatives-a-customer-already-uses]
+evidence: [gds-discovery, gds-alpha, shapeup-betting-table, lean-startup-principles]
+sources:
+  - id: gds-discovery
+    title: How the discovery phase works
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works
+    accessed: 2026-10-10
+  - id: gds-alpha
+    title: How the alpha phase works
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/agile-delivery/how-the-alpha-phase-works
+    accessed: 2026-10-10
+  - id: shapeup-betting-table
+    title: Shape Up, Chapter 8, The Betting Table
+    publisher: Basecamp
+    url: https://basecamp.com/shapeup/2.2-chapter-08
+    accessed: 2026-10-10
+  - id: lean-startup-principles
+    title: The Lean Startup, methodology
+    publisher: Eric Ries, theleanstartup.com
+    url: https://theleanstartup.com/principles
+    accessed: 2026-10-10
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Most founders can describe in detail what success would look like. Far fewer can say what would make them stop. The omission is not carelessness. It is the natural result of caring about the idea: while you are working on it, every weak result has an explanation, and every explanation sounds reasonable.
+
+A kill criterion is a decision you write down before the evidence arrives, saying what result would change what you do. A team can use the discipline, and so can a single founder. This article describes how to write one, what kinds exist and what goes wrong. It makes no claim about how often ideas fail, because nothing it cites measures that.
+
+## Why decide first
+
+Once you have spent a month on an idea, the month becomes an argument for the next one. A result that falls short of what you hoped for gets reinterpreted: the sample was small, the wording was off, the right customers were busy. Some of those explanations may be true. The difficulty is that you will find them whether or not they are true.
+
+Deciding in advance separates two jobs that are hard to do at once. One job is to choose what would count as evidence. The other is to read the evidence when it arrives. Doing the first job calmly, before you have a result to hope about, makes the second one easier and more honest. That is reasoning, not a research finding, and it is the argument for the practice.
+
+## What the public sources say about stopping
+
+Several public descriptions of early-stage work treat stopping as a normal outcome and not as a failure.
+
+The UK Government Digital Service describes the first phase of a project, discovery, as the stage in which "you need to understand the problem that needs to be solved," and says that "your discovery is finished when you’ve decided whether or not you want to move on to alpha." The end of the phase is a decision, and the decision can be no. Of the later phase it says: "you could stop altogether or decide to repeat discovery or alpha." It is explicit that "it’s okay to decide at the end of your discovery that you do not think it’s worth running an alpha."
+
+Basecamp's *Shape Up* builds a stopping rule into its working cycle, which it calls a circuit breaker: "If they don’t finish, by default the project doesn’t get an extension." The reasoning offered is economic: "If the project was only worth six weeks, it would be foolish to spend two, three or ten times that." The six weeks is Basecamp's own cycle length. The idea that carries over is that the amount you will spend should be chosen in advance, because otherwise the work expands to take whatever you are willing to give it.
+
+The Lean Startup site uses a single phrase for the choice: "learn whether to pivot or persevere."
+
+None of these is a rule for your company, and each comes from a different setting: public services, one software company and a general method. They agree on one point: a stop, a change of direction and a continuation should be decisions, made with evidence.
+
+## The three outcomes
+
+Write criteria for each of three outcomes, not only for stopping.
+
+- **Stop.** You end work on this idea. You have not failed to learn; you have learned.
+- **Change direction.** You keep part of what you have, such as the problem, the customer or the technology, and change another part.
+- **Continue.** The evidence supports the next, more expensive step, and you say what that step is.
+
+Naming all three prevents the common drift where a result that is not good enough to continue and not bad enough to stop becomes a reason to carry on unchanged.
+
+## How to write a criterion
+
+A usable criterion has five parts. Write them in a short table before you begin, and date it.
+
+<DataTable
+  caption="Parts of a kill criterion, with an invented example"
+  columns={['Part', 'What it says', 'Invented example']}
+  rows={[
+    ['Assumption', 'The belief this test could disprove', 'Small clinics feel the pain of unconfirmed appointments strongly enough to change how they work'],
+    ['Evidence', 'What you will collect and from whom', 'Twelve interviews with clinic receptionists, each asked about the last missed appointment'],
+    ['Threshold', 'The result that separates the outcomes', 'Fewer than four describe the problem unprompted: stop. Four to seven: change direction. Eight or more: continue'],
+    ['Date', 'When you will read the evidence and decide', 'The Friday after the twelfth interview'],
+    ['Witness', 'Who else knows, and will ask what happened', 'A friend who is not involved in the company']
+  ]}
+/>
+
+The thresholds in the example are illustrations. They are not benchmarks, and nothing in the sources suggests the right numbers for your idea. Choose numbers that you would be willing to defend to someone you respect, and write down why you chose them.
+
+## Kinds of criteria
+
+Different tests call for different measures. These categories cover most early work.
+
+**Evidence of the problem.** How many of the people you talk to describe the problem without being led? The <MaybeLink path="/insights/customer-discovery-interviews-without-false-positives/">article on customer discovery interviews</MaybeLink> covers how to ask so that the answer means something.
+
+**Evidence of behavior.** How many people take a real action, such as a booking, a data upload or a commitment? The <MaybeLink path="/insights/fake-door-and-concierge-tests/">article on fake-door and concierge tests</MaybeLink> describes tests of this kind.
+
+**Evidence of alternatives.** Does the <MaybeLink path="/insights/mapping-the-alternatives-a-customer-already-uses/">map of alternatives</MaybeLink> show a gap that your idea could fill, or does the customer already have something good enough?
+
+**A resource limit.** The amount of time or money you will spend before deciding, in the manner of *Shape Up*'s circuit breaker. For a solo founder, this is often the most honest criterion, because it holds even when the evidence is ambiguous.
+
+**An outside dependency.** A condition that sits with someone else, such as a supplier who must agree to supply or a regulator whose rules decide whether the product can exist. If the answer is no, no amount of effort changes it.
+
+## What goes wrong
+
+**The criterion cannot fail.** "We will continue if customers are interested" will always pass. If you cannot imagine a result that would stop you, the criterion is decoration.
+
+**There are too many.** Three or four are plenty. A long list lets you pass some and ignore the rest.
+
+**The sample is too small to read.** Decide in advance how many people is enough to count. A result from two people says almost nothing, and a rule that triggers on two is a rule for an anxious mood.
+
+**The ambiguous middle.** Say what you will do if the result is inconclusive, such as running one more defined test and then deciding. Without that rule, an ambiguous result becomes a permanent extension.
+
+**Moving the goalposts.** Changing a threshold after seeing the result defeats the purpose. If you believe the criterion was wrong, write the revised one with the reason and the date, and treat the earlier result as the cost of learning that.
+
+## For a solo founder
+
+A team has other voices. A solo founder has one. The witness in the table above matters for this reason: tell someone the criteria and the date, and ask them to ask you on that day. Sharing the criteria does not hand over the decision. It makes quietly letting the date pass a harder thing to do.
+
+<Callout title="Stopping is a result">
+  A well-run stop leaves you with a written account of what you tested, what you saw and what you would try differently. That record is worth more than a half-built product, and it makes the next idea easier to judge.
+</Callout>
+
+## Where this connects
+
+Put the criteria with the problem brief, so that both are read together. The <MaybeLink path="/library/one-page-problem-brief/">one-page problem brief</MaybeLink> is the natural place, and the <MaybeLink path="/playbooks/validate-the-problem/">Validate the problem playbook</MaybeLink> shows the surrounding steps. The <MaybeLink path="/insights/is-your-saas-idea-a-business-or-a-feature/">article on whether an idea is a business or a feature</MaybeLink> poses a related question from a different angle. Terms are in the <MaybeLink path="/glossary/">glossary</MaybeLink>.
+
+## What this article cannot tell you
+
+This article cannot tell you how likely your idea is to work, what a good threshold is, or whether you should stop. It does not report how often early ideas fail, and we make no claim about that. The sources describe public service delivery, one company's working cycle and a general method; none was tested on solo founders, and the thresholds in the example are invented.
+
+It also does not cover the personal side of ending a project, such as your finances, your commitments to others or how you feel about it. Those matter, and they are yours to weigh with people you trust. If a decision affects money you owe or have raised, ask a qualified professional about your obligations.

@@ -1,0 +1,116 @@
+---
+title: Mapping the alternatives a customer already uses
+seoTitle: Mapping the alternatives customers already use
+description: A method for listing everything a customer does today instead of buying your product, from spreadsheets to doing nothing, and reading the gaps honestly.
+topic: dream
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [first-time-founders, non-technical-founders]
+related: [fake-door-and-concierge-tests, kill-criteria-deciding-in-advance-when-to-stop]
+evidence: [gds-learning-user-needs, gds-service-standard-1, gds-discovery]
+sources:
+  - id: gds-learning-user-needs
+    title: Learning about users and their needs
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/user-research/start-by-learning-user-needs
+    accessed: 2026-10-10
+  - id: gds-service-standard-1
+    title: 1. Understand users and their needs
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/service-standard/point-1-understand-user-needs
+    accessed: 2026-10-10
+  - id: gds-discovery
+    title: How the discovery phase works
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works
+    accessed: 2026-10-10
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Ask a first-time founder who their competitors are and you will often hear "nobody, there is nothing like this." Ask the founder's prospective customer how they handle the problem today and you will hear several answers: a spreadsheet, a shared inbox, a person on the team, an outside firm, a feature in software they already pay for, or nothing at all.
+
+Those answers are the real alternatives, and they are not always products. A customer who has a workaround has already shown that the problem is worth some effort. Your idea has to beat what they do now, not only what other startups sell. This article describes how to list those alternatives, what to record about each and how to read the result without fooling yourself.
+
+## Why "no competitors" is a warning
+
+When the answer to "what do customers do today?" is "nothing," one of two things is true. Either the problem is not painful enough for anyone to have tried to solve it, or you have not looked closely. Both are worth knowing before you build.
+
+The UK Government Digital Service's service manual makes a similar point about the early stage of a project. It tells teams to "develop a deep understanding of users and the problem you’re trying to solve for them," and warns that "the real problem might not be the one you originally thought needed solving." Looking at alternatives is one of the quickest ways to find out that the problem is different from the one you started with.
+
+## What counts as an alternative
+
+An alternative is whatever the customer would do tomorrow if your product did not exist. It helps to sort the answers into kinds, because each kind competes in a different way.
+
+- **Another product built for this job.** The kind you would normally call a competitor.
+- **A general tool bent to fit.** A spreadsheet, a document, a messaging app, a form.
+- **A person or a firm.** An assistant, a part-time contractor, an agency, an in-house team.
+- **A feature in something they already use.** A module in software they pay for anyway, which may be less good but adds no extra charge to start.
+- **A manual routine.** Paper, a whiteboard, a calendar reminder, memory.
+- **Doing nothing.** Accepting the problem. This is often the alternative that matters most, and the hardest to see.
+
+A good map has entries in several of these kinds. A map that contains only other products is probably incomplete.
+
+## How to build the map
+
+**Start from a situation, not a category.** Pick one moment when the problem occurs, for example "the day before an appointment, when the clinic wants to know who will turn up." Everything on the map answers that moment.
+
+**Ask about the last time.** The service manual's list of what to find out in discovery includes "how they currently do it (for example, what services or channels they use)" and "the problems or frustrations they experience." Ask for the most recent real occasion, in order: what triggered it, what they did first, what they did next, who else was involved and how it ended. A description of a real occasion is more reliable than a description of what they usually do. The <MaybeLink path="/insights/customer-discovery-interviews-without-false-positives/">article on customer discovery interviews</MaybeLink> covers how to ask without leading, and the <MaybeLink path="/library/customer-interview-guide/">customer interview guide</MaybeLink> has a set of questions.
+
+**Watch where you can.** The manual recommends "interviewing and observing actual or likely users." Watching someone work often shows steps they no longer notice, such as a copied number or a message sent to a colleague, which never come up in conversation.
+
+**Ask who else is involved.** The person who feels the problem is not always the person who chooses the tool or pays for it. Note who decides, who uses and who is affected, because an alternative that the user dislikes may still be protected by the person who bought it. The service manual advises looking at "the full context to understand what the user is trying to achieve," and the people around the user are part of that context.
+
+**Record the same facts for every alternative.** Use one row per alternative, and fill the same columns every time.
+
+<DataTable
+  caption="One row per alternative, invented example for a clinic reminder product"
+  columns={['Alternative', 'Kind', 'What it does well', 'What frustrates people', 'What switching away costs', 'How you know']}
+  rows={[
+    ['Receptionist phones each patient', 'A person', 'Personal, catches questions', 'Takes the receptionist away from the desk', 'Habit, and trust in the personal touch', 'Observed in two clinics'],
+    ['Paper list ticked off by hand', 'Manual routine', 'Nothing to learn', 'Easy to lose, nobody else can see it', 'Very little', 'Heard in interviews'],
+    ['Reminder feature in the clinic’s existing booking software', 'A feature in something already used', 'Already paid for, already set up', 'Fixed wording, no list of who has not replied', 'Learning a second tool', 'Heard in interviews, not yet seen'],
+    ['Do nothing and accept missed appointments', 'Doing nothing', 'No effort', 'Empty slots', 'None', 'Heard in one interview']
+  ]}
+/>
+
+The last column is the most important, and the one people skip. Mark each row as observed, heard or assumed. Rows marked "assumed" are hypotheses, and the honest next step is to find out.
+
+## Read the map for gaps, not for a verdict
+
+When the table is full, read it in three passes.
+
+**Where is the frustration concentrated?** If one complaint appears in several rows, such as no view of who has not replied, that complaint is a candidate for the core of your product. It is a candidate, not a conclusion.
+
+**What does the cheapest alternative cost the customer to leave?** Doing nothing asks for no effort to stay with. An alternative the customer already pays for and already knows has a head start. Your product must be better enough to cover the effort of change.
+
+**What does the most popular alternative do well?** Every entry earned its place. If you cannot name what the most common alternative does well, you have not understood why customers use it, and your first customers will tell you at an inconvenient moment.
+
+## Four mistakes that spoil a map
+
+- **Listing only what you have heard of.** Customers know their own workarounds better than you do. Ask each person what the others in their team do.
+- **Treating a workaround as a weakness.** A customer who built a spreadsheet to solve the problem is a sign of need, and also a sign of how much effort the problem justifies. Both facts matter.
+- **Mixing customer types.** A clinic owner, a receptionist and a patient have different alternatives. Build one map per kind of customer, or the rows will contradict each other.
+- **Stopping at the first full table.** The second round of interviews usually adds rows. Keep the map open until new conversations stop adding anything.
+
+## What the map cannot do
+
+A map of alternatives tells you how customers solve a problem today. It does not tell you how many of them there are, how much they would pay, or whether they would switch. For those, you need other work: the <MaybeLink path="/insights/bottom-up-market-sizing-for-a-first-saas/">bottom-up market sizing article</MaybeLink> covers counting, and a test where the customer takes a real action covers willingness, which is the subject of the <MaybeLink path="/insights/fake-door-and-concierge-tests/">fake-door and concierge tests article</MaybeLink>.
+
+It also cannot protect you from selecting only the customers who agree with you. If every row came from friendly contacts, say so on the page.
+
+<Callout title="A short test of your own map">
+  Show the table to someone who works in the field. Ask what is missing. If they name an alternative you did not list, the map was incomplete, and you have learned something cheaply.
+</Callout>
+
+## Where to go next
+
+Put the strongest finding into the problem brief, so that what you build later can be checked against it. The <MaybeLink path="/library/one-page-problem-brief/">one-page problem brief</MaybeLink> has a place for it, and the <MaybeLink path="/playbooks/validate-the-problem/">Validate the problem playbook</MaybeLink> shows where this step sits. For terms such as workaround and switching cost, see the <MaybeLink path="/glossary/">glossary</MaybeLink>.
+
+## What this article cannot tell you
+
+The method is a general practice, supported in this article by the UK Government Digital Service's guidance on discovery research for public services. That guidance was not written for commercial software startups, and the sources do not measure whether mapping alternatives improves the odds of building something customers want. We make no such claim.
+
+The article does not cover regulated markets, where the alternatives may include legal obligations, or markets with a single large buyer, where the map looks different. The example is invented, and its clinics are not real. It cannot tell you whether the gaps you find are big enough for a business. That depends on how many customers share them and what they would pay.
