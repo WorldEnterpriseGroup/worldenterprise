@@ -1,11 +1,20 @@
 {
   "version": 2,
+  "redirectAllowlist": [
+    "/apply/thanks/",
+    "/briefs/thanks/",
+    "/investors/interest/thanks/",
+    "/network/partners/enquire/thanks/"
+  ],
   "kinds": {
     "apply": {
       "thanks": "/apply/thanks/",
       "audience": [
         "startup"
       ],
+      "rateLimit": {
+        "perHour": 5
+      },
       "fields": {
         "name": {
           "rule": "R",
@@ -125,6 +134,9 @@
         "investor",
         "partner"
       ],
+      "rateLimit": {
+        "perHour": 5
+      },
       "fields": {
         "name": {
           "rule": "R",
@@ -242,6 +254,9 @@
       "audience": [
         ""
       ],
+      "rateLimit": {
+        "perHour": 5
+      },
       "fields": {
         "name": {
           "rule": "-",
@@ -361,6 +376,9 @@
         "investor",
         "partner"
       ],
+      "rateLimit": {
+        "perHour": 5
+      },
       "fields": {
         "name": {
           "rule": "R",
@@ -478,6 +496,9 @@
       "audience": [
         "investor"
       ],
+      "rateLimit": {
+        "perHour": 5
+      },
       "fields": {
         "name": {
           "rule": "R",
@@ -595,6 +616,9 @@
       "audience": [
         "partner"
       ],
+      "rateLimit": {
+        "perHour": 5
+      },
       "fields": {
         "name": {
           "rule": "R",
