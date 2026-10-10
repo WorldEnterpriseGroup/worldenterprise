@@ -329,7 +329,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         ],
       },
     ],
-    featured: { label: 'Start here', title: 'Read a brief', text: 'Open abstracts. The full brief arrives by email.', cta: { label: 'Browse the briefs', href: '/briefs/' }, slot: null },
+    featured: { label: 'Start here', title: 'Read a brief', text: 'Open abstracts. The full brief arrives by email.', cta: { label: 'Read the funding paths brief', href: '/briefs/funding-paths/' }, slot: null },
     strip: [{ label: 'Your journey', href: '/journey/' }],
   },
   { kind: 'direct', id: 'pricing', label: 'Pricing', href: '/pricing/' },
