@@ -1,0 +1,767 @@
+{
+  "wp": "WP-65",
+  "note": "The sentence ledger of the partner journey (issue #45): the copy module src/components/partners/copy.ts, the six partner content files and the network content file src/content/pages/network/index.mdx (docs/wave8-contracts.md, section 9; the WP-60 pattern). Each sentence maps to one claim (C-nn), one existing page (a bare path, or path#heading) or one decision; a control label that states no fact about WE is marked label (seven words at most). Statements about what an inbound partner program is and is not map to D-21 because no claim states them; the handoff proposes claim wording for counsel. tests/unit/wp-65/copy-ledger.test.ts enumerates the sentences from the files, fails on one with no mapping and on a mapping with no sentence, checks each mapping with tests/unit/wp-60/sources.ts and runs the claims denylist over all of them. The file has no fetches: it quotes no outside source.",
+  "fetches": [],
+  "documents": [
+    {
+      "path": "src/components/partners/copy.ts",
+      "sentences": [
+        {
+          "text": "Send an enquiry",
+          "label": true
+        },
+        {
+          "text": "See the categories",
+          "label": true
+        },
+        {
+          "text": "How enquiries work",
+          "label": true
+        },
+        {
+          "text": "Read the FAQ",
+          "label": true
+        },
+        {
+          "text": "Tooling and software products",
+          "label": true
+        },
+        {
+          "text": "Products a SaaS team uses to build, run, sell or support its software.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say what the product does, who it is for and which stage of a company it suits.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say how a founder gets it and what it costs the founder.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE does not say that WE uses or recommends a product.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE does not test or certify a product.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Cloud services and credits",
+          "label": true
+        },
+        {
+          "text": "Programs that give early-stage companies cloud usage credits or similar allowances.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say who qualifies, how a company applies and when the credits expire.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say what happens when the credits run out.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE does not promise that a founder will receive credits.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE does not state an amount of credits.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Legal services",
+          "label": true
+        },
+        {
+          "text": "Firms that advise early-stage companies on formation, contracts and regulation.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say which jurisdictions the firm covers and which matters it takes on.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say how the firm bills a founder.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE does not give legal advice.",
+          "page": "src/content/services/professional-services-coordination.mdx"
+        },
+        {
+          "text": "WE does not choose a firm for a founder.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Finance and accounting",
+          "label": true
+        },
+        {
+          "text": "Firms that keep the books, taxes and financial reporting of young companies in order.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say which services the firm provides and which size of company it works with.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE does not give tax advice.",
+          "page": "src/content/services/professional-services-coordination.mdx"
+        },
+        {
+          "text": "WE does not handle a founder's money.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Engineering and delivery services",
+          "label": true
+        },
+        {
+          "text": "Teams that deliver engineering, design or operations work alongside a founder's own team.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say which skills the team covers and how it hands work over.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say how the team is managed and how it bills for its work.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE steers its own dedicated teams and manages their subcontractors, and an enquiry does not change that.",
+          "page": "src/content/pages/network/index.mdx#how-the-pieces-fit"
+        },
+        {
+          "text": "A delivery partner is a category here, and WE lists none.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Ecosystem and community programs",
+          "label": true
+        },
+        {
+          "text": "Communities, events and resource programs that support founders.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say who the program is for, how a founder joins and what it asks of a member.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Say who runs the program.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE does not promise a founder a place in any program.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE names no program on this site.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Six kinds of organization, and what a good enquiry from each says.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Each category below says what a good enquiry contains and what WE does not do for it.",
+          "decision": "D-21"
+        },
+        {
+          "text": "What a good enquiry says",
+          "label": true
+        },
+        {
+          "text": "What WE does not do",
+          "label": true
+        },
+        {
+          "text": "A category is a way to sort enquiries, and WE names no organization in any of them.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE reads each enquiry and decides whether to talk further.",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "Tell WE what your organization provides to founders.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "Use this form to tell WE what your organization provides to founders and on what terms.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "Start the enquiry",
+          "label": true
+        },
+        {
+          "text": "What to include",
+          "label": true
+        },
+        {
+          "text": "What happens next",
+          "label": true
+        },
+        {
+          "text": "WE replies to the email address you give if it talks further.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "WE does not state a response time on this site.",
+          "page": "src/content/pages/apply/thanks.mdx"
+        },
+        {
+          "text": "What WE collects",
+          "label": true
+        },
+        {
+          "text": "WE uses the details in this form to answer your enquiry, as the privacy notice describes.",
+          "claim": "C-28"
+        },
+        {
+          "text": "WE sets no cookies, runs no analytics and loads no third-party scripts.",
+          "decision": "D-14"
+        },
+        {
+          "text": "Read first",
+          "label": true
+        },
+        {
+          "text": "Partner FAQ",
+          "label": true
+        },
+        {
+          "text": "The name of the organization and its website.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "The category that fits what it provides.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "What the organization provides to founders.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "The terms a founder would see, including who qualifies and what it costs.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "Anything a founder should know before asking for an introduction.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Does WE have a partner program?",
+          "label": true
+        },
+        {
+          "text": "WE takes enquiries from organizations that help or equip founders.",
+          "claim": "C-26"
+        },
+        {
+          "text": "WE names no partner on this site.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Sending an enquiry does not create a partnership.",
+          "claim": "C-26"
+        },
+        {
+          "text": "Which organizations can send an enquiry?",
+          "label": true
+        },
+        {
+          "text": "Any organization that helps or equips founders may send one.",
+          "claim": "C-26"
+        },
+        {
+          "text": "The form groups them in six categories and has a Something else option.",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "Does an enquiry create a partnership?",
+          "label": true
+        },
+        {
+          "text": "WE decides whether to talk further.",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "Will WE introduce my organization to founders?",
+          "label": true
+        },
+        {
+          "text": "WE may introduce an organization to a founder when that founder asks for help in its category and agrees to the introduction.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE cannot promise an introduction, a meeting or a reply.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Does WE endorse a partner's product?",
+          "label": true
+        },
+        {
+          "text": "WE does not say on this site that WE uses, endorses or works with any named product.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE names no partner on this site until a written record exists.",
+          "decision": "D-21"
+        },
+        {
+          "text": "What should an enquiry say?",
+          "label": true
+        },
+        {
+          "text": "An enquiry should name the organization, its website, its category, what it provides to founders and the terms a founder would see.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "What does WE do with the details in the form?",
+          "claim": "C-28"
+        },
+        {
+          "text": "WE uses the details in a form to answer the enquiry, as the privacy notice describes.",
+          "claim": "C-28"
+        },
+        {
+          "text": "How long does a reply take?",
+          "label": true
+        },
+        {
+          "text": "WE replies to the email address in the enquiry when it decides to talk further.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "Short answers about partner enquiries.",
+          "label": true
+        },
+        {
+          "text": "These answers cover who can send an enquiry and what an enquiry does and does not create.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE introduces a partner to a founder only when the founder asks for help in that category and agrees to the introduction.",
+          "decision": "D-21"
+        },
+        {
+          "text": "How WE reads an enquiry, and how an introduction happens.",
+          "decision": "D-21"
+        },
+        {
+          "text": "An enquiry is read by WE, and WE decides whether to talk further.",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "An introduction to a founder happens only when the founder asks for it.",
+          "decision": "D-21"
+        },
+        {
+          "text": "From enquiry to introduction",
+          "label": true
+        },
+        {
+          "text": "Use the enquiry form and say what the organization provides to founders and on what terms.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "WE reads it",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "WE replies if it talks further",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "WE writes to the email address in the enquiry.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        },
+        {
+          "text": "Terms are written down",
+          "label": true
+        },
+        {
+          "text": "Before any introduction, the terms a founder would see are written down.",
+          "decision": "D-21"
+        },
+        {
+          "text": "A founder asks first",
+          "label": true
+        },
+        {
+          "text": "What an enquiry should contain",
+          "label": true
+        },
+        {
+          "text": "WE reads the enquiry as written, so it should say these things.",
+          "decision": "D-21"
+        },
+        {
+          "text": "What WE does not promise",
+          "label": true
+        },
+        {
+          "text": "An enquiry creates no partnership, no referral arrangement and no commitment on either side.",
+          "claim": "C-26"
+        },
+        {
+          "text": "WE does not promise a partner a meeting, a reply, an introduction or a place on this site.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Organizations that help founders can tell WE what they offer.",
+          "claim": "C-26"
+        },
+        {
+          "text": "Who WE wants to hear from",
+          "label": true
+        },
+        {
+          "text": "WE reads enquiries from organizations in six categories.",
+          "decision": "D-21"
+        },
+        {
+          "text": "If none of the six fits, the form has a Something else option.",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "What WE can offer a partner",
+          "label": true
+        },
+        {
+          "text": "WE offers three things, and none is promised in advance.",
+          "decision": "D-21"
+        },
+        {
+          "text": "A warm introduction to a founder, when that founder asks for help in the partner's category.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Content written together with the partner, when the subject helps founders.",
+          "decision": "D-21"
+        },
+        {
+          "text": "A place in a founder playbook, where the offer fits the stage the playbook covers.",
+          "decision": "D-21"
+        },
+        {
+          "text": "What WE asks of a partner",
+          "label": true
+        },
+        {
+          "text": "Terms are written down before any introduction.",
+          "decision": "D-21"
+        },
+        {
+          "text": "The offer is described accurately, including who qualifies and what a founder pays.",
+          "decision": "D-21"
+        },
+        {
+          "text": "The enquiry says what the organization provides and on what terms.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE does not promise a price, a saving or any terms on behalf of a partner.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Pass it on",
+          "label": true
+        },
+        {
+          "text": "Know an organization that helps founders?",
+          "label": true
+        },
+        {
+          "text": "Share the enquiry form with them.",
+          "label": true
+        },
+        {
+          "text": "WE is a digital incubator for SaaS companies.",
+          "claim": "C-29"
+        },
+        {
+          "text": "An organization that helps or equips founders may send WE an enquiry.",
+          "claim": "C-26"
+        },
+        {
+          "text": "Described by roles and criteria",
+          "label": true
+        },
+        {
+          "text": "WE is a fully remote digital incubator for SaaS, so its network is not a building or a member list.",
+          "claim": "C-29"
+        },
+        {
+          "text": "It has four parts you can read about today.",
+          "page": "src/content/pages/network/index.mdx#how-the-pieces-fit"
+        },
+        {
+          "text": "This section names no people and no companies.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Four places to start",
+          "label": true
+        },
+        {
+          "text": "The four parts of the WE network",
+          "label": true
+        },
+        {
+          "text": "Partners",
+          "label": true
+        },
+        {
+          "text": "Organizations that help founders",
+          "label": true
+        },
+        {
+          "text": "How an organization that helps founders can send WE an enquiry",
+          "claim": "C-26"
+        },
+        {
+          "text": "Your enquiry is with WE.",
+          "label": true
+        },
+        {
+          "text": "Your enquiry has been sent to WE.",
+          "page": "src/content/pages/apply/thanks.mdx"
+        },
+        {
+          "text": "WE does not state a response time on this site, so check that the address you entered is one you read.",
+          "page": "src/content/pages/apply/thanks.mdx"
+        },
+        {
+          "text": "WE reads your enquiry",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "WE reads what you wrote about the organization and what it provides.",
+          "decision": "D-21"
+        },
+        {
+          "text": "WE decides whether to talk further",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "If WE decides to talk further, the reply goes to the email address you gave.",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "Nothing is promised",
+          "label": true
+        },
+        {
+          "text": "While you wait",
+          "label": true
+        },
+        {
+          "text": "The six categories",
+          "label": true
+        },
+        {
+          "text": "Contact WE",
+          "label": true
+        },
+        {
+          "text": "Before you send an enquiry",
+          "label": true
+        },
+        {
+          "text": "How an enquiry is read",
+          "label": true
+        },
+        {
+          "text": "Read the partner FAQ",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/network/partners/index.mdx",
+      "sentences": [
+        {
+          "text": "WE is a digital incubator for SaaS companies.",
+          "claim": "C-29"
+        },
+        {
+          "text": "An organization that helps or equips founders may send WE an enquiry.",
+          "claim": "C-26"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/network/partners/categories.mdx",
+      "sentences": [
+        {
+          "text": "Each category below says what a good enquiry contains and what WE does not do for it.",
+          "decision": "D-21"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/network/partners/how-it-works.mdx",
+      "sentences": [
+        {
+          "text": "An enquiry is read by WE, and WE decides whether to talk further.",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "An introduction to a founder happens only when the founder asks for it.",
+          "decision": "D-21"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/network/partners/faq.mdx",
+      "sentences": [
+        {
+          "text": "These answers cover who can send an enquiry and what an enquiry does and does not create.",
+          "decision": "D-21"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/network/partners/enquire.mdx",
+      "sentences": [
+        {
+          "text": "Use this form to tell WE what your organization provides to founders and on what terms.",
+          "page": "src/components/forms/PartnerEnquiryForm.astro"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/network/partners/thanks.mdx",
+      "sentences": [
+        {
+          "text": "Your enquiry has been sent to WE.",
+          "page": "src/content/pages/apply/thanks.mdx"
+        },
+        {
+          "text": "WE reads each enquiry and decides whether to talk further.",
+          "page": "src/components/forms/copy.ts"
+        },
+        {
+          "text": "WE does not state a response time on this site, so check that the address you entered is one you read.",
+          "page": "src/content/pages/apply/thanks.mdx"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/network/index.mdx",
+      "sentences": [
+        {
+          "text": "How the pieces fit",
+          "label": true
+        },
+        {
+          "text": "A founder applies.",
+          "label": true
+        },
+        {
+          "text": "WE scopes the work with the founder and seats a dedicated team for that company.",
+          "claim": "C-01"
+        },
+        {
+          "text": "The team is made of defined roles, WE steers it, and WE manages any subcontractors it uses.",
+          "claim": "C-03"
+        },
+        {
+          "text": "As the work produces evidence, WE helps the founder organize that evidence so a serious investor can read it.",
+          "claim": "C-05"
+        },
+        {
+          "text": "Each step has its own page.",
+          "page": "src/pages/network/index.astro#from-application-to-investor-ready-materials"
+        },
+        {
+          "text": "The founder page says what WE asks of you and what you keep doing.",
+          "page": "src/content/pages/founders/index.mdx"
+        },
+        {
+          "text": "The operators page lists the roles that can staff a seat.",
+          "page": "src/content/pages/network/operators.mdx"
+        },
+        {
+          "text": "The investors page says what WE does for companies preparing to raise, and what it does not do.",
+          "page": "src/content/pages/investors/index.mdx"
+        },
+        {
+          "text": "The partners page says how an organization that helps founders can send WE an enquiry.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Partners",
+          "label": true
+        },
+        {
+          "text": "An organization that helps or equips founders may send WE an enquiry.",
+          "claim": "C-26"
+        },
+        {
+          "text": "The partners page lists six categories, from tooling and software products to ecosystem and community programs.",
+          "decision": "D-21"
+        },
+        {
+          "text": "An enquiry creates no partnership, no referral arrangement and no commitment on either side.",
+          "claim": "C-26"
+        },
+        {
+          "text": "WE names no partner on this site until a written record exists.",
+          "decision": "D-21"
+        },
+        {
+          "text": "The standards WE works to",
+          "label": true
+        },
+        {
+          "text": "WE steers a team with a small set of documented operating frameworks.",
+          "claim": "C-19"
+        },
+        {
+          "text": "Those are described on the frameworks page.",
+          "page": "src/content/pages/about/frameworks.md"
+        },
+        {
+          "text": "The public standards WE maps its work to are named on the trust center.",
+          "page": "src/content/pages/trust/index.mdx"
+        },
+        {
+          "text": "Naming a standard is a statement about what WE reads and works from.",
+          "page": "src/content/pages/trust/index.mdx"
+        },
+        {
+          "text": "It is not a claim of certification for WE or for any company.",
+          "page": "src/content/pages/trust/index.mdx"
+        },
+        {
+          "text": "What the network is not",
+          "label": true
+        },
+        {
+          "text": "There is no logo wall, no client list and no investor network.",
+          "claim": "C-13"
+        },
+        {
+          "text": "If that changes, it will appear on its own page with the names of people and companies who agreed in writing to be named.",
+          "decision": "D-21"
+        },
+        {
+          "text": "Investor Introductions is a separate, paid add-on.",
+          "claim": "C-14"
+        },
+        {
+          "text": "It is not a membership of any network.",
+          "claim": "C-14"
+        }
+      ]
+    }
+  ]
+}

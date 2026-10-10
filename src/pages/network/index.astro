@@ -5,22 +5,21 @@ import InvestorIntroductionsOffer from '../../components/blocks/InvestorIntroduc
 import CellTrail from '../../components/ui/CellTrail.astro';
 import Callout from '../../components/ui/Callout.astro';
 import Card from '../../components/ui/Card.astro';
-import CtaBand from '../../components/ui/CtaBand.astro';
 import Grid from '../../components/ui/Grid.astro';
 import NetworkIntro from '../../components/network/NetworkIntro.astro';
 import { getPageEntry } from '../../components/network/pageEntry.ts';
+import { HREFS, NETWORK_COPY } from '../../components/partners/copy.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { href } from '../../lib/url.ts';
 
 const page = await getPageEntry('network', 'network/index');
 const { Content } = await render(page);
-
 const subtree = [
   { title: 'Who WE builds with', href: '/founders/', description: 'The founder profile and the evidence WE looks for' },
   { title: 'Operator roles', href: '/network/operators/', description: 'The roles WE places around your team' },
   { title: 'For investors', href: '/investors/', description: 'How WE prepares companies, and what WE does not do' },
+  { title: NETWORK_COPY.partners.title, href: HREFS.hub, description: NETWORK_COPY.partners.subtreeDescription },
 ] as const;
-
 const trail = [
   { label: 'Founder applies', href: href('/apply/') },
   { label: 'WE scopes the work', href: href('/program/how-it-works/') },
@@ -43,13 +42,14 @@ const trail = [
   secondary={{ label: 'See the operator roles', href: '/network/operators/' }}
 >
   <Fragment slot="panel">
-    <p class="eyebrow">Three places to start</p>
+    <p class="eyebrow">{NETWORK_COPY.partsHeading}</p>
     <HexAtlas
-      label="The three parts of the WE network"
+      label={NETWORK_COPY.partsLabel}
       cells={[
         { label: 'Founders', href: '/founders/', line: 'F' },
         { label: 'Operator roles', href: '/network/operators/', line: 'O' },
         { label: 'Investors', href: '/investors/', line: 'I' },
+        { label: NETWORK_COPY.partners.title, href: HREFS.hub, line: 'P' },
       ]}
     />
   </Fragment>
@@ -57,7 +57,7 @@ const trail = [
   <NetworkIntro />
 
   <section aria-labelledby="network-parts" class="stack">
-    <h2 id="network-parts">Three places to start</h2>
+    <h2 id="network-parts">{NETWORK_COPY.partsHeading}</h2>
     <Grid min="17rem">
       <Card title="Founders" href={href('/founders/')} eyebrow="Who WE builds with" headingLevel={3}>
         <p>The criteria WE uses, what WE asks of you and what you keep doing yourself.</p>
@@ -68,9 +68,9 @@ const trail = [
       <Card title="Investors" href={href('/investors/')} eyebrow="What WE does and does not do" headingLevel={3}>
         <p>WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.</p>
       </Card>
+      <Card title={NETWORK_COPY.partners.title} href={href(HREFS.hub)} eyebrow={NETWORK_COPY.partners.eyebrow} headingLevel={3}><p>{NETWORK_COPY.partners.text}</p></Card>
     </Grid>
   </section>
-
   <section aria-labelledby="network-path" class="stack">
     <h2 id="network-path">From application to investor-ready materials</h2>
     <CellTrail label="How a company moves through the WE network" cells={trail} />
@@ -87,12 +87,4 @@ const trail = [
   <Callout tone="notice" title="No promise of funding">
     <p>WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.</p>
   </Callout>
-
-  <CtaBand
-    slot="after"
-    title="Ask a question, or apply"
-    text="Tell WE about your company, or ask how the network works. Neither commits you to anything."
-    cta={{ label: 'Contact', href: '/contact/' }}
-    secondary={{ label: 'Apply', href: '/apply/' }}
-  />
 </HubLayout>

@@ -1,6 +1,6 @@
 import { DESK_DEFINITIONS, deskPath } from '../../../src/data/desks.ts';
 import { BRIEFS, COMPARISONS, familyLabel, INDUSTRIES, SEGMENTS } from '../../../src/data/families.ts';
-import type { FamilyDefinition } from '../../../src/data/families.ts';
+import type { FamilyDefinition, FamilyEntry } from '../../../src/data/families.ts';
 import { kindGroups, liveGroups, metaLookup, RESOURCE_STRIP, RESOURCES_COPY, routeOfEntry, STATIC_META } from '../../../src/components/reference/resources.ts';
 import type { LedgerRow, ResourceGroup } from '../../../src/components/reference/resources.ts';
 import type { DiskEntry } from './disk-meta.ts';
@@ -64,6 +64,9 @@ export function ownedSentences(): string[] {
   return [...new Set([...page, ...groups, ...staticTitles, ...RESOURCE_STRIP.map((i) => i.title)])];
 }
 
+/** Every family entry the hub lists, by path: its words come from the registry, never from the page the entry links to. */
+export const FAMILY_ENTRIES: ReadonlyMap<string, FamilyEntry> = new Map([BRIEFS, SEGMENTS, INDUSTRIES, COMPARISONS].flatMap((family) => family.entries.map((entry) => [entry.path, entry] as const)));
+
 const familyEntries = (family: FamilyDefinition): Derived[] => family.entries.map((e) => ({ text: familyLabel(e), page: 'src/data/families.ts' }));
 
 /** The titles and descriptions of the items the hub lists, with the file each came from, for the routes `isLive` accepts. */
@@ -78,6 +81,8 @@ export function derivedSentences(entries: readonly DiskEntry[], ledger: readonly
   const groups = [...liveGroups(isLive, lookup), ...kindGroups(ledger, isLive, lookup)];
   for (const group of groups) {
     for (const item of group.items) {
+      // A family entry is listed by its registry label alone, so its only source is src/data/families.ts (added below).
+      if (FAMILY_ENTRIES.has(item.path)) continue;
       const entry = byRoute.get(item.path);
       const page = entry?.file ?? STATIC_PAGE_FILES[item.path];
       if (page === undefined) continue;

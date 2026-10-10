@@ -1,5 +1,8 @@
 ---
 import ReferenceLayout from '../layouts/ReferenceLayout.astro';
+import { FAMILY_LABELS } from '../components/geo/llms-plan.ts';
+import { DESK_DEFINITIONS, deskPath } from '../data/desks.ts';
+import { FAMILIES, familyLabel } from '../data/families.ts';
 import { primaryNav, footerNav, utilityNav } from '../data/nav.ts';
 import { routes } from '../data/routes.ts';
 import { getPublished } from '../lib/content.ts';
@@ -37,12 +40,15 @@ for (const [name, toPath] of collectionPaths) {
   for (const entry of await getPublished(name)) addLabel(toPath(entry.id), entry.data.title);
 }
 
+// Desks and page families are named by their registries, so a new desk or family is labelled with no edit here.
+for (const desk of DESK_DEFINITIONS) addLabel(deskPath(desk.id), desk.name);
+for (const family of FAMILIES) {
+  if (family.hub !== undefined) addLabel(family.hub.path, FAMILY_LABELS[family.id]);
+  for (const entry of family.entries) addLabel(entry.path, familyLabel(entry));
+}
+
 const paths = routes.filter((r) => r.launch && r.indexable && state.isLive(r.path)).map((r) => r.path);
-const topicDesk = (path: string): string | undefined => {
-  const topic = /^\/insights\/topic\/([a-z]+)\/$/.exec(path)?.[1];
-  return topic === undefined ? undefined : `${topic.charAt(0).toUpperCase()}${topic.slice(1)} desk`;
-};
-const sections = groupSitemapRoutes(paths, (path) => topicDesk(path) ?? labels.get(path));
+const sections = groupSitemapRoutes(paths, (path) => labels.get(path));
 ---
 
 <ReferenceLayout

@@ -1,0 +1,46 @@
+---
+import { render } from 'astro:content';
+import AsideStyles from '../../../../components/forms/AsideStyles.astro';
+import PartnerEnquiryForm from '../../../../components/forms/PartnerEnquiryForm.astro';
+import { jumpTo } from '../../../../components/hero/ctas.ts';
+import { getPageEntry } from '../../../../components/network/pageEntry.ts';
+import { ENQUIRE_PAGE, ENQUIRY_CONTENTS, HREFS } from '../../../../components/partners/copy.ts';
+import FormLayout from '../../../../layouts/FormLayout.astro';
+import { href } from '../../../../lib/url.ts';
+
+const page = await getPageEntry('network/partners/enquire');
+const { Content } = await render(page);
+---
+
+<FormLayout
+  title={page.data.title}
+  description={page.data.description}
+  eyebrow={page.data.eyebrow}
+  lead={ENQUIRE_PAGE.lead}
+  path={HREFS.enquire}
+  primary={jumpTo(ENQUIRE_PAGE.start, '#partner-enquiry-form')}
+  updated={page.data.updated}
+  draft={page.data.draft}
+  ogSlot="og-network"
+>
+  <div class="prose"><Content /></div>
+  <PartnerEnquiryForm />
+
+  <Fragment slot="aside">
+    <AsideStyles />
+    <h2 class="aside-title">{ENQUIRE_PAGE.asideContents}</h2>
+    <ul class="stack" role="list">
+      {ENQUIRY_CONTENTS.map((item) => <li>{item}</li>)}
+    </ul>
+    <h2 class="aside-title">{ENQUIRE_PAGE.asideNext}</h2>
+    <ul class="stack" role="list">
+      {ENQUIRE_PAGE.nextItems.map((item) => <li>{item}</li>)}
+    </ul>
+    <h2 class="aside-title">{ENQUIRE_PAGE.asideCollects}</h2>
+    {ENQUIRE_PAGE.collects.map((item) => <p>{item}</p>)}
+    <h2 class="aside-title">{ENQUIRE_PAGE.asideLinks}</h2>
+    <ul class="stack" role="list">
+      {ENQUIRE_PAGE.links.map((link) => <li><a href={href(link.href)}>{link.label}</a></li>)}
+    </ul>
+  </Fragment>
+</FormLayout>
