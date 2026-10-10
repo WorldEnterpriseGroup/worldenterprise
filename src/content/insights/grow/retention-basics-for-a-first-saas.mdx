@@ -39,13 +39,9 @@ The definitions below follow how one payments vendor describes the measures in i
 
 Churn is the opposite of retention: it counts the customers you lost. In its billing analytics, Stripe describes subscriber churn as a rate over a window of 30 days, in which the number of subscribers lost during the window is divided by the number who were active at the start of it, plus the new subscribers added in that window. Read the definition of your own tool closely. Whether new sign-ups sit in the denominator changes the figure, and a number that moves because the definition moved is not a trend.
 
-A plain version you can compute by hand is customer churn for a month:
+A plain version you can compute by hand is customer churn for a month.
 
-```
-customers lost this month
-divided by
-customers at the start of this month
-```
+> Customer churn for a month is the customers lost this month, divided by the customers at the start of this month.
 
 ### Customer retention
 
@@ -55,14 +51,9 @@ Customer retention is the other side of the same count: the customers at the sta
 
 Revenue retention asks a different question: of the recurring revenue you had at the start of the period, how much do you still have at the end? Stripe's billing analytics states that "Revenue retention considers expansion and can increase above 100%." That sentence carries the important point. If remaining customers upgrade or add seats, their growth can outweigh the revenue lost from departures, so revenue retention can rise while customer retention falls.
 
-A hand calculation:
+A hand calculation follows.
 
-```
-recurring revenue at the end of the period
-from customers who were present at the start
-divided by
-recurring revenue at the start of the period
-```
+> Revenue retention for a period is the recurring revenue at its end from customers who were present at its start, divided by the recurring revenue at its start.
 
 Customers who joined during the period stay out of both numbers.
 
