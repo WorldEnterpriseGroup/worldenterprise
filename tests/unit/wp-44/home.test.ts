@@ -186,12 +186,15 @@ test('the page is an argument in the planned order', () => {
   }
 });
 
-test('every section below the first screen after the hero band defers its rendering; the hero and the first band do not', () => {
+test('every section below the first screen after the hero band defers its rendering; the hero, the first band and the one above the closing band do not', () => {
   const home = read('src/pages/index.astro');
   const sections = [...home.matchAll(/<section class="([^"]*)"(?: aria-labelledby="([^"]*)")?/g)].map((m) => ({ classes: m[1] ?? '', id: m[2] ?? '(none)' }));
   assert.ok(sections.length >= 9, `${sections.length} sections`);
   for (const section of sections) {
     if (section.id === 'home-leave-with') assert.doesNotMatch(section.classes, /section--defer/, 'the band under the hero renders at once');
+    // The last section sits right above the closing band. A skipped section keeps its placeholder height, so on a phone its last question
+    // overflowed into the band and axe measured it as covered (target-size). Rendered at once, its box is its real height.
+    else if (section.id === 'home-faq') assert.doesNotMatch(section.classes, /section--defer/, 'the section above the closing band renders at once');
     else assert.match(section.classes, /section--defer/, `${section.id} defers rendering`);
   }
   assert.match(read('src/components/home/LatestInsights.astro'), /class="section section--defer" aria-labelledby="home-insights"/);

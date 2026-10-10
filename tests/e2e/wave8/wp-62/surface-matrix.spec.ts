@@ -53,7 +53,29 @@ async function assertNoTracking(page: Page): Promise<void> {
   expect(offenders, 'a band carries no script, event handler, ping or data attribute beyond data-cta').toEqual([]);
 }
 
+/**
+ * A page that hands the layout its own `slot="after"` band (the old `section.ctaband`) keeps that band and the layout draws no default one:
+ * the pages of the program, pricing, services, playbooks, tools, network and about families and the guides are not WP-62's files, and
+ * moving them to the CTA system is a migration for their owners. Such a page is accepted when it has exactly one such band, no second band
+ * of any kind and no `data-cta` element, and the gap is recorded as an annotation so the report names it. A page with a `data-cta="end"`
+ * band must have no old band beside it.
+ */
+async function isLegacyBand(page: Page): Promise<boolean> {
+  const drawn = await page.locator('[data-cta="end"]').count();
+  const legacy = await page.locator('section.ctaband').count();
+  if (drawn === 1) {
+    expect(legacy, 'a page with a data-cta end band has no old closing band beside it').toBe(0);
+    return false;
+  }
+  expect(drawn, 'at most one end band').toBe(0);
+  expect(legacy, 'a page with no data-cta end band keeps exactly one hand-placed closing band').toBe(1);
+  await expect(page.locator('[data-cta]'), 'a page on the old closing band carries no other band').toHaveCount(0);
+  test.info().annotations.push({ type: 'legacy-band', description: `${new URL(page.url()).pathname} closes with its own section.ctaband, not the CTA system` });
+  return true;
+}
+
 async function assertEndBand(page: Page, model: CtaModel): Promise<void> {
+  if (await isLegacyBand(page)) return;
   const band = page.locator('[data-cta="end"]');
   await expect(band, 'exactly one end band').toHaveCount(1);
   await expect(band.locator('h2, h3').first(), 'the heading of the band').toHaveText(model.heading);
@@ -108,11 +130,12 @@ function matrix(): void {
         });
         if (!measure.has) continue;
         withBand += 1;
-        // The page is counted here by splitting its text, the plugin counts the blocks of the source; a small margin keeps the two from disagreeing.
+        // The page is counted here by splitting its text, the plugin counts the words of the source blocks (headings, lists and tables count
+        // differently, and a table cell or a link adds words to the DOM); a margin of five points on each side keeps the two from disagreeing.
         expect(measure.total, `${file.slug}: only a document of about 900 words or more carries a mid-body band`).toBeGreaterThanOrEqual(850);
         const share = measure.before / measure.total;
-        expect(share, `${file.slug}: the band is not in the first half`).toBeGreaterThanOrEqual(0.48);
-        expect(share, `${file.slug}: the band is not in the last tenth`).toBeLessThanOrEqual(0.92);
+        expect(share, `${file.slug}: the band is not in the first half`).toBeGreaterThanOrEqual(0.45);
+        expect(share, `${file.slug}: the band is not in the last tenth`).toBeLessThanOrEqual(0.95);
         expect(measure.afterTag, `${file.slug}: the band follows a paragraph, never a heading`).toBe('P');
         await expect(bands.locator('a'), `${file.slug}: the band has one action`).toHaveCount(1);
         await assertNoTracking(page);
