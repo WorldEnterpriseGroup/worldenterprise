@@ -11,12 +11,6 @@ import type { RenderedTwin } from './markdown-twins.ts';
 /** The no-funding sentence, required in both files by rule R-W7-C05-no-funding-disclaimer. */
 export const NO_FUNDING_SENTENCE = 'WE makes no promise of funding.';
 
-/**
- * The FAQ answer about intake calendars uses a word that the denylist rule C-13-peers allows on /faq/ only, and a text file cannot
- * carry an allow marker, so the llms files say the same thing in other words.
- */
-export const NO_CALENDAR_STATEMENT = 'WE does not run a fixed intake calendar or a demo day, and this site describes neither.';
-
 /** Cap on /llms-full.txt, in bytes of UTF-8. A unit test builds the real file and fails when it passes the cap. */
 export const LLMS_FULL_MAX_BYTES = 262_144;
 
@@ -67,6 +61,8 @@ export interface LlmsInput {
    * verbatim disclaimer. Taken from the facts page so the wording lives in one reviewed place.
    */
   readonly addOnStatement: string;
+  /** The FAQ sentence about intake calendars and demo days, verbatim: the denylist allows its wording on the machine files. */
+  readonly calendarStatement: string;
 }
 
 function linkTo(page: LlmsPage, twinRoutes: ReadonlySet<string>, origin: string): string {
@@ -85,7 +81,7 @@ function limitsSection(input: LlmsInput): string {
     list([
       `- ${NO_FUNDING_SENTENCE}`,
       `- ${input.addOnStatement}`,
-      `- ${NO_CALENDAR_STATEMENT}`,
+      `- ${input.calendarStatement}`,
       '- WE does not give legal, tax or accounting advice, and does not keep your books or file your taxes.',
     ]),
   ].join('\n');

@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { parse } from 'yaml';
 import * as claimsAudit from '../../../scripts/audit-claims.mjs';
 import * as geoAudit from '../../../scripts/audit-geo.mjs';
-import { addOnStatementFrom } from '../../../src/components/geo/qa.ts';
+import { addOnStatementFrom, calendarStatementFrom } from '../../../src/components/geo/qa.ts';
 import { packages } from '../../../src/data/packages.ts';
 import { site } from '../../../src/data/site.ts';
 import { INTRODUCTIONS_DISCLAIMER, INTRODUCTIONS_FLAT_FEE } from '../../../src/components/blocks/introductions.ts';
@@ -20,6 +21,10 @@ const geo = geoAudit as unknown as {
 
 const addOnStatement = addOnStatementFrom(read('src/content/pages/about/facts.mdx').replace(/^---[\s\S]*?\n---\n/, ''));
 
+const faqYaml = parse(read('src/data/faq.yaml')) as { id: string; answer: string }[];
+const accelerator = faqYaml.find((e) => e.id === 'is-it-an-accelerator')?.answer;
+const calendarStatement = calendarStatementFrom(accelerator);
+
 function input(overrides: Partial<LlmsInput> = {}): LlmsInput {
   const twins = assembleReal().twins;
   return {
@@ -36,6 +41,7 @@ function input(overrides: Partial<LlmsInput> = {}): LlmsInput {
     contactRoute: '/contact/',
     applyRoute: '/apply/',
     addOnStatement,
+    calendarStatement,
     ...overrides,
   };
 }
@@ -103,8 +109,9 @@ test('llms.txt and the real llms-full.txt pass the denylist as plain text', () =
 
 function fullPages() {
   const prefixes = ['/about/', '/services/', '/playbooks/', '/glossary/'];
+  const routes = ['/faq/', '/research/early-stage-saas-metrics-definitions/'];
   return assembleReal()
-    .twins.filter((t) => prefixes.some((p) => t.route.startsWith(p)))
+    .twins.filter((t) => routes.includes(t.route) || prefixes.some((p) => t.route.startsWith(p)))
     .map((t) => buildTwin(t));
 }
 
@@ -129,4 +136,15 @@ test('the facts twin carries the facts page sentences that llms.txt repeats', ()
   const markdown = buildTwin(facts).markdown;
   assert.ok(markdown.includes(NO_FUNDING_SENTENCE));
   assert.ok(markdown.includes(INTRODUCTIONS_DISCLAIMER));
+});
+
+test('the calendar sentence is the FAQ sentence, word for word, in llms.txt, and the FAQ and the metrics brief are in llms-full.txt', () => {
+  assert.equal(calendarStatement, 'This site does not describe a cohort calendar or a demo day.');
+  assert.ok((accelerator ?? '').includes(calendarStatement));
+  assert.ok(buildLlmsTxt(input()).includes(`- ${calendarStatement}`));
+  assert.throws(() => calendarStatementFrom('Nothing here.'), /no sentence about a demo day/);
+  const text = buildLlmsFullTxt(input(), fullPages());
+  assert.match(text, /Source: https:\/\/worldenterprise\.org\/faq\/\n/);
+  assert.match(text, /Source: https:\/\/worldenterprise\.org\/research\/early-stage-saas-metrics-definitions\/\n/);
+  assert.ok(text.includes(calendarStatement), 'the FAQ answer is carried whole');
 });

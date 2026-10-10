@@ -5,7 +5,8 @@ import type { RenderedTwin } from '../../lib/markdown-twins.ts';
 import type { LlmsInput, LlmsPage, LlmsServiceLine } from '../../lib/llms.ts';
 import { packages } from '../../data/packages.ts';
 import { site } from '../../data/site.ts';
-import { addOnStatementFrom } from './qa.ts';
+import { getCollection } from 'astro:content';
+import { addOnStatementFrom, calendarStatementFrom } from './qa.ts';
 import { getTwins } from './twin-sources.ts';
 
 /**
@@ -52,11 +53,11 @@ const OPTIONAL_PAGES: readonly KeyPageSpec[] = [
 
 const HOW_WE_DECIDE_ROUTE = '/program/how-we-decide/';
 
-/** Twins left out of /llms-full.txt. The reason is the denylist: llms-full.txt cannot carry an allow marker (see NO_CALENDAR_STATEMENT). */
-const FULL_EXCLUDED: ReadonlySet<string> = new Set(['/faq/', '/research/early-stage-saas-metrics-definitions/']);
-
 /** The twins whose full text goes into /llms-full.txt: the about, service and playbook pages. Briefs and articles are linked from llms.txt. */
 const FULL_PREFIXES = ['/about/', '/services/', '/playbooks/', '/glossary/'] as const;
+
+/** Single twins added to /llms-full.txt: the FAQ, and the metrics definitions brief that the FAQ and the glossary point to. */
+const FULL_ROUTES: ReadonlySet<string> = new Set(['/faq/', '/research/early-stage-saas-metrics-definitions/']);
 
 export interface LlmsLoad {
   readonly input: LlmsInput;
@@ -70,6 +71,7 @@ export async function loadLlms(): Promise<LlmsLoad> {
   const twinRoutes = new Set(twins.map((t) => t.route));
   const pages = await getPublished('pages');
   const services = await getPublished('services');
+  const faq = await getCollection('faq');
 
   const factsBody = pages.find((p) => p.id === 'about/facts')?.body;
   const byId = new Map(pages.map((p) => [p.id, p.data] as const));
@@ -104,10 +106,11 @@ export async function loadLlms(): Promise<LlmsLoad> {
     contactRoute: state.isLive('/contact/') ? '/contact/' : null,
     applyRoute: state.isLive('/apply/') ? '/apply/' : null,
     addOnStatement: addOnStatementFrom(factsBody),
+    calendarStatement: calendarStatementFrom(faq.find((e) => e.id === 'is-it-an-accelerator')?.data.answer),
   };
 
   const fullPages = twins
-    .filter((t) => FULL_PREFIXES.some((prefix) => t.route.startsWith(prefix)) && !FULL_EXCLUDED.has(t.route))
+    .filter((t) => FULL_ROUTES.has(t.route) || FULL_PREFIXES.some((prefix) => t.route.startsWith(prefix)))
     .map((t) => buildTwin(t));
   return { input, fullPages };
 }

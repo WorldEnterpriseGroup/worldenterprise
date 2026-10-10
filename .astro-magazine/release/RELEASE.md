@@ -426,6 +426,19 @@ Source: `src/data/faq.yaml:57`. Renders on: /faq/.
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
+#### CR-21. Facts page, the question about the add-on (Release 2 scope: not in release-1-rc2; counsel reviews it with the next candidate)
+
+Source: `src/content/pages/about/facts.mdx:51`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
+
+> L51: Is Investor Introductions part of a package?
+>
+> L53: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+>
+> L55: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
 <!-- COUNSEL-CHECKLIST:END -->
 
 Counsel sign-off:
