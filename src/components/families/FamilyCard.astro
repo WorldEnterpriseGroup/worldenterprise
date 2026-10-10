@@ -1,0 +1,108 @@
+---
+import { href as resolve } from '../../lib/url.ts';
+
+/**
+ * A card in a family hub: a title and an optional one-sentence description, and nothing that ranks one page above another. Every card
+ * is the same size and carries the same marks, so a hub reads as a list of equals. It is neutral by construction: it takes no image,
+ * no badge and no emphasis prop, and it is not the shared photo `Card`. The title is the card's single link and the whole card is
+ * the target. It lays itself out from its own width, so it works in a grid cell and full width alike.
+ */
+interface Props {
+  title: string;
+  href: string;
+  description?: string | undefined;
+  headingLevel?: 2 | 3 | 4;
+}
+
+const { title, href: raw, description, headingLevel = 3 } = Astro.props;
+const target = resolve(raw);
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+
+<article class="fcard">
+  <span class="fcard__mark" aria-hidden="true"></span>
+  <div class="fcard__body">
+    <Heading class="fcard__title"><a class="fcard__link" href={target}>{title}</a></Heading>
+    {description !== undefined && <p class="fcard__text">{description}</p>}
+  </div>
+</article>
+
+<style>
+  .fcard {
+    container-type: inline-size;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--sp-4);
+    block-size: 100%;
+    padding: var(--sp-5);
+    background: var(--color-bg);
+    border: var(--border-hair);
+    border-radius: var(--radius-md);
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+
+    &:is(:hover, :focus-within) {
+      background: var(--tint-blue);
+      border-color: var(--color-link);
+    }
+  }
+
+  .fcard__mark {
+    inline-size: var(--sp-5);
+    aspect-ratio: var(--hex-ratio);
+    clip-path: var(--hex-clip);
+    background: var(--color-accent);
+    margin-block-start: var(--sp-1);
+  }
+
+  .fcard__body {
+    display: grid;
+    gap: var(--sp-2);
+  }
+
+  .fcard__title {
+    font-size: var(--fs-lg);
+    line-height: var(--lh-tight);
+  }
+
+  .fcard__text {
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  /* One link per card: its pseudo-element covers the card. */
+  .fcard__link {
+    color: var(--color-text);
+    text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    &:hover {
+      color: var(--color-link);
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .fcard {
+      border-color: CanvasText;
+    }
+
+    .fcard__mark {
+      forced-color-adjust: none;
+      background: ButtonText;
+    }
+  }
+</style>

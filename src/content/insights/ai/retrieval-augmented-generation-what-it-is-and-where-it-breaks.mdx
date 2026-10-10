@@ -1,0 +1,130 @@
+---
+title: "Retrieval-augmented generation: what it is and where it breaks"
+seoTitle: "RAG: what it is, how it breaks"
+description: What retrieval-augmented generation is, where it commonly fails in a product, and how to test retrieval and answers separately before launch.
+topic: ai
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders]
+related: [evaluating-an-llm-feature-before-you-ship-it, prompt-injection-and-the-owasp-top-10-for-llm-applications, ai-features-and-customer-data-what-to-decide-first]
+evidence: [rag-arxiv, lost-middle, owasp-llm08, owasp-llm01, nist-ai600-1, anth-tokencount, goog-tokens]
+relatedPlaybook: build-and-ship-v1
+relatedServices: [B]
+relatedTemplate: security-baseline-checklist
+sources:
+  - id: rag-arxiv
+    title: Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks
+    publisher: arXiv (Lewis et al., NeurIPS 2020)
+    url: https://arxiv.org/abs/2005.11401
+    accessed: 2026-10-10
+  - id: lost-middle
+    title: "Lost in the Middle: How Language Models Use Long Contexts"
+    publisher: ACL Anthology (Transactions of the Association for Computational Linguistics, volume 12, 2024)
+    url: https://aclanthology.org/2024.tacl-1.9/
+    accessed: 2026-10-10
+  - id: owasp-llm08
+    title: "LLM08:2025 Vector and Embedding Weaknesses"
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm082025-vector-and-embedding-weaknesses/
+    accessed: 2026-10-10
+  - id: owasp-llm01
+    title: "LLM01:2025 Prompt Injection"
+    publisher: OWASP Gen AI Security Project
+    url: https://genai.owasp.org/llmrisk/llm01-prompt-injection/
+    accessed: 2026-10-10
+  - id: nist-ai600-1
+    title: "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile, NIST AI 600-1"
+    publisher: National Institute of Standards and Technology
+    url: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf
+    accessed: 2026-10-10
+  - id: anth-tokencount
+    title: Token counting
+    publisher: Anthropic
+    url: https://platform.claude.com/docs/en/build-with-claude/token-counting
+    accessed: 2026-10-10
+  - id: goog-tokens
+    title: Understand and count tokens
+    publisher: Google
+    url: https://ai.google.dev/gemini-api/docs/tokens
+    accessed: 2026-10-10
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Retrieval-augmented generation, usually shortened to RAG, is the pattern behind many "chat with your documents" features. Instead of asking a model to answer from memory, the application first looks up relevant material and puts it in front of the model along with the question. The idea is simple. Building a version that stays right when documents change, users differ and attackers show up is not.
+
+This article explains where the term comes from, describes a common shape for a RAG feature, and walks through the places it breaks, using the original research paper, a later study of long inputs, the OWASP Gen AI Security Project and the NIST Generative AI Profile as those sources read on October 10, 2026. It reports no benchmark results and makes no claim about how accurate any retrieval method is.
+
+## Where the term comes from
+
+The name comes from a 2020 research paper by Patrick Lewis and colleagues, accepted at NeurIPS 2020. Its abstract starts from a limitation: large pre-trained language models store factual knowledge in their parameters, but their ability to access and precisely manipulate knowledge is still limited, and providing provenance for their decisions and updating their world knowledge remain open research problems. The authors explore retrieval-augmented generation, models that combine pre-trained parametric and non-parametric memory for language generation. In their setup, the non-parametric memory is a dense vector index of Wikipedia, accessed with a pre-trained neural retriever.
+
+Two things in that description carry over to products. The model's own memory is treated as insufficient on its own, and an external store supplies what it lacks. And the two problems the paper names, provenance and updating knowledge, are the same two a product team has to solve: can you show where an answer came from, and can you change what the system knows without retraining anything?
+
+Most products today use a looser version of the idea, retrieving passages with a search index and pasting them into the prompt, rather than the paper's trained architecture. The failure modes below apply to the looser version as well.
+
+## A common shape for a RAG feature
+
+The following is this article's description, not a standard. Most implementations have five steps:
+
+1. **Prepare.** Split source documents into passages and attach metadata such as owner, date and access level.
+2. **Index.** Store each passage with a vector representation (an embedding) so similar passages can be found for a query.
+3. **Retrieve.** Turn the user's question into a query and fetch the closest passages.
+4. **Assemble.** Place the retrieved passages and the question in the prompt, along with instructions.
+5. **Generate.** The model writes an answer, ideally citing the passages it used.
+
+Every step can fail independently, and a wrong answer at the end does not say which one failed. That is the first lesson: instrument the steps separately.
+
+## Where it breaks
+
+<DataTable
+  caption="Failure points in a RAG feature, with the source that describes each"
+  columns={['Failure point', 'What goes wrong', 'Source']}
+  rows={[
+    ['Position in a long prompt', 'The model uses relevant passages less well when they sit in the middle of a long input', 'Lost in the Middle study'],
+    ['Conflicting or stale data', 'Sources contradict one another, or the model cannot supersede old knowledge with retrieved data', 'OWASP LLM08'],
+    ['Access control', 'Embeddings holding sensitive data are reachable by people who should not see them; users of a shared store leak context to one another', 'OWASP LLM08'],
+    ['Poisoned or injected content', 'A document contains hidden instructions or manipulated data that steer the answer', 'OWASP LLM08 and LLM01'],
+    ['Embedding inversion', 'Attackers recover substantial source information from stored embeddings', 'OWASP LLM08'],
+    ['Changed model behavior', 'Retrieval alters how the model behaves, for example accuracy and relevance may rise while empathy falls', 'OWASP LLM08'],
+    ['Confident wrong answers', 'The model produces confidently stated but erroneous or false content, which the profile calls confabulation', 'NIST AI 600-1']
+  ]}
+/>
+
+### Long inputs have a cost
+
+The tempting fix for a missed answer is to retrieve more passages. A study published in the Transactions of the Association for Computational Linguistics analyzed how language models use long contexts on multi-document question answering and key-value retrieval. It found that performance can degrade significantly when the position of the relevant information changes, that it is often highest when that information is at the beginning or end of the input, and that it degrades when models must access it in the middle of long contexts, even for explicitly long-context models. The study tested particular models at a particular time, so read it as a reason to test your own arrangement, not as a rule about any product. Passages also cost money and count toward limits: Anthropic's token-counting page says counts help manage rate limits and costs, and Google's page says the context window defines the combined limit of input and output tokens. The article on <MaybeLink path="/insights/metering-and-budgeting-model-usage/">metering and budgeting model usage</MaybeLink> shows how to track that spend.
+
+### Your knowledge base is an attack surface
+
+OWASP's entry on vector and embedding weaknesses treats retrieval as a security topic. It describes unauthorized access and data leakage from inadequate or misaligned access controls, cross-context leaks in multi-tenant environments where users share a vector database, and embedding inversion attacks that recover significant amounts of source information. Its poisoning scenario is easy to picture: an attacker creates a resume containing hidden text, such as white text on a white background, with instructions to recommend the candidate, and the screening feature ingests it.
+
+The prompt injection entry makes a related point that matters for planning. OWASP says RAG and fine-tuning aim to make outputs more relevant and accurate, but research shows they do not fully mitigate prompt injection. Adding retrieval does not reduce the injection problem; it adds a new channel for it. The article on <MaybeLink path="/insights/prompt-injection-and-the-owasp-top-10-for-llm-applications/">prompt injection and the OWASP Top 10</MaybeLink> covers how to limit what a steered model can do.
+
+OWASP's mitigations for the knowledge base are concrete:
+
+- implement fine-grained access controls and permission-aware vector and embedding stores, with strict logical and access partitioning of datasets,
+- implement validation pipelines for knowledge sources, audit the integrity of the knowledge base for hidden codes and data poisoning, and accept data only from trusted and verified sources,
+- tag and classify data to control access levels when combining sources,
+- maintain detailed immutable logs of retrieval activities.
+
+The practical rule is that retrieval must enforce the same permissions as the original document. If a user cannot open a file in your product, a passage from that file should never reach the prompt that is answering that user.
+
+## How to test it
+
+Test retrieval and generation as separate things. For retrieval, assemble questions with a known source passage and check whether it came back, and how highly ranked. For generation, check whether the answer is supported by the passages supplied. OWASP's prompt injection page names three checks it calls the RAG Triad: context relevance, groundedness, and question and answer relevance. They map onto the steps above: was the retrieved context relevant, is the answer grounded in it, and does the answer address the question.
+
+The NIST Generative AI Profile includes a suggested action that fits: verify that fine-tuning or retrieval-augmented generation data is grounded, along with the provenance of training and test data. OWASP's output guidance suggests requesting source citations and using deterministic code to validate the output format; checking that each citation appears in the retrieved set is a cheap extension of that idea, and it is this article's suggestion rather than OWASP's. The article on <MaybeLink path="/insights/evaluating-an-llm-feature-before-you-ship-it/">evaluating an LLM feature before you ship it</MaybeLink> describes how to turn these checks into a repeatable test set, including hostile documents.
+
+<Callout title="Questions to ask before launch">
+  Does retrieval enforce per-user permissions? Can a deleted document be removed from the index and from any cache? Who adds documents, and are they checked? Are retrieved passages and their sources logged for debugging, with the retention limits you chose? What happens when nothing relevant is found?
+</Callout>
+
+The last question deserves a design decision, not a default. If no passage meets a relevance threshold you set from your own tests, the feature can say it does not know, rather than letting the model answer from general memory. The deletion question connects to the decisions in <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data</MaybeLink>.
+
+## What this article cannot tell you
+
+It does not say whether RAG is the right approach for your feature, which retrieval method or vector store to choose, how to split documents, or how many passages to include. Those depend on your content and your users, and only your own tests answer them. The research cited was carried out on specific models and tasks, and says nothing about how any current product behaves.
+
+It summarizes sources as read on October 10, 2026; OWASP and NIST revise their documents. It does not cover fine-tuning, or the legal questions about the documents you index, such as copyright and customer contracts, which belong with counsel. It is general information, current as of October 10, 2026, and not security or legal advice.

@@ -1,0 +1,104 @@
+---
+import type { GetStaticPaths } from 'astro';
+import tokensCss from '../../styles/tokens.css?raw';
+import PageShell from '../../components/about/PageShell.astro';
+import { loadPage } from '../../components/about/load-page.ts';
+import Lockup from '../../components/brand/Lockup.astro';
+import { jumpTo } from '../../components/hero/ctas.ts';
+import WeBrandCopy from '../../components/islands/we-brand-copy/WeBrandCopy.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import Section from '../../components/ui/Section.astro';
+import { routes } from '../../data/routes.ts';
+import { asset, href } from '../../lib/url.ts';
+import { pressBoilerplate } from './_boilerplate.ts';
+import { KIT_PATH, kitStaticPaths, paletteCopyText, parseBrandPalette, parseFontRoles } from './_kit-data.ts';
+
+/**
+ * The brand kit ships only when the live route ledger holds a launched row for it (OP-BRAND): until then no page is built, so the kit is
+ * absent from the sitemap, the navigation, the search index and both llms files. Moving the row out of L2_RESERVED is the release step.
+ */
+export const getStaticPaths = (() => kitStaticPaths(routes)) satisfies GetStaticPaths;
+
+const entry = await loadPage('press/brand-kit');
+const swatches = parseBrandPalette(tokensCss);
+const fonts = parseFontRoles(tokensCss);
+const boilerplate = pressBoilerplate();
+---
+
+<PageShell
+  entry={entry}
+  path={KIT_PATH}
+  ogSlot="og-about"
+  lead="Usage rules for the wordmark, colors and type."
+  schemaType="WebPage"
+  primary={jumpTo('Read the wordmark rules', '#kit-wordmark')}
+  secondary={{ label: 'Download the wordmark (SVG)', href: '/press/we-logo-wordmark.svg', download: true }}
+>
+  <Fragment slot="after">
+    <Section labelledby="kit-wordmark">
+      <div class="container stack">
+        <h2 id="kit-wordmark">The wordmark</h2>
+        <p>The wordmark is provided as SVG for use on white or very light backgrounds.</p>
+        <figure class="stack">
+          <Lockup ground="light" size="lg" />
+          <figcaption>The World Enterprise wordmark on a light ground, with its clear space.</figcaption>
+        </figure>
+        <p>Keep clear space around it equal to the height of one of its hexagonal cells.</p>
+        <p><a href={asset('/press/we-logo-wordmark.svg')} download>Download the World Enterprise wordmark (SVG)</a></p>
+        <h3 id="kit-do">Do</h3>
+        <ul>
+          <li>Use it dark on light only.</li>
+          <li>Keep the proportions it was supplied in.</li>
+          <li>Keep other marks and text out of the clear space.</li>
+        </ul>
+        <h3 id="kit-do-not">Do not</h3>
+        <ul>
+          <li>There is no reversed version, so do not make one.</li>
+          <li>Do not stretch, recolor, outline or crop it.</li>
+          <li>Do not place it on a dark band or a busy ground.</li>
+          <li>Do not use it in a way that suggests WE endorses your product or service.</li>
+        </ul>
+      </div>
+    </Section>
+    <Section tone="soft" labelledby="kit-colors">
+      <div class="container stack">
+        <h2 id="kit-colors">Colors</h2>
+        <p>The brand colors are defined as tokens in the site stylesheet. The table lists each brand color by token name, with its hex value and the roles that point at it.</p>
+        <DataTable
+          caption="Brand colors by token name"
+          columns={['Token', 'Hex value', 'Used as']}
+          rows={swatches.map((s) => [s.token, s.hex, s.usedAs.length > 0 ? s.usedAs.join(', ') : 'Not used as a role'])}
+        />
+        <p>Body text is charcoal on white. Links and primary buttons are deep blue. Amber is the highlight color.</p>
+        <p>Text and control colors are checked for contrast against their backgrounds.</p>
+        <WeBrandCopy text={paletteCopyText(swatches)} label="Copy the color values">
+          <pre>{paletteCopyText(swatches)}</pre>
+        </WeBrandCopy>
+      </div>
+    </Section>
+    <Section labelledby="kit-type">
+      <div class="container stack">
+        <h2 id="kit-type">Type</h2>
+        <p>Each type family is set in the stylesheet by role: display, serif, sans and mono.</p>
+        <DataTable caption="Type families by role" columns={['Role', 'Family', 'Token']} rows={fonts.map((f) => [f.role, f.family, f.token])} />
+      </div>
+    </Section>
+    <Section tone="soft" labelledby="kit-hex">
+      <div class="container stack">
+        <h2 id="kit-hex">The hexagon</h2>
+        <p>The wordmark is made of hexagonal cells, and its clear space is measured in one cell.</p>
+        <p>The stylesheet defines the hexagon as two tokens: --hex-clip for its shape and --hex-ratio for its proportion.</p>
+      </div>
+    </Section>
+    <Section labelledby="kit-boilerplate">
+      <div class="container stack">
+        <h2 id="kit-boilerplate">Boilerplate</h2>
+        <p>Use this text when you describe WE. It is the same text as on the <a href={href('/press/')}>press page</a>.</p>
+        <WeBrandCopy text={boilerplate} label="Copy the boilerplate">
+          <p>{boilerplate}</p>
+        </WeBrandCopy>
+        <p>Anything not on the press page or in this kit is not a published claim. Check with WE before you state it.</p>
+      </div>
+    </Section>
+  </Fragment>
+</PageShell>
