@@ -6,15 +6,16 @@ import CtaBand from '../../components/ui/CtaBand.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import Section from '../../components/ui/Section.astro';
 import { jumpTo } from '../../components/hero/ctas.ts';
-import { flags } from '../../data/flags.ts';
 import { site } from '../../data/site.ts';
-import { asset } from '../../lib/url.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { asset, href } from '../../lib/url.ts';
+import { pressBoilerplate, pressEntity } from './_boilerplate.ts';
 
 const entry = await loadPage('press/index');
-const entity = flags.pbcWording ? site.legalLine : `${site.legalName}, registered in Delaware`;
-const boilerplate =
-  'World Enterprise Incubator is a digital incubator for SaaS. Dedicated team seats, steered by WE, work with a founder from first idea toward a company that can show investors its evidence. WE is fully remote and makes no promise of funding. World Enterprise Incubator is operated by ' +
-  `${entity}.`;
+const entity = pressEntity();
+const boilerplate = pressBoilerplate();
+// The brand kit is linked only while its route is live (ledger row launched and page built), so the link can never point at a 404.
+const kitLive = (await getRouteState()).isLive('/press/brand-kit/');
 ---
 
 <PageShell
@@ -65,6 +66,13 @@ const boilerplate =
           <li>Do not stretch, recolour, outline, crop or place it on a dark or busy ground.</li>
           <li>Do not use it in a way that suggests WE endorses your product or service.</li>
         </ul>
+        {
+          kitLive && (
+            <p>
+              <a href={href('/press/brand-kit/')}>Read the brand kit</a> for usage rules, colors and type.
+            </p>
+          )
+        }
       </div>
     </Section>
     <CtaBand title="A question or a correction?" text="Choose the topic Press or media, or A correction to something WE published." cta={{ label: 'Contact WE', href: '/contact/' }} />

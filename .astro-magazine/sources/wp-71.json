@@ -1,0 +1,291 @@
+{
+  "package": "WP-71",
+  "wp": "WP-71",
+  "note": "Maps every string WP-71 puts on the site (the brand story page, the brand kit page and the brand kit link on the press page) to the existing page and line, token line or claim id it restates. The brand story invents no history, date, name or statistic: each sentence is moved from src/content/pages/about/index.md, manifesto.md, editorial-policy.md, .astro-magazine/decisions.md (D-8) or src/pages/press/index.astro. tests/unit/wp-71/story-sources.test.ts enumerates the strings from the page files, fails on one that is not listed here, fails on a stale entry, checks each quote against its file, and runs the claims denylist over all of them. A \"ui_label\" entry is a heading, table header or control label that states no fact about WE. A \"page_frame\" entry describes the page itself and states no fact about WE; the test caps how many there may be and rejects digits and fact verbs in them. A \"paraphrase\" entry names the line it restates and says what changed. The press boilerplate was moved verbatim from src/pages/press/index.astro into src/pages/press/_boilerplate.ts so /press/ and the brand kit state the same text. The ORBITAL registry was not fetched for this package (gh was not authenticated in the build environment); no sentence depends on it.",
+  "sources": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp71-existing-site-copy",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "Existing copy on the about page, the manifesto, the editorial policy, the press page and decision D-8 that the brand story and the brand kit restate",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "See sentences[].sources: each entry names a file, a line and the quoted text",
+      "publication_date": "",
+      "last_updated_date": "2026-10-10",
+      "retrieved_at": "2026-10-10",
+      "next_review": "when any cited page or decision changes; story-sources.test.ts fails on a moved quote",
+      "version_or_release": "wp/71 branched from wp/12d 81f14f1",
+      "relevant_locator": "C-01, C-02, C-03, C-04, C-05, C-18",
+      "variables_units_scope": "Brand, voice and logo-usage wording only; no history, date, name, count, price or response time beyond what the site already says",
+      "methodology_limitations": "Restatement, not new research. Any new brand claim needs operator input and the whitelab brand-usage sign-off (OP-BRAND) before the kit is published.",
+      "funding_conflicts": "none",
+      "claims_supported": ["C-01", "C-02", "C-03", "C-04", "C-05", "C-18"],
+      "claims_not_supported": ["C-06", "C-09", "C-11", "C-12", "C-13", "C-14", "C-16"],
+      "license_access_attribution": "Internal; verbatim or lightly reordered",
+      "freshness_trigger": "Any change to the about page, the manifesto, the editorial policy, the press page or decision D-8",
+      "captured_by": "WP-71 fork C"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp71-design-tokens",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "src/styles/tokens.css: the brand color, type and hexagon tokens the brand kit describes",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/styles/tokens.css lines 3-4, 32-45, 66-69 and 132-133",
+      "publication_date": "",
+      "last_updated_date": "2026-10-10",
+      "retrieved_at": "2026-10-10",
+      "next_review": "when tokens.css changes; the kit table is read from the file at build time, so its values cannot drift",
+      "version_or_release": "wp/71 branched from wp/12d 81f14f1",
+      "relevant_locator": "Palette source: whitelab brand",
+      "variables_units_scope": "Token names, hex values kept in the stylesheet comments, and the role each color plays",
+      "methodology_limitations": "The kit states how the colors are used on this site, not a full brand manual. Whitelab brand-usage sign-off (OP-BRAND) gates its release.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": ["C-13"],
+      "license_access_attribution": "Internal",
+      "freshness_trigger": "Any change to the --we-*, --color-*, --ff-* or --hex-* tokens",
+      "captured_by": "WP-71 fork C"
+    }
+  ],
+  "sentences": [
+    { "text": "Brand story", "ui_label": true },
+    { "text": "What World Enterprise Incubator is, how WE speaks and how the brand looks, as the rest of this site already states it.", "page_frame": true },
+    { "text": "About", "ui_label": true },
+    {
+      "text": "World Enterprise Incubator is a digital incubator for SaaS.",
+      "sources": [{ "file": "src/content/pages/about/index.md", "line": 10, "quote": "World Enterprise Incubator is a digital incubator for SaaS." }]
+    },
+    {
+      "text": "WE is fully digital.",
+      "sources": [{ "file": "src/content/pages/about/index.md", "line": 24, "quote": "WE is fully digital." }, { "claims": ["C-01"] }]
+    },
+    {
+      "text": "There is no office to visit and no relocation to plan.",
+      "sources": [{ "file": "src/content/pages/about/index.md", "line": 24, "quote": "There is no office to visit and no relocation to plan." }]
+    },
+    { "text": "The name and the motto", "ui_label": true },
+    {
+      "text": "The motto is WE Dream. WE Build. WE Grow.",
+      "sources": [{ "file": "src/data/site.ts", "line": 13, "quote": "WE Dream. WE Build. WE Grow." }]
+    },
+    {
+      "text": "Dream is where the problem and the customer are tested before anything is built.",
+      "sources": [{ "file": "src/content/pages/about/index.md", "line": 16, "quote": "is where the problem and the customer are tested before anything is built." }]
+    },
+    {
+      "text": "Build turns the validated idea into a product that ships.",
+      "sources": [{ "file": "src/content/pages/about/index.md", "line": 17, "quote": "turns the validated idea into a product that ships." }]
+    },
+    {
+      "text": "Grow earns the first customers and assembles the evidence an investor asks for.",
+      "sources": [{ "file": "src/content/pages/about/index.md", "line": 18, "quote": "earns the first customers and assembles the evidence an investor asks for." }]
+    },
+    {
+      "text": "WE would rather hand you something concrete than describe a feeling of progress.",
+      "sources": [{ "file": "src/content/pages/about/index.md", "line": 20, "quote": "WE would rather hand you something concrete than describe a feeling of progress." }]
+    },
+    { "text": "How WE speaks", "ui_label": true },
+    {
+      "text": "Short sentences, concrete nouns, no hype.",
+      "sources": [{ "file": "src/content/pages/about/manifesto.md", "line": 38, "quote": "Short sentences, concrete nouns, no hype." }]
+    },
+    {
+      "text": "If a sentence could appear on any company's site, WE rewrites it.",
+      "sources": [{ "file": "src/content/pages/about/manifesto.md", "line": 38, "quote": "If a sentence could appear on any company's site, WE rewrites it." }]
+    },
+    {
+      "text": "A promise with no limits is not a promise.",
+      "sources": [{ "file": "src/content/pages/about/manifesto.md", "line": 14, "quote": "A promise with no limits is not a promise." }]
+    },
+    {
+      "text": "Every service page carries a plain statement of what it does not cover.",
+      "sources": [{ "file": "src/content/pages/about/manifesto.md", "line": 14, "quote": "Every service page carries a plain statement of what it does not cover." }, { "claims": ["C-04"] }]
+    },
+    {
+      "text": "Statements of fact on the site name their source.",
+      "sources": [{ "file": "src/content/pages/about/manifesto.md", "line": 34, "quote": "Statements of fact on the site name their source." }]
+    },
+    {
+      "text": "Articles, research briefs and guides are published under the byline World Enterprise Editorial.",
+      "sources": [{ "file": "src/content/pages/about/editorial-policy.md", "line": 14, "quote": "Articles, research briefs and guides are published under the byline World Enterprise Editorial." }]
+    },
+    {
+      "text": "WE does not invent authors, experts or quotations to give a page authority.",
+      "sources": [{ "file": "src/content/pages/about/editorial-policy.md", "line": 14, "quote": "WE does not invent authors, experts or quotations to give a page authority." }]
+    },
+    { "text": "What the brand leaves out", "ui_label": true },
+    {
+      "text": "There are no logo walls, no quotes from customers and no performance figures on this site.",
+      "sources": [{ "file": "src/content/pages/about/manifesto.md", "line": 22, "quote": "There are no logo walls, no quotes from customers and no performance figures on this site." }]
+    },
+    {
+      "text": "WE does not promise funding, and nothing here predicts that a company will raise money.",
+      "sources": [{ "file": "src/content/pages/about/index.md", "line": 28, "quote": "WE does not promise funding, and nothing here predicts that a company will raise money." }, { "claims": ["C-05"] }]
+    },
+    { "text": "How the brand looks", "ui_label": true },
+    {
+      "text": "The site uses a light theme only.",
+      "sources": [{ "file": ".astro-magazine/decisions.md", "line": 51, "quote": "Light theme only" }]
+    },
+    {
+      "text": "The WE logo is used dark on light only, and there is no reversed version.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 64, "quote": "Use it dark on light only. There is no reversed version." }, { "file": ".astro-magazine/decisions.md", "line": 51, "quote": "No reversed logo" }]
+    },
+    {
+      "text": "Dark bands never carry the logo.",
+      "sources": [{ "file": ".astro-magazine/decisions.md", "line": 51, "quote": "never carry the logo" }]
+    },
+    {
+      "text": "The clear space around the logo equals the height of one of its hexagonal cells.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 65, "quote": "Keep clear space around it equal to the height of one of its hexagonal cells." }]
+    },
+
+    { "text": "What WE is, how it speaks and how it looks.", "page_frame": true },
+    { "text": "Where to check this", "ui_label": true },
+    { "text": "Each statement on this page comes from a page you can read in full: the about page, the manifesto, the editorial policy and the press page.", "page_frame": true },
+
+    { "text": "Brand kit", "ui_label": true },
+    { "text": "How to use the World Enterprise wordmark, colors and type: usage rules, clear space, token values and the boilerplate to copy.", "page_frame": true },
+    { "text": "Press", "ui_label": true },
+    { "text": "This kit shows how the WE wordmark, colors and type are used on this site.", "page_frame": true },
+    { "text": "It is for anyone who writes about WE or shows its name.", "page_frame": true },
+
+    { "text": "Usage rules for the wordmark, colors and type.", "page_frame": true },
+    { "text": "Copy the color values", "ui_label": true },
+    { "text": "Copy the boilerplate", "ui_label": true },
+    { "text": "Brand colors by token name", "ui_label": true },
+    { "text": "Type families by role", "ui_label": true },
+    { "text": "Read the wordmark rules", "ui_label": true },
+    { "text": "Download the wordmark (SVG)", "ui_label": true },
+    { "text": "Token", "ui_label": true },
+    { "text": "Hex value", "ui_label": true },
+    { "text": "Used as", "ui_label": true },
+    { "text": "Not used as a role", "ui_label": true },
+    { "text": "Role", "ui_label": true },
+    { "text": "Family", "ui_label": true },
+    { "text": "The wordmark", "ui_label": true },
+    {
+      "text": "The wordmark is provided as SVG for use on white or very light backgrounds.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 58, "quote": "The wordmark is provided as SVG for use on white or very light backgrounds." }]
+    },
+    { "text": "The World Enterprise wordmark on a light ground, with its clear space.", "page_frame": true },
+    {
+      "text": "Keep clear space around it equal to the height of one of its hexagonal cells.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 65, "quote": "Keep clear space around it equal to the height of one of its hexagonal cells." }]
+    },
+    { "text": "Download the World Enterprise wordmark (SVG)", "ui_label": true },
+    { "text": "Do", "ui_label": true },
+    {
+      "text": "Use it dark on light only.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 64, "quote": "Use it dark on light only." }]
+    },
+    {
+      "text": "Keep the proportions it was supplied in.",
+      "paraphrase": true,
+      "note": "States the positive form of the press rule against stretching the wordmark.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 66, "quote": "Do not stretch, recolour, outline, crop" }]
+    },
+    {
+      "text": "Keep other marks and text out of the clear space.",
+      "paraphrase": true,
+      "note": "States what a clear space is: the area the press rule keeps around the wordmark.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 65, "quote": "Keep clear space around it" }]
+    },
+    { "text": "Do not", "ui_label": true },
+    {
+      "text": "There is no reversed version, so do not make one.",
+      "paraphrase": true,
+      "note": "Adds the instruction that follows from the recorded rule.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 64, "quote": "There is no reversed version." }, { "file": ".astro-magazine/decisions.md", "line": 51, "quote": "do not invent a reversed version" }]
+    },
+    {
+      "text": "Do not stretch, recolor, outline or crop it.",
+      "paraphrase": true,
+      "note": "The press line in US spelling, split so the rule on busy grounds has its own item.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 66, "quote": "Do not stretch, recolour, outline, crop" }]
+    },
+    {
+      "text": "Do not place it on a dark band or a busy ground.",
+      "paraphrase": true,
+      "note": "The press line, with the dark band wording of D-8.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 66, "quote": "place it on a dark or busy ground" }, { "file": ".astro-magazine/decisions.md", "line": 51, "quote": "never carry the logo" }]
+    },
+    {
+      "text": "Do not use it in a way that suggests WE endorses your product or service.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 67, "quote": "Do not use it in a way that suggests WE endorses your product or service." }]
+    },
+    { "text": "Colors", "ui_label": true },
+    {
+      "text": "The brand colors are defined as tokens in the site stylesheet.",
+      "paraphrase": true,
+      "note": "The stylesheet header names the palette source; the kit table is read from the same file.",
+      "sources": [{ "file": "src/styles/tokens.css", "line": 3, "quote": "Palette source: whitelab brand." }]
+    },
+    { "text": "The table lists each brand color by token name, with its hex value and the roles that point at it.", "page_frame": true },
+    {
+      "text": "Body text is charcoal on white.",
+      "sources": [{ "file": "src/styles/tokens.css", "line": 35, "quote": "--color-text: var(--we-charcoal)" }, { "file": "src/styles/tokens.css", "line": 32, "quote": "--color-bg: var(--we-white)" }]
+    },
+    {
+      "text": "Links and primary buttons are deep blue.",
+      "sources": [{ "file": "src/styles/tokens.css", "line": 38, "quote": "--color-link: var(--we-blue-deep)" }, { "file": "src/styles/tokens.css", "line": 42, "quote": "--color-cta: var(--we-blue-deep)" }]
+    },
+    {
+      "text": "Amber is the highlight color.",
+      "sources": [{ "file": "src/styles/tokens.css", "line": 44, "quote": "--color-highlight: var(--we-amber)" }]
+    },
+    {
+      "text": "Text and control colors are checked for contrast against their backgrounds.",
+      "sources": [{ "file": "src/styles/tokens.css", "line": 4, "quote": "verified by scripts/audit-contrast.mjs" }]
+    },
+    { "text": "Type", "ui_label": true },
+    {
+      "text": "Each type family is set in the stylesheet by role: display, serif, sans and mono.",
+      "sources": [
+        { "file": "src/styles/tokens.css", "line": 66, "quote": "--ff-display:" },
+        { "file": "src/styles/tokens.css", "line": 67, "quote": "--ff-serif:" },
+        { "file": "src/styles/tokens.css", "line": 68, "quote": "--ff-sans:" },
+        { "file": "src/styles/tokens.css", "line": 69, "quote": "--ff-mono:" }
+      ]
+    },
+    { "text": "The hexagon", "ui_label": true },
+    {
+      "text": "The wordmark is made of hexagonal cells, and its clear space is measured in one cell.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 65, "quote": "equal to the height of one of its hexagonal cells" }]
+    },
+    {
+      "text": "The stylesheet defines the hexagon as two tokens: --hex-clip for its shape and --hex-ratio for its proportion.",
+      "sources": [{ "file": "src/styles/tokens.css", "line": 132, "quote": "--hex-clip: polygon(" }, { "file": "src/styles/tokens.css", "line": 133, "quote": "--hex-ratio:" }]
+    },
+    { "text": "Boilerplate", "ui_label": true },
+    { "text": "Use this text when you describe WE.", "page_frame": true },
+    { "text": "It is the same text as on the press page.", "page_frame": true },
+    {
+      "text": "Anything not on the press page or in this kit is not a published claim.",
+      "paraphrase": true,
+      "note": "The press page sentence, widened to name the kit as a second place WE publishes facts.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 52, "quote": "is not a published claim." }]
+    },
+    {
+      "text": "Check with WE before you state it.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 52, "quote": "Check with WE before you state it." }]
+    },
+
+    {
+      "text": "Dedicated team seats, steered by WE, work with a founder from first idea toward a company that can show investors its evidence.",
+      "paraphrase": true,
+      "note": "Moved verbatim from the press page boilerplate; the same facts are on the facts page.",
+      "sources": [{ "file": "src/content/pages/about/facts.mdx", "line": 12, "quote": "Dedicated team seats, steered by WE, take a founder from first idea toward first customers" }, { "claims": ["C-02", "C-03"] }]
+    },
+    {
+      "text": "WE is fully remote and makes no promise of funding.",
+      "sources": [{ "file": "src/pages/press/index.astro", "line": 49, "quote": "WE makes no promise of funding" }, { "file": "src/content/pages/about/facts.mdx", "line": 12, "quote": "The work is fully remote." }, { "claims": ["C-01", "C-05"] }]
+    },
+    {
+      "text": "World Enterprise Incubator is operated by World Enterprise Group Incorporated, registered in Delaware.",
+      "sources": [{ "file": "src/data/site.ts", "line": 9, "quote": "World Enterprise Group Incorporated" }, { "claims": ["C-18"] }]
+    },
+    { "text": "Read the brand kit for usage rules, colors and type.", "page_frame": true }
+  ]
+}

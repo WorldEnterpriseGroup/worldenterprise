@@ -1,0 +1,32 @@
+---
+import PageShell from '../../../components/about/PageShell.astro';
+import { loadPage } from '../../../components/about/load-page.ts';
+import { APPLY, TALK_TO_WE } from '../../../components/hero/ctas.ts';
+import Section from '../../../components/ui/Section.astro';
+import { href } from '../../../lib/url.ts';
+
+const entry = await loadPage('about/brand-story');
+---
+
+<PageShell
+  entry={entry}
+  path="/about/brand-story/"
+  ogSlot="og-about"
+  lead="What WE is, how it speaks and how it looks."
+  schemaType="WebPage"
+  primary={APPLY}
+  secondary={TALK_TO_WE}
+>
+  <Fragment slot="after">
+    <Section tone="soft" labelledby="story-check">
+      <div class="container stack">
+        <h2 id="story-check">Where to check this</h2>
+        <p>
+          Each statement on this page comes from a page you can read in full: the <a href={href('/about/')}>about page</a>, the
+          <a href={href('/about/manifesto/')}>manifesto</a>, the <a href={href('/about/editorial-policy/')}>editorial policy</a> and the
+          <a href={href('/press/')}>press page</a>.
+        </p>
+      </div>
+    </Section>
+  </Fragment>
+</PageShell>
