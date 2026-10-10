@@ -1587,7 +1587,7 @@
     {
       "wp": "WP-60",
       "path": "src/styles/components.css",
-      "reason": "Wave 8 CI follow-up (#40): the shared breadcrumb rule needs a 24px target-size floor (WCAG 2.2 2.5.8, found by WP-75's e2e). Scoped to the .breadcrumbs li rule; WP-71 cannot edit the shared stylesheet, ruled by the integrator 2026-10-10."
+      "reason": "Wave 8 CI follow-up (#40): the shared breadcrumb rule needs a 24px target-size floor (WCAG 2.2 2.5.8, found by WP-75's e2e). Scoped to the .breadcrumbs li rule and to the .mega-nav__list gap in the 1100-1279.98px block (WP-63's eighth top-level item overflowed the header row at 1100 and 1140 px, taken over from WP-63); WP-71 and WP-63 cannot edit the shared stylesheet, ruled by the integrator 2026-10-10."
     },
     {
       "wp": "WP-14",
