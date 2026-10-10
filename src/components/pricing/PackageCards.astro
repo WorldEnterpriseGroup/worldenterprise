@@ -1,0 +1,242 @@
+---
+/**
+ * The four packages as cards (claim C-10): the name, the company stage each is sized for and its depth, all read from
+ * src/data/packages.ts. Nothing else about a package is published, so no card carries an amount, a seat count or a term.
+ * Each card links to the application and to the Team Composer with `?package=<id>` (docs/wave7-contracts.md, section 1).
+ *
+ * The picker (PackagePicker.astro) marks one card with `data-suggested` on a visitor's choice; the same look applies to the card a
+ * fragment link points at (`:target`), so the list of links the picker falls back to without JavaScript highlights a card too.
+ */
+import type { WePackage } from '../../data/packages.ts';
+import { href } from '../../lib/url.ts';
+import { withPackage } from './package-links.ts';
+import { stageLabel } from './stages.ts';
+
+interface Props {
+  packages: readonly WePackage[];
+}
+
+const { packages } = Astro.props;
+const applyPath = href('/apply/');
+const composerPath = href('/tools/team-composer/');
+---
+
+<section id="packages" class="pkgs" aria-labelledby="packages-title">
+  <div class="pkgs__head">
+    <h2 id="packages-title">Four packages, each sized for a company stage</h2>
+    <p class="pkgs__lead">Every package covers all seven service lines, A to G. The packages differ in depth.</p>
+  </div>
+  <ul class="pkgs__list" role="list">
+    {
+      packages.map((pkg, index) => (
+        <li class="pkg" id={`package-${pkg.id}`} data-package={pkg.id}>
+          <p class="pkg__flag">Sized for your stage</p>
+          <p class="pkg__stage">{stageLabel(pkg)}</p>
+          <h3 class="pkg__name">{pkg.name}</h3>
+          <p class="pkg__fit">
+            <span class="visually-hidden">Sized for: </span>
+            {pkg.stageFit}
+          </p>
+          <p class="pkg__depth">
+            <span class="pkg__depth-label">Depth in every service line</span>
+            <span class="pkg__depth-row">
+              <strong class="pkg__depth-name">{pkg.depth}</strong>
+              <span class="pkg__ladder" aria-hidden="true">
+                {packages.map((_, step) => (
+                  <i class:list={['pkg__step', { 'is-on': step <= index }]} />
+                ))}
+              </span>
+            </span>
+          </p>
+          <div class="pkg__actions">
+            <a class="btn btn--primary" href={withPackage(applyPath, pkg.id)}>
+              Start with this package<span class="visually-hidden">: {pkg.name}</span>
+            </a>
+            <a class="btn btn--secondary" href={withPackage(composerPath, pkg.id)}>
+              Sketch the team<span class="visually-hidden"> for {pkg.name}</span>
+            </a>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  @layer pages {
+    .pkgs {
+      display: grid;
+      gap: var(--sp-5);
+      margin-block-start: var(--space-block);
+      scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
+      container-type: inline-size;
+    }
+
+    .pkgs__head {
+      display: grid;
+      gap: var(--space-heading);
+      max-inline-size: var(--prose-max);
+    }
+
+    .pkgs__lead {
+      font-family: var(--ff-sans);
+      color: var(--color-text-muted);
+    }
+
+    .pkgs__list {
+      display: grid;
+      gap: var(--sp-5);
+      padding: 0;
+      margin: 0;
+      /* The flag sits half outside its card, so the first row needs room above it. */
+      padding-block-start: var(--sp-3);
+      list-style: none;
+    }
+
+    .pkg {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+      padding: var(--sp-5);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-block-start: 6px solid var(--we-tint);
+      border-radius: var(--radius-md);
+      font-family: var(--ff-sans);
+      scroll-margin-block-start: calc(var(--header-h) + var(--sp-6));
+      transition:
+        border-color var(--dur-base) var(--ease-out),
+        box-shadow var(--dur-base) var(--ease-out);
+
+      &:is([data-suggested], :target) {
+        border-color: var(--color-accent);
+        border-block-start-color: var(--color-highlight);
+        box-shadow: var(--shadow-2);
+      }
+    }
+
+    /* Hidden until the picker or a fragment link marks the card. Absolute, so showing it moves nothing. */
+    .pkg__flag {
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-start: var(--sp-5);
+      translate: 0 -50%;
+      display: none;
+      padding: var(--sp-1) var(--sp-3);
+      background: var(--color-highlight);
+      color: var(--color-text);
+      border-radius: var(--radius-pill);
+      font-family: var(--ff-display);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .pkg:is([data-suggested], :target) .pkg__flag {
+      display: block;
+    }
+
+    .pkg__stage {
+      font-family: var(--ff-display);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      color: var(--color-link);
+    }
+
+    .pkg__name {
+      font-family: var(--ff-display);
+      font-size: var(--fs-2xl);
+      line-height: var(--lh-tight);
+      margin-block-start: calc(-1 * var(--sp-2));
+    }
+
+    .pkg__fit {
+      max-inline-size: 36ch;
+    }
+
+    /* The depth and the actions sit at the foot of the card, so they line up across a row of cards of different text length. */
+    .pkg__depth {
+      display: grid;
+      gap: var(--sp-1);
+      margin-block-start: auto;
+      padding-block-start: var(--sp-3);
+      border-block-start: var(--border-hair);
+    }
+
+    .pkg__depth-label {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    .pkg__depth-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-3);
+    }
+
+    .pkg__depth-name {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+    }
+
+    /* Four cells, filled up to the package's depth. Decorative: the depth is the word beside it. */
+    .pkg__ladder {
+      display: inline-flex;
+      gap: var(--sp-1);
+    }
+
+    .pkg__step {
+      display: block;
+      inline-size: 1.1rem;
+      aspect-ratio: var(--hex-ratio);
+      clip-path: var(--hex-clip);
+      background: var(--we-tint);
+
+      &.is-on {
+        background: var(--color-accent);
+      }
+    }
+
+    .pkg__actions {
+      display: grid;
+      gap: var(--sp-2);
+      padding-block-start: var(--sp-2);
+
+      & .btn {
+        inline-size: 100%;
+        text-align: center;
+      }
+    }
+
+    @container (min-width: 36rem) {
+      .pkgs__list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @container (min-width: 64rem) {
+      .pkgs__list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--sp-4);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .pkg:is([data-suggested], :target) {
+        outline: 3px solid Highlight;
+      }
+
+      .pkg__step {
+        background: GrayText;
+
+        &.is-on {
+          background: Highlight;
+        }
+      }
+    }
+  }
+</style>
