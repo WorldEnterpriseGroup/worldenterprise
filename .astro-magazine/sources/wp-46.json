@@ -1,0 +1,50 @@
+{
+  "wp": "WP-46",
+  "note": "WP-46 publishes no new page copy and makes no claim. Everything it lists in the command palette, the mega panels and the drawer is read from src/data/nav.ts and the route state at build time. The only new text is interface wording: the palette's labels, its status lines and the type chips on /search/ (Article, Research, Playbook, Guide, Template, FAQ, Glossary), which describe the interface and say nothing about WE.",
+  "sources": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp46-navigation-data",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The navigation data every palette entry, panel link and drawer link is read from",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/data/nav.ts, primaryNav, utilityNav, applyButton and footerNav (frozen; unchanged by WP-46, decision DP-3)",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-09",
+      "next_review": "when WP-40 or WP-50 changes the navigation data",
+      "version_or_release": "n/a",
+      "relevant_locator": "docs/wave7-contracts.md section 4",
+      "variables_units_scope": "Labels, addresses and the one-line descriptions that are already published in the panels. No amount, no count, no date.",
+      "methodology_limitations": "Copied by code, not retyped. src/components/nav/commands.ts and panels.ts derive from the data; tests/unit/wp-46 proves the derivation and that the data is not changed.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": ["C-06", "C-09", "C-10", "C-14"],
+      "license_access_attribution": "Internal; verbatim",
+      "freshness_trigger": "Any change to src/data/nav.ts",
+      "captured_by": "WP-46"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp46-newest-research-tile",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The title of the newest published research brief, shown in the Resources panel tile",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/content/research (the entry with the latest publishedDate whose route is live), read in src/components/layout/Header.astro",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-09",
+      "next_review": "each time a research brief is published",
+      "version_or_release": "n/a",
+      "relevant_locator": "newestResearch flag on the Resources section of src/data/nav.ts",
+      "variables_units_scope": "The brief's own title and its address. The tile shows no date and no count.",
+      "methodology_limitations": "A brief whose page does not exist is skipped, so the tile never links to a missing page; with no readable brief the tile keeps the text of the navigation data.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [],
+      "license_access_attribution": "Internal; verbatim",
+      "freshness_trigger": "A new research brief",
+      "captured_by": "WP-46"
+    }
+  ]
+}

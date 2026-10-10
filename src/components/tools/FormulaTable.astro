@@ -1,0 +1,84 @@
+---
+import MethodologyBox from '../blocks/MethodologyBox.astro';
+import { METRICS, SOURCE_LABELS } from '../islands/we-calc/formulas.ts';
+
+/**
+ * The metrics calculator's formulas as static content: what each result is, the formula as published or as chosen, where it comes
+ * from, and the assumptions that go with it. This is the no-JavaScript fallback, and it is what a reader checks a result against.
+ * The brief's formulas appear exactly as the brief publishes them (tests/unit/wp-49/formulas.test.ts).
+ */
+interface Props {
+  updated?: Date | undefined;
+}
+
+const { updated } = Astro.props;
+const count = (source: 'brief' | 'reference'): number => METRICS.filter((metric) => metric.source === source).length;
+const numberWord = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+const word = (n: number): string => numberWord[n] ?? String(n);
+const capital = (text: string): string => text.charAt(0).toUpperCase() + text.slice(1);
+const methodology = `Each result is one formula applied to the numbers you type, for one month. ${capital(word(count('brief')))} formulas are the ones published in the SaaS metrics research brief. The other ${word(count('reference'))} are not defined there: each is shown as it is commonly calculated, as a convention and not as a WE method, with a link to a public page that states it. Each is labelled below.`;
+const limitations =
+  'The calculator checks arithmetic, not your books: it cannot tell whether an entry is right. It uses one month as the period and treats lost revenue like lost customers when it works out lifetime value. It makes no allowance for the time value of money, shows no benchmark or target, and a result is not a prediction of funding or of any other outcome. Figures in the working are rounded for display.';
+---
+
+<section class="formulas stack" aria-labelledby="formulas-title">
+  <h2 id="formulas-title">How each number is worked out</h2>
+  <p>
+    Every result above comes from the formula in this table. A formula the research brief does not state is a convention, so the
+    table says which are conventions and links a public page for each. Whichever you report, say which one you used.
+  </p>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Formulas used by the metrics calculator">
+    <table class="data-table">
+      <caption>Formulas, sources and assumptions</caption>
+      <thead>
+        <tr>
+          <th scope="col">Result</th>
+          <th scope="col">Formula</th>
+          <th scope="col">Where it comes from</th>
+          <th scope="col">Assumptions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          METRICS.map((metric) => (
+            <tr id={`formula-${metric.id}`}>
+              <th scope="row">{metric.name}</th>
+              <td>{metric.formula}</td>
+              <td>
+                {SOURCE_LABELS[metric.source]}
+                {metric.reference !== null && (
+                  <span class="formulas__from">
+                    . Stated in <a href={metric.reference.url} rel="noopener">{metric.reference.title}</a>, {metric.reference.publisher}
+                  </span>
+                )}
+              </td>
+              <td>
+                <ul class="formulas__list">
+                  {metric.assumptions.map((assumption) => (
+                    <li>{assumption}</li>
+                  ))}
+                </ul>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <MethodologyBox methodology={methodology} limitations={limitations} version="1.0" updated={updated} />
+</section>
+
+<style>
+  @layer pages {
+    .formulas__list {
+      display: grid;
+      gap: var(--sp-2);
+      padding-inline-start: var(--sp-4);
+      font-size: var(--fs-sm);
+    }
+
+    .formulas__from {
+      color: var(--color-text-muted);
+    }
+  }
+</style>

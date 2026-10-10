@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { unallowed } from '../../../scripts/lib/release-gate.mjs';
+import { FAMILIES, familyPaths } from '../../../src/data/families.ts';
 import { getRoute, MACHINE_ROUTES } from '../../../src/data/routes.ts';
 
 // WP-40 (issue #29, decisions W7-6 and W7-9): the two wave 7 QA jobs are inert until their files exist, follow the blocking policy of
@@ -104,7 +105,30 @@ function branchAllow(): string {
   return match[1] as string;
 }
 
+/** The fixed (not registry-derived) rows wave 8 pre-registered ahead of their pages: investors, partners, brand story, three tools. */
 const PENDING = [
+  '/briefs/thanks/',
+  '/investors/meet-startups/',
+  '/investors/what-you-can-see/',
+  '/investors/readiness-criteria/',
+  '/investors/showcase-format/',
+  '/investors/faq/',
+  '/investors/interest/',
+  '/investors/interest/thanks/',
+  '/network/partners/',
+  '/network/partners/categories/',
+  '/network/partners/how-it-works/',
+  '/network/partners/faq/',
+  '/network/partners/enquire/',
+  '/network/partners/enquire/thanks/',
+  '/about/brand-story/',
+  '/tools/runway-calculator/',
+  '/tools/pricing-page-checker/',
+  '/tools/cap-table-explainer/',
+];
+
+/** Wave 7 rows whose pages exist (or, for WP-48, are cut): none of them may stay tolerated (contracts section 10). */
+const WAVE_SEVEN = [
   '/program/how-we-decide/',
   '/about/facts/',
   '/tools/',
@@ -118,23 +142,58 @@ const PENDING = [
   '/llms-full.txt',
 ];
 
-test('RELEASE_ALLOW covers the nine pending wave 7 rows, the two machine routes and the form routes, and nothing else (W7-6)', () => {
+test('RELEASE_ALLOW covers the fixed wave 8 pending rows and the form routes, and no wave 7 pattern survives (contracts section 10)', () => {
   const allow = branchAllow();
   for (const path of PENDING) {
-    const isMachine = MACHINE_ROUTES.some((m) => m.path === path);
-    assert.ok(isMachine || getRoute(path)?.launch === true, `${path} is a launched row or a machine route`);
+    assert.equal(getRoute(path)?.launch, true, `${path} is a launched row`);
     assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [], `${path} is tolerated while pending`);
   }
-  assert.equal(PENDING.filter((p) => MACHINE_ROUTES.some((m) => m.path === p)).length, 2);
+  for (const path of WAVE_SEVEN) {
+    assert.deepEqual(
+      unallowed([`launch:true route does not exist: ${path}`], allow),
+      [`launch:true route does not exist: ${path}`],
+      `${path} is no longer tolerated`,
+    );
+  }
+  for (const path of ['/about/frameworks/ubf/', '/star/', '/shift/', '/android/']) {
+    const framework = getRoute(path);
+    assert.equal(framework?.launch, false, `${path} is cut`);
+    assert.ok((framework?.reason ?? '').length > 0, `${path} says why`);
+  }
+  assert.ok(MACHINE_ROUTES.some((m) => m.path === '/llms.txt'), 'the machine routes are untouched');
   assert.deepEqual(unallowed(['launched form route /apply/ has form "intake" in disabled mode'], allow), [], 'the form routes stay tolerated');
   for (const problem of [
     'launch:true route does not exist: /pricing/',
     'launch:true route does not exist: /tools/team-composer/',
     'launch:true route does not exist: /tools/evidence-room/extra/',
+    'launch:true route does not exist: /tools/other-tool/',
+    'launch:true route does not exist: /investors/',
+    'launch:true route does not exist: /investors/other/',
+    'launch:true route does not exist: /network/operators/',
+    'launch:true route does not exist: /network/partners/other/',
     'launch:true route does not exist: /about/facts',
-    'launch:true route does not exist: /llms.txt.bak',
     'launch:true route does not exist: /robots.txt',
     'draft content remains: src/content/insights/x.mdx',
+  ]) {
+    assert.deepEqual(unallowed([problem], allow), [problem], `${problem} still fails`);
+  }
+});
+
+test('RELEASE_ALLOW covers every pending page-family row of the registry by path shape, and no other launched route (W8-31)', () => {
+  const allow = branchAllow();
+  const families = FAMILIES.flatMap((f) => familyPaths(f));
+  assert.ok(families.length >= 30, 'the registry launches the family paths');
+  for (const path of families) {
+    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [], `${path} is tolerated while pending`);
+  }
+  for (const problem of [
+    'launch:true route does not exist: /pricing/',
+    'launch:true route does not exist: /investors/',
+    'launch:true route does not exist: /founders/',
+    'launch:true route does not exist: /insights/topic/legal/',
+    'launch:true route does not exist: /briefs/a/b/',
+    'launch:true route does not exist: /compare',
+    'launch:true route does not exist: /compare/x/index.html',
   ]) {
     assert.deepEqual(unallowed([problem], allow), [problem], `${problem} still fails`);
   }

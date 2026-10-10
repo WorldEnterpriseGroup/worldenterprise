@@ -1,0 +1,232 @@
+---
+import { asset, href } from '../../../lib/url.ts';
+import type { PaletteCommand } from '../../nav/commands.ts';
+
+/**
+ * <we-palette> island host (docs/wave7-contracts.md section 4). A modal <dialog> that opens on Ctrl or Cmd plus K, on "/" and from any
+ * [data-palette-open] button. The command list is serialized once, here, into data-commands, so there is no route and no runtime fetch;
+ * src/scripts/palette.ts reads it with JSON.parse in a try. Page matches come from the Pagefind index the same way <we-search> loads
+ * it: a same-origin dynamic import of data-pagefind, started on first open. Without JavaScript the dialog is never opened and the
+ * header keeps its link to /search/.
+ */
+interface Props {
+  /** Only live routes; built by buildPaletteCommands(). */
+  commands: readonly PaletteCommand[];
+}
+
+const { commands } = Astro.props;
+---
+
+<we-palette
+  data-commands={JSON.stringify(commands)}
+  data-pagefind={asset('/pagefind/pagefind.js')}
+  data-base={href('/')}
+  data-search-url={href('/search/')}
+>
+  <dialog class="we-palette__dialog" aria-labelledby="we-palette-title" data-palette-dialog>
+    <h2 id="we-palette-title" class="visually-hidden">Search the site</h2>
+    <div class="we-palette__bar">
+      <label class="visually-hidden" for="we-palette-input">Search pages or type a page name</label>
+      <input
+        id="we-palette-input"
+        class="we-palette__input"
+        type="text"
+        role="combobox"
+        aria-autocomplete="list"
+        aria-expanded="false"
+        aria-controls="we-palette-list"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        enterkeyhint="go"
+        maxlength="200"
+        placeholder="Search pages or jump to one"
+        data-palette-input
+      />
+      <button type="button" class="btn btn--secondary we-palette__close" data-palette-close>Close</button>
+    </div>
+    <div id="we-palette-list" class="we-palette__list" role="listbox" aria-label="Pages and search results" tabindex="-1" data-palette-list></div>
+    <p class="we-palette__note" data-palette-note hidden></p>
+    <p class="we-palette__status visually-hidden" role="status" data-palette-status></p>
+    <p class="we-palette__foot" aria-hidden="true">
+      <span><kbd>↑</kbd> <kbd>↓</kbd> move</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>Esc</kbd> close</span>
+    </p>
+  </dialog>
+</we-palette>
+
+<script>
+  import '../../../scripts/palette.ts';
+</script>
+
+<style is:global>
+  @layer components {
+    we-palette {
+      display: contents;
+    }
+
+    .we-palette__dialog {
+      inline-size: min(40rem, calc(100% - 2 * var(--sp-4)));
+      max-inline-size: none;
+      max-block-size: calc(100dvh - min(var(--sp-8), 8dvh) - var(--sp-4));
+      margin: min(var(--sp-8), 8dvh) auto auto;
+      padding: 0;
+      border: 0;
+      border-radius: var(--radius-lg);
+      background: var(--color-bg);
+      color: var(--color-text);
+      box-shadow: var(--shadow-3);
+      overflow: hidden;
+
+      &::backdrop {
+        background: var(--scrim);
+      }
+
+      &[open] {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .we-palette__bar {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      padding: var(--sp-3) var(--sp-4);
+      border-block-end: var(--border-hair);
+    }
+
+    .we-palette__input {
+      flex: 1 1 auto;
+      min-inline-size: 0;
+      min-block-size: var(--target-min);
+      padding: var(--sp-2) var(--sp-3);
+      border: var(--border-strong);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+      color: var(--color-text);
+      font: inherit;
+    }
+
+    .we-palette__list {
+      flex: 1 1 auto;
+      min-block-size: 0;
+      padding: var(--sp-2) var(--sp-3) var(--sp-3);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .we-palette__group-label {
+      padding: var(--sp-3) var(--sp-3) var(--sp-1);
+      font-family: var(--ff-display);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      color: var(--color-text-muted);
+    }
+
+    .we-palette__option {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: var(--sp-1) var(--sp-3);
+      min-block-size: var(--target-min);
+      align-content: center;
+      padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--radius-sm);
+      color: var(--color-text);
+      text-decoration: none;
+
+      &[aria-selected='true'] {
+        background: var(--color-bg-soft);
+        color: var(--color-link);
+        box-shadow: inset 4px 0 0 var(--color-accent);
+      }
+
+      & mark {
+        background: transparent;
+        color: inherit;
+        font-weight: 700;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 0.18em;
+      }
+    }
+
+    .we-palette__label {
+      font-family: var(--ff-display);
+      font-weight: 600;
+    }
+
+    .we-palette__hint {
+      grid-column: 1;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .we-palette__kind {
+      grid-row: 1;
+      grid-column: 2;
+      padding-inline: var(--sp-2);
+      border: var(--border-hair);
+      border-radius: var(--radius-pill);
+      color: var(--color-text-muted);
+      font-size: var(--fs-xs);
+    }
+
+    .we-palette__note {
+      margin: 0;
+      padding: var(--sp-2) var(--sp-4);
+      border-block-start: var(--border-hair);
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .we-palette__foot {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-1) var(--sp-4);
+      margin: 0;
+      padding: var(--sp-2) var(--sp-4);
+      border-block-start: var(--border-hair);
+      background: var(--color-bg-soft);
+      color: var(--color-text-muted);
+      font-size: var(--fs-xs);
+
+      & kbd {
+        padding-inline: var(--sp-1);
+        border: var(--border-hair);
+        border-radius: var(--radius-sm);
+        background: var(--color-bg);
+        font-family: var(--ff-mono);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .we-palette__dialog[open] {
+        animation: we-palette-in var(--dur-fast) var(--ease-out);
+      }
+
+      @keyframes we-palette-in {
+        from {
+          opacity: 0;
+          transform: translateY(-0.5rem);
+        }
+      }
+    }
+
+    @media (forced-colors: active) {
+      .we-palette__dialog {
+        border: 1px solid CanvasText;
+      }
+
+      .we-palette__option[aria-selected='true'] {
+        forced-color-adjust: none;
+        background: Highlight;
+        color: HighlightText;
+      }
+    }
+  }
+</style>
