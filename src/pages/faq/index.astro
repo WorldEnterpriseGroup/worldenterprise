@@ -1,28 +1,30 @@
 ---
 import { getCollection } from 'astro:content';
 import FaqList from '../../components/cards/FaqList.astro';
-import { anchorId, faqPageNode, groupBy } from '../../components/reference/jsonld.ts';
+import { anchorId, faqPageNode } from '../../components/reference/jsonld.ts';
 import Button from '../../components/ui/Button.astro';
 import Callout from '../../components/ui/Callout.astro';
 import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
+import { buildSections, jumpLinks } from './_model.ts';
+import type { FaqEntry } from './_model.ts';
 
-const entries = (await getCollection('faq')).filter((entry) => entry.data.draft !== true);
-const items = entries.map((entry) => ({
-  id: entry.data.id,
-  question: entry.data.question,
-  answer: entry.data.answer,
-  group: entry.data.group,
-}));
-const slugify = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-// One accordion per group: opening a question closes the others in its group only.
-const groups = groupBy(items).map((g) => ({
-  heading: g.group,
-  slug: slugify(g.group),
-  questions: g.items.map((item) => ({ id: anchorId('faq', item.id), question: item.question, answer: item.answer })),
-}));
+const entries: FaqEntry[] = (await getCollection('faq'))
+  .filter((entry) => entry.data.draft !== true)
+  .map((entry) => ({
+    id: entry.data.id,
+    question: entry.data.question,
+    answer: entry.data.answer,
+    group: entry.data.group,
+    audience: entry.data.audience,
+    seeAlso: entry.data.seeAlso,
+  }));
 const state = await getRouteState();
+// Audience first, then topic. One FAQPage node names every question, in the order the page shows them.
+const sections = buildSections(entries, (path) => state.isLive(path));
+const jump = jumpLinks(sections);
+const items = sections.flatMap((section) => section.groups.flatMap((g) => g.items));
 const canApply = state.isLive('/apply/');
 const canContact = state.isLive('/contact/');
 ---
@@ -36,12 +38,45 @@ const canContact = state.isLive('/contact/');
   updated={new Date('2026-10-06')}
   jsonLd={[faqPageNode('/faq/', items)]}
 >
+  {
+    jump.length > 1 && (
+      <nav class="faq-jump" aria-label="Jump to a set of questions">
+        <p class="faq-jump__label">Jump to</p>
+        <ul class="faq-jump__list">
+          {jump.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
   <div class="stack stack--loose">
     {
-      groups.map((g) => (
-        <section aria-labelledby={`faq-group-${g.slug}`} class="stack">
-          <h2 id={`faq-group-${g.slug}`}>{g.heading}</h2>
-          <FaqList items={g.questions} name={`faq-${g.slug}`} />
+      sections.map((section) => (
+        <section aria-labelledby={section.slug} class="stack stack--loose faq-section">
+          <h2 id={section.slug}>{section.label}</h2>
+          {section.groups.map((g) => (
+            <div class="stack">
+              <h3 id={`faq-group-${g.slug}`}>{g.heading}</h3>
+              <FaqList
+                items={g.items.map((item) => ({ id: anchorId('faq', item.id), question: item.question, answer: item.answer }))}
+                name={`faq-${g.slug}`}
+              />
+              {g.seeAlso.length > 0 && (
+                <p class="faq-more">
+                  <span class="faq-more__label">Read more: </span>
+                  {g.seeAlso.map((link, index) => (
+                    <>
+                      {index > 0 && ', '}
+                      <a href={href(link.href)}>{link.title}</a>
+                    </>
+                  ))}
+                </p>
+              )}
+            </div>
+          ))}
         </section>
       ))
     }
@@ -58,3 +93,44 @@ const canContact = state.isLive('/contact/');
     )
   }
 </ReferenceLayout>
+
+<style>
+  .faq-jump {
+    display: grid;
+    gap: var(--sp-2);
+    margin-block-end: var(--sp-6);
+  }
+
+  .faq-jump__label {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .faq-jump__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .faq-jump__list a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    padding-inline: var(--sp-4);
+    border: var(--border-strong);
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+  }
+
+  .faq-section h2 {
+    scroll-margin-block-start: var(--sp-6);
+  }
+
+  .faq-more {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+</style>
