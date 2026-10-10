@@ -1,0 +1,132 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import * as claimsAudit from '../../../scripts/audit-claims.mjs';
+import * as geoAudit from '../../../scripts/audit-geo.mjs';
+import { addOnStatementFrom } from '../../../src/components/geo/qa.ts';
+import { packages } from '../../../src/data/packages.ts';
+import { site } from '../../../src/data/site.ts';
+import { INTRODUCTIONS_DISCLAIMER, INTRODUCTIONS_FLAT_FEE } from '../../../src/components/blocks/introductions.ts';
+import { LLMS_FULL_MAX_BYTES, NO_FUNDING_SENTENCE, buildLlmsFullTxt, buildLlmsTxt, LlmsFullTooLargeError } from '../../../src/lib/llms.ts';
+import type { LlmsInput } from '../../../src/lib/llms.ts';
+import { buildTwin } from '../../../src/lib/markdown-twins.ts';
+import { assembleReal, read } from './content.ts';
+
+const audit = claimsAudit as unknown as {
+  scan(text: string, options: { route: string; plain: boolean }): { rule: string; match: string }[];
+};
+const geo = geoAudit as unknown as {
+  auditLlmsStructure(name: string, text: string): string[];
+};
+
+const addOnStatement = addOnStatementFrom(read('src/content/pages/about/facts.mdx').replace(/^---[\s\S]*?\n---\n/, ''));
+
+function input(overrides: Partial<LlmsInput> = {}): LlmsInput {
+  const twins = assembleReal().twins;
+  return {
+    site: { name: site.name, legalName: site.legalName, tagline: site.tagline, description: site.description, origin: site.origin },
+    packages: packages.map((p) => ({ name: p.name, stageFit: p.stageFit, depth: p.depth })),
+    serviceLines: ['A', 'B', 'C', 'D', 'E', 'F', 'G'].map((line) => ({ line, title: `Line ${line}`, route: `/services/line-${line.toLowerCase()}/`, summary: `Summary of line ${line}.` })),
+    keyPages: [
+      { route: '/about/facts/', title: 'Facts about WE', description: 'Plain answers.' },
+      { route: '/pricing/', title: 'Pricing', description: 'Packages.' },
+    ],
+    optionalPages: [{ route: '/about/manifesto/', title: 'Manifesto' }],
+    howWeDecide: null,
+    twinRoutes: new Set(twins.map((t) => t.route)),
+    contactRoute: '/contact/',
+    applyRoute: '/apply/',
+    addOnStatement,
+    ...overrides,
+  };
+}
+
+test('the add-on statement is taken from the facts page and carries the verbatim disclaimer and the flat-fee sentence', () => {
+  assert.ok(addOnStatement.includes(INTRODUCTIONS_DISCLAIMER));
+  assert.ok(addOnStatement.includes(INTRODUCTIONS_FLAT_FEE));
+  assert.match(addOnStatement, /separate, paid add-on with a flat fee/);
+  assert.throws(() => addOnStatementFrom('## A question\n\nAn answer.'), /no answer about the paid add-on/);
+});
+
+test('llms.txt has the contract outline and both required sentences', () => {
+  const text = buildLlmsTxt(input());
+  assert.ok(text.startsWith(`# ${site.name}\n`));
+  assert.deepEqual(geo.auditLlmsStructure('llms.txt', text), []);
+  assert.ok(text.includes(NO_FUNDING_SENTENCE));
+  assert.ok(text.includes(INTRODUCTIONS_DISCLAIMER));
+  const headings = text.split('\n').filter((l) => l.startsWith('## '));
+  assert.deepEqual(headings, ['## What WE is', '## What WE offers', '## What WE does not do', '## Published commercial facts', '## Key pages', '## Contact', '## Optional']);
+});
+
+test('llms.txt and llms-full.txt are built from data: a renamed package changes both', () => {
+  const renamed = packages.map((p, i) => ({ name: i === 0 ? 'Ignite' : p.name, stageFit: p.stageFit, depth: p.depth }));
+  // The page text is typed in the MDX (facts.test.ts pins it to packages.ts), so the head of the full file is what the data drives.
+  const pages: ReturnType<typeof buildTwin>[] = [];
+  const before = input();
+  const after = input({ packages: renamed });
+  for (const [a, b] of [
+    [buildLlmsTxt(before), buildLlmsTxt(after)],
+    [buildLlmsFullTxt(before, pages), buildLlmsFullTxt(after, pages)],
+  ] as const) {
+    assert.ok(a.includes('Spark') && !a.includes('Ignite'));
+    assert.ok(b.includes('Ignite') && !b.includes('Spark'));
+  }
+});
+
+test('a link goes to the Markdown twin when there is one and to the page otherwise', () => {
+  const text = buildLlmsTxt(input());
+  assert.match(text, /\(https:\/\/worldenterprise\.org\/about\/facts\.md\)/);
+  assert.match(text, /\(https:\/\/worldenterprise\.org\/pricing\/\)/, 'pricing has no twin yet');
+});
+
+test('How WE decides is listed only when the page is live', () => {
+  assert.ok(!buildLlmsTxt(input()).includes('## How WE decides'));
+  const live = buildLlmsTxt(input({ howWeDecide: { route: '/program/how-we-decide/', title: 'How WE decides', description: 'The criteria.' } }));
+  assert.match(live, /## How WE decides\n\n- \[How WE decides\]\(https:\/\/worldenterprise\.org\/program\/how-we-decide\/\)/);
+  assert.deepEqual(geo.auditLlmsStructure('llms.txt', live), []);
+});
+
+test('the contact section lists only the forms that are live and no mailbox', () => {
+  const none = buildLlmsTxt(input({ contactRoute: null, applyRoute: null }));
+  assert.ok(!/Apply: /.test(none));
+  assert.ok(!/Contact form: /.test(none));
+  assert.match(none, /no email address yet/);
+  assert.ok(!/@/.test(none), 'no mailbox');
+});
+
+test('llms.txt and the real llms-full.txt pass the denylist as plain text', () => {
+  const full = buildLlmsFullTxt(input(), fullPages());
+  for (const [route, text] of [['/llms.txt', buildLlmsTxt(input())], ['/llms-full.txt', full]] as const) {
+    const hits = audit.scan(text, { route, plain: true });
+    assert.deepEqual(hits.map((h) => `${h.rule}: ${h.match}`), [], route);
+  }
+});
+
+function fullPages() {
+  const prefixes = ['/about/', '/services/', '/playbooks/', '/glossary/'];
+  return assembleReal()
+    .twins.filter((t) => prefixes.some((p) => t.route.startsWith(p)))
+    .map((t) => buildTwin(t));
+}
+
+test('llms-full.txt is under its size cap over the real content, and a lower cap fails loudly', () => {
+  const text = buildLlmsFullTxt(input(), fullPages());
+  const bytes = new TextEncoder().encode(text).length;
+  assert.ok(bytes <= LLMS_FULL_MAX_BYTES, `${bytes} bytes against a cap of ${LLMS_FULL_MAX_BYTES}`);
+  assert.ok(bytes > 5_000, 'the file carries real page text');
+  assert.throws(() => buildLlmsFullTxt(input(), fullPages(), 1_000), LlmsFullTooLargeError);
+});
+
+test('llms-full.txt heads each block with its canonical URL and refuses a twin with lint problems', () => {
+  const text = buildLlmsFullTxt(input(), fullPages());
+  assert.match(text, /\n---\n\nSource: https:\/\/worldenterprise\.org\/about\/facts\/\n\n# Facts about WE\n/);
+  assert.deepEqual(geo.auditLlmsStructure('llms-full.txt', text), []);
+  assert.throws(() => buildLlmsFullTxt(input(), [{ route: '/x/', markdown: '# X\n\n<Foo />\n', problems: ['a tag remains'] }]), /lint problems/);
+});
+
+test('the facts twin carries the facts page sentences that llms.txt repeats', () => {
+  const facts = assembleReal().twins.find((t) => t.route === '/about/facts/');
+  assert.ok(facts !== undefined);
+  const markdown = buildTwin(facts).markdown;
+  assert.ok(markdown.includes(NO_FUNDING_SENTENCE));
+  assert.ok(markdown.includes(INTRODUCTIONS_DISCLAIMER));
+});

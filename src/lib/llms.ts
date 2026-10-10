@@ -84,6 +84,7 @@ function limitsSection(input: LlmsInput): string {
     '',
     list([
       `- ${NO_FUNDING_SENTENCE}`,
+      `- ${input.addOnStatement}`,
       `- ${NO_CALENDAR_STATEMENT}`,
       '- WE does not give legal, tax or accounting advice, and does not keep your books or file your taxes.',
     ]),
@@ -100,7 +101,7 @@ function commercialSection(input: LlmsInput): string {
       `- WE offers ${input.packages.length} packages: ${input.packages.map((p) => p.name).join(', ')}. Each is a pre-configured seat plan sized for a company stage and covers all ${input.serviceLines.length} service lines at a different depth. A custom seat plan is the alternative.`,
       '- Seats scale up or down by notice. The written agreement sets out how.',
       `- Amounts are not published. ${ask}`,
-      `- ${input.addOnStatement}`,
+      '- The paid add-on named in the section above is separate from the packages.',
     ]),
   ].join('\n');
 }
@@ -160,12 +161,14 @@ export function buildLlmsTxt(input: LlmsInput): string {
 
 /** Thrown when /llms-full.txt would pass its cap. The build fails loudly rather than truncating a page. */
 export class LlmsFullTooLargeError extends Error {
-  constructor(
-    readonly bytes: number,
-    readonly cap: number,
-  ) {
+  readonly bytes: number;
+  readonly cap: number;
+
+  constructor(bytes: number, cap: number) {
     super(`llms-full.txt is ${bytes} bytes, over the cap of ${cap}. Remove a page from the key list or raise LLMS_FULL_MAX_BYTES in src/lib/llms.ts.`);
     this.name = 'LlmsFullTooLargeError';
+    this.bytes = bytes;
+    this.cap = cap;
   }
 }
 
