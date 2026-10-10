@@ -26,9 +26,23 @@ export interface ClaimRecord {
   readonly quote?: string;
 }
 
+/**
+ * One sentence of page copy and what it restates (docs/wave8-contracts.md, section 9): a claim id, an existing page with a heading, or a
+ * decision id. A control label that states no fact about WE is marked `label: true` instead, as in the WP-43 ledger, and stays short.
+ */
+export interface SentenceRecord {
+  readonly text: string;
+  readonly claim?: string;
+  readonly page?: string;
+  readonly decision?: string;
+  readonly label?: boolean;
+}
+
 export interface DocumentRecord {
   readonly path: string;
   readonly claims?: readonly ClaimRecord[];
+  /** Page copy: a document that is a component or a data module, not a content file. */
+  readonly sentences?: readonly SentenceRecord[];
 }
 
 export interface MarkerRecord {
@@ -113,7 +127,7 @@ export function fetchDate(fetchedAt: string): string | null {
  * The problems with one sources file against the documents it covers. `facts` maps a repository path to what the file says about itself.
  * An empty list means the file holds.
  */
-export function checkSourcesFile(file: SourcesFile, facts: ReadonlyMap<string, DocumentFacts>): string[] {
+export function checkSourcesFile(file: SourcesFile, facts: ReadonlyMap<string, DocumentFacts>, exists: (path: string) => boolean = () => false): string[] {
   const problems: string[] = [];
   const at = `${file.wp}`;
 
@@ -131,6 +145,12 @@ export function checkSourcesFile(file: SourcesFile, facts: ReadonlyMap<string, D
 
   for (const doc of file.documents ?? []) {
     const own = facts.get(doc.path);
+    if (doc.sentences !== undefined) {
+      // A page-copy document is a component or a data module: it needs to exist, and every sentence needs one honest mapping.
+      if (!exists(doc.path)) problems.push(`${at}: ${doc.path} lists sentences but the file does not exist`);
+      problems.push(...checkSentences(at, doc.path, doc.sentences, exists));
+      if (own === undefined) continue;
+    }
     if (own === undefined) {
       problems.push(`${at}: document ${doc.path} does not exist or is not a content document`);
       continue;
@@ -168,6 +188,39 @@ export function checkSourcesFile(file: SourcesFile, facts: ReadonlyMap<string, D
   for (const m of markers) {
     if (!byId.has(m.sourceId)) problems.push(`${at}: marker for ${m.path} (${m.rule}) names unknown sourceId "${m.sourceId}"`);
     if (m.reason.trim() === '') problems.push(`${at}: marker for ${m.path} (${m.rule}) has no reason`);
+  }
+  return problems;
+}
+
+const MAX_LABEL_WORDS = 7;
+const CLAIM_ID = /^C-\d{2}$/;
+const DECISION_ID = /^(?:W[78]|DP|D|OP)-[0-9A-Za-z-]+$/;
+
+/** The problems with the sentences of one page-copy document. A sentence names exactly one of a claim, a page or a decision, or is a short label. */
+export function checkSentences(at: string, path: string, sentences: readonly SentenceRecord[], exists: (path: string) => boolean): string[] {
+  const problems: string[] = [];
+  const seen = new Set<string>();
+  for (const sentence of sentences) {
+    const where = `${at}: ${path}: "${sentence.text}"`;
+    if (sentence.text.trim() === '') problems.push(`${at}: ${path} has an empty sentence`);
+    if (seen.has(sentence.text)) problems.push(`${where} is listed twice`);
+    seen.add(sentence.text);
+    const mappings = [sentence.claim, sentence.page, sentence.decision].filter((m) => m !== undefined).length + (sentence.label === true ? 1 : 0);
+    if (mappings !== 1) {
+      problems.push(`${where} needs exactly one of claim, page, decision or label (it has ${mappings})`);
+      continue;
+    }
+    if (sentence.label === true) {
+      if (wordCount(sentence.text) > MAX_LABEL_WORDS) problems.push(`${where} is too long to be a label (${MAX_LABEL_WORDS} words at most)`);
+    } else if (sentence.claim !== undefined) {
+      if (!CLAIM_ID.test(sentence.claim)) problems.push(`${where} names "${sentence.claim}", which is not a claim id (C-nn)`);
+    } else if (sentence.decision !== undefined) {
+      if (!DECISION_ID.test(sentence.decision)) problems.push(`${where} names "${sentence.decision}", which is not a decision id`);
+    } else if (sentence.page !== undefined) {
+      const [pagePath, heading] = sentence.page.split('#');
+      if ((heading ?? '').trim() === '') problems.push(`${where} names a page with no heading ("path#heading")`);
+      if (pagePath === undefined || pagePath.startsWith('/') || pagePath.includes('..') || !exists(pagePath)) problems.push(`${where} names a page that does not exist: ${pagePath}`);
+    }
   }
   return problems;
 }

@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import { parse } from 'yaml';
 import { listCollectionFiles, listInsightFiles } from '../../../src/lib/content-files.ts';
 import { checkMarkers, checkSourcesFile, classifyHost, fetchDate } from './sources.ts';
-import type { DocumentFacts, FetchRecord, SourcesFile } from './sources.ts';
+import type { DocumentFacts, FetchRecord, SentenceRecord, SourcesFile } from './sources.ts';
 
 /**
  * The sources ledger (docs/wave8-contracts.md, section 9). A package that writes a document with sources records, in
@@ -72,6 +72,7 @@ function factsFor(path: string): DocumentFacts | undefined {
 }
 
 const real = loadSourcesFiles();
+const repoHas = (path: string): boolean => existsSync(join(root, path));
 
 function factsMap(paths: readonly string[]): Map<string, DocumentFacts> {
   const map = new Map<string, DocumentFacts>();
@@ -89,7 +90,7 @@ function factsMap(paths: readonly string[]): Map<string, DocumentFacts> {
 for (const file of real) {
   test(`${file.wp} sources file holds every sources rule`, () => {
     const facts = factsMap((file.documents ?? []).map((d) => d.path));
-    assert.deepEqual(checkSourcesFile(file, facts), []);
+    assert.deepEqual(checkSourcesFile(file, facts, repoHas), []);
   });
 }
 
@@ -228,6 +229,41 @@ test('a vendor documentation host cannot source a statistic or a regulation, and
 
 test('a document that does not exist fails', () => {
   assert.ok(checkSourcesFile(base(), new Map()).some((p) => p.includes('does not exist')));
+});
+
+// Page copy (a component or a data module) is listed with `sentences`, and each sentence needs one mapping.
+const COPY_DOC = 'src/data/cta/targets.ts';
+const copyFile = (sentences: SentenceRecord[]): SourcesFile => ({ wp: 'WP-99', fetches: [], documents: [{ path: COPY_DOC, sentences }] });
+const checkCopy = (sentences: SentenceRecord[]): string[] => checkSourcesFile(copyFile(sentences), new Map(), repoHas);
+
+test('page copy: a sentence mapped to a claim, a page with a heading, a decision or a short label passes', () => {
+  assert.deepEqual(checkCopy([
+    { text: 'WE makes no promise of funding.', claim: 'C-05' },
+    { text: 'Read the steps after you apply.', page: 'src/content/pages/apply/apply.mdx#What happens next' },
+    { text: 'Request the brief', decision: 'W8-6' },
+    { text: 'Open the tools', label: true },
+  ]), []);
+});
+
+test('page copy: an unmapped sentence, a double mapping, a repeated sentence and an empty one fail', () => {
+  assert.ok(checkCopy([{ text: 'Nothing maps this.' }]).some((p) => p.includes('exactly one of')));
+  assert.ok(checkCopy([{ text: 'Two.', claim: 'C-05', decision: 'W8-6' }]).some((p) => p.includes('exactly one of')));
+  assert.ok(checkCopy([{ text: 'Same.', claim: 'C-05' }, { text: 'Same.', claim: 'C-05' }]).some((p) => p.includes('listed twice')));
+  assert.ok(checkCopy([{ text: ' ', claim: 'C-05' }]).some((p) => p.includes('empty sentence')));
+});
+
+test('page copy: a bad claim id, a bad decision id, a page that is missing or has no heading, and a long label fail', () => {
+  assert.ok(checkCopy([{ text: 'a', claim: 'claim-5' }]).some((p) => p.includes('not a claim id')));
+  assert.ok(checkCopy([{ text: 'b', decision: 'because' }]).some((p) => p.includes('not a decision id')));
+  assert.ok(checkCopy([{ text: 'c', page: 'src/content/pages/nothing-here.mdx#Heading' }]).some((p) => p.includes('does not exist')));
+  assert.ok(checkCopy([{ text: 'd', page: 'src/content/pages/apply/apply.mdx' }]).some((p) => p.includes('no heading')));
+  assert.ok(checkCopy([{ text: 'one two three four five six seven eight', label: true }]).some((p) => p.includes('too long to be a label')));
+});
+
+test('page copy: a listed file that does not exist fails, and a path outside the repository is not a page', () => {
+  const missing: SourcesFile = { wp: 'WP-99', fetches: [], documents: [{ path: 'src/data/cta/not-a-file.ts', sentences: [] }] };
+  assert.ok(checkSourcesFile(missing, new Map(), repoHas).some((p) => p.includes('does not exist')));
+  assert.ok(checkCopy([{ text: 'e', page: '../outside.md#H' }]).some((p) => p.includes('does not exist')));
 });
 
 test('a marker in a file with no markers entry fails, and a recorded one passes', () => {
