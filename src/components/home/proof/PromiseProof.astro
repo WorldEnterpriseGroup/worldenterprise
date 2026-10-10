@@ -1,0 +1,130 @@
+---
+import { href } from '../../../lib/url.ts';
+import { BASIS_LABEL } from './proof.ts';
+import type { ResolvedProofRow } from './proof.ts';
+
+interface Props {
+  rows: readonly ResolvedProofRow[];
+  /** Names the list for assistive technology. */
+  label?: string;
+}
+
+const { rows, label = 'What WE promises and where to check it' } = Astro.props;
+---
+
+<ul class="proof" role="list" aria-label={label}>
+  {
+    rows.map((row) => (
+      <li class:list={['proof__row', row.sourceHref !== undefined && 'proof__row--linked']}>
+        <p class="proof__kicker">Check it in</p>
+        <p class="proof__source">
+          {row.sourceHref !== undefined ? <a class="proof__link" href={href(row.sourceHref)}>{row.source}</a> : row.source}
+        </p>
+        <p class="proof__claim">{row.claim}</p>
+        <p class="proof__basis">
+          <span class={`proof__chip proof__chip--${row.basis}`}>{BASIS_LABEL[row.basis]}</span>
+        </p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  @layer pages {
+    .proof {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-4);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      @media (min-width: 52rem) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .proof__row {
+      position: relative;
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      border: var(--border-hair);
+      border-inline-start: 4px solid var(--we-blue);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+
+      &:has(:focus-visible) {
+        outline: 3px solid var(--color-focus);
+        outline-offset: 2px;
+      }
+
+      &:nth-child(3),
+      &:nth-child(4) {
+        border-inline-start-color: var(--color-highlight);
+      }
+    }
+
+    .proof__kicker {
+      font-family: var(--ff-display);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      color: var(--color-text-muted);
+    }
+
+    /* The source is the lead of the row. */
+    .proof__source {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+      line-height: var(--lh-snug);
+    }
+
+    /* The whole row is the target of its one link, so the row can be clicked or tapped anywhere. */
+    .proof__link::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    .proof__claim {
+      font-family: var(--ff-serif);
+      font-weight: 600;
+    }
+
+    .proof__basis {
+      margin-block-start: var(--sp-1);
+    }
+
+    .proof__chip {
+      display: inline-block;
+      padding: 0.1em 0.6em;
+      border: 1px solid var(--we-tint);
+      border-radius: var(--radius-pill);
+      background: var(--color-bg-soft);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .proof__chip--editorial-judgement {
+      background: var(--color-amber-wash);
+      border-color: var(--color-highlight);
+      color: var(--color-highlight-ink);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .proof__row {
+        transition: background-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+      }
+
+      .proof__row--linked:hover {
+        background: var(--color-bg-soft);
+        box-shadow: var(--shadow-1);
+      }
+    }
+  }
+</style>
