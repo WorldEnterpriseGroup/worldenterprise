@@ -694,10 +694,18 @@
       min-inline-size: 0;
       white-space: nowrap;
 
+      /* A 24px floor (WCAG 2.2 target size, 2.5.8): at 390px the links measured 23px tall. A constant floor, not one that follows the
+         line height, also keeps the trail the same height when the web font swaps in. */
+      min-block-size: 1.5rem;
+
       & > :is(a, [aria-current]) {
         min-inline-size: 0;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      & > a {
+        min-block-size: 1.5rem;
       }
 
       &:last-child {
