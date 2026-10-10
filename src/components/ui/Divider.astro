@@ -1,0 +1,82 @@
+---
+/**
+ * A section divider, decorative. `hex` is a hairline with one amber cell in the middle, the quiet break between two blocks of one
+ * band. `cells` is a trail of three cells (blue, amber, blue) for the turn between two parts of a long page. `hairline` is a rule
+ * that fades out at both ends. Tint the bands around it with `Section tone`, not with the divider.
+ */
+interface Props {
+  variant?: 'hex' | 'cells' | 'hairline';
+}
+
+const { variant = 'hex' } = Astro.props;
+---
+
+<div class={`divider divider--${variant}`} aria-hidden="true">
+  {variant === 'hex' && <span class="divider__cell"></span>}
+  {
+    variant === 'cells' && (
+      <>
+        <span class="divider__cell divider__cell--blue"></span>
+        <span class="divider__cell"></span>
+        <span class="divider__cell divider__cell--blue"></span>
+      </>
+    )
+  }
+</div>
+
+<style>
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-3);
+    margin-block: var(--space-group);
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      block-size: 1px;
+      background: var(--tint-line);
+    }
+  }
+
+  .divider__cell {
+    inline-size: var(--sp-4);
+    aspect-ratio: var(--hex-ratio);
+    clip-path: var(--hex-clip);
+    background: var(--color-highlight);
+  }
+
+  .divider__cell--blue {
+    background: var(--color-accent);
+  }
+
+  .divider--cells {
+    gap: var(--sp-2);
+
+    &::before,
+    &::after {
+      margin-inline: var(--sp-2);
+    }
+  }
+
+  .divider--hairline {
+    &::before {
+      background: linear-gradient(to right, transparent, var(--color-border-strong), transparent);
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .divider::before,
+    .divider::after,
+    .divider__cell {
+      forced-color-adjust: none;
+      background: CanvasText;
+    }
+  }
+</style>

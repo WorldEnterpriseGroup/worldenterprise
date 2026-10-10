@@ -1,0 +1,107 @@
+---
+import { href as resolve } from '../../lib/url.ts';
+
+/**
+ * The claim card: one statement the site stands behind, set large, with the basis it rests on. It carries no number, no chart and no
+ * quote from a person: a claim card says what WE does or does not do, and names where a reader can check it. Pair a row of them with
+ * `EvidenceLedger` further down the page when the full account of sources is needed.
+ */
+interface Props {
+  /** The statement, one sentence. */
+  claim: string;
+  /** Small label above the claim, for example "What WE promises". */
+  label?: string;
+  /** Source label shown under the claim. */
+  source?: string;
+  /** Site path or URL of the source. Makes the source label a link. */
+  href?: string;
+  /** How the statement is grounded, in the same words as the evidence ledger. */
+  basis?: 'primary-source' | 'framework' | 'editorial-judgement';
+}
+
+const { claim, label, source, href: raw, basis } = Astro.props;
+const BASIS_LABEL: Record<NonNullable<Props['basis']>, string> = {
+  'primary-source': 'Primary source',
+  framework: 'Published framework',
+  'editorial-judgement': 'Editorial judgment',
+};
+const target = raw === undefined ? undefined : resolve(raw);
+---
+
+<article class="claimcard">
+  {label && <p class="eyebrow">{label}</p>}
+  <p class="claimcard__claim">{claim}</p>
+  {
+    (source || basis) && (
+      <p class="claimcard__foot">
+        {basis && <span class={`claimcard__basis claimcard__basis--${basis}`}>{BASIS_LABEL[basis]}</span>}
+        {source && <span class="claimcard__source">{target ? <a href={target}>{source}</a> : source}</span>}
+      </p>
+    )
+  }
+</article>
+
+<style>
+  .claimcard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    padding: var(--sp-5) var(--sp-5) var(--sp-5) var(--sp-6);
+    background: var(--tint-sand);
+    border: 1px solid var(--tint-line);
+    border-radius: var(--radius-md);
+
+    /* The hex bullet that opens the statement. */
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block-start: var(--sp-5);
+      inset-inline-start: var(--sp-4);
+      inline-size: var(--sp-3);
+      aspect-ratio: var(--hex-ratio);
+      clip-path: var(--hex-clip);
+      background: var(--color-highlight);
+    }
+  }
+
+  .claimcard__claim {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    line-height: var(--lh-snug);
+    text-wrap: balance;
+  }
+
+  .claimcard__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-2) var(--sp-3);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .claimcard__basis {
+    padding: 0.1em 0.6em;
+    border: 1px solid var(--color-highlight);
+    border-radius: var(--radius-pill);
+    background: var(--color-amber-wash);
+    color: var(--color-highlight-ink);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  @media (forced-colors: active) {
+    .claimcard {
+      border-color: CanvasText;
+    }
+
+    .claimcard::before {
+      forced-color-adjust: none;
+      background: CanvasText;
+    }
+  }
+</style>

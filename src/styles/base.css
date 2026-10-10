@@ -44,8 +44,19 @@
   p,
   li,
   dd,
-  blockquote {
+  blockquote,
+  figcaption,
+  caption,
+  .lead {
     text-wrap: pretty;
+  }
+
+  /* Figures line up in columns and do not shift as they change. */
+  table,
+  .factband__item dd,
+  .meter__text,
+  time {
+    font-variant-numeric: tabular-nums;
   }
 
   a {
