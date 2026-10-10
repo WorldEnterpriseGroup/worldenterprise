@@ -182,6 +182,42 @@
       "tool": "WebFetch"
     },
     {
+      "id": "nist-7-1-3",
+      "url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc13.htm",
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods, 7.1.3 What are statistical tests?",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T07:50:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-7-1-4",
+      "url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc14.htm",
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods, 7.1.4 What are confidence intervals?",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T07:50:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-7-3-3",
+      "url": "https://www.itl.nist.gov/div898/handbook/prc/section3/prc33.htm",
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods: How can we determine whether two processes produce the same proportion of defectives?",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T07:51:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-1-3-6-7-1",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda3671.htm",
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods, 1.3.6.7.1 Cumulative distribution function of the standard normal distribution",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T07:52:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
       "id": "canada-casl",
       "url": "https://ised-isde.canada.ca/site/canada-anti-spam-legislation/en",
       "title": "Canada's anti-spam legislation",
@@ -885,6 +921,99 @@
           "sourceId": "cornell-16-cfr-255-5",
           "locator": "255.5(a)",
           "quote": "monetary payment"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/gtm/landing-page-tests-you-can-read.md",
+      "claims": [
+        {
+          "id": "H1",
+          "sentence": "The handbook defines a statistical test as a mechanism for quantitative decisions.",
+          "kind": "definition",
+          "sourceId": "nist-7-1-3",
+          "locator": "7.1.3",
+          "quote": "A statistical test provides a mechanism for making quantitative decisions about a process or processes."
+        },
+        {
+          "id": "H2",
+          "sentence": "The handbook names the conjecture the null hypothesis.",
+          "kind": "definition",
+          "sourceId": "nist-7-1-3",
+          "locator": "7.1.3",
+          "quote": "The conjecture is called the null hypothesis."
+        },
+        {
+          "id": "H3",
+          "sentence": "The alternative hypothesis may be what the tester believes true.",
+          "kind": "paraphrase",
+          "sourceId": "nist-7-1-3",
+          "locator": "7.1.3",
+          "quote": "The alternative hypothesis might, in fact, be what we believe to be true."
+        },
+        {
+          "id": "H4",
+          "sentence": "The test procedure keeps the risk of wrongly rejecting a true null hypothesis small; the page calls it the significance level.",
+          "kind": "definition",
+          "sourceId": "nist-7-1-3",
+          "locator": "7.1.3",
+          "quote": "The test procedure is constructed so that the risk of rejecting the null hypothesis, when it is in fact true, is small."
+        },
+        {
+          "id": "H5",
+          "sentence": "The risk of missing a real difference is not chosen by the user.",
+          "kind": "definition",
+          "sourceId": "nist-7-1-3",
+          "locator": "7.1.3",
+          "quote": "The risk of failing to reject the null hypothesis when it is in fact false is not chosen by the user."
+        },
+        {
+          "id": "H6",
+          "sentence": "A confidence interval gives a range of values likely to contain the parameter.",
+          "kind": "definition",
+          "sourceId": "nist-7-1-4",
+          "locator": "7.1.4",
+          "quote": "it provides a range of values which is likely to contain the population parameter of interest."
+        },
+        {
+          "id": "H7",
+          "sentence": "Confidence intervals are built at a user-selected confidence level.",
+          "kind": "definition",
+          "sourceId": "nist-7-1-4",
+          "locator": "7.1.4, Confidence levels",
+          "quote": "Confidence intervals are constructed at a confidence level, such as 95 %, selected by the user."
+        },
+        {
+          "id": "H8",
+          "sentence": "The hypothesis of equal proportions can be tested with a z statistic.",
+          "kind": "paraphrase",
+          "sourceId": "nist-7-3-3",
+          "locator": "Two proportions",
+          "quote": "The hypothesis of equal proportions can be tested using a z statistic"
+        },
+        {
+          "id": "H9",
+          "sentence": "The normal approximation applies when samples are reasonably large.",
+          "kind": "paraphrase",
+          "sourceId": "nist-7-3-3",
+          "locator": "Two proportions",
+          "quote": "If the samples are reasonably large we can use the normal approximation to the binomial"
+        },
+        {
+          "id": "H10",
+          "sentence": "The Fisher Exact Probability test is suggested for small samples.",
+          "kind": "paraphrase",
+          "sourceId": "nist-7-3-3",
+          "locator": "Two proportions, small samples",
+          "quote": "The Fisher Exact Probability test is an excellent choice for small samples"
+        },
+        {
+          "id": "H11",
+          "sentence": "The table lists 0.47500 for z of 1.96, the area from 0 to z.",
+          "kind": "statistic",
+          "sourceId": "nist-1-3-6-7-1",
+          "locator": "Table row 1.9, column 0.06",
+          "quote": "1.9 0.47128 0.47193 0.47257 0.47320 0.47381 0.47441 0.47500 0.47558 0.47615 0.47670"
         }
       ]
     }
