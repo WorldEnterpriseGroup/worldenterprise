@@ -52,7 +52,8 @@ export function toFamily(raw: unknown): FamilyData | undefined {
   const record = raw as Record<string, unknown>;
   const mapList = (key: string, field: string): unknown =>
     Array.isArray(record[key]) ? (record[key] as Record<string, unknown>[]).map((item) => ({ ...item, [field]: date(item[field]) })) : record[key];
-  return { ...record, sources: mapList('sources', 'accessed'), ...(record['perimeter'] === undefined ? {} : { perimeter: mapList('perimeter', 'asOf') }) } as unknown as FamilyData;
+  // The schema defaults `sources` to an empty list (a journey page may cite none).
+  return { ...record, sources: mapList('sources', 'accessed') ?? [], ...(record['perimeter'] === undefined ? {} : { perimeter: mapList('perimeter', 'asOf') }) } as unknown as FamilyData;
 }
 
 export function loadContent(): TwinContent {
