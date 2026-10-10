@@ -31,6 +31,7 @@ sources:
     url: https://bookface-static.ycombinator.com/assets/ycdc/Postmoney%20Safe%20-%20Valuation%20Cap%20Only%20-%20FINAL-f2a64add6d21039ab347ee2e7194141a4239e364ffed54bad0fe9cf623bf1691.docx
     accessed: 2026-10-10
 evidence: [ny-fsl-801, sba-loans, yc-vs-note, nvca-term-sheet, yc-safe-form]
+relatedServices: [F]
 relatedPlaybook: build-repeatable-growth
 relatedTemplate: seed-data-room-checklist
 segments: [technical-founders, solo-founders]
@@ -41,6 +42,7 @@ related:
 claimsUsed: [C-05]
 ---
 import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 <NoFundingDisclaimer />
 
@@ -62,9 +64,9 @@ Two practical points follow from the wording. First, the payment is tied to sale
 
 For a founder who thinks in formulas, the difference between the two shapes is short to state. A fixed payment is the same amount each period whatever your revenue does. A payment tied to revenue is the agreed share multiplied by the revenue the contract counts, so it falls when counted revenue falls and rises when it rises.
 
-Which is easier to carry depends on how steady your revenue is, and only your own figures can tell you. Repayments are cash leaving the company, so they enter the [metrics calculator](/tools/metrics-calculator/) as cash out, and the calculator's net burn and runway then show what the repayments do to your position in a given month. Run it on your real past months, with the contract's definition of revenue applied, and compare the results month by month rather than trusting one.
+Which is easier to carry depends on how steady your revenue is, and only your own figures can tell you. Repayments are cash leaving the company, so they enter the <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> as cash out, and the calculator's net burn and runway then show what the repayments do to your position in a given month. Run it on your real past months, with the contract's definition of revenue applied, and compare the results month by month rather than trusting one.
 
-The definition is where care goes. The [research brief on SaaS metrics definitions](/research/early-stage-saas-metrics-definitions/) shows how recurring revenue is defined in public references. A contract may define revenue differently: gross receipts, receipts less refunds, or only some products. A customer who pays a year in advance may count in one month or in every month, depending on the wording. Get the definition in writing and test it against your own records before you sign.
+The definition is where care goes. The <MaybeLink path="/research/early-stage-saas-metrics-definitions/">research brief on SaaS metrics definitions</MaybeLink> shows how recurring revenue is defined in public references. A contract may define revenue differently: gross receipts, receipts less refunds, or only some products. A customer who pays a year in advance may count in one month or in every month, depending on the wording. Get the definition in writing and test it against your own records before you sign.
 
 ## What a loan asks of the company
 
@@ -78,7 +80,7 @@ Debt changes the order in which people are paid, and investors' documents say so
 
 Debt can also run into the rights that investors ask for later. The NVCA's model term sheet, with brackets that mark terms the parties negotiate, lists protective provisions that require the written consent of the requisite holders of the preferred stock to create or authorize any debt security if total borrowing for money would exceed a bracketed amount. A separate list of matters requires board approval, including the approval of a preferred director, for incurring aggregate indebtedness above a bracketed amount that is not in a board-approved budget, other than ordinary trade credit, and for guaranteeing indebtedness other than trade accounts.
 
-These are model terms, not agreed terms, and no source says that any investor will ask for them. They show something narrower: the NVCA model treats borrowing above a set level as a matter that needs a vote. Before you borrow, have counsel read your existing SAFEs, notes and side letters for restrictions. Keep the signed debt terms with your other contracts, where the [data room guide](/fundability/data-room/) says they belong.
+These are model terms, not agreed terms, and no source says that any investor will ask for them. They show something narrower: the NVCA model treats borrowing above a set level as a matter that needs a vote. Before you borrow, have counsel read your existing SAFEs, notes and side letters for restrictions. Keep the signed debt terms with your other contracts, where the <MaybeLink path="/fundability/data-room/">data room guide</MaybeLink> says they belong.
 
 ## Questions to bring to the provider and to your counsel
 
@@ -90,9 +92,9 @@ These are model terms, not agreed terms, and no source says that any investor wi
 - Does it require a personal guarantee, or a right to buy shares in the company?
 - What do my existing agreements say about borrowing, and who must consent?
 - Is the provider licensed or registered where I operate, and which disclosures does the law there require me to receive?
-- Which of the questions in [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) apply to this contract?
+- Which of the questions in <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> apply to this contract?
 
-The [investor readiness checklist](/fundability/investor-readiness-checklist/) lists the records an investor may ask for, and signed debt terms belong among them.
+The <MaybeLink path="/fundability/investor-readiness-checklist/">investor readiness checklist</MaybeLink> lists the records an investor may ask for, and signed debt terms belong among them.
 
 ## What this article cannot tell you
 

@@ -3273,6 +3273,14 @@
       ]
     },
     {
+      "path": "src/content/insights/funding/funding-a-first-saas-from-customer-revenue.mdx",
+      "claims": []
+    },
+    {
+      "path": "src/content/insights/funding/runway-and-burn-the-arithmetic.mdx",
+      "claims": []
+    },
+    {
       "path": "src/content/pages/insights/topic-funding.mdx",
       "claims": [],
       "sentences": [
@@ -3494,38 +3502,20 @@
   "markers": [
     {
       "path": "src/content/insights/funding/safe-or-convertible-note-how-the-two-instruments-differ.mdx",
-      "rule": "C-08-valuation-cap",
-      "reason": "generic definition of a SAFE term from the publisher own description, inside data-generic-definition elements (one dl, two paragraphs), never about WE",
-      "sourceId": "yc-safe"
-    },
-    {
-      "path": "src/content/insights/funding/safe-or-convertible-note-how-the-two-instruments-differ.mdx",
-      "rule": "C-08-discount-rate",
-      "reason": "generic definition of a SAFE term from the publisher own description, inside the data-generic-definition dl, never about WE",
-      "sourceId": "yc-safe"
-    },
-    {
-      "path": "src/content/insights/funding/safe-or-convertible-note-how-the-two-instruments-differ.mdx",
-      "rule": "C-08-mfn",
-      "reason": "generic definition of a SAFE term from the publisher own description, inside the data-generic-definition dl, never about WE",
-      "sourceId": "yc-safe"
-    },
-    {
-      "path": "src/content/insights/funding/safe-or-convertible-note-how-the-two-instruments-differ.mdx",
-      "rule": "C-08-pro-rata",
-      "reason": "generic definition of a SAFE term from the publisher own description, inside the data-generic-definition dl, never about WE",
+      "rule": "generic-definition",
+      "reason": "generic definition of a SAFE or financing term (valuation-cap, discount-rate, mfn, pro-rata) from the cited publisher, inside data-generic-definition elements, never about WE",
       "sourceId": "yc-safe"
     },
     {
       "path": "src/content/insights/funding/reading-a-term-sheet-line-by-line.mdx",
-      "rule": "C-08-pro-rata",
-      "reason": "generic definition of a financing term, inside a data-generic-definition paragraph, describing the published model sheet and never any agreement with WE",
+      "rule": "generic-definition",
+      "reason": "generic definition of a SAFE or financing term (pro-rata) from the cited publisher, inside data-generic-definition elements, never about WE",
       "sourceId": "nvca-term-sheet"
     },
     {
       "path": "src/content/insights/funding/cap-table-basics-for-founders.mdx",
-      "rule": "C-08-valuation-cap",
-      "reason": "generic definition of a SAFE term from the publisher own comparison page, inside one data-generic-definition paragraph, never about WE",
+      "rule": "generic-definition",
+      "reason": "generic definition of a SAFE or financing term (valuation-cap) from the cited publisher, inside data-generic-definition elements, never about WE",
       "sourceId": "yc-vs-note"
     }
   ]

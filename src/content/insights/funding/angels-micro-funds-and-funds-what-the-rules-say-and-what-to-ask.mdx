@@ -36,6 +36,7 @@ sources:
     url: https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice
     accessed: 2026-10-10
 evidence: [ecfr-230-501, sec-exempt-offerings, sec-rule-506b, sec-rule-506c, sec-rule-504, sec-form-d]
+relatedServices: [F]
 relatedPlaybook: build-repeatable-growth
 relatedTemplate: seed-data-room-checklist
 segments: [first-time-founders, non-technical-founders]
@@ -46,12 +47,13 @@ related:
 claimsUsed: [C-05]
 ---
 import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 <NoFundingDisclaimer />
 
 *This article is general information, not legal or financial advice. It was written on October 10, 2026, from the public sources listed on this page, and it does not describe any agreement with World Enterprise. Securities rules change and have exceptions, so confirm the current position with your own lawyer.*
 
-Founders often sort investors into angels, micro-funds and funds, and ask how each kind decides. No source cited here describes how any of them decides, so this article does not guess. What public sources do describe is the legal frame around every one of these investors: who counts as an accredited investor, which exemptions let a company sell them shares, and what each exemption asks of the company. Those rules shape what you must do whoever writes the check. For the practical side of choosing, read [choosing the right first investors for a SaaS company](/insights/choosing-the-right-first-investors-for-a-saas-company/).
+Founders often sort investors into angels, micro-funds and funds, and ask how each kind decides. No source cited here describes how any of them decides, so this article does not guess. What public sources do describe is the legal frame around every one of these investors: who counts as an accredited investor, which exemptions let a company sell them shares, and what each exemption asks of the company. Those rules shape what you must do whoever writes the check. For the practical side of choosing, read <MaybeLink path="/insights/choosing-the-right-first-investors-for-a-saas-company/">choosing the right first investors for a SaaS company</MaybeLink>.
 
 ## The legal question behind the labels
 
@@ -100,7 +102,7 @@ Exemptions have limits on who may use them. The SEC's Rule 504 page lists the co
 
 Purchasers in a Rule 506(b) offering or a Rule 506(c) offering receive restricted securities, the SEC says. What that means for an investor's ability to sell is for counsel to explain. It is one more reason an investor may ask how and when they could exit.
 
-The rules above set who may invest and what you must file. They do not list what a careful investor weighs before writing a check, and none of the sources used here does either. Having your answers ready is the point of the [investor readiness checklist](/fundability/investor-readiness-checklist/) and the [data room guide](/fundability/data-room/).
+The rules above set who may invest and which filings are required. They do not list what a careful investor weighs before writing a check, and none of the sources used here does either. Having your answers ready is the point of the <MaybeLink path="/fundability/investor-readiness-checklist/">investor readiness checklist</MaybeLink> and the <MaybeLink path="/fundability/data-room/">data room guide</MaybeLink>.
 
 ## Questions for the investor, and for your own counsel
 
@@ -109,7 +111,7 @@ The rules above set who may invest and what you must file. They do not list what
 - What will the investor want to see before closing, and what will they want afterward?
 - If the investor is a fund, what does the fund need to complete an investment, and who inside it decides?
 - What filings do I owe, including a Form D and any state filings?
-- Which of the questions in [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) apply here?
+- Which of the questions in <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> apply here?
 
 ## What this article cannot tell you
 

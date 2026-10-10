@@ -51,6 +51,7 @@ sources:
     url: https://www.sec.gov/resources-small-businesses/exempt-offerings/regulation-crowdfunding
     accessed: 2026-10-10
 evidence: [sec-exempt-offerings, sec-form-d, sba-loans, sbir-about, yc-safe, yc-vs-note, ny-fsl-801, nvca-term-sheet, sec-regcf]
+relatedServices: [F]
 relatedPlaybook: build-repeatable-growth
 relatedTemplate: seed-data-room-checklist
 segments: [first-time-founders, solo-founders]
@@ -62,6 +63,7 @@ related:
 claimsUsed: [C-05]
 ---
 import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 <NoFundingDisclaimer />
 
@@ -96,7 +98,7 @@ A loan is repaid, whatever happens to the company's valuation. The U.S. Small Bu
 
 ## Investment by SAFE or convertible note
 
-Y Combinator, which publishes the SAFE, describes it as a short contract an investor signs to fund your startup now in exchange for the right to shares of stock in your startup later. Y Combinator describes the note as debt on which interest accrues and which has a maturity date, whereas a SAFE has neither. The article on how the two instruments differ lays them side by side. The plain-language guide to [SAFEs](/fundability/safe-explained/) on this site defines the terms you will meet in the documents.
+Y Combinator, which publishes the SAFE, describes it as a short contract an investor signs to fund your startup now in exchange for the right to shares of stock in your startup later. Y Combinator describes the note as debt on which interest accrues and which has a maturity date, whereas a SAFE has neither. The article on how the two instruments differ lays them side by side. The plain-language guide to <MaybeLink path="/fundability/safe-explained/">SAFEs</MaybeLink> on this site defines the terms you will meet in the documents.
 
 ## A priced round
 
@@ -119,11 +121,11 @@ The practical consequences are the reason this desk keeps returning to your coun
 - What would each route do to the ownership of the company, now and after later rounds?
 - What does each route require me to repay, report or promise, and to whom?
 - How are the proceeds treated for tax, and does the answer change with the instrument?
-- Which documents belong in my [data room](/fundability/data-room/) before I talk to anyone, and which are in order already?
+- Which documents belong in my <MaybeLink path="/fundability/data-room/">data room</MaybeLink> before I talk to anyone, and which are in order already?
 
 ## Where to read next
 
-If you are weighing who might invest, [choosing the right first investors](/insights/choosing-the-right-first-investors-for-a-saas-company/) covers the criteria worth writing down. The [investor readiness checklist](/fundability/investor-readiness-checklist/) lists the evidence a careful investor may ask for, and [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) prepares the conversation with your lawyer. To see how long a pool of cash lasts at your current spending, the [metrics calculator](/tools/metrics-calculator/) can do the arithmetic. The [glossary](/glossary/) is the place to look up an unfamiliar term.
+If you are weighing who might invest, <MaybeLink path="/insights/choosing-the-right-first-investors-for-a-saas-company/">choosing the right first investors</MaybeLink> covers the criteria worth writing down. The <MaybeLink path="/fundability/investor-readiness-checklist/">investor readiness checklist</MaybeLink> lists the evidence a careful investor may ask for, and <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> prepares the conversation with your lawyer. To see how long a pool of cash lasts at your current spending, the <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> can do the arithmetic. The <MaybeLink path="/glossary/">glossary</MaybeLink> is the place to look up an unfamiliar term.
 
 ## What this article cannot tell you
 

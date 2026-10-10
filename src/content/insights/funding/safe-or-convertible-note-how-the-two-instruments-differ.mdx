@@ -26,6 +26,7 @@ sources:
     url: https://www.sec.gov/resources-small-businesses/exempt-offerings
     accessed: 2026-10-10
 evidence: [yc-safe, yc-vs-note, yc-safe-form, sec-exempt-offerings]
+relatedServices: [F]
 relatedPlaybook: build-repeatable-growth
 relatedTemplate: seed-data-room-checklist
 segments: [first-time-founders, technical-founders]
@@ -36,6 +37,7 @@ related:
 claimsUsed: [C-05]
 ---
 import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 <NoFundingDisclaimer />
 
@@ -78,7 +80,7 @@ The sentence about convertible promissory notes is the one to read twice. A comp
 
 ## Terms you will meet in a SAFE
 
-These generic definitions come from the publisher's own description of the form. They help you recognize the words when you read a real document, and the [glossary](/glossary/) is the place to look up other unfamiliar terms.
+These generic definitions come from the publisher's own description of the form. They help you recognize the words when you read a real document, and the <MaybeLink path="/glossary/">glossary</MaybeLink> is the place to look up other unfamiliar terms.
 
 <dl data-generic-definition>
   <dt>Valuation cap</dt>
@@ -107,7 +109,7 @@ The publisher also describes the SAFE as the modern default for early raises and
 
 ## The rules that apply to both
 
-Neither instrument escapes securities law. The SEC states that every offer and sale of securities must either be registered under the Securities Act of 1933 or rely on an available exemption from registration. Y Combinator's FAQ adds two points about its own form: SAFE investors should be accredited, and a company's board of directors must approve issuing SAFEs. Whether the instrument you are considering is a security, which exemption an offering relies on and what you must file are questions for your lawyer. The plain-language [SAFE guide](/fundability/safe-explained/) on this site walks through the vocabulary, and the [data room](/fundability/data-room/) guide lists where signed instruments belong in your records.
+Neither instrument escapes securities law. The SEC states that every offer and sale of securities must either be registered under the Securities Act of 1933 or rely on an available exemption from registration. Y Combinator's FAQ adds two points about its own form: SAFE investors should be accredited, and a company's board of directors must approve issuing SAFEs. Whether the instrument you are considering is a security, which exemption an offering relies on and which filings are required are questions for your lawyer. The plain-language <MaybeLink path="/fundability/safe-explained/">SAFE guide</MaybeLink> on this site walks through the vocabulary, and the <MaybeLink path="/fundability/data-room/">data room</MaybeLink> guide lists where signed instruments belong in your records.
 
 ## Questions to bring to your own counsel
 
@@ -117,7 +119,7 @@ Neither instrument escapes securities law. The SEC states that every offer and s
 - Is each investor accredited, and who verifies it?
 - What approvals and filings does issuing the instrument need, including from the board?
 - How is the instrument treated for tax? Y Combinator says to consult your tax advisor if the tax characterization of the SAFE is material to your use of it.
-- Which of the questions in [questions to ask your counsel before you sign](/insights/questions-to-ask-your-counsel-before-you-sign/) apply here?
+- Which of the questions in <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> apply here?
 
 ## What this article cannot tell you
 
