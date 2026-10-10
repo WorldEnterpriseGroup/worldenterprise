@@ -106,7 +106,7 @@ export async function loadLlms(): Promise<LlmsLoad> {
     contactRoute: state.isLive('/contact/') ? '/contact/' : null,
     applyRoute: state.isLive('/apply/') ? '/apply/' : null,
     addOnStatement: addOnStatementFrom(factsBody),
-    calendarStatement: calendarStatementFrom(faq.find((e) => e.id === 'is-it-an-accelerator')?.data.answer),
+    calendarStatement: calendarStatementFrom(faq.find((e) => /\bdemo day\b/.test(e.data.answer))?.data.answer),
   };
 
   const fullPages = twins

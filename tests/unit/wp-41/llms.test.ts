@@ -17,12 +17,13 @@ const audit = claimsAudit as unknown as {
 };
 const geo = geoAudit as unknown as {
   auditLlmsStructure(name: string, text: string): string[];
+  auditLlmsDenylist(file: string, text: string, set: unknown): string[];
 };
 
 const addOnStatement = addOnStatementFrom(read('src/content/pages/about/facts.mdx').replace(/^---[\s\S]*?\n---\n/, ''));
 
 const faqYaml = parse(read('src/data/faq.yaml')) as { id: string; answer: string }[];
-const accelerator = faqYaml.find((e) => e.id === 'is-it-an-accelerator')?.answer;
+const accelerator = faqYaml.find((e) => /\bdemo day\b/.test(e.answer))?.answer;
 const calendarStatement = calendarStatementFrom(accelerator);
 
 function input(overrides: Partial<LlmsInput> = {}): LlmsInput {
@@ -101,9 +102,11 @@ test('the contact section lists only the forms that are live and no mailbox', ()
 
 test('llms.txt and the real llms-full.txt pass the denylist as plain text', () => {
   const full = buildLlmsFullTxt(input(), fullPages());
+  const set = (claimsAudit as unknown as { loadDenylist(): unknown }).loadDenylist();
   for (const [route, text] of [['/llms.txt', buildLlmsTxt(input())], ['/llms-full.txt', full]] as const) {
     const hits = audit.scan(text, { route, plain: true });
     assert.deepEqual(hits.map((h) => `${h.rule}: ${h.match}`), [], route);
+    assert.deepEqual(geo.auditLlmsDenylist(route.slice(1), text, set), [], `${route} held to the rule the denylist skips`);
   }
 });
 
@@ -142,9 +145,21 @@ test('the calendar sentence is the FAQ sentence, word for word, in llms.txt, and
   assert.equal(calendarStatement, 'This site does not describe a cohort calendar or a demo day.');
   assert.ok((accelerator ?? '').includes(calendarStatement));
   assert.ok(buildLlmsTxt(input()).includes(`- ${calendarStatement}`));
-  assert.throws(() => calendarStatementFrom('Nothing here.'), /no sentence about a demo day/);
+  assert.throws(() => calendarStatementFrom('Nothing here.'), /no answer with a sentence about a demo day/);
   const text = buildLlmsFullTxt(input(), fullPages());
   assert.match(text, /Source: https:\/\/worldenterprise\.org\/faq\/\n/);
   assert.match(text, /Source: https:\/\/worldenterprise\.org\/research\/early-stage-saas-metrics-definitions\/\n/);
   assert.ok(text.includes(calendarStatement), 'the FAQ answer is carried whole');
+});
+
+test('the audit holds the llms files to the C-13-peers vocabulary that the denylist skips on them', () => {
+  const set = (claimsAudit as unknown as { loadDenylist(): unknown }).loadDenylist();
+  const head = buildLlmsTxt(input());
+  assert.deepEqual(geo.auditLlmsDenylist('llms.txt', head, set), []);
+  const stray = `${head}\nWE runs a mentor program for every cohort.\n`;
+  assert.match(geo.auditLlmsDenylist('llms.txt', stray, set).join('\n'), /C-13-peers/);
+  const faqBlock = `---\n\nSource: https://worldenterprise.org/faq/\n\n# FAQ\n\nCanonical URL: https://worldenterprise.org/faq/\n\nIs WE an accelerator? ${calendarStatement}\n`;
+  assert.deepEqual(geo.auditLlmsDenylist('llms-full.txt', `${head}\n${faqBlock}`, set), [], 'the FAQ block is scanned as the FAQ');
+  const pricingBlock = faqBlock.split('/faq/').join('/pricing/');
+  assert.match(geo.auditLlmsDenylist('llms-full.txt', `${head}\n${pricingBlock}`, set).join('\n'), /C-13-peers/, 'the same words on another page are a hit');
 });

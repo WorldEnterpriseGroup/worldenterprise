@@ -51,7 +51,7 @@ export function qaFromMarkdown(body: string): readonly QaPair[] {
 /** The FAQ sentence that says the site describes no intake calendar or demo day, copied verbatim from the FAQ answer. */
 export function calendarStatementFrom(answer: string | undefined): string {
   const sentence = (answer ?? '').split(/(?<=[.!?])\s+(?=[A-Z])/).find((s) => /\bdemo day\b/.test(s));
-  if (sentence === undefined) throw new Error('The FAQ answer "is-it-an-accelerator" has no sentence about a demo day, so llms.txt cannot state it.');
+  if (sentence === undefined) throw new Error('The FAQ has no answer with a sentence about a demo day, so llms.txt cannot state it.');
   return sentence.trim();
 }
 

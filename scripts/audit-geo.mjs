@@ -10,7 +10,9 @@
 //                   canonical match the block.
 //   Markdown twins  every .md outside library/ has its page, the page advertises it with <link rel="alternate" type="text/markdown">,
 //                   the first heading is the page H1, the canonical URL is the page's, and the text is plain Markdown (no JSX leak).
-//   Denylist        no twin and no llms file contains a phrase that scripts/audit-claims.mjs scans for (a twin stands for its page route).
+//   Denylist        no twin and no llms file contains a phrase that scripts/audit-claims.mjs scans for (a twin stands for its page route). The
+//                   llms files are skipped by the denylist's C-13-peers rule, so this audit holds them: the head may use the FAQ calendar
+//                   sentence and nothing else of that rule's vocabulary, and each llms-full page block is scanned as the page it copies.
 //   robots.txt      a production build names the AI crawlers, allows them, and lists the sitemap; a preview build disallows everything.
 // Exit code 1 on any error.
 import { existsSync, readFileSync } from 'node:fs';
@@ -269,6 +271,31 @@ export function auditDenylist(file, text, set) {
   return scan(text, { route: textRouteOf(file), rules: set.scanRules, plain: true }).map((hit) => `${file}: ${hit.rule} (${hit.claim}) matched "${hit.match}" in: ${hit.context}`);
 }
 
+/** The one sentence of the FAQ that the machine files restate and that the denylist's C-13-peers rule allows there. */
+export const CALENDAR_SENTENCE = 'This site does not describe a cohort calendar or a demo day.';
+/** A route that no allowPaths entry names, so every context rule runs in full on text that has no page of its own. */
+const NO_PAGE_ROUTE = '/llms-head/';
+
+/**
+ * Denylist over llms.txt and llms-full.txt. The denylist lets C-13-peers skip both files so that they can restate the FAQ sentence
+ * above, which means the rule cannot hold them to anything. This holds them instead: the head (everything outside a `Source:` block)
+ * is scanned on a route no allowance covers, with that one sentence removed, and each page block is scanned as the page it copies.
+ */
+export function auditLlmsDenylist(file, text, set) {
+  const errors = [];
+  const [head, ...blocks] = text.split(/^---\n\n(?=Source: )/m);
+  const report = (where, route, body) => {
+    for (const hit of scan(body, { route, rules: set.scanRules, plain: true })) errors.push(`${file}: ${where}: ${hit.rule} (${hit.claim}) matched "${hit.match}" in: ${hit.context}`);
+  };
+  report('head', NO_PAGE_ROUTE, head.split(CALENDAR_SENTENCE).join(' '));
+  for (const block of blocks) {
+    const source = /^Source: (\S+)\s*$/m.exec(block)?.[1];
+    const target = source === undefined ? null : targetOfLink(source);
+    report(source ?? 'a block without a Source line', target === null ? NO_PAGE_ROUTE : target.route, block);
+  }
+  return errors;
+}
+
 /** Reads the production bundle. `dist` must exist. */
 export function readDist(dist) {
   const pages = new Map();
@@ -290,11 +317,11 @@ export function auditGeo({ pages, twins, llms, llmsFull, robots }, options) {
   const sentences = requiredSentences(set);
   if (llms === undefined) errors.push('llms.txt is missing from dist');
   else {
-    errors.push(...auditLlmsStructure('llms.txt', llms, { sentences }), ...auditLlmsLinks('llms.txt', llms, { pages, twinFiles: twins }), ...auditDenylist('llms.txt', llms, set));
+    errors.push(...auditLlmsStructure('llms.txt', llms, { sentences }), ...auditLlmsLinks('llms.txt', llms, { pages, twinFiles: twins }), ...auditLlmsDenylist('llms.txt', llms, set));
   }
   if (llmsFull === undefined) errors.push('llms-full.txt is missing from dist');
   else {
-    errors.push(...auditLlmsStructure('llms-full.txt', llmsFull, { sentences }), ...auditLlmsFullBlocks(llmsFull, pages), ...auditDenylist('llms-full.txt', llmsFull, set));
+    errors.push(...auditLlmsStructure('llms-full.txt', llmsFull, { sentences }), ...auditLlmsFullBlocks(llmsFull, pages), ...auditLlmsDenylist('llms-full.txt', llmsFull, set));
     const bytes = new TextEncoder().encode(llmsFull).length;
     if (bytes > options.maxFullBytes) errors.push(`llms-full.txt: ${bytes} bytes is over the cap of ${options.maxFullBytes}`);
   }
