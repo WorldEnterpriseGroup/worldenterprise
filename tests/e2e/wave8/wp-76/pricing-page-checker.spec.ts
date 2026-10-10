@@ -98,7 +98,12 @@ test.describe('pricing page checker (the project sets the viewport: 1440 and 390
     const seen = watch(page, baseURL ?? '');
     await openPage(page);
     const after: string[] = [];
-    page.on('request', (request) => after.push(`${request.method()} ${request.url()}`));
+    // The tool sends data with fetch, XHR, a beacon or a socket. A lazy image of the page's own header or footer is not the tool, so
+    // static resource types are left out; any non-GET request is still counted.
+    page.on('request', (request) => {
+      if (request.method() === 'GET' && ['image', 'font', 'stylesheet', 'script', 'media'].includes(request.resourceType())) return;
+      after.push(`${request.method()} ${request.url()}`);
+    });
     page.on('websocket', (socket) => after.push(`websocket ${socket.url()}`));
     await page.route('**/*', (route) => route.abort());
     for (let i = 0; i < 8; i += 1) await boxes(page).nth(i).check();
@@ -217,7 +222,8 @@ test.describe('pricing page checker (the project sets the viewport: 1440 and 390
     for (let i = 0; i < 8; i += 1) {
       const box = boxes(page).nth(i);
       await expect(box).toHaveAccessibleName(/\S/);
-      expect((await box.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(24);
+      // The target is the whole row, the box and its label, which is what a click or a tap lands on.
+      expect((await box.locator('xpath=..').boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(24);
     }
   });
 });

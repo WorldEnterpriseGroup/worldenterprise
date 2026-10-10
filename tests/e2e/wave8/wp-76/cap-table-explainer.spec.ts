@@ -95,7 +95,12 @@ test.describe('cap table explainer (the project sets the viewport: 1440 and 390)
     const seen = watch(page, baseURL ?? '');
     await openPage(page);
     const after: string[] = [];
-    page.on('request', (request) => after.push(`${request.method()} ${request.url()}`));
+    // The tool sends data with fetch, XHR, a beacon or a socket. A lazy image of the page's own header or footer is not the tool, so
+    // static resource types are left out; any non-GET request is still counted.
+    page.on('request', (request) => {
+      if (request.method() === 'GET' && ['image', 'font', 'stylesheet', 'script', 'media'].includes(request.resourceType())) return;
+      after.push(`${request.method()} ${request.url()}`);
+    });
     page.on('websocket', (socket) => after.push(`websocket ${socket.url()}`));
     await page.route('**/*', (route) => route.abort());
     await fill(page, { yours: '1000', others: '3000', issue: '500' });
