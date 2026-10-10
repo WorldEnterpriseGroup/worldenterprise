@@ -89,6 +89,11 @@
     .site-top {
       view-transition-name: site-top;
     }
+
+    /* The page title carries across a navigation: the outgoing h1 slides and resizes into the incoming one. A page has one h1. */
+    h1 {
+      view-transition-name: page-title;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -120,5 +125,10 @@
   /* The header stays put while the page behind it changes. */
   ::view-transition-group(site-top) {
     animation-duration: 0s;
+  }
+
+  ::view-transition-group(page-title) {
+    animation-duration: 260ms;
+    animation-timing-function: var(--ease-out);
   }
 }

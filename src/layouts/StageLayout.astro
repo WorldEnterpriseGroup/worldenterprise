@@ -6,6 +6,7 @@ import { getStage } from '../components/program/stages.ts';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 import ContextualNext from '../components/blocks/ContextualNext.astro';
+import StageRail from '../components/program/StageRail.astro';
 
 const ALTITUDES = { dream: 'Survey', build: 'Blueprint', grow: 'Territory' } as const;
 
@@ -42,6 +43,15 @@ const heroArt = heroPhoto !== undefined ? art : (art ?? { variant: 'flower' as c
     art={heroArt}
     measure={measure}
   />
+  {
+    stage && (
+      <div class="section section--tight">
+        <div class="container">
+          <StageRail current={stage} />
+        </div>
+      </div>
+    )
+  }
   <div class="section">
     <div class="container stack">
       <slot />
@@ -50,7 +60,7 @@ const heroArt = heroPhoto !== undefined ? art : (art ?? { variant: 'flower' as c
   <slot name="after" />
   {
     next.length > 0 && (
-      <div class="section section--soft section--defer">
+      <div class="section section--soft section--tinted section--tint-blue section--defer">
         <div class="container">
           <ContextualNext items={next} />
         </div>

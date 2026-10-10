@@ -2,13 +2,10 @@
 import { getEntry, render } from 'astro:content';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
-import DataTable from '../../components/ui/DataTable.astro';
 import FactBand from '../../components/ui/FactBand.astro';
-import { COMPOSE_TEAM } from '../../components/hero/ctas.ts';
+import { jumpTo } from '../../components/hero/ctas.ts';
 import { photoImage } from '../../components/media/photo-image.ts';
-import { flags } from '../../data/flags.ts';
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import { ROLES } from '../../scripts/team-composer.ts';
 
 const entry = await getEntry('pages', 'pricing/pricing');
 if (!entry) throw new Error('Missing content entry pages/pricing/pricing (src/content/pages/pricing/pricing.mdx).');
@@ -17,12 +14,6 @@ const { data } = entry;
 
 // The band sits in a 40rem column from 62rem and fills the container below it.
 const band = await photoImage('band-3', { sizes: '(min-width: 62rem) 40rem, 100vw' });
-
-/** The rate column exists only while the operator has published the seat rate (claim C-06, FLAG-PRICE). */
-const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
-const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
-const columns = rate === null ? ['Role', 'What the seat does'] : ['Role', 'What the seat does', 'Monthly rate per seat'];
-const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [role.label, role.summary, money.format(rate)]));
 ---
 
 <ToolLayout
@@ -32,45 +23,23 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
   lead="How dedicated team seats and packages work, and how to ask for the current rate."
   path="/pricing/"
   photo="inset-pricing"
-  primary={{ label: 'Request the current seat rate', href: '/contact/?topic=seat-rate' }}
-  secondary={COMPOSE_TEAM}
+  primary={jumpTo('Compare the four packages', '#packages')}
+  secondary={{ label: 'Request the current seat rate', href: '/contact/?topic=seat-rate' }}
   updated={data.updated}
   draft={data.draft}
   ogSlot="og-default"
 >
-  <div class="pricing-intro">
-    <div class="stack">
-      <FactBand
-        label="The seat model at a glance"
-        facts={[
-          { label: 'Format', value: 'Fully remote' },
-          { label: 'The unit of work', value: 'A seat dedicated to your company' },
-          { label: 'Start with', value: 'A package or a custom seat plan' },
-          { label: 'Scaling', value: 'Up or down by notice' },
-        ]}
-      />
-    </div>
-    <figure class="seatflow" aria-labelledby="seatflow-title">
-      <figcaption id="seatflow-title" class="seatflow__title">How a seat is staffed and steered</figcaption>
-      <ol class="seatflow__list" role="list">
-        <li class="seatflow__cell seatflow__cell--lead"><strong>Your company</strong><span>Sets the goal and makes the decisions.</span></li>
-        <li class="seatflow__cell"><strong>WE steers</strong><span>Plans the work, runs the cycles and manages the subcontractors.</span></li>
-        <li class="seatflow__cell"><strong>Dedicated seats</strong><span>People in the roles you choose, working only on your company.</span></li>
-      </ol>
-    </figure>
-  </div>
+  <FactBand
+    label="The seat model at a glance"
+    facts={[
+      { label: 'Format', value: 'Fully remote' },
+      { label: 'The unit of work', value: 'A seat dedicated to your company' },
+      { label: 'Start with', value: 'A package or a custom seat plan' },
+      { label: 'Scaling', value: 'Up or down by notice' },
+    ]}
+  />
 
   <div class="prose pricing-copy"><Content /></div>
-
-  <section class="stack" aria-labelledby="roles-title">
-    <h2 id="roles-title">Roles a seat can fill</h2>
-    <DataTable caption="Seat roles and what each seat does" columns={columns} rows={rows} />
-    {
-      rate === null && (
-        <p class="pricing-note">No rate is listed here. Ask for it and WE shares the current figure for a package, a custom seat plan or the add-on.</p>
-      )
-    }
-  </section>
 
   <NoFundingDisclaimer />
 
@@ -87,59 +56,11 @@ const rows = ROLES.map((role) => (rate === null ? [role.label, role.summary] : [
   />
 </ToolLayout>
 
-<style>
+<style is:global>
   @layer pages {
-    .pricing-intro {
-      display: grid;
-      gap: var(--sp-7);
-      align-items: start;
-
-      @media (min-width: 62rem) {
-        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-      }
-    }
-
-    .pricing-copy {
+    /* The page text keeps a reading measure. The package cards, the seat explainer, the picker and the other blocks use the full column. */
+    .pricing-copy > :is(p, ul, ol, h2, h3, .faq-list) {
       max-inline-size: var(--prose-max);
-    }
-
-    .seatflow {
-      display: grid;
-      gap: var(--sp-3);
-      padding: var(--sp-5);
-      background: var(--color-bg-soft);
-      border: var(--border-hair);
-      border-inline-start: 6px solid var(--color-highlight);
-      border-radius: var(--radius-md);
-      font-family: var(--ff-sans);
-    }
-
-    .seatflow__title {
-      font-family: var(--ff-display);
-      font-weight: 700;
-      font-size: var(--fs-lg);
-    }
-
-    .seatflow__list {
-      display: grid;
-      gap: var(--sp-3);
-      list-style: none;
-      padding: 0;
-    }
-
-    .seatflow__cell {
-      display: grid;
-      gap: var(--sp-1);
-      padding: var(--sp-3) var(--sp-4);
-      background: var(--color-bg);
-      border: var(--border-strong);
-      border-radius: var(--radius-sm);
-
-    }
-
-    .pricing-note {
-      font-family: var(--ff-sans);
-      color: var(--color-text-muted);
     }
 
     .pricing-visual img {

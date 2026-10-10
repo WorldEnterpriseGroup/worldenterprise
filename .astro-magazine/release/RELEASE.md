@@ -165,6 +165,8 @@ Newsletter (`/newsletter/`): there is no mailto fallback. With no endpoint the f
 
 Counsel reviews the wording of release candidate `release-1-rc2` (commit `99e3f37`) before any push to `gh-pages` (claim C-14, owner decision of 2026-10-09). The quotes in the checklist below are verbatim at their cited lines in that commit. `release-1-rc1` is superseded and must not be reviewed or released. The structure the owner chose: a separate, paid add-on; a flat fee for curation and preparation that does not depend on any investment closing; no success fee, stake or transaction-based pay; WE negotiates no terms, gives no securities advice and handles no funds; a limited number of curated introductions, made only after the readiness criteria are met; no promise of a meeting, a reply or funding.
 
+Line numbers in this checklist track the current demo branch; the text counsel reviews for release 1 is this file and its sources as they stand at tag release-1-rc2 (99e3f37).
+
 ### Resolved conflict: an article denied the add-on
 
 The Fundable article `src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx` said, at line 37, "It does not describe an introduction service, because World Enterprise does not offer one." while line 77 of the same article says Investor Introductions is a separate, paid add-on. The team decision of 2026-10-09 replaced the line 37 sentence with the one quoted in the checklist item for that article ("It is about your judgment, whether or not you also use our paid Investor Introductions add-on, which is described below."). That is the only edit made to the article, under a scoped ownership exception recorded in `decisions.md` (R-3). Release candidate tags before `release-1-rc2` carry the old sentence and must not be released.
@@ -327,15 +329,15 @@ Source: `src/content/pages/network/index.mdx:34`. Renders on: /network/.
 
 #### CR-12. Pricing page, body and FAQ
 
-Source: `src/content/pages/pricing/pricing.mdx:52`. Renders on: /pricing/.
+Source: `src/content/pages/pricing/pricing.mdx:22`. Renders on: /pricing/.
 
-> L52: This page lists no amounts. WE shares the current rate for a package, a custom seat plan or the add-on when you ask, so the figure you receive is the one that applies today.
+> L22: This page lists no amounts. WE shares the current rate for a package, a custom seat plan or the add-on when you ask, so the figure you receive is the one that applies today.
 >
-> L58: Not on this page. WE shares the current rate for a package, a custom seat plan or the add-on when you ask for it.
+> L47: Not on this page. WE shares the current rate for a package, a custom seat plan or the add-on when you ask for it.
 >
-> L69: Is Investor Introductions part of a package?
+> L64: Is Investor Introductions part of a package?
 >
-> L70: No. It is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+> L65: No. It is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______

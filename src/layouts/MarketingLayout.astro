@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import HeroCompact from '../components/hero/HeroCompact.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
@@ -7,12 +8,21 @@ type Props = PageMeta & HeaderProps & { title: string };
 
 const { eyebrow, lead, primary, secondary, photo, art, measure, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
-// The body is a reading column, so the hero copy shares its edge. A page that brings a photo or art gets the wider editorial frame.
-const heroMeasure = measure ?? (photo !== undefined || art !== undefined ? 'default' : 'prose');
+// A page that brings a photo or art gets the wider editorial frame. Without media a marketing page states its position, so it opens
+// with the statement hero: the title is the claim, set large over the reading column, and the page needs no art to carry it.
+const hasMedia = photo !== undefined || art !== undefined;
+// The body is a reading column, so the statement copy shares its edge.
+const heroMeasure = measure ?? (hasMedia ? 'default' : 'prose');
 ---
 
 <BaseLayout {...meta} crumbs={crumbs}>
-  <PageHero title={meta.title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} primary={primary} secondary={secondary} photo={photo} art={art} measure={heroMeasure} />
+  {
+    hasMedia ? (
+      <PageHero title={meta.title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} primary={primary} secondary={secondary} photo={photo} art={art} measure={heroMeasure} />
+    ) : (
+      <HeroCompact variant="statement" title={meta.title} eyebrow={eyebrow} lead={lead} crumbs={crumbs} primary={primary} secondary={secondary} measure={heroMeasure} />
+    )
+  }
   <div class="section">
     <div class="container container--prose prose">
       <slot />

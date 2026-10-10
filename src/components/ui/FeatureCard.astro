@@ -1,0 +1,117 @@
+---
+import { href as resolve } from '../../lib/url.ts';
+
+/**
+ * The feature card: one idea given room. A hex mark and a large title, a paragraph or two, no image. Use it for the two to four ideas
+ * a page leads with, where `Card` (a photo, a short teaser) would be too small. It lays itself out from its own width, not the
+ * viewport: the mark sits beside the text from 34rem up and above it below that, so it works in a grid cell and full width alike.
+ * With `href` the title is the card's single link and the whole card is the target.
+ */
+interface Props {
+  title: string;
+  href?: string;
+  eyebrow?: string;
+  headingLevel?: 2 | 3 | 4;
+  /** One or two characters in the hex mark, for example a service line letter or a step number. */
+  mark?: string;
+  /** `tint` washes the card in the pale blue section tint. */
+  tone?: 'plain' | 'tint';
+}
+
+const { title, href: raw, eyebrow, headingLevel = 3, mark, tone = 'plain' } = Astro.props;
+const target = raw === undefined ? undefined : resolve(raw);
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+
+<article class:list={['feature', tone === 'tint' && 'feature--tint']} data-linked={target ? '' : undefined}>
+  <div class="feature__inner">
+    {mark && <span class="feature__mark" aria-hidden="true">{mark}</span>}
+    <div class="stack">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <Heading class="feature__title">{target ? <a class="feature__link" href={target}>{title}</a> : title}</Heading>
+      <slot />
+    </div>
+  </div>
+</article>
+
+<style>
+  .feature {
+    container-type: inline-size;
+    position: relative;
+    background: var(--color-bg);
+    border: var(--border-hair);
+    border-inline-start: 4px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+
+    &:is(:hover, :focus-within)[data-linked] {
+      background: var(--tint-blue);
+      border-color: var(--color-link);
+    }
+  }
+
+  .feature--tint {
+    background: var(--tint-blue);
+  }
+
+  .feature__inner {
+    display: grid;
+    gap: var(--sp-4);
+    padding: var(--sp-5);
+
+    @container (min-width: 34rem) {
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: var(--sp-5);
+      padding: var(--sp-6);
+    }
+  }
+
+  .feature__mark {
+    display: grid;
+    place-items: center;
+    inline-size: 3.25rem;
+    aspect-ratio: var(--hex-ratio);
+    clip-path: var(--hex-clip);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+  }
+
+  .feature__title {
+    font-size: var(--fs-xl);
+    line-height: var(--lh-tight);
+  }
+
+  /* One link per card: its pseudo-element covers the card. */
+  .feature__link {
+    color: var(--color-text);
+    text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    &:hover {
+      color: var(--color-link);
+      text-decoration: underline;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .feature {
+      border-color: CanvasText;
+    }
+
+    .feature__mark {
+      forced-color-adjust: none;
+      background: ButtonText;
+      color: ButtonFace;
+    }
+  }
+</style>
