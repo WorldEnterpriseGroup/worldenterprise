@@ -44,14 +44,16 @@ function parse(file: string): Row[] {
 const faq = parse('faq.yaml').filter((r) => r.draft !== true);
 const glossary = parse('glossary.yaml').filter((r) => r.draft !== true);
 
-test('FAQ has the 16 seeded entries and the two added for the 2026-10-09 owner decisions, with unique ids', () => {
-  assert.equal(faq.length, 18);
-  assert.equal(new Set(faq.map((r) => r.id)).size, 18);
+// Reference data grows by additions only (decision W8-28); tests/unit/wp-60/reference-data.test.ts pins the 18 FAQ entries and 40 terms
+// byte for byte, so these checks state the rule and no count.
+test('FAQ keeps the 16 seeded entries and the two added for the 2026-10-09 owner decisions, with unique ids', () => {
+  assert.ok(faq.length >= 18);
+  assert.equal(new Set(faq.map((r) => r.id)).size, faq.length);
 });
 
-test('glossary has 40 terms with unique ids', () => {
-  assert.equal(glossary.length, 40);
-  assert.equal(new Set(glossary.map((r) => r.id)).size, 40);
+test('glossary keeps its 40 terms, with unique ids', () => {
+  assert.ok(glossary.length >= 40);
+  assert.equal(new Set(glossary.map((r) => r.id)).size, glossary.length);
 });
 
 test('every cited claim exists and is usable', () => {
