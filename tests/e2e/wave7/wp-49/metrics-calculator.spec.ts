@@ -264,8 +264,10 @@ test.describe('metrics calculator without JavaScript', () => {
   test('the formulas are the page, and the fields wait for a script instead of doing nothing', async ({ page }) => {
     await page.goto(ROUTE);
     await expect(page.locator('#formulas table tbody tr')).toHaveCount(9);
-    await expect(page.locator('#formulas')).toContainText('(Churned MRR / Starting MRR) x 100');
-    await expect(page.getByText('JavaScript is off.')).toBeVisible();
+    await expect(page.locator('#formulas')).toContainText('((Churned MRR + Contraction MRR) / Starting MRR) x 100');
+    // Not getByText: Playwright's text engine never looks inside <noscript>, even when the browser renders it as elements.
+    await expect(page.locator('noscript .callout')).toContainText('JavaScript is off.');
+    await expect(page.locator('noscript .callout')).toBeVisible();
     const inputs = page.locator('we-calc input');
     await expect(inputs).toHaveCount(10);
     for (let i = 0; i < 10; i += 1) await expect(inputs.nth(i)).toBeDisabled();

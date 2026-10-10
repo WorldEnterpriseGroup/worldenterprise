@@ -222,7 +222,9 @@ test.describe('evidence room without JavaScript', () => {
 
   test('the whole checklist is on the page and can be ticked and printed; the script-only controls wait', async ({ page }) => {
     await page.goto(ROUTE);
-    await expect(page.getByText('JavaScript is off.')).toBeVisible();
+    // Not getByText: Playwright's text engine never looks inside <noscript>, even when the browser renders it as elements.
+    await expect(page.locator('noscript .callout')).toContainText('JavaScript is off.');
+    await expect(page.locator('noscript .callout')).toBeVisible();
     expect(await page.locator('we-evidence-room input[data-code]').count()).toBeGreaterThan(40);
     await expect(page.locator('we-evidence-room [data-item][hidden]')).toHaveCount(0);
     await expect(box(page, '1a')).toBeEnabled();
