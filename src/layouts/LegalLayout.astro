@@ -1,11 +1,12 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CtaEnd from '../components/cta/CtaEnd.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 type Props = PageMeta & HeaderProps & { title: string; updated: Date };
 
-const { eyebrow, lead, primary, secondary, measure = 'prose', ...meta } = Astro.props;
+const { eyebrow, lead, primary, secondary, measure = 'prose', cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
@@ -20,4 +21,5 @@ const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'l
       </div>
     </div>
   </div>
+  <slot name="cta-end"><CtaEnd path={meta.path} collection="pages" cta={cta} /></slot>
 </BaseLayout>

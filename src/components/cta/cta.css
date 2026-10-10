@@ -1,0 +1,121 @@
+/*
+ * The call to action (docs/wave8-contracts.md, section 6). Tokens only (src/styles/tokens.css). Three placements share one vocabulary:
+ * .cta (the end-of-page band), .cta--aside (the compact band beside the text) and .cta-inline (the one-paragraph band that
+ * src/lib/rehype-mid-cta.ts puts into a long article). Nothing here moves after load: no animation, no sticky or fixed position.
+ */
+@layer components {
+  .cta {
+    display: grid;
+    gap: var(--sp-4);
+    padding: var(--sp-6);
+    background: var(--tint-blue);
+    border: var(--border-hair);
+    border-inline-start: 0.25rem solid var(--color-accent);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+
+    & .cta__title {
+      margin: 0;
+      font-family: var(--ff-display);
+      font-size: var(--fs-xl);
+      line-height: var(--lh-snug);
+    }
+
+    & .cta__body,
+    & .cta__note {
+      margin: 0;
+      max-inline-size: var(--measure);
+    }
+
+    & .cta__note {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    & .cta__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-3);
+    }
+  }
+
+  /* The band that closes a page sits in the page container, with the space a section has. */
+  .cta-wrap {
+    padding-block: var(--space-block);
+  }
+
+  .cta--aside {
+    padding: var(--sp-5);
+
+    & .cta__title {
+      font-size: var(--fs-lg);
+    }
+  }
+
+  /* The mid-body band: written by the hast plugin as plain HTML, so it takes its own spacing from the prose around it. */
+  .cta-inline {
+    display: grid;
+    gap: var(--sp-3);
+    margin-block: var(--space-group);
+    padding: var(--sp-5);
+    background: var(--tint-blue);
+    border: var(--border-hair);
+    border-inline-start: 0.25rem solid var(--color-accent);
+    border-radius: var(--radius-md);
+
+    & p {
+      margin: 0;
+    }
+
+    & .cta-inline__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 600;
+      line-height: var(--lh-snug);
+    }
+
+    & .cta-inline__note {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+  }
+
+  .audience-strip {
+    display: grid;
+    gap: var(--sp-3);
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    & a {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-1);
+      block-size: 100%;
+      padding: var(--sp-4);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+      color: var(--color-text);
+      text-decoration: none;
+      transition: border-color var(--dur-fast) var(--ease-out);
+
+      &:hover {
+        border-color: var(--color-accent);
+      }
+    }
+
+    & .audience-strip__label {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 600;
+      color: var(--color-link);
+    }
+
+    & .audience-strip__text {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+  }
+}

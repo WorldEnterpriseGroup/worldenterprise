@@ -18,6 +18,8 @@ const base: FormValues = {
   message: 'A scheduling tool for clinics.',
   consent: true,
   website: '',
+  audience: 'startup',
+  requestId: '3f2b8c1e-5d4a-4e6b-9a7c-1b2d3e4f5a6b',
 };
 const timing = { startedAt: Date.UTC(2026, 9, 9, 10, 0, 0), submittedAt: Date.UTC(2026, 9, 9, 10, 3, 0) };
 const keys = (value: object): string[] => Object.keys(value).sort();
