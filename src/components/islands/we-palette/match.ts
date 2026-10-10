@@ -1,4 +1,4 @@
-import type { PaletteCommand } from '../../nav/commands.ts';
+import type { PaletteCommand } from './model.ts';
 
 /**
  * Matching for <we-palette>. Pure, so node --test can run it. No fuzzy scoring and no dependency: every word the visitor types has to

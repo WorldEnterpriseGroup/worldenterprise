@@ -1,0 +1,30 @@
+---
+import { render } from 'astro:content';
+import FaqList from '../../../components/cards/FaqList.astro';
+import { ACTIONS, FAQ_ITEMS, FAQ_PAGE, HREFS } from '../../../components/partners/copy.ts';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import { anchorId, faqPageNode } from '../../../components/reference/jsonld.ts';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+
+const page = await getPageEntry('network/partners/faq');
+const { Content } = await render(page);
+
+const items = FAQ_ITEMS.map((item) => ({ id: item.id, question: item.question, answer: item.answer.join(' ') }));
+const questions = items.map((item) => ({ id: anchorId('faq', item.id), question: item.question, answer: item.answer }));
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path={HREFS.faq}
+  eyebrow={page.data.eyebrow}
+  lead={FAQ_PAGE.lead}
+  updated={page.data.updated}
+  ogSlot="og-network"
+  primary={ACTIONS.enquire}
+  secondary={ACTIONS.howItWorks}
+  jsonLd={[faqPageNode(HREFS.faq, items)]}
+>
+  <Content />
+  <FaqList items={questions} name="partner-faq" />
+</MarketingLayout>
