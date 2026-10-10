@@ -1,7 +1,7 @@
 /**
  * The words the family templates fix, so a page cannot omit, reword or reorder them (contracts section 8.2). Headings are sentence
  * case. Every sentence here is traced in `.astro-magazine/sources/wp-71.json` (`template_sentences`) and is scanned against the
- * claims denylist by tests/unit/wp-71/copy.test.ts.
+ * claims denylist by tests/unit/wp-71/families-copy.test.ts.
  */
 
 /** The fixed sentences. Each is quoted from, or restates, a rule of docs/wave8-contracts.md. */
