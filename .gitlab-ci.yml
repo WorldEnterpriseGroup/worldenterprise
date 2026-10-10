@@ -388,6 +388,8 @@ e2e:forms:
 #   resource_group: one qa:lighthouse at a time across the whole project, whatever pipelines are running;
 #   needs: it starts after this pipeline's own Playwright jobs (all three e2e:routes shards included) have finished, so it does not
 #          compete with them. The wave 7 and wave 8 jobs exist only once their specs do, hence optional.
+# A run that dies on a DevTools PROTOCOL_TIMEOUT (demo 66053, job 1132552, two minutes in, before any route was measured) is a stalled run:
+# it is logged and the route is tried again in the next round. A route fails only if none of its runs completes.
 # Remove both when the runner requests enough CPU for a job (gitlab-k8s#16), and measure again.
 qa:lighthouse:
   extends: [.e2e]

@@ -2,7 +2,8 @@
 // Runs Lighthouse (mobile, simulated throttling) on the representative routes of the built site and checks the budgets in
 // lighthouserc.json (SAGE-PLAN 6.9). Each route is judged on the best of up to three runs, taken in rounds over all routes: the
 // timings move with the CPU the shared runner happens to give the job, contention only ever adds time, and a real regression raises every
-// run, the best one included. A route that is within budget on its first run is not measured again. The budgets are not loosened. The site is served by scripts/lib/serve.mjs with its production origin
+// run, the best one included. A route that is within budget on its first run is not measured again. A run that stalls on a DevTools
+// protocol timeout is logged and retried in the next round; a route fails only if none of its runs completes. The budgets are not loosened. The site is served by scripts/lib/serve.mjs with its production origin
 // rewritten to the local one so the canonical URL is self-referential. Chromium comes from Playwright.
 // Usage: node scripts/run-lighthouse.mjs [--dist dist] [--out reports/lighthouse] [--config lighthouserc.json]
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -196,7 +197,17 @@ export function bestSummary(runs) {
  */
 export function needsAnotherRun(runs, config, maxRuns) {
   if (runs.length >= maxRuns) return false;
+  if (runs.length === 0) return true;
   return checkBudgets(bestSummary(runs), config).some((f) => f.sampled);
+}
+
+/**
+ * Whether an error from one Lighthouse run is a stalled run, not a verdict on the page. Lighthouse raises PROTOCOL_TIMEOUT when Chromium
+ * does not answer a DevTools command in time, which is what a CPU taken by neighbouring jobs looks like (job 1132552 on demo pipeline 66053
+ * died on it, two minutes in, before any route was measured). Any other error is a real failure of the tool and still ends the job.
+ */
+export function isStalledRun(error) {
+  return typeof error === 'object' && error !== null && error.code === 'PROTOCOL_TIMEOUT';
 }
 
 /**
@@ -206,13 +217,24 @@ export function needsAnotherRun(runs, config, maxRuns) {
  * Rounds, not all runs of one route back to back: a stall on the shared runner lasts tens of seconds, so back-to-back runs of one route
  * catch the same stall, while runs a whole round apart almost never do. The first round measures every route; each later round measures
  * only the routes that still breach (`needsAnotherRun`), so a page that is within budget costs one run.
+ *
+ * A run that stalls (`isStalledRun`: a DevTools protocol timeout) is an attempt that produced nothing. `onStall(round, route, error)` is told,
+ * and the route is tried again in the next round; an attempt is spent either way, so a route gets `maxRuns` attempts in all. A route none of
+ * whose attempts completed has an empty run list, and `judge` fails it. Any other error from `runOnce` is not a stall and is thrown.
  */
-export async function measureRoutes(routes, runOnce, config, maxRuns, onRun = () => {}) {
+export async function measureRoutes(routes, runOnce, config, maxRuns, onRun = () => {}, onStall = () => {}) {
   const measured = new Map(routes.map((route) => [route, []]));
   let pending = routes;
   for (let round = 1; pending.length > 0 && round <= maxRuns; round += 1) {
     for (const route of pending) {
-      const summary = await runOnce(route);
+      let summary;
+      try {
+        summary = await runOnce(route);
+      } catch (error) {
+        if (!isStalledRun(error)) throw error;
+        onStall(round, route, error);
+        continue;
+      }
       measured.get(route).push(summary);
       onRun(round, summary);
     }
@@ -221,8 +243,12 @@ export async function measureRoutes(routes, runOnce, config, maxRuns, onRun = ()
   return measured;
 }
 
-/** The verdict for a route: the best summary of its runs and the budgets that summary breaches. */
-export function judge(runs, config) {
+/**
+ * The verdict for a route: the best summary of its runs and the budgets that summary breaches. A route with no completed run has no
+ * summary and fails: `attempts` says how many runs were tried, all of which stalled.
+ */
+export function judge(runs, config, attempts = runs.length) {
+  if (runs.length === 0) return { summary: null, failures: [`no run completed: ${attempts} of ${attempts} runs stalled (DevTools protocol timeout)`] };
   const summary = bestSummary(runs);
   return { summary, failures: evaluate(summary, config) };
 }
@@ -259,6 +285,8 @@ async function main() {
   const benchmarks = (runs) => runs.map((r) => (r.benchmarkIndex === null ? 'n/a' : Math.round(r.benchmarkIndex))).join('/');
   try {
     const lhrOf = new Map();
+    /** Runs that stalled on a DevTools protocol timeout, per route. They are not measurements and do not count for or against a route. */
+    const stalls = new Map();
     const measured = await measureRoutes(
       routes,
       async (route) => {
@@ -276,18 +304,30 @@ async function main() {
       config,
       maxRuns,
       (round, summary) => console.log(`run ${round}/${maxRuns}  ${summary.route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  benchmark ${summary.benchmarkIndex === null ? 'n/a' : Math.round(summary.benchmarkIndex)}`),
+      (round, route, error) => {
+        stalls.set(route, (stalls.get(route) ?? 0) + 1);
+        console.log(`run ${round}/${maxRuns}  ${route}  stalled (${error.code}: ${String(error.message).split('\n')[0]}), not counted, tried again in the next round`);
+      },
     );
 
     for (const route of routes) {
       const runs = measured.get(route);
-      const { summary, failures } = judge(runs, config);
+      const stalled = stalls.get(route) ?? 0;
+      const { summary, failures } = judge(runs, config, stalled);
+      if (summary === null) {
+        failed += 1;
+        results.push({ route, runs: [], stalledRuns: stalled, failures });
+        console.error(`FAIL  ${route}  ${failures[0]}`);
+        continue;
+      }
       writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), lhrOf.get(bestRun(runs)));
       results.push({
         ...summary,
         runs: runs.map((r) => ({ tbtMs: r.tbtMs, lcpMs: r.lcpMs, cls: r.cls, performance: r.scores.performance, benchmarkIndex: r.benchmarkIndex, failures: evaluate(r, config) })),
+        stalledRuns: stalled,
         failures,
       });
-      const line = `${route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  a11y ${Math.round((summary.scores.accessibility ?? 0) * 100)}  bp ${Math.round((summary.scores['best-practices'] ?? 0) * 100)}  seo ${Math.round((summary.scores.seo ?? 0) * 100)}  LCP ${Math.round(summary.lcpMs ?? 0)}ms  CLS ${(summary.cls ?? 0).toFixed(3)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  JS ${summary.scriptBytes}B  (best of ${runs.length}, TBT ${spread(runs)}, benchmark ${benchmarks(runs)})`;
+      const line = `${route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  a11y ${Math.round((summary.scores.accessibility ?? 0) * 100)}  bp ${Math.round((summary.scores['best-practices'] ?? 0) * 100)}  seo ${Math.round((summary.scores.seo ?? 0) * 100)}  LCP ${Math.round(summary.lcpMs ?? 0)}ms  CLS ${(summary.cls ?? 0).toFixed(3)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  JS ${summary.scriptBytes}B  (best of ${runs.length}, TBT ${spread(runs)}, benchmark ${benchmarks(runs)}${stalled > 0 ? `, ${stalled} stalled` : ''})`;
       if (failures.length === 0) console.log(`ok    ${line}`);
       else {
         failed += 1;

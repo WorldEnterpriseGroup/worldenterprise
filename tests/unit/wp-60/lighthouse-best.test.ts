@@ -31,8 +31,16 @@ const lh = lhMod as unknown as {
   bestRun(runs: Summary[]): Summary;
   bestSummary(runs: Summary[]): Summary;
   needsAnotherRun(runs: Summary[], config: Budget, maxRuns: number): boolean;
-  judge(runs: Summary[], config: Budget): { summary: Summary; failures: string[] };
-  measureRoutes(routes: string[], runOnce: (route: string) => Promise<Summary>, config: Budget, maxRuns: number, onRun?: (round: number, summary: Summary) => void): Promise<Map<string, Summary[]>>;
+  judge(runs: Summary[], config: Budget, attempts?: number): { summary: Summary | null; failures: string[] };
+  isStalledRun(error: unknown): boolean;
+  measureRoutes(
+    routes: string[],
+    runOnce: (route: string) => Promise<Summary>,
+    config: Budget,
+    maxRuns: number,
+    onRun?: (round: number, summary: Summary) => void,
+    onStall?: (round: number, route: string, error: Error) => void,
+  ): Promise<Map<string, Summary[]>>;
   checkBudgets(summary: Summary, config: Budget): { id: string; sampled: boolean; message: string }[];
 };
 
@@ -78,7 +86,7 @@ test('the pipeline 66023 patterns pass: every one has a run, or a combination of
 
 test('a real regression fails: the best of three runs is still over budget, and the message names that best value', () => {
   const verdict = lh.judge([stalled(669), stalled(518), stalled(900)], config);
-  assert.equal(verdict.summary.tbtMs, 518);
+  assert.equal(verdict.summary?.tbtMs, 518);
   assert.match(verdict.failures.join('\n'), /TBT 518 ms is not under 200 ms/);
   for (const runs of [[stalled(300), stalled(250), stalled(900)], [stalled(900), stalled(300), stalled(250)], [stalled(250), stalled(300), stalled(900)]]) {
     assert.match(lh.judge(runs, config).failures.join('\n'), /TBT 250 ms/, 'whatever the run order');
@@ -89,8 +97,8 @@ test('each metric takes its own best: a run that stalled on paint and a run that
   const slowPaint = run({ lcpMs: 2900, scores: { performance: 0.8, accessibility: 1, seo: 1, 'best-practices': 1 } });
   const blocked = stalled(700);
   const verdict = lh.judge([slowPaint, blocked, run({ tbtMs: 400, lcpMs: 3000 })], config);
-  assert.equal(verdict.summary.lcpMs, 1800, 'the best LCP is the blocked run (its paint was fine)');
-  assert.equal(verdict.summary.tbtMs, 0, 'the best TBT is the slow-paint run');
+  assert.equal(verdict.summary?.lcpMs, 1800, 'the best LCP is the blocked run (its paint was fine)');
+  assert.equal(verdict.summary?.tbtMs, 0, 'the best TBT is the slow-paint run');
   assert.deepEqual(verdict.failures, []);
 });
 
@@ -189,6 +197,82 @@ test('measureRoutes reports each run with its round, and a run that throws stops
   await assert.rejects(lh.measureRoutes(['/a/'], async () => { throw new Error('Lighthouse returned no result for /a/'); }, config, 3), /no result for \/a\//);
 });
 
+/** What Lighthouse throws when Chromium does not answer a DevTools command in time (LighthouseError, code PROTOCOL_TIMEOUT). */
+function protocolTimeout(): Error {
+  return Object.assign(new Error('Waiting for DevTools protocol response has exceeded the allotted time. (Method: Page.enable)'), { code: 'PROTOCOL_TIMEOUT' });
+}
+
+/** A runner whose answers are blocking times, or 'timeout' for a run that dies on a protocol timeout. */
+function scriptedWithTimeouts(script: Record<string, (number | 'timeout')[]>): { order: string[]; runOnce: (route: string) => Promise<Summary> } {
+  const order: string[] = [];
+  const seen = new Map<string, number>();
+  return {
+    order,
+    runOnce: async (route) => {
+      order.push(route);
+      const n = seen.get(route) ?? 0;
+      seen.set(route, n + 1);
+      const answer = script[route]?.[n];
+      assert.notEqual(answer, undefined, `${route} was run ${n + 1} times, more than scripted`);
+      if (answer === 'timeout') throw protocolTimeout();
+      return answer! >= config.metrics.tbtMs ? { ...stalled(answer!), route } : { ...run({ tbtMs: answer! }), route };
+    },
+  };
+}
+
+test('only a DevTools protocol timeout counts as a stalled run; any other error is not one', () => {
+  assert.equal(lh.isStalledRun(protocolTimeout()), true);
+  assert.equal(lh.isStalledRun(Object.assign(new Error('x'), { code: 'NO_FCP' })), false);
+  assert.equal(lh.isStalledRun(new Error('Lighthouse returned no result for /a/')), false);
+  assert.equal(lh.isStalledRun(null), false);
+  assert.equal(lh.isStalledRun('PROTOCOL_TIMEOUT'), false);
+});
+
+test('a protocol timeout on one run is logged and the route is tried again: the first route of job 1132552 timing out does not end the job', async () => {
+  const stalls: string[] = [];
+  const { order, runOnce } = scriptedWithTimeouts({ '/a/': ['timeout', 0], '/b/': [0] });
+  const measured = await lh.measureRoutes(['/a/', '/b/'], runOnce, config, 3, () => {}, (round, route, error) => stalls.push(`${round}:${route}:${(error as Error & { code: string }).code}`));
+  assert.deepEqual(stalls, ['1:/a/:PROTOCOL_TIMEOUT']);
+  assert.deepEqual(order, ['/a/', '/b/', '/a/'], 'the stalled route is tried again in the next round, the others are not');
+  assert.equal(measured.get('/a/')!.length, 1, 'the stalled attempt is not a measurement');
+  assert.deepEqual(lh.judge(measured.get('/a/')!, config).failures, []);
+});
+
+test('a route fails only if none of its runs completes: every attempt stalled', async () => {
+  const stalls: number[] = [];
+  const { order, runOnce } = scriptedWithTimeouts({ '/a/': ['timeout', 'timeout', 'timeout'], '/b/': [0] });
+  const measured = await lh.measureRoutes(['/a/', '/b/'], runOnce, config, 3, () => {}, (round) => stalls.push(round));
+  assert.deepEqual(order, ['/a/', '/b/', '/a/', '/a/'], 'three attempts, then the route is given up');
+  assert.deepEqual(stalls, [1, 2, 3]);
+  assert.deepEqual(measured.get('/a/'), []);
+  const verdict = lh.judge(measured.get('/a/')!, config, 3);
+  assert.equal(verdict.summary, null);
+  assert.match(verdict.failures.join('\n'), /no run completed: 3 of 3 runs stalled/);
+  assert.deepEqual(lh.judge(measured.get('/b/')!, config).failures, [], 'the other route is judged on its own runs');
+});
+
+test('a stalled attempt uses one of the N attempts: a stall then two breaching runs ends after three attempts, and the breach still fails', async () => {
+  const { order, runOnce } = scriptedWithTimeouts({ '/a/': ['timeout', 700, 800] });
+  const measured = await lh.measureRoutes(['/a/'], runOnce, config, 3, () => {}, () => {});
+  assert.deepEqual(order, ['/a/', '/a/', '/a/']);
+  assert.equal(measured.get('/a/')!.length, 2);
+  assert.match(lh.judge(measured.get('/a/')!, config, 1).failures.join('\n'), /TBT 700 ms/);
+});
+
+test('a stall followed by a within-budget run needs nothing more, and one stall among completed runs does not fail the route', async () => {
+  const { order, runOnce } = scriptedWithTimeouts({ '/a/': [900, 'timeout', 10] });
+  const measured = await lh.measureRoutes(['/a/'], runOnce, config, 3);
+  assert.deepEqual(order, ['/a/', '/a/', '/a/']);
+  assert.deepEqual(lh.judge(measured.get('/a/')!, config, 1).failures, []);
+});
+
+test('the script logs each stalled run with its round and reports a route whose runs all stalled as a failure, not as a crash', () => {
+  assert.match(script, /stalled \(\$\{error\.code\}/);
+  assert.match(script, /\$\{stalled\} stalled/);
+  assert.match(script, /summary === null/);
+  assert.match(script, /FAIL {2}\$\{route\} {2}\$\{failures\[0\]\}/);
+});
+
 test('measureRoutes with one run configured measures each route once', async () => {
   const { order, runOnce } = scripted({ '/a/': [900], '/b/': [0] });
   await lh.measureRoutes(['/a/', '/b/'], runOnce, config, 1);
@@ -212,6 +296,8 @@ test('the reasoning is written down where the budgets and the job are', () => {
   assert.match(rc, /only ever adds time|only adds time/);
   assert.match(ci, /^qa:lighthouse:/m);
   assert.match(ci, /best of/);
+  assert.match(rc, /DevTools protocol timeout/);
+  assert.match(ci, /PROTOCOL_TIMEOUT/);
 });
 
 /** The text of one job in .gitlab-ci.yml: from its `name:` line to the next top-level key or the end. */
