@@ -218,6 +218,33 @@
       "tool": "WebFetch"
     },
     {
+      "id": "aws-saas-products",
+      "url": "https://docs.aws.amazon.com/marketplace/latest/userguide/saas-products.html",
+      "title": "SaaS-based products in AWS Marketplace",
+      "publisher": "Amazon Web Services documentation",
+      "fetchedAt": "2026-10-10T08:05:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "aws-saas-pricing",
+      "url": "https://docs.aws.amazon.com/marketplace/latest/userguide/saas-pricing-models.html",
+      "title": "SaaS product pricing in AWS Marketplace",
+      "publisher": "Amazon Web Services documentation",
+      "fetchedAt": "2026-10-10T08:06:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "google-marketplace-partners",
+      "url": "https://docs.cloud.google.com/marketplace/docs/partners",
+      "title": "Google Cloud Marketplace Partners documentation",
+      "publisher": "Google Cloud documentation",
+      "fetchedAt": "2026-10-10T08:06:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
       "id": "canada-casl",
       "url": "https://ised-isde.canada.ca/site/canada-anti-spam-legislation/en",
       "title": "Canada's anti-spam legislation",
@@ -1014,6 +1041,131 @@
           "sourceId": "nist-1-3-6-7-1",
           "locator": "Table row 1.9, column 0.06",
           "quote": "1.9 0.47128 0.47193 0.47257 0.47320 0.47381 0.47441 0.47500 0.47558 0.47615 0.47670"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/gtm/marketplaces-and-partner-channels-when-a-listing-helps.md",
+      "claims": [
+        {
+          "id": "K1",
+          "sentence": "AWS says the seller manages customer access and accounts within the software.",
+          "kind": "paraphrase",
+          "sourceId": "aws-saas-products",
+          "locator": "Intro",
+          "quote": "You are responsible for managing customer access, account creation, resource provisioning, and account management within your software."
+        },
+        {
+          "id": "K2",
+          "sentence": "AWS lists availability by country as a configurable listing property.",
+          "kind": "paraphrase",
+          "sourceId": "aws-saas-products",
+          "locator": "Intro",
+          "quote": "including your product description, availability by country, pricing, and so on"
+        },
+        {
+          "id": "K3",
+          "sentence": "AWS lists four SaaS pricing models including a zero-price model.",
+          "kind": "paraphrase",
+          "sourceId": "aws-saas-pricing",
+          "locator": "SaaS pricing models",
+          "quote": "All pricing dimensions must be set to $0.00."
+        },
+        {
+          "id": "K4",
+          "sentence": "AWS says the pricing model cannot be changed once the listing is published to limited.",
+          "kind": "paraphrase",
+          "sourceId": "aws-saas-pricing",
+          "locator": "Note",
+          "quote": "Once you create your listing and publish it to limited, you can't change the pricing model."
+        },
+        {
+          "id": "K5",
+          "sentence": "Microsoft gives four listing options for a SaaS offer.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Listing options",
+          "quote": "The following table shows the listing options for SaaS offers in Microsoft Marketplace."
+        },
+        {
+          "id": "K6",
+          "sentence": "Microsoft says Contact me has no technical requirements.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Technical requirements",
+          "quote": "listing option has no technical requirements"
+        },
+        {
+          "id": "K7",
+          "sentence": "Microsoft says publishers support all aspects of the license transaction for the non-transactable options.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Listing options, footnote",
+          "quote": "Publishers are responsible for supporting all aspects of the software license transaction"
+        },
+        {
+          "id": "K8",
+          "sentence": "Microsoft describes an agency model for offers sold through Microsoft.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "SaaS billing",
+          "quote": "publishers set prices, Microsoft bills customers, and Microsoft pays revenue to publishers"
+        },
+        {
+          "id": "K9",
+          "sentence": "Microsoft says the Sell through Microsoft option cannot be changed after publishing.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Listing options",
+          "quote": "You can't change this option once your offer is published."
+        },
+        {
+          "id": "K10",
+          "sentence": "Microsoft says the landing page and webhook should be running 24/7.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Technical information",
+          "quote": "The landing page you configure should be running 24/7."
+        },
+        {
+          "id": "K11",
+          "sentence": "Microsoft describes a CSP resale option.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Additional sales opportunities",
+          "quote": "allow Microsoft Cloud Solution Providers (CSP) partners to resell your solution as part of a bundled offer"
+        },
+        {
+          "id": "K12",
+          "sentence": "Microsoft describes a co-sell option.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Additional sales opportunities",
+          "quote": "lets Microsoft sales teams consider your IP co-sell eligible solution"
+        },
+        {
+          "id": "K13",
+          "sentence": "Google says partners can offer subscriptions, pay-as-you-go and custom pricing.",
+          "kind": "paraphrase",
+          "sourceId": "google-marketplace-partners",
+          "locator": "Page intro",
+          "quote": "You can offer products with pricing features that you're used to, such as subscriptions, pay-as-you-go, and custom pricing."
+        },
+        {
+          "id": "K14",
+          "sentence": "Google says most configurations give customers one bill.",
+          "kind": "paraphrase",
+          "sourceId": "google-marketplace-partners",
+          "locator": "Page intro",
+          "quote": "For most configurations, your customers receive one bill for all of your products and services"
+        },
+        {
+          "id": "K15",
+          "sentence": "Microsoft describes a publisher-run trial and a separate trial feature for transactable offers.",
+          "kind": "paraphrase",
+          "sourceId": "microsoft-plan-saas-offer",
+          "locator": "Plans, Free trial",
+          "quote": "You manage the trial experience, fulfillment, billing, and customer lifecycle outside Microsoft commerce."
         }
       ]
     }

@@ -1,0 +1,80 @@
+---
+title: "Marketplaces and partner channels: when a listing helps"
+seoTitle: "Marketplaces and partner channels: when a listing helps"
+description: "How a technical or remote founder can read marketplace documentation to judge whether a listing helps, with each platform's rules attributed, none ranked."
+topic: gtm
+publishedDate: 2026-10-10
+segments: [technical-founders, global-remote-founders]
+related: [choosing-your-first-channels, trials-demos-and-self-serve-how-a-customer-first-meets-the-product]
+sources:
+  - id: aws-saas-products
+    title: SaaS-based products in AWS Marketplace
+    publisher: Amazon Web Services documentation
+    url: https://docs.aws.amazon.com/marketplace/latest/userguide/saas-products.html
+    accessed: 2026-10-10
+  - id: aws-saas-pricing
+    title: SaaS product pricing in AWS Marketplace
+    publisher: Amazon Web Services documentation
+    url: https://docs.aws.amazon.com/marketplace/latest/userguide/saas-pricing-models.html
+    accessed: 2026-10-10
+  - id: microsoft-plan-saas-offer
+    title: Plan a SaaS offer for Microsoft Marketplace
+    publisher: Microsoft Learn, Partner Center documentation
+    url: https://learn.microsoft.com/en-us/partner-center/marketplace-offers/plan-saas-offer
+    accessed: 2026-10-10
+  - id: google-marketplace-partners
+    title: Google Cloud Marketplace Partners documentation
+    publisher: Google Cloud documentation
+    url: https://docs.cloud.google.com/marketplace/docs/partners
+    accessed: 2026-10-10
+evidence: [aws-saas-products, aws-saas-pricing, microsoft-plan-saas-offer, google-marketplace-partners]
+claimsUsed: []
+draft: false
+---
+
+A cloud marketplace is an online catalog run by a platform company, where software vendors list products and customers buy them using an account they already hold with that platform. For a technical founder with a working product, a listing can look like a shortcut to buyers. It can also be a large piece of integration work that takes the place of conversations with the people who would use the product. This article explains what the documentation of three large marketplaces says a seller must do, and gives you questions to answer before you commit engineering time. Each platform's rules are attributed to its own pages and read on 2026-10-10. The article does not recommend a platform, and it gives no figure for fees, prices or sales. Terms change, so check the live pages.
+
+## What a listing is, and what it is not
+
+A listing is a product page inside someone else's store, plus the technical hook-up that lets the platform tell your software that a purchase happened. It is a channel in the sense used in the article on [choosing your first channels](/insights/choosing-your-first-channels/): a way for buyers to find and reach you. It does not create demand by itself, and it does not replace the first customers you win by other means. The [first-customers playbook](/playbooks/earn-your-first-customers/) covers that earlier work.
+
+Read the platform documentation as a statement of what you will have to build and run, not as a description of the audience you will receive. The documents describe processes. They do not say how many buyers a listing reaches.
+
+A practical way to read them is to keep one page of notes per platform with the same headings: the listing options, what your software must do on a purchase, what cannot be changed after publishing, which countries a listing can cover, how trials work, and who bills the customer. Laying the platforms side by side on those headings makes the differences visible without ranking anyone, and it leaves you with a list of questions for the platform that the documentation does not answer.
+
+## What the three sets of documentation say
+
+### AWS Marketplace
+
+AWS's page on SaaS products says that "You are responsible for managing customer access, account creation, resource provisioning, and account management within your software." So the platform sends you a purchase and your product is the thing that turns it into a working account. The same page lists properties you configure for a listing, including "availability by country", which matters if you sell across borders. The pricing page lists four pricing models: SaaS subscriptions, SaaS contracts, SaaS contracts with pay-as-you-go, and a zero-price model. It also states a constraint that deserves a pause: "Once you create your listing and publish it to limited, you can't change the pricing model."
+
+### Microsoft Marketplace
+
+Microsoft's planning page gives four listing options for a SaaS offer: Contact me, Free trial, Get it now (Free), and Sell through Microsoft. It says the Contact me option "has no technical requirements", and that with this option the customer contacts the publisher directly. For the options where the transaction runs outside the platform, it says "Publishers are responsible for supporting all aspects of the software license transaction". For Sell through Microsoft, the page describes an agency model in which "publishers set prices, Microsoft bills customers, and Microsoft pays revenue to publishers". It also says of that option, "You can't change this option once your offer is published." The page adds that the landing page for new purchases "should be running 24/7", which is an operating commitment as well as a build task.
+
+### Google Cloud Marketplace
+
+Google's partner documentation says "You can offer products with pricing features that you're used to, such as subscriptions, pay-as-you-go, and custom pricing", and that "For most configurations, your customers receive one bill for all of your products and services". The landing page does not list seller requirements. It links to separate guides for offering products and for receiving payments, and those are the pages to read before you form a view.
+
+## Partner channels beyond the listing
+
+Marketplaces sit next to other kinds of partner relationships. Microsoft's page names two options in its sales opportunities section. One is described as a way to "allow Microsoft Cloud Solution Providers (CSP) partners to resell your solution as part of a bundled offer". The other "lets Microsoft sales teams consider your IP co-sell eligible solution". Other platforms have their own versions under their own names. These are programs run by the platform, with their own eligibility terms that the documentation points to separately. Whether you qualify, and what a given partner would do for you, is something only the platform or partner can answer.
+
+## Questions to answer before you build
+
+Treat the following as a checklist for a conversation with yourself, a platform contact and an advisor.
+
+1. **Do your target buyers already buy through this marketplace?** Ask in your next five conversations. The [sales call structure](/insights/founder-led-sales-calls-a-structure/) article has room for a question about how they purchase software. A buyer's own description beats any inference from a platform's documentation.
+2. **What does the integration require, and who will keep it running?** The documentation names purchase, entitlement and metering steps, and Microsoft says a landing page and a connection webhook "should be running 24/7". Price those in your own team's time.
+3. **Which pricing model do you commit to?** Both AWS and Microsoft say the pricing model cannot be changed after a certain point. The article on [pricing a first SaaS](/insights/pricing-a-first-saas-value-packaging-and-the-questions-to-ask/) sets out the questions to settle before you pick one.
+4. **How will trials work?** Microsoft describes a trial run by the publisher outside the platform and a separate trial feature for transactable offers, and the two behave differently. The article on [trials, demos and self-serve](/insights/trials-demos-and-self-serve-how-a-customer-first-meets-the-product/) covers the product-side choices.
+5. **Which countries and currencies can you serve?** AWS lists availability by country as a listing property. For a founder who lives in one country and sells to another, who is the seller of record, how tax is handled and which entity signs are questions for an accountant or counsel. This article does not answer them.
+6. **What happens if you leave?** Ask what becomes of existing subscriptions if you remove a listing, and read the terms that govern that.
+
+## A way to decide
+
+A listing is worth the effort when buyers already buy this way, when the integration work is smaller than the conversations it would otherwise save, and when you can run it. If those three are not yet true, a listing can wait while you keep earning customers directly. Revisit the question when a buyer asks for it by name. The [glossary](/glossary/) defines terms such as pilot and design partner that you will meet in marketplace and partner conversations.
+
+## What this article cannot tell you
+
+This article cannot tell you whether a marketplace will bring you buyers, which platform fits your product, or what a listing will cost you in fees, tax or time. It leaves out every fee amount and outcome on purpose. It reads three vendors' own documentation, which describes each vendor's program as that vendor chooses to present it, and it has not tested any of the processes described. Platform terms, eligibility rules and fees change, and the pages cited were read on 2026-10-10. This is general information, not legal or financial advice. Before you accept a marketplace agreement, or decide who sells to whom across borders, ask a qualified lawyer and an accountant who know your situation.
