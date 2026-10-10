@@ -1,0 +1,114 @@
+---
+import { CLEAR_TICKS, TICKS_PRIVACY } from '../../tools/copy.ts';
+import ToolPrivacy from '../../tools/ToolPrivacy.astro';
+import ToolResult from '../../tools/ToolResult.astro';
+import { waitingText } from '../../../scripts/pricing-checker.ts';
+import { CHECKS, ISLAND, RESULTS } from './spec.ts';
+
+/**
+ * <we-pricing-checker>: the launch checklist of the pricing page article, as statements the reader ticks when they are true of their
+ * own page, and a count of what is marked and what is left, in the browser. The markup is complete without JavaScript, except that the
+ * boxes are rendered disabled: a visitor without a script is not handed controls that do nothing, and the rules below the checker stand
+ * on their own. The script enables the boxes and fills the results.
+ *
+ * The results region is `role="status"` and polite, and each result is a fixed block, so updating one moves nothing. Nothing is stored
+ * or sent, and the ticks never reach the address bar.
+ */
+const waiting = waitingText();
+---
+
+<we-pricing-checker class="pcheck">
+  <ToolPrivacy text={TICKS_PRIVACY} />
+  <form class="pcheck__form" novalidate autocomplete="off">
+    <section class="pcheck__panel" aria-labelledby="pcheck-panel-title">
+      <h2 id="pcheck-panel-title" class="pcheck__title">{ISLAND.panelTitle}</h2>
+      <p class="pcheck__intro">{ISLAND.panelIntro}</p>
+      <fieldset class="pcheck__set">
+        <legend>{ISLAND.legend}</legend>
+        <ol class="pcheck__list">
+          {
+            CHECKS.map((item) => (
+              <li class="pcheck__item">
+                <div class="choice">
+                  <input id={`pcheck-${item.id}`} type="checkbox" name={item.id} disabled />
+                  <label for={`pcheck-${item.id}`}>{item.text}</label>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </fieldset>
+      <div class="pcheck__live" role="status" aria-live="polite" aria-label={ISLAND.liveLabel}>
+        <dl class="pcheck__results">
+          {RESULTS.map((result) => <ToolResult id={result.id} name={result.name} display={waiting.display} detail={waiting.detail} />)}
+        </dl>
+      </div>
+    </section>
+    <div class="cluster">
+      <button class="btn btn--quiet" type="reset" disabled>{CLEAR_TICKS}</button>
+    </div>
+  </form>
+</we-pricing-checker>
+
+<script>
+  import { definePricingChecker } from '../../../scripts/pricing-checker.ts';
+  definePricingChecker();
+</script>
+
+<style>
+  @layer pages {
+    .pcheck {
+      display: grid;
+      gap: var(--sp-6);
+    }
+
+    .pcheck__form {
+      display: grid;
+      gap: var(--sp-7);
+    }
+
+    .pcheck__panel {
+      container-type: inline-size;
+      display: grid;
+      gap: var(--sp-4);
+      font-family: var(--ff-sans);
+    }
+
+    .pcheck__title {
+      font-size: var(--fs-xl);
+    }
+
+    .pcheck__intro {
+      color: var(--color-text-muted);
+      max-inline-size: 62ch;
+    }
+
+    .pcheck__set {
+      display: grid;
+      gap: var(--sp-3);
+      margin: 0;
+      padding: 0;
+      border: 0;
+      min-inline-size: 0;
+
+      & legend {
+        padding: 0;
+        font-weight: 600;
+        margin-block-end: var(--sp-3);
+      }
+    }
+
+    .pcheck__list {
+      display: grid;
+      gap: var(--sp-3);
+      margin: 0;
+      padding-inline-start: var(--sp-6);
+    }
+
+    .pcheck__results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: var(--sp-4) var(--sp-5);
+    }
+  }
+</style>
