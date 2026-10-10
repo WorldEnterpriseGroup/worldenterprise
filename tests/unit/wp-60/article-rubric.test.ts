@@ -2,10 +2,11 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
+import * as claimsAudit from '../../../scripts/audit-claims.mjs';
 import { routes } from '../../../src/data/routes.ts';
 import { listCollectionFiles, listInsightFiles } from '../../../src/lib/content-files.ts';
 import { checkArticle, internalLinks, LIMITS_HEADING, MAX_WORDS, MIN_WORDS } from './rubric.ts';
-import type { DenyRule, RubricContext } from './rubric.ts';
+import type { RubricContext } from './rubric.ts';
 
 /**
  * Every file in src/content/insights/** meets the article rules of docs/wave8-contracts.md, section 2. The rule list is in rubric.ts and is
@@ -13,13 +14,10 @@ import type { DenyRule, RubricContext } from './rubric.ts';
  */
 const root = new URL('../../../', import.meta.url).pathname;
 
-function loadDenylist(): readonly DenyRule[] {
-  try {
-    return (JSON.parse(readFileSync(join(root, 'claims-denylist.json'), 'utf8')) as { rules: DenyRule[] }).rules;
-  } catch (error) {
-    throw new Error(`Could not read claims-denylist.json: ${(error as Error).message}`);
-  }
+interface AuditModule {
+  scan(text: string, options?: { route?: string }): { rule: string }[];
 }
+const audit = claimsAudit as unknown as AuditModule;
 
 const slugs = (collection: string): Set<string> => new Set(listCollectionFiles(root, collection).map((f) => f.replace(/\.mdx?$/, '')));
 
@@ -27,7 +25,8 @@ const ctx: RubricContext = {
   ledgerPaths: new Set(routes.map((r) => r.path)),
   playbookSlugs: slugs('playbooks'),
   templateSlugs: slugs('library'),
-  denylist: loadDenylist(),
+  // The same scan the built-output audit runs: rules and context rules, the data-claim-allow and data-generic-definition markers, allowed paths.
+  scanClaims: (text, route) => audit.scan(text, { route }),
 };
 
 /**
@@ -162,6 +161,14 @@ test('a claim the denylist blocks fails, and so do emoji, an exclamation mark an
   assert.ok(rules(doc(FRONT, body({ extra: 'You should sign the note before the round closes.' }))).includes('advice'));
   const dream = FRONT.map((l) => (l === 'topic: funding' ? 'topic: dream' : l));
   assert.ok(!rules(doc(dream, body({ extra: 'You should sign up for the interview slot.' })), 'src/content/insights/dream/a-fabricated-article.mdx').includes('advice'));
+});
+
+test('a SAFE term inside a data-generic-definition element passes and a first-person peer word does not, as in the built-output audit', () => {
+  const definition = '<p data-generic-definition>A valuation cap limits the price at which a note converts.</p>';
+  assert.ok(!rules(doc(FRONT, body({ extra: definition }))).includes('denylist'));
+  assert.ok(rules(doc(FRONT, body({ extra: 'A valuation cap limits the price at which a note converts.' }))).includes('denylist'));
+  assert.ok(rules(doc(FRONT, body({ extra: 'Our cohort starts soon.' }))).includes('denylist'));
+  assert.ok(!rules(doc(FRONT, body({ extra: 'A <span data-claim-allow="C-13-peers">cohort analysis</span> groups customers by signup month.' }))).includes('denylist'));
 });
 
 test('a file with no frontmatter or broken YAML fails', () => {

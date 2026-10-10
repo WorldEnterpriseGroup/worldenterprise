@@ -40,12 +40,13 @@ project="WorldEnterpriseGroup%2Fworldenterprise"
 mkdir -p "$slot_dir"
 
 status_of() {
-  # prints "<id> <status> <created_at>" for the newest pipeline of the given ref, or "none"
+  # prints "<id> <status> <created_at>" for the newest push-source pipeline of the given ref, or "none". Merge request pipelines
+  # (source merge_request_event) fail at once with no jobs on this project and would hide the real result, so they are not read.
   if [ -n "${WAVE8_STATUS_CMD:-}" ]; then
     "$WAVE8_STATUS_CMD" "$1"
     return
   fi
-  GITLAB_HOST=git.developerdojo.org glab api "projects/$project/pipelines?ref=$1&per_page=1" |
+  GITLAB_HOST=git.developerdojo.org glab api "projects/$project/pipelines?ref=$1&source=push&per_page=1" |
     python3 -c 'import json,sys; d=json.load(sys.stdin); print("{} {} {}".format(d[0]["id"], d[0]["status"], d[0]["created_at"]) if d else "none")'
 }
 
@@ -87,7 +88,8 @@ wait_for_pipeline() {
   # $1 ref, $2 ISO timestamp the wait started at (a pipeline created earlier is not ours)
   local ref="$1" started="$2" waited=0 line id state created
   while true; do
-    line="$(status_of "$ref")"
+    # A lookup that fails once (network, rate limit) is retried at the next poll; under set -e it would end the script and keep the slot.
+    line="$(status_of "$ref" || echo none)"
     if [ "$line" != "none" ]; then
       read -r id state created <<<"$line"
       if [[ "$created" > "$started" || "$created" == "$started" ]]; then

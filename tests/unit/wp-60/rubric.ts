@@ -13,18 +13,18 @@ export const MAX_WORDS = 1800;
 export const LIMITS_HEADING = 'What this article cannot tell you';
 export const MIN_INTERNAL_LINKS = 3;
 
-export interface DenyRule {
-  readonly id: string;
-  readonly pattern: string;
-  readonly flags: string;
-}
+/**
+ * The claims scan of scripts/audit-claims.mjs: the rules and the context rules, with their markers (`data-claim-allow`,
+ * `data-generic-definition`) and allowed paths, exactly as the built-output audit applies them. Passing the function in keeps this file pure.
+ */
+export type ClaimsScan = (text: string, route: string) => readonly { readonly rule: string }[];
 
 export interface RubricContext {
   /** Every ledger path (launch candidates), for the internal-link rule. */
   readonly ledgerPaths: ReadonlySet<string>;
   readonly playbookSlugs: ReadonlySet<string>;
   readonly templateSlugs: ReadonlySet<string>;
-  readonly denylist: readonly DenyRule[];
+  readonly scanClaims: ClaimsScan;
 }
 
 export interface Problem {
@@ -108,9 +108,8 @@ export function checkArticle(path: string, raw: string, ctx: RubricContext): Pro
   const links = internalLinks(parts.body).filter((l) => ctx.ledgerPaths.has(l));
   if (links.length < MIN_INTERNAL_LINKS) add('internal-links', `${links.length} internal links to ledger routes; at least ${MIN_INTERNAL_LINKS}`);
 
-  for (const rule of ctx.denylist) {
-    if (new RegExp(rule.pattern, rule.flags).test(raw)) add('denylist', `matches claims rule ${rule.id}`);
-  }
+  const slug = place[2] ?? '';
+  for (const hit of ctx.scanClaims(raw, `/insights/${slug}/`)) add('denylist', `matches claims rule ${hit.rule}`);
   if (EMOJI.test(raw)) add('style', 'no emoji');
   if (/!\s/u.test(parts.body.replace(/!\[[^\]]*\]/g, ''))) add('style', 'no exclamation marks');
   if (typeof data.topic === 'string' && ADVICE_DESKS.includes(data.topic) && ADVICE.test(parts.body)) {
