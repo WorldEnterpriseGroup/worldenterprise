@@ -1,0 +1,123 @@
+---
+title: "Usage-based, seat-based and hybrid pricing models"
+seoTitle: Seat, usage and hybrid pricing
+description: How seat-based, usage-based and hybrid pricing work, what each one asks of your product and billing, and the questions that help you choose a unit of value.
+topic: models
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders, non-technical-founders]
+relatedServices: [C]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: customer-interview-guide
+related: [pricing-a-first-saas-value-packaging-and-the-questions-to-ask, product-led-and-sales-led-growth-choosing-between-them]
+evidence: [stripe-pricing-models, stripe-usage-based, stripe-analytics]
+claimsUsed: []
+sources:
+  - id: stripe-pricing-models
+    title: Recurring pricing models
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/products-prices/pricing-models
+    accessed: 2026-10-10
+  - id: stripe-usage-based
+    title: Basic usage-based billing
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/billing/subscriptions/usage-based
+    accessed: 2026-10-10
+  - id: stripe-analytics
+    title: Billing analytics
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/billing/subscriptions/analytics
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+import DataTable from '../../../components/ui/DataTable.astro';
+
+A pricing model answers three questions at once. What is the unit you charge for? How does the charge change as the customer uses more of the product? And when does the customer find out what they owe? The answers shape how you sell, how you build and how predictable your revenue is. Changing them later is possible, but every existing customer has an opinion about it.
+
+This article compares the three families you will meet most often, seat-based, usage-based and hybrid, and sets out what each one asks of your product, your billing and your sales conversations. It describes how companies price software in general. It does not describe what any particular company charges.
+
+## Terms you will meet
+
+The definitions below are general descriptions of pricing terms, taken from one payments vendor's public documentation and attributed to it. They describe how that documentation uses the words, and they show the vocabulary you will see in billing tools and in customer questions.
+
+<dl data-generic-definition>
+  <dt>Pricing unit</dt>
+  <dd>The thing a price is attached to, such as a user, a project or a quantity of activity. Whatever the unit is, the customer's bill grows with it.</dd>
+  <dt>Seat-based pricing</dt>
+  <dd>Stripe's documentation says of per-seat pricing: "Each pricing unit represents one user." Its example is a business that buys software for its employees, where each employee needs a license to access the software.</dd>
+  <dt>Flat rate</dt>
+  <dd>Stripe's documentation describes it this way: "Customers choose a service tier (for example, Basic, Starter, or Enterprise) and pay a flat rate for it."</dd>
+  <dt>Tiered pricing</dt>
+  <dd>In the same documentation, "The unit cost changes with quantity (volume-based pricing) or usage (graduated pricing)."</dd>
+  <dt>Usage-based pricing</dt>
+  <dd>Charging customers "based on their usage of your product or service". Its page on pricing models lists three variations: fixed fee and overage, pay as you go, and credit burndown.</dd>
+  <dt>Overage</dt>
+  <dd>Use beyond what a fixed fee covers, which is then charged separately. In the vocabulary above, "fixed fee and overage" is the model most often called hybrid.</dd>
+  <dt>Meter</dt>
+  <dd>A record of usage events that a billing system adds up to work out what to charge. Stripe describes recording usage data "to bill your customers the correct amounts".</dd>
+</dl>
+
+## Seat-based pricing
+
+In a seat-based model the bill grows with the number of people who use the product. It suits software that people work in together: collaboration, communication, project and customer tools.
+
+**What it does well.** It is the easiest model to explain. A buyer can multiply a price by a headcount and put the result in a budget. Revenue is predictable, because seats change slowly, and the invoice rarely surprises anyone.
+
+**Where it strains.** It works only when value grows with the number of people. If one person gets all the benefit, charging by seat penalizes the customers who adopt the product most widely and rewards the ones who share a login. Customers also ration seats, which limits the spread that could have made your product hard to remove. And if your product does work for people without needing them to log in, such as automations that run in the background, a seat count misses the value entirely.
+
+**What it asks of you.** Clear rules about who counts as a seat, how to add and remove people, and what happens to a seat when its holder leaves.
+
+## Usage-based pricing
+
+In a usage-based model the bill follows the amount of activity: messages sent, records processed, calls made, data stored. Stripe's documentation calls it "a common pricing model for SaaS businesses", and that is a vendor's description, not a market measurement.
+
+**What it does well.** Customers can start small and pay in proportion to the value they get. When usage tracks value, a customer who succeeds with your product pays more because they gained more, which many buyers find fair.
+
+**Where it strains.** Revenue is less predictable, both for you and for the customer. A customer who cannot forecast the bill may hold back use, ask for a cap or object at renewal. Usage also needs to be measured accurately. If your own count of events does not match what the customer sees, you will spend time on disputes.
+
+A small detail in vendor documentation shows the forecasting problem. Stripe's definition of monthly recurring revenue says its calculations exclude "any metered (usage based) products". A common recurring revenue measure, in other words, may not include the part of your income that varies with use. If you adopt this model, decide how you will measure income that moves, and say so to anyone who reads your numbers. The <MaybeLink path="/research/early-stage-saas-metrics-definitions/">early-stage SaaS metrics definitions</MaybeLink> explain the standard measures, and the <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> lets you work through them.
+
+**What it asks of you.** A metering system you trust, a way to show customers their own usage before the invoice arrives, alerts or limits that prevent a surprise, and a clear definition of what counts as one unit.
+
+## Hybrid pricing
+
+A hybrid combines a fixed part with a variable one. The usual forms are a base fee that includes an allowance followed by a charge for the excess, or a per-seat price plus a charge for a heavy resource. Stripe's list of usage variations names the first form as "fixed fee and overage".
+
+**What it does well.** The base fee gives you predictable revenue and gives the customer a stable number to approve. The variable part captures extra value from heavier users without penalizing light ones.
+
+**Where it strains.** Every added variable is another thing to explain, test and support. Buyers read a pricing page with two dimensions more slowly, and a sales conversation may spend more time on forecasting usage than on the problem the product solves. A hybrid chosen to avoid a hard decision can end up carrying the weaknesses of both models.
+
+**What it asks of you.** Everything the other two ask for, plus a clear explanation of how the parts interact.
+
+## Comparing the three
+
+<DataTable
+  caption="What each family of pricing models asks for"
+  columns={['Question', 'Seat-based', 'Usage-based', 'Hybrid']}
+  rows={[
+    ['What grows with value?', 'The number of people', 'The amount of activity', 'Both, in part'],
+    ['Easy to forecast for the customer?', 'Usually yes', 'Often no', 'Partly'],
+    ['Easy to forecast for you?', 'Usually yes', 'Harder', 'Partly'],
+    ['What must you build?', 'Seat management', 'Metering and usage views', 'Both'],
+    ['Common failure', 'Shared logins and rationed seats', 'Bill shock and disputes', 'A page nobody can follow']
+  ]}
+/>
+
+The table is editorial judgment organized for comparison. It is not drawn from a source, and each row is a hypothesis to test against your own customers.
+
+## Choosing a unit
+
+Ask what grows when the customer gets more value. Then ask whether you can measure it cheaply and whether the customer will accept the measurement. Write both answers down before deciding.
+
+1. Name the three most valuable things a customer does with your product. Which of them can you count?
+2. Does the count grow with people, with activity or with something else?
+3. Would a customer be able to predict that number a quarter ahead?
+4. What would a customer do to avoid paying more, and is that behavior one you want?
+5. Can your billing system, and your team, handle the model on day one?
+
+Test the answers in conversations. The <MaybeLink path="/insights/pricing-page-fundamentals-for-a-first-saas/">pricing page fundamentals article</MaybeLink> explains how to state a model on a page, and the <MaybeLink path="/playbooks/build-repeatable-growth/">build repeatable growth playbook</MaybeLink> places pricing inside the wider work of finding customers who stay. For a first company, one plain model that you can explain in a sentence is usually easier to learn from than a clever one.
+
+## What this article cannot tell you
+
+This article cannot tell you which model fits your product, what to charge or how customers in your market react to each model. It cites one payments vendor's documentation for how that vendor names and describes the models, and it gives no market statistics. The comparison table and the lists of strengths and strains are editorial judgment. It says nothing about taxes on software sales, billing and consumer rules, or contract terms for changing a price, all of which vary by country and customer type and are for a qualified professional. Checked on 2026-10-10.
