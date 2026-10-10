@@ -133,7 +133,8 @@ test.describe('with the endpoint connected (mocked)', () => {
     await page.locator(`${FORM} [data-submit]`).click();
     await expect(page).toHaveURL(/\/investors\/interest\/$/);
     await expect(page.locator(`${FORM} [name="name"]`)).toHaveValue('Test Investor');
-    await expect(page.locator(`${FORM} [data-status]`)).not.toBeEmpty();
+    await expect(page.locator(`${FORM} [data-error-summary]`)).toContainText('The form could not be accepted');
+    await expect(page.locator(`${FORM} [name="email"]`)).toHaveValue('investor@example.org');
   });
 
   test('@endpoint a 429 gives the wait from Retry-After in minutes and keeps the answers', async ({ page }) => {

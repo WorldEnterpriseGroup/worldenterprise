@@ -8,6 +8,7 @@ import { isBuilt } from '../../support/routes.ts';
 
 const FUNDING = 'WE makes no promise of funding.';
 const DISCLAIMER = 'Introductions are a flat-fee service.';
+const DISCLAIMER_FULL = 'Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.';
 
 interface Journey {
   readonly route: string;
@@ -53,7 +54,9 @@ for (const entry of PAGES) {
       const text = ((await page.locator('main').textContent()) ?? '').replace(/\s+/g, ' ');
       expect(text).toContain(FUNDING);
       if (entry.names) expect(text).toContain(DISCLAIMER);
-      expect(text).not.toMatch(/success fee|no fee|no equity|free of charge/i);
+      // The disclaimer is the owner's verbatim sentence and says "takes no fee or stake tied to any investment". Anywhere else the words are banned.
+      const outsideDisclaimer = text.split(DISCLAIMER_FULL).join(' ');
+      expect(outsideDisclaimer).not.toMatch(/success fee|no fee|no equity|no stake|free of charge/i);
       expect(text).not.toMatch(/investor network|our investors|portfolio companies/i);
     });
 
