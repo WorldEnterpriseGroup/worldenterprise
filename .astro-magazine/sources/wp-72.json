@@ -1,6 +1,6 @@
 {
   "wp": "WP-72",
-  "note": "The sentence ledger of the four customer-journey pages WP-72 wrote (docs/wave8-contracts.md, sections 8.2 and 11; plan 5.3). Each sentence maps to one claim (C-nn), one existing page with a heading (path#heading), or one decision (W8-nn); a title or heading that states no fact about WE is a label (seven words at most). A question for the founder to put to WE states no fact about WE: it maps to the page that already covers its topic, or to W8-25, the journey contract, where the program pages are silent. The template's own sentences (the note under the hero, the section headings and the checklist note) are WP-71's and are traced in its ledger. tests/unit/wp-72/ enumerates the sentences from the content files, fails on one with no mapping and on a mapping with no sentence, and runs the claims denylist over all of them. The resources hub (src/pages/resources/index.astro) is the fifth document. Its own copy (page strings, group titles and intros, the strip) is held strictly; each item title and description is read from the page the item links to and is mapped to that page's file, so a page another package adds changes the list without editing this file (tests/unit/wp-72/resources.test.ts). The file has no fetches: it quotes no outside source.",
+  "note": "The sentence ledger of the four customer-journey pages WP-72 wrote (docs/wave8-contracts.md, sections 8.2 and 11; plan 5.3). Each sentence maps to one claim (C-nn), one existing page with a heading (path#heading), or one decision (W8-nn); a title or heading that states no fact about WE is a label (seven words at most). A question for the founder to put to WE states no fact about WE: it maps to the page that already covers its topic, or to W8-25, the journey contract, where the program pages are silent. The template's own sentences (the note under the hero, the section headings and the checklist note) are WP-71's and are traced in its ledger. tests/unit/wp-72/ enumerates the sentences from the content files, fails on one with no mapping and on a mapping with no sentence, and runs the claims denylist over all of them. The resources hub's own words (src/components/reference/resources.ts, the module that holds them) are the fifth document. Its own copy (page strings, group titles and intros, the strip) is held strictly; each item title and description is read from the page the item links to and is mapped to that page's file, so a page another package adds changes the list without editing this file (tests/unit/wp-72/resources.test.ts). The file has no fetches: it quotes no outside source.",
   "fetches": [],
   "documents": [
     {
@@ -424,7 +424,7 @@
       ]
     },
     {
-      "path": "src/pages/resources/index.astro",
+      "path": "src/components/reference/resources.ts",
       "sentences": [
         {
           "text": "Resources",

@@ -167,10 +167,10 @@ test('no sentence of the hub trips the claims denylist', () => {
 });
 
 // ---------------------------------------------------------------------------------------------------------------------------------
-// The sentence ledger (.astro-magazine/sources/wp-72.json, document src/pages/resources/index.astro)
+// The sentence ledger (.astro-magazine/sources/wp-72.json, document src/components/reference/resources.ts)
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-const HUB = 'src/pages/resources/index.astro';
+const HUB = 'src/components/reference/resources.ts';
 const sources = JSON.parse(readFileSync(join(root, '.astro-magazine/sources/wp-72.json'), 'utf8')) as SourcesFile;
 const hubRows = sources.documents?.find((d) => d.path === HUB)?.sentences ?? [];
 const mapped = new Set(hubRows.map((r) => r.text));
