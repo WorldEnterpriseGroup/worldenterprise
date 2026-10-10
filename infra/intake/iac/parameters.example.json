@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceGroupName": { "value": "rg-worldenterprise-intake" },
+    "location": { "value": "eastus" },
+    "apiHost": { "value": "intake.worldenterprise.org" },
+    "siteOrigin": { "value": "https://worldenterprise.org" },
+    "allowedOrigins": { "value": ["https://worldenterprise.org", "https://www.worldenterprise.org"] },
+    "frontDoorId": { "value": "00000000-0000-0000-0000-000000000000" },
+    "dataverseUrl": { "value": "https://example.crm.dynamics.com" },
+    "keyVaultName": { "value": "omlab-secrets" },
+    "keyVaultResourceGroup": { "value": "Om-Labs" },
+    "senderAddress": { "value": "" },
+    "mailFooterAddress": { "value": "" },
+    "webhookUrl": { "value": "" },
+    "alertEmail": { "value": "" },
+    "deployPrincipalId": { "value": "" },
+    "nurtureEnabled": { "value": false }
+  }
+}

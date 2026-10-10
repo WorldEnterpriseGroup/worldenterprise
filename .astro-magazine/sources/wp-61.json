@@ -1,0 +1,5 @@
+{
+  "wp": "WP-61",
+  "note": "WP-61 is an engineering package: a Function, Bicep, Dataverse definition, brief renderer and CI jobs. It publishes no statistic, number, person, company, date or testimonial. The only visitor-facing text it changes is the privacy notice (src/content/pages/legal/privacy.md), which describes what the intake service does as built: it names every field of the six forms, says submissions go to WE's customer relationship management system (Microsoft Dataverse), that a requested brief is emailed through Azure Communication Services as a link that stops working after 48 hours with a confirm-to-unsubscribe page, that rate limits keep only one-way scrambled values, and that WE has not yet set a retention period. Each of those statements is checked against the code by infra/intake/tests and tests/unit/wp-61/privacy.test.ts. It states no retention period (OP-RETAIN), no delivery time and no amount, and keeps 'sets no cookies' and 'no analytics'.",
+  "sources": []
+}
