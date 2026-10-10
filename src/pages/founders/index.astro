@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Callout from '../../components/ui/Callout.astro';
-import CtaBand from '../../components/ui/CtaBand.astro';
+import FounderSegments from '../../components/cta/FounderSegments.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import Steps from '../../components/ui/Steps.astro';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
@@ -53,6 +53,8 @@ const notFor = [
 >
   <Content />
 
+  <FounderSegments />
+
   <h2 id="criteria-title">The evidence WE looks for</h2>
   <DataTable caption="Criteria WE uses when deciding whether a company is a fit" columns={['Criterion', 'What it means']} rows={criteria} />
 
@@ -75,12 +77,4 @@ const notFor = [
       <a href={href('/investors/')}>what WE does and does not do</a> for investors.
     </p>
   </Callout>
-
-  <CtaBand
-    slot="after"
-    title="Ready to describe your company?"
-    text="Apply, or see how a seat is staffed first. Neither commits you to anything."
-    cta={{ label: 'Apply', href: '/apply/' }}
-    secondary={{ label: 'See the operator roles', href: '/network/operators/' }}
-  />
 </MarketingLayout>

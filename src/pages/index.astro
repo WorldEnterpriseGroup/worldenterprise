@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
 import FaqList from '../components/cards/FaqList.astro';
+import HomeAudience from '../components/home/audience/HomeAudience.astro';
 import HomeHero from '../components/home/HomeHero.astro';
 import LatestInsights from '../components/home/LatestInsights.astro';
 import { HOME_FAQ_IDS } from '../components/home/faq.ts';
@@ -11,7 +12,8 @@ import { resolveProof } from '../components/home/proof/proof.ts';
 import { loadPage } from '../components/program/loadPage.ts';
 import SeatDiagram from '../components/program/SeatDiagram.astro';
 import { photoImage } from '../components/media/photo-image.ts';
-import CtaBand from '../components/ui/CtaBand.astro';
+import { resolveCta } from '../data/cta/index.ts';
+import CtaBand from '../components/cta/CtaBand.astro';
 import HexAtlas from '../components/ui/HexAtlas.astro';
 import { preloadOfPhoto } from '../lib/image-type.ts';
 import { getRouteState } from '../lib/route-state.ts';
@@ -22,6 +24,7 @@ import HomeLayout from '../layouts/HomeLayout.astro';
 const { data, Content } = await loadPage('home');
 const [primary, secondary] = data.ctas;
 const state = await getRouteState();
+const endBand = resolveCta({ path: '/', collection: 'pages' }, state.isLive);
 const band = await photoImage('band-4');
 const heroImage = await photoImage('band-1');
 
@@ -46,6 +49,8 @@ const proofRows = resolveProof((path) => state.isLive(path));
 ---
 <HomeLayout description={data.description} updated={data.updated} draft={data.draft} ogSlot="og-home" preloadImage={preloadOfPhoto(heroImage)}>
   {primary && <HomeHero image={heroImage} eyebrow={data.eyebrow ?? 'World Enterprise Incubator'} title="Build the evidence a SaaS idea needs to be a company." lead="Dedicated team seats, steered by WE, take you from first idea to first customers, with the evidence an investor will ask for." primary={primary} secondary={secondary} />}
+
+  <HomeAudience />
 
   <section class="section" aria-labelledby="home-leave-with">
     <div class="container stack">
@@ -135,8 +140,8 @@ const proofRows = resolveProof((path) => state.isLive(path));
     </div>
   </section>
 
-  <Fragment slot="after">
-    {primary && <CtaBand title="Ready to test your idea?" text="Apply, or sketch the team you would need first." cta={primary} secondary={secondary} />}
+  <Fragment slot="cta-end">
+    <CtaBand model={endBand} />
   </Fragment>
 </HomeLayout>
 

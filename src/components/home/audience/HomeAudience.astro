@@ -1,0 +1,25 @@
+---
+import AudienceStrip from '../../cta/AudienceStrip.astro';
+import { AUDIENCE_LINKS } from '../../../data/cta/audiences.ts';
+import { HUB_HEADINGS } from '../../../data/cta/hubs.ts';
+import { getRouteState } from '../../../lib/route-state.ts';
+
+/**
+ * The band under the hero: four doors, one for each audience (startups, investors, partners, corporate teams). A door whose page is not
+ * live is left out by the strip, and the band, heading included, is not drawn when fewer than two doors are open, so a heading is never
+ * left over a list that is not there. It renders at once (no deferred rendering) because it sits in the first screens of the page.
+ */
+const state = await getRouteState();
+const open = AUDIENCE_LINKS.filter((link) => state.isLive(link.href)).length >= 2;
+---
+
+{
+  open && (
+    <section class="section" aria-labelledby="home-audience">
+      <div class="container stack">
+        <h2 id="home-audience">{HUB_HEADINGS.audience}</h2>
+        <AudienceStrip label="Starting points by audience" />
+      </div>
+    </section>
+  )
+}

@@ -177,7 +177,7 @@ test('the packages teaser lists the four packages from packages.ts, links apply 
 
 test('the page is an argument in the planned order', () => {
   const home = read('src/pages/index.astro');
-  const order = ['<HomeHero', 'id="home-leave-with"', 'id="home-team"', 'id="home-packages"', 'id="home-proof"', 'id="home-fundable"', '<Content />', 'id="home-remote"', 'id="home-services"', '<LatestInsights />', 'id="home-faq"', '<CtaBand'];
+  const order = ['<HomeHero', '<HomeAudience />', 'id="home-leave-with"', 'id="home-team"', 'id="home-packages"', 'id="home-proof"', 'id="home-fundable"', '<Content />', 'id="home-remote"', 'id="home-services"', '<LatestInsights />', 'id="home-faq"', '<CtaBand'];
   let at = -1;
   for (const marker of order) {
     const next = home.indexOf(marker, at + 1);

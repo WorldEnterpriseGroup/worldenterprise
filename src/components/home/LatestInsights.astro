@@ -1,10 +1,29 @@
 ---
+import { DESK_DEFINITIONS } from '../../data/desks.ts';
 import { getPublished } from '../../lib/content.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
 import ArticleCard from '../cards/ArticleCard.astro';
 
-const entries = (await getPublished('insights'))
-  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime())
-  .slice(0, 3);
+const CARDS = 3;
+
+const published = (await getPublished('insights')).sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
+
+// The newest article of each desk comes first, so the three cards show three desks rather than the three newest pieces of one. When fewer
+// than three desks hold an article, the newest of the rest fill the row.
+const newestOfDesk = new Map<string, (typeof published)[number]>();
+for (const entry of published) if (!newestOfDesk.has(entry.data.topic)) newestOfDesk.set(entry.data.topic, entry);
+const lead = [...newestOfDesk.values()].slice(0, CARDS);
+const entries = [...lead, ...published.filter((entry) => !lead.includes(entry))].slice(0, CARDS);
+
+// A desk is a link only when its topic page is live (a desk with no article has no page yet).
+const state = await getRouteState();
+const desks = DESK_DEFINITIONS.filter((desk) => state.isLive(`/insights/topic/${desk.id}/`));
+
+/** The display name of a desk; an id that is not a desk is shown as it is. */
+function deskName(id: string): string {
+  return DESK_DEFINITIONS.find((desk) => desk.id === id)?.name ?? id;
+}
 
 /** The route slug is the last segment of the entry id. */
 function slugOf(id: string): string {
@@ -20,9 +39,20 @@ function slugOf(id: string): string {
         <h2 id="home-insights">Latest insights</h2>
         <div class="grid">
           {entries.map((e) => (
-            <ArticleCard title={e.data.title} summary={e.data.description} path={`/insights/${slugOf(e.id)}/`} eyebrow={e.data.topic} />
+            <ArticleCard title={e.data.title} summary={e.data.description} path={`/insights/${slugOf(e.id)}/`} eyebrow={deskName(e.data.topic)} />
           ))}
         </div>
+        {desks.length > 0 && (
+          <nav aria-label="Insight desks">
+            <ul class="cluster" role="list">
+              {desks.map((desk) => (
+                <li>
+                  <a class="btn btn--secondary" href={href(`/insights/topic/${desk.id}/`)}>{desk.name}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </div>
     </section>
   )

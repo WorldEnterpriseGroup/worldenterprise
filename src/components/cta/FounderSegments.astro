@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import { HUB_HEADINGS } from '../../data/cta/hubs.ts';
+import { SEGMENTS } from '../../data/families.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+/**
+ * The paths of the founders hub: one entry per founder segment of the registry, and only for a segment that is launched and whose page is
+ * live, so a segment with no page yet is not listed. A segment page's own description, when it has one, is the line under its name. With no
+ * live segment the list, heading included, is not drawn.
+ */
+const state = await getRouteState();
+const pages = await getCollection('pages');
+const segments = SEGMENTS.entries
+  .filter((entry) => entry.launch && state.isLive(entry.path))
+  .map((entry) => ({ label: entry.label, path: entry.path, description: pages.find((p) => p.id === `founders/${entry.slug}`)?.data.description }));
+---
+
+{
+  segments.length > 0 && (
+    <>
+      <h2 id="segments-title">{HUB_HEADINGS.segments}</h2>
+      <ul class="segments" role="list">
+        {segments.map((segment) => (
+          <li class="segments__item">
+            <a class="segments__link" href={href(segment.path)}>
+              {segment.label}
+            </a>
+            {segment.description && <p class="segments__text">{segment.description}</p>}
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
+
+<style>
+  @layer pages {
+    .segments {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      gap: var(--sp-4);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .segments__item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-2);
+      padding: var(--sp-4);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .segments__link {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 600;
+    }
+
+    .segments__text {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+  }
+</style>
