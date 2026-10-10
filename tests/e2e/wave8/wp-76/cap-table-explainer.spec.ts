@@ -95,10 +95,13 @@ test.describe('cap table explainer (the project sets the viewport: 1440 and 390)
     const seen = watch(page, baseURL ?? '');
     await openPage(page);
     const after: string[] = [];
-    // The tool sends data with fetch, XHR, a beacon or a socket. A lazy image of the page's own header or footer is not the tool, so
-    // static resource types are left out; any non-GET request is still counted.
+    // What is entered must stay in the browser. Only a same-origin GET of a static resource is let through: a lazy image of the page's
+    // own header or footer is not the tool. Every other request, and any request to another origin, is counted.
+    if (baseURL === undefined) throw new Error('the project sets no baseURL');
+    const origin = new URL(baseURL).origin;
     page.on('request', (request) => {
-      if (request.method() === 'GET' && ['image', 'font', 'stylesheet', 'script', 'media'].includes(request.resourceType())) return;
+      const staticAsset = ['image', 'font', 'stylesheet', 'script', 'media'].includes(request.resourceType());
+      if (request.method() === 'GET' && staticAsset && new URL(request.url()).origin === origin) return;
       after.push(`${request.method()} ${request.url()}`);
     });
     page.on('websocket', (socket) => after.push(`websocket ${socket.url()}`));
