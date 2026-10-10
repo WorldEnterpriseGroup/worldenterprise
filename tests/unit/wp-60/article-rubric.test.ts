@@ -2,10 +2,12 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
+import * as claimsAudit from '../../../scripts/audit-claims.mjs';
 import { routes } from '../../../src/data/routes.ts';
 import { listCollectionFiles, listInsightFiles } from '../../../src/lib/content-files.ts';
+import { liveRoutesAt, ROUTED_COLLECTIONS } from './live-routes.ts';
 import { checkArticle, internalLinks, LIMITS_HEADING, MAX_WORDS, MIN_WORDS } from './rubric.ts';
-import type { DenyRule, RubricContext } from './rubric.ts';
+import type { RubricContext } from './rubric.ts';
 
 /**
  * Every file in src/content/insights/** meets the article rules of docs/wave8-contracts.md, section 2. The rule list is in rubric.ts and is
@@ -13,21 +15,19 @@ import type { DenyRule, RubricContext } from './rubric.ts';
  */
 const root = new URL('../../../', import.meta.url).pathname;
 
-function loadDenylist(): readonly DenyRule[] {
-  try {
-    return (JSON.parse(readFileSync(join(root, 'claims-denylist.json'), 'utf8')) as { rules: DenyRule[] }).rules;
-  } catch (error) {
-    throw new Error(`Could not read claims-denylist.json: ${(error as Error).message}`);
-  }
+interface AuditModule {
+  scan(text: string, options?: { route?: string }): { rule: string }[];
 }
+const audit = claimsAudit as unknown as AuditModule;
 
 const slugs = (collection: string): Set<string> => new Set(listCollectionFiles(root, collection).map((f) => f.replace(/\.mdx?$/, '')));
 
 const ctx: RubricContext = {
-  ledgerPaths: new Set(routes.map((r) => r.path)),
+  livePaths: liveRoutesAt(root),
   playbookSlugs: slugs('playbooks'),
   templateSlugs: slugs('library'),
-  denylist: loadDenylist(),
+  // The same scan the built-output audit runs: rules and context rules, the data-claim-allow and data-generic-definition markers, allowed paths.
+  scanClaims: (text, route) => audit.scan(text, { route }),
 };
 
 /**
@@ -75,7 +75,7 @@ function body(options: { readonly words?: number; readonly links?: readonly stri
   const filler = sentence.repeat(Math.ceil(((options.words ?? 1300) - 40) / 17));
   return [
     filler,
-    ...links.map((l) => `See [a linked page](${l}) for more.`),
+    ...links.map((l) => `See <MaybeLink path="${l}">a linked page</MaybeLink> for more.`),
     options.limits === false ? '' : `## ${LIMITS_HEADING}\n\nThe sources cover one jurisdiction and one date.`,
     options.extra ?? '',
   ].join('\n\n');
@@ -119,14 +119,47 @@ test('a missing limits section fails', () => {
   assert.ok(rules(doc(FRONT, body({ limits: false }))).includes('cannot-tell-you'));
 });
 
-test('fewer than three internal links to ledger routes fail, and a link to a route not in the ledger does not count', () => {
+test('fewer than three internal links to live routes fail, and a link to a route that is not live does not count', () => {
   assert.ok(rules(doc(FRONT, body({ links: ['/glossary/', '/faq/'] }))).includes('internal-links'));
   assert.ok(rules(doc(FRONT, body({ links: ['/glossary/', '/faq/', '/no-such-page/'] }))).includes('internal-links'));
   assert.ok(!rules(doc(FRONT, body({ links: ['/glossary/', '/faq/', '/pricing/'] }))).includes('internal-links'));
 });
 
-test('internalLinks reads Markdown and href links, drops the fragment and query and adds the slash', () => {
+test('a ledger path whose page is still pending does not count as a link: pending paths belong in `related`', () => {
+  const pending = '/industries/';
+  assert.ok(routes.some((r) => r.path === pending), 'the pending path is a ledger row, so only liveness keeps it out');
+  assert.ok(!ctx.livePaths.has(pending), 'the pending path is not live');
+  assert.ok(rules(doc(FRONT, body({ links: ['/glossary/', '/faq/', pending] }))).includes('internal-links'));
+});
+
+test('a link to another article in the same tree counts, because routes derive from the files', () => {
+  const sibling = listInsightFiles(root).find((f) => !ORIGINALS.has(f.file)) ?? listInsightFiles(root)[0];
+  assert.ok(sibling !== undefined);
+  assert.ok(ctx.livePaths.has(`/insights/${sibling.slug}/`), `${sibling.slug} is live`);
+  assert.ok(!rules(doc(FRONT, body({ links: ['/glossary/', '/faq/', `/insights/${sibling.slug}/`] }))).includes('internal-links'));
+});
+
+test('internalLinks counts MaybeLink with double or single quotes and other attributes, drops the fragment and query and adds the slash', () => {
+  assert.deepEqual(internalLinks('<MaybeLink path="/faq/#x">a</MaybeLink> <MaybeLink path=\'/glossary?q=1\'>b</MaybeLink>'), ['/faq/', '/glossary/']);
+  assert.deepEqual(internalLinks('<MaybeLink class="x"\n  path="/pricing">c</MaybeLink>'), ['/pricing/']);
+  assert.deepEqual(internalLinks('<MaybeLink path="https://example.com/">d</MaybeLink>'), []);
+});
+
+test('internalLinks still reads the Markdown and href forms, which link-form rejects', () => {
   assert.deepEqual(internalLinks('[a](/faq/#x) <a href="/glossary?q=1">b</a> [c](https://example.com/)'), ['/faq/', '/glossary/']);
+});
+
+test('the live set reads the same collections as the build, so a link counts exactly when the build would publish its page', () => {
+  const source = readFileSync(join(root, 'src/lib/route-state.ts'), 'utf8');
+  const built = /COLLECTION_NAMES = \[([^\]]+)\]/.exec(source)?.[1]?.match(/'([a-z]+)'/g)?.map((s) => s.slice(1, -1));
+  assert.deepEqual(ROUTED_COLLECTIONS, built);
+});
+
+test('a root-relative Markdown or href link fails the link-form rule, and MaybeLink does not', () => {
+  assert.ok(rules(doc(FRONT, body({ extra: 'See [the glossary](/glossary/).' }))).includes('link-form'));
+  assert.ok(rules(doc(FRONT, body({ extra: 'See <a href="/glossary/">the glossary</a>.' }))).includes('link-form'));
+  assert.ok(!rules(doc(FRONT, body({ extra: 'See [the standard](https://www.irs.gov/a).' }))).includes('link-form'));
+  assert.ok(!rules(doc()).includes('link-form'));
 });
 
 test('the desk folder must equal the topic', () => {
@@ -162,6 +195,14 @@ test('a claim the denylist blocks fails, and so do emoji, an exclamation mark an
   assert.ok(rules(doc(FRONT, body({ extra: 'You should sign the note before the round closes.' }))).includes('advice'));
   const dream = FRONT.map((l) => (l === 'topic: funding' ? 'topic: dream' : l));
   assert.ok(!rules(doc(dream, body({ extra: 'You should sign up for the interview slot.' })), 'src/content/insights/dream/a-fabricated-article.mdx').includes('advice'));
+});
+
+test('a SAFE term inside a data-generic-definition element passes and a first-person peer word does not, as in the built-output audit', () => {
+  const definition = '<p data-generic-definition>A valuation cap limits the price at which a note converts.</p>';
+  assert.ok(!rules(doc(FRONT, body({ extra: definition }))).includes('denylist'));
+  assert.ok(rules(doc(FRONT, body({ extra: 'A valuation cap limits the price at which a note converts.' }))).includes('denylist'));
+  assert.ok(rules(doc(FRONT, body({ extra: 'Our cohort starts soon.' }))).includes('denylist'));
+  assert.ok(!rules(doc(FRONT, body({ extra: 'A <span data-claim-allow="C-13-peers">cohort analysis</span> groups customers by signup month.' }))).includes('denylist'));
 });
 
 test('a file with no frontmatter or broken YAML fails', () => {

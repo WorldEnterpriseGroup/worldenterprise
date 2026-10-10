@@ -2,6 +2,7 @@
 import Field from './Field.astro';
 import Fieldset from './Fieldset.astro';
 import FormFrame from './FormFrame.astro';
+import { CONTACT_AUDIENCE_OPTIONS } from './copy.ts';
 
 const topics = [
   { value: '', label: 'Choose a topic' },
@@ -41,6 +42,7 @@ const topics = [
       hint="Optional."
       reserveError
     />
+    <Field id="contact-audience" name="audience" label="You are writing as" type="select" required options={CONTACT_AUDIENCE_OPTIONS} reserveError />
     <Field id="contact-topic" name="topic" label="What is this about?" type="select" required options={topics} reserveError />
     <Field
       id="contact-message"

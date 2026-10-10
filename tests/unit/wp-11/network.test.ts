@@ -106,16 +106,7 @@ test('no raw internal links in MDX bodies and no raw hex or px colours in compon
   assert.doesNotMatch(read('src/components/network/NetworkIntro.astro'), /#[0-9a-fA-F]{3,8}\b/);
 });
 
-test('investors page carries the no-funding disclaimer and the not-an-offer statement', () => {
-  const page = read('src/pages/investors/index.astro');
-  assert.match(page, /<NoFundingDisclaimer\s*\/>/);
-  assert.match(page, /Not an offer of securities/);
-  assert.match(page, /does not offer securities|offer to sell, or a solicitation/);
-  // Owner decision of 2026-10-09: introductions are a separate paid add-on, so the page no longer says WE arranges no meetings.
-  assert.match(page, /<InvestorIntroductionsOffer\b/);
-  assert.match(page, /does not negotiate terms, advise on securities or handle funds/i);
-  assert.doesNotMatch(page, /does not arrange meetings with investors/i);
-});
+// The investors page block (disclaimer, not-an-offer statement, add-on offer) moved verbatim to tests/unit/wp-64/legacy-investors-page.test.ts (W8-18).
 
 test('every page uses one h1 through its layout and no page renders a raw h1', () => {
   for (const file of pageFiles.filter((f) => f.endsWith('.astro'))) assert.doesNotMatch(read(file), /<h1[\s>]/, file);
