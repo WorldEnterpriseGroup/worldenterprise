@@ -1,12 +1,18 @@
 ---
+import { stageLabel } from '../../pricing/stages.ts';
 import { flags } from '../../../data/flags.ts';
+import { PACKAGE_PARAM, packages } from '../../../data/packages.ts';
 import { href } from '../../../lib/url.ts';
-import { MAX_SEATS_PER_ROLE, ROLE_GROUPS, ROLES } from '../../../scripts/team-composer.ts';
+import { CUSTOM_PLAN_BANNER, MAX_SEATS_PER_ROLE, ROLE_GROUPS, ROLES } from '../../../scripts/team-composer.ts';
 
 /**
  * <we-team-composer>: choose roles and seat counts, see a team-shape summary and carry it to the Apply form.
  * The server-rendered form is a complete no-JavaScript tool (a plain GET to /apply/). The script enhances it.
  * The price renders only when flags.seatPrice.published is true (claim C-06).
+ *
+ * The optional stage select is a `package` field of the form, so the plain GET carries `package=<id>` to the application. The script
+ * also reads `?package=` on load (the pricing page links with it), names the package above the sketch and keeps the Apply links in step.
+ * No package comes with preset seats: the page publishes no seat count for a package (claim C-10).
  */
 const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
 ---
@@ -15,6 +21,16 @@ const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
   <form class="composer__form" method="get" action={href('/apply/')}>
     <div class="composer__layout">
       <div class="stack">
+        <div class="field composer__stage">
+          <label for="composer-package">Company stage (optional)</label>
+          <select id="composer-package" name={PACKAGE_PARAM} aria-describedby="composer-package-hint">
+            <option value="">No stage chosen: a custom seat plan</option>
+            {packages.map((pkg) => <option value={pkg.id}>{stageLabel(pkg)} ({pkg.name})</option>)}
+          </select>
+          <p class="field__hint" id="composer-package-hint">
+            WE sizes each package for one company stage. Choose yours and the application notes that package. Leave it empty for a custom seat plan.
+          </p>
+        </div>
         {
           ROLE_GROUPS.map((group) => (
             <fieldset class="fieldset composer__group">
@@ -48,6 +64,10 @@ const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
 
       <section class="composer__summary" aria-labelledby="composer-summary-title">
         <h2 id="composer-summary-title">Your team sketch</h2>
+        <div class="composer__package" role="status" aria-live="polite">
+          <p class="composer__package-title" data-package-title>{CUSTOM_PLAN_BANNER.title}</p>
+          <p class="composer__package-detail" data-package-detail>{CUSTOM_PLAN_BANNER.detail}</p>
+        </div>
         <p class="composer__static">Enter the number of seats for each role. Then continue to the application. Your choices travel in the link, not to a server.</p>
         <div class="composer__live stack">
           <p class="composer__headline" data-headline role="status">No seats chosen yet.</p>
@@ -147,6 +167,25 @@ const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
         position: sticky;
         inset-block-start: calc(var(--header-h) + var(--sp-5));
       }
+    }
+
+    .composer__package {
+      display: grid;
+      gap: var(--sp-1);
+      padding: var(--sp-3) var(--sp-4);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-radius: var(--radius-sm);
+    }
+
+    .composer__package-title {
+      font-family: var(--ff-display);
+      font-weight: 700;
+    }
+
+    .composer__package-detail {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
     }
 
     .composer__headline {

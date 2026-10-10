@@ -1,0 +1,221 @@
+---
+/**
+ * A stage question that points to the package sized for that stage (claim C-10). The mapping is read from src/data/packages.ts.
+ * Without JavaScript the visitor gets a plain list: each published stage, with a link to its package card. With JavaScript the list
+ * gives way to radio buttons, the result is announced in a polite live region and the matching card is marked.
+ * The radios and the list carry the stage-fit sentences verbatim. The short name above each sentence comes from stages.ts.
+ */
+import type { WePackage } from '../../data/packages.ts';
+import { href } from '../../lib/url.ts';
+import { stageLabel } from './stages.ts';
+
+interface Props {
+  packages: readonly WePackage[];
+}
+
+const { packages } = Astro.props;
+---
+
+<section class="picker-section" aria-labelledby="picker-title">
+  <div class="picker-section__head">
+    <h2 id="picker-title">Not sure which package fits?</h2>
+    <p>Say where your company is today. WE shows the package sized for that stage, as published above. It is a starting point for a conversation, not a quote.</p>
+  </div>
+
+  <we-package-picker class="picker" data-apply={href('/apply/')} data-composer={href('/tools/team-composer/')}>
+    <div class="picker__fallback">
+      <p class="picker__fallback-lead">Find your stage in this list, then follow its link to the package.</p>
+      <ol class="picker__list" role="list">
+        {
+          packages.map((pkg) => (
+            <li class="picker__row">
+              <span class="picker__stage">{stageLabel(pkg)}</span>
+              <span class="picker__fit">{pkg.stageFit}</span>
+              <a class="picker__card-link" href={`#package-${pkg.id}`}>
+                See the {pkg.name} package
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="picker__live">
+      <fieldset class="fieldset picker__fieldset">
+        <legend>Where is your company today?</legend>
+        <div class="picker__options">
+          {
+            packages.map((pkg) => (
+              <label class="picker__option">
+                <input type="radio" name="stage" value={pkg.stageKey} />
+                <span class="picker__option-text">
+                  <span class="picker__stage">{stageLabel(pkg)}</span>
+                  <span class="picker__fit">{pkg.stageFit}</span>
+                </span>
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+      <div class="picker__result">
+        <p class="picker__status" data-status role="status" aria-live="polite" aria-atomic="true"></p>
+        <div class="cluster picker__actions" data-actions></div>
+      </div>
+    </div>
+  </we-package-picker>
+</section>
+
+<script>
+  import { definePackagePicker } from './package-picker.ts';
+  definePackagePicker();
+</script>
+
+<style>
+  @layer pages {
+    .picker-section {
+      display: grid;
+      gap: var(--sp-5);
+      margin-block-start: var(--space-block);
+      scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
+    }
+
+    .picker-section__head {
+      display: grid;
+      gap: var(--space-heading);
+      max-inline-size: var(--prose-max);
+    }
+
+    .picker {
+      display: block;
+      padding: var(--sp-5);
+      background: var(--color-bg-soft);
+      border: var(--border-hair);
+      border-inline-start: 6px solid var(--color-highlight);
+      border-radius: var(--radius-md);
+      font-family: var(--ff-sans);
+    }
+
+    .picker__fallback-lead {
+      margin-block-end: var(--sp-3);
+    }
+
+    .picker__list {
+      display: grid;
+      gap: var(--sp-3);
+      padding: 0;
+      list-style: none;
+    }
+
+    .picker__row {
+      display: grid;
+      gap: var(--sp-1);
+      padding: var(--sp-3) var(--sp-4);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-radius: var(--radius-sm);
+    }
+
+    .picker__stage {
+      font-family: var(--ff-display);
+      font-weight: 700;
+    }
+
+    .picker__fit {
+      color: var(--color-text-muted);
+    }
+
+    /* The script builds one of these links after the page is served, so the rule has to reach elements without Astro's scope attribute. */
+    .picker :global(.picker__card-link) {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--target-min);
+      font-weight: 600;
+      color: var(--color-link);
+    }
+
+    .picker__actions:empty {
+      display: none;
+    }
+
+    .picker__fieldset {
+      display: grid;
+      gap: var(--sp-3);
+      background: var(--color-bg);
+    }
+
+    .picker__options {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .picker__option {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-3);
+      min-block-size: var(--target-min);
+      padding: var(--sp-3) var(--sp-4);
+      border: var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+      cursor: pointer;
+      transition: border-color var(--dur-fast) var(--ease-out);
+
+      & input {
+        flex: none;
+        inline-size: 1.5rem;
+        block-size: 1.5rem;
+        margin-block-start: var(--sp-1);
+        accent-color: var(--color-link);
+      }
+
+      &:has(input:checked) {
+        border-color: var(--color-link);
+        background: var(--color-amber-wash);
+      }
+
+      &:has(input:focus-visible) {
+        outline: 3px solid var(--color-focus);
+        outline-offset: 2px;
+      }
+    }
+
+    .picker__option-text {
+      display: grid;
+      gap: var(--sp-1);
+    }
+
+    .picker__result {
+      display: grid;
+      gap: var(--sp-3);
+      margin-block-start: var(--sp-4);
+    }
+
+    .picker__status {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+      line-height: var(--lh-snug);
+    }
+
+    @media (min-width: 62rem) {
+      .picker__options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    /* The radios replace the list once the script has run. Without it the radios would do nothing, so they stay hidden. */
+    we-package-picker:not([data-enhanced]) .picker__live {
+      display: none;
+    }
+
+    we-package-picker[data-enhanced] .picker__fallback {
+      display: none;
+    }
+
+    @media (forced-colors: active) {
+      .picker__option:has(input:checked) {
+        outline: 2px solid Highlight;
+      }
+    }
+  }
+</style>
