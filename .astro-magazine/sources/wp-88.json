@@ -1,0 +1,177 @@
+{
+  "wp": "WP-88",
+  "note": "Fetches are the primary government and standards-body pages cited by the eight sector articles, fetched on 2026-10-10 with WebFetch (one URL per call). Each quote is a fragment WebFetch returned inside quotation marks for that page. Fetches that failed or returned a page without the needed text were dropped with the sentences they would have supported.",
+  "fetches": [
+    {
+      "id": "fincen-msb",
+      "url": "https://www.fincen.gov/money-services-business-definition",
+      "title": "Money Services Business (MSB) Registration",
+      "publisher": "Financial Crimes Enforcement Network (FinCEN)",
+      "fetchedAt": "2026-10-10T22:31:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-safeguards",
+      "url": "https://www.ftc.gov/business-guidance/resources/ftc-safeguards-rule-what-your-business-needs-know",
+      "title": "FTC Safeguards Rule: What Your Business Needs to Know",
+      "publisher": "Federal Trade Commission",
+      "fetchedAt": "2026-10-10T22:33:05Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fed-sr-23-4",
+      "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2304.htm",
+      "title": "SR 23-4: Interagency Guidance on Third-Party Relationships: Risk Management",
+      "publisher": "Board of Governors of the Federal Reserve System",
+      "fetchedAt": "2026-10-10T22:34:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dfpi-money-transmitters",
+      "url": "https://dfpi.ca.gov/regulated-industries/money-transmitters/",
+      "title": "Money Transmitters",
+      "publisher": "California Department of Financial Protection and Innovation",
+      "fetchedAt": "2026-10-10T22:35:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/content/insights/sectors/fintech-saas-considerations-before-you-build.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "the term \"money services business\" includes any person doing business",
+          "kind": "regulation",
+          "sourceId": "fincen-msb",
+          "locator": "MSB definition",
+          "quote": "The term \"money services business\" includes any person doing business"
+        },
+        {
+          "id": "A2",
+          "sentence": "a currency dealer or exchanger, a check casher, an issuer or seller of traveler's checks, money orders or stored value, and a money transmitter",
+          "kind": "paraphrase",
+          "sourceId": "fincen-msb",
+          "locator": "MSB categories",
+          "quote": "Currency dealer or exchanger."
+        },
+        {
+          "id": "A3",
+          "sentence": "a person who engages as a business in the transfer of funds is an MSB as a money transmitter, regardless of the amount of money transmission activity",
+          "kind": "regulation",
+          "sourceId": "fincen-msb",
+          "locator": "Money transmitter",
+          "quote": "engages as a business in the transfer of funds is an MSB as a money transmitter, regardless of the amount of money transmission activity"
+        },
+        {
+          "id": "A4",
+          "sentence": "no activity threshold applies to the definition of money transmitter",
+          "kind": "regulation",
+          "sourceId": "fincen-msb",
+          "locator": "Money transmitter",
+          "quote": "No activity threshold applies to the definition of money transmitter."
+        },
+        {
+          "id": "A5",
+          "sentence": "licenses and regulates money transmitters",
+          "kind": "regulation",
+          "sourceId": "dfpi-money-transmitters",
+          "locator": "Money Transmitter Division",
+          "quote": "The Money Transmitter Division of DFPI licenses and regulates money transmitters"
+        },
+        {
+          "id": "A6",
+          "sentence": "California's money transmission laws are found in the Financial Code",
+          "kind": "paraphrase",
+          "sourceId": "dfpi-money-transmitters",
+          "locator": "Statutes",
+          "quote": "The California money transmission laws are found in the California Financial Code, Division 1.2"
+        },
+        {
+          "id": "A7",
+          "sentence": "a healthy and trusted financial marketplace",
+          "kind": "paraphrase",
+          "sourceId": "dfpi-money-transmitters",
+          "locator": "Licensing purpose",
+          "quote": "the DFPI supports a healthy and trusted financial marketplace"
+        },
+        {
+          "id": "A8",
+          "sentence": "applies to financial institutions subject to the FTC's jurisdiction",
+          "kind": "regulation",
+          "sourceId": "ftc-safeguards",
+          "locator": "Who the rule applies to",
+          "quote": "The Safeguards Rule applies to financial institutions subject to the FTC’s jurisdiction"
+        },
+        {
+          "id": "A9",
+          "sentence": "Your information security program must be written",
+          "kind": "regulation",
+          "sourceId": "ftc-safeguards",
+          "locator": "Written program",
+          "quote": "Your information security program must be written"
+        },
+        {
+          "id": "A10",
+          "sentence": "designate a Qualified Individual to implement and supervise that program",
+          "kind": "regulation",
+          "sourceId": "ftc-safeguards",
+          "locator": "Qualified Individual",
+          "quote": "Designate a Qualified Individual to implement and supervise your company’s information security program."
+        },
+        {
+          "id": "A11",
+          "sentence": "encrypt customer information on your system and when it's in transit",
+          "kind": "regulation",
+          "sourceId": "ftc-safeguards",
+          "locator": "Encryption",
+          "quote": "Encrypt customer information on your system and when it’s in transit."
+        },
+        {
+          "id": "A12",
+          "sentence": "The page showed December 2024 as its date when read",
+          "kind": "paraphrase",
+          "sourceId": "ftc-safeguards",
+          "locator": "Page date",
+          "quote": "December 2024"
+        },
+        {
+          "id": "A13",
+          "sentence": "the guidance is intended to assist banking organizations in identifying and managing risks",
+          "kind": "regulation",
+          "sourceId": "fed-sr-23-4",
+          "locator": "Purpose",
+          "quote": "The guidance is intended to assist banking organizations in identifying and managing risks"
+        },
+        {
+          "id": "A14",
+          "sentence": "the letter applies to all banking organizations supervised by the Federal Reserve",
+          "kind": "regulation",
+          "sourceId": "fed-sr-23-4",
+          "locator": "Applicability",
+          "quote": "This letter applies to all banking organizations supervised by the Federal Reserve."
+        },
+        {
+          "id": "A15",
+          "sentence": "risk management practices commensurate with each banking organization's size, complexity, risk profile",
+          "kind": "regulation",
+          "sourceId": "fed-sr-23-4",
+          "locator": "Commensurate",
+          "quote": "risk management practices commensurate with each banking organization's size, complexity, risk profile"
+        },
+        {
+          "id": "A16",
+          "sentence": "dated June 7, 2023",
+          "kind": "paraphrase",
+          "sourceId": "fed-sr-23-4",
+          "locator": "Date",
+          "quote": "June 7, 2023"
+        }
+      ]
+    }
+  ]
+}
