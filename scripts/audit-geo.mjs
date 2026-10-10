@@ -32,6 +32,8 @@ export const LLMS_SECTIONS = [
   { heading: 'What WE does not do', optional: false },
   { heading: 'Published commercial facts', optional: false },
   { heading: 'Key pages', optional: true },
+  { heading: 'Insight desks', optional: true },
+  { heading: 'Page families', optional: true },
   { heading: 'How WE decides', optional: true },
   { heading: 'Contact', optional: false },
   { heading: 'Optional', optional: true },

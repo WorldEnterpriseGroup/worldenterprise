@@ -83,6 +83,11 @@ export function loadContent(): TwinContent {
       body: e.body,
       data: { title: String(e.data['title']), description: String(e.data['description']), steps: list(e.data['steps']), artifacts: list(e.data['artifacts']), updated: date(e.data['updated']) },
     })),
+    briefs: collection('briefs').map((e) => ({
+      id: e.id,
+      body: e.body,
+      data: { title: String(e.data['title']), description: String(e.data['description']), outline: list(e.data['outline']), updated: date(e.data['updated']) },
+    })),
     faq,
     glossary,
     referenceUpdated: new Date('2026-10-06'),

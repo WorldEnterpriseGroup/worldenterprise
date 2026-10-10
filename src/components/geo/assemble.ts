@@ -90,6 +90,14 @@ export interface GuideData {
   readonly updated: Date;
 }
 
+/** The open abstract of a gated brief (src/content/briefs). Only these fields are ever read: the full text is outside the build (D-23). */
+export interface BriefData {
+  readonly title: string;
+  readonly description: string;
+  readonly outline: readonly string[];
+  readonly updated: Date;
+}
+
 export interface ServiceData {
   readonly title: string;
   readonly summary: string;
@@ -115,6 +123,8 @@ export interface TwinContent {
   readonly playbooks: readonly Entry<PlaybookData>[];
   /** The guides collection. Optional so a content set without guides still assembles. */
   readonly guides?: readonly Entry<GuideData>[] | undefined;
+  /** The briefs collection: open abstracts only. Optional so a content set without briefs still assembles. */
+  readonly briefs?: readonly Entry<BriefData>[] | undefined;
   readonly faq: readonly FaqTwinItem[];
   readonly glossary: readonly GlossaryTwinItem[];
   /** The most recent date among the FAQ and glossary pages, which their page files fix by hand. */
@@ -224,6 +234,18 @@ export function assembleTwins(content: TwinContent, options: AssembleOptions): A
       updated: entry.data.updated,
       mdx: entry.body ?? '',
       tail: sourcesBody(entry.data.sources),
+    });
+  }
+
+  // A brief's squeeze page: the open abstract and the section titles. Nothing is read from the brief itself.
+  for (const entry of content.briefs ?? []) {
+    addMdx({
+      route: `/briefs/${lastSegment(entry.id)}/`,
+      title: entry.data.title,
+      lead: entry.data.description,
+      updated: entry.data.updated,
+      mdx: entry.body ?? '',
+      tail: ['## What is inside', '', ...entry.data.outline.map((title) => `- ${title}`)].join('\n'),
     });
   }
 
