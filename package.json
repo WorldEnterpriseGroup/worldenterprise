@@ -26,6 +26,7 @@
     "audit:ledger": "node scripts/audit-route-ledger.mjs --dist dist --ledger reports/ledger.json",
     "audit:dist": "node scripts/lib/audit-dist.mjs --dist dist --cname CNAME",
     "audit:csp": "node scripts/audit-csp.mjs --dist dist",
+    "audit:geo": "node scripts/audit-geo.mjs --dist dist",
     "audit:a11y": "node scripts/audit-a11y.mjs --dist dist",
     "qa:lighthouse": "node scripts/run-lighthouse.mjs --dist dist --out reports/lighthouse",
     "verify:release": "node scripts/lib/release-gate.mjs --json reports/release-gate.json",
