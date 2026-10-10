@@ -52,7 +52,7 @@ export function loadContent(): TwinContent {
     insights: collection('insights').map((e) => ({
       id: e.id,
       body: e.body,
-      data: { title: String(e.data['title']), description: String(e.data['description']), publishedDate: date(e.data['publishedDate']), updatedDate: optionalDate(e.data['updatedDate']), sources: list(e.data['sources']) },
+      data: { title: String(e.data['title']), description: String(e.data['description']), topic: String(e.data['topic']), publishedDate: date(e.data['publishedDate']), updatedDate: optionalDate(e.data['updatedDate']), sources: list(e.data['sources']) },
     })),
     research: collection('research').map((e) => ({
       id: e.id,
@@ -68,6 +68,11 @@ export function loadContent(): TwinContent {
       },
     })),
     pages: collection('pages').map((e) => ({ id: e.id, body: e.body, data: { title: String(e.data['title']), updated: date(e.data['updated']) } })),
+    guides: collection('guides').map((e) => ({
+      id: e.id,
+      body: e.body,
+      data: { section: String(e.data['section']), title: String(e.data['title']), description: String(e.data['description']), sources: list(e.data['sources']), updated: date(e.data['updated']) },
+    })),
     services: collection('services').map((e) => ({
       id: e.id,
       body: e.body,
