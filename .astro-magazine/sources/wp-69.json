@@ -1,0 +1,2569 @@
+{
+  "wp": "WP-69",
+  "note": "Fetches are the primary and vendor pages cited by the nine AI-desk articles, all fetched on 2026-10-10 with the WebFetch tool, each quote re-checked against that fetch. The two NIST publications are PDFs: WebFetch saved the file and the quotes were checked against text extracted from that saved file. Sources that could not be fetched this way were dropped and are listed in the handoff. The topic-ai desk page is a sentences-only document: each sentence maps to the page and heading it restates.",
+  "fetches": [
+    {
+      "id": "anth-deprec",
+      "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+      "title": "Model deprecations",
+      "publisher": "Anthropic",
+      "fetchedAt": "2026-10-10T07:55:23Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "anth-evals",
+      "url": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+      "title": "Define success criteria and build evaluations",
+      "publisher": "Anthropic",
+      "fetchedAt": "2026-10-10T07:56:16Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "anth-privacy",
+      "url": "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data",
+      "title": "How long do you store my organization's data?",
+      "publisher": "Anthropic Privacy Center",
+      "fetchedAt": "2026-10-10T07:56:23Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "anth-ratelimits",
+      "url": "https://platform.claude.com/docs/en/api/rate-limits",
+      "title": "Rate limits",
+      "publisher": "Anthropic",
+      "fetchedAt": "2026-10-10T07:56:12Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "anth-tokencount",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
+      "title": "Token counting",
+      "publisher": "Anthropic",
+      "fetchedAt": "2026-10-10T07:56:15Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "aws-bedrock-dp",
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html",
+      "title": "Data protection in Amazon Bedrock",
+      "publisher": "Amazon Web Services",
+      "fetchedAt": "2026-10-10T07:55:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eu-aiact-ec",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+      "title": "AI Act (regulatory framework for AI)",
+      "publisher": "European Commission, Shaping Europe's digital future",
+      "fetchedAt": "2026-10-10T08:05:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eu-aiact-oj",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng",
+      "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act), original text",
+      "publisher": "Official Journal of the European Union, EUR-Lex",
+      "fetchedAt": "2026-10-10T08:06:31Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eu-omnibus-oj",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ:L_202601744",
+      "title": "Regulation (EU) 2026/1744 (Digital Omnibus on AI)",
+      "publisher": "Official Journal of the European Union, EUR-Lex",
+      "fetchedAt": "2026-10-10T08:06:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eu-transp-news",
+      "url": "https://digital-strategy.ec.europa.eu/en/news/commission-starts-enforcing-ai-act-rules-and-new-transparency-requirements-2-august",
+      "title": "Commission starts enforcing AI Act rules and new transparency requirements on 2 August",
+      "publisher": "European Commission, Shaping Europe's digital future",
+      "fetchedAt": "2026-10-10T08:04:58Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gdpr-oj",
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+      "title": "Regulation (EU) 2016/679 (General Data Protection Regulation)",
+      "publisher": "Official Journal of the European Union, EUR-Lex",
+      "fetchedAt": "2026-10-10T08:06:27Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "goog-deprec",
+      "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "title": "Gemini deprecations",
+      "publisher": "Google",
+      "fetchedAt": "2026-10-10T07:58:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "goog-ratelimits",
+      "url": "https://ai.google.dev/gemini-api/docs/rate-limits",
+      "title": "Rate limits",
+      "publisher": "Google",
+      "fetchedAt": "2026-10-10T07:58:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "goog-terms",
+      "url": "https://ai.google.dev/gemini-api/terms",
+      "title": "Gemini API Additional Terms of Service",
+      "publisher": "Google",
+      "fetchedAt": "2026-10-10T07:58:32Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "goog-tokens",
+      "url": "https://ai.google.dev/gemini-api/docs/tokens",
+      "title": "Understand and count tokens",
+      "publisher": "Google",
+      "fetchedAt": "2026-10-10T07:55:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "lost-middle",
+      "url": "https://aclanthology.org/2024.tacl-1.9/",
+      "title": "Lost in the Middle: How Language Models Use Long Contexts",
+      "publisher": "ACL Anthology (Transactions of the Association for Computational Linguistics, volume 12, 2024)",
+      "fetchedAt": "2026-10-10T08:04:59Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "msft-dataprivacy",
+      "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/data-privacy",
+      "title": "Data, privacy, and security for Azure Direct Models in Microsoft Foundry",
+      "publisher": "Microsoft Learn",
+      "fetchedAt": "2026-10-10T07:55:34Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-ai100-1",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf",
+      "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T08:02:05Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-ai600-1",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+      "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile, NIST AI 600-1",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T08:02:06Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-airmf",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "title": "AI Risk Management Framework",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T08:02:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-airmf-playbook",
+      "url": "https://airc.nist.gov/airmf-resources/playbook/",
+      "title": "NIST AI RMF Playbook",
+      "publisher": "NIST AI Resource Center",
+      "fetchedAt": "2026-10-10T08:02:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "oai-deprec",
+      "url": "https://developers.openai.com/api/docs/deprecations",
+      "title": "Deprecations",
+      "publisher": "OpenAI",
+      "fetchedAt": "2026-10-10T07:58:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "oai-evals",
+      "url": "https://developers.openai.com/api/docs/guides/evals",
+      "title": "Working with evals",
+      "publisher": "OpenAI",
+      "fetchedAt": "2026-10-10T07:58:31Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "oai-ratelimits",
+      "url": "https://developers.openai.com/api/docs/guides/rate-limits",
+      "title": "Rate limits",
+      "publisher": "OpenAI",
+      "fetchedAt": "2026-10-10T07:58:33Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "oai-yourdata",
+      "url": "https://developers.openai.com/api/docs/guides/your-data",
+      "title": "Data controls in the OpenAI platform",
+      "publisher": "OpenAI",
+      "fetchedAt": "2026-10-10T07:58:36Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-llm-top10",
+      "url": "https://genai.owasp.org/llm-top-10/",
+      "title": "2025 Top 10 Risk and Mitigations for LLMs and Gen AI Apps",
+      "publisher": "OWASP Gen AI Security Project",
+      "fetchedAt": "2026-10-10T08:01:12Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-llm01",
+      "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+      "title": "LLM01:2025 Prompt Injection",
+      "publisher": "OWASP Gen AI Security Project",
+      "fetchedAt": "2026-10-10T08:01:16Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-llm02",
+      "url": "https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/",
+      "title": "LLM02:2025 Sensitive Information Disclosure",
+      "publisher": "OWASP Gen AI Security Project",
+      "fetchedAt": "2026-10-10T08:01:05Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-llm06",
+      "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+      "title": "LLM06:2025 Excessive Agency",
+      "publisher": "OWASP Gen AI Security Project",
+      "fetchedAt": "2026-10-10T08:01:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-llm08",
+      "url": "https://genai.owasp.org/llmrisk/llm082025-vector-and-embedding-weaknesses/",
+      "title": "LLM08:2025 Vector and Embedding Weaknesses",
+      "publisher": "OWASP Gen AI Security Project",
+      "fetchedAt": "2026-10-10T08:01:19Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-llm10",
+      "url": "https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/",
+      "title": "LLM10:2025 Unbounded Consumption",
+      "publisher": "OWASP Gen AI Security Project",
+      "fetchedAt": "2026-10-10T08:01:19Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "rag-arxiv",
+      "url": "https://arxiv.org/abs/2005.11401",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "publisher": "arXiv (Lewis et al., NeurIPS 2020)",
+      "fetchedAt": "2026-10-10T08:05:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "tx-hb149",
+      "url": "https://capitol.texas.gov/tlodocs/89R/billtext/html/HB00149F.htm",
+      "title": "H.B. 149, Texas Responsible Artificial Intelligence Governance Act (enrolled version)",
+      "publisher": "Texas Legislature Online",
+      "fetchedAt": "2026-10-10T08:06:22Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "tx-hb149-history",
+      "url": "https://capitol.texas.gov/BillLookup/History.aspx?LegSess=89R&Bill=HB149",
+      "title": "H.B. 149 bill history, 89th Legislature",
+      "publisher": "Texas Legislature Online",
+      "fetchedAt": "2026-10-10T07:54:46Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/content/insights/ai/ai-features-and-customer-data-what-to-decide-first.mdx",
+      "claims": [
+        {
+          "id": "D1",
+          "sentence": "OWASP's entry on sensitive information disclosure lists personal identifiable information, financial details, health records, confidential business data, security credentials and legal documents.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm02",
+          "locator": "intro",
+          "quote": "personal identifiable information (PII), financial details, health records, confidential business data, security credentials, and legal documents"
+        },
+        {
+          "id": "D2",
+          "sentence": "The GDPR defines personal data as any information relating to an identified or identifiable natural person.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 4(1)",
+          "quote": "any information relating to an identified or identifiable natural person"
+        },
+        {
+          "id": "D3",
+          "sentence": "The GDPR's principles include that personal data be adequate, relevant and limited to what is necessary in relation to the purposes for which it is processed.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 5(1)(c)",
+          "quote": "adequate, relevant and limited to what is necessary in relation to the purposes"
+        },
+        {
+          "id": "D4",
+          "sentence": "OWASP's mitigation list: scrub or mask sensitive content, validate inputs, and limit access by least privilege.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm02",
+          "locator": "Prevention and Mitigation Strategies",
+          "quote": "This includes scrubbing or masking sensitive content before it is used in training."
+        },
+        {
+          "id": "D5",
+          "sentence": "OWASP recommends limiting access to sensitive data based on the principle of least privilege.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm02",
+          "locator": "Access Controls",
+          "quote": "Limit access to sensitive data based on the principle of least privilege."
+        },
+        {
+          "id": "D6",
+          "sentence": "The Anthropic privacy page covers commercial products such as the API and says consumer products are covered separately.",
+          "kind": "paraphrase",
+          "sourceId": "anth-privacy",
+          "locator": "page intro",
+          "quote": "For our consumer products such as Claude Free, Pro, Max"
+        },
+        {
+          "id": "D7",
+          "sentence": "Google: unpaid services may use submitted content to improve products.",
+          "kind": "paraphrase",
+          "sourceId": "goog-terms",
+          "locator": "Unpaid services",
+          "quote": "Any Services that are offered free of charge like direct interactions with Google AI Studio or unpaid quota in Gemini API"
+        },
+        {
+          "id": "D8",
+          "sentence": "The Google page says not to submit sensitive, confidential or personal information to the unpaid services.",
+          "kind": "paraphrase",
+          "sourceId": "goog-terms",
+          "locator": "Unpaid services",
+          "quote": "Do not submit sensitive, confidential, or personal information to the Unpaid Services."
+        },
+        {
+          "id": "D9",
+          "sentence": "OpenAI: data sent to the API is not used to train or improve models unless you opt in.",
+          "kind": "paraphrase",
+          "sourceId": "oai-yourdata",
+          "locator": "intro",
+          "quote": "is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us)"
+        },
+        {
+          "id": "D10",
+          "sentence": "OpenAI abuse monitoring logs are kept for up to 30 days by default.",
+          "kind": "paraphrase",
+          "sourceId": "oai-yourdata",
+          "locator": "Data retention controls for abuse monitoring",
+          "quote": "retained for up to 30 days"
+        },
+        {
+          "id": "D11",
+          "sentence": "OpenAI's stricter controls require prior approval.",
+          "kind": "paraphrase",
+          "sourceId": "oai-yourdata",
+          "locator": "Data retention controls for abuse monitoring",
+          "quote": "these controls are subject to prior approval by OpenAI"
+        },
+        {
+          "id": "D12",
+          "sentence": "GDPR Article 28: the controller shall use only processors providing sufficient guarantees.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 28(1)",
+          "quote": "the controller shall use only processors providing sufficient guarantees"
+        },
+        {
+          "id": "D13",
+          "sentence": "A processor shall not engage another processor without the controller's authorization.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 28(2)",
+          "quote": "the processor shall not engage another processor"
+        },
+        {
+          "id": "D14",
+          "sentence": "Processing by a processor is governed by a contract or other legal act.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 28(3)",
+          "quote": "shall be governed by a contract or other legal act"
+        },
+        {
+          "id": "D15",
+          "sentence": "The processor processes the personal data only on documented instructions from the controller.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 28(3)(a)",
+          "quote": "only on documented instructions from the controller"
+        },
+        {
+          "id": "D16",
+          "sentence": "OWASP's vector and embedding entry: inadequate or misaligned access controls can lead to unauthorized access to embeddings containing sensitive information.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Common examples of risks, 1",
+          "quote": "Inadequate or misaligned access controls can lead to unauthorized access to embeddings containing sensitive information"
+        },
+        {
+          "id": "D17",
+          "sentence": "The model could retrieve and disclose personal data, proprietary information, or other sensitive content.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Common examples of risks, 1",
+          "quote": "the model could retrieve and disclose personal data, proprietary information, or other sensitive content"
+        },
+        {
+          "id": "D18",
+          "sentence": "The GDPR's storage principle: identification for no longer than is necessary for the purposes of processing.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 5(1)(e)",
+          "quote": "for no longer than is necessary for the purposes for which the personal data are processed"
+        },
+        {
+          "id": "D19",
+          "sentence": "GDPR Article 17 gives a data subject the right to obtain from the controller the erasure of personal data without undue delay, where listed grounds apply.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 17(1)",
+          "quote": "the right to obtain from the controller the erasure of personal data concerning him or her without undue delay"
+        },
+        {
+          "id": "D20",
+          "sentence": "OWASP recommends terms of use that let users opt out of having their data included in training.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm02",
+          "locator": "Intro and User Education and Transparency",
+          "quote": "Allow users to opt out of having their data included in training processes."
+        },
+        {
+          "id": "D21",
+          "sentence": "OWASP's guidance on transparency is to maintain clear policies about data retention, usage and deletion.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm02",
+          "locator": "User Education and Transparency",
+          "quote": "Maintain clear policies about data retention, usage, and deletion."
+        },
+        {
+          "id": "D22",
+          "sentence": "The GDPR requires a data protection impact assessment where processing is likely to result in a high risk to the rights and freedoms of natural persons.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 35(1)",
+          "quote": "is likely to result in a high risk to the rights and freedoms of natural persons"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ai/ai-regulation-for-a-small-saas-company-what-to-ask-counsel.mdx",
+      "claims": [
+        {
+          "id": "B1",
+          "sentence": "The Commission's page says the Act entered into force on August 1, 2024 and became applicable on August 2, 2026, with some exceptions.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-ec",
+          "locator": "Timeline",
+          "quote": "The AI Act entered into force on 1 August 2024 and became applicable on 2 August 2026, with some exceptions"
+        },
+        {
+          "id": "B2",
+          "sentence": "Prohibited AI practices and AI literacy obligations entered into application on February 2, 2025.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-ec",
+          "locator": "Timeline",
+          "quote": "prohibited AI practices and AI literacy obligations entered into application from 2 February 2025"
+        },
+        {
+          "id": "B3",
+          "sentence": "Governance rules and obligations for general-purpose AI models became applicable on August 2, 2025.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-ec",
+          "locator": "Timeline",
+          "quote": "the governance rules and the obligations for GPAI models became applicable on 2 August 2025"
+        },
+        {
+          "id": "B4",
+          "sentence": "From August 2, 2026 the AI Office and national authorities begin enforcing the Act.",
+          "kind": "regulation",
+          "sourceId": "eu-transp-news",
+          "locator": "Opening paragraph",
+          "quote": "the European Commission’s AI Office, together with national authorities, will begin enforcing"
+        },
+        {
+          "id": "B5",
+          "sentence": "The transparency rules start on August 2, 2026.",
+          "kind": "regulation",
+          "sourceId": "eu-transp-news",
+          "locator": "Second paragraph",
+          "quote": "On the same date, new transparency rules will start to apply"
+        },
+        {
+          "id": "B6",
+          "sentence": "Systems placed on the market before August 2, 2026 are to meet Article 50(2) by December 2, 2026.",
+          "kind": "regulation",
+          "sourceId": "eu-omnibus-oj",
+          "locator": "Article 111(4) as added",
+          "quote": "have been placed on the market before 2 August 2026 shall take the necessary steps in order to comply with Article 50(2)"
+        },
+        {
+          "id": "B58",
+          "sentence": "The date for those systems is December 2, 2026.",
+          "kind": "regulation",
+          "sourceId": "eu-omnibus-oj",
+          "locator": "Article 111(4) as added",
+          "quote": "Article 50(2) by 2 December 2026"
+        },
+        {
+          "id": "B7",
+          "sentence": "A prohibition added by the Omnibus takes effect in December 2026.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-ec",
+          "locator": "Prohibited practices",
+          "quote": "Prohibition 9 comes into effect in December 2026 and was introduced as a part of the AI Omnibus."
+        },
+        {
+          "id": "B8",
+          "sentence": "High-risk rules for Annex III use cases apply from December 2, 2027.",
+          "kind": "regulation",
+          "sourceId": "eu-omnibus-oj",
+          "locator": "Article 113(c)(i) as replaced",
+          "quote": "2 December 2027 as regards AI systems classified as high-risk pursuant to Article 6(2) and Annex III"
+        },
+        {
+          "id": "B9",
+          "sentence": "High-risk rules for AI in Annex I products apply from August 2, 2028.",
+          "kind": "regulation",
+          "sourceId": "eu-omnibus-oj",
+          "locator": "Article 113(c)(ii) as replaced",
+          "quote": "2 August 2028 as regards AI systems classified as high-risk pursuant to Article 6(1) and Annex I"
+        },
+        {
+          "id": "B10",
+          "sentence": "Regulation (EU) 2026/1744 amends the AI Act and the Commission calls it the AI Omnibus.",
+          "kind": "regulation",
+          "sourceId": "eu-omnibus-oj",
+          "locator": "Title",
+          "quote": "amending Regulations (EU) 2024/1689"
+        },
+        {
+          "id": "B11",
+          "sentence": "The AI Omnibus entered into force on July 27, 2026.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-ec",
+          "locator": "Simplification section",
+          "quote": "a political agreement was reached on 7 May 2026 and entered into force on 27 July 2026"
+        },
+        {
+          "id": "B12",
+          "sentence": "The Omnibus regulation is dated July 8, 2026.",
+          "kind": "regulation",
+          "sourceId": "eu-omnibus-oj",
+          "locator": "Signature block",
+          "quote": "Done at Strasbourg, 8 July 2026"
+        },
+        {
+          "id": "B13",
+          "sentence": "The original Article 4 asked providers and deployers to ensure a sufficient level of AI literacy.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 4",
+          "quote": "a sufficient level of AI literacy of their staff and other persons dealing with the operation and use of AI systems"
+        },
+        {
+          "id": "B14",
+          "sentence": "The replacement Article 4 asks them to take measures to support the development of AI literacy of their staff.",
+          "kind": "regulation",
+          "sourceId": "eu-omnibus-oj",
+          "locator": "Article 1(5), replacing Article 4",
+          "quote": "shall take measures to support the development of AI literacy of their staff"
+        },
+        {
+          "id": "B15",
+          "sentence": "In the original Article 3, a provider develops an AI system or a general-purpose AI model, or has one developed.",
+          "kind": "definition",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 3(3)",
+          "quote": "that develops an AI system or a general-purpose AI model or that has an AI system or a general-purpose AI model developed"
+        },
+        {
+          "id": "B16",
+          "sentence": "A provider places the system on the market or puts it into service under its own name or trademark.",
+          "kind": "definition",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 3(3)",
+          "quote": "places it on the market or puts the AI system into service under its own name or trademark"
+        },
+        {
+          "id": "B17",
+          "sentence": "A deployer is a person using an AI system under its authority, other than for personal non-professional activity.",
+          "kind": "definition",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 3(4)",
+          "quote": "using an AI system under its authority except where the AI system is used in the course of a personal non-professional activity"
+        },
+        {
+          "id": "B18",
+          "sentence": "Article 25 treats a deployer or other third party as a provider of a high-risk system if it puts its name or trademark on one already on the market.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 25(1)(a)",
+          "quote": "they put their name or trademark on a high-risk AI system already placed on the market or put into service"
+        },
+        {
+          "id": "B19",
+          "sentence": "Article 2 covers providers and deployers in a third country where the output produced by the AI system is used in the Union.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 2(1)(c)",
+          "quote": "where the output produced by the AI system is used in the Union"
+        },
+        {
+          "id": "B20",
+          "sentence": "The Commission's page says most AI systems pose limited to no risk.",
+          "kind": "paraphrase",
+          "sourceId": "eu-aiact-ec",
+          "locator": "Risk tiers",
+          "quote": "most AI systems pose limited to no risk"
+        },
+        {
+          "id": "B21",
+          "sentence": "The Act does not introduce rules for AI that is deemed minimal or no risk.",
+          "kind": "paraphrase",
+          "sourceId": "eu-aiact-ec",
+          "locator": "Minimal risk",
+          "quote": "The AI Act does not introduce rules for AI that is deemed minimal or no risk."
+        },
+        {
+          "id": "B22",
+          "sentence": "High-risk use cases include AI tools for employment such as CV-sorting software for recruitment.",
+          "kind": "paraphrase",
+          "sourceId": "eu-aiact-ec",
+          "locator": "High-risk list",
+          "quote": "CV-sorting software for recruitment"
+        },
+        {
+          "id": "B23",
+          "sentence": "High-risk use cases include AI used to give access to essential services, with credit scoring that denies a loan as an example.",
+          "kind": "paraphrase",
+          "sourceId": "eu-aiact-ec",
+          "locator": "High-risk list",
+          "quote": "credit scoring denying citizens opportunity to obtain a loan"
+        },
+        {
+          "id": "B24",
+          "sentence": "Chatbots and other interactive AI systems will have to tell users they are dealing with AI, not a human.",
+          "kind": "regulation",
+          "sourceId": "eu-transp-news",
+          "locator": "Third paragraph",
+          "quote": "chatbots and other interactive AI systems will have to tell users they are dealing with AI, not a human"
+        },
+        {
+          "id": "B25",
+          "sentence": "AI-generated or altered content will also have to carry machine-readable marks so it can be detected more easily.",
+          "kind": "regulation",
+          "sourceId": "eu-transp-news",
+          "locator": "Third paragraph",
+          "quote": "AI-generated or altered content will also have to carry machine-readable marks so it can be detected more easily"
+        },
+        {
+          "id": "B26",
+          "sentence": "The press release is dated July 31, 2026.",
+          "kind": "paraphrase",
+          "sourceId": "eu-transp-news",
+          "locator": "Page header",
+          "quote": "Publication 31 July 2026"
+        },
+        {
+          "id": "B27",
+          "sentence": "Article 50(1) of the original text says the persons concerned must be informed that they are interacting with an AI system, unless this is obvious.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 50(1)",
+          "quote": "informed that they are interacting with an AI system, unless this is obvious"
+        },
+        {
+          "id": "B38",
+          "sentence": "The enrolled text of House Bill 149 is the Texas Responsible Artificial Intelligence Governance Act.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 1",
+          "quote": "This Act may be cited as the Texas Responsible Artificial Intelligence Governance Act."
+        },
+        {
+          "id": "B39",
+          "sentence": "It takes effect January 1, 2026.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 10",
+          "quote": "This Act takes effect January 1, 2026."
+        },
+        {
+          "id": "B40",
+          "sentence": "It applies to a person who promotes, advertises, or conducts business in the state.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 551.002(1)",
+          "quote": "promotes, advertises, or conducts business in this state"
+        },
+        {
+          "id": "B41",
+          "sentence": "It applies to a person who produces a product or service used by residents of the state.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 551.002(2)",
+          "quote": "produces a product or service used by residents of this state"
+        },
+        {
+          "id": "B42",
+          "sentence": "It applies to a person who develops or deploys an AI system in the state.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 551.002(3)",
+          "quote": "develops or deploys an artificial intelligence system in this state"
+        },
+        {
+          "id": "B43",
+          "sentence": "The consumer disclosure duty is written for a governmental agency that makes a consumer-facing AI system available.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.051(b)",
+          "quote": "A governmental agency that makes available an artificial intelligence system intended to interact with consumers"
+        },
+        {
+          "id": "B44",
+          "sentence": "A separate duty falls on the provider of a health care service or treatment in which AI is used.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.051(f)",
+          "quote": "the provider of the service or treatment shall provide the disclosure"
+        },
+        {
+          "id": "B45",
+          "sentence": "The text defines a consumer as an individual who is a resident of the state acting only in an individual or household context.",
+          "kind": "definition",
+          "sourceId": "tx-hb149",
+          "locator": "Section 551.001(2)",
+          "quote": "an individual who is a resident of this state acting only in an individual or household context"
+        },
+        {
+          "id": "B46",
+          "sentence": "It excludes an individual acting in a commercial or employment context.",
+          "kind": "definition",
+          "sourceId": "tx-hb149",
+          "locator": "Section 551.001(2)",
+          "quote": "The term does not include an individual acting in a commercial or employment context."
+        },
+        {
+          "id": "B47",
+          "sentence": "The text prohibits developing or deploying a system in a manner that intentionally aims to incite or encourage a person to commit self-harm, harm another person, or engage in criminal activity.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.052",
+          "quote": "intentionally aims to incite or encourage a person to"
+        },
+        {
+          "id": "B48",
+          "sentence": "It prohibits developing or deploying a system with the intent to unlawfully discriminate against a protected class.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.056(b)",
+          "quote": "with the intent to unlawfully discriminate against a protected class in violation of state or federal law"
+        },
+        {
+          "id": "B49",
+          "sentence": "A disparate impact is not sufficient by itself to demonstrate an intent to discriminate.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.056(c)",
+          "quote": "a disparate impact is not sufficient by itself to demonstrate an intent to discriminate"
+        },
+        {
+          "id": "B50",
+          "sentence": "The attorney general has exclusive authority to enforce the chapter.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.101(a)",
+          "quote": "The attorney general has exclusive authority to enforce this chapter"
+        },
+        {
+          "id": "B51",
+          "sentence": "There is no private right of action.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.101(b)",
+          "quote": "does not provide a basis for, and is not subject to, a private right of action"
+        },
+        {
+          "id": "B52",
+          "sentence": "The attorney general may not bring an action before the 60th day after giving written notice.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.104(b)(1)",
+          "quote": "before the 60th day after the date the attorney general provides the notice"
+        },
+        {
+          "id": "B53",
+          "sentence": "A person may cure the identified violation within that period.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.104(b)(2)",
+          "quote": "cures the identified violation"
+        },
+        {
+          "id": "B54",
+          "sentence": "A civil investigative demand can ask for a high-level description of post-deployment monitoring and user safeguards.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.103(b)(7)",
+          "quote": "a high-level description of the post-deployment monitoring and user safeguards"
+        },
+        {
+          "id": "B55",
+          "sentence": "A defendant may not be found liable where it discovers a violation through an internal review process and substantially complies with the NIST Generative AI Profile.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.105(e)(2)(D)",
+          "quote": "the most recent version of the \"Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile\""
+        },
+        {
+          "id": "B56",
+          "sentence": "The provision also names another nationally or internationally recognized risk management framework.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.105(e)(2)(D)",
+          "quote": "another nationally or internationally recognized risk management framework for artificial intelligence systems"
+        },
+        {
+          "id": "B57",
+          "sentence": "The defendant discovers the violation through an internal review process.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149",
+          "locator": "Section 552.105(e)(2)(D)",
+          "quote": "an internal review process"
+        },
+        {
+          "id": "B59",
+          "sentence": "The Texas Legislature Online bill history shows it signed by the Governor on June 22, 2025.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149-history",
+          "locator": "Actions",
+          "quote": "Signed by the Governor 06/22/2025"
+        },
+        {
+          "id": "B60",
+          "sentence": "The bill history shows a last action of Effective on 1/1/26.",
+          "kind": "regulation",
+          "sourceId": "tx-hb149-history",
+          "locator": "Last Action",
+          "quote": "Effective on 1/1/26"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ai/choosing-a-model-provider-the-questions-that-matter.mdx",
+      "claims": [
+        {
+          "id": "P1",
+          "sentence": "Anthropic API inputs and outputs are automatically deleted from the backend within 30 days, with listed exceptions.",
+          "kind": "paraphrase",
+          "sourceId": "anth-privacy",
+          "locator": "Standard retention timeframe",
+          "quote": "we automatically delete inputs and outputs on our backend within 30 days of receipt or generation"
+        },
+        {
+          "id": "P2",
+          "sentence": "Exceptions include a zero data retention agreement.",
+          "kind": "paraphrase",
+          "sourceId": "anth-privacy",
+          "locator": "Standard retention timeframe",
+          "quote": "When you and we have agreed otherwise (e.g. zero data retention agreement)"
+        },
+        {
+          "id": "P3",
+          "sentence": "Exceptions include enforcement of the usage policy.",
+          "kind": "paraphrase",
+          "sourceId": "anth-privacy",
+          "locator": "Standard retention timeframe",
+          "quote": "to enforce our Usage Policy"
+        },
+        {
+          "id": "P4",
+          "sentence": "The Anthropic privacy center page is dated July 1, 2026.",
+          "kind": "paraphrase",
+          "sourceId": "anth-privacy",
+          "locator": "page header",
+          "quote": "July 1, 2026"
+        },
+        {
+          "id": "P5",
+          "sentence": "Data sent to the OpenAI API is not used to train or improve models unless you opt in.",
+          "kind": "paraphrase",
+          "sourceId": "oai-yourdata",
+          "locator": "intro",
+          "quote": "data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us)"
+        },
+        {
+          "id": "P6",
+          "sentence": "OpenAI abuse monitoring logs are kept up to 30 days by default.",
+          "kind": "paraphrase",
+          "sourceId": "oai-yourdata",
+          "locator": "Data retention controls for abuse monitoring",
+          "quote": "retained for up to 30 days"
+        },
+        {
+          "id": "P7",
+          "sentence": "OpenAI zero data retention and modified abuse monitoring controls are subject to prior approval.",
+          "kind": "paraphrase",
+          "sourceId": "oai-yourdata",
+          "locator": "Data retention controls for abuse monitoring",
+          "quote": "these controls are subject to prior approval by OpenAI"
+        },
+        {
+          "id": "P8",
+          "sentence": "For Google unpaid services, submitted content may be used to improve products and human reviewers may read it.",
+          "kind": "paraphrase",
+          "sourceId": "goog-terms",
+          "locator": "Unpaid services",
+          "quote": "human reviewers may read, annotate, and process your API input and output"
+        },
+        {
+          "id": "P9",
+          "sentence": "The Google page says not to submit sensitive, confidential or personal information to the unpaid services.",
+          "kind": "paraphrase",
+          "sourceId": "goog-terms",
+          "locator": "Unpaid services",
+          "quote": "Do not submit sensitive, confidential, or personal information to the Unpaid Services."
+        },
+        {
+          "id": "P10",
+          "sentence": "For Google paid services the terms say prompts and responses are not used to improve products.",
+          "kind": "paraphrase",
+          "sourceId": "goog-terms",
+          "locator": "Paid services",
+          "quote": "Google doesn't use your prompts"
+        },
+        {
+          "id": "P11",
+          "sentence": "Microsoft Foundry: prompts, completions and embeddings are not available to other customers or to the providers of models sold by Azure.",
+          "kind": "paraphrase",
+          "sourceId": "msft-dataprivacy",
+          "locator": "Important box",
+          "quote": "are NOT available to OpenAI or other providers of Models sold by Azure"
+        },
+        {
+          "id": "P12",
+          "sentence": "Amazon Bedrock: model providers do not have access to the deployment accounts, and so not to logs or customer prompts.",
+          "kind": "paraphrase",
+          "sourceId": "aws-bedrock-dp",
+          "locator": "Data protection page",
+          "quote": "they don't have access to Amazon Bedrock logs or to customer prompts and completions"
+        },
+        {
+          "id": "P13",
+          "sentence": "Anthropic says applications relying on its models may need occasional updates to keep working.",
+          "kind": "paraphrase",
+          "sourceId": "anth-deprec",
+          "locator": "intro",
+          "quote": "may need occasional updates to keep working"
+        },
+        {
+          "id": "P14",
+          "sentence": "Anthropic gives at least 60 days' notice before retirement for publicly released models.",
+          "kind": "paraphrase",
+          "sourceId": "anth-deprec",
+          "locator": "Notifications",
+          "quote": "at least 60 days' notice before model retirement for publicly released models"
+        },
+        {
+          "id": "P15",
+          "sentence": "Dates on the Anthropic page apply to Anthropic-operated platforms; partner-operated platforms set their own retirement schedules.",
+          "kind": "paraphrase",
+          "sourceId": "anth-deprec",
+          "locator": "Overview",
+          "quote": "Partner-operated platforms (Amazon Bedrock and Google Cloud) set their own retirement schedules"
+        },
+        {
+          "id": "P16",
+          "sentence": "OpenAI lists a minimum notice of at least 6 months for generally available models.",
+          "kind": "paraphrase",
+          "sourceId": "oai-deprec",
+          "locator": "Model deprecation notice periods",
+          "quote": "Generally available models: At least 6 months"
+        },
+        {
+          "id": "P17",
+          "sentence": "OpenAI lists at least 3 months for specialized variants.",
+          "kind": "paraphrase",
+          "sourceId": "oai-deprec",
+          "locator": "Model deprecation notice periods",
+          "quote": "Specialized variants of generally available models: At least 3 months"
+        },
+        {
+          "id": "P18",
+          "sentence": "Preview models may be retired with notice as short as 2 weeks.",
+          "kind": "paraphrase",
+          "sourceId": "oai-deprec",
+          "locator": "Model deprecation notice periods",
+          "quote": "may be retired with much shorter notice, such as 2 weeks"
+        },
+        {
+          "id": "P19",
+          "sentence": "OpenAI does not recommend preview models for business-critical production workloads unless you can migrate on short notice.",
+          "kind": "paraphrase",
+          "sourceId": "oai-deprec",
+          "locator": "Model deprecation notice periods",
+          "quote": "We don't recommend using preview models for business-critical production workloads unless you can migrate on short notice"
+        },
+        {
+          "id": "P20",
+          "sentence": "OpenAI allows faster timelines where safety or compliance concerns require them.",
+          "kind": "paraphrase",
+          "sourceId": "oai-deprec",
+          "locator": "Model deprecation notice periods",
+          "quote": "Unless safety or compliance concerns require a faster timeline"
+        },
+        {
+          "id": "P21",
+          "sentence": "Google defines deprecation as the announcement that it no longer provides support for a model and that it will be shut down.",
+          "kind": "definition",
+          "sourceId": "goog-deprec",
+          "locator": "intro",
+          "quote": "A \"deprecation\" is the announcement that we no longer provide support for a model"
+        },
+        {
+          "id": "P22",
+          "sentence": "Once shut down, the endpoint is no longer available.",
+          "kind": "definition",
+          "sourceId": "goog-deprec",
+          "locator": "intro",
+          "quote": "the endpoint is no longer available"
+        },
+        {
+          "id": "P23",
+          "sentence": "Google says the shutdown dates in its table are the earliest possible dates and the exact date will be communicated in advance.",
+          "kind": "paraphrase",
+          "sourceId": "goog-deprec",
+          "locator": "note above tables",
+          "quote": "the earliest possible dates on which a model might be retired"
+        },
+        {
+          "id": "P24",
+          "sentence": "Anthropic's page recommends testing applications with newer models well before the retirement date.",
+          "kind": "paraphrase",
+          "sourceId": "anth-deprec",
+          "locator": "Best practices",
+          "quote": "Test your applications with newer models well before the retirement date"
+        },
+        {
+          "id": "P25",
+          "sentence": "OpenAI lists limits in requests per minute, requests per day, tokens per minute, tokens per day and images per minute.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "How do these rate limits work?",
+          "quote": "RPM (requests per minute), RPD (requests per day), TPM (tokens per minute), TPD (tokens per day), IPM (images per minute)"
+        },
+        {
+          "id": "P26",
+          "sentence": "Google says limits are usually measured across requests per minute, input tokens per minute and requests per day, and that exceeding any triggers an error.",
+          "kind": "paraphrase",
+          "sourceId": "goog-ratelimits",
+          "locator": "How rate limits work",
+          "quote": "exceeding any of them will trigger a rate limit error"
+        },
+        {
+          "id": "P27",
+          "sentence": "Google's limits are applied per project, not per API key.",
+          "kind": "paraphrase",
+          "sourceId": "goog-ratelimits",
+          "locator": "How rate limits work",
+          "quote": "Rate limits are applied per project, not per API key."
+        },
+        {
+          "id": "P28",
+          "sentence": "Anthropic's page says limits exist on how much an organization can use the API, to mitigate misuse and manage capacity.",
+          "kind": "paraphrase",
+          "sourceId": "anth-ratelimits",
+          "locator": "page description",
+          "quote": "To mitigate misuse and manage capacity on the API, limits are in place on how much an organization can use the Claude API"
+        },
+        {
+          "id": "P29",
+          "sentence": "Google's terms say you may use only paid services when making API clients available to users in the EEA, Switzerland or the UK.",
+          "kind": "paraphrase",
+          "sourceId": "goog-terms",
+          "locator": "Use of the services",
+          "quote": "You may use only Paid Services when making API Clients available to users in the European Economic Area, Switzerland,"
+        },
+        {
+          "id": "P30",
+          "sentence": "Google's terms say you may not use the services to develop models that compete with them.",
+          "kind": "paraphrase",
+          "sourceId": "goog-terms",
+          "locator": "Use of the services",
+          "quote": "You may not use the Services to develop models that compete with the Services"
+        },
+        {
+          "id": "P31",
+          "sentence": "The NIST profile names improper supplier vetting within value chain and component integration.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai600-1",
+          "locator": "Section 2.12",
+          "quote": "improper supplier vetting"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ai/evaluating-an-llm-feature-before-you-ship-it.mdx",
+      "claims": [
+        {
+          "id": "E1",
+          "sentence": "OpenAI describes evals as tests of model outputs against style and content criteria you specify.",
+          "kind": "paraphrase",
+          "sourceId": "oai-evals",
+          "locator": "intro",
+          "quote": "test model outputs to ensure they meet style and content criteria that you specify"
+        },
+        {
+          "id": "E2",
+          "sentence": "OpenAI says writing evals is an essential component to building reliable applications, especially when upgrading or trying new models.",
+          "kind": "paraphrase",
+          "sourceId": "oai-evals",
+          "locator": "intro",
+          "quote": "is an essential component to building reliable applications"
+        },
+        {
+          "id": "E3",
+          "sentence": "OpenAI says evals matter especially when upgrading or trying new models.",
+          "kind": "paraphrase",
+          "sourceId": "oai-evals",
+          "locator": "intro",
+          "quote": "especially when upgrading or trying new models"
+        },
+        {
+          "id": "E4",
+          "sentence": "Anthropic frames the idea as a cycle: develop test cases, test a prompt against them, refine, test against held-out evals, then ship.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "intro diagram",
+          "quote": "This cycle is central to prompt engineering."
+        },
+        {
+          "id": "E5",
+          "sentence": "NIST's Measure function says AI systems should be tested before their deployment and regularly while in operation.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 5.3",
+          "quote": "AI systems should be tested before their deployment and regularly while in operation"
+        },
+        {
+          "id": "E6",
+          "sentence": "Anthropic says good success criteria are specific, measurable, achievable and relevant.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Define your success criteria",
+          "quote": "Good success criteria are:"
+        },
+        {
+          "id": "E7",
+          "sentence": "The guide lists commonly important dimensions: task fidelity, consistency, relevance and coherence, tone and style, privacy preservation, context utilization, latency and price.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Common success criteria",
+          "quote": "Context utilization"
+        },
+        {
+          "id": "E8",
+          "sentence": "Most use cases need multidimensional evaluation along several success criteria.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Common success criteria",
+          "quote": "Most use cases need multidimensional evaluation along several success criteria."
+        },
+        {
+          "id": "E9",
+          "sentence": "NIST Measure 1.1 says the risks or trustworthiness characteristics that will not, or cannot, be measured are properly documented.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 3, Measure 1.1",
+          "quote": "will not – or cannot – be measured are properly documented"
+        },
+        {
+          "id": "E10",
+          "sentence": "Anthropic's first design principle for evals is to be task-specific and mirror the real-world task distribution.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Eval design principles",
+          "quote": "Design evals that mirror your real-world task distribution."
+        },
+        {
+          "id": "E11",
+          "sentence": "Edge cases named: irrelevant or nonexistent input data.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Example edge cases",
+          "quote": "Irrelevant or nonexistent input data"
+        },
+        {
+          "id": "E12",
+          "sentence": "Edge cases named: overly long input data or user input.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Example edge cases",
+          "quote": "Overly long input data or user input"
+        },
+        {
+          "id": "E13",
+          "sentence": "Edge cases named: poor, harmful or irrelevant user input in chat use cases.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Example edge cases",
+          "quote": "Poor, harmful, or irrelevant user input"
+        },
+        {
+          "id": "E14",
+          "sentence": "Edge cases named: ambiguous cases where even humans would find it hard to reach consensus.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Example edge cases",
+          "quote": "Ambiguous test cases where even humans would find it hard to reach an assessment consensus"
+        },
+        {
+          "id": "E15",
+          "sentence": "OpenAI's guide says an eval needs two key ingredients: a schema for the test data and the graders that determine whether output is correct.",
+          "kind": "paraphrase",
+          "sourceId": "oai-evals",
+          "locator": "Create an eval",
+          "quote": "testing_criteria: The graders that determine if the model output is correct"
+        },
+        {
+          "id": "E16",
+          "sentence": "Anthropic's guide recommends structuring questions to allow automated grading where possible, naming multiple-choice, string match, code-graded and LLM-graded approaches.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Eval design principles",
+          "quote": "multiple-choice, string match, code-graded, LLM-graded"
+        },
+        {
+          "id": "E17",
+          "sentence": "Anthropic's worked examples pair exact match with categorical labels.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Example evals",
+          "quote": "perfect for tasks with clear-cut, categorical answers like sentiment analysis"
+        },
+        {
+          "id": "E18",
+          "sentence": "The guide prefers more questions with slightly lower signal from automated grading over fewer high-quality human hand-graded evals.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Eval design principles",
+          "quote": "More questions with slightly lower signal automated grading is better than fewer questions with high-quality human hand-graded evals"
+        },
+        {
+          "id": "E19",
+          "sentence": "The example code comments that it is generally good practice to use a different model to evaluate than the one that generated the output.",
+          "kind": "paraphrase",
+          "sourceId": "anth-evals",
+          "locator": "Tone and style example code comment",
+          "quote": "use a different model to evaluate than the model used to generate the evaluated output"
+        },
+        {
+          "id": "E20",
+          "sentence": "OpenAI's guide describes the loop: describe the task as an eval, run it with test inputs, analyze the results, then iterate and improve the prompt.",
+          "kind": "paraphrase",
+          "sourceId": "oai-evals",
+          "locator": "Getting started",
+          "quote": "Analyze the results, then iterate and improve on your prompt"
+        },
+        {
+          "id": "E21",
+          "sentence": "OpenAI compares the loop to behavior-driven development.",
+          "kind": "paraphrase",
+          "sourceId": "oai-evals",
+          "locator": "Getting started",
+          "quote": "somewhat similar to behavior-driven development (BDD)"
+        },
+        {
+          "id": "E22",
+          "sentence": "NIST Measure 2.1: test sets, metrics and details about the tools used during testing, evaluation, verification and validation are documented.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 3, Measure 2.1",
+          "quote": "Test sets, metrics, and details about the tools used during TEVV are documented"
+        },
+        {
+          "id": "E23",
+          "sentence": "Measure 2.3 asks that performance be demonstrated for conditions similar to the deployment settings.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 3, Measure 2.3",
+          "quote": "demonstrated for conditions similar to deployment setting(s)"
+        },
+        {
+          "id": "E24",
+          "sentence": "OWASP's mitigation list includes adversarial testing, treating the model as an untrusted user to test trust boundaries.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 7",
+          "quote": "treating the model as an untrusted user to test the effectiveness of trust boundaries and access controls"
+        },
+        {
+          "id": "E25",
+          "sentence": "OWASP's guidance on output formats says to use deterministic code to validate adherence to them.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 2",
+          "quote": "use deterministic code to validate adherence to these formats"
+        },
+        {
+          "id": "E26",
+          "sentence": "The NIST Generative AI Profile suggests evaluating claims of model capabilities using empirically validated methods.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai600-1",
+          "locator": "Suggested action MS-2.3-002",
+          "quote": "Evaluate claims of model capabilities using empirically validated methods"
+        },
+        {
+          "id": "E27",
+          "sentence": "Anthropic's deprecation page recommends testing applications with newer models well before the retirement date.",
+          "kind": "paraphrase",
+          "sourceId": "anth-deprec",
+          "locator": "Best practices",
+          "quote": "Test your applications with newer models well before the retirement date"
+        },
+        {
+          "id": "E28",
+          "sentence": "NIST Measure 2.4 asks that the functionality and behavior of the system be monitored when in production.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 3, Measure 2.4",
+          "quote": "are monitored when in production"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ai/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop.mdx",
+      "claims": [
+        {
+          "id": "H1",
+          "sentence": "OWASP's entry on excessive agency lists require user approval among its mitigations: a human-in-the-loop control that requires a human to approve high-impact actions before they are taken.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Prevention and mitigation, 6",
+          "quote": "require a human to approve high-impact actions before they are taken"
+        },
+        {
+          "id": "H2",
+          "sentence": "The approval may be implemented in a downstream system, outside the scope of the model application, or within the extension itself.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Prevention and mitigation, 6",
+          "quote": "This may be implemented in a downstream system (outside the scope of the LLM application) or within the LLM extension itself."
+        },
+        {
+          "id": "H3",
+          "sentence": "OWASP gives the example of an application that creates and posts social media content on a user's behalf, which should include an approval routine.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Prevention and mitigation, 6",
+          "quote": "should include a user approval routine within the extension that implements the ‘post’ operation"
+        },
+        {
+          "id": "H4",
+          "sentence": "In OWASP's mailbox scenario, requiring the user to review and send every drafted message is one of the changes that would have broken the chain.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Example attack scenarios",
+          "quote": "requiring the user to manually review and hit ‘send’ on every mail drafted by the LLM extension"
+        },
+        {
+          "id": "H5",
+          "sentence": "NIST Map 3.5 asks that processes for human oversight are defined, assessed, and documented in accordance with organizational policies from the Govern function.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 2, Map 3.5",
+          "quote": "Processes for human oversight are defined, assessed, and documented in accordance with organizational policies from the GOVERN function"
+        },
+        {
+          "id": "H6",
+          "sentence": "Manage 2.4 asks for mechanisms, with assigned responsibilities, to supersede, disengage or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 4, Manage 2.4",
+          "quote": "to supersede, disengage, or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use"
+        },
+        {
+          "id": "H7",
+          "sentence": "The NIST profile defines human-AI configuration as arrangements of or interactions between a human and an AI system which can result in anthropomorphizing, algorithmic aversion, automation bias, over-reliance or emotional entanglement.",
+          "kind": "definition",
+          "sourceId": "nist-ai600-1",
+          "locator": "Section 2.7",
+          "quote": "Arrangements of or interactions between a human and an AI system"
+        },
+        {
+          "id": "H8",
+          "sentence": "These include algorithmic aversion, automation bias, over-reliance and emotional entanglement.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai600-1",
+          "locator": "Section 2.7",
+          "quote": "experiencing algorithmic aversion, automation bias, over-reliance, or emotional entanglement with GAI systems"
+        },
+        {
+          "id": "H9",
+          "sentence": "EU AI Act Article 14(1): high-risk AI systems shall be designed so that they can be effectively overseen by natural persons during the period in which they are in use.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 14(1)",
+          "quote": "that they can be effectively overseen by natural persons during the period in which they are in use"
+        },
+        {
+          "id": "H10",
+          "sentence": "Article 14(1) refers to appropriate human-machine interface tools.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 14(1)",
+          "quote": "including with appropriate human-machine interface tools"
+        },
+        {
+          "id": "H11",
+          "sentence": "The people assigned to oversight must be enabled to remain aware of the possible tendency of automatically relying or over-relying on the output, which the text labels automation bias.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 14(4)(b)",
+          "quote": "to remain aware of the possible tendency of automatically relying or over-relying on the output produced by a high-risk AI system (automation bias)"
+        },
+        {
+          "id": "H12",
+          "sentence": "The definition of high-risk is set out in Article 6 and annexes of the Act.",
+          "kind": "regulation",
+          "sourceId": "eu-aiact-oj",
+          "locator": "Article 6",
+          "quote": "Classification rules for high-risk AI systems"
+        },
+        {
+          "id": "H13",
+          "sentence": "GDPR Article 22(1): the data subject shall have the right not to be subject to a decision based solely on automated processing, including profiling, which produces legal effects or similarly significantly affects them.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 22(1)",
+          "quote": "the right not to be subject to a decision based solely on automated processing, including profiling"
+        },
+        {
+          "id": "H14",
+          "sentence": "The decision produces legal effects concerning the person or similarly significantly affects them.",
+          "kind": "regulation",
+          "sourceId": "gdpr-oj",
+          "locator": "Article 22(1)",
+          "quote": "which produces legal effects concerning him or her or similarly significantly affects him or her"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ai/metering-and-budgeting-model-usage.mdx",
+      "claims": [
+        {
+          "id": "M1",
+          "sentence": "Google's page says that for its models a token is equivalent to about 4 characters.",
+          "kind": "paraphrase",
+          "sourceId": "goog-tokens",
+          "locator": "intro",
+          "quote": "a token is equivalent to about 4 characters"
+        },
+        {
+          "id": "M2",
+          "sentence": "Anthropic's page describes counting tokens before sending to help proactively manage rate limits and costs.",
+          "kind": "paraphrase",
+          "sourceId": "anth-tokencount",
+          "locator": "intro",
+          "quote": "Proactively manage rate limits and costs"
+        },
+        {
+          "id": "M3",
+          "sentence": "The count is an estimate.",
+          "kind": "paraphrase",
+          "sourceId": "anth-tokencount",
+          "locator": "How to count message tokens",
+          "quote": "The token count is an estimate."
+        },
+        {
+          "id": "M4",
+          "sentence": "The actual number of input tokens can differ by a small amount.",
+          "kind": "paraphrase",
+          "sourceId": "anth-tokencount",
+          "locator": "How to count message tokens",
+          "quote": "the actual number of input tokens used when creating a message might differ by a small amount"
+        },
+        {
+          "id": "M5",
+          "sentence": "The Messages API response reports the tokens used in its usage object.",
+          "kind": "paraphrase",
+          "sourceId": "anth-tokencount",
+          "locator": "How to count message tokens",
+          "quote": "the Messages API response reports the tokens used in its usage object"
+        },
+        {
+          "id": "M6",
+          "sentence": "Google's page points to the usage fields of a response for actual token usage.",
+          "kind": "paraphrase",
+          "sourceId": "goog-tokens",
+          "locator": "Tool use tokens",
+          "quote": "To check actual token usage for a request, inspect interaction.usage."
+        },
+        {
+          "id": "M7",
+          "sentence": "The token counting endpoint counts under the tokenizer of the model you pass.",
+          "kind": "paraphrase",
+          "sourceId": "anth-tokencount",
+          "locator": "Tokenizer note",
+          "quote": "The token counting endpoint counts under the tokenizer of the model you pass."
+        },
+        {
+          "id": "M8",
+          "sentence": "Usage on newer models reflects that tokenizer's counts.",
+          "kind": "paraphrase",
+          "sourceId": "anth-tokencount",
+          "locator": "Tokenizer note",
+          "quote": "Usage and billing on these models reflect this tokenizer's counts."
+        },
+        {
+          "id": "M9",
+          "sentence": "When migrating, do not reuse counts measured on the older model to estimate costs or context window fit.",
+          "kind": "paraphrase",
+          "sourceId": "anth-tokencount",
+          "locator": "Tokenizer note",
+          "quote": "don't reuse token counts measured on the older model to estimate costs or context window fit"
+        },
+        {
+          "id": "M10",
+          "sentence": "Anthropic's console usage export breaks usage down by API key and model.",
+          "kind": "paraphrase",
+          "sourceId": "anth-deprec",
+          "locator": "Auditing model usage",
+          "quote": "usage broken down by API key and model"
+        },
+        {
+          "id": "M11",
+          "sentence": "Anthropic describes spend limits as a maximum monthly cost an organization can incur.",
+          "kind": "paraphrase",
+          "sourceId": "anth-ratelimits",
+          "locator": "two types of limits",
+          "quote": "Spend limits set a maximum monthly cost an organization can incur for API usage."
+        },
+        {
+          "id": "M12",
+          "sentence": "You can set your own spend limit below your tier's cap.",
+          "kind": "paraphrase",
+          "sourceId": "anth-ratelimits",
+          "locator": "Setting your own spend limit",
+          "quote": "set your own spend limit below your tier's cap to control costs"
+        },
+        {
+          "id": "M13",
+          "sentence": "OpenAI lists limits in requests, tokens and images per minute or day.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "How do these rate limits work?",
+          "quote": "RPM (requests per minute), RPD (requests per day), TPM (tokens per minute), TPD (tokens per day), IPM (images per minute)"
+        },
+        {
+          "id": "M14",
+          "sentence": "OpenAI's limits are defined at the organization and project level, not user level.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "Other important things worth noting",
+          "quote": "Rate limits are defined at the organization level and at the project level, not user level."
+        },
+        {
+          "id": "M15",
+          "sentence": "OpenAI advises setting a usage limit for individual users within a daily, weekly or monthly time frame.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "Avoiding misuse",
+          "quote": "set a usage limit for individual users within a specified time frame (daily, weekly, or monthly)"
+        },
+        {
+          "id": "M16",
+          "sentence": "OpenAI suggests a hard cap or manual review for users who exceed the limit.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "Avoiding misuse",
+          "quote": "Consider implementing a hard cap or a manual review process for users who exceed the limit."
+        },
+        {
+          "id": "M17",
+          "sentence": "OWASP lists input size limits.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Mitigation 1",
+          "quote": "Implement strict input validation to ensure that inputs do not exceed reasonable size limits."
+        },
+        {
+          "id": "M18",
+          "sentence": "OWASP lists rate limiting and user quotas restricting requests from a single source.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Mitigation 3",
+          "quote": "Apply rate limiting and user quotas to restrict the number of requests a single source entity can make in a given time period."
+        },
+        {
+          "id": "M19",
+          "sentence": "OWASP lists timeouts and throttling for resource-intensive operations.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Mitigation 5",
+          "quote": "Set timeouts and throttle processing for resource-intensive operations"
+        },
+        {
+          "id": "M20",
+          "sentence": "OpenAI's guide says the API returns a 429 error for a temporary rate limit.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "Retrying with exponential backoff",
+          "quote": "the API returns a 429 error"
+        },
+        {
+          "id": "M21",
+          "sentence": "The response can include a retry-after header; treat the value as a minimum.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "Retrying with exponential backoff",
+          "quote": "Treat this value as a minimum"
+        },
+        {
+          "id": "M22",
+          "sentence": "Add a small random delay so multiple clients do not retry together.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "Retrying with exponential backoff",
+          "quote": "add a small random delay so multiple clients don't retry at the same time"
+        },
+        {
+          "id": "M23",
+          "sentence": "Limit both the number of attempts and the total time spent retrying.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "Retrying with exponential backoff",
+          "quote": "Limit both the number of attempts and the total time spent retrying."
+        },
+        {
+          "id": "M24",
+          "sentence": "Nested retry loops can multiply requests.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "Retrying with exponential backoff",
+          "quote": "nested retry loops don't multiply requests"
+        },
+        {
+          "id": "M25",
+          "sentence": "Anthropic: at the tier's spend cap, API usage pauses until 00:00 UTC on the first day of the next month unless you request a higher limit.",
+          "kind": "paraphrase",
+          "sourceId": "anth-ratelimits",
+          "locator": "Spend limit reached",
+          "quote": "API usage pauses until 00:00 UTC on the first day of the next month"
+        },
+        {
+          "id": "M26",
+          "sentence": "The response has no retry-after header.",
+          "kind": "paraphrase",
+          "sourceId": "anth-ratelimits",
+          "locator": "Spend limit reached",
+          "quote": "the response has no retry-after header"
+        },
+        {
+          "id": "M27",
+          "sentence": "Retrying, including SDK automatic retries, fails until access resumes.",
+          "kind": "paraphrase",
+          "sourceId": "anth-ratelimits",
+          "locator": "Spend limit reached",
+          "quote": "Retrying, including the SDK's automatic retries, fails until access resumes."
+        },
+        {
+          "id": "M28",
+          "sentence": "The response carries an error code that tells the two apart.",
+          "kind": "paraphrase",
+          "sourceId": "anth-ratelimits",
+          "locator": "Spend limit reached",
+          "quote": "Use it to tell this response apart from a rate limit."
+        },
+        {
+          "id": "M29",
+          "sentence": "OpenAI says not to retry quota, billing or other errors that require you to take action.",
+          "kind": "paraphrase",
+          "sourceId": "oai-ratelimits",
+          "locator": "Retrying with exponential backoff",
+          "quote": "Don't retry quota, billing, or other errors that require you to take action."
+        },
+        {
+          "id": "M30",
+          "sentence": "OWASP names denial of wallet: attackers exploit the cost-per-use model of cloud-based AI services.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Common examples, 2",
+          "quote": "attackers exploit the cost-per-use model of cloud-based AI services"
+        },
+        {
+          "id": "M31",
+          "sentence": "OWASP lists logging to detect unusual patterns of resource consumption.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Mitigation 7",
+          "quote": "implement logging to detect and respond to unusual patterns of resource consumption"
+        },
+        {
+          "id": "M32",
+          "sentence": "OWASP lists designing the system to degrade gracefully under heavy load.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Mitigation 9",
+          "quote": "Design the system to degrade gracefully under heavy load"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ai/prompt-injection-and-the-owasp-top-10-for-llm-applications.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "The OWASP Gen AI Security Project publishes a Top 10 list of risks for applications built on large language models; the 2025 edition is the latest on the project's site.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm-top10",
+          "locator": "intro paragraph of the Top 10 page",
+          "quote": "the latest Top 10 risks, vulnerabilities and mitigations for developing and securing generative AI and large language model applications"
+        },
+        {
+          "id": "A2",
+          "sentence": "The 2025 list has ten entries (LLM01 Prompt Injection to LLM10 Unbounded Consumption).",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm-top10",
+          "locator": "entry list",
+          "quote": "LLM10:2025 Unbounded Consumption"
+        },
+        {
+          "id": "A3",
+          "sentence": "OWASP defines the problem in one sentence: A Prompt Injection Vulnerability occurs when user prompts alter the LLM's behavior or output in unintended ways.",
+          "kind": "definition",
+          "sourceId": "owasp-llm01",
+          "locator": "first paragraph",
+          "quote": "A Prompt Injection Vulnerability occurs when user prompts alter the LLM’s behavior or output in unintended ways."
+        },
+        {
+          "id": "A4",
+          "sentence": "These inputs can affect the model even when they are imperceptible to humans, as long as the model parses the content.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "first paragraph",
+          "quote": "These inputs can affect the model even if they are imperceptible to humans"
+        },
+        {
+          "id": "A5",
+          "sentence": "Direct prompt injection: a user's own prompt input alters the model's behavior in an unintended way.",
+          "kind": "definition",
+          "sourceId": "owasp-llm01",
+          "locator": "Types of Prompt Injection Vulnerabilities, Direct",
+          "quote": "Direct prompt injections occur when a user’s prompt input directly alters the behavior of the model in unintended or unexpected ways."
+        },
+        {
+          "id": "A6",
+          "sentence": "Indirect prompt injection: the model accepts input from an external source, such as a website or a file.",
+          "kind": "definition",
+          "sourceId": "owasp-llm01",
+          "locator": "Types of Prompt Injection Vulnerabilities, Indirect",
+          "quote": "Indirect prompt injections occur when an LLM accepts input from external sources, such as websites or files."
+        },
+        {
+          "id": "A7",
+          "sentence": "Both forms can be intentional or unintentional.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Direct and Indirect paragraphs",
+          "quote": "Like direct injections, indirect injections can be either intentional or unintentional."
+        },
+        {
+          "id": "A8",
+          "sentence": "OWASP's own example: summarizing a web page with hidden instructions that make the model insert an image linking to a URL, leaking the private conversation.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Scenario #2: Indirect Injection",
+          "quote": "A user employs an LLM to summarize a webpage containing hidden instructions that cause the LLM to insert an image linking to a URL"
+        },
+        {
+          "id": "A9",
+          "sentence": "Jailbreaking is described as a form of prompt injection in which the attacker's input makes the model disregard its safety protocols entirely.",
+          "kind": "definition",
+          "sourceId": "owasp-llm01",
+          "locator": "third paragraph",
+          "quote": "Jailbreaking is a form of prompt injection where the attacker provides inputs that cause the model to disregard its safety protocols entirely."
+        },
+        {
+          "id": "A10",
+          "sentence": "Developers can build safeguards into system prompts and input handling, but effective prevention of jailbreaking requires ongoing updates to training and safety mechanisms.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "third paragraph",
+          "quote": "effective prevention of jailbreaking requires ongoing updates to the model’s training and safety mechanisms"
+        },
+        {
+          "id": "A11",
+          "sentence": "Retrieval-augmented generation and fine-tuning do not fully mitigate prompt injection, per OWASP.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "second paragraph",
+          "quote": "research shows that they do not fully mitigate prompt injection vulnerabilities"
+        },
+        {
+          "id": "A12",
+          "sentence": "The project says it is unclear whether fool-proof prevention methods exist.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Prevention and Mitigation Strategies",
+          "quote": "it is unclear if there are fool-proof methods of prevention for prompt injection"
+        },
+        {
+          "id": "A13",
+          "sentence": "The measures it lists can mitigate the impact of prompt injection.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Prevention and Mitigation Strategies",
+          "quote": "the following measures can mitigate the impact of prompt injections"
+        },
+        {
+          "id": "A14",
+          "sentence": "Mitigation: validate output formats with deterministic code; ask for clear formats, reasoning and source citations.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 2",
+          "quote": "Specify clear output formats, request detailed reasoning and source citations, and use deterministic code to validate adherence to these formats."
+        },
+        {
+          "id": "A15",
+          "sentence": "Filtering: the RAG Triad of context relevance, groundedness and question and answer relevance.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 3",
+          "quote": "Evaluate responses using the RAG Triad: Assess context relevance, groundedness, and question/answer relevance"
+        },
+        {
+          "id": "A16",
+          "sentence": "Privilege control: the application holds its own API tokens and handles functions in code rather than giving them to the model.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 4",
+          "quote": "handle these functions in code rather than providing them to the model"
+        },
+        {
+          "id": "A17",
+          "sentence": "Segregate and identify external content: separate and denote untrusted content to limit its influence.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 6",
+          "quote": "Separate and clearly denote untrusted content to limit its influence on user prompts."
+        },
+        {
+          "id": "A18",
+          "sentence": "OWASP recommends treating the model as an untrusted user when testing trust boundaries and access controls.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 7",
+          "quote": "treating the model as an untrusted user to test the effectiveness of trust boundaries and access controls"
+        },
+        {
+          "id": "A19",
+          "sentence": "Severity of a successful prompt injection depends largely on business context and the agency with which the model is architected.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "after the Indirect paragraph",
+          "quote": "largely dependent on both the business context the model operates in, and the agency with which the model is architected"
+        },
+        {
+          "id": "A20",
+          "sentence": "Excessive Agency is the ability to perform damaging actions in response to unexpected, ambiguous or manipulated model output.",
+          "kind": "definition",
+          "sourceId": "owasp-llm06",
+          "locator": "second paragraph",
+          "quote": "Excessive Agency is the vulnerability that enables damaging actions to be performed in response to unexpected, ambiguous or manipulated outputs from an LLM"
+        },
+        {
+          "id": "A21",
+          "sentence": "Typical root causes: excessive functionality, excessive permissions, excessive autonomy.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "root cause list",
+          "quote": "The root cause of Excessive Agency is typically one or more of: excessive functionality; excessive permissions; excessive autonomy."
+        },
+        {
+          "id": "A22",
+          "sentence": "Example: an extension meant to read documents can also modify and delete them.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Example 1",
+          "quote": "the 3rd-party extension they choose to use also includes the ability to modify and delete documents"
+        },
+        {
+          "id": "A23",
+          "sentence": "Example: a read extension connects with an identity that also has update, insert and delete permissions.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Example 4",
+          "quote": "connects to a database server using an identity that not only has SELECT permissions, but also UPDATE, INSERT and DELETE permissions"
+        },
+        {
+          "id": "A24",
+          "sentence": "Example: an extension that deletes a user's documents does so without asking the user.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Example 6",
+          "quote": "performs deletions without any confirmation from the user"
+        },
+        {
+          "id": "A25",
+          "sentence": "Mitigation: avoid open-ended extensions such as running a shell command.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Mitigation 3",
+          "quote": "Avoid the use of open-ended extensions where possible (e.g., run a shell command, fetch a URL, etc.)"
+        },
+        {
+          "id": "A26",
+          "sentence": "Mitigation: implement authorization in downstream systems rather than relying on an LLM to decide if an action is allowed or not.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Mitigation 7, complete mediation",
+          "quote": "Implement authorization in downstream systems rather than relying on an LLM to decide if an action is allowed or not."
+        },
+        {
+          "id": "A27",
+          "sentence": "Logging, monitoring and rate limiting will not prevent excessive agency but can limit the damage.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "after the numbered mitigations",
+          "quote": "The following options will not prevent Excessive Agency, but can limit the level of damage caused"
+        },
+        {
+          "id": "A28",
+          "sentence": "The mailbox scenario can be broken by removing excessive autonomy: the user reviews and sends every drafted mail.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "Example Attack Scenarios",
+          "quote": "eliminating excessive autonomy by requiring the user to manually review and hit ‘send’ on every mail drafted by the LLM extension"
+        },
+        {
+          "id": "A29",
+          "sentence": "Unbounded Consumption: an application allows excessive and uncontrolled inference.",
+          "kind": "definition",
+          "sourceId": "owasp-llm10",
+          "locator": "first paragraphs",
+          "quote": "Unbounded Consumption occurs when a Large Language Model (LLM) application allows users to conduct excessive and uncontrolled inferences"
+        },
+        {
+          "id": "A30",
+          "sentence": "Risks include denial of service, economic losses, model theft and service degradation.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "first paragraphs",
+          "quote": "leading to risks such as denial of service (DoS), economic losses, model theft, and service degradation"
+        },
+        {
+          "id": "A31",
+          "sentence": "Denial of Wallet: initiating a high volume of operations to exploit the cost-per-use model of cloud-based AI services.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Common Examples, 2",
+          "quote": "By initiating a high volume of operations, attackers exploit the cost-per-use model of cloud-based AI services"
+        },
+        {
+          "id": "A32",
+          "sentence": "Mitigations include input size limits, rate limiting and user quotas, timeouts and throttling.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Prevention and Mitigation Strategies 1, 3, 5",
+          "quote": "Apply rate limiting and user quotas to restrict the number of requests a single source entity can make in a given time period."
+        },
+        {
+          "id": "A33",
+          "sentence": "The project's site states that its content is provided without warranty of service or accuracy.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm-top10",
+          "locator": "page footer",
+          "quote": "provided without warranty of service or accuracy"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ai/retrieval-augmented-generation-what-it-is-and-where-it-breaks.mdx",
+      "claims": [
+        {
+          "id": "R1",
+          "sentence": "The name comes from a 2020 research paper by Patrick Lewis and colleagues, accepted at NeurIPS 2020.",
+          "kind": "paraphrase",
+          "sourceId": "rag-arxiv",
+          "locator": "arXiv listing comments",
+          "quote": "Accepted at NeurIPS 2020"
+        },
+        {
+          "id": "R2",
+          "sentence": "The abstract starts from the limitation that models' ability to access and precisely manipulate knowledge is still limited.",
+          "kind": "paraphrase",
+          "sourceId": "rag-arxiv",
+          "locator": "abstract",
+          "quote": "their ability to access and precisely manipulate knowledge is still limited"
+        },
+        {
+          "id": "R3",
+          "sentence": "Providing provenance for decisions and updating world knowledge remain open research problems.",
+          "kind": "paraphrase",
+          "sourceId": "rag-arxiv",
+          "locator": "abstract",
+          "quote": "providing provenance for their decisions and updating their world knowledge remain open research problems"
+        },
+        {
+          "id": "R4",
+          "sentence": "RAG models combine pre-trained parametric and non-parametric memory for language generation.",
+          "kind": "definition",
+          "sourceId": "rag-arxiv",
+          "locator": "abstract",
+          "quote": "models which combine pre-trained parametric and non-parametric memory for language generation"
+        },
+        {
+          "id": "R5",
+          "sentence": "In their setup the non-parametric memory is a dense vector index of Wikipedia, accessed with a pre-trained neural retriever.",
+          "kind": "paraphrase",
+          "sourceId": "rag-arxiv",
+          "locator": "abstract",
+          "quote": "the non-parametric memory is a dense vector index of Wikipedia, accessed with a pre-trained neural retriever"
+        },
+        {
+          "id": "R6",
+          "sentence": "A TACL study analyzed long contexts on multi-document question answering and key-value retrieval.",
+          "kind": "paraphrase",
+          "sourceId": "lost-middle",
+          "locator": "abstract",
+          "quote": "multi-document question answering and key-value retrieval"
+        },
+        {
+          "id": "R7",
+          "sentence": "Performance can degrade significantly when the position of relevant information changes.",
+          "kind": "paraphrase",
+          "sourceId": "lost-middle",
+          "locator": "abstract",
+          "quote": "performance can degrade significantly when changing the position of relevant information"
+        },
+        {
+          "id": "R8",
+          "sentence": "Performance is often highest when relevant information is at the beginning or end of the input.",
+          "kind": "paraphrase",
+          "sourceId": "lost-middle",
+          "locator": "abstract",
+          "quote": "performance is often highest when relevant information occurs at the beginning or end of the input context"
+        },
+        {
+          "id": "R9",
+          "sentence": "It degrades when models must access relevant information in the middle of long contexts, even for explicitly long-context models.",
+          "kind": "paraphrase",
+          "sourceId": "lost-middle",
+          "locator": "abstract",
+          "quote": "significantly degrades when models must access relevant information in the middle of long contexts, even for explicitly long-context models"
+        },
+        {
+          "id": "R10",
+          "sentence": "The study appeared in volume 12 of the Transactions of the Association for Computational Linguistics, 2024.",
+          "kind": "paraphrase",
+          "sourceId": "lost-middle",
+          "locator": "citation metadata",
+          "quote": "Transactions of the Association for Computational Linguistics, Volume 12"
+        },
+        {
+          "id": "R11",
+          "sentence": "Anthropic's token-counting page says counts help manage rate limits and costs.",
+          "kind": "paraphrase",
+          "sourceId": "anth-tokencount",
+          "locator": "intro",
+          "quote": "Proactively manage rate limits and costs"
+        },
+        {
+          "id": "R12",
+          "sentence": "Google's page says the context window defines the combined limit of input and output tokens.",
+          "kind": "paraphrase",
+          "sourceId": "goog-tokens",
+          "locator": "Context window",
+          "quote": "The context window defines the combined limit of input and output tokens."
+        },
+        {
+          "id": "R13",
+          "sentence": "OWASP describes unauthorized access and data leakage from inadequate or misaligned access controls.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Common examples of risks, 1",
+          "quote": "Inadequate or misaligned access controls can lead to unauthorized access to embeddings containing sensitive information"
+        },
+        {
+          "id": "R14",
+          "sentence": "It describes cross-context leaks in multi-tenant environments where users share a vector database.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Common examples of risks, 2",
+          "quote": "there’s a risk of context leakage between users or queries"
+        },
+        {
+          "id": "R15",
+          "sentence": "It describes embedding inversion attacks that recover significant amounts of source information.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Common examples of risks, 3",
+          "quote": "invert embeddings and recover significant amounts of source information"
+        },
+        {
+          "id": "R16",
+          "sentence": "Its poisoning scenario: a resume with hidden text, such as white text on a white background, with instructions to recommend the candidate.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Scenario 1",
+          "quote": "white text on a white background"
+        },
+        {
+          "id": "R17",
+          "sentence": "OWASP says RAG and fine-tuning do not fully mitigate prompt injection.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "intro",
+          "quote": "they do not fully mitigate prompt injection vulnerabilities"
+        },
+        {
+          "id": "R18",
+          "sentence": "Knowledge conflict errors can occur when data from multiple sources contradict each other.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Common examples of risks, 2",
+          "quote": "data from multiple sources contradict each other"
+        },
+        {
+          "id": "R19",
+          "sentence": "The model cannot always supersede old knowledge learned in training with new retrieved data.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Common examples of risks, 2",
+          "quote": "can’t supersede old knowledge that it has learned while training"
+        },
+        {
+          "id": "R20",
+          "sentence": "Retrieval augmentation can inadvertently alter the model's behavior; accuracy and relevance may rise while emotional intelligence or empathy can diminish.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Common examples of risks, 5",
+          "quote": "aspects like emotional intelligence or empathy can diminish"
+        },
+        {
+          "id": "R21",
+          "sentence": "OWASP's mitigation: fine-grained access controls and permission-aware vector and embedding stores.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Mitigation 1",
+          "quote": "permission-aware vector and embedding stores"
+        },
+        {
+          "id": "R22",
+          "sentence": "OWASP's mitigation: strict logical and access partitioning of datasets.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Mitigation 1",
+          "quote": "strict logical and access partitioning of datasets in the vector database"
+        },
+        {
+          "id": "R23",
+          "sentence": "OWASP's mitigation: audit the integrity of the knowledge base for hidden codes and data poisoning.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Mitigation 2",
+          "quote": "audit and validate the integrity of the knowledge base for hidden codes and data poisoning"
+        },
+        {
+          "id": "R24",
+          "sentence": "OWASP's mitigation: accept data only from trusted and verified sources.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Mitigation 2",
+          "quote": "Accept data only from trusted and verified sources."
+        },
+        {
+          "id": "R25",
+          "sentence": "OWASP's mitigation: tag and classify data to control access levels.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Mitigation 3",
+          "quote": "Tag and classify data within the knowledge base to control access levels"
+        },
+        {
+          "id": "R26",
+          "sentence": "OWASP's mitigation: maintain detailed immutable logs of retrieval activities.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm08",
+          "locator": "Mitigation 4",
+          "quote": "Maintain detailed immutable logs of retrieval activities"
+        },
+        {
+          "id": "R27",
+          "sentence": "OWASP names three checks it calls the RAG Triad: context relevance, groundedness, and question and answer relevance.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 3",
+          "quote": "Assess context relevance, groundedness, and question/answer relevance"
+        },
+        {
+          "id": "R28",
+          "sentence": "The NIST profile defines confabulation as the production of confidently stated but erroneous or false content.",
+          "kind": "definition",
+          "sourceId": "nist-ai600-1",
+          "locator": "Section 2.2",
+          "quote": "The production of confidently stated but erroneous or false content"
+        },
+        {
+          "id": "R29",
+          "sentence": "The NIST profile suggests verifying that fine-tuning or retrieval-augmented generation data is grounded.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai600-1",
+          "locator": "Suggested action MS-2.5-005",
+          "quote": "fine-tuning or retrieval-augmented generation data is grounded"
+        },
+        {
+          "id": "R30",
+          "sentence": "OWASP's output guidance suggests requesting source citations.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 2",
+          "quote": "request detailed reasoning and source citations"
+        },
+        {
+          "id": "R31",
+          "sentence": "OWASP's output guidance suggests using deterministic code to validate the output format.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "Mitigation 2",
+          "quote": "use deterministic code to validate adherence to these formats"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx",
+      "claims": [
+        {
+          "id": "N1",
+          "sentence": "The NIST AI Risk Management Framework is a document from NIST about managing the risks of artificial intelligence systems.",
+          "kind": "paraphrase",
+          "sourceId": "nist-airmf",
+          "locator": "intro",
+          "quote": "better manage risks to individuals, organizations, and society associated with artificial intelligence"
+        },
+        {
+          "id": "N2",
+          "sentence": "NIST describes the AI RMF as intended for voluntary use.",
+          "kind": "paraphrase",
+          "sourceId": "nist-airmf",
+          "locator": "intro",
+          "quote": "intended for voluntary use"
+        },
+        {
+          "id": "N3",
+          "sentence": "It was released on January 26, 2023.",
+          "kind": "statistic",
+          "sourceId": "nist-airmf",
+          "locator": "intro",
+          "quote": "January 26, 2023"
+        },
+        {
+          "id": "N4",
+          "sentence": "The document calls the framework voluntary, rights-preserving, non-sector-specific, and use-case agnostic.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 1.2 / Part 2 intro",
+          "quote": "voluntary, rights-preserving, non-sector-specific, and use-case agnostic"
+        },
+        {
+          "id": "N5",
+          "sentence": "The framework offers flexibility for organizations of all sizes and in all sectors.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Part 2 intro",
+          "quote": "organizations of all sizes and in all sectors"
+        },
+        {
+          "id": "N6",
+          "sentence": "The framework describes the characteristics of a trustworthy AI system: valid and reliable, safe, secure and resilient, accountable and transparent, explainable and interpretable, privacy-enhanced, and fair with harmful bias managed.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 3, Figure 4",
+          "quote": "fair with harmful bias managed"
+        },
+        {
+          "id": "N7",
+          "sentence": "The AI RMF 1.0 is being revised as part of the White House AI Action Plan.",
+          "kind": "regulation",
+          "sourceId": "nist-airmf",
+          "locator": "page notice",
+          "quote": "being revised as part of the White House AI Action Plan"
+        },
+        {
+          "id": "N8",
+          "sentence": "The Playbook page says it will be updated after the framework is revised.",
+          "kind": "paraphrase",
+          "sourceId": "nist-airmf-playbook",
+          "locator": "page notice",
+          "quote": "revised"
+        },
+        {
+          "id": "N9",
+          "sentence": "The core organizes AI risk management into four functions: Govern, Map, Measure and Manage.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 5",
+          "quote": "GOVERN, MAP, MEASURE, and MANAGE"
+        },
+        {
+          "id": "N10",
+          "sentence": "Govern applies to all stages of an organization's AI risk management, while the other three can be applied in AI system-specific contexts and at specific stages of the AI lifecycle.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 5",
+          "quote": "While GOVERN applies to all stages of organizations’ AI risk management processes and procedures"
+        },
+        {
+          "id": "N11",
+          "sentence": "The actions under the functions do not constitute a checklist, nor are they necessarily an ordered set of steps.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 5",
+          "quote": "do not constitute a checklist, nor are they necessarily an ordered set of steps"
+        },
+        {
+          "id": "N12",
+          "sentence": "Govern cultivates and implements a culture of risk management; it is a cross-cutting function infused throughout the others.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 5.1",
+          "quote": "cross-cutting function that is infused throughout AI risk management"
+        },
+        {
+          "id": "N13",
+          "sentence": "Map establishes the context to frame risks related to an AI system.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 5.2",
+          "quote": "establishes the context to frame risks related to an AI system"
+        },
+        {
+          "id": "N14",
+          "sentence": "Measure employs quantitative, qualitative or mixed-method tools to analyze, assess, benchmark and monitor AI risk.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 5.3",
+          "quote": "employs quantitative, qualitative, or mixed-method tools, techniques, and methodologies to analyze, assess, benchmark, and monitor AI risk"
+        },
+        {
+          "id": "N15",
+          "sentence": "Manage allocates risk resources to mapped and measured risks and covers plans to respond to and recover from incidents.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 5.4",
+          "quote": "risk resources to mapped and measured risks"
+        },
+        {
+          "id": "N16",
+          "sentence": "Govern 2.1 asks that roles, responsibilities and lines of communication for mapping, measuring and managing AI risks are documented and clear.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 1, Govern 2.1",
+          "quote": "are documented and are clear to individuals and teams throughout the organization"
+        },
+        {
+          "id": "N17",
+          "sentence": "Map 1.1 asks that intended purposes, potentially beneficial uses, specific laws, norms and expectations, and prospective deployment settings are understood and documented.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 2, Map 1.1",
+          "quote": "and prospective settings in which the AI system will be deployed are understood and documented"
+        },
+        {
+          "id": "N18",
+          "sentence": "Measure 2.1 asks that test sets, metrics and details about the tools used during testing, evaluation, verification and validation are documented.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 3, Measure 2.1",
+          "quote": "Test sets, metrics, and details about the tools used during TEVV are documented"
+        },
+        {
+          "id": "N19",
+          "sentence": "Manage 2.4 asks that mechanisms are in place, with responsibilities assigned, to supersede, disengage or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 4, Manage 2.4",
+          "quote": "to supersede, disengage, or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use"
+        },
+        {
+          "id": "N20",
+          "sentence": "Manage 4.3 asks that incidents and errors are communicated to relevant AI actors, and that processes for tracking, responding to and recovering from them are followed and documented.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Table 4, Manage 4.3",
+          "quote": "Incidents and errors are communicated to relevant AI actors"
+        },
+        {
+          "id": "N21",
+          "sentence": "The Measure function says AI systems should be tested before their deployment and regularly while in operation.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai100-1",
+          "locator": "Section 5.3",
+          "quote": "AI systems should be tested before their deployment and regularly while in operation"
+        },
+        {
+          "id": "N22",
+          "sentence": "NIST publishes a companion Playbook that provides suggested actions for achieving the outcomes in the core.",
+          "kind": "paraphrase",
+          "sourceId": "nist-airmf-playbook",
+          "locator": "page intro",
+          "quote": "suggested actions for achieving the outcomes laid out in the AI Risk Management Framework"
+        },
+        {
+          "id": "N23",
+          "sentence": "The Playbook page states that it is neither a checklist nor set of steps to be followed in its entirety, and that its suggestions are voluntary.",
+          "kind": "paraphrase",
+          "sourceId": "nist-airmf-playbook",
+          "locator": "page intro",
+          "quote": "neither a checklist nor set of steps to be followed in its entirety"
+        },
+        {
+          "id": "N24",
+          "sentence": "On July 26, 2024 NIST released NIST AI 600-1, the Generative Artificial Intelligence Profile.",
+          "kind": "statistic",
+          "sourceId": "nist-ai600-1",
+          "locator": "cover page",
+          "quote": "July 2024"
+        },
+        {
+          "id": "N25",
+          "sentence": "A profile is an implementation of the AI RMF functions, categories and subcategories for a specific setting, application or technology.",
+          "kind": "definition",
+          "sourceId": "nist-ai600-1",
+          "locator": "Section 1",
+          "quote": "an implementation of the AI RMF functions, categories, and subcategories for a specific setting, application, or technology"
+        },
+        {
+          "id": "N26",
+          "sentence": "The profile lists twelve risks it describes as unique to or exacerbated by generative AI (CBRN information or capabilities; confabulation; dangerous, violent or hateful content; data privacy; environmental impacts; harmful bias or homogenization; human-AI configuration; information integrity; information security; intellectual property; obscene, degrading and abusive content; value chain and component integration).",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai600-1",
+          "locator": "Section 2",
+          "quote": "unique to or exacerbated by GAI"
+        },
+        {
+          "id": "N27",
+          "sentence": "The profile defines confabulation as the production of confidently stated but erroneous or false content.",
+          "kind": "definition",
+          "sourceId": "nist-ai600-1",
+          "locator": "Section 2.2",
+          "quote": "The production of confidently stated but erroneous or false content"
+        },
+        {
+          "id": "N28",
+          "sentence": "The profile describes human-AI configuration as arrangements of a human and an AI system that can result in, among other things, automation bias or over-reliance.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai600-1",
+          "locator": "Section 2.7",
+          "quote": "automation bias"
+        },
+        {
+          "id": "N29",
+          "sentence": "The profile describes value chain and component integration as including non-transparent or untraceable integration of upstream third-party components and improper supplier vetting.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ai600-1",
+          "locator": "Section 2.12",
+          "quote": "improper supplier vetting"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/insights/topic-ai.mdx",
+      "sentences": [
+        {
+          "text": "AI-native building means putting a language model inside a product and running it with the risks stated.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "One article reads the OWASP list of risks for model applications.",
+          "page": "src/content/insights/ai/prompt-injection-and-the-owasp-top-10-for-llm-applications.mdx#what-the-list-contains"
+        },
+        {
+          "text": "Another applies the NIST AI Risk Management Framework to a small team.",
+          "page": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx#what-the-framework-is"
+        },
+        {
+          "text": "Another sets out the questions to ask a model provider.",
+          "page": "src/content/insights/ai/choosing-a-model-provider-the-questions-that-matter.mdx#a-question-list-you-can-hand-to-a-technical-lead"
+        },
+        {
+          "text": "Another shows how to evaluate a feature before launch.",
+          "page": "src/content/insights/ai/evaluating-an-llm-feature-before-you-ship-it.mdx#why-an-informal-check-is-not-enough"
+        },
+        {
+          "text": "Another explains retrieval and where it breaks.",
+          "page": "src/content/insights/ai/retrieval-augmented-generation-what-it-is-and-where-it-breaks.mdx#where-it-breaks"
+        },
+        {
+          "text": "Another covers metering and budgeting usage.",
+          "page": "src/content/insights/ai/metering-and-budgeting-model-usage.mdx#budget-in-units-you-can-control"
+        },
+        {
+          "text": "Another covers decisions about customer data.",
+          "page": "src/content/insights/ai/ai-features-and-customer-data-what-to-decide-first.mdx#the-one-page-decision-record"
+        },
+        {
+          "text": "Another places a person in the loop.",
+          "page": "src/content/insights/ai/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop.mdx#three-places-a-person-can-sit"
+        },
+        {
+          "text": "The last lists questions to bring to counsel about AI regulation.",
+          "page": "src/content/insights/ai/ai-regulation-for-a-small-saas-company-what-to-ask-counsel.mdx#questions-to-bring-to-counsel"
+        },
+        {
+          "text": "Each article cites the document it describes and says what it cannot tell you.",
+          "page": "src/content/insights/ai/the-nist-ai-risk-management-framework-for-a-small-team.mdx#what-this-article-cannot-tell-you"
+        }
+      ]
+    }
+  ],
+  "markers": []
+}

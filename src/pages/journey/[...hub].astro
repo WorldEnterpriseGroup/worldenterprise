@@ -1,0 +1,55 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { journeyActions } from '../../components/families/actions.ts';
+import { HEADINGS, HEADINGS_HUB } from '../../components/families/copy.ts';
+import FamilyHubPage from '../../components/families/FamilyHubPage.astro';
+import JourneyList from '../../components/families/JourneyList.astro';
+import { loadIsLive } from '../../components/families/load.ts';
+import { ogSlotFor } from '../../components/families/og.ts';
+import { findHubPage, hubStaticPaths, liveCards, pageRefs } from '../../components/families/paths.ts';
+import { journeySteps } from '../../components/families/view.ts';
+import { PROGRAM_STEPS } from '../../components/program/steps.ts';
+import { JOURNEY } from '../../data/families.ts';
+import { getRenderable } from '../../lib/content.ts';
+
+/**
+ * The journey hub (/journey/): the program's steps in order, then the questions the hub page lists (if its content owner wrote any),
+ * then the journey pages that are live. The steps are the program's own; the page adds no step and no duration. The hub is a rest route
+ * that yields only the root, so it is built only when its `journey/index` entry exists (pending otherwise, never an empty page).
+ */
+export const getStaticPaths = (async () => hubStaticPaths(JOURNEY, await getRenderable('pages'))) satisfies GetStaticPaths;
+
+const pages = await getRenderable('pages');
+const isLive = await loadIsLive();
+const hub = findHubPage(JOURNEY, pages);
+const family = hub?.data.family;
+const questions = family?.id === 'journey' ? family.questions : [];
+---
+
+<FamilyHubPage
+  family="journey"
+  composition="journey"
+  page={hub}
+  path="/journey/"
+  cards={liveCards(JOURNEY, pageRefs(pages), isLive)}
+  listHeading={HEADINGS_HUB.journey}
+  actions={journeyActions('index', isLive)}
+  ogSlot={ogSlotFor('journey')}
+>
+  <section class="stack" aria-labelledby="jny-hub-steps">
+    <h2 id="jny-hub-steps">{HEADINGS.journey.steps}</h2>
+    <JourneyList steps={journeySteps(PROGRAM_STEPS)} label={HEADINGS.journey.steps} />
+  </section>
+  {
+    questions.length > 0 && (
+      <section class="stack" aria-labelledby="jny-hub-questions">
+        <h2 id="jny-hub-questions">{HEADINGS.journey.questions}</h2>
+        <ul>
+          {questions.map((question) => (
+            <li>{question}</li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</FamilyHubPage>

@@ -1,0 +1,156 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { SlotId } from '../../assets/photo/slots.ts';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import SourcesList from '../blocks/SourcesList.astro';
+import BrandCallout from '../brand/BrandCallout.astro';
+import Compositions from '../brand/Compositions.astro';
+import DataTable from '../ui/DataTable.astro';
+import Section from '../ui/Section.astro';
+import type { HeroActions } from './actions.ts';
+import { COMPARE_CAPTION, COMPARE_QUESTION_COLUMN, EYEBROWS, FIXED, HEADINGS } from './copy.ts';
+import type { CompareView } from './view.ts';
+
+/**
+ * A comparison page (/compare/<pair>/). Neutral by construction: both sides are the same fields rendered by the same markup in the
+ * order the data gives them, in a table whose columns are equal and in two lists of equal weight; no side is highlighted, ordered by
+ * the template or given a different heading level. Where each side fits names a situation for both, and every definition cites the
+ * source it came from. The fixed sentence says the page compares categories, never products or companies.
+ */
+interface Props {
+  page: CollectionEntry<'pages'>;
+  view: CompareView;
+  path: string;
+  actions: HeroActions;
+  ogSlot: SlotId;
+}
+
+const { page, view, path, actions, ogSlot } = Astro.props;
+const { Content } = await render(page);
+const { title, description, eyebrow, updated, draft } = page.data;
+
+const columns = [COMPARE_QUESTION_COLUMN, ...view.names];
+const rows = view.rows.map((row) => [row.label, ...row.cells]);
+---
+
+<MarketingLayout
+  title={title}
+  description={description}
+  path={path}
+  lead={description}
+  eyebrow={eyebrow ?? EYEBROWS.compare}
+  updated={updated}
+  draft={draft}
+  ogSlot={ogSlot}
+  schemaType="WebPage"
+  primary={actions.primary}
+  secondary={actions.secondary}
+>
+  <Compositions id="compare" />
+  <BrandCallout tone="note" title={HEADINGS.shared.about}>
+    <p>{FIXED.compare}</p>
+  </BrandCallout>
+  <Content />
+  <Fragment slot="after">
+    <Section labelledby="cmp-table">
+      <div class="stack">
+        <h2 id="cmp-table">{HEADINGS.compare.table}</h2>
+        <DataTable caption={COMPARE_CAPTION} columns={columns} rows={rows} />
+      </div>
+    </Section>
+    <Section tone="soft" labelledby="cmp-ask">
+      <div class="stack">
+        <h2 id="cmp-ask">{HEADINGS.compare.ask}</h2>
+        <div class="cmp-pair">
+          {
+            view.asks.map((side) => (
+              <section class="cmp-side stack">
+                <h3>{side.name}</h3>
+                <ul>
+                  {side.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ))
+          }
+        </div>
+      </div>
+    </Section>
+    <Section labelledby="cmp-fits">
+      <div class="stack">
+        <h2 id="cmp-fits">{HEADINGS.compare.fits}</h2>
+        <div class="cmp-pair">
+          {
+            view.fits.map((side) => (
+              <section class="cmp-side stack">
+                <h3>{side.name}</h3>
+                <p>{side.text}</p>
+              </section>
+            ))
+          }
+        </div>
+      </div>
+    </Section>
+    <Section tone="soft" labelledby="cmp-defs">
+      <div class="stack">
+        <h2 id="cmp-defs">{HEADINGS.compare.definitions}</h2>
+        <dl class="cmp-defs">
+          {
+            view.definitions.map((definition) => (
+              <>
+                <dt>{definition.term}</dt>
+                <dd>
+                  {definition.text} <a href={definition.sourceHref}>Source {definition.sourceNumber}</a>
+                </dd>
+              </>
+            ))
+          }
+        </dl>
+      </div>
+    </Section>
+    <Section tone="stone">
+      <SourcesList sources={view.sources} title={HEADINGS.shared.sources} />
+    </Section>
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  /* Two equal columns, the same width and the same padding, in the order the data gives. Nothing here distinguishes one side. */
+  .cmp-pair {
+    display: grid;
+    gap: var(--sp-5);
+    container-type: inline-size;
+
+    @container (min-width: 40rem) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .cmp-side {
+    padding: var(--sp-5);
+    background: var(--color-bg);
+    border: var(--border-hair);
+    border-radius: var(--radius-md);
+  }
+
+  .cmp-defs {
+    display: grid;
+    gap: var(--sp-2) var(--sp-5);
+
+    dt {
+      font-weight: 700;
+    }
+
+    dd {
+      margin: 0 0 var(--sp-3);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .cmp-side {
+      border-color: CanvasText;
+    }
+  }
+</style>
