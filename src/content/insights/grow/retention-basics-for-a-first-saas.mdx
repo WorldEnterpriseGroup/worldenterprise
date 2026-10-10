@@ -1,0 +1,119 @@
+---
+title: "Retention basics for a first SaaS"
+seoTitle: Retention basics for SaaS
+description: What retention measures in a subscription business, how to calculate customer and revenue retention with a handful of accounts, and what to do with the result.
+topic: grow
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders, first-time-founders]
+relatedServices: [C]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: customer-interview-guide
+related: [onboarding-is-acquisition-time-to-first-value, feedback-loops-that-reach-the-product]
+evidence: [stripe-analytics, stripe-pricing-models]
+claimsUsed: []
+sources:
+  - id: stripe-analytics
+    title: Billing analytics
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/billing/subscriptions/analytics
+    accessed: 2026-10-10
+  - id: stripe-pricing-models
+    title: Recurring pricing models
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/products-prices/pricing-models
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+A subscription company earns its revenue over time, not at the moment of sale. A customer who signs up and stays pays again next month. A customer who signs up and leaves has cost you the effort of winning them and given back little. Retention is the name for how many customers, and how much revenue, you keep from one period to the next.
+
+For a first company the numbers are small and noisy, and the formulas are simple. The hard part is knowing which question each number answers and what you can honestly conclude from it. This article defines the main measures in plain words, shows how to compute them with a handful of accounts, and describes what to do when the answer is not the one you hoped for.
+
+## The measures, in words
+
+The definitions below follow how one payments vendor describes the measures in its public billing documentation. Other tools differ in detail, so check the definition inside whatever tool you use before comparing numbers.
+
+### Churn
+
+Churn is the opposite of retention: it counts the customers you lost. In its billing analytics, Stripe describes subscriber churn as a rate over a window of 30 days, in which the number of subscribers lost during the window is divided by the number who were active at the start of it, plus the new subscribers added in that window. Read the definition of your own tool closely. Whether new sign-ups sit in the denominator changes the figure, and a number that moves because the definition moved is not a trend.
+
+A plain version you can compute by hand is customer churn for a month:
+
+```
+customers lost this month
+divided by
+customers at the start of this month
+```
+
+### Customer retention
+
+Customer retention is the other side of the same count: the customers at the start of the period who are still customers at the end of it. If you started a month with twenty customers and finished it with nineteen of them, customer retention for that month is nineteen out of twenty. Customers who joined during the month are not counted in either number.
+
+### Revenue retention
+
+Revenue retention asks a different question: of the recurring revenue you had at the start of the period, how much do you still have at the end? Stripe's billing analytics states that "Revenue retention considers expansion and can increase above 100%." That sentence carries the important point. If remaining customers upgrade or add seats, their growth can outweigh the revenue lost from departures, so revenue retention can rise while customer retention falls.
+
+A hand calculation:
+
+```
+recurring revenue at the end of the period
+from customers who were present at the start
+divided by
+recurring revenue at the start of the period
+```
+
+Customers who joined during the period stay out of both numbers.
+
+### Why report both
+
+Customer retention tells you whether people stay. Revenue retention tells you whether the money stays. A product where a few large accounts expand while many small ones leave looks healthy on one measure and troubled on the other, and you should know which describes your company. The <MaybeLink path="/research/early-stage-saas-metrics-definitions/">early-stage SaaS metrics definitions</MaybeLink> set out the surrounding measures, such as monthly recurring revenue, and the <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> lets you check your arithmetic.
+
+## Looking at retention over time
+
+A single monthly figure hides the shape of what is going on. A <span data-claim-allow="C-13-peers">cohort</span> is a group of customers who started in the same period, followed together over time. Looking at customers by the month they began shows whether recent sign-ups behave like earlier ones. Stripe's analytics groups subscribers by when they first started paying and tracks each group in the following months, which is one way to build such a view.
+
+With a few dozen customers you can do this in a spreadsheet. List each customer, the month they started and the month they left, if they have. Then ask three questions.
+
+1. When do customers leave? A pattern of leaving in the first month points at onboarding. Leaving around the end of a trial or an annual term points at value or price.
+2. Do newer customers leave sooner or later than older ones? If you changed the product or the sales conversation, this is how you see whether the change helped.
+3. Which customers stayed longest, and what do they share? That answer tells you whom to look for next.
+
+## What small numbers can and cannot tell you
+
+Suppose you have ten customers and one leaves. Customer churn for the month is one in ten. If a second leaves next month, it is two in ten. These are illustrations of arithmetic, not targets. The point is that a single departure moves the figure a great deal, so with so few accounts a percentage is a weak signal.
+
+Treat small-sample retention as a prompt for conversation, not as a result. Each customer who leaves represents a reason, and with ten customers you can learn the reason for every one. Call them. Ask what they were trying to do, what happened and what they use instead. Ask in a way that makes it easy for them to be candid, as described in the <MaybeLink path="/library/customer-interview-guide/">customer interview guide</MaybeLink>.
+
+## What moves retention
+
+Retention is the result of several things, most of which you can influence in order.
+
+**The first experience.** Many departures can be traced to customers who never reached a first result. The <MaybeLink path="/insights/onboarding-is-acquisition-time-to-first-value/">onboarding article</MaybeLink> treats this as the last step of acquisition, and it is usually the first place to look.
+
+**Fit with the right customer.** Some customers were never a good match. If the people who leave share a trait, such as size, industry or the job they hoped the product would do, the lesson is about who you sell to, not what you build.
+
+**Support when it matters.** A customer who hit a problem and waited is likelier to leave than one who got an answer quickly. The <MaybeLink path="/insights/support-at-five-customers-not-fifty/">support article</MaybeLink> describes a light way to answer well at this stage.
+
+**Ongoing value.** The product has to keep earning its place. Usage that falls over several weeks is an early sign that a customer is drifting, and reaching out then is cheaper than winning them back later.
+
+**Price and packaging.** If customers leave when a trial ends or a plan renews, the price may feel out of line with the value. Stripe's documentation on recurring pricing lists several models, such as flat rate, per seat and usage-based, and the article on <MaybeLink path="/insights/usage-based-seat-based-and-hybrid-pricing-models/">usage-based, seat-based and hybrid pricing</MaybeLink> explains how each shapes what customers do when they want to pay less.
+
+**What customers tell you.** Feedback that goes nowhere is a retention risk of its own. The article on <MaybeLink path="/insights/feedback-loops-that-reach-the-product/">feedback loops that reach the product</MaybeLink> covers how to route it.
+
+## A simple routine
+
+Once a month, set aside an hour.
+
+1. Update the list of customers, with start and, where relevant, end dates.
+2. Compute customer retention and revenue retention for the month, using the same definitions each time.
+3. Write down each departure with the reason the customer gave, in their words.
+4. Look at the usage of the remaining customers and note anyone who has gone quiet.
+5. Choose one change to try before the next review, and record why.
+
+Keep the definitions fixed. A number is useful when you can compare it with last month, and a changing definition destroys that. The <MaybeLink path="/playbooks/build-repeatable-growth/">build repeatable growth playbook</MaybeLink> places this routine within the wider work of finding customers who stay.
+
+## What this article cannot tell you
+
+This article cannot tell you what a good retention figure is for your product, how many customers you will keep or how long they will stay. It gives no benchmarks, because no source fetched for it supports one for your category. It relies on one payments vendor's documentation for how that vendor defines the measures, and other tools define them differently. The worked figures are arithmetic illustrations. The sections on what moves retention are editorial judgment, not research findings. Checked on 2026-10-10.
