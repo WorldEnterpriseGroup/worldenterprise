@@ -500,6 +500,281 @@
       ]
     },
     {
+      "owner": "WP-40",
+      "title": "Wave 7 foundation: ledger, claims, ownership, packages data, CI plumbing",
+      "branch": "wp/40",
+      "stage": 0,
+      "write_set": [
+        "package.json",
+        "package-lock.json",
+        "astro.config.mjs",
+        "src/data/routes.ts",
+        "src/data/nav.ts",
+        "src/data/claims.ts",
+        "src/data/site.ts",
+        "src/data/flags.ts",
+        "src/data/packages.ts",
+        "src/content.config.ts",
+        "claims-denylist.json",
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/decisions.md",
+        ".gitlab-ci.yml",
+        "playwright.config.ts",
+        "lighthouserc.json",
+        "tests/unit/foundation/**",
+        "docs/wave7-contracts.md",
+        "tests/unit/wp-40/**",
+        ".astro-magazine/handoffs/wp-40*",
+        ".astro-magazine/sources/wp-40.json",
+        "scripts/lib/audit-dist.mjs",
+        "scripts/audit-claims.mjs",
+        ".astro-magazine/plans/**",
+        "scripts/check-ownership.mjs"
+      ]
+    },
+    {
+      "owner": "WP-41",
+      "title": "GEO and citation layer",
+      "branch": "wp/41",
+      "stage": 1,
+      "write_set": [
+        "src/pages/llms.txt.ts",
+        "src/pages/llms-full.txt.ts",
+        "src/pages/robots.txt.ts",
+        "src/pages/[...path].md.ts",
+        "src/lib/seo.ts",
+        "src/lib/schema.ts",
+        "src/lib/llms.ts",
+        "src/lib/markdown-twins.ts",
+        "src/components/seo/**",
+        "src/components/geo/**",
+        "src/layouts/ArticleLayout.astro",
+        "src/layouts/BriefLayout.astro",
+        "src/layouts/PlaybookLayout.astro",
+        "src/layouts/GuideLayout.astro",
+        "src/pages/about/facts.astro",
+        "src/content/pages/about/facts.mdx",
+        "scripts/audit-geo.mjs",
+        "scripts/audit-seo.mjs",
+        "scripts/validate-jsonld.mjs",
+        "tests/unit/wp-41/**",
+        "tests/e2e/wave7/wp-41/**",
+        ".astro-magazine/handoffs/wp-41*",
+        ".astro-magazine/sources/wp-41.json"
+      ]
+    },
+    {
+      "owner": "WP-42",
+      "title": "Pricing, packages and the Team Composer",
+      "branch": "wp/42",
+      "stage": 1,
+      "write_set": [
+        "src/components/pricing/**",
+        "src/components/islands/we-team-composer/**",
+        "src/scripts/team-composer.ts",
+        "src/pages/tools/team-composer.astro",
+        "src/content/pages/tools/team-composer.mdx",
+        "src/content/pages/pricing/**",
+        "tests/unit/wp-42/**",
+        "tests/e2e/wave7/wp-42/**",
+        ".astro-magazine/handoffs/wp-42*",
+        ".astro-magazine/sources/wp-42.json"
+      ],
+      "lane_exceptions": [
+        "src/pages/pricing/index.astro"
+      ]
+    },
+    {
+      "owner": "WP-43",
+      "title": "Apply flow and the How WE decides page",
+      "branch": "wp/43",
+      "stage": 1,
+      "write_set": [
+        "src/components/forms/**",
+        "src/scripts/forms.ts",
+        "src/data/forms.ts",
+        "docs/forms-contract.md",
+        "src/pages/apply/**",
+        "src/pages/contact/**",
+        "src/content/pages/apply/**",
+        "src/content/pages/contact/**",
+        "src/components/apply/**",
+        "src/pages/program/how-we-decide.astro",
+        "src/content/pages/program/how-we-decide.mdx",
+        "tests/unit/wp-43/**",
+        "tests/e2e/wave7/wp-43/**",
+        ".astro-magazine/handoffs/wp-43*",
+        ".astro-magazine/sources/wp-43.json"
+      ],
+      "lane_exceptions": [
+        "src/pages/program/who-its-for.astro"
+      ]
+    },
+    {
+      "owner": "WP-44",
+      "title": "Home composition: what you leave with, proof, signature opening",
+      "branch": "wp/44",
+      "stage": 1,
+      "write_set": [
+        "src/pages/index.astro",
+        "src/content/pages/home/**",
+        "src/components/home/LatestInsights.astro",
+        "src/components/home/faq.ts",
+        "src/components/home/leave-with/**",
+        "src/components/home/proof/**",
+        "tests/unit/wp-44/**",
+        "tests/e2e/wave7/wp-44/**",
+        ".astro-magazine/handoffs/wp-44*",
+        ".astro-magazine/sources/wp-44.json"
+      ]
+    },
+    {
+      "owner": "WP-45",
+      "title": "Visual system v2: signature moments, card and section variants, motion",
+      "branch": "wp/45",
+      "stage": 1,
+      "write_set": [
+        "src/styles/**",
+        "src/layouts/BaseLayout.astro",
+        "src/layouts/HomeLayout.astro",
+        "src/layouts/MarketingLayout.astro",
+        "src/layouts/HubLayout.astro",
+        "src/layouts/StageLayout.astro",
+        "src/layouts/ServiceLayout.astro",
+        "src/layouts/ToolLayout.astro",
+        "src/layouts/FormLayout.astro",
+        "src/layouts/LegalLayout.astro",
+        "src/layouts/ReferenceLayout.astro",
+        "src/layouts/ArticleHub.astro",
+        "src/layouts/TemplateLayout.astro",
+        "src/layouts/types.ts",
+        "src/components/ui/**",
+        "src/components/hero/**",
+        "src/components/diagrams/**",
+        "src/components/motion/**",
+        "src/components/blocks/**",
+        "src/components/program/**",
+        "src/assets/brand/**",
+        "src/assets/hex/**",
+        "src/assets/icons/**",
+        "src/assets/fonts/**",
+        "public/favicon.svg",
+        "public/apple-touch-icon.png",
+        "src/pages/styleguide.astro",
+        "scripts/audit-tokens.mjs",
+        "tests/unit/wp-45/**",
+        "tests/e2e/wave7/wp-45/**",
+        ".astro-magazine/handoffs/wp-45*",
+        ".astro-magazine/sources/wp-45.json"
+      ],
+      "exclude": [
+        "src/components/ui/Card.astro",
+        "src/components/hero/HeroAtlas.astro",
+        "src/components/hero/HeroEditorial.astro"
+      ]
+    },
+    {
+      "owner": "WP-46",
+      "title": "Navigation identity and the command palette",
+      "branch": "wp/46",
+      "stage": 1,
+      "write_set": [
+        "src/components/layout/**",
+        "src/components/nav/**",
+        "src/components/islands/we-search/**",
+        "src/components/islands/we-palette/**",
+        "src/scripts/nav.ts",
+        "src/scripts/search.ts",
+        "src/scripts/palette.ts",
+        "src/pages/search/**",
+        "tests/unit/wp-46/**",
+        "tests/e2e/wave7/wp-46/**",
+        ".astro-magazine/handoffs/wp-46*",
+        ".astro-magazine/sources/wp-46.json"
+      ]
+    },
+    {
+      "owner": "WP-47",
+      "title": "Playbooks, guides and readiness depth",
+      "branch": "wp/47",
+      "stage": 1,
+      "write_set": [
+        "src/content/playbooks/**",
+        "src/content/guides/**",
+        "src/content/pages/playbooks/**",
+        "src/content/pages/fundability/**",
+        "src/pages/playbooks/**",
+        "src/pages/fundability/**",
+        "src/components/playbooks/**",
+        "src/components/fundability/**",
+        "src/components/islands/we-readiness-check/**",
+        "src/scripts/readiness-check.ts",
+        "tests/unit/wp-47/**",
+        "tests/e2e/wave7/wp-47/**",
+        ".astro-magazine/handoffs/wp-47*",
+        ".astro-magazine/sources/wp-47.json"
+      ]
+    },
+    {
+      "owner": "WP-48",
+      "title": "Frameworks and the named thesis",
+      "branch": "wp/48",
+      "stage": 1,
+      "write_set": [
+        "src/pages/about/frameworks/**",
+        "src/pages/about/manifesto/**",
+        "src/components/about/**",
+        "src/content/pages/about/frameworks.md",
+        "src/content/pages/about/orbital.md",
+        "src/content/pages/about/android-ops.md",
+        "src/content/pages/about/manifesto.md",
+        "src/content/pages/about/framework-*.md",
+        "tests/unit/wp-48/**",
+        "tests/e2e/wave7/wp-48/**",
+        ".astro-magazine/handoffs/wp-48*",
+        ".astro-magazine/sources/wp-48.json"
+      ]
+    },
+    {
+      "owner": "WP-49",
+      "title": "Interactive founder tools",
+      "branch": "wp/49",
+      "stage": 1,
+      "write_set": [
+        "src/pages/tools/index.astro",
+        "src/pages/tools/metrics-calculator.astro",
+        "src/pages/tools/evidence-room.astro",
+        "src/content/pages/tools/index.mdx",
+        "src/content/pages/tools/metrics-calculator.mdx",
+        "src/content/pages/tools/evidence-room.mdx",
+        "src/components/tools/**",
+        "src/components/islands/we-calc/**",
+        "src/components/islands/we-evidence-room/**",
+        "src/scripts/metrics-calc.ts",
+        "src/scripts/evidence-room.ts",
+        "tests/unit/wp-49/**",
+        "tests/e2e/wave7/wp-49/**",
+        ".astro-magazine/handoffs/wp-49*",
+        ".astro-magazine/sources/wp-49.json"
+      ]
+    },
+    {
+      "owner": "WP-50",
+      "title": "Wave 7 integrator and regression",
+      "branch": "wp/50",
+      "stage": 2,
+      "write_set": [
+        "tests/e2e/*.spec.ts",
+        "tests/e2e/support/**",
+        "scripts/lib/wave7/**",
+        "docs/wave7-handoff.md",
+        "tests/unit/wp-50/**",
+        ".astro-magazine/handoffs/wp-50*",
+        ".astro-magazine/handoffs/wave7*",
+        ".astro-magazine/sources/wp-50.json"
+      ]
+    },
+    {
       "owner": "WP-12c",
       "title": "Responsive heroes and declared dependencies",
       "branch": "wp/12c",
@@ -535,7 +810,7 @@
   "active_leases": [],
   "handoffs": [],
   "conflicts": [],
-  "updated_at": "2026-10-08T03:45:00.000Z",
+  "updated_at": "2026-10-09T12:00:00.000Z",
   "frozen_paths": [
     "package.json",
     "package-lock.json",
@@ -722,6 +997,51 @@
       "reason": "Wave 4 brief: the optional services `artifacts` field left open by WP-15 (WP-02 request 2)."
     },
     {
+      "wp": "WP-40",
+      "path": "package.json",
+      "reason": "Wave 7 foundation (issue #29): the audit:geo script, added after WP-30 merged to demo."
+    },
+    {
+      "wp": "WP-40",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 7 foundation (issue #29): pre-registers the wave 7 route rows and widens the RouteOwner union."
+    },
+    {
+      "wp": "WP-40",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 7 foundation (issue #29): links to the new pages; each stays hidden until its page exists."
+    },
+    {
+      "wp": "WP-40",
+      "path": "claims-denylist.json",
+      "reason": "Wave 7 foundation (issue #29): version 3: commercial-model wording, response-time promises, application counts, per-package seat counts."
+    },
+    {
+      "wp": "WP-40",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "Wave 7 foundation (issue #29): registers the wave 7 assignments and records decisions W7-1 to W7-8."
+    },
+    {
+      "wp": "WP-40",
+      "path": "tests/unit/foundation/**",
+      "reason": "Wave 7 foundation (issue #29): ledger row count, nav snapshot and the extended dist allowlist cases."
+    },
+    {
+      "wp": "WP-40",
+      "path": "tests/unit/wp-18/audit-claims.test.ts",
+      "reason": "Wave 7 foundation (issue #29): this test pins the denylist version and its rule ids, so adding the version 3 rules changes it."
+    },
+    {
+      "wp": "WP-42",
+      "path": "src/pages/pricing/index.astro",
+      "reason": "Wave 7, decision W7-9: the photography lane (WP-12b exception) reserves this page, and phase B photo generation is deferred, so the page is released to this package now. Phase B will rebase onto wave 7."
+    },
+    {
+      "wp": "WP-43",
+      "path": "src/pages/program/who-its-for.astro",
+      "reason": "Wave 7, decision W7-9: the photography lane (WP-12b exception) reserves this page, and phase B photo generation is deferred, so the page is released to this package now. Phase B will rebase onto wave 7."
+    },
+    {
       "wp": "WP-12c",
       "path": "{src/pages/index.astro,src/components/hero/HeroAtlas.astro,src/components/hero/HeroEditorial.astro,src/components/home/HomeHero.astro}",
       "reason": "Brief grants the home page and the three hero components: they serve the slot srcset and sizes through photoImage()."
@@ -787,6 +1107,38 @@
     "check-ownership.mjs diffs against origin/demo and fails on any path outside the owner write_set or inside frozen_paths.",
     "The WP-00 content fixtures (src/content/<collection>/_fixtures/) were removed by WP-15; new draft:true entries fail a PUBLIC_RELEASE build.",
     "Package.json and the lockfile are single-writer: WP-00 until G0, then WP-14, then WP-15.",
-    "WP-02 also owns src/content/pages/services/** (small addition to the plan spec so the services hub can carry page copy)."
-  ]
+    "WP-02 also owns src/content/pages/services/** (small addition to the plan spec so the services hub can carry page copy).",
+    "Wave 7 (issue #29): assignments WP-40 to WP-50 carry `stage` (0 foundation, 1 parallel features, 2 integrator). An assignment may carry `exclude` (globs inside its write_set that it must not edit, unless an exception names the path) and `lane_exceptions` (photography-lane files it edits through an exception; released by decision W7-9, so nothing waits for WP-12d phase B). scripts/check-ownership.mjs enforces `exclude`; tests/unit/wp-40/write-sets.test.ts proves the stage-1 sets are pairwise disjoint and clear of the frozen paths and the lanes."
+  ],
+  "lanes": {
+    "$comment": "Lanes that wave 7 packages must stay out of. The static floor is read by tests/unit/wp-40/write-sets.test.ts together with the write sets of the registered WP-12* (photography) and WP-30 (release) assignments, so a registration that lands later extends the lane without an edit here.",
+    "photography": [
+      "src/assets/photo/**",
+      "src/assets/og/**",
+      "src/components/media/**",
+      "scripts/build-og.mjs",
+      ".astro-magazine/media/**",
+      ".astro-magazine/handoffs/wp-12*",
+      ".astro-magazine/sources/wp-12b.json",
+      "scripts/photo/**",
+      "tests/unit/wp-12b/**",
+      "tests/unit/wp-12c/**",
+      "tests/unit/wp-12d/**",
+      "src/components/cards/**",
+      "src/components/ui/Card.astro",
+      "src/components/hero/HeroAtlas.astro",
+      "src/components/hero/HeroEditorial.astro",
+      "src/components/home/HomeHero.astro",
+      "src/components/services/LineAside.astro",
+      "src/pages/program/who-its-for.astro",
+      "src/pages/pricing/index.astro"
+    ],
+    "release": [
+      "scripts/release-preflight.mjs",
+      "scripts/lib/release-gate.mjs",
+      "docs/runbook-release.md",
+      "scripts/ci/**",
+      ".astro-magazine/release/**"
+    ]
+  }
 }

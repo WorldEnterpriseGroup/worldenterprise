@@ -1,0 +1,50 @@
+{
+  "wp": "WP-40",
+  "note": "WP-40 publishes no new page copy. The one site-visible text it adds is src/data/packages.ts (the four package names, stage fit and depth), transcribed verbatim from the table already on /pricing/. The wave 7 denylist rules and docs/wave7-contracts.md are repository files, not published copy.",
+  "sources": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp40-pricing-table",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The four packages table on the pricing page",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/content/pages/pricing/pricing.mdx, DataTable 'The four packages, the company stage each is sized for and its depth'",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-09",
+      "next_review": "when WP-42 renders the table from src/data/packages.ts",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-10",
+      "variables_units_scope": "Package names, stage fit and depth only; no amount, no seat count, no term",
+      "methodology_limitations": "Copied, not re-derived. The owner decision of 2026-10-09 allows the names Spark, Launch, Accelerate and Studio (claim C-10).",
+      "funding_conflicts": "none",
+      "claims_supported": ["C-10"],
+      "claims_not_supported": ["C-06", "C-09"],
+      "license_access_attribution": "Internal; verbatim",
+      "freshness_trigger": "Any change to the package names, stage fit or depth",
+      "captured_by": "WP-40"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp40-investor-introductions-disclaimer",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The verbatim Investor Introductions disclaimer and flat-fee sentence",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/components/blocks/introductions.ts, INTRODUCTIONS_DISCLAIMER and INTRODUCTIONS_FLAT_FEE",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-09",
+      "next_review": "before release (counsel review of the Introductions wording)",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-14",
+      "variables_units_scope": "Wording only. Required verbatim on /llms.txt and /llms-full.txt once built; exempted from the no-fee rule by shape",
+      "methodology_limitations": "The denylist test asserts the required text equals the component text.",
+      "funding_conflicts": "none",
+      "claims_supported": ["C-14"],
+      "claims_not_supported": ["C-09"],
+      "license_access_attribution": "Internal; verbatim",
+      "freshness_trigger": "Any change to the Introductions disclaimer",
+      "captured_by": "WP-40"
+    }
+  ]
+}

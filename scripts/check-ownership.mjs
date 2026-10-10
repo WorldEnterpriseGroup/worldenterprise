@@ -45,9 +45,13 @@ export function violations(files, owner, ownership) {
   if (!assignment) return [{ path: '*', reason: `no assignment for ${owner}` }];
   const extra = ownership.exceptions.filter((e) => e.wp === owner).map((e) => e.path);
   const allowed = [...assignment.write_set, ...ownership.always_allowed, ...extra];
+  // `exclude` carves files out of a broad glob in write_set (wave 7: a layout glob that must not reach a photography-lane file).
+  // An exception that names the path still wins.
+  const excluded = assignment.exclude ?? [];
   const found = [];
   for (const path of files) {
     if (matches(path, ownership.frozen_paths) && !matches(path, extra)) found.push({ path, reason: 'frozen path' });
+    else if (matches(path, excluded) && !matches(path, extra)) found.push({ path, reason: `excluded from the ${owner} write set` });
     else if (!matches(path, allowed)) found.push({ path, reason: `outside the ${owner} write set` });
   }
   return found;

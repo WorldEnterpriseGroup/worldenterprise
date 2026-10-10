@@ -27,7 +27,8 @@ export type Requirement = 'people' | 'companies' | 'events' | 'dates';
 
 export type RouteOwner =
   | 'WP-01' | 'WP-02' | 'WP-03' | 'WP-04' | 'WP-05' | 'WP-06' | 'WP-07' | 'WP-08'
-  | 'WP-09' | 'WP-10' | 'WP-11' | 'WP-12' | 'WP-13';
+  | 'WP-09' | 'WP-10' | 'WP-11' | 'WP-12' | 'WP-13'
+  | 'WP-40' | 'WP-41' | 'WP-42' | 'WP-43' | 'WP-44' | 'WP-45' | 'WP-46' | 'WP-47' | 'WP-48' | 'WP-49' | 'WP-50';
 
 export interface RouteRow {
   /** Site-relative path with trailing slash (or a file name such as /404.html). May contain a dynamic segment for L2 rows. */
@@ -210,9 +211,21 @@ const RAW_ROWS: readonly RawRow[] = [
   // Utility (2)
   row('/sitemap/', 'ReferenceLayout', 'WP-09', { indexable: false }),
   row('/404.html', 'ReferenceLayout', 'WP-09', { indexable: false }),
+
+  // Wave 7 (9), registered ahead of their pages by WP-40 so no page-owning package edits this file (docs/wave7-contracts.md, section 5).
+  // A launched row with no page is inert: out of nav and sitemap, a warning in audit:ledger. The page file makes it live.
+  row('/program/how-we-decide/', 'StageLayout', 'WP-43'),
+  row('/about/facts/', 'MarketingLayout', 'WP-41'),
+  row('/tools/', 'HubLayout', 'WP-49'),
+  row('/tools/metrics-calculator/', 'ToolLayout', 'WP-49'),
+  row('/tools/evidence-room/', 'ToolLayout', 'WP-49'),
+  row('/about/frameworks/ubf/', 'MarketingLayout', 'WP-48'),
+  row('/star/', 'MarketingLayout', 'WP-48'),
+  row('/shift/', 'MarketingLayout', 'WP-48'),
+  row('/android/', 'MarketingLayout', 'WP-48'),
 ];
 
-/** The 90 launch-candidate rows. */
+/** The 99 launch-candidate rows: the 90 of WP-00 and the 9 pre-registered for wave 7. */
 export const routes: readonly RouteRow[] = RAW_ROWS.map(finalizeRow);
 
 /** Specified but not built, not in nav, sitemap or search (SAGE-PLAN 5.7). Each needs a real source before it can launch. */
@@ -245,6 +258,8 @@ export const MACHINE_ROUTES: readonly MachineRoute[] = [
   { path: '/sitemap-index.xml', owner: 'WP-09', launch: true, generated: 'integration' },
   { path: '/sitemap-0.xml', owner: 'WP-09', launch: true, generated: 'integration' },
   { path: '/rss.xml', owner: 'WP-09', launch: true, generated: 'page' },
+  { path: '/llms.txt', owner: 'WP-41', launch: true, generated: 'page' },
+  { path: '/llms-full.txt', owner: 'WP-41', launch: true, generated: 'page' },
   { path: '/.well-known/security.txt', owner: 'WP-09', launch: site.securityContact !== null, generated: 'page' },
   { path: '/pagefind/', owner: 'WP-08', launch: true, generated: 'postbuild' },
   { path: '/favicon.svg', owner: 'WP-00', launch: true, generated: 'public' },

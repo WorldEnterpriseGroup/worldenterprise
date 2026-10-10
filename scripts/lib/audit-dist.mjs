@@ -4,6 +4,8 @@
 //              exist and match too (the GitHub workflow copies it in before this gate runs); without the flag it is checked only if present.
 //   Allowlist: every file under dist has an extension that is meant to be published, and every top-level entry is a known file, a known
 //              asset folder or a route folder (one that holds an index.html). Nothing is allowed because nobody thought of it.
+//              Wave 7: llms.txt and llms-full.txt are known top-level files, and a .md file outside library/ is a Markdown twin, allowed
+//              only when the page it mirrors was built (insights/x.md needs insights/x/index.html).
 //   Forbidden: no repository-internal path (.git, .github, .plan, CLAUDE.md, package.json ...) at any depth, no scripts, tests or docs
 //              folder at the top level, and no dotfile or hidden folder other than .well-known.
 //   Leaks:     no source maps (file or sourceMappingURL), no internal hostname, private address, build path or credential-shaped string
@@ -32,11 +34,14 @@ export const ALLOWED_EXTENSIONS = new Set([
   // Pagefind index files and its WebAssembly reader.
   '.pf_fragment', '.pf_index', '.pf_meta', '.pf_filter', '.pagefind',
 ]);
-/** Extensions that are allowed only below a folder: the library templates are published as Markdown downloads. */
+/**
+ * Extensions that are allowed only below a folder: the library templates are published as Markdown downloads. A `.md` file elsewhere is a
+ * Markdown twin (wave 7) and is allowed only beside the page it mirrors; see twinPage.
+ */
 export const SCOPED_EXTENSIONS = { '.md': ['library/'] };
 
 /** Top-level files. Everything else at the top of dist must be a folder. */
-export const TOP_LEVEL_FILES = [/^index\.html$/, /^404\.html$/, /^robots\.txt$/, /^rss\.xml$/, /^sitemap(?:-index|-\d+)\.xml$/, /^favicon\.(?:svg|ico)$/, /^apple-touch-icon(?:-\d+x\d+)?\.png$/, /^CNAME$/, /^manifest\.webmanifest$/];
+export const TOP_LEVEL_FILES = [/^index\.html$/, /^404\.html$/, /^robots\.txt$/, /^llms(?:-full)?\.txt$/, /^rss\.xml$/, /^sitemap(?:-index|-\d+)\.xml$/, /^favicon\.(?:svg|ico)$/, /^apple-touch-icon(?:-\d+x\d+)?\.png$/, /^CNAME$/, /^manifest\.webmanifest$/];
 /** Top-level folders that hold assets rather than pages. Any other folder must hold an index.html. */
 export const ASSET_FOLDERS = new Set(['_astro', 'pagefind', 'press', '.well-known']);
 
@@ -76,20 +81,29 @@ function excerpt(name, text) {
   return text.length > 80 ? `${text.slice(0, 77)}...` : text;
 }
 
-function extensionIssue(rel) {
+/** The page a Markdown twin mirrors: "insights/x.md" mirrors "insights/x/index.html" and "index.md" mirrors "index.html". */
+export function twinPage(rel) {
+  return rel === 'index.md' ? 'index.html' : `${rel.slice(0, -'.md'.length)}/index.html`;
+}
+
+function extensionIssue(rel, present) {
   const ext = extname(rel).toLowerCase();
   if (ext === '.map') return 'source map in the published output';
   if (ALLOWED_EXTENSIONS.has(ext)) return null;
   const scope = SCOPED_EXTENSIONS[ext];
   if (scope !== undefined) {
-    return scope.some((prefix) => rel.startsWith(prefix)) ? null : `${ext} files are published only under ${scope.join(', ')}`;
+    if (scope.some((prefix) => rel.startsWith(prefix))) return null;
+    if (ext === '.md' && present.has(twinPage(rel))) return null;
+    return `${ext} files are published only under ${scope.join(', ')}${ext === '.md' ? `, or beside the page they mirror (${twinPage(rel)})` : ''}`;
   }
   return `file type "${ext === '' ? '(none)' : ext}" is not on the publish allowlist`;
 }
 
-/** A file at the top of dist must be one of the known names. A source map keeps its own message. */
-function topLevelFileIssue(rel) {
-  if (extname(rel).toLowerCase() === '.map') return 'source map in the published output';
+/** A file at the top of dist must be one of the known names, or a Markdown twin of a built page. A source map keeps its own message. */
+function topLevelFileIssue(rel, present) {
+  const ext = extname(rel).toLowerCase();
+  if (ext === '.map') return 'source map in the published output';
+  if (ext === '.md' && present.has(twinPage(rel))) return null;
   return TOP_LEVEL_FILES.some((re) => re.test(rel)) ? null : `top-level file "${rel}" is not on the publish allowlist`;
 }
 
@@ -97,6 +111,7 @@ function topLevelFileIssue(rel) {
 export function auditStructure(distDir, rels) {
   const findings = [];
   const topFolders = new Map();
+  const present = new Set(rels);
   for (const rel of rels) {
     const segments = rel.split('/');
     const where = `${distDir}/${rel}`;
@@ -110,7 +125,7 @@ export function auditStructure(distDir, rels) {
       findings.push({ level: 'error', where, message: `hidden entry "${hidden}" in the published output (only .well-known may be hidden)` });
       continue;
     }
-    const issue = segments.length === 1 ? topLevelFileIssue(rel) : extensionIssue(rel);
+    const issue = segments.length === 1 ? topLevelFileIssue(rel, present) : extensionIssue(rel, present);
     if (issue !== null) findings.push({ level: 'error', where, message: issue });
     if (segments.length > 1) {
       const folder = segments[0];
