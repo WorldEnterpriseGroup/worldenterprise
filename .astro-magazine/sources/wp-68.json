@@ -172,6 +172,33 @@
       "fetchedAt": "2026-10-10T11:37:35Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "irs-tc427",
+      "url": "https://www.irs.gov/taxtopics/tc427",
+      "title": "Topic no. 427, Stock options",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T11:37:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-26-422",
+      "url": "https://www.law.cornell.edu/uscode/text/26/422",
+      "title": "26 U.S. Code 422, Incentive stock options",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T11:37:55Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-26-1-409a-1",
+      "url": "https://www.law.cornell.edu/cfr/text/26/1.409A-1",
+      "title": "26 CFR 1.409A-1, Definitions and covered plans",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T11:38:30Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -876,7 +903,123 @@
           "quote": "notice periods"
         }
       ]
+    },
+    {
+      "path": "src/content/insights/team/stock-options-for-early-employees-what-an-option-is-and-what-to-ask.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "options granted under an employee stock purchase plan or an incentive stock option (ISO) plan are statutory stock options",
+          "kind": "definition",
+          "sourceId": "irs-tc427",
+          "locator": "Two types of stock options",
+          "quote": "Options granted under an employee stock purchase plan or an incentive stock option (ISO) plan are statutory stock options."
+        },
+        {
+          "id": "A2",
+          "sentence": "stock options that are granted neither under an employee stock purchase plan nor an ISO plan are nonstatutory stock options",
+          "kind": "definition",
+          "sourceId": "irs-tc427",
+          "locator": "Two types of stock options",
+          "quote": "Stock options that are granted neither under an employee stock purchase plan nor an ISO plan are nonstatutory stock options."
+        },
+        {
+          "id": "A3",
+          "sentence": "there's no taxable event when the option is granted",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "When tax applies",
+          "quote": "there's no taxable event when the option is granted."
+        },
+        {
+          "id": "A4",
+          "sentence": "you must include in income the fair market value of the stock received on exercise",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "When tax applies",
+          "quote": "must include in income the fair market value of the stock received on exercise."
+        },
+        {
+          "id": "A5",
+          "sentence": "you have taxable income or deductible loss when you sell the stock you bought by exercising the option",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "When tax applies",
+          "quote": "You have taxable income or deductible loss when you sell the stock you bought by exercising the option."
+        },
+        {
+          "id": "A6",
+          "sentence": "you may be subject to alternative minimum tax in the year you exercise an ISO",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "Alternative minimum tax",
+          "quote": "However, you may be subject to alternative minimum tax in the year you exercise an ISO."
+        },
+        {
+          "id": "A7",
+          "sentence": "if you don't meet special holding period requirements, you'll have to treat income from the sale as ordinary income",
+          "kind": "regulation",
+          "sourceId": "irs-tc427",
+          "locator": "Holding period",
+          "quote": "However, if you don't meet special holding period requirements, you'll have to treat income from the sale as ordinary income."
+        },
+        {
+          "id": "A8",
+          "sentence": "no disposition of such share is made by him within 2 years from the date of the granting of the option",
+          "kind": "regulation",
+          "sourceId": "usc-26-422",
+          "locator": "Subsection (a)(1)",
+          "quote": "no disposition of such share is made by him within 2 years from the date of the granting of the option"
+        },
+        {
+          "id": "A9",
+          "sentence": "a requirement of employment during the option period",
+          "kind": "paraphrase",
+          "sourceId": "usc-26-422",
+          "locator": "Subsection (a)(2)",
+          "quote": "such individual was an employee of either the corporation granting such option"
+        },
+        {
+          "id": "A10",
+          "sentence": "the option price is not less than the fair market value of the stock at the time such option is granted",
+          "kind": "regulation",
+          "sourceId": "usc-26-422",
+          "locator": "Subsection (b)(4)",
+          "quote": "the option price is not less than the fair market value of the stock at the time such option is granted"
+        },
+        {
+          "id": "A11",
+          "sentence": "a limit on how much can qualify in a year",
+          "kind": "paraphrase",
+          "sourceId": "usc-26-422",
+          "locator": "Subsection (d)",
+          "quote": "exceeds $100,000, such options shall be treated as options which are not incentive stock options"
+        },
+        {
+          "id": "A12",
+          "sentence": "its exercise price may never be less than the fair market value of the underlying stock",
+          "kind": "regulation",
+          "sourceId": "cfr-26-1-409a-1",
+          "locator": "(b)(5)(i)(A)",
+          "quote": "exercise price may never be less than the fair market value of the underlying stock"
+        },
+        {
+          "id": "A13",
+          "sentence": "a value determined by the reasonable application of a reasonable valuation method",
+          "kind": "regulation",
+          "sourceId": "cfr-26-1-409a-1",
+          "locator": "(b)(5)(iv)(B)(1)",
+          "quote": "a value determined by the reasonable application of a reasonable valuation method"
+        }
+      ]
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "path": "src/content/insights/team/stock-options-for-early-employees-what-an-option-is-and-what-to-ask.mdx",
+      "rule": "generic-definition",
+      "reason": "A glossary of option terms (option, grant, exercise price, exercise, vesting, cliff, expiration) written as general definitions with no figures; the article states that they are not drawn from a source.",
+      "sourceId": "irs-tc427"
+    }
+  ]
 }
