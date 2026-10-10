@@ -2,8 +2,8 @@ import { loadPagefind } from '../components/islands/we-search/pagefind.ts';
 import type { PagefindApi } from '../components/islands/we-search/pagefind.ts';
 import { kindLabel, normalizeBase, normalizeQuery, resolveResultUrl, resultKind } from '../components/islands/we-search/query.ts';
 import { groupCommands, highlight, rankCommands } from '../components/islands/we-palette/match.ts';
-import { parseCommands } from '../components/nav/commands.ts';
-import type { PaletteCommand } from '../components/nav/commands.ts';
+import { parseCommands } from '../components/islands/we-palette/model.ts';
+import type { PaletteCommand } from '../components/islands/we-palette/model.ts';
 
 /**
  * <we-palette>: the command palette. A modal <dialog> opened by Ctrl or Cmd plus K, by "/" (outside a field) and by any
