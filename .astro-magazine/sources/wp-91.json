@@ -1,0 +1,65 @@
+{
+  "wp": "WP-91",
+  "note": "Discoverability at scale: the machine layer (twins, llms files, sitemap, feed, robots, search, palette). Three vendor documentation pages were fetched to verify the crawler user agents in src/lib/seo.ts; they source a user-agent name and its stated purpose, never a statistic. The copy this package adds is labels of the machine files; each sentence maps to a label.",
+  "fetches": [
+    {
+      "id": "openai-bots",
+      "url": "https://developers.openai.com/api/docs/bots",
+      "title": "Overview of OpenAI crawlers",
+      "publisher": "OpenAI",
+      "fetchedAt": "2026-10-10T09:00:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "anthropic-crawler",
+      "url": "https://privacy.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler",
+      "title": "Does Anthropic crawl data from the web, and how can site owners block the crawler?",
+      "publisher": "Anthropic",
+      "fetchedAt": "2026-10-10T09:00:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "google-common-crawlers",
+      "url": "https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers",
+      "title": "Google's common crawlers",
+      "publisher": "Google",
+      "fetchedAt": "2026-10-10T09:00:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/components/geo/llms-plan.ts",
+      "sentences": [
+        { "text": "Founder segments", "label": true },
+        { "text": "Industries", "label": true },
+        { "text": "Comparisons", "label": true },
+        { "text": "Journey", "label": true },
+        { "text": "Briefs", "label": true }
+      ]
+    },
+    {
+      "path": "src/lib/llms.ts",
+      "sentences": [
+        { "text": "Insight desks", "label": true },
+        { "text": "Each desk lists its own articles.", "label": true },
+        { "text": "Page families", "label": true }
+      ]
+    },
+    {
+      "path": "src/components/geo/assemble.ts",
+      "sentences": [
+        { "text": "Desks", "label": true },
+        { "text": "Articles", "label": true },
+        { "text": "What is inside", "label": true }
+      ]
+    },
+    {
+      "path": "src/components/geo/mdx-transform.ts",
+      "sentences": [{ "text": "Table:", "label": true }]
+    }
+  ]
+}

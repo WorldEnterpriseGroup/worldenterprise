@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { INTRODUCTIONS_DISCLAIMER } from '../../../src/components/blocks/introductions.ts';
 import {
-  INTRODUCTIONS_TITLE,
+  CLAIMS_MARKER_REASON,
   KNOWN_COMPONENTS,
   NO_FUNDING_TEXT,
+  SERVICE_DISCLAIMER_REFUSAL,
   NO_FUNDING_TITLE,
   transformMdx,
 } from '../../../src/components/geo/mdx-transform.ts';
@@ -90,15 +90,13 @@ test('inline code that mentions a component is not converted', () => {
   assert.equal(ok('Write `<MaybeLink path="/x/">` in MDX.'), 'Write `<MaybeLink path="/x/">` in MDX.');
 });
 
-test('the disclaimer blockquotes use the wording the components render', () => {
+test('the funding disclaimer uses the wording its component renders, and the services disclaimer has no twin', () => {
   const funding = readFileSync(`${ROOT}src/components/blocks/NoFundingDisclaimer.astro`, 'utf8').replace(/\s+/g, ' ');
   assert.ok(funding.includes(`<p class="callout__title">${NO_FUNDING_TITLE}</p>`), 'the funding disclaimer title moved');
   assert.ok(funding.includes(`<p> ${NO_FUNDING_TEXT} </p>`), 'the funding disclaimer wording moved');
-  const intro = readFileSync(`${ROOT}src/components/blocks/IntroductionsDisclaimer.astro`, 'utf8').replace(/\s+/g, ' ');
-  assert.ok(intro.includes(`<p class="callout__title">${INTRODUCTIONS_TITLE}</p>`), 'the introductions disclaimer title moved');
-  assert.ok(intro.includes('{INTRODUCTIONS_DISCLAIMER}'), 'the introductions disclaimer no longer renders the shared constant');
   assert.equal(ok('<NoFundingDisclaimer />'), `> **${NO_FUNDING_TITLE}**\n>\n> ${NO_FUNDING_TEXT}`);
-  assert.equal(ok('<IntroductionsDisclaimer />'), `> **${INTRODUCTIONS_TITLE}**\n>\n> ${INTRODUCTIONS_DISCLAIMER}`);
+  const refused = transformMdx('<IntroductionsDisclaimer />', live);
+  assert.ok(!refused.ok && refused.reason === SERVICE_DISCLAIMER_REFUSAL);
 });
 
 test('fail closed: an unknown component, an unknown prop, an expression and an unclosed tag all refuse', () => {
@@ -116,16 +114,39 @@ test('the literal parser reads the escapes and trailing commas that the content 
   rejects(`<Steps steps={[{ title: \`tpl\`, body: 'x' }]} />`, /unsupported expression/);
 });
 
-test('every published insight that uses components converts to lint-clean Markdown, with every link live or none', () => {
+test('every published insight converts to lint-clean Markdown with every link live or none, except a page that holds a claims marker or the services disclaimer', () => {
   const insights = loadContent().insights;
   assert.ok(insights.length >= 14, 'the real content should hold at least the 14 launch insights');
+  let converted = 0;
   for (const entry of insights) {
     for (const options of [live, dead]) {
       const result = transformMdx(entry.body ?? '', options);
+      if (/\bdata-(?:generic-definition|claim-allow)\b/.test(entry.body ?? '')) {
+        assert.ok(!result.ok && result.reason === CLAIMS_MARKER_REASON, `${entry.id} holds a marker, so it has no twin`);
+        continue;
+      }
+      if ((entry.body ?? '').includes('<IntroductionsDisclaimer')) {
+        assert.ok(!result.ok && result.reason === SERVICE_DISCLAIMER_REFUSAL, `${entry.id} renders the services disclaimer, so it has no twin`);
+        continue;
+      }
       assert.ok(result.ok, `${entry.id}: ${result.ok ? '' : result.reason}`);
       assert.deepEqual(lintMarkdown(result.markdown), [], entry.id);
+      converted += 1;
     }
   }
+  assert.ok(converted >= 28, 'at least the 14 launch insights still convert');
+});
+
+test('a one-line <p> without attributes or inner markup becomes its paragraph, and anything else of that kind is refused by the lint', () => {
+  assert.equal(ok('<p>A quoted passage.</p>'), 'A quoted passage.');
+  const kept = ok('<p>With <b>markup</b>.</p>');
+  assert.deepEqual(lintMarkdown(kept), ['a tag remains: <p>']);
+});
+
+test('a claims marker refuses the twin, in a paragraph or a span, and a fenced example of one does not', () => {
+  rejects('<p data-generic-definition>A valuation cap is defined here.</p>', /claims marker/);
+  rejects('Text with <span data-claim-allow="C-13-peers">cohort</span> inside.', /claims marker/);
+  assert.equal(ok('```html\n<p data-generic-definition>x</p>\n```'), '```html\n<p data-generic-definition>x</p>\n```');
 });
 
 test('the known components are exactly the ones the content uses in articles', () => {

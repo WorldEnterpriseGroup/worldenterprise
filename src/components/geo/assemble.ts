@@ -1,4 +1,5 @@
 import { DESK_DEFINITIONS, deskPath } from '../../data/desks.ts';
+import { COMPARISONS, INDUSTRIES, JOURNEY, SEGMENTS } from '../../data/families.ts';
 import { site } from '../../data/site.ts';
 import {
   buildTwin,
@@ -10,6 +11,11 @@ import {
   sourcesBody,
 } from '../../lib/markdown-twins.ts';
 import type { FaqTwinItem, GlossaryTwinItem, RequiredRuleLike, SourceLike, TwinSource } from '../../lib/markdown-twins.ts';
+import { findHubPage, liveCards, resolveEntries } from '../families/paths.ts';
+import type { FamilyData, Registry } from '../families/types.ts';
+import { readingPath } from '../families/view.ts';
+import { PROGRAM_STEPS } from '../program/steps.ts';
+import { familyTail, fixedCallout, hubTail } from './family-twin.ts';
 import { transformMdx } from './mdx-transform.ts';
 
 /**
@@ -21,6 +27,9 @@ import { transformMdx } from './mdx-transform.ts';
  *   transforms of mdx-transform.ts (a component it does not know means no twin, never a twin with a hole);
  * - the marketing and legal pages whose page file adds only a lead line and a call to action to the MDX body (listed in PAGE_TWINS);
  * - service lines and playbooks, built from the same frontmatter fields the page renders, because their body prose is MDX;
+ * - the page-family pages (founder segments, industries, comparisons, journey) and the industries, compare and journey hubs, which
+ *   family-twin.ts builds from the same views the templates render. A family page exists only for a launched registry entry that holds
+ *   a pages entry, exactly as its route does (resolveEntries), so a new family page gets its twin with no change here;
  * - the FAQ and the glossary, built from their data files.
  * Library templates are excluded: src/pages/library/[slug].md.ts already serves them as downloads. The pages that are written in
  * the .astro file itself (pricing, who it is for, apply, program, investors, network, about, guides index) have no twin: a second
@@ -64,6 +73,8 @@ export interface InsightData {
   readonly topic?: string | undefined;
   readonly publishedDate: Date;
   readonly updatedDate?: Date | undefined;
+  /** The founder segments the article is for (the reading path of a segment page). */
+  readonly segments?: readonly string[] | undefined;
   readonly sources: readonly SourceLike[];
 }
 
@@ -80,6 +91,10 @@ export interface ResearchData {
 export interface PageData {
   readonly title: string;
   readonly updated: Date;
+  /** The page's description, which a family page shows as its lead. */
+  readonly description?: string | undefined;
+  /** The parsed `family` object of a page-family page. */
+  readonly family?: FamilyData | undefined;
 }
 
 export interface GuideData {
@@ -177,7 +192,7 @@ export function assembleTwins(content: TwinContent, options: AssembleOptions): A
   };
 
   /** Adds a twin whose body is MDX: converted first, and skipped with the reason when the transform refuses it. */
-  const addMdx = (source: Omit<TwinSource, 'statements' | 'body'> & { readonly mdx: string; readonly tail?: string }): void => {
+  const addMdx = (source: Omit<TwinSource, 'statements' | 'body'> & { readonly mdx: string; readonly head?: string; readonly tail?: string }): void => {
     if (!options.isEligible(source.route)) {
       skipped.push({ route: source.route, reason: 'the page is not built, not indexable or a draft' });
       return;
@@ -187,8 +202,8 @@ export function assembleTwins(content: TwinContent, options: AssembleOptions): A
       skipped.push({ route: source.route, reason: `MDX body not converted: ${converted.reason}` });
       return;
     }
-    const { mdx: _mdx, tail, ...rest } = source;
-    const body = [converted.markdown, tail ?? ''].filter((part) => part.trim() !== '').join('\n\n');
+    const { mdx: _mdx, head, tail, ...rest } = source;
+    const body = [head ?? '', converted.markdown, tail ?? ''].filter((part) => part.trim() !== '').join('\n\n');
     add({ ...rest, body });
   };
 
@@ -257,6 +272,7 @@ export function assembleTwins(content: TwinContent, options: AssembleOptions): A
       title: entry.data.title,
       description: entry.data.description,
       date: entry.data.publishedDate,
+      segments: entry.data.segments ?? [],
     }))
     .filter((article) => isLive(article.route));
   const liveDesks = DESK_DEFINITIONS.filter((desk) => liveArticles.some((article) => article.desk === desk.id) && isLive(deskPath(desk.id)));
@@ -288,6 +304,63 @@ export function assembleTwins(content: TwinContent, options: AssembleOptions): A
       tail: ['## Articles', '', ...articles.map((article) => `- [${article.title}](${article.route}): ${article.description}`)].join('\n'),
     });
   }
+
+  // The page families. A page exists when the registry launches its slug and a pages entry holds it (resolveEntries, the rule of the
+  // routes), so the twins follow the routes with no list kept here. A malformed `family` object skips the twin; the page itself fails the build.
+  const addFamilies = (): void => {
+    const refs = content.pages.map((page) => ({ id: page.id, description: page.data.description ?? '' }));
+    const context = { steps: PROGRAM_STEPS, isLive };
+    const families: readonly { readonly registry: Registry; readonly id: FamilyData['id'] }[] = [
+      { registry: SEGMENTS, id: 'segments' },
+      { registry: INDUSTRIES, id: 'industries' },
+      { registry: COMPARISONS, id: 'compare' },
+      { registry: JOURNEY, id: 'journey' },
+    ];
+    for (const { registry, id } of families) {
+      for (const { entry, page } of resolveEntries(registry, content.pages)) {
+        const family = page.data.family;
+        if (family === undefined || family.id !== id || family.slug !== entry.slug) {
+          skipped.push({ route: entry.path, reason: `the family object does not match ${registry.folder}/${entry.slug}` });
+          continue;
+        }
+        addMdx({
+          route: entry.path,
+          title: page.data.title,
+          lead: page.data.description ?? '',
+          updated: page.data.updated,
+          mdx: page.body ?? '',
+          head: fixedCallout(id),
+          tail: familyTail(family, {
+            ...context,
+            reading:
+              id === 'segments'
+                ? readingPath(
+                    liveArticles.map((article) => ({ title: article.title, href: article.route, summary: article.description, segments: article.segments, published: article.date })),
+                    entry.slug,
+                  )
+                : [],
+          }),
+        });
+      }
+    }
+    for (const { registry, id } of families) {
+      const hubPage = findHubPage(registry, content.pages);
+      const route = registry.hub?.path;
+      if (id === 'segments' || hubPage === undefined || route === undefined) continue;
+      const family = hubPage.data.family;
+      addMdx({
+        route,
+        title: hubPage.data.title,
+        lead: hubPage.data.description ?? '',
+        updated: hubPage.data.updated,
+        mdx: hubPage.body ?? '',
+        head: fixedCallout(id),
+        tail: hubTail(id, liveCards(registry, refs, isLive), id === 'journey' ? { steps: PROGRAM_STEPS, questions: family?.id === 'journey' ? family.questions : [] } : {}),
+      });
+    }
+  };
+
+  addFamilies();
 
   for (const entry of content.services) {
     add({

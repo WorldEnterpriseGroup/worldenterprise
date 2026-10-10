@@ -1,4 +1,3 @@
-import { INTRODUCTIONS_DISCLAIMER } from '../blocks/introductions.ts';
 
 /**
  * Turns the MDX body of an article into the plain Markdown of its twin (src/lib/markdown-twins.ts), for the entries whose body uses
@@ -12,8 +11,8 @@ import { INTRODUCTIONS_DISCLAIMER } from '../blocks/introductions.ts';
  * - CellTrail becomes a labelled numbered list, a cell linked only when its route is live;
  * - Steps becomes the numbered "**Title.** body" list that playbook twins use;
  * - Callout becomes a blockquote with a bold title;
- * - NoFundingDisclaimer and IntroductionsDisclaimer become blockquotes with their fixed wording (pinned to the component sources by
- *   tests/unit/wp-91/mdx-transform.test.ts);
+ * - NoFundingDisclaimer becomes a blockquote with its fixed wording (pinned to the component source by tests/unit/wp-91/mdx-transform.test.ts);
+ *   IntroductionsDisclaimer is refused, so a page that renders it has no twin (see its handler);
  * - MaybeLink becomes `[text](path)` when the route is live and the bare text when it is not, the same choice the component makes.
  */
 
@@ -28,11 +27,13 @@ export type MdxTransformResult =
 
 export type LiteralValue = string | number | boolean | null | readonly LiteralValue[] | { readonly [key: string]: LiteralValue };
 
-/** The wording the two disclaimer components render, which their twin blockquotes repeat. */
+/** Why a page that renders the services disclaimer has no twin. */
+export const SERVICE_DISCLAIMER_REFUSAL = '<IntroductionsDisclaimer> has no Markdown form: its wording is counsel-reviewed only where it is defined';
+
+/** The wording the funding disclaimer component renders, which its twin blockquote repeats. */
 export const NO_FUNDING_TITLE = 'No promise of funding';
 export const NO_FUNDING_TEXT =
   'WE makes no promise of funding. This material helps you prepare evidence for investors. It does not predict that any company will raise money, and it is not legal or financial advice.';
-export const INTRODUCTIONS_TITLE = 'About this service';
 
 class MdxTransformError extends Error {
   constructor(message: string) {
@@ -251,6 +252,17 @@ function objectList(name: string, props: Props, key: string): readonly { readonl
 const oneLine = (text: string): string => text.replace(/\s+/g, ' ').trim();
 const escapeCell = (text: string): string => oneLine(text).replace(/([\\|*`])/g, '\\$1');
 
+/** A captioned Markdown table: the DataTable transform, and the comparison pages' side-by-side table, render through it. */
+export function markdownTable(caption: string, columns: readonly string[], rows: readonly (readonly string[])[]): string {
+  return [
+    `Table: ${oneLine(caption)}`,
+    '',
+    `| ${columns.map(escapeCell).join(' | ')} |`,
+    `| ${columns.map(() => '---').join(' | ')} |`,
+    ...rows.map((row) => `| ${row.map(escapeCell).join(' | ')} |`),
+  ].join('\n');
+}
+
 function blockquote(title: string | undefined, body: string): string {
   const lines = [...(title === undefined ? [] : [`**${title}**`, '']), ...body.split('\n')];
   return lines.map((line) => (line === '' ? '>' : `> ${line}`)).join('\n');
@@ -279,14 +291,7 @@ const HANDLERS: Readonly<Record<string, Handler>> = {
       if (row.length !== columns.length) return fail('<DataTable> has a row with a different number of cells than columns');
       return row as readonly string[];
     });
-    const lines = [
-      `Table: ${oneLine(caption)}`,
-      '',
-      `| ${columns.map(escapeCell).join(' | ')} |`,
-      `| ${columns.map(() => '---').join(' | ')} |`,
-      ...rows.map((row) => `| ${row.map(escapeCell).join(' | ')} |`),
-    ];
-    return block(lines.join('\n'));
+    return block(markdownTable(caption, columns, rows));
   },
   CellTrail: (props, _children, options) => {
     allow('CellTrail', props, ['cells', 'label', 'current']);
@@ -326,7 +331,9 @@ const HANDLERS: Readonly<Record<string, Handler>> = {
   IntroductionsDisclaimer: (props, children) => {
     allow('IntroductionsDisclaimer', props, []);
     if (children !== undefined) return fail('<IntroductionsDisclaimer> takes no content');
-    return block(blockquote(INTRODUCTIONS_TITLE, INTRODUCTIONS_DISCLAIMER));
+    // Its wording is counsel-reviewed where it is defined (RELEASE.md section 8 lists each file that carries it). A second copy in the
+    // transform would be a file the checklist does not list, so a page that renders it has no twin until the checklist names the twin.
+    return fail(SERVICE_DISCLAIMER_REFUSAL);
   },
   MaybeLink: (props, children, options) => {
     allow('MaybeLink', props, ['path']);
@@ -341,6 +348,8 @@ const HANDLERS: Readonly<Record<string, Handler>> = {
 /** Names of the components this transform converts. */
 export const KNOWN_COMPONENTS: readonly string[] = Object.keys(HANDLERS);
 
+/** A paragraph written as one line of HTML with no attributes and no markup inside (an article's quoted passage): its text is the Markdown paragraph. */
+const PLAIN_PARAGRAPH = /^<p>([^<\n]+)<\/p>$/;
 const IMPORT_LINE = /^import\s+[A-Za-z_]\w*\s+from\s+['"][^'"]+\.astro['"];?\s*$/;
 
 /** Rewrites the components in prose (no code fences in `text`). Inline code spans are left alone. */
@@ -381,6 +390,14 @@ function transformProse(text: string, options: MdxTransformOptions): string {
   return out;
 }
 
+/**
+ * An element marked `data-generic-definition` or `data-claim-allow` is exempt from a claims rule on the page, but the claims audit reads a
+ * Markdown file as plain text and honors no marker (scripts/audit-claims.mjs, `plain`). Converting the element would put the exempt wording
+ * in a file where it is a finding, and removing it would make the twin differ from its page, so a page that holds one has no twin.
+ */
+const CLAIMS_MARKER = /\bdata-(?:generic-definition|claim-allow)\b/;
+export const CLAIMS_MARKER_REASON = 'the page holds a claims marker (data-generic-definition or data-claim-allow), which the plain-text claims audit cannot honor';
+
 /** Splits at fenced code blocks, which pass through untouched. */
 function splitFences(text: string): readonly { readonly code: boolean; readonly text: string }[] {
   const segments: { code: boolean; text: string }[] = [];
@@ -408,9 +425,11 @@ export function transformMdx(source: string, options: MdxTransformOptions): MdxT
   try {
     const pieces = splitFences(source).map((segment) => {
       if (segment.code) return segment.text;
+      if (CLAIMS_MARKER.test(segment.text)) return fail(CLAIMS_MARKER_REASON);
       const kept = segment.text
         .split('\n')
         .filter((line) => !IMPORT_LINE.test(line))
+        .map((line) => line.replace(PLAIN_PARAGRAPH, '$1'))
         .join('\n');
       return transformProse(kept, options);
     });
