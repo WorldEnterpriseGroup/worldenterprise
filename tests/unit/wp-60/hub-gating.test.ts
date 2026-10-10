@@ -49,6 +49,35 @@ for (const family of PAGES_FAMILIES) {
   });
 }
 
+// WP-71 serves a hub and its entries from one rest page, `src/pages/<folder>/[...hub].astro`, whose hub root has an empty parameter.
+for (const family of PAGES_FAMILIES) {
+  const hub = family.hub?.path ?? '';
+  const rest = [`/src/pages/${family.folder}/[...hub].astro`];
+
+  test(`${hub} from a [...hub] page is live with its ${family.folder}/index entry and pending without it`, () => {
+    assert.equal(routeExists(hub, ctx(rest, [`${family.folder}/index`])), true);
+    assert.equal(routeExists(hub, ctx(rest)), false);
+    assert.equal(routeExists(hub, ctx(rest, [`${family.folder}/other`])), false);
+  });
+
+  test(`${hub} from a [...hub] page: an entry page is live with its own entry, and the hub entry alone does not make it live`, () => {
+    const slug = family.entries[0]?.slug ?? 'x';
+    assert.equal(routeExists(`${hub}${slug}/`, ctx(rest, [`${family.folder}/index`, `${family.folder}/${slug}`])), true);
+    assert.equal(routeExists(`${hub}${slug}/`, ctx(rest, [`${family.folder}/index`])), false);
+  });
+
+  test(`${hub} from a [...hub] page is pending in the route state until the entry exists`, () => {
+    assert.equal(computeRouteState(ctx(rest), routes).isLive(hub), false);
+    assert.equal(computeRouteState(ctx(rest, [`${family.folder}/index`]), routes).isLive(hub), true);
+  });
+}
+
+test('a rest route outside a hub family still resolves its root from the folder index entry', () => {
+  const files = ['/src/pages/about/[...slug].astro'];
+  assert.equal(routeExists('/about/', ctx(files, ['about/index'])), true);
+  assert.equal(routeExists('/about/', ctx(files)), false);
+});
+
 test('an entry of the family does not make the hub live', () => {
   const files = ['/src/pages/industries/index.astro', '/src/pages/industries/[slug].astro'];
   assert.equal(routeExists('/industries/', ctx(files, ['industries/fintech'])), false);

@@ -1,0 +1,70 @@
+---
+import StepMarker from '../brand/StepMarker.astro';
+import type { JourneyStepView } from './view.ts';
+
+/**
+ * One step of the program in the journey list. The title and body are the program's own (PROGRAM_STEPS); the step states no duration.
+ * The marker is decorative, so the heading carries a visually hidden "Step N:" and the current step says so with `aria-current`.
+ */
+interface Props {
+  step: JourneyStepView;
+}
+
+const { step } = Astro.props;
+---
+
+<li class={`jstep jstep--${step.state}`} aria-current={step.state === 'current' ? 'step' : undefined}>
+  <StepMarker n={step.n} state={step.state} />
+  <div class="jstep__body">
+    <h3 class="jstep__title"><span class="visually-hidden">Step {step.n}: </span>{step.title}</h3>
+    <p>{step.body}</p>
+  </div>
+</li>
+
+<style>
+  .jstep {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-4);
+    align-items: start;
+    padding-block-end: var(--sp-5);
+
+    /* The rail that joins one marker to the next. */
+    &:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      inset-block: var(--sp-7) 0;
+      inset-inline-start: calc(var(--sp-7) / 2);
+      inline-size: 0;
+      border-inline-start: 2px solid var(--color-border-strong);
+    }
+  }
+
+  .jstep--next:not(:last-child)::before {
+    border-inline-start-style: dashed;
+  }
+
+  .jstep__body {
+    display: grid;
+    gap: var(--sp-2);
+    padding-block-start: var(--sp-1);
+  }
+
+  .jstep__title {
+    font-size: var(--fs-lg);
+    line-height: var(--lh-tight);
+  }
+
+  .jstep--current .jstep__title {
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: var(--sp-1);
+  }
+
+  @media (forced-colors: active) {
+    .jstep:not(:last-child)::before {
+      border-inline-start-color: CanvasText;
+    }
+  }
+</style>

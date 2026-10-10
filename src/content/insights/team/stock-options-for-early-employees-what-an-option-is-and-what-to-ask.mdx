@@ -1,0 +1,114 @@
+---
+title: "Stock options for early employees: what an option is and what to ask"
+seoTitle: Stock options, early staff
+description: "What a stock option is, how US tax sources describe the two main types, and the questions an early employee or a founder can bring to counsel before a grant."
+topic: team
+publishedDate: 2026-10-10
+segments: [first-time-founders, technical-founders]
+related: [offer-letters-what-they-should-state, your-first-hire-what-to-settle-before-you-write-the-job, hiring-across-borders-employees-contractors-and-employers-of-record]
+evidence: [irs-tc427, usc-26-422, cfr-26-1-409a-1]
+relatedServices: [G]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: irs-tc427
+    title: Topic no. 427, Stock options
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/taxtopics/tc427
+    accessed: 2026-10-10
+  - id: usc-26-422
+    title: 26 U.S. Code 422, Incentive stock options
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/uscode/text/26/422
+    accessed: 2026-10-10
+  - id: cfr-26-1-409a-1
+    title: 26 CFR 1.409A-1, Definitions and covered plans
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/cfr/text/26/1.409A-1
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal or financial advice. Written October 10, 2026. Equity and tax rules vary by country and by the facts of each grant. Ask a lawyer and an accountant licensed where you or the company are before you offer or accept an option.*
+
+Early employees at a startup are often offered a part of the company's future instead of some of its present salary. The most common form is a stock option. Options are easy to describe in a sentence and hard to value, and many people who hold them could not say what they would do on the day they wanted to use them. This article explains what an option is, how two US public sources describe the main types and the tax events around them, and which questions to ask. It gives no figure for what an option is worth and does not say whether you should offer or accept one.
+
+The reader may be a founder deciding what to offer, or an employee deciding what to ask. The questions overlap, and each side benefits from knowing what the other will ask.
+
+## What an option is
+
+The terms below are general definitions, written for this article. They describe how the words are commonly used, and an actual grant defines its own terms in its own documents.
+
+<dl data-generic-definition>
+  <dt>Option</dt>
+  <dd>A right, not an obligation, to buy a stated number of shares of the company at a stated price.</dd>
+  <dt>Grant</dt>
+  <dd>The act of the company giving the option to a person. The grant is usually recorded in a written agreement and tied to a plan the company has adopted.</dd>
+  <dt>Exercise price</dt>
+  <dd>The price per share the holder pays to buy the shares. It is set when the option is granted and is sometimes called the strike price.</dd>
+  <dt>Exercise</dt>
+  <dd>The act of buying the shares by paying the exercise price.</dd>
+  <dt>Vesting</dt>
+  <dd>A schedule that sets when the holder earns the right to exercise. Shares that have not vested cannot be exercised.</dd>
+  <dt>Cliff</dt>
+  <dd>A date before which nothing vests. When it passes, a first portion vests at once.</dd>
+  <dt>Expiration</dt>
+  <dd>The date after which the option can no longer be exercised.</dd>
+</dl>
+
+Notice what an option is not. It is not a share. A person holding an option does not yet own the company's stock, does not vote it and has not paid for it. Until an option is exercised, it is a right that may be worth something later, or nothing.
+
+## The two main types in US tax guidance
+
+The Internal Revenue Service's page on stock options draws a line that matters for taxes. It says options granted under an employee stock purchase plan or an incentive stock option (ISO) plan are statutory stock options. It also says stock options that are granted neither under an employee stock purchase plan nor an ISO plan are nonstatutory stock options.
+
+<DataTable
+  caption="Two types of option in the IRS's terms"
+  columns={['Type', 'IRS wording', 'What to ask']}
+  rows={[
+    ['Statutory', 'Granted under an employee stock purchase plan or an incentive stock option (ISO) plan', 'Does the plan meet the statute’s conditions, and who checks?'],
+    ['Nonstatutory', 'Granted neither under an employee stock purchase plan nor an ISO plan', 'What taxable event arises when the option is exercised?']
+  ]}
+/>
+
+The labels are not choices that a founder can make by writing a word into the grant. They depend on the statute and the plan, which the next sections describe.
+
+### When tax arises
+
+The same IRS page describes when tax generally arises. For nonstatutory options without a readily determined fair market value, it says there's no taxable event when the option is granted. At exercise, for nonstatutory options, you must include in income the fair market value of the stock received on exercise. For statutory options, it says you have taxable income or deductible loss when you sell the stock you bought by exercising the option.
+
+For ISOs the page adds two cautions. It says you may be subject to alternative minimum tax in the year you exercise an ISO, and that if you don't meet special holding period requirements, you'll have to treat income from the sale as ordinary income. The practical lesson is that the timing of exercise and sale can change the tax result, and that an employee who exercises without advice may owe tax on shares that cannot yet be sold. Ask an accountant before exercising, not after.
+
+## What makes an option an ISO
+
+The statute that defines incentive stock options, section 422 of the Internal Revenue Code, sets conditions. Two are easy to state. One is a holding period: it refers to a case where no disposition of such share is made by him within 2 years from the date of the granting of the option, together with a requirement of employment during the option period. The other concerns price: the option price is not less than the fair market value of the stock at the time such option is granted.
+
+Statute and regulation use many more conditions than these two, including a limit on how much can qualify in a year. A founder should not try to run that list alone. If you plan to grant ISOs, ask your counsel to confirm that your plan and each grant meet every condition, and ask what happens to the grant if one is missed.
+
+## The price question, without a number
+
+Both the grant price and the tax rules point to the same difficulty: someone must decide what a share of an early-stage company is worth, and the company's stock is not traded. The federal regulation on deferred compensation, section 409A, says an option avoids being treated as a deferral if its exercise price may never be less than the fair market value of the underlying stock. For stock that is not readily tradable, it says fair market value means a value determined by the reasonable application of a reasonable valuation method.
+
+This article gives no valuation and no price, and neither should an offer letter without advice. What it does show is the shape of the question. The price set at grant is tied to a fair market value, and for a private company that value comes from a method that must be reasonable. Ask your counsel or an independent valuation provider what method the company will use, when the value must be refreshed, and what happens to existing grants if it is not. A price set carelessly can cause tax problems for the person holding the option, not only for the company.
+
+## What an early employee may ask
+
+If you are being offered options, the questions are practical and fit on a page. None of them accuses anyone. They are the questions a careful person asks before accepting any package.
+
+<Callout title="Questions for the company">
+  How many options are being offered, and out of how many total shares? What is the exercise price and how was it set? What is the vesting schedule, and is there a cliff? Is the option statutory or nonstatutory? What happens to unvested and vested options if I leave? How long do I have to exercise after leaving? What happens to the options if the company is sold? Who can I ask about taxes?
+</Callout>
+
+If you cannot get answers in writing, treat that as information. Also ask for a copy of the plan and the grant agreement, and take them to your own adviser rather than relying on the company's counsel, who represents the company.
+
+## What a founder may ask counsel
+
+If you are the one offering, the questions are different. Does the company have a plan, and who approves each grant? How is the exercise price set, and when must it be updated? Which type of option fits, and what must be true for it to qualify? What should the offer letter say, and what should it leave for the grant documents? How do grants affect what you have told your co-founders and investors? What must be disclosed to the people who receive them? <MaybeLink path="/insights/offer-letters-what-they-should-state/">Offer letters</MaybeLink> covers how to refer to a possible grant without promising one, and <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> lists wider questions for a lawyer.
+
+Decide your position before a candidate asks. <MaybeLink path="/insights/your-first-hire-what-to-settle-before-you-write-the-job/">Your first hire</MaybeLink> places that decision among the others you make before you write the job. If the person will work in another country, the rules for equity and for tax can differ sharply, and <MaybeLink path="/insights/hiring-across-borders-employees-contractors-and-employers-of-record/">hiring across borders</MaybeLink> sets out where to start. The <MaybeLink path="/glossary/">glossary</MaybeLink> defines further terms.
+
+## What this article cannot tell you
+
+This article cannot tell you what an option is worth, whether to offer one, whether to accept one, or how your own tax will work out. The definitions in the list above are general and were written for this article, not taken from a source. The tax and statute descriptions come from three US sources, an IRS page, section 422 of the Internal Revenue Code and a federal regulation, all read on October 10, 2026, and they describe federal rules only. It does not cover state tax, other countries' share schemes, restricted stock, the alternative minimum tax calculation, the securities-law side of granting equity, or how options are treated in a sale of the company. For any real grant, ask a lawyer and an accountant who know your facts.

@@ -1,0 +1,89 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { SlotId } from '../../assets/photo/slots.ts';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import SourcesList from '../blocks/SourcesList.astro';
+import BrandCallout from '../brand/BrandCallout.astro';
+import Compositions from '../brand/Compositions.astro';
+import Section from '../ui/Section.astro';
+import type { HeroActions } from './actions.ts';
+import { EYEBROWS, FIXED, HEADINGS } from './copy.ts';
+import FamilyItems from './FamilyItems.astro';
+import type { IndustryView } from './view.ts';
+
+/**
+ * An industry page (/industries/<vertical>/). A page of considerations: who buys and who decides, the regulatory and standards
+ * perimeter (each item with its jurisdiction, its date and its source), the data questions and the sales cycle. The fixed sentence
+ * says the page describes no WE company or result. The sources are required by the schema and render last.
+ */
+interface Props {
+  page: CollectionEntry<'pages'>;
+  view: IndustryView;
+  path: string;
+  actions: HeroActions;
+  ogSlot: SlotId;
+}
+
+const { page, view, path, actions, ogSlot } = Astro.props;
+const { Content } = await render(page);
+const { title, description, eyebrow, updated, draft } = page.data;
+
+const perimeter = view.perimeter.map((item) => ({
+  title: item.title,
+  text: item.text,
+  facts: [item.jurisdiction, item.asOf],
+  source: { label: `Source ${item.sourceNumber}: ${item.sourceTitle}`, href: item.sourceHref },
+}));
+---
+
+<MarketingLayout
+  title={title}
+  description={description}
+  path={path}
+  lead={description}
+  eyebrow={eyebrow ?? EYEBROWS.industries}
+  updated={updated}
+  draft={draft}
+  ogSlot={ogSlot}
+  schemaType="WebPage"
+  primary={actions.primary}
+  secondary={actions.secondary}
+>
+  <Compositions id="industries" />
+  <BrandCallout tone="consider" title={HEADINGS.shared.about}>
+    <p>{FIXED.industry}</p>
+  </BrandCallout>
+  <Content />
+  <Fragment slot="after">
+    <Section labelledby="ind-buyer">
+      <div class="stack">
+        <h2 id="ind-buyer">{HEADINGS.industries.buyer}</h2>
+        <p>{view.buyer}</p>
+      </div>
+    </Section>
+    <Section tone="soft" labelledby="ind-perimeter">
+      <div class="stack">
+        <h2 id="ind-perimeter">{HEADINGS.industries.perimeter}</h2>
+        <FamilyItems items={perimeter} label={HEADINGS.industries.perimeter} />
+      </div>
+    </Section>
+    <Section labelledby="ind-data">
+      <div class="stack">
+        <h2 id="ind-data">{HEADINGS.industries.data}</h2>
+        <ul>
+          {view.dataQuestions.map((question) => <li>{question}</li>)}
+        </ul>
+      </div>
+    </Section>
+    <Section tone="soft" labelledby="ind-sales">
+      <div class="stack">
+        <h2 id="ind-sales">{HEADINGS.industries.sales}</h2>
+        <p>{view.salesCycle}</p>
+      </div>
+    </Section>
+    <Section tone="stone">
+      <SourcesList sources={view.sources} title={HEADINGS.shared.sources} />
+    </Section>
+  </Fragment>
+</MarketingLayout>
