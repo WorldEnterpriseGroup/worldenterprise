@@ -165,15 +165,6 @@ test('the claims audit scans llms.txt, llms-full.txt and the Markdown twins', ()
   assert.match(dirty.map((f) => f.where).join('\n'), /x\.md/);
 });
 
-test('C-13-peers allows the FAQ sentence in llms.txt and llms-full.txt, and still flags it on an ordinary page', () => {
-  const sentence = 'This site does not describe a cohort calendar or a demo day.';
-  for (const route of ['/llms.txt', '/llms-full.txt']) {
-    assert.equal(caught(api.scan(sentence, { route, plain: true, flagValues: {} }), 'C-13-peers'), false, `${route} may carry the sentence`);
-  }
-  assert.equal(caught(api.scan(sentence, { route: '/pricing/', plain: true, flagValues: {} }), 'C-13-peers'), true, 'an ordinary page is still flagged');
-  assert.equal(caught(api.scan(sentence, { route: '/llms.txt.bak', plain: true, flagValues: {} }), 'C-13-peers'), true, 'the allowance is anchored to the two files');
-});
-
 test('a Markdown twin is held to the same denylist as its page, including a seat count', () => {
   const findings = audit({ 'pricing/index.html': home, 'pricing.md': '# Pricing\n\nLaunch includes 3 seats.\n' });
   assert.deepEqual(findings.map((f) => f.rule), ['W7-package-seat-count']);

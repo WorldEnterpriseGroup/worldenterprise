@@ -1042,26 +1042,6 @@
       "reason": "Wave 7, decision W7-9: the photography lane (WP-12b exception) reserves this page, and phase B photo generation is deferred, so the page is released to this package now. Phase B will rebase onto wave 7."
     },
     {
-      "wp": "WP-44",
-      "path": "tests/unit/wp-18/copy.test.ts",
-      "reason": "WP-44 (#33): the catalogue-count band is removed from the home page (wave7.md section 5, WP-44 item 1), so the test case that pinned its framework counter is removed. WP-44's own tests assert that no numeric catalogue statistic remains."
-    },
-    {
-      "wp": "WP-43",
-      "path": "tests/e2e/forms.spec.ts",
-      "reason": "WP-43 (#32): the progressive Apply stepper hides inactive fieldsets with JS on, so the apply cases walk the steps; no-JS cases unchanged. Edited in the same MR so demo e2e stays green."
-    },
-    {
-      "wp": "WP-42",
-      "path": ".astro-magazine/release/RELEASE.md",
-      "reason": "WP-42 (#31): the reordered pricing.mdx moves four CR-12 quotes (wording unchanged), so only their line numbers are refreshed, plus a note that line numbers track demo while the rc2 text is the copy of this file at tag release-1-rc2."
-    },
-    {
-      "wp": "WP-41",
-      "path": ".astro-magazine/release/RELEASE.md",
-      "reason": "WP-41 (#30): /about/facts/ names Investor Introductions, so a new counsel-checklist CR entry for src/content/pages/about/facts.mdx is added, marked release 2 (not in release-1-rc2)."
-    },
-    {
       "wp": "WP-12c",
       "path": "{src/pages/index.astro,src/components/hero/HeroAtlas.astro,src/components/hero/HeroEditorial.astro,src/components/home/HomeHero.astro}",
       "reason": "Brief grants the home page and the three hero components: they serve the slot srcset and sizes through photoImage()."
