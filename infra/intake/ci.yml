@@ -128,7 +128,7 @@ intake:deploy:
   resource_group: intake-demo
   script:
     - export PATH="/opt/az/bin:${PATH}"
-    - test -f infra/intake/dist/function.zip || { echo "infra/intake/dist/function.zip is missing: the schema was not on the branch when intake:test ran"; exit 1; }
+    - test -f infra/intake/dist/function.zip || { echo "infra/intake/dist/function.zip is missing, so the schema was not on the branch when intake:test ran"; exit 1; }
     - cd infra/intake
     # Every operator input becomes a deployment parameter by name. Optional ones are passed only when set.
     - |
@@ -179,7 +179,7 @@ intake:dataverse:
   resource_group: intake-demo
   script:
     - export PATH="/opt/az/bin:${PATH}"
-    - test -n "${INTAKE_IDENTITY_CLIENT_ID:-}" || { echo "INTAKE_IDENTITY_CLIENT_ID is unset: run intake:deploy first, or set it to the Bicep identityClientId output"; exit 1; }
+    - test -n "${INTAKE_IDENTITY_CLIENT_ID:-}" || { echo "INTAKE_IDENTITY_CLIENT_ID is unset, so run intake:deploy first or set it to the Bicep identityClientId output"; exit 1; }
     - cd infra/intake
     # The token goes straight into the environment of one process. It is never written to a file or echoed.
     - DATAVERSE_URL="${INTAKE_DATAVERSE_URL}" DATAVERSE_TOKEN="$(az account get-access-token --resource "${INTAKE_DATAVERSE_URL}" --query accessToken --output tsv)" node dataverse/apply.ts
@@ -193,5 +193,5 @@ intake:verify:
       artifacts: true
       optional: true
   script:
-    - test -n "${INTAKE_ORIGIN_HOST:-}" || { echo "INTAKE_ORIGIN_HOST is unset: run intake:deploy first, or set it to the Bicep functionOriginHost output"; exit 1; }
+    - test -n "${INTAKE_ORIGIN_HOST:-}" || { echo "INTAKE_ORIGIN_HOST is unset, so run intake:deploy first or set it to the Bicep functionOriginHost output"; exit 1; }
     - ORIGIN_HOST="${INTAKE_ORIGIN_HOST}" API_HOST="${INTAKE_API_HOST:-intake.worldenterprise.org}" node infra/intake/iac/verify.mjs
