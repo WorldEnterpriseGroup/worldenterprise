@@ -26,7 +26,10 @@ test.beforeEach(() => {
 
 test('the sections follow the planned order, and the first six are always there', async ({ page }) => {
   await page.goto('/');
-  const headings = (await page.locator('main h2').allTextContents()).map((t) => t.trim());
+  // A heading of the Markdown body may carry an anchor, so a heading matches a planned title when it starts with it.
+  const headings = (await page.locator('main h2').allTextContents())
+    .map((t) => t.trim())
+    .map((t) => SECTION_ORDER.find((title) => t.startsWith(title)) ?? t);
   const present = SECTION_ORDER.filter((title) => headings.includes(title));
   expect(headings.filter((h) => (SECTION_ORDER as readonly string[]).includes(h)), 'the planned sections, in page order').toEqual(present);
   for (const title of SECTION_ORDER.slice(0, 6)) expect(headings, `"${title}" is on the page`).toContain(title);

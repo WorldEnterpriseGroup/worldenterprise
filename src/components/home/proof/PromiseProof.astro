@@ -15,7 +15,7 @@ const { rows, label = 'What WE promises and where to check it' } = Astro.props;
 <ul class="proof" role="list" aria-label={label}>
   {
     rows.map((row) => (
-      <li class:list={['proof__row', row.sourceHref !== undefined && 'proof__row--linked']}>
+      <li class:list={['proof__row', `proof__row--${row.basis}`, row.sourceHref !== undefined && 'proof__row--linked']}>
         <p class="proof__kicker">Check it in</p>
         <p class="proof__source">
           {row.sourceHref !== undefined ? <a class="proof__link" href={href(row.sourceHref)}>{row.source}</a> : row.source}
@@ -60,10 +60,10 @@ const { rows, label = 'What WE promises and where to check it' } = Astro.props;
         outline-offset: 2px;
       }
 
-      &:nth-child(3),
-      &:nth-child(4) {
-        border-inline-start-color: var(--color-highlight);
-      }
+    }
+
+    .proof__row--editorial-judgement {
+      border-inline-start-color: var(--color-highlight);
     }
 
     .proof__kicker {
