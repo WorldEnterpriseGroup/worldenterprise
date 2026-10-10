@@ -154,6 +154,24 @@
       "fetchedAt": "2026-10-10T11:37:10Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "irs-w8ben",
+      "url": "https://www.irs.gov/instructions/iw8ben",
+      "title": "Instructions for Form W-8BEN",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T11:37:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-right-to-work",
+      "url": "https://www.gov.uk/check-job-applicant-right-to-work",
+      "title": "Check if someone can work for you in the UK",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T11:37:35Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -479,6 +497,75 @@
           "sourceId": "govuk-employment-status",
           "locator": "Decisions",
           "quote": "Courts and tribunals can make final decisions on employment status."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/team/hiring-across-borders-employees-contractors-and-employers-of-record.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "an employee is someone who works under an employment contract",
+          "kind": "regulation",
+          "sourceId": "govuk-employee",
+          "locator": "Employee",
+          "quote": "An employee is someone who works under an employment contract."
+        },
+        {
+          "id": "A2",
+          "sentence": "a person is self-employed if they run their business for themselves and take responsibility for its success or failure",
+          "kind": "regulation",
+          "sourceId": "govuk-self-employed-contractor",
+          "locator": "Self-employed",
+          "quote": "A person is self-employed if they run their business for themselves and take responsibility for its success or failure."
+        },
+        {
+          "id": "A3",
+          "sentence": "workers are entitled to most types of statutory pay, but only employees get statutory pay and leave",
+          "kind": "regulation",
+          "sourceId": "govuk-employee",
+          "locator": "Employee",
+          "quote": "For example, workers are entitled to most types of statutory pay, but only employees get statutory pay and leave."
+        },
+        {
+          "id": "A4",
+          "sentence": "you must check that a job applicant is allowed to work for you in the UK before you employ them",
+          "kind": "regulation",
+          "sourceId": "govuk-right-to-work",
+          "locator": "Before you employ",
+          "quote": "You must check that a job applicant is allowed to work for you in the UK before you employ them."
+        },
+        {
+          "id": "A5",
+          "sentence": "you could face a civil penalty if you employ an illegal worker and have not carried out a correct right to work check",
+          "kind": "regulation",
+          "sourceId": "govuk-right-to-work",
+          "locator": "Civil penalty",
+          "quote": "You could face a civil penalty if you employ an illegal worker and have not carried out a correct right to work check."
+        },
+        {
+          "id": "A6",
+          "sentence": "if you receive certain types of income, you must provide it",
+          "kind": "regulation",
+          "sourceId": "irs-w8ben",
+          "locator": "Who must provide",
+          "quote": "If you receive certain types of income, you must provide Form W-8BEN to:"
+        },
+        {
+          "id": "A7",
+          "sentence": "to establish that you are not a U.S. person",
+          "kind": "regulation",
+          "sourceId": "irs-w8ben",
+          "locator": "Who must provide",
+          "quote": "Establish that you are not a U.S. person;"
+        },
+        {
+          "id": "A8",
+          "sentence": "provide Form W-8BEN to the withholding agent or payer before income is paid or credited to you",
+          "kind": "regulation",
+          "sourceId": "irs-w8ben",
+          "locator": "When to provide",
+          "quote": "Provide Form W-8BEN to the withholding agent or payer before income is paid or credited to you."
         }
       ]
     },
