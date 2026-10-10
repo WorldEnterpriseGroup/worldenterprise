@@ -5,6 +5,7 @@ import { APPLY, jumpTo } from '../components/hero/ctas.ts';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 import ContextualNext from '../components/blocks/ContextualNext.astro';
+import CiteThis from '../components/geo/CiteThis.astro';
 import Steps from '../components/ui/Steps.astro';
 
 interface Step {
@@ -43,6 +44,7 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
         <h2 id="steps-title">The steps</h2>
         <Steps steps={steps} headingLevel={3} />
       </section>
+      <CiteThis title={meta.title} path={meta.path} date={meta.updated} />
     </div>
   </div>
   {

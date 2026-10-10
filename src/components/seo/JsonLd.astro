@@ -1,7 +1,9 @@
 ---
+import { packages } from '../../data/packages.ts';
+import { getPublished } from '../../lib/content.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import type { JsonLdNode } from '../../lib/schema.ts';
-import { graph, serializeJsonLd, withSearchAction } from '../../lib/schema.ts';
+import { graph, serializeJsonLd, withOrganizationEnrichment, withSearchAction } from '../../lib/schema.ts';
 
 interface Props {
   /** Graph nodes for this page. The sitewide organisation and website nodes are added by BaseLayout. */
@@ -12,7 +14,15 @@ const { nodes } = Astro.props;
 
 // The WebSite SearchAction is advertised only once /search/ exists, so the schema never promises a feature the site lacks.
 const state = await getRouteState();
-const finalNodes = state.isLive('/search/') ? withSearchAction(nodes) : nodes;
+const withSearch = state.isLive('/search/') ? withSearchAction(nodes) : nodes;
+
+// The organisation lists the four packages as an OfferCatalog without price, and the live service lines as knowsAbout.
+const services = await getPublished('services');
+const serviceLines = services
+  .filter((entry) => state.isLive(`/services/${entry.id.split('/').at(-1) ?? entry.id}/`))
+  .sort((a, b) => a.data.line.localeCompare(b.data.line))
+  .map((entry) => entry.data.title);
+const finalNodes = withOrganizationEnrichment(withSearch, { packages, serviceLines });
 ---
 
 <script type="application/ld+json" is:inline set:html={serializeJsonLd(graph(finalNodes))} />

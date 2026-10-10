@@ -3,6 +3,8 @@ import { Font } from 'astro:assets';
 import { site } from '../../data/site.ts';
 import type { PreloadImage } from '../../lib/image-type.ts';
 import { asset, href } from '../../lib/url.ts';
+import { twinUrl } from '../../lib/markdown-twins.ts';
+import { twinPathFor } from '../geo/twin-sources.ts';
 import { canonicalUrl } from '../../lib/seo.ts';
 import type { RobotsDirective } from '../../lib/seo.ts';
 import SpeculationRules from './SpeculationRules.astro';
@@ -31,6 +33,8 @@ interface Props {
 
 const { title, description, path, robots, ogType = 'website', ogImage, preloadImage, published, modified } = Astro.props;
 const canonical = canonicalUrl(path);
+// A page with a Markdown twin advertises it (docs/wave7-contracts.md, section 2). Absolute, like the canonical.
+const markdownTwin = (await twinPathFor(path)) === null ? null : twinUrl(path);
 ---
 
 <meta charset="utf-8" />
@@ -45,6 +49,7 @@ const canonical = canonicalUrl(path);
 <meta name="generator" content={Astro.generator} />
 
 <link rel="alternate" type="application/rss+xml" title={`${site.name}: insights and research`} href={href('/rss.xml')} />
+{markdownTwin !== null && <link rel="alternate" type="text/markdown" href={markdownTwin} />}
 <link rel="sitemap" type="application/xml" href={asset('/sitemap-index.xml')} />
 <link rel="icon" href={asset('/favicon.svg')} type="image/svg+xml" />
 <link rel="apple-touch-icon" href={asset('/apple-touch-icon.png')} />
