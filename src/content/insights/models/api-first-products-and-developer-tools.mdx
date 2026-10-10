@@ -1,0 +1,107 @@
+---
+title: "API-first products and developer tools"
+seoTitle: API-first products and tools
+description: What it means to build a product around its interface, what developers expect from an API, and the early choices on errors, versions and documentation.
+topic: models
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders]
+relatedServices: [B]
+relatedPlaybook: design-the-product
+relatedTemplate: security-baseline-checklist
+related: [platforms-and-ecosystems-when-a-product-becomes-a-platform, b2b-saas-how-the-model-works-and-what-it-asks-of-a-first-company]
+evidence: [google-api-design, ms-api-design, rfc-9457]
+claimsUsed: []
+sources:
+  - id: google-api-design
+    title: API design guide
+    publisher: Google Cloud Documentation
+    url: https://docs.cloud.google.com/apis/design
+    accessed: 2026-10-10
+  - id: ms-api-design
+    title: Web API design best practices
+    publisher: Microsoft Learn
+    url: https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design
+    accessed: 2026-10-10
+  - id: rfc-9457
+    title: RFC 9457, Problem Details for HTTP APIs
+    publisher: IETF
+    url: https://datatracker.ietf.org/doc/html/rfc9457
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Most software has an interface for people and, somewhere behind it, an interface for other software. An API-first product reverses the order of attention. The interface for other software is designed first, documented as a product in its own right, and the screens that people use are built on top of it. A developer tool goes a step further: its customers are developers, so the interface is the product.
+
+Both choices change what you build, whom you sell to and what you owe your customers afterward. This article describes what API-first means in practice, what developers expect, and three decisions a small technical team should make early: how errors look, how versions change and who owns the documentation.
+
+## Two meanings of API-first
+
+**API-first as an engineering method.** The team designs the interface before writing the code behind it, agrees it with the people who will call it, and builds the web or mobile screens as clients of that same interface. The benefit is discipline. Because the product's own screens use the interface, it has to be complete, and the gaps show up while they are cheap to fix.
+
+**API-first as a product.** The interface is something customers buy or rely on. Payments, messaging, search, identity and data services are common examples. The customer is a developer, and success means that developer can integrate in an afternoon and trust the result for years.
+
+The first can exist without the second, and it is a sensible way to build many ordinary products. The second asks much more of you, because it makes outside developers a customer group with needs of their own, as the companion article on <MaybeLink path="/insights/platforms-and-ecosystems-when-a-product-becomes-a-platform/">platforms and ecosystems</MaybeLink> describes.
+
+## What developers expect
+
+Developers judge an API quickly. Before they read your pricing, they read your documentation, make a first call and see what happens when something goes wrong. Six things decide whether they stay.
+
+1. **A first call that works within minutes.** A short guide, a test key and an example they can paste.
+2. **Consistent naming and behavior.** Once someone has learned how one operation behaves, the next should not surprise them.
+3. **Errors that explain themselves.** A message a developer can act on without writing to you.
+4. **Change that does not break them.** Notice before anything is removed, and a way to stay on the version they built against.
+5. **Clear limits.** What the rate limits are, what the service guarantees and where to see its status.
+6. **A person to ask.** Even a small company needs a visible route for questions.
+
+None of these require a large team, and all of them can be done badly by a large one.
+
+## Learn from published design guides
+
+Several large companies publish how they design interfaces, and a first company can borrow a great deal. Google's design guide describes itself as "a general design guide for networked APIs", and says it is shared "to inform outside developers and to make it easier for us all to work together." It is guidance written for Google's own interfaces, and you should read it as a worked example of a consistent style, not as a rule you must follow.
+
+Microsoft's guidance on web API design names a principle that is worth keeping in view: "Loose coupling, which means that the client and the web service can evolve independently." The idea is that the caller should not depend on how your service works inside. If it does, every internal change becomes a breaking change for someone. Whatever you decide about resources, formats and verbs, test it against that principle.
+
+Both documents are descriptions by a vendor of its own practice, offered as general guidance. Neither claims that its approach is the only one, and neither tells you what customers in your market want.
+
+## Decision one: how errors look
+
+When a call fails, the developer has to decide what to do next. If each endpoint reports failure in its own way, they write special handling for each one, and every inconsistency becomes a support request.
+
+An internet standard now exists for this. RFC 9457, published by the Internet Engineering Task Force, "defines a "problem detail" to carry machine-readable details of errors in HTTP response content" and does so "to avoid the need to define new error response formats for HTTP APIs." A first company can adopt the format and move on, because choosing a common shape for errors is a decision with few downsides.
+
+Whatever format you use, give each error four things: a stable code the developer can program against, a plain sentence about what went wrong, a hint about what to do next, and a reference that lets you find the request in your own logs. Do not leak internal detail such as stack traces or database messages. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> covers what errors should not reveal.
+
+## Decision two: how versions change
+
+Every interface changes. The question is how you change it without breaking the people who depend on it. Microsoft's guidance lists four common approaches: putting the version in the address, in a query string, in a header or in the media type. Each has trade-offs, and the guidance describes them in its own text. What matters for a first company is less which one you choose than three habits.
+
+**Prefer additions.** Adding a field or an endpoint rarely breaks a caller who ignores what they do not recognize. Removing or renaming a field does. Make the first kind of change by default.
+
+**Promise something about notice.** Decide how long a version will keep working after a replacement exists, write the number in your documentation and keep to it. That one sentence will matter to a developer deciding whether to build on you.
+
+**Keep a record of changes.** A dated changelog is cheap to write and builds trust with the people who read it. It is also the document you will point to when a customer asks what changed.
+
+Resist publishing more of the interface than you can maintain. Everything public is a promise, and the <MaybeLink path="/insights/architecture-decisions-to-defer-in-the-first-six-months/">article on architecture decisions to defer</MaybeLink> explains why a public interface is one of the things that often can wait.
+
+## Decision three: who owns the documentation
+
+For a developer tool, documentation is the main interface, and it needs an owner the way a feature does. The owner keeps the first guide working, checks the examples whenever the interface changes and answers questions that the documentation failed to answer. A good test is to ask someone who has never seen your product to complete the first guide while you watch, without helping. Where they stop is where the documentation is weakest.
+
+Reference pages that are generated from a description of the interface stay accurate more easily than pages written by hand, but they are not enough alone. A developer also needs a guide that explains the order in which to do things and a page that says what the product is for.
+
+## Business questions that come with the model
+
+The technical choices sit inside business ones.
+
+- **Who is the buyer?** The person who integrates is often not the person who approves the spend. The motion for selling to each differs, as the article on <MaybeLink path="/insights/product-led-and-sales-led-growth-choosing-between-them/">product-led and sales-led growth</MaybeLink> describes.
+- **What is the unit of pricing?** Developer products often charge by usage, which brings the forecasting questions in the article on <MaybeLink path="/insights/usage-based-seat-based-and-hybrid-pricing-models/">usage-based, seat-based and hybrid pricing</MaybeLink>.
+- **What happens when you are down?** Customers build their own service on yours, so your outage becomes their outage. Decide what you will promise and how you will communicate.
+- **How do you handle access?** Keys, scopes and rotation are part of the product. The article on <MaybeLink path="/insights/build-versus-buy-for-auth-billing-and-email/">build versus buy for sign-in, billing and email</MaybeLink> helps decide how much of that to build yourself.
+
+The <MaybeLink path="/playbooks/design-the-product/">design the product playbook</MaybeLink> takes these questions into the work of specifying what to build first.
+
+## What this article cannot tell you
+
+This article cannot tell you whether an interface-first product suits your market, what developers in your category expect or how much a developer product could earn. It gives no adoption statistics. It draws on two vendor documents describing their own design practice and on one internet standard for error formats, and it reads them as examples, not as requirements. It does not cover choice of protocol, security architecture, rate limiting design, legal terms for developers or any particular programming language. Checked on 2026-10-10.

@@ -134,9 +134,9 @@
     inline-size: clamp(11rem, 30vw, 16rem);
   }
 
-  /* From 1100px the header row holds the logo, seven items and Apply. The logo may not shrink to make room (it was 117px at 1100, under
+  /* From 1100px the header row holds the logo, eight items and Apply. The logo may not shrink to make room (it was 117px at 1100, under
      the 160px brand minimum): it grows from 160px at 1100 to its full 256px at 1279, and the nav gives instead: 16px type (the fluid size
-     is 18px there) and items 4px closer. At 18px type the row was 21px wider than the viewport at 1100px, which the old page frame clipped. */
+     is 18px there) and items closer (a gap of --sp-1; each item keeps its 8px side padding, so the targets are unchanged). At 18px type the row was 21px wider than the viewport at 1100px, which the old page frame clipped. */
   @media (min-width: 1100px) {
     .site-header__logo {
       flex: 0 0 auto;
@@ -147,7 +147,7 @@
   /* The items inherit their size (font: inherit), so the size is set on the list. */
   @media (min-width: 1100px) and (max-width: 1279.98px) {
     .mega-nav__list {
-      gap: var(--sp-3);
+      gap: var(--sp-1);
       font-size: 1rem;
     }
   }
@@ -694,10 +694,18 @@
       min-inline-size: 0;
       white-space: nowrap;
 
+      /* A 24px floor (WCAG 2.2 target size, 2.5.8): at 390px the links measured 23px tall. A constant floor, not one that follows the
+         line height, also keeps the trail the same height when the web font swaps in. */
+      min-block-size: 1.5rem;
+
       & > :is(a, [aria-current]) {
         min-inline-size: 0;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      & > a {
+        min-block-size: 1.5rem;
       }
 
       &:last-child {

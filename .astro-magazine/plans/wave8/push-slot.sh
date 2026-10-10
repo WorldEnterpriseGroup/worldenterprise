@@ -46,8 +46,20 @@ status_of() {
     "$WAVE8_STATUS_CMD" "$1"
     return
   fi
-  GITLAB_HOST=git.developerdojo.org glab api "projects/$project/pipelines?ref=$1&source=push&per_page=1" |
-    python3 -c 'import json,sys; d=json.load(sys.stdin); print("{} {} {}".format(d[0]["id"], d[0]["status"], d[0]["created_at"]) if d else "none")'
+  # A lookup that gets no answer is not the same as a lookup that answers "none": it returns non-zero (a network error, a timeout, a 5xx
+  # whose body is HTML or an error object), and the caller retries it without counting it as a missing pipeline.
+  GITLAB_HOST=git.developerdojo.org timeout "${WAVE8_LOOKUP_SECONDS:-60}" glab api "projects/$project/pipelines?ref=$1&source=push&per_page=1" |
+    python3 -c '
+import json, sys
+try:
+    d = json.load(sys.stdin)
+except ValueError as e:
+    sys.stderr.write("pipelines lookup: the response is not JSON (%s)\n" % e)
+    sys.exit(4)
+if not isinstance(d, list):
+    sys.stderr.write("pipelines lookup: unexpected response %s\n" % str(d)[:120])
+    sys.exit(4)
+print("{} {} {}".format(d[0]["id"], d[0]["status"], d[0]["created_at"]) if d else "none")'
 }
 
 show_status() {
@@ -86,25 +98,35 @@ acquire() {
 
 wait_for_pipeline() {
   # $1 ref, $2 ISO timestamp the wait started at (a pipeline created earlier is not ours)
-  local ref="$1" started="$2" waited=0 line id state created
+  local ref="$1" started="$2" waited=0 empty=0 line id state created
   while true; do
-    # A lookup that fails once (network, rate limit) is retried at the next poll; under set -e it would end the script and keep the slot.
-    line="$(status_of "$ref" || echo none)"
-    if [ "$line" != "none" ]; then
-      read -r id state created <<<"$line"
-      if [[ "$created" > "$started" || "$created" == "$started" ]]; then
-        echo "pipeline $id: $state"
-        case "$state" in
-          success) return 0 ;;
-          failed|canceled) return 1 ;;
-          skipped) return 3 ;;
-        esac
+    # A lookup that fails (network, rate limit, a 5xx with a non-JSON body, a timeout) is retried at the next poll: under set -e it would end
+    # the script and keep the slot, and it says nothing about whether a pipeline exists, so it never counts toward "no pipeline appeared".
+    if line="$(status_of "$ref")"; then
+      if [ "$line" != "none" ]; then
+        read -r id state created <<<"$line"
+        if [[ "$created" > "$started" || "$created" == "$started" ]]; then
+          echo "pipeline $id: $state"
+          case "$state" in
+            success) return 0 ;;
+            failed|canceled) return 1 ;;
+            skipped) return 3 ;;
+          esac
+          empty=0
+        else
+          empty=$((empty + poll))
+        fi
+      else
+        empty=$((empty + poll))
       fi
+    else
+      echo "pipeline lookup for $ref failed, retrying in ${poll}s" >&2
     fi
     sleep "$poll"
     waited=$((waited + poll))
     if [ "$waited" -ge "$limit" ]; then echo "gave up after ${limit}s" >&2; return 1; fi
-    if [ "$waited" -ge "$appear" ] && { [ "$line" = "none" ] || [[ "$created" < "$started" ]]; }; then
+    # Only answers that showed no pipeline of ours count: a run of failed lookups, however long, is not a missing pipeline.
+    if [ "$empty" -ge "$appear" ]; then
       echo "no pipeline appeared within ${appear}s" >&2
       return 3
     fi
