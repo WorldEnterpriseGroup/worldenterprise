@@ -1,6 +1,6 @@
 ---
 stage: grow
-order: 5
+order: 9
 title: Build repeatable growth
 description: Define your metrics in writing, run one channel long enough to learn, fix leaks before adding traffic and turn the results into a monthly review.
 steps:
@@ -23,31 +23,82 @@ artifacts:
   - A monthly review with the decision and the reason
 relatedLibrary:
   - weekly-investor-update-template
-updated: 2026-10-06
+updated: 2026-10-10
 ---
+import Callout from '../../components/ui/Callout.astro';
 import DataTable from '../../components/ui/DataTable.astro';
+import MaybeLink from '../../components/insights/MaybeLink.astro';
+
+## What good looks like
+
+Repeatable growth means the result does not depend on one person having a good week. The same steps, measured the same way, give you figures you can compare from one period to the next.
+
+- Each metric has one written definition with a date, and the definition changes only through a dated note.
+- One channel has been run for a fixed period and measured the same way for at least two periods.
+- The first week of a new customer's experience has been looked at before more traffic was sent to it.
+- A person who did not build the channel can follow the written process and tell you what they did.
+- Each monthly review ends in a decision to put more in, change the channel or stop, with the reason beside it.
+
+<Callout title="Illustrative example, not a real company">
+
+A founder with a scheduling tool for tutoring businesses has won customers through direct messages to tutoring owners. She writes one definition each for monthly recurring revenue, churn, activation and the cost of winning a customer, and dates the sheet. She runs the messages channel for a fixed set of weeks and logs the money, the hours and the customers won in each period. In the review she sees that many new customers never finish setup. She pauses the channel, fixes the setup steps and runs it again. In the second period she compares like with like, because the definitions did not change.
+
+</Callout>
+
+## Decision aid: put more in, change it or stop
+
+At each monthly review, find the row that matches what the channel log shows. Write down the row you picked and the reason.
+
+<DataTable
+  caption="Choosing what to do with a channel at the monthly review"
+  columns={["What the log shows", "What it usually means", "The decision"]}
+  rows={[
+    ["Customers arrive but many leave in the first week", "The leak is in onboarding or activation, not in the channel.", "Stop adding traffic. Fix the first-week experience, then run the channel again."],
+    ["Results are steady and the cost per customer is in line across periods", "The channel is learnable and stable.", "Put more into it in a measured step, and keep the definitions unchanged."],
+    ["One period was very good and the next was very poor", "You may be reading one lucky week, or something changed that you did not record.", "Keep the channel running for another period before you judge it."],
+    ["The channel works only when you do it yourself", "It is a habit, not yet a process.", "Write the steps down with examples and ask someone else to run one period."],
+    ["Cost has risen in each period and results have not", "The easy part of the audience may be used up.", "Change the message or the audience, or stop and test another channel."],
+    ["You changed a metric definition during the period", "The periods cannot be compared.", "Restate the earlier periods under the new definition or start the comparison again."]
+  ]}
+/>
 
 ## Common mistakes
 
 <DataTable
   caption="Common mistakes when building growth"
-  columns={['Mistake', 'Why it costs you', 'Do this instead']}
+  columns={["Mistake", "Why it costs you", "Do this instead"]}
   rows={[
-    ['Changing a metric definition between reports', 'The trend line breaks and nobody can tell what actually changed.', 'Write each definition once, version it and note any change with its date.'],
-    ['Reporting vanity measures', 'Page views and sign-ups can rise while customers leave.', 'Report revenue, churn and activation, each defined in writing.'],
-    ['Running many channels at once', 'None gets enough time to teach you anything.', 'Run one channel for a fixed period, then compare.'],
-    ['Scaling before onboarding works', 'New customers leave in the first week and the money spent winning them is lost.', 'Fix the first-week experience, then widen the channel.'],
-    ['Treating a rule of thumb as a target', 'A ratio from a blog post is not a fact about your business.', 'Use your own figures, defined the same way each period.'],
+    ["Changing a metric definition between reports", "The trend line breaks and nobody can tell what actually changed.", "Write each definition once, version it and note any change with its date."],
+    ["Reporting vanity measures", "Page views and sign-ups can rise while customers leave.", "Report revenue, churn and activation, each defined in writing."],
+    ["Running many channels at once", "None gets enough time to teach you anything.", "Run one channel for a fixed period, then compare."],
+    ["Scaling before onboarding works", "New customers leave in the first week and the money spent winning them is lost.", "Fix the first-week experience, then widen the channel."],
+    ["Treating a rule of thumb as a target", "A ratio from a blog post is not a fact about your business.", "Use your own figures, defined the same way each period."],
+    ["Leaving out your own time", "A channel that looks cheap in money may use most of your week.", "Count hours as well as money in each period of the channel log."]
   ]}
 />
 
 ## Evidence to check before you move on
 
-Investor readiness starts here. Move to [investor readiness](/fundability/) when you can show each of these.
+Move to <MaybeLink path="/playbooks/prepare-for-investor-conversations/">Prepare for investor conversations</MaybeLink> when you can show each of these.
 
 - The metrics sheet exists, with one definition per measure and a date.
 - The channel log covers at least two periods, measured the same way.
 - Someone who did not build the channel could follow the written process.
 - Monthly reviews record a decision and the reason for it.
 
-These records are what the [investor updates guide](/fundability/investor-updates/) asks you to report from, and what a [seed data room](/fundability/data-room/) holds. Keep them current and they cost almost nothing to share.
+These records are what the <MaybeLink path="/fundability/investor-updates/">investor updates guide</MaybeLink> asks you to report from, and what a <MaybeLink path="/fundability/data-room/">seed data room</MaybeLink> holds. Keep them current and they cost almost nothing to share.
+
+## Where WE can help
+
+WE's Business Management and Operations line sets up an operating rhythm with goals, metrics each defined in writing and a weekly review. It does not keep your books or run your company for you. The <MaybeLink path="/services/business-management-and-operations/">service line page</MaybeLink> lists what it covers and what it does not.
+
+## Sources
+
+The steps and the decision aid draw on the research brief, articles and template below. Each names the public sources it read.
+
+- <MaybeLink path="/research/early-stage-saas-metrics-definitions/">SaaS metrics definitions</MaybeLink>
+- <MaybeLink path="/insights/choosing-your-first-channels/">Choosing your first channels</MaybeLink>
+- <MaybeLink path="/insights/retention-basics-for-a-first-saas/">Retention basics for a first SaaS</MaybeLink>
+- <MaybeLink path="/insights/onboarding-is-acquisition-time-to-first-value/">Onboarding is acquisition: time to first value</MaybeLink>
+- <MaybeLink path="/insights/support-at-five-customers-not-fifty/">Support at five customers, not fifty</MaybeLink>
+- <MaybeLink path="/library/weekly-investor-update-template/">Weekly investor update template</MaybeLink>

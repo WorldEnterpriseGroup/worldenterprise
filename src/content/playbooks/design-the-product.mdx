@@ -25,27 +25,62 @@ artifacts:
   - Acceptance criteria for every item above the line
 relatedLibrary:
   - mvp-cut-line-worksheet
-updated: 2026-10-06
+updated: 2026-10-10
 ---
+import Callout from '../../components/ui/Callout.astro';
 import DataTable from '../../components/ui/DataTable.astro';
+import MaybeLink from '../../components/insights/MaybeLink.astro';
+
+## What good looks like
+
+A good design is specific enough that a team can build from it without guessing, and small enough that the first customer can reach the result in one sitting. It does not have to be finished or beautiful.
+
+- Every item above the cut line traces back to a job a customer described in their own words.
+- The path to first value fits on one page, and there is no step on it that a customer would call optional.
+- The cut line is written down, and the items below it have a stated reason for waiting.
+- Each item above the line has an acceptance criterion that someone who did not design it could check.
+- Choices you are deferring sit in a log with the trigger that would reopen each one.
+
+<Callout title="Illustrative example, not a real company">
+
+A founder building invoice reminders for small design studios has a long list of ideas: recurring invoices, a client portal, tax reports, a mobile app and reminder emails. The job she heard in interviews was getting paid without an awkward conversation. Her cut line keeps three items above it: create an invoice, send a reminder on a schedule, and see which invoices are overdue. Everything else goes below the line with a note. The acceptance criterion for reminders reads: a studio owner sets a schedule once and a reminder arrives on that date without further action. A friend who has never seen the sketches can check it.
+
+</Callout>
+
+## Decision aid: above the line or below it
+
+Run each candidate feature through these questions in order. The first question you answer no to decides where the feature goes.
+
+<DataTable
+  caption="Questions that place a feature above or below the cut line"
+  columns={["Question", "If the answer is yes", "If the answer is no"]}
+  rows={[
+    ["Did a customer describe the job this feature does, in their own words?", "Keep it on the list and ask the next question.", "Below the line. Write down which interview would change your mind."],
+    ["Is the path to first value broken without it?", "Above the line.", "Ask the next question."],
+    ["Can the job be done by hand for the first customers?", "Below the line. Do it by hand and watch what happens.", "Ask the next question."],
+    ["Can a proven component do the job, such as sign-in, billing or email?", "Buy or adopt it, and place the choice in the deferred-decisions log.", "Above the line, with an acceptance criterion."],
+    ["Would you be embarrassed to release without it?", "Check whether the embarrassment is about the customer or about you. Only the first belongs above the line.", "Below the line."]
+  ]}
+/>
 
 ## Common mistakes
 
 <DataTable
   caption="Common mistakes when designing a first version"
-  columns={['Mistake', 'Why it costs you', 'Do this instead']}
+  columns={["Mistake", "Why it costs you", "Do this instead"]}
   rows={[
-    ['Designing for everyone', 'A product with no first customer in mind has no first path to value.', 'Name one kind of customer from your interviews and design for that person.'],
-    ['Copying a competitor feature list', 'You inherit years of someone else\'s decisions without their reasons.', 'Start from the jobs you heard in interviews and add only what a job needs.'],
-    ['Polishing visuals before the flow works', 'Beautiful screens hide a path that confuses people.', 'Test the flow with sketches first and add polish once the path holds.'],
-    ['Leaving the cut line unwritten', 'Scope grows quietly and the release date moves with it.', 'Write the line down and change it only through a recorded decision.'],
-    ['Building sign-in or billing from scratch', 'You spend weeks on parts that are not your product.', 'Use proven components and note what would make you revisit the choice.'],
+    ["Designing for everyone", "A product with no first customer in mind has no first path to value.", "Name one kind of customer from your interviews and design for that person."],
+    ["Copying a competitor feature list", "You inherit years of someone else's decisions without their reasons.", "Start from the jobs you heard in interviews and add only what a job needs."],
+    ["Polishing visuals before the flow works", "Beautiful screens hide a path that confuses people.", "Test the flow with sketches first and add polish once the path holds."],
+    ["Leaving the cut line unwritten", "Scope grows quietly and the release date moves with it.", "Write the line down and change it only through a recorded decision."],
+    ["Building sign-in or billing from scratch", "You spend weeks on parts that are not your product.", "Use proven components and note what would make you revisit the choice."],
+    ["Writing acceptance criteria as intentions", "A line such as \"easy to use\" cannot be checked, so every review becomes an argument.", "Write what a person can observe, in the customer's words."]
   ]}
 />
 
 ## Evidence to check before you move on
 
-Move to [Build and ship v1](/playbooks/build-and-ship-v1/) when you can show each of these.
+Move to <MaybeLink path="/playbooks/set-up-the-company/">Set up the company</MaybeLink> when you can show each of these. The company setup comes before you build because the people who write code for you will be asked who owns it.
 
 - Every item above the cut line traces back to a customer job.
 - The path to first value fits on one page and has no step that a customer would call optional.
@@ -53,3 +88,18 @@ Move to [Build and ship v1](/playbooks/build-and-ship-v1/) when you can show eac
 - Deferred decisions are listed with the trigger that would bring each one back.
 
 The design does not have to be finished or beautiful. It has to be specific enough that a team can build from it without guessing.
+
+## Where WE can help
+
+WE's Product and IT Development line covers architecture, an agile build in short cycles and a pilot environment where your first customers can use the product. It does not run your live service or promise that a product will pass a particular audit. The <MaybeLink path="/services/product-and-it-development/">service line page</MaybeLink> lists the full scope.
+
+## Sources
+
+The steps and the decision aid draw on the articles and templates below. Each article names the public sources it read.
+
+- <MaybeLink path="/insights/cutting-an-mvp-the-cut-line-test/">Cutting an MVP: the cut-line test</MaybeLink>
+- <MaybeLink path="/insights/writing-a-product-requirements-document-people-read/">Writing a product requirements document people read</MaybeLink>
+- <MaybeLink path="/insights/build-versus-buy-for-auth-billing-and-email/">Build versus buy for auth, billing and email</MaybeLink>
+- <MaybeLink path="/insights/architecture-decisions-to-defer-in-the-first-six-months/">Architecture decisions to defer in the first six months</MaybeLink>
+- <MaybeLink path="/insights/fake-door-and-concierge-tests/">Fake door and concierge tests</MaybeLink>
+- <MaybeLink path="/library/mvp-cut-line-worksheet/">MVP cut-line worksheet</MaybeLink>

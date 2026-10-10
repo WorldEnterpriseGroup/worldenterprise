@@ -1,6 +1,6 @@
 ---
 stage: grow
-order: 4
+order: 7
 title: Earn your first customers
 description: Win your first customers with personal outreach, a scoped pilot, fast onboarding and a conversation log that records why people said yes or no.
 steps:
@@ -23,31 +23,82 @@ artifacts:
   - A conversation log
 relatedLibrary:
   - customer-interview-guide
-updated: 2026-10-06
+updated: 2026-10-10
 ---
+import Callout from '../../components/ui/Callout.astro';
 import DataTable from '../../components/ui/DataTable.astro';
+import MaybeLink from '../../components/insights/MaybeLink.astro';
+
+## What good looks like
+
+Good early selling is slow, specific and written down. You can name each person you spoke with, say what you asked of them and say what they answered, including the nos.
+
+- The named list has ten or fewer entries at first, and each one has a status and the date of the last contact.
+- Each pilot has a one-page scope that the customer has seen, with an end date and a result that counts as success.
+- A new customer can get from sign-up to the first result, and you know where each one hesitated.
+- At the end of a pilot you asked for what a real customer gives, such as payment, a renewal, a referral or a written reference.
+- The conversation log is current, and you can point to a pattern in it and name it.
+
+<Callout title="Illustrative example, not a real company">
+
+A founder with a tool that reconciles payouts for small online shops lists ten shop owners she interviewed earlier. She writes to each about the exact spreadsheet problem that person described. Four reply and two agree to a pilot. Each pilot has a one-page scope that says what is covered, when it ends and what result counts as success. At the end of the first pilot she asks the shop owner to start paying. The owner says no, because the tool does not yet handle one of the payment providers the shop uses. She writes that reason in the log. When a second owner gives the same reason, she moves that provider to the top of the backlog.
+
+</Callout>
+
+## Decision aid: what to do after a pilot
+
+At the end of a pilot, find the row that matches what happened. Then do the next move in that row and write the result in the log.
+
+<DataTable
+  caption="What to do after a first pilot ends"
+  columns={["What happened", "What it usually means", "The next move"]}
+  rows={[
+    ["The customer reached the first result and agreed to pay", "The product does the job for this customer.", "Write down what they said made the difference and look for the next customer who has the same need."],
+    ["The customer reached the first result and said no to paying", "The result is real but the price, the timing or the buyer is wrong.", "Ask what would have to be true for a yes. Record the answer word for word."],
+    ["The customer did not reach the first result", "The onboarding or the product is in the way.", "Watch a new customer from sign-up to the first result before you contact anyone else."],
+    ["The customer reached the result but did not return", "It solved a one-time need, or the habit was never formed.", "Ask what they do now and whether the need comes back. Change the offer if it does not."],
+    ["The customer asked for something only they need", "A request from one account, not yet a pattern.", "Add it to the backlog. Build it only when several customers ask for the same thing."],
+    ["The customer went quiet before the pilot ended", "The pilot had no date that forced a decision.", "Send a short message that ends the pilot and asks for a clear yes or no."]
+  ]}
+/>
 
 ## Common mistakes
 
 <DataTable
   caption="Common mistakes when winning first customers"
-  columns={['Mistake', 'Why it costs you', 'Do this instead']}
+  columns={["Mistake", "Why it costs you", "Do this instead"]}
   rows={[
-    ['Broad outreach before any conversation', 'Messages with no specific reason are easy to ignore and teach you nothing.', 'Write to named people about a problem you have already heard described.'],
-    ['Open-ended free pilots', 'With no end date there is no moment when anyone has to decide.', 'Agree the scope, the length and the success result before the pilot starts.'],
-    ['Building custom features for one buyer', 'You bend the product around one account and lose the pattern.', 'Add a request to the backlog and build it only when several customers show the same need.'],
-    ['Counting sign-ups instead of results', 'Sign-ups say people were curious, not that the product helped.', 'Count customers who reached the first result and came back.'],
-    ['Avoiding the price conversation', 'You find out late whether anyone will pay.', 'Raise price early and record every reaction in the log.'],
+    ["Broad outreach before any conversation", "Messages with no specific reason are easy to ignore and teach you nothing.", "Write to named people about a problem you have already heard described."],
+    ["Open-ended pilots with no end date", "With no end date there is no moment when anyone has to decide.", "Agree the scope, the length and the success result before the pilot starts."],
+    ["Building custom features for one buyer", "You bend the product around one account and lose the pattern.", "Add a request to the backlog and build it only when several customers show the same need."],
+    ["Counting sign-ups instead of results", "Sign-ups say people were curious, not that the product helped.", "Count customers who reached the first result and came back."],
+    ["Avoiding the price conversation", "You find out late whether anyone will pay.", "Raise price early and record every reaction in the log."],
+    ["Keeping the log in your head", "Memory keeps the good conversations and drops the rest, so the pattern disappears.", "Write each conversation down the same day, in the same format."]
   ]}
 />
 
 ## Evidence to check before you move on
 
-Move to [Build repeatable growth](/playbooks/build-repeatable-growth/) when you can show each of these.
+Move to <MaybeLink path="/playbooks/run-your-first-outbound-sequence/">Run your first outbound sequence</MaybeLink> when you can show each of these.
 
 - The named list exists, and every name has a status and a date of last contact.
 - At least one pilot ran to its written end, and you asked for a commitment at the close.
 - The onboarding checklist shows the steps a new customer follows to the first result.
 - The conversation log has enough entries that you can point to a pattern and name it.
 
-If the log shows no pattern, go back to your assumptions in [Validate the problem](/playbooks/validate-the-problem/) before you spend on growth.
+If the log shows no pattern, go back to your assumptions in <MaybeLink path="/playbooks/validate-the-problem/">Validate the problem</MaybeLink> before you spend on growth.
+
+## Where WE can help
+
+WE's Customer Relations and Market Development line covers outreach support, pilot scoping and a log of what buyers said. It does not promise that conversations will turn into customers or revenue. The <MaybeLink path="/services/customer-and-market-development/">service line page</MaybeLink> lists what it covers and what it does not.
+
+## Sources
+
+The steps and the decision aid draw on the articles and templates below. Each article names the public sources it read.
+
+- <MaybeLink path="/insights/your-first-ten-customers-a-founder-led-sequence/">Your first ten customers: a founder-led sequence</MaybeLink>
+- <MaybeLink path="/insights/founder-led-sales-calls-a-structure/">Founder-led sales calls: a structure</MaybeLink>
+- <MaybeLink path="/insights/customers-as-capital-pilots-prepayment-and-design-partners/">Customers as capital: pilots, prepayment and design partners</MaybeLink>
+- <MaybeLink path="/insights/onboarding-is-acquisition-time-to-first-value/">Onboarding is acquisition: time to first value</MaybeLink>
+- <MaybeLink path="/insights/feedback-loops-that-reach-the-product/">Feedback loops that reach the product</MaybeLink>
+- <MaybeLink path="/library/customer-interview-guide/">Customer interview guide</MaybeLink>

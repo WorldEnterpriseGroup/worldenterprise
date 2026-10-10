@@ -2,13 +2,15 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import RelatedRail from '../../components/blocks/RelatedRail.astro';
+import CtaEnd from '../../components/cta/CtaEnd.astro';
 import Button from '../../components/ui/Button.astro';
 import PlaybookTrail from '../../components/playbooks/PlaybookTrail.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
-import { liveItems } from '../../components/playbooks/links.ts';
-import { LIBRARY_REFS, PLAYBOOK_RELATED, PLAYBOOK_SEQUENCE } from '../../components/playbooks/meta.ts';
+import { isLinkable, liveItems } from '../../components/playbooks/links.ts';
+import { PLAYBOOK_RELATED, artifactRefs, liveSequence, nextLive } from '../../components/playbooks/meta.ts';
 import PlaybookLayout from '../../layouts/PlaybookLayout.astro';
 import { getRenderable, isDraft } from '../../lib/content.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
 export const getStaticPaths = (async () => {
@@ -22,20 +24,19 @@ const { slug = '' } = Astro.params;
 const { Content } = await render(entry);
 const { data } = entry;
 
-const position = PLAYBOOK_SEQUENCE.findIndex((p) => p.slug === slug);
-const next = position >= 0 ? PLAYBOOK_SEQUENCE[position + 1] : undefined;
+// The chain is the playbooks whose route is live in this build, so a playbook that is missing or still a draft is skipped, never linked.
+const { isLive } = await getRouteState();
+const chain = liveSequence(isLive);
+const position = chain.findIndex((p) => p.slug === slug);
+const next = nextLive(slug, isLive);
+const terminal = position !== -1 && next === undefined;
 const stageLabel = { dream: 'Dream', build: 'Build', grow: 'Grow' }[data.stage];
-const eyebrow = position >= 0 ? `Playbook ${position + 1} of ${PLAYBOOK_SEQUENCE.length}, ${stageLabel}` : `Playbook, ${stageLabel}`;
+const eyebrow = position >= 0 ? `Playbook ${position + 1} of ${chain.length}, ${stageLabel}` : `Playbook, ${stageLabel}`;
 
-const templates = await liveItems(
-  data.relatedLibrary.map((id) => ({
-    title: LIBRARY_REFS[id]?.title ?? id,
-    description: LIBRARY_REFS[id]?.description,
-    href: `/library/${id}/`,
-  })),
-);
+const artifacts = await liveItems(artifactRefs(slug, data.relatedLibrary));
 const related = await liveItems(PLAYBOOK_RELATED[slug] ?? []);
-const photo = position >= 0 ? PLAYBOOK_SEQUENCE[position]?.slot : undefined;
+const photo = position >= 0 ? chain[position]?.slot : undefined;
+const leadsTo = terminal && (await isLinkable('/fundability/'));
 ---
 
 <PlaybookLayout
@@ -46,7 +47,7 @@ const photo = position >= 0 ? PLAYBOOK_SEQUENCE[position]?.slot : undefined;
   eyebrow={eyebrow}
   lead={data.description}
   steps={data.steps}
-  artifacts={templates}
+  artifacts={artifacts}
   photo={photo}
   updated={data.updated}
   draft={isDraft(entry)}
@@ -77,12 +78,12 @@ const photo = position >= 0 ? PLAYBOOK_SEQUENCE[position]?.slot : undefined;
           )
         }
         {
-          position === PLAYBOOK_SEQUENCE.length - 1 && (
+          terminal && (
             <nav class="stack" aria-label="Where this leads">
               <p class="eyebrow">Where this leads</p>
               <div class="cluster">
-                <Button href={href('/fundability/')}>Investor readiness</Button>
-                <Button href={href('/playbooks/')} variant="quiet">All playbooks</Button>
+                {leadsTo && <Button href={href('/fundability/')}>Investor readiness</Button>}
+                <Button href={href('/playbooks/')} variant={leadsTo ? 'quiet' : 'primary'}>All playbooks</Button>
               </div>
             </nav>
           )
@@ -96,5 +97,8 @@ const photo = position >= 0 ? PLAYBOOK_SEQUENCE[position]?.slot : undefined;
         </div>
       )
     }
+  </Fragment>
+  <Fragment slot="cta-end">
+    <CtaEnd path={`/playbooks/${slug}/`} collection="playbooks" cta={data.cta} />
   </Fragment>
 </PlaybookLayout>
