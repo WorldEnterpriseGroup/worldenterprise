@@ -712,8 +712,8 @@
         },
         {
           "id": "A2",
-          "sentence": "PostgreSQL origin date.",
-          "kind": "statistic",
+          "sentence": "PostgreSQL origin date, attributed to the project own About page.",
+          "kind": "paraphrase",
           "sourceId": "postgresql-about",
           "locator": "About",
           "quote": "The origins of PostgreSQL date back to 1986 as part of the POSTGRES project at the University of California at Berkeley"
@@ -1094,37 +1094,17 @@
     },
     {
       "path": "src/content/pages/insights/topic-build.mdx",
-      "note": "Only the sentence below and the description are new; every other sentence of the page is unchanged from 88ba306. A sentence that describes several articles has one entry per article.",
+      "note": "Only the sentence below and the description are new; every other sentence of the page is unchanged from 88ba306. A sentence that describes several articles maps to the first article it names.",
       "sentences": [
         {
           "text": "The articles on this desk deal with each of those in turn, and with the habits a first release needs: product decisions, requirements, estimates in ranges, a plain first stack, flags with a way back, and a view of what you shipped.",
           "page": "src/content/insights/build/product-management-for-a-first-saas-roles-backlog-and-decisions.mdx#Three jobs, not one title"
-        },
-        {
-          "text": "The articles on this desk deal with each of those in turn, and with the habits a first release needs: product decisions, requirements, estimates in ranges, a plain first stack, flags with a way back, and a view of what you shipped.",
-          "page": "src/content/insights/build/writing-a-product-requirements-document-people-read.mdx#What the document is for"
-        },
-        {
-          "text": "The articles on this desk deal with each of those in turn, and with the habits a first release needs: product decisions, requirements, estimates in ranges, a plain first stack, flags with a way back, and a view of what you shipped.",
-          "page": "src/content/insights/build/estimating-a-first-release-ranges-and-what-they-hide.mdx#Three different things called an estimate"
-        },
-        {
-          "text": "The articles on this desk deal with each of those in turn, and with the habits a first release needs: product decisions, requirements, estimates in ranges, a plain first stack, flags with a way back, and a view of what you shipped.",
-          "page": "src/content/insights/build/a-boring-first-technology-stack.mdx#What boring means"
-        },
-        {
-          "text": "The articles on this desk deal with each of those in turn, and with the habits a first release needs: product decisions, requirements, estimates in ranges, a plain first stack, flags with a way back, and a view of what you shipped.",
-          "page": "src/content/insights/build/shipping-safely-with-feature-flags-and-rollback.mdx#Deploying is not releasing"
-        },
-        {
-          "text": "The articles on this desk deal with each of those in turn, and with the habits a first release needs: product decisions, requirements, estimates in ranges, a plain first stack, flags with a way back, and a view of what you shipped.",
-          "page": "src/content/insights/build/observability-for-a-small-team-logs-metrics-and-alerts-you-will-actually-read.mdx#What you are collecting"
         }
       ]
     },
     {
       "path": "src/content/pages/insights/topic-dream.mdx",
-      "note": "Only the sentences below and the description are new; every other sentence of the page is unchanged from 88ba306. A sentence that describes several articles has one entry per article.",
+      "note": "Only the sentences below and the description are new; every other sentence of the page is unchanged from 88ba306. A sentence that describes several articles maps to the first article it names.",
       "sentences": [
         {
           "text": "The articles on this desk are practical and ordered.",
@@ -1141,10 +1121,6 @@
         {
           "text": "Interview customers without collecting false encouragement, and test honestly.",
           "page": "src/content/insights/dream/customer-discovery-interviews-without-false-positives.mdx#Ask about the past"
-        },
-        {
-          "text": "Interview customers without collecting false encouragement, and test honestly.",
-          "page": "src/content/insights/dream/fake-door-and-concierge-tests.mdx#The honesty line"
         },
         {
           "text": "Size the market from the bottom up.",
