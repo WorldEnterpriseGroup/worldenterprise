@@ -1,7 +1,10 @@
 ---
 interface Props {
   id: string;
-  name: string;
+  /** The form field name. Omit it for a control the script reads but the browser must not post (the package choice, see docs/forms-contract.md). */
+  name?: string;
+  /** Stable hook for the script when the control has no name. */
+  dataField?: string;
   label: string;
   type?: 'text' | 'email' | 'url' | 'tel' | 'textarea' | 'select';
   required?: boolean;
@@ -13,15 +16,16 @@ interface Props {
   rows?: number;
   /** Always render an empty, hidden error element so scripts can fill it and aria-describedby stays valid. */
   reserveError?: boolean;
-  options?: readonly { readonly value: string; readonly label: string }[];
+  options?: readonly { readonly value: string; readonly label: string; readonly stageFit?: string }[];
 }
 
-const { id, name, label, type = 'text', required = false, hint, error, autocomplete, options = [], maxlength, rows = 5, reserveError = false } = Astro.props;
+const { id, name, dataField, label, type = 'text', required = false, hint, error, autocomplete, options = [], maxlength, rows = 5, reserveError = false } = Astro.props;
 const hasError = error !== undefined || reserveError;
 const describedBy = [hint ? `${id}-hint` : '', hasError ? `${id}-error` : ''].filter(Boolean).join(' ') || undefined;
 const common = {
   id,
-  name,
+  ...(name !== undefined ? { name } : {}),
+  ...(dataField !== undefined ? { 'data-field': dataField } : {}),
   required,
   ...(maxlength !== undefined ? { maxlength } : {}),
   ...(autocomplete ? { autocomplete: autocomplete as 'off' } : {}),
@@ -33,6 +37,6 @@ const common = {
 <div class="field">
   <label for={id}>{label}{required && <span class="field__req"> (required)</span>}</label>
   {hint && <p class="field__hint" id={`${id}-hint`}>{hint}</p>}
-  {type === 'textarea' ? <textarea rows={rows} {...common} /> : type === 'select' ? <select {...common}>{options.map((o) => <option value={o.value}>{o.label}</option>)}</select> : <input type={type} {...common} />}
+  {type === 'textarea' ? <textarea rows={rows} {...common} /> : type === 'select' ? <select {...common}>{options.map((o) => <option value={o.value} data-stage-fit={o.stageFit}>{o.label}</option>)}</select> : <input type={type} {...common} />}
   {hasError && <p class="field__error" id={`${id}-error`} hidden={!error}>{error}</p>}
 </div>

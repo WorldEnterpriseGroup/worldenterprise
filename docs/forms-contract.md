@@ -60,7 +60,7 @@ The Team Composer (`/tools/team-composer/`) is not a form that submits anywhere.
 | `stage` | `"idea"`, `"validating"`, `"building"`, `"launched"` or `""` | apply | Required on apply, empty on contact. |
 | `seats` | string | apply | Optional, at most 500 characters. Free text produced by the Team Composer or typed by the visitor. |
 | `topic` | `"general"`, `"seat-rate"`, `"press"`, `"correction"`, `"information"` or `""` | contact | Required on contact, empty on apply. |
-| `message` | string | both | Required on contact, optional on apply, at most 4000 characters. |
+| `message` | string | both | Required on contact, optional on apply, at most 4000 characters. On apply the script may append one line, `Package interest: <package name>` or `Package interest: not sure yet`, after the visitor's text and a blank line (section 8, "The Apply stepper"). The line counts toward the 4000 characters. |
 | `consent` | boolean | both | Must be `true`. The visitor ticks a box that links to the privacy notice. |
 | `website` | string | both | Honeypot. Must be empty. A non-empty value means automation. |
 | `startedAt`, `submittedAt` | ISO 8601 UTC strings | both | Client clock. Informational only; never trust for security. Use `submittedAt - startedAt` as a weak bot signal. |
@@ -118,6 +118,16 @@ Every form is a real `<form method="post">`, in every mode, with native `require
 | `disabled` | none | disabled | The form states that it is not connected yet. The button stays off. |
 
 The client script (`src/scripts/forms.ts`) removes `disabled` when it mounts, for every mode except `disabled`, after its submit handlers are attached. So the only way to send a form without JavaScript is the native POST to a confirmed https endpoint. `tests/unit/wp-19/forms-plan.test.ts` checks every combination, and the e2e suites check the built pages with JavaScript off (`tests/e2e/forms.spec.ts` for the endpoint build, `tests/e2e/modes.spec.ts` for the default build).
+
+### The Apply stepper (WP-43)
+
+`/apply/` is one server-rendered `<form method="post">` in which every fieldset is in the DOM. Without JavaScript all of them are visible, the stepper bar, the Back and Next buttons and the package select are `hidden`, and the form behaves exactly as the table above says. When `src/scripts/forms.ts` mounts, `src/components/apply/stepper.ts` groups the fieldsets into four steps (About you, About the idea, Team and package, Review), shows a progress list with a live status line, adds Back and Next, validates one step at a time with the same validators, and moves focus to the step heading. A failed submit returns the visitor to the earliest step that holds an error. The stepper mounts in every mode, including `disabled`, where the submit button stays disabled and nothing is sent.
+
+- **The package choice never adds a payload key.** The intake schema in section 3 is closed. The package select has no `name`, so a native post cannot carry it, and it is revealed by the script only. The script folds the choice into `message` as the last line, `Package interest: <package name>` (names from `src/data/packages.ts`) or `Package interest: not sure yet`. A server reads it, if it wants it, as free text.
+- **`?package=` is read leniently.** `/apply/?package=<id>` preselects one of `spark`, `launch`, `accelerate`, `studio` or `not-sure`. An unknown, empty or repeated value is ignored, and the page opens as usual. The query string is never written back (docs/wave7-contracts.md section 1).
+- **Nothing is persisted.** Answers and the current step live in memory only: no `localStorage`, `sessionStorage`, cookie, IndexedDB or history entry. A reload starts the form again.
+- **Focus.** Next and Back move focus to the new step heading (`tabindex="-1"`). Pressing Enter in a field on a step other than the last one means Next, not submit. On a phone the progress bar is sticky, and every control carries a `scroll-margin-block-start` larger than the bar, so a focused field is never covered (WCAG 2.2, 2.4.11).
+- **Review.** The last step lists the answers with a Change button per group. The consent checkbox sits on that step, so the visitor agrees to the privacy notice only after seeing what is sent.
 
 ## 9. Open items for the operator
 

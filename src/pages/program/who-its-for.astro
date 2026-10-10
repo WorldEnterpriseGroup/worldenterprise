@@ -1,4 +1,5 @@
 ---
+import { FITS, FIT_HEADING, NOT_FITS, NOT_FIT_HEADING } from '../../components/apply/fit.ts';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
 import { photoImage } from '../../components/media/photo-image.ts';
 import Card from '../../components/ui/Card.astro';
@@ -14,13 +15,6 @@ const next = [
   { title: 'How the program works', href: '/program/how-it-works/', description: 'Five steps from application to a working team.' },
   { title: 'Frequently asked questions', href: '/faq/', description: 'Short answers on stage, scope and cost.' },
   { title: 'Is your SaaS idea a business or a feature?', href: '/insights/is-your-saas-idea-a-business-or-a-feature/', description: 'A first test you can run today.' },
-];
-const fits = [
-  'You have a SaaS idea or an early product, and you can say who it is for.',
-  'You can describe the problem as the customer would, even if you are not yet sure it is real.',
-  'You are willing to test the idea with real customers, including when the answers are unwelcome.',
-  'You can make decisions for the company and join a review at each cycle.',
-  'You want a team and a method to carry out the work, and you will keep ownership of the direction.',
 ];
 ---
 
@@ -40,9 +34,9 @@ const fits = [
   <div class="prose measure"><Content /></div>
 
   <section class="stack" aria-labelledby="fit-yes">
-    <h2 id="fit-yes">You are a good fit if</h2>
+    <h2 id="fit-yes">{FIT_HEADING}</h2>
     <ul class="measure fit">
-      {fits.map((f) => <li>{f}</li>)}
+      {FITS.map((f) => <li>{f}</li>)}
     </ul>
   </section>
 
@@ -72,16 +66,7 @@ const fits = [
     </div>
   </section>
 
-  <LimitsBlock
-    title="WE is probably not the right fit if"
-    items={[
-      'You need a physical office, on-site staff or in-person work. WE is fully remote.',
-      'You are looking for money rather than a team. WE makes no promise of funding.',
-      'You want WE to run your product in production or to provide round-the-clock support.',
-      'You want WE to give legal or tax advice, keep your books or file your taxes.',
-      'Your idea is not a software-as-a-service product.',
-    ]}
-  />
+  <LimitsBlock title={NOT_FIT_HEADING} items={NOT_FITS} />
 
   <Fragment slot="after">
     {primary && <CtaBand title="Think you fit?" text="Apply. The application is short, and a clear no is as useful to you as a yes." cta={primary} secondary={secondary} />}

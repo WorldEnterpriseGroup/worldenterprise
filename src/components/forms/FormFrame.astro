@@ -1,5 +1,6 @@
 ---
 import { forms, intakeRequiresJs, mailboxFor, planForm } from '../../data/forms.ts';
+import { REVIEW_COPY } from '../apply/fields.ts';
 import { absoluteUrl, href } from '../../lib/url.ts';
 import ErrorSummary from './ErrorSummary.astro';
 import FormStatus from './FormStatus.astro';
@@ -15,9 +16,14 @@ interface Props {
   thanksPath?: string;
   /** Wording of the required consent checkbox. */
   consentLabel: string;
+  /**
+   * The form is a stepped form (Apply). The consent block is then the last step, and the Back and Next controls are rendered
+   * hidden for the script to reveal. Without JavaScript none of this shows and the form stays one page.
+   */
+  stepped?: boolean;
 }
 
-const { kind, id, submitLabel, thanksPath, consentLabel } = Astro.props;
+const { kind, id, submitLabel, thanksPath, consentLabel, stepped = false } = Astro.props;
 const config = kind === 'newsletter' ? forms.newsletter : forms.intake;
 const plan = planForm(kind, config, kind === 'newsletter' ? null : mailboxFor(kind), intakeRequiresJs);
 const { mode, mailbox, nativePost } = plan;
@@ -64,6 +70,8 @@ const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') 
     </noscript>
   )}
 
+  <slot name="top" />
+
   <ErrorSummary id={id} />
 
   {nativePost !== null && <input type="hidden" name="form" value={kind} />}
@@ -71,7 +79,7 @@ const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') 
 
   <slot />
 
-  <div class="intake__consent stack">
+  <div class="intake__consent stack" data-step={stepped ? 'review' : undefined}>
     <Choice id={`${id}-consent`} name="consent" required label={consentLabel} describedby={`${id}-consent-error`} />
     <p class="field__error" id={`${id}-consent-error`} hidden></p>
     <p class="field__hint"><a href={href('/legal/privacy/')}>Read the privacy notice</a>. WE sets no cookies and loads no third-party scripts.</p>
@@ -79,7 +87,9 @@ const redirect = kind === 'apply' ? absoluteUrl(thanksPath ?? '/apply/thanks/') 
 
   <HoneypotField id={`${id}-website`} />
 
-  <div class="cluster">
+  <div class="cluster intake__actions">
+    {stepped && <button class="btn btn--secondary" type="button" data-step-back hidden>{REVIEW_COPY.back}</button>}
+    {stepped && <button class="btn btn--primary" type="button" data-step-next hidden>{REVIEW_COPY.next}</button>}
     <button class="btn btn--primary" type="submit" data-submit disabled={plan.submitDisabledInMarkup}>{submitLabel}</button>
   </div>
   <FormStatus id={`${id}-status`} />

@@ -1,5 +1,6 @@
 ---
 import { getEntry, render } from 'astro:content';
+import { ASIDE_COPY } from '../../components/apply/decide-copy.ts';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
 import AsideStyles from '../../components/forms/AsideStyles.astro';
 import ApplyForm from '../../components/forms/ApplyForm.astro';
@@ -31,6 +32,9 @@ const { data } = entry;
 
   <Fragment slot="aside">
     <AsideStyles />
+    <h2 class="aside-title">{ASIDE_COPY.heading}</h2>
+    <p>{ASIDE_COPY.reads}</p>
+    <p><a href={href(ASIDE_COPY.page.link.href)}>{ASIDE_COPY.page.link.text}</a>{ASIDE_COPY.page.after}</p>
     <h2 class="aside-title">What happens next</h2>
     <Steps
       headingLevel={3}

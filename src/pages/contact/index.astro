@@ -1,5 +1,6 @@
 ---
 import { getEntry, render } from 'astro:content';
+import { ASIDE_COPY } from '../../components/apply/decide-copy.ts';
 import AsideStyles from '../../components/forms/AsideStyles.astro';
 import ContactForm from '../../components/forms/ContactForm.astro';
 import { jumpTo } from '../../components/hero/ctas.ts';
@@ -46,6 +47,6 @@ const address = publicContactAddress();
       <li><strong>Information handling.</strong> The <a href={href('/trust/')}>trust center</a> says what is true of this site.</li>
     </ul>
     <h2 class="aside-title">Ready to apply?</h2>
-    <p>Use the <a href={href('/apply/')}>application form</a> instead. It asks the questions WE needs.</p>
+    <p>Use the <a href={href('/apply/')}>application form</a> instead. It asks the questions WE needs. <a href={href(ASIDE_COPY.contact.link.href)}>{ASIDE_COPY.contact.link.text}</a>{ASIDE_COPY.contact.after}</p>
   </Fragment>
 </FormLayout>
