@@ -1,6 +1,6 @@
 ---
 title: "A technical founder's blind spots: selling, pricing and saying no"
-seoTitle: Technical founders: selling, pricing, no
+seoTitle: "Technical founders: blind spots"
 description: "Three kinds of work a builder can overlook when starting a SaaS company: selling before building, setting a price on purpose, and keeping an explicit no list."
 topic: starting
 publishedDate: 2026-10-10
@@ -22,6 +22,7 @@ sources:
     url: https://www.gov.uk/service-manual/the-team/what-each-role-does-in-service-team
     accessed: 2026-10-10
 evidence: [gds-needs, gds-priorities, gds-roles]
+relatedServices: [C]
 relatedPlaybook: earn-your-first-customers
 relatedTemplate: mvp-cut-line-worksheet
 segments: [technical-founders]

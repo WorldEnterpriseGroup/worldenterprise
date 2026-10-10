@@ -1,6 +1,6 @@
 ---
 title: "Student founders: the questions to settle before you start"
-seoTitle: "Student founders: questions to settle first"
+seoTitle: "Student founders: questions"
 description: "Before you build a company while enrolled, find out what your school's policy says about ownership. Two real policies compared, and the questions to ask."
 topic: starting
 publishedDate: 2026-10-10
@@ -22,6 +22,7 @@ sources:
     url: https://policies.mit.edu/policies-procedures/130-information-policies/131-intellectual-property
     accessed: 2026-10-10
 evidence: [stanford-ip, stanford-copy, mit-ip]
+relatedServices: [E]
 relatedPlaybook: validate-the-problem
 relatedTemplate: customer-interview-guide
 segments: [student-founders]

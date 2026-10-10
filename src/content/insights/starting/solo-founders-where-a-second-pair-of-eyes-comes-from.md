@@ -1,6 +1,6 @@
 ---
 title: "Solo founders: where a second pair of eyes comes from"
-seoTitle: "Solo founders: finding a second pair of eyes"
+seoTitle: "Solo founders: a second look"
 description: "A solo founder makes every decision alone. Four sources of outside review, and a short session format borrowed from public-service assessments."
 topic: starting
 publishedDate: 2026-10-10
@@ -22,6 +22,7 @@ sources:
     url: https://www.gov.uk/service-manual/user-research/start-by-learning-user-needs
     accessed: 2026-10-10
 evidence: [gds-multid, gds-assess, gds-needs]
+relatedServices: [E]
 relatedPlaybook: validate-the-problem
 relatedTemplate: customer-interview-guide
 segments: [solo-founders]
@@ -56,7 +57,7 @@ Some questions need a professional, and one short engagement is often enough: a 
 
 ### 3. Outside reviewers of the work itself
 
-A person who builds the same kind of thing, and who has no stake in your choices, can read your code, your designs or your pricing page and tell you where it confuses them. Hire this by the hour, or ask for a favor that you return. Be specific about what you want: "Read this onboarding flow and tell me where you hesitate" is a better request than "Take a look."
+A person who builds the same kind of thing, and who does not depend on your choices, can read your code, your designs or your pricing page and tell you where it confuses them. Hire this by the hour, or ask for a favor that you return. Be specific about what you want: "Read this onboarding flow and tell me where you hesitate" is a better request than "Take a look."
 
 When you are not sure whether to hire a person for a day, a team for a quarter or a freelancer for a task, the [research brief on dedicated teams, agencies and freelancers](/research/dedicated-team-agency-or-freelancers/) sets out the trade-offs, and the [team composer](/tools/team-composer/) helps you list the roles the work needs.
 

@@ -1,6 +1,6 @@
 ---
 title: "What a first-time founder should settle first"
-seoTitle: What a first-timer settles first
+seoTitle: "A first-timer's first decisions"
 description: "A checklist of decisions a first-time SaaS founder can settle early: the problem, the owners, the legal form, who owns the code, and who reviews your work."
 topic: starting
 publishedDate: 2026-10-10
@@ -27,6 +27,7 @@ sources:
     url: https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works
     accessed: 2026-10-10
 evidence: [sba-structure, irs-ein, usc-204, gds-discovery]
+relatedServices: [E]
 relatedPlaybook: validate-the-problem
 relatedTemplate: one-page-problem-brief
 segments: [first-time-founders]

@@ -1,6 +1,6 @@
 ---
 title: "Founders inside a company: intellectual property and employment agreements"
-seoTitle: "Employed founders: IP and employment agreements"
+seoTitle: "Employed founders: IP rules"
 description: "If you start a company while employed, who owns what you build? Federal copyright and patent rules and one state statute, with questions for counsel."
 topic: starting
 publishedDate: 2026-10-10
@@ -22,6 +22,7 @@ sources:
     url: https://app.leg.wa.gov/RCW/default.aspx?cite=49.44.140
     accessed: 2026-10-10
 evidence: [cop-circ30, pat-261, wa-49-44-140]
+relatedServices: [G]
 relatedPlaybook: validate-the-problem
 relatedTemplate: seed-data-room-checklist
 segments: [corporate-innovators]

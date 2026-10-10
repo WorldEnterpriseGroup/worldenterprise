@@ -1,6 +1,6 @@
 ---
 title: "Second-career founders: turning domain knowledge into a SaaS idea"
-seoTitle: "Second-career founders: domain knowledge to SaaS"
+seoTitle: "Second-career founders: ideas"
 description: "Years in an industry give you a problem others cannot see. How to separate what you know from what you assume, and turn it into a testable SaaS idea."
 topic: starting
 publishedDate: 2026-10-10
@@ -22,6 +22,7 @@ sources:
     url: https://www.sba.gov/counseling/plan-your-business/#market-research
     accessed: 2026-10-10
 evidence: [gds-discovery, gds-needs, sba-research]
+relatedServices: [C]
 relatedPlaybook: validate-the-problem
 relatedTemplate: one-page-problem-brief
 segments: [second-career-founders]

@@ -1,6 +1,6 @@
 ---
 title: "A non-technical founder building SaaS: what to own and what to delegate"
-seoTitle: Non-technical founders: own and delegate
+seoTitle: "Non-technical: own and delegate"
 description: "If you cannot write the code yourself, the decisions, accounts and records to keep in your own hands, and the work you can hand to a technical team."
 topic: starting
 publishedDate: 2026-10-10
@@ -22,6 +22,7 @@ sources:
     url: https://www.law.cornell.edu/uscode/text/17/204
     accessed: 2026-10-10
 evidence: [gds-contractors, gds-roles, usc-204]
+relatedServices: [B]
 relatedPlaybook: build-and-ship-v1
 relatedTemplate: seed-data-room-checklist
 segments: [non-technical-founders]

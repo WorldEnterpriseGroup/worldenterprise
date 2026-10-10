@@ -1,6 +1,6 @@
 ---
 title: "Part-time to full-time: deciding when to commit"
-seoTitle: "Part-time to full-time: when to commit"
+seoTitle: "Going full-time: when to commit"
 description: "Moving from a side project to a full commitment is a staged decision. How to write the criteria in advance, and what to leave to your own professionals."
 topic: starting
 publishedDate: 2026-10-10
@@ -22,6 +22,7 @@ sources:
     url: https://www.sba.gov/counseling/plan-your-business/#startup-costs
     accessed: 2026-10-10
 evidence: [gds-discovery, gds-assess, sba-costs]
+relatedServices: [D]
 relatedPlaybook: validate-the-problem
 relatedTemplate: mvp-cut-line-worksheet
 segments: [second-career-founders, student-founders]

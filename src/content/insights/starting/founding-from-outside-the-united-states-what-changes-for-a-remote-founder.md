@@ -1,6 +1,6 @@
 ---
 title: "Founding from outside the United States: what changes for a remote founder"
-seoTitle: "Founding a SaaS company from outside the US"
+seoTitle: "Founding from outside the US"
 description: "Where you live, where the company is formed and where customers are can be three different places. Delaware, UK and EU VAT examples, with questions for counsel."
 topic: starting
 publishedDate: 2026-10-10
@@ -32,6 +32,7 @@ sources:
     url: https://vat-one-stop-shop.ec.europa.eu/index_en
     accessed: 2026-10-10
 evidence: [de-131, de-agent, irs-ein, uk-directors, eu-oss]
+relatedServices: [G]
 relatedPlaybook: validate-the-problem
 relatedTemplate: seed-data-room-checklist
 segments: [global-remote-founders]

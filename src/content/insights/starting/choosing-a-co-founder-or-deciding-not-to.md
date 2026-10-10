@@ -1,6 +1,6 @@
 ---
 title: "Choosing a co-founder, or deciding not to"
-seoTitle: "Choosing a co-founder, or deciding not to"
+seoTitle: "Choosing a co-founder, or not"
 description: "A co-founder is one way to cover missing skills, and the only one that makes someone an owner. How to list the work, test the fit and write things down."
 topic: starting
 publishedDate: 2026-10-10
@@ -27,6 +27,7 @@ sources:
     url: https://www.law.cornell.edu/uscode/text/17/204
     accessed: 2026-10-10
 evidence: [gds-multid, sba-structure, gds-contractors, usc-204]
+relatedServices: [G]
 relatedPlaybook: validate-the-problem
 relatedTemplate: customer-interview-guide
 segments: [first-time-founders, solo-founders]
