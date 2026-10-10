@@ -6,7 +6,9 @@ import {
   checkBot,
   failureMessage,
   MIN_FILL_MS,
+  newRequestId,
   parseFieldErrors,
+  parseRetryAfter,
   submitIntake,
   SubmitError,
   topicFromSearch,
@@ -24,6 +26,8 @@ const good: FormValues = {
   message: 'Line one\r\nLine two',
   consent: true,
   website: '',
+  audience: 'startup',
+  requestId: '3f2b8c1e-5d4a-4e6b-9a7c-1b2d3e4f5a6b',
 };
 
 const timing = { startedAt: Date.UTC(2026, 9, 6, 14, 0, 0), submittedAt: Date.UTC(2026, 9, 6, 14, 2, 41) };
@@ -56,7 +60,7 @@ test('email must look like an address', () => {
 });
 
 test('contact requires a topic and a message but not a stage', () => {
-  const errors = validate('contact', { ...good, stage: '', topic: '', message: '' });
+  const errors = validate('contact', { ...good, stage: '', seats: '', topic: '', message: '' });
   assert.deepEqual(
     errors.map((e) => e.field),
     ['topic', 'message'],
@@ -94,10 +98,44 @@ test('payload trims, normalises line endings, stamps ISO times and blanks the ot
   assert.equal(c.topic, 'press');
 });
 
-test('the payload never carries a field outside the contract', () => {
+test('the payload never carries a field outside the contract (v2 keys for the intake forms)', () => {
   assert.deepEqual(Object.keys(payload()).sort(), [
+    'audience', 'briefId', 'company', 'companyUrl', 'consent', 'consentUpdates', 'email', 'focus', 'form', 'investorKind', 'message', 'name',
+    'offer', 'page', 'partnerCategory', 'requestId', 'seats', 'stage', 'startedAt', 'submittedAt', 'topic', 'website',
+  ]);
+});
+
+test('the newsletter body stays the v1 key set: no request id, no audience', () => {
+  assert.deepEqual(Object.keys(buildPayload('newsletter', good, timing, '/')).sort(), [
     'company', 'consent', 'email', 'form', 'message', 'name', 'page', 'seats', 'stage', 'startedAt', 'submittedAt', 'topic', 'website',
   ]);
+});
+
+test('a 429 carries Retry-After as whole seconds and the message gives the wait in minutes', async () => {
+  const fetchImpl = (async () => new Response('', { status: 429, headers: { 'Retry-After': '90' } })) as typeof fetch;
+  await assert.rejects(submitIntake('https://intake.example.org/v1', payload(), { fetchImpl }), (e: unknown) => {
+    assert.ok(e instanceof SubmitError);
+    assert.equal(e.retryAfterSeconds, 90);
+    assert.match(failureMessage(e, false), /Wait 2 minutes/);
+    return true;
+  });
+  assert.equal(parseRetryAfter('Wed, 21 Oct 2026 07:28:00 GMT'), null);
+  assert.equal(parseRetryAfter(null), null);
+  assert.match(failureMessage(new SubmitError('rate-limited', 'x'), false), /Wait a few minutes/);
+});
+
+test('mailto exists only for apply and contact', () => {
+  for (const form of ['newsletter', 'brief-request', 'investor-interest', 'partner-enquiry'] as const) {
+    assert.throws(() => buildMailto('x@example.org', { ...payload(), form }), RangeError, form);
+  }
+});
+
+test('request id: one UUID v4 per attempt, from randomUUID or the getRandomValues fallback', () => {
+  const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+  assert.match(newRequestId(), uuid);
+  const noRandomUuid = { getRandomValues: globalThis.crypto.getRandomValues.bind(globalThis.crypto) } as unknown as Pick<Crypto, 'randomUUID' | 'getRandomValues'>;
+  assert.match(newRequestId(noRandomUuid), uuid);
+  assert.notEqual(newRequestId(), newRequestId());
 });
 
 test('bot check: filled honeypot is dropped, a fast first submit is paused once, then allowed', () => {

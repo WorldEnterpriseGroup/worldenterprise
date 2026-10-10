@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CtaEnd from '../components/cta/CtaEnd.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { APPLY } from '../components/hero/ctas.ts';
 import { getStage } from '../components/program/stages.ts';
@@ -23,7 +24,7 @@ type Props = PageMeta & HeaderProps & {
   next?: readonly NextItem[];
 };
 
-const { eyebrow, lead, stage, next = [], primary = APPLY, secondary, photo, art, measure, ...meta } = Astro.props;
+const { eyebrow, lead, stage, next = [], primary = APPLY, secondary, photo, art, measure, cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const altitude = stage ? ALTITUDES[stage] : undefined;
 // A stage page shows its own stage image. The pages that are about the path as a whole show the flower, or the trail they pass.
@@ -67,4 +68,5 @@ const heroArt = heroPhoto !== undefined ? art : (art ?? { variant: 'flower' as c
       </div>
     )
   }
+  <slot name="cta-end">{!Astro.slots.has('after') && <CtaEnd path={meta.path} collection="pages" cta={cta} />}</slot>
 </BaseLayout>
