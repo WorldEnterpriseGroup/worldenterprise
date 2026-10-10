@@ -55,12 +55,20 @@ async function open(page: Page, kind: Kind, frozen = false): Promise<void> {
 
 async function fillValid(page: Page, kind: Kind, how: 'pointer' | 'keyboard' = 'pointer'): Promise<void> {
   const form = page.locator('form[data-intake-form]').first();
+  // The Apply form is a stepper when JavaScript runs (WP-43): the answers are given step by step and the consent box sits on the last one.
+  const stepped = kind.name === 'apply' && (await form.getAttribute('data-stepper')) === 'on';
+  const next = form.locator('[data-step-next]');
   await form.locator('[name="name"]').fill('Test Founder');
   await form.locator('[name="email"]').fill('founder@example.org');
+  if (stepped) await next.click();
   if (kind.name === 'apply') await form.locator('[name="stage"]').selectOption('idea');
   else {
     await form.locator('[name="topic"]').selectOption('general');
     await form.locator('[name="message"]').fill('A short message for the team.');
+  }
+  if (stepped) {
+    await next.click();
+    await next.click();
   }
   const consent = form.locator('[name="consent"]');
   if (how === 'pointer') await consent.check();
@@ -73,6 +81,12 @@ async function fillValid(page: Page, kind: Kind, how: 'pointer' | 'keyboard' = '
 }
 
 const submit = (page: Page): Promise<void> => page.locator('form[data-intake-form] [data-submit]').first().click();
+/** What a visitor presses on a form they have not filled in: Send, or Next on the first step of the Apply stepper. */
+const press = async (page: Page): Promise<void> => {
+  const form = page.locator('form[data-intake-form]').first();
+  if ((await form.getAttribute('data-stepper')) === 'on') await form.locator('[data-step-next]').click();
+  else await submit(page);
+};
 /** Moves the page clock past MIN_FILL_MS (3 s) so the too-fast check does not pause the first submit. */
 const settle = (page: Page): Promise<void> => page.clock.fastForward(3500);
 
@@ -101,7 +115,7 @@ for (const kind of KINDS) {
       const mock = await mockEndpoint(page, ok);
       await open(page, kind);
       await settle(page);
-      await submit(page);
+      await press(page);
       const summary = page.locator('form[data-intake-form] [data-error-summary]');
       await expect(summary).toBeVisible();
       await expect(summary).toBeFocused();

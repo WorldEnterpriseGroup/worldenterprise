@@ -1,0 +1,22 @@
+---
+/**
+ * The progress bar of the Apply stepper (WP-43). Rendered hidden: src/components/apply/stepper.ts reveals it when JavaScript runs,
+ * so a visitor without JavaScript sees one plain form and no control that does nothing. The status line is the live region.
+ */
+import { APPLY_STEPS } from './steps.ts';
+---
+
+<div class="stepper" data-stepper hidden>
+  <p class="stepper__status" data-stepper-status role="status" aria-live="polite"></p>
+  <ol class="stepper__list" role="list" aria-label="Application steps">
+    {
+      APPLY_STEPS.map((step, index) => (
+        <li class="stepper__item" data-stepper-item={step.id}>
+          <span class="stepper__num" aria-hidden="true">{index + 1}</span>
+          <span class="stepper__label">{step.title}</span>
+          <span class="visually-hidden" data-stepper-state />
+        </li>
+      ))
+    }
+  </ol>
+</div>

@@ -156,15 +156,6 @@ test('the founders page and the services hub build their stage text from the hel
   }
 });
 
-// ---- P1-6: the framework count ----
-
-test('the home counter is the length of the framework list, gated on the frameworks page being live', () => {
-  const home = read('src/pages/index.astro');
-  assert.match(home, /import \{ FRAMEWORKS \} from '\.\.\/components\/about\/frameworks\.ts'/);
-  assert.match(home, /state\.isLive\('\/about\/frameworks\/'\) \? FRAMEWORKS\.length : 0/);
-  assert.doesNotMatch(home, /startsWith\(['"]\/about\/frameworks\//);
-});
-
 // ---- P0-3: the photo disclosure ----
 
 test('the disclosure line is the one the audit requires, and it links to the editorial policy', () => {

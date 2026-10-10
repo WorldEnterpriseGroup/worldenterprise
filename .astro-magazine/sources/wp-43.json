@@ -1,0 +1,1095 @@
+{
+  "wp": "WP-43",
+  "note": "Maps every string WP-43 puts on the site to the existing page and line, or the claim id, it restates (DP-5: no new criterion, timeline, count or response time). tests/unit/wp-43/sources.test.ts enumerates the strings from the page modules, fails on one that is not listed here, fails on a stale entry, checks each quote against its file and line, and runs the claims denylist over all of them. A \"ui_label\" entry is a control label or heading that states no fact about WE. The fit lists were moved verbatim from src/pages/program/who-its-for.astro at 2a9a7b0 (wp/40) and are pinned by tests/unit/wp-43/fixtures/fit-snapshot.json. The form field labels and hints were moved verbatim from src/components/forms/ApplyForm.astro at the same commit into src/components/apply/fields.ts. Three sentences of apply.mdx are unchanged and are not WP-43 text. Interface strings built by src/components/apply/stepper.ts (status line, review labels, error counts) are denylist-scanned and need no source.",
+  "sources": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp43-existing-site-copy",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "Existing copy on who-its-for, how-it-works, thanks and the apply form that /program/how-we-decide/ restates",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "See sentences[].sources: each entry names a file, a line and the quoted text",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-09",
+      "next_review": "when any cited page changes; sources.test.ts fails on a moved quote",
+      "version_or_release": "wp/40 2a9a7b0",
+      "relevant_locator": "C-01, C-05, C-10",
+      "variables_units_scope": "Selection and review wording only; no criterion, timeline, count, price or response time beyond what the site already says",
+      "methodology_limitations": "Restatement, not new research. Operator input DP-5 is needed before any criterion is added.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-01",
+        "C-05",
+        "C-10"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09",
+        "C-13",
+        "C-14",
+        "C-16"
+      ],
+      "license_access_attribution": "Internal; verbatim or lightly reordered",
+      "freshness_trigger": "Any change to who-its-for, how-it-works, the apply thanks page or the form fields",
+      "captured_by": "WP-43"
+    }
+  ],
+  "sentences": [
+    {
+      "text": "How WE decides",
+      "sources": [
+        {
+          "file": "src/data/routes.ts",
+          "line": 217,
+          "quote": "'/program/how-we-decide/'"
+        }
+      ]
+    },
+    {
+      "text": "How WE reads an application to World Enterprise Incubator: who fits, who probably does not, what you can send and what WE does not decide.",
+      "sources": [
+        {
+          "file": "src/pages/apply/index.astro",
+          "line": 42,
+          "quote": "WE reviews each application."
+        },
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 11,
+          "quote": "NOT_FIT_HEADING = 'WE is probably not the right fit if'"
+        },
+        {
+          "claims": [
+            "C-05"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "The program",
+      "sources": [
+        {
+          "file": "src/content/pages/program/how-it-works.mdx",
+          "line": 4,
+          "quote": "eyebrow: The program"
+        }
+      ]
+    },
+    {
+      "text": "Apply to the program",
+      "sources": [
+        {
+          "file": "src/content/pages/program/who-its-for.mdx",
+          "line": 8,
+          "quote": "label: Apply to the program"
+        }
+      ]
+    },
+    {
+      "text": "Who the program is for",
+      "sources": [
+        {
+          "file": "src/content/pages/program/who-its-for.mdx",
+          "line": 2,
+          "quote": "title: Who the program is for"
+        }
+      ]
+    },
+    {
+      "text": "This page sets out how WE reads an application, who the program fits and what WE does not decide, so you can judge your own fit before you apply.",
+      "sources": [
+        {
+          "file": "src/pages/program/how-it-works.astro",
+          "line": 24,
+          "quote": "Check your own fit before you apply."
+        },
+        {
+          "file": "src/components/program/steps.ts",
+          "line": 10,
+          "quote": "judge fit"
+        },
+        {
+          "claims": [
+            "C-05"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "How an application is read, and what WE does not decide.",
+      "sources": [
+        {
+          "file": "src/pages/apply/index.astro",
+          "line": 42,
+          "quote": "WE reviews each application."
+        },
+        {
+          "claims": [
+            "C-05"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "How an application is read",
+      "sources": [
+        {
+          "file": "src/pages/apply/index.astro",
+          "line": 42,
+          "quote": "WE reviews each application."
+        }
+      ]
+    },
+    {
+      "text": "WE reviews each application.",
+      "sources": [
+        {
+          "file": "src/pages/apply/index.astro",
+          "line": 42,
+          "quote": "WE reviews each application."
+        }
+      ]
+    },
+    {
+      "text": "The application is short and asks only what WE needs to judge fit.",
+      "sources": [
+        {
+          "file": "src/components/program/steps.ts",
+          "line": 10,
+          "quote": "The application is short and asks only what WE needs to judge fit."
+        }
+      ]
+    },
+    {
+      "text": "WE reviews your application",
+      "sources": [
+        {
+          "file": "src/pages/apply/thanks.astro",
+          "line": 29,
+          "quote": "title: 'WE reviews your application'"
+        }
+      ]
+    },
+    {
+      "text": "WE reviews what you wrote about the idea and the team you have in mind.",
+      "sources": [
+        {
+          "file": "src/pages/apply/thanks.astro",
+          "line": 29,
+          "quote": "WE reviews what you wrote about the idea and the team you have in mind."
+        }
+      ]
+    },
+    {
+      "text": "WE replies",
+      "sources": [
+        {
+          "file": "src/pages/apply/thanks.astro",
+          "line": 30,
+          "quote": "title: 'WE replies'"
+        }
+      ]
+    },
+    {
+      "text": "WE replies to the email address you give.",
+      "sources": [
+        {
+          "file": "src/pages/apply/index.astro",
+          "line": 43,
+          "quote": "WE replies to the email address you give"
+        }
+      ]
+    },
+    {
+      "text": "If the idea fits, WE scopes the work with you",
+      "sources": [
+        {
+          "file": "src/pages/apply/thanks.astro",
+          "line": 31,
+          "quote": "If the idea fits, WE scopes the work with you"
+        }
+      ]
+    },
+    {
+      "text": "WE and the founder choose which service lines the company needs and what each one will and will not cover.",
+      "sources": [
+        {
+          "file": "src/components/program/steps.ts",
+          "line": 14,
+          "quote": "WE and the founder choose which service lines the company needs and what each one will and will not cover."
+        }
+      ]
+    },
+    {
+      "text": "WE does not state a response time on this site.",
+      "sources": [
+        {
+          "file": "src/content/pages/apply/thanks.mdx",
+          "line": 10,
+          "quote": "WE does not state a response time on this site"
+        }
+      ]
+    },
+    {
+      "text": "The full path is on How the program works.",
+      "sources": [
+        {
+          "file": "src/content/pages/program/how-it-works.mdx",
+          "line": 2,
+          "quote": "title: How the program works"
+        }
+      ]
+    },
+    {
+      "text": "You are a good fit if",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 10,
+          "quote": "FIT_HEADING = 'You are a good fit if'"
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 3,
+          "quote": "\"fitHeading\": \"You are a good fit if\""
+        }
+      ]
+    },
+    {
+      "text": "Use these two lists to judge your own fit before you apply.",
+      "sources": [
+        {
+          "file": "src/pages/program/how-it-works.astro",
+          "line": 24,
+          "quote": "Check your own fit before you apply."
+        }
+      ]
+    },
+    {
+      "text": "You have a SaaS idea or an early product, and you can say who it is for.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 14,
+          "quote": "You have a SaaS idea or an early product, and you can say who it is for."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 6,
+          "quote": "You have a SaaS idea or an early product, and you can say who it is for."
+        }
+      ]
+    },
+    {
+      "text": "You can describe the problem as the customer would, even if you are not yet sure it is real.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 15,
+          "quote": "You can describe the problem as the customer would, even if you are not yet sure it is real."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 7,
+          "quote": "You can describe the problem as the customer would, even if you are not yet sure it is real."
+        }
+      ]
+    },
+    {
+      "text": "You are willing to test the idea with real customers, including when the answers are unwelcome.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 16,
+          "quote": "You are willing to test the idea with real customers, including when the answers are unwelcome."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 8,
+          "quote": "You are willing to test the idea with real customers, including when the answers are unwelcome."
+        }
+      ]
+    },
+    {
+      "text": "You can make decisions for the company and join a review at each cycle.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 17,
+          "quote": "You can make decisions for the company and join a review at each cycle."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 9,
+          "quote": "You can make decisions for the company and join a review at each cycle."
+        }
+      ]
+    },
+    {
+      "text": "You want a team and a method to carry out the work, and you will keep ownership of the direction.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 18,
+          "quote": "You want a team and a method to carry out the work, and you will keep ownership of the direction."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 10,
+          "quote": "You want a team and a method to carry out the work, and you will keep ownership of the direction."
+        }
+      ]
+    },
+    {
+      "text": "You need a physical office, on-site staff or in-person work. WE is fully remote.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 22,
+          "quote": "You need a physical office, on-site staff or in-person work. WE is fully remote."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 13,
+          "quote": "You need a physical office, on-site staff or in-person work. WE is fully remote."
+        }
+      ]
+    },
+    {
+      "text": "You are looking for money rather than a team. WE makes no promise of funding.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 23,
+          "quote": "You are looking for money rather than a team. WE makes no promise of funding."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 14,
+          "quote": "You are looking for money rather than a team. WE makes no promise of funding."
+        }
+      ]
+    },
+    {
+      "text": "You want WE to run your product in production or to provide round-the-clock support.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 24,
+          "quote": "You want WE to run your product in production or to provide round-the-clock support."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 15,
+          "quote": "You want WE to run your product in production or to provide round-the-clock support."
+        }
+      ]
+    },
+    {
+      "text": "You want WE to give legal or tax advice, keep your books or file your taxes.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 25,
+          "quote": "You want WE to give legal or tax advice, keep your books or file your taxes."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 16,
+          "quote": "You want WE to give legal or tax advice, keep your books or file your taxes."
+        }
+      ]
+    },
+    {
+      "text": "Your idea is not a software-as-a-service product.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 26,
+          "quote": "Your idea is not a software-as-a-service product."
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 17,
+          "quote": "Your idea is not a software-as-a-service product."
+        }
+      ]
+    },
+    {
+      "text": "WE is probably not the right fit if",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 11,
+          "quote": "NOT_FIT_HEADING = 'WE is probably not the right fit if'"
+        },
+        {
+          "file": "tests/unit/wp-43/fixtures/fit-snapshot.json",
+          "line": 4,
+          "quote": "\"notFitHeading\": \"WE is probably not the right fit if\""
+        }
+      ]
+    },
+    {
+      "text": "What you can send",
+      "sources": [
+        {
+          "file": "src/content/pages/apply/apply.mdx",
+          "line": 10,
+          "quote": "The form has four short steps"
+        }
+      ]
+    },
+    {
+      "text": "The form asks for these answers.",
+      "sources": [
+        {
+          "file": "src/content/pages/apply/apply.mdx",
+          "line": 10,
+          "quote": "The form has four short steps"
+        }
+      ]
+    },
+    {
+      "text": "Your name",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 21,
+          "quote": "name: { label: 'Your name' }"
+        }
+      ]
+    },
+    {
+      "text": "Email address",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 22,
+          "quote": "label: 'Email address'"
+        }
+      ]
+    },
+    {
+      "text": "WE replies to this address.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 22,
+          "quote": "hint: 'WE replies to this address.'"
+        }
+      ]
+    },
+    {
+      "text": "Company or working name",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 23,
+          "quote": "label: 'Company or working name'"
+        }
+      ]
+    },
+    {
+      "text": "Optional. Leave it blank if the company has no name yet.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 23,
+          "quote": "Optional. Leave it blank if the company has no name yet."
+        }
+      ]
+    },
+    {
+      "text": "Where is the idea today?",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 24,
+          "quote": "label: 'Where is the idea today?'"
+        }
+      ]
+    },
+    {
+      "text": "What are you building, and for whom?",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 26,
+          "quote": "label: 'What are you building, and for whom?'"
+        }
+      ]
+    },
+    {
+      "text": "Optional. A few plain sentences are enough: the problem, the customer and what you have learned so far.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 27,
+          "quote": "Optional. A few plain sentences are enough"
+        }
+      ]
+    },
+    {
+      "text": "Team you have in mind",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 30,
+          "quote": "label: 'Team you have in mind'"
+        }
+      ]
+    },
+    {
+      "text": "Optional. Sketch the roles in the Team Composer and they appear here, or describe them yourself.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 31,
+          "quote": "Optional. Sketch the roles in the Team Composer"
+        }
+      ]
+    },
+    {
+      "text": "Package you have in mind",
+      "sources": [
+        {
+          "file": "src/data/packages.ts",
+          "line": 4,
+          "quote": "WP-43 (the package field on the apply form)"
+        },
+        {
+          "claims": [
+            "C-10"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Optional. Choose one of the four packages, or say that you are not sure.",
+      "sources": [
+        {
+          "file": "src/data/packages.ts",
+          "line": 4,
+          "quote": "WP-43 (the package field on the apply form)"
+        },
+        {
+          "file": "src/pages/pricing/index.astro",
+          "line": 26,
+          "quote": "Compare the four packages"
+        },
+        {
+          "claims": [
+            "C-10"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "An idea that is not yet tested with customers",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 14,
+          "quote": "label: 'An idea that is not yet tested with customers'"
+        }
+      ]
+    },
+    {
+      "text": "Validating the problem with customers",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 15,
+          "quote": "label: 'Validating the problem with customers'"
+        }
+      ]
+    },
+    {
+      "text": "Building the first version",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 16,
+          "quote": "label: 'Building the first version'"
+        }
+      ]
+    },
+    {
+      "text": "Live, and looking for the first customers",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 17,
+          "quote": "label: 'Live, and looking for the first customers'"
+        }
+      ]
+    },
+    {
+      "text": "Choose a package",
+      "ui_label": true
+    },
+    {
+      "text": "Spark",
+      "sources": [
+        {
+          "file": "src/data/packages.ts",
+          "line": 33,
+          "quote": "name: 'Spark'"
+        },
+        {
+          "claims": [
+            "C-10"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Launch",
+      "sources": [
+        {
+          "file": "src/data/packages.ts",
+          "line": 40,
+          "quote": "name: 'Launch'"
+        },
+        {
+          "claims": [
+            "C-10"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Accelerate",
+      "sources": [
+        {
+          "file": "src/data/packages.ts",
+          "line": 47,
+          "quote": "name: 'Accelerate'"
+        },
+        {
+          "claims": [
+            "C-10"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Studio",
+      "sources": [
+        {
+          "file": "src/data/packages.ts",
+          "line": 54,
+          "quote": "name: 'Studio'"
+        },
+        {
+          "claims": [
+            "C-10"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Not sure yet",
+      "ui_label": true
+    },
+    {
+      "text": "What a clear no looks like",
+      "sources": [
+        {
+          "file": "src/pages/program/who-its-for.astro",
+          "line": 72,
+          "quote": "a clear no is as useful to you as a yes"
+        }
+      ]
+    },
+    {
+      "text": "A clear no is as useful to you as a yes.",
+      "sources": [
+        {
+          "file": "src/pages/program/who-its-for.astro",
+          "line": 72,
+          "quote": "a clear no is as useful to you as a yes"
+        }
+      ]
+    },
+    {
+      "text": "WE is probably not the right fit for some ideas and founders.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 11,
+          "quote": "NOT_FIT_HEADING = 'WE is probably not the right fit if'"
+        }
+      ]
+    },
+    {
+      "text": "The cases are listed in Who the program is for.",
+      "sources": [
+        {
+          "file": "src/content/pages/program/who-its-for.mdx",
+          "line": 2,
+          "quote": "title: Who the program is for"
+        }
+      ]
+    },
+    {
+      "text": "What WE does not decide",
+      "sources": [
+        {
+          "claims": [
+            "C-05"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Funding",
+      "sources": [
+        {
+          "claims": [
+            "C-05"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "WE makes no promise of funding.",
+      "sources": [
+        {
+          "file": "src/components/blocks/NoFundingDisclaimer.astro",
+          "line": 8,
+          "quote": "WE makes no promise of funding."
+        },
+        {
+          "claims": [
+            "C-05"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "The work helps you prepare the evidence investors ask for.",
+      "sources": [
+        {
+          "file": "src/components/program/stages.ts",
+          "line": 140,
+          "quote": "assemble the evidence investors ask for"
+        },
+        {
+          "file": "src/components/blocks/NoFundingDisclaimer.astro",
+          "line": 8,
+          "quote": "This material helps you prepare evidence for"
+        }
+      ]
+    },
+    {
+      "text": "It does not predict that any company will raise money.",
+      "sources": [
+        {
+          "file": "src/components/blocks/NoFundingDisclaimer.astro",
+          "line": 8,
+          "quote": "It does not predict that"
+        },
+        {
+          "claims": [
+            "C-05"
+          ]
+        }
+      ]
+    },
+    {
+      "text": "Direction",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 18,
+          "quote": "keep ownership of the direction"
+        }
+      ]
+    },
+    {
+      "text": "You keep ownership of the direction.",
+      "sources": [
+        {
+          "file": "src/components/apply/fit.ts",
+          "line": 18,
+          "quote": "keep ownership of the direction"
+        }
+      ]
+    },
+    {
+      "text": "The next cycle",
+      "sources": [
+        {
+          "file": "src/components/program/steps.ts",
+          "line": 26,
+          "quote": "You decide what the next cycle holds"
+        }
+      ]
+    },
+    {
+      "text": "You decide what the next cycle holds.",
+      "sources": [
+        {
+          "file": "src/components/program/steps.ts",
+          "line": 26,
+          "quote": "You decide what the next cycle holds"
+        }
+      ]
+    },
+    {
+      "text": "Ready to apply?",
+      "sources": [
+        {
+          "file": "src/pages/contact/index.astro",
+          "line": 49,
+          "quote": "Ready to apply?"
+        }
+      ]
+    },
+    {
+      "text": "The application is short.",
+      "sources": [
+        {
+          "file": "src/pages/program/who-its-for.astro",
+          "line": 72,
+          "quote": "The application is short"
+        }
+      ]
+    },
+    {
+      "text": "How the program works",
+      "sources": [
+        {
+          "file": "src/pages/program/who-its-for.astro",
+          "line": 15,
+          "quote": "title: 'How the program works'"
+        }
+      ]
+    },
+    {
+      "text": "Five steps from application to a working team.",
+      "sources": [
+        {
+          "file": "src/pages/program/who-its-for.astro",
+          "line": 15,
+          "quote": "Five steps from application to a working team."
+        }
+      ]
+    },
+    {
+      "text": "Check your own fit before you apply.",
+      "sources": [
+        {
+          "file": "src/pages/program/how-it-works.astro",
+          "line": 24,
+          "quote": "Check your own fit before you apply."
+        }
+      ]
+    },
+    {
+      "text": "Frequently asked questions",
+      "sources": [
+        {
+          "file": "src/pages/program/who-its-for.astro",
+          "line": 16,
+          "quote": "title: 'Frequently asked questions'"
+        }
+      ]
+    },
+    {
+      "text": "Short answers on stage, scope and cost.",
+      "sources": [
+        {
+          "file": "src/pages/program/who-its-for.astro",
+          "line": 16,
+          "quote": "Short answers on stage, scope and cost."
+        }
+      ]
+    },
+    {
+      "text": "What WE reads",
+      "ui_label": true
+    },
+    {
+      "text": "WE reads what the form asks for: who you are, where the idea stands and, if you add it, the team you have in mind.",
+      "sources": [
+        {
+          "file": "src/content/pages/apply/apply.mdx",
+          "line": 10,
+          "quote": "who you are, where the idea stands, the team and package you have in mind"
+        }
+      ]
+    },
+    {
+      "text": "How WE decides lists who fits, who probably does not and what WE does not decide.",
+      "sources": [
+        {
+          "file": "src/content/pages/program/how-we-decide.mdx",
+          "line": 3,
+          "quote": "who fits, who probably does not"
+        }
+      ]
+    },
+    {
+      "text": "How WE decides says how an application is read.",
+      "sources": [
+        {
+          "file": "src/content/pages/program/how-we-decide.mdx",
+          "line": 3,
+          "quote": "How WE reads an application"
+        }
+      ]
+    },
+    {
+      "text": "The form has four short steps: who you are, where the idea stands, the team and package you have in mind, and a review before you send.",
+      "sources": [
+        {
+          "file": ".astro-magazine/plans/wave7.md",
+          "line": 205,
+          "quote": "About you, About the idea, Team and package, Review"
+        },
+        {
+          "file": "src/components/apply/steps.ts",
+          "line": 22,
+          "quote": "title: 'Team and package'"
+        }
+      ]
+    },
+    {
+      "text": "The team and the package are optional, and so is a longer description of what you are building.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 27,
+          "quote": "Optional. A few plain sentences are enough"
+        },
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 31,
+          "quote": "Optional. Sketch the roles in the Team Composer"
+        },
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 35,
+          "quote": "Optional. Choose one of the four packages"
+        }
+      ]
+    },
+    {
+      "text": "Without JavaScript the same questions appear on one page.",
+      "sources": [
+        {
+          "file": "docs/forms-contract.md",
+          "line": 122,
+          "quote": "### The Apply stepper (WP-43)"
+        },
+        {
+          "file": "docs/forms-contract.md",
+          "line": 124,
+          "quote": "Without JavaScript all of them are visible"
+        }
+      ]
+    },
+    {
+      "text": "About you",
+      "sources": [
+        {
+          "file": "src/components/apply/steps.ts",
+          "line": 20,
+          "quote": "title: 'About you'"
+        },
+        {
+          "file": ".astro-magazine/plans/wave7.md",
+          "line": 205,
+          "quote": "About you, About the idea, Team and package, Review"
+        }
+      ]
+    },
+    {
+      "text": "About the idea",
+      "sources": [
+        {
+          "file": "src/components/apply/steps.ts",
+          "line": 21,
+          "quote": "title: 'About the idea'"
+        },
+        {
+          "file": ".astro-magazine/plans/wave7.md",
+          "line": 205,
+          "quote": "About you, About the idea, Team and package, Review"
+        }
+      ]
+    },
+    {
+      "text": "Team and package",
+      "sources": [
+        {
+          "file": "src/components/apply/steps.ts",
+          "line": 22,
+          "quote": "title: 'Team and package'"
+        },
+        {
+          "file": ".astro-magazine/plans/wave7.md",
+          "line": 205,
+          "quote": "About you, About the idea, Team and package, Review"
+        }
+      ]
+    },
+    {
+      "text": "Review",
+      "sources": [
+        {
+          "file": ".astro-magazine/plans/wave7.md",
+          "line": 205,
+          "quote": "About you, About the idea, Team and package, Review"
+        }
+      ]
+    },
+    {
+      "text": "Check your answers.",
+      "sources": [
+        {
+          "file": "src/components/forms/ErrorSummary.astro",
+          "line": 11,
+          "quote": "Check your answers"
+        }
+      ]
+    },
+    {
+      "text": "Nothing has been sent yet.",
+      "sources": [
+        {
+          "file": "src/scripts/forms.ts",
+          "line": 622,
+          "quote": "await submitIntake(this.endpoint, payload);"
+        }
+      ]
+    },
+    {
+      "text": "Use Change to go back to a step.",
+      "ui_label": true
+    },
+    {
+      "text": "Not given",
+      "ui_label": true
+    },
+    {
+      "text": "Seats and packages are explained on the pricing page.",
+      "sources": [
+        {
+          "file": "src/pages/pricing/index.astro",
+          "line": 26,
+          "quote": "Compare the four packages"
+        },
+        {
+          "claims": [
+            "C-10"
+          ]
+        }
+      ]
+    }
+  ]
+}

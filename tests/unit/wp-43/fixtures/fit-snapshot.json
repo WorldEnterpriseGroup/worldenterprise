@@ -1,0 +1,25 @@
+{
+  "$comment": "The fit lists exactly as src/pages/program/who-its-for.astro rendered them on wp/40 (2a9a7b0), before WP-43 moved them to src/components/apply/fit.ts. Changing a string here is a change of published criteria: an operator decision (DP-5).",
+  "fitHeading": "You are a good fit if",
+  "notFitHeading": "WE is probably not the right fit if",
+  "fits": [
+    "You have a SaaS idea or an early product, and you can say who it is for.",
+    "You can describe the problem as the customer would, even if you are not yet sure it is real.",
+    "You are willing to test the idea with real customers, including when the answers are unwelcome.",
+    "You can make decisions for the company and join a review at each cycle.",
+    "You want a team and a method to carry out the work, and you will keep ownership of the direction."
+  ],
+  "notFits": [
+    "You need a physical office, on-site staff or in-person work. WE is fully remote.",
+    "You are looking for money rather than a team. WE makes no promise of funding.",
+    "You want WE to run your product in production or to provide round-the-clock support.",
+    "You want WE to give legal or tax advice, keep your books or file your taxes.",
+    "Your idea is not a software-as-a-service product."
+  ],
+  "whoItsForMarkup": [
+    "<h2 id=\"fit-yes\">{FIT_HEADING}</h2>",
+    "<ul class=\"measure fit\">",
+    "{FITS.map((f) => <li>{f}</li>)}",
+    "<LimitsBlock title={NOT_FIT_HEADING} items={NOT_FITS} />"
+  ]
+}
