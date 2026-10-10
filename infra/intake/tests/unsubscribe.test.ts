@@ -249,13 +249,12 @@ describe('retry sweep', () => {
 
 describe('health', () => {
   test('reports configuration only and carries the security headers', () => {
-    const h = harness();
-    const ok = handleHealth(h.deps, { configured: true, contractVersion: 2 }, request({ method: 'GET' }));
+    const ok = handleHealth({ configured: true, contractVersion: 2, nurture: false }, request({ method: 'GET' }));
     assert.equal(ok.status, 200);
     assert.deepEqual(JSON.parse(ok.body), { status: 'ok', configured: true, contract: 2, nurture: false });
     assert.equal(ok.headers['X-Content-Type-Options'], 'nosniff');
-    const down = handleHealth(h.deps, { configured: false, contractVersion: 2 }, request({ method: 'GET' }));
+    const down = handleHealth({ configured: false, contractVersion: 2, nurture: false }, request({ method: 'GET' }));
     assert.equal(down.status, 503);
-    assert.equal(handleHealth(h.deps, { configured: true, contractVersion: 2 }, request({ method: 'POST' })).status, 405);
+    assert.equal(handleHealth({ configured: true, contractVersion: 2, nurture: false }, request({ method: 'POST' })).status, 405);
   });
 });

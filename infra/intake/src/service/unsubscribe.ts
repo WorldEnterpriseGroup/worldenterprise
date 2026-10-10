@@ -81,11 +81,12 @@ export async function syncCrm(deps: Deps, engagementId: string): Promise<void> {
 export interface HealthInfo {
   readonly configured: boolean;
   readonly contractVersion: number;
+  readonly nurture: boolean;
 }
 
 /** Public and unauthenticated: it reports configuration only, and calls nothing downstream, so it cannot be used to load Dataverse. */
-export function handleHealth(deps: Deps, info: HealthInfo, req: HttpRequestLike): HttpResult {
+export function handleHealth(info: HealthInfo, req: HttpRequestLike): HttpResult {
   if (req.method !== 'GET' && req.method !== 'HEAD') return emptyResult(405, { Allow: 'GET, HEAD' });
-  const body = { status: info.configured ? 'ok' : 'unconfigured', configured: info.configured, contract: info.contractVersion, nurture: deps.settings.nurtureEnabled };
+  const body = { status: info.configured ? 'ok' : 'unconfigured', configured: info.configured, contract: info.contractVersion, nurture: info.nurture };
   return jsonResult(info.configured ? 200 : 503, body);
 }

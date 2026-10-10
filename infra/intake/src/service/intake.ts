@@ -91,7 +91,11 @@ async function afterWrite(deps: Deps, submission: Submission, record: Engagement
   }
 }
 
-export async function handleIntake(deps: Deps, req: HttpRequestLike): Promise<HttpResult> {
+/**
+ * `impliedKind` is set by a route that serves one form only (`/api/newsletter`): a post to it that omits the `form` field
+ * is read as that form. A post that names another form is still validated as the form it names.
+ */
+export async function handleIntake(deps: Deps, req: HttpRequestLike, impliedKind?: Kind): Promise<HttpResult> {
   const verdict = checkOrigin(req.header('origin'), deps.settings.allowedOrigins);
   const cors = verdict.kind === 'allowed' ? corsHeaders(verdict.origin) : {};
   const done = (result: HttpResult): HttpResult => withExtra(result, cors);
@@ -130,7 +134,7 @@ export async function handleIntake(deps: Deps, req: HttpRequestLike): Promise<Ht
 
   const parsed = parseBody(kindOfBody, text);
   if (!parsed.ok) return done(fieldError(400, 'form', 'The request body is not valid.'));
-  const body = parsed.body;
+  const body = impliedKind !== undefined && readFormKind(parsed.body) === '' ? { ...parsed.body, form: impliedKind } : parsed.body;
 
   if (isHoneypotTripped(body)) {
     deps.log.info('honeypot', { route: 'intake', client });
