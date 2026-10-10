@@ -1,0 +1,66 @@
+---
+import { BRIEFS } from '../../data/families.ts';
+import { flags } from '../../data/flags.ts';
+import { STAGE_OPTIONS } from '../apply/fields.ts';
+import Choice from './Choice.astro';
+import Field from './Field.astro';
+import Fieldset from './Fieldset.astro';
+import FormFrame from './FormFrame.astro';
+import { BRIEF_AUDIENCE_LABELS, FORM_CONSENT, FORM_NOTICES, FORM_SUBMIT_LABELS } from './copy.ts';
+
+interface Props {
+  /** The registry id of the brief this form requests (src/data/families.ts). */
+  briefId: string;
+}
+
+const { briefId } = Astro.props;
+const entry = BRIEFS.entries.find((e) => e.slug === briefId);
+if (entry === undefined) {
+  throw new Error(`BriefRequestForm: "${briefId}" is not a brief in src/data/families.ts (${BRIEFS.entries.map((e) => e.slug).join(', ')}).`);
+}
+const id = `brief-${briefId}`;
+const several = entry.audience.length > 1;
+const audienceOptions = [
+  { value: '', label: 'Choose who you are writing as' },
+  ...entry.audience.map((value) => ({ value, label: BRIEF_AUDIENCE_LABELS[value] })),
+];
+const stageOptions = STAGE_OPTIONS.map((option) => (option.value === '' ? { ...option, label: 'Choose one, or leave it empty' } : option));
+---
+
+<FormFrame
+  kind="brief-request"
+  id={id}
+  submitLabel={FORM_SUBMIT_LABELS['brief-request']}
+  thanksPath="/briefs/thanks/"
+  briefId={briefId}
+  audience={several ? undefined : entry.audience[0]}
+  consentLabel={FORM_CONSENT['brief-request']}
+>
+  <Fieldset legend={`Request the brief: ${entry.label}`}>
+    <p class="field__hint" data-form-notice>{FORM_NOTICES.briefSends}</p>
+    <Field id={`${id}-name`} name="name" label="Your name" required autocomplete="name" maxlength={120} reserveError />
+    <Field
+      id={`${id}-email`}
+      name="email"
+      label="Email address"
+      type="email"
+      required
+      autocomplete="email"
+      maxlength={254}
+      hint="WE sends the brief to this address."
+      reserveError
+    />
+    <Field id={`${id}-company`} name="company" label="Company or organization" autocomplete="organization" maxlength={120} hint="Optional." reserveError />
+    {several && <Field id={`${id}-audience`} name="audience" label="You are writing as" type="select" required options={audienceOptions} reserveError />}
+    {entry.audience.includes('startup') && (
+      <Field id={`${id}-stage`} name="stage" label="Where is your idea today?" type="select" options={stageOptions} hint="Optional." reserveError />
+    )}
+  </Fieldset>
+  {
+    flags.briefUpdates && (
+      <div class="stack">
+        <Choice id={`${id}-updates`} name="consentUpdates" label={FORM_CONSENT['brief-updates']} />
+      </div>
+    )
+  }
+</FormFrame>

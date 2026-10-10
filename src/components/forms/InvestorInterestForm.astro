@@ -1,0 +1,66 @@
+---
+import IntroductionsDisclaimer from '../blocks/IntroductionsDisclaimer.astro';
+import Field from './Field.astro';
+import Fieldset from './Fieldset.astro';
+import FormFrame from './FormFrame.astro';
+import { FORM_CONSENT, FORM_NOTICES, FORM_SUBMIT_LABELS, INVESTOR_KIND_OPTIONS } from './copy.ts';
+
+const id = 'investor-interest';
+---
+
+<FormFrame
+  kind="investor-interest"
+  id={id}
+  submitLabel={FORM_SUBMIT_LABELS['investor-interest']}
+  thanksPath="/investors/interest/thanks/"
+  consentLabel={FORM_CONSENT['investor-interest']}
+>
+  <Fieldset legend="Ask to meet the companies WE incubates">
+    <p class="field__hint" data-form-notice>{FORM_NOTICES.noFunding}</p>
+    <IntroductionsDisclaimer />
+    <Field id={`${id}-name`} name="name" label="Your name" required autocomplete="name" maxlength={120} reserveError />
+    <Field
+      id={`${id}-email`}
+      name="email"
+      label="Email address"
+      type="email"
+      required
+      autocomplete="email"
+      maxlength={254}
+      hint="WE replies to this address."
+      reserveError
+    />
+    <Field id={`${id}-company`} name="company" label="Firm or organization" autocomplete="organization" maxlength={120} hint="Optional." reserveError />
+    <Field
+      id={`${id}-url`}
+      name="companyUrl"
+      label="Website"
+      type="url"
+      autocomplete="url"
+      maxlength={300}
+      hint="Optional. Start it with https://"
+      reserveError
+    />
+    <Field id={`${id}-kind`} name="investorKind" label="How do you describe yourself?" type="select" options={INVESTOR_KIND_OPTIONS} hint="Optional." reserveError />
+    <Field
+      id={`${id}-focus`}
+      name="focus"
+      label="Sectors and stages you want to see"
+      type="textarea"
+      rows={4}
+      maxlength={1000}
+      hint="Optional."
+      reserveError
+    />
+    <Field
+      id={`${id}-message`}
+      name="message"
+      label="Anything else"
+      type="textarea"
+      rows={4}
+      maxlength={4000}
+      hint="Optional."
+      reserveError
+    />
+  </Fieldset>
+</FormFrame>

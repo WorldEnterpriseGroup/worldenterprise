@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CtaEnd from '../components/cta/CtaEnd.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
@@ -11,7 +12,7 @@ type Props = PageMeta & HeaderProps & {
   instructions?: string;
 };
 
-const { eyebrow, lead, markdownHref, instructions, primary, secondary, photo, art, measure = 'prose', ...meta } = Astro.props;
+const { eyebrow, lead, markdownHref, instructions, primary, secondary, photo, art, measure = 'prose', cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 // The download is the main action of a template, so it sits in the hero. Controls the page adds (copy, print) join it there.
 const download = markdownHref !== undefined ? { label: 'Download as Markdown', href: markdownHref, download: true } : undefined;
@@ -39,4 +40,5 @@ const download = markdownHref !== undefined ? { label: 'Download as Markdown', h
       </div>
     </div>
   </div>
+  <slot name="cta-end"><CtaEnd path={meta.path} collection="library" cta={cta} /></slot>
 </BaseLayout>
