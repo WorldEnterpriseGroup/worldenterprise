@@ -48,6 +48,17 @@
     align-items: center;
     gap: var(--sp-3);
     margin-block-start: var(--sp-3);
+
+    /*
+     * On a phone the actions stack, full width. Two buttons side by side leave a few pixels of slack at 390 px with the fallback
+     * font, so when the web font arrives a slightly wider label wraps the second button to a new row and moves the whole hero down
+     * (CLS 0.14 on /program/how-it-works/). A stacked column has the same number of rows with either font, so a font swap cannot
+     * change the line count. The primary action stays first, at the same position.
+     */
+    @media (max-width: 36rem) {
+      flex-direction: column;
+      align-items: stretch;
+    }
   }
 
   /* Media frame: the space is reserved by the ratio, so a late image or a font swap cannot move the page. */
