@@ -1,15 +1,9 @@
 ---
-/** The short orientation under the network hero. The hero carries the three places to start, so this block is text only. */
+/** The short orientation under the network hero. The hero carries the places to start, so this block is text only. */
+import { NETWORK_COPY } from '../partners/copy.ts';
 ---
 
 <div class="network-intro stack">
-  <h2 id="network-intro-title">Described by roles and criteria</h2>
-  <p>
-    WE is a fully remote digital incubator for SaaS, so its network is not a building or a member list. It is three
-    things you can read about today: the founders WE builds with, the roles that staff a dedicated team seat, and the
-    standards WE maps work to.
-  </p>
-  <p>
-    This section names no people and no companies.
-  </p>
+  <h2 id="network-intro-title">{NETWORK_COPY.introHeading}</h2>
+  {NETWORK_COPY.intro.map((text) => <p>{text}</p>)}
 </div>
