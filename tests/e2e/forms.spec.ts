@@ -22,6 +22,8 @@ const KINDS: readonly Kind[] = [
   { name: 'contact', route: '/contact/' },
 ];
 
+const UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
 interface Mock {
   readonly bodies: unknown[];
 }
@@ -63,6 +65,7 @@ async function fillValid(page: Page, kind: Kind, how: 'pointer' | 'keyboard' = '
   if (stepped) await next.click();
   if (kind.name === 'apply') await form.locator('[name="stage"]').selectOption('idea');
   else {
+    await form.locator('[name="audience"]').selectOption('startup');
     await form.locator('[name="topic"]').selectOption('general');
     await form.locator('[name="message"]').fill('A short message for the team.');
   }
@@ -106,9 +109,38 @@ for (const kind of KINDS) {
       if (kind.name === 'apply') await expect(page).toHaveURL(/\/apply\/thanks\/$/);
       else await expect(page.locator('form[data-intake-form] [data-status]')).toContainText('Thank you');
       expect(mock.bodies).toHaveLength(1);
-      expect(mock.bodies[0]).toMatchObject({ form: kind.name, email: 'founder@example.org', consent: true, website: '' });
+      expect(mock.bodies[0]).toMatchObject({ form: kind.name, email: 'founder@example.org', consent: true, website: '', audience: 'startup' });
+      expect((mock.bodies[0] as { requestId: string }).requestId).toMatch(UUID_V4);
       expect(seen.consoleErrors).toEqual([]);
       expect(seen.thirdParty, 'only the mocked endpoint may be contacted').toEqual([]);
+    });
+
+    test('a failed send keeps the request id, so the retry is the same request', async ({ page }) => {
+      let calls = 0;
+      const mock = await mockEndpoint(page, (route) => {
+        calls += 1;
+        return calls === 1 ? route.fulfill({ status: 500, headers: CORS, body: 'boom' }) : ok(route);
+      });
+      await open(page, kind);
+      await fillValid(page, kind);
+      await settle(page);
+      await submit(page);
+      await expect(page.locator('form[data-intake-form] [data-error-summary]')).toBeVisible();
+      await submit(page);
+      await expect.poll(() => mock.bodies.length).toBe(2);
+      const [first, second] = mock.bodies as { requestId: string }[];
+      expect(first?.requestId).toMatch(UUID_V4);
+      expect(second?.requestId).toBe(first?.requestId);
+    });
+
+    test('a 429 gives the wait from Retry-After in minutes and keeps the answers', async ({ page }) => {
+      await mockEndpoint(page, (route) => route.fulfill({ status: 429, headers: { ...CORS, 'access-control-expose-headers': 'Retry-After', 'retry-after': '120' }, body: '' }));
+      await open(page, kind);
+      await fillValid(page, kind);
+      await settle(page);
+      await submit(page);
+      await expect(page.locator('form[data-intake-form] [data-error-summary]')).toContainText('Wait 2 minutes');
+      await expect(page.locator('form[data-intake-form] [name="email"]')).toHaveValue('founder@example.org');
     });
 
     test('client validation names the problems and sends nothing', async ({ page }) => {
@@ -194,6 +226,89 @@ for (const kind of KINDS) {
   });
 }
 
+// The three wave 8 kinds (docs/forms-contract.md version 2). Their pages belong to other packages and are pending in the ledger until
+// those land, so each case skips while its route is not built. One success case per kind proves the body, the preset audience, the
+// request id and the thanks route.
+interface Wave8Kind {
+  readonly name: 'brief-request' | 'investor-interest' | 'partner-enquiry';
+  readonly route: string;
+  readonly audience: string;
+  readonly thanks: RegExp;
+  readonly fill: (form: ReturnType<Page['locator']>) => Promise<void>;
+}
+const WAVE8: readonly Wave8Kind[] = [
+  {
+    name: 'brief-request',
+    route: '/briefs/funding-paths/',
+    audience: 'startup',
+    thanks: /\/briefs\/thanks\/$/,
+    fill: async (form) => {
+      await form.locator('[name="name"]').fill('Test Founder');
+      await form.locator('[name="email"]').fill('founder@example.org');
+    },
+  },
+  {
+    name: 'investor-interest',
+    route: '/investors/interest/',
+    audience: 'investor',
+    thanks: /\/investors\/interest\/thanks\/$/,
+    fill: async (form) => {
+      await form.locator('[name="name"]').fill('Test Investor');
+      await form.locator('[name="email"]').fill('investor@example.org');
+    },
+  },
+  {
+    name: 'partner-enquiry',
+    route: '/network/partners/enquire/',
+    audience: 'partner',
+    thanks: /\/network\/partners\/enquire\/thanks\/$/,
+    fill: async (form) => {
+      await form.locator('[name="name"]').fill('Test Partner');
+      await form.locator('[name="email"]').fill('partner@example.org');
+      await form.locator('[name="company"]').fill('Example Legal LLP');
+      await form.locator('[name="companyUrl"]').fill('https://example.org');
+      await form.locator('[name="partnerCategory"]').selectOption('legal');
+      await form.locator('[name="offer"]').fill('Fixed-fee company formation for founders, with the terms written on a page.');
+    },
+  },
+];
+
+for (const kind of WAVE8) {
+  test.describe(`${kind.name} form (wave 8)`, () => {
+    test.beforeEach(() => {
+      test.skip(!isBuilt(kind.route), `${kind.route} is not built yet`);
+    });
+
+    test('success sends the kind, the preset audience and a request id, then opens the thanks page', async ({ page, baseURL }) => {
+      const seen = watch(page, baseURL ?? '', [ENDPOINT_ORIGIN]);
+      const mock = await mockEndpoint(page, ok);
+      await page.clock.install();
+      await page.goto(kind.route);
+      const form = page.locator('form[data-intake-form]').first();
+      const mode = await form.getAttribute('data-mode');
+      if (process.env.E2E_REQUIRE_ENDPOINT === '1') expect(mode, `${kind.route} must be in endpoint mode in the forms build`).toBe('endpoint');
+      test.skip(mode !== 'endpoint', `${kind.route} is not in endpoint mode in this build`);
+      await kind.fill(form);
+      await form.locator('[name="consent"]').check();
+      await settle(page);
+      await submit(page);
+      await expect(page).toHaveURL(kind.thanks);
+      expect(mock.bodies).toHaveLength(1);
+      expect(mock.bodies[0]).toMatchObject({ form: kind.name, audience: kind.audience, consent: true, website: '' });
+      expect((mock.bodies[0] as { requestId: string }).requestId).toMatch(UUID_V4);
+      expect(seen.consoleErrors).toEqual([]);
+      expect(seen.thirdParty, 'only the mocked endpoint may be contacted').toEqual([]);
+    });
+
+    test('it never offers an email fallback: no mailbox exists for this kind', async ({ page }) => {
+      await page.goto(kind.route);
+      const form = page.locator('form[data-intake-form]').first();
+      await expect(form).not.toHaveAttribute('data-mailto', /./);
+      expect(await form.getAttribute('data-mode')).not.toBe('mailto');
+    });
+  });
+}
+
 // Without JavaScript (code-security P1-1). A form with no method submits as a GET query string, which puts the visitor's name, email
 // and message in the URL, the browser history and the server log. planForm (src/data/forms.ts) therefore makes every form
 // method="post" and ships the button disabled unless the browser can POST to the endpoint. The endpoint origin is also the proof that
@@ -245,6 +360,8 @@ test.describe('without JavaScript', () => {
       expect(fields.get('email')).toBe('founder@example.org');
       expect(fields.get('consent')).toBe('on');
       expect(fields.get('website')).toBe('');
+      expect(fields.get('audience'), 'the audience rides in the post').toBe('startup');
+      expect(fields.get('requestId'), 'a native post carries an empty id and the server generates one').toBe('');
       if (kind.name === 'apply') expect(fields.get('redirect')).toMatch(/\/apply\/thanks\/$/);
     });
   }

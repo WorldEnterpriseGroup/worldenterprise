@@ -1,4 +1,5 @@
 import { isDeskId } from '../data/desks.ts';
+import { FAMILIES } from '../data/families.ts';
 import { MACHINE_ROUTES, routes } from '../data/routes.ts';
 import type { RouteRow } from '../data/routes.ts';
 
@@ -122,8 +123,18 @@ function pagesEntryExists(prefixSegments: string[], param: string, ctx: RouteCon
   return ids.has(base) || ids.has(`${base}/index`);
 }
 
+/**
+ * The hub of a page family whose entries live in the `pages` collection, mapped to the entry id that holds its copy (`<folder>/index`, the
+ * `program/index` precedent). A hub with no such entry is pending: a static `index.astro` alone must not publish an empty hub on fallback copy.
+ */
+const HUB_ENTRY_IDS: ReadonlyMap<string, string> = new Map(
+  FAMILIES.flatMap((family) => (family.collection === 'pages' && family.hub !== undefined ? [[family.hub.path, `${family.folder}/index`] as const] : [])),
+);
+
 /** Whether a ledger path is backed by a page file (and, for dynamic pages, by a published entry). */
 export function routeExists(path: string, ctx: RouteContext): boolean {
+  const hubEntry = HUB_ENTRY_IDS.get(path);
+  if (hubEntry !== undefined && ctx.entryIds.pages?.has(hubEntry) !== true) return false;
   for (const page of ctx.pageRoutes) {
     if (!page.dynamic) {
       if (page.pattern === path) return true;

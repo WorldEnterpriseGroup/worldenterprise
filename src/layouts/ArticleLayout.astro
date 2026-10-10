@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import CtaEnd from '../components/cta/CtaEnd.astro';
 import CiteThis from '../components/geo/CiteThis.astro';
 import HeroArticle from '../components/hero/HeroArticle.astro';
 import RelatedRail from '../components/blocks/RelatedRail.astro';
@@ -30,7 +31,7 @@ type Props = Omit<PageMeta, 'updated'> & {
   related?: readonly { readonly kind: string; readonly title: string; readonly href: string }[];
 };
 
-const { topic, publishedDate, updatedDate, readingMinutes, headings = [], sources = [], related = [], ...meta } = Astro.props;
+const { topic, publishedDate, updatedDate, readingMinutes, headings = [], sources = [], related = [], cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const toc = headings.filter((h) => h.depth === 2);
 const state = await getRouteState();
@@ -91,4 +92,5 @@ const article = articleNode({ path: meta.path, headline: meta.title, description
       <RelatedRail items={related} />
     </div>
   </div>
+  <slot name="cta-end"><CtaEnd path={meta.path} collection="insights" topic={topic} cta={cta} /></slot>
 </BaseLayout>

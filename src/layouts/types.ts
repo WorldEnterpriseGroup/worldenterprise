@@ -1,5 +1,6 @@
 import type { SlotId } from '../assets/photo/slots.ts';
 import type { HeroArtProps, HeroCta, HeroMeasure } from '../components/hero/types.ts';
+import type { CtaVariant } from '../data/cta/types.ts';
 import type { Crumb } from '../lib/breadcrumbs.ts';
 import type { PreloadImage } from '../lib/image-type.ts';
 import type { JsonLdNode, PageSchemaType } from '../lib/schema.ts';
@@ -27,6 +28,8 @@ export interface PageMeta {
   jsonLd?: readonly JsonLdNode[];
   /** LCP image to preload. */
   preloadImage?: PreloadImage;
+  /** The frontmatter `cta` override of the document: which call to action closes the page (src/data/cta, contracts section 6.1). */
+  cta?: { readonly variant: CtaVariant; readonly briefId?: string | undefined } | undefined;
 }
 
 /** Hero options for the layouts that open with a hero. Each layout supplies the defaults that suit its template. */

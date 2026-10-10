@@ -12,4 +12,6 @@ const { path = '/', ...meta } = Astro.props;
   <slot name="hero" />
   <slot />
   <slot name="after" />
+  <!-- The home page closes with its own band today; WP-62 fills this slot with the audience strip and the default band. -->
+  <slot name="cta-end" />
 </BaseLayout>

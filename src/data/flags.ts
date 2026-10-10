@@ -17,6 +17,11 @@ export const flags = {
   pbcWording: false,
   /** FLAG-FOCUS. Focus Shifts confirmed as used in seat operations. */
   focusShiftConfirmed: false,
+  /**
+   * D-23, DP-W8-9. When true, the brief request form shows the optional "email me related briefs and articles" checkbox. It stays OFF
+   * until the privacy notice states CRM use and retention (OP-RETAIN) and counsel has reviewed the follow-up sequence.
+   */
+  briefUpdates: false,
 } as const;
 
 export type Flags = typeof flags;
