@@ -45,9 +45,9 @@ test('the hub entry exists, carries no family object and fits the page schema', 
   assert.ok(hub.data.description.length >= 50 && hub.data.description.length <= 160);
 });
 
-test('every document title fits in the title limit once the site name is added', () => {
+test('every title fits in the title limit once the site name is added; ComparePage passes only `title` to the layout, so seoTitle cannot rescue a long one', () => {
   for (const page of loadComparePages()) {
-    const effective = pageTitle(page.data.seoTitle ?? page.data.title);
+    const effective = pageTitle(page.data.title);
     assert.ok(effective.length <= TITLE_MAX, `${page.path}: "${effective}" is ${effective.length} characters`);
   }
 });
