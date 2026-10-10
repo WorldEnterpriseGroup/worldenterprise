@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { parse } from 'yaml';
-import { INSIGHT_SLUGS } from '../../../src/data/routes.ts';
 import { PLAYBOOK_TITLES, TEMPLATE_TITLES } from '../../../src/components/insights/related.ts';
 import { splitFrontmatter, visibleWords } from './words.ts';
 
@@ -13,16 +12,34 @@ interface Front {
 }
 
 const root = new URL('../../../src/content/insights/', import.meta.url);
-const OWNED: Record<string, readonly string[]> = { dream: INSIGHT_SLUGS.slice(0, 4), build: INSIGHT_SLUGS.slice(4, 9) };
+// The articles WP-05 wrote. Later articles in the same desks follow tests/unit/wp-60/article-rubric.test.ts; these checks stay on the originals,
+// whose files are pinned byte for byte by tests/unit/wp-60/existing-articles.test.ts (decision D-20: no count of articles is pinned).
+const OWNED: Record<string, readonly string[]> = {
+  dream: [
+    'bottom-up-market-sizing-for-a-first-saas',
+    'customer-discovery-interviews-without-false-positives',
+    'is-your-saas-idea-a-business-or-a-feature',
+    'write-the-problem-brief-before-the-code',
+  ],
+  build: [
+    'an-operating-rhythm-for-a-remote-offshore-team',
+    'architecture-decisions-to-defer-in-the-first-six-months',
+    'build-versus-buy-for-auth-billing-and-email',
+    'cutting-an-mvp-the-cut-line-test',
+    'what-a-dedicated-team-seat-is-and-is-not',
+  ],
+};
 const denylist = JSON.parse(readFileSync(new URL('../../../claims-denylist.json', import.meta.url), 'utf8')) as { rules: { id: string; pattern: string; flags: string }[] };
 const banned = [/\bguarantee[sd]?\b/i, /\bpremier\b/i, /\bcertified\b/i, /\bsuccess[- ]fees?\b/i, /\btrusted by\b/i, /\btestimonials?\b/i, /!\s/u];
 const emoji = /\p{Extended_Pictographic}/u;
 
 for (const [desk, slugs] of Object.entries(OWNED)) {
-  const files = readdirSync(new URL(`${desk}/`, root)).filter((f) => f.endsWith('.mdx')).sort();
-  test(`${desk} desk has exactly the planned articles`, () => {
-    assert.deepEqual(files.map((f) => f.replace(/\.mdx$/, '')).sort(), [...slugs].sort());
+  const present = readdirSync(new URL(`${desk}/`, root)).filter((f) => f.endsWith('.mdx')).sort();
+  test(`${desk} desk still holds the planned articles`, () => {
+    const names = present.map((f) => f.replace(/\.mdx$/, ''));
+    for (const slug of slugs) assert.ok(names.includes(slug), `${slug} is missing from the ${desk} desk`);
   });
+  const files = present.filter((f) => slugs.includes(f.replace(/\.mdx$/, '')));
   for (const file of files) {
     const raw = readFileSync(new URL(`${desk}/${file}`, root), 'utf8');
     const { front, body } = splitFrontmatter(raw);
