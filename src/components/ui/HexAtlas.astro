@@ -69,7 +69,9 @@ const { cells, label } = Astro.props;
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
       .hexatlas li {
-        animation: hexatlas-assemble linear both;
+        animation-name: hexatlas-assemble;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
         animation-range: entry 0% entry 55%;
 

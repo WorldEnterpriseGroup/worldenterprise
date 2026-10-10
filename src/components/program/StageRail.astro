@@ -143,8 +143,12 @@ const stateOf = (index: number): 'done' | 'current' | 'next' => (index < current
 
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
+      /* Longhands on purpose: the build folds `animation` plus `animation-timeline` into one shorthand, and a browser whose
+         `animation` shorthand does not take a timeline yet drops the whole declaration. The longhands survive it. */
       .stagerail__stop[data-state='current']::after {
-        animation: stagerail-fill linear both;
+        animation-name: stagerail-fill;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
         animation-range: entry 20% cover 45%;
       }

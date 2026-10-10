@@ -172,7 +172,9 @@ const cells = flower(80, 70, R);
        default style is the finished line, so a browser without scroll-driven animation shows the same picture. */
     @supports (animation-timeline: view()) {
       .altitude__stage:not(:last-child)::after {
-        animation: altitude-draw linear both;
+        animation-name: altitude-draw;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
         animation-range: entry 30% cover 40%;
       }

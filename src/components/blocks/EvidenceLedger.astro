@@ -94,7 +94,9 @@ const basisLabel: Record<Row['basis'], string> = {
        upward only: a downward one would overflow the scrolling wrapper and add a scrollbar. The default style is the finished table. */
     @supports (animation-timeline: view()) {
       .evidence tbody tr {
-        animation: evidence-stack linear both;
+        animation-name: evidence-stack;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
         animation-range: entry 0% entry 90%;
       }

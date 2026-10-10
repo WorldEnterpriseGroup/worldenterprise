@@ -135,7 +135,9 @@ const { labelledby } = Astro.props;
     @media (prefers-reduced-motion: no-preference) {
       @supports (animation-timeline: view()) {
         .altitude__link {
-          animation: altitude-rise linear both;
+          animation-name: altitude-rise;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
           animation-timeline: view();
           animation-range: entry 0% entry 60%;
         }
@@ -149,7 +151,9 @@ const { labelledby } = Astro.props;
         }
 
         .altitude ol::after {
-          animation: altitude-rail linear both;
+          animation-name: altitude-rail;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
           animation-timeline: view();
           animation-range: entry 20% cover 40%;
         }
