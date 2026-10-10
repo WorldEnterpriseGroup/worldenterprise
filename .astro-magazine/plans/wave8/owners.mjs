@@ -18,7 +18,7 @@ const briefs = {
 };
 const segments = ['first-time-founders', 'technical-founders', 'non-technical-founders', 'solo-founders', 'corporate-innovators', 'student-founders', 'second-career-founders', 'global-remote-founders'];
 const industries = ['fintech', 'healthtech', 'edtech', 'climate-tech', 'legaltech', 'logistics', 'proptech'];
-const compare = ['incubator-vs-accelerator', 'incubator-vs-venture-studio', 'dedicated-team-vs-agency', 'dedicated-team-vs-freelancers', 'build-vs-buy', 'onshore-vs-offshore-teams', 'bootstrapping-vs-outside-funding'];
+const compare = ['incubator-vs-other-programs', 'incubator-vs-venture-studio', 'dedicated-team-vs-agency', 'dedicated-team-vs-freelancers', 'build-vs-buy', 'onshore-vs-offshore-teams', 'bootstrapping-vs-outside-funding'];
 const journey = ['index', 'after-you-apply', 'first-months', 'onboarding-checklist'];
 
 const cases = [];

@@ -1,16 +1,22 @@
 @layer utilities {
-  /* Scroll-driven reveal, only where supported and only when motion is welcome. */
+  /* Scroll-driven reveal, only where supported and only when motion is welcome. Every scroll-driven rule below spells its animation as
+     longhands: the build folds `animation` plus `animation-timeline` into one shorthand, and a browser whose `animation` shorthand does not
+     take a timeline yet drops the whole declaration, so the motion never ran there (WP-45 finding, closed by WP-60). The longhands survive. */
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
       .reveal {
-        animation: we-reveal linear both;
+        animation-name: we-reveal;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
         animation-range: entry 0% entry 40%;
       }
 
       /* Children of a stagger group arrive one after another along the same timeline. */
       .reveal-stagger > * {
-        animation: we-reveal linear both;
+        animation-name: we-reveal;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
         animation-range: entry 0% entry 40%;
 
@@ -30,7 +36,9 @@
 
       /* Hero atlas art drifts slower than the page. Decorative only. */
       .hero-art {
-        animation: we-drift linear both;
+        animation-name: we-drift;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: scroll(root block);
         animation-range: 0 60vh;
       }
@@ -43,19 +51,21 @@
         z-index: var(--z-header);
         background: var(--color-accent);
         transform-origin: left;
-        animation: we-grow linear both;
+        animation-name: we-grow;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: scroll(root);
       }
     }
   }
 
+  /* The reveal moves; it does not fade. Text is never drawn at partial opacity, so axe never measures a mid-animation contrast and a
+     reader sees every word at full strength before it arrives (the rule WP-45 set for the newer scroll-driven moments). */
   @keyframes we-reveal {
     from {
-      opacity: 0.25;
       transform: translateY(1rem);
     }
     to {
-      opacity: 1;
       transform: none;
     }
   }
