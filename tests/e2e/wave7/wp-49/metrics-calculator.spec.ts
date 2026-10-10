@@ -206,21 +206,33 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
     await expect(page.locator('main').getByText('WE makes no promise of funding.').first()).toBeVisible();
   });
 
-  test('the page passes axe empty, filled and with errors, and nothing overflows', async ({ page }) => {
+  // One test per state, so each has its own time budget: a full axe scan of this page is slow on a loaded runner.
+  const scan = async (page: Page, label: string): Promise<void> => {
+    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    expect(results.violations.map((v) => `${label} ${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
+    expect(await findOverflow(page)).toEqual([]);
+  };
+
+  test('the empty page passes axe and nothing overflows', async ({ page }) => {
     await page.goto(ROUTE);
     await page.waitForLoadState('networkidle');
-    const scan = async (label: string) => {
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
-      expect(results.violations.map((v) => `${label} ${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
-    };
-    await scan('empty');
+    await scan(page, 'empty');
+  });
+
+  test('the filled page passes axe and nothing overflows', async ({ page }) => {
+    await page.goto(ROUTE);
+    await page.waitForLoadState('networkidle');
     await fillMonth(page);
     await expect(value(page, 'runway')).toHaveText('8.0 months');
-    await scan('filled');
+    await scan(page, 'filled');
+  });
+
+  test('the page with errors passes axe and nothing overflows', async ({ page }) => {
+    await page.goto(ROUTE);
+    await page.waitForLoadState('networkidle');
     await fillMonth(page, { cash: 'abc', grossMarginPct: '120' });
     await expect(page.locator('[data-note="cash"]')).toContainText('enter a number');
-    await scan('errors');
-    expect(await findOverflow(page)).toEqual([]);
+    await scan(page, 'errors');
   });
 
   test('every field is labelled, reachable by keyboard, and at least 24px tall', async ({ page }) => {

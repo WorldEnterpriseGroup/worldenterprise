@@ -2,12 +2,14 @@
 import { getEntry, render } from 'astro:content';
 import EvidenceRoom from '../../components/islands/we-evidence-room/EvidenceRoom.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
+import { webApplicationNode } from '../../components/tools/webApplicationNode.ts';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 
 const entry = await getEntry('pages', 'tools/evidence-room');
 if (!entry) throw new Error('Missing content entry pages/tools/evidence-room (src/content/pages/tools/evidence-room.mdx).');
 const { Content } = await render(entry);
 const { data } = entry;
+const PATH = '/tools/evidence-room/';
 ---
 
 <ToolLayout
@@ -15,11 +17,12 @@ const { data } = entry;
   description={data.description}
   eyebrow={data.eyebrow}
   lead="The data room and readiness guides as one checklist. Tick, filter, print or copy."
-  path="/tools/evidence-room/"
+  path={PATH}
   primary={{ label: 'Read the data room guide', href: '/fundability/data-room/' }}
   secondary={{ label: 'Investor readiness checklist', href: '/fundability/investor-readiness-checklist/' }}
   updated={data.updated}
   draft={data.draft}
+  jsonLd={[webApplicationNode({ path: PATH, name: data.title, description: data.description })]}
   crumbs={[
     { label: 'Home', href: '/' },
     { label: 'Tools', href: '/tools/' },

@@ -4,12 +4,14 @@ import { jumpTo } from '../../components/hero/ctas.ts';
 import MetricsCalculator from '../../components/islands/we-calc/MetricsCalculator.astro';
 import FormulaTable from '../../components/tools/FormulaTable.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
+import { webApplicationNode } from '../../components/tools/webApplicationNode.ts';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 
 const entry = await getEntry('pages', 'tools/metrics-calculator');
 if (!entry) throw new Error('Missing content entry pages/tools/metrics-calculator (src/content/pages/tools/metrics-calculator.mdx).');
 const { Content } = await render(entry);
 const { data } = entry;
+const PATH = '/tools/metrics-calculator/';
 ---
 
 <ToolLayout
@@ -17,11 +19,12 @@ const { data } = entry;
   description={data.description}
   eyebrow={data.eyebrow}
   lead="One month of your numbers in, nine results out, every formula shown."
-  path="/tools/metrics-calculator/"
+  path={PATH}
   primary={jumpTo('Start calculating', '#calculator')}
   secondary={{ label: 'Read the formulas', href: '#formulas' }}
   updated={data.updated}
   draft={data.draft}
+  jsonLd={[webApplicationNode({ path: PATH, name: data.title, description: data.description })]}
   crumbs={[
     { label: 'Home', href: '/' },
     { label: 'Tools', href: '/tools/' },

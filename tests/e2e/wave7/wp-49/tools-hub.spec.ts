@@ -13,6 +13,27 @@ const TOOLS = [
   { name: 'Evidence room builder', route: '/tools/evidence-room/' },
 ] as const;
 
+// The two tool pages describe themselves as a WebApplication. The JSON-LD validator requires an id, a name and a url and forbids a price.
+for (const tool of TOOLS.filter((t) => t.route !== '/tools/team-composer/')) {
+  test(`${tool.route} carries one WebApplication node with an id, a name and a url, and no price`, async ({ page }) => {
+    test.skip(!isBuilt(tool.route), `${tool.route} is not built`);
+    await page.goto(tool.route);
+    const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+    const nodes = blocks.flatMap((block) => {
+      const parsed: unknown = JSON.parse(block);
+      const graph = (parsed as { '@graph'?: unknown[] })['@graph'];
+      return (Array.isArray(graph) ? graph : [parsed]) as Record<string, unknown>[];
+    });
+    const apps = nodes.filter((node) => node['@type'] === 'WebApplication');
+    expect(apps).toHaveLength(1);
+    const app = apps[0] ?? {};
+    expect(app['url']).toBe(`https://worldenterprise.org${tool.route}`);
+    expect(app['@id']).toBe(`https://worldenterprise.org${tool.route}#app`);
+    expect(String(app['name'])).not.toHaveLength(0);
+    for (const key of ['offers', 'price', 'priceCurrency', 'priceSpecification']) expect(app).not.toHaveProperty(key);
+  });
+}
+
 test.describe('tools hub (the project sets the viewport: 1440 and 390)', () => {
   test.beforeEach(() => {
     test.skip(!isBuilt(HUB), 'the tools hub is not built');

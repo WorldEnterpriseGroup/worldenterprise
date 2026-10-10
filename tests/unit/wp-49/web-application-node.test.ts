@@ -28,6 +28,16 @@ for (const tool of TOOLS) {
   });
 }
 
+for (const tool of TOOLS) {
+  test(`${tool.page} builds the WebApplication node for its own route and hands it to the layout`, () => {
+    const source = readFileSync(join(root, tool.page), 'utf8');
+    assert.match(source, /import \{ webApplicationNode \} from '\.\.\/\.\.\/components\/tools\/webApplicationNode\.ts';/);
+    assert.ok(source.includes(`const PATH = '${tool.path}';`), `${tool.page} names its route once`);
+    assert.match(source, /path=\{PATH\}/);
+    assert.match(source, /jsonLd=\{\[webApplicationNode\(\{ path: PATH, name: data\.title, description: data\.description \}\)\]\}/);
+  });
+}
+
 test('each tool page has a content entry the schema accepts: a title, a description of 50 to 160 characters and the funding claim', () => {
   for (const rel of ['src/content/pages/tools/index.mdx', ...TOOLS.map((tool) => tool.content)]) {
     const source = readFileSync(join(root, rel), 'utf8');
