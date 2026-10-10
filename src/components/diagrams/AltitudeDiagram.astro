@@ -153,13 +153,47 @@ const cells = flower(80, 70, R);
     }
   }
 
+  @media (min-width: 62rem) {
+    .altitude__stage:not(:last-child)::after {
+      background: var(--color-accent);
+      transform-origin: left;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .altitude__stage:not(:last-child)::after {
+      forced-color-adjust: none;
+      background: CanvasText;
+    }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
+    /* The stage rail: the link between one altitude and the next draws as the diagram scrolls in, the second after the first. The
+       default style is the finished line, so a browser without scroll-driven animation shows the same picture. */
+    @supports (animation-timeline: view()) {
+      .altitude__stage:not(:last-child)::after {
+        animation: altitude-draw linear both;
+        animation-timeline: view();
+        animation-range: entry 30% cover 40%;
+      }
+
+      .altitude__stage:nth-child(2)::after {
+        animation-range: entry 45% cover 50%;
+      }
+    }
+
     .altitude__cell {
       transition: fill var(--dur-base) var(--ease-out);
     }
 
     .altitude__stage:hover .altitude__cell:not(.is-core):not(.is-lead) {
       fill: var(--we-mist);
+    }
+  }
+
+  @keyframes altitude-draw {
+    from {
+      transform: scaleX(0);
     }
   }
 </style>

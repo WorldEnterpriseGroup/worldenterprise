@@ -90,12 +90,28 @@ const basisLabel: Record<Row['basis'], string> = {
   }
 
   @media (prefers-reduced-motion: no-preference) {
+    /* The rows stack in as the ledger scrolls into view, one after another, each rising from just above its place. The offset is
+       upward only: a downward one would overflow the scrolling wrapper and add a scrollbar. The default style is the finished table. */
+    @supports (animation-timeline: view()) {
+      .evidence tbody tr {
+        animation: evidence-stack linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 90%;
+      }
+    }
+
     .evidence tbody tr {
       transition: background-color var(--dur-fast) var(--ease-out);
     }
 
     .evidence tbody tr:hover {
       background: var(--color-bg-soft);
+    }
+  }
+
+  @keyframes evidence-stack {
+    from {
+      translate: 0 calc(-1 * var(--sp-3));
     }
   }
 </style>

@@ -4,6 +4,11 @@ import Accordion from '../components/ui/Accordion.astro';
 import Button from '../components/ui/Button.astro';
 import Callout from '../components/ui/Callout.astro';
 import Card from '../components/ui/Card.astro';
+import ClaimCard from '../components/ui/ClaimCard.astro';
+import Divider from '../components/ui/Divider.astro';
+import FeatureCard from '../components/ui/FeatureCard.astro';
+import LedgerCard from '../components/ui/LedgerCard.astro';
+import StageRail from '../components/program/StageRail.astro';
 import CellTrail from '../components/ui/CellTrail.astro';
 import CtaBand from '../components/ui/CtaBand.astro';
 import DataTable from '../components/ui/DataTable.astro';
@@ -77,6 +82,7 @@ const headings = [
   { depth: 2, slug: 'colour', text: 'Color' },
   { depth: 2, slug: 'type', text: 'Type' },
   { depth: 2, slug: 'components', text: 'Components' },
+  { depth: 2, slug: 'system', text: 'Visual system' },
   { depth: 2, slug: 'states', text: 'States' },
   { depth: 2, slug: 'diagrams', text: 'Diagrams and panels' },
   { depth: 2, slug: 'motion', text: 'Motion' },
@@ -200,6 +206,44 @@ const headings = [
     </div>
   </Section>
 
+  <Section id="system" labelledby="h-system" tone="tint">
+    <h2 id="h-system">Visual system</h2>
+    <p class="muted">The second layer of the system: pale section tints, three card variants that take a width from their container, dividers, and the stage rail. All of it is built from the tokens above, on the light theme only.</p>
+    <div class="stack stack--loose">
+      <div class="sg-tints">
+        <p class="sg-tint sg-tint--blue">Tint blue</p>
+        <p class="sg-tint sg-tint--sand">Tint sand</p>
+        <p class="sg-tint sg-tint--stone">Tint stone</p>
+      </div>
+      <Grid min="20rem">
+        <FeatureCard title="Feature card" mark="1" eyebrow="One idea">
+          <p>A mark, a large title and a paragraph, no image. It lays itself out from its own width.</p>
+        </FeatureCard>
+        <FeatureCard title="Linked feature card" mark="2" href="#system" tone="tint">
+          <p>With a link the title is the card's single target and the whole card is clickable.</p>
+        </FeatureCard>
+      </Grid>
+      <LedgerCard
+        title="Ledger card"
+        eyebrow="Claim and source"
+        rows={[
+          { claim: 'A statement the site stands behind.', source: 'The page that backs it', href: '#system' },
+          { claim: 'A second statement.', source: 'A published framework' },
+        ]}
+      />
+      <Grid min="20rem">
+        <ClaimCard label="Claim card" claim="WE promises no funding. WE helps a founder become ready for it." basis="primary-source" source="The program terms" href="#system" />
+        <ClaimCard claim="A claim card carries one sentence and the basis it rests on, never a number." basis="editorial-judgement" />
+      </Grid>
+      <div class="sg-dividers">
+        <Divider variant="hex" />
+        <Divider variant="cells" />
+        <Divider variant="hairline" />
+      </div>
+      <StageRail current="build" />
+    </div>
+  </Section>
+
   <Section id="states" labelledby="h-states">
     <h2 id="h-states">States</h2>
     <p class="muted">Default, hover, focus-visible, disabled and error for the interactive primitives. Hover and focus are pinned with classes so they can be reviewed in a screenshot.</p>
@@ -273,6 +317,7 @@ const headings = [
     </HeroConsole>
     <HeroArticle as="h2" eyebrow="H4 Article" title="Article hero" lead="Single articles. The copy starts where the article body starts." byline="Editorial team" published={new Date('2026-01-01')} />
     <HeroCompact as="h2" eyebrow="H5 Compact" title="Compact hero" lead="Utility and legal pages. Copy only, with an optional action." primary={{ label: 'Primary action', href: '#heroes' }} />
+    <HeroCompact as="h2" variant="statement" eyebrow="H6 Statement" title="The title is the claim" lead="Marketing pages with no media. The title is set large over the reading column, on a pale wash." primary={{ label: 'Primary action', href: '#heroes' }} measure="prose" />
   </section>
 
   <Section id="contrast" labelledby="h-contrast">
@@ -400,5 +445,29 @@ const headings = [
 
   .sg-figure {
     max-inline-size: 8rem;
+  }
+
+  .sg-tints {
+    display: grid;
+    gap: var(--sp-3);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  }
+
+  .sg-tint {
+    padding: var(--sp-4);
+    border: 1px solid var(--tint-line);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-family: var(--ff-display);
+    font-weight: 600;
+  }
+
+  .sg-tint--blue { background: var(--tint-blue); }
+  .sg-tint--sand { background: var(--tint-sand); }
+  .sg-tint--stone { background: var(--tint-stone); }
+
+  .sg-dividers {
+    display: grid;
+    gap: var(--sp-5);
   }
 </style>
