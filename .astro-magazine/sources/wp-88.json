@@ -307,6 +307,51 @@
       "fetchedAt": "2026-10-10T23:01:05Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "nist-ssdf",
+      "url": "https://csrc.nist.gov/projects/ssdf",
+      "title": "Secure Software Development Framework (SSDF)",
+      "publisher": "National Institute of Standards and Technology, Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T23:08:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-csf",
+      "url": "https://www.nist.gov/cyberframework",
+      "title": "Cybersecurity Framework",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T23:08:15Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cisa-secure-by-design",
+      "url": "https://www.cisa.gov/securebydesign",
+      "title": "Secure by Design",
+      "publisher": "Cybersecurity and Infrastructure Security Agency",
+      "fetchedAt": "2026-10-10T23:08:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ec-cra",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/cyber-resilience-act",
+      "title": "Cyber Resilience Act",
+      "publisher": "European Commission, Shaping Europe's digital future",
+      "fetchedAt": "2026-10-10T23:08:25Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "aicpa-soc",
+      "url": "https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2",
+      "title": "SOC Suite of Services",
+      "publisher": "American Institute of CPAs (AICPA and CIMA)",
+      "fetchedAt": "2026-10-10T23:08:30Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -1366,6 +1411,163 @@
           "sourceId": "usc-15-7001",
           "locator": "7001(c)",
           "quote": "has affirmatively consented to such use and has not withdrawn such consent"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/sectors/security-software-considerations-before-you-build.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "Helping organizations to better understand and improve their management of cybersecurity risk",
+          "kind": "paraphrase",
+          "sourceId": "nist-csf",
+          "locator": "Page description",
+          "quote": "Helping organizations to better understand and improve their management of cybersecurity risk"
+        },
+        {
+          "id": "A2",
+          "sentence": "For industry, government, and organizations to reduce cybersecurity risks",
+          "kind": "paraphrase",
+          "sourceId": "nist-csf",
+          "locator": "Audience",
+          "quote": "For industry, government, and organizations to reduce cybersecurity risks"
+        },
+        {
+          "id": "A3",
+          "sentence": "a set of fundamental, sound, and secure software development practices",
+          "kind": "paraphrase",
+          "sourceId": "nist-ssdf",
+          "locator": "About",
+          "quote": "The Secure Software Development Framework (SSDF) is a set of fundamental, sound, and secure software development practices."
+        },
+        {
+          "id": "A4",
+          "sentence": "NIST Special Publication (SP) 800-218",
+          "kind": "paraphrase",
+          "sourceId": "nist-ssdf",
+          "locator": "Publication",
+          "quote": "NIST Special Publication (SP) 800-218"
+        },
+        {
+          "id": "A5",
+          "sentence": "Recommendations for Mitigating the Risk of Software Vulnerabilities",
+          "kind": "paraphrase",
+          "sourceId": "nist-ssdf",
+          "locator": "Publication subtitle",
+          "quote": "Recommendations for Mitigating the Risk of Software Vulnerabilities"
+        },
+        {
+          "id": "A6",
+          "sentence": "software producers and acquirers can use it to foster their communications",
+          "kind": "paraphrase",
+          "sourceId": "nist-ssdf",
+          "locator": "Use",
+          "quote": "software producers and acquirers can use it to foster their communications"
+        },
+        {
+          "id": "A7",
+          "sentence": "Updated October 06, 2026",
+          "kind": "paraphrase",
+          "sourceId": "nist-ssdf",
+          "locator": "Page date",
+          "quote": "Created February 25, 2021, Updated October 06, 2026"
+        },
+        {
+          "id": "A8",
+          "sentence": "It's time to build cybersecurity into the design and manufacture of technology products",
+          "kind": "paraphrase",
+          "sourceId": "cisa-secure-by-design",
+          "locator": "Opening",
+          "quote": "It's time to build cybersecurity into the design and manufacture of technology products."
+        },
+        {
+          "id": "A9",
+          "sentence": "Every technology provider must take ownership at the executive level to ensure their products are secure by design",
+          "kind": "paraphrase",
+          "sourceId": "cisa-secure-by-design",
+          "locator": "Executive ownership",
+          "quote": "Every technology provider must take ownership at the executive level to ensure their products are secure by design."
+        },
+        {
+          "id": "A10",
+          "sentence": "SOC as a suite of offerings that CPAs may provide in connection with system-level controls of a service organization",
+          "kind": "definition",
+          "sourceId": "aicpa-soc",
+          "locator": "SOC suite",
+          "quote": "CPAs may provide in connection with system-level controls of a service organization"
+        },
+        {
+          "id": "A11",
+          "sentence": "SOC 2 Reporting on an Examination of Controls at a Service Organization",
+          "kind": "paraphrase",
+          "sourceId": "aicpa-soc",
+          "locator": "SOC 2 guide",
+          "quote": "SOC 2® Reporting on an Examination of Controls at a Service Organization"
+        },
+        {
+          "id": "A12",
+          "sentence": "Relevant to Security, Availability, Processing Integrity, Confidentiality, or Privacy",
+          "kind": "paraphrase",
+          "sourceId": "aicpa-soc",
+          "locator": "SOC 2 scope",
+          "quote": "Relevant to Security, Availability, Processing Integrity, Confidentiality, or Privacy"
+        },
+        {
+          "id": "A13",
+          "sentence": "the CRA aims to safeguard consumers and businesses buying software or hardware products with digital elements",
+          "kind": "regulation",
+          "sourceId": "ec-cra",
+          "locator": "Scope",
+          "quote": "The CRA aims to safeguard consumers and businesses buying software or hardware products with digital elements."
+        },
+        {
+          "id": "A14",
+          "sentence": "the CRA introduces mandatory cybersecurity requirements for manufacturers",
+          "kind": "regulation",
+          "sourceId": "ec-cra",
+          "locator": "Requirements",
+          "quote": "The CRA introduces mandatory cybersecurity requirements for manufacturers"
+        },
+        {
+          "id": "A15",
+          "sentence": "requires manufacturers to handle vulnerabilities during the lifecycle of their products",
+          "kind": "regulation",
+          "sourceId": "ec-cra",
+          "locator": "Vulnerability handling",
+          "quote": "The CRA also requires manufacturers to handle vulnerabilities during the lifecycle of their products."
+        },
+        {
+          "id": "A16",
+          "sentence": "entered into force on 10 December 2024",
+          "kind": "regulation",
+          "sourceId": "ec-cra",
+          "locator": "Entry into force",
+          "quote": "The CRA entered into force on 10 December 2024."
+        },
+        {
+          "id": "A17",
+          "sentence": "reporting obligations apply as of 11 September 2026",
+          "kind": "regulation",
+          "sourceId": "ec-cra",
+          "locator": "Reporting",
+          "quote": "with reporting obligations to apply as of 11 September 2026."
+        },
+        {
+          "id": "A18",
+          "sentence": "the main obligations introduced by the Act will apply from 11 December 2027",
+          "kind": "regulation",
+          "sourceId": "ec-cra",
+          "locator": "Main obligations",
+          "quote": "The main obligations introduced by the Act will apply from 11 December 2027"
+        },
+        {
+          "id": "A19",
+          "sentence": "7 September 2026",
+          "kind": "paraphrase",
+          "sourceId": "ec-cra",
+          "locator": "Page date",
+          "quote": "7 September 2026"
         }
       ]
     }
