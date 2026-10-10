@@ -1,14 +1,13 @@
 import { expect, test, type Locator, type Page, type Route } from '@playwright/test';
 import { watch } from '../../support/page-guards.ts';
-import { isBuilt } from '../../support/routes.ts';
 
 // WP-63: the gated executive briefs. The squeeze page asks for a name and an email address, sends one brief-request body and opens
 // /briefs/thanks/. The brief text is never on any page, so no case here looks for it.
 //
-// Two modes. The e2e:wave8 job builds the site with no intake endpoint, so the form is disabled and the cases under "no endpoint" run
-// there. The cases under "endpoint mode" need a build with PUBLIC_WE_INTAKE_API_URL set, the way the forms job builds, and skip in any
-// other build; with E2E_REQUIRE_ENDPOINT=1 (the forms job) a form that is not in endpoint mode fails instead. The page.route mock answers
-// every request to the endpoint origin, so nothing leaves the test.
+// Two modes (main's ruling on wave 8 forms). The e2e:wave8 job builds with no intake endpoint, so every form there is disabled and the
+// disabled-mode cases always run. The endpoint-mode cases carry the tag @endpoint in their title and skip unless the form is in endpoint
+// mode; e2e:forms runs them for real with --grep @endpoint against its endpoint build. The page.route mock answers every request to the
+// endpoint origin, so nothing leaves the test.
 
 const ENDPOINT_ORIGIN = 'https://intake.example.test';
 const CORS = {
@@ -46,15 +45,14 @@ async function mockEndpoint(page: Page, respond: (route: Route) => Promise<void>
 
 const ok = (route: Route): Promise<void> => route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
 
-/** Opens a squeeze page and skips unless it is built and, for the endpoint cases, the form is in endpoint mode. */
+/** Opens a squeeze page. An @endpoint case skips unless the form is in endpoint mode; a disabled-mode case asserts the mode. */
 async function open(page: Page, route: string, mode: 'endpoint' | 'disabled'): Promise<Locator> {
-  test.skip(!isBuilt(route), `${route} is not built`);
   await page.clock.install();
   await page.goto(route);
   const form = page.locator(FORM).first();
   const actual = await form.getAttribute('data-mode');
-  if (mode === 'endpoint' && process.env.E2E_REQUIRE_ENDPOINT === '1') expect(actual, `${route} must be in endpoint mode in the forms build`).toBe('endpoint');
-  test.skip(actual !== mode, `${route} is in ${actual ?? 'no'} mode in this build, this case needs ${mode}`);
+  if (mode === 'endpoint') test.skip(actual !== 'endpoint', 'runs in e2e:forms');
+  else expect(actual, `${route} must be disabled in a build with no intake endpoint`).toBe('disabled');
   return form;
 }
 
@@ -70,7 +68,7 @@ const submit = (page: Page): Promise<void> => page.locator(`${FORM} [data-submit
 test.describe('endpoint mode', () => {
   for (const brief of BRIEFS) {
     test.describe(`${brief.id}`, () => {
-      test('success sends one brief-request body with the brief id and opens the thanks page', async ({ page, baseURL }) => {
+      test('@endpoint success sends one brief-request body with the brief id and opens the thanks page', async ({ page, baseURL }) => {
         const seen = watch(page, baseURL ?? '', [ENDPOINT_ORIGIN]);
         const mock = await mockEndpoint(page, ok);
         const form = await open(page, brief.route, 'endpoint');
@@ -86,7 +84,7 @@ test.describe('endpoint mode', () => {
         expect(seen.thirdParty, 'only the mocked endpoint may be contacted').toEqual([]);
       });
 
-      test('a 422 shows the server message next to the field and keeps the answers', async ({ page }) => {
+      test('@endpoint a 422 shows the server message next to the field and keeps the answers', async ({ page }) => {
         await mockEndpoint(page, (route) =>
           route.fulfill({ status: 422, headers: CORS, contentType: 'application/json', body: JSON.stringify({ errors: { email: 'That address was rejected by the server.' } }) }),
         );
@@ -101,7 +99,7 @@ test.describe('endpoint mode', () => {
         await expect(page).not.toHaveURL(/\/briefs\/thanks\/$/);
       });
 
-      test('a 429 gives the wait from Retry-After in minutes and keeps the answers', async ({ page }) => {
+      test('@endpoint a 429 gives the wait from Retry-After in minutes and keeps the answers', async ({ page }) => {
         await mockEndpoint(page, (route) => route.fulfill({ status: 429, headers: { ...CORS, 'access-control-expose-headers': 'Retry-After', 'retry-after': '120' }, body: '' }));
         const form = await open(page, brief.route, 'endpoint');
         await fillRequired(form);
@@ -115,7 +113,7 @@ test.describe('endpoint mode', () => {
     });
   }
 
-  test('keyboard only: the form is filled, consented and sent without the pointer', async ({ page }) => {
+  test('@endpoint keyboard only: the form is filled, consented and sent without the pointer', async ({ page }) => {
     const mock = await mockEndpoint(page, ok);
     const form = await open(page, BRIEFS[0].route, 'endpoint');
     await form.locator('[name="name"]').focus();
@@ -135,7 +133,7 @@ test.describe('endpoint mode', () => {
     expect(mock.bodies[0]).toMatchObject({ form: 'brief-request', briefId: BRIEFS[0].id, consent: true });
   });
 
-  test('keyboard only: a send with nothing filled moves focus to the error summary and sends nothing', async ({ page }) => {
+  test('@endpoint keyboard only: a send with nothing filled moves focus to the error summary and sends nothing', async ({ page }) => {
     const mock = await mockEndpoint(page, ok);
     const form = await open(page, BRIEFS[0].route, 'endpoint');
     await settle(page);
@@ -151,8 +149,7 @@ test.describe('endpoint mode', () => {
     // Reduced motion switches smooth scrolling off, which keeps Playwright's click scrolling from stalling with scripting off.
     test.use({ javaScriptEnabled: false, reducedMotion: 'reduce' });
 
-    test('the native post goes form-encoded to the endpoint and never builds a query string', async ({ page }) => {
-      test.skip(!isBuilt(BRIEFS[0].route), `${BRIEFS[0].route} is not built`);
+    test('@endpoint the native post goes form-encoded to the endpoint and never builds a query string', async ({ page }) => {
       const seen: { method: string; url: string; contentType: string; body: string }[] = [];
       await page.route(`${ENDPOINT_ORIGIN}/**`, async (route) => {
         const request = route.request();
@@ -162,8 +159,7 @@ test.describe('endpoint mode', () => {
       await page.goto(BRIEFS[0].route);
       const form = page.locator(FORM).first();
       const mode = await form.getAttribute('data-mode');
-      if (process.env.E2E_REQUIRE_ENDPOINT === '1') expect(mode, `${BRIEFS[0].route} must be in endpoint mode in the forms build`).toBe('endpoint');
-      test.skip(mode !== 'endpoint', `${BRIEFS[0].route} is not in endpoint mode in this build`);
+      test.skip(mode !== 'endpoint', 'runs in e2e:forms');
 
       await expect(form).toHaveAttribute('method', 'post');
       await expect(form).toHaveAttribute('action', `${ENDPOINT_ORIGIN}/api/intake`);
@@ -212,7 +208,6 @@ test.describe('no endpoint', () => {
 
 test.describe('the pages around the form, in any build', () => {
   test('the hub is indexable and lists the briefs without sending the visitor anywhere off the site', async ({ page, baseURL }) => {
-    test.skip(!isBuilt('/briefs/'), '/briefs/ is not built');
     const seen = watch(page, baseURL ?? '', []);
     await page.goto('/briefs/');
     await expect(page.locator('h1')).toHaveCount(1);
@@ -223,7 +218,6 @@ test.describe('the pages around the form, in any build', () => {
   });
 
   test('the thanks page is noindex, reads nothing from the query string and links onward', async ({ page }) => {
-    test.skip(!isBuilt('/briefs/thanks/'), '/briefs/thanks/ is not built');
     await page.goto('/briefs/thanks/?brief=funding-paths&email=founder%40example.org');
     await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(1);
     await expect(page.locator('h1')).toHaveCount(1);
@@ -233,7 +227,6 @@ test.describe('the pages around the form, in any build', () => {
   });
 
   test('the no-JavaScript path lands on the thanks page: it renders with scripting off', async ({ browser }) => {
-    test.skip(!isBuilt('/briefs/thanks/'), '/briefs/thanks/ is not built');
     const context = await browser.newContext({ javaScriptEnabled: false });
     try {
       const page = await context.newPage();
@@ -246,7 +239,6 @@ test.describe('the pages around the form, in any build', () => {
   });
 
   test('a squeeze page keeps the brief text out of the document: no more than the abstract and the outline', async ({ page }) => {
-    test.skip(!isBuilt(BRIEFS[0].route), `${BRIEFS[0].route} is not built`);
     await page.goto(BRIEFS[0].route);
     const words = (await page.locator('main').innerText()).split(/\s+/).filter(Boolean).length;
     expect(words, 'a squeeze page is an abstract, an outline and a form, never the brief').toBeLessThan(1500);
