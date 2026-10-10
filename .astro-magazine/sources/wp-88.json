@@ -91,6 +91,42 @@
       "fetchedAt": "2026-10-10T22:35:59Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "ed-ferpa",
+      "url": "https://studentprivacy.ed.gov/ferpa",
+      "title": "FERPA",
+      "publisher": "U.S. Department of Education, Student Privacy Policy Office (Protecting Student Privacy)",
+      "fetchedAt": "2026-10-10T22:37:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-34-99-31",
+      "url": "https://www.law.cornell.edu/cfr/text/34/99.31",
+      "title": "34 CFR 99.31: Under what conditions is prior consent not required to disclose information?",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T22:37:45Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-coppa",
+      "url": "https://www.ftc.gov/business-guidance/resources/childrens-online-privacy-protection-rule-six-step-compliance-plan-your-business",
+      "title": "Children's Online Privacy Protection Rule: A Six-Step Compliance Plan for Your Business",
+      "publisher": "Federal Trade Commission",
+      "fetchedAt": "2026-10-10T22:37:36Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ada-web-rule",
+      "url": "https://www.ada.gov/resources/web-rule-first-steps/",
+      "title": "State and Local Governments: First Steps Toward Complying with the Americans with Disabilities Act Title II Web and Mobile App Rule",
+      "publisher": "U.S. Department of Justice, ADA.gov",
+      "fetchedAt": "2026-10-10T22:38:08Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -365,6 +401,171 @@
           "sourceId": "fda-device-software",
           "locator": "Enforcement discretion",
           "quote": "the FDA will exercise enforcement discretion and will not expect manufacturers to submit premarket review"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/sectors/edtech-saas-considerations-before-you-build.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "provides certain rights for parents regarding their children's education records",
+          "kind": "regulation",
+          "sourceId": "ed-ferpa",
+          "locator": "Featured resources",
+          "quote": "provides certain rights for parents regarding their children's education records."
+        },
+        {
+          "id": "A2",
+          "sentence": "an educational agency or institution to which funds have been made available under any program administered by the Secretary",
+          "kind": "regulation",
+          "sourceId": "ed-ferpa",
+          "locator": "99.1(a)",
+          "quote": "this part applies to an educational agency or institution to which funds have been made available"
+        },
+        {
+          "id": "A3",
+          "sentence": "a parent or eligible student must be given the opportunity to inspect and review the student's education records",
+          "kind": "regulation",
+          "sourceId": "ed-ferpa",
+          "locator": "99.10(a)",
+          "quote": "a parent or eligible student must be given the opportunity to inspect and review the student's education records."
+        },
+        {
+          "id": "A4",
+          "sentence": "can seek amendment of records believed to be inaccurate",
+          "kind": "paraphrase",
+          "sourceId": "ed-ferpa",
+          "locator": "99.7(a)(2)(ii)",
+          "quote": "Seek amendment of the student's education records that the parent or eligible student believes to be inaccurate"
+        },
+        {
+          "id": "A5",
+          "sentence": "can consent to disclosures of personally identifiable information in them",
+          "kind": "paraphrase",
+          "sourceId": "ed-ferpa",
+          "locator": "99.7(a)(2)(iii)",
+          "quote": "Consent to disclosures of personally identifiable information contained in the student's education records"
+        },
+        {
+          "id": "A6",
+          "sentence": "a student who has reached 18 years of age or is attending an institution of postsecondary education",
+          "kind": "regulation",
+          "sourceId": "ed-ferpa",
+          "locator": "99.3 eligible student",
+          "quote": "a student who has reached 18 years of age or is attending an institution of postsecondary education."
+        },
+        {
+          "id": "A7",
+          "sentence": "when a student becomes an eligible student, the rights accorded to, and consent required of, parents",
+          "kind": "regulation",
+          "sourceId": "ed-ferpa",
+          "locator": "99.5(a)(1)",
+          "quote": "When a student becomes an eligible student, the rights accorded to, and consent required of, parents"
+        },
+        {
+          "id": "A8",
+          "sentence": "transfer from the parents to the student",
+          "kind": "regulation",
+          "sourceId": "ed-ferpa",
+          "locator": "99.5(a)(1)",
+          "quote": "under this part transfer from the parents to the student."
+        },
+        {
+          "id": "A9",
+          "sentence": "perform an institutional service or function for which the agency or institution would otherwise use employees",
+          "kind": "regulation",
+          "sourceId": "cfr-34-99-31",
+          "locator": "(a)(1)(i)(B)",
+          "quote": "Performs an institutional service or function for which the agency or institution would otherwise use employees"
+        },
+        {
+          "id": "A10",
+          "sentence": "under the direct control of the agency or institution with respect to the use and maintenance of education records",
+          "kind": "regulation",
+          "sourceId": "cfr-34-99-31",
+          "locator": "(a)(1)(i)(B)",
+          "quote": "under the direct control of the agency or institution with respect to the use and maintenance of education records"
+        },
+        {
+          "id": "A11",
+          "sentence": "be subject to the requirements of § 99.33(a)",
+          "kind": "regulation",
+          "sourceId": "cfr-34-99-31",
+          "locator": "(a)(1)(i)(B)",
+          "quote": "Is subject to the requirements of § 99.33(a)"
+        },
+        {
+          "id": "A12",
+          "sentence": "COPPA applies to operators of websites and online services that collect personal information from kids under 13",
+          "kind": "regulation",
+          "sourceId": "ftc-coppa",
+          "locator": "Who COPPA applies to",
+          "quote": "Put simply, COPPA applies to operators of websites and online services that collect personal information from kids under 13."
+        },
+        {
+          "id": "A13",
+          "sentence": "before collecting, using or disclosing personal information from a child, you must get their parent's verifiable consent",
+          "kind": "regulation",
+          "sourceId": "ftc-coppa",
+          "locator": "Verifiable consent",
+          "quote": "Before collecting, using or disclosing personal information from a child, you must get their parent’s verifiable consent."
+        },
+        {
+          "id": "A14",
+          "sentence": "The page showed May 2026 as its date when read",
+          "kind": "paraphrase",
+          "sourceId": "ftc-coppa",
+          "locator": "Page date",
+          "quote": "May 2026"
+        },
+        {
+          "id": "A15",
+          "sentence": "which was dated January 8, 2025 when read",
+          "kind": "paraphrase",
+          "sourceId": "ada-web-rule",
+          "locator": "Page date",
+          "quote": "January 8, 2025"
+        },
+        {
+          "id": "A16",
+          "sentence": "sets technical requirements for state and local governments to follow",
+          "kind": "regulation",
+          "sourceId": "ada-web-rule",
+          "locator": "Who the rule applies to",
+          "quote": "sets technical requirements for state and local governments to follow"
+        },
+        {
+          "id": "A17",
+          "sentence": "the technical requirements are called the Web Content Accessibility Guidelines Version 2.1 Level AA",
+          "kind": "regulation",
+          "sourceId": "ada-web-rule",
+          "locator": "Technical standard",
+          "quote": "The technical requirements are called the Web Content Accessibility Guidelines Version 2.1 Level AA"
+        },
+        {
+          "id": "A18",
+          "sentence": "a compliance deadline of April 26, 2027 for governments with a population of 50,000 or more",
+          "kind": "regulation",
+          "sourceId": "ada-web-rule",
+          "locator": "Population 50,000 or more",
+          "quote": "Compliance deadline: April 26, 2027"
+        },
+        {
+          "id": "A19",
+          "sentence": "April 26, 2028 for those with fewer people and for special districts",
+          "kind": "regulation",
+          "sourceId": "ada-web-rule",
+          "locator": "Population under 50,000",
+          "quote": "Compliance deadline: April 26, 2028"
+        },
+        {
+          "id": "A20",
+          "sentence": "in April 2026 the Department published an Interim Final Rule extending the compliance date",
+          "kind": "regulation",
+          "sourceId": "ada-web-rule",
+          "locator": "Interim Final Rule",
+          "quote": "In April 2026, the Department published an Interim Final Rule (IFR) extending the compliance date"
         }
       ]
     }
