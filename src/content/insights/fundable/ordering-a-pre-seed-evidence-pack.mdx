@@ -1,0 +1,104 @@
+---
+title: "Ordering a pre-seed evidence pack"
+seoTitle: Pre-seed evidence pack
+description: "How to arrange the records behind a founder's claims into one indexed set, in data room folder order, and what to ask counsel."
+topic: fundable
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [first-time-founders, technical-founders]
+related: [evidence-over-narrative-what-diligence-actually-tests, questions-to-ask-your-counsel-before-you-sign, ip-contracts-and-access-diligence-for-small-engineering-teams]
+sources:
+  - id: irs-recordkeeping
+    title: Recordkeeping
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/businesses/small-businesses-self-employed/recordkeeping
+    accessed: 2026-10-10
+  - id: nist-ssdf
+    title: Secure Software Development Framework (SSDF)
+    publisher: National Institute of Standards and Technology
+    url: https://csrc.nist.gov/projects/ssdf
+    accessed: 2026-10-10
+evidence: [irs-recordkeeping, nist-ssdf]
+relatedServices: [F]
+relatedPlaybook: build-repeatable-growth
+relatedTemplate: seed-data-room-checklist
+claimsUsed: [C-05]
+draft: false
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+<NoFundingDisclaimer />
+
+*General information as of October 10, 2026. It is education written by World Enterprise Editorial, not legal, tax or financial advice, and not an offer or solicitation of any kind. Your own lawyer and accountant can say what applies to your company.*
+
+Here, "ordering" an evidence pack means putting it in order, not buying one. A pack is a set of records that back the statements a founder makes about a company, arranged so that a reader who was not there can find each record without help. This article describes how the site's own materials arrange that set, why each arrangement exists, and which questions are worth taking to counsel and an accountant. It describes preparation. It does not say what any investor will ask for, and nothing in a pack predicts what anyone will do with it.
+
+## What a pack is made of
+
+The unit is a pair: a statement and the record that shows it. The <MaybeLink path="/fundability/investor-readiness-checklist/">investor readiness checklist</MaybeLink> is built this way. It lists twelve statements a founder can answer yes or no, and for each one it names the artifact another person could open. A statement without an artifact stays a claim, a distinction the article on <MaybeLink path="/insights/evidence-over-narrative-what-diligence-actually-tests/">evidence over narrative</MaybeLink> develops.
+
+The twelve statements fall into four groups, and the order of the groups is the first ordering the materials offer:
+
+| Group | What it evidences | Artifacts the checklist names |
+|---|---|---|
+| The problem and the customer | That a real problem exists and that you learned about it from the people who have it | A one-page problem brief; interview notes and a short summary |
+| The product and the first customers | That people use the product, that you can count what happens, and that growth is not a one-off | A released version and a note of use; a customer conversation log; a metrics definitions sheet; a channel log |
+| The company and its records | That the company exists on paper, owns what it sells and keeps its records in order | Signed assignments; formation documents and a current cap table; a data room folder with an index; a data inventory and an access list |
+| Communication and counsel | That you report progress consistently and understand what you may be asked to sign | Two or more dated updates in the same format; a written list of questions for your counsel |
+
+The groups run from the problem outward to the company. The <MaybeLink path="/library/one-page-problem-brief/">one-page problem brief</MaybeLink> and the <MaybeLink path="/library/customer-interview-guide/">customer interview guide</MaybeLink> are templates for the first group's artifacts.
+
+## A second ordering: folders
+
+A statement list answers what you claim. A folder structure answers where each record lives. The guide to <MaybeLink path="/fundability/data-room/">the seed data room</MaybeLink> describes nine folders: company, product, customers, metrics and finance, people and contracts, intellectual property, security and privacy, legal, and updates. The <MaybeLink path="/library/seed-data-room-checklist/">seed data room checklist</MaybeLink> lists seven sections of the same material, with a status of present, missing or not applicable and an owner for each item.
+
+The two orderings answer different questions, and the same record can sit in both. A signed assignment is the artifact for a company-group statement and also a document in a people-and-contracts folder. A pack can keep one master copy in the folder structure and refer to it from the statement list, which avoids holding two versions of a record that can drift apart.
+
+## The index comes first
+
+The data room guide gives a test for the whole arrangement: a stranger should find any document in under a minute using the index alone. An index is the document that makes the pack a pack, because it states what is in each folder, the date of each file and what is missing. The guide also says a short note in the index naming a missing record and when it is expected is easier to trust than a quiet gap, and that a plan should be labelled as a plan.
+
+These are the guide's own rules and not legal requirements. They describe a way of keeping an index honest. Whether a particular record should be included at all, or in what form, is a question for counsel.
+
+## A third ordering: who looks first
+
+Some records need a professional's eyes before anyone else sees them. The guide says to ask counsel to review the company, people and contracts, intellectual property and legal folders before they go anywhere, and to remove from any document with personal data what counsel says must be removed. It also says to share the minimum, in stages, and to keep a log of who was given access and when.
+
+That gives a third ordering, by review and exposure: which folders counsel reads first, which are shared early, and which wait. The data room checklist ends with a short list of checks along the same lines, including that someone other than the author has checked the cap table against the signed documents.
+
+## Records that are not about investors at all
+
+Some records exist for reasons that have nothing to do with a raise. The IRS's page on recordkeeping says good records help you monitor the progress of your business and prepare your financial statements. It says you may choose any recordkeeping system suited to your business that clearly shows your income and expenses and that, except in a few cases, the law does not require any special kind of records.
+
+It also says you must keep your records as long as needed to prove the income or deductions on a tax return, and to keep all records of employment taxes for at least four years. Those statements describe tax records. How long a given company keeps a given document, and how the tax folder in a pack relates to the rest of its books, is a question for an accountant.
+
+## Showing the security and privacy answers
+
+The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> is a self-assessment in six sections: accounts and access, code and build, data, product security, vendors, and logging and response. Each question is answered yes, partly or no, with an owner and a date. The checklist says it does not certify anything and maps loosely to public references. One of them, the Secure Software Development Framework, is described by NIST as drawing on established secure software development practice documents from organizations such as BSA, OWASP, and SAFECode.
+
+In a pack, those answers show what the team says it does and knows, and no more. A self-assessment is not a certification, and the checklist says so itself. The related article on <MaybeLink path="/insights/answering-a-security-and-privacy-questionnaire/">answering a security and privacy questionnaire</MaybeLink> describes the formats in which these questions often arrive.
+
+## Pairing the pack with the documents counsel owns
+
+The company and legal folders depend on documents the articles in the legal desk describe. For example, <MaybeLink path="/insights/founder-ip-assignment-and-confidentiality-agreements/">founder IP assignment and confidentiality agreements</MaybeLink> explains the signed instrument behind the assignments statement, and <MaybeLink path="/insights/founder-equity-splits-and-vesting/">founder equity splits and vesting</MaybeLink> describes the records behind a cap table. The article on <MaybeLink path="/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/">IP, contracts and access diligence</MaybeLink> explains how those records are read together.
+
+## Questions to bring to counsel and an accountant
+
+The <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> is a general list. For a pack:
+
+1. Which documents in the company, people, intellectual property and legal folders should counsel read before anything is shared, and what must be removed?
+2. Does the cap table match the signed documents, and who checked it?
+3. Which agreements limit what we may disclose, such as customer contracts with confidentiality terms?
+4. How should personal data in a document be handled before it enters a shared folder?
+5. Which financial and tax records belong in the pack, and how long do we keep each?
+6. Who owns each folder, and who updates it when something changes?
+7. How do we label a plan, a draft and a gap so no reader mistakes one for a signed record?
+
+## What this article cannot tell you
+
+It does not say what any investor will ask for, in what order, or whether a pack will matter to the outcome of a conversation. The materials it describes are a structure for evidence and make no promise about funding.
+
+It describes the site's own checklist, guides and templates, which are general information and not requirements. It reads two external pages, one from the IRS and one from NIST, for the statements attributed to them. It does not give legal, tax or security advice, and it names no certification a company should hold.
+
+The external pages were read on October 10, 2026. Agency pages are updated, so a decision about what to keep, share or remove should rest on the current text and on professionals who have seen your records.

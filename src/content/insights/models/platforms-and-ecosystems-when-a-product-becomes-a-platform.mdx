@@ -1,0 +1,116 @@
+---
+title: "Platforms and ecosystems: when a product becomes a platform"
+seoTitle: Product to platform
+description: How a software product turns into a platform that others build on, what that asks of your interfaces, permissions and partner support, and why it comes late.
+topic: models
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders, corporate-innovators]
+relatedServices: [B]
+relatedPlaybook: design-the-product
+relatedTemplate: security-baseline-checklist
+related: [api-first-products-and-developer-tools, marketplaces-the-two-sided-start-up-problem]
+evidence: [oauth-rfc-6749, stripe-apps, google-workspace-marketplace, stripe-connect]
+claimsUsed: [C-29]
+sources:
+  - id: oauth-rfc-6749
+    title: RFC 6749, The OAuth 2.0 Authorization Framework
+    publisher: IETF
+    url: https://datatracker.ietf.org/doc/html/rfc6749
+    accessed: 2026-10-10
+  - id: stripe-apps
+    title: Stripe Apps
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/stripe-apps
+    accessed: 2026-10-10
+  - id: google-workspace-marketplace
+    title: Google Workspace Marketplace overview
+    publisher: Google for Developers
+    url: https://developers.google.com/workspace/marketplace/overview
+    accessed: 2026-10-10
+  - id: stripe-connect
+    title: Connect, embedded finance for platforms and marketplaces
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/connect
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+A product is something customers use. A platform is something other companies build on. The difference shows in who the roadmap serves. A product team asks what its customers want next. A platform team also asks what outside developers need in order to build things the platform team will never have time to build, and what those developers need to trust before they stake their own business on it.
+
+Most products do not become platforms, and the ones that do rarely start that way. This article describes what the change involves, what it asks of the company that makes it, and how to tell whether you are early or late. A statement about WE first: WE builds SaaS products, and this article describes a model in general terms. It is not a description of an offer to build or run a platform or an ecosystem for anyone.
+
+## What a platform is, in practical terms
+
+Three things have to be true for a product to be called a platform.
+
+1. **Other parties can extend it.** They can add features, connect other systems or build products that depend on yours, using interfaces that you publish.
+2. **Customers can use those extensions inside your product.** The extension appears where the customer already works, with the customer's permission.
+3. **There is a path to reach customers.** Developers can list or distribute what they have built so that customers can find it.
+
+Documentation from companies that run platforms shows what these look like when they are mature. Stripe's documentation for Stripe Apps says it "allows you to develop and distribute apps privately or publish them on the global Stripe Apps Marketplace". Google's overview of its Workspace Marketplace describes it as "a website that lists Google Workspace add-ons, Editor add-ons, Drive apps, and Web apps". Those are descriptions by the vendors of their own products. They show the pattern of an interface, an extension format and a listing, and neither is a recommendation to copy it or to use either vendor.
+
+A second pattern is a platform where companies build their own businesses on your service. Stripe's documentation for Connect says, of building a SaaS platform, that you "Provide platform services to businesses that collect payments from their own customers." Here the customers of your customers are your concern as well.
+
+## Why a first company should be cautious
+
+A platform is expensive in a way that a feature is not, for four reasons.
+
+**You make promises that last.** Once an outside developer builds on an interface, changing it can break their business. Every published interface is a commitment to keep it working, to give notice before it changes and to explain what replaces it. The companion article <MaybeLink path="/insights/api-first-products-and-developer-tools/">API-first products and developer tools</MaybeLink>, covers how interfaces are designed to make those promises cheaper to keep.
+
+**You need something worth building on.** Developers build on a platform because it has customers, data or capabilities they need. A product with few users gives them little reason to come. The usual order is a product that customers rely on, then integrations that customers ask for, then a public interface, and only later a program for outside builders.
+
+**You take on a second customer.** The developer is a customer with needs of their own: documentation, a sandbox, a way to ask questions, predictable change, a fair route to market. That is a product inside your product, and it needs an owner.
+
+**You create competitors and partners at once.** The developer who builds a useful extension may also be doing what your own roadmap lists next. Decide early, and write down, which areas you will keep for yourself and which you will leave open. Developers read that boundary closely, because it tells them how safe their investment is.
+
+For a corporate team building a platform inside a larger company, a fifth cost appears: the other business units are the developers, and an internal platform needs the same documentation, versioning and support as an external one.
+
+## The building blocks, in order
+
+If your customers are asking for ways to connect your product to other things, these steps are a sensible order. Each one is useful on its own, and you can stop at any of them.
+
+### Step one: events and exports
+
+Let a customer get their data out and be told when something happens. Outbound notifications that a record changed, and a way to download everything, cover a surprising share of requests and commit you to very little.
+
+### Step two: a documented interface
+
+Publish a small, stable interface for the operations customers ask for most. Keep it narrow. Everything you publish is something to maintain.
+
+### Step three: delegated access
+
+When another application needs to act on a customer's behalf, it should not ask for the customer's password. The standard answer is delegated authorization. The OAuth 2.0 specification, published by the Internet Engineering Task Force as RFC 6749, describes a framework that "enables a third-party application to obtain limited access to an HTTP service". Limited is the important word. The customer decides what the other application may do, and can withdraw it. Stripe's Apps documentation points to the same need from the other side, with a reference page on the permissions an app can request, and another on versions and releases for shipping new versions of an app. Reading the permission model of a mature platform is a quick way to see what you will have to decide.
+
+The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> covers the access questions that sit under this step, and <MaybeLink path="/insights/build-versus-buy-for-auth-billing-and-email/">build versus buy for sign-in, billing and email</MaybeLink> covers whether to build the authorization layer yourself.
+
+### Step four: a way for others to be found
+
+A listing, a directory or a documentation page that names the integrations that exist. Start with a list you curate by hand. A full marketplace of extensions, with review, ranking and revenue sharing, is a product of its own and arrives last.
+
+## Signs you are not ready
+
+- Fewer than a handful of customers have asked for the same integration.
+- The core product changes weekly, so any published interface would break.
+- Nobody on the team can own developer documentation and questions.
+- You cannot yet say which parts of the product you would keep closed.
+
+Each one is a reason to wait. Waiting costs little, because the first three steps above are useful before any outside developer arrives, and the <MaybeLink path="/insights/architecture-decisions-to-defer-in-the-first-six-months/">article on architecture decisions to defer</MaybeLink> explains why a platform interface is one of the decisions that can usually be postponed.
+
+## Questions to answer before you publish an interface
+
+Write short answers to these before an outside developer sees your interface. If you cannot answer one, that is the work to do first.
+
+1. Which customers asked for this, and what were they trying to do?
+2. What does a developer get that they cannot get today, and why would they spend their time on it?
+3. What will you promise about stability, and how will you give notice of a change?
+4. Who answers a developer's question, and how will they know the answer is coming?
+5. Which parts of the product will stay closed, and have you told developers so?
+6. What can an extension see and do on a customer's behalf, and how does the customer remove it?
+
+A platform is a relationship with outside builders, kept up over years. The answers above are the terms of that relationship, and writing them is cheaper than renegotiating them after developers have relied on a guess.
+
+## What this article cannot tell you
+
+This article cannot tell you whether a platform is the right direction for your company, how many developers your product could attract or what such a program would earn. It describes the mechanisms in documents from two vendors and one standards body, each read as a description of how that party's own system works. It does not compare platforms, rank them or say that any of them succeeded. It says nothing about competition law, revenue sharing terms or the legal position of a platform toward the developers on it, all of which differ by country and are for counsel. WE builds SaaS, and nothing here is an offer to build or run a platform or an ecosystem. Checked on 2026-10-10.

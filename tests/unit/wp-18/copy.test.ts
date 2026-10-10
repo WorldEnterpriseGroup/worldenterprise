@@ -69,6 +69,8 @@ test('"fundable" as an outcome and the peers family appear in source only where 
       'src/data/routes.ts',
       // The comparison page's slug and its blockedWord field: the one registry entry whose label drops the word (families.test.ts proves it).
       'src/data/families.ts',
+      // The denylist already allows the word on the route ^/compare/incubator-vs-other-programs/$, because that page compares the category.
+      'src/content/pages/compare/incubator-vs-other-programs.mdx',
     ],
     'C-21-phrase': ['src/data/claims.ts', 'src/pages/program/dedicated-teams.astro'],
   };
