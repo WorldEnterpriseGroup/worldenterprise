@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import test from 'node:test';
 import * as claimsAudit from '../../../scripts/audit-claims.mjs';
@@ -7,6 +7,7 @@ import * as copy from '../../../src/components/forms/copy.ts';
 import { AUDIENCE_LINKS } from '../../../src/data/cta/audiences.ts';
 import { allKeys, targetFor } from '../../../src/data/cta/targets.ts';
 import { BRIEFS } from '../../../src/data/families.ts';
+import { repoViewAt } from './repo-view.ts';
 import { checkSentences } from './sources.ts';
 import type { SentenceRecord, SourcesFile } from './sources.ts';
 
@@ -23,7 +24,7 @@ interface Hit {
 const audit = claimsAudit as unknown as { scan(text: string, options?: { route?: string; plain?: boolean; flagValues?: object }): Hit[] };
 
 const root = new URL('../../../', import.meta.url).pathname;
-const repoHas = (path: string): boolean => existsSync(join(root, path));
+const repo = repoViewAt(root);
 const ledger = JSON.parse(readFileSync(join(root, '.astro-magazine/sources/wp-60.json'), 'utf8')) as SourcesFile;
 
 const TARGETS = 'src/data/cta/targets.ts';
@@ -99,7 +100,7 @@ test('no mapping is stale: every mapped sentence is still in its module', () => 
 });
 
 test('every mapping is well formed: one claim, page, decision or label, and an existing page', () => {
-  for (const doc of ledger.documents ?? []) assert.deepEqual(checkSentences('WP-60', doc.path, doc.sentences ?? [], repoHas), []);
+  for (const doc of ledger.documents ?? []) assert.deepEqual(checkSentences('WP-60', doc.path, doc.sentences ?? [], repo), []);
 });
 
 test('no sentence the ledger holds trips the claims denylist', () => {

@@ -20,8 +20,8 @@ export const MIN_INTERNAL_LINKS = 3;
 export type ClaimsScan = (text: string, route: string) => readonly { readonly rule: string }[];
 
 export interface RubricContext {
-  /** Every ledger path (launch candidates), for the internal-link rule. */
-  readonly ledgerPaths: ReadonlySet<string>;
+  /** The routes that are live (a page file and, for a dynamic page, a published entry), for the internal-link rule. Files supply them, so an article on the same branch counts. */
+  readonly livePaths: ReadonlySet<string>;
   readonly playbookSlugs: ReadonlySet<string>;
   readonly templateSlugs: ReadonlySet<string>;
   readonly scanClaims: ClaimsScan;
@@ -43,14 +43,26 @@ export function splitFrontmatter(raw: string): { readonly front: string; readonl
   return match === null ? null : { front: match[1] ?? '', body: match[2] ?? '' };
 }
 
-/** Internal link targets in a body: Markdown `](/path/)` and HTML or MDX `href="/path/"`, without the query or fragment. */
+const withSlash = (target: string): string => {
+  const path = target.split(/[?#]/)[0] ?? '';
+  return path.endsWith('/') ? path : `${path}/`;
+};
+
+/**
+ * Internal link targets in a body, without the query or fragment: `<MaybeLink path="/path/">` (either quote), the component that honours
+ * PATH_BASE and that contracts section 2 prescribes, and the Markdown `](/path/)` and `href="/path/"` forms, which `link-form` rejects.
+ */
 export function internalLinks(body: string): string[] {
   const found: string[] = [];
-  for (const match of body.matchAll(/\]\((\/[^)\s]*)\)|href=["'](\/[^"']*)["']/g)) {
-    const target = (match[1] ?? match[2] ?? '').split(/[?#]/)[0] ?? '';
-    found.push(target.endsWith('/') ? target : `${target}/`);
+  for (const match of body.matchAll(/<MaybeLink\b[^>]*?\bpath=["'](\/[^"']*)["']|\]\((\/[^)\s]*)\)|\bhref=["'](\/[^"']*)["']/g)) {
+    found.push(withSlash(match[1] ?? match[2] ?? match[3] ?? ''));
   }
   return found;
+}
+
+/** Root-relative Markdown and href links bypass `href()` and break on the PATH_BASE preview, so an article uses `<MaybeLink>` instead. */
+export function bypassingLinks(body: string): string[] {
+  return [...body.matchAll(/\]\((\/[^)\s]*)\)|\bhref=["'](\/[^"']*)["']/g)].map((m) => m[1] ?? m[2] ?? '');
 }
 
 /** The problems with one article: an empty list means it passes. `path` is relative to the repository root. */
@@ -105,8 +117,10 @@ export function checkArticle(path: string, raw: string, ctx: RubricContext): Pro
   const headings = [...parts.body.matchAll(/^##[ \t]+(.+?)[ \t]*$/gm)].map((m) => m[1]);
   if (!headings.includes(LIMITS_HEADING)) add('cannot-tell-you', `needs the H2 "${LIMITS_HEADING}"`);
 
-  const links = internalLinks(parts.body).filter((l) => ctx.ledgerPaths.has(l));
-  if (links.length < MIN_INTERNAL_LINKS) add('internal-links', `${links.length} internal links to ledger routes; at least ${MIN_INTERNAL_LINKS}`);
+  // Only a route that is live counts. A page still pending belongs in `related`: a link to it would be dead on the day the article ships.
+  const links = internalLinks(parts.body).filter((l) => ctx.livePaths.has(l));
+  if (links.length < MIN_INTERNAL_LINKS) add('internal-links', `${links.length} internal links to live routes; at least ${MIN_INTERNAL_LINKS}`);
+  for (const bypass of bypassingLinks(parts.body)) add('link-form', `${bypass} is a root-relative link; use <MaybeLink path="${bypass}"> so it honours the preview base path`);
 
   const slug = place[2] ?? '';
   for (const hit of ctx.scanClaims(raw, `/insights/${slug}/`)) add('denylist', `matches claims rule ${hit.rule}`);

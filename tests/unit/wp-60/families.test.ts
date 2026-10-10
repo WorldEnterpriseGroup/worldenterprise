@@ -131,10 +131,11 @@ test('the segment short names map back to the slugs, and every segment value in 
 
 test('a family page declares its own family id and slug', () => {
   for (const family of FAMILIES.filter((f) => f.collection === 'pages')) {
-    for (const slug of listPageSlugs(root, family.folder)) {
+    // `index` is the hub of the family, not an entry of the registry, so it has no family id to declare. Every other page must declare one.
+    for (const slug of listPageSlugs(root, family.folder).filter((s) => s !== 'index')) {
       const data = frontmatter(join(root, 'src/content/pages', family.folder, `${slug}.mdx`));
       const declared = data.family as { id?: string; slug?: string } | undefined;
-      if (declared === undefined) continue;
+      assert.ok(declared !== undefined, `${family.folder}/${slug} has no \`family\` frontmatter, so nothing ties it to the registry`);
       assert.equal(declared.id, family.id, `${family.folder}/${slug} family id`);
       assert.equal(declared.slug, slug, `${family.folder}/${slug} family slug equals the file name`);
     }
