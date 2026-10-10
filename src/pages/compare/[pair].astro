@@ -1,0 +1,27 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { compareActions } from '../../components/families/actions.ts';
+import ComparePage from '../../components/families/ComparePage.astro';
+import { loadIsLive } from '../../components/families/load.ts';
+import { ogSlotFor } from '../../components/families/og.ts';
+import { assertFamilyData, resolveEntries } from '../../components/families/paths.ts';
+import type { CompareData } from '../../components/families/types.ts';
+import { compareView } from '../../components/families/view.ts';
+import { COMPARISONS } from '../../data/families.ts';
+import { getRenderable } from '../../lib/content.ts';
+
+/** One page per comparison (/compare/<pair>/): a route exists when the registry names the slug and a `pages` entry holds it. */
+export const getStaticPaths = (async () => {
+  const pages = await getRenderable('pages');
+  return resolveEntries(COMPARISONS, pages).map(({ entry, page }) => ({
+    params: { pair: entry.slug },
+    props: { page, slug: entry.slug, path: entry.path },
+  }));
+}) satisfies GetStaticPaths;
+
+const { page, slug, path } = Astro.props;
+const data = assertFamilyData<CompareData>(COMPARISONS, slug, page.data.family, 'compare');
+const actions = compareActions(await loadIsLive());
+---
+
+<ComparePage page={page} view={compareView(data)} path={path} actions={actions} ogSlot={ogSlotFor('compare')} />

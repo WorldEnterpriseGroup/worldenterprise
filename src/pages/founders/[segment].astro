@@ -1,0 +1,33 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { segmentActions } from '../../components/families/actions.ts';
+import SegmentPage from '../../components/families/SegmentPage.astro';
+import { loadIsLive, loadReading } from '../../components/families/load.ts';
+import { ogSlotFor } from '../../components/families/og.ts';
+import { assertFamilyData, resolveEntries } from '../../components/families/paths.ts';
+import type { SegmentData } from '../../components/families/types.ts';
+import { segmentView } from '../../components/families/view.ts';
+import { BRIEFS, SEGMENTS } from '../../data/families.ts';
+import { getRenderable } from '../../lib/content.ts';
+
+/**
+ * One page per founder segment (/founders/<segment>/). A segment has a route when the registry names its slug and a `pages` entry
+ * holds it; a slug with no entry makes no route. Static routes of the same folder (/founders/, /founders/portfolio/) win over this one.
+ */
+export const getStaticPaths = (async () => {
+  const pages = await getRenderable('pages');
+  return resolveEntries(SEGMENTS, pages).map(({ entry, page }) => ({
+    params: { segment: entry.slug },
+    props: { page, slug: entry.slug, path: entry.path },
+  }));
+}) satisfies GetStaticPaths;
+
+const { page, slug, path } = Astro.props;
+const data = assertFamilyData<SegmentData>(SEGMENTS, slug, page.data.family, 'segments');
+const isLive = await loadIsLive();
+const briefs = BRIEFS.entries.map((brief) => ({ slug: brief.slug, path: brief.path, label: brief.label }));
+const actions = segmentActions(page.data.cta, briefs, isLive);
+const view = segmentView(data, await loadReading(slug));
+---
+
+<SegmentPage page={page} view={view} path={path} actions={actions} ogSlot={ogSlotFor('segments')} />
