@@ -148,10 +148,11 @@ import { waitingText } from '../../../scripts/metrics-calc.ts';
       gap: var(--sp-4);
     }
 
-    /* A result is a fixed block: the name, one line for the value, room for four lines of working or reason, and the source tag. */
+    /* A result is a fixed block: the name, one line for the value, room for four lines of working or reason, and the source tag. The
+       working row grows only when an unusually long number needs more than four lines, so text never runs into the tag below it. */
     .calc__result {
       display: grid;
-      grid-template-rows: auto 1lh 4lh auto;
+      grid-template-rows: auto 1lh minmax(4lh, auto) auto;
       gap: var(--sp-2);
       padding: var(--sp-4);
       background: var(--color-bg);
