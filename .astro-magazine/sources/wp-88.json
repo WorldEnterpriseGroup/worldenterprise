@@ -262,6 +262,51 @@
       "fetchedAt": "2026-10-10T22:55:45Z",
       "status": 200,
       "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-37-11-106",
+      "url": "https://www.law.cornell.edu/cfr/text/37/11.106",
+      "title": "37 CFR 11.106: Confidentiality of information",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T23:02:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-37-11-503",
+      "url": "https://www.law.cornell.edu/cfr/text/37/11.503",
+      "title": "37 CFR 11.503: Responsibilities regarding non-practitioner assistance",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T23:02:12Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-37-11-505",
+      "url": "https://www.law.cornell.edu/cfr/text/37/11.505",
+      "title": "37 CFR 11.505: Unauthorized practice of law",
+      "publisher": "Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)",
+      "fetchedAt": "2026-10-10T23:01:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fre-502",
+      "url": "https://www.law.cornell.edu/rules/fre/rule_502",
+      "title": "Federal Rule of Evidence 502: Attorney-Client Privilege and Work Product; Limitations on Waiver",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T23:01:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-15-7001",
+      "url": "https://www.law.cornell.edu/uscode/text/15/7001",
+      "title": "15 U.S.C. 7001: General rule of validity",
+      "publisher": "Legal Information Institute, Cornell Law School (United States Code text)",
+      "fetchedAt": "2026-10-10T23:01:05Z",
+      "status": 200,
+      "tool": "WebFetch"
     }
   ],
   "documents": [
@@ -1188,6 +1233,139 @@
           "sourceId": "ec-ai-act",
           "locator": "Page date",
           "quote": "3 August 2026"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/sectors/legal-software-considerations-before-you-build.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "Confidentiality of information",
+          "kind": "paraphrase",
+          "sourceId": "cfr-37-11-106",
+          "locator": "Section title",
+          "quote": "Confidentiality of information."
+        },
+        {
+          "id": "A2",
+          "sentence": "shall not reveal information relating to the representation of a client unless the client gives informed consent",
+          "kind": "regulation",
+          "sourceId": "cfr-37-11-106",
+          "locator": "11.106(a)",
+          "quote": "shall not reveal information relating to the representation of a client unless the client gives informed consent"
+        },
+        {
+          "id": "A3",
+          "sentence": "reasonable efforts to prevent the inadvertent or unauthorized disclosure of, or unauthorized access to, information",
+          "kind": "regulation",
+          "sourceId": "cfr-37-11-106",
+          "locator": "11.106(d)",
+          "quote": "reasonable efforts to prevent the inadvertent or unauthorized disclosure of, or unauthorized access to, information"
+        },
+        {
+          "id": "A4",
+          "sentence": "Responsibilities regarding non-practitioner assistance",
+          "kind": "paraphrase",
+          "sourceId": "cfr-37-11-503",
+          "locator": "Section title",
+          "quote": "Responsibilities regarding non-practitioner assistance."
+        },
+        {
+          "id": "A5",
+          "sentence": "reasonable efforts to ensure that the person's conduct is compatible with the professional obligations of the practitioner",
+          "kind": "regulation",
+          "sourceId": "cfr-37-11-503",
+          "locator": "11.503(b)",
+          "quote": "reasonable efforts to ensure that the person's conduct is compatible with the professional obligations of the practitioner."
+        },
+        {
+          "id": "A6",
+          "sentence": "Unauthorized practice of law",
+          "kind": "paraphrase",
+          "sourceId": "cfr-37-11-505",
+          "locator": "Section title",
+          "quote": "Unauthorized practice of law."
+        },
+        {
+          "id": "A7",
+          "sentence": "shall not practice law in a jurisdiction in violation of the regulation of the legal profession in that jurisdiction, or assist another in doing so",
+          "kind": "regulation",
+          "sourceId": "cfr-37-11-505",
+          "locator": "11.505",
+          "quote": "A practitioner shall not practice law in a jurisdiction in violation of the regulation of the legal profession"
+        },
+        {
+          "id": "A8",
+          "sentence": "Attorney-Client Privilege and Work Product; Limitations on Waiver",
+          "kind": "paraphrase",
+          "sourceId": "fre-502",
+          "locator": "Title",
+          "quote": "Attorney-Client Privilege and Work Product; Limitations on Waiver"
+        },
+        {
+          "id": "A9",
+          "sentence": "made in a federal proceeding or to a federal office or agency",
+          "kind": "regulation",
+          "sourceId": "fre-502",
+          "locator": "502(b)",
+          "quote": "When made in a federal proceeding or to a federal office or agency,"
+        },
+        {
+          "id": "A10",
+          "sentence": "the disclosure is inadvertent",
+          "kind": "regulation",
+          "sourceId": "fre-502",
+          "locator": "502(b)(1)",
+          "quote": "the disclosure is inadvertent;"
+        },
+        {
+          "id": "A11",
+          "sentence": "the holder of the privilege or protection took reasonable steps to prevent disclosure",
+          "kind": "regulation",
+          "sourceId": "fre-502",
+          "locator": "502(b)(2)",
+          "quote": "the holder of the privilege or protection took reasonable steps to prevent disclosure"
+        },
+        {
+          "id": "A12",
+          "sentence": "the holder promptly took reasonable steps to rectify the error",
+          "kind": "regulation",
+          "sourceId": "fre-502",
+          "locator": "502(b)(3)",
+          "quote": "the holder promptly took reasonable steps to rectify the error."
+        },
+        {
+          "id": "A13",
+          "sentence": "a federal court may order that the privilege or protection is not waived by disclosure",
+          "kind": "regulation",
+          "sourceId": "fre-502",
+          "locator": "502(d)",
+          "quote": "A federal court may order that the privilege or protection is not waived by disclosure"
+        },
+        {
+          "id": "A14",
+          "sentence": "General rule of validity",
+          "kind": "paraphrase",
+          "sourceId": "usc-15-7001",
+          "locator": "Section title",
+          "quote": "General rule of validity"
+        },
+        {
+          "id": "A15",
+          "sentence": "may not be denied legal effect, validity, or enforceability solely because it is in electronic form",
+          "kind": "regulation",
+          "sourceId": "usc-15-7001",
+          "locator": "7001(a)",
+          "quote": "may not be denied legal effect, validity, or enforceability solely because it is in electronic form."
+        },
+        {
+          "id": "A16",
+          "sentence": "has affirmatively consented to such use and has not withdrawn such consent",
+          "kind": "regulation",
+          "sourceId": "usc-15-7001",
+          "locator": "7001(c)",
+          "quote": "has affirmatively consented to such use and has not withdrawn such consent"
         }
       ]
     }
