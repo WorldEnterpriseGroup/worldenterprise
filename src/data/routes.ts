@@ -273,12 +273,42 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/tools/', 'HubLayout', 'WP-49'),
     row('/tools/metrics-calculator/', 'ToolLayout', 'WP-49'),
     row('/tools/evidence-room/', 'ToolLayout', 'WP-49'),
-    row('/about/frameworks/ubf/', 'MarketingLayout', 'WP-48'),
-    row('/star/', 'MarketingLayout', 'WP-48'),
-    row('/shift/', 'MarketingLayout', 'WP-48'),
-    row('/android/', 'MarketingLayout', 'WP-48'),
+    // WP-48 was deferred in wave 7 and its four pages do not exist; wave 8 flips them to launch:false (contracts section 10). A future package that writes a page
+    // flips its row back to launch:true in the same change.
+    row('/about/frameworks/ubf/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
+    row('/star/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
+    row('/shift/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
+    row('/android/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
 
-    // Wave 8 page families, derived from src/data/families.ts. Each row is inert until its page exists.
+    // Wave 8 (docs/wave8-contracts.md, section 1.2), registered ahead of the pages by WP-60 so no page-owning package edits this file.
+    // A launched row with no page is inert: out of nav and sitemap, a warning in audit:ledger. The page file makes it live.
+    // Briefs: the hub is a family hub (below); the squeeze pages derive from the registry; the thanks page is fixed and noindex.
+    row('/briefs/thanks/', 'FormLayout', 'WP-63', { indexable: false }),
+
+    // Investors (WP-64). The hub `/investors/` exists above. Inbound pages name no company (D-21).
+    row('/investors/meet-startups/', 'MarketingLayout', 'WP-64'),
+    row('/investors/what-you-can-see/', 'MarketingLayout', 'WP-64'),
+    row('/investors/readiness-criteria/', 'MarketingLayout', 'WP-64'),
+    row('/investors/showcase-format/', 'MarketingLayout', 'WP-64'),
+    row('/investors/faq/', 'MarketingLayout', 'WP-64'),
+    row('/investors/interest/', 'FormLayout', 'WP-64'),
+    row('/investors/interest/thanks/', 'FormLayout', 'WP-64', { indexable: false }),
+
+    // Partners (WP-65). D-21: the hub launches without naming anyone, so it has its own source instead of `requires: ['companies']`.
+    row('/network/partners/', 'MarketingLayout', 'WP-65', { source: 'D-21 (.astro-magazine/decisions.md): an inbound partner page names no company' }),
+    row('/network/partners/categories/', 'MarketingLayout', 'WP-65'),
+    row('/network/partners/how-it-works/', 'MarketingLayout', 'WP-65'),
+    row('/network/partners/faq/', 'MarketingLayout', 'WP-65'),
+    row('/network/partners/enquire/', 'FormLayout', 'WP-65'),
+    row('/network/partners/enquire/thanks/', 'FormLayout', 'WP-65', { indexable: false }),
+
+    // Brand story (WP-71) and the extra tools (WP-76). `/press/brand-kit/` stays an L2 row below, owned by WP-71.
+    row('/about/brand-story/', 'MarketingLayout', 'WP-71'),
+    row('/tools/runway-calculator/', 'ToolLayout', 'WP-76'),
+    row('/tools/pricing-page-checker/', 'ToolLayout', 'WP-76'),
+    row('/tools/cap-table-explainer/', 'ToolLayout', 'WP-76'),
+
+    // Page families, derived from src/data/families.ts. Each row is inert until its page exists.
     ...familyRows(),
   ];
 }
@@ -315,14 +345,13 @@ export const L2_RESERVED: readonly RouteRow[] = [
   row('/founders/stories/', 'MarketingLayout', 'WP-11', { requires: ['companies'] }),
   row('/founders/portfolio/', 'MarketingLayout', 'WP-11', { requires: ['companies'] }),
   row('/case-studies/', 'MarketingLayout', 'WP-11', { requires: ['companies'] }),
-  row('/network/partners/', 'MarketingLayout', 'WP-11', { requires: ['companies'] }),
   row('/network/delivery-partners/', 'MarketingLayout', 'WP-11', { requires: ['companies'] }),
   row('/about/team/', 'MarketingLayout', 'WP-10', { requires: ['people'] }),
   row('/careers/', 'MarketingLayout', 'WP-10', { requires: ['dates'] }),
   row('/events/', 'HubLayout', 'WP-08', { requires: ['events', 'dates'] }),
   row('/program/cohorts/', 'StageLayout', 'WP-01', { requires: ['dates'] }),
   row('/program/demo-day/', 'StageLayout', 'WP-01', { requires: ['dates', 'events'] }),
-  row('/press/brand-kit/', 'MarketingLayout', 'WP-10', { launch: false, reason: 'needs whitelab brand-usage sign-off' }),
+  row('/press/brand-kit/', 'MarketingLayout', 'WP-71', { launch: false, reason: 'needs whitelab brand-usage sign-off (OP-BRAND)' }),
   row('/people/[slug]/', 'MarketingLayout', 'WP-11', { requires: ['people'] }),
 ].map(finalizeRow);
 

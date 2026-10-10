@@ -21,7 +21,7 @@ interface Source {
 
 type Props = Omit<PageMeta, 'updated'> & {
   title: string;
-  topic: DeskId;
+  topic: 'dream' | 'build' | 'grow' | 'fundable' | DeskId;
   publishedDate: Date;
   updatedDate?: Date | undefined;
   readingMinutes?: number;

@@ -42,16 +42,14 @@ variables:
   # so the launched /apply/ and /contact/ forms render disabled. Every launch route exists and no draft remains. gh-pages
   # overrides this to empty, so the endpoints must exist before production ships.
   #
-  # Wave 7 (decision W7-6) also tolerates its pending rows: the nine pre-registered pages and the two machine files (llms.txt,
-  # llms-full.txt) are launch:true in src/data/routes.ts before their packages land. Each pattern names one path and is anchored at the
-  # end, so a missing route that is not on this list still fails. WP-50 narrows this back to the form routes. A release tag and
-  # gh-pages set RELEASE_ALLOW to empty (verify:release below), so none of this can reach a release. expand: false keeps the `$`.
-  #
-  # Wave 8 (WP-60, decision W8-31) also tolerates the page families (founders segments, industries, compare, journey, briefs): the registry
-  # in src/data/families.ts launches every entry before its package writes the page, and the packages land over the wave. Only those five
-  # path shapes are covered; a launched route anywhere else that does not exist still fails. WP-99 empties this list.
+  # Wave 8 (decision W8-31, contracts section 10) also tolerates the pages it pre-registered: the page families (founders segments,
+  # industries, compare, journey, briefs), the investor and partner pages, the brand story and three founder tools are launch:true in
+  # src/data/routes.ts before their packages write the page. Each shape is anchored at both ends, so a launched route anywhere else
+  # that does not exist still fails. The wave 7 patterns are gone: those pages exist, and the four framework pages WP-48 never built
+  # are launch:false. WP-99 removes the wave 8 shapes when the last page lands, leaving the form routes. A release tag and gh-pages
+  # set RELEASE_ALLOW to empty (verify:release below), so none of this can reach a release. expand: false keeps the `$`.
   RELEASE_ALLOW:
-    value: '^launched form route,^launch:true route does not exist: (/program/how-we-decide/|/about/facts/|/tools/|/tools/metrics-calculator/|/tools/evidence-room/|/about/frameworks/ubf/|/star/|/shift/|/android/|/llms\.txt|/llms-full\.txt|/(?:founders/[a-z0-9-]+|industries|industries/[a-z0-9-]+|compare|compare/[a-z0-9-]+|journey|journey/[a-z0-9-]+|briefs|briefs/[a-z0-9-]+)/)$'
+    value: '^launched form route,^launch:true route does not exist: (/(?:founders/[a-z0-9-]+|industries|industries/[a-z0-9-]+|compare|compare/[a-z0-9-]+|journey|journey/[a-z0-9-]+|briefs|briefs/[a-z0-9-]+|investors/(?:meet-startups|what-you-can-see|readiness-criteria|showcase-format|faq|interest|interest/thanks)|network/partners|network/partners/(?:categories|how-it-works|faq|enquire|enquire/thanks)|about/brand-story|tools/(?:runway-calculator|pricing-page-checker|cap-table-explainer))/)$'
     expand: false
   # Every qa job blocks on every branch (decision I-10). Set by WP-15 after a wp/15 pipeline passed all of them.
   QA_STRICT: "1"
