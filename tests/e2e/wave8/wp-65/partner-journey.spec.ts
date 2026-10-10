@@ -5,10 +5,12 @@ import { isBuilt } from '../../support/routes.ts';
 
 // WP-65: the partner journey. One spec, run at 1440 and at 390 by the wave 8 projects.
 //
-// The default build has no intake endpoint, so the enquiry form is in `disabled` mode there. The tests that need a send (success, 422,
-// 429) rewrite the page document in flight: data-mode becomes `endpoint`, data-endpoint points at a mocked origin and the CSP meta tag is
-// dropped so the mocked origin may be contacted. Nothing leaves the test, and the markup is otherwise what the build produced. The
-// disabled state, the no-JavaScript path and the absence of any mailto fallback are checked on the page exactly as built.
+// Convention (main's ruling on form e2e): e2e:wave8 runs against the shared build, which has no intake endpoint, so the enquiry form is
+// `disabled` there. The disabled-mode assertions are plain tests and always run: the callout, the disabled button, no mailto, the
+// no-JavaScript behaviour. Every endpoint-mode case (success, 422, 429, a keyboard-only post, the native no-JavaScript post) carries the
+// tag @endpoint in its title and starts by skipping unless the form's data-mode is `endpoint`; e2e:forms runs `--grep @endpoint` against
+// its endpoint build, so each of them runs for real in exactly one job. The endpoint origin is mocked with page.route, so nothing
+// leaves the test.
 
 const ENQUIRE = '/network/partners/enquire/';
 const THANKS = '/network/partners/enquire/thanks/';
@@ -40,20 +42,6 @@ test.beforeEach(() => {
   test.skip(!isBuilt(ENQUIRE), `${ENQUIRE} is not built`);
 });
 
-/** Serves the enquiry page in endpoint mode when the build left it disabled. A build that already has an endpoint is served untouched. */
-async function serveInEndpointMode(page: Page): Promise<void> {
-  await page.route(`**${ENQUIRE}`, async (route) => {
-    const response = await route.fetch();
-    const html = await response.text();
-    const rewritten = html
-      .replace(/data-mode=(["']?)disabled\1/, `data-mode="endpoint" data-endpoint="${ENDPOINT}"`)
-      .replace(/<meta[^>]+http-equiv=["']?content-security-policy["']?[^>]*>/i, '');
-    const headers = { ...response.headers() };
-    delete headers['content-length'];
-    await route.fulfill({ response, body: rewritten, headers });
-  });
-}
-
 interface Mock {
   readonly bodies: unknown[];
 }
@@ -75,13 +63,13 @@ async function mockEndpoint(page: Page, respond: (route: Route) => Promise<void>
 
 const ok = (route: Route): Promise<void> => route.fulfill({ status: 200, headers: CORS, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
 
-/** Opens the enquiry page in endpoint mode with a controllable clock, and waits for the form script to mount. */
+/** Opens the enquiry page with a controllable clock and waits for the form script to mount. Skips unless the build is in endpoint mode. */
 async function openEndpointForm(page: Page): Promise<void> {
-  await serveInEndpointMode(page);
   await page.clock.install();
   await page.goto(ENQUIRE);
   await expect(form(page)).toHaveAttribute('data-mounted', 'true');
-  await expect(form(page)).toHaveAttribute('data-mode', 'endpoint');
+  const mode = await form(page).getAttribute('data-mode');
+  test.skip(mode !== 'endpoint', 'runs in e2e:forms');
 }
 
 /** Fills every required answer except those named in `skip`. */
@@ -153,7 +141,7 @@ test.describe('the six routes', () => {
 });
 
 test.describe('the enquiry form with an endpoint', () => {
-  test('success sends one JSON body for a partner enquiry, then opens the thanks page', async ({ page, baseURL }) => {
+  test('success sends one JSON body for a partner enquiry, then opens the thanks page @endpoint', async ({ page, baseURL }) => {
     const seen = watch(page, baseURL ?? '', [ENDPOINT_ORIGIN]);
     const mock = await mockEndpoint(page, ok);
     await openEndpointForm(page);
@@ -178,7 +166,7 @@ test.describe('the enquiry form with an endpoint', () => {
     expect(seen.thirdParty, 'only the mocked endpoint may be contacted').toEqual([]);
   });
 
-  test('a missing category is named in the summary and inline, focus moves to the summary, and nothing is sent', async ({ page }) => {
+  test('a missing category is named in the summary and inline, focus moves to the summary, and nothing is sent @endpoint', async ({ page }) => {
     const mock = await mockEndpoint(page, ok);
     await openEndpointForm(page);
     await fill(page, ['category']);
@@ -192,7 +180,7 @@ test.describe('the enquiry form with an endpoint', () => {
     expect(mock.bodies).toHaveLength(0);
   });
 
-  test('a missing website address is named in the summary and nothing is sent', async ({ page }) => {
+  test('a missing website address is named in the summary and nothing is sent @endpoint', async ({ page }) => {
     const mock = await mockEndpoint(page, ok);
     await openEndpointForm(page);
     await fill(page, ['url']);
@@ -203,7 +191,7 @@ test.describe('the enquiry form with an endpoint', () => {
     expect(mock.bodies).toHaveLength(0);
   });
 
-  test('a website address that does not start with https:// is refused before sending', async ({ page }) => {
+  test('a website address that does not start with https:// is refused before sending @endpoint', async ({ page }) => {
     const mock = await mockEndpoint(page, ok);
     await openEndpointForm(page);
     await fill(page, ['url']);
@@ -213,7 +201,7 @@ test.describe('the enquiry form with an endpoint', () => {
     expect(mock.bodies).toHaveLength(0);
   });
 
-  test('a 422 from the server for the category is shown against the field and the answers stay', async ({ page }) => {
+  test('a 422 from the server for the category is shown against the field and the answers stay @endpoint', async ({ page }) => {
     const mock = await mockEndpoint(page, (route) =>
       route.fulfill({
         status: 422,
@@ -232,7 +220,7 @@ test.describe('the enquiry form with an endpoint', () => {
     await expect(page).toHaveURL(new RegExp(`${ENQUIRE}$`));
   });
 
-  test('a 422 from the server for the website address is shown against the field', async ({ page }) => {
+  test('a 422 from the server for the website address is shown against the field @endpoint', async ({ page }) => {
     await mockEndpoint(page, (route) =>
       route.fulfill({
         status: 422,
@@ -248,7 +236,7 @@ test.describe('the enquiry form with an endpoint', () => {
     await expect(form(page).locator('[name="companyUrl"]')).toHaveAttribute('aria-invalid', 'true');
   });
 
-  test('a 429 says to wait, keeps the answers, and offers no email fallback', async ({ page }) => {
+  test('a 429 says to wait, keeps the answers, and offers no email fallback @endpoint', async ({ page }) => {
     const mock = await mockEndpoint(page, (route) =>
       route.fulfill({ status: 429, headers: { ...CORS, 'retry-after': '120', 'access-control-expose-headers': 'Retry-After' }, contentType: 'application/json', body: '{}' }),
     );
@@ -263,7 +251,7 @@ test.describe('the enquiry form with an endpoint', () => {
     await expect(page.locator('main a[href^="mailto:"]')).toHaveCount(0);
   });
 
-  test('a retry after a failed send is the same request', async ({ page }) => {
+  test('a retry after a failed send is the same request @endpoint', async ({ page }) => {
     let calls = 0;
     const mock = await mockEndpoint(page, (route) => {
       calls += 1;
@@ -279,7 +267,7 @@ test.describe('the enquiry form with an endpoint', () => {
     expect(second?.requestId).toBe(first?.requestId);
   });
 
-  test('a keyboard-only run completes and sends the form: Tab, typing, arrow keys, Space and Enter', async ({ page }) => {
+  test('a keyboard-only run completes and sends the form: Tab, typing, arrow keys, Space and Enter @endpoint', async ({ page }) => {
     const mock = await mockEndpoint(page, ok);
     await openEndpointForm(page);
     await form(page).locator('[name="name"]').focus();
@@ -323,8 +311,7 @@ test.describe('the enquiry form as built', () => {
   test('the disabled state says the form is not connected, keeps the button off and sends nothing', async ({ page, baseURL }) => {
     await page.goto(ENQUIRE);
     await expect(form(page)).toHaveAttribute('data-mounted', 'true');
-    const mode = await form(page).getAttribute('data-mode');
-    test.skip(mode !== 'disabled', 'this build has an endpoint, so the form is not disabled');
+    expect(await form(page).getAttribute('data-mode'), 'the shared e2e:wave8 build has no intake endpoint').toBe('disabled');
     const requests: string[] = [];
     page.on('request', (request) => {
       if (request.method() === 'POST') requests.push(request.url());
@@ -357,20 +344,16 @@ test.describe('the enquiry form as built', () => {
 });
 
 test.describe('without JavaScript', () => {
+  // Reduced motion switches smooth scrolling off, so a click never waits on a scroll that has no script to settle it.
   test.use({ javaScriptEnabled: false, reducedMotion: 'reduce' });
 
-  test('the form cannot be sent as a query string: it posts, or its button is off, and no mailto link appears', async ({ page }) => {
+  test('the disabled form cannot be sent: it posts nowhere, its button is off, a note says why and no mailto link appears', async ({ page }) => {
     await page.goto(ENQUIRE);
     await expect(form(page)).toHaveAttribute('method', 'post');
-    const mode = await form(page).getAttribute('data-mode');
-    if (mode === 'endpoint') {
-      await expect(form(page)).toHaveAttribute('action', /^https:\/\//);
-      await expect(submitButton(page)).toBeEnabled();
-    } else {
-      await expect(form(page)).not.toHaveAttribute('action', /./);
-      await expect(submitButton(page)).toBeDisabled();
-      await expect(form(page).getByText('This form is not connected yet')).toBeVisible();
-    }
+    expect(await form(page).getAttribute('data-mode'), 'the shared e2e:wave8 build has no intake endpoint').toBe('disabled');
+    await expect(form(page)).not.toHaveAttribute('action', /./);
+    await expect(submitButton(page)).toBeDisabled();
+    await expect(form(page).getByText('This form is not connected yet')).toBeVisible();
     await expect(page.locator('main a[href^="mailto:"]')).toHaveCount(0);
     // Every control has its label in the markup, so the page is usable without a script.
     for (const field of ['name', 'email', 'company', 'url', 'category', 'offer']) {
@@ -384,5 +367,48 @@ test.describe('without JavaScript', () => {
       await page.goto(route);
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
     }
+  });
+
+  test('the connected form posts form-encoded fields to the endpoint and never builds a query string @endpoint', async ({ page }) => {
+    const seen: { method: string; url: string; contentType: string; body: string }[] = [];
+    await page.route(`${ENDPOINT_ORIGIN}/**`, async (route) => {
+      const request = route.request();
+      seen.push({ method: request.method(), url: request.url(), contentType: request.headers()['content-type'] ?? '', body: request.postData() ?? '' });
+      await route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>received</title><p>received</p>' });
+    });
+    await page.goto(ENQUIRE);
+    const mode = await form(page).getAttribute('data-mode');
+    test.skip(mode !== 'endpoint', 'runs in e2e:forms');
+
+    await expect(form(page)).toHaveAttribute('method', 'post');
+    await expect(form(page)).toHaveAttribute('action', ENDPOINT);
+    await expect(submitButton(page)).toBeEnabled();
+    await form(page).locator('[name="name"]').fill(ANSWERS.name);
+    await form(page).locator('[name="email"]').fill(ANSWERS.email);
+    await form(page).locator('[name="company"]').fill(ANSWERS.company);
+    await form(page).locator('[name="companyUrl"]').fill(ANSWERS.url);
+    await form(page).locator('[name="partnerCategory"]').selectOption(ANSWERS.category);
+    await form(page).locator('[name="offer"]').fill(ANSWERS.offer);
+    const consent = form(page).locator('[name="consent"]');
+    await consent.focus();
+    await page.keyboard.press('Space');
+    await expect(consent).toBeChecked();
+    await submitButton(page).focus();
+    await page.keyboard.press('Enter');
+    await expect.poll(() => seen.length).toBe(1);
+
+    const [request] = seen;
+    expect(request?.method).toBe('POST');
+    expect(request?.url, 'no query string on the endpoint URL').toBe(ENDPOINT);
+    expect(request?.contentType).toContain('application/x-www-form-urlencoded');
+    const fields = new URLSearchParams(request?.body ?? '');
+    expect(fields.get('form')).toBe('partner-enquiry');
+    expect(fields.get('audience')).toBe('partner');
+    expect(fields.get('partnerCategory')).toBe(ANSWERS.category);
+    expect(fields.get('companyUrl')).toBe(ANSWERS.url);
+    expect(fields.get('consent')).toBe('on');
+    expect(fields.get('website')).toBe('');
+    expect(fields.get('requestId'), 'a native post carries an empty id and the server generates one').toBe('');
+    expect(fields.get('redirect')).toMatch(/\/network\/partners\/enquire\/thanks\/$/);
   });
 });
