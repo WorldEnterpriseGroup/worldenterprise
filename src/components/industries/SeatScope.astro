@@ -1,0 +1,18 @@
+---
+/**
+ * What the seats of WE can and cannot build (WP-74). The same list closes the body of every industry page and the hub, so a reader sees the
+ * limits next to the industry's perimeter. The words live in scope-copy.ts, which the sources ledger maps sentence by sentence; nothing here
+ * says that WE holds a certification or meets an industry rule (claim C-15).
+ *
+ * The component has no style block of its own. Built inside an MDX page, a scoped style was emitted inline with a hash the page's CSP did
+ * not list (audit-csp failed on all eight pages), so it reuses the shared .callout and .stack rules. `seat-scope` is a hook for the e2e spec.
+ */
+import { SCOPE_HEADING, SCOPE_ITEMS } from './scope-copy.ts';
+---
+
+<section class="seat-scope callout callout--notice stack" aria-labelledby="seat-scope-title">
+  <h2 id="seat-scope-title" class="callout__title">{SCOPE_HEADING}</h2>
+  <ul>
+    {SCOPE_ITEMS.map((item) => <li>{item.text}</li>)}
+  </ul>
+</section>
