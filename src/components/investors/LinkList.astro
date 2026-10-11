@@ -1,0 +1,33 @@
+---
+/**
+ * A list of internal links that keeps only the routes live in this build (a sibling page of the investor journey may not exist on a
+ * branch yet), so no build ships a dead link. The text under a link is optional.
+ */
+import { liveItems } from '../playbooks/links.ts';
+import { href } from '../../lib/url.ts';
+
+interface Item {
+  readonly title: string;
+  readonly href: string;
+  readonly text?: string;
+}
+
+interface Props {
+  items: readonly Item[];
+}
+
+const live = await liveItems(Astro.props.items);
+---
+
+{
+  live.length > 0 && (
+    <ul class="stack" role="list">
+      {live.map((item) => (
+        <li>
+          <a href={href(item.href)}>{item.title}</a>
+          {item.text !== undefined && <span>. {item.text}</span>}
+        </li>
+      ))}
+    </ul>
+  )
+}

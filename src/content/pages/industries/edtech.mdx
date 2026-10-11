@@ -1,0 +1,58 @@
+---
+title: "Edtech SaaS considerations"
+description: "What a founder weighs before building SaaS for schools and learners: who buys, the regulatory perimeter, data questions and the sales cycle."
+eyebrow: Industry considerations
+hero: H2
+updated: 2026-10-10
+claimsUsed: [C-29]
+family:
+  id: industries
+  slug: edtech
+  buyer: "In education the buyer is usually a school, a district or an institution, so the person who wants the product is rarely the only person who must approve it. Name the budget owner, the instructional owner and the reviewer for student data before the first demo."
+  perimeter:
+    - title: "Education records and outside providers"
+      text: "Under the Family Educational Rights and Privacy Act regulations, 34 CFR 99.31, a school may treat an outside party as a school official if the party performs a function the school would otherwise staff, is under the school’s direct control over education records and is subject to the rules on redisclosure."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: ed-34-cfr-99-31
+    - title: "Online services directed to children"
+      text: "The Children’s Online Privacy Protection Rule, 16 CFR 312.3, applies to an operator of a website or online service directed to children and requires the operator to provide notice of what information it collects from children. Whether a product is directed to children is a question to settle early."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: ftc-16-cfr-312-3
+    - title: "Accessibility of public entity web content"
+      text: "A Department of Justice rule, 28 CFR 35.200, covers web content and mobile apps that a public entity provides or makes available directly or through contractual, licensing or other arrangements, and sets WCAG 2.1 Level AA as the standard, with dates that depend on the size of the entity. A public school buyer may ask how a product meets that standard."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: doj-28-cfr-35-200
+  dataQuestions:
+    - "Which student records does the product receive, and what function does it perform that a school would otherwise staff?"
+    - "Can the school keep direct control over how the vendor uses and maintains education records?"
+    - "Is any part of the product directed to children, and what information does it collect from them?"
+    - "How can a buyer verify that the product meets WCAG 2.1 Level AA?"
+  salesCycle: "A school or district reviews how a vendor will use and maintain education records before it shares them. Treat that review, and any accessibility review, as stages of the sale, and ask early who runs each one."
+  sources:
+    - id: ed-34-cfr-99-31
+      title: "Conditions under which prior consent is not required to disclose information, 34 CFR 99.31"
+      publisher: "Department of Education (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-34.xml?part=99&section=99.31"
+      accessed: 2026-10-10
+    - id: ftc-16-cfr-312-3
+      title: "Children's Online Privacy Protection Rule, 16 CFR 312.3 General requirements"
+      publisher: "Federal Trade Commission (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-16.xml?part=312&section=312.3"
+      accessed: 2026-10-10
+    - id: doj-28-cfr-35-200
+      title: "Requirements for web and mobile accessibility, 28 CFR 35.200"
+      publisher: "Department of Justice (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-28.xml?part=35&section=35.200"
+      accessed: 2026-10-10
+---
+
+import SeatScope from '../../../components/industries/SeatScope.astro';
+
+This page sets out what building SaaS for schools and learners asks of a founder, in general terms.
+
+The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.
+
+<SeatScope />

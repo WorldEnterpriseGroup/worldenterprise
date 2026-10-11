@@ -1,0 +1,43 @@
+---
+import { render } from 'astro:content';
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import { ASK_TO_MEET, CONSENT_SCOPES, FORMAT, SEE } from '../../../components/investors/copy.ts';
+import PortfolioShowcase from '../../../components/investors/PortfolioShowcase.astro';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import DataTable from '../../../components/ui/DataTable.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+
+const page = await getPageEntry('investors/showcase-format', 'investors/showcase-format/index');
+const { Content } = await render(page);
+const scopes = CONSENT_SCOPES.map((s) => [s.label, s.text]);
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/investors/showcase-format/"
+  eyebrow={page.data.eyebrow}
+  lead={FORMAT.lead}
+  updated={page.data.updated}
+  ogSlot="og-network"
+  primary={ASK_TO_MEET}
+>
+  <Content />
+
+  <h2 id="fields-title">{FORMAT.fieldsHeading}</h2>
+  <DataTable caption={FORMAT.fieldsCaption} columns={FORMAT.fieldsColumns} rows={FORMAT.fields} />
+
+  <h2 id="permissions-title">{SEE.consentHeading}</h2>
+  <DataTable caption={SEE.scopeCaption} columns={SEE.scopeColumns} rows={scopes} />
+
+  <h2 id="rules-title">{FORMAT.rulesHeading}</h2>
+  <ul>
+    {FORMAT.rules.map((rule) => <li>{rule}</li>)}
+  </ul>
+  <p>{FORMAT.never}</p>
+
+  <h2 id="companies-title">{FORMAT.emptyHeading}</h2>
+  <PortfolioShowcase headingLevel={3} />
+
+  <NoFundingDisclaimer />
+</MarketingLayout>

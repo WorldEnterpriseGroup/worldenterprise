@@ -1,33 +1,23 @@
 ---
 import { render } from 'astro:content';
-import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
 import InvestorIntroductionsOffer from '../../components/blocks/InvestorIntroductionsOffer.astro';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
-import Callout from '../../components/ui/Callout.astro';
-import CtaBand from '../../components/ui/CtaBand.astro';
-import DataTable from '../../components/ui/DataTable.astro';
-import { TALK_TO_WE } from '../../components/hero/ctas.ts';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import { ASK_TO_MEET, HUB, JOURNEY_LINKS, MATERIAL_LINKS, PROCESS_STEPS } from '../../components/investors/copy.ts';
+import LinkList from '../../components/investors/LinkList.astro';
+import PortfolioShowcase from '../../components/investors/PortfolioShowcase.astro';
 import { getPageEntry } from '../../components/network/pageEntry.ts';
+import { isLinkable } from '../../components/playbooks/links.ts';
+import Callout from '../../components/ui/Callout.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import Steps from '../../components/ui/Steps.astro';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
-import { href } from '../../lib/url.ts';
 
 const page = await getPageEntry('investors', 'investors/index');
 const { Content } = await render(page);
 
-const prepares: readonly (readonly [string, string])[] = [
-  ['A readiness checklist', 'A list of the evidence an investor commonly asks for, so a founder can see the gaps.'],
-  ['A seed data room', 'A guide to organizing and keeping current the documents an investor reads.'],
-  ['Investor updates', 'A consistent shape for the regular update a founder sends to people who have backed the company.'],
-  ['Plain explanations', 'Generic, sourced explanations of terms such as SAFEs. They describe the instrument and do not describe any deal.'],
-];
-
-const doesNot = [
-  'WE does not offer, sell or place securities, and takes no part in any financing.',
-  'WE does not negotiate terms, advise on securities or handle funds.',
-  'WE does not advise investors or recommend any company as an investment, and an introduction is not an endorsement.',
-  'WE does not verify a company’s statements. They remain that company’s own.',
-  'WE does not promise or predict a meeting, a reply or funding for any company.',
-];
+const meet = JOURNEY_LINKS[0];
+const secondary = meet && (await isLinkable(meet.href)) ? { label: meet.title, href: meet.href } : undefined;
 ---
 
 <MarketingLayout
@@ -35,48 +25,37 @@ const doesNot = [
   description={page.data.description}
   path="/investors/"
   eyebrow={page.data.eyebrow}
-  lead="WE prepares a company's evidence. It does not raise money, place securities or promise funding."
+  lead={HUB.lead}
   updated={page.data.updated}
   ogSlot="og-network"
-  primary={TALK_TO_WE}
-  secondary={{ label: 'How investor readiness works', href: '/fundability/' }}
+  primary={ASK_TO_MEET}
+  secondary={secondary}
 >
-  <Callout tone="notice" title="Not an offer of securities">
-    <p>
-      Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security. WE does not offer
-      securities through this site or in any other way described on it.
-    </p>
+  <Callout tone="notice" title={HUB.notOfferTitle}>
+    <p>{HUB.notOffer}</p>
   </Callout>
 
   <Content />
 
-  <h2 id="prepares-title">The materials</h2>
-  <DataTable caption="Materials WE helps a founder prepare" columns={['Material', 'What it is']} rows={prepares} />
-  <p>
-    Each item has its own page: the <a href={href('/fundability/investor-readiness-checklist/')}>readiness checklist</a>,
-    the <a href={href('/fundability/data-room/')}>seed data room</a>, <a href={href('/fundability/investor-updates/')}>investor updates</a>
-    and <a href={href('/fundability/safe-explained/')}>SAFEs in plain language</a>.
-  </p>
+  <h2 id="process-title">{HUB.processHeading}</h2>
+  <Steps headingLevel={3} steps={PROCESS_STEPS} />
+
+  <h2 id="companies-title">{HUB.companiesHeading}</h2>
+  <PortfolioShowcase headingLevel={3} />
+
+  <h2 id="more-title">{HUB.moreHeading}</h2>
+  <LinkList items={JOURNEY_LINKS} />
+
+  <h2 id="prepares-title">{HUB.materialsHeading}</h2>
+  <DataTable caption={HUB.materialsCaption} columns={HUB.materialsColumns} rows={HUB.materials} />
+  <LinkList items={MATERIAL_LINKS} />
 
   <InvestorIntroductionsOffer variant="full" headingLevel={2} idPrefix="intro-offer" />
 
-  <LimitsBlock title="The limits of WE's role" items={doesNot} headingLevel={2} />
+  <LimitsBlock title={HUB.limitsTitle} items={HUB.limits} headingLevel={2} />
 
-  <h2 id="investor-title">If you are an investor</h2>
-  <p>
-    Any company that shows you materials prepared with WE’s help is making its own case. Ask the founder for the
-    source of each claim, as you would for any company. An introduction through the add-on above is not an endorsement or a
-    recommendation to invest. You decide whether to reply, and you do your own diligence. If you have a question about how WE works, use the
-    <a href={href('/contact/')}>contact page</a>. A question is not a request for access to any company.
-  </p>
+  <h2 id="diligence-title">{HUB.diligenceHeading}</h2>
+  <p>{HUB.diligence}</p>
 
   <NoFundingDisclaimer />
-
-  <CtaBand
-    slot="after"
-    title="Questions about how WE works"
-    text="Use the contact page. A question is not a request for access to any company."
-    cta={{ label: 'Contact', href: '/contact/' }}
-    secondary={{ label: 'Read about investor readiness', href: '/fundability/' }}
-  />
 </MarketingLayout>

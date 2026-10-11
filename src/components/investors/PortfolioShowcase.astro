@@ -1,0 +1,75 @@
+---
+/**
+ * The consent-gated portfolio showcase (W8-17, D-21). It reads src/content/portfolio/**, where an entry exists only after a founder has
+ * agreed in writing, and shows each company only as far as that agreement goes (portfolio.ts). With no entry it shows one fixed sentence
+ * and nothing else: no placeholder company, no count, no date and no promise that a company will appear.
+ *
+ * `getPublished` in src/lib/content.ts types public collections only and leaves out `portfolio`, so this reads the collection directly and
+ * drops drafts through the gate.
+ */
+import { getCollection } from 'astro:content';
+import { SHOWCASE_EMPTY } from './copy.ts';
+import { showcaseCards } from './portfolio.ts';
+
+interface Props {
+  /** Heading level of each company name, so the page outline stays valid. */
+  headingLevel?: 3 | 4;
+}
+
+const { headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h3' | 'h4';
+const entries = await getCollection('portfolio');
+const cards = showcaseCards(entries.map((entry) => entry.data));
+---
+
+{
+  cards.length === 0 ? (
+    <p data-showcase="empty">{SHOWCASE_EMPTY}</p>
+  ) : (
+    <ul class="showcase" role="list" data-showcase="list">
+      {cards.map((card) => (
+        <li class="showcase__item">
+          <Heading class="showcase__name">{card.name}</Heading>
+          {card.oneLine !== undefined && <p>{card.oneLine}</p>}
+          {card.stage !== undefined && <p class="showcase__stage">{card.stage}</p>}
+          {card.website !== undefined && (
+            <p>
+              <a href={card.website} rel="noopener noreferrer">
+                {card.website}
+              </a>
+            </p>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  @layer pages {
+    .showcase {
+      display: grid;
+      gap: var(--space-flow);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .showcase__item {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-flow);
+    }
+
+    .showcase__name {
+      font-size: var(--fs-lg);
+      margin-block-start: 0;
+    }
+
+    .showcase__stage {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+  }
+</style>
