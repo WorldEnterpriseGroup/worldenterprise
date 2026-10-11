@@ -144,14 +144,6 @@
     }
   }
 
-  /* The items inherit their size (font: inherit), so the size is set on the list. */
-  @media (min-width: 1100px) and (max-width: 1279.98px) {
-    .mega-nav__list {
-      gap: var(--sp-1);
-      font-size: 1rem;
-    }
-  }
-
   .site-header__logo img {
     inline-size: 100%;
     block-size: auto;
@@ -168,6 +160,15 @@
     padding: 0;
     font-family: var(--ff-display);
     font-weight: 600;
+  }
+
+  /* The items inherit their size (font: inherit), so the size is set on the list. This block comes after the base rule above: both have the
+     same specificity, so the later one wins, and before it the base gap of --sp-4 beat this one and the row overflowed at 1100 and 1140px. */
+  @media (min-width: 1100px) and (max-width: 1279.98px) {
+    .mega-nav__list {
+      gap: var(--sp-1);
+      font-size: 1rem;
+    }
   }
 
   .mega-nav__link,
