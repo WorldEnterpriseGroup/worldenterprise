@@ -1,0 +1,2219 @@
+{
+  "wp": "WP-77",
+  "note": "Glossary terms added to src/data/glossary.yaml. Every definition is general and neutral; each term lists the fetched sources it restates under `terms`. No document in `documents` states a sourced claim of its own, and no claims marker is used (see the handoff for why the four SAFE-mechanics terms are not defined).",
+  "fetches": [
+    {
+      "id": "ai-arxiv-rag",
+      "url": "https://arxiv.org/abs/2005.11401",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "publisher": "arXiv",
+      "fetchedAt": "2026-10-10T21:59:51Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ai-claude-ctx",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+      "title": "Context windows",
+      "publisher": "Claude Docs (Anthropic)",
+      "fetchedAt": "2026-10-10T22:00:19Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ai-eu-act",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+      "title": "AI Act | Shaping Europe's digital future",
+      "publisher": "European Commission",
+      "fetchedAt": "2026-10-10T22:04:03Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ai-google-gen",
+      "url": "https://developers.google.com/machine-learning/glossary/generative",
+      "title": "Machine Learning Glossary: Generative AI",
+      "publisher": "Google for Developers",
+      "fetchedAt": "2026-10-10T22:01:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ai-google-lang",
+      "url": "https://developers.google.com/machine-learning/glossary/language",
+      "title": "Machine Learning Glossary | Google for Developers",
+      "publisher": "Google for Developers",
+      "fetchedAt": "2026-10-10T22:02:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ai-ico-pd",
+      "url": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/personal-information-what-is-it/what-is-personal-information-a-guide/",
+      "title": "What is personal information: a guide",
+      "publisher": "Information Commissioner's Office",
+      "fetchedAt": "2026-10-10T22:02:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ai-nist-ai",
+      "url": "https://csrc.nist.gov/glossary/term/artificial_intelligence",
+      "title": "artificial intelligence - Glossary | CSRC",
+      "publisher": "NIST Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T21:59:11Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ai-nist-ml",
+      "url": "https://csrc.nist.gov/glossary/term/machine_learning",
+      "title": "machine learning - Glossary | CSRC",
+      "publisher": "NIST Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T21:59:19Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ai-nist-rmf",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "title": "AI Risk Management Framework | NIST",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T21:59:59Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ai-openai-concepts",
+      "url": "https://developers.openai.com/api/docs/concepts",
+      "title": "Key concepts",
+      "publisher": "OpenAI Developers",
+      "fetchedAt": "2026-10-10T22:00:56Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-ab-dg",
+      "url": "https://digital.gov/guides/plain-language/test/comparative-studies",
+      "title": "Comparative studies | Digital.gov",
+      "publisher": "Digital.gov (U.S. General Services Administration)",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-ab-hbs",
+      "url": "https://online.hbs.edu/blog/post/what-is-ab-testing",
+      "title": "What Is A/B Testing and How Is It Used? | HBS Online",
+      "publisher": "Harvard Business School Online",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-jtbd-hbs",
+      "url": "https://www.library.hbs.edu/working-knowledge/clay-christensens-milkshake-marketing",
+      "title": "Clay Christensen's Milkshake Marketing | Working Knowledge",
+      "publisher": "Harvard Business School",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-nps-byu",
+      "url": "https://learnstrategy.byu.edu/business-strategy/net-promoter-score",
+      "title": "Net Promoter Score",
+      "publisher": "Brigham Young University Learn Strategy",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-persona-dg",
+      "url": "https://digital.gov/2023/05/19/personas-learn-how-to-discover-your-audience-understand-them-and-pivot-to-address-their-needs",
+      "title": "Personas: learn how to discover your audience, understand them, and pivot to address their needs",
+      "publisher": "Digital.gov (U.S. General Services Administration)",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-pmf-mit",
+      "url": "https://orbit-kb.mit.edu/hc/en-us/articles/205194123-What-is-Product-Market-Fit",
+      "title": "What is Product/Market Fit?",
+      "publisher": "Massachusetts Institute of Technology",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-pmf-stanford",
+      "url": "https://web.stanford.edu/class/ee204/ProductMarketFit.html",
+      "title": "EE204: Business Management for Electrical Engineers and Computer Scientists",
+      "publisher": "Stanford University",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-pra-usability",
+      "url": "https://pra.digital.gov/terms/usability-testing.html",
+      "title": "Glossary: usability testing | A Guide to the Paperwork Reduction Act",
+      "publisher": "Digital.gov (U.S. General Services Administration)",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-profiles-dg",
+      "url": "https://digital.gov/guides/research-collaboration/user-needs/user-profiles",
+      "title": "Understand your users by developing profiles",
+      "publisher": "Digital.gov (U.S. General Services Administration)",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cust-roadmap-dg",
+      "url": "https://digital.gov/2024/08/26/how-login-gov-uses-roadmapping-to-build-trust-with-its-partners-and-the-public",
+      "title": "How Login.gov uses roadmapping to build trust with its partners and the public | Digital.gov",
+      "publisher": "Digital.gov (U.S. General Services Administration)",
+      "fetchedAt": "2026-10-10T21:55:13Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "deliv-ci",
+      "url": "https://martinfowler.com/articles/continuousIntegration.html",
+      "title": "Continuous Integration",
+      "publisher": "martinfowler.com",
+      "fetchedAt": "2026-10-10T21:53:46Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "deliv-multitenant",
+      "url": "https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/overview",
+      "title": "Architect Multitenant Solutions on Azure - Azure Architecture Center",
+      "publisher": "Microsoft Learn",
+      "fetchedAt": "2026-10-10T21:54:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "deliv-openfeature",
+      "url": "https://openfeature.dev/docs/reference/intro/",
+      "title": "Introduction | OpenFeature",
+      "publisher": "OpenFeature",
+      "fetchedAt": "2026-10-10T21:54:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "deliv-otel",
+      "url": "https://opentelemetry.io/docs/concepts/observability-primer/",
+      "title": "Observability primer",
+      "publisher": "OpenTelemetry",
+      "fetchedAt": "2026-10-10T21:54:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "deliv-postmortem",
+      "url": "https://sre.google/sre-book/postmortem-culture/",
+      "title": "Postmortem Culture: Learning from Failure",
+      "publisher": "Google SRE",
+      "fetchedAt": "2026-10-10T21:54:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "deliv-scrum",
+      "url": "https://scrumguides.org/scrum-guide.html",
+      "title": "Scrum Guide | Scrum Guides",
+      "publisher": "Scrum Guides",
+      "fetchedAt": "2026-10-10T21:53:46Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "deliv-shapeup",
+      "url": "https://basecamp.com/shapeup/0.3-chapter-01",
+      "title": "Introduction | Shape Up",
+      "publisher": "Basecamp",
+      "fetchedAt": "2026-10-10T21:54:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "deliv-slo",
+      "url": "https://sre.google/sre-book/service-level-objectives/",
+      "title": "Service Level Objectives",
+      "publisher": "Google SRE",
+      "fetchedAt": "2026-10-10T21:54:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "deliv-techdebt",
+      "url": "https://martinfowler.com/bliki/TechnicalDebt.html",
+      "title": "Technical Debt",
+      "publisher": "martinfowler.com",
+      "fetchedAt": "2026-10-10T21:53:46Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fin-iastate-cf",
+      "url": "https://www.extension.iastate.edu/agdm/wholefarm/html/c3-14.html",
+      "title": "Understanding Cash Flow Analysis",
+      "publisher": "Iowa State University Extension and Outreach, Ag Decision Maker",
+      "fetchedAt": "2026-10-10T21:44:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fin-irs538",
+      "url": "https://www.irs.gov/publications/p538",
+      "title": "Publication 538 (01/2022), Accounting Periods and Methods",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T21:31:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fin-purdue-wc",
+      "url": "https://ag.purdue.edu/commercialag/home/sub-articles/2020/09/working-capital-what-is-it-and-do-you-have-enough/",
+      "title": "Working Capital: What Is It and Do You Have Enough?",
+      "publisher": "Purdue University Center for Commercial Agriculture",
+      "fetchedAt": "2026-10-10T21:36:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fin-scu-cogs",
+      "url": "https://www.scu.edu/mobi/business-courses/starting-a-business/controlling-costs/",
+      "title": "Controlling Costs",
+      "publisher": "Santa Clara University, My Own Business Institute",
+      "fetchedAt": "2026-10-10T21:44:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fin-upenn-revrec",
+      "url": "https://finance.upenn.edu/policy/1117-revenue-recognition/",
+      "title": "1117 Revenue Recognition",
+      "publisher": "University of Pennsylvania Division of Finance",
+      "fetchedAt": "2026-10-10T21:36:05Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fund-cfr-501",
+      "url": "https://www.law.cornell.edu/cfr/text/17/230.501",
+      "title": "17 CFR § 230.501 - Definitions and terms used in Regulation D.",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:56:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fund-harvard-vc",
+      "url": "https://guides.library.harvard.edu/law/private_equity",
+      "title": "Getting Started - Private Equity, Venture Capital, and Hedge Funds - Research Guides at Harvard Library",
+      "publisher": "Harvard Law School Library",
+      "fetchedAt": "2026-10-10T21:55:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fund-mit-terms1",
+      "url": "https://nutsandbolts.mit.edu/BBJ/What%20Are%20The%20Terms%20Part%201.php",
+      "title": "What Are the Terms? - Part 1: A Preferred Return",
+      "publisher": "MIT Sloan, Nuts and Bolts of New Ventures",
+      "fetchedAt": "2026-10-10T21:55:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fund-mit-terms2",
+      "url": "https://nutsandbolts.mit.edu/BBJ/What%20Are%20The%20Terms%20Part%202.php",
+      "title": "What Are the Terms? - Part 2",
+      "publisher": "MIT Sloan, Nuts and Bolts of New Ventures",
+      "fetchedAt": "2026-10-10T21:56:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fund-psu-sources",
+      "url": "https://propel.smeal.psu.edu/digital-resources/financing-strategies/funding-sources/",
+      "title": "Propel Business | Funding Sources",
+      "publisher": "Penn State Smeal College of Business",
+      "fetchedAt": "2026-10-10T21:56:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fund-sec-early",
+      "url": "https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/early-stage-investors",
+      "title": "Early-Stage Investors",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T21:55:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fund-wex-accredited",
+      "url": "https://www.law.cornell.edu/wex/accredited_investor",
+      "title": "accredited investor | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:55:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fund-wex-followon",
+      "url": "https://www.law.cornell.edu/wex/follow-on_offering",
+      "title": "follow-on offering | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:55:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fund-yc-venturedebt",
+      "url": "https://www.ycombinator.com/blog/venture-debt-101-basics-and-approach",
+      "title": "Venture Debt 101: Basics and Approach | Y Combinator",
+      "publisher": "Y Combinator",
+      "fetchedAt": "2026-10-10T21:56:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-csusm-tam",
+      "url": "https://libguides.csusm.edu/c.php?g=1258765&p=9719487",
+      "title": "Markets - Innovation Hub Research Guide",
+      "publisher": "California State University San Marcos Library",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-google-seo",
+      "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+      "title": "SEO Starter Guide: The Basics",
+      "publisher": "Google Search Central",
+      "fetchedAt": "2026-10-10T21:54:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-hbs-gtm",
+      "url": "https://online.hbs.edu/blog/post/go-to-market-strategy-framework",
+      "title": "How to Develop a Go-to-Market Strategy for Your Tech Venture",
+      "publisher": "Harvard Business School Online",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-hbs-kpis",
+      "url": "https://online.hbs.edu/blog/post/marketing-kpis",
+      "title": "7 Marketing KPIs You Should Know & How to Measure Them",
+      "publisher": "Harvard Business School Online",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-hbs-positioning",
+      "url": "https://online.hbs.edu/blog/post/brand-positioning-statement",
+      "title": "Crafting the Perfect Brand Positioning Statement",
+      "publisher": "Harvard Business School Online",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-hbs-segment",
+      "url": "https://online.hbs.edu/blog/post/target-audience-in-marketing",
+      "title": "The Importance of Target Audience in Marketing Strategy",
+      "publisher": "Harvard Business School Online",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-hbs-value",
+      "url": "https://online.hbs.edu/blog/post/creating-a-value-proposition",
+      "title": "How to Create an Effective Value Proposition",
+      "publisher": "Harvard Business School Online",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-mit-beachhead",
+      "url": "https://executive.mit.edu/launching-a-successful-start-up-3-the-beachhead-market-MC7FUMDZ6IU5AIPP4WGIPN2PZJI4.html",
+      "title": "Launching a Successful Start-Up #3: The Beachhead Market",
+      "publisher": "MIT Sloan Executive Education",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-mit-orbit-tam",
+      "url": "https://orbit-kb.mit.edu/hc/en-us/articles/360024691172-How-do-you-calculate-TAM/",
+      "title": "How do you calculate TAM?",
+      "publisher": "MIT Orbit KnowledgeBase",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-mit-plg",
+      "url": "https://mitsloan.mit.edu/ideas-made-to-matter/guidance-growth-initiatives-5-lessons-mit-sloan-management-review",
+      "title": "Guidance for growth initiatives: 5 lessons from MIT Sloan Management Review",
+      "publisher": "MIT Sloan School of Management",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-stripe-overview",
+      "url": "https://docs.stripe.com/billing/subscriptions/overview",
+      "title": "How subscriptions work",
+      "publisher": "Stripe Documentation",
+      "fetchedAt": "2026-10-10T21:54:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-stripe-prorations",
+      "url": "https://docs.stripe.com/billing/subscriptions/prorations",
+      "title": "Prorations",
+      "publisher": "Stripe Documentation",
+      "fetchedAt": "2026-10-10T21:54:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-stripe-recovery",
+      "url": "https://docs.stripe.com/billing/revenue-recovery",
+      "title": "Revenue recovery",
+      "publisher": "Stripe Documentation",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-stripe-usage",
+      "url": "https://docs.stripe.com/billing/subscriptions/usage-based",
+      "title": "Basic usage-based billing",
+      "publisher": "Stripe Documentation",
+      "fetchedAt": "2026-10-10T21:54:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gtm-tufts-module2",
+      "url": "https://derbyecenter.tufts.edu/learningcenter/module2/",
+      "title": "Module 2: Market and Consumer",
+      "publisher": "Derby Entrepreneurship Center, Tufts University",
+      "fetchedAt": "2026-10-10T21:57:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-cr-copyright",
+      "url": "https://www.copyright.gov/what-is-copyright/",
+      "title": "What is Copyright? | U.S. Copyright Office",
+      "publisher": "U.S. Copyright Office",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-delcode-101",
+      "url": "https://delcode.delaware.gov/title8/c001/sc01/index.html",
+      "title": "Delaware Code Online",
+      "publisher": "State of Delaware",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-osi-licenses",
+      "url": "https://opensource.org/licenses",
+      "title": "Licenses – Open Source Initiative",
+      "publisher": "Open Source Initiative",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-osi-osd",
+      "url": "https://opensource.org/osd",
+      "title": "The Open Source Definition",
+      "publisher": "Open Source Initiative",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-uscode-1202",
+      "url": "https://www.law.cornell.edu/uscode/text/26/1202",
+      "title": "26 U.S. Code § 1202 - Partial exclusion for gain from certain small business stock",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-uscode-83",
+      "url": "https://www.law.cornell.edu/uscode/text/26/83",
+      "title": "26 U.S. Code § 83 - Property transferred in connection with performance of services",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-uspto-prov",
+      "url": "https://www.uspto.gov/patents/basics/apply/provisional-application",
+      "title": "Provisional Application for Patent | USPTO",
+      "publisher": "United States Patent and Trademark Office",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-wex-ccorp",
+      "url": "https://www.law.cornell.edu/wex/c_corporation",
+      "title": "C corporation | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-wex-copyright",
+      "url": "https://www.law.cornell.edu/wex/copyright",
+      "title": "copyright | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-wex-indemnify",
+      "url": "https://www.law.cornell.edu/wex/indemnify",
+      "title": "indemnify | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-wex-patent",
+      "url": "https://www.law.cornell.edu/wex/patent",
+      "title": "patent | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-wex-trademark",
+      "url": "https://www.law.cornell.edu/wex/trademark",
+      "title": "trademark | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "legal-wex-tradesecret",
+      "url": "https://www.law.cornell.edu/wex/trade_secret",
+      "title": "trade secret | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:54:14Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-ca-ccpa",
+      "url": "https://oag.ca.gov/privacy/ccpa",
+      "title": "California Consumer Privacy Act (CCPA)",
+      "publisher": "California Department of Justice, Office of the Attorney General",
+      "fetchedAt": "2026-10-10T21:54:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-eu-dataprot",
+      "url": "https://commission.europa.eu/law/law-topic/data-protection/data-protection-explained_en",
+      "title": "Data protection explained",
+      "publisher": "European Commission",
+      "fetchedAt": "2026-10-10T21:54:58Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-ietf-rfc6749",
+      "url": "https://datatracker.ietf.org/doc/html/rfc6749",
+      "title": "RFC 6749 - The OAuth 2.0 Authorization Framework",
+      "publisher": "IETF",
+      "fetchedAt": "2026-10-10T21:53:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-nist-leastpriv",
+      "url": "https://csrc.nist.gov/glossary/term/least_privilege",
+      "title": "least privilege - Glossary | CSRC",
+      "publisher": "NIST Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T21:53:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-nist-mfa",
+      "url": "https://csrc.nist.gov/glossary/term/multi_factor_authentication",
+      "title": "multi-factor authentication - Glossary | CSRC",
+      "publisher": "NIST Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T21:53:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-nist-pentest",
+      "url": "https://csrc.nist.gov/glossary/term/penetration_testing",
+      "title": "penetration testing - Glossary | CSRC",
+      "publisher": "NIST Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T21:53:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-nist-sbom",
+      "url": "https://csrc.nist.gov/glossary/term/software_bill_of_materials",
+      "title": "Software Bill of Materials - Glossary | CSRC",
+      "publisher": "NIST Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T21:53:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-nist-sso",
+      "url": "https://csrc.nist.gov/glossary/term/single_sign_on",
+      "title": "Single Sign-On - Glossary | CSRC",
+      "publisher": "NIST Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T21:53:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-nist-threatmodel",
+      "url": "https://csrc.nist.gov/glossary/term/threat_modeling",
+      "title": "threat modeling - Glossary | CSRC",
+      "publisher": "NIST Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T21:53:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-nist-zerotrust",
+      "url": "https://csrc.nist.gov/glossary/term/zero_trust",
+      "title": "Zero Trust - Glossary | CSRC",
+      "publisher": "NIST Computer Security Resource Center",
+      "fetchedAt": "2026-10-10T21:53:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-owasp-top10",
+      "url": "https://owasp.org/www-project-top-ten/",
+      "title": "OWASP Top 10 | OWASP Foundation",
+      "publisher": "OWASP Foundation",
+      "fetchedAt": "2026-10-10T21:53:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-w3c-intro",
+      "url": "https://www.w3.org/WAI/fundamentals/accessibility-intro/",
+      "title": "Introduction to Web Accessibility | Web Accessibility Initiative (WAI) | W3C",
+      "publisher": "W3C Web Accessibility Initiative",
+      "fetchedAt": "2026-10-10T21:54:27Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-w3c-tools",
+      "url": "https://www.w3.org/WAI/people-use-web/tools-techniques/",
+      "title": "Tools and Techniques | Web Accessibility Initiative (WAI) | W3C",
+      "publisher": "W3C Web Accessibility Initiative",
+      "fetchedAt": "2026-10-10T21:54:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-cornell-422",
+      "url": "https://www.law.cornell.edu/uscode/text/26/422",
+      "title": "26 U.S. Code § 422 - Incentive stock options",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:54:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-cornell-atwill",
+      "url": "https://www.law.cornell.edu/wex/at-will_employment",
+      "title": "at-will employment | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:55:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-cornell-contractor",
+      "url": "https://www.law.cornell.edu/wex/independent_contractor",
+      "title": "independent contractor | Wex | US Law | LII / Legal Information Institute",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T21:55:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-dol-misclass",
+      "url": "https://www.dol.gov/agencies/whd/flsa/misclassification",
+      "title": "Misclassification of Employees as Independent Contractors Under the Fair Labor Standards Act | U.S. Department of Labor",
+      "publisher": "U.S. Department of Labor",
+      "fetchedAt": "2026-10-10T21:54:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-irs-contractor",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee",
+      "title": "Independent contractor (self-employed) or employee? | Internal Revenue Service",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T21:54:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-irs-cpeo",
+      "url": "https://www.irs.gov/tax-professionals/certified-professional-employer-organization",
+      "title": "Certified professional employer organization | Internal Revenue Service",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T21:55:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-irs-tc427",
+      "url": "https://www.irs.gov/taxtopics/tc427",
+      "title": "Topic no. 427, Stock options | Internal Revenue Service",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T21:54:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-irs-thirdparty",
+      "url": "https://www.irs.gov/government-entities/third-party-payer-arrangements-professional-employer-organizations",
+      "title": "Third party payer arrangements – Professional Employer Organizations | Internal Revenue Service",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T21:55:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-opm-onboarding",
+      "url": "https://www.opm.gov/frequently-asked-questions/internships-faq/internship-supervisors/what-is-the-difference-between-orientation-and-onboarding/",
+      "title": "What is the difference between orientation and onboarding?",
+      "publisher": "U.S. Office of Personnel Management",
+      "fetchedAt": "2026-10-10T21:55:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-opm-structured",
+      "url": "https://www.opm.gov/policy-data-oversight/assessment-and-selection/structured-interviews/",
+      "title": "Structured Interviews",
+      "publisher": "U.S. Office of Personnel Management",
+      "fetchedAt": "2026-10-10T21:54:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-stanford-options",
+      "url": "https://web.stanford.edu/class/e145/2008_winter/materials/stock_options_qa.htm",
+      "title": "Stock Options QA",
+      "publisher": "Stanford University",
+      "fetchedAt": "2026-10-10T21:55:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "team-uwyo-options",
+      "url": "https://haubcareers.uwyo.edu/resources/employee-stock-options-what-they-are-and-how-they-work/",
+      "title": "Employee Stock Options: What They Are and How They Work",
+      "publisher": "University of Wyoming, Haub School of Environment and Natural Resources",
+      "fetchedAt": "2026-10-10T21:56:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [],
+  "markers": [],
+  "terms": [
+    {
+      "id": "accredited-investor",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-wex-accredited",
+          "locator": "accredited investor",
+          "quote": "Under federal law, an accredited investor is a special kind of investor"
+        },
+        {
+          "sourceId": "fund-cfr-501",
+          "locator": "(a) Accredited investor",
+          "quote": "Accredited investor shall mean any person who comes within any of the following categories,"
+        }
+      ]
+    },
+    {
+      "id": "angel-investor",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-sec-early",
+          "locator": "Angel Investors > Investor Profile",
+          "quote": "Angel investors are generally high-net-worth individuals who invest their own money directly in emerging businesses."
+        },
+        {
+          "sourceId": "fund-sec-early",
+          "locator": "Angel Investors > Company Stage",
+          "quote": "angel investors tend to invest in early funding rounds"
+        }
+      ]
+    },
+    {
+      "id": "pre-seed",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-sec-early",
+          "locator": "Friends and Family > Company Stage",
+          "quote": "Friends and family tend to invest at the earliest stages of a company’s life cycle in the pre-seed or seed round."
+        }
+      ]
+    },
+    {
+      "id": "seed-round",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-sec-early",
+          "locator": "Friends and Family > Company Stage",
+          "quote": "Friends and family tend to invest at the earliest stages of a company’s life cycle in the pre-seed or seed round."
+        },
+        {
+          "sourceId": "fund-sec-early",
+          "locator": "Angel Investors > Company Stage",
+          "quote": "including seed and Series A rounds."
+        }
+      ]
+    },
+    {
+      "id": "venture-capital",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-harvard-vc",
+          "locator": "Venture Capital (VC) > Introduction",
+          "quote": "Venture capital (VC) is an important source of funding for new businesses (e.g., start-ups)"
+        },
+        {
+          "sourceId": "fund-sec-early",
+          "locator": "Venture Capital Funds > Company Stage",
+          "quote": "VC funds invest in companies across their growth life cycle, from Series A through their public offering."
+        }
+      ]
+    },
+    {
+      "id": "dilution",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-wex-followon",
+          "locator": "follow-on offering",
+          "quote": "is considered dilutive, because each existing share represents a smaller proportional ownership interest in the company."
+        }
+      ]
+    },
+    {
+      "id": "liquidation-preference",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-mit-terms1",
+          "locator": "Liquidation Preference",
+          "quote": "If the company is liquidated, the holders of the preferred are entitled to receive their investment back"
+        }
+      ]
+    },
+    {
+      "id": "option-pool",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-mit-terms2",
+          "locator": "Management of the Investment",
+          "quote": "Stock option pools enable management to bring in additional personnel"
+        }
+      ]
+    },
+    {
+      "id": "venture-debt",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-yc-venturedebt",
+          "locator": "What is Venture Debt?",
+          "quote": "Venture debt is a loan to companies that have raised money from venture capital investors"
+        }
+      ]
+    },
+    {
+      "id": "bootstrapping",
+      "group": "Funding",
+      "sources": [
+        {
+          "sourceId": "fund-psu-sources",
+          "locator": "1. Bootstrapping",
+          "quote": "Bootstrapping is the process of funding your own start-up without any external resources."
+        },
+        {
+          "sourceId": "fund-psu-sources",
+          "locator": "1. Bootstrapping",
+          "quote": "typically takes the form of the entrepreneur funding the business through savings, credit cards"
+        }
+      ]
+    },
+    {
+      "id": "trademark",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-wex-trademark",
+          "locator": "trademark",
+          "quote": "A trademark is any word, name, symbol, or design, or any combination thereof, used in commerce"
+        },
+        {
+          "sourceId": "legal-wex-trademark",
+          "locator": "trademark",
+          "quote": "to identify and distinguish the goods of one manufacturer or seller from those of another"
+        }
+      ]
+    },
+    {
+      "id": "patent",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-wex-patent",
+          "locator": "patent",
+          "quote": "A patent grants its holder the exclusive right to exclude others from making, using, importing, or selling"
+        },
+        {
+          "sourceId": "legal-wex-patent",
+          "locator": "patent",
+          "quote": "Granting exclusive rights is intended to encourage innovation in exchange for disclosure."
+        }
+      ]
+    },
+    {
+      "id": "provisional-patent-application",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-uspto-prov",
+          "locator": "Provisional Application for Patent",
+          "quote": "A provisional patent application allows you to file without a formal patent claim, oath or declaration"
+        },
+        {
+          "sourceId": "legal-uspto-prov",
+          "locator": "Provisional Application for Patent",
+          "quote": "A provisional application provides the means to establish an early effective filing date"
+        }
+      ]
+    },
+    {
+      "id": "copyright",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-cr-copyright",
+          "locator": "What is Copyright?",
+          "quote": "Copyright is a type of intellectual property that protects original works of authorship as soon as an author"
+        },
+        {
+          "sourceId": "legal-wex-copyright",
+          "locator": "copyright",
+          "quote": "Copyright is the exclusive legal right to reproduce, publish, sell, or distribute the matter and form of something."
+        }
+      ]
+    },
+    {
+      "id": "trade-secret",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-wex-tradesecret",
+          "locator": "trade secret",
+          "quote": "Trade secret is a type of intellectual property protecting valuable confidential information."
+        },
+        {
+          "sourceId": "legal-wex-tradesecret",
+          "locator": "trade secret",
+          "quote": "the information must have independent economic value because others do not generally know it"
+        }
+      ]
+    },
+    {
+      "id": "indemnification",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-wex-indemnify",
+          "locator": "indemnify",
+          "quote": "To indemnify, also known as indemnity or indemnification, means compensating a person for damages or losses"
+        },
+        {
+          "sourceId": "legal-wex-indemnify",
+          "locator": "indemnify",
+          "quote": "Typically, parties make a written agreement in which one party (indemnitor) promises to indemnify the other party"
+        }
+      ]
+    },
+    {
+      "id": "qsbs",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-uscode-1202",
+          "locator": "26 U.S. Code section 1202, subsection (c)",
+          "quote": "the term \"qualified small business stock\" means any stock in a C corporation"
+        },
+        {
+          "sourceId": "legal-uscode-1202",
+          "locator": "Section heading",
+          "quote": "Partial exclusion for gain from certain small business stock"
+        }
+      ]
+    },
+    {
+      "id": "83b-election",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-uscode-83",
+          "locator": "Subsection (b)(1), Election to include in gross income in year of transfer",
+          "quote": "may elect to include in his gross income for the taxable year in which such property is transferred, the excess of—"
+        },
+        {
+          "sourceId": "legal-uscode-83",
+          "locator": "Subsection (b)(1), Election to include in gross income in year of transfer",
+          "quote": "If such election is made, subsection (a) shall not apply with respect to the transfer of such property,"
+        }
+      ]
+    },
+    {
+      "id": "open-source-license",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-osi-licenses",
+          "locator": "Licenses",
+          "quote": "Open source licenses are licenses that comply with the Open Source Definition."
+        },
+        {
+          "sourceId": "legal-osi-osd",
+          "locator": "The Open Source Definition, introduction",
+          "quote": "The distribution terms of open source software must comply with the following criteria:"
+        }
+      ]
+    },
+    {
+      "id": "delaware-c-corporation",
+      "group": "Legal and contracts",
+      "sources": [
+        {
+          "sourceId": "legal-delcode-101",
+          "locator": "Section 101(a), Incorporators; how corporation formed; purposes",
+          "quote": "Any person, partnership, association or corporation, singly or jointly with others"
+        },
+        {
+          "sourceId": "legal-wex-ccorp",
+          "locator": "C corporation",
+          "quote": "A C corporation is any corporation that does not qualify or elect to be an S corporation under the Internal Revenue Code."
+        }
+      ]
+    },
+    {
+      "id": "accrual-accounting",
+      "group": "Finance and metrics",
+      "sources": [
+        {
+          "sourceId": "fin-irs538",
+          "locator": "Accrual Method",
+          "quote": "you generally report income in the year it is earned and deduct or capitalize expenses in the year incurred"
+        }
+      ]
+    },
+    {
+      "id": "revenue-recognition",
+      "group": "Finance and metrics",
+      "sources": [
+        {
+          "sourceId": "fin-upenn-revrec",
+          "locator": "Policy, Revenue Recognition",
+          "quote": "Revenue should be recognized based on accrual accounting in accordance with GAAP."
+        },
+        {
+          "sourceId": "fin-upenn-revrec",
+          "locator": "Policy, Revenue Recognition",
+          "quote": "Revenue is considered earned when the University has substantially met its obligation"
+        }
+      ]
+    },
+    {
+      "id": "deferred-revenue",
+      "group": "Finance and metrics",
+      "sources": [
+        {
+          "sourceId": "fin-upenn-revrec",
+          "locator": "Policy, Revenue Recognition, Deferred income",
+          "quote": "Deferred income generally results when cash is received in advance of revenue being earned."
+        },
+        {
+          "sourceId": "fin-upenn-revrec",
+          "locator": "Policy, Revenue Recognition",
+          "quote": "Revenue is considered earned when the University has substantially met its obligation"
+        }
+      ]
+    },
+    {
+      "id": "working-capital",
+      "group": "Finance and metrics",
+      "sources": [
+        {
+          "sourceId": "fin-purdue-wc",
+          "locator": "What is working capital and how is it calculated?",
+          "quote": "The amount of working capital a business has is calculated by subtracting current liabilities from current assets."
+        }
+      ]
+    },
+    {
+      "id": "cash-flow",
+      "group": "Finance and metrics",
+      "sources": [
+        {
+          "sourceId": "fin-iastate-cf",
+          "locator": "Understanding Cash Flow Analysis",
+          "quote": "A cash flow statement is a listing of the flows of cash into and out of the business or project."
+        }
+      ]
+    },
+    {
+      "id": "cogs",
+      "group": "Finance and metrics",
+      "sources": [
+        {
+          "sourceId": "fin-scu-cogs",
+          "locator": "Costs of Good Sold",
+          "quote": "The cost of goods sold (COGS) is the sum of all the direct costs used to make the products that a company sells."
+        }
+      ]
+    },
+    {
+      "id": "product-market-fit",
+      "group": "Customers and product",
+      "sources": [
+        {
+          "sourceId": "cust-pmf-mit",
+          "locator": "What is Product/Market Fit?",
+          "quote": "Product/Market Fit is the degree to which a product satisfies a strong market demand."
+        },
+        {
+          "sourceId": "cust-pmf-stanford",
+          "locator": "Product/Market Fit",
+          "quote": "Product/market fit means being in a good market with a product that can satisfy that market."
+        }
+      ]
+    },
+    {
+      "id": "user-persona",
+      "group": "Customers and product",
+      "sources": [
+        {
+          "sourceId": "cust-persona-dg",
+          "locator": "Introduction",
+          "quote": "A user persona is a fictional representation of a type of user with whom you want to communicate."
+        },
+        {
+          "sourceId": "cust-profiles-dg",
+          "locator": "Method 2: Personas",
+          "quote": "A persona is a fictional, research-based representations of user types."
+        }
+      ]
+    },
+    {
+      "id": "jobs-to-be-done",
+      "group": "Customers and product",
+      "sources": [
+        {
+          "sourceId": "cust-jtbd-hbs",
+          "locator": "Clay Christensen's Milkshake Marketing",
+          "quote": "And when faced with a job that needs doing, they essentially \"hire\" a product to do that job."
+        },
+        {
+          "sourceId": "cust-jtbd-hbs",
+          "locator": "Clay Christensen's Milkshake Marketing",
+          "quote": "To that end, Christensen suggests that companies start segmenting their markets according to \"jobs-to-be-done.\""
+        }
+      ]
+    },
+    {
+      "id": "net-promoter-score",
+      "group": "Customers and product",
+      "sources": [
+        {
+          "sourceId": "cust-nps-byu",
+          "locator": "What is the Net Promotor Score (NPS)?",
+          "quote": "A net promoter score is calculated based upon a sample of customers’ responses to the following question:"
+        },
+        {
+          "sourceId": "cust-nps-byu",
+          "locator": "What is the Net Promotor Score (NPS)?",
+          "quote": "How likely are you to recommend [company X; or product Y] to a friend or colleague?"
+        }
+      ]
+    },
+    {
+      "id": "product-roadmap",
+      "group": "Customers and product",
+      "sources": [
+        {
+          "sourceId": "cust-roadmap-dg",
+          "locator": "How Login.gov uses roadmapping to build trust with its partners and the public",
+          "quote": "build and share a product roadmap that articulates the direction of the service"
+        },
+        {
+          "sourceId": "cust-roadmap-dg",
+          "locator": "How Login.gov uses roadmapping to build trust with its partners and the public",
+          "quote": "As a living document that is regularly updated, the roadmap is able to incorporate ongoing user research as well as"
+        }
+      ]
+    },
+    {
+      "id": "a-b-test",
+      "group": "Customers and product",
+      "sources": [
+        {
+          "sourceId": "cust-ab-hbs",
+          "locator": "What Is A/B Testing & What Is It Used For?",
+          "quote": "This means comparing the outcomes of two different choices (A and B) by running a controlled mini-experiment."
+        },
+        {
+          "sourceId": "cust-ab-hbs",
+          "locator": "What Is A/B Testing & What Is It Used For?",
+          "quote": "With all other variables held constant, randomly selected users interact with the page."
+        },
+        {
+          "sourceId": "cust-ab-dg",
+          "locator": "Comparative studies",
+          "quote": "Controlled comparative studies (often called A/B testing or split testing)"
+        }
+      ]
+    },
+    {
+      "id": "usability-testing",
+      "group": "Customers and product",
+      "sources": [
+        {
+          "sourceId": "cust-pra-usability",
+          "locator": "Glossary: usability testing",
+          "quote": "a type of user research that consists of asking users to navigate or perform tasks while observing them"
+        }
+      ]
+    },
+    {
+      "id": "go-to-market-strategy",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-hbs-gtm",
+          "locator": "What Is a Go-to-Market Strategy, and How Does It Fit into a Business Model?",
+          "quote": "A go-to-market (GTM) strategy is a detailed plan of how your startup will reach its target customers"
+        }
+      ]
+    },
+    {
+      "id": "positioning",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-hbs-positioning",
+          "locator": "What Is a Brand Positioning Statement?",
+          "quote": "Brand positioning describes how brands establish competitive advantages in consumers’ minds in the marketplace."
+        },
+        {
+          "sourceId": "gtm-hbs-positioning",
+          "locator": "What Is a Brand Positioning Statement?",
+          "quote": "In a nutshell: Your brand positioning statement defines how your brand is perceived."
+        }
+      ]
+    },
+    {
+      "id": "value-proposition",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-hbs-value",
+          "locator": "What Is a Value Proposition?",
+          "quote": "A value proposition is a statement that conveys what a brand does and how it differs from competitors."
+        }
+      ]
+    },
+    {
+      "id": "product-led-growth",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-mit-plg",
+          "locator": "The 5 characteristics of product-led growth",
+          "quote": "Qualified leads emerge organically from users of a free or a trial version"
+        }
+      ]
+    },
+    {
+      "id": "conversion-rate",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-hbs-kpis",
+          "locator": "7 Marketing KPIs to Help You Measure Success: Conversion Rate",
+          "quote": "the percentage of visitors to your website or digital platform who take a desired action"
+        }
+      ]
+    },
+    {
+      "id": "total-addressable-market",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-csusm-tam",
+          "locator": "TAM",
+          "quote": "Total Number of Potential Customers X Average Annual Revenue per Customer = Total Addressable Market (TAM)"
+        },
+        {
+          "sourceId": "gtm-mit-orbit-tam",
+          "locator": "TAM (Total Addressable Market)",
+          "quote": "the TAM calculation is heavily dependent on assumptions."
+        }
+      ]
+    },
+    {
+      "id": "beachhead-market",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-mit-beachhead",
+          "locator": "Launching a Successful Start-Up #3: The Beachhead Market",
+          "quote": "A beachhead market is the place where, once you gain a dominant market share, you will have the strength"
+        },
+        {
+          "sourceId": "gtm-tufts-module2",
+          "locator": "Defining & sizing the market: Market selection",
+          "quote": "The basic idea is to identify, land and get established in a tightly defined market."
+        }
+      ]
+    },
+    {
+      "id": "usage-based-pricing",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-stripe-usage",
+          "locator": "Basic usage-based billing (page subtitle)",
+          "quote": "Charge customers based on how much they use your product or service."
+        },
+        {
+          "sourceId": "gtm-stripe-usage",
+          "locator": "Basic usage-based billing (introduction)",
+          "quote": "Usage-based billing is a common pricing model for SaaS businesses"
+        }
+      ]
+    },
+    {
+      "id": "subscription-billing",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-stripe-overview",
+          "locator": "How subscriptions work",
+          "quote": "Subscriptions let customers make recurring payments to access a product or service."
+        },
+        {
+          "sourceId": "gtm-stripe-overview",
+          "locator": "How subscriptions work (introduction)",
+          "quote": "Stripe automatically generates invoices, attempts payment collection"
+        }
+      ]
+    },
+    {
+      "id": "proration",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-stripe-prorations",
+          "locator": "Prorations (introduction)",
+          "quote": "the customer is charged a percentage of a subscription’s cost to reflect partial use"
+        }
+      ]
+    },
+    {
+      "id": "dunning",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-stripe-recovery",
+          "locator": "Revenue recovery features: Smart Retries",
+          "quote": "Automatically retry failed payments to prevent involuntary churn due to temporary issues."
+        },
+        {
+          "sourceId": "gtm-stripe-recovery",
+          "locator": "Revenue recovery features: Email notifications",
+          "quote": "Automatically send emails to customers when a payment fails, a card expires, or a payment method requires an update."
+        },
+        {
+          "sourceId": "gtm-stripe-overview",
+          "locator": "How subscriptions work (introduction)",
+          "quote": "Stripe handles the payment retry logic, dunning, and status transitions."
+        }
+      ]
+    },
+    {
+      "id": "search-engine-optimization",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-google-seo",
+          "locator": "Search Engine Optimization (SEO) Starter Guide (introduction)",
+          "quote": "SEO—short for search engine optimization—is about helping search engines understand your content"
+        }
+      ]
+    },
+    {
+      "id": "market-segmentation",
+      "group": "Go-to-market",
+      "sources": [
+        {
+          "sourceId": "gtm-hbs-segment",
+          "locator": "Top Benefits of Identifying Your Target Audience: Target Market Segmentation",
+          "quote": "It entails organizing consumers with similar needs and preferences into groups called “segments,” enabling you to provide"
+        }
+      ]
+    },
+    {
+      "id": "scrum",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-scrum",
+          "locator": "Scrum Definition",
+          "quote": "Scrum is a lightweight framework that helps people, teams and organizations generate value through adaptive solutions"
+        }
+      ]
+    },
+    {
+      "id": "product-owner",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-scrum",
+          "locator": "Scrum Team > Product Owner",
+          "quote": "The Product Owner is accountable for maximizing the value of the product resulting from the work of the Scrum Team."
+        }
+      ]
+    },
+    {
+      "id": "definition-of-done",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-scrum",
+          "locator": "Scrum Artifacts > Increment > Commitment: Definition of Done",
+          "quote": "The Definition of Done is a formal description of the state of the Increment when it meets the quality measures required"
+        }
+      ]
+    },
+    {
+      "id": "technical-debt",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-techdebt",
+          "locator": "Technical Debt",
+          "quote": "Technical Debt is a metaphor, coined by Ward Cunningham, that frames how to think about dealing with this cruft,"
+        }
+      ]
+    },
+    {
+      "id": "continuous-integration",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-ci",
+          "locator": "Continuous Integration",
+          "quote": "Continuous Integration is a software development practice where each member of a team merges their changes"
+        }
+      ]
+    },
+    {
+      "id": "feature-flag",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-openfeature",
+          "locator": "Welcome to OpenFeature",
+          "quote": "In the most basic case, you can think of a feature flag as an if/else statement that can be controlled at runtime."
+        }
+      ]
+    },
+    {
+      "id": "service-level-objective",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-slo",
+          "locator": "Service Level Terminology > Objectives",
+          "quote": "An SLO is a service level objective: a target value or range of values for a service level that is measured by an SLI."
+        }
+      ]
+    },
+    {
+      "id": "postmortem",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-postmortem",
+          "locator": "Google's Postmortem Philosophy",
+          "quote": "A postmortem is a written record of an incident, its impact,"
+        },
+        {
+          "sourceId": "deliv-postmortem",
+          "locator": "Google's Postmortem Philosophy",
+          "quote": "and the follow-up actions to prevent the incident from recurring."
+        }
+      ]
+    },
+    {
+      "id": "observability",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-otel",
+          "locator": "What is Observability?",
+          "quote": "Observability lets you understand a system from the outside by letting you ask questions about that system"
+        }
+      ]
+    },
+    {
+      "id": "multi-tenancy",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-multitenant",
+          "locator": "Architect Multitenant Solutions on Azure",
+          "quote": "Tenants are distinct from users. Multiple users from a single organization, company, or group form a single tenant."
+        }
+      ]
+    },
+    {
+      "id": "shape-up",
+      "group": "Product delivery",
+      "sources": [
+        {
+          "sourceId": "deliv-shapeup",
+          "locator": "Introduction",
+          "quote": "First, we work in six-week cycles."
+        },
+        {
+          "sourceId": "deliv-shapeup",
+          "locator": "Introduction",
+          "quote": "Second, we shape the work before giving it to a team."
+        },
+        {
+          "sourceId": "deliv-shapeup",
+          "locator": "Introduction",
+          "quote": "Third, we give full responsibility to a small integrated team of designers and programmers."
+        }
+      ]
+    },
+    {
+      "id": "vesting",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-stanford-options",
+          "locator": "Stock Options Q&A, General",
+          "quote": "Vesting refers to the process of your option becoming free from a company"
+        },
+        {
+          "sourceId": "team-uwyo-options",
+          "locator": "Vesting",
+          "quote": "a vesting schedule, which outlines when employees gain the right to purchase their options"
+        }
+      ]
+    },
+    {
+      "id": "cliff",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-uwyo-options",
+          "locator": "How do employee stock options work? - Vesting",
+          "quote": "Employees must wait a set period (e.g., one year) before all or a portion of the options vest at once."
+        }
+      ]
+    },
+    {
+      "id": "stock-option",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-stanford-options",
+          "locator": "Stock Options Q&A, General",
+          "quote": "a contract that gives you the right to purchase a specific number of shares of stock at a fixed price"
+        },
+        {
+          "sourceId": "team-uwyo-options",
+          "locator": "Introduction",
+          "quote": "an agreement that gives employees the right to purchase company stock at a predetermined price"
+        }
+      ]
+    },
+    {
+      "id": "incentive-stock-option",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-cornell-422",
+          "locator": "26 U.S. Code § 422(b)",
+          "quote": "an option granted to an individual for any reason connected with his employment"
+        },
+        {
+          "sourceId": "team-irs-tc427",
+          "locator": "Topic no. 427, Stock options (introduction)",
+          "quote": "Options granted under an employee stock purchase plan or an incentive stock option (ISO) plan are statutory stock options."
+        }
+      ]
+    },
+    {
+      "id": "non-qualified-stock-option",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-irs-tc427",
+          "locator": "Topic no. 427, Stock options (introduction)",
+          "quote": "Stock options that are granted neither under an employee stock purchase plan nor an ISO plan are nonstatutory stock options."
+        }
+      ]
+    },
+    {
+      "id": "independent-contractor",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-cornell-contractor",
+          "locator": "independent contractor",
+          "quote": "independent contractors are entities hired by employers to accomplish certain tasks"
+        },
+        {
+          "sourceId": "team-irs-contractor",
+          "locator": "Common law rules",
+          "quote": "The keys are to look at the entire relationship and consider the extent of the right to direct and control the worker."
+        }
+      ]
+    },
+    {
+      "id": "employee-classification",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-dol-misclass",
+          "locator": "Misclassification of Employees as Independent Contractors Under the Fair Labor Standards Act",
+          "quote": "Misclassification occurs when an employer treats a worker who is an employee under the FLSA as an independent contractor."
+        },
+        {
+          "sourceId": "team-irs-contractor",
+          "locator": "Common law rules",
+          "quote": "Businesses must weigh all these factors when determining whether a worker is an employee or independent contractor."
+        }
+      ]
+    },
+    {
+      "id": "at-will-employment",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-cornell-atwill",
+          "locator": "at-will employment",
+          "quote": "At-will employment is an employment arrangement in which the employee may quit at any time"
+        },
+        {
+          "sourceId": "team-cornell-atwill",
+          "locator": "at-will employment",
+          "quote": "the employer may fire the employee for any reason and at any point"
+        }
+      ]
+    },
+    {
+      "id": "professional-employer-organization",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-irs-cpeo",
+          "locator": "Certified professional employer organization",
+          "quote": "handle various payroll administration and tax reporting responsibilities for their business clients"
+        },
+        {
+          "sourceId": "team-irs-thirdparty",
+          "locator": "Third party payer arrangements",
+          "quote": "A Professional Employer Organization (PEO) is a type of third party payer."
+        }
+      ]
+    },
+    {
+      "id": "structured-interview",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-opm-structured",
+          "locator": "Structured Interviews",
+          "quote": "A structured interview is an assessment method designed to measure job-related competencies of candidates"
+        }
+      ]
+    },
+    {
+      "id": "onboarding-employee",
+      "group": "Team and hiring",
+      "sources": [
+        {
+          "sourceId": "team-opm-onboarding",
+          "locator": "What is the difference between orientation and onboarding?",
+          "quote": "the process of welcoming and acclimating new employees into an organization"
+        },
+        {
+          "sourceId": "team-opm-onboarding",
+          "locator": "What is the difference between orientation and onboarding?",
+          "quote": "Onboarding is a broader, longer-term process"
+        }
+      ]
+    },
+    {
+      "id": "artificial-intelligence",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-nist-ai",
+          "locator": "artificial intelligence, definition attributed to CNSSI 4009-2022 (PL 115-232, Sec. 238)",
+          "quote": "A set of techniques, including machine learning, that is designed to approximate a cognitive task"
+        }
+      ]
+    },
+    {
+      "id": "machine-learning",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-nist-ml",
+          "locator": "machine learning, definition attributed to NIST SP 800-55v1",
+          "quote": "The development and use of computer systems that adapt and learn from data with the goal of improving accuracy."
+        },
+        {
+          "sourceId": "ai-nist-ai",
+          "locator": "artificial intelligence, definition attributed to CNSSI 4009-2022 (PL 115-232, Sec. 238)",
+          "quote": "A set of techniques, including machine learning, that is designed to approximate a cognitive task"
+        }
+      ]
+    },
+    {
+      "id": "large-language-model",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-google-gen",
+          "locator": "large language model",
+          "quote": "At a minimum, a language model having a very high number of parameters."
+        },
+        {
+          "sourceId": "ai-google-gen",
+          "locator": "large language model",
+          "quote": "More informally, any Transformer-based language model, such as Gemini or GPT."
+        }
+      ]
+    },
+    {
+      "id": "prompt",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-google-gen",
+          "locator": "prompt",
+          "quote": "Any text entered as input to a large language model to condition the model to behave in a certain way."
+        },
+        {
+          "sourceId": "ai-openai-concepts",
+          "locator": "Key concepts, Text generation models",
+          "quote": "The inputs to these models are also referred to as \"prompts.\""
+        }
+      ]
+    },
+    {
+      "id": "context-window",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-google-gen",
+          "locator": "context window",
+          "quote": "The number of tokens a model can process in a given prompt."
+        },
+        {
+          "sourceId": "ai-claude-ctx",
+          "locator": "How the context window works",
+          "quote": "all the text a language model can reference when generating a response, including the response itself"
+        }
+      ]
+    },
+    {
+      "id": "token",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-google-lang",
+          "locator": "token",
+          "quote": "In a language model, the atomic unit that the model is training on and making predictions on."
+        },
+        {
+          "sourceId": "ai-openai-concepts",
+          "locator": "Key concepts, Tokens",
+          "quote": "Text generation and embeddings models process text in chunks called tokens."
+        }
+      ]
+    },
+    {
+      "id": "embedding",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-openai-concepts",
+          "locator": "Key concepts, Embeddings",
+          "quote": "An embedding is a vector representation of a piece of data (e.g. some text)"
+        },
+        {
+          "sourceId": "ai-openai-concepts",
+          "locator": "Key concepts, Embeddings",
+          "quote": "that is meant to preserve aspects of its content and/or its meaning."
+        }
+      ]
+    },
+    {
+      "id": "retrieval-augmented-generation",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-arxiv-rag",
+          "locator": "Abstract (Lewis et al., 2020)",
+          "quote": "models which combine pre-trained parametric and non-parametric memory for language generation"
+        }
+      ]
+    },
+    {
+      "id": "fine-tuning",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-google-gen",
+          "locator": "fine-tuning",
+          "quote": "A second, task-specific training pass performed on a pre-trained model to refine its parameters for a specific use case."
+        }
+      ]
+    },
+    {
+      "id": "hallucination",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-google-gen",
+          "locator": "hallucination",
+          "quote": "The production of plausible-seeming but factually incorrect output by a generative AI model"
+        }
+      ]
+    },
+    {
+      "id": "ai-agent",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-google-gen",
+          "locator": "agent",
+          "quote": "Software that can reason about user inputs in order to plan and execute actions on behalf of the user."
+        },
+        {
+          "sourceId": "ai-google-gen",
+          "locator": "agentic workflow",
+          "quote": "A dynamic process in which an agent autonomously plans and executes actions to achieve a goal."
+        }
+      ]
+    },
+    {
+      "id": "training-data",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-google-lang",
+          "locator": "training set",
+          "quote": "The subset of the dataset used to train a model."
+        },
+        {
+          "sourceId": "ai-google-lang",
+          "locator": "training",
+          "quote": "The process of determining the ideal parameters (weights and biases) comprising a model."
+        }
+      ]
+    },
+    {
+      "id": "ai-risk-management-framework",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-nist-rmf",
+          "locator": "AI Risk Management Framework, introduction",
+          "quote": "a framework to better manage risks to individuals, organizations, and society associated with artificial intelligence (AI)"
+        },
+        {
+          "sourceId": "ai-nist-rmf",
+          "locator": "AI Risk Management Framework, introduction",
+          "quote": "is intended for voluntary use"
+        }
+      ]
+    },
+    {
+      "id": "eu-ai-act",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-eu-act",
+          "locator": "Unacceptable risk",
+          "quote": "All AI systems considered a clear threat to the safety, livelihoods and rights of people are banned."
+        },
+        {
+          "sourceId": "ai-eu-act",
+          "locator": "High risk",
+          "quote": "AI use cases that can pose serious risks to health, safety or fundamental rights are classified as high-risk."
+        }
+      ]
+    },
+    {
+      "id": "personal-data",
+      "group": "AI and data",
+      "sources": [
+        {
+          "sourceId": "ai-ico-pd",
+          "locator": "What is personal information: a guide",
+          "quote": "Personal data is information that relates to an identified or identifiable individual."
+        }
+      ]
+    },
+    {
+      "id": "multi-factor-authentication",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-nist-mfa",
+          "locator": "multi-factor authentication (NIST SP 800-53 Rev. 5)",
+          "quote": "An authentication system that requires more than one authentication factor for successful authentication."
+        },
+        {
+          "sourceId": "sec-nist-mfa",
+          "locator": "multi-factor authentication (NIST SP 800-53 Rev. 5)",
+          "quote": "The three authentication factors are something you know, something you have, and something you are."
+        }
+      ]
+    },
+    {
+      "id": "least-privilege",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-nist-leastpriv",
+          "locator": "least privilege (NIST SP 800-53 Rev. 5)",
+          "quote": "the minimum system resources and authorizations that the entity needs to perform its function."
+        }
+      ]
+    },
+    {
+      "id": "oauth",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-ietf-rfc6749",
+          "locator": "Abstract",
+          "quote": "The OAuth 2.0 authorization framework enables a third-party application to obtain limited access to an HTTP service,"
+        }
+      ]
+    },
+    {
+      "id": "penetration-testing",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-nist-pentest",
+          "locator": "penetration testing (NIST SP 800-115)",
+          "quote": "Security testing in which evaluators mimic real-world attacks in an attempt to identify ways to circumvent"
+        },
+        {
+          "sourceId": "sec-nist-pentest",
+          "locator": "penetration testing (NIST SP 800-115)",
+          "quote": "the security features of an application, system, or network."
+        }
+      ]
+    },
+    {
+      "id": "threat-modeling",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-nist-threatmodel",
+          "locator": "threat modeling (NIST SP 800-53 Rev. 5)",
+          "quote": "A form of risk assessment that models aspects of the attack and defense sides of a logical entity,"
+        },
+        {
+          "sourceId": "sec-nist-threatmodel",
+          "locator": "threat modeling (NIST SP 800-53 Rev. 5)",
+          "quote": "such as a piece of data, an application, a host, a system, or an environment."
+        }
+      ]
+    },
+    {
+      "id": "owasp-top-10",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-owasp-top10",
+          "locator": "OWASP Top 10 project page",
+          "quote": "The OWASP Top 10 is the reference standard for the most critical web application security risks."
+        }
+      ]
+    },
+    {
+      "id": "sbom",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-nist-sbom",
+          "locator": "Software Bill of Materials (NIST SP 800-161r1-upd1)",
+          "quote": "A formal record containing the details and supply chain relationships of various components used in building software."
+        },
+        {
+          "sourceId": "sec-nist-sbom",
+          "locator": "Software Bill of Materials (NIST SP 800-161r1-upd1)",
+          "quote": "The SBOM enumerates these components in a product."
+        }
+      ]
+    },
+    {
+      "id": "zero-trust",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-nist-zerotrust",
+          "locator": "Zero Trust (NIST SP 800-207)",
+          "quote": "A collection of concepts and ideas designed to minimize uncertainty in enforcing accurate,"
+        },
+        {
+          "sourceId": "sec-nist-zerotrust",
+          "locator": "Zero Trust (NIST SP 800-207)",
+          "quote": "in the face of a network viewed as compromised."
+        }
+      ]
+    },
+    {
+      "id": "single-sign-on",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-nist-sso",
+          "locator": "Single Sign-On (NIST SP 800-63-4)",
+          "quote": "An authentication process by which one account and its authenticators are used to access multiple applications"
+        }
+      ]
+    },
+    {
+      "id": "gdpr",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-eu-dataprot",
+          "locator": "Data protection explained",
+          "quote": "the General Data Protection Regulation (GDPR), the EU's main data protection law."
+        },
+        {
+          "sourceId": "sec-eu-dataprot",
+          "locator": "Data protection explained",
+          "quote": "The GDPR protects personal data regardless of the technology used for processing that data."
+        }
+      ]
+    },
+    {
+      "id": "ccpa",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-ca-ccpa",
+          "locator": "California Consumer Privacy Act (CCPA)",
+          "quote": "The California Consumer Privacy Act of 2018 (CCPA) gives consumers more control over the personal information"
+        },
+        {
+          "sourceId": "sec-ca-ccpa",
+          "locator": "California Consumer Privacy Act (CCPA)",
+          "quote": "that businesses collect about them and the CCPA regulations provide guidance on how to implement the law."
+        }
+      ]
+    },
+    {
+      "id": "screen-reader",
+      "group": "Security and accessibility",
+      "sources": [
+        {
+          "sourceId": "sec-w3c-tools",
+          "locator": "Tools and Techniques",
+          "quote": "screen readers that read aloud web pages for people who cannot read the text"
+        },
+        {
+          "sourceId": "sec-w3c-intro",
+          "locator": "Introduction to Web Accessibility",
+          "quote": "screen reader that reads aloud the information on a page, including the alt text for the visual image."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1568 @@
+{
+  "wp": "WP-75",
+  "note": "Fallback ledger shape agreed with the orchestrator: ComparePage frontmatter has no top-level sources, so the sources-ledger factsFor cannot read a page family. Each page is a documents entry with claims: [] and sentences: a verbatim WE sentence maps to its program page or to apply/fit.ts, framing and question text maps to W8-24, a short label is label: true, a claim restatement maps to its claim id. A sentence about the other category is listed under evidence with the sourceId and a verbatim quote of at most 25 words; tests/unit/wp-75/ledger.test.ts checks every evidence sourceId is a fetch record and a family.sources entry, every quote is at most 25 words, and every sentence of every page is in exactly one of the two lists.",
+  "fetches": [
+    {
+      "id": "burlington",
+      "url": "https://www.burlingtonnc.gov/2278/Blog---What-are-Incubators",
+      "title": "Blog - What are Incubators?",
+      "publisher": "City of Burlington Economic Development Office",
+      "fetchedAt": "2026-10-10T12:27:42Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "london",
+      "url": "https://www.cityoflondon.gov.uk/supporting-businesses/accelerators-and-incubators",
+      "title": "Accelerators and incubators",
+      "publisher": "City of London Corporation",
+      "fetchedAt": "2026-10-10T12:14:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ec",
+      "url": "https://research-and-innovation.ec.europa.eu/research-area/industrial-research-and-innovation/eu-valorisation-policy/knowledge-valorisation-platform/thematic-focus/role-incubators-and-accelerators-knowledge-valorisation_en",
+      "title": "The role of Incubators and Accelerators in knowledge valorisation",
+      "publisher": "Directorate-General for Research and Innovation, European Commission",
+      "fetchedAt": "2026-10-10T12:14:21Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "wharton-acc",
+      "url": "https://knowledge.wharton.upenn.edu/article/why-startup-accelerators-are-feeling-pressure-to-evolve/",
+      "title": "Disrupting the Disruptors: Startup Accelerators Feel Pressure to Evolve",
+      "publisher": "Knowledge at Wharton, University of Pennsylvania",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sloan",
+      "url": "https://sloanreview.mit.edu/article/is-a-venture-studio-right-for-your-company/",
+      "title": "Is a Venture Studio Right for Your Company?",
+      "publisher": "MIT Sloan Management Review",
+      "fetchedAt": "2026-10-10T12:15:36Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dspace",
+      "url": "https://dspace.mit.edu/handle/1721.1/139445",
+      "title": "Venture Studios: Analyzing a New Asset in the Venture Ecosystem",
+      "publisher": "Massachusetts Institute of Technology, System Design and Management Program",
+      "fetchedAt": "2026-10-10T12:10:27Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "wharton-vent",
+      "url": "https://knowledge.wharton.upenn.edu/special-report/corporate-venturing-report/",
+      "title": "How Corporations and Startups Are Redefining Corporate Venturing",
+      "publisher": "Knowledge at Wharton, University of Pennsylvania",
+      "fetchedAt": "2026-10-10T12:46:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govc",
+      "url": "https://www.gov.uk/service-manual/the-team/working-contractors-third-parties",
+      "title": "Working with contractors or third parties",
+      "publisher": "GOV.UK Service Manual",
+      "fetchedAt": "2026-10-10T12:22:59Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "far601",
+      "url": "https://www.acquisition.gov/far/16.601",
+      "title": "FAR 16.601, Time-and-materials contracts",
+      "publisher": "Acquisition.gov, General Services Administration",
+      "fetchedAt": "2026-10-10T12:17:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "far1621",
+      "url": "https://www.acquisition.gov/far/16.202-1",
+      "title": "FAR 16.202-1, Description",
+      "publisher": "Acquisition.gov, General Services Administration",
+      "fetchedAt": "2026-10-10T12:17:19Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cornell",
+      "url": "https://www.law.cornell.edu/uscode/text/17/201",
+      "title": "17 U.S. Code section 201, Ownership of copyright",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T12:17:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee",
+      "title": "Independent contractor (self-employed) or employee?",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T12:17:03Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist",
+      "url": "https://csrc.nist.gov/glossary/term/commercial_off_the_shelf",
+      "title": "commercial-off-the-shelf (COTS), Glossary",
+      "publisher": "Computer Security Resource Center, National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T12:17:06Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govtech",
+      "url": "https://www.gov.uk/service-manual/technology/choosing-technology-an-introduction",
+      "title": "Choosing technology: an introduction",
+      "publisher": "GOV.UK Service Manual",
+      "fetchedAt": "2026-10-10T12:22:27Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "wharton-off",
+      "url": "https://knowledge.wharton.upenn.edu/article/outsourcing-vs-offshoring-why-consumers-push-back-on-jobs-sent-abroad/",
+      "title": "Outsourcing vs. Offshoring: Why Consumers Push Back on Jobs Sent Abroad",
+      "publisher": "Knowledge at Wharton, University of Pennsylvania",
+      "fetchedAt": "2026-10-10T12:23:38Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "rice",
+      "url": "https://news.rice.edu/news/2024/hidden-cost-working-across-time-zones",
+      "title": "The hidden cost of working across time zones",
+      "publisher": "Rice News, Rice University",
+      "fetchedAt": "2026-10-10T12:23:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "hbs",
+      "url": "https://www.library.hbs.edu/working-knowledge/global-talent-local-obstacles-why-time-zones-matter-in-remote-work",
+      "title": "Global Talent, Local Obstacles: Why Time Zones Matter in Remote Work",
+      "publisher": "Harvard Business School, Working Knowledge",
+      "fetchedAt": "2026-10-10T12:23:46Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gao",
+      "url": "https://www.gao.gov/assets/gao-06-5.pdf",
+      "title": "Offshoring of Services: An Overview of the Issues",
+      "publisher": "U.S. Government Accountability Office",
+      "fetchedAt": "2026-10-10T12:39:00Z",
+      "status": 200,
+      "tool": "WebFetch, pdftotext"
+    },
+    {
+      "id": "sba-fund",
+      "url": "https://www.sba.gov/business-guide/plan-your-business/fund-your-business",
+      "title": "Fund your business",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-10T12:17:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-loans",
+      "url": "https://www.sba.gov/funding-programs/loans",
+      "title": "Access affordable 7(a), 504, and microloans",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-10T12:22:43Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings",
+      "title": "Exempt Offerings",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T12:22:45Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "claims": [],
+      "sentences": [
+        {
+          "text": "Incubators and other startup programs",
+          "label": true
+        },
+        {
+          "text": "A plain comparison of incubators and other kinds of startup program, each described from named public sources, with no program ranked.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets two categories of support side by side on the same questions.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each statement about a category names a public source, and the sources are listed at the end of the page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Where WE sits",
+          "label": true
+        },
+        {
+          "text": "WE is a digital incubator for SaaS.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "A founder brings an idea or an early product.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "WE brings a method, a way of steering a team, and dedicated team seats that work only on that company.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "The program is fully remote, so nobody relocates and there is no office to visit.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "WE is probably not the right fit if",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You need a physical office, on-site staff or in-person work.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "WE is fully remote.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You are looking for money rather than a team.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "Incubators",
+          "label": true
+        },
+        {
+          "text": "The sources cited here do not state what incubators ask of a founder.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The questions below cover what a given offer asks.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "How does the program describe the help it gives, and who gives it?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Is the work done in person, online or both?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What does the program ask of a founder in return?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Accelerators",
+          "label": true
+        },
+        {
+          "text": "Incubator",
+          "label": true
+        },
+        {
+          "text": "Accelerator",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "claims": [],
+      "sentences": [
+        {
+          "text": "Incubators and venture studios",
+          "label": true
+        },
+        {
+          "text": "A plain comparison of incubators and venture studios, each described from named public sources, with no company or model ranked.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets two categories of support side by side on the same questions.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each statement about a category names a public source, and the sources are listed at the end of the page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Where WE sits",
+          "label": true
+        },
+        {
+          "text": "WE is a digital incubator for SaaS.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "A founder brings an idea or an early product.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "WE brings a method, a way of steering a team, and dedicated team seats that work only on that company.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "The program is fully remote, so nobody relocates and there is no office to visit.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "WE is probably not the right fit if",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You need a physical office, on-site staff or in-person work.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "WE is fully remote.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You are looking for money rather than a team.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "Incubators",
+          "label": true
+        },
+        {
+          "text": "The sources cited here do not state what incubators ask of a founder.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The questions below cover what a given offer asks.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Who runs the program, and how does it describe its help?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Is the support given in person, online or both?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What does it ask of a founder in return?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Venture studios",
+          "label": true
+        },
+        {
+          "text": "Does the founder join as a cofounder or in another role?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Who owns the idea, and who owns the company that results?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Incubator",
+          "label": true
+        },
+        {
+          "text": "Venture studio",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "claims": [],
+      "sentences": [
+        {
+          "text": "A dedicated team or an agency",
+          "label": true
+        },
+        {
+          "text": "A plain comparison of a dedicated team and an agency, each described from named public sources, with no company ranked.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets two categories of support side by side on the same questions.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each statement about a category names a public source, and the sources are listed at the end of the page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Where WE sits",
+          "label": true
+        },
+        {
+          "text": "The seats are offshore, they scale up or down by notice, and WE manages the team and any subcontractors on the founder's behalf.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "A seat is not a fixed promise of output.",
+          "page": "src/pages/program/dedicated-teams.astro"
+        },
+        {
+          "text": "WE steers the work, and what ships depends on the scope and on your decisions.",
+          "page": "src/pages/program/dedicated-teams.astro"
+        },
+        {
+          "text": "WE is probably not the right fit if",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You want WE to run your product in production or to provide round-the-clock support.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "A dedicated team",
+          "label": true
+        },
+        {
+          "text": "A seat is one dedicated place on your company's team.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "It is filled by an offshore specialist who works on your company and on nothing else.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "You want a team and a method to carry out the work, and you will keep ownership of the direction.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You decide where the company is going.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "You review the work and set the direction.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "Who manages the people on the team, and who answers for how it is run?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "How does the team scale up or down, and on what notice?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What does the founder review and decide at each cycle?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "An agency",
+          "label": true
+        },
+        {
+          "text": "Is the price fixed, hourly or set another way, and what can change it?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Who owns the work product when the engagement ends?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "How is knowledge passed to the founder's own team?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "You can make decisions for the company and join a review at each cycle.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "Firm-fixed-price contract",
+          "label": true
+        },
+        {
+          "text": "Time-and-materials contract",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "claims": [],
+      "sentences": [
+        {
+          "text": "A dedicated team or freelancers",
+          "label": true
+        },
+        {
+          "text": "A plain comparison of a dedicated team and freelancers, each described from named public sources, with no person or company ranked.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets two categories of support side by side on the same questions.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each statement about a category names a public source, and the sources are listed at the end of the page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Where WE sits",
+          "label": true
+        },
+        {
+          "text": "A seat is not a freelancer you must recruit, brief and manage.",
+          "page": "src/pages/program/dedicated-teams.astro"
+        },
+        {
+          "text": "WE does that.",
+          "page": "src/pages/program/dedicated-teams.astro"
+        },
+        {
+          "text": "You do not recruit, contract or manage the people in the seats.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "WE does, including any subcontractors it brings in.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "WE is probably not the right fit if",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You want WE to give legal or tax advice, keep your books or file your taxes.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "A dedicated team",
+          "label": true
+        },
+        {
+          "text": "A seat is one dedicated place on your company's team.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "It is filled by an offshore specialist who works on your company and on nothing else.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "You want a team and a method to carry out the work, and you will keep ownership of the direction.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You decide where the company is going.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "You review the work and set the direction.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "Who recruits, contracts and manages the people on the team?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Who answers if a person leaves or a skill is missing?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What does the founder review and decide at each cycle?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Freelancers",
+          "label": true
+        },
+        {
+          "text": "Who directs the work, and how much control does the founder have over how it is done?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Who owns the work product, and is that in writing?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Who covers the gap if a freelancer is unavailable?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "You can make decisions for the company and join a review at each cycle.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "Copyright ownership",
+          "label": true
+        },
+        {
+          "text": "Work made for hire",
+          "label": true
+        },
+        {
+          "text": "Right to control",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "claims": [],
+      "sentences": [
+        {
+          "text": "Build or buy",
+          "label": true
+        },
+        {
+          "text": "A plain comparison of building a product and buying one, each described from named public sources, with no product ranked.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets two categories of support side by side on the same questions.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each statement about a category names a public source, and the sources are listed at the end of the page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Where WE sits",
+          "label": true
+        },
+        {
+          "text": "WE is a digital incubator for SaaS companies: dedicated offshore team seats steered by WE, fully remote, with no promise of funding.",
+          "claim": "C-29"
+        },
+        {
+          "text": "WE is probably not the right fit if",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "Your idea is not a software-as-a-service product.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You want WE to run your product in production or to provide round-the-clock support.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "Build",
+          "label": true
+        },
+        {
+          "text": "From the blueprint altitude, the team draws what a first release must do, cuts the scope to that, and builds it in reviewed cycles.",
+          "page": "src/content/pages/program/build.mdx"
+        },
+        {
+          "text": "Build starts from a problem you have tested.",
+          "page": "src/content/pages/program/build.mdx"
+        },
+        {
+          "text": "You want a team and a method to carry out the work, and you will keep ownership of the direction.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You can make decisions for the company and join a review at each cycle.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "Dedicated seats do the work and WE steers them.",
+          "page": "src/content/pages/program/build.mdx"
+        },
+        {
+          "text": "What must a first release do, and what can wait?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Who owns the code and the data?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Who maintains the product after the first release?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Buy",
+          "label": true
+        },
+        {
+          "text": "Which parts of the need does a ready-made product already meet?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Can the founder export and control the data stored in it?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "How hard is it to change tools or providers later?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The aim is a first product that a real customer can use, plus the paper trail that explains it: the scope, the decisions and the open items.",
+          "page": "src/content/pages/program/build.mdx"
+        },
+        {
+          "text": "Commercial off-the-shelf",
+          "label": true
+        },
+        {
+          "text": "Open standards",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "claims": [],
+      "sentences": [
+        {
+          "text": "Onshore or offshore teams",
+          "label": true
+        },
+        {
+          "text": "A plain comparison of onshore and offshore teams, each described from named public sources, with no location or company ranked.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets two categories of support side by side on the same questions.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each statement about a category names a public source, and the sources are listed at the end of the page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Where WE sits",
+          "label": true
+        },
+        {
+          "text": "The program is fully remote, so nobody relocates and there is no office to visit.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "The seats are offshore, they scale up or down by notice, and WE manages the team and any subcontractors on the founder's behalf.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "WE is probably not the right fit if",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You need a physical office, on-site staff or in-person work.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "WE is fully remote.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "Onshore teams",
+          "label": true
+        },
+        {
+          "text": "The sources cited here do not state what an onshore team asks of a founder.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The questions below cover what a given offer asks.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "How much of the workday overlaps with the founder's?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What local law applies to the team's contracts and data?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What does it ask of a founder in return?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Offshore teams",
+          "label": true
+        },
+        {
+          "text": "How much of the workday overlaps with the founder's, and how are handoffs timed?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "If personal data crosses a border, which transfer mechanism covers it?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Outsourcing",
+          "label": true
+        },
+        {
+          "text": "Offshoring",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "claims": [],
+      "sentences": [
+        {
+          "text": "Bootstrapping or outside funding",
+          "label": true
+        },
+        {
+          "text": "A plain comparison of bootstrapping and outside funding, each described from named public sources, with no investor or lender ranked.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets two categories of support side by side on the same questions.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each statement about a category names a public source, and the sources are listed at the end of the page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Where WE sits",
+          "label": true
+        },
+        {
+          "text": "WE is a digital incubator for SaaS.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "A founder brings an idea or an early product.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "WE brings a method, a way of steering a team, and dedicated team seats that work only on that company.",
+          "page": "src/content/pages/program/index.mdx"
+        },
+        {
+          "text": "WE is probably not the right fit if",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You are looking for money rather than a team.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "Bootstrapping",
+          "label": true
+        },
+        {
+          "text": "How long can the company run on the founder's own resources?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What does the company need to pay for before it earns?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What happens if the resources run out?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Outside funding",
+          "label": true
+        },
+        {
+          "text": "What ownership share and board role does the funder expect?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which securities rules or lender requirements apply to the raise?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What control does the founder keep after the funding closes?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The sources cited here do not name a situation in which bootstrapping fits better.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The sources cited here do not name a situation in which outside funding fits better.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Self-funding",
+          "label": true
+        },
+        {
+          "text": "Venture capital",
+          "label": true
+        },
+        {
+          "text": "Securities offering",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/index.mdx",
+      "claims": [],
+      "sentences": [
+        {
+          "text": "Compare",
+          "label": true
+        },
+        {
+          "text": "Plain comparisons of categories of support a founder weighs, each side described from named public sources, with no company ranked.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each page sets two categories side by side on the same questions.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "A statement about a category names its public source, and WE appears only in words taken from its program pages.",
+          "decision": "W8-24"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "The City of Burlington says incubators most commonly provide a shared working space for entrepreneurs to work collaboratively.",
+      "support": [
+        {
+          "sourceId": "burlington",
+          "quote": "Most commonly, incubators provide a shared working space for entrepreneurs to work collaboratively"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "It lists management training, advisory services and access to capital sources among what incubators provide.",
+      "support": [
+        {
+          "sourceId": "burlington",
+          "quote": "management training, advisory services, access to capital sources (loans, grants)"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "The City of London Corporation says incubators help develop and refine start-up ideas.",
+      "support": [
+        {
+          "sourceId": "london",
+          "quote": "Incubators help develop and refine start-up ideas, while Accelerators outline specific tracks"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "Knowledge at Wharton says accelerators target projects that show promise.",
+      "support": [
+        {
+          "sourceId": "wharton-acc",
+          "quote": "Accelerators are fixed-term programs generally lasting from three months to six months that target projects showing promise."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "It says the programs usually end with graduates pitching their ideas to potential investors.",
+      "support": [
+        {
+          "sourceId": "wharton-acc",
+          "quote": "The programs usually culminate with graduates pitching their ideas to potential investors."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "The City of London Corporation says accelerators outline specific tracks to turn a start-up into a scalable business.",
+      "support": [
+        {
+          "sourceId": "london",
+          "quote": "Incubators help develop and refine start-up ideas, while Accelerators outline specific tracks"
+        },
+        {
+          "sourceId": "london",
+          "quote": "to turn your start-up into a scalable business"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "Knowledge at Wharton reports that entry into an accelerator can cost a startup equity.",
+      "support": [
+        {
+          "sourceId": "wharton-acc",
+          "quote": "entree into accelerators can cost a startup from 2% to 10% equity"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "The European Commission page places incubators at an earlier stage of startup development than accelerators.",
+      "support": [
+        {
+          "sourceId": "ec",
+          "quote": "incubators usually act in an earlier stage of startup development than accelerators."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "The European Commission page places accelerators at a later stage of startup development than incubators.",
+      "support": [
+        {
+          "sourceId": "ec",
+          "quote": "incubators usually act in an earlier stage of startup development than accelerators."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "The City of Burlington defines business incubators as companies that specialize in assisting entrepreneurs in their start-up ventures.",
+      "support": [
+        {
+          "sourceId": "burlington",
+          "quote": "Business incubators are companies that specialize in assisting entrepreneurs in their start up ventures"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "sentence": "Knowledge at Wharton defines accelerators as fixed-term programs.",
+      "support": [
+        {
+          "sourceId": "wharton-acc",
+          "quote": "Accelerators are fixed-term programs generally lasting from three months to six months that target projects showing promise."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "The City of Burlington says incubators most commonly provide a shared working space for entrepreneurs to work collaboratively.",
+      "support": [
+        {
+          "sourceId": "burlington",
+          "quote": "Most commonly, incubators provide a shared working space for entrepreneurs to work collaboratively"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "It lists management training, advisory services and access to capital sources among what incubators provide.",
+      "support": [
+        {
+          "sourceId": "burlington",
+          "quote": "management training, advisory services, access to capital sources (loans, grants)"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "The City of Burlington says incubators are designed to speed the growth and success of entrepreneurial companies.",
+      "support": [
+        {
+          "sourceId": "burlington",
+          "quote": "designed to accelerate the growth and success of entrepreneurial companies"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "MIT Sloan Management Review says venture studios systematically assemble ideas, people and resources to create multiple new ventures.",
+      "support": [
+        {
+          "sourceId": "sloan",
+          "quote": "[V]enture studios systematically assemble ideas, people, and resources to create multiple new ventures."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "An MIT study calls venture studios factories that build businesses.",
+      "support": [
+        {
+          "sourceId": "dspace",
+          "quote": "Acting as “factories that build businesses,” venture studios are companies"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "A Knowledge at Wharton report says a standalone venture studio can be the external party through which startups are created, launched and scaled.",
+      "support": [
+        {
+          "sourceId": "wharton-vent",
+          "quote": "by an internal venture building team, or by an external party, such as a university or a standalone 'venture studio.'"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "MIT Sloan Management Review says studios recruit entrepreneurs and cofound ventures with shared equity.",
+      "support": [
+        {
+          "sourceId": "sloan",
+          "quote": "recruit entrepreneurs into those spaces and cofound ventures with shared equity."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "The City of Burlington describes incubators as companies that specialize in assisting entrepreneurs in their start-up ventures.",
+      "support": [
+        {
+          "sourceId": "burlington",
+          "quote": "Business incubators are companies that specialize in assisting entrepreneurs in their start up ventures"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "An MIT study says studios apply venture-building methods to identify market opportunities and develop ideas for businesses.",
+      "support": [
+        {
+          "sourceId": "dspace",
+          "quote": "to systematically identify market opportunities, develop ideas for businesses that can pursue those opportunities"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "The City of Burlington defines business incubators as companies that specialize in assisting entrepreneurs.",
+      "support": [
+        {
+          "sourceId": "burlington",
+          "quote": "Business incubators are companies that specialize in assisting entrepreneurs in their start up ventures"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "sentence": "MIT Sloan Management Review defines venture studios as organizations that create multiple new ventures.",
+      "support": [
+        {
+          "sourceId": "sloan",
+          "quote": "[V]enture studios systematically assemble ideas, people, and resources to create multiple new ventures."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "sentence": "The GOV.UK Service Manual says a team without the skills it needs may hire third parties or contractors.",
+      "support": [
+        {
+          "sourceId": "govc",
+          "quote": "If you do not have these in your team or available to it, you may need to hire third parties or contractors."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "sentence": "It says to buy only the skills needed and not to lock a service into a long contract with a fixed cost.",
+      "support": [
+        {
+          "sourceId": "govc",
+          "quote": "It’s important to only buy the skills you need and not to lock your service into a long contract with a fixed cost."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "sentence": "It says to make sure there is a plan to pass knowledge from contractors to the rest of the team.",
+      "support": [
+        {
+          "sourceId": "govc",
+          "quote": "You must make sure you have a plan to pass knowledge from contractors to the rest of your team."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "sentence": "The manual also says to treat contractors and permanent staff as equal team members.",
+      "support": [
+        {
+          "sourceId": "govc",
+          "quote": "Treat contractors and permanent staff as equal team members."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "sentence": "The Federal Acquisition Regulation describes a firm-fixed-price contract as one with a price that is not subject to any adjustment based on the contractor's cost experience.",
+      "support": [
+        {
+          "sourceId": "far1621",
+          "quote": "A firm-fixed-price contract provides for a price that is not subject to any adjustment"
+        },
+        {
+          "sourceId": "far1621",
+          "quote": "on the basis of the contractor’s cost experience in performing the contract."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "sentence": "The Federal Acquisition Regulation describes a time-and-materials contract as one paid by direct labor hours at specified fixed hourly rates that include wages, overhead and administrative expenses.",
+      "support": [
+        {
+          "sourceId": "far601",
+          "quote": "Direct labor hours at specified fixed hourly rates that include wages, overhead, general and administrative expenses"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "sentence": "The IRS says the keys to telling an independent contractor from an employee are the entire relationship and the right to direct and control the worker.",
+      "support": [
+        {
+          "sourceId": "irs",
+          "quote": "The keys are to look at the entire relationship and consider the extent of the right to direct and control the worker."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "sentence": "The GOV.UK Service Manual says a team lacking needed skills may need to hire third parties or contractors.",
+      "support": [
+        {
+          "sourceId": "govc",
+          "quote": "If you do not have these in your team or available to it, you may need to hire third parties or contractors."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "sentence": "The manual also says to make sure there is a plan to pass knowledge from contractors to the rest of the team.",
+      "support": [
+        {
+          "sourceId": "govc",
+          "quote": "You must make sure you have a plan to pass knowledge from contractors to the rest of your team."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "sentence": "It also says to buy only the skills needed and not to lock a service into a long contract with a fixed cost.",
+      "support": [
+        {
+          "sourceId": "govc",
+          "quote": "It’s important to only buy the skills you need and not to lock your service into a long contract with a fixed cost."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "sentence": "Section 201 of the copyright statute says copyright in a work vests initially in the author or authors of the work.",
+      "support": [
+        {
+          "sourceId": "cornell",
+          "quote": "Copyright in a work protected under this title vests initially in the author or authors of the work."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "sentence": "The same section says that for a work made for hire, the employer or other person for whom it was prepared is considered the author.",
+      "support": [
+        {
+          "sourceId": "cornell",
+          "quote": "the employer or other person for whom the work was prepared is considered the author"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "sentence": "The IRS says what matters is whether the payer has the right to control the details of how the services are performed.",
+      "support": [
+        {
+          "sourceId": "irs",
+          "quote": "What matters is that you have the right to control the details of how the services are performed."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "sentence": "NIST defines commercial off-the-shelf as a software or hardware product that is commercially ready-made and available for sale, lease or license to the general public.",
+      "support": [
+        {
+          "sourceId": "nist",
+          "quote": "A software and/or hardware product that is commercially ready-made and available for sale, lease, or license"
+        },
+        {
+          "sourceId": "nist",
+          "quote": "to the general public."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "sentence": "The GOV.UK Service Manual says to use standard government technology components where possible.",
+      "support": [
+        {
+          "sourceId": "govtech",
+          "quote": "use standard government technology components where possible"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "sentence": "It says to make sure you always have full control of any data you store.",
+      "support": [
+        {
+          "sourceId": "govtech",
+          "quote": "make sure you always have full control of any data you store"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "sentence": "It also lists reducing the chance of getting locked in to long contracts for specific tools and providers.",
+      "support": [
+        {
+          "sourceId": "govtech",
+          "quote": "reducing the chance of getting locked in to long contracts for specific tools and providers"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "sentence": "The manual says to use software that other departments have built, and to make it easy to use software that you build.",
+      "support": [
+        {
+          "sourceId": "govtech",
+          "quote": "use software that other departments have built, and make it easy to use software that you build"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "sentence": "The NIST glossary describes commercial off-the-shelf as a ready-made product available to the general public.",
+      "support": [
+        {
+          "sourceId": "nist",
+          "quote": "A software and/or hardware product that is commercially ready-made and available for sale, lease, or license"
+        },
+        {
+          "sourceId": "nist",
+          "quote": "to the general public."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "sentence": "The GOV.UK Service Manual says using open standards makes it easier to make changes later.",
+      "support": [
+        {
+          "sourceId": "govtech",
+          "quote": "Using open standards makes it easier to make changes later."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "sentence": "A Rice University news article says the overlap between workdays is greater when people work in the same time zone than when they work across time zones.",
+      "support": [
+        {
+          "sourceId": "rice",
+          "quote": "the overlap between their workdays will be less than it would if they all worked in the same time zone."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "sentence": "The same article says speaking is usually faster and conveys tone better than emails do.",
+      "support": [
+        {
+          "sourceId": "rice",
+          "quote": "speaking is usually faster and conveys tone better than emails do."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "sentence": "The U.S. Government Accountability Office says offshoring generally refers to a company's purchases from abroad of goods or services that were previously produced domestically.",
+      "support": [
+        {
+          "sourceId": "gao",
+          "quote": "Offshoring generally refers to a company’s purchases from abroad (imports) of goods or services that were previously produced domestically."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "sentence": "Its 2005 report says that, according to several business studies, a primary reason that organizations engage in offshoring is to reduce costs.",
+      "support": [
+        {
+          "sourceId": "gao",
+          "quote": "According to several business studies, a primary reason that organizations engage in offshoring is to reduce costs."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "sentence": "HBS Working Knowledge quotes a researcher who says you will have to set expectations and train people, especially managers, that they cannot expect answers instantaneously.",
+      "support": [
+        {
+          "sourceId": "hbs",
+          "quote": "You’ll have to set expectations and train people, especially managers, that they cannot expect answers instantaneously"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "sentence": "The Rice article adds that if opportunities to talk with collaborators are limited, it could slow work on some projects.",
+      "support": [
+        {
+          "sourceId": "rice",
+          "quote": "If opportunities to talk with collaborators are limited, it could slow work on some projects."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "sentence": "The 2005 report adds that access to a workforce in different time zones may enable companies to conduct work around the clock.",
+      "support": [
+        {
+          "sourceId": "gao",
+          "quote": "Access to a workforce in different time zones across the globe may enable companies to conduct work around the clock"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "sentence": "Knowledge at Wharton says outsourcing refers to hiring an external firm to perform tasks.",
+      "support": [
+        {
+          "sourceId": "wharton-off",
+          "quote": "outsourcing refers to hiring an external firm to perform tasks, while offshoring means moving those tasks abroad"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "sentence": "Knowledge at Wharton says offshoring means moving those tasks abroad.",
+      "support": [
+        {
+          "sourceId": "wharton-off",
+          "quote": "outsourcing refers to hiring an external firm to perform tasks, while offshoring means moving those tasks abroad"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "sentence": "The SBA says self-funding, otherwise known as bootstrapping, lets you leverage your own financial resources to support your business.",
+      "support": [
+        {
+          "sourceId": "sba-fund",
+          "quote": "Otherwise known as bootstrapping, self-funding lets you leverage your own financial resources to support your business."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "sentence": "The SBA says that with self-funding you retain complete control over the business.",
+      "support": [
+        {
+          "sourceId": "sba-fund",
+          "quote": "With self-funding, you retain complete control over the business, but you also take on all the risk yourself."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "sentence": "The SBA adds that with self-funding you also take on all the risk yourself.",
+      "support": [
+        {
+          "sourceId": "sba-fund",
+          "quote": "With self-funding, you retain complete control over the business, but you also take on all the risk yourself."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "sentence": "The SBA says venture capital is normally offered in exchange for an ownership share and active role in the company.",
+      "support": [
+        {
+          "sourceId": "sba-fund",
+          "quote": "Venture capital is normally offered in exchange for an ownership share and active role in the company."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "sentence": "The SBA says businesses normally must meet size standards, be able to repay and have a sound business purpose to get an SBA loan.",
+      "support": [
+        {
+          "sourceId": "sba-loans",
+          "quote": "Normally, businesses must meet SBA size standards, be able to repay, and have a sound business purpose."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "sentence": "The SBA says almost all venture capitalists will, at a minimum, want a seat on the board of directors.",
+      "support": [
+        {
+          "sourceId": "sba-fund",
+          "quote": "Almost all venture capitalists will, at a minimum, want a seat on the board of directors."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "sentence": "The SBA says self-funding is otherwise known as bootstrapping.",
+      "support": [
+        {
+          "sourceId": "sba-fund",
+          "quote": "Otherwise known as bootstrapping, self-funding lets you leverage your own financial resources to support your business."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "sentence": "The SBA says a founder should be prepared to give up some portion of both control and ownership in exchange for funding.",
+      "support": [
+        {
+          "sourceId": "sba-fund",
+          "quote": "So be prepared to give up some portion of both control and ownership of your company in exchange for funding."
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "sentence": "The SEC says every offer and sale of securities must either be registered under the Securities Act of 1933 or rely on an exemption.",
+      "support": [
+        {
+          "sourceId": "sec",
+          "quote": "Every offer and sale of securities must either be registered under the Securities Act of 1933,"
+        }
+      ]
+    }
+  ],
+  "markers": []
+}

@@ -1,0 +1,105 @@
+---
+title: Books and basic accounting for a software startup
+seoTitle: Books and basic accounting
+description: What keeping books means for a small software company, what the IRS says about records, separate accounts and accounting methods, and what to ask an accountant.
+topic: ops
+publishedDate: 2026-10-10
+segments: [non-technical-founders, first-time-founders]
+related: [runway-and-burn-the-arithmetic, the-tax-calendar-a-us-software-startup-should-know-exists]
+sources:
+  - id: irs-p583
+    title: Publication 583, Starting a Business and Keeping Records
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/publications/p583
+    accessed: 2026-10-10
+  - id: irs-recordkeeping
+    title: Recordkeeping
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/businesses/small-businesses-self-employed/recordkeeping
+    accessed: 2026-10-10
+  - id: irs-p538
+    title: Publication 538, Accounting Periods and Methods
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/publications/p538
+    accessed: 2026-10-10
+  - id: sba-manage-finances
+    title: Manage your finances
+    publisher: U.S. Small Business Administration
+    url: https://www.sba.gov/business-guide/manage-your-business/manage-your-finances
+    accessed: 2026-10-10
+  - id: sba-bank-account
+    title: Open a business bank account
+    publisher: U.S. Small Business Administration
+    url: https://www.sba.gov/business-guide/launch-your-business/open-business-bank-account
+    accessed: 2026-10-10
+evidence: [irs-p583, irs-recordkeeping, irs-p538, sba-manage-finances, sba-bank-account]
+relatedServices: [D]
+relatedTemplate: weekly-investor-update-template
+claimsUsed: []
+draft: false
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal, tax, accounting or financial advice. Written October 10, 2026 from US federal pages read that day. How a company must keep its books depends on its entity type, its tax elections and where it operates, so confirm choices with a qualified accountant.*
+
+For a non-technical founder, the books are often the part of the company that feels most foreign. The product has a roadmap and the customers have names, but the books are a set of records that someone else seems to understand. This article explains in general terms what keeping books means, what US federal pages say about records, bank accounts and accounting methods, and which questions to put to an accountant before a decision is made.
+
+It does not teach double-entry bookkeeping or the rules of any reporting standard. Those belong to a professional, and the sources read for this article do not describe them.
+
+## What the books are for
+
+Think of the books as the company’s memory of money. Each time cash comes in or goes out, a record notes the date, the amount, who the counterparty was and why the money moved. Everything else, from the tax return to the investor update to the runway figure, is built from those records.
+
+The IRS says it plainly: "Everyone in business must keep records." Its recordkeeping page says that "Good records will help you monitor the progress of your business, prepare your financial statements," and more. In other words, the same records serve the founder who wants to know how the company is doing and the accountant who prepares the statements, and, as a later section shows, they are also what the company relies on to support a tax return.
+
+## Records the IRS does and does not prescribe
+
+A founder may fear that there is a mandated format. The IRS recordkeeping page says otherwise: "You may choose any recordkeeping system suited to your business that clearly shows your income and expenses." It adds that "Except in a few cases, the law does not require any special kind of records." The system is yours to choose, and the test is that it clearly shows income and expenses.
+
+How long to keep a record is a different question. The IRS says "The length of time you should keep a document depends on the action, expense, or event the document records." It also says "You must keep your records as long as needed to prove the income or deductions on a tax return." For records of employment taxes, the page states "Keep all records of employment taxes for at least four years." These are federal statements. A state may ask for more, and the company’s contracts may too, so ask your accountant for a retention rule that covers all of them.
+
+## A bank account that belongs to the company
+
+The first practical step in most guides is a separate account. IRS Publication 583 says "You should keep your business account separate from your personal checking account." The US Small Business Administration describes a business bank account as one that offers "limited personal liability protection by keeping your business funds separate from your personal funds." Whether that protection applies to your company depends on its legal structure and how it is run, which is a question for counsel. The point for the books is practical: when company money and personal money mix, someone has to untangle every line later.
+
+The SBA page lists documents that banks commonly ask for, among them an Employer Identification Number, formation documents and ownership agreements. A founder who has not yet settled the structure will find that the bank questions come back to <MaybeLink path="/insights/choosing-an-entity-llc-or-c-corporation/">choosing an entity</MaybeLink>.
+
+## Cash and accrual: the choice that shapes the numbers
+
+An accounting method is the rule for when income and expense are counted. The IRS publication on accounting methods describes two. "Under the cash method, you generally report income in the tax year you receive it," and you "deduct expenses in the tax year in which you pay the expenses." "Under the accrual method, you generally report income in the tax year you earn it, regardless of when payment is received."
+
+For a software company the difference shows up as soon as a customer pays ahead. Imagine a customer who pays for a full year of a subscription on the day it starts. A cash view counts the whole payment when the money arrives. An accrual view counts income as it is earned, which is a different picture of the same company. Neither picture is wrong, and the choice has tax consequences, so it is a conversation with an adviser, not a default.
+
+Two timing points come from the IRS. Publication 583 says "You choose an accounting method for your business when you file your first income tax return." And the accounting methods publication says "If you later want to change your accounting method, you must generally get IRS approval." The second sentence is the reason to ask before the first return, not after. Which method suits a given software company, and how to treat prepaid subscriptions, deferred revenue and software development costs, are questions for an accountant. The IRS pages quoted here do not answer them.
+
+## A small set of habits, described neutrally
+
+Here is a plain description of what a working set of books tends to include. Treat it as a checklist of topics for your accountant, not as instructions.
+
+<DataTable
+  caption="Parts of a basic set of books, and the question each prompts"
+  columns={['Part', 'What it is', 'A question to ask']}
+  rows={[
+    ['Chart of accounts', 'The list of categories money is recorded under', 'Which categories will the investor update and the tax return need?'],
+    ['Bank and card feeds', 'Transactions as they arrive from the company’s accounts', 'Who checks that the records match the bank statement, and how often?'],
+    ['Invoices and bills', 'Money owed to and by the company', 'Where do invoices and receipts live, and who can see them?'],
+    ['Payroll and contractor records', 'Payments to people', 'Which records does the company need if it pays a worker?'],
+    ['Month-end review', 'A regular look at the numbers', 'Which three numbers does the founder read each month?']
+  ]}
+/>
+
+The SBA guidance is similarly general. It says "Make sure you maintain proper bookkeeping and have a basic knowledge of business finances." On help, it says "Consider hiring a certified public accountant (CPA), bookkeeper, or using an online service." This article names no product. How to choose among tools is the subject of <MaybeLink path="/insights/choosing-and-managing-a-small-companys-software-stack/">choosing and managing a software stack</MaybeLink>, which treats criteria and not products.
+
+## Connecting the books to decisions
+
+Books are most useful when they feed decisions the founder actually makes. They also matter when someone outside the company asks to look at them. A buyer, a lender or an investor can ask for financial records, and the <MaybeLink path="/fundability/data-room/">data room guide</MaybeLink> lists the kinds of document a company gathers for that moment. Records that were kept from the first month are easier to hand over than records rebuilt in a hurry, though no source read for this article says how any particular reader will judge them. <MaybeLink path="/insights/runway-and-burn-the-arithmetic/">Runway and burn</MaybeLink> shows how monthly cash movement becomes a runway figure, and the <MaybeLink path="/tools/runway-calculator/">runway calculator</MaybeLink> lets you try the arithmetic with your own numbers. The dates on which the company owes money to a tax authority are the subject of <MaybeLink path="/insights/the-tax-calendar-a-us-software-startup-should-know-exists/">the tax calendar</MaybeLink>, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines common terms.
+
+<Callout title="Questions to bring to an accountant">
+  Which accounting method fits the company, and who decides it? Which bank accounts and cards belong to the company, and who has access? How should prepaid subscriptions be recorded? Where are receipts and contracts kept, and for how long? What does the company need at month end, at quarter end and at year end? Who is the contact when something looks wrong?
+</Callout>
+
+## What this article cannot tell you
+
+This article cannot tell you how to keep your books or which method your company should use. It rests on three IRS pages and two Small Business Administration pages, all read on October 10, 2026, and it covers US federal statements only. It does not cover accounting standards, revenue recognition for software, audits, state requirements, other countries, payroll, or how a particular accounting tool works. The retention periods quoted are the pages’ own words and are not a full schedule. Check each point with a qualified accountant before you rely on it.

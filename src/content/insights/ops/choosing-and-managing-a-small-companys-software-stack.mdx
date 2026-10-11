@@ -1,0 +1,99 @@
+---
+title: Choosing and managing a small company's software stack
+seoTitle: Choosing a small-company stack
+description: Criteria for choosing a small company's tools and a light routine to keep them in order, using a US consumer-protection agency's data principles.
+topic: ops
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [non-technical-founders, solo-founders]
+related: [build-versus-buy-for-auth-billing-and-email, an-operating-rhythm-for-a-remote-offshore-team]
+sources:
+  - id: ftc-protecting-personal-information
+    title: "Protecting Personal Information: A Guide for Business"
+    publisher: U.S. Federal Trade Commission
+    url: https://www.ftc.gov/business-guidance/resources/protecting-personal-information-guide-business
+    accessed: 2026-10-10
+  - id: cisa-strong-passwords
+    title: Require strong passwords
+    publisher: Cybersecurity and Infrastructure Security Agency
+    url: https://www.cisa.gov/secure-our-world/require-strong-passwords
+    accessed: 2026-10-10
+evidence: [ftc-protecting-personal-information, cisa-strong-passwords]
+relatedServices: [D]
+claimsUsed: []
+draft: false
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal, security or financial advice. Written October 10, 2026. This article describes criteria. It names no product and recommends none.*
+
+A small company ends up running on dozens of tools without ever deciding to. Someone signs up for a design tool, a founder adds a team chat, a contractor brings their own project board and a trial turns into a subscription nobody remembers approving. The tools are individually reasonable. Together they hold the company’s files, its customer information and its money, and nobody has a list.
+
+This article is about two decisions: how to choose a tool, and how to keep the set of tools in order afterward. It uses two public agency pages as anchors and everything else is a plain set of criteria you can adapt. It does not rank products, because a product that suits one company can fail another, and a ranking would age before you read it.
+
+## Start with the job, not the product
+
+A tool is hired to do a job. Before looking at any product, write down what the job is, in a sentence a colleague could check. "Track who owes us money" is a job. "A better finance tool" is not. The sentence keeps the search from drifting toward features that are nice to have, and it gives you a way to decide later whether the tool is still earning its place.
+
+Then write who will use it, how often and what they will put into it. A tool used by one person once a month has a different cost of failure from one every employee touches daily. If the answer to "who" is "nobody yet", that is itself an answer.
+
+## The criteria
+
+The table lists eight questions to put to any candidate. They are not scored, because a weight is a judgment about your company. They are a way to make sure each question gets an answer before the tool is bought.
+
+<DataTable
+  caption="Eight questions for a candidate tool"
+  columns={['Criterion', 'The question', 'What to look for in the answer']}
+  rows={[
+    ['The job', 'What exact job does this do for the company?', 'A sentence that names the job and the person who needs it done'],
+    ['Overlap', 'Does a tool the company already holds do this?', 'A reason the new one is not a duplicate'],
+    ['Data held', 'What information will the tool hold, and whose is it?', 'A list that separates company data, customer data and personal data'],
+    ['Access', 'Who can sign in, and how is that decided?', 'Named roles, and a way to remove someone'],
+    ['Exit', 'Can the data leave in a form another tool could read?', 'An export you have tried, not one you were told about'],
+    ['Cost over time', 'What does the tool cost after the first period, and when does it renew?', 'A renewal date and an owner who will see it coming'],
+    ['Fit with the stack', 'Does it connect to the tools it has to work with?', 'The specific connection you need, tested'],
+    ['Vendor documentation', 'Where does the vendor describe how it handles security and data?', 'Public documentation you can read, which is not the same as a promise']
+  ]}
+/>
+
+On the last row, a vendor’s own description of its security is a claim by the vendor. Read it as that. If you need assurance beyond the claim, the article on <MaybeLink path="/insights/answering-a-security-and-privacy-questionnaire/">answering a security and privacy questionnaire</MaybeLink> shows the questions customers ask of a company, and the same questions can be turned around and put to a supplier.
+
+## The data question comes first
+
+Of the eight, the question about data held deserves the most care, because a tool is often a place where personal information collects. The US Federal Trade Commission’s guide for business says "A sound data security plan is built on 5 key principles:" and lists them. The first two bear directly on a tool choice. They are "TAKE STOCK. Know what personal information you have in your files and on your computers." and "SCALE DOWN. Keep only what you need for your business."
+
+The guide’s remaining principles are "LOCK IT. Protect the information that you keep.", "PITCH IT. Properly dispose of what you no longer need." and "PLAN AHEAD. Create a plan to respond to security incidents." Notice that they read as a lifecycle. A tool holds data, and the data has to be protected, removed when it is no longer needed and accounted for if something goes wrong. A tool that cannot delete what you put in it is a tool that makes the fourth principle hard.
+
+The guide is also direct about restraint: "If you don’t have a legitimate business need for sensitive personally identifying information, don’t keep it." Before you choose a tool to hold information, ask whether the company needs the information at all. The law on personal data differs by place, and <MaybeLink path="/insights/privacy-law-basics-for-a-small-product/">privacy law basics for a small product</MaybeLink> describes what to ask counsel.
+
+## Managing the stack once you have it
+
+The most important document in a small company’s tooling is a one-page register. It lists each tool and, beside it, the job, the owner, the data held, who has access, the renewal date and where the export lives. The register does not need to be elaborate. It needs to exist and to be read. A natural time to read it is a short quarterly review, in the same rhythm as the checks described in <MaybeLink path="/insights/a-weekly-operating-rhythm-for-a-founder/">a weekly operating rhythm for a founder</MaybeLink>.
+
+The register also gives a new colleague a map. Someone who joins in month eight can see in one page where the invoices live, who approves a renewal and which tool holds the customer list. Without it, that knowledge sits in the head of whoever signed up first, and it leaves when that person does.
+
+Three habits keep the register honest.
+
+1. **Give every tool one owner.** An owner is the person who knows what the tool is for and who is told when it renews. A tool with no owner is a tool whose cost nobody notices.
+2. **Pair access with a joining and leaving routine.** When someone joins, the register says what they get. When someone leaves, the register says what to remove. The routine matters most for the tools that hold customer information.
+3. **Review the register on a fixed date.** Cancel what has no job and merge what overlaps.
+
+### Passwords and sign-in
+
+Most of a small company’s exposure sits in how people sign in. The US Cybersecurity and Infrastructure Security Agency says "Protect your business by requiring your team to use strong passwords and a password manager." It also says "To make accounts even more secure, always use phishing-resistant MFA along with strong passwords." and "MFA adds a critical layer of security even if a password is stolen." These are the agency’s statements about practice. Whether a given tool supports multifactor sign-in is a criterion to check before you buy it, and the answer belongs in the register. A shared login that several people use is worth a line in the register too, because it hides who did what and has to be changed every time someone leaves. Where a tool offers separate accounts, the register is a good place to note that each person has one. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> lists further checks.
+
+## Build, buy or borrow
+
+Some of what a company runs on is bought, some is built and some is assembled from open parts. The article on <MaybeLink path="/insights/build-versus-buy-for-auth-billing-and-email/">build versus buy for auth, billing and email</MaybeLink> treats that choice for three common functions. Whichever side you take, the register records it. A tool the company built is a tool the company must also maintain, and it belongs in the list with an owner like any other.
+
+<Callout title="A short test before any new tool">
+  Can I state the job in one sentence? Is there an owner? Do I know what information it will hold and whether the company needs to keep it? Can I get the data back out? Does the renewal date have a reminder? If any answer is no, wait.
+</Callout>
+
+The <MaybeLink path="/glossary/">glossary</MaybeLink> defines shared terms.
+
+## What this article cannot tell you
+
+This article cannot tell you which tool to choose or whether any tool is secure. It rests on one FTC guide and one CISA page, read on October 10, 2026, which are US sources written for businesses in general, not for software startups in particular. The eight criteria and the register are this article’s own framework, not drawn from a source. It does not cover procurement rules, contracts with vendors, data protection law outside the United States, or the cost of any tool, and it names no product. Ask counsel about vendor contracts and about the law that applies to the data you hold.

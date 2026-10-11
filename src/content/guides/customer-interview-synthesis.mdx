@@ -1,0 +1,124 @@
+---
+section: fundability
+title: Customer interview synthesis
+description: "How to turn a set of customer interview notes into findings: separate what people did from what they said, cluster the notes and report what you do not know."
+disclaimers:
+  - no-funding
+  - not-legal-advice
+sources:
+  - id: govuk-analyse
+    title: Analyse a user research session
+    publisher: GOV.UK Service Manual, Government Digital Service
+    url: https://www.gov.uk/service-manual/user-research/analyse-a-research-session
+    accessed: 2026-10-10
+  - id: govuk-interviews
+    title: Using in-depth interviews
+    publisher: GOV.UK Service Manual, Government Digital Service
+    url: https://www.gov.uk/service-manual/user-research/using-in-depth-interviews
+    accessed: 2026-10-10
+  - id: govuk-consent
+    title: Getting users' consent for research
+    publisher: GOV.UK Service Manual, Government Digital Service
+    url: https://www.gov.uk/service-manual/user-research/getting-users-consent-for-research
+    accessed: 2026-10-10
+  - id: govuk-data
+    title: Managing user research data and participant privacy
+    publisher: GOV.UK Service Manual, Government Digital Service
+    url: https://www.gov.uk/service-manual/user-research/managing-user-research-data-participant-privacy
+    accessed: 2026-10-10
+  - id: cornell-18usc2511
+    title: 18 U.S. Code section 2511, Interception and disclosure of wire, oral, or electronic communications prohibited
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/uscode/text/18/2511
+    accessed: 2026-10-10
+updated: 2026-10-10
+---
+import DataTable from '../../components/ui/DataTable.astro';
+
+After a round of customer interviews you have a pile of notes. Synthesis is the step that turns the pile into findings: short statements about what you learned, each tied to the evidence behind it. Without it, a founder remembers the loudest conversation and the most recent one, and tells a story that the notes do not support.
+
+This guide shows one way to do the step, in the order a small team can follow. It assumes you have already run the interviews, for example with the [customer interview guide](/library/customer-interview-guide/). It is general information, not legal advice, and the privacy and recording points are for your counsel to confirm.
+
+## Why a written synthesis matters
+
+The statement "I have recorded notes from conversations with people who have the problem, written in one consistent format" is one of the twelve statements in the [investor readiness checklist](/fundability/investor-readiness-checklist/). A synthesis is what makes the notes usable by someone other than you. It also protects you from your own enthusiasm. The article on [customer discovery interviews without false positives](/insights/customer-discovery-interviews-without-false-positives/) explains how polite answers mislead, and a written synthesis is where you check for that.
+
+The UK government's service manual, written for its own research teams, says in-depth interviews are helpful when you want to [learn more about your users and relevant aspects of their lives and work](https://www.gov.uk/service-manual/user-research/using-in-depth-interviews). That is the job a founder's discovery interview does, so the same discipline applies.
+
+## Handle consent and the data first
+
+Do this before the first interview, not after.
+
+- **Get consent.** The service manual says that whenever you do user research, you must get the participant's informed consent. Tell people what you will do with their words, whether you will record, and how to withdraw. The manual adds that you can also get [verbal consent on the recording](https://www.gov.uk/service-manual/user-research/getting-users-consent-for-research), as long as the participant has read the consent form you sent.
+- **Know the rules on recording.** The U.S. federal wiretap statute includes an exception for interception [where one of the parties to the communication has given prior consent to such interception](https://www.law.cornell.edu/uscode/text/18/2511). It is only one source of rules. Get consent from everyone on the call, and ask your counsel what applies where you and the participant are located.
+- **Store it securely and share it narrowly.** The manual's guidance on research data says to store the data securely at all times, to restrict access to those who need it, and to delete participants' contact details as soon as you no longer need them. Its [page on managing research data](https://www.gov.uk/service-manual/user-research/managing-user-research-data-participant-privacy) also notes that most raw research data loses its value quite quickly, which is a reason to synthesize early and keep the findings, not the raw material.
+
+## Step 1: Analyze soon after each round
+
+The service manual advises doing analysis [as soon as you can after each round of research](https://www.gov.uk/service-manual/user-research/analyse-a-research-session), while it is still fresh in people's minds. Do the same. A short synthesis of five interviews done this week is worth more than a long one of twenty done in a quarter. If anyone else watched or joined an interview, invite them to the session. The manual makes the same point about people who observed the research.
+
+## Step 2: Write observations, not opinions
+
+Go through each set of notes and pull out single observations, one per line. Each observation says what the person did, said or felt, in plain words, with the interview it came from. Mark each with a code:
+
+- **D** for something the person did, such as "paid for a spreadsheet template" or "built a workaround".
+- **S** for something the person said about the past.
+- **P** for a prediction about what they would do.
+
+Give most weight to D, some to S, and the least to P. What people did is stronger evidence than what they say they would do next time. Keep your own interpretations out of this step, and write them in a separate column if you must.
+
+## Step 3: Cluster the observations
+
+Group the observations that belong together. The service manual notes that this is often called affinity diagramming or affinity sorting. Put each observation on its own note, on a wall or in a document, and move them into groups until each group has a plain name. If a group has observations from only one interview, mark it as a single case and not a pattern.
+
+## Step 4: Write findings with the evidence behind them
+
+Each cluster becomes a finding. Use a table so every finding shows its evidence and how far to trust it.
+
+<DataTable
+  caption="A findings table"
+  columns={['Finding', 'Evidence', 'Confidence', 'What it changes']}
+  rows={[
+    ['One plain sentence about what you learned.', 'How many interviews, and how many of the observations are D, S or P.', 'High, medium or low, and one reason.', 'The decision, question or next test this finding bears on.'],
+  ]}
+/>
+
+Write confidence as a judgment, and give the reason. "Low: two interviews, both predictions" tells a reader more than a score would.
+
+## Step 5: Say what you do not know
+
+A good synthesis ends with three short lists: the interviews that disagreed with the finding, the questions the interviews did not answer, and the people you have not yet spoken to. Counter-evidence belongs in the document. A reader who finds the disagreement themselves will wonder what else you left out.
+
+## A worked example
+
+**Illustrative example, not a real company.** A fictional shift-scheduling tool for small cafes. The team ran eight interviews and wrote the table below from the observations.
+
+<DataTable
+  caption="Findings from eight fictional interviews"
+  columns={['Finding', 'Evidence', 'Confidence', 'What it changes']}
+  rows={[
+    ['Owners fix schedule conflicts by text message on the day.', 'Six of eight interviews. Five D, one S.', 'High: most are things people did.', 'Test a same-day change feature before a planning feature.'],
+    ['Owners say they would pay to avoid the texting.', 'Four of eight. All P.', 'Low: predictions only, and nobody has paid yet.', 'Ask for a paid pilot to find out.'],
+    ['Larger cafes use a spreadsheet and are content with it.', 'Two of eight. Both S.', 'Low: only two, both about the past.', 'Interview more large cafes before deciding who to build for.'],
+  ]}
+/>
+
+Notice what the table refuses to claim. The strongest finding rests on actions, the weakest on predictions, and the last one is marked as a gap in who was interviewed.
+
+## Mistakes to avoid
+
+- **Counting yes answers.** A count of people who said they liked the idea is not a finding.
+- **Interviewing only friendly people.** If everyone was introduced by a friend, say so in the evidence column.
+- **Rewriting the notes after the fact.** Keep the originals and put interpretations in their own column.
+- **Quotes without context.** A vivid line is not evidence on its own. Say how many others said something similar.
+- **Letting one interview decide.** One person can be right, and still not be a pattern.
+
+## Where the output goes
+
+Put the findings table in folder 3 of your [seed data room](/fundability/data-room/), beside the conversation log. Copy the [interview synthesis sheet](/library/interview-synthesis-sheet/) to start, and record the choices the findings lead to in a [decision log](/library/decision-log/).
+
+## About the evidence
+
+Five outside pages back this guide, all read on the dates listed under Sources: four pages of the UK government's service manual on user research, and the U.S. federal wiretap statute. The service manual is written for government service teams, so this guide uses it for method and attribution, not as a rule that binds a startup. The coding scheme, the findings table and the example are working practice, and the example is invented. This guide does not say whether any particular recording or data practice is lawful where you are.
+
+This guide is general information and not legal advice.

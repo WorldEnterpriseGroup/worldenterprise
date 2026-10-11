@@ -1,0 +1,91 @@
+---
+title: "Fintech SaaS: considerations before you build"
+seoTitle: "Fintech: before you build"
+description: "Questions to settle before you build software that moves money or holds financial data in the United States, from public agency pages. Not legal advice."
+topic: sectors
+publishedDate: 2026-10-10
+segments: [corporate-innovators, technical-founders]
+related: [privacy-law-basics-for-a-small-product, answering-a-security-and-privacy-questionnaire, vertical-saas-depth-over-breadth]
+evidence: [fincen-msb, ftc-safeguards, fed-sr-23-4, dfpi-money-transmitters]
+relatedServices: [B, G]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: fincen-msb
+    title: Money Services Business (MSB) Registration
+    publisher: Financial Crimes Enforcement Network (FinCEN)
+    url: https://www.fincen.gov/money-services-business-definition
+    accessed: 2026-10-10
+  - id: ftc-safeguards
+    title: "FTC Safeguards Rule: What Your Business Needs to Know"
+    publisher: Federal Trade Commission
+    url: https://www.ftc.gov/business-guidance/resources/ftc-safeguards-rule-what-your-business-needs-know
+    accessed: 2026-10-10
+  - id: fed-sr-23-4
+    title: "SR 23-4: Interagency Guidance on Third-Party Relationships: Risk Management"
+    publisher: Board of Governors of the Federal Reserve System
+    url: https://www.federalreserve.gov/supervisionreg/srletters/SR2304.htm
+    accessed: 2026-10-10
+  - id: dfpi-money-transmitters
+    title: Money Transmitters
+    publisher: California Department of Financial Protection and Innovation
+    url: https://dfpi.ca.gov/regulated-industries/money-transmitters/
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal or financial advice. Written October 10, 2026 and scoped to United States federal pages plus one state example, California. Whether a rule reaches your product depends on what the product does, where your customers are and which partners you use, so bring the facts to a lawyer licensed where you operate.*
+
+Software that touches money sits in a different place from software that touches calendars. The code may be ordinary, but the activity it carries can fall under rules written for banks, payment businesses and lenders, and those rules attach to what the product does, not to whether the company calls itself a software company. This article lists the considerations a founder can settle before building. It is a set of questions, each tied to a public agency page, and it does not tell you what any of the rules mean for your product.
+
+## Start with what the product does with money and data
+
+Two questions come before any architecture. First, does your product ever receive money from one party and pass it to another, or hold value on someone's behalf? Second, does it store or process financial information about individuals, such as account details, balances or application data? The two questions lead to different rules, and a product can be in one, both or neither.
+
+Write the answers as a short factual description: who pays, who is paid, whose money sits where, and at which moment your system is the one holding it. A payments flow that looks simple in a diagram often has a step where your company, or a partner, briefly controls the funds. That step is where the questions below start to matter.
+
+## Moving or holding money: the money services business question
+
+The US Treasury's Financial Crimes Enforcement Network, FinCEN, keeps a registration page for money services businesses. The page says the term "money services business" includes any person doing business in one or more listed categories. The list on the page includes a currency dealer or exchanger, a check casher, an issuer or seller of traveler's checks, money orders or stored value, and a money transmitter.
+
+The category founders meet most often is the last. The FinCEN page says that a person who engages as a business in the transfer of funds is an MSB as a money transmitter, regardless of the amount of money transmission activity. It also says no activity threshold applies to the definition of money transmitter. Read that as a reason to ask the question early rather than late: size does not remove the question, and counsel is the person to say whether an activity is covered or excluded.
+
+States add their own layer. California's Department of Financial Protection and Innovation describes its Money Transmitter Division as the body that licenses and regulates money transmitters, and it says California's money transmission laws are found in the Financial Code. The page presents licensing as the way the department supports what it calls a healthy and trusted financial marketplace. Other states have their own regimes, with their own definitions and their own licensing questions, and this article covers none of them.
+
+A practical consequence for a first product: the same feature can be built so that your company touches funds or so that a licensed partner does. That choice changes which rules sit with you and which sit with the partner, and it is a decision for the founders and counsel together, before the build, because it is expensive to reverse after customers are on it.
+
+## Holding customer financial information: the Safeguards Rule
+
+The second question is about data. The Federal Trade Commission's guidance page on its Safeguards Rule says the rule applies to financial institutions subject to the FTC's jurisdiction. Whether a company is one is a legal question about what it does, and the guidance exists to help a business answer it. If the rule does reach a company, the page lists what it asks for. Your information security program must be written. The company is asked to designate a Qualified Individual to implement and supervise that program. And the page tells the reader to encrypt customer information on your system and when it's in transit.
+
+For a technical founder, the useful reading is that these are engineering and management obligations that exist before the first customer. A written program, a named owner and a data inventory are cheap to start with and expensive to reconstruct from a codebase two years in. The page showed December 2024 as its date when read, so read the current version rather than this summary.
+
+If you want a general starting point for what a small team writes down about security, the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> and the <MaybeLink path="/research/saas-security-baseline-year-one/">year-one security baseline note</MaybeLink> describe a baseline in general terms. Neither is a statement about the Safeguards Rule.
+
+## Selling to a bank or working through one
+
+Many fintech products reach customers through a bank, either as a vendor to it or as a partner that depends on its charter. The Federal Reserve's page for SR 23-4 publishes the Interagency Guidance on Third-Party Relationships: Risk Management, dated June 7, 2023. It states that the guidance is intended to assist banking organizations in identifying and managing risks, and the risks in question are those of relying on third parties. It says the letter applies to all banking organizations supervised by the Federal Reserve, and it describes risk management practices commensurate with each banking organization's size, complexity, risk profile and the nature of its third-party relationships.
+
+The guidance is addressed to banks, not to vendors. A reasonable reading, which is the author's and not something the page says, is that a bank that must manage the risk of its vendors will ask its vendors for evidence: how the product works, where data goes, what happens in an outage. A security and privacy questionnaire is the usual form that request takes, and <MaybeLink path="/insights/answering-a-security-and-privacy-questionnaire/">answering a security and privacy questionnaire</MaybeLink> covers how to prepare for one. Having the descriptive material ready is a different thing from holding any attestation, and this article makes no claim that any attestation is needed.
+
+## Questions to put to counsel before you build
+
+None of the following is advice. They are the questions that follow from the pages above.
+
+- Does any feature receive money from one party and pass it to another, or hold value for someone else, and at which step does that happen?
+- If it does, is the activity within the federal definition of a money services business, and does any state where you will have customers license it?
+- Could a licensed partner be the one that holds or moves the funds, and what does that arrangement allocate to you and to them?
+- Is the company a financial institution for the purposes of the Safeguards Rule, and if so who is the Qualified Individual?
+- What customer financial information will the system hold, for how long, and who can reach it?
+- If a bank is a customer or a partner, what will its third-party risk process ask you to provide?
+- Which of these answers changes if you add a feature, a state or a customer type?
+
+Keep the answers in writing. They become part of the diligence materials an investor or a bank will ask for, which <MaybeLink path="/insights/evidence-over-narrative-what-diligence-actually-tests/">what diligence actually tests</MaybeLink> describes in general terms.
+
+## What shapes the build, apart from the rules
+
+Regulated activity does not change the basics of building a first product. A narrow first release is still the aim, and <MaybeLink path="/insights/vertical-saas-depth-over-breadth/">vertical SaaS, depth over breadth</MaybeLink> describes why depth in one workflow matters. What changes is the order of decisions: the licensing and partner question moves from "later" to "before the first line of code", because it decides what you are allowed to build, and the data question decides how you build it. The <MaybeLink path="/glossary/">glossary</MaybeLink> defines terms used in these pages, and <MaybeLink path="/insights/privacy-law-basics-for-a-small-product/">privacy law basics for a small product</MaybeLink> covers the privacy layer that sits beside the financial rules.
+
+## What this article cannot tell you
+
+This article does not tell you whether your product is a money services business, a financial institution under the Safeguards Rule, or subject to a bank's third-party program. It covers four pages: FinCEN's money services business page, the FTC's Safeguards Rule guidance, the Federal Reserve's letter SR 23-4 and California's money transmitter page, each read on October 10, 2026. It does not cover lending, securities, insurance, cryptoassets, consumer-protection rules for financial products, anti-money-laundering program duties, card network rules, other states, or any country outside the United States. It says nothing about the cost of licensing or how long any process takes. Rules in this area change, so confirm anything you rely on against the current official text with a lawyer licensed where you operate.

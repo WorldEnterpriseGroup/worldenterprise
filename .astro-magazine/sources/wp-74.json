@@ -1,0 +1,1093 @@
+{
+  "wp": "WP-74",
+  "note": "The ledger of the seven industry pages and the /industries/ hub (docs/wave8-contracts.md sections 8.2 and 9; W8-9 and W8-24). Every outside fact is a regulatory statement in the perimeter of one page. Each was read in the writing session of 2026-10-10 with WebFetch from the government or standards host named in `fetches`; the locator and the verbatim quote (25 words at most) of each are in the `claims` of its page, and the page keeps its sources in `family.sources`. The sentences list is the page copy: each sentence names decision W8-9 (it restates a source read in the session), decision W8-24 (a consideration, not an outcome), a claim or an existing services page. fetchedAt carries the exact date and an approximate time of day: the date is what the ledger checks.",
+  "fetches": [
+    {
+      "id": "ftc-16-cfr-314-4",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-16.xml?part=314&section=314.4",
+      "title": "Safeguards Rule, 16 CFR 314.4 Elements",
+      "publisher": "Federal Trade Commission (eCFR)",
+      "fetchedAt": "2026-10-10T12:13:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fincen-31-cfr-1010-100",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-31.xml?part=1010&section=1010.100",
+      "title": "General definitions, 31 CFR 1010.100",
+      "publisher": "Financial Crimes Enforcement Network (eCFR)",
+      "fetchedAt": "2026-10-10T12:13:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfpb-12-cfr-1005-1",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-12.xml?part=1005&section=1005.1",
+      "title": "Regulation E, 12 CFR 1005.1 Authority and purpose",
+      "publisher": "Consumer Financial Protection Bureau (eCFR)",
+      "fetchedAt": "2026-10-10T12:13:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fed-sr-23-4",
+      "url": "https://www.federalreserve.gov/supervisionreg/srletters/SR2304.htm",
+      "title": "SR 23-4: Interagency Guidance on Third-Party Relationships: Risk Management",
+      "publisher": "Board of Governors of the Federal Reserve System",
+      "fetchedAt": "2026-10-10T12:13:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "hhs-45-cfr-160-103",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-45.xml?part=160&section=160.103",
+      "title": "Definitions, 45 CFR 160.103",
+      "publisher": "Department of Health and Human Services (eCFR)",
+      "fetchedAt": "2026-10-10T12:13:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "hhs-45-cfr-164-306",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-45.xml?part=164&section=164.306",
+      "title": "Security standards: General rules, 45 CFR 164.306",
+      "publisher": "Department of Health and Human Services (eCFR)",
+      "fetchedAt": "2026-10-10T12:13:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "hhs-45-cfr-164-502",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-45.xml?part=164&section=164.502",
+      "title": "Uses and disclosures of protected health information: General rules, 45 CFR 164.502",
+      "publisher": "Department of Health and Human Services (eCFR)",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fda-device-software",
+      "url": "https://www.fda.gov/medical-devices/digital-health-center-excellence/device-software-functions-including-mobile-medical-applications",
+      "title": "Device Software Functions Including Mobile Medical Applications",
+      "publisher": "Food and Drug Administration",
+      "fetchedAt": "2026-10-10T12:13:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ed-34-cfr-99-31",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-34.xml?part=99&section=99.31",
+      "title": "Conditions under which prior consent is not required to disclose information, 34 CFR 99.31",
+      "publisher": "Department of Education (eCFR)",
+      "fetchedAt": "2026-10-10T12:13:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-16-cfr-312-3",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-16.xml?part=312&section=312.3",
+      "title": "Children's Online Privacy Protection Rule, 16 CFR 312.3 General requirements",
+      "publisher": "Federal Trade Commission (eCFR)",
+      "fetchedAt": "2026-10-10T12:13:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "doj-28-cfr-35-200",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-28.xml?part=35&section=35.200",
+      "title": "Requirements for web and mobile accessibility, 28 CFR 35.200",
+      "publisher": "Department of Justice (eCFR)",
+      "fetchedAt": "2026-10-10T12:17:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "epa-40-cfr-98-2",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-40.xml?part=98&section=98.2",
+      "title": "Greenhouse gas reporting, 40 CFR 98.2 Who must report?",
+      "publisher": "Environmental Protection Agency (eCFR)",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-16-cfr-260-4",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-16.xml?part=260&section=260.4",
+      "title": "Environmental marketing claims, 16 CFR 260.4 General environmental benefit claims",
+      "publisher": "Federal Trade Commission (eCFR)",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ec-csrd",
+      "url": "https://finance.ec.europa.eu/capital-markets-union-and-financial-markets/company-reporting-and-auditing/company-reporting/corporate-sustainability-reporting_en",
+      "title": "Corporate sustainability reporting",
+      "publisher": "European Commission",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ny-jud-478",
+      "url": "https://www.nysenate.gov/legislation/laws/JUD/478",
+      "title": "Judiciary Law section 478, Practicing or appearing as attorney-at-law without being admitted and registered",
+      "publisher": "New York State Senate",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "uspto-37-cfr-11-106",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-37.xml?part=11&section=11.106",
+      "title": "Rules of professional conduct, 37 CFR 11.106 Confidentiality of information",
+      "publisher": "Patent and Trademark Office (eCFR)",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "uspto-37-cfr-11-503",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-37.xml?part=11&section=11.503",
+      "title": "Rules of professional conduct, 37 CFR 11.503 Responsibilities regarding non-practitioner assistance",
+      "publisher": "Patent and Trademark Office (eCFR)",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fre-502",
+      "url": "https://www.law.cornell.edu/rules/fre/rule_502",
+      "title": "Federal Rule of Evidence 502, Attorney-Client Privilege and Work Product; Limitations on Waiver",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fmcsa-49-cfr-371-2",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-49.xml?part=371&section=371.2",
+      "title": "Brokers of property, 49 CFR 371.2 Definitions",
+      "publisher": "Federal Motor Carrier Safety Administration (eCFR)",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "fmcsa-49-cfr-395-8",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-49.xml?part=395&section=395.8",
+      "title": "Hours of service of drivers, 49 CFR 395.8 Driver's record of duty status",
+      "publisher": "Federal Motor Carrier Safety Administration (eCFR)",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cbp-19-cfr-149-2",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-19.xml?part=149&section=149.2",
+      "title": "Importer security filing, 19 CFR 149.2",
+      "publisher": "Customs and Border Protection (eCFR)",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-49-14706",
+      "url": "https://www.law.cornell.edu/uscode/text/49/14706",
+      "title": "49 U.S. Code 14706, Liability of carriers under receipts and bills of lading",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-42-3604",
+      "url": "https://www.law.cornell.edu/uscode/text/42/3604",
+      "title": "42 U.S. Code 3604, Discrimination in the sale or rental of housing and other prohibited practices",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-15-1681a",
+      "url": "https://www.law.cornell.edu/uscode/text/15/1681a",
+      "title": "15 U.S. Code 1681a, Definitions; rules of construction",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-15-7001",
+      "url": "https://www.law.cornell.edu/uscode/text/15/7001",
+      "title": "15 U.S. Code 7001, General rule of validity",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T12:17:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfpb-12-cfr-1024-1",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-12.xml?part=1024&section=1024.1",
+      "title": "Regulation X, 12 CFR 1024.1 Designation",
+      "publisher": "Consumer Financial Protection Bureau (eCFR)",
+      "fetchedAt": "2026-10-10T12:15:20Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/content/pages/industries/fintech.mdx",
+      "claims": [
+        {
+          "id": "fin-1",
+          "sentence": "The Federal Trade Commission’s Safeguards Rule, 16 CFR 314.4, requires a financial institution to designate a qualified individual to oversee and implement its information security program.",
+          "kind": "regulation",
+          "sourceId": "ftc-16-cfr-314-4",
+          "locator": "16 CFR 314.4(a)",
+          "quote": "Designate a qualified individual responsible for overseeing and implementing your information security program"
+        },
+        {
+          "id": "fin-2",
+          "sentence": "Federal anti-money-laundering rules, 31 CFR 1010.100, define a money services business to include a money transmitter, which is a person that provides money transmission services.",
+          "kind": "regulation",
+          "sourceId": "fincen-31-cfr-1010-100",
+          "locator": "31 CFR 1010.100(ff)(5)",
+          "quote": "A person that provides money transmission services."
+        },
+        {
+          "id": "fin-3a",
+          "sentence": "Regulation E, 12 CFR 1005, carries out the Electronic Fund Transfer Act.",
+          "kind": "regulation",
+          "sourceId": "cfpb-12-cfr-1005-1",
+          "locator": "12 CFR 1005.1(b)",
+          "quote": "This part carries out the purposes of the Electronic Fund Transfer Act"
+        },
+        {
+          "id": "fin-3b",
+          "sentence": "The Act sets the basic rights, liabilities and responsibilities of consumers who use electronic fund transfer and remittance transfer services and of the financial institutions or other persons that offer them.",
+          "kind": "regulation",
+          "sourceId": "cfpb-12-cfr-1005-1",
+          "locator": "12 CFR 1005.1(b)",
+          "quote": "establishes the basic rights, liabilities, and responsibilities of consumers who use electronic fund transfer"
+        },
+        {
+          "id": "fin-4",
+          "sentence": "In June 2023 the federal banking agencies issued joint guidance on managing risks associated with third-party relationships.",
+          "kind": "regulation",
+          "sourceId": "fed-sr-23-4",
+          "locator": "SR 23-4, June 7, 2023",
+          "quote": "The guidance is intended to assist banking organizations in identifying and managing risks"
+        }
+      ],
+      "sentences": [
+        {
+          "text": "Fintech SaaS considerations",
+          "label": true
+        },
+        {
+          "text": "What a founder weighs before building SaaS for financial services: who buys, the regulatory perimeter, data questions and the sales cycle.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets out what building SaaS for financial services asks of a founder, in general terms.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "In financial services the buyer is often an institution that is itself regulated, so the person who wants the product is rarely the only person who must approve it.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Name the budget owner, the reviewer for information security and the reviewer for legal and compliance before the first demo.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The Federal Trade Commission’s Safeguards Rule, 16 CFR 314.4, requires a financial institution to designate a qualified individual to oversee and implement its information security program.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A vendor that handles customer information may be asked how its product fits that program.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Federal anti-money-laundering rules, 31 CFR 1010.100, define a money services business to include a money transmitter, which is a person that provides money transmission services.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Whether a product accepts and moves value for its users decides whether that definition is in play.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Regulation E, 12 CFR 1005, carries out the Electronic Fund Transfer Act.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "The Act sets the basic rights, liabilities and responsibilities of consumers who use electronic fund transfer and remittance transfer services and of the financial institutions or other persons that offer them.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "In June 2023 the federal banking agencies issued joint guidance on managing risks associated with third-party relationships.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A fintech company that sells to a bank may be assessed as a third party under that guidance.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Does the product create, receive, maintain or transmit customer financial information, and where does each kind of that data live?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Who inside the buyer’s organization may see the data, and how is that access recorded?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "If the product holds or moves value for users, which party is the financial institution and which party is the vendor?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What happens to the buyer’s data when the contract ends?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "A sale to a regulated financial institution includes a review of the vendor as a third party.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Plan for that review as a stage of the sale, and ask early who will run it and which documents the reviewer will want to see.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/industries/healthtech.mdx",
+      "claims": [
+        {
+          "id": "hea-1",
+          "sentence": "Under the federal privacy and security rules, a business associate is defined with respect to a covered entity, and covered entities include health plans, health care clearinghouses and certain health care providers.",
+          "kind": "regulation",
+          "sourceId": "hhs-45-cfr-160-103",
+          "locator": "45 CFR 160.103, Business associate and Covered entity",
+          "quote": "business associate means, with respect to a covered entity, a person who:"
+        },
+        {
+          "id": "hea-2",
+          "sentence": "The HIPAA Security Rule, 45 CFR 164.306, requires covered entities and business associates to ensure the confidentiality, integrity and availability of all electronic protected health information that they create, receive, maintain or transmit.",
+          "kind": "regulation",
+          "sourceId": "hhs-45-cfr-164-306",
+          "locator": "45 CFR 164.306(a)(1)",
+          "quote": "Ensure the confidentiality, integrity, and availability of all electronic protected health information"
+        },
+        {
+          "id": "hea-3",
+          "sentence": "A covered entity may disclose protected health information to a business associate if it obtains satisfactory assurance that the business associate will appropriately safeguard the information.",
+          "kind": "regulation",
+          "sourceId": "hhs-45-cfr-164-502",
+          "locator": "45 CFR 164.502(e)(1)",
+          "quote": "A covered entity may disclose protected health information to a business associate"
+        },
+        {
+          "id": "hea-4",
+          "sentence": "The Food and Drug Administration states that software functions that meet the definition of a device may be deployed on mobile platforms.",
+          "kind": "regulation",
+          "sourceId": "fda-device-software",
+          "locator": "FDA page, opening paragraphs",
+          "quote": "Software functions that meet the definition of a device may be deployed on mobile platforms"
+        }
+      ],
+      "sentences": [
+        {
+          "text": "Healthtech SaaS considerations",
+          "label": true
+        },
+        {
+          "text": "What a founder weighs before building SaaS for health care: who buys, the regulatory perimeter, data questions and the sales cycle.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets out what building SaaS for health care asks of a founder, in general terms.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "In health care the buyer is often a covered entity under federal privacy rules, so the person who wants the product is rarely the only person who must approve it.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Name the budget owner, the clinical owner and the reviewer for privacy and security before the first demo.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Under the federal privacy and security rules, a business associate is defined with respect to a covered entity, and covered entities include health plans, health care clearinghouses and certain health care providers.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Whether a SaaS company is a business associate depends on its relationship with a covered entity, which the founder should confirm with counsel.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The HIPAA Security Rule, 45 CFR 164.306, requires covered entities and business associates to ensure the confidentiality, integrity and availability of all electronic protected health information that they create, receive, maintain or transmit.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A covered entity may disclose protected health information to a business associate if it obtains satisfactory assurance that the business associate will appropriately safeguard the information.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A buyer in that position will look for the assurance from its vendor.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The Food and Drug Administration states that software functions that meet the definition of a device may be deployed on mobile platforms.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Whether a given function meets that definition is a question for the founder’s regulatory specialist, not for this page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Does the product create, receive, maintain or transmit electronic protected health information, or can it be designed so that it never does?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which assurances about safeguards will a covered entity ask the vendor to give before it shares data?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Where is each category of health data stored, and who can see it?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Does any function of the product touch diagnosis, treatment or monitoring, which could raise a device question?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "A buyer that is a covered entity will want satisfactory assurance about safeguards before it shares protected health information.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Plan for that exchange as a stage of the sale, and ask early who in the buyer’s organization reviews privacy and security.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/industries/edtech.mdx",
+      "claims": [
+        {
+          "id": "edu-1",
+          "sentence": "Under the Family Educational Rights and Privacy Act regulations, 34 CFR 99.31, a school may treat an outside party as a school official if the party performs a function the school would otherwise staff, is under the school’s direct control over education records and is subject to the rules on redisclosure.",
+          "kind": "regulation",
+          "sourceId": "ed-34-cfr-99-31",
+          "locator": "34 CFR 99.31(a)(1)(i)(B)",
+          "quote": "Is under the direct control of the agency or institution with respect to the use and maintenance of education records"
+        },
+        {
+          "id": "edu-2",
+          "sentence": "The Children’s Online Privacy Protection Rule, 16 CFR 312.3, applies to an operator of a website or online service directed to children and requires the operator to provide notice of what information it collects from children.",
+          "kind": "regulation",
+          "sourceId": "ftc-16-cfr-312-3",
+          "locator": "16 CFR 312.3(a)",
+          "quote": "Provide notice on the website or online service of what information it collects from children"
+        },
+        {
+          "id": "edu-3",
+          "sentence": "A Department of Justice rule, 28 CFR 35.200, covers web content and mobile apps that a public entity provides or makes available directly or through contractual, licensing or other arrangements, and sets WCAG 2.1 Level AA as the standard, with dates that depend on the size of the entity.",
+          "kind": "regulation",
+          "sourceId": "doj-28-cfr-35-200",
+          "locator": "28 CFR 35.200(a) and (b)",
+          "quote": "comply with Level A and Level AA success criteria and conformance requirements specified in WCAG 2.1"
+        }
+      ],
+      "sentences": [
+        {
+          "text": "Edtech SaaS considerations",
+          "label": true
+        },
+        {
+          "text": "What a founder weighs before building SaaS for schools and learners: who buys, the regulatory perimeter, data questions and the sales cycle.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets out what building SaaS for schools and learners asks of a founder, in general terms.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "In education the buyer is usually a school, a district or an institution, so the person who wants the product is rarely the only person who must approve it.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Name the budget owner, the instructional owner and the reviewer for student data before the first demo.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Under the Family Educational Rights and Privacy Act regulations, 34 CFR 99.31, a school may treat an outside party as a school official if the party performs a function the school would otherwise staff, is under the school’s direct control over education records and is subject to the rules on redisclosure.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "The Children’s Online Privacy Protection Rule, 16 CFR 312.3, applies to an operator of a website or online service directed to children and requires the operator to provide notice of what information it collects from children.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Whether a product is directed to children is a question to settle early.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "A Department of Justice rule, 28 CFR 35.200, covers web content and mobile apps that a public entity provides or makes available directly or through contractual, licensing or other arrangements, and sets WCAG 2.1 Level AA as the standard, with dates that depend on the size of the entity.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A public school buyer may ask how a product meets that standard.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which student records does the product receive, and what function does it perform that a school would otherwise staff?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Can the school keep direct control over how the vendor uses and maintains education records?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Is any part of the product directed to children, and what information does it collect from them?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "How can a buyer verify that the product meets WCAG 2.1 Level AA?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "A school or district reviews how a vendor will use and maintain education records before it shares them.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Treat that review, and any accessibility review, as stages of the sale, and ask early who runs each one.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/industries/climate-tech.mdx",
+      "claims": [
+        {
+          "id": "cli-1",
+          "sentence": "The Environmental Protection Agency’s reporting rule, 40 CFR 98.2, applies to the owners and operators of any facility that is located in the United States and that meets the requirements of one of its applicability paragraphs.",
+          "kind": "regulation",
+          "sourceId": "epa-40-cfr-98-2",
+          "locator": "40 CFR 98.2(a)",
+          "quote": "to the owners and operators of any facility that is located in the United States"
+        },
+        {
+          "id": "cli-2",
+          "sentence": "The Federal Trade Commission states, in 16 CFR 260.4, that unqualified general environmental benefit claims are difficult to interpret and likely convey a wide range of meanings.",
+          "kind": "regulation",
+          "sourceId": "ftc-16-cfr-260-4",
+          "locator": "16 CFR 260.4(b)",
+          "quote": "Unqualified general environmental benefit claims are difficult to interpret and likely convey a wide range of meanings."
+        },
+        {
+          "id": "cli-3",
+          "sentence": "The European Commission states that companies subject to the Corporate Sustainability Reporting Directive have to report according to the European Sustainability Reporting Standards.",
+          "kind": "regulation",
+          "sourceId": "ec-csrd",
+          "locator": "Page text, last updated July 3, 2026",
+          "quote": "Companies subject to the CSRD have to report according to European Sustainability Reporting Standards (ESRS)."
+        }
+      ],
+      "sentences": [
+        {
+          "text": "Climate tech considerations",
+          "label": true
+        },
+        {
+          "text": "What a founder weighs before building software for climate and emissions work: who buys, the reporting perimeter, data questions and the sales cycle.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets out what building software for climate and emissions work asks of a founder, in general terms.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The perimeter below reads United States federal and European Union sources, and the rules of other places are outside this page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Buyers are often companies or facility operators that must report, and the people who decide may sit in sustainability, finance, operations and legal.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Name the person who owns the reporting obligation, and the person who owns the budget, before the first demo.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The Environmental Protection Agency’s reporting rule, 40 CFR 98.2, applies to the owners and operators of any facility that is located in the United States and that meets the requirements of one of its applicability paragraphs.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A product that calculates emissions for such a facility works alongside that rule.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The Federal Trade Commission states, in 16 CFR 260.4, that unqualified general environmental benefit claims are difficult to interpret and likely convey a wide range of meanings.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A product that markets an environmental benefit should be able to say what the benefit is and what supports it.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The European Commission states that companies subject to the Corporate Sustainability Reporting Directive have to report according to the European Sustainability Reporting Standards.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "The Commission’s page also records simplification changes to scope and timing, so check the current text before relying on a date.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which data feeds the calculation, who owns it at the buyer and how is its source recorded?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which reporting rule or standard does the buyer need the output to support, and will the buyer’s reviewer accept it?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which environmental claims does the product’s own marketing make, and what supports each one?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What happens to the buyer’s data and calculation history if the buyer leaves?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "A buyer that reports under a rule will ask whether the output can support the report it must file.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Settle which report the product supports, and which it does not, before a pilot begins, and state the date of the rules the product assumes because reporting rules change.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/industries/legaltech.mdx",
+      "claims": [
+        {
+          "id": "leg-1",
+          "sentence": "New York’s Judiciary Law, section 478, makes it unlawful for a natural person to practice or appear as an attorney-at-law for another person in a court of record without first being licensed and admitted to practice law.",
+          "kind": "regulation",
+          "sourceId": "ny-jud-478",
+          "locator": "Judiciary Law 478",
+          "quote": "It shall be unlawful for any natural person to practice or appear as an attorney-at-law or as an attorney and"
+        },
+        {
+          "id": "leg-2",
+          "sentence": "The rules of professional conduct at 37 CFR 11.106 require a practitioner to make reasonable efforts to prevent the inadvertent or unauthorized disclosure of information relating to a representation.",
+          "kind": "regulation",
+          "sourceId": "uspto-37-cfr-11-106",
+          "locator": "37 CFR 11.106(d)",
+          "quote": "A practitioner shall make reasonable efforts to prevent the inadvertent or unauthorized disclosure of"
+        },
+        {
+          "id": "leg-3",
+          "sentence": "The same rules, at 37 CFR 11.503, require a practitioner with supervisory authority to make reasonable efforts to ensure that a non-practitioner assistant’s conduct is compatible with the practitioner’s obligations.",
+          "kind": "regulation",
+          "sourceId": "uspto-37-cfr-11-503",
+          "locator": "37 CFR 11.503(b)",
+          "quote": "shall make reasonable efforts to ensure that the person's conduct is compatible"
+        },
+        {
+          "id": "leg-4",
+          "sentence": "Federal Rule of Evidence 502 limits waiver of the attorney-client privilege and work-product protection, and says a disclosure made in a federal proceeding or to a federal office or agency does not operate as a waiver if it was inadvertent, reasonable steps were taken to prevent it and the holder acted promptly to correct it.",
+          "kind": "regulation",
+          "sourceId": "fre-502",
+          "locator": "Rule 502(b)",
+          "quote": "the disclosure does not operate as a waiver in a federal or state proceeding if:"
+        }
+      ],
+      "sentences": [
+        {
+          "text": "Legaltech SaaS considerations",
+          "label": true
+        },
+        {
+          "text": "What a founder weighs before building SaaS for lawyers and legal teams: who buys, the professional rules, data questions and the sales cycle.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets out what building SaaS for lawyers and legal teams asks of a founder, in general terms.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The perimeter below reads one New York statute and United States federal rules, and the rules of other states are outside this page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The buyer is often a law firm or an in-house legal department, and the lawyers who carry professional obligations are rarely the only people who decide.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Name who bears the professional obligation, who owns the budget and who reviews technology before the first demo.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "New York’s Judiciary Law, section 478, makes it unlawful for a natural person to practice or appear as an attorney-at-law for another person in a court of record without first being licensed and admitted to practice law.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Whether a product’s output counts as legal services is a question for counsel in each state where the product is offered.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The rules of professional conduct at 37 CFR 11.106 require a practitioner to make reasonable efforts to prevent the inadvertent or unauthorized disclosure of information relating to a representation.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Other jurisdictions have comparable rules, which this page does not cover.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The same rules, at 37 CFR 11.503, require a practitioner with supervisory authority to make reasonable efforts to ensure that a non-practitioner assistant’s conduct is compatible with the practitioner’s obligations.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A buyer may ask a software vendor how its handling of information supports that duty.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Federal Rule of Evidence 502 limits waiver of the attorney-client privilege and work-product protection, and says a disclosure made in a federal proceeding or to a federal office or agency does not operate as a waiver if it was inadvertent, reasonable steps were taken to prevent it and the holder acted promptly to correct it.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Does the product receive information relating to a representation, and where is it stored and who can reach it?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "What can the buyer tell its own reviewers about how the vendor handles that information?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Could any output look like legal advice to a person who is not a lawyer, and in which jurisdictions is the product offered?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "If a document is shared by mistake, what steps does the product give the buyer to limit the effect?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "A lawyer who buys software carries professional obligations about confidentiality and about supervising non-lawyer assistance, so a buyer’s review is likely to focus on how information is handled.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Plan for that review as a stage of the sale.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/industries/logistics.mdx",
+      "claims": [
+        {
+          "id": "log-1",
+          "sentence": "Federal rules, 49 CFR 371.2, define a broker as a person who, for compensation, arranges or offers to arrange the transportation of property by an authorized motor carrier.",
+          "kind": "regulation",
+          "sourceId": "fmcsa-49-cfr-371-2",
+          "locator": "49 CFR 371.2(a)",
+          "quote": "Broker means a person who, for compensation, arranges, or offers to arrange, the transportation of property"
+        },
+        {
+          "id": "log-2",
+          "sentence": "Federal rules, 49 CFR 395.8, require a motor carrier operating commercial motor vehicles to install an electronic logging device and to require each of its drivers to use one to record duty status.",
+          "kind": "regulation",
+          "sourceId": "fmcsa-49-cfr-395-8",
+          "locator": "49 CFR 395.8(a)(1)(i)",
+          "quote": "a motor carrier operating commercial motor vehicles must install and require each of its drivers to use an ELD."
+        },
+        {
+          "id": "log-3",
+          "sentence": "Customs and Border Protection rules, 19 CFR 149.2, direct the importer or an authorized agent to submit the importer security filing in English, and set a deadline for some of its data of no later than 24 hours before the cargo is laden aboard the vessel at the foreign port.",
+          "kind": "regulation",
+          "sourceId": "cbp-19-cfr-149-2",
+          "locator": "19 CFR 149.2(a) and (b)",
+          "quote": "no later than 24 hours before the cargo is laden aboard the vessel at the foreign port."
+        },
+        {
+          "id": "log-4",
+          "sentence": "Under 49 U.S.C. 14706, a carrier providing transportation or service subject to the covered chapters must issue a receipt or bill of lading for property it receives, and its liability under that paragraph is for the actual loss or injury to the property.",
+          "kind": "regulation",
+          "sourceId": "usc-49-14706",
+          "locator": "49 U.S.C. 14706(a)(1)",
+          "quote": "The liability imposed under this paragraph is for the actual loss or injury to the property"
+        }
+      ],
+      "sentences": [
+        {
+          "text": "Logistics SaaS considerations",
+          "label": true
+        },
+        {
+          "text": "What a founder weighs before building SaaS for freight and supply chains: who buys, the regulatory perimeter, data questions and the sales cycle.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets out what building SaaS for freight and supply chains asks of a founder, in general terms.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Buyers include shippers, brokers and motor carriers, and the person who wants the product, often in operations, is not always the person who signs.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Name the budget owner, the owner of the existing dispatch or transportation system and the owner of compliance before the first demo.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Federal rules, 49 CFR 371.2, define a broker as a person who, for compensation, arranges or offers to arrange the transportation of property by an authorized motor carrier.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A freight-matching product that arranges transportation may raise the question whether its operator falls within that definition.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Federal rules, 49 CFR 395.8, require a motor carrier operating commercial motor vehicles to install an electronic logging device and to require each of its drivers to use one to record duty status.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Software that touches driver records connects to that requirement.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Customs and Border Protection rules, 19 CFR 149.2, direct the importer or an authorized agent to submit the importer security filing in English, and set a deadline for some of its data of no later than 24 hours before the cargo is laden aboard the vessel at the foreign port.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Under 49 U.S.C. 14706, a carrier providing transportation or service subject to the covered chapters must issue a receipt or bill of lading for property it receives, and its liability under that paragraph is for the actual loss or injury to the property.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A product that produces shipping documents works with records this law names.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Does the product store driver duty-status records, and who at the buyer is responsible for them?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which shipment, customs and billing records does the product hold, and how does the buyer retrieve them?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which of the buyer’s existing systems must the product exchange data with, and who owns each connection?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "If the product arranges transportation, which party is the broker and which party is the carrier?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Logistics buyers often run new software next to systems they already use, so integration with those systems is part of the sale.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Settle early which of the buyer’s systems must be connected and who on the buyer’s side owns each one.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/industries/proptech.mdx",
+      "claims": [
+        {
+          "id": "pro-1",
+          "sentence": "The Fair Housing Act, 42 U.S.C. 3604, makes it unlawful to make, print or publish, or cause to be made, printed or published, any notice, statement or advertisement that indicates any preference, limitation or discrimination.",
+          "kind": "regulation",
+          "sourceId": "usc-42-3604",
+          "locator": "42 U.S.C. 3604(c)",
+          "quote": "To make, print, or publish, or cause to be made, printed, or published any notice, statement, or advertisement,"
+        },
+        {
+          "id": "pro-2",
+          "sentence": "The Fair Credit Reporting Act defines a consumer reporting agency as a person that regularly assembles or evaluates consumer credit information or other information on consumers to furnish consumer reports to third parties.",
+          "kind": "regulation",
+          "sourceId": "usc-15-1681a",
+          "locator": "15 U.S.C. 1681a(f)",
+          "quote": "regularly engages in whole or in part in the practice of assembling or evaluating consumer credit information"
+        },
+        {
+          "id": "pro-3",
+          "sentence": "A federal statute, 15 U.S.C. 7001, provides that a signature, contract or other record relating to a transaction in or affecting interstate or foreign commerce may not be denied legal effect, validity or enforceability solely because it is in electronic form.",
+          "kind": "regulation",
+          "sourceId": "usc-15-7001",
+          "locator": "15 U.S.C. 7001(a)",
+          "quote": "a signature, contract, or other record relating to such transaction may not be denied legal effect,"
+        },
+        {
+          "id": "pro-4",
+          "sentence": "Regulation X, 12 CFR 1024, is issued by the Consumer Financial Protection Bureau to implement the Real Estate Settlement Procedures Act of 1974.",
+          "kind": "regulation",
+          "sourceId": "cfpb-12-cfr-1024-1",
+          "locator": "12 CFR 1024.1",
+          "quote": "to implement the Real Estate Settlement Procedures Act of 1974, as amended, 12 U.S.C. 2601 et. seq."
+        }
+      ],
+      "sentences": [
+        {
+          "text": "Proptech SaaS considerations",
+          "label": true
+        },
+        {
+          "text": "What a founder weighs before building SaaS for real estate: who buys, the regulatory perimeter, data questions and the sales cycle.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "This page sets out what building SaaS for real estate asks of a founder, in general terms.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Buyers include landlords, property managers, brokerages and lenders, and the person who wants the product is not always the person who signs.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Name the budget owner, the owner of the leasing or listing workflow and the reviewer of legal risk before the first demo.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The Fair Housing Act, 42 U.S.C. 3604, makes it unlawful to make, print or publish, or cause to be made, printed or published, any notice, statement or advertisement that indicates any preference, limitation or discrimination.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A listing or marketing product that publishes text for others sits close to that prohibition.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "The Fair Credit Reporting Act defines a consumer reporting agency as a person that regularly assembles or evaluates consumer credit information or other information on consumers to furnish consumer reports to third parties.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A product that assembles screening information about applicants should check whether it falls inside that definition.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "A federal statute, 15 U.S.C. 7001, provides that a signature, contract or other record relating to a transaction in or affecting interstate or foreign commerce may not be denied legal effect, validity or enforceability solely because it is in electronic form.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "Regulation X, 12 CFR 1024, is issued by the Consumer Financial Protection Bureau to implement the Real Estate Settlement Procedures Act of 1974.",
+          "decision": "W8-9"
+        },
+        {
+          "text": "A product that touches settlement workflows should find out whether the Act applies to the services it provides.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Does the product assemble information about applicants or tenants, and for whom?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which listings or advertisements does the product publish, and who reviews their wording?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which signed or stored documents does the product hold, and how does the buyer retrieve them?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Which personal and financial details does the product collect, and who at the buyer can see them?",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Property buyers often work through listing, leasing and settlement steps that touch several laws, so legal review can sit in the middle of a sale.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Ask early who reviews advertising, screening and signed-document workflows.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/industries/index.mdx",
+      "sentences": [
+        {
+          "text": "Industry considerations",
+          "label": true
+        },
+        {
+          "text": "What building SaaS for an industry asks of a founder: who buys, the regulatory perimeter from primary sources, data questions and the sales cycle.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Founders often arrive with an industry in mind.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each page below sets out what building SaaS for that industry asks of a founder: who buys and who decides, the regulatory and standards perimeter, the questions about data handling and the sales cycle.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Every regulatory statement is read from a primary source on the date shown, and the sources are listed on each page.",
+          "decision": "W8-9"
+        }
+      ]
+    },
+    {
+      "path": "src/components/industries/scope-copy.ts",
+      "sentences": [
+        {
+          "text": "What WE's seats can and cannot build",
+          "label": true
+        },
+        {
+          "text": "WE is a digital incubator for SaaS companies, with dedicated offshore team seats steered by WE.",
+          "claim": "C-29"
+        },
+        {
+          "text": "A seat builds SaaS software: architecture, an agile build in short cycles and a pilot environment where early customers can use the product.",
+          "page": "src/content/services/product-and-it-development.mdx"
+        },
+        {
+          "text": "A seat does not run a live service, because WE builds to pilot scale.",
+          "page": "src/content/services/product-and-it-development.mdx"
+        },
+        {
+          "text": "A seat does not store or process restricted or regulated data in WE systems.",
+          "page": "src/content/services/product-and-it-development.mdx"
+        },
+        {
+          "text": "WE gives no assurance that a product will pass a particular audit or hold a particular certification.",
+          "page": "src/content/services/product-and-it-development.mdx"
+        },
+        {
+          "text": "WE does not give legal, tax, accounting, insurance or compliance advice.",
+          "page": "src/content/services/professional-services-coordination.mdx"
+        },
+        {
+          "text": "WE coordinates a founder’s own counsel and other specialists, and the founder engages them directly.",
+          "page": "src/content/services/professional-services-coordination.mdx"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+---
+import { render } from 'astro:content';
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import AsideStyles from '../../../components/forms/AsideStyles.astro';
+import { OPEN_NOW_LINKS, THANKS } from '../../../components/investors/copy.ts';
+import LinkList from '../../../components/investors/LinkList.astro';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import Steps from '../../../components/ui/Steps.astro';
+import FormLayout from '../../../layouts/FormLayout.astro';
+
+const page = await getPageEntry('investors/interest/thanks');
+const { Content } = await render(page);
+const { data } = page;
+---
+
+<FormLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead={THANKS.lead}
+  path="/investors/interest/thanks/"
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-network"
+>
+  <div class="prose"><Content /></div>
+  <h2>{THANKS.nextHeading}</h2>
+  <Steps headingLevel={3} steps={THANKS.next} />
+  <Fragment slot="aside">
+    <AsideStyles />
+    <h2 class="aside-title">{THANKS.asideHeading}</h2>
+    <LinkList items={OPEN_NOW_LINKS} />
+    <NoFundingDisclaimer />
+  </Fragment>
+</FormLayout>

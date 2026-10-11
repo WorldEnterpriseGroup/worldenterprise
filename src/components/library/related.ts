@@ -32,6 +32,32 @@ export const RELATED_BY_TEMPLATE: Readonly<Record<string, readonly RelatedLink[]
     { label: 'Research brief: a SaaS security baseline for year one', path: '/research/saas-security-baseline-year-one/' },
     { label: 'Trust center', path: '/trust/' },
   ],
+  'landing-page-brief': [
+    { label: 'Writing a landing page that says what the product does', path: '/insights/writing-a-landing-page-that-says-what-the-product-does/' },
+    { label: 'Landing page tests you can read', path: '/insights/landing-page-tests-you-can-read/' },
+  ],
+  'pricing-page-checklist': [
+    { label: 'Pricing page fundamentals for a first SaaS', path: '/insights/pricing-page-fundamentals-for-a-first-saas/' },
+    { label: 'Pricing page checker', path: '/tools/pricing-page-checker/' },
+    { label: 'Pricing experiments guide', path: '/fundability/pricing-experiments/' },
+  ],
+  'job-description-template': [
+    { label: 'Writing a job description people can answer', path: '/insights/writing-a-job-description-people-can-answer/' },
+    { label: 'Structured interviews for a small team', path: '/insights/structured-interviews-for-a-small-team/' },
+  ],
+  'outreach-sequence-worksheet': [
+    { label: 'Cold outreach that follows CAN-SPAM', path: '/insights/cold-outreach-that-follows-can-spam/' },
+    { label: 'Customer interview synthesis guide', path: '/fundability/customer-interview-synthesis/' },
+  ],
+  'interview-synthesis-sheet': [
+    { label: 'Customer interview synthesis guide', path: '/fundability/customer-interview-synthesis/' },
+    { label: 'Customer interview guide', path: '/library/customer-interview-guide/' },
+    { label: 'Customer discovery interviews without false positives', path: '/insights/customer-discovery-interviews-without-false-positives/' },
+  ],
+  'decision-log': [
+    { label: 'The seed data room guide', path: '/fundability/data-room/' },
+    { label: 'Investor readiness checklist', path: '/fundability/investor-readiness-checklist/' },
+  ],
 };
 
 /** Templates whose subject is investor preparation carry the no-funding disclaimer (claim C-05). */
