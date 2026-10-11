@@ -31,7 +31,7 @@ const sections = orderedGroups([...terms].sort(byTerm));
 ---
 
 <nav class="glossary-index" aria-label="Jump to a group of terms">
-  <ul class="cluster" role="list">
+  <ul class="glossary-index__list" role="list">
     {sections.map((section) => <li><a href={`#${groupAnchorId(section.group)}`}>{section.group}</a></li>)}
   </ul>
 </nav>
@@ -92,12 +92,34 @@ const sections = orderedGroups([...terms].sort(byTerm));
     border-block-end: var(--border-hair);
   }
 
+  /*
+   * The jump list is a grid of equal cells, each a fixed height that holds two lines. How many cells fit a row depends on the width of the
+   * page, never on the width of a label, and a label that wraps one way in the fallback font and another in the web font stays inside its
+   * cell. Wrapping chips moved the whole list when the fonts arrived (layout-shift budget, WP-77 fix-forward).
+   */
+  .glossary-index__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 10rem), 1fr));
+    gap: var(--sp-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   .glossary-index a {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    min-block-size: var(--target-min);
+    justify-content: center;
+    block-size: 3rem;
+    padding-inline: var(--sp-2);
+    border: var(--border-hair);
+    border-radius: var(--radius-md);
     font-family: var(--ff-display);
+    font-size: var(--fs-sm);
     font-weight: 600;
+    line-height: var(--lh-snug);
+    text-align: center;
+    text-wrap: balance;
   }
 
   h2 {
