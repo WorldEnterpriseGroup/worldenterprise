@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
 import { BRIEFS } from '../../../src/data/families.ts';
@@ -16,18 +17,29 @@ import type { BriefFacts } from './brief-rules.ts';
 const root = new URL('../../../', import.meta.url).pathname;
 const BRIEFS_DIR = join(root, 'infra/intake/briefs');
 const ABSTRACTS_DIR = join(root, 'src/content/briefs');
-const ledger = JSON.parse(readFileSync(join(root, '.astro-magazine/sources/wp-63.json'), 'utf8')) as SourcesFile;
+const SOURCES_DIR = join(root, '.astro-magazine/sources');
 
 const read = (path: string): string => readFileSync(path, 'utf8');
 const written = (): string[] => (existsSync(BRIEFS_DIR) ? readdirSync(BRIEFS_DIR).filter((n) => n.endsWith('.md')).map((n) => n.replace(/\.md$/, '')).sort() : []);
 
-function claimsFor(id: string): readonly ClaimRecord[] {
+/**
+ * The sources ledger of the package that owns a brief: owner 'WP-79' reads wp-79.json. A package that has no ledger yet gets an empty one,
+ * so its brief still fails, and fails for the right reason (every source it names has no fetch record).
+ */
+function ledgerFor(owner: string, dir: string = SOURCES_DIR): SourcesFile {
+  const file = join(dir, `${owner.toLowerCase()}.json`);
+  if (!existsSync(file)) return { wp: owner, fetches: [] };
+  return JSON.parse(read(file)) as SourcesFile;
+}
+
+function claimsFor(ledger: SourcesFile, id: string): readonly ClaimRecord[] {
   return ledger.documents?.find((d) => d.path === `infra/intake/briefs/${id}.md`)?.claims ?? [];
 }
 
 function factsFor(id: string): BriefFacts {
   const row = BRIEFS.entries.find((e) => e.slug === id);
   assert.ok(row !== undefined, `infra/intake/briefs/${id}.md is not in the brief registry (src/data/families.ts)`);
+  const ledger = ledgerFor(row.owner);
   const abstract = join(ABSTRACTS_DIR, `${id}.md`);
   return {
     id,
@@ -36,7 +48,7 @@ function factsFor(id: string): BriefFacts {
     audience: row.audience,
     desks: row.desks,
     fetches: ledger.fetches,
-    claims: claimsFor(id),
+    claims: claimsFor(ledger, id),
   };
 }
 
@@ -75,7 +87,7 @@ test('every abstract title, with the site suffix, fits the 60-character title li
 });
 
 test('every claim of the ledger belongs to a brief that exists', () => {
-  for (const doc of ledger.documents ?? []) {
+  for (const doc of ledgerFor('WP-63').documents ?? []) {
     if (!doc.path.startsWith('infra/intake/briefs/')) continue;
     assert.ok(existsSync(join(root, doc.path)), `${doc.path} is in the ledger but missing`);
   }
@@ -238,4 +250,22 @@ test('an abstract whose outline names a section the brief lacks fails', () => {
 
 test('a brief with no abstract fails', () => {
   assert.ok(checkBrief({ ...facts(), abstractText: undefined }).some((p) => /no open abstract/.test(p)));
+});
+
+test('a brief of another package is checked against its owner ledger, never against wp-63.json', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'wp63-ledgers-'));
+  try {
+    const own: SourcesFile = { wp: 'WP-99', fetches: fetchesFor(6) };
+    writeFileSync(join(dir, 'wp-99.json'), JSON.stringify(own));
+    // The owner's ledger knows the six fixture sources, so the fixture brief passes against it.
+    assert.deepEqual(checkBrief({ ...facts(), fetches: ledgerFor('WP-99', dir).fetches }), []);
+    // The ledger of WP-63 does not know them, so the same brief fails there: fetch records are not borrowed across packages.
+    assert.ok(checkBrief({ ...facts(), fetches: ledgerFor('WP-63').fetches }).some((p) => /has no fetch record/.test(p)));
+    // A package with no ledger gets an empty one, and the brief fails for that reason.
+    const none = ledgerFor('WP-98', dir);
+    assert.deepEqual(none.fetches, []);
+    assert.ok(checkBrief({ ...facts(), fetches: none.fetches }).some((p) => /has no fetch record/.test(p)));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
