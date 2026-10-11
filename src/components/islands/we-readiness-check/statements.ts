@@ -135,3 +135,44 @@ export const readinessStatements: readonly ReadinessStatement[] = [
     gapHref: '/fundability/safe-explained/',
   },
 ];
+
+/** A further page that helps with a statement, beyond the first place to start. */
+export interface AlsoRead {
+  readonly title: string;
+  /** Ledger path of the page. A path that is not live in the build is left out, never rendered as a dead link. */
+  readonly href: string;
+}
+
+/**
+ * Extra reading per statement, additive to `gapTitle` and `gapHref`: the statement ids, their wording and the first link are unchanged.
+ * Keys are statement ids. A statement with no entry here shows only its first place to start.
+ */
+export const ALSO_READ: Readonly<Record<string, readonly AlsoRead[]>> = {
+  'problem-stated': [{ title: 'Template: one-page problem brief', href: '/library/one-page-problem-brief/' }],
+  'customer-interviews': [
+    { title: 'Guide: customer interview synthesis', href: '/fundability/customer-interview-synthesis/' },
+    { title: 'Template: interview synthesis sheet', href: '/library/interview-synthesis-sheet/' },
+    { title: 'Insight: customer discovery interviews without false positives', href: '/insights/customer-discovery-interviews-without-false-positives/' },
+  ],
+  'first-customers': [
+    { title: 'Insight: customer evidence and reference calls', href: '/insights/customer-evidence-and-reference-calls/' },
+    { title: 'Guide: pricing experiments', href: '/fundability/pricing-experiments/' },
+  ],
+  'metrics-defined': [{ title: 'Tool: metrics calculator', href: '/tools/metrics-calculator/' }],
+  'repeatable-channel': [{ title: 'Template: outreach sequence worksheet', href: '/library/outreach-sequence-worksheet/' }],
+  'ip-assignments': [{ title: 'Guide: the seed data room', href: '/fundability/data-room/' }],
+  'entity-and-ownership': [
+    { title: 'Insight: cap table basics for founders', href: '/insights/cap-table-basics-for-founders/' },
+    { title: 'Tool: cap table explainer', href: '/tools/cap-table-explainer/' },
+  ],
+  'data-room-folder': [{ title: 'Tool: evidence room', href: '/tools/evidence-room/' }],
+  'data-inventory': [
+    { title: 'Guide: security questionnaire answers', href: '/fundability/security-questionnaire-answers/' },
+    { title: 'Insight: answering a security and privacy questionnaire', href: '/insights/answering-a-security-and-privacy-questionnaire/' },
+  ],
+  'update-habit': [{ title: 'Template: weekly investor update', href: '/library/weekly-investor-update-template/' }],
+  'safe-with-counsel': [
+    { title: 'Guide: term sheet checklist', href: '/fundability/term-sheet-checklist/' },
+    { title: 'Insight: reading a term sheet line by line', href: '/insights/reading-a-term-sheet-line-by-line/' },
+  ],
+};

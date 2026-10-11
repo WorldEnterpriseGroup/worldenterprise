@@ -1,0 +1,96 @@
+---
+title: "Legal software: considerations before you build"
+seoTitle: Legal software questions
+description: "Questions to settle before you build legal software: client confidentiality, supervision, privilege, e-signatures and the unauthorized practice of law."
+topic: sectors
+publishedDate: 2026-10-10
+segments: [technical-founders, second-career-founders]
+related: [ai-features-and-customer-data-what-to-decide-first, answering-a-security-and-privacy-questionnaire, terms-of-service-and-privacy-policy-what-each-document-is-for]
+evidence: [cfr-37-11-106, cfr-37-11-503, cfr-37-11-505, fre-502, usc-15-7001]
+relatedServices: [B, G]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: cfr-37-11-106
+    title: "37 CFR 11.106: Confidentiality of information"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/37/11.106
+    accessed: 2026-10-10
+  - id: cfr-37-11-503
+    title: "37 CFR 11.503: Responsibilities regarding non-practitioner assistance"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/37/11.503
+    accessed: 2026-10-10
+  - id: cfr-37-11-505
+    title: "37 CFR 11.505: Unauthorized practice of law"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/37/11.505
+    accessed: 2026-10-10
+  - id: fre-502
+    title: "Federal Rule of Evidence 502: Attorney-Client Privilege and Work Product; Limitations on Waiver"
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/rules/fre/rule_502
+    accessed: 2026-10-10
+  - id: usc-15-7001
+    title: "15 U.S.C. 7001: General rule of validity"
+    publisher: Legal Information Institute, Cornell Law School (United States Code text)
+    url: https://www.law.cornell.edu/uscode/text/15/7001
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal or financial advice. Written October 10, 2026 and scoped to five United States federal texts as published by the Legal Information Institute. Three are rules of professional conduct written for practitioners before one federal agency, and they are used here as published examples of the kind of duty a legal customer carries; the rules that govern most lawyers are set state by state and are not covered. Bring the facts of your product to a lawyer licensed where your customers practice.*
+
+Legal software has two kinds of customers, and they ask different things of a product. A law firm or a legal department is bound by duties of confidentiality and supervision, and it will ask how your product fits inside them. A person or small business without a lawyer is a customer of a different kind, and the question for that one is whether the product starts to look like the practice of law. This article lists the considerations a founder can settle before building, each tied to a public text. It does not say how any rule applies to your product.
+
+## Start with who uses the product and what it produces
+
+The first sentence to write is "my user is this kind of person, and the product produces this kind of output". A tool that helps a lawyer draft, search or organize is used inside a professional's judgment. A tool that gives a member of the public an answer about their rights, or fills a form for them, might not be. Write down, for each feature, whether a lawyer reviews the output before it reaches a client, and whether the product ever addresses a person's specific legal situation directly. Those two answers decide most of what follows, and they are also questions a law-firm buyer or a regulator may put to you.
+
+## Client confidentiality reaches the vendor
+
+Rules of professional conduct treat confidentiality as a duty of the lawyer, and a vendor that stores client information is where that duty meets the product. The U.S. Patent and Trademark Office publishes conduct rules for practitioners, in 37 CFR part 11. Section 11.106 is titled "Confidentiality of information". Its paragraph (a) says a practitioner shall not reveal information relating to the representation of a client unless the client gives informed consent. Its paragraph (d) says a practitioner shall make reasonable efforts to prevent the inadvertent or unauthorized disclosure of, or unauthorized access to, information.
+
+Neither paragraph names software. Read as a founder, the second one means a law-firm customer will ask what reasonable efforts look like in your system: who at your company can see client data, where it is stored, how access is logged and what happens in an incident. The <MaybeLink path="/insights/answering-a-security-and-privacy-questionnaire/">security and privacy questionnaire</MaybeLink> article describes how those questions arrive in general. Whether any particular rule governs a particular customer is a question for counsel.
+
+## Supervising what the product does
+
+Section 11.503 is titled "Responsibilities regarding non-practitioner assistance". Under its paragraph (b), a practitioner with direct supervisory authority over a non-practitioner assistant must take reasonable efforts to ensure that the person's conduct is compatible with the professional obligations of the practitioner.
+
+The section is about people, and the text does not mention software or vendors. A founder can still treat it as a design prompt, because a customer that is bound to supervise assistants may want to understand and review what a product does on its behalf. A feature that drafts, summarizes or decides without a visible step where a lawyer can check it is harder for such a customer to adopt than one that shows its work. If a model sits inside the feature, <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data: what to decide first</MaybeLink> covers the data decisions that come before this, including whether a customer's documents may be used to improve the product. The text read does not say how any regulator treats a vendor's tool, and this article does not either.
+
+## Privilege and what disclosure can cost
+
+Federal Rule of Evidence 502 is titled "Attorney-Client Privilege and Work Product; Limitations on Waiver". Its subdivision (b) lists conditions under which a disclosure made in a federal proceeding or to a federal office or agency is not a waiver: the disclosure is inadvertent, the holder of the privilege or protection took reasonable steps to prevent disclosure, and the holder promptly took reasonable steps to rectify the error. Subdivision (d) says a federal court may order that the privilege or protection is not waived by disclosure in connection with the litigation pending before the court.
+
+The rule is about disclosure in litigation, not about software, and it has more subdivisions than this article reads. For a product that moves documents, such as one for discovery, data rooms or document sharing, the lesson is design rather than law. A customer whose privilege is at stake will care whether the product makes a wrong recipient easy, whether it logs who received what and whether a mistaken send can be pulled back quickly. Whether any such capability would count as reasonable steps before a court is a question for counsel.
+
+## Electronic signatures
+
+Many legal products collect signatures. Title 15, section 7001 of the United States Code is titled "General rule of validity". For a transaction in or affecting interstate or foreign commerce, its subsection (a) says a signature, contract, or other record may not be denied legal effect, validity, or enforceability solely because it is in electronic form. Its subsection (c) sets conditions for consumers: electronic records can satisfy a writing requirement only if, among other things, the consumer has affirmatively consented to such use and has not withdrawn such consent.
+
+The word "solely" matters, because the section does not say every electronic signature is enough for every purpose. A founder building signing or document-assembly features should ask counsel which kinds of documents have their own rules, how consumer consent is captured and kept, and what record the product must retain to show it. The section does not say which signature technology is acceptable, and this article does not either.
+
+## Who is practicing law?
+
+The conduct rules also speak to who may practice. Section 11.505 is titled "Unauthorized practice of law". It says a practitioner shall not practice law in a jurisdiction in violation of the regulation of the legal profession in that jurisdiction, or assist another in doing so.
+
+The section does not define the practice of law, and the definition is set by each jurisdiction, which differ. That is the reason the answer to "does my product cross the line?" cannot be read from one page. A product marketed to the public that tailors legal advice or prepares documents for a person's particular situation raises the question differently from a tool a lawyer uses. A founder should have counsel in each place the product will be offered to the public look at the descriptions, the user flow and the disclaimers together, and should treat the words on the website as part of the product.
+
+## Questions to put to counsel before you build
+
+None of these is advice. They follow from the pages above.
+
+- Is the first customer a lawyer, a legal department or a member of the public, and which rules govern each?
+- What would a law-firm customer need to see to conclude the company's handling of client information is reasonable?
+- Which features act without a lawyer's review, and how would a customer supervise them?
+- Does the product move documents in ways that could affect privilege, and what can it do about a mistaken disclosure?
+- Which documents does the product let people sign, and do any have rules beyond the federal electronic-signature rule?
+- Could any feature or description be read as giving legal advice to the public, in each place it will be offered?
+- Which answer changes if the product adds a model, a customer type or a jurisdiction?
+
+Keep the answers in writing. The <MaybeLink path="/insights/terms-of-service-and-privacy-policy-what-each-document-is-for/">terms of service and privacy policy</MaybeLink> article covers what each document can and cannot do for you, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines terms used in these pages.
+
+## What this article cannot tell you
+
+This article does not tell you whether a rule applies to your product or customers, what counts as practicing law anywhere, or whether any feature protects privilege. It covers five pages read on October 10, 2026: three sections of the Patent and Trademark Office's practitioner conduct rules, Federal Rule of Evidence 502 and 15 U.S.C. 7001. It does not cover state rules of professional conduct, which govern most lawyers, bar guidance on generative AI, lawyer advertising, fee and trust-account rules, e-discovery sanctions, court filing systems, data-protection law in any country, or the law of any country outside the United States. It does not describe how a regulator or court has treated any vendor. These texts are amended and reinterpreted, so confirm anything you rely on against the current official text with a lawyer licensed where your customers practice.

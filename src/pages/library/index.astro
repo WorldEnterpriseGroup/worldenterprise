@@ -8,17 +8,17 @@ import { LIBRARY_SLUGS } from '../../data/routes.ts';
 import { getPublished } from '../../lib/content.ts';
 
 const entries = await getPublished('library');
+// The first six templates keep their order; every template written after them follows by name, so a new file is listed without a code change.
 const order = new Map<string, number>(LIBRARY_SLUGS.map((slug, index) => [slug, index]));
-const templates = entries
-  .filter((entry) => order.has(entrySlug(entry.id)))
-  .sort((a, b) => (order.get(entrySlug(a.id)) ?? 0) - (order.get(entrySlug(b.id)) ?? 0));
+const rank = (slug: string): number => order.get(slug) ?? order.size;
+const templates = [...entries].sort((a, b) => rank(entrySlug(a.id)) - rank(entrySlug(b.id)) || entrySlug(a.id).localeCompare(entrySlug(b.id)));
 
 const KIND_LABEL = { template: 'Template', checklist: 'Checklist', worksheet: 'Worksheet', guide: 'Guide' } as const;
 ---
 
 <HubLayout
   title="Templates and checklists"
-  description="Six working documents for early-stage SaaS teams: problem brief, interview guide, MVP cut line, investor update, data room and security checklists."
+  description="Working documents for early-stage SaaS teams: briefs, worksheets, checklists and logs for problems, pricing, hiring, outreach, investors and security."
   path="/library/"
   eyebrow="Library"
   lead="Documents you can use today. Copy them, print them or download them as Markdown."

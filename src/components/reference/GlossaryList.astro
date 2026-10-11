@@ -1,5 +1,10 @@
 ---
-import { anchorId, initials } from './jsonld.ts';
+import { anchorId, definitionMarkers, groupAnchorId, orderedGroups } from './jsonld.ts';
+
+interface SeeAlsoLink {
+  readonly href: string;
+  readonly label: string;
+}
 
 interface Term {
   readonly id: string;
@@ -7,6 +12,12 @@ interface Term {
   readonly definition: string;
   readonly group: string;
   readonly related: readonly string[];
+  /** Wraps the definition in `data-generic-definition` (the SAFE-mechanics terms). */
+  readonly genericDefinition?: boolean;
+  /** Wraps the definition in `data-claim-allow` for each claims-denylist rule id. */
+  readonly claimAllow?: readonly string[];
+  /** Links to pages that are live, already resolved by the page. */
+  readonly seeAlso?: readonly SeeAlsoLink[];
 }
 
 interface Props {
@@ -14,52 +25,61 @@ interface Props {
 }
 
 const { terms } = Astro.props;
-const sorted = [...terms].sort((a, b) => a.term.localeCompare(b.term, 'en', { sensitivity: 'base' }));
-const byId = new Map(sorted.map((t) => [t.id, t]));
-const letterOf = (term: string): string => {
-  const first = term.trim().charAt(0).toUpperCase();
-  return /[A-Z]/.test(first) ? first : '#';
-};
-const letters = initials(sorted.map((t) => t.term));
-const sections = letters.map((letter) => ({ letter, terms: sorted.filter((t) => letterOf(t.term) === letter) }));
+const byTerm = (a: Term, b: Term): number => a.term.localeCompare(b.term, 'en', { sensitivity: 'base' });
+const byId = new Map(terms.map((t) => [t.id, t]));
+const sections = orderedGroups([...terms].sort(byTerm));
 ---
 
-<nav class="glossary-index" aria-label="Jump to a letter">
-  <ul class="cluster" role="list">
-    {letters.map((letter) => <li><a href={`#letter-${letter === '#' ? 'other' : letter}`}>{letter}</a></li>)}
+<nav class="glossary-index" aria-label="Jump to a group of terms">
+  <ul class="glossary-index__list" role="list">
+    {sections.map((section) => <li><a href={`#${groupAnchorId(section.group)}`}>{section.group}</a></li>)}
   </ul>
 </nav>
 
 <div class="stack stack--loose">
   {
     sections.map((section) => (
-      <section aria-labelledby={`letter-${section.letter === '#' ? 'other' : section.letter}`} class="stack">
-        <h2 id={`letter-${section.letter === '#' ? 'other' : section.letter}`}>{section.letter}</h2>
+      <section aria-labelledby={groupAnchorId(section.group)} class="stack">
+        <h2 id={groupAnchorId(section.group)}>{section.group}</h2>
         <dl class="glossary-list">
-          {section.terms.map((t) => (
-            <div class="glossary-list__entry">
-              <dt id={anchorId('term', t.id)}>{t.term}</dt>
-              <dd>
-                <p>{t.definition}</p>
-                <p class="glossary-list__meta">
-                  <span>{t.group}</span>
-                  {t.related.filter((r) => byId.has(r)).length > 0 && (
-                    <span>
-                      See also:{' '}
-                      {t.related
-                        .filter((r) => byId.has(r))
-                        .map((r, i) => (
-                          <Fragment>
-                            {i > 0 && ', '}
-                            <a href={`#${anchorId('term', r)}`}>{byId.get(r)?.term}</a>
-                          </Fragment>
-                        ))}
-                    </span>
+          {section.items.map((t) => {
+            const related = t.related.filter((r) => byId.has(r));
+            const seeAlso = t.seeAlso ?? [];
+            return (
+              <div class="glossary-list__entry">
+                <dt id={anchorId('term', t.id)}>{t.term}</dt>
+                <dd>
+                  <p {...definitionMarkers(t)}>{t.definition}</p>
+                  {(related.length > 0 || seeAlso.length > 0) && (
+                    <p class="glossary-list__meta">
+                      {related.length > 0 && (
+                        <span>
+                          See also:{' '}
+                          {related.map((r, i) => (
+                            <Fragment>
+                              {i > 0 && ', '}
+                              <a href={`#${anchorId('term', r)}`}>{byId.get(r)?.term}</a>
+                            </Fragment>
+                          ))}
+                        </span>
+                      )}
+                      {seeAlso.length > 0 && (
+                        <span>
+                          Read more:{' '}
+                          {seeAlso.map((link, i) => (
+                            <Fragment>
+                              {i > 0 && ', '}
+                              <a href={link.href}>{link.label}</a>
+                            </Fragment>
+                          ))}
+                        </span>
+                      )}
+                    </p>
                   )}
-                </p>
-              </dd>
-            </div>
-          ))}
+                </dd>
+              </div>
+            );
+          })}
         </dl>
       </section>
     ))
@@ -72,14 +92,38 @@ const sections = letters.map((letter) => ({ letter, terms: sorted.filter((t) => 
     border-block-end: var(--border-hair);
   }
 
+  /*
+   * The jump list is a grid of equal cells, each a fixed height that holds two lines. How many cells fit a row depends on the width of the
+   * page, never on the width of a label, and a label that wraps one way in the fallback font and another in the web font stays inside its
+   * cell. Wrapping chips moved the whole list when the fonts arrived (layout-shift budget, WP-77 fix-forward).
+   */
+  .glossary-index__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 10rem), 1fr));
+    gap: var(--sp-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   .glossary-index a {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    min-inline-size: var(--target-min);
-    min-block-size: var(--target-min);
+    block-size: 3rem;
+    padding-inline: var(--sp-2);
+    border: var(--border-hair);
+    border-radius: var(--radius-md);
     font-family: var(--ff-display);
+    font-size: var(--fs-sm);
     font-weight: 600;
+    line-height: var(--lh-snug);
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  h2 {
+    scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
   }
 
   .glossary-list {
