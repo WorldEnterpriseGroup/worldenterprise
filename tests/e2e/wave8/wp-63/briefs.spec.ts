@@ -213,7 +213,8 @@ test.describe('the pages around the form, in any build', () => {
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0);
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
-    for (const brief of BRIEFS) await expect(page.locator(`a[href$="${brief.route}"]`).first()).toBeVisible();
+    // The header's closed mega panels also link to briefs, so the hub's own list is found inside main.
+    for (const brief of BRIEFS) await expect(page.locator('main').locator(`a[href$="${brief.route}"]`).first()).toBeVisible();
     expect(seen.thirdParty).toEqual([]);
   });
 

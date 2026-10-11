@@ -33,6 +33,16 @@ test('the logo cannot be squeezed by the flex row from 1100px, and the nav type 
   assert.match(css, /@media \(min-width: 1100px\) and \(max-width: 1279\.98px\) \{\s*\.mega-nav__list \{\s*gap: var\(--sp-1\);\s*font-size: 1rem;/);
 });
 
+test('the 1100 to 1279px override of the nav list comes after the base rule, because both have the same specificity and the later one wins', () => {
+  const css = stripComments(read('src/styles/components.css'));
+  const base = css.search(/\n {2}\.mega-nav__list \{/);
+  const override = css.search(/@media \(min-width: 1100px\) and \(max-width: 1279\.98px\) \{\s*\.mega-nav__list \{/);
+  assert.ok(base >= 0, 'the base .mega-nav__list rule is found at the top level of its block');
+  assert.ok(override >= 0, 'the narrow-desktop override is found');
+  assert.ok(override > base, 'the override comes after the base rule; before it, the base gap (--sp-4) beat the override and the header row overflowed at 1100 and 1140px');
+  assert.equal(css.match(/\n {2}\.mega-nav__list \{/g)?.length, 1, 'one base rule, so "after the base rule" is unambiguous');
+});
+
 test('--apply-bar-h is defined once and drives the bar, the scroll padding and the footer', () => {
   const tokens = stripComments(read('src/styles/tokens.css'));
   assert.match(tokens, /--apply-bar-h:\s*calc\(var\(--target-min\) \+ 2 \* var\(--sp-3\) \+ 1px\)/);

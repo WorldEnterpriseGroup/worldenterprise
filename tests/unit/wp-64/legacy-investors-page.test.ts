@@ -14,18 +14,20 @@ const ROOT = new URL('../../../', import.meta.url).pathname;
 const read = (rel: string): string => readFileSync(join(ROOT, rel), 'utf8');
 
 test('investors page carries the no-funding disclaimer and the not-an-offer statement', () => {
-  const page = read('src/pages/investors/index.astro');
-  assert.match(page, /<NoFundingDisclaimer\s*\/>/);
+  // The words of the page moved to src/components/investors/copy.ts when WP-64 rebuilt it; the markup stays in the page file.
+  const markup = read('src/pages/investors/index.astro');
+  const page = markup + read('src/components/investors/copy.ts');
+  assert.match(markup, /<NoFundingDisclaimer\s*\/>/);
   assert.match(page, /Not an offer of securities/);
   assert.match(page, /does not offer securities|offer to sell, or a solicitation/);
   // Owner decision of 2026-10-09: introductions are a separate paid add-on, so the page no longer says WE arranges no meetings.
-  assert.match(page, /<InvestorIntroductionsOffer\b/);
+  assert.match(markup, /<InvestorIntroductionsOffer\b/);
   assert.match(page, /does not negotiate terms, advise on securities or handle funds/i);
   assert.doesNotMatch(page, /does not arrange meetings with investors/i);
 });
 
 test('the investors page and Service Line F state the flat fee and no longer deny introductions', () => {
-  const investors = read('src/pages/investors/index.astro') + read('src/content/pages/investors/index.mdx');
+  const investors = read('src/pages/investors/index.astro') + read('src/content/pages/investors/index.mdx') + read('src/components/investors/copy.ts');
   const service = read('src/content/services/fundability-and-investor-readiness.mdx');
   assert.doesNotMatch(investors, /does not (?:arrange|broker|make)[^.]*(?:meetings|introductions)/i);
   assert.doesNotMatch(investors, /no introductions/i);

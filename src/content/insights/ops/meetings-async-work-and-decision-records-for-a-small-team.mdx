@@ -1,0 +1,101 @@
+---
+title: Meetings, async work and decision records for a small team
+seoTitle: Meetings, async and decisions
+description: "How a small team can decide which conversations need a meeting, what to write instead, and how to keep a decision record, using the Scrum Guide and GOV.UK."
+topic: ops
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [technical-founders, global-remote-founders]
+related: [writing-down-how-a-remote-team-works-a-team-handbook, an-operating-rhythm-for-a-remote-offshore-team]
+sources:
+  - id: scrum-guide
+    title: The Scrum Guide
+    publisher: Scrum Guides (Ken Schwaber and Jeff Sutherland)
+    url: https://scrumguides.org/scrum-guide.html
+    accessed: 2026-10-10
+  - id: govuk-adr-framework
+    title: Architectural Decision Record framework
+    publisher: GOV.UK
+    url: https://www.gov.uk/government/publications/architectural-decision-record-framework/architectural-decision-record-framework
+    accessed: 2026-10-10
+evidence: [scrum-guide, govuk-adr-framework]
+relatedServices: [D]
+claimsUsed: []
+draft: false
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not management or legal advice. Written October 10, 2026. This article describes practices and sources. It does not promise that any practice will improve a team's results.*
+
+A team of four people in three time zones can lose a day to a meeting that could have been a paragraph, and lose a week to a decision that nobody wrote down. Both losses are quiet. The meeting looks productive and the decision seems settled until someone asks what was decided and why.
+
+This article is about three habits that work together. Decide which conversations deserve a meeting. Move the rest to writing. Keep a short record of the decisions that matter. It leans on two public documents, one describing a meeting cadence and one describing a decision record, and it treats everything else as a design you can change.
+
+## Start with what a meeting is for
+
+A meeting is the most expensive way to move information, because it takes everyone’s attention at the same moment. It earns that cost when the conversation is hard to hold in writing: a disagreement where tone matters, a problem where people need to think out loud together, a decision that needs many voices quickly. Reading a status update does not need a meeting, and neither does reporting a result.
+
+A useful test is to ask, for any recurring meeting, what would be lost if it became a written note. If the answer is "nothing much", the meeting is a note in disguise. If the answer is "the argument", the meeting is doing real work. The same test can be run on a one-off call before you send the invitation. It also helps to name the one outcome the meeting is meant to produce, such as a choice between two options, and to end it when that outcome exists.
+
+## What the Scrum Guide says about regular events
+
+The Scrum Guide is a description of a team framework, and a small team can borrow a single idea without adopting the rest. The guide says "Events are used in Scrum to create regularity and to minimize the need for meetings not defined in Scrum." The aim is that a few regular events replace many ad hoc ones. It also gives events fixed durations. It says "The Daily Scrum is a 15-minute event for the Developers of the Scrum Team." and "Sprint Planning is timeboxed to a maximum of eight hours for a one-month Sprint."
+
+What a founder can take from this is a principle, not a prescription. A meeting with a fixed time limit and a stated purpose is easier to run than an open one, and a small set of regular meetings can reduce the number of extra calls. The guide’s figures are for its own events, on a team that works in Sprints, and are not targets for yours. Whether your team needs a daily check-in at all depends on how it works, and a team spread across time zones may find that a written update does the same job.
+
+## Moving work to writing
+
+Asynchronous work means that people contribute at different times and do not wait for one another. It does not mean silence. It means that the useful content of a conversation is written so that a person who was asleep when it started can read it and add to it. These practices tend to help, and each is a design choice, not a rule from a source.
+
+<DataTable
+  caption="Practices for written, asynchronous work"
+  columns={['Practice', 'What it does', 'A question to test it']}
+  rows={[
+    ['State the question first', 'Lets a reader decide whether it concerns them', 'Can someone tell from the first line what is being asked?'],
+    ['Say what you need, from whom and by when', 'Replaces a vague message with a request', 'Does each person named know their part?'],
+    ['Put the context in the message', 'Avoids a chain of questions to reconstruct it', 'Could a new colleague act on this without asking?'],
+    ['Keep one place for each kind of conversation', 'Prevents decisions from scattering across channels', 'Where would someone look for the last decision about pricing?'],
+    ['Agree what counts as urgent', 'Keeps an interruption for the cases that need it', 'Does everyone share the same meaning of urgent?']
+  ]}
+/>
+
+For a team across several countries, add questions about the working day. Which hours overlap for everyone, and is that overlap spent on the conversations that need it? Who is expected to be reachable when, and who has agreed to that? When one person is asked for an answer outside their working hours, is that a rare exception or a habit? Those are decisions for the team to make and write down, and <MaybeLink path="/insights/writing-down-how-a-remote-team-works-a-team-handbook/">the team handbook article</MaybeLink> covers where they can live. <MaybeLink path="/insights/an-operating-rhythm-for-a-remote-offshore-team/">An operating rhythm for a remote offshore team</MaybeLink> describes a cadence for a distributed team.
+
+## Why write a decision down
+
+A decision made in a meeting is a decision that exists only in the memory of the people who were there. A month later, they remember it differently, or a new person asks why the team did it that way, and the answer is a shrug. The cost is not only confusion. A team that cannot find an earlier decision tends to make it again.
+
+A decision record is a short document that captures the choice and the reasoning. The UK government’s Architectural Decision Record framework describes the kind it has in mind: "An ADR is a formal document used to capture significant architectural decisions." The framework says each record should contain a title, a date, a status, a context, the decision, the consequences, the stakeholders consulted and links to supporting documents. It says the record "provides a record of the decision-making process", and that a team should "Regularly review and update the ADR" so that it remains useful.
+
+The framework is about architecture decisions in government digital services, and a small company will choose its own scale. A one-paragraph record for a pricing change is the same idea at a smaller size. The useful features carry over: the context says what prompted the choice, the decision says what was chosen, the consequences say what the team expects and the status says whether the decision still stands.
+
+<DataTable
+  caption="A small decision record, scaled from the framework’s fields"
+  columns={['Field', 'What to write', 'Example for a pricing change']}
+  rows={[
+    ['Title and date', 'A short name and the day it was decided', 'Move annual plans to a single price, with the date'],
+    ['Status', 'Proposed, accepted, replaced or withdrawn', 'Accepted'],
+    ['Context', 'What prompted the question and what constrained it', 'Customers asked for a simpler page and support kept explaining the tiers'],
+    ['Decision', 'The choice, in a sentence', 'One annual price replaces two annual tiers'],
+    ['Consequences', 'What the team expects, good and bad, and what to check later', 'Fewer questions to support, less choice for customers, review at the next quarter'],
+    ['Who was consulted', 'The people whose view was asked for', 'The two founders and the person handling support']
+  ]}
+/>
+
+Keep records in one place the whole team can search, and write them at the time of the decision. A record written months afterward is a story about the decision. If a record is later replaced, mark it replaced and link to the new one, and do not edit the old one in place.
+
+## What to bring together in a week
+
+These habits fit together. A short, regular meeting handles what needs voices in a room. Written updates handle the rest. A decision record keeps what was settled. A founder can fold the three into the weekly pattern in <MaybeLink path="/insights/a-weekly-operating-rhythm-for-a-founder/">a weekly operating rhythm for a founder</MaybeLink>, and a team with a product to ship can see how decisions feed a plan in <MaybeLink path="/insights/product-management-for-a-first-saas-roles-backlog-and-decisions/">product management for a first SaaS</MaybeLink>. Decision records are also what you point to when two people remember a choice differently, which is one reason they help in <MaybeLink path="/insights/working-through-a-disagreement-with-a-co-founder/">working through a disagreement with a co-founder</MaybeLink>.
+
+<Callout title="A test for any recurring meeting">
+  Is its purpose one sentence? Does it have a time limit? Would a written note do the same job? Who would miss it if it stopped? Does it end with a decision, and is the decision written down?
+</Callout>
+
+The <MaybeLink path="/glossary/">glossary</MaybeLink> defines shared terms.
+
+## What this article cannot tell you
+
+This article cannot tell you how many meetings your team needs or which tools to use. It rests on the Scrum Guide and one GOV.UK framework, both read on October 10, 2026. The Scrum Guide is written for teams that work in Sprints, and the GOV.UK framework is written for architecture decisions in government digital services, so the examples and the pricing record are this article’s own scaling. It does not cover meeting tools, time-zone law, working-time rules or the legal weight of a record, and it makes no claim about productivity. Ask counsel if a decision record may matter in a legal dispute.

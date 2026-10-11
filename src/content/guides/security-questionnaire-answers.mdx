@@ -1,0 +1,110 @@
+---
+section: fundability
+title: Security questionnaire answers
+description: "How to answer a customer security questionnaire honestly: build an answer library, say what you do and do not have, and keep every answer provable."
+disclaimers:
+  - no-funding
+  - not-legal-advice
+sources:
+  - id: csa-ccm
+    title: Cloud Controls Matrix
+    publisher: Cloud Security Alliance
+    url: https://cloudsecurityalliance.org/research/cloud-controls-matrix
+    accessed: 2026-10-10
+  - id: aicpa-soc
+    title: System and Organization Controls (SOC) suite of services
+    publisher: AICPA and CIMA
+    url: https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services
+    accessed: 2026-10-10
+  - id: aicpa-soc2
+    title: SOC 2, System and Organization Controls
+    publisher: AICPA and CIMA
+    url: https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2
+    accessed: 2026-10-10
+  - id: nist-cyberframework
+    title: Cybersecurity Framework
+    publisher: National Institute of Standards and Technology
+    url: https://www.nist.gov/cyberframework
+    accessed: 2026-10-10
+updated: 2026-10-10
+---
+import DataTable from '../../components/ui/DataTable.astro';
+
+Sooner or later a customer, or an investor doing diligence, sends a spreadsheet of questions about how your company protects data. Most are yes or no questions with a box for comments. A small company can answer them well, and the way to do it is not to sound large. A good answer is true, specific and provable, and you can write one for every common question before anyone asks.
+
+This guide is about the answering, not the security program itself. It assumes you have started on the basics and want to describe them accurately. It makes no claim about the security of any product of World Enterprise, and it is not legal advice.
+
+## Why the questions arrive
+
+A customer who hands part of its work to a supplier takes on a risk it cannot see from outside, so it asks. The AICPA describes its System and Organization Controls reports as ones that [provide users with valuable information that is needed to assess and address the risks associated with outsourcing services](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services). A questionnaire is the lighter version of the same need. It lets a buyer compare suppliers without an audit.
+
+Knowing that helps you answer. The reader is not trying to catch you out. The reader is deciding how much trust to place in a supplier it cannot inspect, and a straight answer, even a weak one, gives them something to work with.
+
+## Formats you may meet
+
+Questionnaires vary, but a few formats come up often.
+
+- **A customer's own spreadsheet.** The most common form. The questions are the customer's, and so is the order.
+- **A standard question set.** The Cloud Security Alliance publishes a control framework for cloud computing, the Cloud Controls Matrix, and says the questionnaire built into it [offers a simple set of "yes/no" questions to assess cloud providers](https://cloudsecurityalliance.org/research/cloud-controls-matrix). Some buyers ask suppliers to fill in that set instead of writing their own.
+- **A request for an independent report.** The AICPA describes its System and Organization Controls as [a suite of service offerings CPAs may provide](https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2). A buyer may ask whether you have one. If you do not, say so plainly and answer the questionnaire instead. Never imply you hold a report you do not.
+- **A framework mapping.** The National Institute of Standards and Technology describes its Cybersecurity Framework as [helping organizations to better understand and improve their management of cybersecurity risk](https://www.nist.gov/cyberframework). A buyer may ask how your practices line up with it. A small company can answer by describing what it does in its own words.
+
+## Build an answer library
+
+The work of answering is mostly the same work each time, so do it once and keep it.
+
+1. **Start from your data inventory.** Write down every system that holds customer data and who can reach it. The [security baseline checklist](/library/security-baseline-checklist/) and the [research brief on a SaaS security baseline](/research/saas-security-baseline-year-one/) cover what to put in place and record.
+2. **Group the questions by topic.** Access, data, vendors, incidents, people and development cover most questionnaires. One answer per topic, reused, keeps your replies consistent.
+3. **Attach evidence to each answer.** A policy, a screenshot, a setting or a log that a reviewer could open. If an answer has no evidence, mark it.
+4. **Give every answer an owner and a date.** Someone is responsible for keeping each one true, and the date shows when it was last checked.
+5. **Review after every change.** A new vendor, a new employee with access or a new product feature can make an old answer wrong.
+
+## Use a small set of honest statuses
+
+Yes and no are not the only honest answers. A set of statuses keeps you from rounding up.
+
+<DataTable
+  caption="Answer statuses"
+  columns={['Status', 'Use it when', 'What to add']}
+  rows={[
+    ['In place', 'The control exists and you can show it working today.', 'The evidence, and the date you last checked.'],
+    ['Partly', 'It exists for some systems or some people, not all.', 'What is covered, what is not, and who owns the rest.'],
+    ['Planned', 'It does not exist yet, but you have decided to build it.', 'The owner and a target date. Never answer yes to a plan.'],
+    ['Not in place', 'It does not exist and is not planned.', 'A sentence on what you do instead, if anything.'],
+    ['Not applicable', 'The question concerns something you do not have.', 'Why it does not apply.'],
+  ]}
+/>
+
+## A worked example
+
+**Illustrative example, not a real company.** The questions and answers below are invented. They show the tone and the level of detail, and they describe no real company or product.
+
+<DataTable
+  caption="Sample answers to four questions"
+  columns={['Question', 'Answer', 'Status']}
+  rows={[
+    ['Is a second step required to sign in to staff accounts?', 'Required for the code host and the cloud console. Not yet required for the support inbox. The owner is the technical lead and the support inbox is next.', 'Partly'],
+    ['Do you keep an inventory of where customer data is stored?', 'Yes. The inventory lists each system, what it holds and who can reach it. It was last reviewed on the date in the file.', 'In place'],
+    ['Do you hold an independent security report?', 'No. The company has not commissioned one. This questionnaire and the data inventory are the evidence offered.', 'Not in place'],
+    ['Do you test your backups?', 'A restore test is on the plan for next quarter. Backups are taken, but a restore has not yet been tested.', 'Planned'],
+  ]}
+/>
+
+Notice that the weakest answers are also the most specific. A reader can act on "not yet required for the support inbox", and cannot act on a bare yes.
+
+## Rules that keep answers honest
+
+- **Answer the question asked.** If the question is about encryption of stored data, do not answer with a paragraph about your office.
+- **Never round up.** A plan is a plan. A pilot is a pilot. A policy nobody follows is not a control.
+- **Keep the answers the same across customers.** A reader who sees the same question answered two ways will trust neither.
+- **Do not claim a certification or report you do not hold.** State what you have, in the words the issuer uses.
+- **Say who is accountable.** An answer with a named owner is easier to rely on than an anonymous one.
+- **Ask when you are unsure.** If a question uses a term you do not know, ask the sender what it means before you reply. Your counsel can help with any question about legal duties.
+
+The article on [answering a security and privacy questionnaire](/insights/answering-a-security-and-privacy-questionnaire/) works through these questions in more depth, and the [evidence room tool](/tools/evidence-room/) helps you see which records you already hold.
+
+## About the evidence
+
+Four outside pages back this guide, all read on the dates listed under Sources: the Cloud Security Alliance's page on its Cloud Controls Matrix, the AICPA's pages on its System and Organization Controls services, and NIST's page on its Cybersecurity Framework. Each is quoted for what its publisher says about its own work. The answer statuses, the library steps and the example are working practice, and the example is invented. This guide does not rate any security practice or product, and a questionnaire answer is a statement you are responsible for, so have it reviewed by someone who knows your systems.
+
+This guide is general information and not legal advice.

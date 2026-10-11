@@ -5,7 +5,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
 
-// The push-slot protocol (plan 4.2, W8-21) keeps at most five branch pipelines running at once across every worktree.
+// The push-slot protocol (plan 4.2, W8-21) keeps at most three branch pipelines running at once across every worktree (it was five until
+// 2026-10-10: with five, the Playwright and Lighthouse jobs starved each other on the 100m job pods, FocusApiary/gitlab-k8s#16).
 // The script is committed in .astro-magazine/plans/wave8/ and tests itself with a mocked push and a mocked pipeline status:
 // four pushes through two slots never overlap more than two, a failed pipeline exits 1, a missing pipeline exits 3.
 
@@ -24,6 +25,13 @@ test('the push-slot self-test passes', { skip: skipReason, timeout: 120_000 }, (
   assert.match(run.stdout, /four pushes through two slots: ok/);
   assert.match(run.stdout, /failed pipeline exits 1, missing pipeline exits 3: ok/);
   assert.match(run.stdout, /push-slot self-test passed/);
+});
+
+test('the default cap is three slots, and the script says why', () => {
+  const text = readFileSync(new URL('../../../.astro-magazine/plans/wave8/push-slot.sh', import.meta.url), 'utf8');
+  assert.match(text, /^slots=3$/m);
+  assert.match(text, /default 3/);
+  assert.match(text, /gitlab-k8s#16/, 'the reason and the issue that lifts it are named');
 });
 
 // The script reads the pipeline through `glab api`. A stand-in `glab` on PATH records the request and answers, so the real status_of runs.

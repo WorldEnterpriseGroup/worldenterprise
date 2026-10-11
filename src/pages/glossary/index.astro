@@ -2,7 +2,22 @@
 import { getCollection } from 'astro:content';
 import GlossaryList from '../../components/reference/GlossaryList.astro';
 import { definedTermSetNode } from '../../components/reference/jsonld.ts';
+import { metaLookup } from '../../components/reference/resources.ts';
+import type { MetaCollection, MetaEntry } from '../../components/reference/resources.ts';
 import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
+import { getPublished } from '../../lib/content.ts';
+import type { PublicCollection } from '../../lib/content.ts';
+import { getRouteState } from '../../lib/route-state.ts';
+
+const state = await getRouteState();
+
+/** The title of every content entry a term can link to, read once from the collections. */
+async function entriesOf(collection: MetaCollection & PublicCollection): Promise<MetaEntry[]> {
+  const entries = await getPublished(collection);
+  return entries.map((entry) => ({ collection, id: entry.id, title: entry.data.title, description: entry.data.description }));
+}
+const collections: readonly (MetaCollection & PublicCollection)[] = ['pages', 'library', 'guides', 'playbooks', 'research'];
+const meta = metaLookup((await Promise.all(collections.map(entriesOf))).flat());
 
 const entries = (await getCollection('glossary')).filter((entry) => entry.data.draft !== true);
 const terms = entries.map((entry) => ({
@@ -11,6 +26,13 @@ const terms = entries.map((entry) => ({
   definition: entry.data.definition,
   group: entry.data.group,
   related: entry.data.related,
+  genericDefinition: entry.data.genericDefinition,
+  claimAllow: entry.data.claimAllow,
+  // A route that is not live on this build is left out, and so is one with no title.
+  seeAlso: entry.data.seeAlso.flatMap((path) => {
+    const found = state.isLive(path) ? meta(path) : undefined;
+    return found === undefined ? [] : [{ href: path, label: found.title }];
+  }),
 }));
 ---
 
@@ -21,7 +43,7 @@ const terms = entries.map((entry) => ({
   eyebrow="Reference"
   lead="Terms founders meet, defined neutrally. These are general definitions, not legal or financial advice."
   wide
-  updated={new Date('2026-10-06')}
+  updated={new Date('2026-10-10')}
   jsonLd={[definedTermSetNode('/glossary/', 'World Enterprise Incubator glossary', terms)]}
 >
   <GlossaryList terms={terms} />
