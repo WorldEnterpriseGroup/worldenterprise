@@ -13,10 +13,15 @@ if (!page) throw new Error('Missing content entry: src/content/pages/fundability
 const { Content } = await render(page);
 const { data } = page;
 
+// The first four guides keep their order; every guide written after them follows by name, so a new file is listed without a code change.
 const order = ['investor-readiness-checklist', 'data-room', 'safe-explained', 'investor-updates'];
+const rank = (id: string): number => {
+  const at = order.indexOf(id);
+  return at === -1 ? order.length : at;
+};
 const guides = (await getPublished('guides'))
   .filter((g) => g.data.section === 'fundability')
-  .sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+  .sort((a, b) => rank(a.id) - rank(b.id) || a.id.localeCompare(b.id));
 ---
 
 <HubLayout
@@ -35,7 +40,7 @@ const guides = (await getPublished('guides'))
   toc={[
     { slug: 'what-it-means', text: 'What it means' },
     { slug: 'self-check', text: 'Self-check' },
-    { slug: 'hub-subtree', text: 'The four guides' },
+    { slug: 'hub-subtree', text: 'The guides' },
   ]}
   subtree={guides.map((g) => ({ title: g.data.title, href: `/fundability/${g.id}/`, description: g.data.description }))}
 >

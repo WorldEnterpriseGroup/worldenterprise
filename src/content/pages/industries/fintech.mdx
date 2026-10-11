@@ -1,0 +1,68 @@
+---
+title: "Fintech SaaS considerations"
+description: "What a founder weighs before building SaaS for financial services: who buys, the regulatory perimeter, data questions and the sales cycle."
+eyebrow: Industry considerations
+hero: H2
+updated: 2026-10-10
+claimsUsed: [C-29]
+family:
+  id: industries
+  slug: fintech
+  buyer: "In financial services the buyer is often an institution that is itself regulated, so the person who wants the product is rarely the only person who must approve it. Name the budget owner, the reviewer for information security and the reviewer for legal and compliance before the first demo."
+  perimeter:
+    - title: "Safeguarding customer information"
+      text: "The Federal Trade Commission’s Safeguards Rule, 16 CFR 314.4, requires a financial institution to designate a qualified individual to oversee and implement its information security program. A vendor that handles customer information may be asked how its product fits that program."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: ftc-16-cfr-314-4
+    - title: "Money transmission"
+      text: "Federal anti-money-laundering rules, 31 CFR 1010.100, define a money services business to include a money transmitter, which is a person that provides money transmission services. Whether a product accepts and moves value for its users decides whether that definition is in play."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: fincen-31-cfr-1010-100
+    - title: "Electronic fund transfers"
+      text: "Regulation E, 12 CFR 1005, carries out the Electronic Fund Transfer Act. The Act sets the basic rights, liabilities and responsibilities of consumers who use electronic fund transfer and remittance transfer services and of the financial institutions or other persons that offer them."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: cfpb-12-cfr-1005-1
+    - title: "Third-party risk management"
+      text: "In June 2023 the federal banking agencies issued joint guidance on managing risks associated with third-party relationships. A fintech company that sells to a bank may be assessed as a third party under that guidance."
+      jurisdiction: "US federal banking agencies"
+      asOf: 2026-10-10
+      sourceId: fed-sr-23-4
+  dataQuestions:
+    - "Does the product create, receive, maintain or transmit customer financial information, and where does each kind of that data live?"
+    - "Who inside the buyer’s organization may see the data, and how is that access recorded?"
+    - "If the product holds or moves value for users, which party is the financial institution and which party is the vendor?"
+    - "What happens to the buyer’s data when the contract ends?"
+  salesCycle: "A sale to a regulated financial institution includes a review of the vendor as a third party. Plan for that review as a stage of the sale, and ask early who will run it and which documents the reviewer will want to see."
+  sources:
+    - id: ftc-16-cfr-314-4
+      title: "Safeguards Rule, 16 CFR 314.4 Elements"
+      publisher: "Federal Trade Commission (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-16.xml?part=314&section=314.4"
+      accessed: 2026-10-10
+    - id: fincen-31-cfr-1010-100
+      title: "General definitions, 31 CFR 1010.100"
+      publisher: "Financial Crimes Enforcement Network (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-31.xml?part=1010&section=1010.100"
+      accessed: 2026-10-10
+    - id: cfpb-12-cfr-1005-1
+      title: "Regulation E, 12 CFR 1005.1 Authority and purpose"
+      publisher: "Consumer Financial Protection Bureau (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-12.xml?part=1005&section=1005.1"
+      accessed: 2026-10-10
+    - id: fed-sr-23-4
+      title: "SR 23-4: Interagency Guidance on Third-Party Relationships: Risk Management"
+      publisher: "Board of Governors of the Federal Reserve System"
+      url: "https://www.federalreserve.gov/supervisionreg/srletters/SR2304.htm"
+      accessed: 2026-10-10
+---
+
+import SeatScope from '../../../components/industries/SeatScope.astro';
+
+This page sets out what building SaaS for financial services asks of a founder, in general terms.
+
+The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.
+
+<SeatScope />

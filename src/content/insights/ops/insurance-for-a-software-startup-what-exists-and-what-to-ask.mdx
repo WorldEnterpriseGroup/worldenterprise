@@ -1,0 +1,98 @@
+---
+title: "Insurance for a software startup: what exists and what to ask"
+seoTitle: Startup insurance questions
+description: "The kinds of business insurance a US small-business agency lists, what regulators say on workers' compensation and cyber risk, and questions for an agent."
+topic: ops
+publishedDate: 2026-10-10
+segments: [first-time-founders, corporate-innovators]
+related: [contractors-and-employees-the-classification-tests, privacy-law-basics-for-a-small-product]
+sources:
+  - id: sba-business-insurance
+    title: Get business insurance
+    publisher: U.S. Small Business Administration
+    url: https://www.sba.gov/business-guide/launch-your-business/get-business-insurance
+    accessed: 2026-10-10
+  - id: dol-workers-comp
+    title: Workers' compensation
+    publisher: U.S. Department of Labor
+    url: https://www.dol.gov/general/topic/workcomp
+    accessed: 2026-10-10
+  - id: nydfs-cyber-circular
+    title: "Insurance Circular Letter No. 2 (2021): Cyber Insurance Risk Framework"
+    publisher: New York State Department of Financial Services
+    url: https://www.dfs.ny.gov/industry_guidance/circular_letters/cl2021_02
+    accessed: 2026-10-10
+  - id: tdi-commercial-liability
+    title: Consumer rights for commercial liability insurance
+    publisher: Texas Department of Insurance
+    url: https://www.tdi.texas.gov/consumer/rights-commercial-liability-insurance.html
+    accessed: 2026-10-10
+evidence: [sba-business-insurance, dol-workers-comp, nydfs-cyber-circular, tdi-commercial-liability]
+relatedServices: [G]
+claimsUsed: []
+draft: false
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not insurance, legal or financial advice. Written October 10, 2026 from US federal and state pages read that day. What coverage a company needs, and what a policy actually covers, depends on its business, its state and its contracts. A licensed insurance agent or broker and your own counsel are the people to ask.*
+
+A software company does not have a factory, a storefront or a fleet of vehicles, and founders often conclude that insurance is for other businesses. That conclusion is worth testing. A company still has a bank balance, a laptop, customers who rely on its product, people who work for it and contracts that may say something about insurance.
+
+This article does not recommend a policy, a limit or a provider. It describes the kinds of coverage a US small-business agency lists, what two public bodies say that bears on workers and on cyber risk, and the questions a founder can take to a licensed professional. It names no insurer or product.
+
+## Insurance among the other protections
+
+Insurance is one of several ways a company deals with risk, and it works alongside the others. The legal form of the company shapes who is responsible for what, which is why <MaybeLink path="/insights/choosing-an-entity-llc-or-c-corporation/">choosing an entity</MaybeLink> comes up in the same conversations. Written contracts allocate responsibility between the company and its customers. Good engineering practice lowers the chance of a failure in the first place. A policy responds after something has gone wrong, on the terms in its own document, and those terms, not the headline name of the coverage, decide what is paid. Reading the document, or having an agent walk through it with you, is the step that turns a coverage name into an answer.
+
+## What the small-business agency lists
+
+The US Small Business Administration has a page on getting business insurance. It describes several kinds of coverage in a sentence each. The table gives the agency’s own wording, because the exact words matter when you compare it with a policy.
+
+<DataTable
+  caption="Kinds of business insurance, in the SBA’s wording"
+  columns={['Kind', 'What the SBA page says']}
+  rows={[
+    ['General liability', 'This coverage protects against financial loss as the result of bodily injury, property damage, medical expenses,'],
+    ['Professional liability', 'This coverage protects against financial loss as a result of malpractice, errors, and negligence.'],
+    ['Commercial property', 'This coverage protects your business against loss and damage to company property due to a wide variety of events.'],
+    ['Business owner’s policy', "A business owner's policy is an insurance package that combines all of the typical coverage options into one bundle."]
+  ]}
+/>
+
+The page also covers a rider for home-based businesses: "Coverage that's added to homeowner's insurance as a rider can offer protection for a small amount of business equipment". Many software founders work from home, so the sentence is a reminder that an ordinary home policy and a business policy are different things, and that the line between them is a question for the agent.
+
+The SBA page does not describe cyber insurance, and it does not separate errors and omissions coverage from professional liability. Neither does this article. If your product handles customer data or other people’s workflows, ask the agent which of these categories would respond to a failure of the product, in plain terms and with an example.
+
+## Workers and workers’ compensation
+
+If the company pays employees, a different question arrives. The SBA page lists workers’ compensation among coverage for businesses with employees, introduced with the sentence "The federal government requires every business with employees to have the following:". The Department of Labor’s workers’ compensation page describes the system from the side of the injured person. It says that people injured on the job at private companies or state and local agencies "should contact their state workers' compensation board."
+
+The two pages emphasize different levels of government, and an article cannot settle how they fit together. The second page points an injured worker to a state board, so the state where a company’s people work is where to start asking. Who counts as an employee is its own question, covered in <MaybeLink path="/insights/contractors-and-employees-the-classification-tests/">the classification tests</MaybeLink>. A company with remote workers in several places has several states to ask about.
+
+## Cyber risk and the policy that does not mention it
+
+A software company’s most obvious exposure is digital. New York’s Department of Financial Services published a circular letter titled "Cyber Insurance Risk Framework". Its subject is how insurers manage the risk, so it is regulatory guidance and not a buyer’s guide. It says that "insurers often incur losses from cyber incidents in insurance policies that do not explicitly grant or exclude cyber coverage". It also says "Cyber insurance plays a key role in managing and reducing cyber risk."
+
+You do not need the insurer’s vocabulary to take the buyer’s lesson from that first sentence. A policy can say nothing at all about a cyber incident, and the silence is itself something to ask about. For each policy the company holds or considers, ask whether a cyber event is covered, excluded or not mentioned. If the answer is "not mentioned", ask who decides what happens when a claim arrives.
+
+Privacy duties are a related subject, and <MaybeLink path="/insights/privacy-law-basics-for-a-small-product/">privacy law basics for a small product</MaybeLink> describes what the main laws are. Insurance does not replace compliance, and a security baseline reduces the chance that a claim is needed at all, as the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> describes.
+
+## What a policyholder can ask the regulator
+
+State insurance regulators publish consumer pages, and the Texas Department of Insurance is one example. Its page on rights under commercial liability insurance says "You have the right to cancel your policy at any time." and "Your policy will tell you how the insurance company will figure out (calculate) the premium amount". It also says an insurer must "Defend you in court, if needed." These are statements about Texas and about that kind of policy. They show that a state regulator may publish plain-language rights you can read before you buy, and that a policy document is where the details live. They do not describe your state.
+
+## Questions for a licensed agent
+
+The SBA gives the same advice in short sentences: "Speak to insurance agents to find out what kinds of coverage makes sense for your business." It adds that "Prices and benefits can vary significantly," and "Then compare terms and prices to find the best deal for you." A founder going into that conversation can bring a short list.
+
+<Callout title="Questions to bring to an insurance agent or broker">
+  Which coverages does a company like this typically hold, and which does the law require where its people work? What does each policy exclude? What is the limit and what is the deductible? How does the policy decide which period a claim belongs to? Is a cyber event covered, excluded or not mentioned? Do any contracts the company has signed or is about to sign mention insurance? What would a claim ask of the company, and who is the first call? What changes when the company hires, changes its product or moves to a new state?
+</Callout>
+
+Counsel is the person to ask about contracts that mention insurance. The article on <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> lists questions for that conversation, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines common terms.
+
+## What this article cannot tell you
+
+This article cannot tell you which insurance a company needs, what any policy covers or what it costs. It rests on the SBA page, the Labor Department page, a New York circular letter written for insurers and a Texas consumer page, all read on October 10, 2026. It does not describe directors and officers coverage, cyber policies, errors and omissions policies, how a claim is made, how premiums are priced or how any provider behaves, and it covers US sources only. The SBA and Labor Department pages differ in how they describe workers’ compensation, and only a licensed agent or your state can say what applies to you.

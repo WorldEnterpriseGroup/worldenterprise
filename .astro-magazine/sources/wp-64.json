@@ -1,0 +1,1079 @@
+{
+  "wp": "WP-64",
+  "note": "The sentence ledger of the investor journey (docs/wave8-contracts.md, section 9): the copy module, the FAQ module and the eight content files of /investors/, plus the two shared modules the criteria page renders. Each sentence maps to one claim (C-nn), one existing page, or one decision; a heading or control label that states no fact about WE is marked label (seven words at most). tests/unit/wp-64/ledger.test.ts enumerates the sentences from the modules and parsed content files, fails on one with no mapping and on a mapping with no sentence, and runs the claims denylist over all of them. The file has no fetches: it quotes no outside source and makes no regulatory statement. Sentences carried over from the wave 7 /investors/ page (the not-an-offer statement, the limits list, the diligence line) map to C-14, the claim that fixed those limits; the handoff lists them for counsel.",
+  "fetches": [],
+  "documents": [
+    {
+      "path": "src/components/investors/copy.ts",
+      "sentences": [
+        {
+          "text": "Ask to meet a company",
+          "label": true
+        },
+        {
+          "text": "Name",
+          "label": true
+        },
+        {
+          "text": "The company’s name appears on the page.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Description",
+          "label": true
+        },
+        {
+          "text": "A one-line description and the company’s stage appear on the page.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Website",
+          "label": true
+        },
+        {
+          "text": "A link to the company’s own site appears on the page.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Meeting investors",
+          "label": true
+        },
+        {
+          "text": "The founder agrees to meet investors who ask.",
+          "claim": "C-25"
+        },
+        {
+          "text": "The evidence WE expects before it curates any introduction, and a self-check a founder can run first.",
+          "claim": "C-14"
+        },
+        {
+          "text": "The criteria",
+          "label": true
+        },
+        {
+          "text": "Readiness criteria, from the work in Service Line F",
+          "page": "src/content/services/fundability-and-investor-readiness.mdx"
+        },
+        {
+          "text": "From line F",
+          "label": true
+        },
+        {
+          "text": "What must be in place",
+          "label": true
+        },
+        {
+          "text": "Run the self-check first",
+          "label": true
+        },
+        {
+          "text": "The self-check lists twelve statements.",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "Tick the ones that are true today.",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "It does not score you, and nothing you tick is stored or sent anywhere.",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "Open the self-check",
+          "label": true
+        },
+        {
+          "text": "The twelve statements",
+          "label": true
+        },
+        {
+          "text": "What the criteria do not do",
+          "label": true
+        },
+        {
+          "text": "Meeting the criteria does not mean an introduction will be made.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE judges whether the criteria are met.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE cannot promise a meeting, a reply or funding.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Questions investors ask",
+          "label": true
+        },
+        {
+          "text": "Short answers, including what WE cannot promise.",
+          "claim": "C-25"
+        },
+        {
+          "text": "The fields a company page can show, and the written consent behind each one.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "The fields",
+          "label": true
+        },
+        {
+          "text": "Fields of a company page and the permission each needs",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Field",
+          "label": true
+        },
+        {
+          "text": "What it shows",
+          "label": true
+        },
+        {
+          "text": "Needs the permission",
+          "label": true
+        },
+        {
+          "text": "The company’s name.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "One line",
+          "label": true
+        },
+        {
+          "text": "One sentence about the company, agreed with the founder.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Stage",
+          "label": true
+        },
+        {
+          "text": "Idea, validating, building or launched.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "A link to the company’s own site.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "A page shows a field only when the founder has agreed to it.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "A page with no agreed field is not listed.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "The rules of the format",
+          "label": true
+        },
+        {
+          "text": "What the format leaves out",
+          "label": true
+        },
+        {
+          "text": "The format has no field for logos, metrics, founder names or amounts.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Companies listed now",
+          "label": true
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "Ask to meet a company WE incubates.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE asks the founder first, and the founder decides.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Not an offer of securities",
+          "label": true
+        },
+        {
+          "text": "Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not offer securities through this site or in any other way described on it.",
+          "claim": "C-14"
+        },
+        {
+          "text": "The companies",
+          "label": true
+        },
+        {
+          "text": "How an investor meets a company",
+          "label": true
+        },
+        {
+          "text": "Read before you ask",
+          "label": true
+        },
+        {
+          "text": "The materials",
+          "label": true
+        },
+        {
+          "text": "Materials WE helps a founder prepare",
+          "label": true
+        },
+        {
+          "text": "Material",
+          "label": true
+        },
+        {
+          "text": "What it is",
+          "label": true
+        },
+        {
+          "text": "A readiness checklist",
+          "label": true
+        },
+        {
+          "text": "A list of the evidence an investor commonly asks for, so a founder can see the gaps.",
+          "page": "src/content/guides/investor-readiness-checklist.mdx"
+        },
+        {
+          "text": "A seed data room",
+          "label": true
+        },
+        {
+          "text": "A guide to organizing and keeping current the documents an investor reads.",
+          "page": "src/content/guides/data-room.mdx"
+        },
+        {
+          "text": "Investor updates",
+          "label": true
+        },
+        {
+          "text": "A consistent shape for the regular update a founder sends to people who have backed the company.",
+          "page": "src/content/guides/investor-updates.mdx"
+        },
+        {
+          "text": "Plain explanations",
+          "label": true
+        },
+        {
+          "text": "Generic, sourced explanations of terms such as SAFEs.",
+          "page": "src/content/guides/safe-explained.mdx"
+        },
+        {
+          "text": "They describe the instrument and do not describe any deal.",
+          "page": "src/content/guides/safe-explained.mdx"
+        },
+        {
+          "text": "The limits of WE's role",
+          "label": true
+        },
+        {
+          "text": "WE does not offer, sell or place securities, and takes no part in any financing.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not negotiate terms, advise on securities or handle funds.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not advise investors or recommend any company as an investment, and an introduction is not an endorsement.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not verify a company’s statements.",
+          "claim": "C-14"
+        },
+        {
+          "text": "They remain that company’s own.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not promise or predict a meeting, a reply or funding for any company.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Your diligence stays yours",
+          "label": true
+        },
+        {
+          "text": "Any company that shows you materials prepared with WE’s help is making its own case.",
+          "claim": "C-14"
+        },
+        {
+          "text": "You decide whether to reply, and you do your own diligence.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Tell WE what you look for.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE asks the founder before it shares anything.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Start the form",
+          "label": true
+        },
+        {
+          "text": "What happens next",
+          "label": true
+        },
+        {
+          "text": "WE reads what you sent",
+          "label": true
+        },
+        {
+          "text": "WE uses the details you sent to answer your request, as the privacy notice describes.",
+          "claim": "C-28"
+        },
+        {
+          "text": "WE asks a founder",
+          "label": true
+        },
+        {
+          "text": "WE asks a founder whether to take part.",
+          "claim": "C-25"
+        },
+        {
+          "text": "The founder may say no.",
+          "claim": "C-25"
+        },
+        {
+          "text": "The founder decides",
+          "label": true
+        },
+        {
+          "text": "WE shares only what the founder agreed to share.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE cannot promise a meeting or a reply.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Before you send",
+          "label": true
+        },
+        {
+          "text": "Read first",
+          "label": true
+        },
+        {
+          "text": "The form asks for no accreditation status, no amounts and no fund size.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "Meet the startups",
+          "label": true
+        },
+        {
+          "text": "How an investor asks, and how a founder decides.",
+          "claim": "C-25"
+        },
+        {
+          "text": "What you can see",
+          "label": true
+        },
+        {
+          "text": "What is open now, and what appears only with consent.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Readiness criteria",
+          "label": true
+        },
+        {
+          "text": "The evidence WE expects before it curates anything.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Showcase format",
+          "label": true
+        },
+        {
+          "text": "The fields a company page can show, and the consent behind each.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Investor FAQ",
+          "label": true
+        },
+        {
+          "text": "Short answers to the questions investors ask first.",
+          "decision": "W8-25"
+        },
+        {
+          "text": "Readiness checklist",
+          "label": true
+        },
+        {
+          "text": "Seed data room",
+          "label": true
+        },
+        {
+          "text": "SAFEs in plain language",
+          "label": true
+        },
+        {
+          "text": "How an investor asks to meet a company WE incubates, and how the founder decides.",
+          "claim": "C-25"
+        },
+        {
+          "text": "How it works",
+          "label": true
+        },
+        {
+          "text": "What WE cannot promise",
+          "label": true
+        },
+        {
+          "text": "WE names no company until a written record exists.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Ready to ask",
+          "label": true
+        },
+        {
+          "text": "The interest form takes your name and email address.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "The rest is optional.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "What is open now.",
+          "label": true
+        },
+        {
+          "text": "The fields a company page can show.",
+          "label": true
+        },
+        {
+          "text": "Short answers.",
+          "label": true
+        },
+        {
+          "text": "The evidence WE expects.",
+          "label": true
+        },
+        {
+          "text": "You ask",
+          "label": true
+        },
+        {
+          "text": "Send the interest form and say which sectors and stages you want to see.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "WE asks the founder",
+          "label": true
+        },
+        {
+          "text": "The founder consents in writing",
+          "label": true
+        },
+        {
+          "text": "WE keeps the consent as a written record that says what the founder agrees to share.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "You see what the founder allows",
+          "label": true
+        },
+        {
+          "text": "What is open now, and what appears only with a founder’s consent.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Open now",
+          "label": true
+        },
+        {
+          "text": "Pages an investor can read today",
+          "label": true
+        },
+        {
+          "text": "Page",
+          "label": true
+        },
+        {
+          "text": "Shown only with consent",
+          "label": true
+        },
+        {
+          "text": "A company appears only when its founder has agreed in writing.",
+          "decision": "D-21"
+        },
+        {
+          "text": "The written record names each permission.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "The permissions a founder can give",
+          "label": true
+        },
+        {
+          "text": "Permission",
+          "label": true
+        },
+        {
+          "text": "What it lets WE show",
+          "label": true
+        },
+        {
+          "text": "What WE cannot show",
+          "label": true
+        },
+        {
+          "text": "WE cannot show a company that has not agreed.",
+          "decision": "D-21"
+        },
+        {
+          "text": "No portfolio is published yet.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "WE lists a company here only with its founder's written consent.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Idea",
+          "label": true
+        },
+        {
+          "text": "Validating",
+          "label": true
+        },
+        {
+          "text": "Building",
+          "label": true
+        },
+        {
+          "text": "Launched",
+          "label": true
+        },
+        {
+          "text": "Your interest is with WE.",
+          "label": true
+        },
+        {
+          "text": "While you wait",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/components/investors/faq.ts",
+      "sentences": [
+        {
+          "text": "Can I meet a company WE incubates?",
+          "label": true
+        },
+        {
+          "text": "You can ask.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Send the interest form and say what you look for.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE asks the founder, and the founder decides.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE cannot promise a meeting, a reply or funding.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Which companies can I see?",
+          "label": true
+        },
+        {
+          "text": "WE lists a company only with its founder's written consent.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "WE names no company until a written record exists.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Is this an offer of securities?",
+          "label": true
+        },
+        {
+          "text": "Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not negotiate terms, advise on securities or handle funds.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Does WE recommend a company as an investment?",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not advise investors or recommend any company as an investment, and an introduction is not an endorsement.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not verify a company’s statements.",
+          "claim": "C-14"
+        },
+        {
+          "text": "They remain that company’s own.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Does WE promise funding?",
+          "label": true
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "It does not predict that any company will raise money.",
+          "claim": "C-05"
+        },
+        {
+          "text": "What does the interest form ask for?",
+          "label": true
+        },
+        {
+          "text": "The form asks for your name and email address.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "The firm, website, how you describe yourself, the sectors and stages you want to see, and a message are optional.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "It asks for no accreditation status, no amounts and no fund size.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "What does WE do with my details?",
+          "label": true
+        },
+        {
+          "text": "WE uses the details in the form to answer your request, as the privacy notice describes.",
+          "claim": "C-28"
+        },
+        {
+          "text": "Will WE reply?",
+          "label": true
+        },
+        {
+          "text": "WE cannot promise a reply or a meeting.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Is there a fee for introductions?",
+          "label": true
+        },
+        {
+          "text": "A company can buy Investor Introductions, a separate, paid add-on.",
+          "claim": "C-14"
+        },
+        {
+          "text": "A flat fee covers curation and preparation.",
+          "claim": "C-14"
+        },
+        {
+          "text": "The fee does not depend on whether any investment closes.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Introductions are a flat-fee service.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.",
+          "claim": "C-14"
+        },
+        {
+          "text": "How does a founder get ready?",
+          "label": true
+        },
+        {
+          "text": "A founder can work through the readiness checklist and the self-check before asking for anything.",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "WE judges whether its readiness criteria are met.",
+          "claim": "C-14"
+        }
+      ]
+    },
+    {
+      "path": "src/components/blocks/introductions.ts",
+      "sentences": [
+        {
+          "text": "Readiness assessment",
+          "label": true
+        },
+        {
+          "text": "Complete, with no kind of evidence marked missing.",
+          "page": "src/components/blocks/introductions.ts"
+        },
+        {
+          "text": "Corporate and cap-table records",
+          "label": true
+        },
+        {
+          "text": "Organized and reconciled so they match your counsel’s records.",
+          "page": "src/components/blocks/introductions.ts"
+        },
+        {
+          "text": "Evidence index",
+          "label": true
+        },
+        {
+          "text": "Every traction statement linked to a source record, and reviewed by a company officer.",
+          "page": "src/components/blocks/introductions.ts"
+        },
+        {
+          "text": "Financial model",
+          "label": true
+        },
+        {
+          "text": "Assumptions written down and outputs reproducible.",
+          "label": true
+        },
+        {
+          "text": "Data room",
+          "label": true
+        },
+        {
+          "text": "Organized against a standard index, each folder complete or marked not applicable.",
+          "page": "src/components/blocks/introductions.ts"
+        },
+        {
+          "text": "Pitch materials",
+          "label": true
+        },
+        {
+          "text": "Every factual claim tied to evidence.",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/components/islands/we-readiness-check/statements.ts",
+      "sentences": [
+        {
+          "text": "The problem and the customer",
+          "label": true
+        },
+        {
+          "text": "The product and the first customers",
+          "label": true
+        },
+        {
+          "text": "The company and its records",
+          "label": true
+        },
+        {
+          "text": "Communication and counsel",
+          "label": true
+        },
+        {
+          "text": "I can state the problem, and who has it, in two plain sentences that a stranger would understand.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "I have recorded notes from conversations with people who have the problem, written in one consistent format.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "A working version of the product exists, and at least one person outside my team has used it.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "I know how my first customers found the product, and what each one committed to or paid for.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "My revenue, churn and activation measures are defined in writing and calculated the same way every period.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "I have found customers through at least one channel more than once, and I know what that channel cost me.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "Everyone who has written code, design or content for the company has signed a written assignment of that work.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "The company is a legal entity, and ownership is recorded in one cap table that is up to date.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "My core company documents sit in one organized folder that I could share within a day.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "I have a written list of where customer data lives and who can reach it.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "I send, or have drafted, a regular written update on progress to people who follow the company.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        },
+        {
+          "text": "I understand the instruments I may be offered, and I have a list of questions for my own counsel before I sign anything.",
+          "page": "src/components/islands/we-readiness-check/statements.ts"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/investors/index.mdx",
+      "sentences": [
+        {
+          "text": "Meet the companies WE incubates",
+          "label": true
+        },
+        {
+          "text": "Investors",
+          "label": true
+        },
+        {
+          "text": "Ask to meet a company WE incubates.",
+          "claim": "C-25"
+        },
+        {
+          "text": "The founder decides what to share.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE makes no promise of funding, and nothing here is an offer of securities.",
+          "claim": "C-05"
+        },
+        {
+          "text": "## What WE does",
+          "label": true
+        },
+        {
+          "text": "WE is a digital incubator for SaaS companies.",
+          "claim": "C-29"
+        },
+        {
+          "text": "Investors can ask to meet the companies WE incubates.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE asks each founder first.",
+          "claim": "C-25"
+        },
+        {
+          "text": "A company appears on this site only when its founder has agreed in writing.",
+          "decision": "D-21"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/investors/meet-startups/index.mdx",
+      "sentences": [
+        {
+          "text": "Meet the startups",
+          "label": true
+        },
+        {
+          "text": "Investors",
+          "label": true
+        },
+        {
+          "text": "How an investor asks to meet a company WE incubates, how the founder consents in writing, and what WE cannot promise.",
+          "claim": "C-25"
+        },
+        {
+          "text": "An investor can ask to meet a company WE incubates.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE asks the founder first, and the founder decides what to share.",
+          "claim": "C-25"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/investors/what-you-can-see/index.mdx",
+      "sentences": [
+        {
+          "text": "What you can see",
+          "label": true
+        },
+        {
+          "text": "Investors",
+          "label": true
+        },
+        {
+          "text": "What an investor can read today, and what appears only with a founder's written consent.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "WE names no company until a written record exists.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Today an investor can read how WE helps a founder prepare evidence.",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "A company appears only when its founder has agreed in writing.",
+          "decision": "D-21"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/investors/readiness-criteria/index.mdx",
+      "sentences": [
+        {
+          "text": "Readiness criteria",
+          "label": true
+        },
+        {
+          "text": "Investors",
+          "label": true
+        },
+        {
+          "text": "The evidence WE expects before it curates any introduction, and a twelve-statement self-check a founder can run first.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE judges whether they are met.",
+          "claim": "C-14"
+        },
+        {
+          "text": "These are the criteria WE judges before it curates any introduction.",
+          "claim": "C-14"
+        },
+        {
+          "text": "A company that wants Investor Introductions, a separate, paid add-on, meets them first.",
+          "claim": "C-14"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/investors/showcase-format/index.mdx",
+      "sentences": [
+        {
+          "text": "Showcase format",
+          "label": true
+        },
+        {
+          "text": "Investors",
+          "label": true
+        },
+        {
+          "text": "The fields a company page can show, and the written consent behind each one.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "WE lists a company only with its founder's consent.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "A company appears in the showcase only when its founder has agreed in writing.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "Each field has its own permission.",
+          "decision": "W8-17"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/investors/faq/index.mdx",
+      "sentences": [
+        {
+          "text": "Investor FAQ",
+          "label": true
+        },
+        {
+          "text": "Investors",
+          "label": true
+        },
+        {
+          "text": "Short answers to the questions investors ask first: how to ask to meet a company, what WE cannot promise, and what the interest form asks for.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "claim": "C-05"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/investors/interest/index.mdx",
+      "sentences": [
+        {
+          "text": "Ask to meet a company",
+          "label": true
+        },
+        {
+          "text": "Investor interest",
+          "label": true
+        },
+        {
+          "text": "Tell WE what you look for.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE asks the founder before it shares anything, and WE cannot promise a meeting, a reply or funding.",
+          "claim": "C-25"
+        },
+        {
+          "text": "The form takes your name and email address.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "Everything else is optional.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/investors/interest/thanks.mdx",
+      "sentences": [
+        {
+          "text": "Thank you for your interest",
+          "label": true
+        },
+        {
+          "text": "Interest sent",
+          "label": true
+        },
+        {
+          "text": "Your investor interest form has been sent to WE.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "WE cannot promise a meeting, a reply or funding.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Your interest form has been sent to WE.",
+          "page": "src/components/forms/InvestorInterestForm.astro"
+        },
+        {
+          "text": "WE cannot promise a meeting or a reply, and WE makes no promise of funding.",
+          "claim": "C-25"
+        }
+      ]
+    }
+  ]
+}

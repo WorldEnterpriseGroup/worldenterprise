@@ -1,0 +1,794 @@
+{
+  "wp": "wp-89",
+  "note": "Fetches are the primary government, regulator, standards-body and public-health pages cited by the eight operations and wellbeing articles, all fetched on 2026-10-10 with WebFetch (one URL per call). The fetchedAt times are rounded to the minute and bracket the real fetches: the HSE, NIOSH and NIMH pages were read about 22:28Z to 22:33Z, the IRS, SBA, DOL, DFS, TDI, EEOC, court, FTC, CISA, Scrum Guide and GOV.UK pages between about 22:33Z and 22:38Z, and four pages (Publication 509, the IRS employment tax and estimated tax pages, the Delaware page, and the NIMH caring page) were fetched again at about 22:47Z to 22:49Z to confirm exact wording, so those carry the later time. Each quote is a contiguous fragment a fetch returned inside quotation marks for that page. Sources that returned 403 or 404, or no usable text, were dropped with the sentences they would have supported. The topic-ops desk page is a sentences-only document.",
+  "fetches": [
+    {
+      "id": "scrum-guide",
+      "url": "https://scrumguides.org/scrum-guide.html",
+      "title": "The Scrum Guide",
+      "publisher": "Scrum Guides (Ken Schwaber and Jeff Sutherland)",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nimh-caring",
+      "url": "https://www.nimh.nih.gov/health/topics/caring-for-your-mental-health",
+      "title": "Caring for your mental health",
+      "publisher": "National Institute of Mental Health",
+      "fetchedAt": "2026-10-10T22:49:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-p583",
+      "url": "https://www.irs.gov/publications/p583",
+      "title": "Publication 583, Starting a Business and Keeping Records",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-recordkeeping",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/recordkeeping",
+      "title": "Recordkeeping",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-p538",
+      "url": "https://www.irs.gov/publications/p538",
+      "title": "Publication 538, Accounting Periods and Methods",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-manage-finances",
+      "url": "https://www.sba.gov/business-guide/manage-your-business/manage-your-finances",
+      "title": "Manage your finances",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-bank-account",
+      "url": "https://www.sba.gov/business-guide/launch-your-business/open-business-bank-account",
+      "title": "Open a business bank account",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "niosh-burnout-what-it-is",
+      "url": "https://www.cdc.gov/niosh/learning/publichealthburnoutprevention/module-2/outline.html",
+      "title": "Module 2 outline: what burnout is and is not",
+      "publisher": "National Institute for Occupational Safety and Health (CDC)",
+      "fetchedAt": "2026-10-10T22:29:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "niosh-burnout-causes",
+      "url": "https://www.cdc.gov/niosh/learning/publichealthburnoutprevention/module-3/outline.html",
+      "title": "Why burnout needs attention in the public health worker population",
+      "publisher": "National Institute for Occupational Safety and Health (CDC)",
+      "fetchedAt": "2026-10-10T22:30:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "hse-stress-overview",
+      "url": "https://www.hse.gov.uk/stress/overview.htm",
+      "title": "What are the Management Standards?",
+      "publisher": "Health and Safety Executive (UK)",
+      "fetchedAt": "2026-10-10T22:31:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nimh-stressed-out",
+      "url": "https://www.nimh.nih.gov/health/publications/so-stressed-out-fact-sheet",
+      "title": "I'm so stressed out! Fact sheet",
+      "publisher": "National Institute of Mental Health",
+      "fetchedAt": "2026-10-10T22:32:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-protecting-personal-information",
+      "url": "https://www.ftc.gov/business-guidance/resources/protecting-personal-information-guide-business",
+      "title": "Protecting Personal Information: A Guide for Business",
+      "publisher": "U.S. Federal Trade Commission",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cisa-strong-passwords",
+      "url": "https://www.cisa.gov/secure-our-world/require-strong-passwords",
+      "title": "Require strong passwords",
+      "publisher": "Cybersecurity and Infrastructure Security Agency",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-business-insurance",
+      "url": "https://www.sba.gov/business-guide/launch-your-business/get-business-insurance",
+      "title": "Get business insurance",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dol-workers-comp",
+      "url": "https://www.dol.gov/general/topic/workcomp",
+      "title": "Workers' compensation",
+      "publisher": "U.S. Department of Labor",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nydfs-cyber-circular",
+      "url": "https://www.dfs.ny.gov/industry_guidance/circular_letters/cl2021_02",
+      "title": "Insurance Circular Letter No. 2 (2021): Cyber Insurance Risk Framework",
+      "publisher": "New York State Department of Financial Services",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "tdi-commercial-liability",
+      "url": "https://www.tdi.texas.gov/consumer/rights-commercial-liability-insurance.html",
+      "title": "Consumer rights for commercial liability insurance",
+      "publisher": "Texas Department of Insurance",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "govuk-adr-framework",
+      "url": "https://www.gov.uk/government/publications/architectural-decision-record-framework/architectural-decision-record-framework",
+      "title": "Architectural Decision Record framework",
+      "publisher": "GOV.UK",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-p509",
+      "url": "https://www.irs.gov/publications/p509",
+      "title": "Publication 509, Tax Calendars",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T22:47:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-employment-tax-due-dates",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/employment-tax-due-dates",
+      "title": "Employment tax due dates",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T22:48:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-estimated-taxes",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/estimated-taxes",
+      "title": "Estimated taxes",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T22:47:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "de-pay-taxes",
+      "url": "https://corp.delaware.gov/paytaxes/",
+      "title": "Pay taxes",
+      "publisher": "Delaware Division of Corporations",
+      "fetchedAt": "2026-10-10T22:48:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eeoc-mediation",
+      "url": "https://www.eeoc.gov/mediation",
+      "title": "Mediation",
+      "publisher": "U.S. Equal Employment Opportunity Commission",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cand-mediation",
+      "url": "https://cand.uscourts.gov/about-court/court-programs-services/alternative-dispute-resolution-adr/mediation",
+      "title": "Mediation",
+      "publisher": "U.S. District Court, Northern District of California",
+      "fetchedAt": "2026-10-10T22:36:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/content/insights/ops/a-weekly-operating-rhythm-for-a-founder.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "Events are used in Scrum to create regularity and to minimize the need for meetings not defined in Scrum.",
+          "kind": "paraphrase",
+          "sourceId": "scrum-guide",
+          "locator": "Scrum events",
+          "quote": "Events are used in Scrum to create regularity and to minimize the need for meetings not defined in Scrum."
+        },
+        {
+          "id": "A2",
+          "sentence": "They are fixed length events of one month or less to create consistency.",
+          "kind": "paraphrase",
+          "sourceId": "scrum-guide",
+          "locator": "Sprint",
+          "quote": "They are fixed length events of one month or less to create consistency."
+        },
+        {
+          "id": "A3",
+          "sentence": "The purpose of the Sprint Review is to inspect the outcome of the Sprint and determine future adaptations.",
+          "kind": "definition",
+          "sourceId": "scrum-guide",
+          "locator": "Sprint Review",
+          "quote": "The purpose of the Sprint Review is to inspect the outcome of the Sprint and determine future adaptations."
+        },
+        {
+          "id": "A4",
+          "sentence": "The purpose of the Sprint Retrospective is to plan ways to increase quality and effectiveness.",
+          "kind": "definition",
+          "sourceId": "scrum-guide",
+          "locator": "Sprint Retrospective",
+          "quote": "The purpose of the Sprint Retrospective is to plan ways to increase quality and effectiveness."
+        },
+        {
+          "id": "A5",
+          "sentence": "Make sleep a priority.",
+          "kind": "paraphrase",
+          "sourceId": "nimh-caring",
+          "locator": "Everyday steps",
+          "quote": "Make sleep a priority."
+        },
+        {
+          "id": "A6",
+          "sentence": "Set goals and priorities.",
+          "kind": "paraphrase",
+          "sourceId": "nimh-caring",
+          "locator": "Everyday steps",
+          "quote": "Set goals and priorities."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ops/books-and-basic-accounting-for-a-software-startup.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "You may choose any recordkeeping system suited to your business that clearly shows your income and expenses.",
+          "kind": "paraphrase",
+          "sourceId": "irs-recordkeeping",
+          "locator": "Recordkeeping system",
+          "quote": "You may choose any recordkeeping system suited to your business that clearly shows your income and expenses."
+        },
+        {
+          "id": "A2",
+          "sentence": "Except in a few cases, the law does not require any special kind of records.",
+          "kind": "paraphrase",
+          "sourceId": "irs-recordkeeping",
+          "locator": "Recordkeeping system",
+          "quote": "Except in a few cases, the law does not require any special kind of records."
+        },
+        {
+          "id": "A3",
+          "sentence": "You must keep your records as long as needed to prove the income or deductions on a tax return.",
+          "kind": "regulation",
+          "sourceId": "irs-recordkeeping",
+          "locator": "How long to keep records",
+          "quote": "You must keep your records as long as needed to prove the income or deductions on a tax return."
+        },
+        {
+          "id": "A4",
+          "sentence": "Keep all records of employment taxes for at least four years.",
+          "kind": "regulation",
+          "sourceId": "irs-recordkeeping",
+          "locator": "Employment tax records",
+          "quote": "Keep all records of employment taxes for at least four years."
+        },
+        {
+          "id": "A5",
+          "sentence": "You should keep your business account separate from your personal checking account.",
+          "kind": "paraphrase",
+          "sourceId": "irs-p583",
+          "locator": "Business bank account",
+          "quote": "You should keep your business account separate from your personal checking account."
+        },
+        {
+          "id": "A6",
+          "sentence": "You choose an accounting method for your business when you file your first income tax return.",
+          "kind": "regulation",
+          "sourceId": "irs-p583",
+          "locator": "Accounting method",
+          "quote": "You choose an accounting method for your business when you file your first income tax return."
+        },
+        {
+          "id": "A7",
+          "sentence": "If you later want to change your accounting method, you must generally get IRS approval.",
+          "kind": "regulation",
+          "sourceId": "irs-p538",
+          "locator": "Changing an accounting method",
+          "quote": "If you later want to change your accounting method, you must generally get IRS approval."
+        },
+        {
+          "id": "A8",
+          "sentence": "Under the accrual method, you generally report income in the tax year you earn it, regardless of when payment is received.",
+          "kind": "definition",
+          "sourceId": "irs-p538",
+          "locator": "Accrual method",
+          "quote": "Under the accrual method, you generally report income in the tax year you earn it, regardless of when payment is received."
+        },
+        {
+          "id": "A9",
+          "sentence": "limited personal liability protection by keeping your business funds separate from your personal funds.",
+          "kind": "paraphrase",
+          "sourceId": "sba-bank-account",
+          "locator": "Business bank account",
+          "quote": "limited personal liability protection by keeping your business funds separate from your personal funds."
+        },
+        {
+          "id": "A10",
+          "sentence": "Make sure you maintain proper bookkeeping and have a basic knowledge of business finances.",
+          "kind": "paraphrase",
+          "sourceId": "sba-manage-finances",
+          "locator": "Bookkeeping",
+          "quote": "Make sure you maintain proper bookkeeping and have a basic knowledge of business finances."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ops/burnout-recognizing-it-and-what-to-change.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "Serious exhaustion that goes beyond typical daily fatigue or low energy levels.",
+          "kind": "definition",
+          "sourceId": "niosh-burnout-what-it-is",
+          "locator": "What burnout is and is not",
+          "quote": "Serious exhaustion that goes beyond typical daily fatigue or low energy levels."
+        },
+        {
+          "id": "A2",
+          "sentence": "Chronic over-stimulation and overload leads to burnout.",
+          "kind": "paraphrase",
+          "sourceId": "niosh-burnout-what-it-is",
+          "locator": "What burnout is and is not",
+          "quote": "Chronic over-stimulation and overload leads to burnout."
+        },
+        {
+          "id": "A3",
+          "sentence": "the absence of resources can be the biggest demand that many public health workers face.",
+          "kind": "paraphrase",
+          "sourceId": "niosh-burnout-causes",
+          "locator": "Causes",
+          "quote": "the absence of resources can be the biggest demand that many public health workers face."
+        },
+        {
+          "id": "A4",
+          "sentence": "using organizational strategies to protect worker health rather than focusing too much on individual strategies",
+          "kind": "paraphrase",
+          "sourceId": "niosh-burnout-causes",
+          "locator": "Total Worker Health perspective",
+          "quote": "using organizational strategies to protect worker health rather than focusing too much on individual strategies"
+        },
+        {
+          "id": "A5",
+          "sentence": "the adverse reaction people have to excessive pressures or other types of demand placed on them.",
+          "kind": "definition",
+          "sourceId": "hse-stress-overview",
+          "locator": "Definition of stress",
+          "quote": "the adverse reaction people have to excessive pressures or other types of demand placed on them."
+        },
+        {
+          "id": "A6",
+          "sentence": "If you are struggling to cope, or the symptoms of your stress or anxiety won’t go away",
+          "kind": "paraphrase",
+          "sourceId": "nimh-stressed-out",
+          "locator": "When to get help",
+          "quote": "If you are struggling to cope, or the symptoms of your stress or anxiety won’t go away"
+        },
+        {
+          "id": "A7",
+          "sentence": "Seek professional help if you are experiencing severe or distressing symptoms that have lasted 2 weeks or more",
+          "kind": "paraphrase",
+          "sourceId": "nimh-caring",
+          "locator": "When to seek professional help",
+          "quote": "Seek professional help if you are experiencing severe or distressing symptoms that have lasted 2 weeks or more"
+        },
+        {
+          "id": "A8",
+          "sentence": "If you are in immediate distress or are thinking about hurting yourself, call or text the 988 Suicide & Crisis Lifeline",
+          "kind": "paraphrase",
+          "sourceId": "nimh-stressed-out",
+          "locator": "Immediate distress",
+          "quote": "If you are in immediate distress or are thinking about hurting yourself, call or text the 988 Suicide & Crisis Lifeline"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ops/choosing-and-managing-a-small-companys-software-stack.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "TAKE STOCK. Know what personal information you have in your files and on your computers.",
+          "kind": "paraphrase",
+          "sourceId": "ftc-protecting-personal-information",
+          "locator": "Principle 1",
+          "quote": "TAKE STOCK. Know what personal information you have in your files and on your computers."
+        },
+        {
+          "id": "A2",
+          "sentence": "SCALE DOWN. Keep only what you need for your business.",
+          "kind": "paraphrase",
+          "sourceId": "ftc-protecting-personal-information",
+          "locator": "Principle 2",
+          "quote": "SCALE DOWN. Keep only what you need for your business."
+        },
+        {
+          "id": "A3",
+          "sentence": "If you don’t have a legitimate business need for sensitive personally identifying information, don’t keep it.",
+          "kind": "paraphrase",
+          "sourceId": "ftc-protecting-personal-information",
+          "locator": "Sensitive information",
+          "quote": "If you don’t have a legitimate business need for sensitive personally identifying information, don’t keep it."
+        },
+        {
+          "id": "A4",
+          "sentence": "Protect your business by requiring your team to use strong passwords and a password manager.",
+          "kind": "paraphrase",
+          "sourceId": "cisa-strong-passwords",
+          "locator": "Passwords",
+          "quote": "Protect your business by requiring your team to use strong passwords and a password manager."
+        },
+        {
+          "id": "A5",
+          "sentence": "MFA adds a critical layer of security even if a password is stolen.",
+          "kind": "paraphrase",
+          "sourceId": "cisa-strong-passwords",
+          "locator": "MFA",
+          "quote": "MFA adds a critical layer of security even if a password is stolen."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ops/insurance-for-a-software-startup-what-exists-and-what-to-ask.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "A business owner's policy is an insurance package that combines all of the typical coverage options into one bundle.",
+          "kind": "definition",
+          "sourceId": "sba-business-insurance",
+          "locator": "Business owner’s policy",
+          "quote": "A business owner's policy is an insurance package that combines all of the typical coverage options into one bundle."
+        },
+        {
+          "id": "A2",
+          "sentence": "The federal government requires every business with employees to have the following:",
+          "kind": "regulation",
+          "sourceId": "sba-business-insurance",
+          "locator": "Insurance for businesses with employees",
+          "quote": "The federal government requires every business with employees to have the following:"
+        },
+        {
+          "id": "A3",
+          "sentence": "should contact their state workers' compensation board.",
+          "kind": "regulation",
+          "sourceId": "dol-workers-comp",
+          "locator": "Injured workers",
+          "quote": "should contact their state workers' compensation board."
+        },
+        {
+          "id": "A4",
+          "sentence": "insurers often incur losses from cyber incidents in insurance policies that do not explicitly grant or exclude cyber coverage",
+          "kind": "paraphrase",
+          "sourceId": "nydfs-cyber-circular",
+          "locator": "Silent cyber",
+          "quote": "insurers often incur losses from cyber incidents in insurance policies that do not explicitly grant or exclude cyber coverage"
+        },
+        {
+          "id": "A5",
+          "sentence": "Cyber insurance plays a key role in managing and reducing cyber risk.",
+          "kind": "paraphrase",
+          "sourceId": "nydfs-cyber-circular",
+          "locator": "Role of cyber insurance",
+          "quote": "Cyber insurance plays a key role in managing and reducing cyber risk."
+        },
+        {
+          "id": "A6",
+          "sentence": "You have the right to cancel your policy at any time.",
+          "kind": "regulation",
+          "sourceId": "tdi-commercial-liability",
+          "locator": "Cancellation",
+          "quote": "You have the right to cancel your policy at any time."
+        },
+        {
+          "id": "A7",
+          "sentence": "Speak to insurance agents to find out what kinds of coverage makes sense for your business.",
+          "kind": "paraphrase",
+          "sourceId": "sba-business-insurance",
+          "locator": "Getting coverage",
+          "quote": "Speak to insurance agents to find out what kinds of coverage makes sense for your business."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ops/meetings-async-work-and-decision-records-for-a-small-team.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "Events are used in Scrum to create regularity and to minimize the need for meetings not defined in Scrum.",
+          "kind": "paraphrase",
+          "sourceId": "scrum-guide",
+          "locator": "Scrum events",
+          "quote": "Events are used in Scrum to create regularity and to minimize the need for meetings not defined in Scrum."
+        },
+        {
+          "id": "A2",
+          "sentence": "The Daily Scrum is a 15-minute event for the Developers of the Scrum Team.",
+          "kind": "definition",
+          "sourceId": "scrum-guide",
+          "locator": "Daily Scrum",
+          "quote": "The Daily Scrum is a 15-minute event for the Developers of the Scrum Team."
+        },
+        {
+          "id": "A3",
+          "sentence": "Sprint Planning is timeboxed to a maximum of eight hours for a one-month Sprint.",
+          "kind": "paraphrase",
+          "sourceId": "scrum-guide",
+          "locator": "Sprint Planning",
+          "quote": "Sprint Planning is timeboxed to a maximum of eight hours for a one-month Sprint."
+        },
+        {
+          "id": "A4",
+          "sentence": "An ADR is a formal document used to capture significant architectural decisions.",
+          "kind": "definition",
+          "sourceId": "govuk-adr-framework",
+          "locator": "What an ADR is",
+          "quote": "An ADR is a formal document used to capture significant architectural decisions."
+        },
+        {
+          "id": "A5",
+          "sentence": "provides a record of the decision-making process",
+          "kind": "paraphrase",
+          "sourceId": "govuk-adr-framework",
+          "locator": "Purpose of an ADR",
+          "quote": "provides a record of the decision-making process"
+        },
+        {
+          "id": "A6",
+          "sentence": "Regularly review and update the ADR",
+          "kind": "paraphrase",
+          "sourceId": "govuk-adr-framework",
+          "locator": "Maintaining an ADR",
+          "quote": "Regularly review and update the ADR"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ops/the-tax-calendar-a-us-software-startup-should-know-exists.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "A tax calendar is a 12-month calendar divided into quarters.",
+          "kind": "definition",
+          "sourceId": "irs-p509",
+          "locator": "What a tax calendar is",
+          "quote": "A tax calendar is a 12-month calendar divided into quarters."
+        },
+        {
+          "id": "A2",
+          "sentence": "for performing any act for tax purposes falls on a Saturday, Sunday, or legal holiday",
+          "kind": "regulation",
+          "sourceId": "irs-p509",
+          "locator": "Weekend and holiday rule",
+          "quote": "for performing any act for tax purposes falls on a Saturday, Sunday, or legal holiday"
+        },
+        {
+          "id": "A3",
+          "sentence": "This form is due on the 15th day of the 4th month after the end of the corporation’s tax year.",
+          "kind": "regulation",
+          "sourceId": "irs-p509",
+          "locator": "Form 1120 entry",
+          "quote": "This form is due on the 15th day of the 4th month after the end of the corporation’s tax year."
+        },
+        {
+          "id": "A4",
+          "sentence": "Corporations generally have to make estimated tax payments if they expect to owe tax of $500 or more when their return is filed.",
+          "kind": "regulation",
+          "sourceId": "irs-estimated-taxes",
+          "locator": "Corporations and estimated tax",
+          "quote": "Corporations generally have to make estimated tax payments if they expect to owe tax of $500 or more when their return is filed."
+        },
+        {
+          "id": "A5",
+          "sentence": "Payments are due on the 15th day of the 4th, 6th, 9th, and 12th months of the corporation’s tax year.",
+          "kind": "regulation",
+          "sourceId": "irs-p509",
+          "locator": "Corporation estimated tax payments",
+          "quote": "Payments are due on the 15th day of the 4th, 6th, 9th, and 12th months of the corporation’s tax year."
+        },
+        {
+          "id": "A6",
+          "sentence": "This form is due the last day of the first calendar month after the calendar quarter ends.",
+          "kind": "regulation",
+          "sourceId": "irs-p509",
+          "locator": "Form 941 entry",
+          "quote": "This form is due the last day of the first calendar month after the calendar quarter ends."
+        },
+        {
+          "id": "A7",
+          "sentence": "If you timely deposited all taxes when due, then you have 10 additional calendar days to file the return.",
+          "kind": "regulation",
+          "sourceId": "irs-employment-tax-due-dates",
+          "locator": "Form 941 deposits and filing",
+          "quote": "If you timely deposited all taxes when due, then you have 10 additional calendar days to file the return."
+        },
+        {
+          "id": "A8",
+          "sentence": "Federal tax deposits must be made by electronic funds transfers (EFT).",
+          "kind": "regulation",
+          "sourceId": "irs-employment-tax-due-dates",
+          "locator": "Federal tax deposits",
+          "quote": "Federal tax deposits must be made by electronic funds transfers (EFT)."
+        },
+        {
+          "id": "A9",
+          "sentence": "Forms W-2 are required to be provided to employees by Jan. 31.",
+          "kind": "regulation",
+          "sourceId": "irs-employment-tax-due-dates",
+          "locator": "Form W-2 year-end",
+          "quote": "Forms W-2 are required to be provided to employees by Jan. 31."
+        },
+        {
+          "id": "A10",
+          "sentence": "This form is due the last day of the first calendar month after the calendar year ends.",
+          "kind": "regulation",
+          "sourceId": "irs-p509",
+          "locator": "Form 940 entry",
+          "quote": "This form is due the last day of the first calendar month after the calendar year ends."
+        },
+        {
+          "id": "A11",
+          "sentence": "All active Domestic Corporation Annual Reports and Franchise Taxes for the prior year are due annually",
+          "kind": "regulation",
+          "sourceId": "de-pay-taxes",
+          "locator": "Domestic corporations",
+          "quote": "All active Domestic Corporation Annual Reports and Franchise Taxes for the prior year are due annually"
+        },
+        {
+          "id": "A12",
+          "sentence": "Foreign Corporations must file an Annual Report with the Delaware Secretary of State on or before June 30 each year.",
+          "kind": "regulation",
+          "sourceId": "de-pay-taxes",
+          "locator": "Foreign corporations",
+          "quote": "Foreign Corporations must file an Annual Report with the Delaware Secretary of State on or before June 30 each year."
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ops/working-through-a-disagreement-with-a-co-founder.mdx",
+      "claims": [
+        {
+          "id": "A1",
+          "sentence": "an informal and confidential way for people to resolve disputes",
+          "kind": "definition",
+          "sourceId": "eeoc-mediation",
+          "locator": "What mediation is",
+          "quote": "an informal and confidential way for people to resolve disputes"
+        },
+        {
+          "id": "A2",
+          "sentence": "The decision to mediate is completely voluntary.",
+          "kind": "paraphrase",
+          "sourceId": "eeoc-mediation",
+          "locator": "Voluntary",
+          "quote": "The decision to mediate is completely voluntary."
+        },
+        {
+          "id": "A3",
+          "sentence": "The mediator does not decide who is right or wrong or issue a decision.",
+          "kind": "paraphrase",
+          "sourceId": "eeoc-mediation",
+          "locator": "Role of the mediator",
+          "quote": "The mediator does not decide who is right or wrong or issue a decision."
+        },
+        {
+          "id": "A4",
+          "sentence": "Mediation is a flexible, non-binding, confidential process in which a neutral mediator facilitates settlement negotiations.",
+          "kind": "definition",
+          "sourceId": "cand-mediation",
+          "locator": "What mediation is",
+          "quote": "Mediation is a flexible, non-binding, confidential process in which a neutral mediator facilitates settlement negotiations."
+        },
+        {
+          "id": "A5",
+          "sentence": "The mediator has no power to impose a settlement and does not attempt to coerce a party to accept any proposed terms.",
+          "kind": "paraphrase",
+          "sourceId": "cand-mediation",
+          "locator": "Role of the mediator",
+          "quote": "The mediator has no power to impose a settlement and does not attempt to coerce a party to accept any proposed terms."
+        },
+        {
+          "id": "A6",
+          "sentence": "Communications made in connection with a mediation ordinarily may not be disclosed to the assigned judge",
+          "kind": "paraphrase",
+          "sourceId": "cand-mediation",
+          "locator": "Confidentiality",
+          "quote": "Communications made in connection with a mediation ordinarily may not be disclosed to the assigned judge"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/insights/topic-ops.mdx",
+      "sentences": [
+        {
+          "text": "Running a company takes upkeep alongside building it, and the founder is part of that system.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Eight articles follow.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "One maps the kinds of obligation on a US tax calendar.",
+          "page": "src/content/insights/ops/the-tax-calendar-a-us-software-startup-should-know-exists.mdx#four-families-of-obligation"
+        },
+        {
+          "text": "Another explains what the books are for and what the IRS does and does not prescribe.",
+          "page": "src/content/insights/ops/books-and-basic-accounting-for-a-software-startup.mdx#records-the-irs-does-and-does-not-prescribe"
+        },
+        {
+          "text": "Another lists the kinds of business insurance a US agency describes and what to ask an agent.",
+          "page": "src/content/insights/ops/insurance-for-a-software-startup-what-exists-and-what-to-ask.mdx#what-the-small-business-agency-lists"
+        },
+        {
+          "text": "Another gives criteria for choosing the tools a company runs on.",
+          "page": "src/content/insights/ops/choosing-and-managing-a-small-companys-software-stack.mdx#the-criteria"
+        },
+        {
+          "text": "Another sets out a weekly rhythm for a founder.",
+          "page": "src/content/insights/ops/a-weekly-operating-rhythm-for-a-founder.mdx#the-week-in-five-parts"
+        },
+        {
+          "text": "Another covers meetings, written work and decision records.",
+          "page": "src/content/insights/ops/meetings-async-work-and-decision-records-for-a-small-team.mdx#why-write-a-decision-down"
+        },
+        {
+          "text": "Another describes a process for a co-founder disagreement and what mediation is.",
+          "page": "src/content/insights/ops/working-through-a-disagreement-with-a-co-founder.mdx#what-a-mediator-is"
+        },
+        {
+          "text": "The last covers burnout and where public bodies point for help.",
+          "page": "src/content/insights/ops/burnout-recognizing-it-and-what-to-change.mdx#where-the-agencies-point-for-help"
+        },
+        {
+          "text": "Tax, insurance and health articles are general information, not advice, and each names its public sources.",
+          "page": "src/content/insights/ops/the-tax-calendar-a-us-software-startup-should-know-exists.mdx#what-this-article-cannot-tell-you"
+        }
+      ]
+    }
+  ],
+  "markers": []
+}

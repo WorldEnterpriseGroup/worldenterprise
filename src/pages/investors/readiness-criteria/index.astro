@@ -1,0 +1,60 @@
+---
+import { render } from 'astro:content';
+import { INTRODUCTIONS_READINESS } from '../../../components/blocks/introductions.ts';
+import LimitsBlock from '../../../components/blocks/LimitsBlock.astro';
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import { ASK_TO_MEET, CRITERIA } from '../../../components/investors/copy.ts';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import { READINESS_GROUPS, readinessStatements } from '../../../components/islands/we-readiness-check/statements.ts';
+import type { ReadinessGroup } from '../../../components/islands/we-readiness-check/statements.ts';
+import { isLinkable } from '../../../components/playbooks/links.ts';
+import DataTable from '../../../components/ui/DataTable.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { href } from '../../../lib/url.ts';
+
+const page = await getPageEntry('investors/readiness-criteria', 'investors/readiness-criteria/index');
+const { Content } = await render(page);
+const rows = INTRODUCTIONS_READINESS.map((c) => [c.artifact, c.inPlace]);
+const groups = (Object.keys(READINESS_GROUPS) as ReadinessGroup[]).map((group) => ({
+  group,
+  title: READINESS_GROUPS[group].title,
+  statements: readinessStatements.filter((s) => s.group === group),
+}));
+const selfCheckLinked = await isLinkable('/fundability/');
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/investors/readiness-criteria/"
+  eyebrow={page.data.eyebrow}
+  lead={CRITERIA.lead}
+  updated={page.data.updated}
+  ogSlot="og-network"
+  primary={ASK_TO_MEET}
+>
+  <Content />
+
+  <h2 id="criteria-title">{CRITERIA.criteriaHeading}</h2>
+  <DataTable caption={CRITERIA.criteriaCaption} columns={CRITERIA.criteriaColumns} rows={rows} />
+
+  <h2 id="self-check-title">{CRITERIA.selfCheckHeading}</h2>
+  <p>{CRITERIA.selfCheck}</p>
+  {selfCheckLinked && <p><a href={href('/fundability/')}>{CRITERIA.selfCheckLink}</a></p>}
+
+  <h2 id="statements-title">{CRITERIA.statementsHeading}</h2>
+  {
+    groups.map((g) => (
+      <section aria-labelledby={`statements-${g.group}`}>
+        <h3 id={`statements-${g.group}`}>{g.title}</h3>
+        <ul>
+          {g.statements.map((s) => <li>{s.statement}</li>)}
+        </ul>
+      </section>
+    ))
+  }
+
+  <LimitsBlock title={CRITERIA.limitsHeading} items={CRITERIA.limits} headingLevel={2} />
+
+  <NoFundingDisclaimer />
+</MarketingLayout>
