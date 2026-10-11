@@ -1,0 +1,41 @@
+---
+import { render } from 'astro:content';
+import InvestorIntroductionsOffer from '../../../components/blocks/InvestorIntroductionsOffer.astro';
+import LimitsBlock from '../../../components/blocks/LimitsBlock.astro';
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import { ASK_TO_MEET, JOURNEY_LINKS, MEET, PROCESS_STEPS } from '../../../components/investors/copy.ts';
+import LinkList from '../../../components/investors/LinkList.astro';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import Steps from '../../../components/ui/Steps.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+
+const page = await getPageEntry('investors/meet-startups', 'investors/meet-startups/index');
+const { Content } = await render(page);
+const others = JOURNEY_LINKS.filter((link) => link.href !== '/investors/meet-startups/');
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/investors/meet-startups/"
+  eyebrow={page.data.eyebrow}
+  lead={MEET.lead}
+  updated={page.data.updated}
+  ogSlot="og-network"
+  primary={ASK_TO_MEET}
+>
+  <Content />
+
+  <h2 id="how-title">{MEET.processHeading}</h2>
+  <Steps headingLevel={3} steps={PROCESS_STEPS} />
+
+  <LimitsBlock title={MEET.limitsHeading} items={MEET.limits} headingLevel={2} />
+
+  <InvestorIntroductionsOffer variant="brief" headingLevel={2} idPrefix="meet-intro" />
+
+  <h2 id="ask-title">{MEET.askHeading}</h2>
+  <p>{MEET.askText}</p>
+  <LinkList items={[{ title: ASK_TO_MEET.label, href: ASK_TO_MEET.href }, ...others]} />
+
+  <NoFundingDisclaimer />
+</MarketingLayout>

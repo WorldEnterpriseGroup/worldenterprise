@@ -1,0 +1,33 @@
+---
+import { render } from 'astro:content';
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import FaqList from '../../../components/cards/FaqList.astro';
+import { INVESTOR_FAQ } from '../../../components/investors/faq.ts';
+import { ASK_TO_MEET, FAQ_HEADING, FAQ_LEAD } from '../../../components/investors/copy.ts';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import { anchorId, faqPageNode } from '../../../components/reference/jsonld.ts';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+
+const page = await getPageEntry('investors/faq', 'investors/faq/index');
+const { Content } = await render(page);
+const items = INVESTOR_FAQ.map((item) => ({ question: item.question, answer: item.answer, id: anchorId('faq', item.id) }));
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/investors/faq/"
+  eyebrow={page.data.eyebrow}
+  lead={FAQ_LEAD}
+  updated={page.data.updated}
+  ogSlot="og-network"
+  primary={ASK_TO_MEET}
+  jsonLd={[faqPageNode('/investors/faq/', INVESTOR_FAQ)]}
+>
+  <Content />
+
+  <h2 id="questions-title">{FAQ_HEADING}</h2>
+  <FaqList items={items} name="investor-faq" />
+
+  <NoFundingDisclaimer />
+</MarketingLayout>
