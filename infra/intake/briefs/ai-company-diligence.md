@@ -56,7 +56,7 @@ Each check below reports what the sources say, what the evidence for that check 
 
 The first question is plain and often skipped: what does the product need the model to do, and what happens when the model does it badly? A product that drafts text for a human to edit asks little of the model's reliability. A product that takes an action in a customer's account on the model's word asks a great deal.
 
-The NIST AI Risk Management Framework gives a vocabulary for the question. The page describes the framework as a way to better manage risks to individuals, organizations and society associated with artificial intelligence, and it says the framework is intended for voluntary use. It is organized around the functions Govern, Map, Measure and Manage. The generative AI profile is a cross-sectoral companion resource to that framework, published in July 2024, and it is also intended for voluntary use.
+The NIST AI Risk Management Framework gives a vocabulary for the question. The page describes the framework as a way to better manage risks to individuals, organizations and society associated with artificial intelligence, and it says the framework is intended for voluntary use. The generative AI profile is a cross-sectoral companion resource to that framework, published in July 2024.
 
 Neither document is a law, and a company that does not follow them has broken no rule. Analysis: their value in diligence is as a list of questions the company should have asked itself. Has anyone written down what the model is used for, what a wrong answer costs and who reviews it? A short internal document that answers those questions is evidence of a certain kind of care. Its absence is not evidence of the opposite, because an early-stage team may carry the answers in its heads.
 
@@ -96,7 +96,7 @@ An investor can ask for a description of the controls, the results of any securi
 
 ## Check five: evidence that the product works
 
-The most useful evidence in this category is also the hardest to read from outside: the company's own measurements of how well the model does its job. The NIST framework treats measurement as a function of risk management, and it names Measure among its four functions.
+The most useful evidence in this category is also the hardest to read from outside: the company's own measurements of how well the model does its job.
 
 An investor might ask what the company measures, on what set of examples, how those examples were chosen and who chose them. Analysis: an evaluation built from the cases the product already handles well will show a good result by construction. A more informative one includes cases the company expects to fail, and it is run again whenever the supplier changes the model or the company changes the instructions it sends. A company that can show a dated series of results, with the cases that got worse as well as those that got better, is showing something a single headline figure cannot.
 
