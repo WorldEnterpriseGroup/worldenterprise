@@ -1,0 +1,87 @@
+---
+title: "Edtech SaaS: considerations before you build"
+seoTitle: "Edtech: before you build"
+description: "Questions to settle before you build education software in the United States: student records, children under 13, school official status and web accessibility."
+topic: sectors
+publishedDate: 2026-10-10
+segments: [second-career-founders, technical-founders]
+related: [privacy-law-basics-for-a-small-product, terms-of-service-and-privacy-policy-what-each-document-is-for, vertical-saas-depth-over-breadth]
+evidence: [ed-ferpa, cfr-34-99-31, ftc-coppa, ada-web-rule]
+relatedServices: [B, G]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: ed-ferpa
+    title: FERPA
+    publisher: U.S. Department of Education, Student Privacy Policy Office (Protecting Student Privacy)
+    url: https://studentprivacy.ed.gov/ferpa
+    accessed: 2026-10-10
+  - id: cfr-34-99-31
+    title: "34 CFR 99.31: Under what conditions is prior consent not required to disclose information?"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/34/99.31
+    accessed: 2026-10-10
+  - id: ftc-coppa
+    title: "Children's Online Privacy Protection Rule: A Six-Step Compliance Plan for Your Business"
+    publisher: Federal Trade Commission
+    url: https://www.ftc.gov/business-guidance/resources/childrens-online-privacy-protection-rule-six-step-compliance-plan-your-business
+    accessed: 2026-10-10
+  - id: ada-web-rule
+    title: "State and Local Governments: First Steps Toward Complying with the Americans with Disabilities Act Title II Web and Mobile App Rule"
+    publisher: U.S. Department of Justice, ADA.gov
+    url: https://www.ada.gov/resources/web-rule-first-steps/
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal or financial advice. Written October 10, 2026 and scoped to United States federal rules: the Family Educational Rights and Privacy Act, the Federal Trade Commission's children's privacy rule and the Department of Justice's web accessibility rule. State student-privacy laws are not covered. Bring the facts of your product to a lawyer licensed where you operate.*
+
+Education software is sold to people who are not the end users. A district buys for students, a parent pays for a child, an employer pays for a worker. Each of those relationships brings its own rules about whose data it is and who may decide what happens to it. This article lists the considerations a founder can settle before building, each tied to a public federal page, for someone coming to the field from another career or from engineering. It does not say how any rule applies to your product.
+
+## Start with who the learner is and who the buyer is
+
+Three questions shape everything after them. How old are the learners? Who pays, and does that party run a school or hold records on the learner's behalf? And does the product collect personal information from the learner directly, or does it receive it from the buyer? A tutoring tool sold to a parent, a classroom tool sold to a school and a skills course sold to adults raise different rules, and a product aimed at one can drift into another when a feature is added.
+
+Write those answers down in one paragraph per customer type. They become the first page of the conversation with counsel, and they stop a product from being built around an assumption, such as "our users are adults", that a feature later breaks.
+
+## Student records and FERPA
+
+The Department of Education's student privacy page introduces the Family Educational Rights and Privacy Act, which it says provides certain rights for parents regarding their children's education records. Section 99.1(a), as the page presents it, says the regulations apply to an educational agency or institution to which funds have been made available under any program administered by the Secretary. The rule is therefore about the schools, not about software companies directly. The page also sets out the rights it gives: a parent or eligible student must be given the opportunity to inspect and review the student's education records, can seek amendment of records believed to be inaccurate, and can consent to disclosures of personally identifiable information in them.
+
+The page defines an eligible student as a student who has reached 18 years of age or is attending an institution of postsecondary education, and says that when a student becomes an eligible student, the rights accorded to, and consent required of, parents transfer from the parents to the student. For a product serving both school-age and adult learners, that line decides whose permission the product is acting on, and it may move during a customer relationship.
+
+## When a vendor is a school official
+
+A software company usually meets FERPA through its customer. The regulation at 34 CFR 99.31 is the place where this happens: it lists conditions under which a school may disclose information without prior consent, including to a contractor that qualifies as a school official. As the section is written, the outside party must perform an institutional service or function for which the agency or institution would otherwise use employees. It must be under the direct control of the agency or institution with respect to the use and maintenance of education records. And it must be subject to the requirements of § 99.33(a), which limits how the party may use and redisclose the information.
+
+Read those three conditions as product requirements. A school must be able to direct how you use records, so a vendor that wants to use student data for its own purposes, for example to train a model or to build a data product, should expect the school to ask about it. The questions "who controls this data?" and "what may the company do with it?" need answers in the contract and in the system, and the data-use decisions in <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data: what to decide first</MaybeLink> apply here with extra weight. Whether your company is a school official for a given customer is a legal conclusion, and this article does not reach it.
+
+## Children under 13
+
+If any learner may be a child, the Federal Trade Commission's children's privacy rule enters. The FTC's six-step plan for businesses says, put simply, COPPA applies to operators of websites and online services that collect personal information from kids under 13. It also says that before collecting, using or disclosing personal information from a child, you must get their parent's verifiable consent. The page showed May 2026 as its date when read.
+
+Two design consequences follow, and neither is a reading of the rule. A product that is for a school may still be used by a child at home, and the product's sign-up flow decides what it knows about age. Consent and age questions are expensive to retrofit, because they sit in the account model, the data flow and the support process. If the answer to "may a child use this?" is yes, take the question to counsel before the account model is built. The <MaybeLink path="/insights/privacy-law-basics-for-a-small-product/">privacy law basics for a small product</MaybeLink> article places this rule among the others a small team meets.
+
+## Selling to a public institution: accessibility
+
+A public school district or a state university is a government customer, and government customers bring accessibility requirements with them. The Department of Justice's page on its web rule, which was dated January 8, 2025 when read, says the rule sets technical requirements for state and local governments to follow. It names the standard: the technical requirements are called the Web Content Accessibility Guidelines Version 2.1 Level AA. The page lists a compliance deadline of April 26, 2027 for governments with a population of 50,000 or more, and April 26, 2028 for those with fewer people and for special districts. It adds that in April 2026 the Department published an Interim Final Rule extending the compliance date, so the dates are current only as of the day this was read.
+
+Whether a given customer is within the rule is a question for counsel, and so is whether the rule reaches a vendor's product at all. The practical point for a founder is that an accessible product is a requirement a buyer may raise in procurement, and accessibility is cheaper to build in than to add. The research note <MaybeLink path="/research/accessibility-as-a-launch-requirement/">accessibility as a launch requirement</MaybeLink> covers the engineering side in general terms.
+
+## Questions to put to counsel before you build
+
+None of these is advice. They follow from the pages above.
+
+- Who is the learner, who is the buyer, and does the buyer hold education records for the learner?
+- If the buyer is a school, would the company be a school official under 34 CFR 99.31, and what would that mean for how the product may use the data?
+- Could a learner be under 13, and what does the account flow need to do about parental consent?
+- At what age does the person who consents change, and can the product handle the change?
+- Is any customer a government entity within the Department of Justice's web rule, and which date applies?
+- What does the product do with learner data beyond delivering the service, and is each use in the contract?
+- Which of these answers changes if you add a feature, a grade band or a customer type?
+
+Keep the answers in writing. A school's security and privacy review will ask for many of them, which <MaybeLink path="/insights/answering-a-security-and-privacy-questionnaire/">answering a security and privacy questionnaire</MaybeLink> describes in general terms, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines terms used in these pages.
+
+## What this article cannot tell you
+
+This article does not tell you whether FERPA, the children's privacy rule or the web accessibility rule applies to your product or your customers. It covers four pages read on October 10, 2026: the Department of Education's FERPA page, 34 CFR 99.31 as published by the Legal Information Institute, the FTC's six-step plan and the Department of Justice's web rule page. It does not cover state student-privacy laws, the Protection of Pupil Rights Amendment, rules on student loans or financial aid, rules for postsecondary accreditation, rules for online program managers, or any country outside the United States. It says nothing about contract terms, pricing, or how a school buys. These rules are amended and reinterpreted, and the Department of Justice page itself reports a recent change to its dates, so confirm anything you rely on against the current official text with a lawyer licensed where you operate.

@@ -154,6 +154,16 @@ test('the component renders a keyboard-operable jump list of anchor links, a hea
   assert.doesNotMatch(component, /tabindex|onclick|addEventListener/i, 'native anchors need no script or tabindex');
 });
 
+test('the jump list keeps a fixed cell size, so a label that re-wraps when the web fonts arrive moves nothing', () => {
+  const component = readText('src/components/reference/GlossaryList.astro');
+  const list = /\.glossary-index__list\s*\{([^}]*)\}/.exec(component)?.[1] ?? '';
+  const chip = /\.glossary-index a\s*\{([^}]*)\}/.exec(component)?.[1] ?? '';
+  assert.match(list, /display:\s*grid/);
+  assert.match(list, /grid-template-columns:\s*repeat\(auto-fill/);
+  assert.match(chip, /(?<!min-)block-size:\s*[\d.]+rem/, 'a fixed block size, not a minimum');
+  assert.doesNotMatch(component, /class="cluster"/, 'the wrapping flex cluster is what shifted');
+});
+
 // ---------------------------------------------------------------------------------------------------------------------------------
 // Claims markers on synthetic flagged terms
 // ---------------------------------------------------------------------------------------------------------------------------------

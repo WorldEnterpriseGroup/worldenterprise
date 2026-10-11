@@ -1,0 +1,103 @@
+---
+title: "Healthtech SaaS: considerations before you build"
+seoTitle: "Healthtech: before you build"
+description: "Questions to settle before you build health software in the United States: business associates, the Security Rule, breach notice and FDA device software."
+topic: sectors
+publishedDate: 2026-10-10
+segments: [corporate-innovators, technical-founders]
+related: [privacy-law-basics-for-a-small-product, ai-features-and-customer-data-what-to-decide-first, answering-a-security-and-privacy-questionnaire]
+evidence: [cfr-160-103, cfr-164-504, cfr-164-306, cfr-164-404, ftc-hbnr, fda-device-software]
+relatedServices: [B, G]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: cfr-160-103
+    title: "45 CFR 160.103: Definitions"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/45/160.103
+    accessed: 2026-10-10
+  - id: cfr-164-504
+    title: "45 CFR 164.504: Uses and disclosures: Organizational requirements"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/45/164.504
+    accessed: 2026-10-10
+  - id: cfr-164-306
+    title: "45 CFR 164.306: Security standards: General rules"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/45/164.306
+    accessed: 2026-10-10
+  - id: cfr-164-404
+    title: "45 CFR 164.404: Notification to individuals"
+    publisher: Legal Information Institute, Cornell Law School (Electronic Code of Federal Regulations text)
+    url: https://www.law.cornell.edu/cfr/text/45/164.404
+    accessed: 2026-10-10
+  - id: ftc-hbnr
+    title: "Complying with FTC's Health Breach Notification Rule"
+    publisher: Federal Trade Commission
+    url: https://www.ftc.gov/business-guidance/resources/complying-ftcs-health-breach-notification-rule-0
+    accessed: 2026-10-10
+  - id: fda-device-software
+    title: Device Software Functions Including Mobile Medical Applications
+    publisher: U.S. Food and Drug Administration
+    url: https://www.fda.gov/medical-devices/digital-health-center-excellence/device-software-functions-including-mobile-medical-applications
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal or financial advice. Written October 10, 2026 and scoped to United States federal rules: the HIPAA regulations, the Federal Trade Commission and the Food and Drug Administration. Whether a rule reaches your product depends on who your customer is and what the software does, so bring the facts to a lawyer licensed where you operate.*
+
+A health product asks three questions that most software never has to answer. Whose health information does it touch? On whose behalf? And does the software itself act like a medical device? The answers decide which federal regimes apply, and they are easier to settle before you design the data model than after. This article walks through the questions, each tied to a primary text, and it does not say how any rule applies to your product.
+
+## First question: who is your customer in health-privacy terms?
+
+The HIPAA regulations separate two kinds of party. The definitions in 45 CFR 160.103 list the covered entities: a health plan, a health care clearinghouse, and a health care provider who transmits any health information in electronic form in connection with a transaction the regulations cover. A hospital, a physician practice or an insurer is typically one of these.
+
+A software company is usually not a covered entity. It may be something else the same section defines: a business associate. In the regulation's words, a business associate is, with respect to a covered entity, a person who creates, receives, maintains, or transmits protected health information for a function or activity. The key phrase for a founder is "with respect to a covered entity". A product that handles protected health information for a clinic or a plan can put the company in that category. A product that sells to consumers who enter their own data, with no covered entity involved, may not. The facts decide, and the definition has exceptions that this article does not cover.
+
+Write down, before building, who the first three customers are likely to be and whether each is a covered entity. If the honest answer is "I do not know", that is the first thing to take to counsel.
+
+## The business associate contract
+
+If the company is a business associate, the regulations expect a written arrangement. Section 164.504(e) says the contract must meet the requirements of paragraph (e)(2), (e)(3), or (e)(5), as applicable. The first item in paragraph (e)(2) says the contract must establish the permitted and required uses and disclosures of protected health information by the business associate.
+
+For a founder, the consequence is practical. A customer that is a covered entity will usually send its own form of agreement, and the terms in it become product requirements: what data you may use, what you may not, and what you must be able to show. Reading one early, before the product exists, tells you what you will be asked to build. <MaybeLink path="/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/">IP, contracts and access diligence for small engineering teams</MaybeLink> covers how contract terms turn into diligence questions in general.
+
+## The Security Rule is built to scale
+
+The Security Rule sits in 45 CFR 164.306. Paragraph (a) says covered entities and business associates must ensure the confidentiality, integrity, and availability of all electronic protected health information. Paragraph (b) is the part small companies read twice: it says covered entities and business associates may use any security measures that allow them to meet the standards the rule sets.
+
+The flexibility is real, and so is the burden it leaves. The rule does not hand a small company a list of products to buy. It leaves the choice of measures to the company, which means the company has to be able to explain its choices. That explanation is a document, best written before a customer asks for it. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> and <MaybeLink path="/research/saas-security-baseline-year-one/">the year-one security baseline note</MaybeLink> describe a general baseline for a small team. Neither is a statement about the Security Rule, and a baseline is not a substitute for reading the rule.
+
+## Breach notice is a design input
+
+Section 164.404 describes what happens after a breach. It says a covered entity shall, following the discovery of a breach of unsecured protected health information, notify each individual, and paragraph (b) says the notice must be given without unreasonable delay and in no case later than 60 calendar days after discovery of a breach. The covered entity is the party named in this section, and this article does not cover what the regulations ask of a business associate.
+
+What matters at the product stage is that a covered entity customer may expect you to detect and report an incident quickly enough for it to meet its own deadline. Logging, access records and an incident procedure are design decisions with a clock attached, which is a reason to make them early. <MaybeLink path="/insights/answering-a-security-and-privacy-questionnaire/">Answering a security and privacy questionnaire</MaybeLink> shows the questions a health customer is likely to ask about them.
+
+## If HIPAA does not apply, another rule may
+
+Not every health product has a covered entity as a customer. A wellness or tracking app sold directly to consumers may sit outside the HIPAA regulations and inside a different one. The FTC's page on its Health Breach Notification Rule says the rule applies if you are a vendor of personal health records, a PHR related entity, or a third party service provider for either. It adds that you are not a vendor of personal health records if you are covered by HIPAA. The same page says makers of health apps, connected devices, and similar products must comply with the Rule. Whether a given product falls within it is a question for counsel. The page showed July 2024 as its date, with an edit in January 2025, when it was read.
+
+Which regime applies, if either, is a legal question about the facts, and a company that assumes neither does has made a decision that deserves a lawyer's check.
+
+## Is the software a medical device?
+
+A separate question is whether the software is itself a regulated device. The FDA's page on device software functions says mobile medical apps are medical devices that are mobile apps and that incorporate device software functionality, and that they meet the definition of a device in section 201(h) of the Food, Drug and Cosmetic Act. It also says the agency takes a risk-based approach that focuses on the subset of software functions that meet the definition of device. For many software functions that meet the definition but pose minimal risk, the page says the FDA will exercise enforcement discretion and will not expect manufacturers to submit premarket review.
+
+Whether a feature meets the definition is a question about what the feature does and what it is for. A feature described as "helps clinicians decide" is a different statement from one described as "stores notes", so ask counsel how your own descriptions of each feature bear on the question. Writing down what each feature is for is a product decision that counsel will want to see. If AI sits inside the feature, <MaybeLink path="/insights/ai-features-and-customer-data-what-to-decide-first/">AI features and customer data: what to decide first</MaybeLink> covers the data decisions that come with it.
+
+## Questions to put to counsel before you build
+
+None of these is advice. They follow from the pages above.
+
+- Is each likely customer a covered entity, and would the company be a business associate of it?
+- What would a business associate contract require the product to do, or refuse to do, with health data?
+- Which security measures fit the company's size and systems, and where is that written down?
+- How fast must the company be able to detect and report an incident, given a customer's own deadline?
+- If no covered entity is involved, does the FTC's Health Breach Notification Rule apply?
+- Does any feature meet the statutory definition of a device, and how does the product describe its intended use?
+- Which answer changes if the product adds a customer type, a data field or an AI feature?
+
+## What this article cannot tell you
+
+This article does not tell you whether you are a business associate, whether a rule applies, or whether your software is a device. It covers six pages read on October 10, 2026: four sections of 45 CFR as published by the Legal Information Institute, the FTC's Health Breach Notification Rule page and the FDA's device software page. It does not cover state health-privacy laws, patient consent, data use for research or product improvement, telehealth rules, prescribing, reimbursement, interoperability rules, or any country outside the United States. It does not describe penalties. These rules are amended and reinterpreted, so confirm anything you rely on against the current official text with a lawyer licensed where you operate.

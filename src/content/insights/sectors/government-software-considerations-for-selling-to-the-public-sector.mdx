@@ -1,0 +1,98 @@
+---
+title: "Government software: considerations for selling to the public sector"
+seoTitle: Selling software to government
+description: "Questions to settle before you build software for US government buyers: registration, commercial acquisition, FedRAMP, Section 508 and the ADA."
+topic: sectors
+publishedDate: 2026-10-10
+segments: [corporate-innovators]
+related: [answering-a-security-and-privacy-questionnaire, build-versus-buy-for-auth-billing-and-email, b2b-saas-how-the-model-works-and-what-it-asks-of-a-first-company]
+evidence: [far-part-12, sam-registration, fedramp-rules, fedramp-20x, section508-laws, ada-web-rule]
+relatedServices: [B, G]
+relatedPlaybook: build-and-ship-v1
+sources:
+  - id: far-part-12
+    title: Part 12, Acquisition of Commercial Products and Commercial Services
+    publisher: Federal Acquisition Regulation, acquisition.gov
+    url: https://www.acquisition.gov/far/part-12
+    accessed: 2026-10-10
+  - id: sam-registration
+    title: Entity Registration
+    publisher: SAM.gov, U.S. General Services Administration
+    url: https://www.sam.gov/content/entity-registration
+    accessed: 2026-10-10
+  - id: fedramp-rules
+    title: FedRAMP Consolidated Rules for 2026
+    publisher: FedRAMP, U.S. General Services Administration
+    url: https://www.fedramp.gov/2026/
+    accessed: 2026-10-10
+  - id: fedramp-20x
+    title: FedRAMP 20x
+    publisher: FedRAMP, U.S. General Services Administration
+    url: https://www.fedramp.gov/20x
+    accessed: 2026-10-10
+  - id: section508-laws
+    title: IT Accessibility Laws and Policies
+    publisher: Section508.gov, U.S. General Services Administration
+    url: https://www.section508.gov/manage/laws-and-policies/
+    accessed: 2026-10-10
+  - id: ada-web-rule
+    title: "State and Local Governments: First Steps Toward Complying with the Americans with Disabilities Act Title II Web and Mobile App Rule"
+    publisher: U.S. Department of Justice, ADA.gov
+    url: https://www.ada.gov/resources/web-rule-first-steps/
+    accessed: 2026-10-10
+claimsUsed: [C-29]
+---
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal or financial advice. Written October 10, 2026 and scoped to United States federal pages, with one rule for state and local governments. State procurement codes, which differ from state to state, are not covered. Bring the facts of your product and your buyer to a lawyer experienced in public procurement in the place where you will sell.*
+
+A government is a buyer with its own vocabulary, its own registration steps and its own rules about what software must do. Selling to one is a different project from selling to a company, and the differences show up in the product long before they show up in a contract. This article lists the considerations a founder can settle before building, each tied to a public page. It is aimed at someone coming from a larger organization who is used to buying and selling inside one. It does not say that any government will buy any product, or how a given agency decides.
+
+## Start with which government, and how it buys
+
+Federal, state, county, city and school-district buyers each have different rules, so the first sentence to write is "my first buyer is this kind of government, for this kind of need". The answer decides which of the pages below matter. A federal civilian agency raises the federal acquisition and registration questions. A city or county raises the state and local ones, including the accessibility rule discussed below. And in every case the buyer may be reaching your product through a reseller or a contract vehicle held by someone else, which this article does not cover.
+
+Also write down what the buyer will have to do to buy from you. A team that cannot buy without a registration, an approved security review and a procurement officer who has read the product description has a long way to go before the first invoice, and the sooner the founders know the steps, the sooner they can see which ones the product itself can shorten.
+
+## Commercial products are a federal preference, with limits
+
+The Federal Acquisition Regulation, the rulebook for federal purchasing, is published on acquisition.gov. Its part 12 covers acquisition of commercial products and commercial services. Section 12.000 says the part implements the Federal Government’s preference for the acquisition of commercial products and commercial services. Section 12.101(a) is a policy statement that refers to agencies determining whether commercial products, commercial services, or nondevelopmental items are available.
+
+For a company with an off-the-shelf SaaS product, this is the part of the rulebook to ask counsel about first. The pages do not say that a given product qualifies as a commercial product or service, that any agency will choose it, or what terms follow. Those are questions for the buyer's contracting staff and for counsel, and they are worth asking early because the definition and the terms drive how the contract is written.
+
+## Registration before a bid
+
+To bid directly, an organization registers. The SAM.gov entity registration page says registration is for organizations that want to directly bid on government contracts and apply for federal assistance. It adds that if you select Register Entity, your Unique Entity ID will be assigned during the registration process. The page does not say how long registration takes or what it costs, and this article does not either.
+
+Two consequences are worth planning. First, registration asks the company to describe itself in a way a government can verify, which makes company records and ownership documentation an early task, not a late one. Second, it is a step that precedes the product being considered at all, so a company that wants to sell directly should learn what the page requires well before the first conversation with a buyer.
+
+## FedRAMP as a program to understand
+
+Cloud services sold to federal agencies meet a program called FedRAMP, run out of the General Services Administration. Treat the rest of this section as a description of the program, not as a statement about any company. The FedRAMP site's page titled "FedRAMP Consolidated Rules for 2026" says it brings the rules, definitions, timelines, stakeholder guidance, and source material together as a shared reference, so agencies, cloud service providers, independent assessors, advisors, and FedRAMP can work from the same public reference. The FedRAMP 20x page says the program was designed for businesses to set their own security goals, and it says FedRAMP 20x simplifies the path to federal cloud adoption.
+
+What the pages read do not say is as important. They do not say when a vendor needs authorization, what each level costs in time or money, or whether an agency will buy a service that has none. The 20x page itself reports that FedRAMP 20x is currently in Phase 3 and that future dates are estimates for public awareness, not firm commitments, so anything written about the program, this article included, ages quickly. The right question for a founder is "which of my likely buyers will ask for FedRAMP, and what do they ask for exactly?", asked of the buyer's security staff. <MaybeLink path="/insights/answering-a-security-and-privacy-questionnaire/">Answering a security and privacy questionnaire</MaybeLink> covers the general habit of keeping security answers ready, and the <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> lists a general baseline. Neither is a statement about FedRAMP.
+
+## Accessibility is part of the product
+
+Government buyers have accessibility rules of their own, and a procurement may ask how a product meets them. For federal agencies, the Section508.gov page on laws and policies says the law applies to all federal agencies when they develop, procure, maintain, or use electronic and information technology. It adds that under Section 508, agencies must give disabled employees and members of the public access to information. The page, which showed "Reviewed/Updated: July 2026" when read, refers to Web Content Accessibility Guidelines (WCAG 2.0), a globally recognized voluntary consensus standard.
+
+For state and local governments, the Department of Justice's ADA page says its rule sets technical requirements for state and local governments to follow and names the standard: the technical requirements are called the Web Content Accessibility Guidelines Version 2.1 Level AA. It lists April 26, 2027 as the compliance date for governments with a population of 50,000 or more and April 26, 2028 for smaller ones and special districts, and it adds that in April 2026 the Department published an Interim Final Rule extending the compliance date. Whether a given buyer is within a rule, and whether the rule reaches the software that buyer purchases, are questions for counsel.
+
+The engineering point is that accessibility cannot be bolted on. The research note <MaybeLink path="/research/accessibility-as-a-launch-requirement/">accessibility as a launch requirement</MaybeLink> covers how a small team builds it in from the start, and a buyer may ask for evidence of it in the same procurement as the security answers.
+
+## Questions to put to counsel before you build
+
+None of these is advice. They follow from the pages above.
+
+- Which government is the first buyer, and which procurement rules govern that purchase?
+- Would the product be a commercial product or commercial service for the purposes of federal acquisition, and who decides?
+- What must the company have in place to register, and how does ownership and company history enter into it?
+- Which of the likely buyers will ask for FedRAMP, what exactly will they ask for, and what is the company's plan if they do?
+- Which accessibility standard does each likely buyer hold you to, and on which date?
+- What does the company do if a buyer's requirements change during a long procurement?
+
+Keep the answers in writing, because the sales cycle is long enough for people to forget. The <MaybeLink path="/insights/b2b-saas-how-the-model-works-and-what-it-asks-of-a-first-company/">B2B SaaS model article</MaybeLink> describes what a long-cycle buyer asks of a first company in general, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines terms used on this page.
+
+## What this article cannot tell you
+
+This article does not tell you whether a government will buy your product, which rule governs a particular purchase, or whether you need FedRAMP authorization. It covers six pages read on October 10, 2026: part 12 of the Federal Acquisition Regulation, the SAM.gov registration page, two pages from FedRAMP, the Section508.gov laws page and the Department of Justice's state and local web rule page. It does not cover state or local procurement codes, small-business set-asides, contract vehicles, pricing and payment rules, export controls, data-residency or controlled-information rules, or any country outside the United States. It says nothing about how long a sale takes. The FedRAMP and accessibility pages are changing, so confirm anything you rely on against the current official text.
