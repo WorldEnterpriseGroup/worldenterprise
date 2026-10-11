@@ -1,7 +1,7 @@
 ---
 import { href } from '../../../lib/url.ts';
-import { isLinkable } from '../../playbooks/links.ts';
-import { READINESS_GROUPS, readinessStatements } from './statements.ts';
+import { isLinkable, liveItems } from '../../playbooks/links.ts';
+import { ALSO_READ, READINESS_GROUPS, readinessStatements } from './statements.ts';
 import type { ReadinessGroup } from './statements.ts';
 
 /**
@@ -11,7 +11,12 @@ import type { ReadinessGroup } from './statements.ts';
 const groupOrder: readonly ReadinessGroup[] = ['problem', 'product', 'company', 'communication'];
 
 const resolved = await Promise.all(
-  readinessStatements.map(async (s) => ({ ...s, target: (await isLinkable(s.gapHref)) ? href(s.gapHref) : '' })),
+  readinessStatements.map(async (s) => ({
+    ...s,
+    target: (await isLinkable(s.gapHref)) ? href(s.gapHref) : '',
+    // More reading per statement, kept only for routes that are live in this build.
+    also: (await liveItems(ALSO_READ[s.id] ?? [])).map((a) => ({ title: a.title, href: href(a.href) })),
+  })),
 );
 ---
 
@@ -33,7 +38,14 @@ const resolved = await Promise.all(
               .map((s) => (
                 <li class="rc__item">
                   <div class="choice">
-                    <input id={s.id} name={s.id} type="checkbox" data-gap-title={s.gapTitle} data-gap-href={s.target} />
+                    <input
+                      id={s.id}
+                      name={s.id}
+                      type="checkbox"
+                      data-gap-title={s.gapTitle}
+                      data-gap-href={s.target}
+                      data-also-read={s.also.length > 0 ? JSON.stringify(s.also) : undefined}
+                    />
                     <label for={s.id}>{s.statement}</label>
                   </div>
                   <p class="rc__gap field__hint">
@@ -41,6 +53,18 @@ const resolved = await Promise.all(
                     {s.target !== '' && (
                       <span class="rc__start">
                         {' '}If it is not yet true, start with <a href={s.target}>{s.gapTitle}</a>.
+                      </span>
+                    )}
+                    {s.also.length > 0 && (
+                      <span class="rc__start">
+                        {' '}Also useful:{' '}
+                        {s.also.map((a, i) => (
+                          <>
+                            {i > 0 && '; '}
+                            <a href={a.href}>{a.title}</a>
+                          </>
+                        ))}
+                        .
                       </span>
                     )}
                   </p>

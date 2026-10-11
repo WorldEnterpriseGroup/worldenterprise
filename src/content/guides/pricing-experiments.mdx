@@ -1,0 +1,104 @@
+---
+section: fundability
+title: Pricing experiments
+description: "How to test a first SaaS price without guessing: write a hypothesis, change one thing, record what each customer does and decide before you look."
+disclaimers:
+  - no-funding
+  - not-legal-advice
+sources:
+  - id: nist-handbook-prc24
+    title: Engineering Statistics Handbook, Tests for proportions
+    publisher: National Institute of Standards and Technology
+    url: https://www.itl.nist.gov/div898/handbook/prc/section2/prc24.htm
+    accessed: 2026-10-10
+  - id: stripe-prices
+    title: How products and prices work
+    publisher: Stripe
+    url: https://docs.stripe.com/products-prices/how-products-and-prices-work
+    accessed: 2026-10-10
+updated: 2026-10-10
+---
+import DataTable from '../../components/ui/DataTable.astro';
+
+A pricing experiment is a planned change to what you ask customers to pay, or to what the price includes, with a written prediction of what will happen. It is not the same as changing your price and seeing how you feel. The difference is the writing: a prediction made before the result, a record of who saw what, and a decision rule you set in advance.
+
+Investors and your own team will both ask how you arrived at your price. "We tested it" is a strong answer only if you can show the test. This guide is about doing the test in a way you can show. It gives no recommended price and no formula, because the right price depends on your product and your buyers, and it is general information, not advice.
+
+## What a small number of customers can tell you
+
+Early in a company you may have a handful of customers and a few dozen conversations. That is enough to learn a lot and not enough to prove much, and it is worth being clear about the difference.
+
+The National Institute of Standards and Technology's statistics handbook makes the general point about its test for a proportion: [because the test is approximate, N needs to be large for the test to be valid](https://www.itl.nist.gov/div898/handbook/prc/section2/prc24.htm). The same caution applies to any comparison of two prices. With a few buyers on each side, a difference in results can come from chance, from who happened to be asked, or from the day. So at this stage, treat an experiment as a structured way to learn and not as proof. Report counts, not percentages. Say how many people saw each price. Write what you think the result means and how sure you are.
+
+## Choose the kind of test
+
+<DataTable
+  caption="Five ways to test a price"
+  columns={['Test', 'What you do', 'What you learn', 'Main risk']}
+  rows={[
+    ['Conversation', 'State the price in an interview, then stop talking and write down the reaction.', 'Whether the price is a surprise, and what the buyer compares it with.', 'People are polite in conversation. A calm reaction is not a purchase.'],
+    ['Quote', 'Send two comparable prospects, or two groups, different quotes for the same thing.', 'Which quote leads to a reply, a question or a signature.', 'The groups may not be comparable.'],
+    ['Packaging', 'Keep the price and change what is included.', 'Which features buyers treat as worth paying for.', 'A change that confuses buyers can look like a price effect.'],
+    ['Page', 'Show a different price on the pricing page, to a defined group.', 'How visitors respond when no one is explaining.', 'Too few visitors to read, and visitors who compare notes.'],
+    ['Term', 'Offer a different billing term, such as monthly or annual, at the same price.', 'How buyers weigh commitment against cost.', 'Cash-flow effects hide the buyer reaction.'],
+  ]}
+/>
+
+## Write the hypothesis first
+
+Before you change anything, write one paragraph with four parts.
+
+1. **The change.** What exactly will differ between the groups? Change one thing.
+2. **The prediction.** What do you expect to happen, and why? "More buyers will ask about annual terms, because the monthly price is the figure they compare with" is a prediction. "Let's see" is not.
+3. **The measure.** What will you count? Replies, trial starts, signatures, questions about price. Choose it now.
+4. **The decision rule.** What will you do if the prediction holds, and what if it does not? Fix the rule before you look at results, or you will find a reason to keep whatever you already prefer.
+
+## Keep a price log
+
+Never overwrite a price. Stripe's documentation, describing how its own products work, says that to change the price of a product you [create a new price for the new amount, then archive the existing price](https://docs.stripe.com/products-prices/how-products-and-prices-work). You do not have to use Stripe to borrow the habit: add each price as a new dated entry and keep the old one. A log of prices with the date each took effect lets you tell later which customers agreed to what, and it keeps your numbers consistent with the definitions in the [metrics brief](/research/early-stage-saas-metrics-definitions/).
+
+## Record each exposure
+
+An exposure is one buyer seeing one price. Record it when it happens, not from memory.
+
+<DataTable
+  caption="Columns for an exposure record"
+  columns={['Column', 'What to write']}
+  rows={[
+    ['Who', 'A prospect code or a first name, with no personal data you do not need.'],
+    ['When', 'The date.'],
+    ['What they saw', 'Which price, package or term.'],
+    ['What they did', 'Replied, asked a question, asked for a change, signed, went quiet or declined.'],
+    ['What they said', 'One line in their words, if they gave a reason.'],
+  ]}
+/>
+
+## Read the result honestly
+
+- **Count, then interpret.** Write the counts first, in a table, and only then write what you think they mean.
+- **Do not stop early.** If the first few results favor your preference, that is not a result. Run the test for as many exposures as you planned.
+- **Watch for who was asked.** If the higher price went only to your warmest prospects, the groups differ before the price does.
+- **Record what you did not learn.** A test that did not settle the question is still a result. Write down what you would try next.
+- **Keep fairness in view.** Customers talk to each other. Before you show different prices to different people, make sure you could explain the difference, and ask your counsel whether any rule applies to the way you do it.
+
+## A worked example
+
+**Illustrative example, not a real company.** A fictional invoicing tool for freelance designers wants to know whether a higher price changes who signs.
+
+> **Hypothesis.** If the team quotes the higher price, fewer prospects will sign, but at least as many will ask how to get the annual term, because the higher figure makes the annual discount more visible. The measure is signatures and questions about the annual term. The decision rule: if signatures fall by more than half and questions do not rise, return to the first price.
+>
+> **Log.** Price A went to six prospects: three signed, two asked about the annual term, one went quiet. Price B went to six comparable prospects: two signed, three asked about the annual term, one declined. The groups were chosen alternately from the same list.
+>
+> **Reading.** Six per group is too few to call a winner. The pattern is that the higher price lost one signature and gained one question about the term, which is not enough to trigger the decision rule. The team decides to run six more per group and to add the annual option to both quotes before changing the price.
+
+Notice that the example states the decision rule first, reports counts and ends with the next test and not a verdict.
+
+## What to do with the result
+
+Record the decision and the reason in a [decision log](/library/decision-log/), so that you and any later reader can see what was tested and why you chose what you did. Then bring the price into the page buyers see: the [pricing page checklist](/library/pricing-page-checklist/) and the [pricing page checker](/tools/pricing-page-checker/) help you test whether the page says what you intend. The articles on [pricing a first SaaS](/insights/pricing-a-first-saas-value-packaging-and-the-questions-to-ask/) and [pricing page fundamentals](/insights/pricing-page-fundamentals-for-a-first-saas/) cover value and packaging in more depth.
+
+## About the evidence
+
+Two outside sources back this guide, both read on the dates listed under Sources: NIST's engineering statistics handbook on tests for a proportion, and Stripe's documentation on how products and prices work. The statistics source is a general caution about small samples. The Stripe page is a vendor description of its own product and is cited only for that. The test types, the hypothesis format and the example are working practice, and the example is invented. Nothing here sets or suggests a price for any company.
+
+This guide is general information and not legal advice.

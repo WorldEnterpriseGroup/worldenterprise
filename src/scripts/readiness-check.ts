@@ -1,4 +1,4 @@
-import { collectGaps } from '../components/islands/we-readiness-check/logic.ts';
+import { collectGaps, parseAlsoRead } from '../components/islands/we-readiness-check/logic.ts';
 import type { GapSource } from '../components/islands/we-readiness-check/logic.ts';
 
 /**
@@ -71,6 +71,21 @@ class WeReadinessCheck extends HTMLElement {
       statement.className = 'rc__gap-statement';
       statement.textContent = label?.textContent?.trim() ?? '';
       item.append(statement, link);
+      const also = parseAlsoRead(this.querySelector<HTMLInputElement>(`#${CSS.escape(gap.id)}`)?.dataset.alsoRead);
+      if (also.length > 0) {
+        const more = document.createElement('span');
+        more.className = 'rc__also';
+        more.append('Also useful: ');
+        also.forEach((entry, index) => {
+          if (index > 0) more.append('; ');
+          const anchor = document.createElement('a');
+          anchor.href = entry.href;
+          anchor.textContent = entry.title;
+          more.append(anchor);
+        });
+        more.append('.');
+        item.append(more);
+      }
       list.append(item);
     }
     result.replaceChildren(heading, note, list);
