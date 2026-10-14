@@ -1,0 +1,669 @@
+{
+  "wp": "WP-79",
+  "note": "The fetch ledger and the claim ledger of WP-79, the second set of gated founder briefs (first-100-customers, pre-seed-evidence-pack, first-hires; docs/wave8-contracts.md, section 9). Every page below was fetched with WebFetch in the writing session on 2026-10-11, and a quote was checked against the fetched page in a second fetch before it went into a brief. Each claim restates a sentence of a brief, with a locator and, for a regulation, a verbatim quote of 25 words or fewer from a government or standards host. Pages that returned 404, a binary document or an unreadable page were dropped and nothing is cited from them. A vendor page (docs.stripe.com) sources a paraphrase only.",
+  "fetches": [
+    {
+      "id": "irs-contractor",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee",
+      "title": "Independent contractor (self-employed) or employee?",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-11T05:52:30Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dol-misclass",
+      "url": "https://www.dol.gov/agencies/whd/flsa/misclassification",
+      "title": "Misclassification of Employees as Independent Contractors Under the Fair Labor Standards Act",
+      "publisher": "U.S. Department of Labor",
+      "fetchedAt": "2026-10-11T05:52:31Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "uscis-i9",
+      "url": "https://www.uscis.gov/i-9",
+      "title": "I-9, Employment Eligibility Verification",
+      "publisher": "U.S. Citizenship and Immigration Services",
+      "fetchedAt": "2026-10-11T05:52:32Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-hiring",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/hiring-employees",
+      "title": "Hiring employees",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-11T05:54:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dol-fs13",
+      "url": "https://www.dol.gov/agencies/whd/fact-sheets/13-flsa-employment-relationship",
+      "title": "Fact Sheet 13: Employment Relationship Under the Fair Labor Standards Act (FLSA)",
+      "publisher": "U.S. Department of Labor",
+      "fetchedAt": "2026-10-11T05:54:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-hire",
+      "url": "https://www.sba.gov/business-guide/manage-your-business/hire-manage-employees",
+      "title": "Hire and manage employees",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-11T05:54:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dol-overtime",
+      "url": "https://www.dol.gov/agencies/whd/overtime",
+      "title": "Overtime Pay",
+      "publisher": "U.S. Department of Labor",
+      "fetchedAt": "2026-10-11T05:56:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-17-101",
+      "url": "https://www.law.cornell.edu/uscode/text/17/101",
+      "title": "17 U.S. Code section 101, Definitions",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:56:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-contractor-forms",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/forms-and-associated-taxes-for-independent-contractors",
+      "title": "Forms and associated taxes for independent contractors",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-11T05:56:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "yc-safe",
+      "url": "https://www.ycombinator.com/documents",
+      "title": "The SAFE, the open standard for startup fundraising",
+      "publisher": "Y Combinator",
+      "fetchedAt": "2026-10-11T05:58:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nvca-model",
+      "url": "https://nvca.org/model-legal-documents/",
+      "title": "Model Legal Documents",
+      "publisher": "National Venture Capital Association",
+      "fetchedAt": "2026-10-11T05:58:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-506b",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/private-placements-rule-506b",
+      "title": "Private Placements - Rule 506(b)",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-11T05:58:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-plan",
+      "url": "https://www.sba.gov/business-guide/plan-your-business/write-your-business-plan",
+      "title": "Plan your business",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-11T05:59:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-17-204",
+      "url": "https://www.law.cornell.edu/uscode/text/17/204",
+      "title": "17 U.S. Code section 204, Execution of transfers of copyright ownership",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T06:00:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-35-261",
+      "url": "https://www.law.cornell.edu/uscode/text/35/261",
+      "title": "35 U.S. Code section 261, Ownership; assignment",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T06:00:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-exempt",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings",
+      "title": "Exempt Offerings",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-11T06:00:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-market-research",
+      "url": "https://www.sba.gov/business-guide/plan-your-business/market-research-competitive-analysis",
+      "title": "Plan your business (market research and competitive analysis)",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-11T06:00:03Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-canspam",
+      "url": "https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business",
+      "title": "CAN-SPAM Act: A Compliance Guide for Business",
+      "publisher": "Federal Trade Commission",
+      "fetchedAt": "2026-10-11T06:02:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-endorsements",
+      "url": "https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking",
+      "title": "FTC's Endorsement Guides: What People Are Asking",
+      "publisher": "Federal Trade Commission",
+      "fetchedAt": "2026-10-11T06:02:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "lean-startup",
+      "url": "https://theleanstartup.com/principles",
+      "title": "The Lean Startup: Methodology",
+      "publisher": "The Lean Startup",
+      "fetchedAt": "2026-10-11T06:03:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "stripe-subscriptions",
+      "url": "https://docs.stripe.com/billing/subscriptions/overview",
+      "title": "How subscriptions work",
+      "publisher": "Stripe documentation",
+      "fetchedAt": "2026-10-11T06:03:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "casl",
+      "url": "https://ised-isde.canada.ca/site/canada-anti-spam-legislation/en",
+      "title": "Canada's anti-spam legislation",
+      "publisher": "Innovation, Science and Economic Development Canada",
+      "fetchedAt": "2026-10-11T06:03:02Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ico-pecr",
+      "url": "https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/electronic-and-telephone-marketing/electronic-mail-marketing/",
+      "title": "Electronic mail marketing",
+      "publisher": "Information Commissioner's Office (UK)",
+      "fetchedAt": "2026-10-11T06:03:03Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "infra/intake/briefs/first-100-customers.md",
+      "claims": [
+        {
+          "id": "FC-01",
+          "sentence": "Market research helps you find customers for your business.",
+          "kind": "paraphrase",
+          "sourceId": "sba-market-research",
+          "locator": "the page's opening statement on market research",
+          "quote": "Market research helps you find customers for your business"
+        },
+        {
+          "id": "FC-02",
+          "sentence": "Competitive analysis helps you learn from businesses competing for your potential customers.",
+          "kind": "paraphrase",
+          "sourceId": "sba-market-research",
+          "locator": "the page's statement on competitive analysis",
+          "quote": "Competitive analysis helps you learn from businesses competing for your potential customers"
+        },
+        {
+          "id": "FC-03",
+          "sentence": "Don’t use false or misleading header information.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "the list of main requirements",
+          "quote": "Don’t use false or misleading header information."
+        },
+        {
+          "id": "FC-04",
+          "sentence": "Tell recipients how to opt out of receiving future marketing email from you.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "the list of main requirements",
+          "quote": "Tell recipients how to opt out of receiving future marketing email from you."
+        },
+        {
+          "id": "FC-05",
+          "sentence": "The law makes no exception for business-to-business email.",
+          "kind": "regulation",
+          "sourceId": "ftc-canspam",
+          "locator": "the statement on whom the Act covers",
+          "quote": "The law makes no exception for business-to-business email."
+        },
+        {
+          "id": "FC-06",
+          "sentence": "that businesses obtain consent before sending commercial electronic messages",
+          "kind": "regulation",
+          "sourceId": "casl",
+          "locator": "the page's description of the law",
+          "quote": "that businesses obtain consent before sending commercial electronic messages"
+        },
+        {
+          "id": "FC-07",
+          "sentence": "You must not send marketing emails or texts to individuals without specific consent.",
+          "kind": "regulation",
+          "sourceId": "ico-pecr",
+          "locator": "the rule on individual subscribers",
+          "quote": "You must not send marketing emails or texts to individuals without specific consent."
+        },
+        {
+          "id": "FC-08",
+          "sentence": "does not apply to prospective customers or new contacts.",
+          "kind": "regulation",
+          "sourceId": "ico-pecr",
+          "locator": "the soft opt-in exception",
+          "quote": "does not apply to prospective customers or new contacts."
+        },
+        {
+          "id": "FC-09",
+          "sentence": "You can send marketing emails or texts to companies.",
+          "kind": "regulation",
+          "sourceId": "ico-pecr",
+          "locator": "the rule on corporate subscribers",
+          "quote": "You can send marketing emails or texts to companies."
+        },
+        {
+          "id": "FC-10",
+          "sentence": "endorsements \"must be honest and not misleading.\"",
+          "kind": "regulation",
+          "sourceId": "ftc-endorsements",
+          "locator": "the statement of the truth-in-advertising principle",
+          "quote": "must be honest and not misleading"
+        },
+        {
+          "id": "FC-11",
+          "sentence": "You can’t talk about your experience with a product if you haven’t tried it.",
+          "kind": "regulation",
+          "sourceId": "ftc-endorsements",
+          "locator": "the answer on endorsers who have not used a product",
+          "quote": "You can’t talk about your experience with a product if you haven’t tried it."
+        },
+        {
+          "id": "FC-12",
+          "sentence": "should be disclosed clearly and conspicuously.",
+          "kind": "regulation",
+          "sourceId": "ftc-endorsements",
+          "locator": "the answer on disclosing a connection",
+          "quote": "should be disclosed clearly and conspicuously."
+        },
+        {
+          "id": "FC-13",
+          "sentence": "The unit of progress for Lean Startups is validated learning",
+          "kind": "definition",
+          "sourceId": "lean-startup",
+          "locator": "the methodology page",
+          "quote": "The unit of progress for Lean Startups is validated learning"
+        },
+        {
+          "id": "FC-14",
+          "sentence": "the build-measure-learn feedback loop",
+          "kind": "definition",
+          "sourceId": "lean-startup",
+          "locator": "the methodology page",
+          "quote": "the build-measure-learn feedback loop"
+        },
+        {
+          "id": "FC-15",
+          "sentence": "Subscriptions let customers make recurring payments to access a product or service.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-subscriptions",
+          "locator": "the page's opening paragraph",
+          "quote": "Subscriptions let customers make recurring payments to access a product or service."
+        },
+        {
+          "id": "FC-16",
+          "sentence": "automatically generates invoices, attempts payment collection, and manages the subscription status throughout its lifecycle.",
+          "kind": "paraphrase",
+          "sourceId": "stripe-subscriptions",
+          "locator": "the page's opening paragraph",
+          "quote": "automatically generates invoices, attempts payment collection, and manages the subscription status throughout its lifecycle"
+        }
+      ]
+    },
+    {
+      "path": "infra/intake/briefs/pre-seed-evidence-pack.md",
+      "claims": [
+        {
+          "id": "PE-01",
+          "sentence": "A SAFE (Simple Agreement for Future Equity) is a short contract an investor signs to fund your startup now.",
+          "kind": "definition",
+          "sourceId": "yc-safe",
+          "locator": "the \"What is a SAFE\" section",
+          "quote": "A SAFE (Simple Agreement for Future Equity) is a short contract an investor signs to fund your startup now"
+        },
+        {
+          "id": "PE-02",
+          "sentence": "It converts into shares automatically when your startup raises a priced round.",
+          "kind": "definition",
+          "sourceId": "yc-safe",
+          "locator": "the \"What is a SAFE\" section",
+          "quote": "It converts into shares automatically when your startup raises a priced round."
+        },
+        {
+          "id": "PE-03",
+          "sentence": "The NVCA Model Legal Documents serve as the industry-embraced model documents to be used in venture capital financings.",
+          "kind": "definition",
+          "sourceId": "nvca-model",
+          "locator": "the page's opening statement",
+          "quote": "The NVCA Model Legal Documents serve as the industry-embraced model documents to be used in venture capital financings."
+        },
+        {
+          "id": "PE-04",
+          "sentence": "Every offer and sale of securities must either be registered under the Securities Act of 1933",
+          "kind": "regulation",
+          "sourceId": "sec-exempt",
+          "locator": "the page's opening statement of the registration requirement",
+          "quote": "Every offer and sale of securities must either be registered under the Securities Act of 1933"
+        },
+        {
+          "id": "PE-05",
+          "sentence": "The SEC does not charge any filing fee for a Form D notice or amendment.",
+          "kind": "regulation",
+          "sourceId": "sec-exempt",
+          "locator": "the Form D notice section",
+          "quote": "The SEC does not charge any filing fee for a Form D notice or amendment."
+        },
+        {
+          "id": "PE-06",
+          "sentence": "a Form D notice is required for all Regulation D offerings",
+          "kind": "regulation",
+          "sourceId": "sec-exempt",
+          "locator": "the Regulation D section",
+          "quote": "Form D required for all Regulation D offerings"
+        },
+        {
+          "id": "PE-07",
+          "sentence": "no general solicitation or advertising to market the securities.",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the list of Rule 506(b) requirements",
+          "quote": "no general solicitation or advertising to market the securities"
+        },
+        {
+          "id": "PE-08",
+          "sentence": "an issuer relying on the rule can sell to an unlimited number of accredited investors",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the page's description of who may buy",
+          "quote": "can sell securities to an unlimited number of accredited investors"
+        },
+        {
+          "id": "PE-09",
+          "sentence": "when non-accredited investors take part the issuer must give them disclosure documents",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the list of Rule 506(b) requirements",
+          "quote": "must give any non-accredited investors disclosure documents"
+        },
+        {
+          "id": "PE-10",
+          "sentence": "Briefly tell your reader what your company is and why it will be successful.",
+          "kind": "paraphrase",
+          "sourceId": "sba-plan",
+          "locator": "the executive summary section",
+          "quote": "Briefly tell your reader what your company is and why it will be successful."
+        },
+        {
+          "id": "PE-11",
+          "sentence": "describe how you’ll attract and retain customers.",
+          "kind": "paraphrase",
+          "sourceId": "sba-plan",
+          "locator": "the marketing and sales section",
+          "quote": "describe how you’ll attract and retain customers."
+        },
+        {
+          "id": "PE-12",
+          "sentence": "clearly explain how much funding you’ll need over the next five years and what you’ll use it for",
+          "kind": "paraphrase",
+          "sourceId": "sba-plan",
+          "locator": "the funding request section",
+          "quote": "clearly explain how much funding you’ll need over the next five years and what you’ll use it for"
+        },
+        {
+          "id": "PE-13",
+          "sentence": "Market research helps you find customers for your business",
+          "kind": "paraphrase",
+          "sourceId": "sba-market-research",
+          "locator": "the page's opening statement on market research",
+          "quote": "Market research helps you find customers for your business"
+        },
+        {
+          "id": "PE-14",
+          "sentence": "Competitive analysis helps you learn from businesses competing for your potential customers.",
+          "kind": "paraphrase",
+          "sourceId": "sba-market-research",
+          "locator": "the page's statement on competitive analysis",
+          "quote": "Competitive analysis helps you learn from businesses competing for your potential customers"
+        },
+        {
+          "id": "PE-15",
+          "sentence": "a work made for hire is \"a work prepared by an employee within the scope of his or her employment.\"",
+          "kind": "regulation",
+          "sourceId": "usc-17-101",
+          "locator": "the definition of a work made for hire, paragraph (1)",
+          "quote": "a work prepared by an employee within the scope of his or her employment"
+        },
+        {
+          "id": "PE-16",
+          "sentence": "the parties must \"expressly agree in a written instrument signed by them\" that the work is made for hire",
+          "kind": "regulation",
+          "sourceId": "usc-17-101",
+          "locator": "the definition of a work made for hire, paragraph (2)",
+          "quote": "expressly agree in a written instrument signed by them"
+        },
+        {
+          "id": "PE-17",
+          "sentence": "\"A transfer of copyright ownership, other than by operation of law, is not valid unless an instrument of conveyance\"",
+          "kind": "regulation",
+          "sourceId": "usc-17-204",
+          "locator": "subsection (a)",
+          "quote": "A transfer of copyright ownership, other than by operation of law, is not valid unless an instrument of conveyance"
+        },
+        {
+          "id": "PE-18",
+          "sentence": "Applications for patent, patents, or any interest therein, shall be assignable in law by an instrument in writing.",
+          "kind": "regulation",
+          "sourceId": "usc-35-261",
+          "locator": "the first paragraph",
+          "quote": "Applications for patent, patents, or any interest therein, shall be assignable in law by an instrument in writing."
+        },
+        {
+          "id": "PE-19",
+          "sentence": "an assignment may be void against a later buyer or lender who gives value without notice unless it is recorded with the Patent and Trademark Office within three months of its date or before the later purchase",
+          "kind": "regulation",
+          "sourceId": "usc-35-261",
+          "locator": "the paragraph on recording",
+          "quote": "shall be void as against any subsequent purchaser or mortgagee for a valuable consideration, without notice"
+        }
+      ]
+    },
+    {
+      "path": "infra/intake/briefs/first-hires.md",
+      "claims": [
+        {
+          "id": "FH-01",
+          "sentence": "Facts that provide evidence of the degree of control and independence fall into three categories:",
+          "kind": "regulation",
+          "sourceId": "irs-contractor",
+          "locator": "the common law rules section",
+          "quote": "Facts that provide evidence of the degree of control and independence fall into three categories:"
+        },
+        {
+          "id": "FH-02",
+          "sentence": "Does the company control or have the right to control what the worker does and how the worker does his or her job?",
+          "kind": "regulation",
+          "sourceId": "irs-contractor",
+          "locator": "the behavioral control category",
+          "quote": "Does the company control or have the right to control what the worker does and how the worker does his or her job?"
+        },
+        {
+          "id": "FH-03",
+          "sentence": "all information that provides evidence of the degree of control and independence must be considered.",
+          "kind": "regulation",
+          "sourceId": "irs-contractor",
+          "locator": "the paragraph on weighing all factors",
+          "quote": "all information that provides evidence of the degree of control and independence must be considered."
+        },
+        {
+          "id": "FH-04",
+          "sentence": "is determined by looking at the economic realities of the worker’s relationship with the employer.",
+          "kind": "regulation",
+          "sourceId": "dol-fs13",
+          "locator": "the statement of the economic reality test",
+          "quote": "is determined by looking at the economic realities of the worker’s relationship with the employer"
+        },
+        {
+          "id": "FH-05",
+          "sentence": "What the worker is called is not relevant",
+          "kind": "regulation",
+          "sourceId": "dol-fs13",
+          "locator": "the statement of the economic reality test",
+          "quote": "What the worker is called is not relevant"
+        },
+        {
+          "id": "FH-06",
+          "sentence": "Misclassification occurs when an employer treats a worker who is an employee under the FLSA as an independent contractor.",
+          "kind": "regulation",
+          "sourceId": "dol-misclass",
+          "locator": "the page's definition of misclassification",
+          "quote": "Misclassification occurs when an employer treats a worker who is an employee under the FLSA as an independent contractor."
+        },
+        {
+          "id": "FH-07",
+          "sentence": "Independent contractors can sometimes qualify as employees in a legal sense.",
+          "kind": "paraphrase",
+          "sourceId": "sba-hire",
+          "locator": "the section on filing taxes with employees or independent contractors",
+          "quote": "Independent contractors can sometimes qualify as employees in a legal sense."
+        },
+        {
+          "id": "FH-08",
+          "sentence": "Get an Employer Identification Number (EIN)",
+          "kind": "paraphrase",
+          "sourceId": "sba-hire",
+          "locator": "the list of steps under \"Hire and pay employees\"",
+          "quote": "Get an Employer Identification Number (EIN)"
+        },
+        {
+          "id": "FH-09",
+          "sentence": "Unless exempt, employees covered by the Act must receive overtime pay for hours worked over 40 in a workweek",
+          "kind": "regulation",
+          "sourceId": "dol-overtime",
+          "locator": "the page's overtime statement",
+          "quote": "Unless exempt, employees covered by the Act must receive overtime pay for hours worked over 40 in a workweek"
+        },
+        {
+          "id": "FH-10",
+          "sentence": "All U.S. employers must properly complete Form I-9 for every individual they hire for employment in the United States.",
+          "kind": "regulation",
+          "sourceId": "uscis-i9",
+          "locator": "the page's statement of who must complete the form",
+          "quote": "All U.S. employers must properly complete Form I-9 for every individual they hire for employment in the United States."
+        },
+        {
+          "id": "FH-11",
+          "sentence": "Both employees and employers (or authorized representatives of the employer) must complete the form.",
+          "kind": "regulation",
+          "sourceId": "uscis-i9",
+          "locator": "the page's statement of who completes the form",
+          "quote": "Both employees and employers (or authorized representatives of the employer) must complete the form."
+        },
+        {
+          "id": "FH-12",
+          "sentence": "for three years after the date of hire, or for one year after employment is terminated, whichever is later",
+          "kind": "regulation",
+          "sourceId": "uscis-i9",
+          "locator": "the list of employer steps on retaining the form",
+          "quote": "for three years after the date of hire, or for one year after employment is terminated, whichever is later"
+        },
+        {
+          "id": "FH-13",
+          "sentence": "Employer must verify the identity and employment authorization of individuals hired for employment in the United States.",
+          "kind": "regulation",
+          "sourceId": "irs-hiring",
+          "locator": "the page's list of hiring requirements",
+          "quote": "Employer must verify the identity and employment authorization of individuals hired for employment in the United States."
+        },
+        {
+          "id": "FH-14",
+          "sentence": "Ask all new employees to give you a signed Form W-4 when they start work.",
+          "kind": "regulation",
+          "sourceId": "irs-hiring",
+          "locator": "the page's list of hiring requirements",
+          "quote": "Ask all new employees to give you a signed Form W-4 when they start work."
+        },
+        {
+          "id": "FH-15",
+          "sentence": "You are required to get each employee's name and Social Security number (SSN) and to enter them on Form W-2",
+          "kind": "regulation",
+          "sourceId": "irs-hiring",
+          "locator": "the page's list of hiring requirements",
+          "quote": "You are required to get each employee's name and Social Security number (SSN) and to enter them on Form W-2"
+        },
+        {
+          "id": "FH-16",
+          "sentence": "can be used to request the correct name and taxpayer identification number",
+          "kind": "paraphrase",
+          "sourceId": "irs-contractor-forms",
+          "locator": "the section on Form W-9",
+          "quote": "can be used to request the correct name and taxpayer identification number"
+        },
+        {
+          "id": "FH-17",
+          "sentence": "Form 1099-NEC is used to report payments to contractors, and, generally, is not used to report wages and other compensation paid to employees",
+          "kind": "paraphrase",
+          "sourceId": "irs-contractor-forms",
+          "locator": "the section on Form 1099-NEC"
+        },
+        {
+          "id": "FH-18",
+          "sentence": "a work made for hire as \"a work prepared by an employee within the scope of his or her employment.\"",
+          "kind": "regulation",
+          "sourceId": "usc-17-101",
+          "locator": "the definition of a work made for hire, paragraph (1)",
+          "quote": "a work prepared by an employee within the scope of his or her employment"
+        },
+        {
+          "id": "FH-19",
+          "sentence": "the parties \"expressly agree in a written instrument signed by them\" that the work is made for hire",
+          "kind": "regulation",
+          "sourceId": "usc-17-101",
+          "locator": "the definition of a work made for hire, paragraph (2)",
+          "quote": "expressly agree in a written instrument signed by them"
+        },
+        {
+          "id": "FH-20",
+          "sentence": "\"A transfer of copyright ownership, other than by operation of law, is not valid unless an instrument of conveyance\"",
+          "kind": "regulation",
+          "sourceId": "usc-17-204",
+          "locator": "subsection (a)",
+          "quote": "A transfer of copyright ownership, other than by operation of law, is not valid unless an instrument of conveyance"
+        }
+      ]
+    }
+  ]
+}
