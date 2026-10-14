@@ -82,3 +82,22 @@ test('readingMinutes never returns less than one', () => {
   assert.equal(readingMinutes(undefined), 1);
   assert.equal(readingMinutes('word '.repeat(2200)), 10);
 });
+
+// WP-63: the open research pages point to the executive briefs hub, and only while that route is live.
+const PAGES = new URL('../../../src/pages/research/', import.meta.url);
+const LINK = new URL('../../../src/components/research/BriefsHubLink.astro', import.meta.url);
+
+test('the research index and every research page carry the fail-closed link to the briefs hub', () => {
+  for (const file of ['index.astro', '[slug].astro']) {
+    const page = readFileSync(new URL(file, PAGES), 'utf8');
+    assert.match(page, /import BriefsHubLink from/, file);
+    assert.match(page, /<BriefsHubLink \/>/, file);
+  }
+  const link = readFileSync(LINK, 'utf8');
+  assert.match(link, /isLive\('\/briefs\/'\)/);
+  assert.match(link, /live && \(/);
+});
+
+test('the open research briefs stay open: no research brief asks for a request or an email address', () => {
+  for (const brief of briefs) assert.doesNotMatch(brief.body, /request (?:this|the) brief|sent by email/i, brief.slug);
+});

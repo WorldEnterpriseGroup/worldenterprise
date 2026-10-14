@@ -1,0 +1,39 @@
+---
+import { forms, intakeRequiresJs, planForm } from '../../data/forms.ts';
+import BriefRequestForm from '../forms/BriefRequestForm.astro';
+import Callout from '../ui/Callout.astro';
+import { BRIEF_COPY } from './copy.ts';
+
+interface Props {
+  /** The registry id of the brief, also the `briefId` the form sends. */
+  briefId: string;
+}
+
+const { briefId } = Astro.props;
+// A brief request has no mailbox fallback (docs/wave8-contracts.md section 3.4), so with no intake endpoint the form is disabled and
+// the page says plainly that requests are not being accepted. No address to write to is offered in its place.
+const plan = planForm('brief-request', forms.intake, null, intakeRequiresJs);
+---
+
+<section class="brief-request stack" id="request" aria-labelledby="request-heading" data-brief-request data-mode={plan.mode}>
+  <h2 id="request-heading">{BRIEF_COPY.requestHeading}</h2>
+  {
+    plan.mode === 'disabled' && (
+      <Callout tone="notice" title={BRIEF_COPY.notAcceptingTitle}>
+        <p data-brief-not-accepting>{BRIEF_COPY.notAccepting}</p>
+      </Callout>
+    )
+  }
+  <BriefRequestForm briefId={briefId} />
+  <p class="brief-request__note">{BRIEF_COPY.notAdvice}</p>
+</section>
+
+<style>
+  .brief-request {
+    scroll-margin-top: var(--sp-8);
+  }
+  .brief-request__note {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+</style>
