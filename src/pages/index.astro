@@ -1,142 +1,98 @@
 ---
-import { getCollection } from 'astro:content';
-import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
-import FaqList from '../components/cards/FaqList.astro';
+/**
+ * The home page (SITE-COPY 1, WP-53): the galaxy hero, the long horizon (Dream, Build, Grow on the business clock), the real clock,
+ * what WE does and how WE is paid, the Universal Business Framework, who WE works with, the latest insights and the closing band.
+ * Every secondary action falls back to a built page until its new route is live (src/components/program/ctas.ts).
+ */
+import HomeClock from '../components/home/HomeClock.astro';
 import HomeHero from '../components/home/HomeHero.astro';
+import HomeJourney from '../components/home/HomeJourney.astro';
+import HomeTeam from '../components/home/HomeTeam.astro';
+import HomeUbf from '../components/home/HomeUbf.astro';
 import LatestInsights from '../components/home/LatestInsights.astro';
-import { HOME_FAQ_IDS } from '../components/home/faq.ts';
-import LeaveWith from '../components/home/leave-with/LeaveWith.astro';
-import PromiseProof from '../components/home/proof/PromiseProof.astro';
-import { resolveProof } from '../components/home/proof/proof.ts';
+import { heroPoster } from '../components/home/hero-image.ts';
+import { SITUATIONS, situationHref } from '../components/home/home.ts';
 import { loadPage } from '../components/program/loadPage.ts';
-import SeatDiagram from '../components/program/SeatDiagram.astro';
+import { NO_FUNDING_LINE } from '../components/program/clock.ts';
+import { START_REVIEW, pick } from '../components/program/ctas.ts';
+import VisualIcon from '../components/visuals/VisualIcon.astro';
 import { photoImage } from '../components/media/photo-image.ts';
-import CtaBand from '../components/ui/CtaBand.astro';
-import HexAtlas from '../components/ui/HexAtlas.astro';
 import { preloadOfPhoto } from '../lib/image-type.ts';
 import { getRouteState } from '../lib/route-state.ts';
-import { PACKAGE_PARAM, packages } from '../data/packages.ts';
 import { href } from '../lib/url.ts';
 import HomeLayout from '../layouts/HomeLayout.astro';
 
-const { data, Content } = await loadPage('home');
-const [primary, secondary] = data.ctas;
+const { data } = await loadPage('home');
 const state = await getRouteState();
+const isLive = (path: string): boolean => state.isLive(path);
+const heroImage = await heroPoster();
+const desk = await photoImage('band-1');
 const band = await photoImage('band-4');
-const heroImage = await photoImage('band-1');
 
-const SERVICES = [
-  { label: 'Brand and Identity', href: '/services/brand-and-identity/', line: 'A' },
-  { label: 'Product and IT Development', href: '/services/product-and-it-development/', line: 'B' },
-  { label: 'Customer Relations and Market Development', href: '/services/customer-and-market-development/', line: 'C' },
-  { label: 'Business Management and Operations', href: '/services/business-management-and-operations/', line: 'D' },
-  { label: 'Digital Incubation', href: '/services/digital-incubation/', line: 'E' },
-  { label: 'Fundability and Investor Readiness', href: '/services/fundability-and-investor-readiness/', line: 'F' },
-  { label: 'Professional-Services Coordination', href: '/services/professional-services-coordination/', line: 'G' },
-] as const;
-const services = SERVICES.filter((s) => state.isLive(s.href));
-
-const faqEntries = (await getCollection('faq')).filter((entry) => entry.data.draft !== true);
-const homeFaqs = HOME_FAQ_IDS.map((id) => {
-  const entry = faqEntries.find((e) => e.data.id === id);
-  if (entry === undefined) throw new Error(`The home page lists the FAQ "${id}", which is not a published entry in src/data/faq.yaml.`);
-  return { question: entry.data.question, answer: entry.data.answer };
-});
-const proofRows = resolveProof((path) => state.isLive(path));
+const howLong = pick('howLong', isLive);
+const who = pick('who', isLive);
+const brief = pick('timelineBrief', isLive);
+const situations = SITUATIONS.map((s) => ({ ...s, href: situationHref(s, isLive) }));
 ---
 <HomeLayout description={data.description} updated={data.updated} draft={data.draft} ogSlot="og-home" preloadImage={preloadOfPhoto(heroImage)}>
-  {primary && <HomeHero image={heroImage} eyebrow={data.eyebrow ?? 'World Enterprise Incubator'} title="Build the evidence a SaaS idea needs to be a company." lead="Dedicated team seats, steered by WE, take you from first idea to first customers, with the evidence an investor will ask for." primary={primary} secondary={secondary} />}
+  <HomeHero image={heroImage}
+    eyebrow={data.eyebrow ?? 'World Enterprise'}
+    title="WE build worlds."
+    lead="Long-horizon business incubation and consulting, paced to the years a company really takes."
+    body="WE steers a dedicated team that builds your company with you, from first proof through the years when most new businesses close. Start in any month. Stay for as long as the work is useful."
+    primary={START_REVIEW}
+    secondary={howLong}
+  />
 
-  <section class="section" aria-labelledby="home-leave-with">
-    <div class="container stack">
-      <h2 id="home-leave-with">What you leave with</h2>
-      <p class="measure">Dream surveys the ground, Build draws the blueprint and Grow works the territory. Each stage ends with things you can open and check, not with a promised outcome.</p>
-      <LeaveWith />
-    </div>
-  </section>
+  <HomeJourney more={pick('program', isLive)} />
 
-  <section class="section section--soft section--defer" aria-labelledby="home-team">
-    <div class="container stack">
-      <h2 id="home-team">A team that works for your company</h2>
-      <SeatDiagram labelledby="home-team" />
-      <p><a href={href('/program/dedicated-teams/')}>See how dedicated seats work</a></p>
-    </div>
-  </section>
+  <HomeClock more={howLong} />
 
-  <section class="section section--defer" aria-labelledby="home-packages">
-    <div class="container stack">
-      <h2 id="home-packages">Four packages, sized to the stage you are at</h2>
-      <p class="measure">A package is a pre-configured seat plan with a fixed scope, sized for a company stage. Every package covers all seven service lines, and the packages differ in depth.</p>
-      <ul class="packages" role="list">
+  <HomeTeam photo={desk} more={pick('howWeWork', isLive)} paid={pick('paid', isLive)} />
+
+  <HomeUbf more={pick('ubf', isLive)} />
+
+  <section class="band band--soft home-who" aria-labelledby="home-who-title">
+    <div class="container stack stack--loose">
+      <div class="split split--even">
+        <div class="split__text home-who__text">
+          <p class="eyebrow">Who WE works with</p>
+          <h2 id="home-who-title">Built around the people who build companies.</h2>
+          <p class="lead">Founders whose experience predicts success, and capable founders who need more capacity than they can yet hire.</p>
+          {who && <p><a class="btn btn--secondary" href={href(who.href)}>{who.label}</a></p>}
+        </div>
+        <div class="split__media">
+          <img class="home-band" src={band.src} srcset={band.srcset} sizes={band.srcset === undefined ? undefined : band.sizes} width={band.width} height={band.height} alt={band.alt} loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <ul class="home-who__list" role="list">
         {
-          packages.map((pkg) => (
-            <li class="packages__item">
-              <p class="packages__depth">{pkg.depth} depth</p>
-              <h3 class="packages__name">{pkg.name}</h3>
-              <p class="packages__fit">{pkg.stageFit}</p>
-              <p class="packages__action">
-                <a href={href(`/apply/?${PACKAGE_PARAM}=${pkg.id}`)}>Apply with {pkg.name}</a>
-              </p>
+          situations.map((s) => (
+            <li class="home-who__card">
+              <VisualIcon name={s.icon} size={40} />
+              <h3 class="home-who__label">{s.href === undefined ? s.label : <a href={href(s.href)}>{s.label}</a>}</h3>
+              <p>{s.line}</p>
             </li>
           ))
         }
       </ul>
-      <p class="measure">Package amounts are not published. WE shares the current rate for a package when you ask.</p>
-      <p><a class="btn btn--secondary" href={href('/pricing/')}>See seats and packages</a></p>
     </div>
   </section>
-
-  <section class="section section--soft section--defer" aria-labelledby="home-proof">
-    <div class="container stack">
-      <h2 id="home-proof">Promise and proof</h2>
-      <p class="measure">Every statement below names the page that holds its evidence. Open the source and check it.</p>
-      <PromiseProof rows={proofRows} />
-    </div>
-  </section>
-
-  <section class="section section--defer" aria-labelledby="home-fundable">
-    <div class="container stack">
-      <h2 id="home-fundable">Evidence a serious investor asks for</h2>
-      <p class="measure">WE helps you assemble the evidence an investor will look for: a validated problem, a working product and customers who use it. The decision to invest stays with the investor.</p>
-      <NoFundingDisclaimer />
-    </div>
-  </section>
-
-  <section class="section section--soft section--defer">
-    <div class="container prose measure"><Content /></div>
-  </section>
-
-  <section class="section section--defer" aria-labelledby="home-remote">
-    <div class="container stack">
-      <h2 id="home-remote">Fully remote, by design</h2>
-      <img class="home-band" src={band.src} srcset={band.srcset} sizes={band.srcset === undefined ? undefined : band.sizes} width={band.width} height={band.height} alt={band.alt} loading="lazy" decoding="async" />
-      <p class="measure">There is no office to visit and nobody relocates. The work is written down, reviewed at set points and visible to you throughout. <a href={href('/program/digital-incubation-model/')}>Read how remote works in practice</a>.</p>
-    </div>
-  </section>
-
-  {
-    services.length > 0 && (
-      <section class="section section--soft section--defer" aria-labelledby="home-services">
-        <div class="container stack">
-          <h2 id="home-services">Seven service lines, one team to answer to</h2>
-          <HexAtlas label="Service lines" cells={services} />
-          <p><a href={href('/services/')}>Explore all service lines</a></p>
-        </div>
-      </section>
-    )
-  }
 
   <LatestInsights />
 
-  <section class="section section--soft section--defer" aria-labelledby="home-faq">
-    <div class="container stack">
-      <h2 id="home-faq">Questions founders ask first</h2>
-      <FaqList items={homeFaqs} name="home-faq" />
-    </div>
-  </section>
-
   <Fragment slot="after">
-    {primary && <CtaBand title="Ready to test your idea?" text="Apply, or sketch the team you would need first." cta={primary} secondary={secondary} />}
+    <section class="band band--deep home-end" aria-labelledby="home-end-title">
+      <div class="container home-end__inner">
+        <h2 id="home-end-title">Where is your company on the clock?</h2>
+        <p class="lead">Start a readiness review. WE arranges a conversation, then sends a one-page read of where your company sits on the business timeline and what the next phase needs.</p>
+        <p class="home-end__required">{NO_FUNDING_LINE}</p>
+        <div class="cluster">
+          <a class="btn btn--inverse" href={href(START_REVIEW.href)}>{START_REVIEW.label}</a>
+          {brief && <a class="home-end__brief" href={href(brief.href)}>{brief.label}</a>}
+        </div>
+      </div>
+    </section>
   </Fragment>
 </HomeLayout>
 
@@ -147,49 +103,53 @@ const proofRows = resolveProof((path) => state.isLive(path));
       block-size: auto;
       aspect-ratio: 16 / 9;
       object-fit: cover;
+      border-radius: var(--radius-md);
     }
 
-    .packages {
+    .home-who__text {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .home-who__list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
       gap: var(--sp-4);
-      list-style: none;
-      padding: 0;
       margin: 0;
+      padding: 0;
+      list-style: none;
     }
 
-    .packages__item {
-      display: flex;
-      flex-direction: column;
+    .home-who__card {
+      display: grid;
+      align-content: start;
       gap: var(--sp-2);
       padding: var(--sp-5);
-      border: var(--border-hair);
-      border-block-start: 4px solid var(--we-blue);
-      border-radius: var(--radius-md);
       background: var(--color-bg);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
     }
 
-    .packages__depth {
-      font-family: var(--ff-display);
-      font-size: var(--fs-xs);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: var(--tracking-caps);
-      color: var(--color-link);
-    }
-
-    .packages__name {
-      font-size: var(--fs-xl);
+    .home-who__label {
+      font-size: var(--fs-lg);
       line-height: var(--lh-tight);
     }
 
-    .packages__fit {
-      color: var(--color-text-muted);
+    .home-end__inner {
+      display: grid;
+      gap: var(--sp-4);
+      justify-items: start;
     }
 
-    .packages__action {
-      margin-block-start: auto;
-      padding-block-start: var(--sp-2);
+    .home-end__inner > p {
+      max-inline-size: var(--prose-max);
+    }
+
+    .home-end__required {
+      font-weight: 600;
+    }
+
+    .home-end__brief {
       font-weight: 600;
     }
   }

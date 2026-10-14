@@ -1,7 +1,13 @@
 ---
+/**
+ * The home hero (decision W9-6): a dark galaxy band with the copy on the left and the galaxy beside it, running to the right edge of
+ * the window. The poster `<img>` is the LCP element (high priority, never lazy, the same srcset and sizes as the head preload). On a
+ * capable desktop the galaxy scene loads over it as decoration; its own poster is the same file, so nothing is fetched twice. Phones,
+ * reduced motion, forced colors and no-JS visitors keep the still image.
+ */
 import type { PhotoImage } from '../media/photo-image.ts';
-import CellTrail from '../ui/CellTrail.astro';
-import { STAGES } from '../program/stages.ts';
+import Scene from '../visuals/Scene.astro';
+import { HERO_POSTER } from './hero-image.ts';
 import { href } from '../../lib/url.ts';
 
 interface Cta {
@@ -12,31 +18,35 @@ interface Cta {
 interface Props {
   eyebrow: string;
   title: string;
+  /** The one-sentence promise under the h1. */
   lead: string;
+  body: string;
   primary: Cta;
-  secondary?: Cta;
+  secondary?: Cta | undefined;
   /** The LCP image. The page builds it once and also derives the head preload from it, so the two name the same srcset and sizes. */
   image: PhotoImage;
 }
 
-const { eyebrow, title, lead, primary, secondary, image } = Astro.props;
-const trail = STAGES.map((s) => ({ label: s.name, href: href(s.path) }));
+const { eyebrow, title, lead, body, primary, secondary, image } = Astro.props;
 ---
 
-<section class="home-hero hero--atlas" aria-labelledby="home-title">
-  <div class="container home-hero__grid">
-    <div class="home-hero__copy stack">
-      <p class="eyebrow">{eyebrow}</p>
+<section class="home-hero band band--deep" aria-labelledby="home-title">
+  <div class="container split home-hero__grid">
+    <div class="split__text home-hero__copy">
+      <p class="eyebrow home-hero__eyebrow">{eyebrow}</p>
       <h1 id="home-title">{title}</h1>
       <p class="lead">{lead}</p>
-      <div class="cluster">
-        <a class="btn btn--primary" href={href(primary.href)}>{primary.label}</a>
-        {secondary && <a class="btn btn--secondary" href={href(secondary.href)}>{secondary.label}</a>}
+      <p class="home-hero__body">{body}</p>
+      <div class="cluster home-hero__actions">
+        <a class="btn btn--primary" href={href(primary.href)} data-hero-action="primary">{primary.label}</a>
+        {secondary && <a class="btn btn--secondary" href={href(secondary.href)} data-hero-action="secondary">{secondary.label}</a>}
       </div>
-      <CellTrail label="The three stages" cells={trail} />
     </div>
-    <div class="home-hero__media hex-frame">
-      <img src={image.src} srcset={image.srcset} sizes={image.srcset === undefined ? undefined : image.sizes} width={image.width} height={image.height} alt={image.alt} fetchpriority="high" decoding="async" />
+    <div class="split__media bleed-media home-hero__media">
+      <div class="home-hero__frame">
+        <img src={image.src} srcset={image.srcset} sizes={image.srcset === undefined ? undefined : image.sizes} width={image.width} height={image.height} alt={image.alt} fetchpriority="high" decoding="async" />
+        <Scene scene="galaxy" poster={HERO_POSTER} alt={image.alt} sizes={image.sizes} fill decorative />
+      </div>
     </div>
   </div>
 </section>
@@ -44,28 +54,86 @@ const trail = STAGES.map((s) => ({ label: s.name, href: href(s.path) }));
 <style>
   @layer pages {
     .home-hero {
-      padding-block: var(--sp-5);
-    }
-
-    .home-hero__grid {
-      display: grid;
-      gap: var(--sp-4);
-      align-items: center;
-      grid-template-columns: minmax(0, 1fr);
+      padding-block: var(--sp-5) var(--sp-6);
 
       @media (min-width: 62rem) {
-        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-        gap: var(--sp-6);
+        padding-block: var(--sp-6);
       }
     }
 
-    /* Keeps the whole hero inside the first viewport on phones and desktops. */
-    .home-hero__media img {
-      max-block-size: 22dvh;
-      object-fit: cover;
+    .home-hero__grid {
+      gap: var(--sp-4);
 
       @media (min-width: 62rem) {
-        max-block-size: 60dvh;
+        gap: var(--sp-8);
+      }
+    }
+
+    .home-hero__copy {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+
+      @media (min-width: 62rem) {
+        gap: var(--sp-4);
+      }
+    }
+
+    .home-hero__eyebrow {
+      color: var(--color-band-deep-accent);
+    }
+
+    .home-hero h1 {
+      font-size: var(--fs-display);
+      line-height: var(--lh-tight);
+    }
+
+    .home-hero .lead {
+      color: var(--color-text);
+    }
+
+    .home-hero__body {
+      color: var(--color-text-muted);
+      max-inline-size: var(--split-text);
+    }
+
+    /* On the night band the filled action is white, the outlined one light: both keep their contrast. */
+    .home-hero .btn--primary {
+      background: var(--color-band-deep-text);
+      color: var(--color-band-deep-bg);
+
+      &:hover {
+        background: var(--color-band-deep-link);
+        color: var(--color-band-deep-bg);
+      }
+    }
+
+    .home-hero__frame {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      max-block-size: 24dvh; /* the h1, the promise, the action and the picture share a phone's first screen */
+      inline-size: 100%;
+      border-radius: var(--radius-md);
+
+      @media (min-width: 62rem) {
+        max-block-size: none;
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+      }
+    }
+
+    .home-hero__frame > img {
+      position: absolute;
+      inset: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+
+    @media (forced-colors: active) {
+      .home-hero__frame {
+        border: 1px solid CanvasText;
       }
     }
   }
