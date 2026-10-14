@@ -31,9 +31,9 @@ const GALAXY_VERTEX = /* glsl */ `
     float a = aAngle + uTime * omega;
     vec3 p = vec3(aRadius * cos(a), aHeight, aRadius * sin(a));
     vColor = color;
-    vAlpha = smoothstep(0.0, 0.6, aRadius) * (0.55 + 0.45 * smoothstep(9.0, 2.0, aRadius));
+    vAlpha = smoothstep(0.0, 0.6, aRadius) * (0.7 + 0.3 * smoothstep(9.0, 2.0, aRadius));
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
-    gl_PointSize = aSize * uScale * (18.0 / -mv.z);
+    gl_PointSize = aSize * uScale * (36.0 / -mv.z);
     gl_Position = projectionMatrix * mv;
   }
 `;
@@ -47,15 +47,15 @@ function buildDisc(count: number, rand: () => number, dust: boolean): { points: 
   for (let i = 0; i < count; i += 1) {
     const arm = i % ARMS;
     // Exponential disc with a dense bulge.
-    const r = dust ? 0.8 + rand() * 7.5 : Math.min(9.5, -Math.log(1 - rand() * 0.985) * 1.9 + 0.25);
+    const r = dust ? 0.8 + rand() * 7.5 : Math.min(9.5, rand() < 0.3 ? Math.abs(gaussian(rand)) * 1.1 + 0.2 : 0.9 + rand() ** 0.8 * 8.4);
     const twist = r * 0.62;
-    const spread = (dust ? 0.5 : 0.28) / (0.6 + r * 0.12);
+    const spread = (dust ? 0.45 : 0.22) / (0.7 + r * 0.1);
     radius[i] = r;
     angle[i] = (arm / ARMS) * Math.PI * 2 + twist + gaussian(rand) * spread;
     height[i] = gaussian(rand) * (0.06 + 0.32 * Math.exp(-r * 0.7));
     size[i] = dust ? 7 + rand() * 9 : rand() < 0.03 ? 2.6 + rand() * 1.8 : 0.8 + rand() * 1.3;
     // Hot pale blue near the core, deeper blue in the arms, palest on the bright stars.
-    const tone = dust ? 0.1 + rand() * 0.25 : Math.min(1, 0.35 + Math.exp(-r * 0.45) * 0.6 + rand() * 0.25);
+    const tone = dust ? 0.15 + rand() * 0.25 : Math.min(1, 0.12 + Math.exp(-r * 0.45) * 0.7 + rand() * 0.3);
     colors.set(ramp(tone), i * 3);
   }
   const geometry = new BufferGeometry();
@@ -159,7 +159,6 @@ function buildTrail(count: number, rand: () => number, pixelScale: number): { po
 
 export function create(ctx: SceneContext): SceneInstance {
   const { scene, camera, renderer, options } = ctx;
-  const rand = seeded(20261014);
   const align = enumOption(options, 'align', ['center', 'end'] as const, 'center');
   const pixelScale = renderer.getPixelRatio();
 
@@ -169,8 +168,9 @@ export function create(ctx: SceneContext): SceneInstance {
   root.rotation.z = -0.18;
   scene.add(root);
 
-  const stars = buildDisc(Math.round(18000 * ctx.quality), rand, false);
-  const dust = buildDisc(Math.round(900 * ctx.quality), rand, true);
+  // Each layer has its own seed: a smaller frame draws fewer particles, and the ones it draws stay where the poster shows them.
+  const stars = buildDisc(Math.round(18000 * ctx.quality), seeded(101), false);
+  const dust = buildDisc(Math.round(900 * ctx.quality), seeded(102), true);
   root.add(dust.points, stars.points);
   for (const m of [stars.material, dust.material]) {
     const u = m.uniforms.uScale;
@@ -181,20 +181,21 @@ export function create(ctx: SceneContext): SceneInstance {
   const halo = makeGlow(RAMP[2], 14, 0.22, 0.7);
   root.add(halo, bulge);
 
-  const shell = makeStarShell(Math.round(1600 * ctx.quality), 30, 60, rand);
+  const shell = makeStarShell(Math.round(1600 * ctx.quality), 30, 60, seeded(103));
   scene.add(shell);
   const shellMaterial = shell.material as ShaderMaterial;
   const shellScale = shellMaterial.uniforms.uScale;
   if (shellScale) shellScale.value = pixelScale;
 
   // The world at the core: assembles over ASSEMBLE_SECONDS, then turns slowly. It does not tilt with the disc.
-  const world = makeGlobe({ frequency: 5, radius: 0.62, seed: 7, scatter: 2.6, tones: [0.05, 0.75], rim: 1.1 });
+  // The amber cell faces the camera at the poster time: the world turns at 0.12 rad/s, so it starts 0.66 rad behind the front.
+  const world = makeGlobe({ frequency: 5, radius: 0.8, seed: 7, scatter: 2.6, tones: [0.05, 0.62], rim: 1.1, amberToward: [-Math.sin(0.66) * 0.85, 0.5, Math.cos(0.66) * 0.85] });
   const worldGlow = makeGlow(AMBER, 0.6, 0.0);
   const worldHalo = makeGlow(RAMP[4], 3.2, 0.5);
   const core = new Group();
   core.add(worldHalo, world.group, worldGlow);
   scene.add(core);
-  const trail = buildTrail(26, rand, pixelScale);
+  const trail = buildTrail(26, seeded(104), pixelScale);
   scene.add(trail.points);
 
   const offsetX = align === 'end' ? 2.6 : 0;

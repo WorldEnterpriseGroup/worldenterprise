@@ -39,7 +39,21 @@ export class WeScene extends HTMLElement {
   private observer: IntersectionObserver | undefined;
   private controller: SceneController | undefined;
 
+  /** Arrow keys, Home and End step focus through the label links, in poster and live state alike. */
+  private readonly onKey = (event: KeyboardEvent): void => {
+    const keys = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'];
+    if (!keys.includes(event.key) || !(event.target instanceof HTMLElement)) return;
+    const items = Array.from(this.querySelectorAll<HTMLElement>('.scene__label a[href], .scene__label button'));
+    const index = items.indexOf(event.target);
+    if (index === -1 || items.length < 2) return;
+    const step = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1;
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 : (index + step + items.length) % items.length;
+    event.preventDefault();
+    items[next]?.focus();
+  };
+
   connectedCallback(): void {
+    this.addEventListener('keydown', this.onKey);
     const name = this.dataset.scene;
     if (this.hasAttribute('data-static') || !isSceneName(name)) {
       if (!isSceneName(name)) console.warn(`we-scene: unknown scene "${String(name)}"; showing the poster`);
@@ -66,6 +80,7 @@ export class WeScene extends HTMLElement {
   }
 
   disconnectedCallback(): void {
+    this.removeEventListener('keydown', this.onKey);
     this.observer?.disconnect();
     this.observer = undefined;
     this.controller?.dispose();

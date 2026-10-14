@@ -38,8 +38,10 @@ export interface GlobeOptions {
   readonly inset?: number;
   /** How far from the surface a cell starts when it assembles (in radii). 0 builds the globe already assembled. */
   readonly scatter?: number;
-  /** Index of the one amber cell, or -1 for none. Defaults to a seeded choice. */
+  /** Index of the one amber cell, or -1 for none. Defaults to a seeded choice (or to `amberToward`). */
   readonly amberCell?: number;
+  /** Puts the amber cell on the cell nearest this direction (object space), so it faces the camera in the poster. */
+  readonly amberToward?: Vec3;
   /** Ramp range used for cell colors, 0..1 on the blue ramp. */
   readonly tones?: readonly [number, number];
   /** Brightness of the rim light. */
@@ -112,8 +114,21 @@ export function makeGlobe(opts: GlobeOptions): Globe {
   const cells = goldbergCells(opts.frequency);
   const inset = opts.inset ?? 0.86;
   const scatter = opts.scatter ?? 0;
-  const [toneLow, toneHigh] = opts.tones ?? [0.0, 0.85];
-  const amber = opts.amberCell ?? Math.floor(rand() * cells.length);
+  const [toneLow, toneHigh] = opts.tones ?? [0.0, 0.62];
+  const toward = opts.amberToward;
+  const nearest = (dir: Vec3): number => {
+    let best = 0;
+    let bestDot = -Infinity;
+    cells.forEach((cell, i) => {
+      const d = cell.center[0] * dir[0] + cell.center[1] * dir[1] + cell.center[2] * dir[2];
+      if (d > bestDot) {
+        bestDot = d;
+        best = i;
+      }
+    });
+    return best;
+  };
+  const amber = opts.amberCell ?? (toward !== undefined ? nearest(toward) : Math.floor(rand() * cells.length));
   const positions: number[] = [];
   const centers: number[] = [];
   const scatters: number[] = [];

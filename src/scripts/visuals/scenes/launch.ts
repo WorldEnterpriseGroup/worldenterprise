@@ -212,7 +212,7 @@ export function create(ctx: SceneContext): SceneInstance {
   scene.add(gate);
 
   // Grow: the hex world with its orbit ring.
-  const planet = makeGlobe({ frequency: 4, radius: 0.78, seed: 11, tones: [0.0, 0.8], amberCell: -1, rim: 1.0 });
+  const planet = makeGlobe({ frequency: 4, radius: 0.78, seed: 11, tones: [0.0, 0.6], amberCell: -1, rim: 1.0 });
   planet.group.position.copy(world);
   scene.add(planet.group);
   const halo = makeGlow(RAMP[4], 3.4, 0.45);

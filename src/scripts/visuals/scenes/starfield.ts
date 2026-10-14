@@ -23,8 +23,8 @@ export function create(ctx: SceneContext): SceneInstance {
   camera.lookAt(0, 0, -1);
   camera.updateProjectionMatrix();
 
-  const near = makeStarShell(Math.round(1400 * density * ctx.quality), 12, 22, rand);
-  const far = makeStarShell(Math.round(3200 * density * ctx.quality), 30, 60, rand);
+  const near = makeStarShell(Math.round(1400 * density * ctx.quality), 12, 22, seeded(5151));
+  const far = makeStarShell(Math.round(3200 * density * ctx.quality), 30, 60, seeded(5152));
   const materials = [near.material as ShaderMaterial, far.material as ShaderMaterial];
   for (const m of materials) {
     const u = m.uniforms.uScale;
@@ -36,7 +36,7 @@ export function create(ctx: SceneContext): SceneInstance {
   const nebula = new Group();
   const tones = [RAMP[1], RAMP[2], RAMP[0], RAMP[3], RAMP[1]];
   tones.forEach((tone, i) => {
-    const glow = makeGlow(tone, 14 + rand() * 10, 0.1 + rand() * 0.06, 0.75);
+    const glow = makeGlow(tone, 16 + rand() * 12, 0.16 + rand() * 0.08, 0.8);
     glow.position.set(-16 + i * 8 + (rand() - 0.5) * 4, (rand() - 0.5) * 5, -20 - rand() * 6);
     nebula.add(glow);
   });

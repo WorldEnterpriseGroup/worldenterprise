@@ -35,7 +35,7 @@ const DUST_VERTEX = /* glsl */ `
     vColor = color;
     vAlpha = (1.0 - e) * 0.9 + 0.05;
     vec4 mv = modelViewMatrix * vec4(position + o, 1.0);
-    gl_PointSize = uScale * mix(3.4, 1.4, e) * (10.0 / -mv.z);
+    gl_PointSize = uScale * mix(4.2, 1.6, e) * (10.0 / -mv.z);
     gl_Position = projectionMatrix * mv;
   }
 `;
@@ -56,7 +56,7 @@ function buildDust(count: number, rand: () => number, pixelScale: number): { poi
   const delays = new Float32Array(count);
   const colors = new Float32Array(count * 3);
   for (let i = 0; i < count; i += 1) {
-    const r = 0.25 + Math.abs(gaussian(rand)) * 0.45;
+    const r = 0.08 + Math.abs(gaussian(rand)) * 0.14;
     const v = [gaussian(rand), gaussian(rand) * 0.45, gaussian(rand)];
     const l = Math.hypot(v[0] ?? 0, v[1] ?? 0, v[2] ?? 0) || 1;
     offsets.set([((v[0] ?? 0) / l) * r, ((v[1] ?? 0) / l) * r, ((v[2] ?? 0) / l) * r], i * 3);
@@ -95,13 +95,14 @@ export function create(ctx: SceneContext): SceneInstance {
   const base = new Vector3(0, 3.4, 11.2);
   const look = new Vector3(0, -0.2, 0);
 
-  const shell = makeStarShell(Math.round(2000 * ctx.quality), 25, 55, rand);
+  const shell = makeStarShell(Math.round(2000 * ctx.quality), 25, 55, seeded(9001));
   const shellMaterial = shell.material as ShaderMaterial;
   const shellScale = shellMaterial.uniforms.uScale;
   if (shellScale) shellScale.value = pixelScale;
   scene.add(shell);
 
-  const world = makeGlobe({ frequency: 6, radius: 1.15, seed: 21, scatter: 2.2, tones: [0.0, 0.8], rim: 1.1 });
+  // The amber cell faces the camera at the poster time (the world turns at 0.1 rad/s, so aim it 0.85 rad behind the front).
+  const world = makeGlobe({ frequency: 6, radius: 1.15, seed: 21, scatter: 2.2, tones: [0.0, 0.6], rim: 1.1, amberToward: [-Math.sin(0.85) * 0.8, 0.45, Math.cos(0.85) * 0.8] });
   scene.add(world.group);
   const halo = makeGlow(RAMP[4], 4.2, 0.5);
   scene.add(halo);
@@ -112,28 +113,25 @@ export function create(ctx: SceneContext): SceneInstance {
   scene.add(system);
   const moons: Moon[] = [];
   for (let i = 0; i < MAX_MOONS; i += 1) {
+    // Ring tilt and moon phase come from the shared seed whether or not the ring has a moon, so moon i sits in the same place for any
+    // `moons` count (the label anchors depend on it); each dust cloud has its own seed.
     const radius = 1.85 + i * 0.47;
+    const tilt: [number, number, number] = [(rand() - 0.5) * 0.35, rand() * Math.PI, (rand() - 0.5) * 0.3];
+    // Golden-angle phases keep neighboring moons apart, so their labels never stack.
+    const phase = 0.4 + i * 2.39996 + rand() * 0.2;
     const pivot = new Group();
-    pivot.rotation.set((rand() - 0.5) * 0.35, rand() * Math.PI, (rand() - 0.5) * 0.3);
+    pivot.rotation.set(...tilt);
     system.add(pivot);
     const ring = new LineLoop(ringGeometry(radius, 192), new LineBasicMaterial({ color: RAMP[3], transparent: true, opacity: 0.16 + (i % 2) * 0.06 }));
     pivot.add(ring);
     if (i >= moonCount) continue;
-    const globe = makeGlobe({ frequency: 1, radius: 0.15 + (i % 3) * 0.03, seed: 300 + i, tones: [0.3, 1.0], amberCell: -1, rim: 1.2 });
-    const dust = buildDust(Math.round(260 * ctx.quality), rand, pixelScale);
+    const globe = makeGlobe({ frequency: 2, radius: 0.16 + (i % 3) * 0.035, seed: 300 + i, tones: [0.25, 0.75], amberCell: -1, rim: 1.2 });
+    globe.group.add(makeGlow(RAMP[4], 0.9, 0.4));
+    const dust = buildDust(Math.round(260 * ctx.quality), seeded(9191 + i), pixelScale);
     const moonGroup = new Group();
     moonGroup.add(globe.group, dust.points);
     pivot.add(moonGroup);
-    moons.push({
-      pivot: moonGroup,
-      globe,
-      dust: dust.points,
-      material: dust.material,
-      radius,
-      speed: 0.28 / Math.sqrt(radius),
-      phase: rand() * Math.PI * 2,
-      start: 1.5 + i * 1.6,
-    });
+    moons.push({ pivot: moonGroup, globe, dust: dust.points, material: dust.material, radius, speed: 0.28 / Math.sqrt(radius), phase, start: 1.5 + i * 1.6 });
   }
 
   const anchorList = moons.map(() => new Vector3());
