@@ -88,7 +88,9 @@ test('"Read more" shows only live routes, once each, with the title of the page'
   }
   const linked = new Set(sections.flatMap((s) => s.groups.flatMap((g) => g.seeAlso.map((l) => l.href))));
   assert.ok(linked.has('/program/how-it-works/'), 'a live page is not linked');
-  assert.ok(!linked.has('/investors/interest/'), 'an investor route with no page on this branch is linked');
+  // WP-44 (2e08abf) put /investors/interest/ on demo after WP-78 branched, so the line follows the route's state instead of assuming it
+  // has no page: linked exactly when live. The fail-closed case with no live route at all is the test above.
+  assert.equal(linked.has('/investors/interest/'), isLive('/investors/interest/'), 'the investor interest link does not follow its route');
 });
 
 test('a live route with no link title is an error, never a bare-path link', () => {
