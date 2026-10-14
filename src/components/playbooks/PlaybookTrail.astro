@@ -1,7 +1,7 @@
 ---
-import CellTrail from '../ui/CellTrail.astro';
+import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
-import { PLAYBOOK_SEQUENCE } from './meta.ts';
+import { liveSequence } from './meta.ts';
 
 interface Props {
   /** Slug of the playbook being read; omit on the hub. */
@@ -9,8 +9,85 @@ interface Props {
 }
 
 const { current } = Astro.props;
-const cells = PLAYBOOK_SEQUENCE.map((p) => ({ label: p.short, href: href(`/playbooks/${p.slug}/`) }));
-const index = PLAYBOOK_SEQUENCE.findIndex((p) => p.slug === current);
+// Only playbooks whose route exists in this build appear, so the trail never holds a dead cell.
+const state = await getRouteState();
+const sequence = liveSequence(state.isLive);
+const index = sequence.findIndex((p) => p.slug === current);
 ---
 
-<CellTrail label="The five playbooks in order" cells={cells} current={index === -1 ? undefined : index} />
+<nav class="pbtrail" aria-label="The playbooks in order">
+  <ol role="list">
+    {
+      sequence.map((p, i) => (
+        <li class="pbtrail__cell" aria-current={i === index ? 'step' : undefined}>
+          <span class="celltrail__hex pbtrail__hex" aria-hidden="true" data-done={index !== -1 && i < index ? 'true' : undefined}>{i + 1}</span>
+          {i === index ? <span>{p.short}</span> : <a href={href(`/playbooks/${p.slug}/`)}>{p.short}</a>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  /* Ten cells do not fit one row, so the trail is a grid whose rows hold two lines of label whatever the font: a label that wraps in the
+     fallback font and not in the web font moves nothing. Below 48rem the cells scroll sideways in a single row instead of stacking ten
+     rows above the page. */
+  .pbtrail ol {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--sp-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+  }
+
+  .pbtrail__cell {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--sp-2);
+    min-block-size: 3rem;
+    font-family: var(--ff-sans);
+    white-space: nowrap;
+
+    &[aria-current='step'] {
+      font-weight: 700;
+    }
+
+    & a {
+      color: inherit;
+    }
+  }
+
+  .pbtrail__hex {
+    flex: none;
+  }
+
+  .pbtrail__hex[data-done='true'] {
+    background: var(--we-blue-deep);
+    color: var(--color-text-inverse);
+  }
+
+  .pbtrail__cell[aria-current='step'] .pbtrail__hex {
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+  }
+
+  .pbtrail__cell[aria-current='step'] ~ .pbtrail__cell .pbtrail__hex {
+    background: var(--we-mist);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .pbtrail ol {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+      overflow-x: visible;
+    }
+
+    .pbtrail__cell {
+      white-space: normal;
+    }
+  }
+</style>

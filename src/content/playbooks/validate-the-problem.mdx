@@ -24,26 +24,64 @@ artifacts:
 relatedLibrary:
   - one-page-problem-brief
   - customer-interview-guide
-updated: 2026-10-06
+  - interview-synthesis-sheet
+updated: 2026-10-10
 ---
+import Callout from '../../components/ui/Callout.astro';
 import DataTable from '../../components/ui/DataTable.astro';
+import MaybeLink from '../../components/insights/MaybeLink.astro';
+
+## What good looks like
+
+Validation is finished when a stranger could read your notes and reach the same conclusion you did. That is a higher bar than "people liked the idea", and it is the bar that protects your time.
+
+- The problem brief names one kind of person, one situation and one thing they do about it today. It does not name a market.
+- You have spoken with people who match the brief and do not know you, and every conversation is written down in the same format on the same day.
+- Some of those people have given you something that costs them, such as an introduction, access to their data, a second conversation or a written commitment to try a pilot.
+- You wrote down what would make you stop before the first interview, and you can say whether that line was crossed.
+- The decision to continue, change the problem or stop is in writing, with the evidence beside it.
+
+<Callout title="Illustrative example, not a real company">
+
+A founder with years of experience in dental-practice administration wants to build scheduling software. The first brief says that dental practices want better scheduling. After a round of interviews with office managers, the notes say something narrower. The pain is a canceled appointment that nobody fills in time, and two people described a spreadsheet they rebuild every Monday to track it. The founder rewrites the brief around late-filled cancellations, drops the idea of a full scheduling system and asks both spreadsheet users for a second conversation. Both agree. The written decision reads: change the problem, then continue with the narrower one.
+
+</Callout>
+
+## Decision aid: continue, change the problem or stop
+
+Read the evidence you have against the rows below. Pick the row that matches what you saw, not the one you hoped for.
+
+<DataTable
+  caption="What the interview evidence usually means and the next move"
+  columns={["What the evidence shows", "What it usually means", "The next move"]}
+  rows={[
+    ["Several unconnected people describe the same problem in similar words, and each has already tried to fix it", "The problem is real for this group.", "Continue. Write down who they are and move to design."],
+    ["People agree the problem exists but have never tried to solve it", "It may be a nuisance and not a priority.", "Ask what would have to change for it to matter. Change the problem or stop if nothing would."],
+    ["Different people describe different problems", "Your brief is too broad.", "Narrow the group or the situation and interview again."],
+    ["People like the idea but offer nothing: no time, no access, no commitment", "Politeness, not demand.", "Treat the idea as untested and ask for a small commitment in the next conversation."],
+    ["The only enthusiastic people are friends or people who already know you", "You have not yet reached the market.", "Recruit people from your brief who do not know you before you decide."],
+    ["People already pay in money or time to work around the problem", "There is a budget, and the workaround is your real competitor.", "Map what they use today and what it costs them. Continue if you can describe a clear gap."]
+  ]}
+/>
 
 ## Common mistakes
 
 <DataTable
   caption="Common mistakes when validating a problem"
-  columns={['Mistake', 'Why it costs you', 'Do this instead']}
+  columns={["Mistake", "Why it costs you", "Do this instead"]}
   rows={[
-    ['Interviewing friends and family', 'They want to be kind, so their answers say little about the market.', 'Recruit people who match your problem brief and do not know you.'],
-    ['Describing your solution while you ask', 'People react to the idea instead of describing their own situation.', 'Ask about the last time the problem happened. Keep the idea out of the first conversation.'],
-    ['Counting compliments as demand', 'Praise is cheap and does not predict what a person will do.', 'Record what each person did, offered or committed to.'],
-    ['Stopping at the first enthusiastic yes', 'One keen person is a story, not a pattern.', 'Look for the same problem in similar words from several people who do not know each other.'],
+    ["Interviewing friends and family", "They want to be kind, so their answers say little about the market.", "Recruit people who match your problem brief and do not know you."],
+    ["Describing your solution while you ask", "People react to the idea instead of describing their own situation.", "Ask about the last time the problem happened. Keep the idea out of the first conversation."],
+    ["Counting compliments as demand", "Praise is cheap and does not predict what a person will do.", "Record what each person did, offered or committed to."],
+    ["Stopping at the first enthusiastic yes", "One keen person is a story, not a pattern.", "Look for the same problem in similar words from several people who do not know each other."],
+    ["Believing that nobody else does this", "An empty field often means no one has a budget for the problem.", "Map what customers use today, including spreadsheets and manual work, before you call the field empty."],
+    ["Deciding the stopping rule after the results are in", "You will bend the rule to fit the outcome you wanted.", "Write the stop criteria before the first interview and check them at the end."]
   ]}
 />
 
 ## Evidence to check before you move on
 
-Move to [Design the product](/playbooks/design-the-product/) when each of these is true and you could show it to a stranger.
+Move to <MaybeLink path="/playbooks/design-the-product/">Design the product</MaybeLink> when each of these is true and you could show it to a stranger.
 
 - The problem brief reads clearly to someone outside your field in about two minutes.
 - Every assumption has a status: supported, contradicted or still untested.
@@ -51,3 +89,19 @@ Move to [Design the product](/playbooks/design-the-product/) when each of these 
 - The decision to continue, change or stop is written down with the evidence beside it.
 
 A "stop" is a useful result. It costs far less than building the wrong product, and your notes still show how you think.
+
+## Where WE can help
+
+WE's Customer Relations and Market Development line covers customer discovery: interviews, notes and a summary of what buyers actually said. It does not promise that conversations will turn into customers or revenue. The <MaybeLink path="/services/customer-and-market-development/">service line page</MaybeLink> lists what it covers and what it does not.
+
+## Sources
+
+The steps and the decision aid draw on the articles and templates below. Each article names the public sources it read.
+
+- <MaybeLink path="/insights/customer-discovery-interviews-without-false-positives/">Customer discovery interviews without false positives</MaybeLink>
+- <MaybeLink path="/insights/write-the-problem-brief-before-the-code/">Write the problem brief before the code</MaybeLink>
+- <MaybeLink path="/insights/kill-criteria-deciding-in-advance-when-to-stop/">Kill criteria: deciding in advance when to stop</MaybeLink>
+- <MaybeLink path="/insights/mapping-the-alternatives-a-customer-already-uses/">Mapping the alternatives a customer already uses</MaybeLink>
+- <MaybeLink path="/insights/is-your-saas-idea-a-business-or-a-feature/">Is your SaaS idea a business or a feature?</MaybeLink>
+- <MaybeLink path="/library/one-page-problem-brief/">One-page problem brief</MaybeLink>
+- <MaybeLink path="/library/customer-interview-guide/">Customer interview guide</MaybeLink>

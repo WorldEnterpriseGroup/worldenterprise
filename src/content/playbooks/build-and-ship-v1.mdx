@@ -1,6 +1,6 @@
 ---
 stage: build
-order: 3
+order: 4
 title: Build and ship v1
 description: Build the first release in short cycles, keep a release checklist, review against the cut line and put it in front of a small group.
 steps:
@@ -25,27 +25,75 @@ artifacts:
 relatedLibrary:
   - security-baseline-checklist
   - mvp-cut-line-worksheet
-updated: 2026-10-06
+  - decision-log
+updated: 2026-10-10
 ---
+import Callout from '../../components/ui/Callout.astro';
 import DataTable from '../../components/ui/DataTable.astro';
+import MaybeLink from '../../components/insights/MaybeLink.astro';
+
+## What good looks like
+
+A good first release is small, working and watched. The team can say what shipped this week, what moved below the cut line and why, and the people using it are people you can call.
+
+- Each week ends with a written review that compares what was built with the cut line.
+- A thin slice of the riskiest path worked early, so the hardest problem was found while it was still cheap.
+- The release checklist exists, carries dates and has been followed at least once, including the security and accessibility items.
+- A person outside your team reached the first result without you doing it for them.
+- You can undo a release. The way back to the last good version was decided before the release, not during it.
+
+<Callout title="Illustrative example, not a real company">
+
+A founder building a shift-swap tool for restaurants works with a small remote team across time zones. Each Monday the team writes one goal for the week in a shared document, and each Friday the founder compares what was built with the cut line. In the second week the review shows that a calendar export crept in. The founder moves it below the line and writes why. The first release goes to a few restaurant managers she has spoken with by name. One of them cannot find the swap button, and the note from that session becomes the top backlog item.
+
+</Callout>
+
+## Decision aid: ready to widen the release group
+
+Before you move from a few named people to a wider group, answer each row. A row you cannot answer yet is the next piece of work.
+
+<DataTable
+  caption="Checks before widening a first release"
+  columns={["Check", "Ready when", "If not yet"]}
+  rows={[
+    ["The first result", "A person outside the team reached it without help, and you watched.", "Keep the group small. Write down where they hesitated and fix that first."],
+    ["Errors", "You can see an error as it happens and say who it affected.", "Add error reporting before more people arrive."],
+    ["Way back", "You know how to return to the last good version and have done it once.", "Practice the rollback on a test copy before the next release."],
+    ["Security baseline", "The checklist items are done or have a dated reason for waiting.", "Work through the baseline checklist and date each deferral."],
+    ["Accessibility", "A keyboard-only run through the path to first value works.", "Fix the keyboard path before adding visual polish."],
+    ["Customer data", "You know what the product stores, where, and who can see it.", "Write the list down. Ask your counsel about anything you do not understand."],
+    ["Backups", "A restore has been tried, not only a backup taken.", "Try a restore on a copy and write down what happened."]
+  ]}
+/>
+
+## Standards to build against
+
+A checklist is stronger when each line points to a public standard instead of a habit. Two are worth putting on the first list.
+
+The W3C's Web Content Accessibility Guidelines (WCAG) 2.2 cover a wide range of recommendations for making web content more accessible, and the document is a W3C Recommendation dated 12 December 2024. Put its success criteria on the release checklist in the first week, because fixing accessibility after launch touches everything that is already built.
+
+NIST's Secure Software Development Framework, published as SP 800-218, describes a core set of high-level secure software development practices that can be integrated into each SDLC implementation. Use it as a vocabulary for the security items on your checklist, and write down which practices you have adopted and which you have deferred.
+
+Neither document tells you that your product is accessible or secure. They give you a shared list to check against and to show to a reviewer.
 
 ## Common mistakes
 
 <DataTable
   caption="Common mistakes when building a first release"
-  columns={['Mistake', 'Why it costs you', 'Do this instead']}
+  columns={["Mistake", "Why it costs you", "Do this instead"]}
   rows={[
-    ['Adding scope without writing it down', 'The cut line stops meaning anything and the release keeps moving.', 'Record every change to scope with the item that moved below the line.'],
-    ['Leaving security and accessibility until later', 'Retrofitting them touches everything that is already built.', 'Put both on the release checklist in week one and build them in as you go.'],
-    ['Releasing to everyone at once', 'You cannot watch or talk to everyone, so you learn little.', 'Start with a small group you can reach by name.'],
-    ['Having no way to roll back', 'A bad release becomes an outage you cannot undo.', 'Decide how you will return to the last good version before you release.'],
-    ['Measuring activity instead of results', 'A busy team can still be building the wrong thing.', 'Review each week against the result the customer came for.'],
+    ["Adding scope without writing it down", "The cut line stops meaning anything and the release keeps moving.", "Record every change to scope with the item that moved below the line."],
+    ["Leaving security and accessibility until later", "Retrofitting them touches everything that is already built.", "Put both on the release checklist in week one and build them in as you go."],
+    ["Releasing to everyone at once", "You cannot watch or talk to everyone, so you learn little.", "Start with a small group you can reach by name."],
+    ["Having no way to roll back", "A bad release becomes an outage you cannot undo.", "Decide how you will return to the last good version before you release."],
+    ["Measuring activity instead of results", "A busy team can still be building the wrong thing.", "Review each week against the result the customer came for."],
+    ["Keeping decisions in chat", "A remote team loses them within days and re-argues them.", "Write each decision in one shared place with its date and reason."]
   ]}
 />
 
 ## Evidence to check before you move on
 
-Move to [Earn your first customers](/playbooks/earn-your-first-customers/) when you can show each of these.
+Move to <MaybeLink path="/playbooks/hire-your-first-team-member/">Hire your first team member</MaybeLink> when you can show each of these.
 
 - A person outside your team reached the first result without you doing it for them.
 - The release checklist exists, has dates on it and has been followed at least once.
@@ -53,3 +101,20 @@ Move to [Earn your first customers](/playbooks/earn-your-first-customers/) when 
 - The backlog is ordered, and each of the top items points to something you observed.
 
 Version one will be incomplete. That is expected. What matters is that you can say exactly what is missing and what you saw that told you so.
+
+## Where WE can help
+
+WE's Product and IT Development line builds in short cycles, shows working software at the end of each one and builds secure development practice in from the first repository. It does not run your live service or offer round-the-clock support. The <MaybeLink path="/services/product-and-it-development/">service line page</MaybeLink> sets out what it covers and what it does not.
+
+## Sources
+
+The steps and the decision aid draw on the articles, research briefs and templates below. Each names the public sources it read.
+
+- <MaybeLink path="/insights/an-operating-rhythm-for-a-remote-offshore-team/">An operating rhythm for a remote offshore team</MaybeLink>
+- <MaybeLink path="/insights/shipping-safely-with-feature-flags-and-rollback/">Shipping safely with feature flags and rollback</MaybeLink>
+- <MaybeLink path="/insights/estimating-a-first-release-ranges-and-what-they-hide/">Estimating a first release: ranges and what they hide</MaybeLink>
+- <MaybeLink path="/research/saas-security-baseline-year-one/">Security baseline for year one</MaybeLink>
+- <MaybeLink path="/research/accessibility-as-a-launch-requirement/">Accessibility at launch</MaybeLink>
+- <MaybeLink path="/library/security-baseline-checklist/">Security baseline checklist</MaybeLink>
+- [W3C, Web Content Accessibility Guidelines (WCAG) 2.2, read October 10, 2026](https://www.w3.org/TR/WCAG22/)
+- [NIST, Secure Software Development Framework (SSDF) Version 1.1, SP 800-218, read October 10, 2026](https://csrc.nist.gov/pubs/sp/800/218/final)
