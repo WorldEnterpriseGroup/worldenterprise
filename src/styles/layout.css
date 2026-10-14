@@ -166,14 +166,18 @@
     min-inline-size: 0;
   }
 
-  /* Article-like pages with a sticky side rail. */
+  /*
+   * Article-like pages with a sticky side rail. The body keeps the reading column at the frame's left edge and the rail sits at its
+   * right edge (W9-4), so a wide screen spreads the page across the frame without widening a line of text.
+   */
   .with-rail {
     display: grid;
     gap: var(--sp-7);
     grid-template-columns: minmax(0, 1fr);
 
     @media (min-width: 62rem) {
-      grid-template-columns: minmax(0, var(--prose-max)) minmax(14rem, 1fr);
+      grid-template-columns: minmax(0, var(--prose-max)) minmax(14rem, 30rem);
+      justify-content: space-between;
       align-items: start;
     }
   }
@@ -184,5 +188,118 @@
     display: flex;
     flex-direction: column;
     gap: var(--sp-5);
+  }
+
+  /* ---------- Wave 9 full-bleed primitives (W9-4, docs/wave9-contracts.md) ---------- */
+
+  /* A full-bleed band: the background runs edge to edge, a .container inside holds the content. The clip keeps a .bleed-media child
+     from adding a sideways scroll. */
+  .band {
+    position: relative;
+    padding-block: var(--band-pad);
+    overflow-x: clip;
+  }
+
+  .band--soft {
+    background: var(--color-bg-soft);
+  }
+
+  .band--tint-blue {
+    background: var(--tint-blue);
+  }
+
+  .band--tint-sand {
+    background: var(--tint-sand);
+  }
+
+  .band--tint-stone {
+    background: var(--tint-stone);
+  }
+
+  /*
+   * The dark galaxy band (W9-7). It re-points the semantic colour tokens, so every component inside reads light on night blue
+   * without its own dark rules. The starfield is the still fallback a scene paints over; it never carries the wordmark.
+   */
+  .band--deep {
+    --color-text: var(--color-band-deep-text);
+    --color-text-muted: var(--color-band-deep-muted);
+    --color-link: var(--color-band-deep-link);
+    --color-link-hover: var(--color-band-deep-text);
+    --color-highlight-ink: var(--color-band-deep-accent);
+    --color-bg-soft: var(--color-band-deep-soft);
+    --color-border: var(--color-band-deep-line);
+    --color-focus: var(--color-focus-inverse);
+    --_star: color-mix(in oklch, var(--we-white) 55%, transparent);
+    color: var(--color-text);
+    border-block-color: transparent;
+    background-color: var(--color-band-deep-bg);
+    background-image:
+      radial-gradient(circle at 18% 32%, var(--_star) 0 1px, transparent 2px),
+      radial-gradient(circle at 72% 64%, var(--_star) 0 1px, transparent 2px),
+      radial-gradient(circle at 44% 86%, var(--_star) 0 1.5px, transparent 2.5px),
+      radial-gradient(ellipse at 85% 0%, color-mix(in oklch, var(--we-blue) 40%, transparent), transparent 60%);
+    background-size: 13rem 11rem, 17rem 19rem, 23rem 29rem, 100% 100%;
+  }
+
+  /* Text beside a visual: the text column holds --split-text from the container edge, the visual takes the rest of the frame. */
+  .split {
+    display: grid;
+    gap: var(--space-block);
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr);
+
+    & > * {
+      min-inline-size: 0;
+    }
+
+    @media (min-width: 62rem) {
+      grid-template-columns: minmax(0, var(--split-text)) minmax(0, 1fr);
+    }
+  }
+
+  .split--media-first > .split__media {
+    order: -1;
+  }
+
+  @media (min-width: 62rem) {
+    .split--even {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .split--media-first > .split__media {
+      order: 0;
+    }
+
+    .split--reverse {
+      grid-template-columns: minmax(0, 1fr) minmax(0, var(--split-text));
+
+      & > .split__media {
+        order: -1;
+      }
+    }
+
+    .split--reverse.split--even {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Inside a .split__media, the visual runs past the container to the viewport edge on its side. Needs a .band ancestor. */
+    .bleed-media {
+      margin-inline-end: calc(-1 * max(var(--gutter), (100vw - var(--page-max)) / 2));
+    }
+
+    .bleed-media--start {
+      margin-inline: calc(-1 * max(var(--gutter), (100vw - var(--page-max)) / 2)) 0;
+    }
+  }
+
+  /*
+   * The wide body of a layout, and any .prose block that now sits in the 110rem frame: text keeps the reading measure at the frame's
+   * left edge; figures, tables, grids and splits use the frame. Paragraphs and headings are held at any depth, so a component section
+   * in the body cannot run a line across 1760px; lists only at the top level, because a nested list is often a card grid. A
+   * component's own width rule outranks these (layer order).
+   */
+  :is(.flow-wide, .prose) :where(p, blockquote, h2, h3, h4, h5, h6),
+  :is(.flow-wide, .prose) > :where(ul, ol, dl, .callout) {
+    max-inline-size: var(--prose-max);
   }
 }
