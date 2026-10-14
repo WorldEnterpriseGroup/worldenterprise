@@ -58,8 +58,9 @@ export async function expectNoHorizontalScroll(page: Page): Promise<void> {
 }
 
 /**
- * Paragraphs (at any depth) and top-level lists of the reading text (`.prose`, `.container--prose`, `.flow-wide`, `.split__text`) stay within
- * {@link MAX_MEASURE_CH} of their own font, however wide the frame. Returns how many were measured, so a spec can require some.
+ * Paragraphs (at any depth) and top-level lists of the reading text (`.prose`, `.container--prose`, `.flow-wide`, `.split__text`)
+ * stay within {@link MAX_MEASURE_CH} of their own font, however wide the frame. Returns how many were measured, so a spec can
+ * require some.
  */
 export async function expectReadableProse(page: Page, maxCh = MAX_MEASURE_CH): Promise<number> {
   const result = await page.evaluate((limit) => {
