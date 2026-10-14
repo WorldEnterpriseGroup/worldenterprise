@@ -1,0 +1,1597 @@
+{
+  "wp": "WP-80",
+  "note": "The fetch ledger and claim ledger of the four audience briefs (investor, partner, corporate; docs/wave8-contracts.md, section 9). Each brief under infra/intake/briefs/ lists the pages it was written from; every page was fetched with WebFetch in the writing session. The claims are the sentences of a brief that restate a source, with a locator and, for a regulation or statistic, a verbatim quote of 25 words or fewer. The abstracts under src/content/briefs/ carry sentence rows that map each sentence to a heading of the brief or to decision W8-24. fetchedAt is recorded at the granularity of the fetch batch: the time is that of the date call that followed the batch.",
+  "fetches": [
+    {
+      "id": "sec-506b",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/private-placements-rule-506b",
+      "title": "Private Placements - Rule 506(b)",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-11T06:06:08Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dgcl-219",
+      "url": "https://delcode.delaware.gov/title8/c001/sc07/index.html",
+      "title": "Title 8, Chapter 1, Subchapter VII, Meetings, Elections, Voting and Notice (section 219)",
+      "publisher": "Delaware Code Online, Delaware General Assembly",
+      "fetchedAt": "2026-10-11T06:06:08Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc17-204",
+      "url": "https://www.law.cornell.edu/uscode/text/17/204",
+      "title": "17 U.S. Code section 204, Execution of transfers of copyright ownership",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T06:06:08Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-ssdf",
+      "url": "https://csrc.nist.gov/pubs/sp/800/218/final",
+      "title": "Secure Software Development Framework (SSDF) Version 1.1, NIST SP 800-218",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-11T06:06:08Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-501",
+      "url": "https://www.law.cornell.edu/cfr/text/17/230.501",
+      "title": "17 CFR 230.501, Definitions and terms used in Regulation D",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T06:06:34Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-83-2",
+      "url": "https://www.law.cornell.edu/cfr/text/26/1.83-2",
+      "title": "26 CFR 1.83-2, Election to include in gross income in year of transfer",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T06:06:34Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "osd",
+      "url": "https://opensource.org/osd",
+      "title": "The Open Source Definition",
+      "publisher": "Open Source Initiative",
+      "fetchedAt": "2026-10-11T06:06:34Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc26-1202",
+      "url": "https://www.law.cornell.edu/uscode/text/26/1202",
+      "title": "26 U.S. Code section 1202, Partial exclusion for gain from certain small business stock",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T06:06:34Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc35-261",
+      "url": "https://www.law.cornell.edu/uscode/text/35/261",
+      "title": "35 U.S. Code section 261, Ownership; assignment",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T06:06:34Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-security",
+      "url": "https://www.ftc.gov/business-guidance/resources/start-security-guide-business",
+      "title": "Start with Security: A Guide for Business",
+      "publisher": "Federal Trade Commission",
+      "fetchedAt": "2026-10-11T06:06:34Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-airmf",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "title": "AI Risk Management Framework",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-11T05:55:36Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eu-ai-act",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+      "title": "AI Act",
+      "publisher": "European Commission, Shaping Europe's digital future",
+      "fetchedAt": "2026-10-11T05:55:39Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-llm10",
+      "url": "https://genai.owasp.org/llm-top-10/",
+      "title": "OWASP Top 10 for LLM Applications",
+      "publisher": "OWASP GenAI Security Project",
+      "fetchedAt": "2026-10-11T05:55:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "copyright-ai",
+      "url": "https://www.copyright.gov/ai/",
+      "title": "Copyright and Artificial Intelligence",
+      "publisher": "U.S. Copyright Office",
+      "fetchedAt": "2026-10-11T05:55:58Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-ai-claims",
+      "url": "https://www.sec.gov/newsroom/press-releases/2024-36",
+      "title": "SEC Charges Two Investment Advisers with Making False and Misleading Statements About Their Use of Artificial Intelligence",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-11T05:56:19Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "ftc-ai-comply",
+      "url": "https://www.ftc.gov/news-events/news/press-releases/2024/09/ftc-announces-crackdown-deceptive-ai-claims-schemes",
+      "title": "FTC Announces Crackdown on Deceptive AI Claims and Schemes",
+      "publisher": "Federal Trade Commission",
+      "fetchedAt": "2026-10-11T05:56:32Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "osi-aidef",
+      "url": "https://opensource.org/ai/open-source-ai-definition",
+      "title": "The Open Source AI Definition, version 1.0",
+      "publisher": "Open Source Initiative",
+      "fetchedAt": "2026-10-11T05:56:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-ssdf-ai",
+      "url": "https://csrc.nist.gov/pubs/sp/800/218/a/final",
+      "title": "Secure Software Development Practices for Generative AI and Dual-Use Foundation Models: An SSDF Community Profile (SP 800-218A)",
+      "publisher": "National Institute of Standards and Technology, Computer Security Resource Center",
+      "fetchedAt": "2026-10-11T05:56:48Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-genai",
+      "url": "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence",
+      "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-11T05:56:57Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "openai-data",
+      "url": "https://developers.openai.com/api/docs/guides/your-data",
+      "title": "Data controls in the OpenAI platform",
+      "publisher": "OpenAI, developer documentation",
+      "fetchedAt": "2026-10-11T05:57:06Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "claude-privacy",
+      "url": "https://privacy.claude.com/en/articles/7996868-is-my-data-used-for-model-training",
+      "title": "Is my data used for model training?",
+      "publisher": "Anthropic, Claude privacy center",
+      "fetchedAt": "2026-10-11T05:57:16Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "copyright-part2",
+      "url": "https://www.copyright.gov/newsnet/2025/1060.html",
+      "title": "Copyright Office Releases Part 2 of Artificial Intelligence Report",
+      "publisher": "U.S. Copyright Office",
+      "fetchedAt": "2026-10-11T05:57:25Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc17-201",
+      "url": "https://www.law.cornell.edu/uscode/text/17/201",
+      "title": "17 U.S. Code section 201, Ownership of copyright",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:55:28Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc17-101",
+      "url": "https://www.law.cornell.edu/uscode/text/17/101",
+      "title": "17 U.S. Code section 101, Definitions",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:55:44Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc35-262",
+      "url": "https://www.law.cornell.edu/uscode/text/35/262",
+      "title": "35 U.S. Code section 262, Joint owners",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:55:54Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-contractor",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee",
+      "title": "Independent contractor (self-employed) or employee?",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-11T05:56:01Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dol-misclass",
+      "url": "https://www.dol.gov/agencies/whd/flsa/misclassification",
+      "title": "Employee or independent contractor: misclassification under the FLSA",
+      "publisher": "U.S. Department of Labor, Wage and Hour Division",
+      "fetchedAt": "2026-10-11T05:56:10Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "gdpr",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32016R0679",
+      "title": "Regulation (EU) 2016/679 (General Data Protection Regulation)",
+      "publisher": "EUR-Lex, Publications Office of the European Union",
+      "fetchedAt": "2026-10-11T05:57:11Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-rule-701",
+      "url": "https://www.law.cornell.edu/cfr/text/17/230.701",
+      "title": "17 CFR 230.701 - Exemption for offers and sales of securities pursuant to certain compensatory benefit plans and contracts relating to compensation",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:55:47Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-affiliation",
+      "url": "https://www.law.cornell.edu/cfr/text/13/121.103",
+      "title": "13 CFR 121.103 - How does SBA determine affiliation?",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:55:47Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irc-355",
+      "url": "https://www.law.cornell.edu/uscode/text/26/355",
+      "title": "26 U.S. Code section 355 - Distribution of stock and securities of a controlled corporation",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:55:47Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-17-201",
+      "url": "https://www.law.cornell.edu/uscode/text/17/201",
+      "title": "17 U.S. Code section 201 - Ownership of copyright",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:55:47Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irc-409a",
+      "url": "https://www.law.cornell.edu/uscode/text/26/409A",
+      "title": "26 U.S. Code section 409A - Inclusion in gross income of deferred compensation under nonqualified deferred compensation plans",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:56:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-35-261",
+      "url": "https://www.law.cornell.edu/uscode/text/35/261",
+      "title": "35 U.S. Code section 261 - Ownership; assignment",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:56:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-35-262",
+      "url": "https://www.law.cornell.edu/uscode/text/35/262",
+      "title": "35 U.S. Code section 262 - Joint owners",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:56:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-size",
+      "url": "https://www.sba.gov/federal-contracting/contracting-guide/size-standards",
+      "title": "Size standards",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-11T05:56:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-17-101",
+      "url": "https://www.law.cornell.edu/uscode/text/17/101",
+      "title": "17 U.S. Code section 101 - Definitions",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:56:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-options",
+      "url": "https://www.irs.gov/taxtopics/tc427",
+      "title": "Topic no. 427, Stock options",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-11T05:56:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "dgcl-141",
+      "url": "https://delcode.delaware.gov/title8/c001/sc04/index.html",
+      "title": "Delaware Code Title 8, Chapter 1, Subchapter IV, Directors and Officers",
+      "publisher": "Delaware General Assembly",
+      "fetchedAt": "2026-10-11T05:56:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "uspto-essentials",
+      "url": "https://www.uspto.gov/patents/basics/essentials",
+      "title": "Patent essentials",
+      "publisher": "United States Patent and Trademark Office",
+      "fetchedAt": "2026-10-11T05:56:04Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sbir-ownership",
+      "url": "https://www.law.cornell.edu/cfr/text/13/121.702",
+      "title": "13 CFR 121.702 - What size and eligibility requirements must a concern meet to participate in the SBIR and STTR programs?",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:56:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irc-83",
+      "url": "https://www.law.cornell.edu/uscode/text/26/83",
+      "title": "26 U.S. Code section 83 - Property transferred in connection with performance of services",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-11T05:56:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-csf",
+      "url": "https://www.nist.gov/cyberframework",
+      "title": "Cybersecurity Framework",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-11T05:56:40Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "infra/intake/briefs/early-stage-diligence.md",
+      "claims": [
+        {
+          "id": "ED-01",
+          "sentence": "the stock ledger is defined as records administered by or on behalf of the corporation",
+          "kind": "regulation",
+          "sourceId": "dgcl-219",
+          "locator": "section 219(c), the definition of stock ledger",
+          "quote": "means 1 or more records administered by or on behalf of the corporation"
+        },
+        {
+          "id": "ED-02",
+          "sentence": "the names of the stockholders of record, their addresses, the number of shares registered in each name and all issuances and transfers of stock are recorded in it",
+          "kind": "regulation",
+          "sourceId": "dgcl-219",
+          "locator": "section 219(c), the definition of stock ledger",
+          "quote": "all issuances and transfers of stock of the corporation"
+        },
+        {
+          "id": "ED-03",
+          "sentence": "the stock ledger is the only evidence as to who the stockholders entitled to examine the list or to vote are",
+          "kind": "regulation",
+          "sourceId": "dgcl-219",
+          "locator": "section 219(c)",
+          "quote": "The stock ledger shall be the only evidence as to who are the stockholders entitled by this section to examine the list"
+        },
+        {
+          "id": "ED-04",
+          "sentence": "a transfer of copyright ownership, other than by operation of law, is not valid unless an instrument of conveyance, or a note or memorandum of the transfer, is in writing and signed by the owner of the rights conveyed",
+          "kind": "regulation",
+          "sourceId": "usc17-204",
+          "locator": "subsection (a)",
+          "quote": "A transfer of copyright ownership, other than by operation of law, is not valid unless an instrument of conveyance,"
+        },
+        {
+          "id": "ED-05",
+          "sentence": "or the owner's duly authorized agent",
+          "kind": "regulation",
+          "sourceId": "usc17-204",
+          "locator": "subsection (a)",
+          "quote": "or such owner’s duly authorized agent."
+        },
+        {
+          "id": "ED-06",
+          "sentence": "applications for patent, patents, or any interest in them, are assignable in law by an instrument in writing",
+          "kind": "regulation",
+          "sourceId": "usc35-261",
+          "locator": "the assignment paragraph",
+          "quote": "Applications for patent, patents, or any interest therein, shall be assignable in law by an instrument in writing."
+        },
+        {
+          "id": "ED-07",
+          "sentence": "an assignment is void as against a subsequent purchaser unless it is recorded in the Patent and Trademark Office no later than three months from its date",
+          "kind": "regulation",
+          "sourceId": "usc35-261",
+          "locator": "the recording paragraph",
+          "quote": "unless it is recorded in the Patent and Trademark Office within three months from its date"
+        },
+        {
+          "id": "ED-08",
+          "sentence": "can sell securities to an unlimited number of accredited investors",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the Rule 506(b) overview",
+          "quote": "can sell securities to an unlimited number of accredited investors"
+        },
+        {
+          "id": "ED-09",
+          "sentence": "securities may not be sold to more than 35 non-accredited investors in any 90-calendar day period",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the Rule 506(b) overview",
+          "quote": "securities may not be sold to more than 35 non-accredited investors in any 90-calendar day period"
+        },
+        {
+          "id": "ED-10",
+          "sentence": "the company must give any non-accredited investors the financial statement information specified in Rule 506",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the information requirements",
+          "quote": "must give any non-accredited investors financial statement information specified in Rule 506"
+        },
+        {
+          "id": "ED-11",
+          "sentence": "there may be no general solicitation or advertising to market the securities",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the Rule 506(b) overview",
+          "quote": "no general solicitation or advertising to market the securities"
+        },
+        {
+          "id": "ED-12",
+          "sentence": "the company must file a notice on Form D no later than 15 days after the first sale of securities in the offering",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the Form D paragraph",
+          "quote": "file a notice with the Commission on Form D within 15 days after the first sale of securities in the offering"
+        },
+        {
+          "id": "ED-13",
+          "sentence": "an accredited investor is any person who comes within any of the listed categories, or whom the issuer reasonably believes comes within them, at the time of the sale of the securities to that person",
+          "kind": "regulation",
+          "sourceId": "cfr-501",
+          "locator": "paragraph (a), lead-in",
+          "quote": "issuer reasonably believes comes within any of the following categories, at the time of the sale of the"
+        },
+        {
+          "id": "ED-14",
+          "sentence": "Several of the categories for natural persons turn on income or net worth",
+          "kind": "regulation",
+          "sourceId": "cfr-501",
+          "locator": "paragraphs (a)(5) and (a)(6)",
+          "quote": "spousal equivalent, exceeds $1,000,000;"
+        },
+        {
+          "id": "ED-15",
+          "sentence": "the election must be filed no later than 30 days after the date the property was transferred, and may be filed before the date of transfer",
+          "kind": "regulation",
+          "sourceId": "cfr-83-2",
+          "locator": "paragraph (b)",
+          "quote": "not later than 30 days after the date the property was transferred"
+        },
+        {
+          "id": "ED-16",
+          "sentence": "the election is made by filing one copy of a written statement with the internal revenue office where the person who performed the services files tax documents",
+          "kind": "regulation",
+          "sourceId": "cfr-83-2",
+          "locator": "paragraph (c)",
+          "quote": "is made by filing one copy of a written statement"
+        },
+        {
+          "id": "ED-17",
+          "sentence": "Its text provides for the exclusion of 50 percent of any gain from the sale or exchange of qualified small business stock acquired on or before the applicable date and held for more than five years",
+          "kind": "regulation",
+          "sourceId": "usc26-1202",
+          "locator": "subsection (a)(1)(A)",
+          "quote": "50 percent of any gain from the sale or exchange of qualified small business stock"
+        },
+        {
+          "id": "ED-18",
+          "sentence": "it defines a qualified small business as a domestic corporation which is a C corporation, among other conditions",
+          "kind": "regulation",
+          "sourceId": "usc26-1202",
+          "locator": "subsection (d)(1)",
+          "quote": "any domestic corporation which is a C corporation"
+        },
+        {
+          "id": "ED-19",
+          "sentence": "describes itself as recommending a core set of high-level secure software development practices that can be integrated into each software development life cycle implementation",
+          "kind": "definition",
+          "sourceId": "nist-ssdf",
+          "locator": "the abstract",
+          "quote": "a core set of high-level secure software development practices that can be integrated into each SDLC implementation."
+        },
+        {
+          "id": "ED-20",
+          "sentence": "few software development life cycle models explicitly address software security in detail",
+          "kind": "definition",
+          "sourceId": "nist-ssdf",
+          "locator": "the abstract",
+          "quote": "Few software development life cycle (SDLC) models explicitly address software security in detail"
+        },
+        {
+          "id": "ED-21",
+          "sentence": "it gives purchasers and suppliers a shared vocabulary for talking about the practices",
+          "kind": "paraphrase",
+          "sourceId": "nist-ssdf",
+          "locator": "the abstract"
+        },
+        {
+          "id": "ED-22",
+          "sentence": "The Federal Trade Commission's guide for business names ten lessons",
+          "kind": "paraphrase",
+          "sourceId": "ftc-security",
+          "locator": "the list of lessons"
+        },
+        {
+          "id": "ED-23",
+          "sentence": "controlling access to data sensibly, requiring secure passwords and authentication, applying sound security practices when developing new products, and making sure service providers implement reasonable security measures",
+          "kind": "paraphrase",
+          "sourceId": "ftc-security",
+          "locator": "lessons two, three, seven and eight"
+        },
+        {
+          "id": "ED-24",
+          "sentence": "when managing a network, developing an app, or even organizing paper files, sound security is no accident",
+          "kind": "paraphrase",
+          "sourceId": "ftc-security",
+          "locator": "the opening statement"
+        },
+        {
+          "id": "ED-25",
+          "sentence": "open source does not just mean access to the source code",
+          "kind": "paraphrase",
+          "sourceId": "osd",
+          "locator": "the introduction"
+        },
+        {
+          "id": "ED-26",
+          "sentence": "among them redistribution terms, the availability of source code and the permission of derived works",
+          "kind": "paraphrase",
+          "sourceId": "osd",
+          "locator": "criteria 1 to 3"
+        }
+      ]
+    },
+    {
+      "path": "src/content/briefs/early-stage-diligence.md",
+      "sentences": [
+        {
+          "text": "Which records a young software company can show an investor, what each one proves and where the proof stops",
+          "page": "infra/intake/briefs/early-stage-diligence.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "How to weigh the records of an early-stage software company: ownership, rights, share sales, tax filings, security and reported numbers, and their limits.",
+          "page": "infra/intake/briefs/early-stage-diligence.md#the-evidence-side-by-side"
+        },
+        {
+          "text": "An early-stage software company hands an investor a folder, and the folder mixes documents of very different standing: registers the law requires, contracts a court would read, and slides written last week.",
+          "page": "infra/intake/briefs/early-stage-diligence.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "This brief sorts that material by the kind of claim each item can support.",
+          "page": "infra/intake/briefs/early-stage-diligence.md#how-to-read-the-evidence-an-investor-can-see"
+        },
+        {
+          "text": "Six records come up in turn: shareholdings, ownership of the code, the sale of shares, the tax elections of founders, product security practice and the open source components inside the product.",
+          "page": "infra/intake/briefs/early-stage-diligence.md#the-evidence-side-by-side"
+        },
+        {
+          "text": "For each it reports what a public source says about the rule behind the record, and then separates that report from analysis of how a reader might test it.",
+          "page": "infra/intake/briefs/early-stage-diligence.md#about-the-evidence"
+        },
+        {
+          "text": "One more section covers the figures a company reports on its own behalf, where public sources say least.",
+          "page": "infra/intake/briefs/early-stage-diligence.md#the-numbers-a-company-reports-about-itself"
+        },
+        {
+          "text": "The brief closes with questions to put to a company, and with a plain account of what a review of documents cannot establish.",
+          "page": "infra/intake/briefs/early-stage-diligence.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "The brief describes how the subject works in general.",
+          "page": "infra/intake/briefs/early-stage-diligence.md#about-the-evidence"
+        },
+        {
+          "text": "It is about no company and is not an assessment of any.",
+          "page": "infra/intake/briefs/early-stage-diligence.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "It is general information for investors.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "It is not legal, tax or investment advice.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "infra/intake/briefs/ai-company-diligence.md",
+      "claims": [
+        {
+          "id": "AC-01",
+          "sentence": "The page describes the framework as a way to better manage risks to individuals, organizations and society associated with artificial intelligence, and it says the framework is intended for voluntary use.",
+          "kind": "paraphrase",
+          "sourceId": "nist-airmf",
+          "locator": "Overview",
+          "quote": "is intended for voluntary use and to improve the ability to incorporate trustworthiness considerations"
+        },
+        {
+          "id": "AC-03",
+          "sentence": "The generative AI profile is a cross-sectoral companion resource to that framework, published in July 2024.",
+          "kind": "paraphrase",
+          "sourceId": "nist-genai",
+          "locator": "Abstract",
+          "quote": "cross-sectoral profile of and companion resource for the AI Risk Management Framework"
+        },
+        {
+          "id": "AC-04",
+          "sentence": "One supplier's developer documentation says that data sent through its programming interface is not used to train its models unless the customer opts in, and that logs created to monitor abuse are kept for a limited period by default.",
+          "kind": "paraphrase",
+          "sourceId": "openai-data",
+          "locator": "Data retention and training"
+        },
+        {
+          "id": "AC-05",
+          "sentence": "The same page describes an approval-based option that excludes customer content from those logs.",
+          "kind": "paraphrase",
+          "sourceId": "openai-data",
+          "locator": "Abuse monitoring options"
+        },
+        {
+          "id": "AC-06",
+          "sentence": "A second supplier's privacy documentation says it does not by default use inputs or outputs from its commercial products to train its models, and that training can occur where a customer opts in or reports feedback.",
+          "kind": "paraphrase",
+          "sourceId": "claude-privacy",
+          "locator": "Commercial products"
+        },
+        {
+          "id": "AC-07",
+          "sentence": "It says an open source AI system must come with sufficiently detailed information about the data used to train the system.",
+          "kind": "definition",
+          "sourceId": "osi-aidef",
+          "locator": "Preconditions to exercise these freedoms: data information",
+          "quote": "Sufficiently detailed information about the data used to train the system"
+        },
+        {
+          "id": "AC-08",
+          "sentence": "The Open Source Initiative's definition lists four freedoms: to use the system for any purpose without having to ask for permission, to study how it works, to modify it for any purpose and to share it for others to use.",
+          "kind": "definition",
+          "sourceId": "osi-aidef",
+          "locator": "Definition",
+          "quote": "An Open Source AI is an AI system made available under terms and in a way that grant the freedoms"
+        },
+        {
+          "id": "AC-09",
+          "sentence": "It also says the model parameters, such as weights or other configuration settings, must be made available under OSI-approved terms for a system to qualify.",
+          "kind": "definition",
+          "sourceId": "osi-aidef",
+          "locator": "Preconditions to exercise these freedoms: parameters",
+          "quote": "The model parameters, such as weights or other configuration settings"
+        },
+        {
+          "id": "AC-10",
+          "sentence": "Its 2025 list includes Prompt Injection, Sensitive Information Disclosure, Supply Chain, Data and Model Poisoning, Improper Output Handling, Excessive Agency, System Prompt Leakage, Vector and Embedding Weaknesses, Misinformation and Unbounded Consumption.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "2025 list"
+        },
+        {
+          "id": "AC-11",
+          "sentence": "Prompt Injection concerns prompts that alter what the model does.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Prompt Injection"
+        },
+        {
+          "id": "AC-12",
+          "sentence": "Excessive Agency concerns how much the model is allowed to do.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Excessive Agency"
+        },
+        {
+          "id": "AC-13",
+          "sentence": "The page frames a system as often granted a degree of agency, and the question for diligence is whether the company has limited what a manipulated model could do.",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm10",
+          "locator": "Excessive Agency"
+        },
+        {
+          "id": "AC-14",
+          "sentence": "It augments the secure software development practices and tasks of the Secure Software Development Framework, version 1.1, and it is intended to be useful to producers of AI models, producers of AI systems that use those models and acquirers of those systems.",
+          "kind": "paraphrase",
+          "sourceId": "nist-ssdf-ai",
+          "locator": "Abstract",
+          "quote": "augments the secure software development practices and tasks"
+        },
+        {
+          "id": "AC-16",
+          "sentence": "The Securities and Exchange Commission announced settled charges against two investment advisers over statements about their use of artificial intelligence.",
+          "kind": "paraphrase",
+          "sourceId": "sec-ai-claims",
+          "locator": "Press release"
+        },
+        {
+          "id": "AC-17",
+          "sentence": "One order found that the firm did not in fact have the AI and machine learning capabilities that it claimed.",
+          "kind": "regulation",
+          "sourceId": "sec-ai-claims",
+          "locator": "Press release, order findings",
+          "quote": "did not in fact have the AI and machine learning capabilities that it claimed"
+        },
+        {
+          "id": "AC-18",
+          "sentence": "The announcement quotes the chair of the Commission at the time as saying that investment advisers should not mislead the public by saying they are using an AI model when they are not.",
+          "kind": "regulation",
+          "sourceId": "sec-ai-claims",
+          "locator": "Press release, chair statement",
+          "quote": "Investment advisers should not mislead the public by saying they are using an AI model when they are not."
+        },
+        {
+          "id": "AC-19",
+          "sentence": "The Federal Trade Commission, announcing a set of enforcement actions against deceptive uses of AI, quoted its chair as saying that there is no AI exemption from the laws on the books.",
+          "kind": "regulation",
+          "sourceId": "ftc-ai-comply",
+          "locator": "Press release, chair statement",
+          "quote": "there is no AI exemption from the laws on the books"
+        },
+        {
+          "id": "AC-20",
+          "sentence": "The European Commission's page describes the AI Act as taking a risk-based approach.",
+          "kind": "paraphrase",
+          "sourceId": "eu-ai-act",
+          "locator": "Overview"
+        },
+        {
+          "id": "AC-21",
+          "sentence": "It says the Act entered into force on 1 August 2024 and became applicable on 2 August 2026, with some exceptions.",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "Application timeline",
+          "quote": "The AI Act entered into force on 1 August 2024 and became applicable on 2 August 2026, with some exceptions"
+        },
+        {
+          "id": "AC-22",
+          "sentence": "All AI systems considered a clear threat to the safety, livelihoods and rights of people are banned.",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "Unacceptable risk",
+          "quote": "All AI systems considered a clear threat to the safety, livelihoods and rights of people are banned."
+        },
+        {
+          "id": "AC-23",
+          "sentence": "AI use cases that can pose serious risks to health, safety or fundamental rights are classified as high-risk, and the page lists areas such as critical infrastructure, education, employment and law enforcement.",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "High risk",
+          "quote": "AI use cases that can pose serious risks to health, safety or fundamental rights are classified as high-risk."
+        },
+        {
+          "id": "AC-24",
+          "sentence": "The Act does not introduce rules for AI that is deemed minimal or no risk.",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "Minimal risk",
+          "quote": "The AI Act does not introduce rules for AI that is deemed minimal or no risk."
+        },
+        {
+          "id": "AC-25",
+          "sentence": "For high-risk systems the page describes strict obligations before a system can be put on the market, including risk assessment and mitigation, high-quality datasets, logging of activity, detailed documentation, human oversight and robustness.",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "High-risk obligations",
+          "quote": "high-risk AI systems will be subject to strict obligations before they can be put on the market"
+        },
+        {
+          "id": "AC-26",
+          "sentence": "It dates the start of those obligations for high-risk systems in sensitive areas to 2 December 2027.",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "High-risk obligations, dates",
+          "quote": "Starting on 2 December 2027, high-risk AI systems will be subject to strict obligations before they can be put on the market"
+        },
+        {
+          "id": "AC-27",
+          "sentence": "It also says that providers of generative AI have to ensure that AI-generated content is identifiable.",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "Transparency",
+          "quote": "providers of generative AI have to ensure that AI-generated content is identifiable"
+        },
+        {
+          "id": "AC-28",
+          "sentence": "The page mentions transparency and copyright requirements for providers of general-purpose models, which concern the supplier more than a company that calls the model.",
+          "kind": "paraphrase",
+          "sourceId": "eu-ai-act",
+          "locator": "General-purpose models"
+        },
+        {
+          "id": "AC-29",
+          "sentence": "The second part addresses the copyrightability of outputs created using generative AI.",
+          "kind": "paraphrase",
+          "sourceId": "copyright-part2",
+          "locator": "Announcement"
+        },
+        {
+          "id": "AC-30",
+          "sentence": "The announcement says the Office concludes that outputs can be protected by copyright only where a human author has determined sufficient expressive elements.",
+          "kind": "regulation",
+          "sourceId": "copyright-part2",
+          "locator": "Announcement, conclusions",
+          "quote": "can be protected by copyright only where a human author has determined sufficient expressive elements"
+        },
+        {
+          "id": "AC-31",
+          "sentence": "It says protection can apply where a human makes creative arrangements or modifications of the output, but not the mere provision of prompts.",
+          "kind": "regulation",
+          "sourceId": "copyright-part2",
+          "locator": "Announcement, conclusions",
+          "quote": "but not the mere provision of prompts"
+        },
+        {
+          "id": "AC-32",
+          "sentence": "It also says the Office finds that the case has not been made for changes to existing law.",
+          "kind": "regulation",
+          "sourceId": "copyright-part2",
+          "locator": "Announcement, conclusions",
+          "quote": "the case has not been made for changes to existing law"
+        },
+        {
+          "id": "AC-33",
+          "sentence": "The Office's page also says that its third part, on generative AI training, was released in a pre-publication version in May 2025, with a final version to follow.",
+          "kind": "paraphrase",
+          "sourceId": "copyright-ai",
+          "locator": "Report parts"
+        }
+      ]
+    },
+    {
+      "path": "src/content/briefs/ai-company-diligence.md",
+      "sentences": [
+        {
+          "text": "Eight checks an investor can run on a company whose product depends on a model, and what each one leaves unanswered",
+          "page": "infra/intake/briefs/ai-company-diligence.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "Eight checks for diligence on an early-stage company that depends on a model: data, supplier, security, evidence, claims, rules and ownership.",
+          "page": "infra/intake/briefs/ai-company-diligence.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "Investors who look at an early-stage software company are used to checking the entity, the cap table, the customers and the code.",
+          "page": "infra/intake/briefs/ai-company-diligence.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "A product that depends on a model adds questions those checks do not reach, and this brief is organized around them.",
+          "page": "infra/intake/briefs/ai-company-diligence.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "It sets out eight checks, running from the model's role and the data behind it to the supplier, security, proof of performance, public claims, regulation and ownership of outputs.",
+          "page": "infra/intake/briefs/ai-company-diligence.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "Each check names the public sources behind it, describes the documents a company might hold, and says what that evidence cannot establish.",
+          "page": "infra/intake/briefs/ai-company-diligence.md#how-to-read-the-checks"
+        },
+        {
+          "text": "The sources come from standards bodies, regulators, a security project and model suppliers' own documentation.",
+          "page": "infra/intake/briefs/ai-company-diligence.md#about-the-evidence"
+        },
+        {
+          "text": "The brief reports what they say and keeps its analysis apart, marked as analysis.",
+          "page": "infra/intake/briefs/ai-company-diligence.md#about-the-evidence"
+        },
+        {
+          "text": "It makes no assessment of any company, offers no recommendation to invest, and names no company.",
+          "page": "infra/intake/briefs/ai-company-diligence.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "It closes with questions to put to a company or to counsel.",
+          "page": "infra/intake/briefs/ai-company-diligence.md#questions-to-ask-before-relying-on-the-answers"
+        },
+        {
+          "text": "This brief is general information for investors.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "It is not legal, tax or investment advice.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "infra/intake/briefs/partnering-with-founders.md",
+      "claims": [
+        {
+          "id": "PW-01",
+          "sentence": "Copyright in a work protected under this title vests initially in the author or authors of the work.",
+          "kind": "regulation",
+          "sourceId": "usc17-201",
+          "locator": "subsection (a), initial ownership",
+          "quote": "Copyright in a work protected under this title vests initially in the author or authors of the work."
+        },
+        {
+          "id": "PW-02",
+          "sentence": "the employer or other person for whom the work was prepared \"is considered the author.\"",
+          "kind": "regulation",
+          "sourceId": "usc17-201",
+          "locator": "subsection (b), works made for hire",
+          "quote": "is considered the author"
+        },
+        {
+          "id": "PW-03",
+          "sentence": "a work prepared by an employee within the scope of his or her employment",
+          "kind": "regulation",
+          "sourceId": "usc17-101",
+          "locator": "definition of work made for hire, clause (1)",
+          "quote": "a work prepared by an employee within the scope of his or her employment"
+        },
+        {
+          "id": "PW-04",
+          "sentence": "if the parties expressly agree in a written instrument signed by them that the work shall be considered a work made for hire",
+          "kind": "regulation",
+          "sourceId": "usc17-101",
+          "locator": "definition of work made for hire, clause (2)",
+          "quote": "if the parties expressly agree in a written instrument signed by them that the work shall be considered a work made for hire."
+        },
+        {
+          "id": "PW-05",
+          "sentence": "The nine categories do not name software as such",
+          "kind": "paraphrase",
+          "sourceId": "usc17-101",
+          "locator": "the list of commissioned-work categories in the definition of work made for hire"
+        },
+        {
+          "id": "PW-06",
+          "sentence": "may be transferred in whole or in part by any means of conveyance",
+          "kind": "regulation",
+          "sourceId": "usc17-201",
+          "locator": "subsection (d)(1), transfer of ownership",
+          "quote": "may be transferred in whole or in part by any means of conveyance"
+        },
+        {
+          "id": "PW-07",
+          "sentence": "a work prepared by two or more authors with the intention that their contributions be merged",
+          "kind": "regulation",
+          "sourceId": "usc17-101",
+          "locator": "definition of joint work",
+          "quote": "a work prepared by two or more authors with the intention that their contributions be merged"
+        },
+        {
+          "id": "PW-08",
+          "sentence": "The authors of a joint work are coowners of copyright in the work.",
+          "kind": "regulation",
+          "sourceId": "usc17-201",
+          "locator": "subsection (a), joint works",
+          "quote": "The authors of a joint work are coowners of copyright in the work."
+        },
+        {
+          "id": "PW-09",
+          "sentence": "Subject to the provisions of this title, patents shall have the attributes of personal property.",
+          "kind": "regulation",
+          "sourceId": "usc35-261",
+          "locator": "the first sentence of section 261",
+          "quote": "Subject to the provisions of this title, patents shall have the attributes of personal property."
+        },
+        {
+          "id": "PW-10",
+          "sentence": "Applications for patent, patents, or any interest therein, shall be assignable in law by an instrument in writing.",
+          "kind": "regulation",
+          "sourceId": "usc35-261",
+          "locator": "the second sentence of section 261",
+          "quote": "Applications for patent, patents, or any interest therein, shall be assignable in law by an instrument in writing."
+        },
+        {
+          "id": "PW-11",
+          "sentence": "an assignment is void against a later purchaser or mortgagee who paid valuable consideration without notice, unless it is recorded no later than three months after its date or before the later purchase or mortgage",
+          "kind": "regulation",
+          "sourceId": "usc35-261",
+          "locator": "the recording rule of section 261",
+          "quote": "within three months from its date or prior to the date of such subsequent purchase or mortgage."
+        },
+        {
+          "id": "PW-12",
+          "sentence": "In the absence of any agreement to the contrary,",
+          "kind": "regulation",
+          "sourceId": "usc35-262",
+          "locator": "the opening of section 262",
+          "quote": "In the absence of any agreement to the contrary"
+        },
+        {
+          "id": "PW-13",
+          "sentence": "without the consent of and without accounting to the other owners.",
+          "kind": "regulation",
+          "sourceId": "usc35-262",
+          "locator": "section 262, joint owners",
+          "quote": "without the consent of and without accounting to the other owners"
+        },
+        {
+          "id": "PW-14",
+          "sentence": "each of the joint owners of a patent may make, use, offer to sell or sell the patented invention",
+          "kind": "regulation",
+          "sourceId": "usc35-262",
+          "locator": "section 262, joint owners",
+          "quote": "each of the joint owners of a patent may make, use, offer to sell, or sell"
+        },
+        {
+          "id": "PW-15",
+          "sentence": "The Internal Revenue Service sorts the evidence into three categories: behavioral control, financial control and the type of relationship.",
+          "kind": "paraphrase",
+          "sourceId": "irs-contractor",
+          "locator": "the three categories of evidence"
+        },
+        {
+          "id": "PW-16",
+          "sentence": "Are the business aspects of the worker’s job controlled by the payer?",
+          "kind": "paraphrase",
+          "sourceId": "irs-contractor",
+          "locator": "the financial control question",
+          "quote": "Are the business aspects of the worker’s job controlled by the payer?"
+        },
+        {
+          "id": "PW-17",
+          "sentence": "The keys are to look at the entire relationship and consider the extent of the right to direct and control the worker.",
+          "kind": "paraphrase",
+          "sourceId": "irs-contractor",
+          "locator": "the closing guidance on the entire relationship",
+          "quote": "The keys are to look at the entire relationship and consider the extent of the right to direct and control the worker."
+        },
+        {
+          "id": "PW-18",
+          "sentence": "Misclassification occurs when an employer treats a worker who is an employee under the FLSA as an independent contractor.",
+          "kind": "paraphrase",
+          "sourceId": "dol-misclass",
+          "locator": "the definition of misclassification",
+          "quote": "Misclassification occurs when an employer treats a worker who is an employee under the FLSA as an independent contractor."
+        },
+        {
+          "id": "PW-19",
+          "sentence": "an issuer can sell to an unlimited number of accredited investors",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the Rule 506(b) description of who may buy",
+          "quote": "an unlimited number of accredited investors"
+        },
+        {
+          "id": "PW-20",
+          "sentence": "may not be sold to more than 35 non-accredited investors in any 90-calendar day period.",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the Rule 506(b) limit on non-accredited investors",
+          "quote": "may not be sold to more than 35 non-accredited investors in any 90-calendar day period"
+        },
+        {
+          "id": "PW-21",
+          "sentence": "no general solicitation or advertising to market the securities.",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the Rule 506(b) bar on general solicitation",
+          "quote": "no general solicitation or advertising to market the securities"
+        },
+        {
+          "id": "PW-22",
+          "sentence": "The page says the issuer must file a notice on Form D no later than 15 days after the first sale of securities.",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the Form D notice",
+          "quote": "file a notice with the Commission on Form D within 15 days after the first sale of securities"
+        },
+        {
+          "id": "PW-23",
+          "sentence": "Open source doesn’t just mean access to the source code.",
+          "kind": "definition",
+          "sourceId": "osd",
+          "locator": "the introduction",
+          "quote": "Open source doesn’t just mean access to the source code."
+        },
+        {
+          "id": "PW-24",
+          "sentence": "the license must allow modifications and derived works",
+          "kind": "definition",
+          "sourceId": "osd",
+          "locator": "criterion 3, derived works",
+          "quote": "The license must allow modifications and derived works"
+        },
+        {
+          "id": "PW-25",
+          "sentence": "the rights attached to a program must apply to everyone to whom the program is redistributed, without the need for an additional license",
+          "kind": "definition",
+          "sourceId": "osd",
+          "locator": "criterion 7, distribution of license",
+          "quote": "The rights attached to the program must apply to all to whom the program is redistributed"
+        },
+        {
+          "id": "PW-26",
+          "sentence": "Processing by a processor shall be governed by a contract or other legal act under Union or Member State law,",
+          "kind": "regulation",
+          "sourceId": "gdpr",
+          "locator": "Article 28, paragraph 3",
+          "quote": "Processing by a processor shall be governed by a contract or other legal act under Union or Member State law"
+        },
+        {
+          "id": "PW-27",
+          "sentence": "processes the personal data only on documented instructions from the controller.",
+          "kind": "regulation",
+          "sourceId": "gdpr",
+          "locator": "Article 28, paragraph 3, point (a)",
+          "quote": "processes the personal data only on documented instructions from the controller"
+        },
+        {
+          "id": "PW-28",
+          "sentence": "a core set of high-level secure software development practices that can be integrated into each SDLC implementation.",
+          "kind": "definition",
+          "sourceId": "nist-ssdf",
+          "locator": "the abstract",
+          "quote": "a core set of high-level secure software development practices that can be integrated into each SDLC implementation"
+        },
+        {
+          "id": "PW-29",
+          "sentence": "software purchasers and consumers can also use it to foster communications with suppliers in acquisition processes.",
+          "kind": "definition",
+          "sourceId": "nist-ssdf",
+          "locator": "the abstract",
+          "quote": "software purchasers and consumers can also use it to foster communications with suppliers in acquisition processes"
+        }
+      ]
+    },
+    {
+      "path": "src/content/briefs/partnering-with-founders.md",
+      "sentences": [
+        {
+          "text": "How an organization and an early-stage founder can set out what each side expects in writing",
+          "page": "infra/intake/briefs/partnering-with-founders.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "For organizations working with early-stage founders: six kinds of arrangement, the ownership and data questions they raise, and what to put in writing.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#kinds-of-arrangement"
+        },
+        {
+          "text": "Organizations that work with early-stage founders often agree on the spirit of an arrangement and leave the details unwritten.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "This brief goes through the details that tend to be missed and explains why each deserves a line in a signed document.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "It sorts common arrangements into six kinds: referral and resale, integration and listing, co-development, pilots, supplier terms and program participation.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#kinds-of-arrangement"
+        },
+        {
+          "text": "It then follows the questions that cut across them.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#how-to-read-the-arrangements"
+        },
+        {
+          "text": "Who owns what gets built?",
+          "page": "infra/intake/briefs/partnering-with-founders.md#who-owns-what-the-work-produces"
+        },
+        {
+          "text": "How do copyright and patent rules treat work done by two parties?",
+          "page": "infra/intake/briefs/partnering-with-founders.md#patents-and-joint-ownership"
+        },
+        {
+          "text": "What do open-source licenses ask of an organization that bundles a product?",
+          "page": "infra/intake/briefs/partnering-with-founders.md#open-source-obligations"
+        },
+        {
+          "text": "What do data protection and security expectations look like in a contract?",
+          "page": "infra/intake/briefs/partnering-with-founders.md#data-and-security-expectations"
+        },
+        {
+          "text": "When does the way people are directed make them employees rather than contractors?",
+          "page": "infra/intake/briefs/partnering-with-founders.md#how-the-people-are-classified"
+        },
+        {
+          "text": "What changes when a partner is paid in shares?",
+          "page": "infra/intake/briefs/partnering-with-founders.md#when-a-partner-takes-shares-in-place-of-fees"
+        },
+        {
+          "text": "Each section reports what a public source says, drawn from statutes, agency pages and standards publications, and separates that report from analysis.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#about-the-evidence"
+        },
+        {
+          "text": "A table compares the structures, and a closing list gives questions that either side can bring to counsel.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#the-arrangements-side-by-side"
+        },
+        {
+          "text": "The brief names no company and describes no particular arrangement.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "It makes no promise of an introduction, a partnership or funding, and it does not recommend a structure.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "It also lists what its sources cannot show, including state law, other countries and changes to rules after the evidence was read.",
+          "page": "infra/intake/briefs/partnering-with-founders.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "This brief is general information for partners.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "It is not legal, tax or investment advice.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "infra/intake/briefs/corporate-spinouts.md",
+      "claims": [
+        {
+          "id": "SO-01",
+          "sentence": "It says that copyright vests initially in the author, and that for a work made for hire the employer is treated as the author.",
+          "kind": "regulation",
+          "sourceId": "usc-17-201",
+          "locator": "section 201(a) and (b)",
+          "quote": "vests initially in the author or authors of the work"
+        },
+        {
+          "id": "SO-02",
+          "sentence": "Its definition of a work made for hire begins with the plainest case, a work prepared by an employee within the scope of his or her employment.",
+          "kind": "regulation",
+          "sourceId": "usc-17-101",
+          "locator": "definition of work made for hire, paragraph (1)",
+          "quote": "a work prepared by an employee within the scope of his or her employment"
+        },
+        {
+          "id": "SO-03",
+          "sentence": "the definition's second paragraph covers a work specially ordered or commissioned, but only for listed categories of work",
+          "kind": "paraphrase",
+          "sourceId": "usc-17-101",
+          "locator": "definition of work made for hire, paragraph (2)"
+        },
+        {
+          "id": "SO-04",
+          "sentence": "says that the inventor or the inventor's legal representative may apply for a patent, and that a person to whom an inventor has assigned an invention may also apply",
+          "kind": "regulation",
+          "sourceId": "uspto-essentials",
+          "locator": "who may apply for a patent",
+          "quote": "You (the inventor) or your legal representative may apply for a patent, with some exceptions."
+        },
+        {
+          "id": "SO-05",
+          "sentence": "Patents are assignable by a written instrument, according to the patent statute's section on ownership",
+          "kind": "regulation",
+          "sourceId": "usc-35-261",
+          "locator": "section 261, first paragraph",
+          "quote": "Applications for patent, patents, or any interest therein, shall be assignable in law by an instrument in writing."
+        },
+        {
+          "id": "SO-06",
+          "sentence": "It says an assignment is void against a later buyer or lender who paid value without notice unless it is recorded, and it sets a three-month window, running from the date of the assignment, for recording it.",
+          "kind": "regulation",
+          "sourceId": "usc-35-261",
+          "locator": "section 261, recording paragraph",
+          "quote": "unless it is recorded in the Patent and Trademark Office within three months from its date"
+        },
+        {
+          "id": "SO-07",
+          "sentence": "The copyright statute says that ownership may be transferred in whole or in part by any means of conveyance or by operation of law.",
+          "kind": "regulation",
+          "sourceId": "usc-17-201",
+          "locator": "section 201(d)(1)",
+          "quote": "The ownership of a copyright may be transferred in whole or in part by any means of conveyance or by operation of law."
+        },
+        {
+          "id": "SO-08",
+          "sentence": "The Delaware General Corporation Law says that the business and affairs of a corporation are managed by or under the direction of a board of directors, unless the chapter or the certificate of incorporation provides otherwise.",
+          "kind": "regulation",
+          "sourceId": "dgcl-141",
+          "locator": "section 141(a)",
+          "quote": "shall be managed by or under the direction of a board of directors"
+        },
+        {
+          "id": "SO-09",
+          "sentence": "The same subchapter allows the board, by resolution passed by a majority of the whole board, to designate committees.",
+          "kind": "regulation",
+          "sourceId": "dgcl-141",
+          "locator": "section 141(c)(1)",
+          "quote": "designate 1 or more committees"
+        },
+        {
+          "id": "SO-10",
+          "sentence": "The rule says that offers and sales made in compliance with all of its conditions are exempt from section 5 of the Securities Act, which is the registration requirement.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-701",
+          "locator": "paragraph (a)",
+          "quote": "Offers and sales made in compliance with all of the conditions of this section are exempt from section 5 of the Act"
+        },
+        {
+          "id": "SO-11",
+          "sentence": "It is available to an issuer that is not subject to the reporting requirements of section 13 or 15(d) of the Exchange Act.",
+          "kind": "regulation",
+          "sourceId": "sec-rule-701",
+          "locator": "paragraph (b)(1)",
+          "quote": "This section is available to any issuer that is not subject to the reporting requirements of section 13 or 15(d)"
+        },
+        {
+          "id": "SO-12",
+          "sentence": "The securities rule for compensation, Rule 701, lets certain issuers offer shares to employees without registering the offer, and it limits who can receive them and how much can be sold in a 12-month period.",
+          "kind": "paraphrase",
+          "sourceId": "sec-rule-701",
+          "locator": "paragraphs (a), (c) and (d)"
+        },
+        {
+          "id": "SO-13",
+          "sentence": "The Internal Revenue Service's topic page on stock options separates statutory options from other options.",
+          "kind": "paraphrase",
+          "sourceId": "irs-options",
+          "locator": "the two kinds of stock option"
+        },
+        {
+          "id": "SO-14",
+          "sentence": "it says that you generally do not include any amount in gross income when you receive or exercise the option, and that taxable income or a deductible loss arises when you sell the stock",
+          "kind": "regulation",
+          "sourceId": "irs-options",
+          "locator": "statutory stock options",
+          "quote": "you generally don't include any amount in your gross income when you receive or exercise the option"
+        },
+        {
+          "id": "SO-15",
+          "sentence": "For options that are not statutory and have no readily determinable value, it says no income is recognized at grant and the fair market value of the stock is included in income when the option is exercised.",
+          "kind": "paraphrase",
+          "sourceId": "irs-options",
+          "locator": "nonstatutory stock options"
+        },
+        {
+          "id": "SO-16",
+          "sentence": "The general rule is that the person who performed the services includes the excess of the property's value over any amount paid in gross income in the first year in which the rights become transferable or are no longer subject to a substantial risk of forfeiture.",
+          "kind": "regulation",
+          "sourceId": "irc-83",
+          "locator": "section 83(a)",
+          "quote": "shall be included in the gross income of the person who performed such services"
+        },
+        {
+          "id": "SO-17",
+          "sentence": "The same section lets that person elect instead to include the amount in the year of the transfer, and it sets the election's deadline at no later than 30 days after the date of the transfer.",
+          "kind": "regulation",
+          "sourceId": "irc-83",
+          "locator": "section 83(b)(2)",
+          "quote": "not later than 30 days after the date of such transfer"
+        },
+        {
+          "id": "SO-18",
+          "sentence": "Section 409A of the Code concerns nonqualified deferred compensation plans.",
+          "kind": "paraphrase",
+          "sourceId": "irc-409a",
+          "locator": "section 409A(a)(1)"
+        },
+        {
+          "id": "SO-19",
+          "sentence": "It provides that when such a plan fails the section's requirements, deferred compensation that is not subject to a substantial risk of forfeiture is included in gross income.",
+          "kind": "regulation",
+          "sourceId": "irc-409a",
+          "locator": "section 409A(a)(1)(A)(i)",
+          "quote": "If at any time during a taxable year a nonqualified deferred compensation plan—"
+        },
+        {
+          "id": "SO-20",
+          "sentence": "says that size standards define the largest size a business can be to participate in government contracting programs, and that you must include the employees or receipts of all affiliates when determining the size of a business",
+          "kind": "regulation",
+          "sourceId": "sba-size",
+          "locator": "common terms, affiliates",
+          "quote": "You must include the employees or receipts of all affiliates when determining the size of a business."
+        },
+        {
+          "id": "SO-21",
+          "sentence": "It adds that affiliation with another business is based on the power to control, whether exercised or not.",
+          "kind": "regulation",
+          "sourceId": "sba-size",
+          "locator": "common terms, affiliates",
+          "quote": "Affiliation with another business is based on the power to control, whether exercised or not."
+        },
+        {
+          "id": "SO-22",
+          "sentence": "says that concerns and entities are affiliates of each other when one controls or has the power to control the other, or a third party controls or has the power to control both",
+          "kind": "regulation",
+          "sourceId": "sba-affiliation",
+          "locator": "paragraph (a)(1)",
+          "quote": "Concerns and entities are affiliates of each other when one controls or has the power to control the other"
+        },
+        {
+          "id": "SO-23",
+          "sentence": "It states that it does not matter whether control is exercised, so long as the power to control exists.",
+          "kind": "regulation",
+          "sourceId": "sba-affiliation",
+          "locator": "paragraph (a)(1)",
+          "quote": "It does not matter whether control is exercised, so long as the power to control exists."
+        },
+        {
+          "id": "SO-24",
+          "sentence": "a holder of 50 percent or more of a concern's voting stock controls or has the power to control it, and options and convertible securities are treated as though the rights granted have been exercised",
+          "kind": "paraphrase",
+          "sourceId": "sba-affiliation",
+          "locator": "paragraphs (c)(1) and (d)(1)"
+        },
+        {
+          "id": "SO-25",
+          "sentence": "a concern must be more than 50% directly owned and controlled by one or more individuals, and the individuals must be citizens or permanent residents of the United States",
+          "kind": "regulation",
+          "sourceId": "sbir-ownership",
+          "locator": "paragraph (a)(1)(i)",
+          "quote": "more than 50% directly owned and controlled by one or more individuals"
+        },
+        {
+          "id": "SO-26",
+          "sentence": "A separate paragraph allows concerns owned by venture capital operating companies, hedge funds or private equity firms, but only for agencies that choose that authority",
+          "kind": "paraphrase",
+          "sourceId": "sbir-ownership",
+          "locator": "paragraph (a)(1)(ii)"
+        },
+        {
+          "id": "SO-27",
+          "sentence": "The opening rule describes a distributing corporation that distributes stock or securities of a controlled corporation that it controlled immediately before the distribution.",
+          "kind": "paraphrase",
+          "sourceId": "irc-355",
+          "locator": "section 355(a)(1)"
+        },
+        {
+          "id": "SO-28",
+          "sentence": "If the section's requirements are met, no gain or loss is recognized to the shareholder.",
+          "kind": "paraphrase",
+          "sourceId": "irc-355",
+          "locator": "section 355(a)(1)"
+        },
+        {
+          "id": "SO-29",
+          "sentence": "The section requires that the distributing and the controlled corporation each be engaged immediately after the distribution in the active conduct of a trade or business, and it says the business must have been actively conducted throughout the five-year period ending on the date of the distribution.",
+          "kind": "regulation",
+          "sourceId": "irc-355",
+          "locator": "section 355(b)(1)(A) and (b)(2)(B)",
+          "quote": "engaged immediately after the distribution in the active conduct of a trade or business"
+        },
+        {
+          "id": "SO-30",
+          "sentence": "It also requires that the transaction was not used principally as a device for the distribution of the earnings and profits.",
+          "kind": "regulation",
+          "sourceId": "irc-355",
+          "locator": "section 355(a)(1)(B)",
+          "quote": "was not used principally as a device for the distribution of the earnings and profits"
+        },
+        {
+          "id": "SO-31",
+          "sentence": "each joint owner of a patent may exploit the invention without the consent of and without accounting to the other owners",
+          "kind": "regulation",
+          "sourceId": "usc-35-262",
+          "locator": "section 262",
+          "quote": "without the consent of and without accounting to the other owners"
+        },
+        {
+          "id": "SO-32",
+          "sentence": "describes its Cybersecurity Framework as helping organizations to better understand and improve their management of cybersecurity risk, and as being for industry, government and organizations generally",
+          "kind": "definition",
+          "sourceId": "nist-csf",
+          "locator": "page introduction",
+          "quote": "organizations to better understand and improve their management of cybersecurity risk"
+        },
+        {
+          "id": "SO-33",
+          "sentence": "By shares, the Delaware director provisions place management with the board, subject to the certificate of incorporation.",
+          "kind": "paraphrase",
+          "sourceId": "dgcl-141",
+          "locator": "section 141(a)"
+        }
+      ]
+    },
+    {
+      "path": "src/content/briefs/corporate-spinouts.md",
+      "sentences": [
+        {
+          "text": "Four ways a company can host a new software product, and what each one settles about ownership, people and control",
+          "page": "infra/intake/briefs/corporate-spinouts.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "Four routes for a new software product inside a company, read through ownership, equity for staff, parent control and small-business rules.",
+          "page": "infra/intake/briefs/corporate-spinouts.md#the-routes-side-by-side"
+        },
+        {
+          "text": "Teams inside established companies often have a product idea that sits awkwardly beside the main business.",
+          "page": "infra/intake/briefs/corporate-spinouts.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "This brief looks at where such a product can live and treats the choice as a legal and organizational decision as much as a product one.",
+          "page": "infra/intake/briefs/corporate-spinouts.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "It compares four routes, running from a small team inside the parent to a separately owned company with outside shareholders, and a fourth in which the parent licenses its technology to someone else.",
+          "page": "infra/intake/briefs/corporate-spinouts.md#the-routes-side-by-side"
+        },
+        {
+          "text": "For each route it reports what public sources say about the mechanism and then separates that report from analysis.",
+          "page": "infra/intake/briefs/corporate-spinouts.md#the-routes-side-by-side"
+        },
+        {
+          "text": "The same questions run through every route.",
+          "page": "infra/intake/briefs/corporate-spinouts.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "Who holds title to the code the team writes?",
+          "page": "infra/intake/briefs/corporate-spinouts.md#who-owns-the-software"
+        },
+        {
+          "text": "Can staff who move hold shares?",
+          "page": "infra/intake/briefs/corporate-spinouts.md#moving-people-and-giving-them-equity"
+        },
+        {
+          "text": "What can the parent still decide?",
+          "page": "infra/intake/briefs/corporate-spinouts.md#what-the-parent-keeps"
+        },
+        {
+          "text": "Which public programs count a parent's ownership against a new venture?",
+          "page": "infra/intake/briefs/corporate-spinouts.md#small-business-programs-and-corporate-ownership"
+        },
+        {
+          "text": "What is at stake for the parent's own shareholders if shares are distributed to them?",
+          "page": "infra/intake/briefs/corporate-spinouts.md#tax-treatment-of-a-spin-off-distribution"
+        },
+        {
+          "text": "What has to be separated in systems and data?",
+          "page": "infra/intake/briefs/corporate-spinouts.md#separating-data-and-security"
+        },
+        {
+          "text": "The brief ends with questions to put to counsel and with a plain statement of the limits of its sources, which are federal rules plus one state's company law.",
+          "page": "infra/intake/briefs/corporate-spinouts.md#questions-to-ask-before-starting"
+        },
+        {
+          "text": "No company is named, no particular arrangement is described and no corporate client is claimed.",
+          "page": "infra/intake/briefs/corporate-spinouts.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "This brief is general information for corporate teams.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "It is not legal, tax or investment advice.",
+          "decision": "W8-24"
+        }
+      ]
+    }
+  ]
+}

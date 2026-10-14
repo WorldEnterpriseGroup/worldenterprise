@@ -1,0 +1,42 @@
+---
+import { href } from '../../lib/url.ts';
+import BriefCard from '../cards/BriefCard.astro';
+import Grid from '../ui/Grid.astro';
+import { BRIEF_COPY, depthLine } from './copy.ts';
+import { sectionCount } from './plan.ts';
+import type { LiveBrief } from './plan.ts';
+
+interface Props {
+  related: readonly LiveBrief[];
+}
+
+const { related } = Astro.props;
+---
+
+<section class="related-briefs stack" aria-labelledby="related-briefs-heading">
+  <h2 id="related-briefs-heading">{BRIEF_COPY.relatedHeading}</h2>
+  {
+    related.length > 0 ? (
+      <Grid min="17rem">
+        {related.map(({ row, abstract }) => (
+          <BriefCard
+            eyebrow={BRIEF_COPY.eyebrow}
+            title={abstract.data.title}
+            summary={abstract.data.description}
+            path={row.path}
+            headingLevel={3}
+            meta={depthLine(abstract.data.updated, sectionCount(abstract))}
+          />
+        ))}
+      </Grid>
+    ) : (
+      <p>{BRIEF_COPY.relatedNone}</p>
+    )
+  }
+  <ul class="cluster related-briefs__links" role="list">
+    <li><a href={href('/briefs/')}>{BRIEF_COPY.allBriefs}</a></li>
+    <li>
+      {BRIEF_COPY.applyLead} <a href={href('/apply/')}>{BRIEF_COPY.applyLink}</a>
+    </li>
+  </ul>
+</section>

@@ -1,0 +1,1055 @@
+{
+  "wp": "WP-63",
+  "note": "The fetch ledger and the sentence ledger of the gated-briefs package (docs/wave8-contracts.md, section 9). Each brief under infra/intake/briefs/ lists the pages it was written from; every page was fetched with WebFetch in the writing session, and the claims below are the sentences of a brief that restate a source, each with a locator and, for a regulation, a verbatim quote of 25 words or fewer. The remaining documents are page copy: the squeeze, hub and thanks copy module, the two page files and the open abstracts. Each sentence maps to one claim (C-nn), one existing page with a heading (path#heading) or one decision, or is a short control label. tests/unit/wp-63/copy-ledger.test.ts enumerates the sentences from the files that hold them, fails on one with no mapping and on a mapping with no sentence, and runs the claims denylist over all of them. Interface strings built at run time (the depth line under a card) hold a date and a count only and are denylist-scanned by that test.",
+  "fetches": [
+    {
+      "id": "sbir-about",
+      "url": "https://www.sbir.gov/about",
+      "title": "About | SBIR",
+      "publisher": "SBIR.gov, coordinated by the U.S. Small Business Administration",
+      "fetchedAt": "2026-10-10T11:46:05Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "yc-safe",
+      "url": "https://www.ycombinator.com/documents",
+      "title": "The SAFE, the open standard for startup fundraising",
+      "publisher": "Y Combinator",
+      "fetchedAt": "2026-10-10T11:46:06Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nvca-model",
+      "url": "https://nvca.org/model-legal-documents/",
+      "title": "Model Legal Documents",
+      "publisher": "National Venture Capital Association",
+      "fetchedAt": "2026-10-10T11:46:07Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-exempt",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings",
+      "title": "Exempt Offerings",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T11:46:08Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-loans",
+      "url": "https://www.sba.gov/funding-programs/loans",
+      "title": "Access affordable 7(a), 504, & microloans",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-10T11:46:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-regcf",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/regulation-crowdfunding",
+      "title": "Regulation Crowdfunding",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T11:46:25Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sec-506b",
+      "url": "https://www.sec.gov/resources-small-businesses/exempt-offerings/private-placements-rule-506b",
+      "title": "Private Placements - Rule 506(b)",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "fetchedAt": "2026-10-10T11:46:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-1202",
+      "url": "https://www.law.cornell.edu/uscode/text/26/1202",
+      "title": "26 U.S. Code section 1202, Partial exclusion for gain from certain small business stock",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T11:46:27Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-structure",
+      "url": "https://www.sba.gov/business-guide/launch-your-business/choose-business-structure",
+      "title": "Choose a business structure",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-10T12:05:07Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-llc",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/limited-liability-company-llc",
+      "title": "Limited liability company (LLC)",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T12:05:08Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cfr-83-2",
+      "url": "https://www.law.cornell.edu/cfr/text/26/1.83-2",
+      "title": "26 CFR 1.83-2, Election to include in gross income in year of transfer",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T12:05:09Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "delaware-form",
+      "url": "https://corp.delaware.gov/howtoform/",
+      "title": "How to form a new business entity",
+      "publisher": "Delaware Division of Corporations",
+      "fetchedAt": "2026-10-10T12:05:09Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-ein",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online",
+      "title": "Apply for an employer identification number (EIN) online",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T12:05:12Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "uspto-trademark",
+      "url": "https://www.uspto.gov/trademarks/basics/what-trademark",
+      "title": "What is a trademark?",
+      "publisher": "U.S. Patent and Trademark Office",
+      "fetchedAt": "2026-10-10T12:05:21Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "copyright-basics",
+      "url": "https://www.copyright.gov/what-is-copyright/",
+      "title": "What is copyright?",
+      "publisher": "U.S. Copyright Office",
+      "fetchedAt": "2026-10-10T12:05:22Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "usc-17-101",
+      "url": "https://www.law.cornell.edu/uscode/text/17/101",
+      "title": "17 U.S. Code section 101, Definitions",
+      "publisher": "Legal Information Institute, Cornell Law School",
+      "fetchedAt": "2026-10-10T12:05:23Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "irs-scorp",
+      "url": "https://www.irs.gov/businesses/small-businesses-self-employed/s-corporations",
+      "title": "S corporations",
+      "publisher": "Internal Revenue Service",
+      "fetchedAt": "2026-10-10T12:05:23Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-airmf",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "title": "AI Risk Management Framework",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T12:10:22Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-core",
+      "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+      "title": "AI RMF Core",
+      "publisher": "National Institute of Standards and Technology, AI Resource Center",
+      "fetchedAt": "2026-10-10T12:10:38Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "nist-genai",
+      "url": "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence",
+      "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-10T12:10:25Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-top10",
+      "url": "https://genai.owasp.org/llm-top-10/",
+      "title": "OWASP Top 10 for LLM Applications",
+      "publisher": "OWASP GenAI Security Project",
+      "fetchedAt": "2026-10-10T12:10:23Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-llm01",
+      "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/",
+      "title": "LLM01:2025 Prompt Injection",
+      "publisher": "OWASP GenAI Security Project",
+      "fetchedAt": "2026-10-10T12:10:49Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "owasp-llm06",
+      "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/",
+      "title": "LLM06:2025 Excessive Agency",
+      "publisher": "OWASP GenAI Security Project",
+      "fetchedAt": "2026-10-10T12:10:49Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "eu-ai-act",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+      "title": "AI Act",
+      "publisher": "European Commission, Shaping Europe's digital future",
+      "fetchedAt": "2026-10-10T12:10:24Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "anthropic-evals",
+      "url": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+      "title": "Define success criteria and build evaluations",
+      "publisher": "Anthropic, Claude developer documentation",
+      "fetchedAt": "2026-10-10T12:10:26Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "openai-evals",
+      "url": "https://developers.openai.com/api/docs/guides/evaluation-best-practices",
+      "title": "Evaluation best practices",
+      "publisher": "OpenAI, developer documentation",
+      "fetchedAt": "2026-10-10T12:10:50Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "documents": [
+    {
+      "path": "infra/intake/briefs/funding-paths.md",
+      "claims": [
+        {
+          "id": "FP-01",
+          "sentence": "every offer and sale of securities must either be registered under the Securities Act of 1933 or fall within an exemption",
+          "kind": "regulation",
+          "sourceId": "sec-exempt",
+          "locator": "the page's opening statement of the registration requirement",
+          "quote": "Every offer and sale of securities must either be registered under the Securities Act of 1933"
+        },
+        {
+          "id": "FP-02",
+          "sentence": "an issuer must file a Form D notice no later than 15 days after the first sale of securities in an offering relying on Rule 506(b)",
+          "kind": "regulation",
+          "sourceId": "sec-exempt",
+          "locator": "the Form D notice section",
+          "quote": "an issuer must file this notice within 15 days after the first sale of securities in an offering relying on Rule 506(b)"
+        },
+        {
+          "id": "FP-03",
+          "sentence": "sales to non-accredited investors are limited to no more than 35 in any 90-calendar-day period",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the page's statement of who may buy",
+          "quote": "securities may not be sold to more than 35 non-accredited investors in any 90-calendar day period"
+        },
+        {
+          "id": "FP-04",
+          "sentence": "an issuer can sell to an unlimited number of accredited investors",
+          "kind": "regulation",
+          "sourceId": "sec-506b",
+          "locator": "the page's statement of who may buy",
+          "quote": "can sell securities to an unlimited number of accredited investors."
+        },
+        {
+          "id": "FP-05",
+          "sentence": "the rules require all transactions under Regulation Crowdfunding to take place online through an SEC-registered intermediary",
+          "kind": "regulation",
+          "sourceId": "sec-regcf",
+          "locator": "the page's description of the intermediary requirement",
+          "quote": "require all transactions under Regulation Crowdfunding to take place online through an SEC-registered intermediary"
+        },
+        {
+          "id": "FP-06",
+          "sentence": "the rules permit a company to raise a maximum aggregate amount through crowdfunding offerings in a 12-month period",
+          "kind": "regulation",
+          "sourceId": "sec-regcf",
+          "locator": "the page's description of the offering limit; the brief states no amount",
+          "quote": "permit a company to raise a maximum aggregate amount of $5 million through crowdfunding offerings in a 12-month period"
+        },
+        {
+          "id": "FP-07",
+          "sentence": "the stock must be acquired at its original issue, directly or through an underwriter",
+          "kind": "regulation",
+          "sourceId": "usc-1202",
+          "locator": "section 1202, the definition of qualified small business stock",
+          "quote": "such stock is acquired by the taxpayer at its original issue (directly or through an underwriter)"
+        },
+        {
+          "id": "FP-08",
+          "sentence": "each participating agency runs its own program within guidelines established by Congress",
+          "kind": "paraphrase",
+          "sourceId": "sbir-about",
+          "locator": "the page's description of how the program is administered"
+        },
+        {
+          "id": "FP-09",
+          "sentence": "guaranteed loans generally have rates and fees comparable to those on loans without a guarantee",
+          "kind": "paraphrase",
+          "sourceId": "sba-loans",
+          "locator": "the page's statement on the cost of guaranteed loans"
+        },
+        {
+          "id": "FP-10",
+          "sentence": "the SAFE converts into shares automatically when the startup raises a priced round",
+          "kind": "definition",
+          "sourceId": "yc-safe",
+          "locator": "the page's description of the instrument"
+        },
+        {
+          "id": "FP-11",
+          "sentence": "describes them as the industry-embraced model documents to be used in venture capital financings",
+          "kind": "definition",
+          "sourceId": "nvca-model",
+          "locator": "the page's introduction to the model documents"
+        }
+      ]
+    },
+    {
+      "path": "infra/intake/briefs/company-setup.md",
+      "claims": [
+        {
+          "id": "CS-01",
+          "sentence": "limited liability companies protect owners from personal liability in most instances",
+          "kind": "paraphrase",
+          "sourceId": "sba-structure",
+          "locator": "the limited liability company entry of the structure comparison"
+        },
+        {
+          "id": "CS-02",
+          "sentence": "a domestic limited liability company with at least two members is classified as a partnership for federal income tax purposes",
+          "kind": "regulation",
+          "sourceId": "irs-llc",
+          "locator": "the default classification rules",
+          "quote": "a domestic LLC with at least two members is classified as a partnership for federal income tax purposes"
+        },
+        {
+          "id": "CS-03",
+          "sentence": "For employment taxes and certain excise taxes, a limited liability company with only one member is still considered a separate entity",
+          "kind": "regulation",
+          "sourceId": "irs-llc",
+          "locator": "the single-member rule",
+          "quote": "for purposes of employment tax and certain excise taxes, an LLC with only one member is still considered a separate entity"
+        },
+        {
+          "id": "CS-04",
+          "sentence": "the corporation must submit Form 2553, signed by all the shareholders",
+          "kind": "regulation",
+          "sourceId": "irs-scorp",
+          "locator": "the election paragraph",
+          "quote": "In order to become an S corporation, the corporation must submit Form 2553, Election by a Small Business Corporation"
+        },
+        {
+          "id": "CS-05",
+          "sentence": "no more than 100 shareholders and only one class of stock",
+          "kind": "regulation",
+          "sourceId": "irs-scorp",
+          "locator": "the list of requirements for S corporation status",
+          "quote": "Have no more than 100 shareholders"
+        },
+        {
+          "id": "CS-06",
+          "sentence": "the election shall be filed not later than 30 days after the date the property was transferred",
+          "kind": "regulation",
+          "sourceId": "cfr-83-2",
+          "locator": "paragraph (b)",
+          "quote": "shall be filed not later than 30 days after the date the property was transferred"
+        },
+        {
+          "id": "CS-07",
+          "sentence": "the election may be filed before the date of transfer",
+          "kind": "regulation",
+          "sourceId": "cfr-83-2",
+          "locator": "paragraph (b)",
+          "quote": "may be filed prior to the date of transfer"
+        },
+        {
+          "id": "CS-08",
+          "sentence": "Delaware law requires that every business entity have and maintain a registered agent in the State of Delaware",
+          "kind": "regulation",
+          "sourceId": "delaware-form",
+          "locator": "the registered agent paragraph",
+          "quote": "Delaware law requires that every business entity have and maintain a Registered Agent in the State of Delaware"
+        },
+        {
+          "id": "CS-09",
+          "sentence": "All corporations incorporated in the State of Delaware are required to file an annual report and to pay a franchise tax",
+          "kind": "regulation",
+          "sourceId": "delaware-form",
+          "locator": "the annual filings paragraph",
+          "quote": "All corporations incorporated in the State of Delaware are required to file an Annual Report and to pay a franchise tax."
+        },
+        {
+          "id": "CS-10",
+          "sentence": "a work prepared by an employee within the scope of his or her employment",
+          "kind": "regulation",
+          "sourceId": "usc-17-101",
+          "locator": "the definition of a work made for hire, paragraph (1)",
+          "quote": "(1) a work prepared by an employee within the scope of his or her employment; or"
+        },
+        {
+          "id": "CS-11",
+          "sentence": "expressly agree in a written instrument signed by them that the work shall be considered a work made for hire",
+          "kind": "regulation",
+          "sourceId": "usc-17-101",
+          "locator": "the definition of a work made for hire, paragraph (2)",
+          "quote": "expressly agree in a written instrument signed by them that the work shall be considered a work made for hire."
+        },
+        {
+          "id": "CS-12",
+          "sentence": "copyright exists automatically in an original work of authorship once it is fixed",
+          "kind": "definition",
+          "sourceId": "copyright-basics",
+          "locator": "the section on when protection begins",
+          "quote": "Copyright exists automatically in an original work of authorship once it is fixed"
+        },
+        {
+          "id": "CS-13",
+          "sentence": "registering a work is not mandatory",
+          "kind": "definition",
+          "sourceId": "copyright-basics",
+          "locator": "the section on registration",
+          "quote": "Registering a work is not mandatory, but for U.S. works, registration (or refusal) is necessary"
+        },
+        {
+          "id": "CS-14",
+          "sentence": "a person is not required to register a trademark",
+          "kind": "definition",
+          "sourceId": "uspto-trademark",
+          "locator": "the registration paragraph",
+          "quote": "You’re not required to register your trademark."
+        },
+        {
+          "id": "CS-15",
+          "sentence": "a registered trademark provides broader rights and protections than an unregistered one",
+          "kind": "definition",
+          "sourceId": "uspto-trademark",
+          "locator": "the registration paragraph",
+          "quote": "However, a registered trademark provides broader rights and protections than an unregistered one."
+        },
+        {
+          "id": "CS-16",
+          "sentence": "rights from use are limited to the geographic area where the goods or services are provided",
+          "kind": "paraphrase",
+          "sourceId": "uspto-trademark",
+          "locator": "the paragraph on rights from use; the page says they only apply to the geographic area in which you are providing goods or services"
+        },
+        {
+          "id": "CS-17",
+          "sentence": "businesses, organizations and some retirement trusts need one to manage their taxes",
+          "kind": "regulation",
+          "sourceId": "irs-ein",
+          "locator": "the opening paragraph",
+          "quote": "Businesses, organizations and some retirement trusts need an EIN to manage their taxes."
+        }
+      ]
+    },
+    {
+      "path": "src/components/briefs/copy.ts",
+      "sentences": [
+        {
+          "text": "Executive brief",
+          "label": true
+        },
+        {
+          "text": "Request this brief",
+          "label": true
+        },
+        {
+          "text": "See the outline",
+          "label": true
+        },
+        {
+          "text": "What the brief covers",
+          "label": true
+        },
+        {
+          "text": "The sections of the full brief, in order.",
+          "decision": "W8-5"
+        },
+        {
+          "text": "WE sends the full text by email to the address you give.",
+          "claim": "C-27"
+        },
+        {
+          "text": "About this brief",
+          "label": true
+        },
+        {
+          "text": "Brief details",
+          "label": true
+        },
+        {
+          "text": "Format",
+          "label": true
+        },
+        {
+          "text": "Written brief",
+          "label": true
+        },
+        {
+          "text": "Updated",
+          "label": true
+        },
+        {
+          "text": "Sections",
+          "label": true
+        },
+        {
+          "text": "Request the brief",
+          "label": true
+        },
+        {
+          "text": "Requests are not being accepted yet",
+          "label": true
+        },
+        {
+          "text": "WE is not accepting brief requests on this page yet, and the form cannot be sent.",
+          "decision": "W8-13"
+        },
+        {
+          "text": "This brief gives considerations for founders.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "It is not legal, tax or investment advice.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Related briefs",
+          "label": true
+        },
+        {
+          "text": "More briefs are on the briefs page.",
+          "label": true
+        },
+        {
+          "text": "All executive briefs",
+          "label": true
+        },
+        {
+          "text": "Have an idea of your own?",
+          "label": true
+        },
+        {
+          "text": "Apply to World Enterprise Incubator",
+          "label": true
+        },
+        {
+          "text": "No executive brief is published yet.",
+          "label": true
+        },
+        {
+          "text": "Open research briefs",
+          "label": true
+        },
+        {
+          "text": "The research briefs on this site are open to read, with no request needed.",
+          "decision": "W8-16"
+        },
+        {
+          "text": "While you wait",
+          "label": true
+        },
+        {
+          "text": "Read about the other executive briefs",
+          "label": true
+        },
+        {
+          "text": "What happens after you apply",
+          "label": true
+        },
+        {
+          "text": "Contact WE",
+          "label": true
+        },
+        {
+          "text": "Executive briefs",
+          "label": true
+        },
+        {
+          "text": "WE also writes longer executive briefs for founders, which are sent by email on request.",
+          "claim": "C-27"
+        },
+        {
+          "text": "See the executive briefs",
+          "label": true
+        }
+      ]
+    },
+    {
+      "path": "src/content/briefs/funding-paths.md",
+      "sentences": [
+        {
+          "text": "What each way of paying for early work asks of the company in return",
+          "page": "infra/intake/briefs/funding-paths.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "Seven ways to pay for early software work, compared by what each asks of the company: customers, awards, loans, shares, convertible instruments and crowds.",
+          "page": "infra/intake/briefs/funding-paths.md#the-paths-side-by-side"
+        },
+        {
+          "text": "Founders are often shown funding as a menu, with the amount of money on offer as the only column.",
+          "page": "infra/intake/briefs/funding-paths.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "This brief reads the same options from the other side and asks what each one requires of the company once the money has arrived.",
+          "page": "infra/intake/briefs/funding-paths.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "It covers seven paths: revenue and savings, federal research awards, loans, private sales of shares, convertible instruments, priced rounds and regulated crowdfunding.",
+          "page": "infra/intake/briefs/funding-paths.md#the-paths-side-by-side"
+        },
+        {
+          "text": "For each path it reports what a public source says the mechanism is, then separates that report from analysis of which kind of company the path tends to suit.",
+          "page": "infra/intake/briefs/funding-paths.md#how-to-read-the-paths"
+        },
+        {
+          "text": "It also lists questions to put to any path before committing, and it sets out the limits of what its sources can show.",
+          "page": "infra/intake/briefs/funding-paths.md#questions-to-ask-before-choosing"
+        },
+        {
+          "text": "Those include rules that change, facts specific to your company and every jurisdiction outside the United States.",
+          "page": "infra/intake/briefs/funding-paths.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "The brief is general information for founders.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "It is not legal, tax or investment advice.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/briefs/company-setup.md",
+      "sentences": [
+        {
+          "text": "The legal and administrative choices that turn a project into a company, and what each one settles",
+          "page": "infra/intake/briefs/company-setup.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "Seven choices a first-time founder makes when forming a company: legal form, state, tax treatment, founder shares, ownership of the work, name and tax number.",
+          "page": "infra/intake/briefs/company-setup.md#the-choices-side-by-side"
+        },
+        {
+          "text": "Founders are usually handed a checklist for starting a company, and a checklist makes every item look like a form.",
+          "page": "infra/intake/briefs/company-setup.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "This brief reads each item as a decision and asks what it settles, what it leaves open and what it costs to change later.",
+          "page": "infra/intake/briefs/company-setup.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "It covers the main choices in the order they tend to arise: the legal form, the state of formation, tax treatment, how the founders divide ownership, who owns the code, the company name and the tax number.",
+          "page": "infra/intake/briefs/company-setup.md#how-to-read-the-choices"
+        },
+        {
+          "text": "For each one it reports what public sources from United States agencies say, then separates that report from analysis.",
+          "page": "infra/intake/briefs/company-setup.md#about-the-evidence"
+        },
+        {
+          "text": "One choice carries a deadline that starts running when shares are issued, and the brief says why that one should not wait.",
+          "page": "infra/intake/briefs/company-setup.md#choice-four-dividing-the-ownership-among-the-founders"
+        },
+        {
+          "text": "It also gives questions to ask a lawyer or an accountant before committing to any of the choices.",
+          "page": "infra/intake/briefs/company-setup.md#questions-to-ask-before-choosing"
+        },
+        {
+          "text": "The brief names its sources and states the limits of what they can show.",
+          "page": "infra/intake/briefs/company-setup.md#about-the-evidence"
+        },
+        {
+          "text": "It does not cover other jurisdictions, and it does not say which choice is right for your company.",
+          "page": "infra/intake/briefs/company-setup.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "It is general information for founders.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "It is not legal, tax or investment advice.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/briefs/index.md",
+      "sentences": [
+        {
+          "text": "Executive briefs for founders on funding paths, company setup and building with AI.",
+          "decision": "W8-5"
+        },
+        {
+          "text": "Each has a public outline and is sent by email on request.",
+          "claim": "C-27"
+        },
+        {
+          "text": "Executive briefs are longer written documents for people who need to decide something and want the considerations laid out in one place.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "Each brief has its own page with an outline of what it covers.",
+          "decision": "W8-5"
+        },
+        {
+          "text": "WE sends the full text by email to the address you give when you request it.",
+          "claim": "C-27"
+        },
+        {
+          "text": "Every brief names its sources, states how far the evidence goes and says what it cannot tell you.",
+          "page": "infra/intake/briefs/funding-paths.md#about-the-evidence"
+        },
+        {
+          "text": "A brief is general information for founders.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "It is not legal, tax or investment advice.",
+          "decision": "W8-24"
+        }
+      ]
+    },
+    {
+      "path": "src/content/pages/briefs/thanks.md",
+      "sentences": [
+        {
+          "text": "Your brief request has been sent to WE.",
+          "decision": "W8-2"
+        },
+        {
+          "text": "This page explains where the brief goes and where to read while you wait.",
+          "claim": "C-27"
+        },
+        {
+          "text": "Your request has been sent to WE.",
+          "decision": "W8-2"
+        },
+        {
+          "text": "WE sends the brief by email to the address you gave.",
+          "claim": "C-27"
+        },
+        {
+          "text": "WE does not state a delivery time on this site, so check that the address you entered is one you read, and look in your spam folder if nothing arrives.",
+          "decision": "W7-5"
+        }
+      ]
+    },
+    {
+      "path": "infra/intake/briefs/ai-native-build.md",
+      "claims": [
+        {
+          "id": "AB-01",
+          "sentence": "The page says the framework is intended for voluntary use",
+          "kind": "regulation",
+          "sourceId": "nist-airmf",
+          "locator": "the framework overview",
+          "quote": "is intended for voluntary use and to improve the ability to incorporate trustworthiness considerations"
+        },
+        {
+          "id": "AB-02",
+          "sentence": "as a framework to better manage risks to individuals, organizations and society associated with artificial intelligence",
+          "kind": "paraphrase",
+          "sourceId": "nist-airmf",
+          "locator": "the framework overview"
+        },
+        {
+          "id": "AB-03",
+          "sentence": "The page also says the framework is being revised",
+          "kind": "paraphrase",
+          "sourceId": "nist-airmf",
+          "locator": "the note on the revision of the framework"
+        },
+        {
+          "id": "AB-04",
+          "sentence": "Govern is the cross-cutting function that runs through the other three",
+          "kind": "regulation",
+          "sourceId": "nist-core",
+          "locator": "the description of the govern function",
+          "quote": "govern is a cross-cutting function that is infused throughout AI risk management and enables the other functions of the"
+        },
+        {
+          "id": "AB-05",
+          "sentence": "Map establishes the context for a system",
+          "kind": "paraphrase",
+          "sourceId": "nist-core",
+          "locator": "the description of the map function"
+        },
+        {
+          "id": "AB-06",
+          "sentence": "Measure uses quantitative, qualitative or mixed methods to assess and monitor the risks",
+          "kind": "paraphrase",
+          "sourceId": "nist-core",
+          "locator": "the description of the measure function"
+        },
+        {
+          "id": "AB-07",
+          "sentence": "Manage allocates resources to the risks that have been mapped and measured, and plans the response",
+          "kind": "paraphrase",
+          "sourceId": "nist-core",
+          "locator": "the description of the manage function"
+        },
+        {
+          "id": "AB-08",
+          "sentence": "a cross-sectoral profile of, and companion resource for, the framework",
+          "kind": "paraphrase",
+          "sourceId": "nist-genai",
+          "locator": "the catalog entry summary"
+        },
+        {
+          "id": "AB-09",
+          "sentence": "The entry does not list the risks the profile covers",
+          "kind": "paraphrase",
+          "sourceId": "nist-genai",
+          "locator": "the catalog entry, which names no risks"
+        },
+        {
+          "id": "AB-10",
+          "sentence": "The 2025 list, as the page shows it, has ten entries",
+          "kind": "paraphrase",
+          "sourceId": "owasp-top10",
+          "locator": "the list of ten entries"
+        },
+        {
+          "id": "AB-11",
+          "sentence": "direct prompt injections occur when a user's prompt input directly alters the behavior of the model",
+          "kind": "regulation",
+          "sourceId": "owasp-llm01",
+          "locator": "the definition of direct prompt injection",
+          "quote": "Direct prompt injections occur when a user's prompt input directly alters the behavior of the model in unintended"
+        },
+        {
+          "id": "AB-12",
+          "sentence": "indirect prompt injections occur when the model accepts input from external sources, such as websites or files",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "the definition of indirect prompt injection"
+        },
+        {
+          "id": "AB-13",
+          "sentence": "it is unclear whether there are fool-proof methods of prevention",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "the closing caution on the mitigation list"
+        },
+        {
+          "id": "AB-14",
+          "sentence": "constraining the model's behavior, defining and validating expected output formats with deterministic code, filtering inputs and outputs, enforcing least privilege, requiring human approval for high-risk actions, separating untrusted content from instructions and running adversarial tests",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm01",
+          "locator": "the seven listed mitigation strategies"
+        },
+        {
+          "id": "AB-15",
+          "sentence": "describes a vulnerability that enables damaging actions to be performed in response to unexpected, ambiguous or manipulated outputs from a model",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "the definition of excessive agency"
+        },
+        {
+          "id": "AB-16",
+          "sentence": "the cause can be hallucination or poor model performance, or direct or indirect prompt injection",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "the definition of excessive agency"
+        },
+        {
+          "id": "AB-17",
+          "sentence": "excessive functionality, excessive permissions and excessive autonomy",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "the list of root causes"
+        },
+        {
+          "id": "AB-18",
+          "sentence": "implement authorization in downstream systems rather than relying on a model to decide if an action is allowed or not",
+          "kind": "regulation",
+          "sourceId": "owasp-llm06",
+          "locator": "the mitigation on enforcing authorization downstream",
+          "quote": "Implement authorization in downstream systems rather than relying on an LLM to decide if an action is allowed or not."
+        },
+        {
+          "id": "AB-19",
+          "sentence": "Grant downstream access at the minimum level needed, such as read-only roles",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "the mitigation on restricting permissions"
+        },
+        {
+          "id": "AB-20",
+          "sentence": "logging, monitoring and rate limiting do not prevent excessive agency but can limit the damage it causes",
+          "kind": "paraphrase",
+          "sourceId": "owasp-llm06",
+          "locator": "the note after the mitigation list"
+        },
+        {
+          "id": "AB-21",
+          "sentence": "starts with clearly defining the success criteria and then designing evaluations to measure performance against them",
+          "kind": "paraphrase",
+          "sourceId": "anthropic-evals",
+          "locator": "the opening statement on success criteria"
+        },
+        {
+          "id": "AB-22",
+          "sentence": "criteria should be specific, measurable, achievable and relevant",
+          "kind": "paraphrase",
+          "sourceId": "anthropic-evals",
+          "locator": "the list of properties of good criteria"
+        },
+        {
+          "id": "AB-23",
+          "sentence": "most use cases need evaluation along several criteria at once",
+          "kind": "paraphrase",
+          "sourceId": "anthropic-evals",
+          "locator": "the note after the list of properties"
+        },
+        {
+          "id": "AB-24",
+          "sentence": "It recommends evaluating early and often",
+          "kind": "paraphrase",
+          "sourceId": "openai-evals",
+          "locator": "the principle on eval-driven development"
+        },
+        {
+          "id": "AB-25",
+          "sentence": "metric-based ones, which give a numerical score and may miss nuance; human ones, which it describes as the highest quality but slow and expensive; and ones that use a model as judge, which it describes as cheaper and more scalable than human evaluation",
+          "kind": "paraphrase",
+          "sourceId": "openai-evals",
+          "locator": "the section on types of graders"
+        },
+        {
+          "id": "AB-26",
+          "sentence": "It flags position and verbosity bias in model judges",
+          "kind": "paraphrase",
+          "sourceId": "openai-evals",
+          "locator": "the model-as-judge grader entry"
+        },
+        {
+          "id": "AB-27",
+          "sentence": "all AI systems considered a clear threat to the safety, livelihoods and rights of people are banned",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "the description of the unacceptable risk category",
+          "quote": "All AI systems considered a clear threat to the safety, livelihoods and rights of people are banned."
+        },
+        {
+          "id": "AB-28",
+          "sentence": "AI use cases that can pose serious risks to health, safety or fundamental rights are classified as high-risk",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "the description of the high-risk category",
+          "quote": "AI use cases that can pose serious risks to health, safety or fundamental rights are classified as high-risk."
+        },
+        {
+          "id": "AB-29",
+          "sentence": "the Act does not introduce rules for AI that is deemed minimal or no risk",
+          "kind": "regulation",
+          "sourceId": "eu-ai-act",
+          "locator": "the description of the minimal risk category",
+          "quote": "The AI Act does not introduce rules for AI that is deemed minimal or no risk."
+        },
+        {
+          "id": "AB-30",
+          "sentence": "telling people when they are interacting with a chatbot",
+          "kind": "paraphrase",
+          "sourceId": "eu-ai-act",
+          "locator": "the transparency risk category"
+        },
+        {
+          "id": "AB-31",
+          "sentence": "providers of generative AI must make AI-generated content identifiable",
+          "kind": "paraphrase",
+          "sourceId": "eu-ai-act",
+          "locator": "the transparency obligations"
+        },
+        {
+          "id": "AB-32",
+          "sentence": "with transparency and copyright given as examples",
+          "kind": "paraphrase",
+          "sourceId": "eu-ai-act",
+          "locator": "the rules for providers of general-purpose AI models"
+        },
+        {
+          "id": "AB-33",
+          "sentence": "running from 2025 to 2028",
+          "kind": "paraphrase",
+          "sourceId": "eu-ai-act",
+          "locator": "the application timeline"
+        }
+      ]
+    },
+    {
+      "path": "src/content/briefs/ai-native-build.md",
+      "sentences": [
+        {
+          "text": "Six considerations that follow from putting a language model at the core of a product, and what each one settles",
+          "page": "infra/intake/briefs/ai-native-build.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "Six considerations for founders building on a language model: risk process, attacks, authority, evaluation and law, and what each asks of the design.",
+          "page": "infra/intake/briefs/ai-native-build.md#the-considerations-side-by-side"
+        },
+        {
+          "text": "A founder who builds on a language model inherits questions that conventional software rarely raises: output that varies, instructions that can arrive from outside, actions taken wrongly and quality that ordinary tests do not settle.",
+          "page": "infra/intake/briefs/ai-native-build.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "This brief treats security, quality and law as one design problem.",
+          "page": "infra/intake/briefs/ai-native-build.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "It asks of each decision what the model may do, who decides and how anyone would know it had gone wrong.",
+          "page": "infra/intake/briefs/ai-native-build.md#the-question-this-brief-answers"
+        },
+        {
+          "text": "It reports what the National Institute of Standards and Technology, OWASP, the European Commission and two model vendors publish on six considerations, and it labels its own analysis as analysis.",
+          "page": "infra/intake/briefs/ai-native-build.md#about-the-evidence"
+        },
+        {
+          "text": "One idea recurs.",
+          "page": "infra/intake/briefs/ai-native-build.md#consideration-four-how-much-the-model-may-do"
+        },
+        {
+          "text": "The model proposes and the surrounding code decides, because the sources describe no way to make a model immune to hostile text.",
+          "page": "infra/intake/briefs/ai-native-build.md#consideration-four-how-much-the-model-may-do"
+        },
+        {
+          "text": "The brief names no preferred model, vendor or architecture, and it cannot say how any rule applies to your product.",
+          "page": "infra/intake/briefs/ai-native-build.md#what-this-brief-cannot-tell-you"
+        },
+        {
+          "text": "It is general information for founders.",
+          "decision": "W8-24"
+        },
+        {
+          "text": "It is not legal, tax or investment advice.",
+          "decision": "W8-24"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import { BRIEF_COPY, HUB_COPY, depthLine } from '../../components/briefs/copy.ts';
+import { groupByAudience, liveBriefs, sectionCount } from '../../components/briefs/plan.ts';
+import BriefCard from '../../components/cards/BriefCard.astro';
+import Grid from '../../components/ui/Grid.astro';
+import { AUDIENCE_LABELS, BRIEFS } from '../../data/families.ts';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { getPublished } from '../../lib/content.ts';
+import { getRouteState, isReleaseBuild } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+// The glob loader may strip a trailing /index from the entry id, so accept either form.
+const page = (await getEntry('pages', 'briefs/index')) ?? (await getEntry('pages', 'briefs'));
+if (page === undefined) {
+  throw new Error('Missing content entry src/content/pages/briefs/index.md for the /briefs/ hub.');
+}
+const { Content } = await render(page);
+const live = liveBriefs(BRIEFS.entries, await getCollection('briefs'), { includeDrafts: !isReleaseBuild() });
+const groups = groupByAudience(live);
+// The open research briefs stay open (W8-16). Each is linked only while its page exists.
+const state = await getRouteState();
+const research = (await getPublished('research'))
+  .map((entry) => ({ entry, path: `/research/${entry.id.split('/').at(-1) ?? entry.id}/` }))
+  .filter(({ path }) => state.isLive(path));
+---
+
+<HubLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/briefs/"
+  {...(page.data.eyebrow !== undefined ? { eyebrow: page.data.eyebrow } : {})}
+  lead={page.data.description}
+  updated={page.data.updated}
+  draft={page.data.draft}
+>
+  <div class="prose"><Content /></div>
+  {
+    groups.length === 0 && (
+      <p data-briefs-empty>{HUB_COPY.emptyText}</p>
+    )
+  }
+  {
+    groups.map((group) => (
+      <section class="stack" aria-labelledby={`briefs-${group.audience}`}>
+        <h2 id={`briefs-${group.audience}`}>{AUDIENCE_LABELS[group.audience]}</h2>
+        <Grid>
+          {group.briefs.map(({ row, abstract }) => (
+            <BriefCard
+              eyebrow={BRIEF_COPY.eyebrow}
+              title={abstract.data.title}
+              summary={abstract.data.description}
+              path={row.path}
+              headingLevel={3}
+              meta={depthLine(abstract.data.updated, sectionCount(abstract))}
+            />
+          ))}
+        </Grid>
+      </section>
+    ))
+  }
+  {
+    research.length > 0 && (
+      <section class="stack" aria-labelledby="briefs-research">
+        <h2 id="briefs-research">{HUB_COPY.researchHeading}</h2>
+        <p>{HUB_COPY.researchText}</p>
+        <ul class="stack" role="list">
+          {research.map(({ entry, path }) => (
+            <li>
+              <a href={href(path)}>{entry.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</HubLayout>

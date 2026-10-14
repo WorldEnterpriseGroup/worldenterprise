@@ -5,9 +5,10 @@ import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
 import Grid from '../../components/ui/Grid.astro';
 import PlaybookTrail from '../../components/playbooks/PlaybookTrail.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
-import { PLAYBOOK_SEQUENCE } from '../../components/playbooks/meta.ts';
+import { PLAYBOOKS_HUB_LEAD, liveSequence } from '../../components/playbooks/meta.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { getPublished, isDraft } from '../../lib/content.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 
 const page = await getEntry('pages', 'playbooks');
 if (!page) throw new Error('Missing content entry: src/content/pages/playbooks/index.mdx');
@@ -15,7 +16,9 @@ const { Content } = await render(page);
 const { data } = page;
 
 const published = await getPublished('playbooks');
-const cards = PLAYBOOK_SEQUENCE.flatMap((ref) => {
+// Only the playbooks whose route is live in this build, in reading order.
+const sequence = liveSequence((await getRouteState()).isLive);
+const cards = sequence.flatMap((ref) => {
   const entry = published.find((e) => e.id.split('/').at(-1) === ref.slug);
   return entry ? [{ ref, entry }] : [];
 });
@@ -27,7 +30,7 @@ const stageLabel = { dream: 'Dream', build: 'Build', grow: 'Grow' } as const;
   description={data.description}
   path="/playbooks/"
   eyebrow={data.eyebrow}
-  lead="Five playbooks, one for each stage of building a SaaS company. Each one is a short sequence of steps, the artifacts you should end up with, and the mistakes that cost founders the most time."
+  lead={PLAYBOOKS_HUB_LEAD}
   updated={data.updated}
   draft={isDraft(page)}
   ogSlot="og-playbooks"
@@ -52,8 +55,8 @@ const stageLabel = { dream: 'Dream', build: 'Build', grow: 'Grow' } as const;
             title={ref.short}
             summary={entry.data.description}
             path={`/playbooks/${ref.slug}/`}
-            photo={ref.slot}
-            eyebrow={`${i + 1} of ${PLAYBOOK_SEQUENCE.length}, ${stageLabel[entry.data.stage]}`}
+            {...(ref.slot !== undefined ? { photo: ref.slot } : {})}
+            eyebrow={`${i + 1} of ${sequence.length}, ${stageLabel[entry.data.stage]}`}
             headingLevel={3}
             meta={`${entry.data.steps.length} steps`}
           />
