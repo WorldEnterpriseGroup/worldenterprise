@@ -22,7 +22,8 @@ const cases = [
   ['P1 pair: literal path inside another package glob', add('WP-62', 'src/content/pages/network/index.mdx'), 'WP-65 src/content/pages/network/**'],
   ['P1 pair: briefs source folder claimed by the intake package', add('WP-61', 'infra/intake/briefs/**'), 'WP-63 infra/intake/briefs/funding-paths.md'],
   ['P1 pair: a second brief owner on one brief file', add('WP-80', 'src/content/briefs/first-hires.md'), 'WP-79 src/content/briefs/first-hires.md'],
-  ['P1 pair: segment pages reaching the founders hub copy', add('WP-73', 'src/content/pages/founders/index.mdx'), 'WP-62 src/content/pages/founders/index.mdx'],
+  // Wave 9 (W9-3) handed the founders hub copy to WP-55; the case now uses the insights hub copy, which WP-62 keeps.
+  ['P1 pair: segment pages reaching the insights hub copy', add('WP-73', 'src/content/pages/insights/index.mdx'), 'WP-62 src/content/pages/insights/index.mdx'],
   ['P1 pair: the founders hub package reaching the dynamic segment route', add('WP-62', 'src/pages/founders/[segment].astro'), 'WP-71 src/pages/founders/[segment].astro'],
   ['P1 pair: FAQ package reaching the glossary data', add('WP-78', 'src/data/glossary.yaml'), 'WP-77 src/data/glossary.yaml'],
   ['P1 pair: guides package reaching a playbook', add('WP-87', 'src/content/playbooks/**'), 'WP-86 src/content/playbooks/**'],

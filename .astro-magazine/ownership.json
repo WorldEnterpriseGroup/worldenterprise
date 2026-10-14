@@ -721,14 +721,6 @@
       "branch": "wp/48",
       "stage": 1,
       "write_set": [
-        "src/pages/about/frameworks/**",
-        "src/pages/about/manifesto/**",
-        "src/components/about/**",
-        "src/content/pages/about/frameworks.md",
-        "src/content/pages/about/orbital.md",
-        "src/content/pages/about/android-ops.md",
-        "src/content/pages/about/manifesto.md",
-        "src/content/pages/about/framework-*.md",
         "tests/unit/wp-48/**",
         "tests/e2e/wave7/wp-48/**",
         ".astro-magazine/handoffs/wp-48*",
@@ -1114,16 +1106,7 @@
         "src/components/cta/**",
         "src/data/cta/**",
         "src/components/blocks/ContextualNext.astro",
-        "src/pages/index.astro",
-        "src/pages/founders/index.astro",
-        "src/components/home/audience/**",
-        "src/components/home/LatestInsights.astro",
-        "src/content/pages/home/**",
-        "src/content/pages/founders/index.mdx",
         "src/content/pages/insights/index.mdx",
-        "tests/unit/wp-01/**",
-        "tests/unit/wp-44/**",
-        "tests/e2e/wave7/wp-44/**",
         "tests/unit/wp-62/**",
         "tests/e2e/wave8/wp-62/**",
         ".astro-magazine/handoffs/wp-62*",
@@ -1545,12 +1528,240 @@
         ".gitlab-ci.yml",
         ".astro-magazine/release/RELEASE.md"
       ]
+    },
+    {
+      "owner": "WP-51",
+      "title": "Wave 9 foundation: governance, full-bleed layout tokens and layouts, three.js dependency",
+      "branch": "wp/51",
+      "stage": 0,
+      "write_set": [
+        "src/styles/tokens.css",
+        "src/styles/layout.css",
+        "src/styles/utilities.css",
+        "src/styles/hero.css",
+        "src/styles/components.css",
+        "src/styles/base.css",
+        "src/layouts/**",
+        "src/components/layout/**",
+        "src/components/hero/**",
+        "src/components/ui/Prose.astro",
+        "src/components/ui/Section.astro",
+        "src/components/ui/Container.astro",
+        "package.json",
+        "package-lock.json",
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/decisions.md",
+        ".astro-magazine/plans/wave9/**",
+        ".astro-magazine/plans/wave8/writesets.json",
+        ".astro-magazine/plans/wave8/selftest.mjs",
+        "src/data/claims.ts",
+        "tests/unit/foundation/claims.test.ts",
+        "docs/wave9-contracts.md",
+        "tests/unit/wp-51/**",
+        "tests/e2e/wave8/wp-51/**",
+        "tests/unit/wp-16/layout-css.test.ts",
+        "tests/unit/wp-16/nav-css.test.ts",
+        "tests/unit/wp-17/heroes.test.ts",
+        "tests/unit/wp-17/type-and-rhythm.test.ts",
+        "tests/unit/wp-45/css-budget.test.ts",
+        "tests/unit/wp-45/pinned-props.test.ts",
+        "tests/unit/wp-45/props-baseline.json",
+        "tests/unit/wp-45/props.ts",
+        "tests/unit/wp-45/hero-actions.test.ts",
+        "tests/unit/wp-15/overflow.test.ts",
+        "tests/unit/wp-15/toc.test.ts",
+        "tests/e2e/layout.spec.ts",
+        "tests/e2e/menu.spec.ts",
+        "tests/e2e/folds.spec.ts",
+        ".astro-magazine/handoffs/wp-51*",
+        ".astro-magazine/sources/wp-51.json"
+      ],
+      "lane_exceptions": [
+        "src/components/hero/HeroEditorial.astro",
+        "src/components/hero/HeroAtlas.astro"
+      ]
+    },
+    {
+      "owner": "WP-52",
+      "title": "Wave 9 visuals library: we-scene island, galaxy/launch/orbit/hex scenes, SVG illustrations, Band and Split",
+      "branch": "wp/52",
+      "stage": 1,
+      "write_set": [
+        "src/components/visuals/**",
+        "src/scripts/visuals/**",
+        "src/assets/visuals/**",
+        "src/pages/styleguide.astro",
+        "tests/unit/wp-52/**",
+        "tests/e2e/wave8/wp-52/**",
+        ".astro-magazine/handoffs/wp-52*",
+        ".astro-magazine/sources/wp-52.json"
+      ]
+    },
+    {
+      "owner": "WP-53",
+      "title": "Wave 9 home and program: galaxy hero, full-bleed bands, launch trajectory",
+      "branch": "wp/53",
+      "stage": 2,
+      "write_set": [
+        "src/pages/index.astro",
+        "src/pages/program/**",
+        "src/components/home/**",
+        "src/components/program/**",
+        "src/content/pages/home/**",
+        "src/content/pages/program/**",
+        "tests/unit/wp-44/home.test.ts",
+        "tests/e2e/wave7/wp-44/**",
+        "tests/unit/wp-01/program.test.ts",
+        "tests/unit/wp-53/**",
+        "tests/e2e/wave8/wp-53/**",
+        ".astro-magazine/handoffs/wp-53*",
+        ".astro-magazine/sources/wp-53.json"
+      ],
+      "lane_exceptions": [
+        "src/components/home/HomeHero.astro",
+        "src/pages/program/who-its-for.astro"
+      ]
+    },
+    {
+      "owner": "WP-54",
+      "title": "Wave 9 services, pricing, tools and apply: split layouts, orbit diagram, unpriced seat builder",
+      "branch": "wp/54",
+      "stage": 2,
+      "write_set": [
+        "src/pages/services/**",
+        "src/content/services/**",
+        "src/content/pages/services/**",
+        "src/components/services/**",
+        "src/pages/pricing/**",
+        "src/content/pages/pricing/**",
+        "src/components/pricing/**",
+        "src/pages/tools/**",
+        "src/content/pages/tools/**",
+        "src/components/tools/**",
+        "src/components/islands/we-calc/**",
+        "src/components/islands/we-cap-table/**",
+        "src/components/islands/we-evidence-room/**",
+        "src/components/islands/we-pricing-checker/**",
+        "src/components/islands/we-readiness-check/**",
+        "src/components/islands/we-runway/**",
+        "src/components/islands/we-team-composer/**",
+        "src/scripts/metrics-calc.ts",
+        "src/scripts/cap-table.ts",
+        "src/scripts/evidence-room.ts",
+        "src/scripts/pricing-checker.ts",
+        "src/scripts/readiness-check.ts",
+        "src/scripts/runway.ts",
+        "src/scripts/team-composer.ts",
+        "src/pages/apply/**",
+        "src/content/pages/apply/**",
+        "src/components/apply/**",
+        "tests/unit/wp-54/**",
+        "tests/e2e/wave8/wp-54/**",
+        ".astro-magazine/handoffs/wp-54*",
+        ".astro-magazine/sources/wp-54.json"
+      ],
+      "lane_exceptions": [
+        "src/components/services/LineAside.astro",
+        "src/pages/pricing/index.astro"
+      ]
+    },
+    {
+      "owner": "WP-55",
+      "title": "Wave 9 about, frameworks and UBF, network, investors, founders, press, trust, contact",
+      "branch": "wp/55",
+      "stage": 2,
+      "write_set": [
+        "src/pages/about/**",
+        "src/components/about/**",
+        "src/content/pages/about/**",
+        "src/pages/network/**",
+        "src/components/network/**",
+        "src/components/partners/**",
+        "src/content/pages/network/**",
+        "src/pages/investors/**",
+        "src/components/investors/**",
+        "src/content/pages/investors/**",
+        "src/pages/founders/**",
+        "src/content/pages/founders/**",
+        "src/pages/press/**",
+        "src/content/pages/press/**",
+        "src/pages/trust/**",
+        "src/components/trust/**",
+        "src/content/pages/trust/**",
+        "src/pages/contact/**",
+        "src/content/pages/contact/**",
+        "tests/unit/wp-55/**",
+        "tests/e2e/wave8/wp-55/**",
+        ".astro-magazine/handoffs/wp-55*",
+        ".astro-magazine/sources/wp-55.json"
+      ]
+    },
+    {
+      "owner": "WP-56",
+      "title": "Wave 9 resources, insights hubs, reference and family hubs: wide card grids, hex bands",
+      "branch": "wp/56",
+      "stage": 2,
+      "write_set": [
+        "src/pages/insights/**",
+        "src/pages/research/**",
+        "src/components/research/**",
+        "src/content/pages/research/**",
+        "src/pages/library/**",
+        "src/components/library/**",
+        "src/pages/playbooks/**",
+        "src/components/playbooks/**",
+        "src/content/pages/playbooks/**",
+        "src/pages/fundability/**",
+        "src/components/fundability/**",
+        "src/content/pages/fundability/**",
+        "src/pages/resources/**",
+        "src/pages/briefs/**",
+        "src/components/briefs/**",
+        "src/content/pages/briefs/**",
+        "src/pages/industries/**",
+        "src/content/pages/industries/**",
+        "src/pages/compare/**",
+        "src/content/pages/compare/**",
+        "src/pages/journey/**",
+        "src/content/pages/journey/**",
+        "src/components/families/**",
+        "src/pages/glossary/**",
+        "src/pages/faq/**",
+        "src/pages/search/**",
+        "src/pages/sitemap.astro",
+        "src/pages/404.astro",
+        "src/components/reference/**",
+        "src/components/islands/we-search/**",
+        "src/scripts/search.ts",
+        "tests/unit/wp-71/family-templates.test.ts",
+        "tests/unit/wp-56/**",
+        "tests/e2e/wave8/wp-56/**",
+        ".astro-magazine/handoffs/wp-56*",
+        ".astro-magazine/sources/wp-56.json"
+      ]
+    },
+    {
+      "owner": "WP-57",
+      "title": "Wave 9 integration: 1920 regression sweep, exception cleanup, scrub, milestone close",
+      "branch": "wp/57",
+      "stage": 3,
+      "write_set": [
+        "tests/unit/wp-57/**",
+        "tests/e2e/wave8/wp-57/**",
+        ".astro-magazine/handoffs/wp-57*",
+        ".astro-magazine/sources/wp-57.json",
+        ".astro-magazine/plans/wave9/**",
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/decisions.md",
+        "src/data/claims.ts",
+        "src/assets/SOURCES.md"
+      ]
     }
   ],
   "active_leases": [],
   "handoffs": [],
   "conflicts": [],
-  "updated_at": "2026-10-10T12:00:00.000Z",
+  "updated_at": "2026-10-14T20:00:00.000Z",
   "frozen_paths": [
     "package.json",
     "package-lock.json",
@@ -1822,11 +2033,6 @@
       "reason": "WP-41 (#30): /about/facts/ names Investor Introductions, so a new counsel-checklist CR entry for src/content/pages/about/facts.mdx is added, marked release 2 (not in release-1-rc2)."
     },
     {
-      "wp": "WP-62",
-      "path": ".astro-magazine/release/RELEASE.md",
-      "reason": "Wave 8 (60a.3): scoped to the CR entry for src/pages/founders/index.astro, a file in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
-    },
-    {
       "wp": "WP-63",
       "path": ".astro-magazine/release/RELEASE.md",
       "reason": "Wave 8 (60a.3): scoped to CR entries for files in this package's own write set (src/pages/briefs/**, src/content/pages/briefs/**, src/components/briefs/**, src/content/briefs/*.md, src/pages/research/**, src/content/pages/research/**). No pinned file is there today; a new file under src that names Investor Introductions must be listed (release-doc.test.ts), and this lets its owner add that entry. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
@@ -1980,6 +2186,151 @@
       "wp": "WP-60",
       "path": "src/lib/route-state.ts",
       "reason": "Wave 8 foundation: route state follows the registries (contracts section 1.3)."
+    },
+    {
+      "wp": "WP-51",
+      "path": "package.json",
+      "reason": "Wave 9 (W9-8): three and @types/three, exact pins, added with npm install --package-lock-only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "package-lock.json",
+      "reason": "Wave 9 (W9-8): the lock entries for three and @types/three and nothing else."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 9 governance (W9-1): registers WP-51 to WP-57, their exceptions, and narrows the superseded WP-62 and WP-48 sets (W9-3)."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/decisions.md",
+      "reason": "Wave 9 governance: decisions W9-1 onward."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/plans/wave8/writesets.json",
+      "reason": "Wave 9 (W9-3): mirrors the narrowed WP-62 write set so tests/unit/wp-60/write-sets-wave8.test.ts keeps policy and proof equal. No other wave 8 entry changes."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/plans/wave8/selftest.mjs",
+      "reason": "Wave 9 (W9-3): the one self-test case that named a WP-62 path handed to wave 9 now names a path WP-62 keeps. No other case changes."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/data/claims.ts",
+      "reason": "Wave 9 (W9-10): C-07 equity concept enabled with no numbers, C-17 genericized figures published, internal source strings made generic."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/foundation/claims.test.ts",
+      "reason": "Wave 9 (W9-10): the softened-default pin for C-07 becomes the W9-10 assertion (enabled, C-08 mechanics still excluded)."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/layouts/**",
+      "reason": "Wave 9 (W9-4): every layout defaults to the full-width content frame; additive props only (W8 frozen, WP-60 done)."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/layout/**",
+      "reason": "Wave 9 (W9-4): the header and footer widen with --content-max; nav breakpoints unchanged (W8 frozen, WP-60 done)."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/hero/HeroEditorial.astro",
+      "reason": "Wave 9 (W9-4): photography-lane file; layout width only, the image markup and slot stay as WP-12b left them."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/hero/HeroAtlas.astro",
+      "reason": "Wave 9 (W9-4): photography-lane file; layout width only, the image markup and slot stay as WP-12b left them."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-17/heroes.test.ts",
+      "reason": "Wave 9 (W9-4): hero frame and mode pins move to the wave 9 heroes (additive data-frame='wide', data-hero='scene'); held by WP-60 in wave 8, which is done."
+    },
+    {
+      "wp": "WP-52",
+      "path": "src/pages/styleguide.astro",
+      "reason": "Wave 9: a visuals section on the existing styleguide (PUBLIC_STYLEGUIDE=1), not a new route; last held by WP-45, which is done."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/components/home/HomeHero.astro",
+      "reason": "Wave 9 (W9-6): the home hero becomes the galaxy poster plus scene; photography lane, WP-12b is merged."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/pages/program/who-its-for.astro",
+      "reason": "Wave 9: layout only; photography lane, WP-12b is merged. The photograph and its slot stay."
+    },
+    {
+      "wp": "WP-53",
+      "path": "tests/e2e/folds.spec.ts",
+      "reason": "Wave 9: the home first-viewport assertions follow the redesigned home; WP-51 hands the file over after its HERO_MODES edit (W9-2)."
+    },
+    {
+      "wp": "WP-53",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/components/program/stages.ts, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/components/services/LineAside.astro",
+      "reason": "Wave 9: layout only; photography lane, WP-12b is merged."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/pages/pricing/index.astro",
+      "reason": "Wave 9: seat builder (unpriced, flags.seatPrice stays off); photography lane, WP-12b is merged."
+    },
+    {
+      "wp": "WP-54",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/content/pages/pricing/pricing.mdx, src/content/services/fundability-and-investor-readiness.mdx, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-55",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 9 (W9-5): launches the UBF detail row /about/frameworks/ubf/ in the same merge request as its page. Scoped to the framework rows; no other row changes."
+    },
+    {
+      "wp": "WP-55",
+      "path": "tests/unit/wp-62/legacy-founders-page.test.ts",
+      "reason": "Wave 9: the founders hub pins follow the redesigned founders page (W8-18 one owner per test file)."
+    },
+    {
+      "wp": "WP-55",
+      "path": "tests/unit/wp-64/legacy-investors-page.test.ts",
+      "reason": "Wave 9: the investors hub pins follow the redesigned investors page (W8-18 one owner per test file)."
+    },
+    {
+      "wp": "WP-55",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/pages/founders/index.astro, src/pages/investors/**, src/pages/network/index.astro, src/components/investors/**, src/content/pages/investors/**, src/content/pages/network/index.mdx, src/content/pages/about/facts.mdx, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-56",
+      "path": "tests/unit/wp-71/family-templates.test.ts",
+      "reason": "Wave 9: family template pins follow the widened family pages (W8-18); held by WP-71, which is done."
+    },
+    {
+      "wp": "WP-57",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 9 close (W9-1): removes the wave 9 exceptions nobody used (W8-30) and adds the fix-forward exceptions the regression pass needs."
+    },
+    {
+      "wp": "WP-57",
+      "path": ".astro-magazine/decisions.md",
+      "reason": "Wave 9 close: records the measured CSS gzip, three chunk size and Lighthouse scores."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/data/claims.ts",
+      "reason": "Wave 9 close (W9-10): scrub review of the internal source and summary strings before any gh-pages promotion."
     }
   ],
   "notes": [
@@ -1990,7 +2341,8 @@
     "WP-02 also owns src/content/pages/services/** (small addition to the plan spec so the services hub can carry page copy).",
     "Wave 7 (issue #29): assignments WP-40 to WP-50 carry `stage` (0 foundation, 1 parallel features, 2 integrator). An assignment may carry `exclude` (globs inside its write_set that it must not edit, unless an exception names the path) and `lane_exceptions` (photography-lane files it edits through an exception; released by decision W7-9, so nothing waits for WP-12d phase B). scripts/check-ownership.mjs enforces `exclude`; tests/unit/wp-40/write-sets.test.ts proves the stage-1 sets are pairwise disjoint and clear of the frozen paths and the lanes.",
     "Wave 8 (issue #40, docs/wave8-contracts.md): assignments WP-60 to WP-99 carry `stage` (0 foundation, 1 authoring, 2 closing) and `pools` (P0b, P1, P2: the sets of packages that can run at the same time). `frozen_paths_wave8` lists files only the owners in `frozen_paths_wave8_owners` may touch; scripts/check-ownership.mjs reads it. An assignment may carry `exceptions_declared` (frozen files its owner registers an exception for when the work needs it) and `serialize_with_release` (release-lane files it edits and must order by hand with WP-30). tests/unit/wp-60/write-sets-wave8.test.ts proves the pools disjoint and clear of the frozen, wave 8 frozen, photography and release lists.",
-    "Wave 8 (issue #40, docs/wave8-contracts.md): assignments WP-60 to WP-99 carry `stage` (0 foundation, 1 authoring, 2 closing) and `pools` (P0b, P1, P2: the sets of packages that can run at the same time). `frozen_paths_wave8` lists files only the owners in `frozen_paths_wave8_owners` (WP-60) may touch; every other owner, WP-99 included, needs a registered exception that names the path. scripts/check-ownership.mjs reads it. An assignment may carry `exceptions_declared` (frozen files its owner registers an exception for when the work needs it) and `serialize_with_release` (release-lane files it edits and must order by hand with WP-30). tests/unit/wp-60/write-sets-wave8.test.ts proves the pools disjoint and clear of the frozen, wave 8 frozen, photography and release lists."
+    "Wave 8 (issue #40, docs/wave8-contracts.md): assignments WP-60 to WP-99 carry `stage` (0 foundation, 1 authoring, 2 closing) and `pools` (P0b, P1, P2: the sets of packages that can run at the same time). `frozen_paths_wave8` lists files only the owners in `frozen_paths_wave8_owners` (WP-60) may touch; every other owner, WP-99 included, needs a registered exception that names the path. scripts/check-ownership.mjs reads it. An assignment may carry `exceptions_declared` (frozen files its owner registers an exception for when the work needs it) and `serialize_with_release` (release-lane files it edits and must order by hand with WP-30). tests/unit/wp-60/write-sets-wave8.test.ts proves the pools disjoint and clear of the frozen, wave 8 frozen, photography and release lists.",
+    "Wave 9 (issue #72, milestone 1784, docs/wave9-contracts.md): assignments WP-51 to WP-57 carry `stage` (0 foundation, 1 visuals, 2 page families in parallel, 3 integration). WP-51 and WP-57 hold the governance files in sequence. Wave 9 write sets supersede the stale wp/62, wp/12b and WP-48 claims on every path they overlap (decision W9-3): WP-62 and WP-48 were narrowed here. tests/unit/wp-51/write-sets-wave9.test.ts proves the wave 9 sets disjoint (except the listed hand-offs in .astro-magazine/plans/wave9/writesets.json), clear of the superseded sets, and covered by an exception wherever they reach a frozen, wave 8 frozen, photography-lane or release-lane path."
   ],
   "lanes": {
     "$comment": "Lanes that wave 7 packages must stay out of. The static floor is read by tests/unit/wp-40/write-sets.test.ts together with the write sets of the registered WP-12* (photography) and WP-30 (release) assignments, so a registration that lands later extends the lane without an edit here.",

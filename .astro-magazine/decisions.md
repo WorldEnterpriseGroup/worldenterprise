@@ -635,3 +635,51 @@ Six calls that the contracts left open, recorded once so the packages that build
 4. **`W8-C13-own-peers` is a context rule with no marker and no path allowance.** It catches "our cohort", "WE mentors", "WE runs a cohort" and the like, and passes denials ("WE has no mentors"). It starts green on the demo build (133 files scanned, 0 findings) and has self-test cases in `scripts/audit-claims.mjs` and `tests/unit/wp-60/claims-w8.test.ts`.
 5. **Pending family rows are tolerated by shape, not by path.** `RELEASE_ALLOW` gains one alternative for the five family path shapes (`/founders/<slug>/`, `/industries/...`, `/compare/...`, `/journey/...`, `/briefs/...`), because the registry launches about forty entries before their packages land. Any other missing launched route still fails; a release tag and gh-pages still allow nothing. WP-99 empties the list.
 6. **The sources host allowlist is code in `tests/unit/wp-60/sources.ts`.** Government and regulator suffixes, standards and law bodies, instrument publishers, universities and vendor documentation hosts. A vendor documentation host never sources a statistic or a regulation. OP-HOSTS extends it by a decision that edits that file.
+
+## Decisions made during WP-51 (wave 9 foundation, issue #72)
+
+Wave 9 is the visual redesign ("Visual redesign: full-screen, UBF, galaxy visuals", milestone 1784). CEO direction of 2026-10-14: the site is fully responsive and full screen at 1920x1080 with no wasted side margin, uses the UBF framework and the other org frameworks heavily, and shows rather than tells (graphics, illustrations and three.js scenes: galaxy, launching, incubating). The contracts are in `docs/wave9-contracts.md`.
+
+### W9-1 Wave 9 numbering, stages and governance
+
+Wave 9 uses WP-51 to WP-57 (issues #72 to #78): the only contiguous range no earlier ownership test filters on. WP-58 and WP-59 stay spare for fix-forward splits. Stages: 0 WP-51 (governance and layout foundation), 1 WP-52 (visuals library), 2 WP-53 to WP-56 (page families, in parallel), 3 WP-57 (integration, the 1920 regression pass, exception cleanup, milestone close). Every assignment and every exception is registered once in this governance commit, ahead of the edits (W8-30); WP-57 removes the ones nobody used. Only WP-51 (now) and WP-57 (at close) edit `ownership.json`, `decisions.md` and `.astro-magazine/plans/wave9/**`. `tests/unit/wp-51/write-sets-wave9.test.ts` proves the wave 9 write sets disjoint and equal to `.astro-magazine/plans/wave9/writesets.json`.
+
+### W9-2 Declared hand-offs inside wave 9
+
+Two wave 9 packages may hold one path only when `.astro-magazine/plans/wave9/writesets.json` lists it as a hand-off from an earlier stage to a later one: the governance files and `src/data/claims.ts` (WP-51 to WP-57), and `tests/e2e/folds.spec.ts` (WP-51 edits `HERO_MODES`, then WP-53 edits the home first-viewport assertions through an exception). The four stage-2 page packages share nothing.
+
+### W9-3 Stale claims are superseded where they overlap wave 9
+
+The unmerged `origin/wp/62` (WP-62, #42), the photography branch `origin/wp/12b` (WP-12b, #22, fully merged) and the never-built WP-48 (#37) lose every path a wave 9 package now holds. WP-62 keeps the CTA system (`src/components/cta/**`, `src/data/cta/**`, `ContextualNext.astro`), the insights hub copy and its own tests; home, the founders hub, the wave 7 home tests (`tests/unit/wp-44/**`, `tests/e2e/wave7/wp-44/**`) and `tests/unit/wp-01/**` move to WP-53 and WP-55, and its counsel-checklist exception moves to WP-55 with the founders page. WP-48 keeps only its test and handoff paths; the framework pages move to WP-55, which absorbs #37. The wave 8 map mirrors the narrowed WP-62 set, and the one self-test case that named a moved path now names the insights hub copy. WP-12b keeps its write set; the photography-lane files wave 9 edits are reached through exceptions (W7-9 pattern). None of these branches is deleted.
+
+### W9-4 Full-bleed layout: content frame 110rem, fluid gutters, readable prose
+
+`--content-max: 110rem` (1760px, 80px of margin each side at 1920) and `--page-max` points to it, so every `.container` widens at once. Gutters are fluid, `clamp(1rem, 0.25rem + 3.2vw, 5rem)`. Section backgrounds run full bleed (`.band`). Paragraphs never widen: prose keeps `--prose-max` (46rem) and the `.split` grid sets a 40rem text column beside a visual. Every layout defaults to the wide frame, so pages benefit before their family package redesigns them; `MarketingLayout` gains `width?: 'content' | 'prose'` (default `'content'`), where `'content'` keeps the reading measure on text and lets figures, grids, tables and splits use the frame. The type scale and the fluid rhythm grow from 360 to 1920 instead of 1440, with the 360 values unchanged. The header widens with the frame; its nav breakpoints (1100, 1279.98 and 1280px) and the logo clamp do not move. Names `container--wide` and `--page-wide` stay forbidden.
+
+### W9-5 D-16 revised: UBF pages are allowed
+
+CEO direction of 2026-10-14 overrides the hub-only part of D-16. A dedicated UBF detail route, `/about/frameworks/ubf/` (the existing `launch: false` row), and further framework detail pages are allowed and wanted. The frameworks hub stays the entry point. Still binding from D-16 and C-19: structures and names from the org frameworks, paraphrased, with no efficacy claims and none of the banned source marketing lines. WP-55 owns the pages and holds a scoped exception on `src/data/routes.ts` to launch the row in the same merge request as the page, so `audit:ledger` and `verify:release` never see a launched route without a page. WP-55 absorbs WP-48 and closes #37.
+
+### W9-6 Home hero: galaxy scene over a still poster
+
+The home hero shows the galaxy scene (three.js, lazy, desktop-only) over a still poster. The poster is the LCP element and is what mobile, no-JS, reduced-motion, forced-colors and Lighthouse users see; the canvas is decoration (`aria-hidden`). `HomeLayout` already forwards `preloadImage` to `BaseLayout`, and WP-53 points it at the poster so the head preload and the hero image name the same source.
+
+### W9-7 Dark visual bands under D-8
+
+Dark "galaxy" bands are allowed: `--color-bg-inverse` (blue-night) with the `--color-band-deep-*` text, muted and link tokens, whose contrast pairs `audit:contrast` verifies. A dark band never carries the logo and the header is never placed over one; the header stays light. The site remains light-theme only.
+
+### W9-8 three.js as a bundled, desktop-gated enhancement
+
+`three` 0.186.1 (dependency) and `@types/three` 0.186.0 (dev dependency) are pinned exactly, added with `npm install --package-lock-only`. three is bundled and self-hosted (D-14) and only fetched behind the `<we-scene>` capability gate (min-width 64rem, fine pointer, no reduced motion, no forced colors, at least 4 cores and 4 GB, no save-data, a WebGL2 context). The CSP does not change: no blob workers, no data: or blob: images, no inline scripts, CSSOM custom properties instead of `style` attributes. The Lighthouse mobile preset never passes the gate, so the 10,240 B per-route JS budget holds.
+
+### W9-9 1920 tests live in the wave 8 directories, and the counsel checklist moves with its copy
+
+There is no 1920 Playwright project and adding one would need a release-lane CI edit. Wave 9 specs live in `tests/e2e/wave8/wp-NN/**`, set a 1920x1080 viewport in the spec and run only in the desktop wave 8 project. The shared assertions are `tests/e2e/wave8/wp-51/lib/full-width.ts`. A wave 9 package that edits a file quoted by `.astro-magazine/release/RELEASE.md` updates the quoted line numbers in the same commit through its scoped exception; WP-99 stays the release owner.
+
+### W9-10 Claims C-07 and C-17 for the wave 9 visuals
+
+Tech-lead decision on the brief, 2026-10-14. C-17 is published for the genericized figures only (the Dream, Build, Grow journey roadmap; a readiness scorecard with no weights or thresholds; the seat-and-steering flow with no amounts and no valuation cap); the original proposal figures stay off the site. C-07 is enabled for the equity concept only ("WE is paid per seat in cash, plus equity earned in arrears for steering"); percentages, caps, valuations and instrument terms stay excluded under C-08. `flags.seatPrice` stays off, so the seat builder ships unpriced. The internal `source` strings of the claims registry name no outside party; WP-57 repeats the scrub review before any gh-pages promotion.
+
+### W9-11 Brand wording for the framework names
+
+"G.R.O.W.T.H. phase" replaces the source name that used the barred word. S.M.A.R.T. expands to Specific, Measurable, Achievable, Relevant, Time-bound. A.N.D.R.O.I.D. uses "Implement". WE is a services provider and build partner, never an investor, fund or accelerator.
