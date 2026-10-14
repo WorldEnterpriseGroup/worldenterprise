@@ -12,18 +12,17 @@ import type { SceneName, SceneOptions } from '../../scripts/visuals/types.ts';
 import { cleanText, ratioClass, sceneRatio } from './contracts.ts';
 import type { SceneRatio } from './contracts.ts';
 import { posterImage } from './poster.ts';
-import type { PosterKey } from './poster.ts';
+import type { PosterSource } from './poster.ts';
 import './positions.css';
 
 interface Props {
   scene: SceneName;
-  poster: PosterKey;
+  /** A poster key (src/assets/visuals/posters/) or an imported image. */
+  poster: PosterSource;
   /** What the poster shows. Required: the poster is the scene's text equivalent for every visitor. */
   alt: string;
   ratio?: SceneRatio;
   options?: SceneOptions;
-  /** The page's largest image (a hero): fetched with high priority, never lazily. */
-  priority?: boolean;
   sizes?: string;
   caption?: string;
   /** Accessible name of the label list, when the scene has labels. */
@@ -45,7 +44,6 @@ const {
   alt,
   ratio = '16/9',
   options = {},
-  priority = false,
   sizes = '100vw',
   caption,
   labelsName = 'Labels',
@@ -59,7 +57,8 @@ const {
 const r = sceneRatio('Scene', ratio);
 const altText = decorative ? '' : cleanText('Scene', 'alt', alt);
 if (caption !== undefined) cleanText('Scene', 'caption', caption);
-const image = await posterImage(poster, sizes);
+// A hero renders its own poster image (high fetch priority, the LCP image) in the `poster` slot; every other scene gets a lazy one here.
+const image = Astro.slots.has('poster') ? null : await posterImage(poster, sizes);
 const hasLabels = Astro.slots.has('labels');
 const hasOverlay = Astro.slots.has('overlay');
 const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : undefined;
@@ -75,18 +74,23 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
   <figure class="scene__figure" role={decorative ? 'none' : undefined}>
     <div class="scene__stage">
       <div class:list={['scene__frame', !fill && ratioClass(r)]} aria-hidden={decorative ? 'true' : undefined}>
-        <img
-          class="scene__poster"
-          src={image.src}
-          srcset={image.srcset}
-          sizes={image.sizes}
-          width={image.width}
-          height={image.height}
-          alt={altText}
-          decoding="async"
-          loading={priority ? 'eager' : 'lazy'}
-          fetchpriority={priority ? 'high' : undefined}
-        />
+        {
+          image === null ? (
+            <slot name="poster" />
+          ) : (
+            <img
+              class="scene__poster"
+              src={image.src}
+              srcset={image.srcset}
+              sizes={image.sizes}
+              width={image.width}
+              height={image.height}
+              alt={altText}
+              decoding="async"
+              loading="lazy"
+            />
+          )
+        }
         {
           hasOverlay && (
             <div class="scene__overlay" aria-hidden="true">
@@ -176,7 +180,7 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
     aspect-ratio: 3;
   }
 
-  .scene__poster,
+  .scene__frame :global(.scene__poster),
   .scene__overlay,
   .scene__frame :global(.scene__canvas) {
     position: absolute;
@@ -185,7 +189,7 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
     block-size: 100%;
   }
 
-  .scene__poster {
+  .scene__frame :global(.scene__poster) {
     object-fit: cover;
   }
 
@@ -205,13 +209,13 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
   }
 
   /* Once the first live frame has rendered, the poster and its overlay fade out under the canvas. */
-  we-scene.is-live .scene__poster,
+  we-scene.is-live :global(.scene__poster),
   we-scene.is-live .scene__overlay {
     opacity: 0;
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .scene__poster,
+    .scene__frame :global(.scene__poster),
     .scene__overlay {
       transition-property: opacity;
       transition-duration: var(--dur-slow);

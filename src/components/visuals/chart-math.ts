@@ -37,7 +37,7 @@ export function polyline(points: readonly (readonly [number, number])[]): string
 }
 
 /**
- * A survival curve drawn as steps (a cohort's share only changes at the yearly measurements, so a stepped line is the honest shape),
+ * A survival curve drawn as steps (the share of a starting year's firms only changes at the yearly measurements, so a stepped line is the honest shape),
  * plus the closed area under it.
  */
 export function survivalPaths(points: readonly { readonly year: number; readonly percent: number }[], box: Box, maxYear: number): { readonly line: string; readonly area: string; readonly dots: readonly (readonly [number, number])[] } {

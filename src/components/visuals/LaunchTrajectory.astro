@@ -17,7 +17,6 @@ interface Props {
   alt?: string;
   caption?: string;
   labelsName?: string;
-  priority?: boolean;
   static?: boolean;
   class?: string;
 }
@@ -34,7 +33,6 @@ const {
   alt = 'A small amber capsule climbs from a hexagonal launch pad labeled Dream, through a hexagonal gate labeled Build, toward a world of hexagonal tiles labeled Grow, leaving a dotted trail.',
   caption,
   labelsName = 'Stages of the flight',
-  priority = false,
   static: isStatic = false,
   class: className,
 } = Astro.props;
@@ -52,7 +50,6 @@ const anchors = launchAnchors(w.length).map((p) => project(p, LAUNCH_CAMERA, LAU
   options={w.length > 0 ? { waypoints: w.length } : {}}
   caption={caption}
   labelsName={labelsName}
-  priority={priority}
   static={isStatic}
   class={className}
 >

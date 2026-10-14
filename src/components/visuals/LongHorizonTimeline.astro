@@ -46,8 +46,9 @@ const MARGIN = 0.05;
 const xOf = (years: number): number => MARGIN + (1 - 2 * MARGIN) * timelineX(years, horizon, 1);
 const events = items.filter((m) => m.kind !== 'survival');
 const gates = items.filter((m) => m.kind === 'survival');
-const eventLanes = lanes(events.map((m) => xOf(m.at)), 0.15, 3);
-const gateLanes = lanes(gates.map((m) => xOf(m.at)), 0.15, 2);
+// Labels are 10rem wide on a track of at least 52rem, so neighbors closer than a fifth of the track take another lane.
+const eventLanes = lanes(events.map((m) => xOf(m.at)), 0.2, 3);
+const gateLanes = lanes(gates.map((m) => xOf(m.at)), 0.2, 2);
 const align = (x: number): string => (x < 0.1 ? 'is-start' : x > 0.9 ? 'is-end' : '');
 
 const rows = items.map((m) => {
@@ -304,7 +305,7 @@ const cluster = (stage: number): { readonly points: string; readonly lit: boolea
       --lane: 0;
       position: absolute;
       left: var(--px);
-      inline-size: 11rem;
+      inline-size: 10rem;
       transform: translateX(-50%);
       text-align: center;
     }

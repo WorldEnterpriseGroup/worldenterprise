@@ -9,6 +9,9 @@ import LaunchTrajectory from '../LaunchTrajectory.astro';
 import OrbitSystem from '../OrbitSystem.astro';
 import WorldForge from '../WorldForge.astro';
 import StarfieldBand from '../StarfieldBand.astro';
+import UbfDiagram from '../UbfDiagram.astro';
+import Band from '../Band.astro';
+import Split from '../Split.astro';
 import LongHorizonTimeline from '../LongHorizonTimeline.astro';
 import ServiceLineSet from '../ServiceLineSet.astro';
 import VisualIcon from '../VisualIcon.astro';
@@ -27,7 +30,6 @@ import { PROGRAM_ICONS, serviceLines } from '../icons.ts';
 import { BLS_BED, CHALLENGES, PROFITABILITY, SBCS, STATS, SURVIVAL, TIMELINE } from './samples.ts';
 
 const lines = serviceLines().map((l) => ({ label: l.label, href: l.href, description: `Line ${l.line}` }));
-const ubf = ['Galaxy', 'Black Hole', 'Super Nova', 'Solar System', 'Sun', 'Super Star', 'Star', 'Moon', 'Comet', 'Asteroid'].map((label) => ({ label }));
 const smart = ['Specific', 'Measurable', 'Achievable', 'Relevant', 'Time-bound'].map((label) => ({ label }));
 const nursery = [
   { label: 'A side project', description: 'Formed: running on its own plan' },
@@ -57,7 +59,7 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
   <h3 id="h-vs-scenes">Scenes</h3>
 
   <div class="vs__item">
-    <p class="vs__name">GalaxyScene <span>Hero galaxy with a world assembling from hex cells. Set <code>priority</code> on a hero.</span></p>
+    <p class="vs__name">GalaxyScene <span>Hero galaxy with a world assembling from hex cells.</span></p>
     <GalaxyScene ratio="21/9" caption="Live, ratio 21/9." />
     <div class="vs__pair">
       <GalaxyScene static caption="Fallback: the poster." />
@@ -75,7 +77,7 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
     <p class="vs__name">OrbitSystem <span>Labeled bodies on orbit rings; 7 single and 10 nested have their own posters, any other count draws its rings over the base poster.</span></p>
     <OrbitSystem bodies={lines} accent={5} caption="Live, the seven service lines, Line F in amber." labelsName="Service lines" />
     <div class="vs__pair">
-      <OrbitSystem static bodies={ubf} rings="nested" caption="Fallback, ten bodies on nested rings: the UBF components." labelsName="UBF components" />
+      <UbfDiagram static caption="UbfDiagram, fallback: the ten UBF components on nested rings, each with its definition." />
       <OrbitSystem static bodies={smart} caption="Fallback, five bodies: base poster with drawn rings." labelsName="S.M.A.R.T." />
     </div>
   </div>
@@ -97,6 +99,20 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
       <h4 id="h-vs-band-static" class="vs__band-title">Fallback band</h4>
       <p>The poster only.</p>
     </StarfieldBand>
+  </div>
+
+  <h3 id="h-vs-layout">Bands and splits</h3>
+
+  <div class="vs__item">
+    <p class="vs__name">Band and Split <span>A full-bleed section (tones plain, soft, tint-blue, tint-sand, tint-stone, deep) with an optional background visual, and text beside a visual. Styles come from the layout layer.</span></p>
+    <Band tone="deep" labelledby="h-vs-split">
+      <HexField slot="scene" edge="right" tone="dark" seed={5} density={0.5} />
+      <Split>
+        <h4 id="h-vs-split" class="vs__band-title">Every company is its own world.</h4>
+        <p>The text keeps a reading column; the visual takes the rest of the frame.</p>
+        <WorldForge slot="media" static moons={nursery.slice(0, 3)} />
+      </Split>
+    </Band>
   </div>
 
   <h3 id="h-vs-timeline">Long-horizon timeline</h3>

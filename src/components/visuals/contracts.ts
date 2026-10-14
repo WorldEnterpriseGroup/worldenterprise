@@ -19,8 +19,8 @@ export class VisualContractError extends Error {
 // ---------------------------------------------------------------------------------------------------------------------------------
 
 /**
- * Words and phrases the visuals never render (the audit:claims denylist plus the positioning rules): WE is not an accelerator, an
- * investor or a seat seller, and the site writes US English.
+ * Words and phrases the visuals never render (the audit:claims denylist plus the positioning rules): WE is an incubation and
+ * consulting firm, never a batch program, an investor or a seat seller, and the site writes US English.
  */
 export const DENYLIST: readonly RegExp[] = [
   /\bfree\b/i,
@@ -82,6 +82,18 @@ export function sceneRatio(component: string, ratio: string): SceneRatio {
 
 /** Class for a ratio: `ratio-16-9`. */
 export const ratioClass = (ratio: SceneRatio): string => `ratio-${ratio.replace('/', '-')}`;
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Band (docs/wave9-contracts.md 5): the tones src/styles/layout.css defines as .band--<tone>
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+export const BAND_TONES = ['plain', 'soft', 'tint-blue', 'tint-sand', 'tint-stone', 'deep'] as const;
+export type BandTone = (typeof BAND_TONES)[number];
+
+export function bandTone(component: string, tone: string): BandTone {
+  if ((BAND_TONES as readonly string[]).includes(tone)) return tone as BandTone;
+  throw new VisualContractError(component, `tone "${tone}" is not one of ${BAND_TONES.join(', ')}`);
+}
 
 // ---------------------------------------------------------------------------------------------------------------------------------
 // Labels (orbit bodies, launch stations and waypoints, nursery moons)
