@@ -1,0 +1,652 @@
+{
+  "wp": "WP-78",
+  "note": "The sentence ledger of the FAQ entries WP-78 added to src/data/faq.yaml (issue #58, docs/wave8-contracts.md section 9, the WP-60 pattern). Each question and each sentence of an answer maps to one claim (C-nn), one existing page (a bare path) or one decision; a bare yes or no, which states no fact of its own, is marked label. The 18 original entries are pinned byte for byte by tests/unit/wp-60/reference-data.test.ts and are not mapped here. The investor and corporate answers restate the claims that WP-64 and WP-73 map for their pages (C-05, C-14, C-25, C-29, decision W8-17) because those pages are not on demo yet; the handoff records the re-pointing to their pages once they are. tests/unit/wp-78/faq-ledger.test.ts enumerates the sentences from the file, fails on one with no mapping and on a mapping with no sentence, checks each mapping with tests/unit/wp-60/sources.ts and runs the claims denylist over all of them. The file has no fetches: it quotes no outside source.",
+  "fetches": [],
+  "documents": [
+    {
+      "path": "src/data/faq.yaml",
+      "sentences": [
+        {
+          "text": "Does this site use cookies or analytics?",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "No.",
+          "label": true
+        },
+        {
+          "text": "This site sets no cookies and loads no third-party scripts, no analytics and no advertising or tracking pixels.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "The website itself keeps no record of your visits.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "The host, GitHub Pages, receives technical data about each request and handles it under its own terms.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "What happens to the details I send in a form?",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "Nothing is collected until you press the submit button of a form, and nothing is sent while you type.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "WE uses the details in a form to answer the request, as the privacy notice describes.",
+          "claim": "C-28"
+        },
+        {
+          "text": "WE does not sell the details and does not pass them to advertisers.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "Can I ask what WE holds about me?",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "Yes.",
+          "label": true
+        },
+        {
+          "text": "You can ask what WE holds about you, ask for it to be corrected, or ask for it to be deleted.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "Use the contact page and choose the topic about how WE handles information.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "Do the founder tools need an account?",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Each tool runs in your browser, needs no account and quotes no price.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "You type your own numbers or make your own choices, and nothing is saved or sent anywhere.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "Does a tool tell me whether my company is ready to raise money?",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "The tools only arrange what you give them.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "They do not tell you whether a company is ready, and they do not predict an outcome.",
+          "page": "src/content/pages/tools/index.mdx"
+        },
+        {
+          "text": "WE makes no promise of funding.",
+          "claim": "C-05"
+        },
+        {
+          "text": "What does the application ask for?",
+          "page": "src/content/pages/apply/apply.mdx"
+        },
+        {
+          "text": "The application is short and asks only what WE needs to judge fit.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "It asks who you are, where the idea stands and, if you add it, the team you have in mind.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "The team, the package and a longer description of what you are building are optional.",
+          "page": "src/content/pages/apply/apply.mdx"
+        },
+        {
+          "text": "What happens after I apply?",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "WE reviews each application and replies to the email address you give.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "WE does not state a response time on this site.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "If the idea fits, WE and the founder choose which service lines the company needs and what each one will and will not cover.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "The scope is written down in an agreement, so both companies work from the same page.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "How do I know whether I am a good fit?",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You are a good fit if you have a SaaS idea or an early product and can say who it is for.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You can describe the problem as the customer would, and you are willing to test the idea with real customers, including when the answers are unwelcome.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "You can make decisions for the company and join a review at each cycle.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "When is WE probably not the right fit?",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "WE is probably not the right fit if you need a physical office, on-site staff or in-person work, because WE is fully remote.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "It is also probably not the right fit if you are looking for money rather than a team, or if your idea is not a software-as-a-service product.",
+          "page": "src/components/apply/fit.ts"
+        },
+        {
+          "text": "A clear no is as useful to you as a yes.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "Can I apply with only an idea, or when I already have customers?",
+          "page": "src/pages/program/who-its-for.astro"
+        },
+        {
+          "text": "WE serves a company from first idea to its first customers.",
+          "page": "src/pages/program/who-its-for.astro"
+        },
+        {
+          "text": "A founder can join at the stage that matches the evidence already in hand: with an idea, at Dream; with a validated problem, at Build; with a product in use, at Grow.",
+          "page": "src/pages/program/who-its-for.astro"
+        },
+        {
+          "text": "Do I need to choose a team or a package before I apply?",
+          "page": "src/content/pages/apply/apply.mdx"
+        },
+        {
+          "text": "The team and the package are optional on the application.",
+          "page": "src/content/pages/apply/apply.mdx"
+        },
+        {
+          "text": "You can sketch the roles in the Team Composer first and carry the sketch to the application in the link if you choose to.",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "The application works without JavaScript, with the same questions on one page.",
+          "page": "src/content/pages/apply/apply.mdx"
+        },
+        {
+          "text": "What are the steps from application to a working team?",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "You apply, and then WE and the founder agree the scope in a written agreement.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "WE assembles dedicated offshore seats for the roles the scope calls for and steers them.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "The team works in short, reviewed cycles, and at each review you decide what the next cycle holds.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "What happens in a cycle?",
+          "page": "src/pages/program/how-it-works.astro"
+        },
+        {
+          "text": "WE and the founder agree the goal of the cycle in a short written plan, and the dedicated team does the work.",
+          "page": "src/pages/program/how-it-works.astro"
+        },
+        {
+          "text": "The work in progress is open to you at any time.",
+          "page": "src/pages/program/how-it-works.astro"
+        },
+        {
+          "text": "At the review you see what exists now, what changed and what is next, and you decide what the next cycle holds.",
+          "page": "src/components/program/steps.ts"
+        },
+        {
+          "text": "Who decides what the team works on?",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "You do.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "You decide where the company is going and what the next cycle holds, and you keep ownership of the direction.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "WE decides how the team gets there with you, and answers for how it is run.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "Do I hire or manage the people in the seats?",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "You do not recruit, contract or manage the people in the seats.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "WE does, including any subcontractors it brings in, and the seats work on your company and on nothing else.",
+          "page": "src/content/pages/program/dedicated-teams.mdx"
+        },
+        {
+          "text": "What happens in Dream?",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "Dream is the first stage: frame the problem, talk to real customers and decide on evidence whether to build, change course or stop.",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "Sizing the market is built from counts you can check, not from third-party reports.",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "Dream does not predict whether the idea will succeed.",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "What happens in Build?",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "Build turns the validated idea into a first release: design the product, cut the first release to what the evidence supports and ship it in reviewed cycles.",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "Each cycle ends with something you can open and a review with you.",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "Build does not promise a ship date and does not include production operations or round-the-clock support.",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "What happens in Grow?",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "Grow is the stage for winning first customers, reporting metrics consistently and assembling the evidence investors ask for.",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "WE does not promise a meeting with any investor and does not run a raise on your behalf.",
+          "page": "src/components/program/stages.ts"
+        },
+        {
+          "text": "What do the service lines cover?",
+          "claim": "C-04"
+        },
+        {
+          "text": "The service lines run from A to G.",
+          "claim": "C-04"
+        },
+        {
+          "text": "They cover brand and identity, product and IT development, customer relations and market development, business management and operations, digital incubation, fundability and investor readiness, and professional-services coordination.",
+          "claim": "C-04"
+        },
+        {
+          "text": "Each line says what it does not cover.",
+          "claim": "C-04"
+        },
+        {
+          "text": "Will WE close deals for me?",
+          "page": "src/content/services/customer-and-market-development.mdx"
+        },
+        {
+          "text": "Selling stays with you and your company.",
+          "page": "src/content/services/customer-and-market-development.mdx"
+        },
+        {
+          "text": "WE helps with customer discovery, pilot design and a written way to track every prospect from first contact to decision, and it makes no promise that conversations will turn into customers or revenue.",
+          "page": "src/content/services/customer-and-market-development.mdx"
+        },
+        {
+          "text": "How do seats and packages work together?",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "A package is a pre-configured seat plan with a fixed scope, sized for a company stage.",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "If no package fits, you can build a custom seat plan instead, and WE scopes it with you.",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "WE confirms the plan in writing when you ask for the current rate.",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "What decides how many seats I need?",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "The number of seats follows the work in front of you.",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "The stage of the idea, the roles the product needs, the work in the current cycle and how much you can review and decide each week all shape it.",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "Where do I find the price?",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "This site lists no amounts.",
+          "claim": "C-10"
+        },
+        {
+          "text": "WE shares the current rate for a package or a custom seat plan when you ask for it, so the figure you receive is the one that applies today.",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "Ask through the contact page and choose the topic for the current seat rate.",
+          "page": "src/content/pages/pricing/pricing.mdx"
+        },
+        {
+          "text": "Can I meet a company WE incubates?",
+          "claim": "C-25"
+        },
+        {
+          "text": "You can ask, using the interest form.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE asks the founder, and the founder decides.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE cannot promise a meeting or a reply.",
+          "claim": "C-25"
+        },
+        {
+          "text": "Which companies can I see?",
+          "decision": "W8-17"
+        },
+        {
+          "text": "WE lists a company only with its founder's written consent.",
+          "decision": "W8-17"
+        },
+        {
+          "text": "WE names no company until a written record exists.",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE shares only what the founder agreed to share.",
+          "claim": "C-25"
+        },
+        {
+          "text": "What happens after I send the interest form?",
+          "claim": "C-25"
+        },
+        {
+          "text": "WE uses the details you sent to answer your request, as the privacy notice describes.",
+          "claim": "C-28"
+        },
+        {
+          "text": "WE asks a founder whether to take part, and the founder may say no.",
+          "claim": "C-25"
+        },
+        {
+          "text": "What does the interest form ask for?",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "The form asks for your name and email address.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "The firm, website, how you describe yourself, the sectors and stages you want to see, and a message are optional.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "It asks for no accreditation status, no amounts and no fund size.",
+          "page": "src/content/pages/legal/privacy.md"
+        },
+        {
+          "text": "How does a founder get ready to meet investors?",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "A founder can work through the readiness checklist and the self-check before asking for anything.",
+          "page": "src/content/pages/fundability/index.mdx"
+        },
+        {
+          "text": "WE judges whether its readiness criteria are met, and meeting them does not mean an introduction will be made.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Is this an offer of securities?",
+          "claim": "C-14"
+        },
+        {
+          "text": "Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not negotiate terms, advise on securities or handle funds.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Does WE recommend a company as an investment?",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not advise investors or recommend any company as an investment, and an introduction is not an endorsement.",
+          "claim": "C-14"
+        },
+        {
+          "text": "WE does not verify a company's statements, which remain that company's own.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Does WE promise a company funding?",
+          "claim": "C-05"
+        },
+        {
+          "text": "It does not predict that any company will raise money.",
+          "claim": "C-05"
+        },
+        {
+          "text": "The work helps a founder prepare the evidence investors ask for.",
+          "page": "src/components/apply/decide-copy.ts"
+        },
+        {
+          "text": "Does WE do my diligence on a company?",
+          "claim": "C-14"
+        },
+        {
+          "text": "Any company that shows you materials prepared with WE's help is making its own case.",
+          "claim": "C-14"
+        },
+        {
+          "text": "You decide whether to reply, and you do your own diligence.",
+          "claim": "C-14"
+        },
+        {
+          "text": "Does WE have a partner program?",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE takes enquiries from organizations that help or equip founders.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE names no partner on this site.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "Sending an enquiry does not create a partnership.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "Which organizations can send an enquiry?",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "Any organization that helps or equips founders may send one.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "The form groups them in categories and has a Something else option.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "What should a partner enquiry say?",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "An enquiry should name the organization, its website, its category, what it provides to founders and the terms a founder would see.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "Will WE introduce my organization to founders?",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE may introduce an organization to a founder when that founder asks for help in its category and agrees to the introduction.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE cannot promise an introduction, a meeting or a reply.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "Does WE endorse a partner's product?",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE does not say on this site that WE uses, endorses or works with any named product.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE names no partner on this site until a written record exists.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "What can WE offer a partner?",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE can offer a warm introduction to a founder, when that founder asks for help in the partner's category.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE can also write content together with the partner, or give it a place in a founder playbook where the offer fits.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "None of it is promised in advance.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "Can a delivery team join as a partner?",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "A delivery partner is a category on the form, and WE lists none.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE steers its own dedicated teams and manages their subcontractors, and an enquiry does not change that.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "How long does a partner reply take?",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE replies to the email address in the enquiry when it decides to talk further.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "What does WE do with the details in a partner enquiry?",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE uses the details in a form to answer the enquiry, as the privacy notice describes.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "WE sets no cookies, runs no analytics and loads no third-party scripts.",
+          "page": "src/components/partners/copy.ts"
+        },
+        {
+          "text": "Where does someone who works for an employer start?",
+          "page": "src/content/pages/program/who-its-for.mdx"
+        },
+        {
+          "text": "Start with the page about who the program is for, which describes a good fit.",
+          "page": "src/content/pages/program/who-its-for.mdx"
+        },
+        {
+          "text": "If a question about your employment is not answered there, ask through the contact page.",
+          "page": "src/content/pages/contact/contact.mdx"
+        },
+        {
+          "text": "WE is a digital incubator for SaaS companies, and WE makes no promise of funding.",
+          "claim": "C-29"
+        },
+        {
+          "text": "Where do I ask about my own situation?",
+          "page": "src/content/pages/contact/contact.mdx"
+        },
+        {
+          "text": "Ask through the contact page, and choose the topic that fits best.",
+          "page": "src/content/pages/contact/contact.mdx"
+        },
+        {
+          "text": "WE routes your message.",
+          "page": "src/content/pages/contact/contact.mdx"
+        },
+        {
+          "text": "Does WE advise on who owns what I made at work?",
+          "page": "src/content/services/professional-services-coordination.mdx"
+        },
+        {
+          "text": "WE does not give legal advice.",
+          "page": "src/content/services/professional-services-coordination.mdx"
+        },
+        {
+          "text": "Questions about your employment agreement are for your own lawyer, and Service Line G coordinates your own counsel and does not replace them.",
+          "page": "src/content/services/professional-services-coordination.mdx"
+        },
+        {
+          "text": "Does the work happen on site at my organization?",
+          "claim": "C-01"
+        },
+        {
+          "text": "WE is fully remote, with no physical offices and no in-person program.",
+          "claim": "C-01"
+        },
+        {
+          "text": "Planning, building and reviewing all happen online.",
+          "claim": "C-01"
+        },
+        {
+          "text": "Does WE help when my first customer is a large organization?",
+          "page": "src/content/services/customer-and-market-development.mdx"
+        },
+        {
+          "text": "Customer Relations and Market Development, Service Line C, covers pilot design, a written pipeline discipline and proposal support.",
+          "page": "src/content/services/customer-and-market-development.mdx"
+        }
+      ]
+    }
+  ]
+}
