@@ -1,0 +1,56 @@
+---
+/**
+ * SourceNote: the "Source:" line under a statistic or chart. Every number the visuals show carries one (contracts.ts: statSource).
+ * Several sources are joined with semicolons. Links open in the same tab (no target attributes).
+ */
+import { statSource } from '../contracts.ts';
+import type { StatSource } from '../contracts.ts';
+
+interface Props {
+  sources: readonly StatSource[];
+  /** Text before the list, default "Source" / "Sources". */
+  lead?: string;
+  class?: string;
+}
+
+const { sources: raw, lead, class: className } = Astro.props;
+const sources = raw.map((s) => statSource('SourceNote', s));
+if (sources.length === 0) throw new Error('SourceNote: needs at least one source');
+const prefix = lead ?? (sources.length > 1 ? 'Sources' : 'Source');
+---
+
+<p class:list={['source-note', className]}>
+  <span class="source-note__lead">{prefix}:</span>
+  {
+    sources.map((s, i) => (
+      <>
+        {i > 0 && '; '}
+        {s.href !== undefined ? <a href={s.href}>{s.label}</a> : <span>{s.label}</span>}
+        {s.period !== undefined && <span>, {s.period}</span>}
+      </>
+    ))
+  }
+</p>
+
+<style>
+  .source-note {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    line-height: var(--lh-snug);
+    color: var(--color-text-muted);
+  }
+
+  .source-note__lead {
+    font-weight: 600;
+  }
+
+  .source-note a {
+    color: inherit;
+    text-decoration-color: var(--color-border);
+  }
+
+  .source-note a:hover {
+    color: var(--color-link);
+  }
+</style>

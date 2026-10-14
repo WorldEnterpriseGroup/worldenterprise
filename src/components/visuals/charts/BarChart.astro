@@ -1,0 +1,143 @@
+---
+/**
+ * BarChart: horizontal bars for a demographic or survey breakdown (two to ten rows), with the figures printed on the bars, a visually
+ * hidden data table, and a required source. One row can be highlighted in amber (the group a page is talking about).
+ */
+import SourceNote from './SourceNote.astro';
+import { cleanText, data, statSource } from '../contracts.ts';
+import type { Datum, StatSource } from '../contracts.ts';
+import { bars } from '../chart-math.ts';
+
+interface Props {
+  items: readonly Datum[];
+  source: StatSource;
+  title: string;
+  /** Scale maximum, e.g. 100 for percentages (default: the largest value). */
+  max?: number;
+  /** Index of the row drawn in amber. */
+  highlight?: number;
+  /** Column header for the values in the data table, e.g. "Share of firms". */
+  valueLabel?: string;
+  note?: string;
+  class?: string;
+}
+
+const { max, highlight, valueLabel = 'Value', note, class: className } = Astro.props;
+const title = cleanText('BarChart', 'title', Astro.props.title);
+const items = data('BarChart', Astro.props.items, 2, 10);
+const source = statSource('BarChart', Astro.props.source);
+if (note !== undefined) cleanText('BarChart', 'note', note);
+
+const W = 720;
+const ROW = 56;
+const H = items.length * ROW;
+const box = { x: 0, y: 0, width: W - 72, height: H };
+const layout = bars(
+  items.map((d) => d.value),
+  box,
+  max,
+);
+const show = (d: Datum): string => d.display ?? String(d.value);
+---
+
+<figure class:list={['bar-chart', className]}>
+  <figcaption class="bar-chart__title">{title}</figcaption>
+  <svg class="bar-chart__svg" viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false">
+    {
+      items.map((d, i) => {
+        const b = layout[i];
+        if (b === undefined) return null;
+        return (
+          <g class:list={['bar-chart__row', i === highlight && 'is-highlight']}>
+            <text class="bar-chart__label" x="0" y={b.labelY}>
+              {d.label}
+            </text>
+            <rect class="bar-chart__track" x="0" y={b.y} width={box.width} height="14" rx="7" />
+            <rect class="bar-chart__bar" x="0" y={b.y} width={Math.max(14, b.width)} height="14" rx="7" />
+            <text class="bar-chart__value" x={W} y={b.y + 12} text-anchor="end">
+              {show(d)}
+            </text>
+          </g>
+        );
+      })
+    }
+  </svg>
+  <table class="visually-hidden">
+    <caption>{title}</caption>
+    <thead>
+      <tr><th scope="col">Group</th><th scope="col">{valueLabel}</th></tr>
+    </thead>
+    <tbody>
+      {items.map((d) => <tr><th scope="row">{d.label}</th><td>{show(d)}</td></tr>)}
+    </tbody>
+  </table>
+  {note !== undefined && <p class="bar-chart__note">{note}</p>}
+  <SourceNote sources={[source]} />
+</figure>
+
+<style>
+  .bar-chart {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+  }
+
+  .bar-chart__title {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .bar-chart__svg {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    overflow: visible;
+  }
+
+  .bar-chart__label {
+    font-family: var(--ff-sans);
+    font-size: 16px;
+    fill: var(--color-text);
+  }
+
+  .bar-chart__track {
+    fill: var(--color-bg-soft);
+  }
+
+  .bar-chart__bar {
+    fill: var(--we-blue);
+  }
+
+  .is-highlight .bar-chart__bar {
+    fill: var(--we-amber);
+  }
+
+  .bar-chart__value {
+    font-family: var(--ff-display);
+    font-size: 18px;
+    font-weight: 700;
+    fill: var(--we-blue-deep);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bar-chart__note {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (forced-colors: active) {
+    .bar-chart__bar {
+      fill: CanvasText;
+    }
+
+    .bar-chart__label,
+    .bar-chart__value {
+      fill: CanvasText;
+    }
+  }
+</style>

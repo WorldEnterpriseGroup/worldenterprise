@@ -1,0 +1,237 @@
+---
+/**
+ * DonutChart: parts of a whole (two to six segments) as a hex-centered ring, with an HTML legend that carries every figure (so the
+ * legend is the text equivalent and the SVG is decoration) and a required source. An optional center value states the headline part.
+ */
+import SourceNote from './SourceNote.astro';
+import { cleanText, data, statSource } from '../contracts.ts';
+import type { Datum, StatSource } from '../contracts.ts';
+import { donut, hexagon } from '../chart-math.ts';
+
+interface Props {
+  items: readonly Datum[];
+  source: StatSource;
+  title: string;
+  /** Large figure in the ring's center, e.g. "47%". */
+  center?: string;
+  /** Small line under the center figure. */
+  centerLabel?: string;
+  note?: string;
+  class?: string;
+}
+
+const { center, centerLabel, note, class: className } = Astro.props;
+const title = cleanText('DonutChart', 'title', Astro.props.title);
+const items = data('DonutChart', Astro.props.items, 2, 6);
+const source = statSource('DonutChart', Astro.props.source);
+if (centerLabel !== undefined) cleanText('DonutChart', 'centerLabel', centerLabel);
+if (note !== undefined) cleanText('DonutChart', 'note', note);
+
+const arcs = donut(
+  items.map((d) => d.value),
+  120,
+  120,
+  110,
+  72,
+);
+const total = items.reduce((a, d) => a + d.value, 0);
+const show = (d: Datum): string => d.display ?? `${Math.round((d.value / (total || 1)) * 100)}%`;
+---
+
+<figure class:list={['donut', className]}>
+  <figcaption class="donut__title">{title}</figcaption>
+  <div class="donut__body">
+    <div class="donut__ring">
+      <svg viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+        <polygon class="donut__hex" points={hexagon(120, 120, 60)} />
+        {arcs.map((a, i) => a.d !== '' && <path class={`donut__seg donut__seg--${i}`} d={a.d} />)}
+      </svg>
+      {
+        center !== undefined && (
+          <p class="donut__center" aria-hidden="true">
+            <span class="donut__center-value">{center}</span>
+            {centerLabel !== undefined && <span class="donut__center-label">{centerLabel}</span>}
+          </p>
+        )
+      }
+    </div>
+    <ul class="donut__legend" role="list">
+      {
+        items.map((d, i) => (
+          <li class={`donut__key donut__key--${i}`}>
+            <span class="donut__key-value">{show(d)}</span>
+            <span class="donut__key-label">{d.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  {note !== undefined && <p class="donut__note">{note}</p>}
+  <SourceNote sources={[source]} />
+</figure>
+
+<style>
+  .donut {
+    container-type: inline-size;
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+  }
+
+  .donut__title {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .donut__body {
+    display: grid;
+    gap: var(--sp-5);
+    align-items: center;
+    justify-items: center;
+  }
+
+  .donut__ring {
+    position: relative;
+    inline-size: min(100%, 16rem);
+  }
+
+  .donut__ring svg {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+  }
+
+  .donut__hex {
+    fill: var(--color-bg-soft);
+  }
+
+  .donut__seg--0 {
+    fill: var(--we-blue-deep);
+  }
+
+  .donut__seg--1 {
+    fill: var(--we-amber);
+  }
+
+  .donut__seg--2 {
+    fill: var(--we-blue-hi);
+  }
+
+  .donut__seg--3 {
+    fill: var(--we-grey);
+  }
+
+  .donut__seg--4 {
+    fill: var(--we-blue);
+  }
+
+  .donut__seg--5 {
+    fill: var(--we-slate);
+  }
+
+  .donut__center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    margin: 0;
+    text-align: center;
+  }
+
+  .donut__center-value {
+    font-family: var(--ff-display);
+    font-size: var(--fs-2xl);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--we-blue-deep);
+  }
+
+  .donut__center-label {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  .donut__legend {
+    display: grid;
+    gap: var(--sp-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .donut__key {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: var(--sp-2);
+    align-items: baseline;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text);
+  }
+
+  .donut__key::before {
+    content: '';
+    inline-size: 12px;
+    block-size: 12px;
+    background: var(--we-blue-deep);
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+  }
+
+  .donut__key--1::before {
+    background: var(--we-amber);
+  }
+
+  .donut__key--2::before {
+    background: var(--we-blue-hi);
+  }
+
+  .donut__key--3::before {
+    background: var(--we-grey);
+  }
+
+  .donut__key--4::before {
+    background: var(--we-blue);
+  }
+
+  .donut__key--5::before {
+    background: var(--we-slate);
+  }
+
+  .donut__key-value {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--we-blue-deep);
+  }
+
+  .donut__note {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  @container (min-width: 32rem) {
+    .donut__body {
+      grid-template-columns: auto 1fr;
+      justify-items: start;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .donut__seg--0,
+    .donut__seg--2,
+    .donut__seg--4 {
+      fill: CanvasText;
+    }
+
+    .donut__key::before {
+      forced-color-adjust: none;
+      background: CanvasText;
+    }
+  }
+</style>

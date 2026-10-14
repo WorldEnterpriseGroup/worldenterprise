@@ -1,0 +1,310 @@
+---
+/**
+ * The styleguide's visuals section: every component of src/components/visuals with its fallback. Scenes appear twice, live (on a
+ * capable desktop with motion allowed) and as the static poster every other visitor sees. Sample figures are real and sourced
+ * (samples.ts). Lives here so styleguide.astro only mounts it.
+ */
+import GalaxyScene from '../GalaxyScene.astro';
+import LaunchTrajectory from '../LaunchTrajectory.astro';
+import OrbitSystem from '../OrbitSystem.astro';
+import WorldForge from '../WorldForge.astro';
+import StarfieldBand from '../StarfieldBand.astro';
+import LongHorizonTimeline from '../LongHorizonTimeline.astro';
+import ServiceLineSet from '../ServiceLineSet.astro';
+import VisualIcon from '../VisualIcon.astro';
+import StatTile from '../charts/StatTile.astro';
+import StatTiles from '../charts/StatTiles.astro';
+import SurvivalCurve from '../charts/SurvivalCurve.astro';
+import BarChart from '../charts/BarChart.astro';
+import DonutChart from '../charts/DonutChart.astro';
+import SourceNote from '../charts/SourceNote.astro';
+import JourneyRoadmap from '../illustrations/JourneyRoadmap.astro';
+import ReadinessScorecard from '../illustrations/ReadinessScorecard.astro';
+import HexField from '../illustrations/HexField.astro';
+import RoleCard from '../seats/RoleCard.astro';
+import TeamConstellation from '../seats/TeamConstellation.astro';
+import { PROGRAM_ICONS, serviceLines } from '../icons.ts';
+import { BLS_BED, CHALLENGES, PROFITABILITY, SBCS, STATS, SURVIVAL, TIMELINE } from './samples.ts';
+
+const lines = serviceLines().map((l) => ({ label: l.label, href: l.href, description: `Line ${l.line}` }));
+const ubf = ['Galaxy', 'Black Hole', 'Super Nova', 'Solar System', 'Sun', 'Super Star', 'Star', 'Moon', 'Comet', 'Asteroid'].map((label) => ({ label }));
+const smart = ['Specific', 'Measurable', 'Achievable', 'Relevant', 'Time-bound'].map((label) => ({ label }));
+const nursery = [
+  { label: 'A side project', description: 'Formed: running on its own plan' },
+  { label: 'A new product line', description: 'Formed' },
+  { label: 'A subsidiary', description: 'Condensing' },
+  { label: 'A department', description: 'Condensing' },
+  { label: 'An idea', description: 'Dust: still gathering' },
+];
+const team = [
+  { role: 'Delivery lead', level: 'Steering', group: 'coordination' },
+  { role: 'Product design', level: 'Senior', group: 'build' },
+  { role: 'Front end', group: 'build' },
+  { role: 'Back end', level: 'Senior', group: 'build' },
+  { role: 'Quality assurance', group: 'build' },
+  { role: 'Brand', group: 'company' },
+  { role: 'Operations', group: 'coordination' },
+];
+const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform baseline', 'Customer evidence', 'Financial model', 'Operating rhythm'].map((label) => ({ label }));
+---
+
+<div class="vs">
+  <p class="vs__lead">
+    Scenes run only on a desktop with a fine pointer, at least 64rem wide, with motion allowed, four or more cores and WebGL2. Everyone else sees the
+    poster in the same reserved box. Each scene is shown live, then as its fallback. See src/components/visuals/README.md for props.
+  </p>
+
+  <h3 id="h-vs-scenes">Scenes</h3>
+
+  <div class="vs__item">
+    <p class="vs__name">GalaxyScene <span>Hero galaxy with a world assembling from hex cells. Set <code>priority</code> on a hero.</span></p>
+    <GalaxyScene ratio="21/9" caption="Live, ratio 21/9." />
+    <div class="vs__pair">
+      <GalaxyScene static caption="Fallback: the poster." />
+      <GalaxyScene static align="end" caption="Fallback, align end (headline space on the left)." />
+    </div>
+  </div>
+
+  <div class="vs__item">
+    <p class="vs__name">LaunchTrajectory <span>Dream, Build, Grow as one flight; stations link to the stage pages; up to eight waypoints.</span></p>
+    <LaunchTrajectory waypoints={waypoints} caption="Live, six waypoints." />
+    <LaunchTrajectory static caption="Fallback: the poster, stations only." />
+  </div>
+
+  <div class="vs__item">
+    <p class="vs__name">OrbitSystem <span>Labeled bodies on orbit rings; 7 single and 10 nested have their own posters, any other count draws its rings over the base poster.</span></p>
+    <OrbitSystem bodies={lines} accent={5} caption="Live, the seven service lines, Line F in amber." labelsName="Service lines" />
+    <div class="vs__pair">
+      <OrbitSystem static bodies={ubf} rings="nested" caption="Fallback, ten bodies on nested rings: the UBF components." labelsName="UBF components" />
+      <OrbitSystem static bodies={smart} caption="Fallback, five bodies: base poster with drawn rings." labelsName="S.M.A.R.T." />
+    </div>
+  </div>
+
+  <div class="vs__item">
+    <p class="vs__name">WorldForge <span>The incubation nursery: a world forming, moons condensing on seven rings. Labels list below.</span></p>
+    <WorldForge moons={nursery} caption="Live, five moons." />
+    <WorldForge static caption="Fallback: the poster." />
+  </div>
+
+  <div class="vs__item">
+    <p class="vs__name">StarfieldBand <span>Dark full-bleed band, decorative sky, real content in the slot. No logo on dark bands.</span></p>
+    <StarfieldBand labelledby="h-vs-band">
+      <p class="vs__band-eyebrow">Starfield band</p>
+      <h4 id="h-vs-band" class="vs__band-title">Worlds take years to build.</h4>
+      <p>Content sits over a slow drift of stars; the sky is hidden from assistive technology.</p>
+    </StarfieldBand>
+    <StarfieldBand static labelledby="h-vs-band-static">
+      <h4 id="h-vs-band-static" class="vs__band-title">Fallback band</h4>
+      <p>The poster only.</p>
+    </StarfieldBand>
+  </div>
+
+  <h3 id="h-vs-timeline">Long-horizon timeline</h3>
+  <div class="vs__item">
+    <p class="vs__name">LongHorizonTimeline <span>Sourced milestones and survival gates on a multi-year track (log scale). Every placement carries a source.</span></p>
+    <LongHorizonTimeline milestones={TIMELINE} horizon={10} id="vs-timeline" caption="Building a business takes years, not a three-month batch." />
+  </div>
+
+  <h3 id="h-vs-data">Data visualization</h3>
+  <div class="vs__item">
+    <p class="vs__name">StatTiles and StatTile <span>Sourced figures; shared sources listed once. A tile can also stand alone.</span></p>
+    <StatTiles stats={STATS} label="Starting a business in the U.S." />
+    <div class="vs__pair">
+      <StatTile value="77.9%" label="Share of new establishments still operating after one year" source={{ label: 'U.S. Bureau of Labor Statistics, Business Employment Dynamics', href: 'https://www.bls.gov/bdm/bdmage.htm', period: 'opened in the year to March 2024' }} icon="calendar" />
+      <div class="vs__dark">
+        <StatTile tone="dark" value="25.5%" label="Share still operating after fifteen years" source={{ label: 'SBA Office of Advocacy, FAQ About Small Business 2026', href: 'https://advocacy.sba.gov/wp-content/uploads/2026/02/FINAL_FAQsAboutSmallBusiness_2026_012826.pdf' }} />
+      </div>
+    </div>
+  </div>
+
+  <div class="vs__item">
+    <p class="vs__name">SurvivalCurve <span>Stepped survival lines (one to three series), gates at chosen years, hidden data table, source.</span></p>
+    <SurvivalCurve
+      title="Share of new U.S. businesses still operating, by year"
+      series={SURVIVAL}
+      source={BLS_BED}
+      gates={[1, 2, 5, 10]}
+      note="Private employer establishments; an exit is not always a failure (sales and mergers count as exits)."
+    />
+  </div>
+
+  <div class="vs__pair">
+    <div class="vs__item">
+      <p class="vs__name">BarChart <span>Horizontal bars, two to ten rows, one highlight.</span></p>
+      <BarChart title="Financial challenges small employer firms faced in the past year" items={CHALLENGES} source={SBCS} max={100} highlight={2} valueLabel="Share of firms" />
+    </div>
+    <div class="vs__item">
+      <p class="vs__name">DonutChart <span>Parts of a whole, two to six segments, legend carries the figures.</span></p>
+      <DonutChart title="Small employer firms at the end of 2024" items={PROFITABILITY} source={SBCS} center="47%" centerLabel="at a profit" />
+    </div>
+  </div>
+
+  <div class="vs__item">
+    <p class="vs__name">SourceNote <span>The source line every figure carries.</span></p>
+    <SourceNote sources={[BLS_BED, SBCS]} />
+  </div>
+
+  <h3 id="h-vs-illustrations">Illustrations</h3>
+  <div class="vs__item">
+    <p class="vs__name">JourneyRoadmap <span>Dream, Build, Grow with the deliverable the company keeps; no numbers, days or fees.</span></p>
+    <JourneyRoadmap />
+  </div>
+
+  <div class="vs__item">
+    <p class="vs__name">ReadinessScorecard <span>Six readiness areas, baseline and later shapes; illustrative, never scored.</span></p>
+    <ReadinessScorecard />
+    <p class="vs__disclaimer">WE makes no promise of funding.</p>
+  </div>
+
+  <div class="vs__item">
+    <p class="vs__name">HexField <span>Decorative hex texture, dense at one edge, one amber cell. Fills a positioned parent.</span></p>
+    <div class="vs__pair">
+      <div class="vs__field"><HexField edge="right" /><p class="vs__field-text">Light, dense at the right</p></div>
+      <div class="vs__field vs__field--dark"><HexField edge="left" tone="dark" seed={21} density={0.8} /><p class="vs__field-text">Dark, dense at the left</p></div>
+    </div>
+  </div>
+
+  <div class="vs__item">
+    <p class="vs__name">ServiceLineSet and VisualIcon <span>The seven lines as linked hex icons; the program icon set.</span></p>
+    <ServiceLineSet layout="honeycomb" />
+    <ul class="vs__icons" role="list">
+      {
+        PROGRAM_ICONS.map((name) => (
+          <li>
+            <VisualIcon name={name} size={48} />
+            <code>{name}</code>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <h3 id="h-vs-team">The team WE steers</h3>
+  <div class="vs__item">
+    <p class="vs__name">TeamConstellation and RoleCard <span>Unpriced, illustrative: roles, never names; no cart, no seat counts to buy.</span></p>
+    <TeamConstellation roles={team} caption="Illustration only; each team is shaped to the company." />
+    <div class="vs__cards">
+      <RoleCard role="Delivery lead" level="Steering" group="coordination" description="Plans the work, runs the reviews and reports progress." />
+      <RoleCard role="Product design" level="Senior" group="build" description="Turns customer evidence into the product's next release." />
+      <RoleCard role="Brand" group="company" />
+    </div>
+  </div>
+</div>
+
+<style>
+  .vs {
+    display: grid;
+    gap: var(--sp-6);
+  }
+
+  .vs__lead {
+    max-inline-size: var(--measure);
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .vs h3 {
+    margin: 0;
+    margin-block-start: var(--sp-5);
+  }
+
+  .vs__item {
+    display: grid;
+    gap: var(--sp-4);
+  }
+
+  .vs__name {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    font-family: var(--ff-mono);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .vs__name span {
+    font-family: var(--ff-sans);
+    font-weight: 400;
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .vs__pair {
+    display: grid;
+    gap: var(--sp-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    align-items: start;
+  }
+
+  .vs__cards {
+    display: grid;
+    gap: var(--sp-3);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  }
+
+  .vs__dark {
+    padding: var(--sp-4);
+    background-color: color-mix(in oklab, var(--we-blue-night) 45%, var(--we-charcoal));
+    border-radius: var(--radius-md);
+  }
+
+  .vs__band-eyebrow {
+    margin: 0;
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--we-tint);
+  }
+
+  .vs__band-title {
+    margin: 0;
+    font-family: var(--ff-display);
+    font-size: var(--fs-3xl);
+    color: var(--color-text-inverse);
+  }
+
+  .vs__disclaimer {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .vs__field {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-block-size: 14rem;
+    overflow: hidden;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .vs__field--dark {
+    color: var(--color-text-inverse);
+    background-color: color-mix(in oklab, var(--we-blue-night) 45%, var(--we-charcoal));
+  }
+
+  .vs__field-text {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .vs__icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .vs__icons li {
+    display: grid;
+    gap: var(--sp-1);
+    justify-items: center;
+    font-size: var(--fs-xs);
+  }
+</style>

@@ -1,0 +1,256 @@
+---
+/**
+ * ReadinessScorecard: the six readiness areas as a hexagonal radar, a dashed baseline shape and a solid later shape grown on every side,
+ * with the loop (baseline, review, close the gaps) beside it. Illustration only: no numbers, weights or thresholds are shown (C-17), and
+ * the shapes are not real scores. Show "WE makes no promise of funding." near it on pages that require that line.
+ */
+import { cleanText } from '../contracts.ts';
+import { radarPoint, radarPolygon } from './shapes.ts';
+import { READINESS_AREAS } from './journey.ts';
+
+interface Props {
+  /** Six fractions (0 to 1) for the dashed starting shape. Rendering only; never printed. */
+  baseline?: readonly number[];
+  /** Six fractions for the solid later shape. */
+  later?: readonly number[];
+  /** Show the three-step loop beside the radar (default true). */
+  steps?: boolean;
+  title?: string;
+  class?: string;
+}
+
+const { baseline = [0.42, 0.3, 0.55, 0.28, 0.36, 0.4], later = [0.82, 0.7, 0.86, 0.66, 0.74, 0.8], steps = true, title = 'The readiness scorecard', class: className } = Astro.props;
+cleanText('ReadinessScorecard', 'title', title);
+if (baseline.length !== 6 || later.length !== 6) throw new Error('ReadinessScorecard: baseline and later take six values each, one per area');
+
+const C = 200;
+const R = 140;
+const rings = [0.25, 0.5, 0.75, 1].map((f) => radarPolygon(C, C, R, [f, f, f, f, f, f]));
+const spokes = READINESS_AREAS.map((_, i) => radarPoint(C, C, R, i, 6, 1));
+const labelAt = READINESS_AREAS.map((_, i) => radarPoint(C, C, R, i, 6, 1.12));
+const anchor = (x: number): string => (Math.abs(x - C) < 4 ? 'middle' : x > C ? 'start' : 'end');
+const STEPS = [
+  { name: 'Baseline', text: 'The diagnostic records where each area starts, with the evidence behind it.' },
+  { name: 'Review', text: 'Each review checks the same six areas against the records the company keeps.' },
+  { name: 'Close the gaps', text: 'The plan targets the weakest sides first, so the shape grows evenly.' },
+];
+---
+
+<figure class:list={['scorecard', className]}>
+  <figcaption class="scorecard__title">{title}</figcaption>
+  <div class="scorecard__body">
+    <div class="scorecard__radar">
+      <svg viewBox="-130 10 660 380" aria-hidden="true" focusable="false">
+        {rings.map((p) => <polygon class="scorecard__ring" points={p} />)}
+        {spokes.map(([x, y]) => <line class="scorecard__spoke" x1={C} y1={C} x2={x} y2={y} />)}
+        <polygon class="scorecard__later" points={radarPolygon(C, C, R, later)} />
+        <polygon class="scorecard__baseline" points={radarPolygon(C, C, R, baseline)} />
+        {
+          later.map((v, i) => {
+            const [x, y] = radarPoint(C, C, R, i, 6, v);
+            return <circle class="scorecard__dot" cx={x} cy={y} r="4.5" />;
+          })
+        }
+        {
+          labelAt.map(([x, y], i) => (
+            <text class="scorecard__axis" x={x} y={y + 5} text-anchor={anchor(x)}>
+              {READINESS_AREAS[i]}
+            </text>
+          ))
+        }
+      </svg>
+    </div>
+    <div class="scorecard__side">
+      <ul class="scorecard__legend" role="list">
+        <li class="scorecard__key scorecard__key--baseline">Baseline at the diagnostic</li>
+        <li class="scorecard__key scorecard__key--later">A later review</li>
+      </ul>
+      <p class="visually-hidden">The six areas: {READINESS_AREAS.join(', ')}.</p>
+      {
+        steps && (
+          <ol class="scorecard__steps" role="list">
+            {STEPS.map((s) => (
+              <li class="scorecard__step">
+                <span class="scorecard__step-name">{s.name}</span>
+                <span class="scorecard__step-text">{s.text}</span>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+      <p class="scorecard__note">Illustration only; the shapes are not real scores.</p>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .scorecard {
+    container-type: inline-size;
+    display: grid;
+    gap: var(--sp-4);
+    margin: 0;
+  }
+
+  .scorecard__title {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .scorecard__body {
+    display: grid;
+    gap: var(--sp-5);
+    align-items: center;
+  }
+
+  .scorecard__radar svg {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: 34rem;
+    block-size: auto;
+    margin-inline: auto;
+    overflow: visible;
+  }
+
+  .scorecard__ring {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 1;
+  }
+
+  .scorecard__ring:last-of-type {
+    stroke: var(--we-hairline);
+  }
+
+  .scorecard__spoke {
+    stroke: var(--color-border);
+    stroke-width: 1;
+  }
+
+  .scorecard__later {
+    fill: color-mix(in oklab, var(--we-blue) 18%, transparent);
+    stroke: var(--we-blue-deep);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+
+  .scorecard__baseline {
+    fill: none;
+    stroke: var(--we-amber);
+    stroke-width: 2;
+    stroke-dasharray: 6 5;
+    stroke-linejoin: round;
+  }
+
+  .scorecard__dot {
+    fill: var(--we-blue-deep);
+  }
+
+  .scorecard__axis {
+    font-family: var(--ff-sans);
+    font-size: 14px;
+    font-weight: 600;
+    fill: var(--color-text);
+  }
+
+  .scorecard__side {
+    display: grid;
+    gap: var(--sp-4);
+  }
+
+  .scorecard__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text);
+  }
+
+  .scorecard__key {
+    display: inline-flex;
+    gap: var(--sp-2);
+    align-items: center;
+  }
+
+  .scorecard__key::before {
+    content: '';
+    inline-size: 1.75rem;
+    block-size: 0;
+    border-block-start: 3px solid var(--we-blue-deep);
+  }
+
+  .scorecard__key--baseline::before {
+    border-block-start: 3px dashed var(--we-amber);
+  }
+
+  .scorecard__steps {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .scorecard__step {
+    position: relative;
+    display: grid;
+    gap: 2px;
+    padding-inline-start: var(--sp-7);
+    counter-increment: step;
+  }
+
+  .scorecard__step::before {
+    content: counter(step);
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    display: grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    color: var(--color-text-inverse);
+    background: var(--we-blue-deep);
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+  }
+
+  .scorecard__step-name {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .scorecard__step-text,
+  .scorecard__note {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  @container (min-width: 48rem) {
+    .scorecard__body {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .scorecard__later,
+    .scorecard__baseline,
+    .scorecard__ring,
+    .scorecard__spoke {
+      stroke: CanvasText;
+    }
+
+    .scorecard__axis {
+      fill: CanvasText;
+    }
+  }
+</style>

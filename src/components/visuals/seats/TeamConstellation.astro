@@ -1,0 +1,270 @@
+---
+/**
+ * TeamConstellation: the team WE steers for a company, drawn as stars on a honeycomb around the company at its center, with a faint
+ * steering ring. One to ten roles. Illustrative and unpriced: no prices, no seat counts to buy, no cart or selector (ORCHESTRATION
+ * 2026-10-14; team visuals are secondary to the incubation story).
+ *
+ * The roles are an HTML list: floated at their stars on wide containers, a plain list below the drawing on narrow ones.
+ */
+import { cleanText, teamRoles } from '../contracts.ts';
+import type { TeamRole } from '../contracts.ts';
+import { constellationLayout, constellationLinks, positionClasses } from '../../../scripts/visuals/geometry.ts';
+import { hexagon } from '../chart-math.ts';
+import '../positions.css';
+
+interface Props {
+  roles: readonly TeamRole[];
+  /** Label of the center, default "Your company". */
+  center?: string;
+  label?: string;
+  caption?: string;
+  class?: string;
+}
+
+const { center = 'Your company', label = 'The team WE steers for you', caption, class: className } = Astro.props;
+const centerText = cleanText('TeamConstellation', 'center', center);
+if (caption !== undefined) cleanText('TeamConstellation', 'caption', caption);
+const roles = teamRoles('TeamConstellation', Astro.props.roles);
+const layout = constellationLayout(roles.length, 0.21);
+const links = constellationLinks(roles.length);
+const W = 800;
+const H = 500;
+const pos = (i: number): readonly [number, number] => {
+  if (i === -1) return [W / 2, H / 2];
+  const p = layout[i];
+  return p === undefined ? [W / 2, H / 2] : [p.x * W, p.y * H];
+};
+---
+
+<figure class:list={['constellation', className]}>
+  <div class="constellation__stage">
+    <svg class="constellation__sky" viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false">
+      <ellipse class="constellation__steer" cx={W / 2} cy={H / 2} rx={W * 0.42} ry={H * 0.44} />
+      {
+        links.map(([a, b]) => {
+          const [x1, y1] = pos(a);
+          const [x2, y2] = pos(b);
+          return <line class:list={['constellation__link', a === -1 && 'is-core']} x1={x1} y1={y1} x2={x2} y2={y2} />;
+        })
+      }
+      <polygon class="constellation__core" points={hexagon(W / 2, H / 2, 46)} />
+      <polygon class="constellation__core-inner" points={hexagon(W / 2, H / 2, 30)} />
+      {
+        roles.map((r, i) => {
+          const [x, y] = pos(i);
+          return (
+            <g class:list={['constellation__star', r.group !== undefined && `is-${r.group}`]}>
+              <polygon class="constellation__halo" points={hexagon(x, y, 20)} />
+              <polygon class="constellation__node" points={hexagon(x, y, 11)} />
+            </g>
+          );
+        })
+      }
+    </svg>
+    <p class="constellation__center">{centerText}</p>
+    <ul class="constellation__roles" aria-label={label} role="list">
+      {
+        roles.map((r, i) => {
+          const p = layout[i];
+          const below = p !== undefined && p.y > 0.5;
+          return (
+            <li class:list={['constellation__role', p !== undefined && positionClasses(p.x, p.y), below && 'is-below']}>
+              <span class="constellation__role-name">{r.role}</span>
+              {r.level !== undefined && <span class="constellation__role-level">{r.level}</span>}
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+  <figcaption class="constellation__caption">
+    <span class="constellation__steer-key">{label}</span>
+    {caption !== undefined && <span>{caption}</span>}
+  </figcaption>
+</figure>
+
+<style>
+  .constellation {
+    container-type: inline-size;
+    container-name: constellation;
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+  }
+
+  .constellation__stage {
+    position: relative;
+  }
+
+  .constellation__sky {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    background: radial-gradient(ellipse at 50% 50%, color-mix(in oklab, var(--we-blue-hi) 22%, var(--color-bg)) 0, var(--color-bg) 70%);
+    border-radius: var(--radius-lg);
+  }
+
+  .constellation__steer {
+    fill: none;
+    stroke: var(--we-amber);
+    stroke-width: 1.5;
+    stroke-dasharray: 2 8;
+    stroke-linecap: round;
+  }
+
+  .constellation__link {
+    stroke: var(--we-hairline);
+    stroke-width: 1.2;
+  }
+
+  .constellation__link.is-core {
+    stroke: var(--we-blue);
+    stroke-opacity: 0.55;
+  }
+
+  .constellation__core {
+    fill: var(--we-blue-deep);
+  }
+
+  .constellation__core-inner {
+    fill: none;
+    stroke: var(--we-tint);
+    stroke-width: 1.5;
+  }
+
+  .constellation__halo {
+    fill: var(--we-blue-hi);
+    fill-opacity: 0.28;
+  }
+
+  .constellation__node {
+    fill: var(--we-blue);
+  }
+
+  .is-company .constellation__node {
+    fill: var(--we-blue-deep);
+  }
+
+  .is-coordination .constellation__node {
+    fill: var(--we-amber);
+  }
+
+  /* The center label sits on the core hex; the role list sits below the drawing until there is room to float it. */
+  .constellation__center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: 0;
+    max-inline-size: 7rem;
+    transform: translate(-50%, -50%);
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+    text-align: center;
+    color: var(--color-text-inverse);
+  }
+
+  .constellation__roles {
+    display: grid;
+    gap: var(--sp-2);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+    margin: 0;
+    margin-block-start: var(--sp-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .constellation__role {
+    display: grid;
+    gap: 2px;
+    padding: var(--sp-2) var(--sp-3);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    background: var(--color-bg-soft);
+    border-inline-start: 3px solid var(--we-blue);
+    border-radius: var(--radius-sm);
+  }
+
+  .constellation__role-name {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .constellation__role-level {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  .constellation__caption {
+    display: grid;
+    gap: var(--sp-1);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .constellation__steer-key {
+    display: inline-flex;
+    gap: var(--sp-2);
+    align-items: center;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .constellation__steer-key::before {
+    content: '';
+    inline-size: 1.75rem;
+    border-block-start: 2px dotted var(--we-amber);
+  }
+
+  /* Narrow: the core hex is too small to hold its label, so the label leads the list instead. */
+  @container constellation (width < 40rem) {
+    .constellation__center {
+      position: static;
+      max-inline-size: none;
+      margin-block-start: var(--sp-3);
+      transform: none;
+      font-size: var(--fs-sm);
+      text-align: start;
+      color: var(--color-text);
+    }
+  }
+
+  @container constellation (min-width: 40rem) {
+    .constellation__roles {
+      position: absolute;
+      inset: 0;
+      display: block;
+      margin: 0;
+    }
+
+    .constellation__role {
+      position: absolute;
+      left: var(--px);
+      top: var(--py);
+      transform: translate(-50%, calc(-100% - var(--sp-5)));
+      max-inline-size: 10rem;
+      padding: var(--sp-1) var(--sp-2);
+      text-align: center;
+      background: color-mix(in oklab, var(--color-bg) 88%, transparent);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+
+    .constellation__role.is-below {
+      transform: translate(-50%, var(--sp-5));
+    }
+  }
+
+  @media (forced-colors: active) {
+    .constellation__role {
+      border: 1px solid CanvasText;
+    }
+
+    .constellation__center {
+      forced-color-adjust: none;
+      color: Canvas;
+    }
+  }
+</style>

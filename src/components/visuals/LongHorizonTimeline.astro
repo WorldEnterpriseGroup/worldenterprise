@@ -21,10 +21,12 @@ interface Props {
   /** Accessible name of the timeline list. */
   label?: string;
   caption?: string;
+  /** Prefix for the source-note ids (default "timeline"); set it when a page shows two timelines. */
+  id?: string;
   class?: string;
 }
 
-const { horizon = 10, label = 'Typical milestones over the life of a new business', caption, class: className } = Astro.props;
+const { horizon = 10, label = 'Typical milestones over the life of a new business', caption, id = 'timeline', class: className } = Astro.props;
 const items = checkMilestones('LongHorizonTimeline', Astro.props.milestones, horizon);
 
 /** "Month 9", "Year 2", "Year 2.5". Never "N years" (the claims audit reads "20 years" as an experience claim). */
@@ -97,7 +99,7 @@ const cluster = (stage: number): { readonly points: string; readonly lit: boolea
             <span class="tl__label">
               {m.label}
               {m.note !== undefined && (
-                <a class="tl__note" href={`#tl-src-${m.note}`} aria-label={`Source ${m.note}`}>
+                <a class="tl__note" href={`#${id}-src-${m.note}`} aria-label={`Source ${m.note}`}>
                   <sup>{m.note}</sup>
                 </a>
               )}
@@ -115,7 +117,7 @@ const cluster = (stage: number): { readonly points: string; readonly lit: boolea
         {sources.length > 0 && (
           <ol class="tl__sources" aria-label="Sources">
             {sources.map((s, i) => (
-              <li id={`tl-src-${i + 1}`}>
+              <li id={`${id}-src-${i + 1}`}>
                 {s.href !== undefined ? <a href={s.href}>{s.label}</a> : s.label}
                 {s.period !== undefined && <span>, {s.period}</span>}
               </li>
