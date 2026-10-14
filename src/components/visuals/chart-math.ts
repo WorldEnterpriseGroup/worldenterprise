@@ -144,7 +144,7 @@ export function lanes(xs: readonly number[], minGap: number, laneCount = 3): rea
   });
 }
 
-/** Points of a flat-top hexagon of radius r centred at (cx, cy), as an SVG `points` string. */
+/** Points of a flat-top hexagon of radius r centered at (cx, cy), as an SVG `points` string. */
 export function hexagon(cx: number, cy: number, r: number): string {
   return Array.from({ length: 6 }, (_, i) => {
     const a = (Math.PI / 3) * i;

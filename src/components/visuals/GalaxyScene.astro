@@ -1,0 +1,46 @@
+---
+/**
+ * GalaxyScene: the "WE build worlds" hero. A spiral galaxy turns while a hex-faceted world assembles at its core and a trail of small hex
+ * cells streams in to join it (BRIEF 2.3 scene 1). Put the hero copy next to it (align="end" moves the core right of center for a
+ * left-hand text column) or over it in a band.
+ */
+import Scene from './Scene.astro';
+import type { SceneRatio } from './contracts.ts';
+
+interface Props {
+  alt?: string;
+  /** `end` shifts the galaxy core toward the right, leaving the left calm for a headline. */
+  align?: 'center' | 'end';
+  ratio?: Extract<SceneRatio, '16/9' | '21/9'>;
+  /** Set on the page's hero: the poster is then the LCP image. */
+  priority?: boolean;
+  sizes?: string;
+  caption?: string;
+  static?: boolean;
+  class?: string;
+}
+
+const {
+  alt = 'A spiral galaxy of blue stars. At its core a world of hexagonal tiles is still assembling, one tile glowing amber, while a trail of small hexagonal cells streams in to join it.',
+  align = 'center',
+  ratio = '16/9',
+  priority = false,
+  sizes,
+  caption,
+  static: isStatic = false,
+  class: className,
+} = Astro.props;
+---
+
+<Scene
+  scene="galaxy"
+  poster={align === 'end' ? 'galaxy-end' : 'galaxy'}
+  alt={alt}
+  ratio={ratio}
+  options={align === 'end' ? { align } : {}}
+  priority={priority}
+  sizes={sizes}
+  caption={caption}
+  static={isStatic}
+  class={className}
+/>

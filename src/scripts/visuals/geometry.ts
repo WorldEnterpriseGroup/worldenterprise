@@ -23,7 +23,7 @@ export const lerp3 = (a: Vec3, b: Vec3, t: number): Vec3 => [a[0] + (b[0] - a[0]
 // ---------------------------------------------------------------------------------------------------------------------------------
 
 export interface GlobeCell {
-  /** Unit vector to the cell's centre. */
+  /** Unit vector to the cell's center. */
   readonly center: Vec3;
   /** The cell's corners on the unit sphere, in winding order around `center`. Five for a pentagon, six for a hexagon. */
   readonly corners: readonly Vec3[];
@@ -141,7 +141,7 @@ export function positionClasses(x: number, y: number): string {
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------
-// Orbit system: N labelled bodies around a centre.
+// Orbit system: N labeled bodies around a center.
 // ---------------------------------------------------------------------------------------------------------------------------------
 
 export const ORBIT_CAMERA: CameraSpec = { position: [0, 5.2, 8.6], target: [0, -0.35, 0], fov: 38 };
@@ -248,20 +248,26 @@ export function waypointTs(count: number): readonly number[] {
   return Array.from({ length: n }, (_, i) => 0.08 + (0.86 * (i + 0.5)) / n);
 }
 
+/** Where the launch labels attach: the pad, the gate, above the Grow world, then each waypoint on the path. Shared by scene and poster. */
+export function launchAnchors(waypointCount: number): readonly Vec3[] {
+  const world: Vec3 = [LAUNCH_WORLD[0], LAUNCH_WORLD[1] + 0.95, LAUNCH_WORLD[2]];
+  return [LAUNCH_STATIONS[0] as Vec3, LAUNCH_STATIONS[1] as Vec3, world, ...waypointTs(waypointCount).map((t) => catmullRom(LAUNCH_PATH, t))];
+}
+
 // ---------------------------------------------------------------------------------------------------------------------------------
 // Team constellation: seats as stars around the company, on honeycomb (axial hex) positions.
 // ---------------------------------------------------------------------------------------------------------------------------------
 
 export const MAX_SEATS = 10;
 
-/** Axial hex coordinates in spiral order around the centre: ring 1 (6 cells), then ring 2. */
+/** Axial hex coordinates in spiral order around the center: ring 1 (6 cells), then ring 2. */
 const SPIRAL: readonly (readonly [number, number])[] = [
   [1, -1], [1, 0], [0, 1], [-1, 1], [-1, 0], [0, -1],
   [2, -1], [1, 1], [-1, 2], [-2, 1], [-1, -1], [1, -2],
 ];
 
 /**
- * Positions in 0..1 of `count` seats (at most MAX_SEATS) around a centre at (0.5, 0.5), on a flat-top honeycomb, with a small seeded
+ * Positions in 0..1 of `count` seats (at most MAX_SEATS) around a center at (0.5, 0.5), on a flat-top honeycomb, with a small seeded
  * jitter so the team reads as a constellation rather than a grid. `spread` is the distance between neighbours as a fraction of the frame.
  */
 export function constellationLayout(count: number, spread = 0.2, jitter = 0.015): readonly { readonly x: number; readonly y: number }[] {
@@ -274,7 +280,7 @@ export function constellationLayout(count: number, spread = 0.2, jitter = 0.015)
   });
 }
 
-/** Neighbour pairs (indices into the layout, -1 for the centre) that the constellation draws as lines. */
+/** Neighbor pairs (indices into the layout, -1 for the center) that the constellation draws as lines. */
 export function constellationLinks(count: number): readonly (readonly [number, number])[] {
   const n = Math.max(0, Math.min(MAX_SEATS, Math.floor(count)));
   const links: [number, number][] = [];

@@ -3,7 +3,7 @@
  * core a hex-faceted world assembling from its tiles. One amber cell in that world is the only warm object. The camera drifts with the
  * pointer. Everything is a pure function of time, so the poster (rendered at `posterTime`) matches the first live frame.
  *
- * Options: `align` 'center' | 'end' (where the core sits: centre, or toward the right for a hero with text on the left).
+ * Options: `align` 'center' | 'end' (where the core sits: center, or toward the right for a hero with text on the left).
  */
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Group, Points, ShaderMaterial, Vector3 } from 'three';
 import { AMBER, RAMP, ramp } from '../palette.ts';

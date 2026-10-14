@@ -30,7 +30,7 @@ import {
   LAUNCH_STATION_T,
   LAUNCH_WORLD,
   catmullRom,
-  waypointTs,
+  launchAnchors,
 } from '../geometry.ts';
 import type { Vec3 } from '../geometry.ts';
 import type { SceneContext, SceneInstance } from '../types.ts';
@@ -236,10 +236,7 @@ export function create(ctx: SceneContext): SceneInstance {
   scene.add(wake.points);
   const wakeAttr = wake.geometry.getAttribute('position') as BufferAttribute;
 
-  const anchorList: Vector3[] = [
-    ...LAUNCH_STATIONS.map((s, i) => (i === 2 ? world.clone().add(new Vector3(0, 0.95, 0)) : new Vector3(...s))),
-    ...waypointTs(waypointCount).map((t) => new Vector3(...catmullRom(LAUNCH_PATH, t))),
-  ];
+  const anchorList = launchAnchors(waypointCount).map((p) => new Vector3(...p));
 
   const here = new Vector3();
   const prev = new Vector3();

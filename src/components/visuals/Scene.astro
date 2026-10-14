@@ -32,8 +32,10 @@ interface Props {
   static?: boolean;
   /** Fill the positioned parent instead of keeping an aspect ratio (band backgrounds). */
   fill?: boolean;
-  /** Decorative background (a band): the poster gets alt="" and the figure is hidden from assistive technology. */
+  /** Decorative background (a band): the poster gets alt="" and the frame is hidden from assistive technology (the pause button stays reachable). */
   decorative?: boolean;
+  /** `float` places labels over the frame at their anchors on wide containers; `list` always lists them below the frame. */
+  labels?: 'float' | 'list';
   class?: string;
 }
 
@@ -50,6 +52,7 @@ const {
   static: isStatic = false,
   fill = false,
   decorative = false,
+  labels = 'float',
   class: className,
 } = Astro.props;
 
@@ -63,16 +66,15 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
 ---
 
 <we-scene
-  class:list={['scene', fill && 'scene--fill', className]}
+  class:list={['scene', fill && 'scene--fill', labels === 'list' && 'scene--list', className]}
   data-scene={scene}
   data-options={optionsJson}
   data-static={isStatic ? '' : undefined}
   data-state="poster"
-  aria-hidden={decorative ? 'true' : undefined}
 >
-  <figure class="scene__figure">
+  <figure class="scene__figure" role={decorative ? 'none' : undefined}>
     <div class="scene__stage">
-      <div class:list={['scene__frame', !fill && ratioClass(r)]}>
+      <div class:list={['scene__frame', !fill && ratioClass(r)]} aria-hidden={decorative ? 'true' : undefined}>
         <img
           class="scene__poster"
           src={image.src}
@@ -252,7 +254,7 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
 
   /* Wide containers: each label floats over the frame at its anchor (static classes, or --x and --y from the live scene). */
   @container scene (min-width: 48rem) {
-    .scene__labels {
+    .scene:not(.scene--list) .scene__labels {
       position: absolute;
       inset: 0;
       display: block;
@@ -260,7 +262,7 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
       pointer-events: none;
     }
 
-    .scene__labels :global(.scene__label) {
+    .scene:not(.scene--list) .scene__labels :global(.scene__label) {
       position: absolute;
       left: var(--x, var(--px, 50%));
       top: var(--y, var(--py, 50%));
@@ -277,21 +279,21 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
       backdrop-filter: blur(4px);
     }
 
-    .scene__labels :global(.scene__label.is-below) {
+    .scene:not(.scene--list) .scene__labels :global(.scene__label.is-below) {
       transform: translate(-50%, var(--sp-2));
     }
 
-    .scene__labels :global(.scene__label-note) {
+    .scene:not(.scene--list) .scene__labels :global(.scene__label-note) {
       color: var(--we-tint);
       font-size: var(--fs-xs);
     }
 
-    .scene__labels :global(.scene__label a) {
+    .scene:not(.scene--list) .scene__labels :global(.scene__label a) {
       color: var(--color-text-inverse);
       text-decoration-color: var(--we-amber);
     }
 
-    .scene__labels :global(.scene__label a:focus-visible) {
+    .scene:not(.scene--list) .scene__labels :global(.scene__label a:focus-visible) {
       outline: 2px solid var(--color-focus-inverse);
       outline-offset: 2px;
     }
@@ -349,6 +351,11 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
   }
 
   /* With labels below the frame (narrow containers) the pause button sits on the frame, not on the list. */
+  .scene--list .scene__labels + .scene__toggle {
+    inset-block-end: auto;
+    inset-block-start: var(--sp-3);
+  }
+
   @container scene (width < 48rem) {
     .scene__labels + .scene__toggle {
       inset-block-end: auto;

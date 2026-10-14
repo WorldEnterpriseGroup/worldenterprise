@@ -74,7 +74,7 @@ const GLOBE_VERTEX = /* glsl */ `
     float k = easeOut(local);
     vArrive = k;
     vec3 offset = aScatter * (1.0 - k);
-    // A cell in flight spins about its own centre, so the tiles tumble in rather than slide.
+    // A cell in flight spins about its own center, so the tiles tumble in rather than slide.
     float spin = (1.0 - k) * 6.0 + aDelay * 10.0;
     vec3 rel = position - aCenter;
     float c = cos(spin * (1.0 - k));
@@ -145,17 +145,17 @@ export function makeGlobe(opts: GlobeOptions): Globe {
     const field = lobes.reduce((sum, lobe, i) => sum + Math.max(0, c[0] * lobe[0] + c[1] * lobe[1] + c[2] * lobe[2]) ** 3 * (i % 2 === 0 ? 1 : 0.7), 0);
     const tone = toneLow + (toneHigh - toneLow) * Math.min(1, field * 0.9 + rand() * 0.18);
     const rgb = index === amber ? channels(AMBER) : ramp(tone);
-    const centre = scale(c, opts.radius);
-    const corners = cell.corners.map((corner) => add(centre, scale(sub(scale(corner, opts.radius), centre), inset)));
+    const middle = scale(c, opts.radius);
+    const corners = cell.corners.map((corner) => add(middle, scale(sub(scale(corner, opts.radius), middle), inset)));
     const dir: Vec3 = [c[0] + gaussian(rand) * 0.6, c[1] + gaussian(rand) * 0.6, c[2] + gaussian(rand) * 0.6];
     const away = scale(dir, opts.radius * scatter * (0.6 + rand() * 0.9));
     const delay = rand();
     for (let k = 0; k < corners.length; k += 1) {
       const a = corners[k] as Vec3;
       const b = corners[(k + 1) % corners.length] as Vec3;
-      for (const p of [centre, a, b]) {
+      for (const p of [middle, a, b]) {
         positions.push(p[0], p[1], p[2]);
-        centers.push(centre[0], centre[1], centre[2]);
+        centers.push(middle[0], middle[1], middle[2]);
         scatters.push(away[0], away[1], away[2]);
         delays.push(delay);
         colors.push(rgb[0], rgb[1], rgb[2]);
