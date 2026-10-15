@@ -3181,6 +3181,11 @@
       "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
     },
     {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-60/fixtures/reference-originals.json",
+      "reason": "Wave 9 close (W9-13 positioning): the glossary 'seat' entry is redefined as the contract unit, not WE's identity; the glossary.seat originals hash only follows glossary.yaml."
+    },
+    {
       "wp": "WP-58",
       "path": "src/data/routes.ts",
       "reason": "Wave 9 (W9-13): adds and launches the rows of its own routes (/who-we-work-with/ and its seven situation pages, /why-it-takes-time/, /briefs/real-timeline/) in the same merge request as their pages. No other row changes."
