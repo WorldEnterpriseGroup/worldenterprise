@@ -1,0 +1,122 @@
+{
+  "wp": "WP-35",
+  "note": "Data hub /data/ and its four report pages. Every figure is in src/data/datasets/*.ts; each dataset names its source id from sources.ts, its retrieval date (2026-10-15) and its transformation. Carta Data is cited by single published figures only, never re-hosted. Hosts outside the allowlist are held in pendingHostFetches until OP-HOSTS is extended.",
+  "fetches": [
+    {
+      "id": "bls-bed-total",
+      "url": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Total Private)",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "fetchedAt": "2026-10-15T19:52:10Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "bls-bed-information",
+      "url": "https://www.bls.gov/bdm/us_age_naics_51_table7.txt",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Information, NAICS 51)",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "fetchedAt": "2026-10-15T19:52:14Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "bls-bed-professional",
+      "url": "https://www.bls.gov/bdm/us_age_naics_54_table7.txt",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Professional, Scientific, and Technical Services, NAICS 54)",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "fetchedAt": "2026-10-15T19:52:18Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-bfs-monthly",
+      "url": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv",
+      "title": "Business Formation Statistics, monthly series (bfs_monthly.csv)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-15T19:53:02Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-bfs-definitions",
+      "url": "https://www.census.gov/econ/bfs/definitions.html",
+      "title": "Business Formation Statistics: Definitions",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-15T19:53:20Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "sba-faq-2026",
+      "url": "https://advocacy.sba.gov/wp-content/uploads/2026/02/FINAL_FAQsAboutSmallBusiness_2026_012826.pdf",
+      "title": "Frequently Asked Questions About Small Business 2026",
+      "publisher": "U.S. Small Business Administration, Office of Advocacy",
+      "fetchedAt": "2026-10-15T19:54:05Z",
+      "status": 200,
+      "tool": "curl"
+    }
+  ],
+  "pendingHostFetches": [
+    {
+      "id": "kauffman-2025",
+      "url": "https://indicators-new.kauffman.org/wp-content/uploads/sites/13/2026/05/2025-Early-Stage-Entrepreneurship-National-Report.pdf",
+      "title": "National Report on Early-Stage Entrepreneurship in the United States: 2025",
+      "publisher": "Ewing Marion Kauffman Foundation (Robert W. Fairlie)",
+      "fetchedAt": "2026-10-15T19:55:17Z",
+      "status": 200,
+      "tool": "curl",
+      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+    },
+    {
+      "id": "kauffman-2021",
+      "url": "https://www.kauffman.org/wp-content/uploads/2022/10/Kauffman_Trends-in-Entrepreneurship-Who-Is-The-Entrepreneur-2021.pdf",
+      "title": "Trends in Entrepreneurship: Who Is the Entrepreneur? 1996 to 2021",
+      "publisher": "Ewing Marion Kauffman Foundation",
+      "fetchedAt": "2026-10-15T19:56:24Z",
+      "status": 200,
+      "tool": "curl",
+      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+    },
+    {
+      "id": "azoulay-2018",
+      "url": "https://www.nber.org/system/files/working_papers/w24489/w24489.pdf",
+      "title": "Age and High-Growth Entrepreneurship (NBER Working Paper 24489; published in American Economic Review: Insights 2(1), 2020)",
+      "publisher": "Azoulay, Jones, Kim and Miranda, National Bureau of Economic Research",
+      "fetchedAt": "2026-10-15T19:55:31Z",
+      "status": 200,
+      "tool": "curl",
+      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+    },
+    {
+      "id": "carta-spm-q1-2026",
+      "url": "https://carta.com/data/state-of-private-markets-q1-2026-full-report/",
+      "title": "State of Private Markets: Q1 2026",
+      "publisher": "Carta, Inc. (Carta Data)",
+      "fetchedAt": "2026-10-15T19:56:38Z",
+      "status": 200,
+      "tool": "curl",
+      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+    },
+    {
+      "id": "cb-insights-2026",
+      "url": "https://www.cbinsights.com/research/report/startup-failure-reasons-top/",
+      "title": "The top reasons startups fail",
+      "publisher": "CB Insights",
+      "fetchedAt": "2026-10-15T19:55:45Z",
+      "status": 200,
+      "tool": "curl",
+      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+    },
+    {
+      "id": "gem-us-2020",
+      "url": "https://www.babson.edu/media/babson/assets/global-entrepreneurship-monitor/GEM-2019-2020-US-Report.pdf",
+      "title": "Global Entrepreneurship Monitor, United States Report 2019/2020",
+      "publisher": "Babson College, Global Entrepreneurship Monitor",
+      "fetchedAt": "2026-10-15T19:56:52Z",
+      "status": 200,
+      "tool": "curl",
+      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+    }
+  ]
+}
