@@ -25,7 +25,7 @@ import {
   decadeMilestones,
   pointerFor,
   visualStat,
-} from '../../../src/pages/program/_longevity/data.ts';
+} from '../../../src/components/program/longevity/data.ts';
 
 /**
  * WP-37 (wave 10, #86): the longevity narrative and the inclusive ecosystem moments. These tests hold the shared data to the site's
@@ -159,7 +159,7 @@ const PAGES: readonly string[] = [
   'src/pages/how-we-work/index.astro',
   'src/pages/why-it-takes-time/index.astro',
   'src/pages/who-we-work-with/index.astro',
-  'src/pages/who-we-work-with/_Situation.astro',
+  'src/components/sales/SituationPage.astro',
 ];
 
 test('every page of the family carries the longevity spine', () => {
@@ -175,13 +175,13 @@ test('the home, program, how-we-work, why-it-takes-time and who-we-work-with hub
   }
 });
 
-test('each situation page renders through _Situation.astro, which holds the pointers', () => {
+test('each situation page renders through SituationPage, which holds the pointers', () => {
   for (const s of SITUATIONS) {
     const file = `src/pages/who-we-work-with/${s.slug}.astro`;
     assert.ok(existsSync(join(root, file)), file);
-    assert.match(read(file), /from '\.\/_Situation\.astro'/);
+    assert.match(read(file), /<SituationPage\b/);
   }
-  assert.match(read('src/pages/who-we-work-with/_Situation.astro'), /<SituationPointers\b/);
+  assert.match(read('src/components/sales/SituationPage.astro'), /<SituationPointers\b/);
 });
 
 test('the primary call to action stays "Start a readiness review" on the family pages', () => {
@@ -192,13 +192,13 @@ test('the primary call to action stays "Start a readiness review" on the family 
 
 test('the new components use no inline style, no inline script and no third-party host', () => {
   for (const file of ['LongevitySpine', 'JoinPrograms', 'SbirBand', 'DataTeaser']) {
-    const source = read(`src/pages/program/_longevity/${file}.astro`);
+    const source = read(`src/components/program/longevity/${file}.astro`);
     assert.ok(!/\sstyle=/.test(source), `${file} has a style attribute`);
     assert.ok(!/<script/.test(source), `${file} has a script`);
     assert.ok(!/https?:\/\//.test(source.replace(/\/\*[\s\S]*?\*\//g, '')), `${file} names a host`);
   }
-  for (const file of ['_SituationPointers', '_SituationMatrix']) {
-    const source = read(`src/pages/who-we-work-with/${file}.astro`);
+  for (const file of ['SituationPointers', 'SituationMatrix']) {
+    const source = read(`src/components/program/longevity/${file}.astro`);
     assert.ok(!/\sstyle=/.test(source) && !/<script/.test(source), `${file} has inline style or script`);
   }
 });
@@ -209,9 +209,9 @@ test('the bands render nothing until their route is built, and never link a rout
     ['SbirBand', 'sbir'],
     ['DataTeaser', 'data'],
   ] as const) {
-    assert.match(read(`src/pages/program/_longevity/${file}.astro`), new RegExp(`isLiveOnDisk\\(ROUTES\\.${route}\\)`), `${file} checks ${route}`);
+    assert.match(read(`src/components/program/longevity/${file}.astro`), new RegExp(`isLiveOnDisk\\(ROUTES\\.${route}\\)`), `${file} checks ${route}`);
   }
-  assert.match(read('src/pages/who-we-work-with/_SituationPointers.astro'), /isLiveOnDisk\(ROUTES\.ecosystem\)/);
+  assert.match(read('src/components/program/longevity/SituationPointers.astro'), /isLiveOnDisk\(ROUTES\.ecosystem\)/);
 });
 
 test('how-we-work keeps the line the release checklist pins (CR-12 quotes line 276)', () => {

@@ -2,7 +2,7 @@ import { salesSource } from '../../../data/sales/sources.ts';
 import type { SalesSourceId } from '../../../data/sales/sources.ts';
 import { stat } from '../../../data/sales/stats.ts';
 import type { StatId } from '../../../data/sales/stats.ts';
-import type { Milestone, Stat, StatSource } from '../../../components/visuals/contracts.ts';
+import type { Milestone, Stat, StatSource } from '../../visuals/contracts.ts';
 
 /**
  * WP-37 (wave 10, issue #86): the longevity narrative shared by the home page, the program pages, /how-we-work/,
@@ -231,6 +231,6 @@ export const SITUATION_POINTERS: readonly SituationPointer[] = [
 
 export function pointerFor(slug: string): SituationPointer {
   const found = SITUATION_POINTERS.find((p) => p.slug === slug);
-  if (found === undefined) throw new Error(`No situation pointer for "${slug}" in src/pages/program/_longevity/data.ts`);
+  if (found === undefined) throw new Error(`No situation pointer for "${slug}" in src/components/program/longevity/data.ts`);
   return found;
 }

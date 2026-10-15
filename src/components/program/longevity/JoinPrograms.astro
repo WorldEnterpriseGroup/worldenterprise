@@ -5,9 +5,9 @@
  * no page links a route that is not live. Wording follows docs/wave10-contracts.md: generic categories here, named programs only on
  * /ecosystem/.
  */
-import Band from '../../../components/visuals/Band.astro';
-import VisualIcon from '../../../components/visuals/VisualIcon.astro';
-import type { BandTone } from '../../../components/visuals/contracts.ts';
+import Band from '../../visuals/Band.astro';
+import VisualIcon from '../../visuals/VisualIcon.astro';
+import type { BandTone } from '../../visuals/contracts.ts';
 import { isLiveOnDisk } from '../../../data/cta/live.ts';
 import { href } from '../../../lib/url.ts';
 import { JOIN_HEADLINE, JOIN_LEAD, JOIN_NOTE, JOIN_TILES, ROUTES } from './data.ts';

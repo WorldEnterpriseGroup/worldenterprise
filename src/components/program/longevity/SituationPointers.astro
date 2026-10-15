@@ -4,11 +4,11 @@
  * SBIR and STTR where it fits. Generic categories only; named programs live on /ecosystem/. Each link renders only when its route is
  * built, and the whole band when /ecosystem/ is not.
  */
-import Band from '../../components/visuals/Band.astro';
-import { isLiveOnDisk } from '../../data/cta/live.ts';
-import { href } from '../../lib/url.ts';
-import { JOIN_NOTE, ROUTES } from '../program/_longevity/data.ts';
-import type { SituationPointer } from '../program/_longevity/data.ts';
+import Band from '../../visuals/Band.astro';
+import { isLiveOnDisk } from '../../../data/cta/live.ts';
+import { href } from '../../../lib/url.ts';
+import { JOIN_NOTE, ROUTES } from './data.ts';
+import type { SituationPointer } from './data.ts';
 
 interface Props {
   pointer: SituationPointer;

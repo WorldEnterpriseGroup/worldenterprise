@@ -19,10 +19,10 @@ import LaunchTrajectory from '../../components/visuals/LaunchTrajectory.astro';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
-import DataTeaser from './_longevity/DataTeaser.astro';
-import JoinPrograms from './_longevity/JoinPrograms.astro';
-import LongevitySpine from './_longevity/LongevitySpine.astro';
-import SbirBand from './_longevity/SbirBand.astro';
+import DataTeaser from '../../components/program/longevity/DataTeaser.astro';
+import JoinPrograms from '../../components/program/longevity/JoinPrograms.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
+import SbirBand from '../../components/program/longevity/SbirBand.astro';
 
 const { data, Content } = await loadPage('program');
 const state = await getRouteState();

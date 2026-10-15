@@ -18,7 +18,7 @@ import type { IconKey } from '../../components/visuals/icons.ts';
 import { routes } from '../../data/routes.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
-import LongevitySpine from './_longevity/LongevitySpine.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
 
 const { data, Content } = await loadPage('program/how-it-works');
 const state = await getRouteState();

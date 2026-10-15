@@ -1,5 +1,7 @@
 ---
 /**
+ * Wave 10 (WP-37, #86) adds the longevity band and "Programs worth a look" (the ecosystem and SBIR/STTR pointers for the situation).
+ *
  * One situation page of /who-we-work-with/ (WP-58, SITE-COPY.md section 6, SALES.md sections 4 and 6.3). Situations, never
  * identities: each page is for anyone in that situation. Structure: hero, what usually gets in the way (beside the situation's world),
  * what WE does with sourced figures, one chart, the questions people ask, how it fits, then the situation's call to action.
@@ -17,6 +19,9 @@ import { FIT_TEXT, SITUATIONS, situationBySlug, situationPath } from '../../data
 import type { Situation } from '../../data/sales/situations.ts';
 import { stat } from '../../data/sales/stats.ts';
 import { href } from '../../lib/url.ts';
+import LongevitySpine from '../program/longevity/LongevitySpine.astro';
+import SituationPointers from '../program/longevity/SituationPointers.astro';
+import { pointerFor } from '../program/longevity/data.ts';
 
 interface Props {
   /** The situation's slug in src/data/sales/situations.ts; each page file under src/pages/who-we-work-with/ passes its own. */
@@ -40,6 +45,7 @@ const marks =
       })
     : [];
 const ids = [...s.stats.flatMap((id) => stat(id).sources), ...chart.sources];
+const pointer = pointerFor(Astro.props.slug);
 const others = SITUATIONS.filter((o) => o.id !== s.id);
 ---
 
@@ -130,6 +136,10 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
         </dl>
       </div>
     </section>
+
+    <LongevitySpine detail="brief" tone="soft" lead={pointer.pace} actions="none" />
+
+    <SituationPointers pointer={pointer} />
 
     <section class="band band--deep" aria-labelledby="fit-title">
       <div class="container">

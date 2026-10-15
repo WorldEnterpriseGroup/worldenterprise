@@ -21,10 +21,10 @@ import { preloadOfPhoto } from '../lib/image-type.ts';
 import { getRouteState } from '../lib/route-state.ts';
 import { href } from '../lib/url.ts';
 import HomeLayout from '../layouts/HomeLayout.astro';
-import DataTeaser from './program/_longevity/DataTeaser.astro';
-import JoinPrograms from './program/_longevity/JoinPrograms.astro';
-import LongevitySpine from './program/_longevity/LongevitySpine.astro';
-import SbirBand from './program/_longevity/SbirBand.astro';
+import DataTeaser from '../components/program/longevity/DataTeaser.astro';
+import JoinPrograms from '../components/program/longevity/JoinPrograms.astro';
+import LongevitySpine from '../components/program/longevity/LongevitySpine.astro';
+import SbirBand from '../components/program/longevity/SbirBand.astro';
 
 const { data } = await loadPage('home');
 const state = await getRouteState();

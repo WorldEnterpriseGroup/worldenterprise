@@ -8,11 +8,11 @@
  * `detail` sets how much of the long half shows: `full` (the three tiles and the track), `track` (the track only, for a page that
  * already shows the three tiles) or `brief` (a sentence, for a page that charts the same figures in full).
  */
-import Band from '../../../components/visuals/Band.astro';
-import LongHorizonTimeline from '../../../components/visuals/LongHorizonTimeline.astro';
-import VisualIcon from '../../../components/visuals/VisualIcon.astro';
-import StatTiles from '../../../components/visuals/charts/StatTiles.astro';
-import type { BandTone } from '../../../components/visuals/contracts.ts';
+import Band from '../../visuals/Band.astro';
+import LongHorizonTimeline from '../../visuals/LongHorizonTimeline.astro';
+import VisualIcon from '../../visuals/VisualIcon.astro';
+import StatTiles from '../../visuals/charts/StatTiles.astro';
+import type { BandTone } from '../../visuals/contracts.ts';
 import { isLiveOnDisk } from '../../../data/cta/live.ts';
 import { href } from '../../../lib/url.ts';
 import { DECADE_STATS, ROUTES, SPINE_HEADLINE, WEEKLY_LOOP, decadeMilestones, visualStat } from './data.ts';

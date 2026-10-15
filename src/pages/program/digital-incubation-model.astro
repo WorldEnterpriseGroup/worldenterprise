@@ -8,7 +8,7 @@ import { loadPage } from '../../components/program/loadPage.ts';
 import { flags } from '../../data/flags.ts';
 import { href } from '../../lib/url.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
-import LongevitySpine from './_longevity/LongevitySpine.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
 
 const { data, Content } = await loadPage('program/digital-incubation-model');
 const frameworks = { label: 'Read the frameworks', href: '/about/frameworks/' };

@@ -4,11 +4,11 @@
  * worth a look. Drawn from SITUATION_POINTERS, so the matrix and the situation pages cannot disagree. It is a real table (row and
  * column headers, a visually hidden text in each marked cell). Renders only when /ecosystem/ is built.
  */
-import Band from '../../components/visuals/Band.astro';
-import { isLiveOnDisk } from '../../data/cta/live.ts';
-import { SITUATIONS, situationPath } from '../../data/sales/situations.ts';
-import { href } from '../../lib/url.ts';
-import { JOIN_NOTE, ROUTES, SITUATION_POINTERS } from '../program/_longevity/data.ts';
+import Band from '../../visuals/Band.astro';
+import { isLiveOnDisk } from '../../../data/cta/live.ts';
+import { SITUATIONS, situationPath } from '../../../data/sales/situations.ts';
+import { href } from '../../../lib/url.ts';
+import { JOIN_NOTE, ROUTES, SITUATION_POINTERS } from './data.ts';
 
 const live = isLiveOnDisk(ROUTES.ecosystem);
 const sbirLive = isLiveOnDisk(ROUTES.sbir);
