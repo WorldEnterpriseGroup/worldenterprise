@@ -36,7 +36,11 @@ export type RouteOwner =
   | 'WP-09' | 'WP-10' | 'WP-11' | 'WP-12' | 'WP-13'
   | 'WP-40' | 'WP-41' | 'WP-42' | 'WP-43' | 'WP-44' | 'WP-45' | 'WP-46' | 'WP-47' | 'WP-48' | 'WP-49' | 'WP-50'
   | WaveNineOwner
+  | WaveTenOwner
   | WaveEightOwner;
+
+/** WP-32 to WP-38, the wave 10 packages (docs/wave10-contracts.md). Declared here, not in families.ts, which stays untouched. */
+export type WaveTenOwner = `WP-3${'2' | '3' | '4' | '5' | '6' | '7' | '8'}`;
 
 /** WP-60 to WP-99, the wave 8 packages (docs/wave8-contracts.md, section 1.3). */
 export type { WaveEightOwner };
@@ -295,6 +299,19 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/who-we-work-with/under-backed-builders/', 'MarketingLayout', 'WP-58'),
     row('/who-we-work-with/next-gen-founders/', 'MarketingLayout', 'WP-58'),
     row('/who-we-work-with/restart-founders/', 'MarketingLayout', 'WP-58'),
+
+    // Wave 10 (docs/wave10-contracts.md, D-W10-1), registered ahead of the pages by WP-32. A launched row with no page is inert (out of nav,
+    // sitemap and the link audit until the page file exists). Each page-owning package holds a scoped exception on its own block below and
+    // adds child rows only inside it (WP-33 ecosystem, WP-34 sbir-sttr, WP-35 data).
+    // BEGIN WP-33 ecosystem block
+    row('/ecosystem/', 'HubLayout', 'WP-33'),
+    // END WP-33 ecosystem block
+    // BEGIN WP-34 sbir-sttr block
+    row('/sbir-sttr/', 'MarketingLayout', 'WP-34'),
+    // END WP-34 sbir-sttr block
+    // BEGIN WP-35 data block
+    row('/data/', 'HubLayout', 'WP-35'),
+    // END WP-35 data block
 
     // Wave 8 (docs/wave8-contracts.md, section 1.2), registered ahead of the pages by WP-60 so no page-owning package edits this file.
     // A launched row with no page is inert: out of nav and sitemap, a warning in audit:ledger. The page file makes it live.
