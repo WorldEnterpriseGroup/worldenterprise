@@ -1,50 +1,72 @@
 ---
+/**
+ * How the program works (SITE-COPY 2.7, WP-53): from first conversation to Day One as a five-step rail, the journey roadmap, a cycle at a glance, what the
+ * company receives and what the work does not do. No seats, no prices, no durations.
+ */
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
-import CtaBand from '../../components/ui/CtaBand.astro';
-import DataTable from '../../components/ui/DataTable.astro';
-import FactBand from '../../components/ui/FactBand.astro';
-import Steps from '../../components/ui/Steps.astro';
+import StepRail from '../../components/program/StepRail.astro';
+import ProgramEnd from '../../components/program/ProgramEnd.astro';
+import { NO_FUNDING_LINE } from '../../components/program/clock.ts';
+import { START_REVIEW, pick } from '../../components/program/ctas.ts';
 import { loadPage } from '../../components/program/loadPage.ts';
 import { PROGRAM_STEPS } from '../../components/program/steps.ts';
 import { STAGES } from '../../components/program/stages.ts';
+import DataTable from '../../components/ui/DataTable.astro';
+import FactBand from '../../components/ui/FactBand.astro';
+import JourneyRoadmap from '../../components/visuals/illustrations/JourneyRoadmap.astro';
+import type { IconKey } from '../../components/visuals/icons.ts';
 import { routes } from '../../data/routes.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
 
 const { data, Content } = await loadPage('program/how-it-works');
-const [primary, secondary] = data.ctas;
+const state = await getRouteState();
+const howWeWork = pick('howWeWork', (path: string): boolean => path !== '/program/how-it-works/' && state.isLive(path));
 const lineCount = routes.filter((r) => r.launch && r.path.startsWith('/services/') && r.path !== '/services/').length;
 const facts = [
   { label: 'Format', value: 'Fully remote' },
-  { label: 'Team model', value: 'Dedicated seats' },
+  { label: 'Team', value: 'Steered by WE' },
   { label: 'Stages', value: String(STAGES.length) },
   { label: 'Service lines', value: String(lineCount) },
 ];
+const STEP_ICONS: readonly IconKey[] = ['contact', 'document', 'team', 'report', 'calendar'];
+const rail = PROGRAM_STEPS.map((step, i) => ({ ...step, icon: STEP_ICONS[i] ?? 'checklist' }));
 const next = [
-  { title: 'Dedicated seats, steered by WE', href: '/program/dedicated-teams/', description: 'Who does the work, and who steers it.' },
+  { title: 'The team WE steers', href: '/program/dedicated-teams/', description: 'The roles a team can include, and who steers it.' },
   { title: 'Who the program is for', href: '/program/who-its-for/', description: 'Check your own fit before you apply.' },
-  { title: 'Dream: validate the problem', href: '/program/dream/', description: 'The first stage of the path.' },
+  { title: 'Dream: find the first proof', href: '/program/dream/', description: 'The first stage of the program.' },
 ];
 ---
 
 <StageLayout
   title={data.title}
+  seoTitle={data.seoTitle}
   description={data.description}
   path="/program/how-it-works/"
   eyebrow={data.eyebrow}
-  lead="A digital incubator, step by step."
+  lead="From first conversation to Day One, and every week after: each step written down."
   updated={data.updated}
   draft={data.draft}
-  primary={primary}
-  secondary={secondary}
+  primary={START_REVIEW}
+  secondary={howWeWork}
   art={{ variant: 'trail', count: PROGRAM_STEPS.length }}
   ogSlot="og-program"
   next={next}
 >
-  <div class="prose measure"><Content /></div>
-
   <section class="stack" aria-labelledby="how-steps">
     <h2 id="how-steps">Five steps from application to a working team</h2>
-    <Steps steps={PROGRAM_STEPS} headingLevel={3} />
+    <p class="measure">From the first conversation to Day One, then the rhythm of the work: a readiness review, written agreements, the team, reviewed cycles and your decisions.</p>
+    <StepRail steps={rail} labelledby="how-steps" />
+  </section>
+
+  <section class="split how-journey" aria-labelledby="how-journey">
+    <div class="split__text prose">
+      <h2 id="how-journey">Then the long horizon</h2>
+      <Content />
+    </div>
+    <div class="split__media">
+      <JourneyRoadmap label="Dream, Build and Grow, with what the company keeps" />
+    </div>
   </section>
 
   <section class="stack" aria-labelledby="how-cycle">
@@ -54,33 +76,54 @@ const next = [
       caption="The four parts of a cycle"
       columns={['Part', 'What happens', 'What you can see']}
       rows={[
-        ['Plan', 'WE and the founder agree the goal of the cycle and which seats it needs.', 'A short written plan.'],
-        ['Work', 'The dedicated team does the work. WE steers it and clears blockers.', 'The work in progress, open to you at any time.'],
+        ['Plan', 'WE and the founder agree the goal of the cycle and the roles it draws on.', 'A short written plan.'],
+        ['Work', 'The team does the work. WE steers it and clears blockers.', 'The work in progress, open to you at any time.'],
         ['Review', 'WE shows what now exists, what changed and what is still open.', 'Review notes with the decisions recorded.'],
-        ['Decide', 'The founder decides what the next cycle holds and whether the seats change.', 'An updated plan for the next cycle.'],
+        ['Decide', 'The founder decides what the next cycle holds and whether the team should change.', 'An updated plan for the next cycle.'],
       ]}
     />
   </section>
 
-  <section class="stack" aria-labelledby="how-get">
-    <h2 id="how-get">What you receive</h2>
-    <ul class="measure">
-      <li>A written scope that names the service lines in use and what each covers.</li>
-      <li>A dedicated team, steered by WE, that works only on your company.</li>
-      <li>A plan and a review for every cycle, written so that anyone can read them later.</li>
-      <li>The playbooks and templates published on this site stay free to use, with or without a seat.</li>
-    </ul>
+  <section class="split split--even how-get" aria-labelledby="how-get">
+    <div class="split__text stack">
+      <h2 id="how-get">What you receive</h2>
+      <ul class="measure-prose">
+        <li>A written scope that names the service lines in use and what each covers.</li>
+        <li>A team that works only on your company, steered by WE.</li>
+        <li>A plan and a review for every cycle, written so that anyone can read them later.</li>
+        <li>The artifacts each stage leaves behind, kept by the company.</li>
+      </ul>
+    </div>
+    <div class="split__media">
+      <LimitsBlock
+        title="What the work does not do"
+        items={[
+          `It does not promise funding. ${NO_FUNDING_LINE}`,
+          'It does not give legal, tax or accounting advice, and it does not keep your books or file your taxes.',
+          'It does not run your product in production or provide round-the-clock support.',
+          'It does not guarantee results. It gives you a team, a method and a written record of the work.',
+        ]}
+      />
+    </div>
   </section>
-
-  <LimitsBlock title="What the program does not do" items={[
-    'It does not promise funding. WE makes no promise of funding to any company.',
-    'It does not give legal, tax or accounting advice, and it does not keep your books or file your taxes.',
-    'It does not run your product in production or provide round-the-clock support.',
-    'It does not guarantee results. It gives you a team, a method and a written record of the work.',
-  ]} />
 
   <Fragment slot="after">
     <FactBand label="The program in four facts" facts={facts} />
-    {primary && <CtaBand title="Ready to start?" text="Apply, and WE will agree the scope with you before any work begins." cta={primary} secondary={secondary} />}
+    <ProgramEnd title="Start with a readiness review" text="WE arranges a conversation, then sends a one-page read of where your company sits on the business clock and what the next phase needs." secondary={howWeWork} />
   </Fragment>
 </StageLayout>
+
+<style>
+  @layer pages {
+    .how-journey .split__text {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-4);
+    }
+
+    .how-get ul {
+      display: grid;
+      gap: var(--sp-2);
+    }
+  }
+</style>

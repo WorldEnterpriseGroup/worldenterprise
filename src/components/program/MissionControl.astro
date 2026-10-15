@@ -1,0 +1,128 @@
+---
+/**
+ * Mission Control (SITE-COPY 2.3): the review rhythm as rings orbiting one world, the inner ring weekly and the outer ring yearly, beside
+ * the list of what each ring holds. The drawing is decorative; the list carries the content.
+ */
+import { MISSION_CONTROL } from './phases.ts';
+
+interface Props {
+  /** Heading id that names the list. */
+  labelledby: string;
+}
+
+const { labelledby } = Astro.props;
+const RADII = [70, 110, 150, 190] as const;
+---
+
+<div class="mission split split--even">
+  <ol class="mission__list split__text" role="list" aria-labelledby={labelledby}>
+    {
+      MISSION_CONTROL.map((ring, i) => (
+        <li class="mission__item">
+          <span class="mission__marker" aria-hidden="true">
+            {i + 1}
+          </span>
+          <span>
+            <strong class="mission__ring">{ring.ring}.</strong> {ring.what}
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+  <div class="split__media mission__media">
+    <svg class="mission__art" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+      {RADII.map((r) => <circle class="mission__orbit" cx="200" cy="200" r={r} />)}
+      <circle class="mission__world" cx="200" cy="200" r="34" />
+      {RADII.map((r, i) => <circle class="mission__moon" cx={200 + r * Math.cos(-0.6 - i * 0.7)} cy={200 + r * Math.sin(-0.6 - i * 0.7)} r={9 - i} />)}
+      {
+        RADII.map((r, i) => (
+          <text class="mission__label" x="200" y={200 - r + 18} text-anchor="middle">
+            {MISSION_CONTROL[i]?.ring.replace('Every ', '')}
+          </text>
+        ))
+      }
+    </svg>
+  </div>
+</div>
+
+<style>
+  @layer pages {
+    .mission__list {
+      display: grid;
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .mission__item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-3);
+      align-items: start;
+    }
+
+    .mission__marker {
+      display: grid;
+      place-items: center;
+      inline-size: 2rem;
+      block-size: 2rem;
+      font-family: var(--ff-display);
+      font-weight: 700;
+      color: var(--color-link);
+      border: 2px solid currentColor;
+      border-radius: 50%;
+    }
+
+    .mission__media {
+      display: grid;
+      place-items: center;
+    }
+
+    .mission__art {
+      inline-size: min(100%, 28rem);
+      block-size: auto;
+      color: var(--color-link);
+    }
+
+    .mission__orbit {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-dasharray: 4 6;
+    }
+
+    .mission__world {
+      fill: var(--we-blue);
+      stroke: var(--we-amber);
+      stroke-width: 4;
+    }
+
+    .mission__moon {
+      fill: currentColor;
+    }
+
+    .mission__label {
+      fill: var(--color-text-muted);
+      font-family: var(--ff-display);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    @media (forced-colors: active) {
+      .mission__orbit,
+      .mission__world {
+        stroke: CanvasText;
+      }
+
+      .mission__world {
+        fill: Canvas;
+      }
+
+      .mission__moon,
+      .mission__label {
+        fill: CanvasText;
+      }
+    }
+  }
+</style>
