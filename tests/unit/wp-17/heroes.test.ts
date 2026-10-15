@@ -61,12 +61,14 @@ test('the editorial hero serves the slot srcset at high priority and reserves th
   const css = read('src/styles/hero.css');
   assert.match(css, /\.hero__media \.hero__frame\s*\{[^}]*aspect-ratio:\s*16 \/ 9/, 'the frame reserves a 16/9 box on a phone');
   assert.match(css, /aspect-ratio:\s*4 \/ 3/, 'the frame reserves a 4/3 box beside the copy');
+  assert.match(css, /\[data-frame='wide'\]\s*\{\s*aspect-ratio:\s*21 \/ 9/, 'a wide frame reserves a 21/9 box (wave 9)');
+  assert.match(source, /data-frame=\{frame === 'wide' \? 'wide' : undefined\}/, 'the editorial hero marks a wide frame');
 });
 
 test('PageHero opens the editorial hero for a photo or art and the compact hero otherwise', () => {
   const source = read('src/components/hero/PageHero.astro');
   assert.match(source, /const editorial = photo !== undefined \|\| art !== undefined;/);
-  assert.match(source, /<HeroEditorial \{\.\.\.copy\} photo=\{photo\} art=\{art\}>/);
+  assert.match(source, /<HeroEditorial \{\.\.\.copy\} photo=\{photo\} art=\{art\} frame=\{frame\}>/, 'the frame shape reaches the editorial hero (wave 9)');
   assert.match(source, /<HeroCompact \{\.\.\.copy\}>/);
   assert.match(source, /Astro\.slots\.has\('actions'\)/, 'the actions slot is forwarded only when the page fills it');
 });

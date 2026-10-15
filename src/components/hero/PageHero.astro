@@ -21,9 +21,11 @@ interface Props {
   photo?: SlotId | undefined;
   art?: HeroArtProps | undefined;
   measure?: HeroMeasure | undefined;
+  /** Media frame shape, passed to the editorial hero (wave 9). */
+  frame?: 'default' | 'wide' | undefined;
 }
 
-const { crumbs = [], eyebrow, title, lead, primary, secondary, photo, art, measure = 'default' } = Astro.props;
+const { crumbs = [], eyebrow, title, lead, primary, secondary, photo, art, measure = 'default', frame = 'default' } = Astro.props;
 const copy = { crumbs, eyebrow, title, lead, primary, secondary, measure };
 const editorial = photo !== undefined || art !== undefined;
 const hasActions = Astro.slots.has('actions');
@@ -32,14 +34,14 @@ const hasActions = Astro.slots.has('actions');
 {
   editorial ? (
     hasActions ? (
-      <HeroEditorial {...copy} photo={photo} art={art}>
+      <HeroEditorial {...copy} photo={photo} art={art} frame={frame}>
         <slot />
         <Fragment slot="actions">
           <slot name="actions" />
         </Fragment>
       </HeroEditorial>
     ) : (
-      <HeroEditorial {...copy} photo={photo} art={art}>
+      <HeroEditorial {...copy} photo={photo} art={art} frame={frame}>
         <slot />
       </HeroEditorial>
     )

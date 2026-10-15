@@ -5,15 +5,24 @@ import HeroCompact from '../components/hero/HeroCompact.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
-type Props = PageMeta & HeaderProps & { title: string };
+type Props = PageMeta &
+  HeaderProps & {
+    title: string;
+    /**
+     * Body width (wave 9, W9-4). 'content', the default, is the full 110rem frame: text keeps the reading measure at the frame's left
+     * edge (.flow-wide) while figures, grids, tables and splits use the width. 'prose' is the centred 46rem reading column.
+     */
+    width?: 'content' | 'prose';
+  };
 
-const { eyebrow, lead, primary, secondary, photo, art, measure, cta, ...meta } = Astro.props;
+const { eyebrow, lead, primary, secondary, photo, art, measure, cta, width = 'content', ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 // A page that brings a photo or art gets the wider editorial frame. Without media a marketing page states its position, so it opens
 // with the statement hero: the title is the claim, set large over the reading column, and the page needs no art to carry it.
 const hasMedia = photo !== undefined || art !== undefined;
-// The body is a reading column, so the statement copy shares its edge.
-const heroMeasure = measure ?? (hasMedia ? 'default' : 'prose');
+// The hero copy shares the body's left edge: the frame edge in the wide body, the reading column in the 'prose' body.
+const heroMeasure = measure ?? (hasMedia || width === 'content' ? 'default' : 'prose');
+const bodyClass = width === 'prose' ? 'container container--prose prose' : 'container flow-wide prose';
 ---
 
 <BaseLayout {...meta} crumbs={crumbs}>
@@ -25,7 +34,7 @@ const heroMeasure = measure ?? (hasMedia ? 'default' : 'prose');
     )
   }
   <div class="section">
-    <div class="container container--prose prose">
+    <div class={bodyClass}>
       <slot />
     </div>
   </div>
