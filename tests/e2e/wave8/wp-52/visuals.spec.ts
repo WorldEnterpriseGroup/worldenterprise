@@ -45,19 +45,25 @@ async function cls(page: Page): Promise<number> {
   );
 }
 
-/** Screenshots every showcase item (one attachment each, so no capture is taller than the browser allows) for visual review. */
+/**
+ * Screenshots every showcase item (one attachment each) for visual review. A page-coordinate clip of a full-page capture, so an item
+ * taller than the viewport or one the element-screenshot visibility check rejects is still captured. Review only, not an assertion.
+ */
 async function attachItems(page: Page, info: TestInfo, suffix: string): Promise<void> {
   const items = await page.locator('#visuals .vs__item').all();
   expect(items.length).toBeGreaterThan(10);
   for (const [i, item] of items.entries()) {
-    await item.scrollIntoViewIfNeeded();
-    await page.waitForLoadState('networkidle');
-    await page.waitForFunction((el) => Array.from(el.querySelectorAll('img')).every((img) => img.complete), await item.elementHandle());
     const name = `visual-${String(i + 1).padStart(2, '0')}-${suffix}`;
+    await item.scrollIntoViewIfNeeded();
+    await item.evaluate((el) => Promise.all(Array.from(el.querySelectorAll('img')).map((img) => img.decode().catch(() => undefined))));
+    const clip = await item.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      return { x: Math.max(0, r.left + window.scrollX), y: Math.max(0, r.top + window.scrollY), width: Math.max(1, r.width), height: Math.max(1, Math.min(r.height, 4000)) };
+    });
     try {
-      await info.attach(name, { body: await item.screenshot({ type: 'jpeg', quality: 72, animations: 'disabled', timeout: 20_000 }), contentType: 'image/jpeg' });
+      await info.attach(name, { body: await page.screenshot({ type: 'jpeg', quality: 72, fullPage: true, clip, animations: 'disabled', timeout: 10_000 }), contentType: 'image/jpeg' });
     } catch (error) {
-      // A review capture is not an assertion: record why it is missing (the layout checks above and in the other tests still gate).
+      // Record why the capture is missing; the layout, overflow and poster checks in the other tests are the gate.
       const reason = error instanceof Error ? error.message.split('\n')[0] : String(error);
       info.annotations.push({ type: 'missing-review-shot', description: `${name}: ${reason}` });
     }
@@ -219,7 +225,7 @@ test.describe('WP-52 visuals on the styleguide', () => {
   });
 
   test('each visual for review, at the project width', async ({ page }, info) => {
-    test.setTimeout(90_000);
+    test.setTimeout(180_000);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(ROUTE);
     await attachItems(page, info, info.project.name);
@@ -256,7 +262,7 @@ test.describe('WP-52 visuals at 1920x1080', () => {
   });
 
   test('each visual at 1920 for review', async ({ page }, info) => {
-    test.setTimeout(90_000);
+    test.setTimeout(180_000);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(ROUTE);
     await attachItems(page, info, '1920');
