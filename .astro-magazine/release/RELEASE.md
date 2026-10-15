@@ -277,7 +277,7 @@ Source: `src/content/pages/investors/index.mdx:3`. Renders on: /investors/ (meta
 
 > L3: Ask to meet a company WE incubates. The founder decides what to share. WE makes no promise of funding, and nothing here is an offer of securities.
 >
-> L16: WE is a digital incubator for SaaS companies. Investors can ask to meet the companies WE incubates.
+> L16: WE is a long-horizon business incubation and consulting firm. Investors can ask to meet the companies WE incubates.
 >
 > L18: WE asks each founder first. A company appears on this site only when its founder has agreed in writing.
 
@@ -315,7 +315,7 @@ Carried verbatim from the wave 7 entry (already reviewed): L66, L81, L82, L83 an
 
 Source: `src/components/investors/copy.ts:18`. Renders on: /investors/ (the showcase), /investors/meet-startups/ and /investors/what-you-can-see/.
 
-> L18: No portfolio is published yet. WE lists a company here only with its founder's written consent.
+> L18: No company is listed yet. WE lists a company here only with its founder's written consent.
 >
 > L93: How an investor asks to meet a company WE incubates, and how the founder decides.
 >
