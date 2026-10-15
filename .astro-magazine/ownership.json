@@ -2611,6 +2611,21 @@
       "reason": "Wave 9 (W9-13): line 61, the /pricing/ link title becomes the /how-we-work/ one. That line only; lines 62 to 65 are WP-53's, and WP-56 keeps the file."
     },
     {
+      "wp": "WP-54",
+      "path": "scripts/audit-claims.mjs",
+      "reason": "Wave 9 (W9-13): the --self-test cases (about lines 458-459 and 494-497) change /pricing/ to /how-we-work/. Those cases only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-41/twins.test.ts",
+      "reason": "Wave 9 (W9-13): lines 73-74, the /pricing/ twin follows /how-we-work/. Those lines only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/foundation/ledger.test.ts",
+      "reason": "Wave 9 (W9-13): line 24, /pricing/ joins NOINDEX (it points to /how-we-work/). That line only."
+    },
+    {
       "wp": "WP-55",
       "path": "src/data/routes.ts",
       "reason": "Wave 9 (W9-5): launches the UBF detail row /about/frameworks/ubf/ in the same merge request as its page. Scoped to the framework rows; no other row changes."
