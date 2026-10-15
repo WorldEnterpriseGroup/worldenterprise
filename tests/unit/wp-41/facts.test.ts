@@ -103,7 +103,7 @@ test('the questions are H2 headings and each has an answer', () => {
   const pairs = qaFromMarkdown(body);
   assert.deepEqual(
     pairs.map((p) => p.question),
-    ['What is World Enterprise Incubator?', 'What is WE not?', 'What does WE offer?', 'How does an engagement work?', 'Is Investor Introductions part of the engagement?', 'How do I reach WE?'],
+    ['What is World Enterprise?', 'What is WE not?', 'What does WE offer?', 'How does an engagement work?', 'Is Investor Introductions part of the engagement?', 'How do I reach WE?'],
   );
   for (const pair of pairs) assert.ok(pair.answer.length > 20, pair.question);
 });
