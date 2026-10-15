@@ -1,0 +1,47 @@
+---
+/**
+ * The closing band of every /sbir-sttr/ page (WP-34): the two calls to action and the plain statement of what WE does and does not do.
+ * The starfield is decorative. WE helps a founder prepare alongside; it is not an agency and promises no award.
+ */
+import CtaRow from '../sales/CtaRow.astro';
+import StarfieldBand from '../visuals/StarfieldBand.astro';
+import { NO_FUNDING, PRIMARY_CTA } from '../../data/sales/copy.ts';
+
+interface Props {
+  id?: string;
+  title?: string;
+}
+
+const { id = 'sbir-close', title = 'Prepare alongside people who plan for the long run' } = Astro.props;
+---
+
+<StarfieldBand labelledby={`${id}-title`} id={id} size="tall" static>
+  <div class="container sbir-close">
+    <h2 id={`${id}-title`}>{title}</h2>
+    <p>
+      WE helps founders get ready for SBIR and STTR: choosing an agency and a topic, checking eligibility, lining up the registrations and
+      writing a plan that holds up over years. WE is not an agency, does not make or review awards, and cannot promise that any proposal
+      is funded. {NO_FUNDING}
+    </p>
+    <CtaRow primary={PRIMARY_CTA} more={[[{ label: 'Talk to WE', href: '/contact/' }]]} label="Talk to WE about SBIR and STTR" />
+  </div>
+</StarfieldBand>
+
+<style>
+  @layer pages {
+    .sbir-close {
+      display: grid;
+      gap: var(--sp-4);
+      justify-items: start;
+    }
+
+    .sbir-close > * {
+      margin: 0;
+    }
+
+    .sbir-close p {
+      max-inline-size: 62ch;
+      font-size: var(--fs-lead);
+    }
+  }
+</style>

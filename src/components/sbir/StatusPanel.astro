@@ -1,0 +1,139 @@
+---
+/**
+ * The verified authorization status of SBIR and STTR (WP-34): a dated statement, the five dates that matter, and the line that says
+ * where to check the latest. `compact` is the one-paragraph form for pages that are not about the status itself. Never hard-code the
+ * date: it comes from data/sbir/status.ts, which the unit tests hold to a date and a source.
+ */
+import {
+  AUTHORIZED_THROUGH,
+  CHECK_LATEST,
+  STATUS_AS_OF,
+  STATUS_AS_OF_LABEL,
+  STATUS_BODY,
+  STATUS_EVENTS,
+  STATUS_HEADLINE,
+} from '../../data/sbir/status.ts';
+import { sbirSource, sourceAnchor } from '../../data/sbir/sources.ts';
+
+interface Props {
+  compact?: boolean;
+  headingLevel?: 2 | 3;
+  id?: string;
+}
+
+const { compact = false, headingLevel = 2, id = 'status' } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+<section class:list={['sbir-status', compact && 'sbir-status--compact']} id={id} aria-labelledby={`${id}-title`}>
+  <p class="sbir-status__stamp">
+    Checked <time datetime={STATUS_AS_OF}>{STATUS_AS_OF_LABEL}</time>
+  </p>
+  <Heading id={`${id}-title`} class="sbir-status__title">{STATUS_HEADLINE}</Heading>
+  {
+    compact ? (
+      <p>
+        The earlier authority lapsed on September 30, 2025, and S. 3971 restored both programs through {AUTHORIZED_THROUGH}.{' '}
+        <a href={sourceAnchor('sba-release-26-43')}>{sbirSource('sba-release-26-43').short}</a>. {CHECK_LATEST}
+      </p>
+    ) : (
+      <>
+        {STATUS_BODY.map((p) => <p>{p}</p>)}
+        <ol class="sbir-status__events" aria-label="Key dates">
+          {
+            STATUS_EVENTS.map((e) => (
+              <li class="sbir-status__event">
+                <time class="sbir-status__date" datetime={e.iso}>{e.date}</time>
+                <p>
+                  {e.text}{' '}
+                  {e.sources.map((s, i) => (
+                    <>
+                      {i > 0 && '; '}
+                      <a href={sourceAnchor(s)}>{sbirSource(s).short}</a>
+                    </>
+                  ))}
+                  .
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </>
+    )
+  }
+</section>
+
+<style>
+  @layer pages {
+    .sbir-status {
+      display: grid;
+      gap: var(--sp-4);
+      padding: var(--sp-6);
+      border: 1px solid var(--color-border);
+      border-inline-start: 6px solid var(--color-success);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .sbir-status > * {
+      margin: 0;
+    }
+
+    .sbir-status__stamp {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+    }
+
+    .sbir-status__title {
+      font-size: var(--fs-h2);
+    }
+
+    .sbir-status--compact {
+      padding: var(--sp-4) var(--sp-5);
+    }
+
+    .sbir-status--compact .sbir-status__title {
+      font-size: var(--fs-h3);
+    }
+
+    .sbir-status__events {
+      display: grid;
+      gap: var(--sp-3);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-inline-start: 2px solid var(--color-border);
+    }
+
+    .sbir-status__event {
+      display: grid;
+      gap: var(--sp-1);
+      padding-inline-start: var(--sp-4);
+    }
+
+    .sbir-status__event p {
+      margin: 0;
+    }
+
+    .sbir-status__date {
+      font-weight: 700;
+      color: var(--color-link);
+    }
+
+    @media (min-width: 48rem) {
+      .sbir-status__event {
+        grid-template-columns: 11rem minmax(0, 1fr);
+        gap: var(--sp-4);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .sbir-status {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>

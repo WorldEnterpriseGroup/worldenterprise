@@ -1,0 +1,81 @@
+---
+/**
+ * One full-bleed band of an /sbir-sttr/ page (WP-34): a heading and text on the left, a figure on the right (the `media` slot) on wide
+ * containers, stacked below 62rem. Without a `media` slot the content uses the whole frame. `deep` is the galaxy band.
+ */
+interface Props {
+  id: string;
+  title: string;
+  tone?: 'plain' | 'soft' | 'blue' | 'sand' | 'deep';
+  /** A short line under the heading. */
+  lead?: string | undefined;
+  /** Put the media first on wide containers. */
+  mediaFirst?: boolean;
+}
+
+const { id, title, tone = 'plain', lead, mediaFirst = false } = Astro.props;
+const hasMedia = Astro.slots.has('media');
+const toneClass: Readonly<Record<NonNullable<Props['tone']>, string | false>> = {
+  plain: false,
+  soft: 'band--soft',
+  blue: 'band--tint-blue',
+  sand: 'band--tint-sand',
+  deep: 'band--deep',
+};
+---
+
+<section class:list={['band', toneClass[tone], 'sbir-band']} id={id} aria-labelledby={`${id}-title`}>
+  <div class="container">
+    {
+      hasMedia ? (
+        <div class:list={['split', 'sbir-band__split', mediaFirst && 'split--media-first']}>
+          <div class="split__text sbir-band__text">
+            <h2 id={`${id}-title`}>{title}</h2>
+            {lead !== undefined && <p class="sbir-band__lead">{lead}</p>}
+            <slot />
+          </div>
+          <div class="split__media sbir-band__media">
+            <slot name="media" />
+          </div>
+        </div>
+      ) : (
+        <div class="sbir-band__stack">
+          <h2 id={`${id}-title`}>{title}</h2>
+          {lead !== undefined && <p class="sbir-band__lead">{lead}</p>}
+          <slot />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  @layer pages {
+    .sbir-band__text,
+    .sbir-band__stack {
+      display: grid;
+      gap: var(--sp-4);
+      align-content: start;
+    }
+
+    .sbir-band__text > *,
+    .sbir-band__stack > * {
+      margin: 0;
+    }
+
+    .sbir-band__lead {
+      font-size: var(--fs-lead);
+      color: var(--color-text-muted);
+      max-inline-size: 62ch;
+    }
+
+    .sbir-band__media {
+      min-inline-size: 0;
+    }
+
+    .sbir-band__text p,
+    .sbir-band__text li {
+      max-inline-size: 62ch;
+    }
+  }
+</style>

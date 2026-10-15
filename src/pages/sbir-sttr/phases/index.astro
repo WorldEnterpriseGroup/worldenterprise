@@ -1,0 +1,326 @@
+---
+/**
+ * /sbir-sttr/phases/ (WP-34, #83): Phase I, II and III with the award sizes the programs publish, the new Strategic Breakthrough award,
+ * and three charts from public data: how long Phase I awardees wait for a Phase II, how often NIH funds the applications it reviews,
+ * and the typical Phase I award by agency. Ships no JavaScript.
+ */
+import BarList from '../../../components/sales/BarList.astro';
+import LineChart from '../../../components/sales/LineChart.astro';
+import SbirBand from '../../../components/sbir/SbirBand.astro';
+import SbirClose from '../../../components/sbir/SbirClose.astro';
+import SbirFigure from '../../../components/sbir/SbirFigure.astro';
+import SbirSources from '../../../components/sbir/SbirSources.astro';
+import SbirTiles from '../../../components/sbir/SbirTiles.astro';
+import StatusPanel from '../../../components/sbir/StatusPanel.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { AGGREGATES } from '../../../data/sbir/aggregates.ts';
+import {
+  GAP_BARS,
+  GAP_SHARE_WITH_PHASE2,
+  MEDIAN_PHASE1_BARS,
+  NIH_FIRST_FY,
+  NIH_LAST_FY,
+  NIH_LATEST,
+  NIH_PHASE1_RANGE,
+  NIH_SERIES,
+  NIH_TABLE,
+  thousands,
+  usd,
+} from '../../../data/sbir/charts.ts';
+import { PHASES, TABA } from '../../../data/sbir/phases.ts';
+import { LAW_CHANGES } from '../../../data/sbir/status.ts';
+import { sbirSource, sourceAnchor } from '../../../data/sbir/sources.ts';
+import type { SbirSourceId } from '../../../data/sbir/sources.ts';
+import { href } from '../../../lib/url.ts';
+
+const path = '/sbir-sttr/phases/';
+const gap = AGGREGATES.phaseGap;
+const strategic = LAW_CHANGES.find((c) => c.title === 'Strategic Breakthrough awards');
+const ids: readonly SbirSourceId[] = [
+  'sbir-apply',
+  'sbir-about',
+  'sbir-policy-directive',
+  'sbir-fast',
+  'crowell-lapse',
+  'taba-nida',
+  'sbir-award-data',
+  'nih-success-rates',
+  'nih-seed',
+];
+const gapTable = GAP_BARS.map((b) => [b.label, b.display]);
+const medianTable = MEDIAN_PHASE1_BARS.map((b) => [b.label, b.display]);
+const gapTiles = [
+  {
+    value: `${GAP_SHARE_WITH_PHASE2} in 100`,
+    label: `companies whose first Phase I award came in ${gap.cohortFrom} to ${gap.cohortTo} later received a Phase II award`,
+    period: `${gap.cohortFrom} to ${gap.cohortTo} first awards`,
+    sources: ['sbir-award-data'],
+    derived: `${thousands(gap.companiesWithLaterPhaseII)} of ${thousands(gap.companiesWithPhaseI)} companies, matched by name in the award data.`,
+  },
+  {
+    value: `${gap.medianMonths} months`,
+    label: 'the median wait from a first Phase I award to a first Phase II award, among those that got one',
+    period: `${gap.cohortFrom} to ${gap.cohortTo} first awards`,
+    sources: ['sbir-award-data'],
+    derived: 'Computed by WE from award dates.',
+  },
+] as const;
+---
+
+<MarketingLayout
+  title="The three phases of SBIR and STTR"
+  seoTitle="SBIR and STTR phases: Phase I, Phase II and Phase III explained"
+  description="What each SBIR and STTR phase pays for, how long it runs and how large awards are, with public data on the wait between phases and how often NIH funds the applications it reviews."
+  lead="Phase I proves the idea, Phase II builds it and Phase III sells it. The programs publish the typical sizes, and the public award data shows how long the road between them has been."
+  eyebrow="America’s seed fund"
+  path={path}
+  ogSlot="og-program"
+  secondary={{ label: 'Prepare for your first proposal', href: '/sbir-sttr/prepare/' }}
+>
+  <StatusPanel compact />
+
+  <ol class="sbir-phases" aria-label="The phases of SBIR and STTR">
+    {
+      PHASES.map((p) => (
+        <li class="sbir-phase" id={p.id}>
+          <p class="sbir-phase__tag">{p.tag}</p>
+          <h2 class="sbir-phase__name">{p.name}</h2>
+          <p class="sbir-phase__summary">{p.summary}</p>
+          <dl class="sbir-phase__facts">
+            <div>
+              <dt>Typical length</dt>
+              <dd>{p.duration}</dd>
+            </div>
+            <div>
+              <dt>Typical size</dt>
+              <dd>{p.size}</dd>
+            </div>
+            {
+              p.limit !== null && (
+                <div>
+                  <dt>Limit without a waiver</dt>
+                  <dd>{p.limit}</dd>
+                </div>
+              )
+            }
+          </dl>
+          <ul>
+            {p.points.map((pt) => <li>{pt}</li>)}
+          </ul>
+          <p class="sbir-phase__sources">
+            Sources:{' '}
+            {p.sources.map((s, i) => (
+              <>
+                {i > 0 && ', '}
+                <a href={sourceAnchor(s)}>{sbirSource(s).short}</a>
+              </>
+            ))}
+          </p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <Fragment slot="after">
+    <SbirBand
+      id="strategic"
+      tone="deep"
+      title="A bigger second step: Strategic Breakthrough awards"
+      lead="New in the 2026 reauthorization."
+    >
+      <p>{strategic?.body}</p>
+      <p>
+        These awards are for companies that already have momentum. They reward the founders who did Phase I and Phase II well and kept
+        building. Each agency will set its own details, so watch the agency’s page and <a href="https://www.sbir.gov/">sbir.gov</a>.
+      </p>
+    </SbirBand>
+
+    <SbirBand
+      id="taba"
+      tone="soft"
+      title={TABA.name}
+      lead="Money in the budget for the help that turns research into a business."
+    >
+      <p>{TABA.body}</p>
+      <p>
+        WE helps founders prepare alongside. The help programs a founder can use before a first proposal are on the
+        <a href={href('/sbir-sttr/prepare/')}> preparation page</a>.
+      </p>
+    </SbirBand>
+
+    <SbirBand
+      id="wait"
+      tone="plain"
+      title="The wait between Phase I and Phase II is part of the plan"
+      lead="Companies that first won in 2010 to 2019, counted by how long the second award took."
+    >
+      <SbirTiles tiles={gapTiles} label="Phase I to Phase II in the award data" />
+      <p>
+        Read the chart as a picture of patience, not a prediction. About half of these companies never appear in the data with a
+        later Phase II. Some moved to other funding, some stopped, and some may be Phase II winners under a changed company name.
+      </p>
+      <Fragment slot="media">
+        <SbirFigure
+          caption={`Among the ${thousands(gap.companiesWithLaterPhaseII)} companies that got a Phase II after a first Phase I in ${gap.cohortFrom} to ${gap.cohortTo}, how long they waited. Amber is the most common wait.`}
+          sources={['sbir-award-data']}
+          derived="Companies are matched by name, so a company that changed its name counts as two. The wait runs from the first Phase I award date to the first later Phase II award date."
+          table={{ caption: 'Wait from first Phase I to first Phase II', columns: ['Wait', 'Companies'], rows: gapTable }}
+        >
+          <BarList bars={GAP_BARS} label="Companies by how long they waited from a first Phase I award to a first Phase II award" />
+        </SbirFigure>
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="nih-success"
+      tone="blue"
+      title="How often NIH funds the applications it reviews"
+      lead={`NIH publishes its success rates by phase. Phase I ranged from ${NIH_PHASE1_RANGE.low.phase1Percent}% to ${NIH_PHASE1_RANGE.high.phase1Percent}% over fiscal years ${NIH_FIRST_FY} to ${NIH_LAST_FY}.`}
+    >
+      <p>
+        In fiscal year {NIH_LAST_FY} NIH funded {NIH_LATEST?.phase1Percent}% of the Phase I applications it reviewed, {thousands(NIH_LATEST?.phase1Awarded ?? 0)} of {thousands(NIH_LATEST?.phase1Reviewed ?? 0)}.
+        The rate has moved a good deal from year to year, and in every year the table reports it, the Phase II rate has run higher than the
+        Phase I rate.
+      </p>
+      <p>
+        NIH is the one agency whose success rates appear in a standard public table. Other agencies report them in different ways, or not
+        at all, so this page does not compare agencies by success rate. Ask the agency’s program staff what its recent rates have been.
+      </p>
+      <Fragment slot="media">
+        <SbirFigure
+          caption="Percent of reviewed applications that NIH funded, by fiscal year. Phase I combines SBIR and STTR and leaves out Fast Track. Phase II is the regular Phase II; fiscal year 2025 is not in the table yet."
+          sources={['nih-success-rates']}
+          derived="Read by WE from NIH Table 215, SBIR and STTR success rates. Percentages are as NIH reports them."
+          table={{
+            caption: 'NIH SBIR and STTR applications reviewed and awarded',
+            columns: ['Fiscal year', 'Phase I reviewed', 'Phase I awarded', 'Phase I rate', 'Phase II reviewed', 'Phase II awarded', 'Phase II rate'],
+            rows: NIH_TABLE,
+          }}
+        >
+          <LineChart
+            id="chart-nih-success"
+            title="NIH SBIR and STTR success rates by fiscal year"
+            desc={`The Phase I rate runs between ${NIH_PHASE1_RANGE.low.phase1Percent}% in ${NIH_PHASE1_RANGE.low.fy} and ${NIH_PHASE1_RANGE.high.phase1Percent}% in ${NIH_PHASE1_RANGE.high.fy}, ending at ${NIH_LATEST?.phase1Percent}% in ${NIH_LAST_FY}. The Phase II rate runs higher, between 25.8% and 41.2%.`}
+            series={NIH_SERIES}
+            x={{ min: NIH_FIRST_FY, max: NIH_LAST_FY }}
+            y={{ min: 0, max: 50 }}
+            xStep={2}
+            xStepNarrow={5}
+            yStep={10}
+            yUnit="%"
+          />
+        </SbirFigure>
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="median"
+      tone="sand"
+      title="What a typical Phase I award looks like, agency by agency"
+      lead="The middle award in the data, not the top of the range."
+    >
+      <p>
+        Agencies state a range, and what they award sits inside it. At the National Institutes of Health a typical Phase I award is
+        about {usd(MEDIAN_PHASE1_BARS.find((b) => b.label === 'HHS')?.value ?? 0)}; at the Environmental Protection Agency it is about
+        {usd(MEDIAN_PHASE1_BARS.find((b) => b.label === 'EPA')?.value ?? 0)}. Size your plan to the agency, not to the ceiling.
+      </p>
+      <Fragment slot="media">
+        <SbirFigure
+          caption={`The median Phase I award by agency, fiscal years ${AGGREGATES.agencies.from} to ${AGGREGATES.agencies.to}. Agencies with fewer than 50 Phase I awards in the window are left out.`}
+          sources={['sbir-award-data']}
+          derived="Median award amount among Phase I awards in the window, computed by WE."
+          table={{ caption: 'Median Phase I award by agency', columns: ['Agency', 'Median Phase I award'], rows: medianTable }}
+        >
+          <BarList bars={MEDIAN_PHASE1_BARS} label="Median Phase I award by agency, in dollars" />
+        </SbirFigure>
+      </Fragment>
+    </SbirBand>
+
+    <SbirClose id="phases-close" />
+
+    <section class="section sbir-sources" aria-label="Sources for this page">
+      <div class="container">
+        <SbirSources ids={ids} />
+        <p class="sbir-note">
+          Always check <a href="https://www.sbir.gov/">sbir.gov</a> for the latest. Award sizes and limits are indexed to inflation and differ by
+          solicitation.
+        </p>
+      </div>
+    </section>
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    .sbir-phases {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+      gap: var(--sp-5);
+      margin: var(--sp-6) 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sbir-phase {
+      display: grid;
+      gap: var(--sp-3);
+      align-content: start;
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      scroll-margin-block-start: var(--sp-8);
+    }
+
+    .sbir-phase > * {
+      margin: 0;
+    }
+
+    .sbir-phase__tag {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+    }
+
+    .sbir-phase__name {
+      font-size: var(--fs-h2);
+    }
+
+    .sbir-phase__facts {
+      display: grid;
+      gap: var(--sp-2);
+      margin: 0;
+    }
+
+    .sbir-phase__facts div {
+      display: grid;
+      gap: var(--sp-1);
+      padding-block: var(--sp-2);
+      border-block-start: 1px solid var(--color-border);
+    }
+
+    .sbir-phase__facts dt {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .sbir-phase__facts dd {
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .sbir-phase__sources {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .sbir-sources {
+      padding-block: var(--sp-7);
+    }
+
+    .sbir-note {
+      margin-block-start: var(--sp-4);
+    }
+  }
+</style>

@@ -1,0 +1,362 @@
+---
+/**
+ * /sbir-sttr/ (WP-34, #83): the hub of the "America's seed fund" guide. It opens with the dated authorization status, explains SBIR
+ * against STTR, draws the launch trajectory of Phase I to III, charts what the programs have awarded and what the six-month pause
+ * looked like in the award data, and says why money for research fits a company that plans for years. Ships no JavaScript.
+ */
+import SbirBand from '../../components/sbir/SbirBand.astro';
+import SbirClose from '../../components/sbir/SbirClose.astro';
+import SbirColumns from '../../components/sbir/SbirColumns.astro';
+import SbirFigure from '../../components/sbir/SbirFigure.astro';
+import SbirSources from '../../components/sbir/SbirSources.astro';
+import SbirTiles from '../../components/sbir/SbirTiles.astro';
+import StatusPanel from '../../components/sbir/StatusPanel.astro';
+import LaunchTrajectory from '../../components/visuals/LaunchTrajectory.astro';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { isLiveOnDisk } from '../../data/cta/live.ts';
+import { AGGREGATES } from '../../data/sbir/aggregates.ts';
+import { AWARDS_BY_YEAR_BARS, AWARDS_BY_YEAR_TABLE, MONTHLY_BARS, MONTHLY_TABLE, PAUSE_COMPARE, PEAK_YEAR, thousands, usdMillions } from '../../data/sbir/charts.ts';
+import { AUTHORIZED_THROUGH } from '../../data/sbir/status.ts';
+import { href } from '../../lib/url.ts';
+import type { SbirSourceId } from '../../data/sbir/sources.ts';
+
+const path = '/sbir-sttr/';
+const cumulative = AGGREGATES.cumulative;
+const ecosystemLive = isLiveOnDisk('/ecosystem/');
+const ids: readonly SbirSourceId[] = [
+  'sba-release-26-43',
+  'congress-s3971',
+  'crowell-lapse',
+  'uw-federal-relations',
+  'sbir-about',
+  'sbir-apply',
+  'sbir-award-data',
+  'doe-sbir',
+  'nasa-sbir',
+  'nsf-seed-fund',
+  'nih-seed',
+];
+
+const stations = [
+  { label: 'Phase I', description: 'Prove the idea can work', href: '/sbir-sttr/phases/#phase-1' },
+  { label: 'Phase II', description: 'Build it', href: '/sbir-sttr/phases/#phase-2' },
+  { label: 'Phase III', description: 'Sell it', href: '/sbir-sttr/phases/#phase-3' },
+] as const;
+const waypoints = [
+  { label: 'Register', description: 'SAM.gov, SBA registry, Login.gov' },
+  { label: 'Choose a topic', description: 'Read open solicitations' },
+  { label: 'Submit', description: 'Plan, budget and team' },
+  { label: 'Review', description: 'Months, not weeks' },
+] as const;
+
+const tiles = [
+  {
+    value: `${thousands(cumulative.awards)}`,
+    label: `awards made from fiscal year ${cumulative.fromYear} to ${cumulative.toYear}`,
+    period: `${cumulative.fromYear} to ${cumulative.toYear}`,
+    sources: ['sbir-award-data'],
+    derived: 'Counted by WE from the public SBIR.gov award data.',
+  },
+  {
+    value: `$${cumulative.usdBillions.toFixed(1)} billion`,
+    label: 'awarded in total, as the award data records it',
+    period: `${cumulative.fromYear} to ${cumulative.toYear}`,
+    sources: ['sbir-award-data', 'sba-release-26-43'],
+    derived: 'Summed by WE. SBA states more than $81 billion invested in more than 34,000 small businesses since 1982.',
+  },
+  {
+    value: usdMillions(PEAK_YEAR.usdMillions),
+    label: `awarded in ${PEAK_YEAR.year}, the largest year in the data`,
+    period: `fiscal year ${PEAK_YEAR.year}`,
+    sources: ['sbir-award-data'],
+  },
+  {
+    value: AUTHORIZED_THROUGH,
+    label: 'the date current authority runs through',
+    period: 'as of the status check above',
+    sources: ['sba-release-26-43'],
+  },
+] as const;
+---
+
+<MarketingLayout
+  title="SBIR and STTR: America’s seed fund"
+  seoTitle="SBIR and STTR guide: America’s seed fund for small business research"
+  description="A plain guide to SBIR and STTR: what they are, the current authorization status checked against sbir.gov, the three phases, the eleven agencies and how to prepare, with the public award data charted."
+  lead="Eleven federal agencies set money aside each year for small businesses that do research and development. The programs are SBIR and STTR. They suit founders who are building something hard and are willing to plan in years, and they are open to anyone who qualifies."
+  eyebrow="America’s seed fund"
+  path={path}
+  ogSlot="og-program"
+  secondary={{ label: 'Prepare for your first proposal', href: '/sbir-sttr/prepare/' }}
+>
+  <StatusPanel />
+
+  <nav class="sbir-routes" aria-labelledby="sbir-routes-title">
+    <h2 id="sbir-routes-title">Where to go next</h2>
+    <ul class="sbir-routes__list">
+      <li><a href={href('/sbir-sttr/phases/')}><strong>The three phases</strong><span>What each phase pays for, how long it runs, and how often a first award is followed by a second.</span></a></li>
+      <li><a href={href('/sbir-sttr/agencies/')}><strong>The eleven agencies</strong><span>Contracts or grants, topics or open calls, and what each agency has awarded.</span></a></li>
+      <li><a href={href('/sbir-sttr/prepare/')}><strong>How to prepare</strong><span>Registrations, eligibility, a readiness checklist and the long timeline.</span></a></li>
+    </ul>
+  </nav>
+
+  <section class="sbir-compare" aria-labelledby="compare-title">
+    <h2 id="compare-title">SBIR and STTR, side by side</h2>
+    <p>
+      They share the same agencies, the same three phases and the same rules about who may apply. The difference is one partner.
+      <a href="#source-sbir-apply">SBIR.gov</a> describes it this way.
+    </p>
+    <div class="sbir-compare__grid">
+      <article class="sbir-compare__card">
+        <h3>SBIR</h3>
+        <p class="sbir-compare__tag">Small Business Innovation Research</p>
+        <ul>
+          <li>The small business can do the research on its own.</li>
+          <li>At least two thirds of Phase I work and half of Phase II work is done by the company.</li>
+          <li>Offered by all eleven participating agencies.</li>
+        </ul>
+      </article>
+      <article class="sbir-compare__card">
+        <h3>STTR</h3>
+        <p class="sbir-compare__tag">Small Business Technology Transfer</p>
+        <ul>
+          <li>The small business partners formally with a research institution, such as a university or a federal research laboratory.</li>
+          <li>The company does at least 40 percent of the work and the research institution at least 30 percent.</li>
+          <li>Offered by five agencies in practice: in the award data, DoD, HHS, DOE, NASA and NSF make almost all STTR awards.</li>
+        </ul>
+      </article>
+    </div>
+    <p class="sbir-compare__note">
+      If the company has a research partner already, or the work depends on a lab, STTR is worth a look. If not, SBIR is the usual start.
+    </p>
+  </section>
+
+  <Fragment slot="after">
+    <SbirBand
+      id="trajectory"
+      tone="deep"
+      title="A launch, not a sprint"
+      lead="Phase I proves the idea. Phase II builds it. Phase III is the market, and no program money is awarded there."
+    >
+      <p>
+        The three phases are a trajectory with real distance between the stations. In the award data, the median company that goes on to a
+        second-phase award waits about a year and a half after its first. Founders who treat that wait as part of the plan are the ones who
+        get through it.
+      </p>
+      <p>
+        <a href={href('/sbir-sttr/phases/')}>See each phase in detail</a>
+      </p>
+      <Fragment slot="media">
+        <LaunchTrajectory
+          stations={stations}
+          waypoints={waypoints}
+          alt="A small amber capsule leaves a hexagonal pad labeled Phase I, passes a gate labeled Phase II and heads for a hexagonal world labeled Phase III, with four steps hanging below the path: register, choose a topic, submit and review."
+          caption="The path from a first registration to the market."
+          labelsName="Phases of SBIR and STTR"
+        />
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="tiles"
+      tone="soft"
+      title="What the programs have put to work"
+      lead="Every figure below is public, and each links to where it came from."
+    >
+      <SbirTiles tiles={tiles} label="Headline figures for SBIR and STTR" />
+    </SbirBand>
+
+    <SbirBand id="awards" tone="plain" title="Awards, year by year" lead="Dollars awarded in each fiscal year, all agencies together.">
+      <SbirFigure
+        caption={`Dollars awarded by fiscal year, ${AGGREGATES.byYear[0]?.year ?? 1983} to ${AGGREGATES.byYear[AGGREGATES.byYear.length - 1]?.year ?? 2025}, as the public SBIR.gov award data records them. The amber column is the largest year.`}
+        sources={['sbir-award-data']}
+        derived="Awards are counted in the fiscal year of their award date, summed by WE, and shown in billions of dollars."
+        table={{ caption: 'SBIR and STTR awards by fiscal year', columns: ['Fiscal year', 'Awards', 'Dollars awarded'], rows: AWARDS_BY_YEAR_TABLE }}
+      >
+        <SbirColumns
+          id="chart-awards-by-year"
+          title="SBIR and STTR dollars awarded by fiscal year"
+          desc={`Dollars awarded climb from $38 million in 1983 to $1.1 billion in 2000 and $2.4 billion in 2005, hold near $2.5 billion through 2015, reach $4.0 billion in 2020, peak at ${usdMillions(PEAK_YEAR.usdMillions)} in ${PEAK_YEAR.year} and fall to ${usdMillions(AGGREGATES.byYear[AGGREGATES.byYear.length - 1]?.usdMillions ?? 0)} in fiscal year 2025.`}
+          bars={AWARDS_BY_YEAR_BARS}
+          max={5}
+          yStep={1}
+          yPrefix="$"
+          ySuffix="B"
+          labelEvery={5}
+          labelEveryNarrow={10}
+        />
+      </SbirFigure>
+    </SbirBand>
+
+    <SbirBand
+      id="pause"
+      tone="blue"
+      title="When the authority lapsed, the awards slowed"
+      lead="The programs lapsed on September 30, 2025 and were renewed on April 13, 2026. The award data shows the gap."
+    >
+      <p>
+        Awards dated October 2025 through March 2026 number {thousands(PAUSE_COMPARE.during)} in the public data, against {thousands(PAUSE_COMPARE.before)}
+        in the same six months a year earlier. The most recent months may still be filling in as agencies report, so read the last bars as a floor.
+      </p>
+      <p>The lesson for a founder is patience: even a program of this size can pause. Plan for the long run, and keep other routes warm.</p>
+      <Fragment slot="media">
+        <SbirFigure
+          caption="Awards by the month of their award date, January 2024 onward. Amber columns are the six months from October 2025 to March 2026."
+          sources={['sbir-award-data', 'crowell-lapse']}
+          derived="Awards counted by WE by calendar month of the award date. Recent months can be undercounted while agencies report."
+          table={{ caption: 'SBIR and STTR awards by month', columns: ['Month', 'Awards'], rows: MONTHLY_TABLE }}
+        >
+          <SbirColumns
+            id="chart-awards-by-month"
+            title="SBIR and STTR awards by month, January 2024 onward"
+            desc="Monthly awards run from about 200 to over 1,000 through 2024 and most of 2025, with a peak each September at the end of the fiscal year. They fall to 154 in October 2025, 66 in November, and 10 or fewer a month from December to March, then reappear at about 50 a month from June to August 2026 while agencies are still reporting."
+            bars={MONTHLY_BARS}
+            max={Math.ceil(Math.max(...MONTHLY_BARS.map((b) => b.value)) / 100) * 100}
+            yStep={200}
+            labelEvery={3}
+            labelEveryNarrow={6}
+          />
+        </SbirFigure>
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="long-horizon"
+      tone="sand"
+      title="Why this fits a company built for the long run"
+      lead="Research money is paid for work, not for a share of the company."
+    >
+      <ul>
+        <li>An award pays for research and development. It is a contract, grant or agreement for work, not a purchase of shares in your company, so ownership stays where it is.</li>
+        <li>The clock matches. A first award takes months to land, and the second phase usually follows after more than a year. A company that already plans in years loses nothing waiting.</li>
+        <li>The work is checked by experts. A proposal that survives technical review has been tested against a reviewer who does not know you.</li>
+        <li>The agency can become a customer. Phase III is a purchase, and an agency may buy the result without a new competition.</li>
+      </ul>
+      <p>
+        None of this makes a first award likely. Competition is real, and the success rates on the <a href={href('/sbir-sttr/phases/')}>phases page</a>
+        say so plainly. It does make the programs a good fit for founders who would rather build slowly and well.
+      </p>
+    </SbirBand>
+
+    <SbirBand id="inclusive" tone="plain" title="One route among many, and all of them welcome">
+      <p>
+        SBIR and STTR sit beside revenue, customers, state programs, university labs and private capital. They are not a replacement for any
+        of those and WE does not rank them against one another. Founders do best when they know every route, and WE encourages them to
+        consider all of them.
+      </p>
+      <p>
+        The organizations named on these pages are independent programs WE encourages founders to consider; no affiliation is implied.
+      </p>
+      {
+        ecosystemLive && (
+          <p>
+            <a href={href('/ecosystem/')}>Browse the wider ecosystem of programs</a>
+          </p>
+        )
+      }
+    </SbirBand>
+
+    <SbirClose />
+
+    <section class="section sbir-sources" aria-label="Sources for this page">
+      <div class="container">
+        <SbirSources ids={ids} />
+        <p class="sbir-note">
+          Always check <a href="https://www.sbir.gov/">sbir.gov</a> for the latest. Awards, rules and deadlines change by agency and by solicitation.
+        </p>
+      </div>
+    </section>
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    .sbir-routes {
+      display: grid;
+      gap: var(--sp-4);
+      margin-block-start: var(--sp-7);
+    }
+
+    .sbir-routes > h2,
+    .sbir-compare > h2 {
+      margin: 0;
+    }
+
+    .sbir-routes__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sbir-routes__list a {
+      display: grid;
+      gap: var(--sp-2);
+      block-size: 100%;
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+    }
+
+    .sbir-routes__list a:hover strong,
+    .sbir-routes__list a:focus-visible strong {
+      text-decoration: underline;
+    }
+
+    .sbir-routes__list strong {
+      font-size: var(--fs-h3);
+    }
+
+    .sbir-compare {
+      display: grid;
+      gap: var(--sp-4);
+      margin-block-start: var(--sp-7);
+    }
+
+    .sbir-compare > p {
+      margin: 0;
+    }
+
+    .sbir-compare__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+      gap: var(--sp-4);
+    }
+
+    .sbir-compare__card {
+      display: grid;
+      gap: var(--sp-3);
+      align-content: start;
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    .sbir-compare__card > * {
+      margin: 0;
+    }
+
+    .sbir-compare__tag {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+    }
+
+    .sbir-compare__note {
+      font-weight: 600;
+    }
+
+    .sbir-sources {
+      padding-block: var(--sp-7);
+    }
+
+    .sbir-note {
+      margin-block-start: var(--sp-4);
+    }
+  }
+</style>

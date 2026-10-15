@@ -1,0 +1,115 @@
+---
+/**
+ * Sourced figures as tiles for /sbir-sttr/** (WP-34). Each tile shows the figure, what it counts, and links to its entry in the page's
+ * sources list. A derived figure says how it was computed.
+ */
+import { sbirSource, sourceAnchor } from '../../data/sbir/sources.ts';
+import type { SbirSourceId } from '../../data/sbir/sources.ts';
+
+export interface Tile {
+  readonly value: string;
+  readonly label: string;
+  readonly sources: readonly SbirSourceId[];
+  readonly period: string;
+  readonly derived?: string | undefined;
+}
+
+interface Props {
+  tiles: readonly Tile[];
+  /** Accessible name of the list. */
+  label: string;
+  tone?: 'light' | 'dark';
+}
+
+const { tiles, label, tone = 'light' } = Astro.props;
+---
+
+<ul class:list={['sbir-tiles', `sbir-tiles--${tone}`]} aria-label={label}>
+  {
+    tiles.map((t) => (
+      <li class="sbir-tile">
+        <p class="sbir-tile__value">{t.value}</p>
+        <p class="sbir-tile__label">{t.label}</p>
+        <p class="sbir-tile__source">
+          {t.sources.map((id, i) => (
+            <>
+              {i > 0 && '; '}
+              <a href={sourceAnchor(id)}>{sbirSource(id).short}</a>
+            </>
+          ))}
+          {`. ${t.period}.`}
+          {t.derived !== undefined && ` ${t.derived}`}
+        </p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  @layer pages {
+    .sbir-tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sbir-tile {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .sbir-tile p {
+      margin: 0;
+    }
+
+    .sbir-tile__value {
+      font-family: var(--ff-display);
+      font-size: var(--fs-2xl);
+      font-weight: 700;
+      line-height: var(--lh-tight);
+      color: var(--color-link);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sbir-tile__label {
+      font-size: var(--fs-base);
+    }
+
+    .sbir-tile__source {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .sbir-tiles--dark .sbir-tile {
+      background: color-mix(in oklch, var(--color-band-deep-bg) 70%, transparent);
+      border-color: var(--color-band-deep-line);
+      color: var(--color-band-deep-text);
+    }
+
+    .sbir-tiles--dark .sbir-tile__value {
+      color: var(--color-band-deep-accent);
+    }
+
+    .sbir-tiles--dark .sbir-tile__source {
+      color: var(--color-band-deep-muted);
+    }
+
+    .sbir-tiles--dark .sbir-tile a {
+      color: var(--color-band-deep-link);
+    }
+
+    @media (forced-colors: active) {
+      .sbir-tile {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>

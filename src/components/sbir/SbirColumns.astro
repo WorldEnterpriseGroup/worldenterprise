@@ -1,0 +1,204 @@
+---
+/**
+ * Vertical columns in SVG for /sbir-sttr/** (WP-34): awards by year and awards by month. An image with a title and a description; the
+ * SbirFigure around it carries the source line and the data table. A wide and a narrow drawing keep the axis readable at any width (CSS
+ * shows one). Amber columns are the ones the caption talks about; the amber is never the only cue, because the caption names them.
+ */
+import { plot, ticks } from '../../data/sales/geometry.ts';
+import type { Box } from '../../data/sales/geometry.ts';
+import type { Bar } from '../../data/sbir/charts.ts';
+
+interface Props {
+  id: string;
+  title: string;
+  desc: string;
+  bars: readonly Bar[];
+  /** The top of the value axis. The axis always starts at zero. */
+  max: number;
+  yStep: number;
+  /** Printed before and after each y tick, e.g. "$" and "B". */
+  yPrefix?: string;
+  ySuffix?: string;
+  labelEvery?: number;
+  labelEveryNarrow?: number;
+  /** Print the value above each highlighted column. */
+  printHighlights?: boolean;
+}
+
+const { id, title, desc, bars, max, yStep, yPrefix = '', ySuffix = '', labelEvery = 1, labelEveryNarrow = labelEvery, printHighlights = false } = Astro.props;
+if (bars.length === 0) throw new Error(`SbirColumns "${id}": no bars`);
+const fmtY = (v: number): string => `${yPrefix}${v}${ySuffix}`;
+
+const boxes: readonly { key: 'wide' | 'narrow'; box: Box; every: number }[] = [
+  { key: 'wide', box: { width: 960, height: 440, top: 40, right: 16, bottom: 56, left: 84 }, every: labelEvery },
+  { key: 'narrow', box: { width: 420, height: 400, top: 40, right: 12, bottom: 56, left: 70 }, every: labelEveryNarrow },
+];
+
+const drawings = boxes.map(({ key, box, every }) => {
+  const { sy } = plot(box, { min: 0, max: box.width }, { min: 0, max });
+  const slot = (box.width - box.left - box.right) / bars.length;
+  const width = Math.max(2, Math.round(slot * 0.7 * 100) / 100);
+  return {
+    key,
+    box,
+    titleId: `${id}-${key}-title`,
+    descId: `${id}-${key}-desc`,
+    ys: ticks({ min: 0, max }, yStep).map((v) => ({ v, at: sy(v) })),
+    floor: sy(0),
+    cols: bars.map((bar, i) => {
+      const cx = Math.round((box.left + slot * i + slot / 2) * 100) / 100;
+      const top = sy(Math.min(bar.value, max));
+      return {
+        ...bar,
+        cx,
+        x: Math.round((cx - width / 2) * 100) / 100,
+        top,
+        width,
+        height: Math.max(0, Math.round((sy(0) - top) * 100) / 100),
+        showLabel: i % every === 0 || i === bars.length - 1,
+      };
+    }),
+  };
+});
+---
+
+<div class="sbir-cols">
+  {
+    drawings.map((d) => (
+      <svg class:list={['sbir-cols__svg', `sbir-cols__svg--${d.key}`]} viewBox={`0 0 ${d.box.width} ${d.box.height}`} role="img" aria-labelledby={`${d.titleId} ${d.descId}`}>
+        <title id={d.titleId}>{title}</title>
+        <desc id={d.descId}>{desc}</desc>
+        <g class="sbir-cols__grid">
+          {d.ys.map((t) => (
+            <line x1={d.box.left} x2={d.box.width - d.box.right} y1={t.at} y2={t.at} />
+          ))}
+        </g>
+        <g class="sbir-cols__axis">
+          {d.ys.map((t) => (
+            <text x={d.box.left - 12} y={t.at + 7} text-anchor="end">
+              {fmtY(t.v)}
+            </text>
+          ))}
+          {d.cols.map(
+            (c) =>
+              c.showLabel && (
+                <text x={c.cx} y={d.box.height - d.box.bottom + 32} text-anchor="middle">
+                  {c.label}
+                </text>
+              ),
+          )}
+          <line x1={d.box.left} x2={d.box.width - d.box.right} y1={d.floor} y2={d.floor} />
+        </g>
+        <g class="sbir-cols__bars">
+          {d.cols.map((c) => (
+            <g class:list={['sbir-col', c.highlight === true && 'sbir-col--highlight']}>
+              <rect x={c.x} y={c.top} width={c.width} height={c.height} rx="2" />
+              {printHighlights && c.highlight === true && (
+                <text class="sbir-col__value" x={c.cx} y={c.top - 10} text-anchor={c.cx > d.box.width - 90 ? 'end' : c.cx < d.box.left + 50 ? 'start' : 'middle'}>
+                  {c.display}
+                </text>
+              )}
+            </g>
+          ))}
+        </g>
+      </svg>
+    ))
+  }
+</div>
+
+<style>
+  @layer pages {
+    .sbir-cols__svg {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+      overflow: visible;
+      font-size: 20px;
+    }
+
+    .sbir-cols__svg--wide {
+      display: none;
+    }
+
+    @media (min-width: 40rem) {
+      .sbir-cols__svg--wide {
+        display: block;
+      }
+
+      .sbir-cols__svg--narrow {
+        display: none;
+      }
+    }
+
+    .sbir-cols__grid line {
+      stroke: var(--color-border);
+      stroke-width: 1;
+    }
+
+    .sbir-cols__axis text {
+      fill: var(--color-text-muted);
+    }
+
+    .sbir-cols__axis line {
+      stroke: var(--color-text-muted);
+      stroke-width: 2;
+    }
+
+    .sbir-col rect {
+      fill: var(--color-link);
+      opacity: 0.78;
+    }
+
+    .sbir-col--highlight rect {
+      fill: var(--color-highlight-ink);
+      opacity: 1;
+    }
+
+    .sbir-col__value {
+      fill: var(--color-text);
+      font-weight: 700;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: view()) {
+        .sbir-col rect {
+          transform-box: fill-box;
+          transform-origin: 50% 100%;
+          animation-name: sbir-col-rise;
+          animation-duration: 1ms;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
+          animation-timeline: view();
+          animation-range: entry 10% cover 40%;
+        }
+      }
+    }
+
+    @keyframes sbir-col-rise {
+      from {
+        transform: scaleY(0.15);
+      }
+
+      to {
+        transform: scaleY(1);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .sbir-col rect,
+      .sbir-col--highlight rect {
+        fill: CanvasText;
+      }
+
+      .sbir-cols__grid line,
+      .sbir-cols__axis line {
+        stroke: CanvasText;
+      }
+
+      .sbir-cols__axis text,
+      .sbir-col__value {
+        fill: CanvasText;
+      }
+    }
+  }
+</style>
