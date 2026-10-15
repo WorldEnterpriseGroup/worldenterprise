@@ -44,6 +44,7 @@ const report = articleNode({ path: meta.path, headline: meta.title, description:
       </div>
       <aside class="rail" aria-label="About this brief">
         <MethodologyBox methodology={methodology} limitations={limitations} version={version} updated={updatedDate ?? publishedDate} />
+        <slot name="aside" />
       </aside>
     </div>
   </div>

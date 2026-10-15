@@ -34,6 +34,8 @@ type Props = Omit<PageMeta, 'updated'> & {
 const { topic, publishedDate, updatedDate, readingMinutes, headings = [], sources = [], related = [], cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const toc = headings.filter((h) => h.depth === 2);
+// A page may put figures or notes in the rail through the optional "aside" slot (wave 9); the rail renders when it has contents or a slot.
+const hasAside = Astro.slots.has('aside');
 const state = await getRouteState();
 const policyLive = state.isLive('/about/editorial-policy/');
 const topicLive = state.isLive(`/insights/topic/${topic}/`);
@@ -69,28 +71,35 @@ const article = articleNode({ path: meta.path, headline: meta.title, description
           }
         </div>
         {
-          toc.length > 0 && (
+          (toc.length > 0 || hasAside) && (
             <aside class="rail" aria-label="In this article">
-              <nav class="toc-rail" aria-label="Contents">
-                <p class="eyebrow">Contents</p>
-                <ol role="list">
-                  {toc.map((h) => (
-                    <li>
-                      <a href={`#${h.slug}`}>{h.text}</a>
-                    </li>
-                  ))}
-                </ol>
-              </nav>
+              {toc.length > 0 && (
+                <nav class="toc-rail" aria-label="Contents">
+                  <p class="eyebrow">Contents</p>
+                  <ol role="list">
+                    {toc.map((h) => (
+                      <li>
+                        <a href={`#${h.slug}`}>{h.text}</a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              )}
+              <slot name="aside" />
             </aside>
           )
         }
       </div>
     </div>
   </article>
-  <div class="section section--soft section--defer">
-    <div class="container">
-      <RelatedRail items={related} />
-    </div>
-  </div>
+  {
+    related.length > 0 && (
+      <div class="section section--soft section--defer">
+        <div class="container">
+          <RelatedRail items={related} />
+        </div>
+      </div>
+    )
+  }
   <slot name="cta-end"><CtaEnd path={meta.path} collection="insights" topic={topic} cta={cta} /></slot>
 </BaseLayout>
