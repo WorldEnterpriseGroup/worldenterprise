@@ -9,7 +9,7 @@ const sources = (isLive: (href: string) => boolean) => ({ items: resolveNav(isLi
 
 test('the palette lists Apply first, under "Start here", then the navigation in its own order', () => {
   const commands = buildPaletteCommands(sources(everythingLive), everythingLive);
-  assert.deepEqual(commands[0], { label: 'Apply', href: '/apply/', group: 'Start here' });
+  assert.deepEqual(commands[0], { label: 'Apply', href: '/apply/', group: 'Start here', hint: 'Start a readiness review' });
   const hubs = primaryNav.filter((item) => item.kind === 'mega').map((item) => item.href);
   const positions = hubs.map((hub) => commands.findIndex((command) => command.href === hub));
   assert.ok(positions.every((at) => at > 0), 'every hub is listed');
@@ -20,16 +20,16 @@ test('a path is listed once, under the first place that names it', () => {
   const commands = buildPaletteCommands(sources(everythingLive), everythingLive);
   const hrefs = commands.map((command) => command.href);
   assert.equal(new Set(hrefs).size, hrefs.length);
-  // /pricing/ is a direct item, a strip link of Program, Services and Network, and a footer link: the direct item is listed first,
-  // under its own name, so a search for "pricing" finds it.
-  assert.deepEqual(commands.find((command) => command.href === '/pricing/'), { label: 'Pricing', href: '/pricing/', group: 'Pricing' });
+  // /pricing/ is a strip link of Program, Services and Network, and a footer link (it left the top level in wave 9, W9-13): the Program
+  // strip names it first.
+  assert.deepEqual(commands.find((command) => command.href === '/pricing/'), { label: 'Compare seat options', href: '/pricing/', group: 'Program' });
   // /apply/ is the Apply button first, and a link of Network later.
   assert.equal(commands.find((command) => command.href === '/apply/')?.group, 'Start here');
 });
 
 test('a search for a page by its own name finds it first', () => {
   const commands = buildPaletteCommands(sources(everythingLive), everythingLive);
-  for (const [query, href] of [['pricing', '/pricing/'], ['program', '/program/'], ['faq', '/faq/'], ['apply', '/apply/']] as const) {
+  for (const [query, href] of [['seat', '/pricing/'], ['program', '/program/'], ['faq', '/faq/'], ['apply', '/apply/']] as const) {
     assert.equal(rankCommands(commands, query)[0]?.command.href, href, query);
   }
 });
