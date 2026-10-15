@@ -1,0 +1,966 @@
+---
+/**
+ * /how-we-work/ (WP-54, wave 9 W9-13): how a company brings WE on, how the work runs, how WE is paid and how it ends. It replaces the
+ * packages page; /pricing/ is a noindex pointer here. Copy and data live in ./_model.ts (SITE-COPY section 4, SALES section 3).
+ *
+ * Layout: the statement hero, an opening split (the engagement in orbit around your company), then full-bleed bands, each a section the
+ * orbit links to. Every visual is HTML and SVG drawn at build time; the only scene is the orbit diagram, which falls back to its poster.
+ */
+import { getEntry, render } from 'astro:content';
+import { INTRODUCTIONS_DISCLAIMER, INTRODUCTIONS_FLAT_FEE } from '../../components/blocks/introductions.ts';
+import Band from '../../components/visuals/Band.astro';
+import OrbitDiagram from '../../components/visuals/OrbitDiagram.astro';
+import Split from '../../components/visuals/Split.astro';
+import StarfieldBand from '../../components/visuals/StarfieldBand.astro';
+import VisualIcon from '../../components/visuals/VisualIcon.astro';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
+import HexField from '../../components/visuals/illustrations/HexField.astro';
+import ReadinessScorecard from '../../components/visuals/illustrations/ReadinessScorecard.astro';
+import TeamConstellation from '../../components/visuals/seats/TeamConstellation.astro';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { href } from '../../lib/url.ts';
+import {
+  BEFORE_STEPS,
+  CADENCE,
+  CHECKPOINTS,
+  CLOCK_STATS,
+  DEFAULT_TERM_LABEL,
+  ENDING_BODY,
+  HERO,
+  HONESTY_LINE,
+  IS_AND_IS_NOT,
+  MONTHS,
+  PAID_CASH,
+  PAID_FALLBACK,
+  PAID_MONTHS,
+  PATH,
+  PHASES,
+  PRIMARY_CTA,
+  SECONDARY_CTA,
+  SECTIONS,
+  STAGES,
+  STEP_DOWN,
+  TEAM_POINTS,
+  TEAM_ROLES,
+  YEAR_TICKS,
+  scaleColumns,
+  tickLabel,
+} from './_model.ts';
+
+const entry = await getEntry('pages', 'how-we-work/how-we-work');
+if (!entry) throw new Error('Missing content entry pages/how-we-work/how-we-work (src/content/pages/how-we-work/how-we-work.mdx).');
+const { Content } = await render(entry);
+const { data } = entry;
+
+const orbit = SECTIONS.map((s) => ({ label: s.label, href: `#${s.id}`, description: s.description }));
+const cadenceBodies = CADENCE.map((r) => ({ label: r.name, description: r.who }));
+const cols = (from: number, to: number | null): string => {
+  const { start, end } = scaleColumns(from, to);
+  return `c-s${start} c-e${end}`;
+};
+const at = (months: number): string => `c-s${scaleColumns(months, null).start}`;
+
+// The step-down ring: four arcs around the world, each a quarter less two degrees, fading from the first to the last.
+const RING = { c: 160, r: 128 };
+const arc = (i: number): string => {
+  const gap = 4;
+  const a0 = ((i * 90 + gap / 2 - 90) * Math.PI) / 180;
+  const a1 = (((i + 1) * 90 - gap / 2 - 90) * Math.PI) / 180;
+  const p = (a: number): string => `${(RING.c + RING.r * Math.cos(a)).toFixed(1)} ${(RING.c + RING.r * Math.sin(a)).toFixed(1)}`;
+  return `M ${p(a0)} A ${RING.r} ${RING.r} 0 0 1 ${p(a1)}`;
+};
+const hex = (cx: number, cy: number, r: number): string =>
+  Array.from({ length: 6 }, (_, i) => {
+    const a = (Math.PI / 3) * i;
+    return `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`;
+  }).join(' ');
+---
+
+<MarketingLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={HERO.eyebrow}
+  lead={HERO.lead}
+  path={PATH}
+  primary={PRIMARY_CTA}
+  secondary={SECONDARY_CTA}
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-default"
+>
+  <Split class="hww-intro">
+    <h2 id="hww-once">Bring WE in once, for as long as the work is useful</h2>
+    <Content />
+    <nav class="hww-jump" aria-label="On this page">
+      <ul role="list">
+        {SECTIONS.map((s) => <li><a href={`#${s.id}`}>{s.label}</a></li>)}
+        <li><a href="#not">What WE is not</a></li>
+      </ul>
+    </nav>
+    <OrbitDiagram
+      slot="media"
+      bodies={orbit}
+      labelsName="The parts of an engagement"
+      alt="Your company as a sun of blue hexagonal tiles, with the seven parts of an engagement in orbit around it."
+      caption="Your company at the center. The engagement moves around it: the start, the phases, the team, the rhythm, how WE is paid and how it ends."
+    />
+  </Split>
+
+  <Fragment slot="after">
+    <Band tone="soft" id="before" labelledby="h-before">
+      <Split reverse>
+        <h2 id="h-before">Before Day One</h2>
+        <p class="hww-lead">Nothing is signed except an NDA until the agreements. Each step tells you more, and either side can stop.</p>
+        <ol class="hww-rail" role="list">
+          {
+            BEFORE_STEPS.map((step, i) => (
+              <li class="hww-rail__step">
+                <VisualIcon name={step.icon} size={56} class="hww-rail__icon" />
+                <div>
+                  <h3>
+                    <span class="hww-rail__n">{i + 1}</span> {step.title}
+                  </h3>
+                  <p>{step.body}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <div slot="media" class="hww-scorecard">
+          <ReadinessScorecard title="Your company clock starts from a readiness review" />
+          <p class="hww-note">An illustration of how the review reads a company: no scores, weights or thresholds. WE makes no promise of funding.</p>
+        </div>
+      </Split>
+    </Band>
+
+    <Band id="start" labelledby="h-start">
+      <Split>
+        <h2 id="h-start">Start in any month</h2>
+        <p>
+          Bring WE in the way you would bring in a long-term partner: once, at the start, for as long as the work is useful. There is no intake
+          calendar and no class to wait for. You start in any month, when your readiness review and agreements are done.
+        </p>
+        <p>Your Day One is your own. Every review after it, including the yearly Orbit Review, is counted from that date.</p>
+        <figure slot="media" class="hww-months">
+          <div class="hww-months__head">
+            <VisualIcon name="calendar" size={48} />
+            <p>Day One can fall in any of these months</p>
+          </div>
+          <ol class="hww-months__grid" role="list" aria-label="Months a company can start">
+            {MONTHS.map((m, i) => <li class={`hww-month m${i + 1}`}><span class="hww-month__name">{m}</span><span class="hww-month__state">Open</span></li>)}
+          </ol>
+          <figcaption>No intake dates are marked, because there are none.</figcaption>
+        </figure>
+      </Split>
+    </Band>
+
+    <Band tone="deep" id="phases" labelledby="h-phases">
+      <HexField slot="scene" tone="dark" edge="right" density={0.35} />
+      <div class="hww-phases-head">
+        <h2 id="h-phases">Five phases, matched to the business clock</h2>
+        <p>
+          Typical windows from public data, drawn to scale from Day One. Your plan sets your own pace, and gates are reached by milestones, not
+          by dates. A company that is already operating starts at the phase it is in; the readiness review places it.
+        </p>
+      </div>
+
+      <figure class="hww-clock" aria-labelledby="hww-clock-cap">
+        <div class="hww-scale" aria-hidden="true">
+          <div class="hww-scale__row hww-scale__stages">
+            {STAGES.map((s) => <span class={`hww-scale__stage ${cols(s.from, s.to)}`}>{s.name}</span>)}
+          </div>
+          <div class="hww-scale__row hww-scale__bars">
+            {PHASES.map((p) => <span class={`hww-scale__bar is-${p.id} ${cols(p.from, p.to)}`}>{p.name}</span>)}
+          </div>
+          <div class="hww-scale__row hww-scale__checks">
+            {CHECKPOINTS.map((c) => <span class={`hww-scale__check ${at(c.at)}`}>{c.label}</span>)}
+          </div>
+          <div class="hww-scale__axis">
+            {YEAR_TICKS.map((m) => <span class="hww-scale__tick">{tickLabel(m)}</span>)}
+          </div>
+        </div>
+        <ol class="hww-clock__phases" role="list">
+          {
+            PHASES.map((p) => (
+              <li class={`hww-phase is-${p.id}`}>
+                <div class="hww-phase__track" aria-hidden="true">
+                  <span class={`hww-phase__bar ${cols(p.from, p.to)}`} />
+                </div>
+                <h3 class="hww-phase__name">{p.name}</h3>
+                <p class="hww-phase__window">{p.window}</p>
+                <p class="hww-phase__work">{p.work}</p>
+                <p class="hww-phase__meta">
+                  <span class="hww-phase__key">Method</span> {p.method}
+                </p>
+                <p class="hww-phase__meta">
+                  <span class="hww-phase__key">Checkpoint</span> {p.checkpoint}
+                </p>
+                <p class="hww-phase__meta">
+                  <span class="hww-phase__key">Stage</span> <a href={href(p.stageHref)}>{p.stage}</a>
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+        <figcaption id="hww-clock-cap">
+          The five phases on one scale, Day One to year six. Orbit has no end date: WE steps down by notice when the company is ready.
+        </figcaption>
+      </figure>
+
+      <div class="hww-clock-stats">
+        <h3 class="hww-clock-stats__title">Why the windows run for years</h3>
+        <StatTiles stats={CLOCK_STATS} tone="dark" label="The business clock" />
+        <p class="hww-honesty">{HONESTY_LINE}</p>
+      </div>
+    </Band>
+
+    <Band id="team" labelledby="h-team">
+      <Split reverse>
+        <h2 id="h-team">Your team, steered by WE</h2>
+        <ul class="hww-points" role="list">
+          {TEAM_POINTS.map((point, i) => <li><VisualIcon name={i === 2 ? 'steering' : 'team'} size={32} /> <span>{point}</span></li>)}
+        </ul>
+        <p>
+          The roles on this page are an example. Your team schedule sets the real ones, and roles can be added or removed by notice. To see the
+          roles a team can include, <a href={href('/tools/team-composer/')}>open the Team Composer</a>.
+        </p>
+        <TeamConstellation
+          slot="media"
+          roles={TEAM_ROLES}
+          label="An example of the team WE steers"
+          caption="Three named contacts at WE, and the roles that work only on your company."
+        />
+      </Split>
+    </Band>
+
+    <Band tone="tint-blue" id="cadence" labelledby="h-cadence">
+      <Split>
+        <h2 id="h-cadence">Written down, every week</h2>
+        <p>Mission Control is WE’s name for the rhythm that runs through every phase: steering, quality review and reporting.</p>
+        <ol class="hww-cadence" role="list">
+          {
+            CADENCE.map((r) => (
+              <li class={`hww-cadence__item is-${r.name.toLowerCase()}`}>
+                <VisualIcon name={r.icon} size={44} />
+                <div>
+                  <h3>{r.name === 'Yearly' ? 'Yearly: the Orbit Review' : r.name}</h3>
+                  <p>{r.body}</p>
+                  <p class="hww-cadence__who">{r.who}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <OrbitDiagram
+          slot="media"
+          bodies={cadenceBodies}
+          rings="nested"
+          accent={3}
+          static
+          labelsName="The rhythm, from the inner ring out"
+          alt="One world at the center with four nested orbit rings around it: weekly on the inner ring, then monthly, quarterly and, on the outer ring in amber, the yearly Orbit Review."
+          caption="Mission Control: weekly on the inner ring, the yearly Orbit Review on the outer one."
+        />
+      </Split>
+    </Band>
+
+    <Band tone="soft" id="paid" labelledby="h-paid">
+      <Split reverse>
+        <h2 id="h-paid">Paid as the work is done</h2>
+        <p>{PAID_CASH}</p>
+        <p>{PAID_FALLBACK}</p>
+        <p class="hww-required">WE makes no promise of funding.</p>
+        <div class="hww-addon">
+          <h3>Investor Introductions is a separate add-on</h3>
+          <p>{INTRODUCTIONS_DISCLAIMER}</p>
+          <p>{INTRODUCTIONS_FLAT_FEE}</p>
+        </div>
+        <figure slot="media" class="hww-pay">
+          <ol class="hww-pay__row" role="list" aria-label="Each month: the work, then the payment for it">
+            {
+              Array.from({ length: PAID_MONTHS }, (_, i) => (
+                <li class="hww-pay__month">
+                  <span class="hww-pay__work">
+                    <span class="hww-pay__label">Month {i + 1}</span>
+                    <span class="hww-pay__what">The team’s work</span>
+                  </span>
+                  <span class="hww-pay__marker">
+                    <VisualIcon name="gate" size={36} />
+                    <span>Paid for month {i + 1}</span>
+                  </span>
+                </li>
+              ))
+            }
+          </ol>
+          <figcaption>Work first, then payment for that month. Every figure is in your agreement, not on a price list.</figcaption>
+        </figure>
+      </Split>
+    </Band>
+
+    <Band id="ending" labelledby="h-ending">
+      <Split>
+        <h2 id="h-ending">Step down, not stop</h2>
+        {ENDING_BODY.map((p) => <p>{p}</p>)}
+        <p class="hww-term"><VisualIcon name="handover" size={36} /> <span>{DEFAULT_TERM_LABEL}</span></p>
+        <figure slot="media" class="hww-stepdown">
+          <svg viewBox="0 0 320 320" class="hww-stepdown__art" aria-hidden="true" focusable="false">
+            <circle class="hww-stepdown__orbit" cx={RING.c} cy={RING.c} r={RING.r} />
+            {STEP_DOWN.map((_, i) => <path class={`hww-stepdown__arc is-${i + 1}`} d={arc(i)} />)}
+            <polygon class="hww-stepdown__world" points={hex(RING.c, RING.c, 54)} />
+            <polygon class="hww-stepdown__core" points={hex(RING.c, RING.c, 32)} />
+          </svg>
+          <ol class="hww-stepdown__steps" role="list" aria-label="How WE steps down">
+            {STEP_DOWN.map((s, i) => <li class={`is-${i + 1}`}>{s.label}</li>)}
+          </ol>
+          <figcaption>The steering ring fades segment by segment as your own hires take over.</figcaption>
+        </figure>
+      </Split>
+    </Band>
+
+    <Band tone="tint-stone" id="not" labelledby="h-not">
+      <h2 id="h-not">What WE is, and what WE is not</h2>
+      <div class="hww-table">
+        <table>
+          <caption class="visually-hidden">What WE is, beside what WE is not</caption>
+          <thead>
+            <tr><th scope="col">WE is</th><th scope="col">WE is not</th></tr>
+          </thead>
+          <tbody>
+            {IS_AND_IS_NOT.map(([is, isNot]) => <tr><td>{is}</td><td>{isNot}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+    </Band>
+
+    <StarfieldBand labelledby="h-hww-end" size="tall" static>
+      <div class="hww-end">
+        <h2 id="h-hww-end">Start with a readiness review</h2>
+        <p>Tell WE where the company stands. WE arranges a conversation, then sends your company clock: where the company sits, the next checkpoint and what the next phase needs.</p>
+        <div class="cluster">
+          <a class="btn btn--inverse" href={href(PRIMARY_CTA.href)}>{PRIMARY_CTA.label}</a>
+          <a class="btn btn--quiet-inverse" href={href(SECONDARY_CTA.href)}>{SECONDARY_CTA.label}</a>
+        </div>
+      </div>
+    </StarfieldBand>
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    /* Opening split */
+    .hww-jump ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2) var(--sp-4);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .hww-jump a {
+      font-weight: 600;
+    }
+
+    .hww-lead {
+      font-size: var(--fs-lg, 1.125rem);
+    }
+
+    .hww-note,
+    .hww-honesty,
+    .hww-cadence__who {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm, 0.875rem);
+    }
+
+    /* Before Day One: a numbered rail with icons */
+    .hww-rail {
+      display: grid;
+      gap: var(--sp-5);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      counter-reset: none;
+    }
+
+    .hww-rail__step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-4);
+      align-items: start;
+    }
+
+    .hww-rail__step h3 {
+      margin: 0;
+    }
+
+    .hww-rail__step p {
+      margin-block: var(--sp-1) 0;
+    }
+
+    .hww-rail__n {
+      display: inline-grid;
+      place-items: center;
+      inline-size: 1.75rem;
+      block-size: 1.75rem;
+      border-radius: var(--radius-pill);
+      background: var(--color-cta);
+      color: var(--color-cta-contrast);
+      font-size: var(--fs-sm, 0.875rem);
+    }
+
+    .hww-scorecard {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    /* Start in any month: twelve open months */
+    .hww-months {
+      display: grid;
+      gap: var(--sp-4);
+      margin: 0;
+    }
+
+    .hww-months__head {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+    }
+
+    .hww-months__head p {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .hww-months__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 7.5rem), 1fr));
+      gap: var(--sp-3);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .hww-month {
+      display: grid;
+      gap: var(--sp-1);
+      padding: var(--sp-4) var(--sp-3);
+      border: var(--border-hair);
+      border-block-start: 4px solid var(--color-accent);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-soft);
+      text-align: center;
+    }
+
+    .hww-month__name {
+      font-weight: 600;
+    }
+
+    .hww-month__state {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm, 0.875rem);
+    }
+
+    .hww-months figcaption {
+      color: var(--color-text-muted);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .hww-month {
+        animation: hww-lit 12s var(--ease-in-out) infinite;
+      }
+
+      .m2 { animation-delay: 1s; }
+      .m3 { animation-delay: 2s; }
+      .m4 { animation-delay: 3s; }
+      .m5 { animation-delay: 4s; }
+      .m6 { animation-delay: 5s; }
+      .m7 { animation-delay: 6s; }
+      .m8 { animation-delay: 7s; }
+      .m9 { animation-delay: 8s; }
+      .m10 { animation-delay: 9s; }
+      .m11 { animation-delay: 10s; }
+      .m12 { animation-delay: 11s; }
+    }
+
+    @keyframes hww-lit {
+      0%,
+      12% {
+        border-block-start-color: var(--color-highlight);
+        background: var(--color-amber-wash);
+      }
+
+      20%,
+      100% {
+        border-block-start-color: var(--color-accent);
+        background: var(--color-bg-soft);
+      }
+    }
+
+    /* The phases, drawn to scale: twelve columns of six months each */
+    .hww-phases-head {
+      display: grid;
+      gap: var(--sp-3);
+      max-inline-size: var(--split-text);
+    }
+
+    .hww-clock {
+      display: grid;
+      gap: var(--sp-6);
+      margin: var(--sp-7) 0 0;
+    }
+
+    .hww-clock__phases {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+      gap: var(--sp-5);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .hww-phase {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-4);
+      border-block-start: 4px solid var(--color-band-deep-link);
+      border-radius: var(--radius-sm);
+      background: var(--color-band-deep-soft);
+    }
+
+    .hww-phase.is-ignite {
+      border-block-start-color: var(--color-band-deep-accent);
+    }
+
+    .hww-phase p,
+    .hww-phase__name {
+      margin: 0;
+    }
+
+    .hww-phase__window {
+      color: var(--color-band-deep-accent);
+      font-weight: 600;
+    }
+
+    .hww-phase__key {
+      display: block;
+      color: var(--color-band-deep-muted);
+      font-size: var(--fs-xs, 0.75rem);
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+    }
+
+    /* Phone and tablet: each card carries its own track, its window drawn to scale. */
+    .hww-phase__track {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      block-size: 0.75rem;
+      border-radius: var(--radius-pill);
+      background: var(--color-band-deep-line);
+    }
+
+    .hww-phase__bar {
+      grid-row: 1;
+      border-radius: var(--radius-pill);
+      background: var(--color-band-deep-link);
+    }
+
+    .is-ignite .hww-phase__bar {
+      background: var(--color-band-deep-accent);
+    }
+
+    .hww-scale {
+      display: none;
+    }
+
+    .hww-clock figcaption {
+      color: var(--color-band-deep-muted);
+    }
+
+    .c-s1 { grid-column-start: 1; }
+    .c-s2 { grid-column-start: 2; }
+    .c-s3 { grid-column-start: 3; }
+    .c-s4 { grid-column-start: 4; }
+    .c-s7 { grid-column-start: 7; }
+    .c-s11 { grid-column-start: 11; }
+    .c-e2 { grid-column-end: 2; }
+    .c-e4 { grid-column-end: 4; }
+    .c-e7 { grid-column-end: 7; }
+    .c-e11 { grid-column-end: 11; }
+    .c-e13 { grid-column-end: 13; }
+
+    /* Desktop: one shared track drawn to scale, the phase cards side by side below it. */
+    @media (min-width: 64rem) {
+      .hww-scale {
+        display: grid;
+        gap: var(--sp-3);
+      }
+
+      .hww-scale__row {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+      }
+
+      .hww-scale__stage {
+        grid-row: 1;
+        padding-block-end: var(--sp-2);
+        padding-inline-start: var(--sp-2);
+        border-block-end: 2px solid var(--color-band-deep-line);
+        border-inline-start: 1px solid var(--color-band-deep-line);
+        font-family: var(--ff-display);
+        font-size: var(--fs-lg, 1.25rem);
+        font-weight: 700;
+      }
+
+      .hww-scale__bars {
+        gap: var(--sp-1);
+      }
+
+      .hww-scale__bar {
+        grid-row: 1;
+        padding: var(--sp-3);
+        background: var(--color-band-deep-link);
+        color: var(--color-band-deep-bg);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .hww-scale__bar.is-ignite {
+        background: var(--color-band-deep-accent);
+      }
+
+      .hww-scale__bar.is-orbit {
+        background: linear-gradient(to right, var(--color-band-deep-link), var(--color-band-deep-soft));
+      }
+
+      .hww-scale__check {
+        grid-row: 1;
+        position: relative;
+        padding-block-start: var(--sp-4);
+        padding-inline-end: var(--sp-2);
+        border-inline-start: 2px solid var(--color-band-deep-accent);
+        padding-inline-start: var(--sp-2);
+        color: var(--color-band-deep-text);
+        font-size: var(--fs-sm, 0.875rem);
+        font-weight: 600;
+      }
+
+      .hww-scale__check::before {
+        content: '';
+        position: absolute;
+        inset-inline-start: calc(-1 * var(--sp-2));
+        inset-block-start: 0;
+        inline-size: 1rem;
+        block-size: 1rem;
+        clip-path: var(--hex-clip);
+        background: var(--color-band-deep-accent);
+      }
+
+      .hww-scale__axis {
+        display: flex;
+        justify-content: space-between;
+        padding-block-start: var(--sp-2);
+        border-block-start: 1px solid var(--color-band-deep-line);
+        color: var(--color-band-deep-muted);
+        font-size: var(--fs-sm, 0.875rem);
+      }
+
+      .hww-scale__tick {
+        display: flex;
+        justify-content: center;
+        inline-size: 0;
+        white-space: nowrap;
+      }
+
+      .hww-scale__tick:first-child {
+        justify-content: flex-start;
+      }
+
+      .hww-scale__tick:last-child {
+        justify-content: flex-end;
+      }
+
+      .hww-phase__track {
+        display: none;
+      }
+
+      .hww-clock__phases {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    .hww-clock-stats {
+      display: grid;
+      gap: var(--sp-4);
+      margin-block-start: var(--sp-7);
+    }
+
+    .hww-clock-stats .hww-honesty,
+    .hww-clock-stats__title {
+      margin: 0;
+    }
+
+    /* Team */
+    .hww-points {
+      display: grid;
+      gap: var(--sp-3);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .hww-points li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-3);
+      align-items: start;
+    }
+
+    /* Cadence */
+    .hww-cadence {
+      display: grid;
+      gap: var(--sp-4);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .hww-cadence__item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-4);
+      padding: var(--sp-4);
+      border-inline-start: 4px solid var(--color-accent);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+    }
+
+    .hww-cadence__item.is-yearly {
+      border-inline-start-color: var(--color-highlight);
+    }
+
+    .hww-cadence__item h3,
+    .hww-cadence__item p {
+      margin: 0;
+    }
+
+    .hww-cadence__item p + p {
+      margin-block-start: var(--sp-1);
+    }
+
+    /* Paid: month blocks, each followed by its payment marker */
+    .hww-required {
+      font-weight: 700;
+    }
+
+    .hww-addon {
+      display: grid;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .hww-addon h3,
+    .hww-addon p {
+      margin: 0;
+    }
+
+    .hww-pay {
+      display: grid;
+      gap: var(--sp-4);
+      margin: 0;
+    }
+
+    .hww-pay__row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+      gap: var(--sp-3);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .hww-pay__month {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: stretch;
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+      overflow: hidden;
+    }
+
+    .hww-pay__work {
+      display: grid;
+      gap: var(--sp-1);
+      padding: var(--sp-4);
+      background: var(--color-bg-soft);
+    }
+
+    .hww-pay__label {
+      font-weight: 700;
+    }
+
+    .hww-pay__what,
+    .hww-pay__marker span {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm, 0.875rem);
+    }
+
+    .hww-pay__marker {
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: var(--sp-1);
+      padding: var(--sp-3);
+      border-inline-start: 2px dashed var(--color-border-strong);
+      text-align: center;
+      max-inline-size: 7rem;
+    }
+
+    .hww-pay figcaption,
+    .hww-stepdown figcaption {
+      color: var(--color-text-muted);
+    }
+
+    /* Ending: the steering ring fades segment by segment */
+    .hww-term {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      padding: var(--sp-4);
+      border-radius: var(--radius-md);
+      background: var(--color-amber-wash);
+      color: var(--color-highlight-ink);
+      font-weight: 600;
+    }
+
+    .hww-stepdown {
+      display: grid;
+      gap: var(--sp-4);
+      align-items: center;
+      margin: 0;
+    }
+
+    .hww-stepdown__art {
+      inline-size: min(100%, 26rem);
+      block-size: auto;
+      justify-self: center;
+    }
+
+    .hww-stepdown__orbit {
+      fill: none;
+      stroke: var(--color-border);
+      stroke-width: 1;
+    }
+
+    .hww-stepdown__arc {
+      fill: none;
+      stroke: var(--color-accent);
+      stroke-width: 10;
+      stroke-linecap: round;
+    }
+
+    .hww-stepdown__arc.is-2 {
+      stroke-opacity: 0.7;
+    }
+
+    .hww-stepdown__arc.is-3 {
+      stroke-opacity: 0.42;
+    }
+
+    .hww-stepdown__arc.is-4 {
+      stroke-opacity: 0.18;
+    }
+
+    .hww-stepdown__world {
+      fill: var(--color-accent);
+    }
+
+    .hww-stepdown__core {
+      fill: var(--color-highlight);
+    }
+
+    .hww-stepdown__steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+      gap: var(--sp-3);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .hww-stepdown__steps li {
+      counter-increment: step;
+      padding: var(--sp-3);
+      border-block-start: 4px solid var(--color-accent);
+      font-weight: 600;
+    }
+
+    .hww-stepdown__steps li::before {
+      content: counter(step) '. ';
+      color: var(--color-text-muted);
+    }
+
+    .hww-stepdown__steps .is-2 {
+      border-block-start-color: color-mix(in oklch, var(--color-accent) 70%, var(--color-bg));
+    }
+
+    .hww-stepdown__steps .is-3 {
+      border-block-start-color: color-mix(in oklch, var(--color-accent) 42%, var(--color-bg));
+    }
+
+    .hww-stepdown__steps .is-4 {
+      border-block-start-color: color-mix(in oklch, var(--color-accent) 18%, var(--color-bg));
+    }
+
+    /* What WE is, and is not */
+    .hww-table {
+      margin-block-start: var(--sp-5);
+      overflow-x: auto;
+    }
+
+    .hww-table table {
+      inline-size: 100%;
+      border-collapse: collapse;
+      font-size: var(--fs-lg, 1.125rem);
+    }
+
+    .hww-table th,
+    .hww-table td {
+      padding: var(--sp-4);
+      border-block-end: var(--border-hair);
+      text-align: start;
+      vertical-align: top;
+      inline-size: 50%;
+    }
+
+    .hww-table th {
+      font-family: var(--ff-display);
+      font-size: var(--fs-xl, 1.5rem);
+    }
+
+    .hww-table td:first-child {
+      font-weight: 600;
+    }
+
+    .hww-table td:last-child {
+      color: var(--color-text-muted);
+    }
+
+    /* Closing band */
+    .hww-end {
+      display: grid;
+      gap: var(--sp-4);
+      max-inline-size: var(--split-text);
+    }
+
+    .hww-end h2,
+    .hww-end p {
+      margin: 0;
+    }
+  }
+</style>
