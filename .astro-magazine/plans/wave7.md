@@ -4,7 +4,7 @@
 |---|---|
 | Mode | SURVEY then PLAN. Read-only. Nothing in the repo was modified, nothing built locally. |
 | Date | 2026-10-09 |
-| Repo / branch | `/home/seantech/repos/WorldEnterpriseGroup/worldenterprise`, branch `demo` at cc84ffa or newer (read through worktree `/home/seantech/repos/WorldEnterpriseGroup/_wt/wp-12d`, `wp/12d`) |
+| Repo / branch | `~/repos/WorldEnterpriseGroup/worldenterprise`, branch `demo` at cc84ffa or newer (read through worktree `~/repos/WorldEnterpriseGroup/_wt/wp-12d`, `wp/12d`) |
 | Excluded by instruction | Photography (WP-12d / phase B, lane WP-12 / 12b) and release (WP-30). Both lanes are treated as reserved paths below. |
 | Evidence method | hix MCP tools were not exposed in this session, so discovery used shell reads. CI artifacts (dist, Lighthouse, Playwright screenshots) stand in for the deployed demo, which sits behind Entra / Keycloak SSO (I stopped at the login and did not authenticate). Benchmark facts come from a delegated read-only teardown with [O] observed, [O2] secondary source, [I] inference, [R] recalled, UNVERIFIED tags. |
 
@@ -363,7 +363,7 @@ Each package lists scope, files, acceptance criteria and dependencies. Globs are
 
 ### WP-48 Frameworks depth (P3, optional, RICE 0.5, 3 sessions)
 
-**Scope.** Four additional framework pages (UBF, STAR, SHIFT, ANDROID), paraphrased from the source documents in `/home/seantech/repos/WorldEnterpriseGroup/dot-github/Frameworks/` in the same template as the existing ORBITAL and ANDROID Ops pages. Internal first names in the sources are never carried over. Update the frameworks index. **No named thesis**: coining a brand name is an operator decision (DP-6), not a package.
+**Scope.** Four additional framework pages (UBF, STAR, SHIFT, ANDROID), paraphrased from the source documents in `~/repos/WorldEnterpriseGroup/dot-github/Frameworks/` in the same template as the existing ORBITAL and ANDROID Ops pages. Internal first names in the sources are never carried over. Update the frameworks index. **No named thesis**: coining a brand name is an operator decision (DP-6), not a package.
 
 **Write set.** `src/pages/about/{frameworks,manifesto}/**`, `src/components/about/**`, `src/content/pages/about/{frameworks,orbital,android-ops,manifesto}.md`, `src/content/pages/about/framework-*.md`, tests and handoff.
 
@@ -420,7 +420,7 @@ None of the work deletes data or changes billing. The items below are outward-fa
 
 ## 8. Evidence
 
-### 8.1 Repo files read (worktree `/home/seantech/repos/WorldEnterpriseGroup/_wt/wp-12d`)
+### 8.1 Repo files read (worktree `~/repos/WorldEnterpriseGroup/_wt/wp-12d`)
 
 | Area | File |
 |---|---|
@@ -436,13 +436,13 @@ None of the work deletes data or changes billing. The items below are outward-fa
 | Audits and CI | `scripts/lib/audit-dist.mjs:21-46`, `scripts/audit-route-ledger.mjs` (pending is a warning, `--strict` an error; `leaked` and `unledgered` are errors), `scripts/lib/release-gate.mjs`, `scripts/audit-claims.mjs:331-338`, `.gitlab-ci.yml:40-46` (`RELEASE_ALLOW`, `QA_STRICT` is the blocking policy, not the ledger flag) and `:187-216`, `playwright.config.ts:6-38`, `package.json:26,31` |
 | Ownership mechanics | `scripts/check-ownership.mjs` (one assignment per branch, additive paths, frozen only with an exception), `tests/unit/foundation/ownership.test.ts`, `tests/unit/wp-15/ownership.test.ts`, `src/lib/route-core.ts` (`computeRouteState`, `routeExists`) |
 | Governance | `.astro-magazine/ownership.json` (frozen list, 21 assignments, 33 exceptions, no WP-30 assignment), `.astro-magazine/decisions.md` (D-1 to D-19, F-4, F-5, P-1 to P-3), `claims-denylist.json` (version 2), WP-17 and WP-19 handoffs |
-| Prior audits (main checkout) | `.plan/SAGE-PLAN.md`, `.plan/qa/visual-brand.md`, `.plan/qa/seo-perf.md` at `/home/seantech/repos/WorldEnterpriseGroup/worldenterprise/.plan/` (audited e8a706b; two P1s and one P2 verified fixed, see 3.5) |
+| Prior audits (main checkout) | `.plan/SAGE-PLAN.md`, `.plan/qa/visual-brand.md`, `.plan/qa/seo-perf.md` at `~/repos/WorldEnterpriseGroup/worldenterprise/.plan/` (audited e8a706b; two P1s and one P2 verified fixed, see 3.5) |
 
 ### 8.2 CI artifacts (current build, not the stale `static/` directory)
 
-- `/home/seantech/.claude/jobs/504efe46/tmp/art/static2/dist/` (robots.txt, home head and JSON-LD, insight JSON-LD with `image`, `/library/*.md`)
-- `/home/seantech/.claude/jobs/504efe46/tmp/art/lh/reports/lighthouse/network.md` and `summary.json` (Lighthouse 1.0 across categories; FCP mean 1,390 ms; LCP mean 1,682 ms; 131.9 KB mean)
-- `/home/seantech/.claude/jobs/504efe46/tmp/art/shots/test-results/routes-route-*/attachments/*.jpg` and `shots/crops/*` (home, pricing, apply, team-composer, services, investors, founders, network, trust at 1440; pricing, apply, composer at 390)
+- `~/.claude/jobs/504efe46/tmp/art/static2/dist/` (robots.txt, home head and JSON-LD, insight JSON-LD with `image`, `/library/*.md`)
+- `~/.claude/jobs/504efe46/tmp/art/lh/reports/lighthouse/network.md` and `summary.json` (Lighthouse 1.0 across categories; FCP mean 1,390 ms; LCP mean 1,682 ms; 131.9 KB mean)
+- `~/.claude/jobs/504efe46/tmp/art/shots/test-results/routes-route-*/attachments/*.jpg` and `shots/crops/*` (home, pricing, apply, team-composer, services, investors, founders, network, trust at 1440; pricing, apply, composer at 390)
 - Benchmark teardown: delegated read-only report, held in the session transcript (tags [O], [O2], [I], [R], UNVERIFIED as defined in section 2).
 
 ### 8.3 Mechanical no-overlap proof
