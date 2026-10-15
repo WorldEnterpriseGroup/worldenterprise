@@ -83,12 +83,12 @@ export const primaryNav: readonly PrimaryNavItem[] = [
       {
         heading: 'How it works',
         links: [
-          { label: 'How it works', href: '/program/how-it-works/', description: 'Apply, scope, seat your team, work in focused cycles' },
+          { label: 'How it works', href: '/program/how-it-works/', description: 'Apply, scope, form your team, work in focused cycles' },
           { label: 'How WE works', href: '/how-we-work/', description: 'Phases, cadence, pricing and how the work ends' },
           { label: 'Your journey', href: '/journey/', description: 'From first visit to the first months inside the program' },
           { label: 'After you apply', href: '/journey/after-you-apply/', description: 'What happens to an application, step by step' },
           { label: 'The digital incubation model', href: '/program/digital-incubation-model/', description: 'Fully remote by design: no office, no relocation' },
-          { label: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'Offshore seats that work only on your company' },
+          { label: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'A dedicated team that works only on your company' },
           { label: "Who it's for", href: '/program/who-its-for/', description: 'The founders and ideas WE builds with' },
           { label: 'How WE decides', href: '/program/how-we-decide/', description: 'How an application is read' },
         ],
