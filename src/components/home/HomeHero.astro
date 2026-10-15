@@ -36,11 +36,11 @@ const { eyebrow, title, lead, body, primary, secondary, image } = Astro.props;
       <p class="eyebrow home-hero__eyebrow">{eyebrow}</p>
       <h1 id="home-title">{title}</h1>
       <p class="lead">{lead}</p>
-      <p class="home-hero__body">{body}</p>
       <div class="cluster home-hero__actions">
         <a class="btn btn--primary" href={href(primary.href)} data-hero-action="primary">{primary.label}</a>
         {secondary && <a class="btn btn--secondary" href={href(secondary.href)} data-hero-action="secondary">{secondary.label}</a>}
       </div>
+      <p class="home-hero__body">{body}</p>
     </div>
     <div class="split__media bleed-media home-hero__media">
       <div class="home-hero__frame">

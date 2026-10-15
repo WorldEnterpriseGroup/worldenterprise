@@ -1,81 +1,137 @@
 ---
+/**
+ * The program hub (SITE-COPY 2.1 to 2.3, WP-53): long-horizon business incubation. The launch trajectory across the frame with the five
+ * phases, the phases as cards on the business clock, Mission Control, the three altitudes and what the program is not.
+ */
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
 import AltitudeDiagram from '../../components/program/AltitudeDiagram.astro';
-import SeatDiagram from '../../components/program/SeatDiagram.astro';
+import ClockBar from '../../components/program/ClockBar.astro';
+import MissionControl from '../../components/program/MissionControl.astro';
+import PhaseCards from '../../components/program/PhaseCards.astro';
+import ProgramEnd from '../../components/program/ProgramEnd.astro';
+import { NO_FUNDING_LINE } from '../../components/program/clock.ts';
+import { START_REVIEW, pick } from '../../components/program/ctas.ts';
 import { loadPage } from '../../components/program/loadPage.ts';
-import { PROGRAM_STEPS } from '../../components/program/steps.ts';
-import CellTrail from '../../components/ui/CellTrail.astro';
-import CtaBand from '../../components/ui/CtaBand.astro';
+import { PHASES, phasesOf } from '../../components/program/phases.ts';
+import { STAGES } from '../../components/program/stages.ts';
+import JourneyRoadmap from '../../components/visuals/illustrations/JourneyRoadmap.astro';
+import LaunchTrajectory from '../../components/visuals/LaunchTrajectory.astro';
+import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
 
 const { data, Content } = await loadPage('program');
-const [primary, secondary] = data.ctas;
+const state = await getRouteState();
+const isLive = (path: string): boolean => state.isLive(path);
+const howWeWork = pick('howWeWork', isLive);
+
+const stations = STAGES.map((stage) => ({
+  label: stage.name,
+  description: phasesOf(stage.id)
+    .map((p) => p.name)
+    .join(' and '),
+  href: stage.path,
+}));
+const waypoints = PHASES.map((p) => ({ label: p.name, description: p.window }));
+
 const subtree = [
-  { title: 'How the program works', href: '/program/how-it-works/', description: 'Five steps from application to a working team.' },
+  { title: 'Dream: find the first proof', href: '/program/dream/', description: 'Ignite. Months 0 to 6, typically.' },
+  { title: 'Build: through the steepest year', href: '/program/build/', description: 'Build and Launch. Months 6 to 36, typically.' },
+  { title: 'Grow: becoming established', href: '/program/grow/', description: 'Grow and Orbit. Year three onward.' },
+  { title: 'From first conversation to Day One', href: '/program/how-it-works/', description: 'How an engagement starts.' },
+  { title: 'The team WE steers', href: '/program/dedicated-teams/', description: 'The roles a team can include, and who steers it.' },
   { title: 'The digital incubation model', href: '/program/digital-incubation-model/', description: 'What fully remote means in practice.' },
-  { title: 'Dedicated seats, steered by WE', href: '/program/dedicated-teams/', description: 'The people on the team and who steers them.' },
-  { title: 'Who the program is for', href: '/program/who-its-for/', description: 'The founders and ideas WE builds with.' },
-  { title: 'Dream: validate the problem', href: '/program/dream/', description: 'The survey altitude.' },
-  { title: 'Build: ship the first product', href: '/program/build/', description: 'The blueprint altitude.' },
-  { title: 'Grow: earn customers', href: '/program/grow/', description: 'The territory altitude.' },
+  { title: 'Who WE works with', href: '/program/who-its-for/', description: 'The founders and companies WE builds with.' },
 ];
 const toc = [
-  { slug: 'program-stages', text: 'Three stages' },
-  { slug: 'program-team', text: 'The team' },
-  { slug: 'program-steps', text: 'How it starts' },
+  { slug: 'program-flight', text: 'The flight' },
+  { slug: 'program-phases', text: 'Five phases' },
+  { slug: 'program-mission', text: 'Mission Control' },
+  { slug: 'program-stages', text: 'Three altitudes' },
   { slug: 'program-limits', text: 'What it is not' },
 ];
 ---
 
 <HubLayout
   title={data.title}
+  seoTitle={data.seoTitle}
   description={data.description}
   path="/program/"
   eyebrow={data.eyebrow}
-  lead="A digital incubator for SaaS, run as a remote team."
+  lead="Paced to the years a company really takes, with a gate at each point where most new businesses close."
   updated={data.updated}
   draft={data.draft}
   ogSlot="og-program"
+  hero="console"
   subtree={subtree}
   toc={toc}
-  photo="inset-program"
-  primary={primary}
-  secondary={secondary}
+  primary={START_REVIEW}
+  secondary={howWeWork}
 >
-  <div class="prose measure"><Content /></div>
+  <Fragment slot="panel">
+    <JourneyRoadmap label="Dream, Build and Grow, with what the company keeps" />
+  </Fragment>
+
+  <section class="program-flight stack" aria-labelledby="program-flight">
+    <div class="split">
+      <div class="split__text prose">
+        <h2 id="program-flight">One flight, from first proof to a settled orbit</h2>
+        <Content />
+      </div>
+      <div class="split__media">
+        <LaunchTrajectory
+          stations={stations}
+          waypoints={waypoints}
+          labelsName="Stages and phases of the flight"
+          alt="A small amber capsule climbs from a hexagonal launch pad labeled Dream, through a hexagonal gate labeled Build, toward a world of hexagonal tiles labeled Grow, with the five phases marked along its dotted trail."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="stack" aria-labelledby="program-phases">
+    <h2 id="program-phases">Five phases, matched to the business clock</h2>
+    <p class="measure">Typical windows from public data. Your plan sets your own pace, and gates are reached by milestones, not by dates.</p>
+    <h3 class="visually-hidden" id="program-clock">The five phases on a ten-year axis</h3>
+    <ClockBar labelledby="program-clock" />
+    <PhaseCards phases={PHASES} label="The five phases" />
+    <p class="measure">A company that is already operating starts at the phase it is in. The readiness review places it.</p>
+    <p><a class="btn btn--primary" href={href(START_REVIEW.href)}>{START_REVIEW.label}</a></p>
+  </section>
+
+  <section class="stack" aria-labelledby="program-mission">
+    <h2 id="program-mission">Mission Control, every week</h2>
+    <MissionControl labelledby="program-mission" />
+    {howWeWork && <p><a href={href(howWeWork.href)}>{howWeWork.label}</a></p>}
+  </section>
 
   <section class="stack" aria-labelledby="program-stages">
     <h2 id="program-stages">Three stages, three altitudes</h2>
-    <p class="measure">Dream surveys the ground, Build draws the blueprint and Grow works the territory. Each stage ends with evidence you can inspect.</p>
+    <p class="measure">Dream surveys the ground, Build draws the blueprint and Grow works the territory. Each stage ends with things the company keeps.</p>
     <AltitudeDiagram labelledby="program-stages" />
-  </section>
-
-  <section class="stack" aria-labelledby="program-team">
-    <h2 id="program-team">A team that works for your company</h2>
-    <SeatDiagram labelledby="program-team" />
-  </section>
-
-  <section class="stack" aria-labelledby="program-steps">
-    <h2 id="program-steps">How it starts</h2>
-    <CellTrail label="The five steps" cells={PROGRAM_STEPS.map((s) => ({ label: s.title }))} />
-    <p class="measure">
-      Each step is explained on <a href={href('/program/how-it-works/')}>how the program works</a>.
-    </p>
   </section>
 
   <div id="program-limits">
     <LimitsBlock
       title="What the program is not"
       items={[
-        'It is not funding, and WE makes no promise of funding.',
-        'It is not legal, tax or accounting advice.',
-        'It is not an office, a campus or a set of in-person sessions.',
+        `It is not funding. ${NO_FUNDING_LINE}`,
+        'It is not legal, tax or accounting advice. Your counsel and your accountant stay your own.',
+        'It is not an office, a campus or a set of in-person sessions. The work is fully remote and written down.',
       ]}
     />
   </div>
 
   <Fragment slot="after">
-    {primary && <CtaBand title="Start with an application" text="WE agrees the scope with you before any work begins." cta={primary} secondary={secondary} />}
+    <ProgramEnd title="Where is your company on the clock?" text="Start a readiness review. WE arranges a conversation, then sends a one-page read of where your company sits on the business timeline and what the next phase needs." secondary={howWeWork} />
   </Fragment>
 </HubLayout>
+
+<style>
+  @layer pages {
+    .program-flight .split__text {
+      display: grid;
+      gap: var(--sp-4);
+    }
+  }
+</style>

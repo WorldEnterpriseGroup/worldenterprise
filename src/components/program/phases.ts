@@ -123,8 +123,6 @@ export interface StageView {
   /** Document title when the heading is longer than the 31-character page-title budget. */
   readonly seoTitle?: string;
   readonly subhead: string;
-  /** Body paragraphs. */
-  readonly body: readonly string[];
   readonly stats: readonly StatId[];
   /** The deliverables the company keeps at the end of the stage (BRIEF 3.2, genericized). */
   readonly keeps: readonly { readonly title: string; readonly note: string; readonly icon: KeepIcon }[];
@@ -140,9 +138,6 @@ export const STAGE_VIEWS: Readonly<Record<StageId, StageView>> = {
     headline: 'Dream: find the first proof',
     subhead:
       'Months 0 to 6, typically. Most new business applications never become employer businesses, and those that do take more than two quarters to reach first payroll.',
-    body: [
-      'In Dream, the team works through the D.R.E.A.M. Playbook and writes the O.R.B.I.T.A.L. Plan. You leave the stage with a readiness scorecard and plan, the ownership records in order and a brand that says what the company does.',
-    ],
     stats: ['ST-07', 'ST-08'],
     keeps: [
       { title: 'Readiness scorecard and plan', note: 'Where each area of the company starts, and the written plan for the next phase.', icon: 'checklist' },
@@ -156,10 +151,6 @@ export const STAGE_VIEWS: Readonly<Record<StageId, StageView>> = {
     headline: 'Build: through the steepest year',
     seoTitle: 'Build: the steepest year',
     subhead: 'Months 6 to 36, typically. About 1 in 5 new businesses close in their first year.',
-    body: [
-      'Build covers two phases. Build is the first release, the first customers and the first hires, run on the S.T.A.R.T.U.P. Initiative and A.N.D.R.O.I.D. Ops. Launch makes sales repeatable and finds product-market fit, run on the L.A.U.N.C.H. Sequence.',
-      'You keep a security baseline and a first release, a customer evidence index and a financial model.',
-    ],
     stats: ['ST-01', 'ST-40'],
     keeps: [
       { title: 'Security baseline and first release', note: 'A first release real customers use, built on a written security baseline.', icon: 'gate' },
@@ -172,10 +163,6 @@ export const STAGE_VIEWS: Readonly<Record<StageId, StageView>> = {
     id: 'grow',
     headline: 'Grow: becoming established',
     subhead: 'Year three onward. A business is not counted as established until it has paid wages for 42 months.',
-    body: [
-      'Grow runs on the G.R.O.W.T.H. phase and then the Event Horizon: what comes after, whether that is steady running, new lines, a succession or a sale. The team steps down by notice as the company’s own hires take over.',
-      'You keep an operating rhythm and organized records and materials.',
-    ],
     stats: ['ST-05', 'ST-04'],
     keeps: [
       { title: 'Operating rhythm', note: 'The weekly, monthly and quarterly reviews, run by the company’s own people.', icon: 'calendar' },
@@ -185,10 +172,13 @@ export const STAGE_VIEWS: Readonly<Record<StageId, StageView>> = {
   },
 };
 
-/** Mission Control (SITE-COPY 2.3): the review rings, inner to outer. */
+/**
+ * Mission Control (SITE-COPY 2.3): the review rings, inner to outer. The outer ring is the phase checkpoint of SITE-COPY 2.2; a yearly
+ * Orbit Review waits for the operator to confirm it ([CONFIRM: yearly Orbit Review]).
+ */
 export const MISSION_CONTROL: readonly { readonly ring: string; readonly what: string }[] = [
   { ring: 'Every week', what: 'A written status, and you say yes or no to the next cycle’s plan.' },
   { ring: 'Every month', what: 'A service report and a review.' },
   { ring: 'Every quarter', what: 'A business review against the plan.' },
-  { ring: 'Every year', what: 'An Orbit Review, timed to the points on the clock where most businesses close.' },
+  { ring: 'Every checkpoint', what: 'An Orbit Review at the close of each phase, timed to the points on the clock where most businesses close.' },
 ];

@@ -1,0 +1,105 @@
+---
+/**
+ * A WE method as a constellation (BRIEF 6: "D.R.E.A.M. five-step constellation"): its letters as stars joined by one line, each with the
+ * word it stands for. A method with no letters (Event Horizon) shows its name only. Plain HTML and CSS, so it reads as an ordered list.
+ */
+import type { Method } from './phases.ts';
+
+interface Props {
+  method: Method;
+}
+
+const { method } = Astro.props;
+---
+
+<div class="method">
+  <p class="method__name">{method.name}</p>
+  {
+    method.expansion.length > 0 && (
+      <ol class="method__steps" role="list" aria-label={`${method.name}, step by step`}>
+        {method.expansion.map((word) => (
+          <li class="method__step">
+            <span class="method__letter" aria-hidden="true">
+              {word.charAt(0)}
+            </span>
+            <span class="method__word">{word}</span>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+</div>
+
+<style>
+  @layer pages {
+    .method {
+      display: grid;
+      gap: var(--sp-2);
+    }
+
+    .method__name {
+      font-family: var(--ff-display);
+      font-weight: 700;
+    }
+
+    .method__steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2) 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .method__step {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: var(--sp-1);
+      min-inline-size: 4.5rem;
+      font-size: var(--fs-xs);
+      text-align: center;
+
+      /* The line that joins each star to the next. */
+      &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        inset-block-start: 1rem;
+        inset-inline-start: calc(50% + 1rem);
+        inline-size: calc(100% - 2rem);
+        border-block-start: 1px dashed var(--color-border);
+      }
+    }
+
+    .method__letter {
+      display: grid;
+      place-items: center;
+      inline-size: 2rem;
+      block-size: 2rem;
+      font-family: var(--ff-display);
+      font-weight: 700;
+      color: var(--color-link);
+      border: 2px solid currentColor;
+      border-radius: 50%;
+    }
+
+    .method__step:first-child .method__letter {
+      color: var(--color-text);
+      background: var(--we-amber);
+      border-color: var(--we-amber);
+    }
+
+    @media (forced-colors: active) {
+      .method__letter,
+      .method__step:first-child .method__letter {
+        color: CanvasText;
+        background: Canvas;
+        border-color: CanvasText;
+      }
+
+      .method__step:not(:last-child)::after {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>

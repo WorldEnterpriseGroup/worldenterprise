@@ -1,0 +1,117 @@
+---
+/**
+ * The UBF picture of a phase, as a small inline drawing (SITE-COPY 2.2, BRIEF 2.1): a Star igniting, a Star on its Track, lift-off to a
+ * Super Star, moons gathering, a settled solar system. Decorative: the phase card names the picture in text beside it. Colors come from
+ * currentColor and the brand tokens, so forced colors keep every shape.
+ */
+import type { PhaseId } from './phases.ts';
+
+interface Props {
+  phase: PhaseId;
+  /** Rendered size in CSS pixels (default 72). */
+  size?: number;
+}
+
+const { phase, size = 72 } = Astro.props;
+---
+
+<svg class="glyph" viewBox="0 0 72 72" width={size} height={size} aria-hidden="true" focusable="false">
+  {
+    phase === 'ignite' && (
+      <g>
+        <circle class="glyph__star" cx="36" cy="36" r="9" />
+        <path class="glyph__line" d="M36 14v8M36 50v8M14 36h8M50 36h8M21 21l6 6M45 45l6 6M21 51l6-6M45 27l6-6" />
+      </g>
+    )
+  }
+  {
+    phase === 'build' && (
+      <g>
+        <ellipse class="glyph__ring" cx="36" cy="40" rx="28" ry="12" />
+        <circle class="glyph__star" cx="36" cy="40" r="10" />
+        <circle class="glyph__dot" cx="62" cy="38" r="3" />
+      </g>
+    )
+  }
+  {
+    phase === 'launch' && (
+      <g>
+        <path class="glyph__trail" d="M10 62C24 58 40 44 48 24" />
+        <circle class="glyph__star" cx="52" cy="18" r="11" />
+        <circle class="glyph__dot" cx="10" cy="62" r="3" />
+      </g>
+    )
+  }
+  {
+    phase === 'grow' && (
+      <g>
+        <circle class="glyph__ring" cx="36" cy="36" r="24" />
+        <circle class="glyph__star" cx="36" cy="36" r="12" />
+        <circle class="glyph__dot" cx="12" cy="36" r="4" />
+        <circle class="glyph__dot" cx="53" cy="19" r="4" />
+        <circle class="glyph__dot" cx="48" cy="57" r="3" />
+      </g>
+    )
+  }
+  {
+    phase === 'orbit' && (
+      <g>
+        <circle class="glyph__ring" cx="36" cy="36" r="16" />
+        <circle class="glyph__ring" cx="36" cy="36" r="30" />
+        <circle class="glyph__star" cx="36" cy="36" r="8" />
+        <circle class="glyph__dot" cx="52" cy="36" r="3" />
+        <circle class="glyph__dot" cx="15" cy="15" r="4" />
+        <circle class="glyph__dot" cx="57" cy="57" r="3" />
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  @layer pages {
+    .glyph {
+      flex: none;
+      color: var(--color-link);
+    }
+
+    .glyph__star {
+      fill: var(--we-amber);
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .glyph__dot {
+      fill: currentColor;
+    }
+
+    .glyph__ring,
+    .glyph__line,
+    .glyph__trail {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .glyph__trail {
+      stroke-dasharray: 3 5;
+    }
+
+    @media (forced-colors: active) {
+      .glyph__star {
+        fill: Canvas;
+        stroke: CanvasText;
+      }
+
+      .glyph__dot {
+        fill: CanvasText;
+      }
+
+      .glyph__ring,
+      .glyph__line,
+      .glyph__trail {
+        stroke: CanvasText;
+      }
+    }
+  }
+</style>
