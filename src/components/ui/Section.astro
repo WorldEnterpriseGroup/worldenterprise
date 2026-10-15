@@ -2,18 +2,20 @@
 /**
  * A full-width band. `soft` is the mist wash the site has always used. `tint`, `sand` and `stone` are the lighter section tints
  * (tokens.css, WP-45): a pale blue for evidence and process, a warm wash for notes and limits, a neutral grey for reference. All are
- * light, and a tinted band behaves as a soft one for spacing.
+ * light, and a tinted band behaves as a soft one for spacing. `deep` (wave 9, W9-7) is the dark galaxy band: night blue, light text and
+ * a still starfield; it spaces like a tinted band and never holds the logo.
  */
-const TONES: Record<'plain' | 'soft' | 'tint' | 'sand' | 'stone', string> = {
+const TONES: Record<'plain' | 'soft' | 'tint' | 'sand' | 'stone' | 'deep', string> = {
   plain: '',
   soft: 'section--soft',
   tint: 'section--soft section--tinted section--tint-blue',
   sand: 'section--soft section--tinted section--tint-sand',
   stone: 'section--soft section--tinted section--tint-stone',
+  deep: 'section--soft section--tinted band--deep',
 };
 
 interface Props {
-  tone?: 'plain' | 'soft' | 'tint' | 'sand' | 'stone';
+  tone?: 'plain' | 'soft' | 'tint' | 'sand' | 'stone' | 'deep';
   tight?: boolean;
   defer?: boolean;
   id?: string;

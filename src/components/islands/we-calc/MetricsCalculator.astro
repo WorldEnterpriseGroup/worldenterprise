@@ -110,9 +110,11 @@ import { waitingText } from '../../../scripts/metrics-calc.ts';
       max-inline-size: 62ch;
     }
 
+    /* 18rem (at least 288px, wider than the 282px column of the old 75rem frame) keeps every field wide enough that an error message
+       fits the two reserved lines in the 110rem frame (W9-4). */
     .calc__fields {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
       gap: var(--sp-4) var(--sp-5);
     }
 

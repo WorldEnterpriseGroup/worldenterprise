@@ -22,6 +22,11 @@
       grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
       gap: var(--space-block);
     }
+
+    /* Wave 9 (W9-4): on a full-HD screen the visual gets the larger share of the 110rem frame; the copy keeps about 44rem. */
+    @media (min-width: 100rem) {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
   }
 
   .hero__copy {
@@ -82,6 +87,10 @@
 
     @media (min-width: 62rem) {
       aspect-ratio: 4 / 3;
+
+      &[data-frame='wide'] {
+        aspect-ratio: 21 / 9;
+      }
     }
 
     & > :is(img, svg) {

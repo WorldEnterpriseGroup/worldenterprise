@@ -52,6 +52,18 @@
     --color-success: var(--we-success); /* @pair color-success color-bg 4.5 */
 
     /*
+     * Dark galaxy band (wave 9, W9-7). The one dark surface besides the console hero: night blue with light text. A dark band never
+     * carries the wordmark, and the header above it stays light.
+     */
+    --color-band-deep-bg: var(--color-bg-inverse);
+    --color-band-deep-text: var(--we-white); /* @pair color-band-deep-text color-band-deep-bg 4.5 */
+    --color-band-deep-muted: var(--we-mist); /* @pair color-band-deep-muted color-band-deep-bg 4.5 */
+    --color-band-deep-link: var(--we-tint); /* @pair color-band-deep-link color-band-deep-bg 4.5 */
+    --color-band-deep-accent: var(--we-amber); /* @pair color-band-deep-accent color-band-deep-bg 3 */
+    --color-band-deep-soft: var(--we-blue-deep); /* panels inside a dark band @pair color-band-deep-text color-band-deep-soft 4.5 @pair color-band-deep-muted color-band-deep-soft 4.5 @pair color-band-deep-link color-band-deep-soft 4.5 */
+    --color-band-deep-line: color-mix(in oklch, var(--we-white) 22%, var(--we-blue-night)); /* #3F5F7D, decorative lines only */
+
+    /*
      * Section tints (WP-45). Light washes of the palette for the bands of a page, mixed from existing tokens so no new colour enters the
      * brand. The hex in each comment is the resolved value in sRGB, for audit-contrast. All four stay within 6 to 12 percent of the
      * source colour: a tint separates two bands, it never becomes a dark section (D-8).
@@ -72,16 +84,18 @@
      * Modular type scale, 360px to 1440px viewport. Base 17px to 19px; the ratio grows from 1.2 (minor third) to 1.32.
      * xs, sm and base are reading sizes and stay close to fixed; lead is half a step above base; lg to 4xl are whole steps 1 to 5.
      * Generated with: size(step) = base * ratio^step at each end, then clamp(min, intercept + slope * vw, max).
+     * Wave 9 (W9-4): the heading steps keep their line past 1440 and stop at 1920, where the ratio reaches about 1.35. The reading
+     * sizes keep their 1440 ceiling, so a paragraph never grows on a wide screen; only the display type does.
      */
     --fs-xs: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
     --fs-sm: clamp(0.9rem, 0.88rem + 0.1vw, 0.975rem);
     --fs-base: clamp(1.0625rem, 1.03rem + 0.16vw, 1.1875rem); /* 17 to 19px */
     --fs-lead: clamp(1.1639rem, 1.0971rem + 0.2969vw, 1.3643rem); /* 18.6 to 21.8px, half a step */
-    --fs-lg: clamp(1.275rem, 1.1775rem + 0.4333vw, 1.5675rem); /* 20.4 to 25.1px, step 1 */
-    --fs-xl: clamp(1.53rem, 1.3503rem + 0.7987vw, 2.0691rem); /* 24.5 to 33.1px, step 2 */
-    --fs-2xl: clamp(1.836rem, 1.5376rem + 1.3262vw, 2.7312rem); /* 29.4 to 43.7px, step 3 */
-    --fs-3xl: clamp(2.2032rem, 1.7359rem + 2.077vw, 3.6052rem); /* 35.3 to 57.7px, step 4 */
-    --fs-4xl: clamp(2.6438rem, 1.9388rem + 3.1334vw, 4.7589rem); /* 42.3 to 76.1px, step 5 */
+    --fs-lg: clamp(1.275rem, 1.1775rem + 0.4333vw, 1.6975rem); /* 20.4 to 25.1px, step 1 */
+    --fs-xl: clamp(1.53rem, 1.3503rem + 0.7987vw, 2.3087rem); /* 24.5 to 33.1px, step 2 */
+    --fs-2xl: clamp(1.836rem, 1.5376rem + 1.3262vw, 3.129rem); /* 29.4 to 43.7px, step 3 */
+    --fs-3xl: clamp(2.2032rem, 1.7359rem + 2.077vw, 4.2283rem); /* 35.3 to 57.7px, step 4 */
+    --fs-4xl: clamp(2.6438rem, 1.9388rem + 3.1334vw, 5.6989rem); /* 42.3 to 76.1px, step 5 */
 
     /* Heading roles. A page title is two steps above its sections, so the outline reads at a glance. */
     --fs-display: var(--fs-4xl); /* home hero only */
@@ -108,16 +122,16 @@
     --sp-10: 8rem;
 
     /*
-     * Vertical rhythm, fluid (360px to 1440px). Every gap between blocks on a page is one of these.
+     * Vertical rhythm, fluid (360px to 1920px; the 360 and 1440 values are unchanged). Every gap between blocks on a page is one of these.
      * heading: heading to the content it introduces. flow: paragraph to paragraph. group: sub-block to sub-block.
      * block: a heading and its content to the next one. section: padding of a full-width band. hero: top of a page opener.
      */
-    --space-heading: clamp(0.625rem, 0.5417rem + 0.3704vw, 0.875rem); /* 10 to 14px */
-    --space-flow: clamp(1rem, 0.9167rem + 0.3704vw, 1.25rem); /* 16 to 20px */
-    --space-group: clamp(1.5rem, 1.25rem + 1.1111vw, 2.25rem); /* 24 to 36px */
-    --space-block: clamp(2.25rem, 1.8333rem + 1.8519vw, 3.5rem); /* 36 to 56px */
-    --space-section: clamp(3rem, 2.3333rem + 2.963vw, 5rem); /* 48 to 80px */
-    --space-hero: clamp(2.5rem, 1.5rem + 4.4444vw, 5.5rem); /* 40 to 88px */
+    --space-heading: clamp(0.625rem, 0.5417rem + 0.3704vw, 0.9862rem); /* 10 to 14px */
+    --space-flow: clamp(1rem, 0.9167rem + 0.3704vw, 1.3612rem); /* 16 to 20px */
+    --space-group: clamp(1.5rem, 1.25rem + 1.1111vw, 2.5833rem); /* 24 to 36px */
+    --space-block: clamp(2.25rem, 1.8333rem + 1.8519vw, 4.0556rem); /* 36 to 56px */
+    --space-section: clamp(3rem, 2.3333rem + 2.963vw, 5.8889rem); /* 48 to 80px */
+    --space-hero: clamp(2.5rem, 1.5rem + 4.4444vw, 6.8333rem); /* 40 to 88px */
     --section-y: var(--space-section);
 
     /* Radii and borders */
@@ -132,10 +146,16 @@
     --hex-clip: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
     --hex-ratio: 1.1547;
 
-    /* Layout */
-    --page-max: 80rem;
+    /*
+     * Layout (wave 9, W9-4). The content frame is 110rem, 1760px, so a 1920 screen keeps an 80px gutter and no empty side bands.
+     * Reading text never widens with it: prose holds --prose-max, and text beside a visual holds --split-text.
+     */
+    --content-max: 110rem;
+    --page-max: var(--content-max);
     --prose-max: 46rem;
-    --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+    --split-text: 40rem;
+    --gutter: clamp(1rem, 0.0769rem + 4.1026vw, 5rem); /* 16px to 360, 60px at 1440, 80px at 1920 */
+    --band-pad: clamp(3rem, 1.8462rem + 5.1282vw, 8rem); /* 48px at 360, 128px at 1920 */
     --header-h: 4.5rem;
     --utility-h: 2.25rem;
     --target-min: 2.75rem;

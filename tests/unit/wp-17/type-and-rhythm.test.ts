@@ -65,3 +65,27 @@ test('rhythm tokens are fluid and ascend from heading to section', () => {
   assert.ok(resolve('--space-hero', VIEWPORT_MAX) > resolve('--space-hero', VIEWPORT_MIN), 'the hero space is fluid');
   assert.match(tokens, /--section-y:\s*var\(--space-section\)/, 'the legacy section token aliases the rhythm token');
 });
+
+// Wave 9 (W9-4): the scale keeps growing to 1920 without moving the 360 and 1440 values, and the reading sizes stop at 1440.
+const VIEWPORT_FULL_HD = 1920;
+
+test('the heading steps grow to 1920, still about one modular step apart, while the reading sizes stay at their 1440 size', () => {
+  const at1920 = STEPS.map((s) => resolve(`--fs-${s}`, VIEWPORT_FULL_HD));
+  for (let i = 0; i < STEPS.length; i += 1) {
+    assert.ok((at1920[i] ?? 0) > resolve(`--fs-${STEPS[i]}`, VIEWPORT_MAX) + 1, `--fs-${STEPS[i]} is larger at 1920 than at 1440`);
+    if (i === 0) continue;
+    const ratio = (at1920[i] ?? 0) / (at1920[i - 1] ?? 1);
+    assert.ok(ratio > 1.3 && ratio < 1.4, `${STEPS[i]} is one step above ${STEPS[i - 1]} at 1920 (${ratio.toFixed(3)})`);
+  }
+  for (const size of ['xs', 'sm', 'base', 'lead']) {
+    const grown = resolve(`--fs-${size}`, VIEWPORT_FULL_HD) - resolve(`--fs-${size}`, VIEWPORT_MAX);
+    assert.ok(grown < 0.5, `--fs-${size} stops at about its 1440 size (${grown.toFixed(2)}px more at 1920)`);
+  }
+});
+
+test('the rhythm tokens keep growing to 1920 and stay in order there', () => {
+  const names = ['--space-heading', '--space-flow', '--space-group', '--space-block', '--space-section', '--space-hero'];
+  const values = names.map((n) => resolve(n, VIEWPORT_FULL_HD));
+  names.forEach((n, i) => assert.ok((values[i] ?? 0) > resolve(n, VIEWPORT_MAX), `${n} is larger at 1920 than at 1440`));
+  for (let i = 1; i < 5; i += 1) assert.ok((values[i] ?? 0) > (values[i - 1] ?? 0), `${names[i]} is larger than ${names[i - 1]} at 1920`);
+});
