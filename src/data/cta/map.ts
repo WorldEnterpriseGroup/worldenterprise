@@ -55,6 +55,10 @@ export const SURFACES: readonly SurfaceRule[] = [
   row('home', { path: '/' }, ['apply'], ['briefs']),
   row('program:how-we-decide', { path: '/program/how-we-decide/' }, ['apply'], ['journey']),
   row('program', { prefix: '/program/' }, ['apply'], ['journey']),
+
+  // How WE works (WP-54, W9-13): the engagement page closes on the readiness review, with Talk to WE as the secondary (SALES 6.2).
+  // /pricing/ is a noindex pointer to it and keeps the same band.
+  row('how-we-work', { path: '/how-we-work/' }, ['apply'], ['contact']),
   row('pricing', { path: '/pricing/' }, ['apply'], ['contact']),
 
   // Services: the seven lines and their hub.

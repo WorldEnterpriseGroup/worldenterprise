@@ -76,12 +76,12 @@ const ROOT = new URL('../../../', import.meta.url).pathname;
 const SET = audit.loadDenylist();
 const PHOTO_LINE = 'Illustrative images, some AI-generated. Figures shown are not real people, founders, clients or WE staff.';
 const DISCLAIMER = 'WE makes no promise of funding.';
-const DISCLAIMER_ROUTES = ['/', '/fundability/', '/investors/', '/program/grow/', '/services/fundability-and-investor-readiness/', '/pricing/'];
+const DISCLAIMER_ROUTES = ['/', '/fundability/', '/investors/', '/program/grow/', '/services/fundability-and-investor-readiness/', '/how-we-work/'];
 const INTRO_DISCLAIMER =
   'Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.';
 const FLAT_FEE = 'The fee does not depend on whether any investment closes.';
-const INTRO_ROUTES = ['/investors/', '/network/', '/services/fundability-and-investor-readiness/', '/pricing/', '/faq/'];
-const FLAT_FEE_ROUTES = ['/investors/', '/services/fundability-and-investor-readiness/', '/pricing/'];
+const INTRO_ROUTES = ['/investors/', '/network/', '/services/fundability-and-investor-readiness/', '/how-we-work/', '/faq/'];
+const FLAT_FEE_ROUTES = ['/investors/', '/services/fundability-and-investor-readiness/', '/how-we-work/'];
 /** Every route a required rule lists, so a fixture site can satisfy all of them. */
 const ALL_ROUTES = [...new Set([...DISCLAIMER_ROUTES, ...INTRO_ROUTES])];
 
@@ -488,9 +488,9 @@ test('required: the no-funding disclaimer must be present on each listed route',
   assert.ok(rule);
   assert.deepEqual([...(rule.routes as readonly string[])].sort(), [...DISCLAIMER_ROUTES].sort());
   assert.deepEqual(audit.checkRequired(builtPages(), SET.required, { generatedImages: false }), []);
-  const partial = audit.checkRequired(builtPages({ '/pricing/': ['funding'] }), SET.required, { generatedImages: false });
+  const partial = audit.checkRequired(builtPages({ '/how-we-work/': ['funding'] }), SET.required, { generatedImages: false });
   assert.equal(partial.length, 1);
-  assert.equal(partial[0]?.route, '/pricing/');
+  assert.equal(partial[0]?.route, '/how-we-work/');
   assert.equal(partial[0]?.rule, 'R-C05-no-funding-disclaimer');
   assert.match(partial[0]?.message ?? '', /required text is missing/);
 });
@@ -505,8 +505,8 @@ test('required: a listed route that was not built is a finding for every rule th
 test('required: the Investor Introductions disclaimer and the flat-fee sentence are each required on their routes', () => {
   const noDisclaimer = audit.checkRequired(builtPages({ '/network/': ['intro'], '/faq/': ['intro'] }), SET.required, { generatedImages: false });
   assert.deepEqual(noDisclaimer.map((f) => `${f.rule} ${f.route}`).sort(), ['R-C14-intro-disclaimer /faq/', 'R-C14-intro-disclaimer /network/']);
-  const noFlat = audit.checkRequired(builtPages({ '/investors/': ['flat'], '/pricing/': ['flat'] }), SET.required, { generatedImages: false });
-  assert.deepEqual(noFlat.map((f) => `${f.rule} ${f.route}`).sort(), ['R-C14-flat-fee-statement /investors/', 'R-C14-flat-fee-statement /pricing/']);
+  const noFlat = audit.checkRequired(builtPages({ '/investors/': ['flat'], '/how-we-work/': ['flat'] }), SET.required, { generatedImages: false });
+  assert.deepEqual(noFlat.map((f) => `${f.rule} ${f.route}`).sort(), ['R-C14-flat-fee-statement /how-we-work/', 'R-C14-flat-fee-statement /investors/']);
 });
 
 test('required: a marked element still counts, because the disclaimer must be seen even where a rule allows quoting', () => {
@@ -655,7 +655,7 @@ test('auditDist: once an image is generated, a page without the line fails and t
 
 test('auditDist: a missing disclaimer, a context-rule hit and a manifest alt problem are all reported', () => {
   const files = cleanSite();
-  files['pricing/index.html'] = page('<h1>Pricing</h1><p>A programme for your organisation.</p>');
+  files['how-we-work/index.html'] = page('<h1>How WE works</h1><p>A programme for your organisation.</p>');
   const badManifest: Manifest = { slots: [{ id: 'g1', source: 'generated', alt: 'A founder at a desk' }] };
   const result = audit.auditDist(makeDist(files), { manifest: badManifest, flagValues: {} });
   const found = new Set(result.findings.map((f) => f.rule));
@@ -671,7 +671,7 @@ test('auditDist: the route comes from the file path, so a path allow applies to 
   files['program/dedicated-teams/index.html'] = page('<h2>Two companies, one objective</h2>');
   const ok = audit.auditDist(makeDist(files), { manifest: NO_IMAGES, flagValues: {} });
   assert.deepEqual(ok.findings, []);
-  files['pricing/index.html'] = page(`<h1>Pricing</h1><p>${DISCLAIMER}</p><p>${INTRO_DISCLAIMER}</p><p>${FLAT_FEE}</p><h2>Two companies, one objective</h2>`);
+  files['how-we-work/index.html'] = page(`<h1>How WE works</h1><p>${DISCLAIMER}</p><p>${INTRO_DISCLAIMER}</p><p>${FLAT_FEE}</p><h2>Two companies, one objective</h2>`);
   const bad = audit.auditDist(makeDist(files), { manifest: NO_IMAGES, flagValues: {} });
   assert.deepEqual(bad.findings.map((f) => f.rule), ['C-21-phrase']);
 });

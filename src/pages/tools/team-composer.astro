@@ -18,7 +18,7 @@ const { data } = entry;
   lead="Sketch the roles you need. No sign-up, no price."
   path="/tools/team-composer/"
   primary={jumpTo('Start composing', '#composer')}
-  secondary={{ label: 'How seats and pricing work', href: '/pricing/' }}
+  secondary={{ label: 'See how WE works', href: '/how-we-work/' }}
   updated={data.updated}
   draft={data.draft}
   crumbs={[
@@ -32,9 +32,9 @@ const { data } = entry;
   <div class="prose composer-notes"><Content /></div>
   <CtaBand
     slot="after"
-    title="Ready to turn the sketch into an application?"
-    text="Your roles arrive in the application's team box, ready to edit."
-    cta={{ label: 'Apply', href: '/apply/' }}
-    secondary={{ label: 'How seats and pricing work', href: '/pricing/' }}
+    title="Bring the sketch to a readiness review"
+    text="Your roles arrive in the application's team box, ready to edit. The readiness review, not the sketch, sets the team WE steers."
+    cta={{ label: 'Start a readiness review', href: '/apply/' }}
+    secondary={{ label: 'See how WE works', href: '/how-we-work/' }}
   />
 </ToolLayout>

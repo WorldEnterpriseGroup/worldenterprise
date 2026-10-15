@@ -51,7 +51,7 @@ test('the navigation copy carries no PBC wording and no "fundable" outcome', () 
   const nav = read('src/data/nav.ts');
   assert.doesNotMatch(nav, /public benefit|benefit corporation|\bPBC\b/i);
   assert.doesNotMatch(nav, /fundable/i);
-  assert.match(nav, /lead: 'A digital incubator for SaaS\. Dedicated team seats, steered by WE, from first idea to first customers\.'/);
+  assert.match(nav, /lead: 'Long-horizon business incubation\. A dedicated team, steered by WE, from first idea to first customers\.'/);
 });
 
 test('"fundable" as an outcome and the peers family appear in source only where a rule allows them', () => {
@@ -197,26 +197,23 @@ test('claims C-10 and C-14 are usable, and the seat price and legal flags stay o
   assert.equal(flags.focusShiftConfirmed, false);
 });
 
-test('the pricing page names the four packages, publishes no amounts or seat counts, and says how to ask for the rate', () => {
-  const sources = [read('src/content/pages/pricing/pricing.mdx'), read('src/pages/pricing/index.astro')];
-  const mdx = sources[0] ?? '';
-  for (const name of PACKAGES) assert.match(mdx, new RegExp(`\\b${name}\\b`), `${name} is on the pricing page`);
+test('the retired pricing page names no package, publishes no amounts or seat counts, and points to How WE works (W9-13)', () => {
+  const sources = [read('src/content/pages/pricing/pricing.mdx'), read('src/pages/pricing/index.astro'), read('src/content/pages/how-we-work/how-we-work.mdx')];
+  for (const name of PACKAGES) assert.doesNotMatch(sources[0] ?? '', new RegExp(`\\b${name}\\b`), `${name} is gone from the pricing page`);
   for (const text of sources) {
     assert.doesNotMatch(text, /\$\s?\d|\bdollars?\b|\bper month\b|\/mo\b/i, 'an amount');
     assert.doesNotMatch(text, /\b(?:\d+|two|three|four|five|six|seven|eight|nine|ten|twelve)\s+(?:dedicated\s+)?seats?\b/i, 'a seat count');
-    assert.doesNotMatch(text, /\bnot packages\b|does not list [^.]*\bpackages?\b|\bwithout packages\b/i, 'a denial of packages');
+    // Words from KEY-VALUES.md that this site does not publish: the milestone scheme and the term.
+    assert.doesNotMatch(text, /\bnine Milestones\b|\bRaise-Ready\b|\bFundability Certification\b|\bDelivery Hours\b|\b12[- ]month\b|\btwelve[- ]month\b/i);
+    assert.doesNotMatch(text, /\bUSD\b/);
   }
-  // Words from KEY-VALUES.md that this site does not publish: the milestone scheme, the phases and the term.
-  for (const text of sources) assert.doesNotMatch(text, /\bnine Milestones\b|\bRaise-Ready\b|\bFundability Certification\b|\bDelivery Hours\b|\b12[- ]month\b|\btwelve[- ]month\b/i);
-  // The page formats a rate only behind flags.seatPrice, which stays off (asserted above).
-  assert.doesNotMatch(mdx, /\bUSD\b/);
-  assert.match(mdx, /contact\/\?topic=seat-rate/);
+  assert.match(read('src/pages/pricing/index.astro'), /href: '\/how-we-work\/'/);
 });
 
-test('the contact form offers the seat-rate topic the pricing page links to', () => {
+test('the contact form keeps the seat-rate topic value, labelled as a request for current terms', () => {
   const form = read('src/components/forms/ContactForm.astro');
   assert.match(form, /seat-rate/);
-  assert.match(form, /Request the current seat rate/);
+  assert.match(form, /Request current terms/);
 });
 
 test('every source page that names Investor Introductions shows the verbatim disclaimer', () => {
@@ -250,7 +247,7 @@ test('every source page that names Investor Introductions shows the verbatim dis
     'src/pages/investors/index.astro',
     'src/pages/network/index.astro',
     'src/content/services/fundability-and-investor-readiness.mdx',
-    'src/content/pages/pricing/pricing.mdx',
+    'src/pages/how-we-work/index.astro',
     'src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx',
   ]) assert.match(read(file), uses, `${file} renders the disclaimer`);
   const topic = read('src/content/pages/insights/topic-fundable.mdx').replace(/\s+/g, ' ');
@@ -269,8 +266,8 @@ test('the FAQ answers the two new questions, and the add-on answer carries the d
   assert.match(intro.answer, /does not depend on whether any investment closes/);
   const packages = list.find((item) => item.id === 'packages');
   assert.ok(packages, 'the packages entry exists');
-  assert.ok(packages.claimsUsed.includes('C-10'));
-  assert.doesNotMatch(packages.answer, /\$|\d/);
+  // Wave 9 (W9-13): the packages are retired, so the entry names none of them and quotes no amount.
+  assert.doesNotMatch(`${packages.question} ${packages.answer}`, /\b(?:Spark|Accelerate|Studio)\b|\$|\d/);
   assert.ok(list.every((item) => !/\bnot packages\b/i.test(item.answer)), 'no entry denies packages');
 });
 
