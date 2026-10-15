@@ -2331,6 +2331,16 @@
       "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The ranking pin searches 'seat', the name /pricing/ is now listed under."
     },
     {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-60/cta.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the apply target label pins (lines 194 and 407) read 'Start a readiness review'. Those lines only; shared with WP-58 (its own rows), disjoint by line."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/e2e/wave7/wp-46/palette.spec.ts",
+      "reason": "Wave 9 (W9-13): the keyboard palette check searches 'seat', the name /pricing/ is listed under after Pricing left the top level. That test only; shared with WP-54, disjoint by line."
+    },
+    {
       "wp": "WP-52",
       "path": "src/pages/styleguide.astro",
       "reason": "Wave 9: a visuals section on the existing styleguide (PUBLIC_STYLEGUIDE=1), not a new route; last held by WP-45, which is done."
@@ -2704,6 +2714,11 @@
       "wp": "WP-56",
       "path": "tests/unit/wp-71/family-templates.test.ts",
       "reason": "Wave 9: family template pins follow the widened family pages (W8-18); held by WP-71, which is done."
+    },
+    {
+      "wp": "WP-56",
+      "path": ".astro-magazine/sources/wp-75.json",
+      "reason": "Wave 9 (W9-12): the three entries that map the reworded sentences of build-vs-buy.mdx line 55 to C-29. Those entries only; WP-53 keeps the seat and SaaS entries, split by entry."
     },
     {
       "wp": "WP-57",
