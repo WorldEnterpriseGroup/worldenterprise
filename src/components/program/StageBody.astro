@@ -2,12 +2,10 @@
 import LimitsBlock from '../blocks/LimitsBlock.astro';
 import NoFundingDisclaimer from '../blocks/NoFundingDisclaimer.astro';
 import Card from '../ui/Card.astro';
-import CellTrail from '../ui/CellTrail.astro';
 import HexIcon from '../ui/HexIcon.astro';
 import { href } from '../../lib/url.ts';
 import ArtifactList from './ArtifactList.astro';
 import ExitEvidence from './ExitEvidence.astro';
-import { STAGES } from './stages.ts';
 import type { Stage } from './stages.ts';
 
 interface Props {
@@ -15,14 +13,10 @@ interface Props {
 }
 
 const { stage } = Astro.props;
-const current = STAGES.findIndex((s) => s.id === stage.id);
-const trail = STAGES.map((s) => ({ label: `${s.name} (${s.altitude})`, href: href(s.path) }));
 ---
 
 <div class="stagebody">
-  <div class="prose measure"><slot /></div>
-
-  <CellTrail label="The WE path" cells={trail} current={current} />
+  {Astro.slots.has('default') && <div class="prose"><slot /></div>}
 
   <section class="stack" aria-labelledby="stage-work">
     <h2 id="stage-work">What you work on in {stage.name}</h2>

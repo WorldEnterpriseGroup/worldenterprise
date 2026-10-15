@@ -1,36 +1,59 @@
 ---
-import CtaBand from '../../components/ui/CtaBand.astro';
+/**
+ * The Grow stage page (SITE-COPY 2.6, WP-53): year three onward, toward an established company, drawn as the world forge with the
+ * G.R.O.W.T.H. phase as its moons.
+ */
+import WorldForge from '../../components/visuals/WorldForge.astro';
+import ProgramEnd from '../../components/program/ProgramEnd.astro';
 import StageBody from '../../components/program/StageBody.astro';
+import StageLong from '../../components/program/StageLong.astro';
+import { START_REVIEW, pick } from '../../components/program/ctas.ts';
 import { loadPage } from '../../components/program/loadPage.ts';
+import { METHODS, STAGE_VIEWS } from '../../components/program/phases.ts';
 import { getStage, nextStage } from '../../components/program/stages.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
 
 const stage = getStage('grow');
+const view = STAGE_VIEWS.grow;
 const { data, Content } = await loadPage('program/grow');
+const state = await getRouteState();
+const howLong = pick('howLong', (path: string): boolean => state.isLive(path));
 const following = nextStage(stage.id);
-const [primary, secondary] = data.ctas;
 const next = [
-  ...(following ? [{ title: `${following.name}: ${following.promise}`, href: following.path, description: `The ${following.altitude.toLowerCase()} altitude.` }] : []),
-  { title: 'How the program works', href: '/program/how-it-works/', description: 'The path from application to a working team.' },
-  { title: 'Dedicated seats, steered by WE', href: '/program/dedicated-teams/', description: 'Who does the work, and who steers it.' },
+  ...(following ? [{ title: STAGE_VIEWS[following.id].headline, href: following.path, description: STAGE_VIEWS[following.id].subhead.split('. ')[0] + '.' }] : []),
+  { title: 'How the program works', href: '/program/how-it-works/', description: 'From first conversation to Day One.' },
+  { title: 'The whole program', href: '/program/', description: 'Five phases on the business clock, and Mission Control.' },
 ];
+const moons = METHODS.growth.expansion.map((label) => ({ label }));
 ---
 
 <StageLayout
-  title={stage.title}
+  title={data.title}
+  seoTitle={data.seoTitle}
   description={data.description}
   path={stage.path}
   stage={stage.id}
-  lead={stage.promise}
+  lead={view.subhead}
   updated={data.updated}
   draft={data.draft}
-  primary={primary}
-  secondary={secondary}
+  primary={START_REVIEW}
+  secondary={howLong}
   ogSlot="og-program"
   next={next}
 >
-  <StageBody stage={stage}><Content /></StageBody>
+  <StageLong stage={stage.id} name={stage.name}>
+    <Content />
+    <Fragment slot="visual">
+      <WorldForge
+        moons={moons}
+        labelsName="The G.R.O.W.T.H. phase"
+        alt="A world of hexagonal tiles turns inside faint rings while six small moons gather around it."
+      />
+    </Fragment>
+  </StageLong>
+  <StageBody stage={stage} />
   <Fragment slot="after">
-    {primary && <CtaBand title={`Start with ${stage.name}`} text="Apply, and WE will agree the scope with you before any work begins." cta={primary} secondary={secondary} />}
+    <ProgramEnd title="Plan the years after the steepest one" text="Start a readiness review. WE arranges a conversation, then sends a one-page read of where the company sits on the business clock and what Grow would need." noFunding secondary={howLong} />
   </Fragment>
 </StageLayout>

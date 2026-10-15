@@ -1,0 +1,42 @@
+---
+/**
+ * The Universal Business Framework, previewed (BRIEF 2.1): the ten components as a nested orbit system beside a short explanation,
+ * linking to the framework page. Paraphrased from the WE frameworks with no efficacy claim (C-19).
+ */
+import UbfDiagram from '../visuals/UbfDiagram.astro';
+import type { Action } from '../program/ctas.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  more?: Action | undefined;
+}
+
+const { more } = Astro.props;
+---
+
+<section class="band band--tint-blue home-ubf" aria-labelledby="home-ubf-title">
+  <div class="container split split--reverse">
+    <div class="split__text home-ubf__text">
+      <p class="eyebrow">The Universal Business Framework</p>
+      <h2 id="home-ubf-title">One map, from a Star to a Galaxy.</h2>
+      <p class="lead">WE plans every company with the Universal Business Framework: ten parts, from a Star, a small company or project, to a Galaxy, an entire industry.</p>
+      <p>
+        The framework gives the founder, the team and WE one vocabulary for where the company stands and what it is becoming: a Star on its
+        Track, a Super Star gathering moons, a Sun at the center of its own system.
+      </p>
+      {more && <p><a class="btn btn--secondary" href={href(more.href)}>{more.label}</a></p>}
+    </div>
+    <div class="split__media bleed-media--start home-ubf__media">
+      <UbfDiagram href={more?.href.includes("/ubf/") === true ? more.href : undefined} />
+    </div>
+  </div>
+</section>
+
+<style>
+  @layer pages {
+    .home-ubf__text {
+      display: grid;
+      gap: var(--sp-4);
+    }
+  }
+</style>
