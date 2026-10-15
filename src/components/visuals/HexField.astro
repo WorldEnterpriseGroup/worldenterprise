@@ -1,0 +1,9 @@
+---
+/** HexField: the name docs/wave9-contracts.md 5 gives the hex texture. The same component as illustrations/HexField, same props. */
+import type { ComponentProps } from 'astro/types';
+import HexFieldIllustration from './illustrations/HexField.astro';
+
+type Props = ComponentProps<typeof HexFieldIllustration>;
+---
+
+<HexFieldIllustration {...Astro.props} />

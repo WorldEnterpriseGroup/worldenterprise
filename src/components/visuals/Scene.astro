@@ -1,0 +1,375 @@
+---
+/**
+ * Scene: the frame every three.js visual lives in (ARCHITECTURE 3.2). It always renders the poster, a real AVIF frame of the same
+ * scene, inside a reserved aspect-ratio box, so no-JS, reduced-motion, mobile and Lighthouse visitors see a finished picture and the
+ * page never shifts. On a capable desktop the <we-scene> stub loads three and the scene after the frame nears the viewport, then
+ * crossfades from the poster. Labels are real HTML (links or text) placed over the frame, and fall back to a list below it on narrow
+ * containers.
+ *
+ * Usually used through a named wrapper (GalaxyScene, LaunchTrajectory, OrbitSystem, WorldForge, StarfieldBand), not directly.
+ */
+import type { SceneName, SceneOptions } from '../../scripts/visuals/types.ts';
+import { cleanText, ratioClass, sceneRatio } from './contracts.ts';
+import type { SceneRatio } from './contracts.ts';
+import { posterImage } from './poster.ts';
+import type { PosterSource } from './poster.ts';
+import './positions.css';
+
+interface Props {
+  scene: SceneName;
+  /** A poster key (src/assets/visuals/posters/) or an imported image. */
+  poster: PosterSource;
+  /** What the poster shows. Required: the poster is the scene's text equivalent for every visitor. */
+  alt: string;
+  ratio?: SceneRatio;
+  options?: SceneOptions;
+  sizes?: string;
+  caption?: string;
+  /** Accessible name of the label list, when the scene has labels. */
+  labelsName?: string;
+  /** Always show the poster (for the styleguide, print-like contexts, or a page with another scene already running). */
+  static?: boolean;
+  /** Fill the positioned parent instead of keeping an aspect ratio (band backgrounds). */
+  fill?: boolean;
+  /** Decorative background (a band): the poster gets alt="" and the frame is hidden from assistive technology (the pause button stays reachable). */
+  decorative?: boolean;
+  /** `float` places labels over the frame at their anchors on wide containers; `list` always lists them below the frame. */
+  labels?: 'float' | 'list';
+  class?: string;
+}
+
+const {
+  scene,
+  poster,
+  alt,
+  ratio = '16/9',
+  options = {},
+  sizes = '100vw',
+  caption,
+  labelsName = 'Labels',
+  static: isStatic = false,
+  fill = false,
+  decorative = false,
+  labels = 'float',
+  class: className,
+} = Astro.props;
+
+const r = sceneRatio('Scene', ratio);
+const altText = decorative ? '' : cleanText('Scene', 'alt', alt);
+if (caption !== undefined) cleanText('Scene', 'caption', caption);
+// A hero renders its own poster image (high fetch priority, the LCP image) in the `poster` slot; every other scene gets a lazy one here.
+const image = Astro.slots.has('poster') ? null : await posterImage(poster, sizes);
+const hasLabels = Astro.slots.has('labels');
+const hasOverlay = Astro.slots.has('overlay');
+const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : undefined;
+---
+
+<we-scene
+  class:list={['scene', fill && 'scene--fill', labels === 'list' && 'scene--list', className]}
+  data-scene={scene}
+  data-options={optionsJson}
+  data-static={isStatic ? '' : undefined}
+  data-state="poster"
+>
+  <figure class="scene__figure" role={decorative ? 'none' : undefined}>
+    <div class="scene__stage">
+      <div class:list={['scene__frame', !fill && ratioClass(r)]} aria-hidden={decorative ? 'true' : undefined}>
+        {
+          image === null ? (
+            <slot name="poster" />
+          ) : (
+            <img
+              class="scene__poster"
+              src={image.src}
+              srcset={image.srcset}
+              sizes={image.sizes}
+              width={image.width}
+              height={image.height}
+              alt={altText}
+              decoding="async"
+              loading="lazy"
+            />
+          )
+        }
+        {
+          hasOverlay && (
+            <div class="scene__overlay" aria-hidden="true">
+              <slot name="overlay" />
+            </div>
+          )
+        }
+      </div>
+      {
+        hasLabels && (
+          <ol class="scene__labels" aria-label={labelsName} role="list">
+            <slot name="labels" />
+          </ol>
+        )
+      }
+      <button class="scene__toggle" type="button" hidden aria-pressed="false" data-play="Play animation" data-pause="Pause animation">
+        <svg class="scene__toggle-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <rect class="scene__toggle-pause" x="4" y="3" width="3" height="10" rx="1"></rect>
+          <rect class="scene__toggle-pause" x="9" y="3" width="3" height="10" rx="1"></rect>
+          <path class="scene__toggle-play" d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5z"></path>
+        </svg>
+        <span class="scene__toggle-text">Pause animation</span>
+      </button>
+    </div>
+    {caption !== undefined && <figcaption class="scene__caption">{caption}</figcaption>}
+  </figure>
+</we-scene>
+
+<script>
+  import { defineWeScene } from '../../scripts/visuals/scene-element.ts';
+
+  defineWeScene();
+</script>
+
+<style>
+  we-scene {
+    display: block;
+    container-type: inline-size;
+    container-name: scene;
+  }
+
+  .scene--fill {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .scene__figure {
+    margin: 0;
+  }
+
+  .scene--fill .scene__figure,
+  .scene--fill .scene__stage,
+  .scene--fill .scene__frame {
+    block-size: 100%;
+  }
+
+  .scene__stage {
+    position: relative;
+  }
+
+  /* The deep-space sky. The posters are rendered over exactly this color, so poster, canvas and frame agree. */
+  .scene__frame {
+    position: relative;
+    overflow: hidden;
+    background-color: color-mix(in oklab, var(--we-blue-night) 45%, var(--we-charcoal));
+    border-radius: inherit;
+  }
+
+  .ratio-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+
+  .ratio-21-9 {
+    aspect-ratio: 21 / 9;
+  }
+
+  .ratio-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+
+  .ratio-1-1 {
+    aspect-ratio: 1;
+  }
+
+  .ratio-3-1 {
+    aspect-ratio: 3;
+  }
+
+  .scene__frame :global(.scene__poster),
+  .scene__overlay,
+  .scene__frame :global(.scene__canvas) {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .scene__frame :global(.scene__poster) {
+    object-fit: cover;
+  }
+
+  .scene__overlay {
+    z-index: 2;
+  }
+
+  .scene__overlay :global(svg) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .scene__frame :global(.scene__canvas) {
+    z-index: 1;
+    display: block;
+  }
+
+  /* Once the first live frame has rendered, the poster and its overlay fade out under the canvas. */
+  we-scene.is-live :global(.scene__poster),
+  we-scene.is-live .scene__overlay {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .scene__frame :global(.scene__poster),
+    .scene__overlay {
+      transition-property: opacity;
+      transition-duration: var(--dur-slow);
+      transition-timing-function: var(--ease-out);
+    }
+  }
+
+  /* Labels: a list below the frame by default (narrow containers, and the text equivalent for everyone). */
+  .scene__labels {
+    display: grid;
+    gap: var(--sp-2);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    margin: 0;
+    margin-block-start: var(--sp-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .scene__labels :global(.scene__label) {
+    display: grid;
+    gap: 2px;
+    padding: var(--sp-2) var(--sp-3);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+    background: var(--color-bg-soft);
+    border-inline-start: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+  }
+
+  .scene__labels :global(.scene__label-note) {
+    color: var(--color-text-muted);
+  }
+
+  .scene__labels :global(.scene__label a) {
+    color: var(--color-link);
+    font-weight: 600;
+  }
+
+  /* Wide containers: each label floats over the frame at its anchor (static classes, or --x and --y from the live scene). */
+  @container scene (min-width: 48rem) {
+    .scene:not(.scene--list) .scene__labels {
+      position: absolute;
+      inset: 0;
+      display: block;
+      margin: 0;
+      pointer-events: none;
+    }
+
+    .scene:not(.scene--list) .scene__labels :global(.scene__label) {
+      position: absolute;
+      left: var(--x, var(--px, 50%));
+      top: var(--y, var(--py, 50%));
+      transform: translate(-50%, calc(-100% - var(--sp-2)));
+      max-inline-size: 15rem;
+      padding: var(--sp-1) var(--sp-2);
+      color: var(--color-text-inverse);
+      text-align: center;
+      background: color-mix(in oklab, var(--we-blue-night) 78%, transparent);
+      border: 1px solid color-mix(in oklab, var(--we-tint) 35%, transparent);
+      border-inline-start-width: 1px;
+      border-radius: var(--radius-sm);
+      pointer-events: auto;
+      backdrop-filter: blur(4px);
+    }
+
+    .scene:not(.scene--list) .scene__labels :global(.scene__label.is-below) {
+      transform: translate(-50%, var(--sp-2));
+    }
+
+    .scene:not(.scene--list) .scene__labels :global(.scene__label-note) {
+      color: var(--we-tint);
+      font-size: var(--fs-xs);
+    }
+
+    .scene:not(.scene--list) .scene__labels :global(.scene__label a) {
+      color: var(--color-text-inverse);
+      text-decoration-color: var(--we-amber);
+    }
+
+    .scene:not(.scene--list) .scene__labels :global(.scene__label a:focus-visible) {
+      outline: 2px solid var(--color-focus-inverse);
+      outline-offset: 2px;
+    }
+  }
+
+  /* The pause control (WCAG 2.2.2): a real button outside the canvas, shown only while a scene runs. */
+  .scene__toggle {
+    position: absolute;
+    inset-block-end: var(--sp-3);
+    inset-inline-end: var(--sp-3);
+    z-index: 3;
+    display: inline-flex;
+    gap: var(--sp-2);
+    align-items: center;
+    min-block-size: 2.75rem;
+    padding: var(--sp-2) var(--sp-3);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-inverse);
+    background: color-mix(in oklab, var(--we-blue-night) 82%, transparent);
+    border: 1px solid color-mix(in oklab, var(--we-tint) 45%, transparent);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+  }
+
+  .scene__toggle[hidden] {
+    display: none;
+  }
+
+  .scene__toggle:focus-visible {
+    outline: 2px solid var(--color-focus-inverse);
+    outline-offset: 2px;
+  }
+
+  .scene__toggle-icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+    fill: currentcolor;
+  }
+
+  .scene__toggle-play,
+  .scene__toggle[aria-pressed='true'] .scene__toggle-pause {
+    display: none;
+  }
+
+  .scene__toggle[aria-pressed='true'] .scene__toggle-play {
+    display: inline;
+  }
+
+  .scene__caption {
+    margin-block-start: var(--sp-2);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* With labels below the frame (narrow containers) the pause button sits on the frame, not on the list. */
+  .scene--list .scene__labels + .scene__toggle {
+    inset-block-end: auto;
+    inset-block-start: var(--sp-3);
+  }
+
+  @container scene (width < 48rem) {
+    .scene__labels + .scene__toggle {
+      inset-block-end: auto;
+      inset-block-start: var(--sp-3);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .scene__labels :global(.scene__label) {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>
