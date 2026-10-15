@@ -49,7 +49,6 @@ function content(abstract: string): TwinContent {
 function llmsInput(overrides: Partial<LlmsInput>): LlmsInput {
   return {
     site: { name: site.name, legalName: site.legalName, tagline: site.tagline, description: site.description, origin: site.origin },
-    packages: [],
     serviceLines: [],
     keyPages: [],
     optionalPages: [],

@@ -45,7 +45,7 @@ export const SECTIONS: readonly SectionDefinition[] = [
  * page is in the repository.
  */
 export const SEE_ALSO_TITLES: Readonly<Record<string, string>> = {
-  '/apply/': 'Apply to the incubator',
+  '/apply/': 'Start a readiness review',
   '/contact/': 'Talk to WE',
   '/fundability/': 'Fundability and investor readiness',
   '/investors/interest/': 'Ask to meet a company',
@@ -58,11 +58,11 @@ export const SEE_ALSO_TITLES: Readonly<Record<string, string>> = {
   '/network/partners/enquire/': 'Send a partner enquiry',
   '/network/partners/faq/': 'Partner FAQ',
   '/network/partners/how-it-works/': 'How partner enquiries work',
-  '/pricing/': 'Seats and pricing',
-  '/program/build/': 'Build: ship the first product',
-  '/program/dedicated-teams/': 'Dedicated seats, steered by WE',
-  '/program/dream/': 'Dream: validate the problem',
-  '/program/grow/': 'Grow: earn customers',
+  '/how-we-work/': 'How WE works',
+  '/program/build/': 'Build: through the steepest year',
+  '/program/dedicated-teams/': 'The team WE steers',
+  '/program/dream/': 'Dream: find the first proof',
+  '/program/grow/': 'Grow: becoming established',
   '/program/how-it-works/': 'How the program works',
   '/program/how-we-decide/': 'How WE decides',
   '/program/who-its-for/': 'Who the program is for',

@@ -5,7 +5,6 @@ import * as geoAudit from '../../../scripts/audit-geo.mjs';
 import { deskGroups, familyGroups, fullTiers, FAMILY_LABELS } from '../../../src/components/geo/llms-plan.ts';
 import { DESK_DEFINITIONS, deskPath } from '../../../src/data/desks.ts';
 import { FAMILIES } from '../../../src/data/families.ts';
-import { packages } from '../../../src/data/packages.ts';
 import { routes } from '../../../src/data/routes.ts';
 import { site } from '../../../src/data/site.ts';
 import {
@@ -29,7 +28,6 @@ const bytes = (text: string): number => new TextEncoder().encode(text).length;
 function input(overrides: Partial<LlmsInput> = {}): LlmsInput {
   return {
     site: { name: site.name, legalName: site.legalName, tagline: site.tagline, description: site.description, origin: site.origin },
-    packages: packages.map((p) => ({ name: p.name, stageFit: p.stageFit, depth: p.depth })),
     serviceLines: [{ line: 'A', title: 'Line A', route: '/services/line-a/', summary: 'Summary of line A.' }],
     keyPages: [{ route: '/about/facts/', title: 'Facts about WE' }],
     optionalPages: [],
@@ -37,7 +35,7 @@ function input(overrides: Partial<LlmsInput> = {}): LlmsInput {
     twinRoutes: new Set<string>(),
     contactRoute: '/contact/',
     applyRoute: '/apply/',
-    addOnStatement: 'The paid add-on is separate from the packages.',
+    addOnStatement: 'The paid add-on is a separate service.',
     calendarStatement: 'WE does not describe an intake calendar.',
     ...overrides,
   };

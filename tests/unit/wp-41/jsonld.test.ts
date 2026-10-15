@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import * as claimsAudit from '../../../scripts/audit-claims.mjs';
 import { ALLOWED_TYPES as SCRIPT_ALLOWED, FORBIDDEN_TYPES as SCRIPT_FORBIDDEN, validateDocument } from '../../../scripts/validate-jsonld.mjs';
-import { packages } from '../../../src/data/packages.ts';
 import {
   ALLOWED_TYPES,
   FORBIDDEN_TYPES,
@@ -10,7 +9,6 @@ import {
   briefCitations,
   graph,
   organizationNode,
-  packageCatalogNode,
   pageNode,
   websiteNode,
   withOrganizationEnrichment,
@@ -31,20 +29,22 @@ const SERVICE_LINES = [
   'Professional-Services Coordination',
 ];
 const org = organizationNode('https://worldenterprise.org/logo.svg');
-const enriched = withOrganizationEnrichment([org], { packages, serviceLines: SERVICE_LINES });
+const enriched = withOrganizationEnrichment([org], { serviceLines: SERVICE_LINES });
 const homePage = pageNode({ path: '/', name: 'WE', description: 'D', type: 'WebPage' });
 const withBase = (nodes: readonly Record<string, unknown>[]) => graph([...nodes, websiteNode(), homePage]);
 const orgDoc = (nodes: readonly Record<string, unknown>[] = enriched) => withBase(nodes);
 
-test('the organisation lists the four packages as an OfferCatalog without a price', () => {
+/** An unpriced catalog, built here only to prove the validator's rules; the site itself publishes none (W9-13, WP-54). */
+const catalog = {
+  '@type': 'OfferCatalog',
+  name: 'Catalog',
+  itemListElement: [{ '@type': 'Offer', name: 'An offer', itemOffered: { '@type': 'Service', '@id': 'https://worldenterprise.org/#service', name: 'A service', description: 'A service.', serviceType: 'Consulting', provider: { '@id': 'https://worldenterprise.org/#org' } } }],
+};
+
+test('the organisation carries no offer catalog and no package now that the packages are retired (W9-13)', () => {
   const node = enriched[0] as Record<string, unknown>;
-  const catalog = node['hasOfferCatalog'] as { '@type': string; itemListElement: { name: string; itemOffered: { '@id': string } }[] };
-  assert.equal(catalog['@type'], 'OfferCatalog');
-  assert.deepEqual(catalog.itemListElement.map((o) => o.name), packages.map((p) => `${p.name} package`));
-  assert.equal(new Set(catalog.itemListElement.map((o) => o.itemOffered['@id'])).size, 4);
-  const text = JSON.stringify(catalog);
-  assert.doesNotMatch(text, /"(?:price|priceCurrency|priceSpecification|offers)"/);
-  assert.doesNotMatch(text, /\d|[$€£]/, 'no digit, no currency sign, no seat count');
+  assert.equal(node['hasOfferCatalog'], undefined);
+  assert.doesNotMatch(JSON.stringify(enriched), /Offer|package|Spark|Accelerate|Studio|\/pricing\//);
   assert.deepEqual(validateDocument(orgDoc()), []);
 });
 
@@ -56,11 +56,11 @@ test('knowsAbout is limited to the seven service lines', () => {
 
 test('the enrichment is a transform: organizationNode alone still emits no Offer, and an empty input adds nothing', () => {
   assert.doesNotMatch(JSON.stringify(org), /Offer/);
-  const bare = withOrganizationEnrichment([org], { packages: [], serviceLines: [] })[0] as Record<string, unknown>;
+  const bare = withOrganizationEnrichment([org], { serviceLines: [] })[0] as Record<string, unknown>;
   assert.equal(bare['hasOfferCatalog'], undefined);
   assert.equal(bare['knowsAbout'], undefined);
   const other = pageNode({ path: '/a/', name: 'A', description: 'D', type: 'WebPage' });
-  assert.deepEqual(withOrganizationEnrichment([other], { packages, serviceLines: SERVICE_LINES })[0], other);
+  assert.deepEqual(withOrganizationEnrichment([other], { serviceLines: SERVICE_LINES })[0], other);
 });
 
 test('sameAs stays the GitHub organisation only', () => {
@@ -72,12 +72,12 @@ test('Offer stays a forbidden type everywhere except inside the organisation cat
   assert.ok(SCRIPT_FORBIDDEN.has('Offer'));
   const bare = { '@context': 'https://schema.org', '@graph': [{ '@type': 'Offer', name: 'x', itemOffered: { '@type': 'Service', name: 'y' } }] };
   assert.ok(validateDocument(bare).some((e: string) => /forbidden @type Offer/.test(e)));
-  const onPage = { '@context': 'https://schema.org', '@graph': [org, { ...pageNode({ path: '/a/', name: 'A', description: 'D', type: 'WebPage' }), hasOfferCatalog: packageCatalogNode(packages) }] };
+  const onPage = { '@context': 'https://schema.org', '@graph': [org, { ...pageNode({ path: '/a/', name: 'A', description: 'D', type: 'WebPage' }), hasOfferCatalog: catalog }] };
   assert.ok(validateDocument(onPage).some((e: string) => /forbidden @type Offer/.test(e)), 'a catalog on a page node is not the organisation');
 });
 
 test('a price inside the catalog still fails the validator', () => {
-  const catalog = packageCatalogNode(packages) as { itemListElement: Record<string, unknown>[] };
+  assert.deepEqual(validateDocument(orgDoc([{ ...(enriched[0] as Record<string, unknown>), hasOfferCatalog: catalog }])), [], 'an unpriced catalog on the organisation is allowed');
   const priced = { ...(enriched[0] as Record<string, unknown>), hasOfferCatalog: { ...catalog, itemListElement: [{ ...catalog.itemListElement[0], price: '1' }, ...catalog.itemListElement.slice(1)] } };
   assert.ok(validateDocument(orgDoc([priced])).some((e: string) => /price/.test(e)));
   const specified = { ...(enriched[0] as Record<string, unknown>), hasOfferCatalog: { ...catalog, itemListElement: [{ ...catalog.itemListElement[0], priceSpecification: {} }] } };

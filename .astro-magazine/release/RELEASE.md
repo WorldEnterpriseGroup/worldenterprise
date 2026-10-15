@@ -387,11 +387,11 @@ This file holds no sentence. It builds the table from the shared readiness crite
 
 #### CR-10. Network page, card and callout
 
-Source: `src/pages/network/index.astro:69`. Renders on: /network/.
+Source: `src/pages/network/index.astro:76`. Renders on: /network/.
 
-> L69: WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.
+> L76: WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.
 >
-> L88: WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.
+> L108: WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -407,17 +407,13 @@ Source: `src/content/pages/network/index.mdx:40`. Renders on: /network/.
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-12. Pricing page, body and FAQ
+#### CR-12. How WE works, the add-on paragraph
 
-Source: `src/content/pages/pricing/pricing.mdx:22`. Renders on: /pricing/.
+Source: `src/pages/how-we-work/index.astro:276`. Renders on: /how-we-work/ (it replaced the packages page in wave 9; /pricing/ is now a noindex pointer that names no add-on). The fee sentence after the first sentence of L277 is CR-02, and the disclaimer below it is CR-01 through `IntroductionsDisclaimer`.
 
-> L22: This page lists no amounts. WE shares the current rate for a package, a custom seat plan or the add-on when you ask, so the figure you receive is the one that applies today.
+> L276: Investor Introductions is a separate add-on
 >
-> L47: Not on this page. WE shares the current rate for a package, a custom seat plan or the add-on when you ask for it.
->
-> L64: Is Investor Introductions part of a package?
->
-> L65: No. It is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+> L277: It is optional, and a flat fee covers curation and preparation.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -472,9 +468,9 @@ Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-
 
 #### CR-17. Founders page, what WE does not do
 
-Source: `src/pages/founders/index.astro:38`. Renders on: /founders/.
+Source: `src/pages/founders/index.astro:44`. Renders on: /founders/.
 
-> L38: It does not promise funding or investor meetings, or predict whether any company will raise money.
+> L44: It does not promise funding or investor meetings, or predict whether any company will raise money.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -510,13 +506,13 @@ Source: `src/data/faq.yaml:57`. Renders on: /faq/.
 
 #### CR-21. Facts page, the question about the add-on (Release 2 scope: not in release-1-rc2; counsel reviews it with the next candidate)
 
-Source: `src/content/pages/about/facts.mdx:51`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
+Source: `src/content/pages/about/facts.mdx:40`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
 
-> L51: Is Investor Introductions part of a package?
+> L40: Is Investor Introductions part of the engagement?
 >
-> L53: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+> L42: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
 >
-> L55: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
+> L44: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______

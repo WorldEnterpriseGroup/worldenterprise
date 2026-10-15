@@ -193,10 +193,13 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/program/build/', 'StageLayout', 'WP-01'),
     row('/program/grow/', 'StageLayout', 'WP-01'),
 
-    // Apply (2), Pricing (1), Tools (1)
+    // Apply (2), How WE works (1), the retired pricing page (1), Tools (1)
     row('/apply/', 'FormLayout', 'WP-03'),
     row('/apply/thanks/', 'FormLayout', 'WP-03', { indexable: false }),
-    row('/pricing/', 'ToolLayout', 'WP-03'),
+    row('/how-we-work/', 'MarketingLayout', 'WP-54'),
+    // Wave 9 (W9-13): /how-we-work/ replaces the packages page. The site has no redirect mechanism, so /pricing/ stays as a noindex
+    // pointer for old links and bookmarks, and leaves the sitemap, search and the llms files.
+    row('/pricing/', 'ToolLayout', 'WP-03', { indexable: false }),
     row('/tools/team-composer/', 'ToolLayout', 'WP-03'),
 
     // Services (8)
@@ -275,8 +278,9 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/tools/metrics-calculator/', 'ToolLayout', 'WP-49'),
     row('/tools/evidence-room/', 'ToolLayout', 'WP-49'),
     // WP-48 was deferred in wave 7 and its four pages do not exist; wave 8 flips them to launch:false (contracts section 10). A future package that writes a page
-    // flips its row back to launch:true in the same change.
-    row('/about/frameworks/ubf/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
+    // flips its row back to launch:true in the same change. WP-55 (wave 9, D-16 revised) absorbed WP-48 and wrote the UBF page; the row keeps the
+    // WP-48 owner because RouteOwner names no wave 9 package.
+    row('/about/frameworks/ubf/', 'MarketingLayout', 'WP-48'),
     row('/star/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
     row('/shift/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
     row('/android/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),

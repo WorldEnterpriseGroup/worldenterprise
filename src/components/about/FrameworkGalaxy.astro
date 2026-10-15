@@ -1,0 +1,231 @@
+---
+/**
+ * The frameworks galaxy (/about/frameworks/): every WE framework drawn as its own solar system, with UBF, the map the others sit on, as
+ * the core system at the center of the spiral. Names, roles and parts are real HTML; the drawings are decorative. A system links to
+ * its deep page only when that page is live, so the galaxy never links a dead route.
+ */
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+import SystemDiagram from './SystemDiagram.astro';
+import { initials } from './framework-data.ts';
+import type { FrameworkSystem } from './framework-data.ts';
+
+interface Props {
+  systems: readonly FrameworkSystem[];
+  /** Heading level of each system name. */
+  headingLevel?: 2 | 3;
+  /** Accessible name of the list. */
+  label?: string;
+}
+
+const { systems, headingLevel = 3, label = 'The WE frameworks, each drawn as a solar system' } = Astro.props;
+if (systems.length === 0) throw new Error('FrameworkGalaxy: needs at least one framework');
+const state = await getRouteState();
+const H = `h${headingLevel}` as 'h2' | 'h3';
+const items = systems.map((s, i) => ({
+  ...s,
+  core: i === 0,
+  link: s.path !== null && state.isLive(s.path) ? s.path : null,
+  mark: initials(s.name),
+}));
+// Two arms of a logarithmic spiral behind the systems: decorative, drawn once at build time.
+const arm = (offset: number): string =>
+  Array.from({ length: 64 }, (_, k) => {
+    const t = k / 63;
+    const a = offset + t * Math.PI * 3.1;
+    const r = 18 + t * 560;
+    return `${k === 0 ? 'M' : 'L'}${(800 + r * Math.cos(a)).toFixed(1)} ${(600 + r * Math.sin(a) * 0.62).toFixed(1)}`;
+  }).join(' ');
+---
+
+<div class="fwgal">
+  <svg class="fwgal__spiral" viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <path d={arm(0)} />
+    <path d={arm(Math.PI)} />
+  </svg>
+  <ul class="fwgal__systems" role="list" aria-label={label}>
+    {
+      items.map((s) => (
+        <li class:list={['fwgal__system', s.core && 'fwgal__system--core']} id={`fw-${s.id}`}>
+          <SystemDiagram initials={s.mark} count={Math.min(12, s.parts.length)} accent={s.core ? 4 : -1} size={s.core ? 'lg' : 'sm'} class="fwgal__diagram" />
+          <div class="fwgal__text">
+            <p class="fwgal__role">{s.role}</p>
+            <H class="fwgal__name">{s.link === null ? s.name : <a href={href(s.link)}>{s.name}</a>}</H>
+            <p class="fwgal__summary">{s.summary}</p>
+            <ol class="fwgal__parts" role="list" aria-label={`${s.name}: its parts in order`}>
+              {s.parts.map((p) => (
+                <li>
+                  <span class="fwgal__initial" aria-hidden="true">{p.name.charAt(0)}</span>
+                  <span class="fwgal__part">{p.name}</span>
+                </li>
+              ))}
+            </ol>
+            {s.link !== null && (
+              <p class="fwgal__more">
+                <a href={href(s.link)}>
+                  Explore {s.name}
+                  <span aria-hidden="true"> →</span>
+                </a>
+              </p>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .fwgal {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .fwgal__spiral {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    z-index: -1;
+    pointer-events: none;
+
+    & path {
+      fill: none;
+      stroke: var(--color-link);
+      stroke-opacity: 0.22;
+      stroke-width: 2;
+      stroke-dasharray: 1 9;
+      stroke-linecap: round;
+    }
+  }
+
+  .fwgal__systems {
+    display: grid;
+    gap: var(--sp-5);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .fwgal__system {
+    display: grid;
+    align-content: start;
+    gap: var(--sp-4);
+    padding: var(--sp-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: color-mix(in oklch, var(--color-bg-soft) 72%, transparent);
+    color: var(--color-text);
+    scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
+  }
+
+  .fwgal__system:target {
+    outline: 2px solid var(--color-highlight);
+    outline-offset: 2px;
+  }
+
+  .fwgal__diagram {
+    color: var(--color-link);
+    max-inline-size: 9rem;
+  }
+
+  .fwgal__text {
+    display: grid;
+    gap: var(--sp-2);
+    align-content: start;
+  }
+
+  .fwgal__role {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .fwgal__name {
+    margin: 0;
+    font-size: var(--fs-xl);
+  }
+
+  .fwgal__summary {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .fwgal__parts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--fs-sm);
+
+    & li {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-1);
+      padding: var(--sp-1) var(--sp-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+    }
+  }
+
+  .fwgal__initial {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 1.5em;
+    block-size: 1.35em;
+    clip-path: var(--hex-clip);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: var(--fs-xs);
+  }
+
+  .fwgal__more {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  @media (min-width: 62rem) {
+    .fwgal__systems {
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    }
+
+    .fwgal__system--core {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(14rem, 26rem) minmax(0, 1fr);
+      align-items: center;
+      gap: var(--sp-7);
+      padding: var(--sp-7);
+      border-color: var(--color-highlight);
+
+      & .fwgal__diagram {
+        max-inline-size: 26rem;
+      }
+
+      & .fwgal__name {
+        font-size: var(--fs-3xl);
+      }
+
+      & .fwgal__summary {
+        max-inline-size: var(--prose-max);
+        font-size: var(--fs-lead);
+      }
+    }
+  }
+
+  @media (forced-colors: active) {
+    .fwgal__system:target {
+      outline-color: Highlight;
+    }
+
+    .fwgal__initial {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

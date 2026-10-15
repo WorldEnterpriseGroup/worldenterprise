@@ -3,9 +3,9 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { packages } from '../../../src/data/packages.ts';
-import { stageLabel } from '../../../src/components/pricing/stages.ts';
-import { CUSTOM_PLAN_BANNER, packageBanner } from '../../../src/scripts/team-composer.ts';
+
+// The copy guard of the pricing and Composer pages, run on the source so a breach fails before a build. Wave 9 (W9-13, WP-54) retired
+// the package components: /pricing/ is a short noindex pointer to /how-we-work/, and the Composer carries roles only.
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
@@ -41,52 +41,29 @@ function read(rel: string): string {
   return readFileSync(join(root, rel), 'utf8');
 }
 
-const COMPONENTS = ['PackageCards', 'SeatExplainer', 'NotPublished', 'PackagePicker'].map((name) => `src/components/pricing/${name}.astro`);
-
 function hits(text: string): string[] {
   return RULES.filter(({ re }) => re.test(text)).map(({ id }) => id);
 }
 
-for (const rel of COMPONENTS) {
+const PAGES = [
+  'src/content/pages/pricing/pricing.mdx',
+  'src/pages/pricing/index.astro',
+  'src/content/pages/tools/team-composer.mdx',
+  'src/pages/tools/team-composer.astro',
+  'src/components/islands/we-team-composer/TeamComposer.astro',
+];
+
+for (const rel of PAGES) {
   test(`${rel}: the copy trips no denylist rule`, () => {
-    assert.deepEqual(hits(visibleText(read(rel))), []);
+    const found = hits(visibleText(read(rel)));
+    assert.deepEqual(found, [], `${rel}: ${found.join(', ')}`);
   });
 }
 
-test('the pricing and Composer page copy trips no denylist rule', () => {
-  for (const rel of ['src/content/pages/pricing/pricing.mdx', 'src/content/pages/tools/team-composer.mdx']) {
-    const text = visibleText(read(rel));
-    const found = hits(text);
-    assert.deepEqual(found, [], `${rel}: ${found.join(', ')}`);
-  }
-});
-
-test('the package data copy trips no rule, and no package sits near a seat count', () => {
-  const text = packages.map((p) => `${p.name} ${p.stageFit} ${p.depth} ${stageLabel(p)}`).join(' . ');
-  assert.deepEqual(hits(text), []);
-});
-
-test('the Composer select, its hint and the banner copy trip no rule when the tags are stripped', () => {
-  const html = read('src/components/islands/we-team-composer/TeamComposer.astro');
-  const hint = /<p class="field__hint" id="composer-package-hint">\s*([^<]+?)\s*<\/p>/.exec(html);
-  assert.ok(hint, 'the select carries a hint paragraph');
-  const options = packages.map((p) => `<option value="${p.id}">${stageLabel(p)} (${p.name})</option>`).join('');
-  const rendered = `<label>Company stage (optional)</label><select><option value="">No stage chosen: a custom seat plan</option>${options}</select><p>${hint[1]}</p><p>${CUSTOM_PLAN_BANNER.title}</p><p>${CUSTOM_PLAN_BANNER.detail}</p>`;
-  assert.deepEqual(hits(rendered.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ')), []);
-});
-
-test('every banner a package can produce trips no rule', () => {
-  for (const pkg of packages) {
-    const banner = packageBanner(pkg.id);
-    assert.deepEqual(hits(`${banner.title}. ${banner.detail}`), [], pkg.id);
-  }
-});
-
-test('the hint after the select ends its sentence, so a package name cannot run into the seat wording that follows', () => {
-  const html = read('src/components/islands/we-team-composer/TeamComposer.astro');
-  const hint = /<p class="field__hint" id="composer-package-hint">\s*([^<]+?)\s*<\/p>/.exec(html);
-  assert.ok(hint);
-  assert.match(hint[1] ?? '', /\.$/);
+test('the retired pricing page names no package and no price', () => {
+  const text = visibleText(read('src/content/pages/pricing/pricing.mdx')) + visibleText(read('src/pages/pricing/index.astro'));
+  assert.doesNotMatch(text, /\b(Spark|Accelerate|Studio)\b|\$\s?\d|\bper seat\b/);
+  assert.match(read('src/pages/pricing/index.astro'), /href: '\/how-we-work\/'/);
 });
 
 test('the guard itself catches the wording it exists for', () => {

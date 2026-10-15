@@ -21,7 +21,7 @@ const LAYOUTS: readonly LayoutName[] = [
 ];
 
 /** The routes that are not indexed. A route joins this list by an explicit edit here, never by accident. */
-const NOINDEX = ['/404.html', '/apply/thanks/', '/briefs/thanks/', '/investors/interest/thanks/', '/network/partners/enquire/thanks/', '/search/', '/sitemap/'];
+const NOINDEX = ['/404.html', '/apply/thanks/', '/briefs/thanks/', '/investors/interest/thanks/', '/network/partners/enquire/thanks/', '/pricing/', '/search/', '/sitemap/'];
 
 test('every row path is unique', () => {
   const paths = routes.map((r) => r.path);

@@ -1,0 +1,158 @@
+---
+/**
+ * Where the phases sit on the business clock: the five phases as segments of a ten-year axis (half-year steps), with the stage a page
+ * is about drawn solid and the others faint. The windows are the typical windows of SITE-COPY 2.2; Orbit runs on past year ten.
+ * Plain HTML: a list of segments a screen reader reads in order, no script.
+ */
+import { PHASES } from './phases.ts';
+import type { StageId } from './stages.ts';
+
+interface Props {
+  /** The stage to emphasize; all phases are solid when omitted. */
+  current?: StageId | undefined;
+  /** Heading id that names the bar. */
+  labelledby: string;
+}
+
+const { current, labelledby } = Astro.props;
+const YEARS = [0, 1, 3, 5, 10] as const;
+---
+
+<div class="clockbar">
+  <ol class="clockbar__phases" role="list" aria-labelledby={labelledby}>
+    {
+      PHASES.map((phase) => (
+        <li class:list={['clockbar__seg', `clockbar__seg--${phase.id}`, { 'clockbar__seg--dim': current !== undefined && phase.stage !== current }]}>
+          <span class="clockbar__name">{phase.name}</span>
+          <span class="clockbar__window">{phase.window}</span>
+        </li>
+      ))
+    }
+  </ol>
+  <ol class="clockbar__axis" role="list" aria-hidden="true">
+    {YEARS.map((year) => <li class:list={['clockbar__tick', `clockbar__tick--${year}`]}>{year === 0 ? 'Start' : `Year ${year}`}</li>)}
+  </ol>
+</div>
+
+<style>
+  @layer pages {
+    .clockbar {
+      display: grid;
+      gap: var(--sp-2);
+    }
+
+    .clockbar__phases,
+    .clockbar__axis {
+      display: grid;
+      grid-template-columns: repeat(20, minmax(0, 1fr));
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .clockbar__phases {
+      gap: var(--sp-1);
+    }
+
+    .clockbar__seg {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-1);
+      min-inline-size: 0;
+      padding: var(--sp-2) var(--sp-3);
+      color: var(--we-white);
+      background: var(--we-blue);
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+    }
+
+    .clockbar__seg--dim {
+      color: var(--color-text);
+      background: var(--color-bg-soft);
+      border-color: var(--color-border);
+    }
+
+    .clockbar__name {
+      font-family: var(--ff-display);
+      font-weight: 700;
+    }
+
+    .clockbar__window {
+      font-size: var(--fs-xs);
+    }
+
+    /* One column on a phone: the segments stack in order; the axis is only drawn where the segments sit on it. */
+    .clockbar__seg {
+      grid-column: 1 / -1;
+    }
+
+    .clockbar__axis {
+      display: none;
+    }
+
+    @media (min-width: 62rem) {
+      .clockbar__seg--ignite {
+        grid-column: 1 / 2;
+      }
+
+      .clockbar__seg--build {
+        grid-column: 2 / 4;
+      }
+
+      .clockbar__seg--launch {
+        grid-column: 4 / 7;
+      }
+
+      .clockbar__seg--grow {
+        grid-column: 7 / 11;
+      }
+
+      .clockbar__seg--orbit {
+        grid-column: 11 / 21;
+      }
+
+      /* Ignite is half a year wide: its name and window wrap rather than overflow. */
+      .clockbar__seg--ignite {
+        padding-inline: var(--sp-1);
+        overflow-wrap: anywhere;
+      }
+
+      .clockbar__axis {
+        display: grid;
+        font-size: var(--fs-xs);
+        color: var(--color-text-muted);
+      }
+
+      .clockbar__tick--0 {
+        grid-column: 1 / 3;
+      }
+
+      .clockbar__tick--1 {
+        grid-column: 3 / 5;
+      }
+
+      .clockbar__tick--3 {
+        grid-column: 7 / 9;
+      }
+
+      .clockbar__tick--5 {
+        grid-column: 11 / 13;
+      }
+
+      .clockbar__tick--10 {
+        grid-column: 19 / 21;
+        justify-self: end;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .clockbar__seg {
+        border-color: CanvasText;
+      }
+
+      .clockbar__seg:not(.clockbar__seg--dim) {
+        border-width: 3px;
+      }
+    }
+  }
+</style>

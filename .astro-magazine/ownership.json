@@ -2342,6 +2342,16 @@
     },
     {
       "wp": "WP-51",
+      "path": "infra/intake/render/render.mjs",
+      "reason": "Wave 9 CI reliability (coordinator request): intake:render timed out launching Chromium on the 100m-CPU runners twice (spawnSync ETIMEDOUT). Raise the print timeout and retry once on ETIMEDOUT only; every other failure still fails."
+    },
+    {
+      "wp": "WP-51",
+      "path": "infra/intake/render/render.d.mts",
+      "reason": "Wave 9 CI reliability (coordinator request): intake:render timed out launching Chromium on the 100m-CPU runners twice (spawnSync ETIMEDOUT). Raise the print timeout and retry once on ETIMEDOUT only; every other failure still fails."
+    },
+    {
+      "wp": "WP-51",
       "path": "tests/e2e/wave8/wp-56/families-1920.spec.ts",
       "reason": "Wave 9 (coordinator grant from WP-56's handoff): the library template's measure skip is lifted once WP-51 caps the 'How to use this' callout at 80ch; the TEMPLATES measure flag and its comment only."
     },
@@ -3184,6 +3194,176 @@
       "wp": "WP-57",
       "path": "tests/e2e/wave7/wp-41/geo.spec.ts",
       "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-60/fixtures/reference-originals.json",
+      "reason": "Wave 9 close (W9-13 positioning): the glossary 'seat' entry is redefined as the contract unit, not WE's identity; the glossary.seat originals hash only follows glossary.yaml. Also the faq hashes of the ids WP-57 rewords for naming and positioning: what-is-we, is-it-an-accelerator, digital-incubator-meaning and corp-start."
+    },
+    {
+      "wp": "WP-57",
+      "path": "public/favicon.svg",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/components/briefs/copy.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": ".astro-magazine/sources/wp-63.json",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/components/geo/cite.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/components/library/markdown.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/components/reference/resources.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/pages/faq/index.astro",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/pages/search/index.astro",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/pages/glossary/index.astro",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/pages/newsletter/[...slug].astro",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/pages/sitemap.astro",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/pages/styleguide.astro",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/scripts/evidence-room.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/insights/dream/write-the-problem-brief-before-the-code.mdx",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/insights/dream/is-your-saas-idea-a-business-or-a-feature.mdx",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/legal/accessibility.md",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/legal/terms.md",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/network/partners/thanks.mdx",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/press/index.md",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/program/how-we-decide.mdx",
+      "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/about/brand-story.mdx",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/about/facts.mdx",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": ".astro-magazine/sources/wp-55.json",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/apply/apply.mdx",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/apply/thanks.mdx",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": ".astro-magazine/sources/wp-43.json",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/scripts/team-composer.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/data/faq.yaml",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": ".astro-magazine/sources/wp-78.json",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-18/copy.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-41/llms.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
     },
     {
       "wp": "WP-58",

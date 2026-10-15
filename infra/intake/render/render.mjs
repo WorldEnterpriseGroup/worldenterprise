@@ -25,7 +25,13 @@ import { blobPaths, BriefError, buildRegistry, parseBrief, renderHtml } from './
 import { findChromium, printArgs } from './chromium.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const PDF_TIMEOUT_MS = 60_000;
+/**
+ * How long one Chromium print may take. The CI runners are small (a 100m CPU request), where a cold Chromium start alone has
+ * passed 60 s, so the default is 180 s; RENDER_PDF_TIMEOUT_MS overrides it.
+ */
+const PDF_TIMEOUT_MS = timeoutFromEnv(process.env.RENDER_PDF_TIMEOUT_MS, 180_000);
+/** A print that times out (ETIMEDOUT) is tried once more, in a fresh profile. Every other failure fails at once. */
+const PDF_ATTEMPTS = 2;
 const MIN_PDF_BYTES = 1024;
 
 function parseArgs(argv) {
@@ -41,15 +47,46 @@ function parseArgs(argv) {
   return options;
 }
 
-function printPdf(chromium, htmlPath, pdfPath) {
-  const profileDir = mkdtempSync(join(tmpdir(), 'brief-profile-'));
-  try {
-    const result = spawnSync(chromium, printArgs({ htmlPath: resolve(htmlPath), pdfPath: resolve(pdfPath), profileDir }), { timeout: PDF_TIMEOUT_MS, encoding: 'utf8' });
-    if (result.error !== undefined) throw new Error(`the browser did not run: ${result.error.message}`);
+/** A positive whole number of milliseconds from the environment, or the fallback when it is unset; anything else is an error. */
+export function timeoutFromEnv(value, fallback) {
+  if (value === undefined || value === '') return fallback;
+  const ms = Number(value);
+  if (!Number.isInteger(ms) || ms <= 0) throw new Error(`RENDER_PDF_TIMEOUT_MS must be a positive whole number of milliseconds, not "${value}"`);
+  return ms;
+}
+
+/**
+ * Runs `attempt` up to `attempts` times, retrying only when the browser timed out (a spawnSync ETIMEDOUT). `attempt` returns
+ * the spawnSync result. Any other spawn error, or a non-zero exit, throws at once with what the browser said.
+ */
+export function runBrowser(attempt, { attempts = PDF_ATTEMPTS, timeoutMs = PDF_TIMEOUT_MS, log = () => {} } = {}) {
+  for (let index = 1; ; index += 1) {
+    const result = attempt();
+    if (result.error !== undefined) {
+      if (result.error.code === 'ETIMEDOUT' && index < attempts) {
+        log(`the browser did not finish within ${timeoutMs} ms (attempt ${index} of ${attempts}); retrying once in a fresh profile`);
+        continue;
+      }
+      const tried = result.error.code === 'ETIMEDOUT' ? ` after ${index} attempt(s) of ${timeoutMs} ms` : '';
+      throw new Error(`the browser did not run${tried}: ${result.error.message}`);
+    }
     if (result.status !== 0) throw new Error(`the browser exited with status ${result.status}: ${(result.stderr ?? '').split('\n').slice(-3).join(' ').slice(0, 300)}`);
-  } finally {
-    rmSync(profileDir, { recursive: true, force: true });
+    return result;
   }
+}
+
+function printPdf(chromium, htmlPath, pdfPath, log) {
+  runBrowser(
+    () => {
+      const profileDir = mkdtempSync(join(tmpdir(), 'brief-profile-'));
+      try {
+        return spawnSync(chromium, printArgs({ htmlPath: resolve(htmlPath), pdfPath: resolve(pdfPath), profileDir }), { timeout: PDF_TIMEOUT_MS, encoding: 'utf8' });
+      } finally {
+        rmSync(profileDir, { recursive: true, force: true });
+      }
+    },
+    { log },
+  );
   const header = readFileSync(pdfPath).subarray(0, 5).toString('latin1');
   if (header !== '%PDF-' || statSync(pdfPath).size < MIN_PDF_BYTES) throw new Error('the browser wrote no valid PDF');
 }
@@ -73,7 +110,7 @@ export function renderAll({ briefsDir, outDir, pdf, log }) {
     const htmlPath = join(outDir, paths.html);
     mkdirSync(dirname(htmlPath), { recursive: true });
     writeFileSync(htmlPath, renderHtml(brief));
-    if (pdf) printPdf(chromium, htmlPath, join(outDir, paths.pdf));
+    if (pdf) printPdf(chromium, htmlPath, join(outDir, paths.pdf), log);
     log(`rendered ${brief.id} v${brief.version}${pdf ? ' (html, pdf)' : ' (html)'}`);
   }
   if (briefs.length > 0) writeFileSync(join(outDir, 'briefs.json'), `${JSON.stringify(registry, null, 2)}\n`);

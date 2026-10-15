@@ -4,7 +4,6 @@ import { parse } from 'yaml';
 import * as claimsAudit from '../../../scripts/audit-claims.mjs';
 import * as geoAudit from '../../../scripts/audit-geo.mjs';
 import { addOnStatementFrom, calendarStatementFrom } from '../../../src/components/geo/qa.ts';
-import { packages } from '../../../src/data/packages.ts';
 import { site } from '../../../src/data/site.ts';
 import { INTRODUCTIONS_DISCLAIMER, INTRODUCTIONS_FLAT_FEE } from '../../../src/components/blocks/introductions.ts';
 import { LLMS_FULL_MAX_BYTES, NO_FUNDING_SENTENCE, buildLlmsFullTxt, buildLlmsTxt, LlmsFullTooLargeError } from '../../../src/lib/llms.ts';
@@ -30,11 +29,10 @@ function input(overrides: Partial<LlmsInput> = {}): LlmsInput {
   const twins = assembleReal().twins;
   return {
     site: { name: site.name, legalName: site.legalName, tagline: site.tagline, description: site.description, origin: site.origin },
-    packages: packages.map((p) => ({ name: p.name, stageFit: p.stageFit, depth: p.depth })),
     serviceLines: ['A', 'B', 'C', 'D', 'E', 'F', 'G'].map((line) => ({ line, title: `Line ${line}`, route: `/services/line-${line.toLowerCase()}/`, summary: `Summary of line ${line}.` })),
     keyPages: [
       { route: '/about/facts/', title: 'Facts about WE', description: 'Plain answers.' },
-      { route: '/pricing/', title: 'Pricing', description: 'Packages.' },
+      { route: '/how-we-work/', title: 'How WE works', description: 'The long-term partnership, phase by phase.' },
     ],
     optionalPages: [{ route: '/about/manifesto/', title: 'Manifesto' }],
     howWeDecide: null,
@@ -64,25 +62,35 @@ test('llms.txt has the contract outline and both required sentences', () => {
   assert.deepEqual(headings, ['## What WE is', '## What WE offers', '## What WE does not do', '## Published commercial facts', '## Key pages', '## Contact', '## Optional']);
 });
 
-test('llms.txt and llms-full.txt are built from data: a renamed package changes both', () => {
-  const renamed = packages.map((p, i) => ({ name: i === 0 ? 'Ignite' : p.name, stageFit: p.stageFit, depth: p.depth }));
-  // The page text is typed in the MDX (facts.test.ts pins it to packages.ts), so the head of the full file is what the data drives.
+test('llms.txt and llms-full.txt are built from data: a renamed service line and a moved form change them', () => {
+  // WP-54: WE publishes no packages, so the data that drives the text is the service lines, the site identity and the live routes.
   const pages: ReturnType<typeof buildTwin>[] = [];
   const before = input();
-  const after = input({ packages: renamed });
+  const lines = before.serviceLines.map((s, i) => (i === 0 ? { ...s, title: 'Renamed line' } : s));
+  const after = input({ serviceLines: lines, contactRoute: '/talk/' });
+  assert.ok(buildLlmsTxt(before).includes('[Line A]') && !buildLlmsTxt(before).includes('Renamed line'));
+  assert.ok(buildLlmsTxt(after).includes('[Renamed line]') && !buildLlmsTxt(after).includes('[Line A]'));
   for (const [a, b] of [
     [buildLlmsTxt(before), buildLlmsTxt(after)],
     [buildLlmsFullTxt(before, pages), buildLlmsFullTxt(after, pages)],
   ] as const) {
-    assert.ok(a.includes('Spark') && !a.includes('Ignite'));
-    assert.ok(b.includes('Ignite') && !b.includes('Spark'));
+    assert.ok(a.includes('https://worldenterprise.org/contact/') && !a.includes('/talk/'));
+    assert.ok(b.includes('https://worldenterprise.org/talk/'));
+  }
+});
+
+test('neither file names a package or a price (WP-54)', () => {
+  for (const text of [buildLlmsTxt(input()), buildLlmsFullTxt(input(), [])]) {
+    assert.doesNotMatch(text, /\b(Spark|Accelerate|Studio)\b|\$\s?\d|per seat|seat price/);
+    assert.match(text, /paid in cash, monthly, for the work of the team/);
+    assert.match(text, /No packages and no amounts are published/);
   }
 });
 
 test('a link goes to the Markdown twin when there is one and to the page otherwise', () => {
   const text = buildLlmsTxt(input());
   assert.match(text, /\(https:\/\/worldenterprise\.org\/about\/facts\.md\)/);
-  assert.match(text, /\(https:\/\/worldenterprise\.org\/pricing\/\)/, 'pricing has no twin yet');
+  assert.match(text, /\(https:\/\/worldenterprise\.org\/how-we-work\/\)/, 'How WE works has no twin yet');
 });
 
 test('How WE decides is listed only when the page is live', () => {
