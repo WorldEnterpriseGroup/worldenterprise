@@ -6,13 +6,13 @@ Source of truth for scope: `.plan/SAGE-PLAN.md` (internal, untracked). Decisions
 
 ### D-1
 
-**Decision.** **Quarantine `bee90c7`; never push it.** Create local branch `quarantine/httrack-wip` at `bee90c7`, mount it as a read-only reference worktree at `/home/seantech/repos/WorldEnterpriseGroup/_refs/finbiz` (`git worktree add --detach`), repoint local `gh-pages` to `origin/gh-pages`, and start all work from `origin/demo`. Nothing is deleted; the commit stays reachable.
+**Decision.** **Quarantine `bee90c7`; never push it.** Create local branch `quarantine/httrack-wip` at `bee90c7`, mount it as a read-only reference worktree at `~/repos/WorldEnterpriseGroup/_refs/finbiz` (`git worktree add --detach`), repoint local `gh-pages` to `origin/gh-pages`, and start all work from `origin/demo`. Nothing is deleted; the commit stays reachable.
 
 **Why.** Pushing puts 44 MB of unlicensed third-party template into mirrored history. This is the one irreversible-looking step; it is fully reversible because the commit is pinned by a branch. The PostToolUse "push now" nudge does not apply to this commit.
 
 ### D-2
 
-**Decision.** **Template is inspiration only.** No template image, SCSS, JS, icon font or copy is ported. No AVIF conversion of its photography. All imagery is new (ComfyUI or whitelab vectors).
+**Decision.** **Template is inspiration only.** No template image, SCSS, JS, icon font or copy is ported. No AVIF conversion of its photography. All imagery is new (ComfyUI or brand-source vectors).
 
 **Why.** No license file; commercial theme.
 
@@ -48,7 +48,7 @@ Source of truth for scope: `.plan/SAGE-PLAN.md` (internal, untracked). Decisions
 
 ### D-8
 
-**Decision.** **Light theme only** (`color-scheme: light`). No reversed logo (whitelab brand findings: logo is dark-on-light only; do not invent a reversed version). Dark bands may exist but never carry the logo. Recorded as an accepted exception to the project "prefers-color-scheme" suggestion.
+**Decision.** **Light theme only** (`color-scheme: light`). No reversed logo (brand source findings: logo is dark-on-light only; do not invent a reversed version). Dark bands may exist but never carry the logo. Recorded as an accepted exception to the project "prefers-color-scheme" suggestion.
 
 **Why.** Brand integrity over a "nice to have".
 
@@ -86,7 +86,7 @@ Source of truth for scope: `.plan/SAGE-PLAN.md` (internal, untracked). Decisions
 
 **Decision.** **No analytics, no cookies, no third-party scripts at v1.0.** No consent banner.
 
-**Why.** Privacy-first, simpler legal surface. If Sean wants analytics later: self-hosted Umami/Plausible on K8s plus a CSP change.
+**Why.** Privacy-first, simpler legal surface. If the owner wants analytics later: self-hosted Umami/Plausible on K8s plus a CSP change.
 
 ### D-15
 
@@ -148,7 +148,7 @@ The npm `build` script ends with `pagefind --site dist` (npm `postbuild`), so ev
 `src/data/routes.ts` holds the 90 page rows plus `MACHINE_ROUTES` (rss, robots, security.txt) and `L2_RESERVED` (declared, never launched). Nav items that point at an L2 or not-yet-existing route stay hidden.
 
 ### W-7 Fonts are local
-The Astro Fonts API (stable in 7.3.6) is configured with the local provider and the whitelab `.woff` files, so there is no network fetch at generation time and no Google Fonts request. OFL licence texts ship beside the files.
+The Astro Fonts API (stable in 7.3.6) is configured with the local provider and the brand source `.woff` files, so there is no network fetch at generation time and no Google Fonts request. OFL licence texts ship beside the files.
 
 
 ### W-8 Chrome uses the Popover API with a script enhancement layer
@@ -290,9 +290,9 @@ The owner delegated both choices to the orchestrator on 2026-10-09. They superse
 
 ### F-4 Owner decision: hybrid pricing model (claim C-10)
 
-The dedicated team seat stays the unit of work. Four packages, Spark, Launch, Accelerate and Studio (names, the company stage each is sized for and its depth, from `whitelab/template/KEY-VALUES.md` section 1), are pre-configured seat plans with a fixed scope. A founder picks a package or a custom seat plan, and seats change by notice either way (C-02). The site publishes no amount: `flags.seatPrice` stays off, and `/pricing/` says how to ask for the current rate (the contact form topic "Request the current seat rate"). The "not packages" denials on `/pricing/`, the FAQ and the program copy are replaced. `/pricing/` carries a package comparison table (package, stage, depth).
+The dedicated team seat stays the unit of work. Four packages, Spark, Launch, Accelerate and Studio (names, the company stage each is sized for and its depth, from the private operator source, section 1), are pre-configured seat plans with a fixed scope. A founder picks a package or a custom seat plan, and seats change by notice either way (C-02). The site publishes no amount: `flags.seatPrice` stays off, and `/pricing/` says how to ask for the current rate (the contact form topic "Request the current seat rate"). The "not packages" denials on `/pricing/`, the FAQ and the program copy are replaced. `/pricing/` carries a package comparison table (package, stage, depth).
 
-C-10 moves from excluded to publish, narrowed to what the owner approved: package names, stage fit and depth. The nine-milestone scheme, the phases, Delivery Hours, every fee, the rate card, the fee-to-equity election and the twelve-month term stay unpublished, and the site does not use the words "Milestones", "Raise-Ready", "Fundability Certification" or "Delivery Hours" for them. No seat count is published per package: KEY-VALUES gives none, so the page says WE confirms the seat plan in writing when the founder asks for the rate.
+C-10 moves from excluded to publish, narrowed to what the owner approved: package names, stage fit and depth. The nine-milestone scheme, the phases, Delivery Hours, every fee, the rate card, the fee-to-equity election and the twelve-month term stay unpublished, and the site does not use the words "Milestones", "Raise-Ready", "Fundability Certification" or "Delivery Hours" for them. No seat count is published per package: the operator source gives none, so the page says WE confirms the seat plan in writing when the founder asks for the rate.
 
 The twelve-month term is deliberately not stated. It is a fact of the agreement template, not an approved web claim, and "no automatic renewal" would sit uneasily beside "seats change by notice". It is an operator item in the handoff.
 
