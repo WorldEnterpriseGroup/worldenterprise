@@ -1,0 +1,87 @@
+---
+/**
+ * The frame of every sales chart (WP-58): the drawing (default slot), a caption, the source line linked into the page's sources list,
+ * any caveat, and a "Show the data" table that works without JavaScript (a native <details>).
+ */
+import DataTable from '../ui/DataTable.astro';
+import { salesSource, sourceAnchor } from '../../data/sales/sources.ts';
+import type { SalesSourceId } from '../../data/sales/sources.ts';
+
+interface Props {
+  caption: string;
+  sources: readonly SalesSourceId[];
+  table: { readonly caption: string; readonly columns: readonly string[]; readonly rows: readonly (readonly string[])[] };
+  caveat?: string | undefined;
+  /** A note on how WE derived the figure from the source's data. */
+  derived?: string | undefined;
+}
+
+const { caption, sources, table, caveat, derived } = Astro.props;
+---
+
+<figure class="sales-chart">
+  <div class="sales-chart__drawing">
+    <slot />
+  </div>
+  <figcaption class="sales-chart__caption">
+    <p>{caption}</p>
+    <p class="sales-chart__source">
+      Source:{' '}
+      {
+        sources.map((id, i) => (
+          <>
+            {i > 0 && '; '}
+            <a href={sourceAnchor(id)}>{salesSource(id).short}</a>
+          </>
+        ))
+      }.
+      {derived !== undefined && ` ${derived}`}
+    </p>
+    {caveat !== undefined && <p class="sales-chart__source">{caveat}</p>}
+  </figcaption>
+  <details class="sales-chart__data">
+    <summary>Show the data</summary>
+    <DataTable caption={table.caption} columns={table.columns} rows={table.rows} />
+  </details>
+</figure>
+
+<style>
+  @layer pages {
+    .sales-chart {
+      display: grid;
+      gap: var(--sp-4);
+      margin: 0;
+      min-inline-size: 0;
+    }
+
+    .sales-chart__drawing {
+      min-inline-size: 0;
+    }
+
+    .sales-chart__caption {
+      display: grid;
+      gap: var(--sp-2);
+    }
+
+    .sales-chart__caption p {
+      margin: 0;
+    }
+
+    .sales-chart__source {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .sales-chart__data summary {
+      cursor: pointer;
+      color: var(--color-link);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
+    .sales-chart__data[open] summary {
+      margin-block-end: var(--sp-3);
+    }
+  }
+</style>

@@ -1,0 +1,107 @@
+---
+/**
+ * Sourced statistics as tiles (WP-58). Each tile shows the figure, what it counts, and a link to its entry in the page's sources list.
+ * The honesty line follows every block unless the caller places it once for several blocks (`honesty={false}`).
+ */
+import { salesSource, sourceAnchor } from '../../data/sales/sources.ts';
+import { stat } from '../../data/sales/stats.ts';
+import type { StatId } from '../../data/sales/stats.ts';
+import { HONESTY_LINE } from '../../data/sales/copy.ts';
+
+interface Props {
+  stats: readonly StatId[];
+  /** Accessible name of the list. */
+  label: string;
+  honesty?: boolean;
+}
+
+const { stats, label, honesty = true } = Astro.props;
+const items = stats.map((id) => stat(id));
+---
+
+<div class="sales-tiles">
+  <ul class="sales-tiles__list" aria-label={label}>
+    {
+      items.map((item) => (
+        <li class="sales-tile">
+          <p class="sales-tile__value">{item.value}</p>
+          <p class="sales-tile__label">{item.label}</p>
+          <p class="sales-tile__source">
+            {item.sources.map((id, i) => (
+              <>
+                {i > 0 && '; '}
+                <a href={sourceAnchor(id)}>{salesSource(id).short}</a>
+              </>
+            ))}
+            {`. ${item.period}.`}
+          </p>
+          {item.caveat !== undefined && <p class="sales-tile__caveat">{item.caveat}</p>}
+        </li>
+      ))
+    }
+  </ul>
+  {honesty && <p class="sales-honesty">{HONESTY_LINE}</p>}
+</div>
+
+<style>
+  @layer pages {
+    .sales-tiles {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .sales-tiles__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sales-tile {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-soft);
+    }
+
+    .sales-tile p {
+      margin: 0;
+    }
+
+    .sales-tile__value {
+      color: var(--color-highlight-ink);
+      font-size: var(--fs-3xl);
+      font-weight: 700;
+      line-height: 1.05;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sales-tile__label {
+      font-size: var(--fs-base);
+    }
+
+    .sales-tile__source,
+    .sales-tile__caveat {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .sales-honesty {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-style: italic;
+    }
+
+    @media (forced-colors: active) {
+      .sales-tile {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,114 @@
+---
+/**
+ * /why-it-takes-time/brief/ (WP-58): the timeline brief. The six charts of /why-it-takes-time/ as a short, printable reading page:
+ * each station's finding, its figures with their sources, and the data behind it. No form and no email: the brief is this page.
+ */
+import DataTable from '../../../components/ui/DataTable.astro';
+import CtaRow from '../../../components/sales/CtaRow.astro';
+import SalesSources from '../../../components/sales/SalesSources.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { CLOCK_END, HEAD_START, PACED, STATIONS } from '../../../data/sales/clock.ts';
+import { CLOCK_HONESTY, HOW_LONG_CTA, PRIMARY_CTA } from '../../../data/sales/copy.ts';
+import { salesSource, sourceAnchor } from '../../../data/sales/sources.ts';
+import { stat } from '../../../data/sales/stats.ts';
+import { href } from '../../../lib/url.ts';
+import { ODDS_STAIRCASE_2013, SURVIVAL_2015 } from '../../../data/sales/timeline.ts';
+
+const path = '/why-it-takes-time/brief/';
+const allPrivate = SURVIVAL_2015[0];
+if (allPrivate === undefined) throw new Error('SURVIVAL_2015 has no series');
+const milestones = [1, 2, 3, 5, 7, 10].map((y) => [`Year ${y}`, `${allPrivate.points.find((p) => p.x === y)?.y ?? ''}%`]);
+const ids = [...STATIONS.flatMap((s) => s.sources), ...STATIONS.flatMap((s) => s.tiles.flatMap((t) => stat(t).sources)), ...PACED.sources, ...HEAD_START.sources];
+const findings = [...STATIONS.map((s) => ({ ...s })), { id: 'head-start', when: 'Who starts', headline: HEAD_START.headline, caption: HEAD_START.caption, tiles: HEAD_START.tiles }];
+---
+
+<MarketingLayout
+  title="The timeline brief."
+  seoTitle="The timeline brief"
+  description="A one-page summary of what public data says about how long a business takes, with every figure and its source."
+  lead="The real clock of a business on one page: six findings, the figures behind them and where each comes from."
+  path={path}
+  ogSlot="og-program"
+  secondary={HOW_LONG_CTA}
+>
+  <p>{CLOCK_HONESTY[0]} The charts are on <a href={href(HOW_LONG_CTA.href)}>the full page</a>.</p>
+
+  {
+    findings.map((f, i) => (
+      <section class="sales-brief__item" aria-labelledby={`brief-${f.id}`}>
+        <p class="sales-brief__when">{`${i + 1}. ${f.when}`}</p>
+        <h2 id={`brief-${f.id}`}>{f.headline}</h2>
+        <p>{f.caption}</p>
+        <ul>
+          {f.tiles.map((t) => {
+            const st = stat(t);
+            return (
+              <li>
+                <strong>{st.value}</strong> {st.label} ({st.period}).{' '}
+                {st.sources.map((id, j) => (
+                  <>
+                    {j > 0 && '; '}
+                    <a href={sourceAnchor(id)}>{salesSource(id).short}</a>
+                  </>
+                ))}
+                .{st.caveat !== undefined && ` ${st.caveat}`}
+              </li>
+            );
+          })}
+        </ul>
+        {f.id === 'survival' && (
+          <DataTable caption="Still operating, establishments opened in the year to March 2015 (all private sector)" columns={['Years since opening', 'Still operating']} rows={milestones} />
+        )}
+        {f.id === 'staircase' && (
+          <DataTable
+            caption="Survival from the previous year, establishments opened in the year to March 2013"
+            columns={['Year', 'Survived the year']}
+            rows={ODDS_STAIRCASE_2013.map((b) => [b.label, b.display])}
+          />
+        )}
+      </section>
+    ))
+  }
+
+  <section class="sales-brief__item" aria-labelledby="brief-paced">
+    <h2 id="brief-paced">{PACED.headline}</h2>
+    {PACED.body.map((p) => <p>{p}</p>)}
+  </section>
+
+  <section class="sales-brief__item" aria-labelledby="brief-end">
+    <h2 id="brief-end">{CLOCK_END.headline}</h2>
+    <p>{CLOCK_END.body}</p>
+    <p class="sales-brief__honesty">{CLOCK_HONESTY.join(' ')}</p>
+    <CtaRow primary={PRIMARY_CTA} more={[[HOW_LONG_CTA]]} />
+  </section>
+
+  <SalesSources ids={ids} />
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    .sales-brief__item {
+      margin-block: var(--sp-7);
+    }
+
+    .sales-brief__when {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+    }
+
+    .sales-brief__honesty {
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+
+    @media print {
+      .sales-ctas {
+        display: none;
+      }
+    }
+  }
+</style>
