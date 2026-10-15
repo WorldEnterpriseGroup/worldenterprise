@@ -164,10 +164,16 @@
 
   /* The items inherit their size (font: inherit), so the size is set on the list. This block comes after the base rule above: both have the
      same specificity, so the later one wins, and before it the base gap of --sp-4 beat this one and the row overflowed at 1100 and 1140px. */
-  @media (min-width: 1100px) and (max-width: 1279.98px) {
+  /* The compact row runs to 1500px (W9-13): with "Start a readiness review" in the header, 18px nav type and --sp-4 gaps only fit from
+     there, and below it the row ran past the frame at 1280px even with "Apply". The header gaps and the button tighten with it. */
+  @media (min-width: 1100px) and (max-width: 1499.98px) {
     .mega-nav__list {
       gap: var(--sp-1);
       font-size: 1rem;
+    }
+
+    .site-header__inner {
+      gap: var(--sp-3);
     }
   }
 
@@ -548,6 +554,29 @@
     .site-header__apply {
       display: inline-flex;
       margin-inline-start: auto;
+      white-space: nowrap;
+    }
+  }
+
+  /* The header button carries the full label as its accessible name; the short label shows only where the row is tight. */
+  .site-header__apply-short {
+    display: none;
+  }
+
+  @media (min-width: 1100px) and (max-width: 1499.98px) {
+    .site-header__apply {
+      padding-inline: var(--sp-3);
+      font-size: 1rem;
+    }
+  }
+
+  @media (min-width: 1100px) and (max-width: 1239.98px) {
+    .site-header__apply-full {
+      display: none;
+    }
+
+    .site-header__apply-short {
+      display: inline;
     }
   }
 

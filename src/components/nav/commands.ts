@@ -28,6 +28,8 @@ export interface CommandSources {
 }
 
 const START_GROUP = 'Start here';
+// The header button reads 'Start a readiness review' (W9-13); the palette lists it by the shorter word people type, with the button label as its hint.
+const APPLY_COMMAND = 'Apply';
 const SITE_GROUP = 'Site';
 const AUDIENCE_GROUP = 'Who it is for';
 const DESK_GROUP = 'Insight desks';
@@ -61,7 +63,7 @@ export function buildPaletteCommands(sources: CommandSources, isLive: (href: str
     commands.push(hint === undefined || hint === '' ? { label, href, group } : { label, href, group, hint });
   };
 
-  if (sources.apply !== null) add(sources.apply.label, sources.apply.href, START_GROUP);
+  if (sources.apply !== null) add(APPLY_COMMAND, sources.apply.href, START_GROUP, sources.apply.label);
 
   // The sections and direct items come first, so a page that is both (Pricing is a direct item and a strip link of two panels) is listed
   // under its own name and a search for "pricing" finds it. Their links follow, in navigation order, into the group of their section.

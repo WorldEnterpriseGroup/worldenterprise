@@ -30,10 +30,10 @@ export const NO_FUNDING_NOTE = 'WE makes no promise of funding.';
 const FIXED: Readonly<Record<'apply' | 'briefs' | 'journey' | 'contact' | 'tools' | 'investor-interest' | 'partner-enquiry', Target>> = {
   apply: {
     href: '/apply/',
-    label: 'Tell WE about your company',
+    label: 'Start a readiness review',
     variant: 'apply',
     band: {
-      heading: 'Tell WE about your company',
+      heading: 'Start a readiness review',
       body: 'The application form asks about your company, your team and what you are building.',
     },
   },

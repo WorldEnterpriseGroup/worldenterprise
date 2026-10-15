@@ -18,6 +18,8 @@ export interface NavLink {
   readonly line?: ServiceLine;
   /** Specified for completeness; hidden until the route ships. */
   readonly l2?: boolean;
+  /** A shorter visible label where the header row is tight (1100 to 1239px); the full label stays the accessible name (W9-13). */
+  readonly short?: string;
 }
 
 export interface NavColumn {
@@ -69,7 +71,7 @@ export const utilityNav: { readonly statement: string; readonly links: readonly 
   ],
 };
 
-export const applyButton: NavLink = { label: 'Apply', href: '/apply/' };
+export const applyButton: NavLink = { label: 'Start a readiness review', href: '/apply/', short: 'Readiness review' };
 
 export const primaryNav: readonly PrimaryNavItem[] = [
   {
@@ -103,7 +105,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         ],
       },
     ],
-    featured: { label: 'Start here', title: 'Apply to the program', cta: { label: 'Apply', href: '/apply/' }, slot: null },
+    featured: { label: 'Start here', title: 'Start with a readiness review', cta: { label: 'Start a readiness review', href: '/apply/' }, slot: null },
     strip: [
       { label: 'Compare seat options', href: '/pricing/' },
       { label: 'Read the FAQ', href: '/faq/' },
@@ -279,7 +281,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         links: [{ label: 'For investors', href: '/investors/', description: 'How WE prepares companies, and what WE does not do' }],
       },
     ],
-    featured: { label: 'Founders', title: 'Apply to build with WE', cta: { label: 'Apply', href: '/apply/' }, slot: null },
+    featured: { label: 'Founders', title: 'Build a company with WE', cta: { label: 'Start a readiness review', href: '/apply/' }, slot: null },
     strip: [
       { label: 'Pricing', href: '/pricing/' },
       { label: 'Contact', href: '/contact/' },
@@ -332,7 +334,6 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     featured: { label: 'Start here', title: 'Read a brief', text: 'Open abstracts. The full brief arrives by email.', cta: { label: 'Read the funding paths brief', href: '/briefs/funding-paths/' }, slot: null },
     strip: [{ label: 'Your journey', href: '/journey/' }],
   },
-  { kind: 'direct', id: 'pricing', label: 'Pricing', href: '/pricing/' },
   {
     kind: 'mega',
     id: 'about',

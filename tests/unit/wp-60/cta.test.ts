@@ -191,7 +191,7 @@ test('the home page offers Apply and the brief hub', () => {
   assert.equal(model.id, 'apply');
   assert.equal(model.audience, 'startup');
   assert.equal(model.variant, 'apply');
-  assert.deepEqual(model.primary, { label: 'Tell WE about your company', href: '/apply/' });
+  assert.deepEqual(model.primary, { label: 'Start a readiness review', href: '/apply/' });
   assert.deepEqual(model.secondary, { label: 'Browse the briefs', href: '/briefs/' });
 });
 
@@ -404,7 +404,7 @@ test('through the real Sätteri pipeline: one band in a long article, none in a 
   const long = await render(longDocument(12), 'src/content/insights/funding/safe-notes.md');
   assert.equal(long.split('data-cta="mid"').length - 1, 1, 'exactly one band');
   assert.match(long, /<aside class="cta-inline" data-cta="mid" aria-label="Next step">/);
-  assert.match(long, /<a class="btn btn--secondary" href="\/apply\/">Tell WE about your company<\/a>/);
+  assert.match(long, /<a class="btn btn--secondary" href="\/apply\/">Start a readiness review<\/a>/);
   const share = long.indexOf('cta-inline') / long.length;
   assert.ok(share > 0.4 && share < 0.95, `the band sits at ${Math.round(share * 100)} percent of the markup`);
   assert.equal((await render(longDocument(6), 'src/content/insights/funding/safe-notes.md')).includes('cta-inline'), false);
