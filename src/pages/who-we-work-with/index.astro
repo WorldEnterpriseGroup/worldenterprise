@@ -1,0 +1,171 @@
+---
+/**
+ * /who-we-work-with/ (WP-58, SITE-COPY.md section 6.0): the hub of the seven situation pages. A solar system with one world per
+ * situation, seven cards (each with its own world), what fits, what does not, and the readiness review.
+ */
+import CtaRow from '../../components/sales/CtaRow.astro';
+import SolarSystem from '../../components/sales/SolarSystem.astro';
+import World from '../../components/sales/World.astro';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { HOW_LONG_CTA, PRIMARY_CTA } from '../../data/sales/copy.ts';
+import { FIT_TEXT, NOT_FIT_TEXT, SITUATIONS, situationPath } from '../../data/sales/situations.ts';
+import { href } from '../../lib/url.ts';
+
+const path = '/who-we-work-with/';
+const title = 'Who WE works with.';
+const lead =
+  'Founders who mean to build a lasting company, especially those whose experience predicts success, and capable founders who need more capacity than they can hire.';
+---
+
+<MarketingLayout
+  title={title}
+  seoTitle="Who WE works with"
+  description="Seven situations WE works with, for anyone in them: a dedicated team steered by WE, paced to the years a company really takes."
+  lead={lead}
+  path={path}
+  ogSlot="og-network"
+  primary={PRIMARY_CTA}
+>
+  <p class="sales-hub__intro">Each page below describes a situation, not a type of person. Every page is for anyone in that situation.</p>
+
+  <Fragment slot="after">
+    <section class="band band--deep" aria-labelledby="system-title">
+      <div class="container">
+        <div class="split">
+          <div class="split__text sales-hub__text">
+            <h2 id="system-title">Seven situations, one way of working</h2>
+            <p>
+              The situations differ in what gets in the way. The work is the same: a dedicated, fully remote team, steered by WE, building a
+              software-enabled company with its founder for as long as the work is useful.
+            </p>
+          </div>
+          <div class="split__media">
+            <SolarSystem names={SITUATIONS.map((s) => s.name)} />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--soft" aria-labelledby="situations-title">
+      <div class="container sales-hub__stack">
+        <h2 id="situations-title">Find your situation</h2>
+        <ul class="sales-hub__cards">
+          {
+            SITUATIONS.map((s) => (
+              <li class="sales-hub__card">
+                <World variant={s.world} title={s.worldAlt} id={`hub-world-${s.id}`} size="sm" />
+                <h3 class="sales-hub__card-title">
+                  <a href={href(situationPath(s))}>{s.name}</a>
+                </h3>
+                <p class="sales-hub__card-headline">{s.headline}</p>
+                <p>{s.card}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="band band--tint-blue" aria-labelledby="fit-title">
+      <div class="container">
+        <div class="split split--even">
+          <div class="split__text sales-hub__text">
+            <h2 id="fit-title">How it fits</h2>
+            <p>{FIT_TEXT}</p>
+          </div>
+          <div class="split__media sales-hub__text">
+            <h2 id="not-fit-title">When WE is not the right help</h2>
+            <p>{NOT_FIT_TEXT}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--deep" aria-labelledby="hub-end-title">
+      <div class="container sales-hub__stack">
+        <h2 id="hub-end-title">Start with a readiness review.</h2>
+        <p class="sales-hub__lead">Tell WE your situation. WE will say plainly whether the work fits, and if it does not, where better help is.</p>
+        <CtaRow primary={PRIMARY_CTA} more={[[HOW_LONG_CTA]]} />
+      </div>
+    </section>
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    .sales-hub__intro,
+    .sales-hub__lead {
+      font-size: var(--fs-lead);
+    }
+
+    .sales-hub__text,
+    .sales-hub__stack {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .sales-hub__text > *,
+    .sales-hub__stack > * {
+      margin: 0;
+    }
+
+    /* Reading lines keep the site measure in the wide two-column bands (the fit lists ran to 85ch at 1920px). */
+    .sales-hub__text > p {
+      max-inline-size: var(--measure);
+    }
+
+    .sales-hub__cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+      gap: var(--sp-5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sales-hub__card {
+      position: relative;
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .sales-hub__card > * {
+      margin: 0;
+    }
+
+    .sales-hub__card .sales-world {
+      inline-size: 5rem;
+    }
+
+    .sales-hub__card-title {
+      font-size: var(--fs-h4);
+    }
+
+    /* The whole card is the link's target area; the name stays the link text. */
+    .sales-hub__card-title a::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    .sales-hub__card:focus-within {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .sales-hub__card-headline {
+      font-weight: 600;
+    }
+
+    @media (forced-colors: active) {
+      .sales-hub__card {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>
