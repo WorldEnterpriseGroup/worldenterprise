@@ -16,8 +16,14 @@ export interface LadderCta {
 
 export type IsLive = (path: string) => boolean;
 
-const apply = targetFor('apply');
-if (apply === undefined) throw new Error('src/data/cta/targets.ts has no "apply" target: the primary CTA label lives there (docs/wave9-contracts.md section 8).');
+/** A shared CTA target (WP-51 owns the labels, docs/wave9-contracts.md section 8). A missing key is a build error, never a silent label. */
+function shared(key: 'apply' | 'contact'): { readonly label: string; readonly href: string } {
+  const target = targetFor(key);
+  if (target === undefined) throw new Error(`src/data/cta/targets.ts has no "${key}" target: the WP-56 CTA ladder reads its label there.`);
+  return target;
+}
+const apply = shared('apply');
+const contact = shared('contact');
 
 /** Primary (commit). The label and target come from the shared CTA data (WP-51), so a family page never writes its own primary. */
 export const READINESS_REVIEW: LadderCta = {
@@ -44,7 +50,7 @@ export const TIMELINE_BRIEF: LadderCta = {
 };
 
 /** Utility. */
-export const TALK_TO_WE: LadderCta = { label: 'Talk to WE', href: '/contact/', note: 'A question that does not fit a form.' };
+export const TALK_TO_WE: LadderCta = { label: contact.label, href: contact.href, note: 'A question that does not fit a form.' };
 
 export interface Ladder {
   readonly primary?: LadderCta | undefined;

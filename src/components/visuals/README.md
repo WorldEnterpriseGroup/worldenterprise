@@ -48,7 +48,7 @@ what phones, reduced motion, forced colors, no-JS visitors and Lighthouse see, s
 (`src/scripts/visuals/scene-element.ts`, about 1.6 KB gzip) imports nothing from three; on a capable desktop it waits until the frame
 is within 200px of the viewport and the browser is idle, then imports the runtime (with three) and the scene, and crossfades from the
 poster. The gate (`src/scripts/visuals/gate.ts`): `(min-width: 64rem) and (pointer: fine) and (prefers-reduced-motion: no-preference)`,
-not forced colors, at least four cores, `deviceMemory` absent or at least 4, no Save-Data, and a hardware WebGL2 context (asked with `failIfMajorPerformanceCaveat`, so software GL such as SwiftShader or a blocklisted GPU keeps the poster; the renderer uses the same attributes). Device pixel
+not forced colors, at least four cores, `deviceMemory` absent or at least 4, no Save-Data, and a hardware WebGL2 context (asked with `failIfMajorPerformanceCaveat`, and refused when the renderer string, `WEBGL_debug_renderer_info` or `RENDERER`, names a software rasteriser: SwiftShader, llvmpipe, softpipe, Microsoft Basic Render Driver, Mesa offscreen; headless Chrome hands out SwiftShader without the caveat, so the name check is what keeps CI and software-GL visitors on the poster; the renderer uses the same attributes). Device pixel
 ratio is capped at 1.75, only one scene animates at a time, scenes pause offscreen and in hidden tabs, and they dispose on navigation.
 A live scene shows a real **Pause animation** button (WCAG 2.2.2); the canvas is `aria-hidden`.
 

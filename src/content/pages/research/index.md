@@ -17,4 +17,4 @@ Every factual statement carries a reference to a numbered source, and every brie
 
 ## What the briefs are not
 
-They are not legal, audit or compliance advice, and they do not describe controls operated by World Enterprise Group or any other company. They contain no client results.
+They are not legal, audit or compliance advice, and they do not describe controls operated by World Enterprise Group Incorporated or any other company. They contain no client results.

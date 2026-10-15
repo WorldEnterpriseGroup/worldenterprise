@@ -2711,6 +2711,11 @@
       "reason": "Wave 9 (W9-13): remaps the brand-story and press quote entries to the new About copy; held by WP-71, which is done. Those entries only."
     },
     {
+      "wp": "WP-55",
+      "path": "tests/e2e/wave7/wp-41/geo.spec.ts",
+      "reason": "Wave 9 (W9-13, sales direction): the facts page heading 'Is Investor Introductions part of a package?' becomes 'part of the engagement?' now that packages are retired; line 172 only, every other assertion kept."
+    },
+    {
       "wp": "WP-56",
       "path": "tests/unit/wp-71/family-templates.test.ts",
       "reason": "Wave 9: family template pins follow the widened family pages (W8-18); held by WP-71, which is done."
@@ -2968,7 +2973,7 @@
     {
       "wp": "WP-57",
       "path": "scripts/build-og.mjs",
-      "reason": "Wave 9 close (W9-13): the og-home and og-about cards print 'digital incubator for SaaS'; re-render those two cards only with the existing deterministic script."
+      "reason": "Wave 9 close (W9-13): the og-home and og-about cards print 'digital incubator for SaaS'; re-render those two cards only with the existing deterministic script. Also naming (coordinator decision 1): the card alts and og-default card follow the 'World Enterprise' site name."
     },
     {
       "wp": "WP-57",
@@ -2989,6 +2994,191 @@
       "wp": "WP-57",
       "path": ".astro-magazine/media/og-rows.json",
       "reason": "Wave 9 close (W9-13): the og-home and og-about cards print 'digital incubator for SaaS'; re-render those two cards only with the existing deterministic script."
+    },
+    {
+      "wp": "WP-57",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. Line 83 sign-off wording; plus W9-13 on CR-01, CR-02, CR-06, CR-08 and CR-22 prose (/pricing/ to /how-we-work/, quoted copy follows the investors and showcase rewording)."
+    },
+    {
+      "wp": "WP-57",
+      "path": ".astro-magazine/sources/wp-71.json",
+      "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. Palette source locator and quote rows (about lines 20, 55, 57, 553); plus W9-13 on the manifesto sentence rows."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/styles/tokens.css",
+      "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. Line 3 header comment only, pinned with wp-71.json row 553."
+    },
+    {
+      "wp": "WP-57",
+      "path": "claims-denylist.json",
+      "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. The C-10 rule description string only; patterns unchanged."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. The /press/brand-kit/ reason string only; it keeps 'sign-off' for story-gate."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/about/manifesto.md",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. The dedicated-seat sentence only."
+    },
+    {
+      "wp": "WP-57",
+      "path": ".astro-magazine/sources/wp-41.json",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Rows quoting the changed manifesto and facts sentences only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/legal/privacy.md",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Also naming. Seat and incubator wording only; no legal substance changes."
+    },
+    {
+      "wp": "WP-57",
+      "path": "docs/forms-contract.md",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Describes the readiness-review intake fields instead of the retired package select."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/data/packages.ts",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Delete, once WP-54's package retirement has landed and nothing imports it."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/components/pricing/SeatExplainer.astro",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Delete, once WP-54's package retirement has landed and nothing imports it."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/journey/after-you-apply.mdx",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. The 'what will each seat work on?' question only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/content/pages/journey/onboarding-checklist.mdx",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. The line 19 seats checklist item only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/e2e/wave8/wp-74/industries.spec.ts",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Line 10 SEAT_SCOPE_HEADING constant only; follows scope-copy.ts."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-60/reference-data.test.ts",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Glossary hash and seat-entry pins only; follows glossary.yaml."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-77/glossary-data.test.ts",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Glossary hash and seat-entry pins only; follows glossary.yaml."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/pages/press/_boilerplate.ts",
+      "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Also naming. Boilerplate line 14 only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/data/site.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. name and titleSuffix values and their doc comments only (lines 7, 17, 18, 36)."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/lib/seo.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Doc comments naming the suffix only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/lib/content-schemas.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Doc comments naming the suffix only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/components/seo/SeoHead.astro",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Doc comments naming the suffix only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "scripts/audit-seo.mjs",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. TITLE_SUFFIX and the siteName default only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "scripts/audit-geo.mjs",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. TITLE_SUFFIX and the siteName default only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/assets/og/og-default.avif",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Re-rendered by the existing deterministic build-og.mjs script only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/foundation/seo.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/shared/fixture-dist.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-09/audit-seo.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-09/helpers.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-09/schema.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-40/denylist.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-40/dist-allowlist.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-41/audit-geo.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-41/facts.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-41/twins.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-44/home.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only (eyebrow fallback regex)."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-78/faq-page.test.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/e2e/wave7/wp-41/geo.spec.ts",
+      "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
     },
     {
       "wp": "WP-58",

@@ -5,8 +5,8 @@ import { ROUTE, cls, isDesktop, liveOrPoster, presentFourCores } from './helpers
 
 // WP-52 live scenes, desktop project only (ARCHITECTURE 3.2: a canvas at desktop width with motion allowed, zero console errors, CLS
 // under 0.01). Headless Chromium on a CI runner has no GPU. This file forces SwiftShader (launch options must be set at file level) to
-// prove that software GL keeps the poster: the gate asks for WebGL2 with failIfMajorPerformanceCaveat, so a software context is refused
-// and the main thread stays free. On a runner with a real GPU the same checks see the scene go live.
+// prove that software GL keeps the poster: the gate asks for WebGL2 with failIfMajorPerformanceCaveat and refuses a SwiftShader, llvmpipe
+// or other software renderer by name (headless Chrome hands one out without the caveat), so the main thread stays free. On a runner with a real GPU the same checks see the scene go live.
 test.use({ launchOptions: { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] } });
 test.describe.configure({ retries: 1 });
 

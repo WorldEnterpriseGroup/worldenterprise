@@ -82,19 +82,22 @@ test.describe('WP-56 families at 1920x1080', () => {
     });
   }
 
-  test('an insights article shows its pull-stats beside the emblem, with the source and the honesty line', async ({ page }) => {
+  test('an insights article shows its pull-stats in the side rail, beside the text, with the source and the honesty line', async ({ page }) => {
     const path = TEMPLATES[0]?.path ?? '/insights/';
     test.skip(!isBuilt(path), `${path} is not built`);
     await page.goto(path);
-    const stats = page.locator('.wv-context');
+    const stats = page.locator('aside.rail .wv-stats');
     await expect(stats).toBeVisible();
     await expect(stats).toContainText("These figures describe all new U.S. businesses, not WE's results.");
     await expect(stats).toContainText('Source: U.S. Bureau of Labor Statistics');
-    const text = await stats.locator('.wv-context__text').boundingBox();
-    const art = await stats.locator('.wv-context__art').boundingBox();
+    const text = await page.locator('article .with-rail > .prose').boundingBox();
+    const figure = await stats.boundingBox();
     expect(text).not.toBeNull();
-    expect(art).not.toBeNull();
-    // Side by side: the picture starts to the right of the text column.
-    expect((art?.x ?? 0) >= (text?.x ?? 0) + (text?.width ?? 0)).toBe(true);
+    expect(figure).not.toBeNull();
+    // Side by side: the figures start to the right of the reading column.
+    expect((figure?.x ?? 0) >= (text?.x ?? 0) + (text?.width ?? 0)).toBe(true);
+    // The illustrated related rail replaces the layout's text rail.
+    await expect(page.locator('section.related')).toHaveCount(0);
+    expect(await page.locator('.wv-related').count()).toBeLessThanOrEqual(1);
   });
 });
