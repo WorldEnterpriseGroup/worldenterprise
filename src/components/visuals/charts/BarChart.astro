@@ -62,17 +62,20 @@ const show = (d: Datum): string => d.display ?? String(d.value);
       })
     }
   </svg>
-  <div class="visually-hidden">
-    <table>
-      <caption>{title}</caption>
-      <thead>
-        <tr><th scope="col">Group</th><th scope="col">{valueLabel}</th></tr>
-      </thead>
-      <tbody>
-        {items.map((d) => <tr><th scope="row">{d.label}</th><td>{show(d)}</td></tr>)}
-      </tbody>
-    </table>
-  </div>
+  <details class="bar-chart__data">
+    <summary>Show the figures as a table</summary>
+    <div class="table-wrap" role="region" tabindex="0" aria-label={`${title}, as a table`}>
+      <table>
+        <caption>{title}</caption>
+        <thead>
+          <tr><th scope="col">Group</th><th scope="col">{valueLabel}</th></tr>
+        </thead>
+        <tbody>
+          {items.map((d) => <tr><th scope="row">{d.label}</th><td>{show(d)}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+  </details>
   {note !== undefined && <p class="bar-chart__note">{note}</p>}
   <SourceNote sources={[source]} />
 </figure>
@@ -141,5 +144,23 @@ const show = (d: Datum): string => d.display ?? String(d.value);
     .bar-chart__value {
       fill: CanvasText;
     }
+  }
+
+  .bar-chart__data summary {
+    cursor: pointer;
+    color: var(--color-link);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .bar-chart__data[open] summary {
+    margin-block-end: var(--sp-3);
+  }
+
+  /* The figures sit in the site's table frame (a named, focusable scroll region: tests/e2e/layout.spec.ts). Closed, the frame leaves
+     layout so no engine reports a scroll region that no key can reach. */
+  .bar-chart__data:not([open]) .table-wrap {
+    display: none;
   }
 </style>

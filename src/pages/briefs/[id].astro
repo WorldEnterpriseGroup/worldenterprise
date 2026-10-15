@@ -1,6 +1,8 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render } from 'astro:content';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
+import WithEmblem from '../../components/families/visual/WithEmblem.astro';
 import BriefDepth from '../../components/briefs/BriefDepth.astro';
 import BriefOutline from '../../components/briefs/BriefOutline.astro';
 import BriefRequestPanel from '../../components/briefs/BriefRequestPanel.astro';
@@ -44,10 +46,10 @@ const related = relatedFor(row.slug, live);
   <Content />
   <Fragment slot="after">
     <Section tone="soft">
-      <div class="stack">
+      <WithEmblem kind="briefs" seed={row.slug}>
         <BriefDepth updated={data.updated} sections={sectionCount(abstract)} />
         <BriefOutline outline={data.outline} />
-      </div>
+      </WithEmblem>
     </Section>
     <Section>
       <BriefRequestPanel briefId={row.slug} />
@@ -56,4 +58,5 @@ const related = relatedFor(row.slug, live);
       <RelatedBriefs related={related} />
     </Section>
   </Fragment>
+  <ArticleEnd slot="cta-end" kind="briefs" seed={row.slug} />
 </MarketingLayout>

@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
-import { evaluateGate, MIN_CORES, SCENE_MEDIA } from '../../../src/scripts/visuals/gate.ts';
-import type { SceneCapabilities } from '../../../src/scripts/visuals/gate.ts';
+import { evaluateGate, MIN_CORES, probeWebgl2, SCENE_MEDIA, WEBGL_CONTEXT_ATTRIBUTES } from '../../../src/scripts/visuals/gate.ts';
+import type { CanvasFactory, SceneCapabilities } from '../../../src/scripts/visuals/gate.ts';
 import { SCENE_NAMES, isSceneName } from '../../../src/scripts/visuals/types.ts';
 import {
   constellationLayout,
@@ -35,6 +35,54 @@ test('the gate never probes WebGL when an earlier condition fails', () => {
   let probed = false;
   evaluateGate({ ...CAPABLE, media: false, webgl2: () => ((probed = true), true) });
   assert.equal(probed, false);
+});
+
+/** A document whose canvas answers getContext with `result`, recording the arguments. */
+function fakeDocument(result: () => unknown): { doc: CanvasFactory; calls: unknown[][] } {
+  const calls: unknown[][] = [];
+  const doc = {
+    createElement: () => ({
+      getContext: (id: 'webgl2', attributes: WebGLContextAttributes) => {
+        calls.push([id, attributes]);
+        return result() as WebGL2RenderingContext | null;
+      },
+    }),
+  } satisfies CanvasFactory;
+  return { doc, calls };
+}
+
+test('the WebGL2 probe asks for a context that fails on software GL (a major performance caveat)', () => {
+  assert.equal(WEBGL_CONTEXT_ATTRIBUTES.failIfMajorPerformanceCaveat, true);
+  const lost = { count: 0 };
+  const ok = fakeDocument(() => ({ getExtension: () => ({ loseContext: () => (lost.count += 1) }) }));
+  assert.equal(probeWebgl2(ok.doc), true);
+  assert.deepEqual(ok.calls, [['webgl2', { failIfMajorPerformanceCaveat: true, powerPreference: 'high-performance' }]]);
+  assert.equal(lost.count, 1, 'the probe context is released at once');
+});
+
+test('software GL, no WebGL2 or a throwing probe all keep the poster', () => {
+  // With failIfMajorPerformanceCaveat, a SwiftShader or blocklisted GPU browser returns null rather than a software context.
+  assert.equal(probeWebgl2(fakeDocument(() => null).doc), false);
+  const warn = console.warn;
+  console.warn = () => undefined;
+  try {
+    assert.equal(
+      probeWebgl2(
+        fakeDocument(() => {
+          throw new Error('context lost');
+        }).doc,
+      ),
+      false,
+    );
+  } finally {
+    console.warn = warn;
+  }
+  assert.deepEqual(evaluateGate({ ...CAPABLE, webgl2: () => probeWebgl2(fakeDocument(() => null).doc) }), { ok: false, reason: 'webgl2' });
+});
+
+test('the renderer is created with the same context attributes as the probe', () => {
+  const runtime = readFileSync(new URL('../../../src/scripts/visuals/runtime.ts', import.meta.url), 'utf8');
+  assert.match(runtime, /new WebGLRenderer\(\{[^}]*\.\.\.WEBGL_CONTEXT_ATTRIBUTES[^}]*\}\)/);
 });
 
 test('the media query requires a wide screen, a fine pointer and motion allowed', () => {

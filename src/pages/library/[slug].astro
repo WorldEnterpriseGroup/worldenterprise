@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
 import WeCopy from '../../components/islands/we-copy/WeCopy.astro';
 import { entrySlug, markdownPath } from '../../components/library/markdown.ts';
@@ -54,4 +55,5 @@ const mdPath = markdownPath(slug);
       )
     }
   </Fragment>
+  <ArticleEnd slot="cta-end" kind="library" seed={slug} />
 </TemplateLayout>

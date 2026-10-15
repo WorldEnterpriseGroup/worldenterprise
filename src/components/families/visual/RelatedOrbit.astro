@@ -1,0 +1,140 @@
+---
+import { href as resolve } from '../../../lib/url.ts';
+import Emblem from './Emblem.astro';
+import { kindForPath } from './kinds.ts';
+
+/**
+ * The related-content rail of the WP-56 templates: one row of illustrated links, each pictured by the emblem of the family it leads to
+ * (a playbook's patch, a template's page stack, an article's galaxy). A scroller with the next card peeking on a phone, a row that
+ * fills the frame on a wide screen. The caller passes only live links; an empty list renders nothing.
+ */
+interface RelatedItem {
+  readonly kind: string;
+  readonly title: string;
+  readonly href: string;
+}
+
+interface Props {
+  items: readonly RelatedItem[];
+  heading?: string;
+  id?: string;
+}
+
+const { items, heading = 'Keep reading', id = 'related-orbit' } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section class="wv-related" aria-labelledby={id}>
+      <h2 id={id} class="wv-related__title">{heading}</h2>
+      <ul class="wv-related__rail" role="list">
+        {items.map((item) => (
+          <li class="wv-related__item">
+            <a class="wv-related__link" href={resolve(item.href)}>
+              <span class="wv-related__sky">
+                <Emblem kind={kindForPath(item.href)} seed={item.href} />
+              </span>
+              <span class="wv-related__kind">{item.kind}</span>
+              <span class="wv-related__label">{item.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .wv-related {
+    display: grid;
+    gap: var(--sp-5);
+  }
+
+  .wv-related__title {
+    margin: 0;
+  }
+
+  .wv-related__rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(80%, 18rem);
+    gap: var(--sp-4);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0 0 var(--sp-3);
+    margin: 0;
+    list-style: none;
+
+    @media (min-width: 62rem) {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+      overflow-x: visible;
+    }
+  }
+
+  .wv-related__item {
+    scroll-snap-align: start;
+    display: flex;
+  }
+
+  .wv-related__link {
+    display: grid;
+    align-content: start;
+    gap: var(--sp-2);
+    inline-size: 100%;
+    padding: 0 0 var(--sp-4);
+    color: var(--color-text);
+    text-decoration: none;
+    background: var(--color-bg);
+    border: var(--border-hair);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--dur-base) var(--ease-out);
+
+    &:hover {
+      border-color: var(--color-link);
+
+      & .wv-related__label {
+        color: var(--color-link);
+        text-decoration: underline;
+      }
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  .wv-related__sky {
+    display: block;
+    aspect-ratio: 16 / 7;
+    background: var(--color-bg-inverse);
+  }
+
+  .wv-related__kind,
+  .wv-related__label {
+    padding-inline: var(--sp-4);
+  }
+
+  .wv-related__kind {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .wv-related__label {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    line-height: var(--lh-tight);
+  }
+
+  @media (forced-colors: active) {
+    .wv-related__link {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

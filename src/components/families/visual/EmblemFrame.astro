@@ -1,0 +1,61 @@
+---
+import Emblem from './Emblem.astro';
+import type { EmblemKind } from './emblems.ts';
+
+/**
+ * A family emblem on its night-blue sky, as a framed picture with an optional caption: the art of a hub's console hero panel, of a
+ * reference page's opening band and of an article's side column. The caption is the only text; the picture itself is decorative.
+ */
+interface Props {
+  kind: EmblemKind;
+  seed?: string;
+  index?: number;
+  caption?: string | undefined;
+  /** `wide` is 16:10 (a hero panel), `tall` is 4:5 (a side column). */
+  shape?: 'wide' | 'tall';
+  drift?: boolean;
+}
+
+const { kind, seed, index, caption, shape = 'wide', drift = true } = Astro.props;
+---
+
+<figure class="wv-frame" data-shape={shape}>
+  <div class="wv-frame__sky">
+    <Emblem kind={kind} {...(seed !== undefined ? { seed } : {})} {...(index !== undefined ? { index } : {})} drift={drift} />
+  </div>
+  {caption !== undefined && <figcaption class="wv-frame__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .wv-frame {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+  }
+
+  .wv-frame__sky {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background:
+      radial-gradient(ellipse at 78% 12%, color-mix(in oklch, var(--we-blue) 55%, transparent), transparent 62%),
+      radial-gradient(ellipse at 10% 95%, color-mix(in oklch, var(--we-blue-deep) 80%, transparent), transparent 55%),
+      var(--color-bg-inverse);
+  }
+
+  .wv-frame[data-shape='tall'] .wv-frame__sky {
+    aspect-ratio: 4 / 5;
+  }
+
+  .wv-frame__caption {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    max-inline-size: 40rem;
+  }
+
+  @media (forced-colors: active) {
+    .wv-frame__sky {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

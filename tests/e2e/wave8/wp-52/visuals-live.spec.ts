@@ -4,8 +4,9 @@ import { isBuilt } from '../../support/routes.ts';
 import { ROUTE, cls, isDesktop, liveOrPoster, presentFourCores } from './helpers.ts';
 
 // WP-52 live scenes, desktop project only (ARCHITECTURE 3.2: a canvas at desktop width with motion allowed, zero console errors, CLS
-// under 0.01). Headless Chromium on a CI runner has no GPU, so this file alone asks for SwiftShader WebGL2; launch options must be set at
-// file level. When the runner still has no WebGL2, or the runtime falls back, the checks assert the poster stays instead.
+// under 0.01). Headless Chromium on a CI runner has no GPU. This file forces SwiftShader (launch options must be set at file level) to
+// prove that software GL keeps the poster: the gate asks for WebGL2 with failIfMajorPerformanceCaveat, so a software context is refused
+// and the main thread stays free. On a runner with a real GPU the same checks see the scene go live.
 test.use({ launchOptions: { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] } });
 test.describe.configure({ retries: 1 });
 
