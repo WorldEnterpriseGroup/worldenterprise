@@ -1927,6 +1927,21 @@
         ".astro-magazine/handoffs/wp-38*",
         ".astro-magazine/sources/wp-38.json"
       ]
+    },
+    {
+      "owner": "WP-32b",
+      "title": "Wave 10 governance follow-up: OP-HOSTS extension (D-W10-6) and the ST-16 and ST-18 period labels",
+      "branch": "wp/32b-hosts",
+      "stage": 0,
+      "write_set": [
+        "tests/unit/wp-60/sources.ts",
+        "tests/unit/wp-60/sources-ledger.test.ts",
+        "src/data/sales/stats.ts",
+        "tests/unit/wp-32b/**",
+        "tests/e2e/wp-32b*.spec.ts",
+        ".astro-magazine/handoffs/wp-32b*",
+        ".astro-magazine/sources/wp-32b.json"
+      ]
     }
   ],
   "active_leases": [],
@@ -3942,6 +3957,16 @@
       "wp": "WP-37",
       "path": "tests/e2e/folds.spec.ts",
       "reason": "Wave 10 (D-W10-1): the home fold at 1440x900; a longer hero headline can move the primary button."
+    },
+    {
+      "wp": "WP-32b",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 10 (D-W10-6): registers WP-32b."
+    },
+    {
+      "wp": "WP-32b",
+      "path": ".astro-magazine/decisions.md",
+      "reason": "Wave 10 (D-W10-6): records D-W10-6."
     }
   ],
   "notes": [
