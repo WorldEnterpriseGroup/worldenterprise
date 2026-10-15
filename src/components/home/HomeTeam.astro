@@ -1,0 +1,160 @@
+---
+/**
+ * What WE does (SITE-COPY 1.3) and how WE is paid (1.5, the C-07 Fallback): the team WE steers as a constellation of roles around the
+ * company, with no count, rate or selector; a still of the remote workplace; and the month-by-month payment rhythm, drawn as
+ * month blocks each followed by a payment marker. The gated C-07 wording ships as its fallback (PAGE-AGENT-BRIEF).
+ */
+import TeamConstellation from '../visuals/seats/TeamConstellation.astro';
+import type { PhotoImage } from '../media/photo-image.ts';
+import type { Action } from '../program/ctas.ts';
+import { TEAM_ROLES } from './home.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  /** The remote-workplace still (lazy; the page builds it so the slot is resolved in one place). */
+  photo: PhotoImage;
+  /** "See how WE works", when that page exists. */
+  more?: Action | undefined;
+  /** "See how WE is paid", when that section exists. */
+  paid?: Action | undefined;
+}
+
+const { photo, more, paid } = Astro.props;
+const MONTHS = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'] as const;
+---
+
+<section class="band home-team" aria-labelledby="home-team-title">
+  <div class="container stack stack--loose">
+    <div class="split">
+      <div class="split__text home-team__text">
+        <p class="eyebrow">What WE does</p>
+        <h2 id="home-team-title">A team inside your company, steered by WE.</h2>
+        <p class="lead">You set where the company goes. WE answers for how the team gets there.</p>
+        <p>
+          WE is a business incubation and consulting firm. WE puts a dedicated, fully remote team on your company: product, engineering, brand,
+          customers, operations and records. WE recruits the team, steers it with a written method and reviews the work with you every week,
+          month and quarter.
+        </p>
+        <img class="home-team__photo" src={photo.src} srcset={photo.srcset} sizes={photo.srcset === undefined ? undefined : photo.sizes} width={photo.width} height={photo.height} alt={photo.alt} loading="lazy" decoding="async" />
+        {more && <p><a class="btn btn--secondary" href={href(more.href)}>{more.label}</a></p>}
+      </div>
+      <div class="split__media">
+        <TeamConstellation
+          roles={TEAM_ROLES}
+          label="The roles a team can include"
+          caption="Your company at the center, the team's roles around it and WE's steering on the outer ring. Illustrative: every team is planned with its founder."
+        />
+      </div>
+    </div>
+
+    <div class="home-team__paid">
+      <div class="home-team__paid-text">
+        <h3 id="home-paid-title">Paid as the work is done.</h3>
+        <p>
+          WE is paid in cash, monthly, for the team's work. The agreement sets every term before you sign, and you review it with your own
+          counsel. WE is paid for work already done, never in advance of it.
+        </p>
+        {paid && <p><a href={href(paid.href)}>{paid.label}</a></p>}
+      </div>
+      <ol class="home-team__months" role="list" aria-label="Each month of work, then its payment">
+        {
+          MONTHS.map((month) => (
+            <li class="home-team__month">
+              <span class="home-team__work">{month} of work</span>
+              <span class="home-team__pay">then paid</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  @layer pages {
+    .home-team__text {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .home-team__photo {
+      inline-size: 100%;
+      block-size: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+    }
+
+    .home-team__paid {
+      display: grid;
+      gap: var(--sp-5);
+      align-items: center;
+      padding: var(--sp-5);
+      background: var(--color-bg-soft);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+
+      @media (min-width: 62rem) {
+        grid-template-columns: minmax(0, var(--split-text)) minmax(0, 1fr);
+        padding: var(--sp-6);
+      }
+    }
+
+    .home-team__paid-text {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .home-team__paid-text h3 {
+      font-size: var(--fs-xl);
+    }
+
+    .home-team__months {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr));
+      gap: var(--sp-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .home-team__month {
+      display: grid;
+      gap: var(--sp-1);
+    }
+
+    .home-team__work {
+      padding: var(--sp-3);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--color-text);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-block-end: 4px solid var(--we-blue);
+      border-radius: var(--radius-sm);
+    }
+
+    .home-team__pay {
+      display: flex;
+      gap: var(--sp-2);
+      align-items: center;
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+
+      &::before {
+        content: '';
+        inline-size: 0.75rem;
+        block-size: 0.75rem;
+        background: var(--we-amber);
+        border-radius: 50%;
+        forced-color-adjust: none;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .home-team__pay::before {
+        background: CanvasText;
+      }
+    }
+  }
+</style>

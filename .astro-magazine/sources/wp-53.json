@@ -1,0 +1,428 @@
+{
+  "wp": "WP-53",
+  "note": "The home page and the program family (issue #74). Every figure is a wave 9 register figure (.astro-magazine/plans/wave9/statistics.json); its source_id is the register id and the page renders it from src/components/program/clock.ts. No price, seat count, client, person or outcome is published. Every block of figures carries the honesty line.",
+  "sources": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-01",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year",
+      "source_tier": "government-statistics",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "publication_date": "March 2025 release",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "March 2025 release",
+      "relevant_locator": "Opening year to March 2024, survival rate since birth at March 2025: 77.9",
+      "variables_units_scope": "Percent of establishments still operating after one year",
+      "methodology_limitations": "Register ST-01 (VERIFIED). All new U.S. private-sector establishments, not WE's results; a closure includes sales and mergers. Every block that prints it carries the honesty line.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Public data, cited by name and link on the page",
+      "freshness_trigger": "A new release of the source table, or a change to the register entry",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-02",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7",
+      "source_tier": "government-statistics",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "publication_date": "March 2025 release",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "March 2025 release",
+      "relevant_locator": "Opening year to March 2020, survival rate since birth at March 2025: 51.4",
+      "variables_units_scope": "Percent of establishments still operating after five years",
+      "methodology_limitations": "Register ST-02 (VERIFIED). All new U.S. private-sector establishments, not WE's results; a closure includes sales and mergers. Every block that prints it carries the honesty line.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Public data, cited by name and link on the page",
+      "freshness_trigger": "A new release of the source table, or a change to the register entry",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-03",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7",
+      "source_tier": "government-statistics",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "publication_date": "March 2025 release",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "March 2025 release",
+      "relevant_locator": "Opening year to March 2015: survival since birth 100, 79.6, 69.1, 61.4, 55.4, 50.2, 46.4, 43.6, 40.3, 37.4, 34.7 (March 2015 to March 2025)",
+      "variables_units_scope": "Percent of the 2015 opening-year group still operating each March; the ten-year figure 34.7 and the survival curve on / (SURVIVAL_2015)",
+      "methodology_limitations": "Register ST-03 (VERIFIED). The curve plots the same table row year by year, re-read from the source on 2026-10-14. All new U.S. private-sector establishments, not WE's results; a closure includes sales and mergers. Every block that prints it carries the honesty line.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Public data, cited by name and link on the page",
+      "freshness_trigger": "A new release of the source table, or a change to the register entry",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-04",
+      "publisher_or_author": "U.S. Small Business Administration, Office of Advocacy",
+      "title": "Frequently Asked Questions About Small Business (2026), Q9",
+      "source_tier": "government-statistics",
+      "exact_url_or_locator": "https://advocacy.sba.gov/wp-content/uploads/2026/02/FINAL_FAQsAboutSmallBusiness_2026_012826.pdf",
+      "publication_date": "2026",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "2026",
+      "relevant_locator": "Q9: 69.5% of five-year survivors reach year ten",
+      "variables_units_scope": "Conditional survival, average of the opening years 1994 to 2022",
+      "methodology_limitations": "Register ST-04 (VERIFIED). All new U.S. private-sector establishments, not WE's results; a closure includes sales and mergers. Every block that prints it carries the honesty line.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Public data, cited by name and link on the page",
+      "freshness_trigger": "A new release of the source table, or a change to the register entry",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-05",
+      "publisher_or_author": "Global Entrepreneurship Monitor (Babson College)",
+      "title": "GEM United States 2019/2020 Report",
+      "source_tier": "research-report",
+      "exact_url_or_locator": "https://www.babson.edu/media/babson/assets/global-entrepreneurship-monitor/GEM-2019-2020-US-Report.pdf",
+      "publication_date": "2020",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "2020",
+      "relevant_locator": "p. 26: an established business has paid wages for more than 42 months",
+      "variables_units_scope": "Definition, not an outcome",
+      "methodology_limitations": "Register ST-05 (VERIFIED, definition). Used as the Established marker on the clock.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Public data, cited by name and link on the page",
+      "freshness_trigger": "A new release of the source table, or a change to the register entry",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-07",
+      "publisher_or_author": "U.S. Census Bureau",
+      "title": "Business Formation Statistics",
+      "source_tier": "government-statistics",
+      "exact_url_or_locator": "https://www.census.gov/econ/bfs/index.html",
+      "publication_date": "2021 applications",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "2021 applications",
+      "relevant_locator": "2021 applications: 7.5% became employer businesses within two years",
+      "variables_units_scope": "Percent of business applications",
+      "methodology_limitations": "Register ST-07 (DERIVED). All new U.S. private-sector establishments, not WE's results; a closure includes sales and mergers. Every block that prints it carries the honesty line.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Public data, cited by name and link on the page",
+      "freshness_trigger": "A new release of the source table, or a change to the register entry",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-08",
+      "publisher_or_author": "U.S. Census Bureau",
+      "title": "Business Formation Statistics, DUR8Q",
+      "source_tier": "government-statistics",
+      "exact_url_or_locator": "https://www.census.gov/econ/bfs/index.html",
+      "publication_date": "2021 applications",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "2021 applications",
+      "relevant_locator": "2021 applicants that hired: 2.29 quarters on average to first payroll",
+      "variables_units_scope": "Quarters from application to first payroll",
+      "methodology_limitations": "Register ST-08 (DERIVED). All new U.S. private-sector establishments, not WE's results; a closure includes sales and mergers. Every block that prints it carries the honesty line.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Public data, cited by name and link on the page",
+      "freshness_trigger": "A new release of the source table, or a change to the register entry",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-40",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7",
+      "source_tier": "government-statistics",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "publication_date": "March 2025 release",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "March 2025 release",
+      "relevant_locator": "Opening year to March 2022, survival since birth at March 2025: 56.3",
+      "variables_units_scope": "Percent of establishments still operating after three years",
+      "methodology_limitations": "Register ST-40 (VERIFIED; the 2022 group opened in a pandemic-era surge). All new U.S. private-sector establishments, not WE's results; a closure includes sales and mergers. Every block that prints it carries the honesty line.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Public data, cited by name and link on the page",
+      "freshness_trigger": "A new release of the source table, or a change to the register entry",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp53-site-copy",
+      "publisher_or_author": "World Enterprise Group Incorporated (internal)",
+      "title": "SITE-COPY.md sections 1 and 2 (home and program), SALES.md 6.1 and 6.2 (calls to action), decisions W9-6, W9-12 and W9-13",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "worldenterprise-redesign-kit/SITE-COPY.md; ORCHESTRATION.md",
+      "publication_date": "",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "n/a",
+      "relevant_locator": "SITE-COPY 1.1 to 1.8, 2.1 to 2.7",
+      "variables_units_scope": "Headlines, leads, body copy, calls to action and limits of / and /program/**",
+      "methodology_limitations": "Operator copy. [GATED: C-07] lines ship as their fallback; [CONFIRM] items ship in their conservative wording (no continuous intake, no yearly Orbit Review).",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-04",
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Internal; rendered, not retyped",
+      "freshness_trigger": "Any change to SITE-COPY.md sections 1 or 2",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp53-phases",
+      "publisher_or_author": "World Enterprise Group Incorporated (internal)",
+      "title": "The five phases, the WE methods and Mission Control as data",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/components/program/phases.ts; src/components/program/clock.ts (CLOCK_MILESTONES)",
+      "publication_date": "",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "n/a",
+      "relevant_locator": "PHASES, STAGE_VIEWS, MISSION_CONTROL",
+      "variables_units_scope": "Phase names, typical windows (anchored on ST-01, ST-05, ST-08, ST-40), method names and their expansions, review rhythm",
+      "methodology_limitations": "Windows are typical and anchored on public data; a company plan sets its own pace and gates are reached by milestones, not dates.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-04",
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Internal; rendered, not retyped",
+      "freshness_trigger": "Any change to phases.ts or clock.ts",
+      "captured_by": "WP-53"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp53-frameworks",
+      "publisher_or_author": "World Enterprise Group Incorporated (internal)",
+      "title": "The Universal Business Framework and the WE methods (S.T.A.R.T.U.P., L.A.U.N.C.H., G.R.O.W.T.H. phase, A.N.D.R.O.I.D. Ops)",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "/about/frameworks/ and /about/frameworks/ubf/ (WP-55); src/components/visuals/UbfDiagram.astro",
+      "publication_date": "",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the wave 9 statistics register or the source releases new data",
+      "version_or_release": "n/a",
+      "relevant_locator": "UBF: ten parts from a Star to a Galaxy",
+      "variables_units_scope": "Framework names and their parts only",
+      "methodology_limitations": "Internal frameworks, described by name; no outcome is claimed.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-07",
+        "C-09",
+        "C-13"
+      ],
+      "license_access_attribution": "Internal; rendered, not retyped",
+      "freshness_trigger": "Any change to the frameworks pages",
+      "captured_by": "WP-53"
+    }
+  ],
+  "copy_map": [
+    {
+      "copy": "WE build worlds.",
+      "where": "/ h1",
+      "source_id": "wp53-site-copy",
+      "note": "SITE-COPY 1.1, motto register."
+    },
+    {
+      "copy": "Long-horizon business incubation and consulting, paced to the years a company really takes.",
+      "where": "/ hero lead",
+      "source_id": "wp53-site-copy",
+      "note": "W9-12 positioning line."
+    },
+    {
+      "copy": "Start a readiness review",
+      "where": "/ and /program/** primary action",
+      "source_id": "wp53-site-copy",
+      "note": "SALES 6.1; links /apply/."
+    },
+    {
+      "copy": "See how long it really takes; See how WE works",
+      "where": "secondary actions",
+      "source_id": "wp53-site-copy",
+      "note": "Shown only when /why-it-takes-time/ and /how-we-work/ are live; otherwise the closest built page (ctas.ts)."
+    },
+    {
+      "copy": "About 1 in 5 new businesses close in their first year.",
+      "where": "/ clock lead",
+      "source_id": "ST-01"
+    },
+    {
+      "copy": "About half are gone by year five.",
+      "where": "/ clock lead",
+      "source_id": "ST-02"
+    },
+    {
+      "copy": "About a third are still operating at year ten.",
+      "where": "/ clock lead",
+      "source_id": "ST-03"
+    },
+    {
+      "copy": "77.9% / 51.4% / 34.7%",
+      "where": "/ stat tiles; stage pages",
+      "source_id": "ST-01",
+      "note": "ST-02 and ST-03 for the five- and ten-year tiles."
+    },
+    {
+      "copy": "Share of new U.S. businesses still operating, year by year",
+      "where": "/ survival curve",
+      "source_id": "ST-03",
+      "note": "The 2015 opening-year group, BLS BED Table 7."
+    },
+    {
+      "copy": "69.5%",
+      "where": "/program/grow/ stat tile",
+      "source_id": "ST-04"
+    },
+    {
+      "copy": "42 months; Established",
+      "where": "/program/grow/ stat tile and the clock marker",
+      "source_id": "ST-05"
+    },
+    {
+      "copy": "7.5%",
+      "where": "/program/dream/ stat tile",
+      "source_id": "ST-07"
+    },
+    {
+      "copy": "2.29 quarters; First payroll, on average",
+      "where": "/program/dream/ stat tile and the clock marker",
+      "source_id": "ST-08"
+    },
+    {
+      "copy": "56.3%",
+      "where": "/program/build/ stat tile and the clock marker",
+      "source_id": "ST-40"
+    },
+    {
+      "copy": "These figures describe all new U.S. businesses, not WE's results.",
+      "where": "under every block of figures",
+      "source_id": "wp53-site-copy",
+      "note": "Required honesty line."
+    },
+    {
+      "copy": "WE makes no promise of funding.",
+      "where": "/, /program/ and /program/grow/",
+      "source_id": "wp53-site-copy",
+      "note": "Required line."
+    },
+    {
+      "copy": "Ignite, Build, Launch, Grow, Orbit",
+      "where": "phase cards and clock bar",
+      "source_id": "wp53-phases"
+    },
+    {
+      "copy": "Mission Control: every week, every month, every quarter, every checkpoint",
+      "where": "/program/ and /program/how-it-works/",
+      "source_id": "wp53-phases",
+      "note": "No yearly Orbit Review ([CONFIRM], conservative wording)."
+    },
+    {
+      "copy": "One map, from a Star to a Galaxy.",
+      "where": "/ UBF band",
+      "source_id": "wp53-frameworks"
+    },
+    {
+      "copy": "WE is a long-horizon business incubation and consulting firm.",
+      "where": "/program/ body; compare pages (remapped under exception (a)/(b))",
+      "source_id": "wp53-site-copy",
+      "note": "Replaces the retired \"digital incubator for SaaS\" line."
+    },
+    {
+      "copy": "A dedicated team does the work, and WE steers it.",
+      "where": "/program/build/",
+      "source_id": "wp53-site-copy"
+    },
+    {
+      "copy": "Built around the people who build companies.",
+      "where": "/ who band",
+      "source_id": "wp53-site-copy",
+      "note": "SITE-COPY 1.6; seven situations, never identities."
+    },
+    {
+      "copy": "A team inside your company, steered by WE.",
+      "where": "/ team band",
+      "source_id": "wp53-site-copy",
+      "note": "Unpriced; the roles are illustrative."
+    }
+  ]
+}

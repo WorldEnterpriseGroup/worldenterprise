@@ -1,0 +1,172 @@
+---
+/**
+ * Dream, Build, Grow on the long horizon (SITE-COPY 1.4): the launch trajectory with the five phases as waypoints, the three stages with
+ * what the company keeps, and the world-forming timeline anchored on the public survival figures.
+ */
+import LaunchTrajectory from '../visuals/LaunchTrajectory.astro';
+import LongHorizonTimeline from '../visuals/LongHorizonTimeline.astro';
+import VisualIcon from '../visuals/VisualIcon.astro';
+import { CLOCK_MILESTONES, HONESTY_LINE } from '../program/clock.ts';
+import { PHASES, STAGE_VIEWS, phasesOf } from '../program/phases.ts';
+import { STAGES } from '../program/stages.ts';
+import type { Action } from '../program/ctas.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  /** The link under the section (the program hub). */
+  more?: Action | undefined;
+}
+
+const { more } = Astro.props;
+
+const LINES = {
+  dream: 'Find the first proof and write the plan.',
+  build: 'Build the first release, win the first customers and launch.',
+  grow: 'Become an established company.',
+} as const;
+
+const stations = STAGES.map((stage) => ({
+  label: stage.name,
+  description: phasesOf(stage.id)
+    .map((p) => p.name)
+    .join(' and '),
+  href: stage.path,
+}));
+const waypoints = PHASES.map((p) => ({ label: p.name, description: p.window }));
+---
+
+<section class="band home-journey" aria-labelledby="home-journey">
+  <div class="container stack stack--loose">
+    <header class="home-journey__head">
+      <p class="eyebrow">The long horizon</p>
+      <h2 id="home-journey">WE Dream. WE Build. WE Grow.</h2>
+      <p class="lead">Three stages, paced to the clock, with things your company keeps at every step.</p>
+    </header>
+
+    <LaunchTrajectory
+      stations={stations}
+      waypoints={waypoints}
+      labelsName="Stages and phases of the flight"
+      alt="A small amber capsule climbs from a hexagonal launch pad labeled Dream, through a hexagonal gate labeled Build, toward a world of hexagonal tiles labeled Grow, with the five phases marked along its dotted trail."
+    />
+
+    <ol class="home-journey__stages" role="list">
+      {
+        STAGES.map((stage) => (
+          <li class="home-journey__stage">
+            <h3 class="home-journey__name">
+              <a href={href(stage.path)}>{stage.name}</a>
+            </h3>
+            <p class="home-journey__phases">{phasesOf(stage.id).map((p) => `${p.name}: ${p.window}`).join(' · ')}</p>
+            <p>{LINES[stage.id]}</p>
+            <p class="home-journey__keeps-title">Keeps</p>
+            <ul class="home-journey__keeps" role="list">
+              {STAGE_VIEWS[stage.id].keeps.map((k) => (
+                <li>
+                  <VisualIcon name={k.icon} size={32} />
+                  <span>{k.title}</span>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="home-journey__clock">
+      <h3 class="home-journey__clock-title" id="home-journey-clock">Where the phases sit on the business clock</h3>
+      <LongHorizonTimeline milestones={CLOCK_MILESTONES} horizon={10} label="The five phases against the share of new businesses still operating" id="home-clock" />
+      <p class="home-journey__honesty">{HONESTY_LINE} Survival figures are for the latest opening-year group with data for that year. Windows are typical, and your plan sets its own pace.</p>
+    </div>
+
+    {more && <p><a class="home-journey__more" href={href(more.href)}>{more.label}</a></p>}
+  </div>
+</section>
+
+<style>
+  @layer pages {
+    .home-journey__head {
+      display: grid;
+      gap: var(--sp-3);
+      max-inline-size: var(--split-text);
+    }
+
+    .home-journey__stages {
+      display: grid;
+      gap: var(--sp-5);
+      grid-template-columns: minmax(0, 1fr);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      @media (min-width: 52rem) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .home-journey__stage {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-block-start: 4px solid var(--color-accent);
+      border-radius: var(--radius-md);
+    }
+
+    .home-journey__name {
+      font-size: var(--fs-xl);
+    }
+
+    .home-journey__phases {
+      font-family: var(--ff-display);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .home-journey__keeps-title {
+      margin-block-start: var(--sp-2);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      color: var(--color-link);
+    }
+
+    .home-journey__keeps {
+      display: grid;
+      gap: var(--sp-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      & li {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--sp-3);
+        align-items: center;
+      }
+    }
+
+    .home-journey__clock {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .home-journey__clock-title {
+      font-size: var(--fs-lg);
+    }
+
+    .home-journey__honesty {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      max-inline-size: var(--prose-max);
+    }
+
+    .home-journey__more {
+      font-weight: 600;
+    }
+  }
+</style>

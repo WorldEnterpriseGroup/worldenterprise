@@ -31,13 +31,18 @@ const next = [
   ogSlot="og-program"
   next={next}
 >
-  <div class="prose measure"><Content /></div>
+  <div class="prose"><Content /></div>
 
-  <section class="stack" aria-labelledby="fit-yes">
-    <h2 id="fit-yes">{FIT_HEADING}</h2>
-    <ul class="measure fit">
-      {FITS.map((f) => <li>{f}</li>)}
-    </ul>
+  <section class="split split--even" aria-labelledby="fit-yes">
+    <div class="split__text stack">
+      <h2 id="fit-yes">{FIT_HEADING}</h2>
+      <ul class="measure fit">
+        {FITS.map((f) => <li>{f}</li>)}
+      </ul>
+    </div>
+    <div class="split__media">
+      <LimitsBlock title={NOT_FIT_HEADING} items={NOT_FITS} />
+    </div>
   </section>
 
   <section class="stack" aria-labelledby="fit-stages">
@@ -65,8 +70,6 @@ const next = [
       }
     </div>
   </section>
-
-  <LimitsBlock title={NOT_FIT_HEADING} items={NOT_FITS} />
 
   <Fragment slot="after">
     {primary && <CtaBand title="Think you fit?" text="Apply. The application is short, and a clear no is as useful to you as a yes." cta={primary} secondary={secondary} />}

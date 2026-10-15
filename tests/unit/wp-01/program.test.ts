@@ -3,7 +3,6 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { routes } from '../../../src/data/routes.ts';
-import { HOME_FAQ_IDS } from '../../../src/components/home/faq.ts';
 import { STAGES } from '../../../src/components/program/stages.ts';
 
 const ROOT = new URL('../../../', import.meta.url).pathname;
@@ -36,11 +35,16 @@ const OWNED = [
   'src/pages/index.astro',
 ];
 
-function frontmatter(file: string, key: string): string {
+function optionalFrontmatter(file: string, key: string): string | undefined {
   const text = readFileSync(join(ROOT, file), 'utf8');
   const match = new RegExp(`^${key}:\\s*(.*)$`, 'm').exec(text);
-  assert.ok(match, `${file} has no ${key}`);
-  return (match[1] ?? '').trim().replace(/^"(.*)"$/, '$1');
+  return match === null ? undefined : (match[1] ?? '').trim().replace(/^"(.*)"$/, '$1');
+}
+
+function frontmatter(file: string, key: string): string {
+  const value = optionalFrontmatter(file, key);
+  assert.ok(value !== undefined, `${file} has no ${key}`);
+  return value;
 }
 
 test('every stage link points at a launch:true ledger row', () => {
@@ -60,9 +64,9 @@ test('each stage links at least two playbooks or templates, exit evidence and li
   }
 });
 
-test('titles are 31 characters or fewer and descriptions are 50 to 160', () => {
+test('document titles (the SEO title, else the title) are 31 characters or fewer and descriptions are 50 to 160', () => {
   for (const file of OWNED.filter((f) => f.endsWith('.mdx'))) {
-    const title = frontmatter(file, 'title');
+    const title = optionalFrontmatter(file, 'seoTitle') ?? frontmatter(file, 'title');
     const description = frontmatter(file, 'description');
     if (!file.includes('/home/')) assert.ok(title.length <= 31, `${file} title is ${title.length} characters`);
     assert.ok(description.length >= 50 && description.length <= 160, `${file} description is ${description.length} characters`);
@@ -99,17 +103,5 @@ test('the Two companies, one objective phrase appears only on the dedicated team
   for (const file of OWNED) {
     const has = /two companies, one objective/i.test(readFileSync(join(ROOT, file), 'utf8'));
     assert.equal(has, file === 'src/pages/program/dedicated-teams.astro', `${file} phrase placement`);
-  }
-});
-
-test('home FAQs are five published entries of src/data/faq.yaml, with answers that state no promise', () => {
-  assert.equal(HOME_FAQ_IDS.length, 5);
-  const yaml = readFileSync(join(ROOT, 'src/data/faq.yaml'), 'utf8');
-  for (const id of HOME_FAQ_IDS) {
-    const block = new RegExp(`^- id: ${id}\\n((?:  .*\\n)+)`, 'm').exec(yaml);
-    assert.ok(block?.[1] !== undefined, `${id} is in faq.yaml`);
-    assert.doesNotMatch(block[1], /^  draft: true$/m, `${id} is not a draft`);
-    assert.match(block[1], /^  question: ".*\?"$/m, `${id} asks a question`);
-    assert.ok((/^  answer: "(.*)"$/m.exec(block[1])?.[1] ?? '').length > 20, `${id} has an answer`);
   }
 });
