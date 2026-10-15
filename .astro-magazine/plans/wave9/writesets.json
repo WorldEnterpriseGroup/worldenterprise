@@ -111,7 +111,19 @@
         "src/components/hero/HeroEditorial.astro",
         "src/components/hero/HeroAtlas.astro",
         "tests/unit/wp-17/heroes.test.ts",
-        "src/components/islands/we-calc/MetricsCalculator.astro"
+        "src/components/islands/we-calc/MetricsCalculator.astro",
+        "src/data/nav.ts",
+        "src/data/cta/targets.ts",
+        ".astro-magazine/sources/wp-60.json",
+        "src/components/nav/commands.ts",
+        "tests/unit/wp-46/commands.test.ts",
+        "tests/unit/wp-71/families-logic.test.ts",
+        "tests/unit/foundation/fixtures/nav-snapshot.json",
+        "tests/unit/foundation/nav.test.ts",
+        "tests/unit/wp-16/active-section.test.ts",
+        "tests/unit/wp-91/palette.test.ts",
+        "tests/unit/wp-60/cta.test.ts",
+        "tests/e2e/wave7/wp-46/palette.spec.ts"
       ]
     },
     {
@@ -162,7 +174,17 @@
         "src/components/home/HomeHero.astro",
         "src/pages/program/who-its-for.astro",
         "tests/e2e/folds.spec.ts",
-        ".astro-magazine/release/RELEASE.md"
+        ".astro-magazine/release/RELEASE.md",
+        ".astro-magazine/sources/wp-75.json",
+        "src/content/pages/compare/incubator-vs-other-programs.mdx",
+        "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+        "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+        "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+        "src/content/pages/compare/build-vs-buy.mdx",
+        "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+        "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+        "src/pages/faq/_model.ts",
+        "tests/unit/wp-15/image-type.test.ts"
       ]
     },
     {
@@ -233,7 +255,35 @@
         "tests/unit/wp-91/d23.test.ts",
         "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
         "src/data/forms.ts",
-        "src/components/forms/ApplyForm.astro"
+        "src/components/forms/ApplyForm.astro",
+        "tests/unit/foundation/nav.test.ts",
+        "tests/unit/wp-16/active-section.test.ts",
+        "tests/unit/wp-46/commands.test.ts",
+        "tests/unit/wp-46/panels.test.ts",
+        "tests/unit/wp-91/palette.test.ts",
+        "tests/e2e/menu.spec.ts",
+        "tests/e2e/wave7/wp-46/palette.spec.ts",
+        "src/components/geo/llms-input.ts",
+        "tests/unit/wp-42/composer-package.test.ts",
+        "tests/unit/wp-42/copy-guard.test.ts",
+        "tests/unit/wp-42/package-picker.test.ts",
+        "tests/unit/wp-43/forms-package.test.ts",
+        "tests/unit/wp-43/sentences.ts",
+        "tests/e2e/wave7/wp-43/apply-stepper.spec.ts",
+        "src/scripts/forms.ts",
+        "src/data/faq.yaml",
+        "src/pages/faq/_model.ts",
+        "scripts/audit-claims.mjs",
+        "tests/unit/wp-41/twins.test.ts",
+        "tests/unit/foundation/ledger.test.ts",
+        "src/components/forms/ContactForm.astro",
+        "tests/unit/wp-60/fixtures/reference-originals.json",
+        ".astro-magazine/sources/wp-78.json",
+        "tests/unit/wp-43/stepper.test.ts",
+        "tests/e2e/wave7/wp-43/how-we-decide.spec.ts",
+        ".astro-magazine/sources/wp-43.json",
+        "src/pages/program/how-we-decide.astro",
+        ".astro-magazine/sources/wp-41.json"
       ]
     },
     {
@@ -322,7 +372,8 @@
       ],
       "laneExceptions": [],
       "exceptions": [
-        "tests/unit/wp-71/family-templates.test.ts"
+        "tests/unit/wp-71/family-templates.test.ts",
+        ".astro-magazine/sources/wp-75.json"
       ]
     },
     {
@@ -393,7 +444,9 @@
         "tests/unit/wp-41/audit-geo.test.ts",
         "tests/unit/wp-71/story-gate.test.ts",
         "tests/unit/wp-74/**",
-        "tests/unit/wp-73/segment-pages.test.ts"
+        "tests/unit/wp-73/segment-pages.test.ts",
+        ".astro-magazine/release/RELEASE.md",
+        "tests/unit/wp-60/families.test.ts"
       ]
     }
   ]

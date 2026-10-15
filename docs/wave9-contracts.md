@@ -113,6 +113,10 @@ Exports: `FULL_HD`, `SMALLEST_PHONE`, `MIN_FRAME_AT_FULL_HD` (1600), `MAX_LEFT_O
 
 A family page picks its CTAs from this table and the CTA map (`src/data/cta/map.ts`); it never writes its own label for the primary.
 
+Where the label lives (WP-51): `APPLY` in `src/components/hero/ctas.ts` (hero primaries, `HubLayout`/`ServiceLayout` defaults, family hero actions), the `apply` target in `src/data/cta/targets.ts` (end bands), `applyButton` in `src/data/nav.ts` (header, drawer and mobile bar). A page that still passes `{ label: 'Apply', href: '/apply/' }` by hand (about, fundability, services, team composer, FAQ, playbooks, the program MDX "Apply to the program") switches to `APPLY` when its owner rewrites it.
+
+The header: the top row is full. From 1100 to 1499px the nav runs at 16px with `--sp-1` gaps and the button at 16px; from 1100 to 1239px the button shows "Readiness review" with the full label as its accessible name. The direct Pricing item left the top level to make room, so no package adds a top-level item (`/how-we-work/` is linked from the Program panel, the strips and the footer). The command palette keeps "Apply" as the command name, with the button label as its hint, so a search for "apply" still finds `/apply/`. Panel column links and the footer link to `/apply/` keep "Apply": they are navigation, not the CTA.
+
 ## 9. Statistics (`.astro-magazine/plans/wave9/statistics.json`, W9-13)
 
 The register holds ST-01 to ST-41 (statistic as it may be quoted, original source, research file, status) and the `neverUse` list. A page quotes a figure only as the register words it, next to its source line, and adds one source record per cited figure to its own `.astro-magazine/sources/wp-NN.json` (`source_id` is the ST id; the other fields follow the usual record: `publisher_or_author`, `title`, `source_tier`, `exact_url_or_locator`, `retrieved_at`, `claims_supported`, `claims_not_supported`, `captured_by`). The figures describe the market, never WE's results (C-13); no page says WE improves survival, shortens the time to a raise or makes a company fundable (C-05, C-16). A status of DERIVED or SECONDARY keeps its qualifier on the page.

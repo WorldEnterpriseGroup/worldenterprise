@@ -167,7 +167,7 @@ test.describe('the current section in the header', () => {
     { route: '/press/', section: 'About' },
     { route: '/fundability/', section: 'Playbooks' },
     { route: '/glossary/', section: 'Resources' },
-    { route: '/pricing/', section: 'Pricing' },
+    { route: '/pricing/', section: null },
   ];
 
   for (const { route, section } of expectations) {
@@ -177,7 +177,7 @@ test.describe('the current section in the header', () => {
       // The markup of both navs is in the document at every width; only one of them is shown.
       const desktop = await page.locator('[data-mega-nav] > ul > li > :is(a, button)[aria-current]').evaluateAll((els) => els.map((el) => `${el.getAttribute('aria-current')}:${(el.textContent ?? '').trim()}`));
       const drawer = await page.locator('[data-mobile-drawer] > nav > ul > li > :is(a, summary)[aria-current], [data-mobile-drawer] > nav > ul > li > details > summary[aria-current]').evaluateAll((els) => els.map((el) => `${el.getAttribute('aria-current')}:${(el.textContent ?? '').trim()}`));
-      const expected = section === null ? [] : [`${route === '/pricing/' ? 'page' : 'true'}:${section}`];
+      const expected = section === null ? [] : [`true:${section}`];
       expect(desktop, 'desktop navigation').toEqual(expected);
       expect(drawer, 'mobile drawer').toEqual(expected);
     });
@@ -188,7 +188,7 @@ test.describe('the current section in the header', () => {
     await page.goto('/apply/');
     await expect(page.locator('main#main')).toBeAttached();
     const current = await page.locator('header [aria-current="page"]').evaluateAll((els) => els.map((el) => (el.textContent ?? '').trim()));
-    expect(current.some((text) => text.startsWith('Apply'))).toBe(true);
+    expect(current.some((text) => text.startsWith('Apply') || text.includes('readiness review'))).toBe(true);
   });
 });
 
@@ -198,8 +198,9 @@ test.describe('the header at the widths between the drawer and the full nav', ()
   });
 
   // The logo has a brand minimum of 160px. It used to shrink to 117px at 1100px to make room for the nav; now it holds 160px and the
-  // nav gives: 16px type and tighter gaps. Nothing may wrap, collide with the Apply button or leave the header.
-  for (const width of [1100, 1140, 1180, 1230, 1279, 1440]) {
+  // nav gives: 16px type and tighter gaps. Nothing may wrap, collide with the Apply button or leave the header. Wave 9 (W9-13): the
+  // button reads "Start a readiness review" ("Readiness review" below 1240px), so the compact row runs to 1500px.
+  for (const width of [1100, 1140, 1180, 1230, 1239, 1240, 1279, 1280, 1366, 1440, 1499, 1500, 1920]) {
     test(`at ${width}px the logo is legible and the nav fits on one row`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto('/');
@@ -218,6 +219,8 @@ test.describe('the header at the widths between the drawer and the full nav', ()
           apply: box(document.querySelector('.site-header__apply')),
           items,
           font: parseFloat(getComputedStyle(document.querySelector('.mega-nav__trigger') ?? document.body).fontSize),
+          applyName: document.querySelector('.site-header__apply')?.getAttribute('aria-label') ?? (document.querySelector('.site-header__apply')?.textContent ?? '').trim(),
+          applyText: [...document.querySelectorAll('.site-header__apply > span')].filter((el) => getComputedStyle(el).display !== 'none').map((el) => (el.textContent ?? '').trim()).join(''),
         };
       });
       expect(m.logo, 'the logo is rendered').not.toBeNull();
@@ -230,8 +233,10 @@ test.describe('the header at the widths between the drawer and the full nav', ()
       expect(m.nav?.right ?? 0, 'nav ends before the Apply button').toBeLessThanOrEqual((m.apply?.left ?? 0) - 8);
       expect(m.apply?.right ?? 0, 'Apply stays inside the viewport').toBeLessThanOrEqual(m.viewport);
       expect(m.logo?.right ?? 0, 'logo ends before the nav').toBeLessThanOrEqual((m.nav?.left ?? 0) + 1);
-      if (width < 1280) expect(m.font, 'nav type under 1280px').toBeCloseTo(16, 0);
-      else expect(m.font, 'nav type from 1280px').toBeGreaterThanOrEqual(16);
+      if (width < 1500) expect(m.font, 'nav type under 1500px').toBeCloseTo(16, 0);
+      else expect(m.font, 'nav type from 1500px').toBeGreaterThanOrEqual(16);
+      expect(m.applyName, 'the button keeps its full name').toBe('Start a readiness review');
+      expect(m.applyText, 'the visible label').toBe(width < 1240 ? 'Readiness review' : 'Start a readiness review');
     });
   }
 });

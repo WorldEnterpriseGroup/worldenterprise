@@ -233,12 +233,12 @@ const only = (...paths: string[]) => (path: string) => paths.includes(path);
 
 test('hero actions follow section 6.2 with every candidate checked against the live routes', () => {
   assert.deepEqual(industryActions(all), {
-    primary: { label: 'Apply', href: '/apply/' },
+    primary: { label: 'Start a readiness review', href: '/apply/' },
     secondary: { label: 'Read the sector articles', href: '/insights/topic/sectors/' },
   });
   assert.equal(industryActions(only('/apply/', '/briefs/')).secondary?.href, '/briefs/');
   assert.equal(compareActions(all).secondary?.href, '/program/how-it-works/');
-  assert.deepEqual(compareActions(only('/apply/')), { primary: { label: 'Apply', href: '/apply/' } });
+  assert.deepEqual(compareActions(only('/apply/')), { primary: { label: 'Start a readiness review', href: '/apply/' } });
 });
 
 test('with nothing live a hero carries no action at all', () => {
