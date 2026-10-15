@@ -36,7 +36,20 @@ const commands = buildPaletteCommands({ items, utility: resolveUtility(state.isL
       <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="World Enterprise" decoding="async" />
     </a>
     {items.length > 0 && <MegaNav items={items} currentPath={currentPath} newestResearch={newestResearch} />}
-    {apply && <a class="btn btn--primary site-header__apply" href={href(apply.href)} aria-current={currentPath === apply.href ? 'page' : undefined}>{apply.label}</a>}
+    {
+      apply && (
+        <a class="btn btn--primary site-header__apply" href={href(apply.href)} aria-current={currentPath === apply.href ? 'page' : undefined} aria-label={apply.short === undefined ? undefined : apply.label}>
+          {apply.short === undefined ? (
+            apply.label
+          ) : (
+            <>
+              <span class="site-header__apply-full" aria-hidden="true">{apply.label}</span>
+              <span class="site-header__apply-short" aria-hidden="true">{apply.short}</span>
+            </>
+          )}
+        </a>
+      )
+    }
     {items.length > 0 && <MobileNav items={items} apply={apply} currentPath={currentPath} newestResearch={newestResearch} />}
   </div>
   <WePalette commands={commands} />

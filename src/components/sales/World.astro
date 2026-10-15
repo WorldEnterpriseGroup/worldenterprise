@@ -1,0 +1,309 @@
+---
+/**
+ * A world, drawn in SVG (WP-58). The seven situation pages each have their own world (a spinout, a world rising over a horizon, twin
+ * worlds, an arrival, a superstar, an ignition, a comet re-planned into orbit), and /why-it-takes-time/ forms one world in six stages
+ * as the reader travels outward. Each drawing is an image with a title; any motion is a slow, one-pass drift of a decorative body,
+ * only when motion is allowed, and the still drawing is complete without it.
+ */
+import { orbitPoints } from '../../data/sales/geometry.ts';
+import type { WorldVariant } from '../../data/sales/situations.ts';
+
+export type WorldStage = 'stage-1' | 'stage-2' | 'stage-3' | 'stage-4' | 'stage-5' | 'stage-6';
+
+interface Props {
+  variant: WorldVariant | WorldStage;
+  /** The image's accessible name. */
+  title: string;
+  id: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { variant, title, id, size = 'md' } = Astro.props;
+const titleId = `${id}-title`;
+
+// Dust for the early stages: a deterministic scatter (golden-angle spiral), denser toward the center as the stage rises.
+const dust = (count: number, spread: number): { x: number; y: number; r: number }[] =>
+  Array.from({ length: count }, (_, i) => {
+    const a = i * 2.39996;
+    const d = spread * Math.sqrt((i + 1) / count);
+    return { x: Math.round((120 + d * Math.cos(a)) * 10) / 10, y: Math.round((120 + d * Math.sin(a)) * 10) / 10, r: 1.5 + (i % 3) };
+  });
+
+const stageNumber = variant.startsWith('stage-') ? Number(variant.slice(6)) : 0;
+const dustField = stageNumber === 1 ? dust(42, 104) : stageNumber === 2 ? dust(34, 80) : stageNumber === 3 ? dust(18, 96) : [];
+const rays = orbitPoints(120, 120, 62, 12).map((p, i) => ({ ...p, inner: orbitPoints(120, 120, 34, 12)[i] }));
+---
+
+<svg class:list={['sales-world', `sales-world--${size}`, `sales-world--${variant}`]} viewBox="0 0 240 240" role="img" aria-labelledby={titleId}>
+  <title id={titleId}>{title}</title>
+  {
+    stageNumber > 0 && (
+      <g class="sales-world__stage">
+        {dustField.map((p) => (
+          <circle class="sales-world__dust" cx={p.x} cy={p.y} r={p.r} />
+        ))}
+        {stageNumber === 2 && <circle class="sales-world__core" cx="120" cy="120" r="16" />}
+        {stageNumber === 3 && <circle class="sales-world__core" cx="120" cy="120" r="40" />}
+        {stageNumber >= 4 && (
+          <>
+            {stageNumber >= 5 && <circle class="sales-world__air" cx="120" cy="120" r="76" />}
+            <circle class="sales-world__body" cx="120" cy="120" r="62" />
+            <path class="sales-world__land" d="M70 96 Q 100 84 124 100 T 168 98 L 176 116 Q 140 124 112 116 T 62 118 Z" />
+            <path class="sales-world__land" d="M78 150 Q 110 138 140 152 T 172 146 L 164 164 Q 130 170 96 166 Z" />
+          </>
+        )}
+        {stageNumber === 6 && (
+          <>
+            <ellipse class="sales-world__orbit" cx="120" cy="120" rx="108" ry="34" transform="rotate(-18 120 120)" />
+            <g class="sales-world__drift">
+              <circle class="sales-world__moon" cx="214" cy="88" r="11" />
+            </g>
+          </>
+        )}
+      </g>
+    )
+  }
+  {
+    variant === 'spinout' && (
+      <g>
+        <circle class="sales-world__body" cx="96" cy="142" r="62" />
+        <path class="sales-world__land" d="M48 128 Q 80 114 104 130 T 150 126 L 156 146 Q 120 152 92 146 T 40 150 Z" />
+        <path class="sales-world__trail" d="M146 104 Q 170 70 188 56" />
+        <g class="sales-world__drift">
+          <circle class="sales-world__moon" cx="194" cy="48" r="24" />
+        </g>
+      </g>
+    )
+  }
+  {
+    variant === 'horizon' && (
+      <g>
+        <circle class="sales-world__air" cx="120" cy="104" r="56" />
+        <g class="sales-world__drift">
+          <circle class="sales-world__sun" cx="120" cy="104" r="40" />
+        </g>
+        <path class="sales-world__ground" d="M0 240 L0 170 Q 120 128 240 170 L240 240 Z" />
+      </g>
+    )
+  }
+  {
+    variant === 'twin' && (
+      <g>
+        <ellipse class="sales-world__orbit" cx="120" cy="120" rx="100" ry="46" />
+        <circle class="sales-world__body" cx="74" cy="120" r="38" />
+        <g class="sales-world__drift">
+          <circle class="sales-world__moon" cx="170" cy="120" r="32" />
+        </g>
+      </g>
+    )
+  }
+  {
+    variant === 'arrival' && (
+      <g>
+        <circle class="sales-world__air" cx="148" cy="146" r="66" />
+        <circle class="sales-world__body" cx="148" cy="146" r="54" />
+        <path class="sales-world__land" d="M104 132 Q 136 118 160 134 T 198 130 L 200 148 Q 170 156 140 150 T 100 152 Z" />
+        <path class="sales-world__trail" d="M12 28 Q 60 40 92 82" />
+        <g class="sales-world__drift">
+          <circle class="sales-world__moon" cx="96" cy="88" r="9" />
+        </g>
+      </g>
+    )
+  }
+  {
+    variant === 'superstar' && (
+      <g>
+        {rays.map((p) => p.inner !== undefined && <line class="sales-world__ray" x1={p.inner.x} y1={p.inner.y} x2={p.x} y2={p.y} />)}
+        <circle class="sales-world__sun" cx="120" cy="120" r="30" />
+        <circle class="sales-world__orbit" cx="120" cy="120" r="94" />
+        <g class="sales-world__drift">
+          <circle class="sales-world__body" cx="186" cy="54" r="16" />
+        </g>
+      </g>
+    )
+  }
+  {
+    variant === 'ignition' && (
+      <g>
+        <circle class="sales-world__orbit" cx="120" cy="120" r="96" />
+        <circle class="sales-world__orbit" cx="120" cy="120" r="70" />
+        <circle class="sales-world__air" cx="120" cy="120" r="46" />
+        <g class="sales-world__drift">
+          <path class="sales-world__spark" d="M120 72 L131 109 L168 120 L131 131 L120 168 L109 131 L72 120 L109 109 Z" />
+        </g>
+      </g>
+    )
+  }
+  {
+    variant === 'comet' && (
+      <g>
+        <circle class="sales-world__orbit" cx="120" cy="120" r="88" />
+        <circle class="sales-world__body" cx="120" cy="120" r="42" />
+        <path class="sales-world__trail" d="M8 214 Q 60 196 112 214" />
+        <g class="sales-world__drift">
+          <path class="sales-world__tail" d="M206 120 Q 214 160 190 186" />
+          <circle class="sales-world__moon" cx="208" cy="120" r="12" />
+        </g>
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  @layer pages {
+    .sales-world {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+      overflow: visible;
+    }
+
+    .sales-world--sm {
+      max-inline-size: 7rem;
+    }
+
+    .sales-world--md {
+      max-inline-size: 16rem;
+    }
+
+    .sales-world--lg {
+      max-inline-size: 26rem;
+      margin-inline: auto;
+    }
+
+    .sales-world__dust {
+      fill: var(--color-text-muted);
+    }
+
+    .sales-world__core {
+      fill: var(--color-highlight-ink);
+    }
+
+    .sales-world__body {
+      fill: var(--color-link);
+    }
+
+    .sales-world__land {
+      fill: var(--color-highlight-ink);
+      opacity: 0.85;
+    }
+
+    .sales-world__air {
+      fill: var(--color-bg-soft);
+      stroke: var(--color-link);
+      stroke-width: 2;
+      opacity: 0.9;
+    }
+
+    .sales-world__orbit {
+      fill: none;
+      stroke: var(--color-text-muted);
+      stroke-width: 2;
+      stroke-dasharray: 5 7;
+    }
+
+    .sales-world__moon,
+    .sales-world__sun,
+    .sales-world__spark {
+      fill: var(--color-highlight-ink);
+    }
+
+    .sales-world__ray {
+      stroke: var(--color-highlight-ink);
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+
+    .sales-world__trail,
+    .sales-world__tail {
+      fill: none;
+      stroke: var(--color-highlight-ink);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 2 8;
+    }
+
+    .sales-world__tail {
+      stroke-dasharray: none;
+      opacity: 0.6;
+    }
+
+    .sales-world__ground {
+      fill: var(--color-link);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .sales-world__drift {
+        transform-box: view-box;
+        transform-origin: 50% 50%;
+        animation-name: sales-world-drift;
+        animation-duration: 6s;
+        animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+      }
+
+      @supports (animation-timeline: view()) {
+        .sales-world__stage,
+        .sales-world__drift {
+          animation-duration: 1ms;
+          animation-timing-function: linear;
+          animation-timeline: view();
+          animation-range: entry 0% cover 50%;
+        }
+
+        .sales-world__stage {
+          transform-box: view-box;
+          transform-origin: 50% 50%;
+          animation-name: sales-world-form;
+          animation-fill-mode: both;
+        }
+      }
+    }
+
+    @keyframes sales-world-drift {
+      from {
+        transform: rotate(-40deg);
+      }
+
+      to {
+        transform: rotate(0deg);
+      }
+    }
+
+    @keyframes sales-world-form {
+      from {
+        transform: scale(0.8) rotate(-25deg);
+      }
+
+      to {
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .sales-world__dust,
+      .sales-world__core,
+      .sales-world__body,
+      .sales-world__moon,
+      .sales-world__sun,
+      .sales-world__spark,
+      .sales-world__ground {
+        fill: CanvasText;
+      }
+
+      .sales-world__land,
+      .sales-world__air {
+        fill: Canvas;
+        stroke: CanvasText;
+      }
+
+      .sales-world__orbit,
+      .sales-world__ray,
+      .sales-world__trail,
+      .sales-world__tail {
+        stroke: CanvasText;
+      }
+    }
+  }
+</style>

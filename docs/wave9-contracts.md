@@ -39,6 +39,7 @@ Never name anything `container--wide` or `--page-wide` (`tests/unit/wp-16/layout
 | `MarketingLayout` | New `width?: 'content' \| 'prose'`, default `'content'`: the body sits in `.container .flow-wide prose`. `'prose'` restores the 46rem column. The hero copy follows the body edge as before. |
 | `GuideLayout`, `TemplateLayout`, `LegalLayout`, `ReferenceLayout` (not `wide`) | Unchanged: the centred 46rem reading column, and the hero shares it (pinned by `tests/unit/wp-16/layout-css.test.ts`). A family package that wants a wide reading page builds it from `MarketingLayout` or `ArticleLayout`. `ReferenceLayout wide` uses the frame. |
 | `HomeLayout`, `HubLayout`, `StageLayout`, `ServiceLayout`, `ToolLayout`, `ArticleHub`, `ArticleLayout`, `BriefLayout`, `PlaybookLayout`, `FormLayout` | Already use `.container`; they widen with the token. |
+| `ArticleLayout`, `BriefLayout` | New optional named slot `aside`: its contents go in the sticky rail (after the contents list or the methodology box), for figures or notes beside the body. `ArticleLayout` renders the rail when it has a contents list or an `aside`, and leaves out the related section when `related` is empty. |
 | `HomeLayout` | The LCP preload is the existing `preloadImage` prop (forwarded to `BaseLayout`). WP-53 points it at the galaxy poster (W9-6). |
 
 `Section.astro` gains `tone="deep"`: the dark band (`section--soft section--tinted band--deep`), which spaces like a tinted band. `Prose.astro` gains `width?: 'prose' | 'content'` (default `'prose'`, unchanged); `'content'` renders `.container.flow-wide.prose`. `PageHero` and `HeroEditorial` gain `frame?: 'default' | 'wide'`.
@@ -112,6 +113,10 @@ Exports: `FULL_HD`, `SMALLEST_PHONE`, `MIN_FRAME_AT_FULL_HD` (1600), `MAX_LEFT_O
 | Partner | Refer a founder | `/network/partners/enquire/` |
 
 A family page picks its CTAs from this table and the CTA map (`src/data/cta/map.ts`); it never writes its own label for the primary.
+
+Where the label lives (WP-51): `APPLY` in `src/components/hero/ctas.ts` (hero primaries, `HubLayout`/`ServiceLayout` defaults, family hero actions), the `apply` target in `src/data/cta/targets.ts` (end bands), `applyButton` in `src/data/nav.ts` (header, drawer and mobile bar). A page that still passes `{ label: 'Apply', href: '/apply/' }` by hand (about, fundability, services, team composer, FAQ, playbooks, the program MDX "Apply to the program") switches to `APPLY` when its owner rewrites it.
+
+The header: the top row is full. From 1100 to 1499px the nav runs at 16px with `--sp-1` gaps and the button at 16px; from 1100 to 1239px the button shows "Readiness review" with the full label as its accessible name. The direct Pricing item left the top level to make room, so no package adds a top-level item (`/how-we-work/` is linked from the Program panel, the strips and the footer). The command palette keeps "Apply" as the command name, with the button label as its hint, so a search for "apply" still finds `/apply/`. Panel column links and the footer link to `/apply/` keep "Apply": they are navigation, not the CTA.
 
 ## 9. Statistics (`.astro-magazine/plans/wave9/statistics.json`, W9-13)
 

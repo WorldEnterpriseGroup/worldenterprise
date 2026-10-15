@@ -1,0 +1,403 @@
+---
+/**
+ * /why-it-takes-time/ (WP-58, SITE-COPY.md section 5): the real clock of a business, shown in six charts met in order as the reader
+ * travels outward from year 0, while a world forms beside them from dust to a settled orbit. Every figure names its source and links to
+ * the sources list at the foot of the page. Charts are SVG images with titles and descriptions, each with a data table, and the page is
+ * complete without JavaScript (it ships none). Motion is decorative, one pass, and only when the reader allows it.
+ */
+import BarList from '../../components/sales/BarList.astro';
+import ChartFrame from '../../components/sales/ChartFrame.astro';
+import ClockScale from '../../components/sales/ClockScale.astro';
+import ColumnChart from '../../components/sales/ColumnChart.astro';
+import CtaRow from '../../components/sales/CtaRow.astro';
+import LineChart from '../../components/sales/LineChart.astro';
+import PhaseRings from '../../components/sales/PhaseRings.astro';
+import SalesSources from '../../components/sales/SalesSources.astro';
+import StatTiles from '../../components/sales/StatTiles.astro';
+import World from '../../components/sales/World.astro';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { CLOCK_END, CLOCK_HERO, HEAD_START, PACED, STATIONS } from '../../data/sales/clock.ts';
+import type { StationId } from '../../data/sales/clock.ts';
+import { CLOCK_HONESTY, HOW_WE_WORK_CTA, HOW_WE_WORK_FALLBACK, PRIMARY_CTA, TIMELINE_BRIEF_CTA } from '../../data/sales/copy.ts';
+import { thousands } from '../../data/sales/geometry.ts';
+import { stat } from '../../data/sales/stats.ts';
+import {
+  APPLICATIONS_BY_YEAR,
+  CLOCK_SPANS,
+  FAILURE_REASONS,
+  FORMATION_FUNNEL,
+  FOUNDER_AGE,
+  MONTHS_AXIS,
+  ODDS_STAIRCASE_2013,
+  PHASES,
+  QUARTERS_TO_PAYROLL,
+  SURVIVAL_2015,
+} from '../../data/sales/timeline.ts';
+import type { WorldStage } from '../../components/sales/World.astro';
+
+const path = '/why-it-takes-time/';
+const tones: Readonly<Record<StationId, string>> = {
+  applications: 'band--deep',
+  funnel: 'band--soft',
+  survival: 'band--deep',
+  clock: 'band--soft',
+  staircase: 'band--deep',
+  reasons: 'band--soft',
+};
+
+const applicationBars = APPLICATIONS_BY_YEAR.map((p, i) => ({
+  label: String(p.x),
+  value: p.y,
+  display: thousands(p.y),
+  highlight: i === APPLICATIONS_BY_YEAR.length - 1,
+}));
+
+const [allPrivate, information, professional] = SURVIVAL_2015;
+if (allPrivate === undefined || information === undefined || professional === undefined) {
+  throw new Error('SURVIVAL_2015 must hold three series: all private, Information, Professional and technical services');
+}
+const survivalAt = (years: number): number => allPrivate.points.find((p) => p.x === years)?.y ?? Number.NaN;
+const survivalMarks = [1, 5, 10].map((x) => ({ x, y: survivalAt(x), label: `${survivalAt(x)}%` }));
+
+const fmtMonth = (m: number): string => (m === 0 ? 'Month 0' : `Month ${m}`);
+const ids = [...STATIONS.flatMap((s) => s.sources), ...PACED.sources, ...HEAD_START.sources];
+---
+
+<MarketingLayout
+  title={CLOCK_HERO.title}
+  seoTitle={CLOCK_HERO.seoTitle}
+  description={CLOCK_HERO.description}
+  lead={CLOCK_HERO.lead}
+  path={path}
+  ogSlot="og-program"
+  secondary={TIMELINE_BRIEF_CTA}
+>
+  <nav class="sales-route" aria-labelledby="sales-route-title">
+    <h2 id="sales-route-title" class="sales-route__title">The journey, from year 0 outward</h2>
+    <ol class="sales-route__list">
+      {
+        STATIONS.map((s) => (
+          <li>
+            <a href={`#station-${s.id}`}>
+              <span class="sales-route__when">{s.when}</span>
+              <span>{s.headline}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+
+  <Fragment slot="after">
+    {
+      STATIONS.map((s) => (
+        <section class:list={['band', tones[s.id], 'sales-station']} id={`station-${s.id}`} aria-labelledby={`station-${s.id}-title`}>
+          <div class="container">
+            <div class="split sales-station__split">
+              <div class="split__text sales-station__text">
+                <div class="sales-station__head">
+                  <World variant={`stage-${s.stage}` as WorldStage} title={s.stageTitle} id={`world-${s.id}`} size="sm" />
+                  <p class="sales-station__when">{s.when}</p>
+                </div>
+                <h2 id={`station-${s.id}-title`}>{s.headline}</h2>
+                <p class="sales-station__caption">{s.caption}</p>
+                <StatTiles stats={s.tiles} label={`Figures for: ${s.headline}`} />
+              </div>
+              <div class="split__media sales-station__media">
+                {s.id === 'applications' && (
+                  <ChartFrame
+                    caption="Yearly U.S. business applications, 2005 to 2025."
+                    sources={s.sources}
+                    derived={stat('ST-06').derived}
+                    table={{
+                      caption: 'U.S. business applications by year',
+                      columns: ['Year', 'Applications'],
+                      rows: APPLICATIONS_BY_YEAR.map((p) => [String(p.x), thousands(p.y)]),
+                    }}
+                  >
+                    <ColumnChart
+                      id="chart-applications"
+                      title="U.S. business applications by year, 2005 to 2025"
+                      desc="Applications held near 2.5 million a year until 2016, rose to 3.5 million by 2019, jumped in 2020 and 2021, and reached a record 5,671,836 in 2025."
+                      bars={applicationBars}
+                      max={6000000}
+                      yStep={1000000}
+                      labelEvery={5}
+                    />
+                  </ChartFrame>
+                )}
+                {s.id === 'funnel' && (
+                  <ChartFrame
+                    caption="What became of the business applications filed in 2021, and the wait from application to first payroll."
+                    sources={s.sources}
+                    derived={stat('ST-07').derived}
+                    table={{
+                      caption: 'Applications filed in 2021 and the employer businesses formed from them',
+                      columns: ['Measure', 'Value'],
+                      rows: [...FORMATION_FUNNEL, ...QUARTERS_TO_PAYROLL.map((b) => ({ ...b, label: `Quarters to first payroll, ${b.label}` }))].map((b) => [
+                        b.label,
+                        b.display,
+                      ]),
+                    }}
+                  >
+                    <BarList bars={FORMATION_FUNNEL} label="Applications filed in 2021, and how many became employers" />
+                    <div class="sales-station__sub">
+                      <BarList bars={QUARTERS_TO_PAYROLL} label="Average quarters from application to first payroll" max={3} />
+                    </div>
+                  </ChartFrame>
+                )}
+                {s.id === 'survival' && (
+                  <ChartFrame
+                    caption="Share of establishments still operating, by years since opening, for those opened in the year to March 2015."
+                    sources={s.sources}
+                    derived="The shaded phases are WE's names for the years, not the source's."
+                    table={{
+                      caption: 'Survival since opening, establishments opened in the year to March 2015 (percent)',
+                      columns: ['Years since opening', 'All private sector', 'Information', 'Professional and technical services'],
+                      rows: allPrivate.points.map((p, i) => [
+                        String(p.x),
+                        `${p.y}%`,
+                        `${information.points[i]?.y ?? ''}%`,
+                        `${professional.points[i]?.y ?? ''}%`,
+                      ]),
+                    }}
+                  >
+                    <LineChart
+                      id="chart-survival"
+                      title="Survival of new U.S. establishments over ten years"
+                      desc="Three falling lines that move together: all private-sector establishments fall from 100% to 79.6% after one year, 50.2% after five and 34.7% after ten. Information falls to 30.0% and professional and technical services to 34.3% at year ten."
+                      series={SURVIVAL_2015}
+                      x={{ min: 0, max: 10 }}
+                      y={{ min: 0, max: 100 }}
+                      xStep={1}
+                      xStepNarrow={2}
+                      yStep={25}
+                      yUnit="%"
+                      bands={PHASES}
+                      bandKey="Shaded behind the lines: Ignite (to 6 months), Build (to 18 months), Launch (to year 3), Grow (to year 5) and Orbit (after year 5)."
+                      marks={survivalMarks}
+                      area
+                    />
+                  </ChartFrame>
+                )}
+                {s.id === 'clock' && (
+                  <ChartFrame
+                    caption="One months axis, from the start of a business to its fifth year."
+                    sources={s.sources}
+                    table={{
+                      caption: 'Program lengths and milestones in months',
+                      columns: ['What', 'From', 'To', 'As the source puts it'],
+                      rows: CLOCK_SPANS.map((sp) => [sp.label, fmtMonth(sp.from), fmtMonth(sp.to), sp.display]),
+                    }}
+                  >
+                    <ClockScale spans={CLOCK_SPANS} months={MONTHS_AXIS} label="Program lengths and milestones on a 60-month axis" />
+                  </ChartFrame>
+                )}
+                {s.id === 'staircase' && (
+                  <ChartFrame
+                    caption="Of establishments still open at the start of each year, the share that survived that year. Opened in the year to March 2013."
+                    sources={['bls-bed-total']}
+                    table={{
+                      caption: 'Survival from the previous year, establishments opened in the year to March 2013',
+                      columns: ['Year', 'Survived the year'],
+                      rows: ODDS_STAIRCASE_2013.map((b) => [b.label, b.display]),
+                    }}
+                  >
+                    <ColumnChart
+                      id="chart-staircase"
+                      title="Survival from the previous year rises with age"
+                      desc="79.6% of new establishments survive their first year. The share rises almost every year after, to 94.4% in year nine."
+                      bars={ODDS_STAIRCASE_2013}
+                      max={100}
+                      yStep={25}
+                      yFormat="percent"
+                      labelEvery={1}
+                      labelEveryNarrow={2}
+                      rings
+                    />
+                  </ChartFrame>
+                )}
+                {s.id === 'reasons' && (
+                  <ChartFrame
+                    caption="Reasons given by venture-backed startups that shut down since 2023."
+                    sources={s.sources}
+                    caveat={stat('ST-11').caveat}
+                    table={{
+                      caption: 'Reasons given for shutting down, venture-backed startups',
+                      columns: ['Reason', 'Share citing it'],
+                      rows: FAILURE_REASONS.map((b) => [b.label, b.display]),
+                    }}
+                  >
+                    <BarList bars={FAILURE_REASONS} label="Reasons given for shutting down" max={100} comet />
+                  </ChartFrame>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      ))
+    }
+
+    <section class="band band--tint-blue sales-station" id="paced" aria-labelledby="paced-title">
+      <div class="container">
+        <div class="split sales-station__split">
+          <div class="split__text sales-station__text">
+            <h2 id="paced-title">{PACED.headline}</h2>
+            {PACED.body.map((p) => <p>{p}</p>)}
+            <p class="sales-station__source">
+              Source: <a href="#source-cohen-hochberg-2014">Cohen and Hochberg (2014)</a>.
+            </p>
+          </div>
+          <div class="split__media">
+            <PhaseRings />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--soft sales-station" id="head-start" aria-labelledby="head-start-title">
+      <div class="container">
+        <div class="split sales-station__split">
+          <div class="split__text sales-station__text">
+            <h2 id="head-start-title">{HEAD_START.headline}</h2>
+            <p class="sales-station__caption">{HEAD_START.caption}</p>
+            <StatTiles stats={HEAD_START.tiles} label="Figures on founder experience" />
+          </div>
+          <div class="split__media">
+            <ChartFrame
+              caption="Mean age at founding, U.S. startups that hire, founded 2007 to 2014."
+              sources={HEAD_START.sources}
+              table={{ caption: 'Mean founder age at founding', columns: ['Founders', 'Mean age'], rows: FOUNDER_AGE.map((b) => [b.label, b.display]) }}
+            >
+              <BarList bars={FOUNDER_AGE} label="Mean founder age at founding" max={50} />
+            </ChartFrame>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--deep sales-end" aria-labelledby="clock-end-title">
+      <div class="container">
+        <div class="split sales-station__split">
+          <div class="split__text sales-station__text">
+            <h2 id="clock-end-title">{CLOCK_END.headline}</h2>
+            <p class="sales-station__caption">{CLOCK_END.body}</p>
+            <p class="sales-end__honesty">{CLOCK_HONESTY.join(' ')}</p>
+            <CtaRow primary={PRIMARY_CTA} more={[[HOW_WE_WORK_CTA, HOW_WE_WORK_FALLBACK], [TIMELINE_BRIEF_CTA]]} />
+          </div>
+          <div class="split__media">
+            <World variant="stage-6" title="A settled world in a steady orbit" id="world-end" size="lg" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sales-sources" aria-label="Sources for this page">
+      <div class="container">
+        <SalesSources ids={ids} />
+      </div>
+    </section>
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    .sales-route__title {
+      font-size: var(--fs-h4);
+    }
+
+    .sales-route__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+      gap: var(--sp-3);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: station;
+    }
+
+    .sales-route__list a {
+      display: grid;
+      gap: var(--sp-1);
+      block-size: 100%;
+      padding: var(--sp-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+    }
+
+    .sales-route__list a:hover span:last-child,
+    .sales-route__list a:focus-visible span:last-child {
+      text-decoration: underline;
+    }
+
+    .sales-route__when {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+    }
+
+    .sales-station__split {
+      align-items: start;
+    }
+
+    .sales-station__text {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .sales-station__text > * {
+      margin: 0;
+    }
+
+    .sales-station__head {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+    }
+
+    .sales-station__head .sales-world {
+      inline-size: 5rem;
+      flex: none;
+    }
+
+    .sales-station__when {
+      margin: 0;
+      color: var(--color-highlight-ink);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+    }
+
+    .sales-station__caption {
+      font-size: var(--fs-lead);
+    }
+
+    .sales-station__source {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .sales-station__media {
+      min-inline-size: 0;
+    }
+
+    .sales-station__sub {
+      margin-block-start: var(--sp-6);
+    }
+
+    .sales-end__honesty {
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+
+    @media (forced-colors: active) {
+      .sales-route__list a {
+        border-color: LinkText;
+      }
+    }
+  }
+</style>

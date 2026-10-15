@@ -100,8 +100,9 @@ test('a real Pagefind index of a page that holds the sentinel is searched throug
   }
 });
 
-test('the ten brief ids of the registry are the brief files the audit will read', () => {
-  assert.equal(BRIEF_IDS.length, 10);
+test('the eleven brief ids of the registry are the brief files the audit will read', () => {
+  // Wave 9 (W9-13): WP-58 adds the timeline brief, real-timeline.
+  assert.equal(BRIEF_IDS.length, 11);
   for (const id of BRIEF_IDS) assert.match(id, /^[a-z0-9]+(?:-[a-z0-9]+)*$/, `${id} is a file-name-safe id`);
 });
 
