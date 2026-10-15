@@ -1,8 +1,8 @@
 # World Enterprise Incubator
 
 Source for [worldenterprise.org](https://worldenterprise.org), the public website of World Enterprise
-Group Incorporated: a fully digital, fully remote incubator for SaaS companies that provides dedicated
-team seats steered by WE.
+Group Incorporated: a long-horizon business incubation and consulting firm. WE steers a dedicated, fully
+remote team that builds the company with its founder, for as long as the work is useful.
 
 The site is a static Astro 7 build. Content, design tokens, routes and navigation are typed data in
 `src/`. Nothing is built or previewed locally: GitLab CI is the only place that runs `astro build`,
