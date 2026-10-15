@@ -46,7 +46,7 @@ import { ALL_ENTRIES, CATEGORIES, CATEGORY_BY_ID, countByCategory, entriesIn } f
 import { directoryNode } from '../../data/ecosystem/schema.ts';
 import { faqPageNode } from '../../lib/schema.ts';
 import { href } from '../../lib/url.ts';
-import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import HubLayout from '../../layouts/HubLayout.astro';
 
 const counts = countByCategory();
 const total = ALL_ENTRIES.length;
@@ -55,7 +55,7 @@ const categoryPath = (id: string): string => `${HUB_PATH}${id}/`;
 const jsonLd = [directoryNode(HUB_PATH, 'Programs to join: the WE ecosystem directory'), faqPageNode(HUB_PATH, FAQ)];
 ---
 
-<MarketingLayout
+<HubLayout
   title={HUB_TITLE}
   seoTitle={HUB_SEO_TITLE}
   description={HUB_DESCRIPTION}
@@ -65,33 +65,23 @@ const jsonLd = [directoryNode(HUB_PATH, 'Programs to join: the WE ecosystem dire
   eyebrow="The wider ecosystem"
   primary={APPLY}
   secondary={TALK_TO_WE}
-  schemaType="CollectionPage"
+  hero="console"
   jsonLd={jsonLd}
 >
+  <Fragment slot="panel">
+    <Constellation names={CATEGORIES.map((c) => c.short)} />
+  </Fragment>
+
   <div data-context="ecosystem" class="eco-intro">
     <p class="eco-intro__text">{INTRO}</p>
     <p class="eco-intro__note"><strong>{DISCLAIMER}</strong> {SOURCE_NOTE}</p>
   </div>
 
   <Fragment slot="after">
-    <section class="band band--deep" aria-labelledby="eco-orbit-title" data-context="ecosystem">
-      <div class="container">
-        <div class="split">
-          <div class="split__text eco-stack">
-            <h2 id="eco-orbit-title">{CONSTELLATION_HEADING}</h2>
-            <p>{CONSTELLATION_TEXT}</p>
-            <p class="eco-tagline">{TAGLINE}</p>
-          </div>
-          <div class="split__media">
-            <Constellation names={CATEGORIES.map((c) => c.short)} />
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="band band--soft" aria-labelledby="eco-kinds-title" data-context="ecosystem">
       <div class="container eco-stack">
-        <h2 id="eco-kinds-title">Eight kinds of program, {total} entries</h2>
+        <h2 id="eco-kinds-title">{CONSTELLATION_HEADING}</h2>
+        <p class="eco-lead">{CONSTELLATION_TEXT} {TAGLINE} {total} programs are listed below.</p>
         <ul class="eco-kinds">
           {
             CATEGORIES.map((c) => (
@@ -220,7 +210,7 @@ const jsonLd = [directoryNode(HUB_PATH, 'Programs to join: the WE ecosystem dire
       </div>
     </section>
   </Fragment>
-</MarketingLayout>
+</HubLayout>
 
 <style>
   @layer pages {
@@ -245,10 +235,6 @@ const jsonLd = [directoryNode(HUB_PATH, 'Programs to join: the WE ecosystem dire
       gap: var(--sp-4);
     }
 
-    .eco-tagline {
-      font-weight: 700;
-      font-size: var(--fs-lead);
-    }
 
     .eco-kinds {
       display: grid;

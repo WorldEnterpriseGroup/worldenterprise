@@ -66,7 +66,7 @@ class WeEcosystemFilter extends HTMLElement {
     return { category: read('category'), stage: read('stage'), audience: read('audience'), remote: data.get('remote') === 'yes' };
   }
 
-  private matches(row: HTMLElement, c: Criteria): boolean {
+  private rowFits(row: HTMLElement, c: Criteria): boolean {
     if (c.category !== ANY && row.dataset.category !== c.category) return false;
     if (c.stage !== ANY && !tokens(row.dataset.stages).includes(c.stage)) return false;
     if (c.audience !== ANY && !tokens(row.dataset.audiences).includes(c.audience)) return false;
@@ -78,7 +78,7 @@ class WeEcosystemFilter extends HTMLElement {
     const c = this.criteria();
     let shown = 0;
     for (const row of this.rows) {
-      const ok = this.matches(row, c);
+      const ok = this.rowFits(row, c);
       row.hidden = !ok;
       if (ok) shown += 1;
     }

@@ -305,6 +305,14 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     // adds child rows only inside it (WP-33 ecosystem, WP-34 sbir-sttr, WP-35 data).
     // BEGIN WP-33 ecosystem block
     row('/ecosystem/', 'HubLayout', 'WP-33'),
+    row('/ecosystem/accelerators/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/incubators/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/university/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/coworking/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/angels/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/sba/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/government/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/communities/', 'MarketingLayout', 'WP-33'),
     // END WP-33 ecosystem block
     // BEGIN WP-34 sbir-sttr block
     row('/sbir-sttr/', 'MarketingLayout', 'WP-34'),

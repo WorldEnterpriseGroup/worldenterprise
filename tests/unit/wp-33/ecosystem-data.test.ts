@@ -173,3 +173,19 @@ test('the ecosystem page files exist and use the ownership-safe patterns', () =>
   assert.match(row, /rel="noopener"/);
   assert.doesNotMatch(row, /href=\{[^}]*\}\s+target=/);
 });
+
+test('the sources ledger holds one record per entry, with the entry source URL and a retrieval month', () => {
+  const ledger = JSON.parse(readFileSync(`${root}.astro-magazine/sources/wp-33.json`, 'utf8')) as {
+    wp: string;
+    sources: { source_id: string; exact_url_or_locator: string; retrieved_at: string }[];
+  };
+  assert.equal(ledger.wp, 'WP-33');
+  assert.equal(ledger.sources.length, ALL_ENTRIES.length);
+  const byId = new Map(ledger.sources.map((s) => [s.source_id, s]));
+  for (const e of ALL_ENTRIES) {
+    const record = byId.get(`wp33-${e.id}`);
+    assert.ok(record, `${e.id}: no source record`);
+    assert.equal(record.exact_url_or_locator, e.sourceUrl, `${e.id}: source URL differs`);
+    assert.equal(record.retrieved_at, e.retrieved, `${e.id}: retrieval differs`);
+  }
+});
