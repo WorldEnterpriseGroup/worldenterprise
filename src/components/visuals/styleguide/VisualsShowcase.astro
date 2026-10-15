@@ -58,7 +58,7 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
 
   <h3 id="h-vs-scenes">Scenes</h3>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="galaxyscene">
     <p class="vs__name">GalaxyScene <span>Hero galaxy with a world assembling from hex cells.</span></p>
     <GalaxyScene ratio="21/9" caption="Live, ratio 21/9." />
     <div class="vs__pair">
@@ -67,13 +67,13 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
     </div>
   </div>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="launchtrajectory">
     <p class="vs__name">LaunchTrajectory <span>Dream, Build, Grow as one flight; stations link to the stage pages; up to eight waypoints.</span></p>
     <LaunchTrajectory waypoints={waypoints} caption="Live, six waypoints." />
     <LaunchTrajectory static caption="Fallback: the poster, stations only." />
   </div>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="orbitsystem">
     <p class="vs__name">OrbitSystem <span>Labeled bodies on orbit rings; 7 single and 10 nested have their own posters, any other count draws its rings over the base poster.</span></p>
     <OrbitSystem bodies={lines} accent={5} caption="Live, the seven service lines, Line F in amber." labelsName="Service lines" />
     <div class="vs__pair">
@@ -82,13 +82,13 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
     </div>
   </div>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="worldforge">
     <p class="vs__name">WorldForge <span>The incubation nursery: a world forming, moons condensing on seven rings. Labels list below.</span></p>
     <WorldForge moons={nursery} caption="Live, five moons." />
     <WorldForge static caption="Fallback: the poster." />
   </div>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="starfieldband">
     <p class="vs__name">StarfieldBand <span>Dark full-bleed band, decorative sky, real content in the slot. No logo on dark bands.</span></p>
     <StarfieldBand labelledby="h-vs-band">
       <p class="vs__band-eyebrow">Starfield band</p>
@@ -103,7 +103,7 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
 
   <h3 id="h-vs-layout">Bands and splits</h3>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="band-and-split">
     <p class="vs__name">Band and Split <span>A full-bleed section (tones plain, soft, tint-blue, tint-sand, tint-stone, deep) with an optional background visual, and text beside a visual. Styles come from the layout layer.</span></p>
     <Band tone="deep" labelledby="h-vs-split">
       <HexField slot="scene" edge="right" tone="dark" seed={5} density={0.5} />
@@ -116,13 +116,13 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
   </div>
 
   <h3 id="h-vs-timeline">Long-horizon timeline</h3>
-  <div class="vs__item">
+  <div class="vs__item" data-visual="longhorizontimeline">
     <p class="vs__name">LongHorizonTimeline <span>Sourced milestones and survival gates on a multi-year track (log scale). Every placement carries a source.</span></p>
     <LongHorizonTimeline milestones={TIMELINE} horizon={10} id="vs-timeline" caption="Building a business takes years, not a three-month batch." />
   </div>
 
   <h3 id="h-vs-data">Data visualization</h3>
-  <div class="vs__item">
+  <div class="vs__item" data-visual="stattiles-and-stattile">
     <p class="vs__name">StatTiles and StatTile <span>Sourced figures; shared sources listed once. A tile can also stand alone.</span></p>
     <StatTiles stats={STATS} label="Starting a business in the U.S." />
     <div class="vs__pair">
@@ -133,7 +133,7 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
     </div>
   </div>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="survivalcurve">
     <p class="vs__name">SurvivalCurve <span>Stepped survival lines (one to three series), gates at chosen years, hidden data table, source.</span></p>
     <SurvivalCurve
       title="Share of new U.S. businesses still operating, by year"
@@ -145,34 +145,34 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
   </div>
 
   <div class="vs__pair">
-    <div class="vs__item">
+    <div class="vs__item" data-visual="barchart">
       <p class="vs__name">BarChart <span>Horizontal bars, two to ten rows, one highlight.</span></p>
       <BarChart title="Financial challenges small employer firms faced in the past year" items={CHALLENGES} source={SBCS} max={100} highlight={2} valueLabel="Share of firms" />
     </div>
-    <div class="vs__item">
+    <div class="vs__item" data-visual="donutchart">
       <p class="vs__name">DonutChart <span>Parts of a whole, two to six segments, legend carries the figures.</span></p>
       <DonutChart title="Small employer firms at the end of 2024" items={PROFITABILITY} source={SBCS} center="47%" centerLabel="at a profit" />
     </div>
   </div>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="sourcenote">
     <p class="vs__name">SourceNote <span>The source line every figure carries.</span></p>
     <SourceNote sources={[BLS_BED, SBCS]} />
   </div>
 
   <h3 id="h-vs-illustrations">Illustrations</h3>
-  <div class="vs__item">
+  <div class="vs__item" data-visual="journeyroadmap">
     <p class="vs__name">JourneyRoadmap <span>Dream, Build, Grow with the deliverable the company keeps; no numbers, days or fees.</span></p>
     <JourneyRoadmap />
   </div>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="readinessscorecard">
     <p class="vs__name">ReadinessScorecard <span>Six readiness areas, baseline and later shapes; illustrative, never scored.</span></p>
     <ReadinessScorecard />
     <p class="vs__disclaimer">WE makes no promise of funding.</p>
   </div>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="hexfield">
     <p class="vs__name">HexField <span>Decorative hex texture, dense at one edge, one amber cell. Fills a positioned parent.</span></p>
     <div class="vs__pair">
       <div class="vs__field"><HexField edge="right" /><p class="vs__field-text">Light, dense at the right</p></div>
@@ -180,7 +180,7 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
     </div>
   </div>
 
-  <div class="vs__item">
+  <div class="vs__item" data-visual="servicelineset-and-visualicon">
     <p class="vs__name">ServiceLineSet and VisualIcon <span>The seven lines as linked hex icons; the program icon set.</span></p>
     <ServiceLineSet layout="honeycomb" />
     <ul class="vs__icons" role="list">
@@ -196,7 +196,7 @@ const waypoints = ['Diagnostic and roadmap', 'Brand and positioning', 'Platform 
   </div>
 
   <h3 id="h-vs-team">The team WE steers</h3>
-  <div class="vs__item">
+  <div class="vs__item" data-visual="teamconstellation-and-rolecard">
     <p class="vs__name">TeamConstellation and RoleCard <span>Unpriced, illustrative: roles, never names; no cart, no seat counts to buy.</span></p>
     <TeamConstellation roles={team} caption="Illustration only; each team is shaped to the company." />
     <div class="vs__cards">

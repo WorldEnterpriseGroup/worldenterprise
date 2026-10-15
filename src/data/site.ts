@@ -13,7 +13,7 @@ export const site = {
   motto: 'WE Dream. WE Build. WE Grow.',
   signature: 'Where vision becomes evidence.',
   description:
-    'A fully remote digital incubator for SaaS. Dedicated team seats, steered by WE, help a founder build evidence for investors. WE promises no funding.',
+    'Long-horizon business incubation and consulting. WE steers a dedicated, fully remote team that builds a software-enabled company. WE promises no funding.',
   /** Title suffix: "{Page} | World Enterprise Incubator" (max 60 characters in total). */
   titleSuffix: 'World Enterprise Incubator',
   locality: 'Lewes',

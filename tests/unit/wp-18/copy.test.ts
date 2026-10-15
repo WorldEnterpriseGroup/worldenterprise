@@ -71,6 +71,9 @@ test('"fundable" as an outcome and the peers family appear in source only where 
       'src/data/families.ts',
       // The denylist already allows the word on the route ^/compare/incubator-vs-other-programs/$, because that page compares the category.
       'src/content/pages/compare/incubator-vs-other-programs.mdx',
+      // The sales sources ledger cites a research title that names the program category (Cohen and Hochberg 2014); the built ledger is
+      // wrapped in data-claim-allow="C-13-peers" (WP-58 exception, W9-12).
+      'src/data/sales/sources.ts',
     ],
     'C-21-phrase': ['src/data/claims.ts', 'src/pages/program/dedicated-teams.astro'],
   };

@@ -1,0 +1,112 @@
+---
+/**
+ * The phase rings of "Paced, not packed" (WP-58): WE's five phases as rings around a company, wider as the years go on, with the
+ * written reviews at years one, three and five marked on them. The drawing is an image; the list beside it says the same in text.
+ */
+import { round } from '../../data/sales/geometry.ts';
+import { PHASES } from '../../data/sales/timeline.ts';
+import { REVIEW_YEARS } from '../../data/sales/clock.ts';
+
+const C = 200;
+// Radius grows with the square root of the years, so year fifteen fits and the first six months stay legible.
+const radius = (years: number): number => round(36 + Math.sqrt(years / 15) * 150);
+const rings = PHASES.map((p, i) => ({ ...p, r: radius(p.to), alt: i % 2 === 1 }));
+const reviews = REVIEW_YEARS.map((y) => ({ y, r: radius(y) }));
+const span = (from: number, to: number): string => {
+  const fmt = (v: number): string => (v < 1 ? `${round(v * 12)} months` : `year ${v}`);
+  return to >= 15 ? `from ${fmt(from)} on` : `${fmt(from)} to ${fmt(to)}`;
+};
+---
+
+<div class="sales-rings">
+  <svg class="sales-rings__svg" viewBox="0 0 400 400" role="img" aria-labelledby="sales-rings-title">
+    <title id="sales-rings-title">Five phase rings around a company, with reviews marked at years one, three and five</title>
+    {[...rings].reverse().map((r) => <circle class:list={['sales-rings__ring', r.alt && 'sales-rings__ring--alt']} cx={C} cy={C} r={r.r} />)}
+    <circle class="sales-rings__core" cx={C} cy={C} r="20" />
+    {
+      reviews.map((rv) => (
+        <g class="sales-rings__review">
+          <circle cx={C} cy={round(C - rv.r)} r="8" />
+          <text x={C + 14} y={round(C - rv.r + 6)}>{`Yr ${rv.y}`}</text>
+        </g>
+      ))
+    }
+  </svg>
+  <ol class="sales-rings__list">
+    {
+      rings.map((r) => (
+        <li>
+          <strong>{r.label}</strong>, {span(r.from, r.to)}
+        </li>
+      ))
+    }
+    <li>Written reviews at years {REVIEW_YEARS.join(', ').replace(/, (\d+)$/, ' and $1')}.</li>
+  </ol>
+</div>
+
+<style>
+  @layer pages {
+    .sales-rings {
+      display: grid;
+      gap: var(--sp-5);
+      align-items: center;
+    }
+
+    @media (min-width: 48rem) {
+      .sales-rings {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 16rem);
+      }
+    }
+
+    .sales-rings__svg {
+      display: block;
+      inline-size: 100%;
+      max-inline-size: 28rem;
+      block-size: auto;
+      font-size: 18px;
+    }
+
+    .sales-rings__ring {
+      fill: var(--color-bg-soft);
+      stroke: var(--color-link);
+      stroke-width: 2;
+    }
+
+    .sales-rings__ring--alt {
+      stroke-dasharray: 6 6;
+    }
+
+    .sales-rings__core {
+      fill: var(--color-highlight-ink);
+    }
+
+    .sales-rings__review circle {
+      fill: var(--color-highlight-ink);
+    }
+
+    .sales-rings__review text {
+      fill: var(--color-text);
+      font-weight: 700;
+    }
+
+    .sales-rings__list {
+      display: grid;
+      gap: var(--sp-2);
+      margin: 0;
+      padding-inline-start: var(--sp-5);
+    }
+
+    @media (forced-colors: active) {
+      .sales-rings__ring {
+        fill: Canvas;
+        stroke: CanvasText;
+      }
+
+      .sales-rings__core,
+      .sales-rings__review circle,
+      .sales-rings__review text {
+        fill: CanvasText;
+      }
+    }
+  }
+</style>

@@ -93,6 +93,8 @@ export const primaryNav: readonly PrimaryNavItem[] = [
           { label: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'A dedicated team that works only on your company' },
           { label: "Who it's for", href: '/program/who-its-for/', description: 'The founders and ideas WE builds with' },
           { label: 'How WE decides', href: '/program/how-we-decide/', description: 'How an application is read' },
+          { label: 'Why it takes time', href: '/why-it-takes-time/', description: 'How long a new business really takes, from public data' },
+          { label: 'Who WE works with', href: '/who-we-work-with/', description: 'Seven situations founders bring to WE' },
         ],
       },
       {
@@ -382,6 +384,8 @@ export const footerNav: readonly FooterColumn[] = [
       { label: 'Your journey', href: '/journey/' },
       { label: 'Dedicated teams', href: '/program/dedicated-teams/' },
       { label: 'How WE works', href: '/how-we-work/' },
+      { label: 'Why it takes time', href: '/why-it-takes-time/' },
+      { label: 'Who WE works with', href: '/who-we-work-with/' },
       { label: 'Apply', href: '/apply/' },
       { label: 'FAQ', href: '/faq/' },
     ],

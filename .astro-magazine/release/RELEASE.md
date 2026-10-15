@@ -488,7 +488,7 @@ Source: `src/components/program/stages.ts:164`. Renders on: /program/grow/ and e
 
 Source: `src/data/site.ts:16`. Renders on: Any page that uses the site description.
 
-> L16: A fully remote digital incubator for SaaS. Dedicated team seats, steered by WE, help a founder build evidence for investors. WE promises no funding.
+> L16: Long-horizon business incubation and consulting. WE steers a dedicated, fully remote team that builds a software-enabled company. WE promises no funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______

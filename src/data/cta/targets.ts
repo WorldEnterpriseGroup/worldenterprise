@@ -57,10 +57,10 @@ const FIXED: Readonly<Record<'apply' | 'briefs' | 'journey' | 'contact' | 'tools
   },
   contact: {
     href: '/contact/',
-    label: 'Ask WE a question',
+    label: 'Talk to WE',
     variant: 'contact',
     band: {
-      heading: 'Ask WE a question',
+      heading: 'Talk to WE',
       body: 'Send a message through the contact form and say what you want to talk about.',
     },
   },
@@ -84,7 +84,7 @@ const FIXED: Readonly<Record<'apply' | 'briefs' | 'journey' | 'contact' | 'tools
   },
   'partner-enquiry': {
     href: '/network/partners/enquire/',
-    label: 'Start a partner enquiry',
+    label: 'Refer a founder',
     variant: 'partner-enquiry',
     band: {
       heading: 'Ask about partnering with WE',
