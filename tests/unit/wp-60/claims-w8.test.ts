@@ -69,7 +69,7 @@ const NEGATIVE = [
   'Your mentor may ask for the plan.',
   'A founder may look for a mentor outside WE.',
   'Incubators and other startup programs differ in what they give a team.',
-  'Dedicated offshore team seats, steered by WE.',
+  'A dedicated team that works only on your company, steered by WE.',
   'We offer a template for cohort analysis.',
   'Launch and Accelerate are packages sized by company stage.',
   INTRODUCTIONS_DISCLAIMER,
