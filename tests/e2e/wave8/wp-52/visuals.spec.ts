@@ -45,39 +45,56 @@ async function cls(page: Page): Promise<number> {
   );
 }
 
+/** Every showcase item, by its data-visual name. No item is hidden at any width: phones see each scene's poster. */
+const VISUALS = [
+  'galaxyscene',
+  'launchtrajectory',
+  'orbitsystem',
+  'worldforge',
+  'starfieldband',
+  'band-and-split',
+  'longhorizontimeline',
+  'stattiles-and-stattile',
+  'survivalcurve',
+  'barchart',
+  'donutchart',
+  'sourcenote',
+  'journeyroadmap',
+  'readinessscorecard',
+  'hexfield',
+  'servicelineset-and-visualicon',
+  'teamconstellation-and-rolecard',
+] as const;
+
 /**
- * Screenshots every showcase item (one attachment each) for visual review: a page-coordinate clip of a full-page capture, positioned
- * with plain DOM calls rather than locator actions, so no item can stall on an actionability wait. The whole pass has a time budget;
- * items past it, or a capture that fails, are annotated instead. Review only: the other tests are the gate.
+ * One review capture: reduced motion (no scene goes live, so nothing animates), the item visible, its images decoded (at most 3s),
+ * its box steady over half a second (an unsteady box is annotated, since it means a layout loop), then a page-coordinate clip of a
+ * full-page shot with animations disabled. Each step has its own limit and message, so a slow visual names itself.
  */
-async function attachItems(page: Page, info: TestInfo, suffix: string): Promise<void> {
-  const count = await page.locator('#visuals .vs__item').count();
-  expect(count).toBeGreaterThan(10);
-  const deadline = Date.now() + 100_000;
-  for (let i = 0; i < count; i += 1) {
-    const name = `visual-${String(i + 1).padStart(2, '0')}-${suffix}`;
-    if (Date.now() > deadline) {
-      info.annotations.push({ type: 'missing-review-shot', description: `${name}: review time budget spent` });
-      continue;
-    }
-    try {
-      const clip = await page.evaluate(async (index) => {
-        const el = document.querySelectorAll('#visuals .vs__item')[index];
-        if (!(el instanceof HTMLElement)) throw new Error(`showcase item ${index} is missing`);
-        el.scrollIntoView({ block: 'start' });
-        await Promise.race([
-          Promise.allSettled(Array.from(el.querySelectorAll('img')).map((img) => img.decode())),
-          new Promise((resolve) => window.setTimeout(resolve, 3000)),
-        ]);
-        const r = el.getBoundingClientRect();
-        return { x: Math.max(0, r.left + window.scrollX), y: Math.max(0, r.top + window.scrollY), width: Math.max(1, r.width), height: Math.max(1, Math.min(r.height, 4000)) };
-      }, i);
-      await info.attach(name, { body: await page.screenshot({ type: 'jpeg', quality: 72, fullPage: true, clip, animations: 'disabled', timeout: 8000 }), contentType: 'image/jpeg' });
-    } catch (error) {
-      const reason = error instanceof Error ? error.message.split('\n')[0] : String(error);
-      info.annotations.push({ type: 'missing-review-shot', description: `${name}: ${reason}` });
-    }
+async function reviewShot(page: Page, info: TestInfo, visual: string, suffix: string): Promise<void> {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto(ROUTE);
+  const item = page.locator(`#visuals [data-visual="${visual}"]`);
+  await expect(item, `${visual} is on the styleguide`).toHaveCount(1, { timeout: 10_000 });
+  await expect(item, `${visual} is visible at ${suffix}`).toBeVisible({ timeout: 10_000 });
+  const measure = (): Promise<{ x: number; y: number; width: number; height: number }> =>
+    item.evaluate(async (el) => {
+      el.scrollIntoView({ block: 'start' });
+      await Promise.race([
+        Promise.allSettled(Array.from(el.querySelectorAll('img')).map((img) => img.decode())),
+        new Promise((resolve) => window.setTimeout(resolve, 3000)),
+      ]);
+      const r = el.getBoundingClientRect();
+      return { x: Math.max(0, r.left + window.scrollX), y: Math.max(0, r.top + window.scrollY), width: Math.max(1, r.width), height: Math.max(1, Math.min(r.height, 4000)) };
+    }, undefined, { timeout: 10_000 });
+  const first = await measure();
+  await page.waitForTimeout(500);
+  const clip = await measure();
+  if (Math.abs(first.height - clip.height) > 1 || Math.abs(first.width - clip.width) > 1) {
+    info.annotations.push({ type: 'unsteady-layout', description: `${visual}: ${first.width}x${first.height} then ${clip.width}x${clip.height}` });
   }
+  const body = await page.screenshot({ type: 'jpeg', quality: 72, fullPage: true, clip, animations: 'disabled', timeout: 15_000 });
+  await info.attach(`visual-${visual}-${suffix}`, { body, contentType: 'image/jpeg' });
 }
 
 test.describe('WP-52 visuals on the styleguide', () => {
@@ -234,12 +251,18 @@ test.describe('WP-52 visuals on the styleguide', () => {
     await info.attach('visuals-live-1440', { body: await scene.screenshot(), contentType: 'image/png' });
   });
 
-  test('each visual for review, at the project width', async ({ page }, info) => {
-    test.setTimeout(180_000);
-    await page.emulateMedia({ reducedMotion: 'reduce' });
+  test('the showcase lists exactly the reviewed visuals', async ({ page }) => {
     await page.goto(ROUTE);
-    await attachItems(page, info, info.project.name);
+    const names = await page.locator('#visuals [data-visual]').evaluateAll((els) => els.map((el) => el.getAttribute('data-visual')));
+    expect(names).toEqual([...VISUALS]);
   });
+
+  for (const visual of VISUALS) {
+    test(`review shot: ${visual}, at the project width`, async ({ page }, info) => {
+      test.setTimeout(60_000);
+      await reviewShot(page, info, visual, info.project.name);
+    });
+  }
 });
 
 test.describe('WP-52 visuals at 1920x1080', () => {
@@ -271,10 +294,10 @@ test.describe('WP-52 visuals at 1920x1080', () => {
     await info.attach('galaxy-live-1920', { body: await scene.screenshot(), contentType: 'image/png' });
   });
 
-  test('each visual at 1920 for review', async ({ page }, info) => {
-    test.setTimeout(180_000);
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto(ROUTE);
-    await attachItems(page, info, '1920');
-  });
+  for (const visual of VISUALS) {
+    test(`review shot: ${visual}, at 1920`, async ({ page }, info) => {
+      test.setTimeout(60_000);
+      await reviewShot(page, info, visual, '1920');
+    });
+  }
 });
