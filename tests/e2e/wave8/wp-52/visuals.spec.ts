@@ -46,24 +46,34 @@ async function cls(page: Page): Promise<number> {
 }
 
 /**
- * Screenshots every showcase item (one attachment each) for visual review. A page-coordinate clip of a full-page capture, so an item
- * taller than the viewport or one the element-screenshot visibility check rejects is still captured. Review only, not an assertion.
+ * Screenshots every showcase item (one attachment each) for visual review: a page-coordinate clip of a full-page capture, positioned
+ * with plain DOM calls rather than locator actions, so no item can stall on an actionability wait. The whole pass has a time budget;
+ * items past it, or a capture that fails, are annotated instead. Review only: the other tests are the gate.
  */
 async function attachItems(page: Page, info: TestInfo, suffix: string): Promise<void> {
-  const items = await page.locator('#visuals .vs__item').all();
-  expect(items.length).toBeGreaterThan(10);
-  for (const [i, item] of items.entries()) {
+  const count = await page.locator('#visuals .vs__item').count();
+  expect(count).toBeGreaterThan(10);
+  const deadline = Date.now() + 100_000;
+  for (let i = 0; i < count; i += 1) {
     const name = `visual-${String(i + 1).padStart(2, '0')}-${suffix}`;
-    await item.scrollIntoViewIfNeeded();
-    await item.evaluate((el) => Promise.all(Array.from(el.querySelectorAll('img')).map((img) => img.decode().catch(() => undefined))));
-    const clip = await item.evaluate((el) => {
-      const r = el.getBoundingClientRect();
-      return { x: Math.max(0, r.left + window.scrollX), y: Math.max(0, r.top + window.scrollY), width: Math.max(1, r.width), height: Math.max(1, Math.min(r.height, 4000)) };
-    });
+    if (Date.now() > deadline) {
+      info.annotations.push({ type: 'missing-review-shot', description: `${name}: review time budget spent` });
+      continue;
+    }
     try {
-      await info.attach(name, { body: await page.screenshot({ type: 'jpeg', quality: 72, fullPage: true, clip, animations: 'disabled', timeout: 10_000 }), contentType: 'image/jpeg' });
+      const clip = await page.evaluate(async (index) => {
+        const el = document.querySelectorAll('#visuals .vs__item')[index];
+        if (!(el instanceof HTMLElement)) throw new Error(`showcase item ${index} is missing`);
+        el.scrollIntoView({ block: 'start' });
+        await Promise.race([
+          Promise.allSettled(Array.from(el.querySelectorAll('img')).map((img) => img.decode())),
+          new Promise((resolve) => window.setTimeout(resolve, 3000)),
+        ]);
+        const r = el.getBoundingClientRect();
+        return { x: Math.max(0, r.left + window.scrollX), y: Math.max(0, r.top + window.scrollY), width: Math.max(1, r.width), height: Math.max(1, Math.min(r.height, 4000)) };
+      }, i);
+      await info.attach(name, { body: await page.screenshot({ type: 'jpeg', quality: 72, fullPage: true, clip, animations: 'disabled', timeout: 8000 }), contentType: 'image/jpeg' });
     } catch (error) {
-      // Record why the capture is missing; the layout, overflow and poster checks in the other tests are the gate.
       const reason = error instanceof Error ? error.message.split('\n')[0] : String(error);
       info.annotations.push({ type: 'missing-review-shot', description: `${name}: ${reason}` });
     }
