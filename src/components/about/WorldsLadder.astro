@@ -1,0 +1,188 @@
+---
+/**
+ * "Droids, worlds, solar systems, galaxies" (SITE-COPY 7.2): the UBF ladder of scale as four drawings that grow from one hex cell to a
+ * spiral. Each step is an HTML list item with its name and line; the drawings are decorative. On wide screens with motion allowed the
+ * steps light up in sequence once, then rest; phones and reduced motion see the still sequence.
+ */
+import { flower, hexPoints } from '../diagrams/hex.ts';
+import type { Part } from './framework-data.ts';
+
+interface Props {
+  steps: readonly Part[];
+  label?: string;
+}
+
+const { steps, label = 'From droid to galaxy' } = Astro.props;
+if (steps.length !== 4) throw new Error(`WorldsLadder: expects the four steps of the ladder, got ${steps.length}`);
+
+const world = flower(60, 60, 13, 0.1);
+const system = [0, 1, 2, 3].map((k) => {
+  const a = -Math.PI / 2 + (k * Math.PI) / 2 + 0.4;
+  return { x: 60 + 44 * Math.cos(a), y: 60 + 44 * Math.sin(a) };
+});
+const galaxy = Array.from({ length: 34 }, (_, k) => {
+  const arm = k % 2;
+  const t = Math.floor(k / 2) / 16;
+  const a = arm * Math.PI + t * Math.PI * 2.4;
+  const r = 6 + t * 50;
+  return { x: 60 + r * Math.cos(a), y: 60 + r * Math.sin(a) * 0.8, s: 2.8 - t * 1.6 };
+});
+---
+
+<ol class="ladder" role="list" aria-label={label}>
+  {
+    steps.map((step, i) => (
+      <li class="ladder__step">
+        <svg class="ladder__art" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+          {i === 0 && (
+            <g>
+              <polygon class="ladder__cell ladder__cell--accent" points={hexPoints(60, 60, 16)} />
+              <path class="ladder__trail" d="M60 60 L104 22" />
+            </g>
+          )}
+          {i === 1 && <g>{world.map((p, k) => <polygon class:list={['ladder__cell', k === 0 && 'ladder__cell--core']} points={hexPoints(p.x, p.y, 13)} />)}</g>}
+          {i === 2 && (
+            <g>
+              <circle class="ladder__ring" cx="60" cy="60" r="44" />
+              {flower(60, 60, 7, 0.1).map((p) => (
+                <polygon class="ladder__cell ladder__cell--core" points={hexPoints(p.x, p.y, 7)} />
+              ))}
+              {system.map((p, k) => (
+                <polygon class:list={['ladder__cell', k === 1 && 'ladder__cell--accent']} points={hexPoints(p.x, p.y, 7)} />
+              ))}
+            </g>
+          )}
+          {i === 3 && (
+            <g>
+              {galaxy.map((p, k) => (
+                <polygon class:list={['ladder__cell', k < 3 && 'ladder__cell--core', k === 13 && 'ladder__cell--accent']} points={hexPoints(p.x, p.y, p.s + 1)} />
+              ))}
+            </g>
+          )}
+        </svg>
+        <p class="ladder__name">{step.name}</p>
+        <p class="ladder__line">{step.line}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .ladder {
+    display: grid;
+    gap: var(--sp-5);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: ladder;
+  }
+
+  .ladder__step {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--sp-2);
+    counter-increment: ladder;
+  }
+
+  .ladder__art {
+    inline-size: 100%;
+    max-inline-size: 10rem;
+    block-size: auto;
+    color: var(--color-link);
+  }
+
+  .ladder__cell {
+    fill: var(--color-bg);
+    stroke: currentColor;
+    stroke-width: 1.4;
+  }
+
+  .ladder__cell--core {
+    fill: var(--color-accent);
+    stroke: var(--color-bg);
+  }
+
+  .ladder__cell--accent {
+    fill: var(--color-highlight);
+    stroke: var(--color-highlight);
+  }
+
+  .ladder__ring,
+  .ladder__trail {
+    fill: none;
+    stroke: currentColor;
+    stroke-opacity: 0.4;
+    stroke-dasharray: 2 4;
+  }
+
+  .ladder__name {
+    margin: 0;
+    font-family: var(--ff-display);
+    font-size: var(--fs-xl);
+    font-weight: 700;
+
+    &::before {
+      content: counter(ladder) '. ';
+      color: var(--color-text-muted);
+      font-weight: 400;
+    }
+  }
+
+  .ladder__line {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 62rem) {
+    .ladder__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      inset-block-start: var(--sp-8);
+      inset-inline-end: calc(-1 * var(--sp-5));
+      inline-size: var(--sp-5);
+      border-block-start: 2px dashed var(--color-border-strong);
+    }
+  }
+
+  @media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+    .ladder__art {
+      animation-name: ladder-rise;
+      animation-duration: 900ms;
+      animation-timing-function: ease-out;
+      animation-fill-mode: both;
+    }
+
+    .ladder__step:nth-child(2) .ladder__art {
+      animation-delay: 350ms;
+    }
+
+    .ladder__step:nth-child(3) .ladder__art {
+      animation-delay: 700ms;
+    }
+
+    .ladder__step:nth-child(4) .ladder__art {
+      animation-delay: 1050ms;
+    }
+  }
+
+  @keyframes ladder-rise {
+    from {
+      opacity: 0.15;
+      transform: scale(0.82);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ladder__cell--core,
+    .ladder__cell--accent {
+      fill: CanvasText;
+    }
+  }
+</style>

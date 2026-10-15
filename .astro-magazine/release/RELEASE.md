@@ -387,11 +387,11 @@ This file holds no sentence. It builds the table from the shared readiness crite
 
 #### CR-10. Network page, card and callout
 
-Source: `src/pages/network/index.astro:69`. Renders on: /network/.
+Source: `src/pages/network/index.astro:76`. Renders on: /network/.
 
-> L69: WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.
+> L76: WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.
 >
-> L88: WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.
+> L108: WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -472,9 +472,9 @@ Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-
 
 #### CR-17. Founders page, what WE does not do
 
-Source: `src/pages/founders/index.astro:38`. Renders on: /founders/.
+Source: `src/pages/founders/index.astro:44`. Renders on: /founders/.
 
-> L38: It does not promise funding or investor meetings, or predict whether any company will raise money.
+> L44: It does not promise funding or investor meetings, or predict whether any company will raise money.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -510,13 +510,13 @@ Source: `src/data/faq.yaml:57`. Renders on: /faq/.
 
 #### CR-21. Facts page, the question about the add-on (Release 2 scope: not in release-1-rc2; counsel reviews it with the next candidate)
 
-Source: `src/content/pages/about/facts.mdx:51`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
+Source: `src/content/pages/about/facts.mdx:40`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
 
-> L51: Is Investor Introductions part of a package?
+> L40: Is Investor Introductions part of the engagement?
 >
-> L53: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+> L42: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
 >
-> L55: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
+> L44: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______

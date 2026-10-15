@@ -1,55 +1,216 @@
 ---
+/**
+ * /about/: "WE build worlds" as a visual narrative (SITE-COPY 7, W9-5). The story runs in four bands: the galaxy and the ladder from a
+ * droid to a galaxy, the one flight through Dream, Build and Grow, the remote team around one company, and what WE has not done yet.
+ */
 import PageShell from '../../components/about/PageShell.astro';
+import WorldsLadder from '../../components/about/WorldsLadder.astro';
+import { SEE_FRAMEWORKS, START_REVIEW, TALK_TO_WE, seeHowWeWorks } from '../../components/about/ctas.ts';
+import { SCALE_LADDER } from '../../components/about/framework-data.ts';
 import { loadPage } from '../../components/about/load-page.ts';
-import CtaBand from '../../components/ui/CtaBand.astro';
-import CellTrail from '../../components/ui/CellTrail.astro';
-import FactBand from '../../components/ui/FactBand.astro';
-import Section from '../../components/ui/Section.astro';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
-import { APPLY, TALK_TO_WE } from '../../components/hero/ctas.ts';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import FactBand from '../../components/ui/FactBand.astro';
+import Band from '../../components/visuals/Band.astro';
+import GalaxyScene from '../../components/visuals/GalaxyScene.astro';
+import LaunchTrajectory from '../../components/visuals/LaunchTrajectory.astro';
+import TeamConstellation from '../../components/visuals/seats/TeamConstellation.astro';
 import { flags } from '../../data/flags.ts';
 import { site } from '../../data/site.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
 const entry = await loadPage('about/index');
+const state = await getRouteState();
+const how = seeHowWeWorks(state.isLive);
 const entity = flags.pbcWording ? site.legalLine : `${site.legalName}, registered in Delaware`;
+const readOn = [
+  { path: '/about/frameworks/', label: 'The frameworks', line: 'the maps WE plans the work with, drawn as one galaxy.' },
+  { path: '/about/manifesto/', label: 'The manifesto', line: 'commitments you can check.' },
+  { path: '/about/facts/', label: 'Facts about WE', line: 'plain answers in one place.' },
+  { path: '/about/editorial-policy/', label: 'Editorial policy', line: 'how WE sources, dates and corrects what it publishes.' },
+  { path: '/press/', label: 'Press', line: 'facts and logo downloads.' },
+].filter((r) => state.isLive(r.path));
+const team = [
+  { role: 'Executive Sponsor', group: 'coordination' },
+  { role: 'Delivery Lead', group: 'coordination' },
+  { role: 'Technical Lead', group: 'build' },
+  { role: 'Product design', group: 'build' },
+  { role: 'Front end', group: 'build' },
+  { role: 'Back end', group: 'build' },
+  { role: 'Quality assurance', group: 'build' },
+  { role: 'Growth and support', group: 'company' },
+];
 ---
 
-<PageShell entry={entry} path="/about/" ogSlot="og-about" schemaType="AboutPage" lead={site.description} photo="inset-about" primary={APPLY} secondary={TALK_TO_WE}>
+<PageShell
+  entry={entry}
+  path="/about/"
+  ogSlot="og-about"
+  schemaType="AboutPage"
+  lead="World Enterprise Group Incorporated is a business incubation and consulting firm."
+  photo="inset-about"
+  primary={START_REVIEW}
+  secondary={how ?? TALK_TO_WE}
+>
   <Fragment slot="after">
-    <Section tone="soft" labelledby="about-path">
-      <div class="container stack">
-        <h2 id="about-path">The path, in three stages</h2>
-        <CellTrail
-          label="WE Dream, WE Build, WE Grow"
-          cells={[
-            { label: 'Dream', href: href('/program/dream/') },
-            { label: 'Build', href: href('/program/build/') },
-            { label: 'Grow', href: href('/program/grow/') },
-          ]}
-        />
-        <FactBand
-          label="Facts about WE"
-          facts={[
-            { label: 'Focus', value: 'SaaS founders' },
-            { label: 'Format', value: 'Fully remote' },
-            { label: 'Company', value: entity },
-          ]}
-        />
+    <Band tone="deep" labelledby="about-worlds" id="worlds">
+      <div class="split about-sky">
+        <div class="split__text about-stack">
+          <p class="eyebrow">The language of the work</p>
+          <h2 id="about-worlds">Droids, worlds, solar systems, galaxies.</h2>
+          <p>
+            WE's Universal Business Framework describes companies the way astronomy describes the sky. Projects become companies (worlds),
+            companies form groups (solar systems), and groups shape industries (galaxies). Some projects are comets: unstable until they are
+            better planned.
+          </p>
+          <p>The framework is how WE plans the work and talks about it with founders.</p>
+          <p class="about-link"><a href={href(SEE_FRAMEWORKS.href)}>{SEE_FRAMEWORKS.label}</a></p>
+        </div>
+        <div class="split__media">
+          <GalaxyScene
+            caption="A world assembling at the core of its galaxy: the picture WE uses for a company in the making."
+          />
+        </div>
       </div>
-    </Section>
-    <Section labelledby="about-next">
-      <div class="container stack">
-        <h2 id="about-next">Read on</h2>
-        <ul>
-          <li><a href={href('/about/manifesto/')}>The manifesto</a>: nine commitments you can check.</li>
-          <li><a href={href('/about/frameworks/')}>How WE steers a team</a>: the operating frameworks in plain language.</li>
-          <li><a href={href('/about/editorial-policy/')}>Editorial policy</a>: how WE sources, dates and corrects what it publishes.</li>
-          <li><a href={href('/press/')}>Press</a>: facts and logo downloads.</li>
-        </ul>
-        <NoFundingDisclaimer />
+      <div class="about-ladder">
+        <WorldsLadder steps={SCALE_LADDER} label="From a droid to a galaxy" />
       </div>
-    </Section>
-    <CtaBand title="Ready to bring an idea?" text="Applying takes a short form. WE reviews each application." cta={{ label: 'Apply', href: '/apply/' }} secondary={{ label: 'Talk to WE', href: '/contact/' }} />
+    </Band>
+
+    <Band tone="soft" labelledby="about-flight" id="flight">
+      <div class="split split--media-first">
+        <div class="split__text about-stack">
+          <p class="eyebrow">WE Dream. WE Build. WE Grow.</p>
+          <h2 id="about-flight">One flight, at the company's pace</h2>
+          <p>
+            Dream tests the problem and the customer before anything is built. Build turns what was learned into a product that ships. Grow
+            earns customers and finds the company its place in the market.
+          </p>
+          <p>Each stage takes as long as the work takes. WE stays for the whole flight, not for a fixed number of weeks.</p>
+        </div>
+        <div class="split__media">
+          <LaunchTrajectory
+            static
+            labelsName="The three stages of the flight"
+            caption="Dream, Build and Grow as one flight. Each label opens that stage."
+          />
+        </div>
+      </div>
+    </Band>
+
+    <Band labelledby="about-team" id="team">
+      <div class="split">
+        <div class="split__text about-stack">
+          <p class="eyebrow">How the work is staffed</p>
+          <h2 id="about-team">Fully remote. One company per team.</h2>
+          <p>
+            WE has no offices. Each team works on one company at a time. WE's leads (a Delivery Lead, a Technical Lead and an Executive
+            Sponsor) answer to the founder.
+          </p>
+          <p>Work happens in shared documents, written plans and scheduled reviews, which is why this site shows no street address.</p>
+        </div>
+        <div class="split__media">
+          <TeamConstellation
+            roles={team}
+            center="One company"
+            label="The leads and the team around one company"
+            caption="An illustrative team. The roles change with the company's stage and the work."
+          />
+        </div>
+      </div>
+    </Band>
+
+    <Band tone="tint-sand" labelledby="about-plain" id="plain">
+      <div class="split split--even">
+        <div class="split__text about-stack about-measure">
+          <h2 id="about-plain">Plain about what WE has not done yet.</h2>
+          <p>
+            WE publishes no client names, client quotes or results. The numbers on this site describe all new businesses, from public
+            sources, so you can check them. What you can check about WE is the method, the agreement and the work itself.
+          </p>
+          <NoFundingDisclaimer />
+        </div>
+        <div class="split__media about-stack">
+          <FactBand
+            label="Facts about WE"
+            facts={[
+              { label: 'Firm', value: 'Business incubation and consulting' },
+              { label: 'Format', value: 'Fully remote' },
+              { label: 'Teams', value: 'One company at a time' },
+              { label: 'Company', value: entity },
+            ]}
+          />
+          {
+            readOn.length > 0 && (
+              <nav class="about-readon" aria-labelledby="about-readon-title">
+                <h3 id="about-readon-title">Read on</h3>
+                <ul role="list">
+                  {readOn.map((r) => (
+                    <li>
+                      <a href={href(r.path)}>{r.label}</a>: {r.line}
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )
+          }
+        </div>
+      </div>
+    </Band>
+
+    <CtaBand
+      title="Bring WE the company you mean to build"
+      text="A readiness review is the first conversation: where the company stands, and whether WE is the right help for the years ahead."
+      cta={START_REVIEW}
+      secondary={TALK_TO_WE}
+    />
   </Fragment>
 </PageShell>
+
+<style>
+  /* An even split gives each column half the 110rem frame; reading text keeps the 46rem measure (wave 8 80ch check). */
+  .about-measure {
+    max-inline-size: var(--prose-max);
+  }
+
+  .about-sky {
+    align-items: center;
+  }
+
+  .about-stack {
+    display: grid;
+    gap: var(--space-flow);
+    align-content: start;
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .about-link {
+    font-weight: 600;
+  }
+
+  .about-ladder {
+    margin-block-start: var(--space-block);
+  }
+
+  .about-readon {
+    display: grid;
+    gap: var(--sp-3);
+
+    & h3 {
+      margin: 0;
+      font-size: var(--fs-lg);
+    }
+
+    & ul {
+      display: grid;
+      gap: var(--sp-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  }
+</style>

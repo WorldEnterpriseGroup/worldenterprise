@@ -11,6 +11,7 @@ import { isLinkable } from '../../components/playbooks/links.ts';
 import Callout from '../../components/ui/Callout.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import Steps from '../../components/ui/Steps.astro';
+import ReadinessScorecard from '../../components/visuals/illustrations/ReadinessScorecard.astro';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
 
 const page = await getPageEntry('investors', 'investors/index');
@@ -47,8 +48,16 @@ const secondary = meet && (await isLinkable(meet.href)) ? { label: meet.title, h
   <LinkList items={JOURNEY_LINKS} />
 
   <h2 id="prepares-title">{HUB.materialsHeading}</h2>
-  <DataTable caption={HUB.materialsCaption} columns={HUB.materialsColumns} rows={HUB.materials} />
-  <LinkList items={MATERIAL_LINKS} />
+  <div class="split investors-prepares">
+    <div class="split__text investors-stack">
+      <DataTable caption={HUB.materialsCaption} columns={HUB.materialsColumns} rows={HUB.materials} />
+      <LinkList items={MATERIAL_LINKS} />
+    </div>
+    <div class="split__media investors-stack">
+      <ReadinessScorecard steps={false} title="Readiness, area by area: an illustration, not a score" />
+      <p class="investors-note">WE makes no promise of funding.</p>
+    </div>
+  </div>
 
   <InvestorIntroductionsOffer variant="full" headingLevel={2} idPrefix="intro-offer" />
 
@@ -59,3 +68,24 @@ const secondary = meet && (await isLinkable(meet.href)) ? { label: meet.title, h
 
   <NoFundingDisclaimer />
 </MarketingLayout>
+
+<style>
+  .investors-prepares {
+    align-items: start;
+  }
+
+  .investors-stack {
+    display: grid;
+    gap: var(--space-flow);
+    align-content: start;
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .investors-note {
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+</style>

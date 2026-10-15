@@ -1,0 +1,459 @@
+{
+  "wp": "WP-55",
+  "note": "WP-55 (wave 9, issue #76) rewrote the About, frameworks, UBF, founders, network, investors, contact, trust and press pages and repositioned /about/facts/ (SITE-COPY 7 and 9, BRIEF.md framework definitions). The sentence map below is the /about/facts/ map, moved here from sources/wp-41.json when the package wording was retired (coordinator direction, WP-54 owns the package data): tests/unit/wp-41/facts.test.ts reads it, fails when a page sentence is unmapped or a locator is missing. The framework definitions on /about/frameworks/ and /about/frameworks/ubf/ are quoted from BRIEF.md (the organization's framework notes) and carry claim C-19 (methods, not standards); the About, founders and contact copy is SITE-COPY 6.0, 7 and 9 verbatim. No fetch was made and no outside statistic is used.",
+  "sources": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp41-faq",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "FAQ answers",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/data/faq.yaml",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-01, C-02, C-03",
+      "variables_units_scope": "What WE is, the seat notice sentence, how to apply",
+      "methodology_limitations": "Copied, not re-derived. Carried over from the WP-41 map when WP-55 rewrote the page (2026-10-14).",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-01",
+        "C-02",
+        "C-03"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp41-how-it-works",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "How it works page",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/pages/program/how-it-works.astro",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "",
+      "variables_units_scope": "What the program does not give",
+      "methodology_limitations": "Edited: \"It\" becomes \"The program\". Carried over from the WP-41 map when WP-55 rewrote the page (2026-10-14).",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp41-introductions",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The verbatim Investor Introductions wording",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/components/blocks/introductions.ts",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-14",
+      "variables_units_scope": "The disclaimer and the flat-fee sentence",
+      "methodology_limitations": "The denylist test asserts the required text equals this module. Carried over from the WP-41 map when WP-55 rewrote the page (2026-10-14).",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-14"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp41-manifesto",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The manifesto",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/content/pages/about/manifesto.md",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-05",
+      "variables_units_scope": "What WE is not; coordination of the professionals around a company",
+      "methodology_limitations": "Copied, not re-derived. One sentence is edited from \"It\" to \"WE\". Carried over from the WP-41 map when WP-55 rewrote the page (2026-10-14).",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp41-no-funding",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The no-funding sentence",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "claims-denylist.json",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-05",
+      "variables_units_scope": "Required text of rule R-C05-no-funding-disclaimer",
+      "methodology_limitations": "Verbatim. Carried over from the WP-41 map when WP-55 rewrote the page (2026-10-14).",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-05"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp55-investors-faq",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The investors FAQ",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/components/investors/faq.ts",
+      "publication_date": "",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-14",
+      "variables_units_scope": "Investor Introductions: a separate, paid add-on with a flat fee",
+      "methodology_limitations": "Copied, not re-derived. One sentence is edited for the subject. Replaces the pricing page source when the public packages were retired (WP-54, 2026-10-14).",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-14"
+      ],
+      "claims_not_supported": [
+        "C-06",
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp41-services",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The service line pages",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/content/services/*.mdx",
+      "publication_date": "",
+      "last_updated_date": "2026-10-09",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-04",
+      "variables_units_scope": "Line letters and titles; every line states what it does not cover",
+      "methodology_limitations": "Each bullet is the line letter and title of the entry. Carried over from the WP-41 map when WP-55 rewrote the page (2026-10-14).",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-04"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp55-about",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The About page (SITE-COPY 7)",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/content/pages/about/index.md and src/pages/about/index.astro",
+      "publication_date": "",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-01, C-03, C-05, C-18",
+      "variables_units_scope": "What WE is, how teams are staffed, that WE is not an investor",
+      "methodology_limitations": "Copied, not re-derived.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-01",
+        "C-03",
+        "C-05",
+        "C-18"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp55-contact",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The contact page (SITE-COPY 9)",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/content/pages/contact/contact.mdx and src/pages/contact/index.astro",
+      "publication_date": "",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "C-01",
+      "variables_units_scope": "What the contact page takes; current terms on request",
+      "methodology_limitations": "Copied, not re-derived.",
+      "funding_conflicts": "none",
+      "claims_supported": [
+        "C-01"
+      ],
+      "claims_not_supported": [
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp55-ctas",
+      "publisher_or_author": "World Enterprise Group (internal)",
+      "title": "The calls to action (SALES.md hierarchy)",
+      "source_tier": "operator-statement",
+      "exact_url_or_locator": "src/components/about/ctas.ts",
+      "publication_date": "",
+      "last_updated_date": "2026-10-14",
+      "retrieved_at": "2026-10-14",
+      "next_review": "when the source file changes",
+      "version_or_release": "n/a",
+      "relevant_locator": "n/a",
+      "variables_units_scope": "The readiness review as the first step",
+      "methodology_limitations": "Copied, not re-derived.",
+      "funding_conflicts": "none",
+      "claims_supported": [],
+      "claims_not_supported": [
+        "C-09"
+      ],
+      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
+      "freshness_trigger": "Any change to the quoted text in the source file",
+      "captured_by": "WP-55"
+    }
+  ],
+  "sentences": [
+    {
+      "sentence": "World Enterprise Incubator is run by World Enterprise Group Incorporated, a business incubation and consulting firm.",
+      "source_id": "wp55-about",
+      "file": "src/pages/about/index.astro",
+      "locator": "World Enterprise Group Incorporated is a business incubation and consulting firm.",
+      "derivation": "edited: names the site and its operator in one sentence"
+    },
+    {
+      "sentence": "WE steers dedicated, fully remote teams that build companies with their founders, paced to the years a company really takes.",
+      "source_id": "wp55-about",
+      "file": "src/content/pages/about/index.md",
+      "locator": "WE steers dedicated, fully remote teams that build companies with their founders, paced to the years a company really takes.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "There are no physical offices.",
+      "source_id": "wp41-faq",
+      "file": "src/data/faq.yaml",
+      "locator": "There are no physical offices.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "WE makes no promise of funding.",
+      "source_id": "wp41-no-funding",
+      "file": "claims-denylist.json",
+      "locator": "WE makes no promise of funding.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "WE is a services firm, not an investor.",
+      "source_id": "wp55-about",
+      "file": "src/content/pages/about/index.md",
+      "locator": "WE is a services firm, not an investor.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "It does not predict or arrange an investment, and it cannot say that anyone will invest.",
+      "source_id": "wp41-manifesto",
+      "file": "src/content/pages/about/manifesto.md",
+      "locator": "It does not predict or arrange an investment, and it cannot say that anyone will invest.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "The program does not give legal, tax or accounting advice, and it does not keep your books or file your taxes.",
+      "source_id": "wp41-how-it-works",
+      "file": "src/pages/program/how-it-works.astro",
+      "locator": "It does not give legal, tax or accounting advice, and it does not keep your books or file your taxes.",
+      "derivation": "edited"
+    },
+    {
+      "sentence": "WE does not stand in for a company's counsel or accountants.",
+      "source_id": "wp41-manifesto",
+      "file": "src/content/pages/about/manifesto.md",
+      "locator": "It does not stand in for them and does not give legal or financial advice.",
+      "derivation": "edited"
+    },
+    {
+      "sentence": "There are no logo walls, no quotes from customers and no performance figures on this site.",
+      "source_id": "wp41-manifesto",
+      "file": "src/content/pages/about/manifesto.md",
+      "locator": "There are no logo walls, no quotes from customers and no performance figures on this site.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "WE offers seven service lines, A to G, and every one of them states what it does not cover.",
+      "source_id": "wp41-services",
+      "file": "src/content/services/brand-and-identity.mdx",
+      "locator": "doesNotCover:",
+      "derivation": "edited"
+    },
+    {
+      "sentence": "Line A: Brand and Identity",
+      "source_id": "wp41-services",
+      "file": "src/content/services/brand-and-identity.mdx",
+      "locator": "title: Brand and Identity",
+      "derivation": "verbatim-of-fields"
+    },
+    {
+      "sentence": "Line B: Product and IT Development",
+      "source_id": "wp41-services",
+      "file": "src/content/services/product-and-it-development.mdx",
+      "locator": "title: Product and IT Development",
+      "derivation": "verbatim-of-fields"
+    },
+    {
+      "sentence": "Line C: Customer Relations and Market Development",
+      "source_id": "wp41-services",
+      "file": "src/content/services/customer-and-market-development.mdx",
+      "locator": "title: Customer Relations and Market Development",
+      "derivation": "verbatim-of-fields"
+    },
+    {
+      "sentence": "Line D: Business Management and Operations",
+      "source_id": "wp41-services",
+      "file": "src/content/services/business-management-and-operations.mdx",
+      "locator": "title: Business Management and Operations",
+      "derivation": "verbatim-of-fields"
+    },
+    {
+      "sentence": "Line E: Digital Incubation",
+      "source_id": "wp41-services",
+      "file": "src/content/services/digital-incubation.mdx",
+      "locator": "title: Digital Incubation",
+      "derivation": "verbatim-of-fields"
+    },
+    {
+      "sentence": "Line F: Fundability and Investor Readiness",
+      "source_id": "wp41-services",
+      "file": "src/content/services/fundability-and-investor-readiness.mdx",
+      "locator": "title: Fundability and Investor Readiness",
+      "derivation": "verbatim-of-fields"
+    },
+    {
+      "sentence": "Line G: Professional-Services Coordination",
+      "source_id": "wp41-services",
+      "file": "src/content/services/professional-services-coordination.mdx",
+      "locator": "title: Professional-Services Coordination",
+      "derivation": "verbatim-of-fields"
+    },
+    {
+      "sentence": "It starts with a readiness review: where the company stands, and whether WE is the right help for the years ahead.",
+      "source_id": "wp55-about",
+      "file": "src/pages/about/index.astro",
+      "locator": "where the company stands, and whether WE is the right help for the years ahead.",
+      "derivation": "edited: the About end band's first-conversation line, with the subject changed"
+    },
+    {
+      "sentence": "Each team works on one company at a time.",
+      "source_id": "wp55-about",
+      "file": "src/pages/about/index.astro",
+      "locator": "Each team works on one company at a time.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "WE's leads (a Delivery Lead, a Technical Lead and an Executive Sponsor) answer to the founder.",
+      "source_id": "wp55-about",
+      "file": "src/pages/about/index.astro",
+      "locator": "WE's leads (a Delivery Lead, a Technical Lead and an Executive Sponsor) answer to the founder.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "WE shares the current terms when you ask.",
+      "source_id": "wp55-contact",
+      "file": "src/pages/contact/index.astro",
+      "locator": "WE shares the current terms when you ask.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "Investor Introductions is a separate, paid add-on with a flat fee.",
+      "source_id": "wp55-investors-faq",
+      "file": "src/components/investors/faq.ts",
+      "locator": "A company can buy Investor Introductions, a separate, paid add-on. A flat fee covers curation and preparation.",
+      "derivation": "edited"
+    },
+    {
+      "sentence": "The fee does not depend on whether any investment closes.",
+      "source_id": "wp41-introductions",
+      "file": "src/components/blocks/introductions.ts",
+      "locator": "The fee does not depend on whether any investment closes.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "Introductions are a flat-fee service.",
+      "source_id": "wp41-introductions",
+      "file": "src/components/blocks/introductions.ts",
+      "locator": "Introductions are a flat-fee service.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.",
+      "source_id": "wp41-introductions",
+      "file": "src/components/blocks/introductions.ts",
+      "locator": "WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.",
+      "derivation": "verbatim"
+    },
+    {
+      "sentence": "Start a readiness review on the Apply page.",
+      "source_id": "wp55-ctas",
+      "file": "src/components/about/ctas.ts",
+      "locator": "Start a readiness review",
+      "derivation": "edited: the primary action, with where it is"
+    },
+    {
+      "sentence": "The contact page takes a question about how WE works, a correction or a press request.",
+      "source_id": "wp55-contact",
+      "file": "src/content/pages/contact/contact.mdx",
+      "locator": "Ask about how WE works, request a correction, or reach WE for press.",
+      "derivation": "edited: the contact page's own line, restated as what the page takes"
+    }
+  ]
+}

@@ -6,7 +6,11 @@ import ContactForm from '../../components/forms/ContactForm.astro';
 import { jumpTo } from '../../components/hero/ctas.ts';
 import { publicContactAddress } from '../../data/forms.ts';
 import { site } from '../../data/site.ts';
+import { REFER_A_FOUNDER, START_REVIEW, seeHowWeWorks } from '../../components/about/ctas.ts';
+import Band from '../../components/visuals/Band.astro';
+import OrbitSystem from '../../components/visuals/OrbitSystem.astro';
 import FormLayout from '../../layouts/FormLayout.astro';
+import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
 const entry = await getEntry('pages', 'contact/contact');
@@ -14,16 +18,19 @@ if (!entry) throw new Error('Missing content entry pages/contact/contact (src/co
 const { Content } = await render(entry);
 const { data } = entry;
 const address = publicContactAddress();
+const state = await getRouteState();
+const how = seeHowWeWorks(state.isLive);
 ---
 
 <FormLayout
   title={data.title}
   description={data.description}
   eyebrow={data.eyebrow}
-  lead="Ask a question, request the current seat rate, or report a correction. WE is fully remote."
+  lead="For a question that does not fit the readiness review."
   path="/contact/"
   photo="inset-contact"
   primary={jumpTo('Write to WE', '#contact-form')}
+  secondary={START_REVIEW}
   updated={data.updated}
   draft={data.draft}
   schemaType="ContactPage"
@@ -41,12 +48,49 @@ const address = publicContactAddress();
     {address !== null && <p>You can also write to <a href={`mailto:${address}`}>{address}</a>.</p>}
     <h2 class="aside-title">Choose the right topic</h2>
     <ul class="stack" role="list">
-      <li><strong>Seat rate.</strong> WE shares the current rate when you ask. See <a href={href('/pricing/')}>how seats work</a> first.</li>
+      <li><strong>Current terms.</strong> WE shares the current terms when you ask.{how && <> See <a href={href(how.href)}>how WE works</a> first.</>}</li>
       <li><strong>Press.</strong> Facts and logos are on the <a href={href('/press/')}>press page</a>.</li>
       <li><strong>Corrections.</strong> Include the page address and what should change. The <a href={href('/about/editorial-policy/')}>editorial policy</a> explains how WE handles them.</li>
       <li><strong>Information handling.</strong> The <a href={href('/trust/')}>trust center</a> says what is true of this site.</li>
     </ul>
     <h2 class="aside-title">Ready to apply?</h2>
-    <p>Use the <a href={href('/apply/')}>application form</a> instead. It asks the questions WE needs. <a href={href(ASIDE_COPY.contact.link.href)}>{ASIDE_COPY.contact.link.text}</a>{ASIDE_COPY.contact.after}</p>
+    <p><a href={href(START_REVIEW.href)}>{START_REVIEW.label}</a> instead. It asks the questions WE needs. <a href={href(ASIDE_COPY.contact.link.href)}>{ASIDE_COPY.contact.link.text}</a>{ASIDE_COPY.contact.after}</p>
   </Fragment>
+
+  <Band slot="cta-end" tone="soft" labelledby="contact-next" id="next">
+    <div class="split contact-next">
+      <div class="split__text contact-stack">
+        <h2 id="contact-next">One conversation at a time</h2>
+        <p>Choose the topic that fits best and WE will route your message. To start an engagement, the readiness review is the better first step.</p>
+        <p class="contact-actions">
+          <a class="btn btn--primary" href={href(START_REVIEW.href)}>{START_REVIEW.label}</a>
+        </p>
+        <p>Accountant, attorney or small business center? <a href={href(REFER_A_FOUNDER.href)}>{REFER_A_FOUNDER.label}</a>.</p>
+      </div>
+      <div class="split__media">
+        <OrbitSystem
+          static
+          bodies={[{ label: 'Your question', description: 'Read and answered in writing' }]}
+          labelsName="One question in orbit"
+          alt="A sun of blue hexagonal tiles with one small hex-faceted world on a single orbit ring."
+        />
+      </div>
+    </div>
+  </Band>
 </FormLayout>
+
+<style>
+  .contact-next {
+    align-items: center;
+  }
+
+  .contact-stack {
+    display: grid;
+    gap: var(--space-flow);
+    align-content: start;
+
+    & > * {
+      margin: 0;
+    }
+  }
+</style>
