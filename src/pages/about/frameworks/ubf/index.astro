@@ -1,0 +1,252 @@
+---
+/**
+ * /about/frameworks/ubf/: the Universal Business Framework (W9-5, revised D-16; absorbs WP-48). The planetarium puts the ten
+ * components on nested orbits with real HTML labels that link to their definitions; then how the parts nest, the five-step lifecycle on
+ * Dream, Build and Grow, the ten levels beside Agile's five, and how WE applies the map in an engagement.
+ */
+import PageShell from '../../../../components/about/PageShell.astro';
+import Band from '../../../../components/visuals/Band.astro';
+import EngagementPath from '../../../../components/about/EngagementPath.astro';
+import LevelLadder from '../../../../components/about/LevelLadder.astro';
+import LifecycleStages from '../../../../components/about/LifecycleStages.astro';
+import UbfLegend from '../../../../components/about/UbfLegend.astro';
+import UbfTree from '../../../../components/about/UbfTree.astro';
+import WorldsLadder from '../../../../components/about/WorldsLadder.astro';
+import { SEE_FRAMEWORKS, START_REVIEW, TALK_TO_WE, seeHowWeWorks } from '../../../../components/about/ctas.ts';
+import { AGILE_LEVELS, SCALE_LADDER, UBF_COMPONENTS, UBF_ENGAGEMENT, UBF_LIFECYCLE, frameworkById, ubfAnchor } from '../../../../components/about/framework-data.ts';
+import { loadPage } from '../../../../components/about/load-page.ts';
+import CtaBand from '../../../../components/ui/CtaBand.astro';
+import LaunchTrajectory from '../../../../components/visuals/LaunchTrajectory.astro';
+import OrbitSystem from '../../../../components/visuals/OrbitSystem.astro';
+import { getRouteState } from '../../../../lib/route-state.ts';
+import { href } from '../../../../lib/url.ts';
+
+const entry = await loadPage('about/ubf');
+const state = await getRouteState();
+const how = seeHowWeWorks(state.isLive);
+const bodies = UBF_COMPONENTS.map((c) => ({ label: c.name, href: `#${ubfAnchor(c.name)}`, description: c.line }));
+const waypoints = UBF_LIFECYCLE.map((s) => ({ label: `${s.step}. ${s.name}`, description: `WE ${s.stage}` }));
+const related = ['orbital', 'star', 'android', 'supernova']
+  .map(frameworkById)
+  .map((f) => ({ ...f, link: f.path !== null && state.isLive(f.path) ? f.path : `/about/frameworks/#fw-${f.id}` }));
+---
+
+<PageShell
+  entry={entry}
+  path="/about/frameworks/ubf/"
+  ogSlot="og-about"
+  lead="Ten components, from an industry down to a single project, and a five-step path for launching and scaling droids."
+  primary={START_REVIEW}
+  secondary={SEE_FRAMEWORKS}
+  art={{ variant: 'flower', glyph: 'U' }}
+>
+  <Fragment slot="after">
+    <Band tone="deep" labelledby="ubf-sky-title" id="planetarium">
+      <div class="split ubf-sky">
+        <div class="split__text ubf-sky__text">
+          <p class="eyebrow">The planetarium</p>
+          <h2 id="ubf-sky-title">Ten components, one sky</h2>
+          <p>
+            Every body in the UBF sky stands for something real in business, from a whole industry at the outer edge to an unstable project
+            close in. Select a body to read what it means and how WE uses it with a founder.
+          </p>
+          <p class="ubf-sky__scales">Industry, ecosystem, company, project: the map works at every scale.</p>
+        </div>
+        <div class="split__media">
+          <OrbitSystem
+            bodies={bodies}
+            rings="nested"
+            labelsName="The ten UBF components"
+            alt="A sun of blue hexagonal tiles at the center of nested orbit rings, with ten smaller hex-faceted worlds, one on each ring: the ten components of the Universal Business Framework."
+            caption="The ten UBF components on nested orbits. Each label links to its definition below."
+          />
+        </div>
+      </div>
+    </Band>
+
+    <Band tone="soft" labelledby="ubf-legend-title" id="components">
+      <div class="ubf-head">
+        <h2 id="ubf-legend-title">The ten components</h2>
+        <p>Definitions quoted from WE's framework documents, and what each one means once the work starts.</p>
+      </div>
+      <UbfLegend />
+    </Band>
+
+    <Band labelledby="ubf-nest-title" id="nesting">
+      <div class="split split--even">
+        <div class="split__text ubf-stack">
+          <h2 id="ubf-nest-title">How the parts nest</h2>
+          <p>
+            A galaxy holds its giants, its shifts and its solar systems. A solar system turns around its sun. The sun holds the flagship, the
+            small companies and projects, and the unstable ones that need a decision. A moon circles the flagship it serves.
+          </p>
+          <h3 class="ubf-sub">From droid to galaxy</h3>
+          <WorldsLadder steps={SCALE_LADDER} label="The UBF ladder of scale" />
+        </div>
+        <div class="split__media ubf-panel">
+          <UbfTree />
+        </div>
+      </div>
+    </Band>
+
+    <Band tone="tint-blue" labelledby="ubf-life-title" id="lifecycle">
+      <div class="ubf-head">
+        <p class="eyebrow">Launching and scaling droids</p>
+        <h2 id="ubf-life-title">Five steps, three stages</h2>
+        <p>
+          UBF sets out five steps for taking a project from an idea to a place in its ecosystem. WE runs them inside its three stages: WE Dream,
+          WE Build, WE Grow.
+        </p>
+      </div>
+      <LaunchTrajectory
+        static
+        waypoints={waypoints}
+        labelsName="The five lifecycle steps on the flight from Dream to Grow"
+        caption="The five UBF lifecycle steps along one flight: Dream, Build and Grow."
+      />
+      <LifecycleStages steps={UBF_LIFECYCLE} />
+    </Band>
+
+    <Band labelledby="ubf-agile-title" id="levels">
+      <div class="split">
+        <div class="split__text ubf-stack">
+          <h2 id="ubf-agile-title">Ten levels where Agile has five</h2>
+          <p>
+            Agile breaks a project into five pieces, from an initiative down to a task. UBF keeps those pieces in view and adds the larger
+            picture: the industry, the ecosystem and the company the project lives in.
+          </p>
+          <p>The two work together. A team can plan its sprints in Agile terms while UBF says where the work sits on the map.</p>
+        </div>
+        <div class="split__media">
+          <LevelLadder
+            ladders={[
+              { title: 'Agile', note: 'The pieces of one project.', rungs: AGILE_LEVELS },
+              { title: 'UBF', note: 'From an industry down to a single project.', rungs: UBF_COMPONENTS.map((c) => c.name) },
+            ]}
+          />
+        </div>
+      </div>
+    </Band>
+
+    <Band tone="tint-sand" labelledby="ubf-engage-title" id="engagement">
+      <div class="ubf-head">
+        <p class="eyebrow">In an engagement</p>
+        <h2 id="ubf-engage-title">How WE applies it with a founder</h2>
+        <p>
+          The map is not a deliverable. It is how WE plans the work and talks about it with the founder, from the first review to every
+          checkpoint after it.
+        </p>
+      </div>
+      <EngagementPath steps={UBF_ENGAGEMENT} />
+    </Band>
+
+    <Band labelledby="ubf-related-title" id="related">
+      <div class="ubf-head">
+        <h2 id="ubf-related-title">Where UBF meets the other frameworks</h2>
+      </div>
+      <ul class="ubf-related" role="list">
+        {
+          related.map((f) => (
+            <li>
+              <p class="ubf-related__role">{f.role}</p>
+              <p class="ubf-related__name">
+                <a href={href(f.link)}>{f.name}</a>
+              </p>
+              <p>{f.summary}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="ubf-related__all"><a href={href('/about/frameworks/')}>See every framework in the galaxy</a></p>
+    </Band>
+
+    <CtaBand
+      title="Bring your company onto the map"
+      text="A readiness review is the first conversation. WE looks at where the company sits and what the next stage needs."
+      cta={START_REVIEW}
+      secondary={how ?? TALK_TO_WE}
+    />
+  </Fragment>
+</PageShell>
+
+<style>
+  .ubf-sky {
+    align-items: center;
+  }
+
+  .ubf-sky__text,
+  .ubf-stack,
+  .ubf-head {
+    display: grid;
+    gap: var(--space-flow);
+    align-content: start;
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .ubf-head {
+    max-inline-size: var(--prose-max);
+    margin-block-end: var(--space-block);
+  }
+
+  .ubf-sky__scales {
+    color: var(--color-text-muted);
+  }
+
+  .ubf-sub {
+    font-size: var(--fs-lg);
+  }
+
+  .ubf-panel {
+    padding: var(--sp-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg);
+  }
+
+  #lifecycle :global(we-scene),
+  #lifecycle :global(figure) {
+    margin-block-end: var(--space-block);
+  }
+
+  .ubf-related {
+    display: grid;
+    gap: var(--sp-5);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & li {
+      display: grid;
+      gap: var(--sp-2);
+      align-content: start;
+      padding-block-start: var(--sp-4);
+      border-block-start: 3px solid var(--color-accent);
+    }
+
+    & p {
+      margin: 0;
+    }
+  }
+
+  .ubf-related__role {
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .ubf-related__name {
+    font-family: var(--ff-display);
+    font-size: var(--fs-xl);
+    font-weight: 700;
+  }
+
+  .ubf-related__all {
+    margin-block: var(--space-block) 0;
+    font-weight: 600;
+  }
+</style>

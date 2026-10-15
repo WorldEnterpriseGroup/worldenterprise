@@ -274,8 +274,9 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/tools/metrics-calculator/', 'ToolLayout', 'WP-49'),
     row('/tools/evidence-room/', 'ToolLayout', 'WP-49'),
     // WP-48 was deferred in wave 7 and its four pages do not exist; wave 8 flips them to launch:false (contracts section 10). A future package that writes a page
-    // flips its row back to launch:true in the same change.
-    row('/about/frameworks/ubf/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
+    // flips its row back to launch:true in the same change. WP-55 (wave 9, D-16 revised) absorbed WP-48 and wrote the UBF page; the row keeps the
+    // WP-48 owner because RouteOwner names no wave 9 package.
+    row('/about/frameworks/ubf/', 'MarketingLayout', 'WP-48'),
     row('/star/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
     row('/shift/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
     row('/android/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),

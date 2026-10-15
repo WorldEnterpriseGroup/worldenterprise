@@ -1,0 +1,121 @@
+---
+/**
+ * The five Consulting Levels as camera altitudes (BRIEF 2.3 scene 5): from the macrocosm, the whole universe of possibilities, down to
+ * the microcosm of a classroom. Each level is a list item with a drawing that narrows as the view comes closer; the drawings are
+ * decorative and the names are real HTML.
+ */
+import { hexPoints } from '../diagrams/hex.ts';
+import type { Part } from './framework-data.ts';
+
+interface Props {
+  levels: readonly Part[];
+  label?: string;
+}
+
+const { levels, label = 'The five altitudes of WE consulting' } = Astro.props;
+if (levels.length < 2) throw new Error('AltitudeStack: needs at least two levels');
+const dots = (level: number): { x: number; y: number; r: number }[] => {
+  // Fewer, larger cells as the view comes closer: a field of stars at the top, one world at the bottom.
+  const n = [26, 14, 7, 3, 1][level] ?? 1;
+  return Array.from({ length: n }, (_, k) => {
+    const a = k * 2.399963;
+    const d = n === 1 ? 0 : 6 + Math.sqrt(k / n) * 34;
+    return { x: 50 + d * Math.cos(a), y: 30 + d * Math.sin(a) * 0.6, r: n === 1 ? 18 : Math.max(2.2, 12 / Math.sqrt(n)) };
+  });
+};
+---
+
+<ol class="alts" role="list" aria-label={label}>
+  {
+    levels.map((level, i) => (
+      <li class="alts__level">
+        <svg class="alts__art" viewBox="0 0 100 60" aria-hidden="true" focusable="false">
+          {dots(i).map((d, k) => (
+            <polygon class:list={['alts__cell', k === 0 && i === levels.length - 1 && 'alts__cell--accent']} points={hexPoints(d.x, d.y, d.r)} />
+          ))}
+        </svg>
+        <div class="alts__text">
+          <p class="alts__name">{level.name}</p>
+          <p class="alts__line">{level.line}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+<p class="alts__scale" aria-hidden="true"><span>Macrocosm</span><span>Microcosm</span></p>
+
+<style>
+  .alts {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .alts__level {
+    display: grid;
+    gap: var(--sp-3);
+    align-content: start;
+    padding: var(--sp-4);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-soft);
+  }
+
+  .alts__art {
+    inline-size: 100%;
+    block-size: auto;
+    color: var(--color-link);
+  }
+
+  .alts__cell {
+    fill: var(--color-accent);
+    fill-opacity: 0.85;
+    stroke: var(--color-bg);
+    stroke-width: 0.6;
+  }
+
+  .alts__cell--accent {
+    fill: var(--color-highlight);
+    fill-opacity: 1;
+  }
+
+  .alts__text {
+    display: grid;
+    gap: var(--sp-1);
+
+    & p {
+      margin: 0;
+    }
+  }
+
+  .alts__name {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: var(--fs-lg);
+  }
+
+  .alts__line {
+    color: var(--color-text-muted);
+  }
+
+  .alts__scale {
+    display: flex;
+    justify-content: space-between;
+    margin: var(--sp-3) 0 0;
+    padding-block-start: var(--sp-2);
+    border-block-start: 2px solid var(--color-border-strong);
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  @media (forced-colors: active) {
+    .alts__cell,
+    .alts__cell--accent {
+      fill: CanvasText;
+    }
+  }
+</style>
