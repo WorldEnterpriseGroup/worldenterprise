@@ -50,9 +50,14 @@ const slug = root.toLowerCase().replace(/\s+/g, '-');
     padding: 0;
   }
 
+  .ubftree {
+    container: ubftree / inline-size;
+    --ubftree-indent: var(--sp-5);
+  }
+
   .ubftree :global(.ubftree__children) {
-    margin-inline-start: var(--sp-5);
-    padding-inline-start: var(--sp-5);
+    margin-inline-start: var(--ubftree-indent);
+    padding-inline-start: var(--ubftree-indent);
     border-inline-start: 2px dashed var(--color-border-strong);
   }
 
@@ -65,16 +70,29 @@ const slug = root.toLowerCase().replace(/\s+/g, '-');
     content: '';
     position: absolute;
     inset-block-start: calc(var(--sp-2) + 0.9em);
-    inset-inline-start: calc(-1 * var(--sp-5));
-    inline-size: var(--sp-4);
+    inset-inline-start: calc(-1 * var(--ubftree-indent));
+    inline-size: calc(var(--ubftree-indent) - var(--sp-2));
     border-block-start: 2px dashed var(--color-border-strong);
   }
 
   .ubftree :global(.ubftree__label) {
-    display: inline-grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
     column-gap: var(--sp-3);
     align-items: baseline;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Four levels deep, the moon has little room on a phone: tighter indents, and each line sits under its name. */
+  @container ubftree (width < 36rem) {
+    .ubftree :global(.ubftree__children) {
+      --ubftree-indent: var(--sp-3);
+    }
+
+    .ubftree :global(.ubftree__label) {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   .ubftree :global(.ubftree__name) {
