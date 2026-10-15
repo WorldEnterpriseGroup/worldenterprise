@@ -1,18 +1,16 @@
-import { existsSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import { findOverflow } from '../../support/overflow.ts';
 import { isBuilt } from '../../support/routes.ts';
 
-// WP-44, acceptance: the home page passes the fold rules at 1440x900 and 390x844 after the recomposition. The h1, the one-sentence
-// promise, the Apply button and the hero image stay inside the first viewport, the hero keeps its preload and fetchpriority, and the
-// band that follows the hero starts right under it and fits the width of the screen.
+// WP-44, recomposed by WP-53 (issue #74): the home page passes the fold rules at 1440x900 and 390x844. The h1, the one-sentence
+// promise, the readiness review button and the galaxy poster (the LCP image) stay inside the first viewport, the poster keeps its
+// preload and fetchpriority, and the journey band that follows the hero starts right under it and fits the width of the screen.
 
 test.beforeEach(() => {
   test.skip(!isBuilt('/'), 'home is not built');
-  test.skip(!existsSync('src/components/home/leave-with/LeaveWith.astro'), 'the leave-with band has not merged');
 });
 
-test('h1, promise, Apply button and hero image are inside the first viewport', async ({ page }) => {
+test('h1, promise, readiness review button and hero poster are inside the first viewport', async ({ page }) => {
   await page.goto('/');
   const height = page.viewportSize()?.height ?? 0;
   const hero = page.locator('.home-hero');
@@ -46,8 +44,8 @@ test('the hero image keeps its preload and its fetchpriority, and is not lazy', 
 test('the band under the hero is the first section of the page body and opens right under the hero', async ({ page }) => {
   await page.goto('/');
   const hero = await page.locator('.home-hero').boundingBox();
-  const heading = page.locator('h2#home-leave-with');
-  await expect(heading).toHaveText('What you leave with');
+  const heading = page.locator('h2#home-journey');
+  await expect(heading).toHaveText('WE Dream. WE Build. WE Grow.');
   const box = await heading.boundingBox();
   expect(hero, 'the hero has a box').not.toBeNull();
   expect(box, 'the band heading has a box').not.toBeNull();
@@ -55,7 +53,7 @@ test('the band under the hero is the first section of the page body and opens ri
   expect(box?.y ?? 0, 'the band heading starts below the hero').toBeGreaterThanOrEqual((hero?.y ?? 0) + (hero?.height ?? 0) - 1);
   expect(box?.y ?? 0, 'the band heading starts within one screen of the hero').toBeLessThan((hero?.y ?? 0) + (hero?.height ?? 0) + viewport);
   const firstH2 = await page.locator('main h2').first().getAttribute('id');
-  expect(firstH2, 'the first h2 of the page is the band').toBe('home-leave-with');
+  expect(firstH2, 'the first h2 of the page is the band').toBe('home-journey');
 });
 
 test('nothing on the page leaves the width of the screen', async ({ page }) => {
