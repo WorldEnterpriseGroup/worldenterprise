@@ -1,4 +1,4 @@
-# World Enterprise Incubator
+# World Enterprise
 
 Source for [worldenterprise.org](https://worldenterprise.org), the public website of World Enterprise
 Group Incorporated: a long-horizon business incubation and consulting firm. WE steers a dedicated, fully

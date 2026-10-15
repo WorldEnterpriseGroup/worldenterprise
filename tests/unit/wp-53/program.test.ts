@@ -45,10 +45,9 @@ function stringLiterals(source: string): string[] {
 }
 
 /**
- * Pinned by other packages, so allowed as written: the journey family uses the step title "Seat your team" as a heading
- * (tests/unit/wp-72), and who-its-for (layout only for WP-53) links an insight by its published title.
+ * Pinned by other packages, so allowed as written: who-its-for (layout only for WP-53) links an insight by its published title.
  */
-const PINNED_TITLE = /\bSeat your team\b|Is your SaaS idea a business or a feature\?/g;
+const PINNED_TITLE = /Is your SaaS idea a business or a feature\?/g;
 const copy = [
   ...[...PAGES, ...COMPONENTS].map((f) => visibleText(read(f))),
   ...[...PAGES, ...COMPONENTS].flatMap((f) => stringLiterals(read(f).split('<style>')[0] ?? '')),
@@ -164,7 +163,7 @@ test('the pages hold the hard rules: no inline style, no inline script, no data 
 });
 
 test('the five program steps keep the titles the journey family uses as headings', () => {
-  assert.deepEqual(PROGRAM_STEPS.map((s) => s.title), ['Apply', 'Agree the scope', 'Seat your team', 'Work in focused cycles', 'Review and decide']);
+  assert.deepEqual(PROGRAM_STEPS.map((s) => s.title), ['Apply', 'Agree the scope', 'Assemble your team', 'Work in focused cycles', 'Review and decide']);
   for (const step of PROGRAM_STEPS) assert.doesNotMatch(step.body, /\bseats?\b|offshore/i, `${step.title} body`);
 });
 

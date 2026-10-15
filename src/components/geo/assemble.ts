@@ -46,7 +46,7 @@ export interface PageTwinSpec {
 
 /** Pages whose rendered content is the MDX body plus the lead. Anything else would produce a twin that is a fragment of its page. */
 export const PAGE_TWINS: readonly PageTwinSpec[] = [
-  { route: '/about/facts/', id: 'about/facts', lead: 'Plain answers about what WE is and is not, what it offers, how seats and packages work, and how to reach the team.' },
+  { route: '/about/facts/', id: 'about/facts', lead: 'Plain answers about what WE is and is not, what it offers, how an engagement works, and how to reach the team.' },
   { route: '/about/manifesto/', id: 'about/manifesto', lead: site.signature },
   { route: '/about/editorial-policy/', id: 'about/editorial-policy', lead: 'How WE chooses, sources, checks, dates and corrects what it publishes.' },
   { route: '/legal/privacy/', id: 'legal/privacy', lead: 'What the site collects, where it goes, and what it never does.' },

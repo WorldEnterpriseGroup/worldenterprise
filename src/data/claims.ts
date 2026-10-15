@@ -29,7 +29,7 @@ const OWNER_2026_10_14 = 'CEO direction 2026-10-14; W9-10 (.astro-magazine/decis
 
 export const claimRegistry: Readonly<Record<ClaimId, Claim>> = {
   'C-01': { id: 'C-01', status: 'publish', enabled: true, source: `${OPERATOR}; operator README`, summary: 'Fully digital, fully remote; no physical offices' },
-  'C-02': { id: 'C-02', status: 'publish', enabled: true, source: OPERATOR, summary: 'Dedicated offshore team seats, scalable by notice (no notice period, no seat counts)' },
+  'C-02': { id: 'C-02', status: 'publish', enabled: true, source: OPERATOR, summary: 'A dedicated team that works only on your company, scaled by notice (no notice period or team size published)' },
   'C-03': { id: 'C-03', status: 'publish', enabled: true, source: `${OPERATOR}; agreement recital D`, summary: 'WE steers the team and manages its subcontractors' },
   'C-04': { id: 'C-04', status: 'publish', enabled: true, source: 'Operator draft packet 2, lines 237-243', summary: 'Service Lines A to G, each with a "does not do" block' },
   'C-05': { id: 'C-05', status: 'publish', enabled: true, source: OPERATOR, summary: 'No promise of funding (mandatory disclaimer). Never an outcome promise such as "fundable company"' },

@@ -18,7 +18,7 @@ export const PROGRAM_STEPS: readonly ProgramStep[] = [
     body: 'WE and the founder choose which service lines the company needs and what each one will and will not cover. An NDA comes first, then draft agreements and an order form with every term written down, which you review with your own counsel.',
   },
   {
-    title: 'Seat your team',
+    title: 'Assemble your team',
     body: 'WE recruits the team for the roles the plan calls for. The team works only on your company. WE steers it, manages any subcontractors and answers for how it is run.',
   },
   {

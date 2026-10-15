@@ -37,7 +37,7 @@ export const EXTRA_NEXT: Readonly<Partial<Record<ServiceLine, readonly NextLink[
     { title: 'Investor readiness checklist', href: '/fundability/investor-readiness-checklist/', description: 'The evidence a serious investor asks for.' },
     { title: 'The seed data room', href: '/fundability/data-room/', description: 'What goes in it and how to organize it.' },
   ],
-  G: [{ title: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'How WE seats and steers a team for your company.' }],
+  G: [{ title: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'How WE builds and steers a dedicated team for your company.' }],
 };
 
 export function servicePath(slug: string): string {
