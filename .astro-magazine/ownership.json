@@ -2281,6 +2281,56 @@
       "reason": "Wave 9 (W9-4): the 110rem frame fits five 15rem fields at 1440, where an error message wraps past its two reserved lines; the field minimum becomes 18rem. One rule; WP-54 keeps the file."
     },
     {
+      "wp": "WP-51",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The header button label and its short form for 1100 to 1239px, the two featured panel CTAs, and the removal of the direct Pricing item. WP-54 keeps the Pricing and seat links."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/data/cta/targets.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The apply target label and band heading. That entry only."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/sources/wp-60.json",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. Remaps the apply target label in the WP-60 sentence ledger. That entry only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/nav/commands.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The palette keeps 'Apply' as the command people type, with the button label as its hint. One line; WP-46 keeps the file."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-46/commands.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The pinned first palette command gains the hint."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-71/families-logic.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The pinned hero primary action label."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The snapshot drops the Pricing section and records the change under wave9."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/foundation/nav.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The resolveNav and activeSectionId pins for /pricing/."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-16/active-section.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). /pricing/ has no current section."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-91/palette.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The ranking pin searches 'seat', the name /pricing/ is now listed under."
+    },
+    {
       "wp": "WP-52",
       "path": "src/pages/styleguide.astro",
       "reason": "Wave 9: a visuals section on the existing styleguide (PUBLIC_STYLEGUIDE=1), not a new route; last held by WP-45, which is done."
@@ -2304,6 +2354,56 @@
       "wp": "WP-53",
       "path": ".astro-magazine/release/RELEASE.md",
       "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/components/program/stages.ts, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-53",
+      "path": ".astro-magazine/sources/wp-75.json",
+      "reason": "Wave 9 (W9-13): the seat and SaaS entries follow the new Program wording. Those entries only; WP-75 is done."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/pages/faq/_model.ts",
+      "reason": "Wave 9 (W9-13): lines 62 to 65, the link-title values of /program/build/, /program/dedicated-teams/, /program/dream/ and /program/grow/. Those lines only; line 61 (/pricing/) stays with WP-54, and WP-56 keeps the file."
+    },
+    {
+      "wp": "WP-53",
+      "path": "tests/unit/wp-15/image-type.test.ts",
+      "reason": "Wave 9 (W9-6): the hero regex widens to accept heroPoster() for the galaxy poster LCP. That pattern only; shared with WP-17, disjoint by line."
     },
     {
       "wp": "WP-54",
@@ -2508,12 +2608,12 @@
     {
       "wp": "WP-58",
       "path": "src/data/cta/map.ts",
-      "reason": "Wave 9 (W9-13): adds the rows of its own routes and the timeline brief. Disjoint by row from WP-54."
+      "reason": "Wave 9 (W9-12, W9-13): adds the surface rows of its own routes (/why-it-takes-time/, /who-we-work-with/) and the timeline brief row, and nothing else. Disjoint by row from WP-54."
     },
     {
       "wp": "WP-58",
       "path": "src/data/families.ts",
-      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): one BRIEF_INPUTS entry, nothing else."
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): one BRIEF_INPUTS entry, and a WaveNineOwner alias (WP-51 to WP-58) on the owner type. Nothing else; WP-60 keeps the file."
     },
     {
       "wp": "WP-58",
@@ -2568,7 +2668,7 @@
     {
       "wp": "WP-58",
       "path": "tests/unit/wp-18/copy.test.ts",
-      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line."
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line. Also (W9-12) adds src/data/sales/sources.ts to the C-13-peers allowed list: the sources ledger cites the research title of Cohen and Hochberg (2014), which names the program category; the built page wraps the ledger in data-claim-allow=\"C-13-peers\"."
     },
     {
       "wp": "WP-58",
@@ -2599,6 +2699,16 @@
       "wp": "WP-58",
       "path": "tests/unit/wp-73/segment-pages.test.ts",
       "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 (W9-13): the CR-19 quote of the site description follows the C-29 rewording; CR-19 lines only, its counsel box stays unticked."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/families.test.ts",
+      "reason": "Wave 9 (W9-13): line 69, the owner regex widens to /^WP-(?:[6-9]\\d|5[1-8])$/ for the WaveNineOwner alias. That line only."
     }
   ],
   "notes": [
