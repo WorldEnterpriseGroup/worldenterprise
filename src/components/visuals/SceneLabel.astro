@@ -1,0 +1,27 @@
+---
+/**
+ * One HTML label of a scene (a station, a body, a moon). Real text and a real link, so it is read, translated, zoomed and focused like
+ * the rest of the page. `x` and `y` (0 to 1) place it over the poster; a live scene moves it with its anchor `index`.
+ */
+import { href as link } from '../../lib/url.ts';
+import { positionClasses } from '../../scripts/visuals/geometry.ts';
+
+interface Props {
+  index: number;
+  label: string;
+  href?: string | undefined;
+  description?: string | undefined;
+  x?: number | undefined;
+  y?: number | undefined;
+  /** Hang the label below its anchor instead of above (anchors near the top edge). */
+  below?: boolean;
+}
+
+const { index, label, href, description, x, y, below = false } = Astro.props;
+const position = x !== undefined && y !== undefined ? positionClasses(x, y) : undefined;
+---
+
+<li class:list={['scene__label', position, below && 'is-below']} data-anchor={index}>
+  {href !== undefined ? <a href={link(href)}>{label}</a> : <span class="scene__label-name">{label}</span>}
+  {description !== undefined && <span class="scene__label-note">{description}</span>}
+</li>
