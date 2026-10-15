@@ -77,7 +77,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     id: 'program',
     label: 'Program',
     href: '/program/',
-    lead: 'A digital incubator for SaaS. A dedicated team, steered by WE, from first idea to first customers.',
+    lead: 'Long-horizon business incubation. A dedicated team, steered by WE, from first idea to first customers.',
     leadLink: 'Explore the program',
     columns: [
       {

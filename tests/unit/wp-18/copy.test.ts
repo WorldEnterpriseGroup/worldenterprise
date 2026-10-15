@@ -51,7 +51,7 @@ test('the navigation copy carries no PBC wording and no "fundable" outcome', () 
   const nav = read('src/data/nav.ts');
   assert.doesNotMatch(nav, /public benefit|benefit corporation|\bPBC\b/i);
   assert.doesNotMatch(nav, /fundable/i);
-  assert.match(nav, /lead: 'A digital incubator for SaaS\. A dedicated team, steered by WE, from first idea to first customers\.'/);
+  assert.match(nav, /lead: 'Long-horizon business incubation\. A dedicated team, steered by WE, from first idea to first customers\.'/);
 });
 
 test('"fundable" as an outcome and the peers family appear in source only where a rule allows them', () => {
