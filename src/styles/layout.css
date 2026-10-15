@@ -297,10 +297,12 @@
    * left edge; figures, tables, grids and splits use the frame. Paragraphs and headings are held at any depth, so a component section
    * in the body cannot run a line across 1760px; lists only at the top level, because a nested list is often a card grid. A
    * component's own width rule outranks these (layer order). The 80ch cap only binds on smaller type (a note at --fs-sm), which would
-   * otherwise run past 80 characters in 46rem; body type reaches 46rem first.
+   * otherwise run past 80 characters in 46rem; body type reaches 46rem first. A callout straight in a prose container (a template's
+   * "How to use this" box) is held the same way.
    */
   :is(.flow-wide, .prose) :where(p, blockquote, h2, h3, h4, h5, h6),
-  :is(.flow-wide, .prose) > :where(ul, ol, dl, .callout) {
+  :is(.flow-wide, .prose) > :where(ul, ol, dl, .callout),
+  .container--prose > :where(.callout) {
     max-inline-size: min(var(--prose-max), 80ch);
   }
 }
