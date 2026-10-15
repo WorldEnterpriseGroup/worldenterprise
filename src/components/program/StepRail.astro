@@ -83,8 +83,8 @@ const { steps, labelledby } = Astro.props;
 
     .onrail__num {
       position: absolute;
-      inset-block-start: -0.5rem;
-      inset-inline-end: -0.5rem;
+      inset-block-start: calc(-1 * var(--sp-2));
+      inset-inline-end: calc(-1 * var(--sp-2));
       display: grid;
       place-items: center;
       inline-size: 1.75rem;
@@ -117,7 +117,7 @@ const { steps, labelledby } = Astro.props;
       .onrail::before {
         inset-block: auto;
         inset-block-start: calc(2rem - var(--onrail-rule) / 2);
-        inset-inline: 2rem;
+        inset-inline: var(--sp-6);
         inline-size: auto;
         block-size: var(--onrail-rule);
       }

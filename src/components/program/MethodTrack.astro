@@ -64,7 +64,7 @@ const { method } = Astro.props;
       &:not(:last-child)::after {
         content: '';
         position: absolute;
-        inset-block-start: 1rem;
+        inset-block-start: var(--sp-4);
         inset-inline-start: calc(50% + 1rem);
         inline-size: calc(100% - 2rem);
         border-block-start: 1px dashed var(--color-border);
