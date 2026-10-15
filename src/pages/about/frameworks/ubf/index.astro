@@ -74,7 +74,7 @@ const related = ['orbital', 'star', 'android', 'supernova']
 
     <Band labelledby="ubf-nest-title" id="nesting">
       <div class="split split--even">
-        <div class="split__text ubf-stack">
+        <div class="split__text ubf-stack ubf-measure">
           <h2 id="ubf-nest-title">How the parts nest</h2>
           <p>
             A galaxy holds its giants, its shifts and its solar systems. A solar system turns around its sun. The sun holds the flagship, the
@@ -170,6 +170,11 @@ const related = ['orbital', 'star', 'android', 'supernova']
 </PageShell>
 
 <style>
+  /* An even split gives each column half the 110rem frame; reading text keeps the 46rem measure (wave 8 80ch check). */
+  .ubf-measure {
+    max-inline-size: var(--prose-max);
+  }
+
   .ubf-sky {
     align-items: center;
   }

@@ -88,7 +88,7 @@ const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...
 
     <Band labelledby="fit-title" id="fit">
       <div class="split split--even">
-        <div class="split__text founders-stack">
+        <div class="split__text founders-stack founders-measure">
           <h2 id="fit-title">What fits</h2>
           <p>
             The core of the business can be built on a screen: software, a digital product, or a service run on software and expertise. You
@@ -96,7 +96,7 @@ const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...
           </p>
           <DataTable caption="Criteria WE uses when deciding whether a company is a fit" columns={['Criterion', 'What it means']} rows={criteria} />
         </div>
-        <div class="split__text founders-stack">
+        <div class="split__text founders-stack founders-measure">
           <h2 id="notfit-title">What does not fit</h2>
           <p>
             WE is not the right help if the core work of the business is physical (food service, retail floors, manufacturing, clinical
@@ -146,6 +146,11 @@ const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...
 </MarketingLayout>
 
 <style>
+  /* An even split gives each column half the 110rem frame; reading text keeps the 46rem measure (wave 8 80ch check). */
+  .founders-measure {
+    max-inline-size: var(--prose-max);
+  }
+
   .founders-sky {
     align-items: center;
   }

@@ -123,7 +123,7 @@ const team = [
 
     <Band tone="tint-sand" labelledby="about-plain" id="plain">
       <div class="split split--even">
-        <div class="split__text about-stack">
+        <div class="split__text about-stack about-measure">
           <h2 id="about-plain">Plain about what WE has not done yet.</h2>
           <p>
             WE publishes no client names, client quotes or results. The numbers on this site describe all new businesses, from public
@@ -169,6 +169,11 @@ const team = [
 </PageShell>
 
 <style>
+  /* An even split gives each column half the 110rem frame; reading text keeps the 46rem measure (wave 8 80ch check). */
+  .about-measure {
+    max-inline-size: var(--prose-max);
+  }
+
   .about-sky {
     align-items: center;
   }
