@@ -1,19 +1,19 @@
 # FAQ entries (WP-08). Schema: src/content.config.ts, collection "faq". Answers follow SAGE-PLAN 7.5 and cite only enabled claims.
 - id: what-is-we
-  question: "What is World Enterprise Incubator?"
-  answer: "World Enterprise Incubator is a digital incubator for SaaS, run by World Enterprise Group Incorporated. Dedicated team seats, steered by WE, take a founder from first idea toward first customers and the evidence an investor will ask for. The work is fully remote."
+  question: "What is World Enterprise?"
+  answer: "World Enterprise is a long-horizon business incubation and consulting firm, run by World Enterprise Group Incorporated. WE steers a dedicated, fully remote team that builds a software-enabled company with its founder, for as long as the work is useful. WE makes no promise of funding."
   group: "About WE"
-  claimsUsed: [C-01, C-03, C-18]
+  claimsUsed: [C-01, C-02, C-03, C-05, C-18, C-29]
   related: [digital-incubator-meaning, what-is-a-seat]
 - id: is-it-an-accelerator
   question: "Is WE an accelerator?"
-  answer: "WE describes itself as a digital incubator. It builds with your company through dedicated team seats. This site does not describe a cohort calendar or a demo day."
+  answer: "No. WE is a long-horizon business incubation and consulting firm. It builds with your company through a dedicated team that WE steers, for as long as the work is useful. This site does not describe a cohort calendar or a demo day."
   group: "About WE"
-  claimsUsed: [C-01, C-02]
+  claimsUsed: [C-01, C-02, C-03, C-29]
   related: [what-is-we, digital-incubator-meaning]
 - id: digital-incubator-meaning
-  question: "What does \"digital incubator\" mean?"
-  answer: "It means the incubator is fully digital. There are no physical offices. Planning, building and reviewing all happen online, so you can work with WE from wherever you are."
+  question: "What does it mean that WE is fully digital?"
+  answer: "It means WE works fully online. There are no physical offices. Planning, building and reviewing all happen online, so you can work with WE from wherever you are."
   group: "About WE"
   claimsUsed: [C-01]
   related: [relocate]
@@ -431,7 +431,7 @@
   related: [part-reply, site-form-details]
 - id: corp-start
   question: "Where does someone who works for an employer start?"
-  answer: "Start with the page about who the program is for, which describes a good fit. If a question about your employment is not answered there, ask through the contact page. WE is a digital incubator for SaaS companies, and WE makes no promise of funding."
+  answer: "Start with the page about who the program is for, which describes a good fit. If a question about your employment is not answered there, ask through the contact page. WE is a long-horizon business incubation and consulting firm, and WE makes no promise of funding."
   group: "Starting from an employer"
   audience: corporate
   seeAlso: [/program/who-its-for/, /contact/]
