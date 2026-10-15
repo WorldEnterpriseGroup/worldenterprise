@@ -1,0 +1,146 @@
+---
+/**
+ * OrbitSystem: a hex-faceted sun with one small hex world per label on hairline orbit rings (BRIEF 2.1 Solar System, 2.3 scene 2).
+ * Use it for the seven service lines around WE (`rings="single"`), for UBF components or the parts of an engagement (`rings="nested"`,
+ * one ring each). Hovering or focusing a label brightens its world in the live scene; arrow keys step between linked labels.
+ *
+ * The 7-on-one-ring and 10-nested layouts have posters rendered from the scene. Any other layout shows the sun-only poster with the
+ * rings and worlds drawn over it in SVG from the same geometry, so labels still sit on their worlds.
+ */
+import Scene from './Scene.astro';
+import SceneLabel from './SceneLabel.astro';
+import { orbitBodies, orbitPosterKey } from './contracts.ts';
+import type { SceneLabel as Label, SceneRatio } from './contracts.ts';
+import { ORBIT_CAMERA, orbitLayout, orbitPosition, project, ringPath } from '../../scripts/visuals/geometry.ts';
+
+interface Props {
+  bodies: readonly Label[];
+  rings?: 'single' | 'nested';
+  /** Index of the body drawn as the scene's one amber object; by default one amber cell on the sun instead. */
+  accent?: number;
+  alt?: string;
+  caption?: string;
+  labelsName?: string;
+  ratio?: Extract<SceneRatio, '16/9'>;
+  static?: boolean;
+  class?: string;
+}
+
+const { bodies, rings = 'single', accent = -1, caption, labelsName = 'Bodies in the system', static: isStatic = false, class: className } = Astro.props;
+const items = orbitBodies('OrbitSystem', bodies);
+if (!Number.isInteger(accent) || accent < -1 || accent >= items.length) throw new Error(`OrbitSystem: accent ${accent} is not -1 or a body index`);
+const alt =
+  Astro.props.alt ??
+  `A sun of blue hexagonal tiles with ${items.length === 1 ? 'one smaller world' : `${items.length} smaller worlds`} on ${rings === 'single' ? 'a single orbit ring' : 'nested orbit rings'} around it, one ${accent >= 0 ? 'world haloed' : 'tile on the sun'} in amber.`;
+
+const W = 1600;
+const H = 900;
+const aspect = W / H;
+const layout = orbitLayout(items.length, rings);
+const anchors = layout.map((b) => {
+  const [x, y, z] = orbitPosition(b, 0);
+  return project([x, y + 0.42, z], ORBIT_CAMERA, aspect);
+});
+const canonical = accent === -1 ? orbitPosterKey(items.length, rings) : null;
+const tan = Math.tan((ORBIT_CAMERA.fov * Math.PI) / 360);
+const overlay =
+  canonical === null
+    ? {
+        rings: Array.from(new Set(layout.map((b) => b.radius))).map((r) => ringPath(r, ORBIT_CAMERA, W, H)),
+        bodies: layout.map((b, i) => {
+          const p = project(orbitPosition(b, 0), ORBIT_CAMERA, aspect);
+          const r = ((0.26 / (p.depth * tan)) * H) / 2;
+          return { x: p.x * W, y: p.y * H, r, accent: i === accent };
+        }),
+      }
+    : null;
+const hexes = (cx: number, cy: number, r: number): string[] => {
+  // Seven hexagons inside each world (the cluster spans 0.95 r, so it needs no clip), so the SVG bodies read as hex-faceted globes.
+  const out: string[] = [];
+  const s = r * 0.36;
+  const centers = [[0, 0], ...Array.from({ length: 6 }, (_, k) => [Math.cos((Math.PI / 3) * k + Math.PI / 6) * s * 1.75, Math.sin((Math.PI / 3) * k + Math.PI / 6) * s * 1.75])];
+  for (const [dx = 0, dy = 0] of centers) {
+    const pts = Array.from({ length: 6 }, (_, k) => {
+      const a = (Math.PI / 3) * k;
+      return `${(cx + dx + Math.cos(a) * s * 0.9).toFixed(1)},${(cy + dy + Math.sin(a) * s * 0.9).toFixed(1)}`;
+    });
+    out.push(pts.join(' '));
+  }
+  return out;
+};
+---
+
+<Scene
+  scene="orbit"
+  poster={canonical ?? 'orbit-base'}
+  alt={alt}
+  ratio="16/9"
+  options={{ count: items.length, rings, accent }}
+  caption={caption}
+  labelsName={labelsName}
+  static={isStatic}
+  class={className}
+>
+  {
+    overlay !== null && (
+      <svg slot="overlay" class="orbit-svg" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" focusable="false">
+        {overlay.rings.map((d) => (
+          <path class="orbit-svg__ring" d={d} />
+        ))}
+        {overlay.bodies.map((b) => (
+          <g class:list={['orbit-svg__body', b.accent && 'is-accent']}>
+            <circle class="orbit-svg__halo" cx={b.x} cy={b.y} r={b.r * 1.9} />
+            <circle class="orbit-svg__globe" cx={b.x} cy={b.y} r={b.r} />
+            {hexes(b.x, b.y, b.r).map((points) => (
+              <polygon class="orbit-svg__cell" points={points} />
+            ))}
+            <circle class="orbit-svg__rim" cx={b.x} cy={b.y} r={b.r} />
+          </g>
+        ))}
+      </svg>
+    )
+  }
+  <Fragment slot="labels">
+    {
+      items.map((item, i) => (
+        <SceneLabel index={i} label={item.label} href={item.href} description={item.description} x={anchors[i]?.x} y={anchors[i]?.y} below={(anchors[i]?.y ?? 1) < 0.16} />
+      ))
+    }
+  </Fragment>
+</Scene>
+
+<style>
+  .orbit-svg__ring {
+    fill: none;
+    stroke: var(--we-blue-hi);
+    stroke-opacity: 0.4;
+    stroke-width: 1.5;
+  }
+
+  .orbit-svg__halo {
+    fill: var(--we-tint);
+    opacity: 0.12;
+  }
+
+  .is-accent .orbit-svg__halo {
+    fill: var(--we-amber);
+    opacity: 0.35;
+  }
+
+  .orbit-svg__globe {
+    fill: var(--we-blue-deep);
+  }
+
+  .orbit-svg__cell {
+    fill: var(--we-blue-hi);
+    stroke: var(--we-blue-night);
+    stroke-width: 1.5;
+  }
+
+  .orbit-svg__rim {
+    fill: none;
+    stroke: var(--we-tint);
+    stroke-opacity: 0.8;
+    stroke-width: 1.5;
+  }
+</style>

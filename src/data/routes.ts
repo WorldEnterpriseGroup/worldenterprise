@@ -3,7 +3,7 @@ import type { InsightFile } from '../lib/content-files.ts';
 import { DESK_DEFINITIONS, DESK_OWNERS, DESKS, deskPath, isDeskId } from './desks.ts';
 import type { Desk, DeskId } from './desks.ts';
 import { FAMILIES } from './families.ts';
-import type { WaveEightOwner } from './families.ts';
+import type { WaveEightOwner, WaveNineOwner } from './families.ts';
 import { flags } from './flags.ts';
 import { forms } from './forms.ts';
 import { site } from './site.ts';
@@ -35,6 +35,7 @@ export type RouteOwner =
   | 'WP-01' | 'WP-02' | 'WP-03' | 'WP-04' | 'WP-05' | 'WP-06' | 'WP-07' | 'WP-08'
   | 'WP-09' | 'WP-10' | 'WP-11' | 'WP-12' | 'WP-13'
   | 'WP-40' | 'WP-41' | 'WP-42' | 'WP-43' | 'WP-44' | 'WP-45' | 'WP-46' | 'WP-47' | 'WP-48' | 'WP-49' | 'WP-50'
+  | WaveNineOwner
   | WaveEightOwner;
 
 /** WP-60 to WP-99, the wave 8 packages (docs/wave8-contracts.md, section 1.3). */
@@ -279,6 +280,17 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/star/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
     row('/shift/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
     row('/android/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
+
+    // Wave 9 sales pages (WP-58, W9-12): the real business clock and the seven situation pages (SITE-COPY.md sections 5 and 6).
+    row('/why-it-takes-time/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/industry-insiders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/encore-founders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/repeat-builders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/global-founders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/under-backed-builders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/next-gen-founders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/restart-founders/', 'MarketingLayout', 'WP-58'),
 
     // Wave 8 (docs/wave8-contracts.md, section 1.2), registered ahead of the pages by WP-60 so no page-owning package edits this file.
     // A launched row with no page is inert: out of nav and sitemap, a warning in audit:ledger. The page file makes it live.

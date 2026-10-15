@@ -1,0 +1,68 @@
+---
+/**
+ * StarfieldBand: a dark, full-bleed section with a slowly drifting starfield behind its content (one amber star). The starfield is
+ * decorative (hidden from assistive technology); the slot holds the section's real content, set in inverse text.
+ *
+ * Dark bands never carry the logo (ORCHESTRATION: no inverted wordmark). Pair a band with plain text and a CTA.
+ */
+interface Props {
+  /** Heading id the section is labeled by (the heading lives in the slot). */
+  labelledby?: string;
+  id?: string;
+  /** `tall` gives the band more height for a closing statement. */
+  size?: 'default' | 'tall';
+  static?: boolean;
+  class?: string;
+}
+
+import Scene from './Scene.astro';
+
+const { labelledby, id, size = 'default', static: isStatic = false, class: className } = Astro.props;
+---
+
+<section class:list={['starfield-band', `starfield-band--${size}`, className]} id={id} aria-labelledby={labelledby}>
+  <Scene scene="starfield" poster="starfield" alt="" decorative fill static={isStatic} sizes="100vw" />
+  <div class="starfield-band__inner">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .starfield-band {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--color-text-inverse);
+    background-color: color-mix(in oklab, var(--we-blue-night) 45%, var(--we-charcoal));
+  }
+
+  .starfield-band__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--sp-4);
+    justify-items: start;
+    max-inline-size: var(--measure);
+    margin-inline: auto;
+    padding-block: var(--sp-9);
+    padding-inline: var(--sp-5);
+  }
+
+  .starfield-band--tall .starfield-band__inner {
+    padding-block: var(--sp-10);
+  }
+
+  .starfield-band__inner :global(a:not([class])) {
+    color: var(--color-text-inverse);
+    text-decoration-color: var(--we-amber);
+  }
+
+  .starfield-band__inner :global(:focus-visible) {
+    outline-color: var(--color-focus-inverse);
+  }
+
+  /* The pause button of the band's scene stays reachable but out of the text's way. */
+  .starfield-band :global(.scene__toggle) {
+    z-index: 2;
+  }
+</style>

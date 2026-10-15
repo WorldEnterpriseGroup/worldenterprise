@@ -1,0 +1,33 @@
+---
+/**
+ * UbfDiagram: the UBF planetarium (BRIEF 2.3 scene 2). The ten UBF components as worlds on nested orbit rings, each label with its
+ * one-line definition; an OrbitSystem preset with its own poster (ten bodies, nested rings).
+ *
+ *   <UbfDiagram href="/about/frameworks/ubf/" />
+ */
+import OrbitSystem from './OrbitSystem.astro';
+import { UBF_COMPONENTS } from './ubf.ts';
+
+interface Props {
+  /** Links every label to one page (the UBF detail page); omit for plain labels. */
+  href?: string;
+  alt?: string;
+  caption?: string;
+  static?: boolean;
+  class?: string;
+}
+
+const { href, alt, caption, static: isStatic = false, class: className } = Astro.props;
+const bodies = UBF_COMPONENTS.map((c) => ({ label: c.label, description: c.description, href }));
+---
+
+<OrbitSystem
+  bodies={bodies}
+  rings="nested"
+  alt={alt ??
+    'A sun of blue hexagonal tiles with ten smaller worlds on nested orbit rings around it, one for each part of the Universal Business Framework, one tile on the sun in amber.'}
+  caption={caption}
+  labelsName="The ten parts of the Universal Business Framework"
+  static={isStatic}
+  class={className}
+/>
