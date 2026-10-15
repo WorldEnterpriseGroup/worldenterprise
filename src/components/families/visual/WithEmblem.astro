@@ -1,0 +1,55 @@
+---
+import EmblemFrame from './EmblemFrame.astro';
+import type { EmblemKind } from './emblems.ts';
+
+/**
+ * A readable column (about 40rem) with the family emblem beside it on a wide screen: the figure-beside-text frame of the WP-56
+ * templates. The emblem is decorative and dropped below 62rem, so a phone reader keeps the text alone.
+ */
+interface Props {
+  kind: EmblemKind;
+  seed?: string;
+  index?: number;
+}
+
+const { kind, seed, index } = Astro.props;
+---
+
+<div class="wv-with">
+  <div class="wv-with__text">
+    <slot />
+  </div>
+  <div class="wv-with__art">
+    <EmblemFrame kind={kind} {...(seed !== undefined ? { seed } : {})} {...(index !== undefined ? { index } : {})} />
+  </div>
+</div>
+
+<style>
+  .wv-with {
+    display: grid;
+    gap: var(--sp-6);
+    align-items: center;
+  }
+
+  .wv-with__text {
+    display: grid;
+    gap: var(--sp-4);
+    max-inline-size: 40rem;
+    min-inline-size: 0;
+  }
+
+  .wv-with__art {
+    display: none;
+  }
+
+  @media (min-width: 62rem) {
+    .wv-with {
+      grid-template-columns: minmax(0, 40rem) minmax(18rem, 34rem);
+      justify-content: space-between;
+    }
+
+    .wv-with__art {
+      display: block;
+    }
+  }
+</style>
