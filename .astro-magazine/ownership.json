@@ -1624,7 +1624,7 @@
     },
     {
       "owner": "WP-54",
-      "title": "Wave 9 services, pricing, tools and apply: split layouts, orbit diagram, unpriced seat builder",
+      "title": "Wave 9 services, engagement model, tools and apply: split layouts, orbit diagram, the steered team as part of the engagement (no prices)",
       "branch": "wp/54",
       "stage": 2,
       "write_set": [
@@ -1756,12 +1756,31 @@
         "src/data/claims.ts",
         "src/assets/SOURCES.md"
       ]
+    },
+    {
+      "owner": "WP-58",
+      "title": "Wave 9 sales literature: who we work with, why it takes time, engagement CTA copy (W9-12)",
+      "branch": "wp/58",
+      "stage": 2,
+      "write_set": [
+        "src/content/sales/**",
+        "src/pages/who-we-work-with/**",
+        "src/content/pages/who-we-work-with/**",
+        "src/pages/why-it-takes-time/**",
+        "src/content/pages/why-it-takes-time/**",
+        "src/components/sales/**",
+        "src/data/sales/**",
+        "tests/unit/wp-58/**",
+        "tests/e2e/wave8/wp-58/**",
+        ".astro-magazine/handoffs/wp-58*",
+        ".astro-magazine/sources/wp-58.json"
+      ]
     }
   ],
   "active_leases": [],
   "handoffs": [],
   "conflicts": [],
-  "updated_at": "2026-10-14T20:00:00.000Z",
+  "updated_at": "2026-10-14T23:00:00.000Z",
   "frozen_paths": [
     "package.json",
     "package-lock.json",
@@ -2285,7 +2304,7 @@
     {
       "wp": "WP-54",
       "path": "src/pages/pricing/index.astro",
-      "reason": "Wave 9: seat builder (unpriced, flags.seatPrice stays off); photography lane, WP-12b is merged."
+      "reason": "Wave 9 (W9-12): the /pricing/ route becomes the engagement-model page (how WE works with you), with no seat prices and no priced cart; photography lane, WP-12b is merged."
     },
     {
       "wp": "WP-54",
@@ -2331,6 +2350,31 @@
       "wp": "WP-57",
       "path": "src/data/claims.ts",
       "reason": "Wave 9 close (W9-10): scrub review of the internal source and summary strings before any gh-pages promotion."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 9 (W9-12): adds and launches the rows of its own routes (/who-we-work-with/, /why-it-takes-time/) in the same merge request as their pages. No other row changes."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 9 (W9-12): adds its own routes to the navigation. No other entry moves."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/content.config.ts",
+      "reason": "Wave 9 (W9-12): adds the `sales` collection for src/content/sales/** and nothing else."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/cta/index.ts",
+      "reason": "Wave 9 (W9-12): the site-wide primary and secondary CTA labels follow the sales strategy (\"Start a conversation\", \"Apply\"); labels and hrefs only, the CTA structure stays."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/cta.test.ts",
+      "reason": "Wave 9 (W9-12): the CTA label pins follow the relabelled CTAs; held by WP-60, which is done."
     }
   ],
   "notes": [
@@ -2342,7 +2386,8 @@
     "Wave 7 (issue #29): assignments WP-40 to WP-50 carry `stage` (0 foundation, 1 parallel features, 2 integrator). An assignment may carry `exclude` (globs inside its write_set that it must not edit, unless an exception names the path) and `lane_exceptions` (photography-lane files it edits through an exception; released by decision W7-9, so nothing waits for WP-12d phase B). scripts/check-ownership.mjs enforces `exclude`; tests/unit/wp-40/write-sets.test.ts proves the stage-1 sets are pairwise disjoint and clear of the frozen paths and the lanes.",
     "Wave 8 (issue #40, docs/wave8-contracts.md): assignments WP-60 to WP-99 carry `stage` (0 foundation, 1 authoring, 2 closing) and `pools` (P0b, P1, P2: the sets of packages that can run at the same time). `frozen_paths_wave8` lists files only the owners in `frozen_paths_wave8_owners` may touch; scripts/check-ownership.mjs reads it. An assignment may carry `exceptions_declared` (frozen files its owner registers an exception for when the work needs it) and `serialize_with_release` (release-lane files it edits and must order by hand with WP-30). tests/unit/wp-60/write-sets-wave8.test.ts proves the pools disjoint and clear of the frozen, wave 8 frozen, photography and release lists.",
     "Wave 8 (issue #40, docs/wave8-contracts.md): assignments WP-60 to WP-99 carry `stage` (0 foundation, 1 authoring, 2 closing) and `pools` (P0b, P1, P2: the sets of packages that can run at the same time). `frozen_paths_wave8` lists files only the owners in `frozen_paths_wave8_owners` (WP-60) may touch; every other owner, WP-99 included, needs a registered exception that names the path. scripts/check-ownership.mjs reads it. An assignment may carry `exceptions_declared` (frozen files its owner registers an exception for when the work needs it) and `serialize_with_release` (release-lane files it edits and must order by hand with WP-30). tests/unit/wp-60/write-sets-wave8.test.ts proves the pools disjoint and clear of the frozen, wave 8 frozen, photography and release lists.",
-    "Wave 9 (issue #72, milestone 1784, docs/wave9-contracts.md): assignments WP-51 to WP-57 carry `stage` (0 foundation, 1 visuals, 2 page families in parallel, 3 integration). WP-51 and WP-57 hold the governance files in sequence. Wave 9 write sets supersede the stale wp/62, wp/12b and WP-48 claims on every path they overlap (decision W9-3): WP-62 and WP-48 were narrowed here. tests/unit/wp-51/write-sets-wave9.test.ts proves the wave 9 sets disjoint (except the listed hand-offs in .astro-magazine/plans/wave9/writesets.json), clear of the superseded sets, and covered by an exception wherever they reach a frozen, wave 8 frozen, photography-lane or release-lane path."
+    "Wave 9 (issue #72, milestone 1784, docs/wave9-contracts.md): assignments WP-51 to WP-57 carry `stage` (0 foundation, 1 visuals, 2 page families in parallel, 3 integration). WP-51 and WP-57 hold the governance files in sequence. Wave 9 write sets supersede the stale wp/62, wp/12b and WP-48 claims on every path they overlap (decision W9-3): WP-62 and WP-48 were narrowed here. tests/unit/wp-51/write-sets-wave9.test.ts proves the wave 9 sets disjoint (except the listed hand-offs in .astro-magazine/plans/wave9/writesets.json), clear of the superseded sets, and covered by an exception wherever they reach a frozen, wave 8 frozen, photography-lane or release-lane path.",
+    "Wave 9 (W9-12, CEO positioning change 2026-10-14): WP-54 is rescoped to services, the engagement model, tools and apply (the /pricing/ route becomes the engagement-model page, no prices); WP-58 (issue #79, stage 2) holds the sales literature and the CTA labels."
   ],
   "lanes": {
     "$comment": "Lanes that wave 7 packages must stay out of. The static floor is read by tests/unit/wp-40/write-sets.test.ts together with the write sets of the registered WP-12* (photography) and WP-30 (release) assignments, so a registration that lands later extends the lane without an edit here.",
