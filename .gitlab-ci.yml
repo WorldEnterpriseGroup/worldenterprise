@@ -52,10 +52,10 @@ variables:
   # industries, compare, journey, briefs), the investor and partner pages, the brand story and three founder tools are launch:true in
   # src/data/routes.ts before their packages write the page. Each shape is anchored at both ends, so a launched route anywhere else
   # that does not exist still fails. The wave 7 patterns are gone: those pages exist, and the four framework pages WP-48 never built
-  # are launch:false. WP-99 removes the wave 8 shapes when the last page lands, leaving the form routes. A release tag and gh-pages
+  # are launch:false. Wave 10 (WP-32, D-W10-5) adds the /ecosystem/, /sbir-sttr/ and /data/ shapes while WP-33, WP-34 and WP-35 build them; WP-37 or the last of them removes the shapes. WP-99 removes the wave 8 shapes when the last page lands, leaving the form routes. A release tag and gh-pages
   # set RELEASE_ALLOW to empty (verify:release below), so none of this can reach a release. expand: false keeps the `$`.
   RELEASE_ALLOW:
-    value: '^launched form route,^launch:true route does not exist: (/(?:founders/[a-z0-9-]+|industries|industries/[a-z0-9-]+|compare|compare/[a-z0-9-]+|journey|journey/[a-z0-9-]+|briefs|briefs/[a-z0-9-]+|investors/(?:meet-startups|what-you-can-see|readiness-criteria|showcase-format|faq|interest|interest/thanks)|network/partners|network/partners/(?:categories|how-it-works|faq|enquire|enquire/thanks)|about/brand-story|tools/(?:runway-calculator|pricing-page-checker|cap-table-explainer))/)$'
+    value: '^launched form route,^launch:true route does not exist: (/(?:founders/[a-z0-9-]+|industries|industries/[a-z0-9-]+|compare|compare/[a-z0-9-]+|journey|journey/[a-z0-9-]+|briefs|briefs/[a-z0-9-]+|investors/(?:meet-startups|what-you-can-see|readiness-criteria|showcase-format|faq|interest|interest/thanks)|network/partners|network/partners/(?:categories|how-it-works|faq|enquire|enquire/thanks)|about/brand-story|tools/(?:runway-calculator|pricing-page-checker|cap-table-explainer)|ecosystem|ecosystem/[a-z0-9-]+|sbir-sttr|sbir-sttr/[a-z0-9-]+|data|data/[a-z0-9-]+)/)$'
     expand: false
   # Every qa job blocks on every branch (decision I-10). Set by WP-15 after a wp/15 pipeline passed all of them.
   QA_STRICT: "1"
