@@ -322,6 +322,7 @@ const hex = (cx: number, cy: number, r: number): string =>
     <Band tone="tint-stone" id="not" labelledby="h-not">
       <h2 id="h-not">What WE is, and what WE is not</h2>
       <div class="hww-table">
+        <div class="table-wrap" tabindex="0" role="region" aria-label="What WE is, beside what WE is not">
         <table>
           <caption class="visually-hidden">What WE is, beside what WE is not</caption>
           <thead>
@@ -331,6 +332,7 @@ const hex = (cx: number, cy: number, r: number): string =>
             {IS_AND_IS_NOT.map(([is, isNot]) => <tr><td>{is}</td><td>{isNot}</td></tr>)}
           </tbody>
         </table>
+        </div>
       </div>
     </Band>
 
@@ -540,7 +542,8 @@ const hex = (cx: number, cy: number, r: number): string =>
     }
 
     .hww-phase__window {
-      color: var(--color-band-deep-accent);
+      /* Body-size text on the panel: the link tone holds 4.5:1 on band-deep-soft; the amber accent is for lines and large text only. */
+      color: var(--color-band-deep-link);
       font-weight: 600;
     }
 
@@ -922,7 +925,6 @@ const hex = (cx: number, cy: number, r: number): string =>
     /* What WE is, and is not */
     .hww-table {
       margin-block-start: var(--sp-5);
-      overflow-x: auto;
     }
 
     .hww-table table {

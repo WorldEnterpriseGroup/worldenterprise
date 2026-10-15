@@ -35,7 +35,9 @@ test.describe('How WE works', () => {
     await expect(main).toContainText('Default initial term: six months. Default; your agreement sets the real terms.');
     await expect(main).toContainText("These figures describe all new U.S. businesses, not WE's results.");
     const text = (await main.innerText()).replace(/\s+/g, ' ');
-    expect(text).not.toMatch(/\$\s?\d|\bper seat\b|\b(Spark|Accelerate|Studio)\b|\bcohort|\baccelerator\b|\bfree\b|belongs to your company/i);
+    expect(text).not.toMatch(/\$\s?\d|\bper seat\b|\bcohort|\baccelerator\b|\bfree\b|belongs to your company/i);
+    // The retired package names, as names: "a venture studio" in the is-not table is not the Studio package.
+    expect(text).not.toMatch(/\b(Spark|Accelerate|Studio)\b/);
     await expect(main.getByRole('link', { name: 'Start a readiness review' }).first()).toHaveAttribute('href', /\/apply\/$/);
     await expect(main.getByRole('link', { name: 'Talk to WE' }).first()).toHaveAttribute('href', /\/contact\/$/);
     await expect(main.locator('a[href$="/pricing/"]')).toHaveCount(0);
@@ -118,6 +120,7 @@ test.describe('the retired pricing page', () => {
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
     await expect(page.locator('main a[href$="/how-we-work/"]').first()).toBeVisible();
     const text = await page.locator('main').innerText();
-    expect(text).not.toMatch(/\$\s?\d|\b(Spark|Accelerate|Studio)\b|per seat/i);
+    expect(text).not.toMatch(/\$\s?\d|per seat/i);
+    expect(text).not.toMatch(/\b(Spark|Accelerate|Studio)\b/);
   });
 });
