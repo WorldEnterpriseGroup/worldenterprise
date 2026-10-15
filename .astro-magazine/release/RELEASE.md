@@ -409,11 +409,11 @@ Source: `src/content/pages/network/index.mdx:40`. Renders on: /network/.
 
 #### CR-12. How WE works, the add-on paragraph
 
-Source: `src/pages/how-we-work/index.astro:275`. Renders on: /how-we-work/ (it replaced the packages page in wave 9; /pricing/ is now a noindex pointer that names no add-on). The fee sentence after the first sentence of L276 is CR-02, and the disclaimer below it is CR-01 through `IntroductionsDisclaimer`.
+Source: `src/pages/how-we-work/index.astro:276`. Renders on: /how-we-work/ (it replaced the packages page in wave 9; /pricing/ is now a noindex pointer that names no add-on). The fee sentence after the first sentence of L277 is CR-02, and the disclaimer below it is CR-01 through `IntroductionsDisclaimer`.
 
-> L275: Investor Introductions is a separate add-on
+> L276: Investor Introductions is a separate add-on
 >
-> L276: It is optional, and a flat fee covers curation and preparation.
+> L277: It is optional, and a flat fee covers curation and preparation.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
