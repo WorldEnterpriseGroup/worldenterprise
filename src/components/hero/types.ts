@@ -10,7 +10,7 @@ export interface HeroCta {
 
 /**
  * How wide the hero copy runs, mirroring the body container of the layout below it so both share one left edge.
- * default: the 80rem page container. prose: the 46rem reading column.
+ * default: the page container (110rem, --content-max). prose: the 46rem reading column.
  * rail: the page container with the copy held to the reading column, which is where an article body starts.
  */
 export type HeroMeasure = 'default' | 'prose' | 'rail';
@@ -27,5 +27,6 @@ export interface HeroArtProps {
   readonly glyph?: string;
 }
 
-export const HERO_MODES = ['editorial', 'console', 'article', 'compact', 'atlas'] as const;
+/** `scene` (wave 9, W9-6): a `<we-scene>` poster in the media frame, the home galaxy hero. */
+export const HERO_MODES = ['editorial', 'console', 'article', 'compact', 'atlas', 'scene'] as const;
 export type HeroMode = (typeof HERO_MODES)[number];

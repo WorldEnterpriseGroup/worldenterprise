@@ -28,9 +28,11 @@ interface Props {
   /** Vector art for the media frame when no photo is given. */
   art?: HeroArtProps | undefined;
   measure?: HeroMeasure;
+  /** Media frame shape from 62rem: 'default' is 4/3, 'wide' is 21/9 for a panoramic visual (wave 9, W9-4). */
+  frame?: 'default' | 'wide';
 }
 
-const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, secondary, photo, inset, art, measure = 'default' } = Astro.props;
+const { as: Heading = 'h1', id, crumbs = [], eyebrow, title, lead, primary, secondary, photo, inset, art, measure = 'default', frame = 'default' } = Astro.props;
 const slotId = photo ?? inset;
 const image = slotId ? await photoImage(slotId) : undefined;
 const hasMediaSlot = Astro.slots.has('media');
@@ -55,7 +57,7 @@ const containerClass = { default: 'container', prose: 'container container--pros
     {
       showMedia && (
         <div class="hero__media">
-          <div class="hero__frame">
+          <div class="hero__frame" data-frame={frame === 'wide' ? 'wide' : undefined}>
             {image ? (
               <img src={image.src} srcset={image.srcset} sizes={image.srcset === undefined ? undefined : image.sizes} width={image.width} height={image.height} alt={image.alt} fetchpriority="high" decoding="async" />
             ) : hasMediaSlot ? (
