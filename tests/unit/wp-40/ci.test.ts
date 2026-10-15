@@ -204,6 +204,16 @@ test('RELEASE_ALLOW covers every pending page-family row of the registry by path
   }
 });
 
+test('RELEASE_ALLOW tolerates the pending wave 10 hubs and their children by path shape, and nothing that merely looks like them (D-W10-5)', () => {
+  const allow = branchAllow();
+  for (const path of ['/ecosystem/', '/ecosystem/programs/', '/sbir-sttr/', '/sbir-sttr/phase-i/', '/data/', '/data/startup-survival/']) {
+    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [], `${path} is tolerated while pending`);
+  }
+  for (const path of ['/ecosystems/', '/database/', '/data/a/b/', '/ecosystem', '/sbir/']) {
+    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [`launch:true route does not exist: ${path}`], `${path} still fails`);
+  }
+});
+
 test('a release tag and gh-pages still allow nothing: the wave 7 allowance cannot reach a release', () => {
   const release = block('verify:release');
   const rule = release.slice(release.indexOf('  rules:'));
