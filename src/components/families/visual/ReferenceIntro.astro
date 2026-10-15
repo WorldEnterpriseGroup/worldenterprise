@@ -1,0 +1,56 @@
+---
+import EmblemFrame from './EmblemFrame.astro';
+import { IDENTITY } from './copy.ts';
+import type { EmblemKind } from './emblems.ts';
+
+/**
+ * The opening band of a reference page (glossary, FAQ, search, site map, not found): the page's own content on the left and the
+ * family emblem with its caption on the right. Below 62rem the emblem is dropped, so a phone reader goes straight to the content.
+ */
+interface Props {
+  kind: EmblemKind;
+  seed?: string;
+}
+
+const { kind, seed } = Astro.props;
+---
+
+<div class="wv-refintro">
+  <div class="wv-refintro__body">
+    <slot />
+  </div>
+  <div class="wv-refintro__art">
+    <EmblemFrame kind={kind} {...(seed !== undefined ? { seed } : {})} caption={IDENTITY[kind].caption} />
+  </div>
+</div>
+
+<style>
+  .wv-refintro {
+    display: grid;
+    gap: var(--sp-6);
+    align-items: start;
+  }
+
+  .wv-refintro__body {
+    display: grid;
+    gap: var(--sp-4);
+    min-inline-size: 0;
+  }
+
+  .wv-refintro__art {
+    display: none;
+  }
+
+  @media (min-width: 62rem) {
+    .wv-refintro {
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 26rem);
+      gap: var(--sp-8);
+    }
+
+    .wv-refintro__art {
+      display: block;
+      position: sticky;
+      inset-block-start: var(--sp-6);
+    }
+  }
+</style>

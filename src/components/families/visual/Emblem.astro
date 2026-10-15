@@ -1,0 +1,152 @@
+---
+import { emblem, seedOf } from './emblems.ts';
+import type { EmblemKind } from './emblems.ts';
+
+/**
+ * A family emblem as inline SVG (see emblems.ts). Decorative: the text beside it says what it shows, so it is hidden from assistive
+ * technology and carries no title. Every shape is painted by a token class, never by a colour attribute. It draws on the night-blue
+ * sky of its frame (`EmblemFrame`, a visual card or a dark band) and scales to the width of its box.
+ */
+interface Props {
+  kind: EmblemKind;
+  /** A slug or name the variant is seeded from. The same seed draws the same picture on every build. */
+  seed?: string;
+  /** A position the picture can show: the step of a playbook, the stop of a journey page. */
+  index?: number;
+  /** Slow drift of the picture when motion is welcome. Off on small cards, on in a hero panel. */
+  drift?: boolean;
+  class?: string;
+}
+
+const { kind, seed = kind, index = 0, drift = false, class: extra } = Astro.props;
+const model = emblem(kind, seedOf(seed), index);
+const classes = ['wv-emblem', drift ? 'wv-emblem--drift' : undefined, extra].filter(Boolean).join(' ');
+---
+
+<svg class={classes} viewBox={model.viewBox} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" data-emblem={kind}>
+  <g class="wv-emblem__field">
+    {
+      model.shapes.map((shape) => {
+        const cls = `wv-t-${shape.tone}`;
+        switch (shape.tag) {
+          case 'circle':
+            return <circle class={cls} cx={shape.cx} cy={shape.cy} r={shape.r} />;
+          case 'ellipse':
+            return <ellipse class={cls} cx={shape.cx} cy={shape.cy} rx={shape.rx} ry={shape.ry} transform={`rotate(${shape.rotate} ${shape.cx} ${shape.cy})`} />;
+          case 'path':
+            return <path class={cls} d={shape.d} />;
+          case 'polygon':
+            return <polygon class={cls} points={shape.points} />;
+          case 'line':
+            return <line class={cls} x1={shape.x1} y1={shape.y1} x2={shape.x2} y2={shape.y2} />;
+        }
+      })
+    }
+  </g>
+</svg>
+
+<style>
+  .wv-emblem {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: hidden;
+  }
+
+  .wv-emblem :global(.wv-t-star) {
+    fill: var(--we-white);
+    opacity: 0.8;
+  }
+
+  .wv-emblem :global(.wv-t-faint) {
+    fill: none;
+    stroke: var(--we-tint);
+    stroke-opacity: 0.32;
+    stroke-width: 1;
+  }
+
+  .wv-emblem :global(.wv-t-line) {
+    fill: none;
+    stroke: var(--we-tint);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .wv-emblem :global(.wv-t-dash) {
+    fill: none;
+    stroke: var(--we-mist);
+    stroke-opacity: 0.7;
+    stroke-width: 1.4;
+    stroke-dasharray: 4 6;
+    stroke-linecap: round;
+  }
+
+  .wv-emblem :global(.wv-t-soft) {
+    fill: var(--we-blue-deep);
+    stroke: var(--we-tint);
+    stroke-width: 1.4;
+  }
+
+  .wv-emblem :global(.wv-t-glass) {
+    fill: var(--we-tint);
+    fill-opacity: 0.16;
+    stroke: var(--we-tint);
+    stroke-opacity: 0.5;
+    stroke-width: 1;
+  }
+
+  .wv-emblem :global(.wv-t-body) {
+    fill: var(--we-blue);
+    stroke: var(--we-tint);
+    stroke-opacity: 0.6;
+    stroke-width: 1;
+  }
+
+  .wv-emblem :global(.wv-t-void) {
+    fill: var(--color-bg-inverse);
+    stroke: var(--we-mist);
+    stroke-width: 1.4;
+  }
+
+  .wv-emblem :global(.wv-t-accent) {
+    fill: var(--we-amber);
+  }
+
+  .wv-emblem :global(.wv-t-accent-line) {
+    fill: none;
+    stroke: var(--we-amber);
+    stroke-width: 2;
+  }
+
+  /* A slow turn of the whole field, only when motion is welcome. The picture is decorative, so nothing is lost without it. */
+  @media (prefers-reduced-motion: no-preference) {
+    .wv-emblem--drift .wv-emblem__field {
+      transform-box: view-box;
+      transform-origin: 50% 50%;
+      animation-name: wv-drift;
+      animation-duration: 90s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+  }
+
+  @keyframes wv-drift {
+    from {
+      transform: rotate(-2deg) scale(1.02);
+    }
+
+    to {
+      transform: rotate(2deg) scale(1.06);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .wv-emblem :global(*) {
+      forced-color-adjust: none;
+      fill: none;
+      stroke: CanvasText;
+    }
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+import Button from '../../ui/Button.astro';
+import { getRouteState } from '../../../lib/route-state.ts';
+import { href as resolve } from '../../../lib/url.ts';
+import { endLadder } from './cta.ts';
+import EmblemFrame from './EmblemFrame.astro';
+
+/**
+ * The end-of-page band of the WP-56 templates (SALES.md 6.1 and 6.2): "Start a readiness review" first, then the timeline brief, or
+ * "See how long it really takes" while the brief has no endpoint, then "Talk to WE". Each rung appears only when its route is live,
+ * so the band never links to a page that is not built, and renders nothing when no rung is live. A full-bleed band on the light
+ * tint, with the journey emblem's last stop (a world in orbit) beside the actions.
+ */
+interface Props {
+  /** Id of the band's heading. One per page. */
+  id?: string;
+  heading?: string;
+}
+
+const { id = 'next-step', heading = 'Start a readiness review' } = Astro.props;
+const state = await getRouteState();
+const ladder = endLadder(state.isLive);
+const any = ladder.primary !== undefined || ladder.secondary !== undefined || ladder.utility !== undefined;
+---
+
+{
+  any && (
+    <section class="wv-ladder" aria-labelledby={id} data-cta-ladder>
+      <div class="container wv-ladder__grid">
+        <div class="wv-ladder__copy">
+          <h2 id={id} class="wv-ladder__title">{heading}</h2>
+          {ladder.primary?.note !== undefined && <p class="wv-ladder__lead">{ladder.primary.note}</p>}
+          <div class="wv-ladder__actions">
+            {ladder.primary !== undefined && <Button href={ladder.primary.href} variant="primary">{ladder.primary.label}</Button>}
+            {ladder.secondary !== undefined && <Button href={ladder.secondary.href} variant="secondary">{ladder.secondary.label}</Button>}
+          </div>
+          {ladder.secondary?.note !== undefined && <p class="wv-ladder__note">{ladder.secondary.note}</p>}
+          {ladder.utility !== undefined && (
+            <p class="wv-ladder__note">
+              <a href={resolve(ladder.utility.href)}>{ladder.utility.label}</a>
+              {ladder.utility.note !== undefined && <span>: {ladder.utility.note}</span>}
+            </p>
+          )}
+        </div>
+        <div class="wv-ladder__art">
+          <EmblemFrame kind="journey" seed="cta-ladder" index={3} drift={false} />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .wv-ladder {
+    padding-block: var(--sp-9);
+    background: var(--tint-blue);
+    border-block-start: var(--border-hair);
+  }
+
+  .wv-ladder__grid {
+    display: grid;
+    gap: var(--sp-7);
+    align-items: center;
+
+    @media (min-width: 62rem) {
+      grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+    }
+  }
+
+  .wv-ladder__copy {
+    display: grid;
+    gap: var(--sp-4);
+    justify-items: start;
+  }
+
+  .wv-ladder__title {
+    font-size: var(--fs-h2);
+    margin: 0;
+  }
+
+  .wv-ladder__lead {
+    font-size: var(--fs-lead);
+    max-inline-size: 40rem;
+  }
+
+  .wv-ladder__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+
+  .wv-ladder__note {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .wv-ladder__art {
+    max-inline-size: 44rem;
+    inline-size: 100%;
+    justify-self: end;
+  }
+
+  @media (max-width: 61.99rem) {
+    .wv-ladder__art {
+      display: none;
+    }
+  }
+</style>
