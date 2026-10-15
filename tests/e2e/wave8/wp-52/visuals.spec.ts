@@ -1,62 +1,20 @@
 import { expect, test } from '@playwright/test';
-import type { Locator, Page, TestInfo } from '@playwright/test';
+import type { Page, TestInfo } from '@playwright/test';
 import { findOverflow } from '../../support/overflow.ts';
-import { watch } from '../../support/page-guards.ts';
 import { isBuilt } from '../../support/routes.ts';
+import { ROUTE, isDesktop, presentFourCores } from './helpers.ts';
 
 // WP-52: the visuals library on the styleguide (built when PUBLIC_STYLEGUIDE=1). Runs in the wave 8 projects (1440x900 and 390x844);
 // the 1920x1080 checks run in the desktop project only. ARCHITECTURE 3.2: a canvas at desktop width with motion allowed, zero console
 // errors and CLS under 0.01; on a phone no request for the scene code; reduced motion, forced colors and no JavaScript show the poster.
 
-const ROUTE = '/styleguide/';
-
 /** The dynamically imported scene code: the runtime (which carries three) and the five scene modules. The stub is not in this set. */
 const SCENE_CODE = /\/(?:runtime|three[\w.-]*|galaxy|launch|orbit|worldforge|starfield)\.[\w-]+\.js(?:\?|$)/;
 
-// Headless Chromium on a CI runner has no GPU. Only the live-scene checks ask for SwiftShader WebGL2 (a separate worker), so every
-// other check renders the page without software GL. The runner may also report fewer than four cores, which the gate refuses, so the
-// live checks present a four-core machine (the gate itself is unit-tested). Review shots are evidence, not gates: a capture that
-// times out leaves a note. Every test is capped at 60s and retried at most once.
-const SWIFTSHADER = {
-  launchOptions: {
-    args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
-  },
-};
+// Headless Chromium on a CI runner has no GPU. Only the live-scene checks (visuals-live.spec.ts) ask for SwiftShader WebGL2, so this
+// file renders without software GL. Review shots are evidence, not gates: a capture that times out leaves a note. Tests are capped at
+// 60s and retried at most once.
 test.describe.configure({ retries: 1 });
-
-const isDesktop = (info: TestInfo): boolean => info.project.name.includes('desktop');
-
-async function presentFourCores(page: Page): Promise<void> {
-  await page.addInitScript(() => {
-    Object.defineProperty(Navigator.prototype, 'hardwareConcurrency', {
-      get: () => 8,
-      configurable: true,
-    });
-  });
-}
-
-/** Cumulative layout shift observed on the page so far (buffered entries, ignoring shifts right after input). */
-async function cls(page: Page): Promise<number> {
-  return page.evaluate(
-    () =>
-      new Promise<number>((resolve) => {
-        let total = 0;
-        const observer = new PerformanceObserver((list) => {
-          for (const entry of list.getEntries() as (PerformanceEntry & {
-            value: number;
-            hadRecentInput: boolean;
-          })[]) {
-            if (!entry.hadRecentInput) total += entry.value;
-          }
-        });
-        observer.observe({ type: 'layout-shift', buffered: true });
-        window.setTimeout(() => {
-          observer.disconnect();
-          resolve(total);
-        }, 300);
-      }),
-  );
-}
 
 /** Every showcase item, by its data-visual name. No item is hidden at any width: phones see each scene's poster. */
 const VISUALS = [
@@ -134,57 +92,6 @@ async function reviewShot(page: Page, info: TestInfo, visual: string, suffix: st
       contentType: 'text/plain',
     });
   }
-}
-
-/** Whether this browser can create a WebGL2 context at all (the gate's last check). */
-async function hasWebGL2(page: Page): Promise<boolean> {
-  return page.evaluate(() => {
-    try {
-      const gl = document.createElement('canvas').getContext('webgl2');
-      gl?.getExtension('WEBGL_lose_context')?.loseContext();
-      return gl !== null;
-    } catch (error) {
-      console.info('webgl2 probe threw', error);
-      return false;
-    }
-  });
-}
-
-/**
- * Waits for a scene to go live when the runner has WebGL2; otherwise (or when the runtime falls back) asserts the poster stays. Returns
- * whether the scene went live; callers pause a live scene when done, so software rendering does not load the runner afterwards.
- */
-async function liveOrPoster(page: Page, scene: Locator, info: TestInfo): Promise<boolean> {
-  const poster = scene.locator('img.scene__poster');
-  if (!(await hasWebGL2(page))) {
-    info.annotations.push({
-      type: 'no-webgl2',
-      description: 'the runner has no WebGL2: the poster fallback is checked instead',
-    });
-    await page.waitForTimeout(1500);
-    await expect(scene.locator('canvas.scene__canvas'), 'no canvas without WebGL2').toHaveCount(0);
-    await expect(poster, 'the poster stays visible without WebGL2').toBeVisible();
-    return false;
-  }
-  await expect(scene, 'the scene leaves the poster state (gate passed, loading or live)').toHaveAttribute(
-    'data-state',
-    /^(?:loading|live|fallback)$/,
-    {
-      timeout: 20_000,
-    },
-  );
-  await expect(scene, 'the scene settles live or falls back to its poster').toHaveAttribute('data-state', /^(?:live|fallback)$/, {
-    timeout: 25_000,
-  });
-  if ((await scene.getAttribute('data-state')) === 'fallback') {
-    info.annotations.push({
-      type: 'scene-fallback',
-      description: 'the runtime fell back to the poster on this runner',
-    });
-    await expect(poster, 'the poster stays visible after a fallback').toBeVisible();
-    return false;
-  }
-  return true;
 }
 
 test.describe('WP-52 visuals on the styleguide', () => {
@@ -370,73 +277,4 @@ test.describe('WP-52 visuals at 1920x1080', () => {
       await reviewShot(page, info, visual, '1920');
     });
   }
-});
-
-test.describe('WP-52 live scenes (desktop, software WebGL)', () => {
-  test.use(SWIFTSHADER);
-
-  test.beforeEach((_args, info) => {
-    test.skip(!isBuilt(ROUTE), 'the styleguide is built only with PUBLIC_STYLEGUIDE=1');
-    test.skip(!isDesktop(info), 'scenes run on desktops only');
-  });
-
-  test('with motion allowed a scene goes live or keeps its poster, with no console errors and no layout shift', async ({
-    page,
-    baseURL,
-  }, info) => {
-    test.setTimeout(60_000);
-    await presentFourCores(page);
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    const seen = watch(page, baseURL ?? '');
-    await page.goto(ROUTE, { waitUntil: 'domcontentloaded' });
-    const scene = page.locator('#visuals we-scene:not([data-static])').first();
-    await scene.evaluate((el) => el.scrollIntoView({ block: 'center' }));
-    if (await liveOrPoster(page, scene, info)) {
-      await expect(scene.locator('canvas.scene__canvas')).toHaveCount(1);
-      await expect(scene).toHaveClass(/is-live/, { timeout: 10_000 });
-      await expect(scene.locator('canvas.scene__canvas')).toHaveAttribute('aria-hidden', 'true');
-      const toggle = scene.locator('.scene__toggle');
-      await expect(toggle).toBeVisible();
-      await toggle.click();
-      await expect(toggle, 'the button pauses').toHaveAttribute('aria-pressed', 'true');
-      await toggle.click();
-      await expect(toggle, 'and resumes').toHaveAttribute('aria-pressed', 'false');
-      await toggle.click();
-    }
-    expect(await cls(page)).toBeLessThan(0.01);
-    expect(seen.consoleErrors).toEqual([]);
-    expect(seen.pageErrors).toEqual([]);
-    expect(seen.thirdParty).toEqual([]);
-  });
-
-  test.describe('at 1920x1080', () => {
-    test.use({ viewport: { width: 1920, height: 1080 } });
-
-    test('the hero galaxy poster fills its box, and the scene goes live or keeps the poster with no console errors', async ({
-      page,
-      baseURL,
-    }, info) => {
-      test.setTimeout(60_000);
-      await presentFourCores(page);
-      await page.emulateMedia({ reducedMotion: 'no-preference' });
-      const seen = watch(page, baseURL ?? '');
-      await page.goto(ROUTE, { waitUntil: 'domcontentloaded' });
-      const scene = page.locator('#visuals we-scene[data-scene="galaxy"]:not([data-static])').first();
-      await scene.evaluate((el) => el.scrollIntoView({ block: 'center' }));
-      const frame = await scene.locator('.scene__frame').boundingBox();
-      const poster = await scene.locator('img.scene__poster').boundingBox();
-      expect(frame?.width ?? 0, 'the frame spans the column').toBeGreaterThan(800);
-      expect(Math.abs((frame?.width ?? 0) - (poster?.width ?? -1)), 'the poster fills the frame width').toBeLessThan(2);
-      expect(Math.abs((frame?.height ?? 0) - (poster?.height ?? -1)), 'the poster fills the frame height').toBeLessThan(2);
-      if (await liveOrPoster(page, scene, info)) {
-        const canvas = await scene.locator('canvas.scene__canvas').boundingBox();
-        expect(Math.abs((frame?.width ?? 0) - (canvas?.width ?? -1)), 'the canvas fills the frame width').toBeLessThan(2);
-        expect(Math.abs((frame?.height ?? 0) - (canvas?.height ?? -1)), 'the canvas fills the frame height').toBeLessThan(2);
-        await scene.locator('.scene__toggle').click();
-      }
-      expect(await cls(page)).toBeLessThan(0.01);
-      expect(seen.consoleErrors).toEqual([]);
-      expect(seen.pageErrors).toEqual([]);
-    });
-  });
 });
