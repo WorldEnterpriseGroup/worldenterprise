@@ -74,6 +74,11 @@ export const SURFACES: readonly SurfaceRule[] = [
   row('industries', { prefix: '/industries/' }, ['apply'], ['path:/insights/topic/sectors/', 'briefs']),
   row('compare', { prefix: '/compare/' }, ['apply'], ['path:/program/how-it-works/']),
 
+  // Wave 10 (D-W10-1): the ecosystem directory, the SBIR and STTR guide and the data pages. Readers here are researching, so Apply leads and the briefs follow.
+  row('ecosystem', { prefix: '/ecosystem/' }, ['apply'], ['briefs']),
+  row('sbir-sttr', { prefix: '/sbir-sttr/' }, ['apply'], ['briefs']),
+  row('data', { prefix: '/data/' }, ['apply'], ['briefs']),
+
   // The customer journey.
   row('journey:after-you-apply', { path: '/journey/after-you-apply/' }, ['apply'], ['path:/journey/first-months/']),
   row('journey:first-months', { path: '/journey/first-months/' }, ['apply'], ['path:/journey/onboarding-checklist/']),
