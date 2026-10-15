@@ -5,8 +5,8 @@ import { buildAbsolute } from './url-core.ts';
 /**
  * JSON-LD graph builders (SAGE-PLAN 6.9). Sitewide: ProfessionalService organisation plus WebSite.
  * Per page: WebPage-family node and BreadcrumbList. No standalone Offer, Event, Review, Person or AggregateRating at launch,
- * no EIN, SIN, PSC, SIC and no foundingDate. The public packages were retired in wave 9 (W9-13, WP-54), so the organisation carries no
- * OfferCatalog. The validator still allows an unpriced catalog on the organisation node only, and still rejects an Offer anywhere else.
+ * no EIN, SIN, PSC, SIC and no foundingDate. The public packages were retired in wave 9 (W9-13, WP-54), so no node carries an
+ * OfferCatalog, and scripts/validate-jsonld.mjs rejects a catalog or an Offer anywhere.
  */
 export type JsonLdNode = Readonly<Record<string, unknown>>;
 
@@ -56,11 +56,10 @@ export const ALLOWED_TYPES = [
   'Service', 'Article', 'Report',
   'FAQPage', 'Question', 'Answer',
   'DefinedTermSet', 'DefinedTerm',
-  'OfferCatalog', 'WebApplication', 'CreativeWork',
+  'WebApplication', 'CreativeWork',
 ] as const;
 
 // Types that must never appear while the site has no offer, event, person or review evidence (claims C-06, C-12, C-13).
-// Offer is the one nested exception: scripts/validate-jsonld.mjs accepts it only as an item of the organisation's OfferCatalog, without a price.
 export const FORBIDDEN_TYPES = ['Offer', 'AggregateOffer', 'Review', 'AggregateRating', 'Rating', 'Person', 'Event'] as const;
 
 export interface WebsiteNodeOptions {
