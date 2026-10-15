@@ -1940,7 +1940,125 @@
         "tests/unit/wp-32b/**",
         "tests/e2e/wp-32b*.spec.ts",
         ".astro-magazine/handoffs/wp-32b*",
-        ".astro-magazine/sources/wp-32b.json"
+        ".astro-magazine/sources/wp-32b.json",
+        ".astro-magazine/plans/wave11/**"
+      ]
+    },
+    {
+      "owner": "WP-22",
+      "title": "Wave 11 media primitives: video, lightbox, carousel, figures",
+      "branch": "wp/22-media",
+      "stage": 1,
+      "write_set": [
+        "src/components/media/**",
+        "src/scripts/media-*.ts",
+        "src/assets/video/**",
+        "public/video/**",
+        "src/assets/media/**",
+        "tests/unit/wp-22/**",
+        "tests/e2e/wp-22*.spec.ts",
+        "tests/e2e/wave8/wp-22/**",
+        ".astro-magazine/handoffs/wp-22*",
+        ".astro-magazine/sources/wp-22.json"
+      ]
+    },
+    {
+      "owner": "WP-23",
+      "title": "Wave 11 reference pages: fundability, research, playbooks, briefs media density",
+      "branch": "wp/23-reference",
+      "stage": 1,
+      "write_set": [
+        "src/pages/fundability/**",
+        "src/pages/research/**",
+        "src/pages/playbooks/**",
+        "src/pages/briefs/index.astro",
+        "src/pages/briefs/[id].astro",
+        "src/components/fundability/**",
+        "src/components/research/**",
+        "src/components/briefs/**",
+        "src/components/playbooks/**",
+        "src/assets/reference/**",
+        "src/content/briefs/**",
+        "src/content/research/**",
+        "src/content/library/**",
+        "tests/unit/wp-23/**",
+        "tests/e2e/wp-23*.spec.ts",
+        "tests/e2e/wave8/wp-23/**",
+        ".astro-magazine/handoffs/wp-23*",
+        ".astro-magazine/sources/wp-23.json"
+      ]
+    },
+    {
+      "owner": "WP-24",
+      "title": "Wave 11 hubs and tools media density",
+      "branch": "wp/24-hubs",
+      "stage": 1,
+      "write_set": [
+        "src/pages/insights/index.astro",
+        "src/pages/insights/topic/**",
+        "src/pages/resources/**",
+        "src/pages/faq/**",
+        "src/pages/tools/**",
+        "src/pages/library/**",
+        "src/pages/industries/**",
+        "src/pages/founders/**",
+        "src/pages/investors/**",
+        "src/pages/journey/**",
+        "src/pages/compare/**",
+        "src/components/families/**",
+        "src/components/tools/**",
+        "src/components/library/**",
+        "src/components/industries/**",
+        "src/components/investors/**",
+        "src/components/hubs/**",
+        "src/scripts/runway.ts",
+        "src/scripts/metrics-calc.ts",
+        "src/scripts/cap-table.ts",
+        "src/scripts/evidence-room.ts",
+        "src/scripts/pricing-checker.ts",
+        "src/assets/hubs/**",
+        "tests/unit/wp-24/**",
+        "tests/e2e/wp-24*.spec.ts",
+        "tests/e2e/wave8/wp-24/**",
+        ".astro-magazine/handoffs/wp-24*",
+        ".astro-magazine/sources/wp-24.json"
+      ]
+    },
+    {
+      "owner": "WP-25",
+      "title": "Wave 11 cleanup: logo sizes, press dedupe, documents, brief thanks page",
+      "branch": "wp/25-cleanup",
+      "stage": 1,
+      "write_set": [
+        "public/press/**",
+        "documents/**",
+        "src/pages/briefs/thanks.astro",
+        ".astro-magazine/checkpoint.json",
+        ".astro-magazine/media/**",
+        ".astro-magazine/articles/**",
+        ".astro-magazine/briefs/**",
+        ".astro-magazine/commission.json",
+        "tests/unit/wp-25/**",
+        "tests/e2e/wp-25*.spec.ts",
+        "tests/e2e/wave8/wp-25/**",
+        ".astro-magazine/handoffs/wp-25*",
+        ".astro-magazine/sources/wp-25.json"
+      ]
+    },
+    {
+      "owner": "WP-26",
+      "title": "Wave 11 insight figures (starts after WP-38 merges)",
+      "branch": "wp/26-figures",
+      "stage": 2,
+      "write_set": [
+        "src/components/insights/**",
+        "src/data/insight-figures/**",
+        "src/assets/insight-figures/**",
+        "tests/unit/wp-26/**",
+        "tests/e2e/wp-26*.spec.ts",
+        "tests/e2e/wave8/wp-26/**",
+        ".astro-magazine/handoffs/wp-26*",
+        ".astro-magazine/sources/wp-26.json"
       ]
     }
   ],
@@ -3967,6 +4085,101 @@
       "wp": "WP-32b",
       "path": ".astro-magazine/decisions.md",
       "reason": "Wave 10 (D-W10-6): records D-W10-6."
+    },
+    {
+      "wp": "WP-32b",
+      "path": ".astro-magazine/sources/wp-58.json",
+      "reason": "Wave 10 (D-W10-6): moves the six fetches held for the OP-HOSTS extension from pendingHostFetches into fetches now that their hosts are listed."
+    },
+    {
+      "wp": "WP-22",
+      "path": "src/pages/about/index.astro",
+      "reason": "Wave 11 (D-W11-1): media placements on the about page only."
+    },
+    {
+      "wp": "WP-22",
+      "path": "src/pages/network/index.astro",
+      "reason": "Wave 11 (D-W11-1): media placements on the network index only."
+    },
+    {
+      "wp": "WP-23",
+      "path": "src/layouts/BriefLayout.astro",
+      "reason": "Wave 11 (D-W11-1): media slots in the brief layout."
+    },
+    {
+      "wp": "WP-23",
+      "path": "src/layouts/PlaybookLayout.astro",
+      "reason": "Wave 11 (D-W11-1): media slots in the playbook layout."
+    },
+    {
+      "wp": "WP-23",
+      "path": "src/layouts/ReferenceLayout.astro",
+      "reason": "Wave 11 (D-W11-1): media slots in the reference layout."
+    },
+    {
+      "wp": "WP-24",
+      "path": "src/layouts/HubLayout.astro",
+      "reason": "Wave 11 (D-W11-1): media slots in the hub layout."
+    },
+    {
+      "wp": "WP-24",
+      "path": "src/layouts/ToolLayout.astro",
+      "reason": "Wave 11 (D-W11-1): media slots in the tool layout."
+    },
+    {
+      "wp": "WP-24",
+      "path": "src/layouts/TemplateLayout.astro",
+      "reason": "Wave 11 (D-W11-1): media slots in the template layout."
+    },
+    {
+      "wp": "WP-25",
+      "path": "src/components/layout/Header.astro",
+      "reason": "Wave 11 (D-W11-1): logo sizes only."
+    },
+    {
+      "wp": "WP-26",
+      "path": "src/layouts/ArticleLayout.astro",
+      "reason": "Wave 11 (D-W11-1): figure slots in the article layout."
+    },
+    {
+      "wp": "WP-26",
+      "path": "src/components/insights/**",
+      "reason": "Wave 11 (D-W11-1): the insights component folder is wave 8 frozen; WP-26 adds figure components there."
+    },
+    {
+      "wp": "WP-38",
+      "path": "src/components/geo/mdx-transform.ts",
+      "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+    },
+    {
+      "wp": "WP-38",
+      "path": "tests/unit/wp-91/mdx-transform.test.ts",
+      "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+    },
+    {
+      "wp": "WP-26",
+      "path": "src/components/geo/mdx-transform.ts",
+      "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+    },
+    {
+      "wp": "WP-26",
+      "path": "tests/unit/wp-91/mdx-transform.test.ts",
+      "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+    },
+    {
+      "wp": "WP-22",
+      "path": "scripts/lib/audit-dist.mjs",
+      "reason": "Wave 11 (D-W11-1): captioned video primitives (#88); additive only. Not frozen and not in the release lane. Allows .mp4, .webm and .vtt extensions only."
+    },
+    {
+      "wp": "WP-22",
+      "path": "scripts/lib/serve.mjs",
+      "reason": "Wave 11 (D-W11-1): captioned video primitives (#88); additive only. Not frozen and not in the release lane. Adds video/mp4, video/webm and text/vtt MIME types and simple HTTP Range (206) support for e2e."
+    },
+    {
+      "wp": "WP-32b",
+      "path": ".astro-magazine/plans/wave10/writesets.json",
+      "reason": "Wave 11 (D-W11-1): records the WP-38 exceptions on the markdown transform in the wave 10 map."
     }
   ],
   "notes": [
