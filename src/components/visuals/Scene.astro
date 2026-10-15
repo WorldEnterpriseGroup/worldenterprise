@@ -33,6 +33,16 @@ interface Props {
   fill?: boolean;
   /** Decorative background (a band): the poster gets alt="" and the frame is hidden from assistive technology (the pause button stays reachable). */
   decorative?: boolean;
+  /**
+   * `edges` (the default for a framed scene) feathers all four edges of the frame into the page with a CSS mask, so there is no box;
+   * `none` keeps a hard edge. A `fill` scene never feathers: its band or hero owns the edges (see Band `bleed`).
+   */
+  feather?: 'edges' | 'none';
+  /**
+   * Names the scene's frame `hero-media` for cross-document view transitions, so the hero picture of one page morphs into the next page's
+   * (one per page; a page with two names aborts its transition). Only the page's lead scene sets it.
+   */
+  hero?: boolean;
   /** `float` places labels over the frame at their anchors on wide containers; `list` always lists them below the frame. */
   labels?: 'float' | 'list';
   class?: string;
@@ -51,6 +61,8 @@ const {
   fill = false,
   decorative = false,
   labels = 'float',
+  feather = 'edges',
+  hero = false,
   class: className,
 } = Astro.props;
 
@@ -61,11 +73,16 @@ if (caption !== undefined) cleanText('Scene', 'caption', caption);
 const image = Astro.slots.has('poster') ? null : await posterImage(poster, sizes);
 const hasLabels = Astro.slots.has('labels');
 const hasOverlay = Astro.slots.has('overlay');
+const hasLegend = Astro.slots.has('legend');
+const hasDetail = Astro.slots.has('detail');
+const uid = Math.abs([...`${scene}|${alt}|${caption ?? ''}`].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7)).toString(36);
+const legendId = `legend-${scene}-${uid}`;
+const detailId = `detail-${scene}-${uid}`;
 const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : undefined;
 ---
 
 <we-scene
-  class:list={['scene', fill && 'scene--fill', labels === 'list' && 'scene--list', className]}
+  class:list={['scene', fill && 'scene--fill', !fill && feather === 'edges' && 'scene--feather', hero && 'scene--hero', labels === 'list' && 'scene--list', className]}
   data-scene={scene}
   data-options={optionsJson}
   data-static={isStatic ? '' : undefined}
@@ -104,6 +121,41 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
           <ol class="scene__labels" aria-label={labelsName} role="list">
             <slot name="labels" />
           </ol>
+        )
+      }
+      {
+        (hasLegend || hasDetail) && (
+          <div class="scene__tools">
+            {hasLegend && (
+              <button class="scene__tool" type="button" popovertarget={legendId} popovertargetaction="toggle">
+                Key
+              </button>
+            )}
+            {hasDetail && (
+              <button class="scene__tool" type="button" hidden data-detail-for={detailId} commandfor={detailId} command="show-modal">
+                About this scene
+              </button>
+            )}
+          </div>
+        )
+      }
+      {
+        hasLegend && (
+          <div class="scene__legend" id={legendId} popover="auto" role="group" aria-label="Key to the scene">
+            <slot name="legend" />
+          </div>
+        )
+      }
+      {
+        hasDetail && (
+          <dialog class="scene__detail" id={detailId} closedby="any" aria-label="About this scene">
+            <slot name="detail" />
+            <form method="dialog">
+              <button class="scene__tool" type="submit">
+                Close
+              </button>
+            </form>
+          </dialog>
         )
       }
       <button class="scene__toggle" type="button" hidden aria-pressed="false" data-play="Play animation" data-pause="Pause animation">
@@ -216,10 +268,103 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
 
   @media (prefers-reduced-motion: no-preference) {
     .scene__frame :global(.scene__poster),
-    .scene__overlay {
+    .scene__overlay,
+    .scene__frame :global(.scene__canvas) {
       transition-property: opacity;
       transition-duration: var(--dur-slow);
       transition-timing-function: var(--ease-out);
+    }
+
+    /* The canvas joins the DOM already drawn; @starting-style fades it in while the poster fades out, so the swap is a crossfade. */
+    @starting-style {
+      .scene__frame :global(.scene__canvas) {
+        opacity: 0;
+      }
+    }
+  }
+
+  /*
+   * Seamless edges (WP-36): a framed scene has no box. Two linear masks (one per axis) intersect, so every edge dissolves into the page
+   * over --fade-x / --fade-y and the corners fade twice as softly. The mask sits on the frame, so the poster and the canvas fade together
+   * and labels (outside the frame) stay crisp. Browsers without mask-composite keep the plain frame.
+   */
+  @supports (mask-composite: intersect) or (-webkit-mask-composite: source-in) {
+    .scene--feather .scene__frame {
+      --_bx: 11%;
+      --_by: 16%;
+      --fade-x: calc(var(--_bx) + var(--depth, 0) * 10%);
+      --fade-y: calc(var(--_by) + var(--depth, 0) * 14%);
+      --_ease-x: linear-gradient(
+        to right,
+        transparent 0,
+        rgb(0 0 0 / 0.18) calc(var(--fade-x) * 0.35),
+        rgb(0 0 0 / 0.62) calc(var(--fade-x) * 0.7),
+        #000 var(--fade-x),
+        #000 calc(100% - var(--fade-x)),
+        rgb(0 0 0 / 0.62) calc(100% - var(--fade-x) * 0.7),
+        rgb(0 0 0 / 0.18) calc(100% - var(--fade-x) * 0.35),
+        transparent 100%
+      );
+      --_ease-y: linear-gradient(
+        to bottom,
+        transparent 0,
+        rgb(0 0 0 / 0.18) calc(var(--fade-y) * 0.35),
+        rgb(0 0 0 / 0.62) calc(var(--fade-y) * 0.7),
+        #000 var(--fade-y),
+        #000 calc(100% - var(--fade-y)),
+        rgb(0 0 0 / 0.62) calc(100% - var(--fade-y) * 0.7),
+        rgb(0 0 0 / 0.18) calc(100% - var(--fade-y) * 0.35),
+        transparent 100%
+      );
+      border-radius: 0;
+      -webkit-mask-image: var(--_ease-x), var(--_ease-y);
+      mask-image: var(--_ease-x), var(--_ease-y);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+    }
+
+    /* A narrow container keeps more of the picture: the fade shrinks with the frame. */
+    @container scene (width < 40rem) {
+      .scene--feather .scene__frame {
+        --_bx: 6%;
+        --_by: 10%;
+      }
+    }
+  }
+
+  /*
+   * Scroll-driven depth, no movement and no scroll-jacking: as a framed scene enters and leaves the viewport its edges feather a little
+   * more (--depth 1 at the viewport edges, 0 through the middle), so the world seems to materialise out of the page. animation-timeline:
+   * view() runs on the compositor-friendly scroll timeline; without support the edges simply stay at their resting feather.
+   */
+  @property --depth {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .scene--feather .scene__frame {
+        animation-name: scene-materialize;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view();
+        animation-range: cover;
+      }
+
+      @keyframes scene-materialize {
+        0% {
+          --depth: 1;
+        }
+        30%,
+        70% {
+          --depth: 0;
+        }
+        100% {
+          --depth: 1;
+        }
+      }
     }
   }
 
@@ -345,6 +490,194 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
 
   .scene__toggle[aria-pressed='true'] .scene__toggle-play {
     display: inline;
+  }
+
+  /* A scene's key: a real popover (Esc and outside click close it, no script), anchored to its button where CSS anchor positioning exists. */
+  /* The key and the about button, bottom left of the frame (the pause button is bottom right). */
+  .scene__tools {
+    position: absolute;
+    inset-block-end: var(--sp-3);
+    inset-inline-start: var(--sp-3);
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+  }
+
+  .scene__tool {
+    min-block-size: 2.75rem;
+    padding: var(--sp-2) var(--sp-3);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-inverse);
+    background: color-mix(in oklab, var(--we-blue-night) 82%, transparent);
+    border: 1px solid color-mix(in oklab, var(--we-tint) 45%, transparent);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+  }
+
+  .scene__tool[hidden] {
+    display: none;
+  }
+
+  .scene__tool:focus-visible {
+    outline: 2px solid var(--color-focus-inverse);
+    outline-offset: 2px;
+  }
+
+  /* <dialog closedby="any">: Esc, a click outside or the Close button dismiss it, with no script. */
+  .scene__detail {
+    max-inline-size: min(32rem, calc(100vw - 2 * var(--sp-4)));
+    padding: var(--sp-5);
+    font-family: var(--ff-sans);
+    line-height: var(--lh-snug);
+    color: var(--color-text-inverse);
+    background: color-mix(in oklab, var(--we-blue-night) 94%, black);
+    border: 1px solid color-mix(in oklab, var(--we-tint) 40%, transparent);
+    border-radius: var(--radius-md, var(--radius-sm));
+  }
+
+  .scene__detail::backdrop {
+    background: color-mix(in oklab, var(--we-blue-night) 55%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  .scene__detail form {
+    margin-block-start: var(--sp-4);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .scene__detail {
+      transition:
+        opacity var(--dur-base) var(--ease-out),
+        scale var(--dur-base) var(--ease-out),
+        overlay var(--dur-base) allow-discrete,
+        display var(--dur-base) allow-discrete;
+    }
+
+    .scene__detail:not([open]) {
+      opacity: 0;
+      scale: 0.96;
+    }
+
+    @starting-style {
+      .scene__detail[open] {
+        opacity: 0;
+        scale: 0.96;
+      }
+    }
+  }
+
+  .scene__legend {
+    max-inline-size: min(22rem, calc(100vw - 2 * var(--sp-4)));
+    padding: var(--sp-3) var(--sp-4);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-snug);
+    color: var(--color-text-inverse);
+    background: color-mix(in oklab, var(--we-blue-night) 92%, black);
+    border: 1px solid color-mix(in oklab, var(--we-tint) 40%, transparent);
+    border-radius: var(--radius-sm);
+  }
+
+  .scene__legend::backdrop {
+    background: transparent;
+  }
+
+  @supports (position-anchor: auto) and (position-area: top) {
+    .scene__legend {
+      position-anchor: auto;
+      position-area: top span-right;
+      margin: 0;
+      margin-block-end: var(--sp-2);
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .scene__legend {
+      transition:
+        opacity var(--dur-base) var(--ease-out),
+        translate var(--dur-base) var(--ease-out),
+        overlay var(--dur-base) allow-discrete,
+        display var(--dur-base) allow-discrete;
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    .scene__legend:not(:popover-open) {
+      opacity: 0;
+      translate: 0 0.5rem;
+    }
+
+    @starting-style {
+      .scene__legend:popover-open {
+        opacity: 0;
+        translate: 0 0.5rem;
+      }
+    }
+
+    /* The pause button appears (hidden attribute removed) with a fade instead of a pop. */
+    .scene__toggle {
+      transition:
+        opacity var(--dur-base) var(--ease-out),
+        display var(--dur-base) allow-discrete;
+    }
+
+    @starting-style {
+      .scene__toggle {
+        opacity: 0;
+      }
+    }
+  }
+
+  /*
+   * Poster state only (no canvas mounted, tested with :has): a slow light sweep across the still frame, so the picture breathes where
+   * the live scene does not run (software GL, a blocked GPU, Save-Data). --sheen is a typed custom property, so the browser interpolates
+   * the gradient position itself. Desktop-width and motion-allowed only: phones and reduced motion keep a still poster.
+   */
+  @property --sheen {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: -30%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) and (min-width: 64rem) and (pointer: fine) {
+    .scene__stage:not(:has(:global(.scene__canvas))) .scene__frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      background: linear-gradient(
+        105deg,
+        transparent calc(var(--sheen) - 22%),
+        color-mix(in oklab, var(--we-tint) 11%, transparent) var(--sheen),
+        transparent calc(var(--sheen) + 22%)
+      );
+      animation: scene-sheen 26s ease-in-out infinite alternate;
+    }
+
+    @keyframes scene-sheen {
+      to {
+        --sheen: 130%;
+      }
+    }
+  }
+
+  /* Cross-document view transitions: the lead scene of a page is one named group, so the hero picture carries across a navigation. */
+  @supports (view-transition-name: none) {
+    @media (prefers-reduced-motion: no-preference) {
+      .scene--hero .scene__frame {
+        view-transition-name: hero-media;
+      }
+
+      :global(::view-transition-group(hero-media)) {
+        animation-duration: 320ms;
+        animation-timing-function: var(--ease-out);
+      }
+    }
   }
 
   .scene__caption {

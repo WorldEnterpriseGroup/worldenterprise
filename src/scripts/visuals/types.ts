@@ -1,9 +1,9 @@
 /**
  * The contract between the runtime and a scene module. Type-only: the custom element imports these names without pulling three in.
  */
-import type { PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three';
+import type { PerspectiveCamera, Scene, Vector3, WebGPURenderer } from 'three/webgpu';
 
-export const SCENE_NAMES = ['galaxy', 'launch', 'orbit', 'worldforge', 'starfield'] as const;
+export const SCENE_NAMES = ['galaxy', 'launch', 'orbit', 'worldforge', 'starfield', 'accretion'] as const;
 export type SceneName = (typeof SCENE_NAMES)[number];
 
 export function isSceneName(value: string | undefined): value is SceneName {
@@ -14,7 +14,7 @@ export function isSceneName(value: string | undefined): value is SceneName {
 export type SceneOptions = Readonly<Record<string, unknown>>;
 
 export interface SceneContext {
-  readonly renderer: WebGLRenderer;
+  readonly renderer: WebGPURenderer;
   readonly scene: Scene;
   readonly camera: PerspectiveCamera;
   readonly options: SceneOptions;
