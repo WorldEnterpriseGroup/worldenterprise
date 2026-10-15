@@ -3366,6 +3366,16 @@
       "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
     },
     {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-40/packages.test.ts",
+      "reason": "Wave 9 (coordinator decision 5, #78): deleted together with src/data/packages.ts, its only importer after WP-54 retired the packages (!73); delete only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/pages/llms.txt.ts",
+      "reason": "Wave 9 (coordinator decision 5, #78): the doc comment on line 5 drops packages.ts from its source list after the module is deleted; that comment line only."
+    },
+    {
       "wp": "WP-58",
       "path": "src/data/routes.ts",
       "reason": "Wave 9 (W9-13): adds and launches the rows of its own routes (/who-we-work-with/ and its seven situation pages, /why-it-takes-time/, /briefs/real-timeline/) in the same merge request as their pages. No other row changes."
