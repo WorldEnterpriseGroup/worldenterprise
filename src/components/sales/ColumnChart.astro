@@ -1,0 +1,221 @@
+---
+/**
+ * Vertical columns in SVG (WP-58): yearly business applications and the odds staircase. An image with a title and a description; the
+ * ChartFrame around it carries the data table. A wide and a narrow drawing keep the axis text readable at any width (CSS shows one).
+ * Highlighted columns print their value above them.
+ */
+import { compact, plot, ticks } from '../../data/sales/geometry.ts';
+import type { Box } from '../../data/sales/geometry.ts';
+import type { Bar } from '../../data/sales/timeline.ts';
+
+interface Props {
+  id: string;
+  title: string;
+  desc: string;
+  bars: readonly Bar[];
+  /** The top of the value axis. The axis always starts at zero. */
+  max: number;
+  yStep: number;
+  /** How a value tick reads. */
+  yFormat?: 'compact' | 'percent';
+  /** Label every nth column on the wide and narrow drawings (the last column is always labelled). */
+  labelEvery?: number;
+  labelEveryNarrow?: number;
+  /** Draw each column as an orbit ring settling (the staircase) instead of a plain bar. */
+  rings?: boolean;
+}
+
+const { id, title, desc, bars, max, yStep, yFormat = 'compact', labelEvery = 1, labelEveryNarrow = labelEvery, rings = false } = Astro.props;
+const fmtY = (v: number): string => (yFormat === 'percent' ? `${v}%` : compact(v));
+
+const boxes: readonly { key: 'wide' | 'narrow'; box: Box; every: number }[] = [
+  { key: 'wide', box: { width: 800, height: 440, top: 48, right: 16, bottom: 56, left: 76 }, every: labelEvery },
+  { key: 'narrow', box: { width: 420, height: 400, top: 48, right: 12, bottom: 56, left: 70 }, every: labelEveryNarrow },
+];
+
+const drawings = boxes.map(({ key, box, every }) => {
+  const { sy } = plot(box, { min: 0, max: box.width }, { min: 0, max });
+  const slot = (box.width - box.left - box.right) / bars.length;
+  const width = Math.max(2, Math.round(slot * 0.68 * 100) / 100);
+  return {
+    key,
+    box,
+    titleId: `${id}-${key}-title`,
+    descId: `${id}-${key}-desc`,
+    ys: ticks({ min: 0, max }, yStep).map((v) => ({ v, at: sy(v) })),
+    floor: sy(0),
+    cols: bars.map((bar, i) => {
+      const cx = Math.round((box.left + slot * i + slot / 2) * 100) / 100;
+      const top = sy(bar.value);
+      return {
+        ...bar,
+        cx,
+        x: Math.round((cx - width / 2) * 100) / 100,
+        top,
+        width,
+        height: Math.max(0, Math.round((sy(0) - top) * 100) / 100),
+        showLabel: i % every === 0 || i === bars.length - 1,
+      };
+    }),
+  };
+});
+---
+
+<div class:list={['sales-cols', rings && 'sales-cols--rings']}>
+  {
+    drawings.map((d) => (
+      <svg class:list={['sales-cols__svg', `sales-cols__svg--${d.key}`]} viewBox={`0 0 ${d.box.width} ${d.box.height}`} role="img" aria-labelledby={`${d.titleId} ${d.descId}`}>
+        <title id={d.titleId}>{title}</title>
+        <desc id={d.descId}>{desc}</desc>
+        <g class="sales-cols__grid">
+          {d.ys.map((t) => (
+            <line x1={d.box.left} x2={d.box.width - d.box.right} y1={t.at} y2={t.at} />
+          ))}
+        </g>
+        <g class="sales-cols__axis">
+          {d.ys.map((t) => (
+            <text x={d.box.left - 12} y={t.at + 7} text-anchor="end">
+              {fmtY(t.v)}
+            </text>
+          ))}
+          {d.cols.map(
+            (c) =>
+              c.showLabel && (
+                <text x={c.cx} y={d.box.height - d.box.bottom + 32} text-anchor="middle">
+                  {c.label.replace(/^Year /, 'Yr ')}
+                </text>
+              ),
+          )}
+          <line x1={d.box.left} x2={d.box.width - d.box.right} y1={d.floor} y2={d.floor} />
+        </g>
+        <g class="sales-cols__bars">
+          {d.cols.map((c) => (
+            <g class:list={['sales-col', c.highlight === true && 'sales-col--highlight']}>
+              <rect x={c.x} y={c.top} width={c.width} height={c.height} rx={rings ? Math.min(c.width / 2, 10) : 2} />
+              {c.highlight === true && (
+                <text class="sales-col__value" x={c.cx} y={c.top - 12} text-anchor={c.cx > d.box.width - 80 ? 'end' : 'middle'}>
+                  {c.display}
+                </text>
+              )}
+            </g>
+          ))}
+        </g>
+      </svg>
+    ))
+  }
+</div>
+
+<style>
+  @layer pages {
+    .sales-cols__svg {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+      overflow: visible;
+      font-size: 22px;
+    }
+
+    .sales-cols__svg--wide {
+      display: none;
+    }
+
+    @media (min-width: 40rem) {
+      .sales-cols__svg--wide {
+        display: block;
+      }
+
+      .sales-cols__svg--narrow {
+        display: none;
+      }
+    }
+
+    .sales-cols__grid line {
+      stroke: var(--color-border);
+      stroke-width: 1;
+    }
+
+    .sales-cols__axis text {
+      fill: var(--color-text-muted);
+    }
+
+    .sales-cols__axis line {
+      stroke: var(--color-text-muted);
+      stroke-width: 2;
+    }
+
+    .sales-col rect {
+      fill: var(--color-link);
+      opacity: 0.75;
+    }
+
+    .sales-col--highlight rect {
+      fill: var(--color-highlight-ink);
+      opacity: 1;
+    }
+
+    .sales-cols--rings .sales-col rect {
+      fill: none;
+      stroke: var(--color-link);
+      stroke-width: 4;
+    }
+
+    .sales-cols--rings .sales-col--highlight rect {
+      fill: none;
+      stroke: var(--color-highlight-ink);
+      stroke-width: 6;
+    }
+
+    .sales-col__value {
+      fill: var(--color-text);
+      font-weight: 700;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: view()) {
+        .sales-col rect {
+          transform-box: fill-box;
+          transform-origin: 50% 100%;
+          animation-name: sales-col-rise;
+          animation-duration: 1ms;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
+          animation-timeline: view();
+          animation-range: entry 10% cover 40%;
+        }
+      }
+    }
+
+    @keyframes sales-col-rise {
+      from {
+        transform: scaleY(0.15);
+      }
+
+      to {
+        transform: scaleY(1);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .sales-col rect,
+      .sales-col--highlight rect {
+        fill: CanvasText;
+      }
+
+      .sales-cols--rings .sales-col rect,
+      .sales-cols--rings .sales-col--highlight rect {
+        fill: Canvas;
+        stroke: CanvasText;
+      }
+
+      .sales-cols__grid line,
+      .sales-cols__axis line {
+        stroke: CanvasText;
+      }
+
+      .sales-cols__axis text,
+      .sales-col__value {
+        fill: CanvasText;
+      }
+    }
+  }
+</style>

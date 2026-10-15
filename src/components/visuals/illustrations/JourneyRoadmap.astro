@@ -1,0 +1,313 @@
+---
+/**
+ * JourneyRoadmap: Dream, Build and Grow along one track, each phase with its milestones and the deliverable the company keeps (BRIEF
+ * 3.2, genericized). Pure HTML and CSS: an ordered list per phase, hex nodes on a track, service-line icons where a line does most of
+ * the work. Wide containers lay the phases side by side along a horizontal track; narrow ones stack them on a vertical rule.
+ *
+ * Never numbered as "M0 to M8", never a count of milestones, never days or fees (C-16, C-17).
+ */
+import VisualIcon from '../VisualIcon.astro';
+import { cleanText } from '../contracts.ts';
+import { JOURNEY_MILESTONES, JOURNEY_PHASES, milestonesOf } from './journey.ts';
+import type { JourneyMilestone } from './journey.ts';
+import { href as link } from '../../../lib/url.ts';
+
+interface Props {
+  /** Override the milestones (same shape); defaults to the generic journey. */
+  milestones?: readonly JourneyMilestone[];
+  /** Link each phase name to its program page (default true). */
+  links?: boolean;
+  label?: string;
+  caption?: string;
+  class?: string;
+}
+
+const { links = true, label = 'The journey: Dream, Build, Grow', caption = 'Illustration only; each engagement sets its own milestones.', class: className } = Astro.props;
+const all = (Astro.props.milestones ?? JOURNEY_MILESTONES).map((m, i) => ({
+  ...m,
+  title: cleanText('JourneyRoadmap', `milestone ${i + 1} title`, m.title),
+  keeps: cleanText('JourneyRoadmap', `milestone ${i + 1} deliverable`, m.keeps),
+}));
+cleanText('JourneyRoadmap', 'caption', caption);
+const phases = JOURNEY_PHASES.map((p) => ({ ...p, items: milestonesOf(p.id, all) }));
+---
+
+<figure class:list={['journey', className]}>
+  <ol class="journey__phases" aria-label={label} role="list">
+    {
+      phases.map((p, pi) => (
+        <li class:list={['journey__phase', `journey__phase--${p.id}`]}>
+          <p class="journey__phase-head">
+            <span class="journey__phase-node" aria-hidden="true" />
+            {links ? (
+              <a class="journey__phase-name" href={link(p.path)}>
+                {p.name}
+              </a>
+            ) : (
+              <span class="journey__phase-name">{p.name}</span>
+            )}
+            <span class="journey__altitude">{p.altitude}</span>
+          </p>
+          <ol class="journey__milestones" role="list">
+            {p.items.map((m) => (
+              <li class="journey__milestone">
+                <span class="journey__hex" aria-hidden="true" />
+                <span class="journey__text">
+                  <span class="journey__title">{m.title}</span>
+                  <span class="journey__keeps">
+                    <span class="journey__keeps-lead">Keeps: </span>
+                    {m.keeps}
+                  </span>
+                </span>
+                {m.line !== undefined && (
+                  <span class="journey__line">
+                    <VisualIcon name={m.line} size={32} />
+                    <span>Line {m.line}</span>
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+          {pi === phases.length - 1 && <span class="journey__horizon" aria-hidden="true" />}
+        </li>
+      ))
+    }
+  </ol>
+  {caption !== '' && <figcaption class="journey__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .journey {
+    container-type: inline-size;
+    container-name: journey;
+    margin: 0;
+  }
+
+  .journey__phases {
+    position: relative;
+    display: grid;
+    gap: var(--sp-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .journey__phase {
+    position: relative;
+    display: grid;
+    gap: var(--sp-3);
+    align-content: start;
+    padding-inline-start: var(--sp-6);
+  }
+
+  /* The track: a vertical rule on narrow containers (blue, with an amber lead in Dream). */
+  .journey__phase::before {
+    content: '';
+    position: absolute;
+    inset-block: var(--sp-3) calc(-1 * var(--sp-6));
+    inset-inline-start: calc(var(--sp-2) + 1px);
+    inline-size: 2px;
+    background: var(--we-blue);
+  }
+
+  .journey__phase--dream::before {
+    background: linear-gradient(to bottom, var(--we-amber), var(--we-blue) var(--sp-9));
+  }
+
+  .journey__phase--grow::before {
+    inset-block-end: 0;
+  }
+
+  .journey__phase-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-1) var(--sp-3);
+    align-items: baseline;
+    margin: 0;
+  }
+
+  .journey__phase-node {
+    position: absolute;
+    inset-block-start: var(--sp-1);
+    inset-inline-start: 0;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    background: var(--we-blue-deep);
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+  }
+
+  .journey__phase--dream .journey__phase-node {
+    background: var(--we-amber);
+  }
+
+  .journey__phase-name {
+    font-family: var(--ff-display);
+    font-size: var(--fs-2xl);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+    color: var(--color-text);
+  }
+
+  a.journey__phase-name {
+    color: var(--color-link);
+    text-decoration-color: var(--we-amber);
+    text-underline-offset: 0.2em;
+  }
+
+  .journey__altitude {
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .journey__milestones {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .journey__milestone {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--sp-2) var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .journey__hex {
+    position: absolute;
+    inset-block-start: var(--sp-4);
+    inset-inline-start: calc(-1 * var(--sp-6) + var(--sp-1));
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    background: var(--color-bg);
+    border: 2px solid var(--we-blue);
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+  }
+
+  .journey__text {
+    display: grid;
+    gap: 2px;
+  }
+
+  .journey__title {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .journey__keeps {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-snug);
+    color: var(--color-text-muted);
+  }
+
+  .journey__keeps-lead {
+    font-weight: 600;
+    color: var(--we-blue-deep);
+  }
+
+  .journey__line {
+    display: grid;
+    gap: 2px;
+    justify-items: center;
+    align-self: start;
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .journey__horizon {
+    display: none;
+  }
+
+  .journey__caption {
+    margin-block-start: var(--sp-4);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* Wide: three phases side by side on one horizontal track, ending at a forming world on the horizon. */
+  @container journey (min-width: 56rem) {
+    .journey__phases {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-5);
+      padding-block-start: var(--sp-2);
+    }
+
+    .journey__phase {
+      padding-inline-start: 0;
+      padding-block-start: var(--sp-7);
+    }
+
+    .journey__phase::before {
+      inset-block: var(--sp-3) auto;
+      inset-inline: 0 calc(-1 * var(--sp-5));
+      inline-size: auto;
+      block-size: 2px;
+      background: var(--we-blue);
+    }
+
+    .journey__phase--dream::before {
+      background: linear-gradient(to right, var(--we-amber), var(--we-blue) 40%);
+    }
+
+    .journey__phase--grow::before {
+      inset-inline-end: var(--sp-7);
+    }
+
+    .journey__phase-node {
+      inset-block-start: calc(var(--sp-3) - 0.625rem + 1px);
+      inline-size: 1.25rem;
+    }
+
+    .journey__hex {
+      display: none;
+    }
+
+    .journey__milestone {
+      border-block-start: 3px solid var(--we-blue);
+    }
+
+    .journey__phase--dream .journey__milestone:first-child {
+      border-block-start-color: var(--we-amber);
+    }
+
+    /* The horizon: a small hex cluster, the world the track leads to. */
+    .journey__horizon {
+      position: absolute;
+      display: block;
+      inset-block-start: calc(var(--sp-3) - 1.25rem + 1px);
+      inset-inline-end: 0;
+      inline-size: 2.5rem;
+      block-size: 2.5rem;
+      background: radial-gradient(circle at 50% 50%, var(--we-blue-deep) 0 38%, transparent 40%), conic-gradient(from 30deg, var(--we-blue-hi) 0 60deg, var(--we-blue) 0 120deg, var(--we-blue-hi) 0 180deg, var(--we-amber) 0 240deg, var(--we-blue-hi) 0 300deg, var(--we-blue) 0);
+      clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .journey__milestone {
+      border-color: CanvasText;
+    }
+
+    .journey__phase::before,
+    .journey__phase-node,
+    .journey__hex {
+      forced-color-adjust: none;
+      background: CanvasText;
+    }
+  }
+</style>

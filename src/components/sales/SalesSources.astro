@@ -1,0 +1,25 @@
+---
+/**
+ * The sources ledger of a sales page (WP-58): every source a figure on the page cites, with the date it was fetched. Each entry's id is
+ * the anchor that the chart and tile source lines link to (`#source-<id>`).
+ */
+import SourcesList from '../blocks/SourcesList.astro';
+import { salesSource } from '../../data/sales/sources.ts';
+import type { SalesSourceId } from '../../data/sales/sources.ts';
+
+interface Props {
+  ids: readonly SalesSourceId[];
+  title?: string;
+}
+
+const { ids, title = 'Sources' } = Astro.props;
+const sources = [...new Set(ids)].map((id) => {
+  const s = salesSource(id);
+  return { id: s.id, title: s.title, publisher: s.publisher, url: s.url, accessed: new Date(`${s.accessed}T00:00:00Z`) };
+});
+---
+
+{/* A cited title is the publisher's own wording; one research title names a program category, so the list is marked for C-13-peers. */}
+<div data-claim-allow="C-13-peers">
+  <SourcesList sources={sources} title={title} />
+</div>

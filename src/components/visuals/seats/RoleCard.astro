@@ -1,0 +1,107 @@
+---
+/**
+ * RoleCard (visuals): one role on the team WE steers for a company, as a hex token, the role, its focus and its group. Roles, never
+ * names; never a price, a seat count or a cart (ORCHESTRATION 2026-10-14). Static HTML, no JavaScript.
+ *
+ * Not the same component as src/components/cards/RoleCard.astro (the pricing-era card); pages building the new team visuals use this one.
+ */
+import { cleanText, teamRoles } from '../contracts.ts';
+import { SEAT_ROLE_GROUPS } from '../../../data/seat-roles.ts';
+
+interface Props {
+  role: string;
+  /** Seniority or focus, e.g. "Senior". */
+  level?: string;
+  /** Role group id from src/data/seat-roles.ts: build, company or coordination. */
+  group?: string;
+  /** One line on what the role does for the company. */
+  description?: string;
+  class?: string;
+}
+
+const { description, class: className } = Astro.props;
+const [item] = teamRoles('RoleCard', [{ role: Astro.props.role, level: Astro.props.level, group: Astro.props.group }]);
+if (item === undefined) throw new Error('RoleCard: role is required');
+const group = SEAT_ROLE_GROUPS.find((g) => g.id === item.group);
+if (item.group !== undefined && group === undefined) throw new Error(`RoleCard: unknown group "${item.group}"`);
+const text = description === undefined ? undefined : cleanText('RoleCard', 'description', description);
+---
+
+<article class:list={['role-card', group !== undefined && `role-card--${group.id}`, className]}>
+  <span class="role-card__token" aria-hidden="true"></span>
+  <div class="role-card__body">
+    <h3 class="role-card__role">{item.role}</h3>
+    {(item.level !== undefined || group !== undefined) && <p class="role-card__meta">{[item.level, group?.label].filter((x) => x !== undefined).join(' · ')}</p>}
+    {text !== undefined && <p class="role-card__text">{text}</p>}
+  </div>
+</article>
+
+<style>
+  .role-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--sp-3);
+    align-items: start;
+    padding: var(--sp-4);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .role-card__token {
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    background: radial-gradient(circle at 50% 50%, var(--we-white) 0 14%, transparent 16%), var(--we-blue);
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+  }
+
+  .role-card--company .role-card__token {
+    background: radial-gradient(circle at 50% 50%, var(--we-white) 0 14%, transparent 16%), var(--we-blue-deep);
+  }
+
+  .role-card--coordination .role-card__token {
+    background: radial-gradient(circle at 50% 50%, var(--we-white) 0 14%, transparent 16%), var(--we-amber);
+  }
+
+  .role-card__body {
+    display: grid;
+    gap: var(--sp-1);
+  }
+
+  .role-card__role {
+    margin: 0;
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .role-card__meta {
+    margin: 0;
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .role-card__text {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (forced-colors: active) {
+    .role-card {
+      border-color: CanvasText;
+    }
+
+    .role-card__token {
+      forced-color-adjust: none;
+      background: CanvasText;
+    }
+  }
+</style>

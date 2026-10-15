@@ -395,11 +395,6 @@
    "leadLink": "The WE network"
   },
   {
-   "id": "pricing",
-   "href": "/pricing/",
-   "direct": true
-  },
-  {
    "id": "about",
    "href": "/about/",
    "columns": [
@@ -484,7 +479,9 @@
   "links": {
    "program": [
     "/journey/",
-    "/journey/after-you-apply/"
+    "/journey/after-you-apply/",
+    "/why-it-takes-time/",
+    "/who-we-work-with/"
    ],
    "resources": [
     "/briefs/",
@@ -503,7 +500,12 @@
    "/briefs/",
    "/industries/",
    "/compare/",
-   "/network/partners/"
+   "/network/partners/",
+   "/why-it-takes-time/",
+   "/who-we-work-with/"
   ]
+ },
+ "wave9": {
+  "note": "Wave 9 (docs/wave9-contracts.md, section 8; decision W9-13): the header button reads 'Start a readiness review', and the direct Pricing item leaves the top level because the header row has no room for both between 1100 and 1500px. /pricing/ stays in the Program, Services and Network strips and the footer; WP-54 retires it for /how-we-work/, which is not a top-level item either."
  }
 }

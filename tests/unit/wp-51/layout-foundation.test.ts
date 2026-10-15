@@ -64,3 +64,13 @@ test('the layouts and shared components expose the additive wave 9 props', () =>
   assert.match(read('src/components/hero/types.ts'), /HERO_MODES = \[[^\]]*'scene'/);
   assert.match(hero, /@media \(min-width: 100rem\)\s*\{\s*grid-template-columns:\s*minmax\(0, 5fr\) minmax\(0, 7fr\)/);
 });
+
+test('ArticleLayout and BriefLayout take an optional aside slot in the rail, and an article with no related items has no related section', () => {
+  const article = read('src/layouts/ArticleLayout.astro');
+  const brief = read('src/layouts/BriefLayout.astro');
+  assert.match(article, /Astro\.slots\.has\('aside'\)/);
+  assert.match(article, /\(toc\.length > 0 \|\| hasAside\) && \(\s*<aside class="rail"/);
+  assert.match(article, /<slot name="aside" \/>\s*<\/aside>/);
+  assert.match(article, /related\.length > 0 && \(\s*<div class="section section--soft section--defer">/);
+  assert.match(brief, /<MethodologyBox[^>]*\/>\s*<slot name="aside" \/>\s*<\/aside>/);
+});

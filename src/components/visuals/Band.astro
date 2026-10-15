@@ -1,0 +1,70 @@
+---
+/**
+ * Band: a full-bleed section (docs/wave9-contracts.md 2 and 5). The background runs edge to edge; a `.container` inside holds the
+ * content in the 110rem frame. The `.band` and `.band--<tone>` rules live in src/styles/layout.css (WP-51); this component only fixes
+ * the markup and layers an optional background visual (slot `scene`) under the content.
+ *
+ *   <Band tone="deep" labelledby="h-worlds">
+ *     <Scene slot="scene" scene="starfield" poster="starfield" alt="" decorative fill />   (or <HexField slot="scene" tone="dark" />)
+ *     <h2 id="h-worlds">Worlds take years to build.</h2>
+ *   </Band>
+ *
+ * A `deep` band is the dark galaxy band (W9-7): light text from the --color-band-deep-* tokens, never the logo.
+ */
+import { bandTone } from './contracts.ts';
+import type { BandTone } from './contracts.ts';
+
+interface Props {
+  tone?: BandTone;
+  id?: string;
+  /** Id of the heading inside the band that names the section. */
+  labelledby?: string;
+  /** Skip layout and paint until the band nears the viewport (content-visibility: auto). Never on the first band of a page. */
+  defer?: boolean;
+  class?: string;
+}
+
+const { tone = 'plain', id, labelledby, defer = false, class: className } = Astro.props;
+const t = bandTone('Band', tone);
+const hasScene = Astro.slots.has('scene');
+---
+
+<section
+  class:list={['band', t !== 'plain' && `band--${t}`, hasScene && 'band--scene', defer && 'band--defer', className]}
+  id={id}
+  aria-labelledby={labelledby}
+>
+  {
+    hasScene && (
+      <div class="band__scene">
+        <slot name="scene" />
+      </div>
+    )
+  }
+  <div class="container band__content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .band--scene {
+    isolation: isolate;
+  }
+
+  .band__scene {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .band--scene .band__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .band--defer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 40rem;
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+/**
+ * The seven-world solar system of /who-we-work-with/ (WP-58): one star, seven orbits, one world per situation. The drawing is an image
+ * with a title and a description that names the seven situations; the cards below it carry the links.
+ */
+import { round } from '../../data/sales/geometry.ts';
+
+interface Props {
+  /** The seven situation names, inner orbit first. */
+  names: readonly string[];
+}
+
+const { names } = Astro.props;
+const C = 300;
+const worlds = names.map((name, i) => {
+  const r = 70 + i * 32;
+  const angle = ((-100 + i * 51) * Math.PI) / 180;
+  return { name, r, x: round(C + r * Math.cos(angle)), y: round(C + r * Math.sin(angle)), size: 9 + (i % 3) * 3 };
+});
+---
+
+<svg class="sales-system" viewBox="0 0 600 600" role="img" aria-labelledby="sales-system-title sales-system-desc">
+  <title id="sales-system-title">Seven worlds around one star</title>
+  <desc id="sales-system-desc">{`One world for each situation WE works with: ${names.join(', ')}.`}</desc>
+  {worlds.map((w) => <circle class="sales-system__orbit" cx={C} cy={C} r={w.r} />)}
+  <circle class="sales-system__glow" cx={C} cy={C} r="44" />
+  <circle class="sales-system__star" cx={C} cy={C} r="30" />
+  <g class="sales-system__worlds">
+    {
+      worlds.map((w, i) => (
+        <circle class:list={['sales-system__world', i % 2 === 1 && 'sales-system__world--alt']} cx={w.x} cy={w.y} r={w.size} />
+      ))
+    }
+  </g>
+</svg>
+
+<style>
+  @layer pages {
+    .sales-system {
+      display: block;
+      inline-size: 100%;
+      max-inline-size: 36rem;
+      block-size: auto;
+      margin-inline: auto;
+    }
+
+    .sales-system__orbit {
+      fill: none;
+      stroke: var(--color-border);
+      stroke-width: 1.5;
+    }
+
+    .sales-system__glow {
+      fill: var(--color-highlight-ink);
+      opacity: 0.25;
+    }
+
+    .sales-system__star {
+      fill: var(--color-highlight-ink);
+    }
+
+    .sales-system__world {
+      fill: var(--color-link);
+    }
+
+    .sales-system__world--alt {
+      fill: var(--color-highlight-ink);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .sales-system__worlds {
+        transform-box: view-box;
+        transform-origin: 50% 50%;
+        animation-name: sales-system-turn;
+        animation-duration: 8s;
+        animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+      }
+    }
+
+    @keyframes sales-system-turn {
+      from {
+        transform: rotate(-30deg);
+      }
+
+      to {
+        transform: rotate(0deg);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .sales-system__orbit {
+        stroke: CanvasText;
+      }
+
+      .sales-system__star,
+      .sales-system__world,
+      .sales-system__world--alt {
+        fill: CanvasText;
+      }
+
+      .sales-system__glow {
+        fill: Canvas;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,31 @@
+---
+/**
+ * VisualIcon: one hex-tile icon from the visuals set (service lines A to G, or a program icon such as `team` or `calendar`).
+ * Decorative by default (alt=""): pair it with visible text. Give `alt` only when the icon stands alone.
+ */
+import { iconAsset } from './icons.ts';
+import type { IconKey } from './icons.ts';
+import { cleanText } from './contracts.ts';
+
+interface Props {
+  name: IconKey;
+  /** Rendered size in CSS pixels (default 48). */
+  size?: number;
+  alt?: string;
+  class?: string;
+}
+
+const { name, size = 48, alt = '', class: className } = Astro.props;
+const icon = iconAsset(name);
+const altText = alt === '' ? '' : cleanText('VisualIcon', 'alt', alt);
+---
+
+<img class:list={['visual-icon', className]} src={icon.src} width={size} height={size} alt={altText} loading="lazy" decoding="async" />
+
+<style>
+  .visual-icon {
+    display: block;
+    flex: none;
+    block-size: auto;
+  }
+</style>

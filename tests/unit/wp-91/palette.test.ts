@@ -94,9 +94,10 @@ test('a path is listed once, and no list carries a label or hint with a word the
   }
 });
 
-test('the registry entries do not change what the existing entries rank: "pricing" still ranks Pricing first on the real list', () => {
+test('the registry entries do not change what the existing entries rank: "seat" still ranks the seat options first on the real list', () => {
+  // Wave 9 (W9-13): Pricing left the top level, so its strip link "Compare seat options" is the entry for /pricing/.
   for (const isLive of [allLive, ledgerLive]) {
-    const ranked = rankCommands(build(isLive), 'pricing');
+    const ranked = rankCommands(build(isLive), 'seat');
     assert.equal(ranked[0]?.command.href, '/pricing/');
   }
 });
