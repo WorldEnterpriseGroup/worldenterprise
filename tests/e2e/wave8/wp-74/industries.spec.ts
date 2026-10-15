@@ -7,7 +7,7 @@ import { isBuilt } from '../../support/routes.ts';
 
 const VERTICALS = ['fintech', 'healthtech', 'edtech', 'climate-tech', 'legaltech', 'logistics', 'proptech'] as const;
 const HUB = '/industries/';
-const SEAT_SCOPE_HEADING = "What WE's seats can and cannot build";
+const SEAT_SCOPE_HEADING = "What WE's teams can and cannot build";
 const TEMPLATE_H2 = ['Who buys and who decides', 'The regulatory and standards perimeter', 'Questions about data handling', 'The sales cycle'];
 
 for (const slug of VERTICALS) {
