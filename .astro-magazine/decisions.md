@@ -720,7 +720,7 @@ CEO direction: more dataviz from statistics, scientific journals and public data
 
 ### D-W10-4 SBIR and STTR are encouraged, never promised
 
-CEO direction: encourage people to go to SBIR and STTR. WP-34 verifies the current 2026 authorization and program status from sbir.gov, SBA and congress.gov before writing, and states it with a retrieval date. WE encourages applying and helps founders prepare alongside; it is not an agency, does not review or score proposals, and guarantees no award. The no-funding statement (C-05) and the Investor Introductions rules stay in force.
+CEO direction: encourage people to go to SBIR and STTR. WP-34 verifies the current 2026 authorization and program status from sbir.gov, SBA and congress.gov before writing, and states it with a retrieval date. WE encourages applying and helps founders prepare alongside; it is not an agency, does not review or score proposals, and guarantees no award. The no-funding statement (C-05) and the Investor Introductions rules stay in force. The two generic scrub patterns for the program names (`\bSBIR\b`, `\bSTTR\b`) were written for a pre-direction false positive; the program names are public and now deliberate site content, so they match by design and are not client identifiers (the tech lead retires them from the kit's scrub list; no other term matches).
 
 ### D-W10-5 Wave 10 governance and numbering
 
