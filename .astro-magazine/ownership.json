@@ -3376,6 +3376,21 @@
       "reason": "Wave 9 (coordinator decision 5, #78): the doc comment on line 5 drops packages.ts from its source list after the module is deleted; that comment line only."
     },
     {
+      "wp": "WP-57",
+      "path": "scripts/validate-jsonld.mjs",
+      "reason": "Wave 9 (coordinator, WP-54 handoff item 4, #78): the organisation node no longer carries an offer catalog, so the JSON-LD validator drops OfferCatalog/Offer and forbids hasOfferCatalog; ALLOWED_TYPES, the catalog exception and the forbidden key only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "src/lib/schema.ts",
+      "reason": "Wave 9 (coordinator, WP-54 handoff item 4, #78): the organisation node no longer carries an offer catalog, so the JSON-LD validator drops OfferCatalog/Offer and forbids hasOfferCatalog; the ALLOWED_TYPES parity entry and the header and FORBIDDEN_TYPES comments only."
+    },
+    {
+      "wp": "WP-57",
+      "path": "tests/unit/wp-41/jsonld.test.ts",
+      "reason": "Wave 9 (coordinator, WP-54 handoff item 4, #78): the organisation node no longer carries an offer catalog, so the JSON-LD validator drops OfferCatalog/Offer and forbids hasOfferCatalog; the catalog tests become 'any catalog or Offer fails'."
+    },
+    {
       "wp": "WP-58",
       "path": "src/data/routes.ts",
       "reason": "Wave 9 (W9-13): adds and launches the rows of its own routes (/who-we-work-with/ and its seven situation pages, /why-it-takes-time/, /briefs/real-timeline/) in the same merge request as their pages. No other row changes."
