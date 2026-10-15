@@ -3,7 +3,7 @@ import type { InsightFile } from '../lib/content-files.ts';
 import { DESK_DEFINITIONS, DESK_OWNERS, DESKS, deskPath, isDeskId } from './desks.ts';
 import type { Desk, DeskId } from './desks.ts';
 import { FAMILIES } from './families.ts';
-import type { WaveEightOwner } from './families.ts';
+import type { WaveEightOwner, WaveNineOwner } from './families.ts';
 import { flags } from './flags.ts';
 import { forms } from './forms.ts';
 import { site } from './site.ts';
@@ -35,7 +35,7 @@ export type RouteOwner =
   | 'WP-01' | 'WP-02' | 'WP-03' | 'WP-04' | 'WP-05' | 'WP-06' | 'WP-07' | 'WP-08'
   | 'WP-09' | 'WP-10' | 'WP-11' | 'WP-12' | 'WP-13'
   | 'WP-40' | 'WP-41' | 'WP-42' | 'WP-43' | 'WP-44' | 'WP-45' | 'WP-46' | 'WP-47' | 'WP-48' | 'WP-49' | 'WP-50'
-  | 'WP-58'
+  | WaveNineOwner
   | WaveEightOwner;
 
 /** WP-60 to WP-99, the wave 8 packages (docs/wave8-contracts.md, section 1.3). */
