@@ -1,5 +1,5 @@
 {
-  "$comment": "Wave 9 write-set map (WP-51 to WP-57). Stage 0 WP-51, stage 1 WP-52, stage 2 WP-53 to WP-56 in parallel, stage 3 WP-57. `handoffs` lists the only paths two wave 9 packages may both hold; the earlier stage finishes before the later one starts. `superseded` lists the earlier assignments whose overlapping paths wave 9 took over (decision W9-3). tests/unit/wp-51/write-sets-wave9.test.ts keeps this file equal to .astro-magazine/ownership.json.",
+  "$comment": "Wave 9 write-set map (WP-51 to WP-58). Stage 0 WP-51, stage 1 WP-52, stage 2 WP-53 to WP-56 and WP-58 in parallel, stage 3 WP-57. `handoffs` lists the only paths two wave 9 packages may both hold; the earlier stage finishes before the later one starts. `superseded` lists the earlier assignments whose overlapping paths wave 9 took over (decision W9-3). tests/unit/wp-51/write-sets-wave9.test.ts keeps this file equal to .astro-magazine/ownership.json.",
   "handoffs": [
     {
       "path": ".astro-magazine/plans/wave9/**",
@@ -168,7 +168,7 @@
       "id": "WP-54",
       "stage": 2,
       "branch": "wp/54",
-      "title": "Wave 9 services, pricing, tools and apply: split layouts, orbit diagram, unpriced seat builder",
+      "title": "Wave 9 services, engagement model, tools and apply: split layouts, orbit diagram, the steered team as part of the engagement (no prices)",
       "writes": [
         "src/pages/services/**",
         "src/content/services/**",
@@ -319,6 +319,33 @@
         ".astro-magazine/ownership.json",
         ".astro-magazine/decisions.md",
         "src/data/claims.ts"
+      ]
+    },
+    {
+      "id": "WP-58",
+      "stage": 2,
+      "branch": "wp/58",
+      "title": "Wave 9 sales literature: who we work with, why it takes time, engagement CTA copy (W9-12)",
+      "writes": [
+        "src/content/sales/**",
+        "src/pages/who-we-work-with/**",
+        "src/content/pages/who-we-work-with/**",
+        "src/pages/why-it-takes-time/**",
+        "src/content/pages/why-it-takes-time/**",
+        "src/components/sales/**",
+        "src/data/sales/**",
+        "tests/unit/wp-58/**",
+        "tests/e2e/wave8/wp-58/**",
+        ".astro-magazine/handoffs/wp-58*",
+        ".astro-magazine/sources/wp-58.json"
+      ],
+      "laneExceptions": [],
+      "exceptions": [
+        "src/data/routes.ts",
+        "src/data/nav.ts",
+        "src/content.config.ts",
+        "src/data/cta/index.ts",
+        "tests/unit/wp-60/cta.test.ts"
       ]
     }
   ]
