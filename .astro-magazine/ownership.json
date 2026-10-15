@@ -1800,6 +1800,8 @@
         "src/data/cta/map.ts",
         "tests/unit/foundation/fixtures/nav-snapshot.json",
         "tests/unit/wp-40/denylist.test.ts",
+        "tests/unit/wp-40/ci.test.ts",
+        ".gitlab-ci.yml",
         "docs/wave10-contracts.md",
         "tests/unit/wp-32/**",
         "tests/e2e/wp-32*.spec.ts",
@@ -3755,6 +3757,11 @@
       "wp": "WP-32",
       "path": "src/data/cta/map.ts",
       "reason": "Wave 10 (D-W10-1): CTA rows for the three new route prefixes (cta.test.ts requires a row per launched route); WP-62's narrowed claim on src/data/cta/** is otherwise unchanged."
+    },
+    {
+      "wp": "WP-32",
+      "path": ".gitlab-ci.yml",
+      "reason": "Wave 10 (D-W10-5): RELEASE_ALLOW gains the /ecosystem/, /sbir-sttr/ and /data/ shapes (hub and one child level) so verify:release tolerates the launched rows until WP-33, WP-34 and WP-35 build the pages; the release-lane edit is the RELEASE_ALLOW value only, and a release tag or gh-pages still sets it empty."
     },
     {
       "wp": "WP-33",
