@@ -8,7 +8,7 @@ import { PHASES } from '../../data/sales/timeline.ts';
 import { REVIEW_YEARS } from '../../data/sales/clock.ts';
 
 const C = 200;
-// Radius grows with the square root of the years, so year fifteen fits without crushing the first six months.
+// Radius grows with the square root of the years, so year fifteen fits and the first six months stay legible.
 const radius = (years: number): number => round(36 + Math.sqrt(years / 15) * 150);
 const rings = PHASES.map((p, i) => ({ ...p, r: radius(p.to), alt: i % 2 === 1 }));
 const reviews = REVIEW_YEARS.map((y) => ({ y, r: radius(y) }));
