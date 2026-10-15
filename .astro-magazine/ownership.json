@@ -2641,6 +2641,26 @@
       "reason": "Wave 9 (W9-13): the start-seats-pricing, start-seat-count and start-rate records only; WP-78 is done."
     },
     {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-43/stepper.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement and the SALES.md 6.4 interim fields in the apply stepper; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-43/how-we-decide.spec.ts",
+      "reason": "Wave 9 (W9-13): line 53, the package field check follows the situation field. That line only."
+    },
+    {
+      "wp": "WP-54",
+      "path": ".astro-magazine/sources/wp-43.json",
+      "reason": "Wave 9 (W9-13): the apply and package field strings only; WP-43 is done."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/pages/program/how-we-decide.astro",
+      "reason": "Wave 9 (W9-13): line 28, APPLY_FIELDS.package becomes the situation field. That line only; WP-53 keeps the page."
+    },
+    {
       "wp": "WP-55",
       "path": "src/data/routes.ts",
       "reason": "Wave 9 (W9-5): launches the UBF detail row /about/frameworks/ubf/ in the same merge request as its page. Scoped to the framework rows; no other row changes."
