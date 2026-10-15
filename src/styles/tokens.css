@@ -151,6 +151,12 @@
      * Reading text never widens with it: prose holds --prose-max, and text beside a visual holds --split-text.
      */
     --content-max: 110rem;
+    /*
+     * Wide screens (wave 9): above 1920 the whole rem-based layout scales with the window, so 2560 and 3840 read as the 1920 design
+     * at 1.33x and 2x instead of a 1760px strip between empty sides. 100vw / 120 is 16px at 1920 and 32px at 3840; the 100% floor
+     * keeps the reader's own font size everywhere below that. Media queries in rem or em still use the initial size, so no breakpoint moves.
+     */
+    --root-size: max(100%, 100vw / 120);
     --page-max: var(--content-max);
     --prose-max: 46rem;
     --split-text: 40rem;

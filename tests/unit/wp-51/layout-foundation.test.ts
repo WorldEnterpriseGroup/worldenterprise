@@ -74,3 +74,15 @@ test('ArticleLayout and BriefLayout take an optional aside slot in the rail, and
   assert.match(article, /related\.length > 0 && \(\s*<div class="section section--soft section--defer">/);
   assert.match(brief, /<MethodologyBox[^>]*\/>\s*<slot name="aside" \/>\s*<\/aside>/);
 });
+
+test('above 1920 the root font size scales with the window, and never drops below the reader\'s own size', () => {
+  assert.match(tokens, /--root-size:\s*max\(100%, 100vw \/ 120\);/, '16px at 1920, 32px at 3840, the browser default below');
+  assert.match(strip(read('src/styles/base.css')), /html\s*\{\s*font-size:\s*var\(--root-size\);/);
+  // A breakpoint in rem or em uses the initial font size, so scaling the root moves none of them; a px breakpoint would not scale either.
+  for (const file of ['tokens.css', 'base.css', 'layout.css', 'hero.css', 'utilities.css']) {
+    const css = strip(read(`src/styles/${file}`));
+    for (const block of css.match(/(?:^|[\s,}])html\s*\{[^}]*\}/g) ?? []) {
+      for (const [, value] of block.matchAll(/font-size:\s*([^;]+);/g)) assert.equal(value.trim(), 'var(--root-size)', `${file} sets no other root font size`);
+    }
+  }
+});

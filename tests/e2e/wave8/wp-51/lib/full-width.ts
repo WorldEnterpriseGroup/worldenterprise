@@ -99,3 +99,26 @@ export async function expectBandsFullBleed(page: Page): Promise<number> {
   expect(result.short, 'bands that do not span the viewport').toEqual([]);
   return result.count;
 }
+
+/** The wide screens above 1920 that the layout scales to (the 1920 design at 1.33x and 2x). */
+export const WIDE_SCREENS = [
+  { width: 2560, height: 1440 },
+  { width: 3840, height: 2160 },
+] as const;
+
+/** Above 1920 the widest frame in `main` spans at least this share of the viewport: no empty side bands at any width. */
+export const MIN_FRAME_SHARE_WIDE = 0.85;
+
+/**
+ * The widest visible `.container` in `scope` spans at least `share` of the viewport's client width. Returns its box, so a spec can
+ * compare it with other frames.
+ */
+export async function expectFrameShare(page: Page, share = MIN_FRAME_SHARE_WIDE, scope = 'main'): Promise<{ left: number; width: number; client: number }> {
+  const result = await page.evaluate((root) => {
+    const boxes = [...document.querySelectorAll(`${root} .container`)].map((el) => el.getBoundingClientRect()).filter((box) => box.width > 0 && box.height > 0);
+    const widest = boxes.reduce<DOMRect | null>((a, b) => (a === null || b.width > a.width ? b : a), null);
+    return { left: widest?.left ?? -1, width: widest?.width ?? 0, client: document.documentElement.clientWidth };
+  }, scope);
+  expect(result.width, `${scope} frame is ${Math.round(result.width)}px of a ${result.client}px viewport`).toBeGreaterThanOrEqual(result.client * share);
+  return result;
+}
