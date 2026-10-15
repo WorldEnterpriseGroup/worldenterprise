@@ -58,7 +58,7 @@ Namespace `src/components/visuals/**`, `src/scripts/visuals/**`, posters in `src
 | `Band.astro` | `tone?: 'plain' \| 'soft' \| 'tint-blue' \| 'tint-sand' \| 'tint-stone' \| 'deep'`, `id?`, `labelledby?`, `defer?: boolean`; slot `scene` for a background visual. Renders `section.band.band--<tone> > .container`. |
 | `Split.astro` | `reverse?`, `even?`, `mediaFirst?`; slots `default` (text) and `media`. Renders `.split > .split__text + .split__media`. |
 | `Scene.astro` | `scene` (required: `'galaxy' \| 'launch' \| 'orbit' \| 'hexfield'`), `poster` (required: an image import or an inline SVG component), `alt` (required, denylist-clean), `ratio?: '16/9' \| '21/9' \| '4/3' \| '1/1'`, `priority?: boolean` (hero only: `fetchpriority="high"`). Renders `figure.scene > .scene__frame > poster + <we-scene data-scene>`. |
-| `GalaxyScene`, `LaunchTrajectory`, `OrbitDiagram`, `HexField`, `SeatBuilder`, `UbfDiagram` | Each wraps `Scene` or is pure SVG; props in the WP-52 handoff. |
+| `GalaxyScene`, `LaunchTrajectory`, `OrbitDiagram`, `HexField`, `TeamConstellation` (the team WE steers: roles in a constellation, never a priced cart; replaces the earlier seat builder, W9-12), `UbfDiagram` | Each wraps `Scene` or is pure SVG; props in the WP-52 handoff. |
 
 Gate (`src/scripts/visuals/gate.ts`, pure over a capabilities object): `(min-width: 64rem) and (pointer: fine) and (prefers-reduced-motion: no-preference)`, not `(forced-colors: active)`, `hardwareConcurrency >= 4`, `deviceMemory` absent or `>= 4`, `connection.saveData !== true`, WebGL2 available. The element imports nothing from `three` statically; scenes load through `import()` after an IntersectionObserver hit and an idle callback. DPR capped at 1.75; one live WebGL context per page; pause off screen and on `visibilitychange`; dispose on disconnect; a real pause `<button>` outside the canvas while a scene runs.
 
@@ -71,7 +71,7 @@ Hard rules (CI enforces): no `style=""` attribute, no inline script, no data:/bl
 - Desktop specs that do not test a scene emulate `prefers-reduced-motion: reduce`, so SwiftShader WebGL does not slow the e2e jobs.
 - The Lighthouse mobile routes (`/`, `/program/`, `/services/`, `/insights/`, `/about/facts/` and the rest in `lighthouserc.json`) keep 10,240 B of gzipped JS; three never loads there.
 - A file quoted by `.astro-magazine/release/RELEASE.md` moves its quoted line numbers in the same commit, through the package's scoped exception (W9-9).
-- Copy follows `BRIEF.md` and needs a sources file `.astro-magazine/sources/wp-NN.json`; claims C-07 (equity concept, no numbers) and C-17 (genericized figures only) are usable (W9-10); `flags.seatPrice` stays off.
+- Copy follows `BRIEF.md` and needs a sources file `.astro-magazine/sources/wp-NN.json`; claims C-07 (equity concept, no numbers) and C-17 (genericized figures only) are usable (W9-10); `flags.seatPrice` stays off and no seat price appears anywhere (W9-12). WE is an ongoing business incubation and consulting firm: no seat cart, no employer-of-record framing, no cohorts, no demo day, no fixed batch. Until the sales strategy lands, primary CTAs read "Start a conversation" or "Apply"; WP-58 owns the CTA labels.
 
 ## 7. The 1920 test helper (`tests/e2e/wave8/wp-51/lib/full-width.ts`)
 

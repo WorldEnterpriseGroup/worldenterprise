@@ -4,7 +4,8 @@ import test from 'node:test';
 import { overlaps } from '../../../.astro-magazine/plans/wave8/lib.mjs';
 import { matches, ownerOf, violations } from '../../../scripts/check-ownership.mjs';
 
-// Wave 9 (WP-51, issue #72): the redesign packages WP-51 to WP-57 are registered once, ahead of the edits (W8-30 pattern, W9-1).
+// Wave 9 (WP-51, issue #72): the redesign packages WP-51 to WP-58 are registered once, ahead of the edits (W8-30 pattern, W9-1;
+// WP-58 joined stage 2 with the positioning change, W9-12).
 // The proof reuses the wave 8 glob comparison (`overlaps` from .astro-magazine/plans/wave8/lib.mjs). It does not reuse wave 8's
 // `check()`, because that function hard-codes the wave 8 roles (WP-60 alone on the wave 8 frozen files, nobody in the photography
 // lane), while wave 9 deliberately reaches both through registered exceptions. The wave 7 and wave 8 tests filter WP-4x/WP-50 and
@@ -83,9 +84,9 @@ function unguarded(sets: readonly Assignment[], protectedList: readonly string[]
   });
 }
 
-test('the seven wave 9 packages are registered in stage order with branches that map back to them', () => {
-  assert.deepEqual(wave9.map((a) => a.owner), ['WP-51', 'WP-52', 'WP-53', 'WP-54', 'WP-55', 'WP-56', 'WP-57']);
-  assert.deepEqual(wave9.map((a) => a.stage), [0, 1, 2, 2, 2, 2, 3]);
+test('the eight wave 9 packages are registered in number order with their stages and branches that map back to them', () => {
+  assert.deepEqual(wave9.map((a) => a.owner), ['WP-51', 'WP-52', 'WP-53', 'WP-54', 'WP-55', 'WP-56', 'WP-57', 'WP-58']);
+  assert.deepEqual(wave9.map((a) => a.stage), [0, 1, 2, 2, 2, 2, 3, 2]);
   for (const a of wave9) {
     assert.equal(ownerOf(a.branch), a.owner, `${a.owner} branch`);
     assert.equal(ownerOf(`${a.branch}-redesign`), a.owner, `${a.owner} slugged branch`);
@@ -123,7 +124,7 @@ test('every hand-off runs from an earlier stage to a later one and names a patte
 
 test('the stage-2 page packages share nothing at all, hand-offs included', () => {
   const stage2 = wave9.filter((a) => a.stage === 2);
-  assert.deepEqual(stage2.map((a) => a.owner), ['WP-53', 'WP-54', 'WP-55', 'WP-56']);
+  assert.deepEqual(stage2.map((a) => a.owner), ['WP-53', 'WP-54', 'WP-55', 'WP-56', 'WP-58']);
   for (const x of stage2) for (const y of stage2) {
     if (x.owner >= y.owner) continue;
     for (const px of x.write_set) for (const py of y.write_set) assert.equal(overlaps(px, py), false, `${x.owner} ${px} <-> ${y.owner} ${py}`);
@@ -156,6 +157,7 @@ test('the stale wp/62 and WP-48 claims are superseded: their narrowed sets meet 
   assert.equal(violations(['src/pages/about/frameworks/ubf.astro'], 'WP-48', ownership).length, 1);
   assert.deepEqual(violations(['src/pages/index.astro'], 'WP-53', ownership), []);
   assert.deepEqual(violations(['src/pages/about/frameworks/ubf.astro'], 'WP-55', ownership), []);
+  assert.deepEqual(violations(['src/pages/who-we-work-with/index.astro', 'src/data/sales/cta.ts'], 'WP-58', ownership), []);
 });
 
 test('ownership has teeth: each package may touch one file per pattern of its own set and is refused another package file', () => {
@@ -198,5 +200,5 @@ test('WP-51 holds a registered exception for every frozen and wave 8 frozen patt
   const frozenInSet = wp51.write_set.filter((p) => [...ownership.frozen_paths, ...ownership.frozen_paths_wave8].some((f) => overlaps(p, f)));
   for (const p of frozenInSet) assert.ok(registered.includes(p), `exception for ${p}`);
   assert.equal(new Set(registered).size, registered.length, 'no duplicate exception');
-  for (const e of ownership.exceptions.filter((x) => /^WP-5[1-7]$/.test(x.wp))) assert.match(e.reason, /\S{3,}/, `${e.wp} ${e.path} carries a reason`);
+  for (const e of ownership.exceptions.filter((x) => /^WP-5[1-8]$/.test(x.wp))) assert.match(e.reason, /\S{3,}/, `${e.wp} ${e.path} carries a reason`);
 });
