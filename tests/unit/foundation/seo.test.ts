@@ -4,9 +4,9 @@ import { buildCrumbs } from '../../../src/lib/breadcrumbs.ts';
 import { articleNode, breadcrumbNode, graph, organizationNode, pageNode, serializeJsonLd, websiteNode } from '../../../src/lib/schema.ts';
 import { buildTitle, canonicalUrl, clampDescription, DESCRIPTION_MAX, resolveRobots, TITLE_MAX } from '../../../src/lib/seo.ts';
 
-test('titles follow "{Page} | World Enterprise Incubator"', () => {
-  assert.equal(buildTitle('Program'), 'Program | World Enterprise Incubator');
-  assert.match(buildTitle(), /^World Enterprise Incubator/);
+test('titles follow "{Page} | World Enterprise"', () => {
+  assert.equal(buildTitle('Program'), 'Program | World Enterprise');
+  assert.match(buildTitle(), /^World Enterprise/);
   assert.ok(buildTitle('Program').length <= TITLE_MAX);
 });
 

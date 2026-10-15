@@ -20,15 +20,15 @@ const svgDir = svgDirFlag > -1 ? path.resolve(process.argv[svgDirFlag + 1] ?? ''
 
 /** Copy for each card. Only enabled, published claims (SAGE-PLAN 3): no prices, no outcomes, no superlatives. */
 export const CARDS = [
-  { id: 'og-home', title: ['Where vision', 'becomes evidence.'], sub: 'Long-horizon business incubation and consulting.', alt: 'World Enterprise Incubator card: Where vision becomes evidence. Long-horizon business incubation and consulting.' },
-  { id: 'og-program', title: ['Dream. Build.', 'Grow.'], sub: 'The World Enterprise program, stage by stage.', alt: 'World Enterprise Incubator card: Dream. Build. Grow. The program, stage by stage.' },
-  { id: 'og-services', title: ['Seven service', 'lines.'], sub: 'What each line does, and what it does not.', alt: 'World Enterprise Incubator card: Seven service lines, what each does and does not do.' },
-  { id: 'og-playbooks', title: ['Playbooks for', 'each stage.'], sub: 'Step-by-step guides for building a SaaS company.', alt: 'World Enterprise Incubator card: Playbooks for each stage of building a SaaS company.' },
-  { id: 'og-fundability', title: ['Fundability,', 'explained.'], sub: 'Prepare to raise. No promise of funding.', alt: 'World Enterprise Incubator card: Fundability, explained. Prepare to raise, with no promise of funding.' },
-  { id: 'og-resources', title: ['Resources for', 'founders.'], sub: 'Insights, research, templates and a glossary.', alt: 'World Enterprise Incubator card: Resources for founders, including insights, research, templates and a glossary.' },
-  { id: 'og-network', title: ['Founders,', 'operators, investors.'], sub: 'How each works with World Enterprise.', alt: 'World Enterprise Incubator card: Founders, operators and investors, and how each works with World Enterprise.' },
-  { id: 'og-about', title: ['About World', 'Enterprise.'], sub: 'A business incubation and consulting firm.', alt: 'World Enterprise Incubator card: About World Enterprise, a business incubation and consulting firm.' },
-  { id: 'og-default', title: ['World Enterprise', 'Incubator.'], sub: 'WE Dream. WE Build. WE Grow.', alt: 'World Enterprise Incubator card: WE Dream. WE Build. WE Grow.' },
+  { id: 'og-home', title: ['Where vision', 'becomes evidence.'], sub: 'Long-horizon business incubation and consulting.', alt: 'World Enterprise card: Where vision becomes evidence. Long-horizon business incubation and consulting.' },
+  { id: 'og-program', title: ['Dream. Build.', 'Grow.'], sub: 'The World Enterprise program, stage by stage.', alt: 'World Enterprise card: Dream. Build. Grow. The program, stage by stage.' },
+  { id: 'og-services', title: ['Seven service', 'lines.'], sub: 'What each line does, and what it does not.', alt: 'World Enterprise card: Seven service lines, what each does and does not do.' },
+  { id: 'og-playbooks', title: ['Playbooks for', 'each stage.'], sub: 'Step-by-step guides for building a SaaS company.', alt: 'World Enterprise card: Playbooks for each stage of building a SaaS company.' },
+  { id: 'og-fundability', title: ['Fundability,', 'explained.'], sub: 'Prepare to raise. No promise of funding.', alt: 'World Enterprise card: Fundability, explained. Prepare to raise, with no promise of funding.' },
+  { id: 'og-resources', title: ['Resources for', 'founders.'], sub: 'Insights, research, templates and a glossary.', alt: 'World Enterprise card: Resources for founders, including insights, research, templates and a glossary.' },
+  { id: 'og-network', title: ['Founders,', 'operators, investors.'], sub: 'How each works with World Enterprise.', alt: 'World Enterprise card: Founders, operators and investors, and how each works with World Enterprise.' },
+  { id: 'og-about', title: ['About World', 'Enterprise.'], sub: 'A business incubation and consulting firm.', alt: 'World Enterprise card: About World Enterprise, a business incubation and consulting firm.' },
+  { id: 'og-default', title: ['World', 'Enterprise.'], sub: 'WE Dream. WE Build. WE Grow.', alt: 'World Enterprise card: WE Dream. WE Build. WE Grow.' },
 ];
 
 async function loadFont(file) {

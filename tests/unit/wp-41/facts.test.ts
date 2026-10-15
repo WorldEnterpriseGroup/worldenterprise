@@ -40,7 +40,7 @@ function sentencesOf(markdown: string): string[] {
 
 test('the facts page frontmatter fits the layout limits and cites usable claims', () => {
   assert.equal(frontmatter['title'], 'Facts about WE');
-  assert.ok(`${String(frontmatter['title'])} | World Enterprise Incubator`.length <= 60);
+  assert.ok(`${String(frontmatter['title'])} | World Enterprise`.length <= 60);
   const description = String(frontmatter['description']);
   assert.ok(description.length >= 50 && description.length <= 160, `description is ${description.length} characters`);
   assert.equal(new Date(String(frontmatter['updated'])).getTime() <= Date.now(), true, 'the date is not in the future');
@@ -123,10 +123,10 @@ test('qaFromMarkdown strips syntax, ignores fenced code and text before the firs
 
 test('the suggested citation names the editorial author, the title, the updated date and the production URL', () => {
   const text = citationText({ title: 'A title.', path: '/insights/x/', date: new Date('2026-10-09T00:00:00Z') });
-  assert.equal(text, 'World Enterprise Editorial. “A title.” World Enterprise Incubator, updated October 9, 2026. https://worldenterprise.org/insights/x/');
+  assert.equal(text, 'World Enterprise Editorial. “A title.” World Enterprise, updated October 9, 2026. https://worldenterprise.org/insights/x/');
   assert.equal(CITATION_AUTHOR, 'World Enterprise Editorial');
-  assert.equal(citationText({ title: 'T', path: '/p/' }), 'World Enterprise Editorial. “T.” World Enterprise Incubator. https://worldenterprise.org/p/');
-  assert.equal(citationText({ title: 'T', path: '/p/', date: new Date('nope') }), 'World Enterprise Editorial. “T.” World Enterprise Incubator. https://worldenterprise.org/p/');
+  assert.equal(citationText({ title: 'T', path: '/p/' }), 'World Enterprise Editorial. “T.” World Enterprise. https://worldenterprise.org/p/');
+  assert.equal(citationText({ title: 'T', path: '/p/', date: new Date('nope') }), 'World Enterprise Editorial. “T.” World Enterprise. https://worldenterprise.org/p/');
 });
 
 test('CiteThis reuses the we-copy island and adds no script or third-party request', () => {
