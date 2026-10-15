@@ -1,0 +1,88 @@
+---
+/**
+ * RangeDotPlot: one row per group, a dot at the mean and a bar for the spread (mean plus or minus one standard deviation, as published).
+ * Values are printed beside each dot. Useful when the honest point is that two groups differ a little while their spreads overlap a lot.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { fmt, niceTicks, scale } from './dataviz.ts';
+import type { FigureMeta } from './dataviz.ts';
+
+interface Row {
+  readonly label: string;
+  readonly mean: number;
+  readonly sd: number;
+  /** Extra table column, e.g. the number of founders, already formatted. */
+  readonly n?: string;
+  readonly highlight?: boolean;
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  rows: readonly Row[];
+  /** Axis range. */
+  min: number;
+  max: number;
+  unit?: string;
+  nLabel?: string;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { rows, min, max, unit = '', nLabel = 'Count' } = props;
+if (rows.length < 2 || rows.length > 12) throw new Error(`RangeDotPlot "${props.id}": takes 2 to 12 rows, got ${rows.length}`);
+const W = 840;
+const left = 270;
+const right = 40;
+const rowH = 40;
+const top = 12;
+const H = top + rows.length * rowH + 34;
+const x = scale([min, max], [left, W - right]);
+const ticks = niceTicks(min, max, 5);
+const hasN = rows.some((r) => r.n !== undefined);
+const table = {
+  caption: props.title,
+  columns: ['Group', 'Mean', 'Standard deviation', 'Mean minus 1 SD', 'Mean plus 1 SD', ...(hasN ? [nLabel] : [])],
+  rows: rows.map((r) => [r.label, `${fmt(r.mean)}${unit}`, `${fmt(r.sd)}${unit}`, `${fmt(r.mean - r.sd)}${unit}`, `${fmt(r.mean + r.sd)}${unit}`, ...(hasN ? [r.n ?? ''] : [])]),
+};
+---
+
+<ChartFigure {...props} table={table}>
+  <svg class="dv__svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${props.id}-svg-t ${props.id}-svg-d`}>
+    <title id={`${props.id}-svg-t`}>{props.title}</title>
+    <desc id={`${props.id}-svg-d`}>{props.description}</desc>
+    {ticks.map((t) => (
+      <>
+        <line class="dv-grid" x1={x(t)} x2={x(t)} y1={top} y2={top + rows.length * rowH} />
+        <text class="dv-axis" x={x(t)} y={top + rows.length * rowH + 20} text-anchor="middle">{t}{unit}</text>
+      </>
+    ))}
+    <g class="dv-reveal">
+      {rows.map((r, i) => {
+        const cy = top + i * rowH + rowH / 2;
+        return (
+          <>
+            <line class:list={['dv-line', r.highlight === true ? 'dv-s2' : 'dv-s1', 'range__bar']} x1={x(r.mean - r.sd)} x2={x(r.mean + r.sd)} y1={cy} y2={cy} />
+            <circle class={r.highlight === true ? 'dv-f2' : 'dv-f0'} cx={x(r.mean)} cy={cy} r="7" />
+          </>
+        );
+      })}
+    </g>
+    {rows.map((r, i) => {
+      const cy = top + i * rowH + rowH / 2;
+      return (
+        <>
+          <text class="dv-label" x={left - 14} y={cy + 4} text-anchor="end">{r.label}</text>
+          <text class="dv-strong" x={x(r.mean)} y={cy - 12} text-anchor="middle">{r.mean.toFixed(1)}</text>
+        </>
+      );
+    })}
+  </svg>
+</ChartFigure>
+
+<style is:global>
+  .range__bar {
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-opacity: 0.4;
+  }
+</style>

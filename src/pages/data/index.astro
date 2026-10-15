@@ -1,0 +1,128 @@
+---
+/**
+ * /data/ (WP-35): "The long game, in data". A founder's route in five stages (formation, first revenue, survival, funding rounds, exits),
+ * each shown by a chart from public data and tied to one message: a fast pace day to day, patience across the years. The first screen
+ * carries the thesis, three sourced figures and the one chart that says it most plainly. Every chart is build-time SVG with its data as a
+ * table; the page ships no script.
+ */
+import CtaRow from '../../components/sales/CtaRow.astro';
+import DataSources from '../../components/visuals/charts/DataSources.astro';
+import DataStage from '../../components/visuals/charts/DataStage.astro';
+import GanttTimeline from '../../components/visuals/charts/GanttTimeline.astro';
+import RangeDotPlot from '../../components/visuals/charts/RangeDotPlot.astro';
+import Ridgeline from '../../components/visuals/charts/Ridgeline.astro';
+import SlopeChart from '../../components/visuals/charts/SlopeChart.astro';
+import StackedArea from '../../components/visuals/charts/StackedArea.astro';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
+import WaffleChart from '../../components/visuals/charts/WaffleChart.astro';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { HOW_LONG_CTA, PRIMARY_CTA } from '../../data/sales/copy.ts';
+import { HUB } from '../../data/datasets/copy.ts';
+import { RETRIEVED } from '../../data/datasets/sources.ts';
+import { applicationsStack, exitRidgeline, founderAgeRange, milestoneGantt, payrollSlope, src, survivalWaffle } from '../../data/datasets/figures.ts';
+
+const tiles = HUB.tiles.map((t) => ({ value: t.value, label: t.label, source: src(t.source) }));
+const subtree = [
+  { title: 'How long new businesses last', href: '/data/survival/', description: 'Thirty years of opening-year groups, six groups, three industries.' },
+  { title: 'Who files, and what happens next', href: '/data/formation/', description: 'Applications by industry, and how many become employers.' },
+  { title: 'Who starts, and who builds fast', href: '/data/who-starts/', description: 'Founder age, by share, by rate and by growth.' },
+  { title: 'The funding clock', href: '/data/years-to-milestones/', description: 'Years between rounds, company age and dilution.' },
+];
+---
+
+<HubLayout
+  title={HUB.title}
+  seoTitle={HUB.seoTitle}
+  description={HUB.description}
+  path={HUB.path}
+  eyebrow={HUB.eyebrow}
+  lead={HUB.lead}
+  primary={PRIMARY_CTA}
+  secondary={HOW_LONG_CTA}
+  subtree={subtree}
+  hero="console"
+>
+  <Fragment slot="panel">
+    <p class="eyebrow">Three figures from public data</p>
+    <StatTiles stats={tiles} label="Three figures from public data" />
+  </Fragment>
+
+  <div class="data-open">
+    <div class="data-open__text">
+      {HUB.thesis.map((p) => <p>{p}</p>)}
+    </div>
+    <WaffleChart {...survivalWaffle} sources={survivalWaffle.sources} retrieved={RETRIEVED} />
+  </div>
+
+  <Fragment slot="after">
+    <DataStage id="formation" tone="soft" {...HUB.stages.formation}>
+      <StackedArea {...applicationsStack} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id="first-revenue" {...HUB.stages.payroll}>
+      <SlopeChart {...payrollSlope} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id="survival" tone="soft" {...HUB.stages.survival}>
+      <Ridgeline {...exitRidgeline} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id="funding" {...HUB.stages.funding}>
+      <GanttTimeline {...milestoneGantt} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id="exits" tone="soft" {...HUB.stages.exits}>
+      <RangeDotPlot {...founderAgeRange} retrieved={RETRIEVED} />
+    </DataStage>
+
+    <section class="band data-close" aria-labelledby="data-close-title">
+      <div class="container">
+        <h2 id="data-close-title">{HUB.close.heading}</h2>
+        <div class="data-close__body">
+          {HUB.close.body.map((p) => <p>{p}</p>)}
+        </div>
+        <CtaRow primary={PRIMARY_CTA} more={[[HOW_LONG_CTA]]} label="Next steps from the data" />
+      </div>
+    </section>
+
+    <DataSources
+      ids={['bls-bed-total', 'bls-bed-information', 'bls-bed-professional', 'census-bfs-monthly', 'census-bfs-definitions', 'kauffman-2025', 'kauffman-2021', 'azoulay-2018', 'carta-spm-q1-2026', 'cb-insights-2026', 'gem-us-2020']}
+    />
+  </Fragment>
+</HubLayout>
+
+<style>
+  @layer pages {
+    .data-open {
+      display: grid;
+      gap: var(--sp-7);
+      align-items: start;
+    }
+
+    .data-open__text {
+      display: grid;
+      gap: var(--sp-4);
+      align-content: start;
+      font-size: var(--fs-lg);
+    }
+
+    .data-open__text p {
+      margin: 0;
+    }
+
+    @media (min-width: 70rem) {
+      .data-open {
+        grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+        column-gap: var(--sp-8);
+      }
+    }
+
+    .data-close__body {
+      display: grid;
+      gap: var(--sp-3);
+      max-inline-size: 62ch;
+      margin-block: var(--sp-4) var(--sp-6);
+      font-size: var(--fs-lg);
+    }
+
+    .data-close__body p {
+      margin: 0;
+    }
+  }
+</style>

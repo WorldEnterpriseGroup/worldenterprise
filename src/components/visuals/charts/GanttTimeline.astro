@@ -1,0 +1,161 @@
+---
+/**
+ * GanttTimeline: rows of durations on one shared time axis. A span row draws a bar from `start` to `end`; a point row draws a marker at
+ * one moment. Row names and printed figures are real HTML text (so they wrap and zoom), and each track is a small SVG that stretches to
+ * the column. Bars are separate durations measured from the same zero, not a chain that adds up.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { cleanText, fmt, niceTicks } from './dataviz.ts';
+import type { FigureMeta } from './dataviz.ts';
+
+interface Row {
+  readonly id: string;
+  readonly label: string;
+  readonly start: number;
+  readonly end: number;
+  readonly kind: 'span' | 'point';
+  /** Printed beside the label. */
+  readonly figure: string;
+  /** Position in `groups`, which picks the color. */
+  readonly group: string;
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  rows: readonly Row[];
+  /** Group names in color order; shown in the legend. */
+  groups: readonly string[];
+  /** Axis end, in the unit below. */
+  max: number;
+  unit: string;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { rows, groups, max } = props;
+const unit = cleanText('GanttTimeline', 'unit', props.unit);
+if (rows.length < 2 || rows.length > 16) throw new Error(`GanttTimeline "${props.id}": takes 2 to 16 rows, got ${rows.length}`);
+for (const r of rows) {
+  if (!groups.includes(r.group)) throw new Error(`GanttTimeline "${props.id}": row "${r.id}" names an unknown group "${r.group}"`);
+  if (r.start < 0 || r.end < r.start || r.end > max) throw new Error(`GanttTimeline "${props.id}": row "${r.id}" lies outside 0 to ${max}`);
+}
+const ticks = niceTicks(0, max, 5).filter((t) => t <= max);
+const pct = (v: number): number => (v / max) * 100;
+const table = {
+  caption: props.title,
+  columns: ['Row', 'Start', 'End', 'As published'],
+  rows: rows.map((r) => [r.label, `${fmt(r.start)} ${unit}`, `${fmt(r.end)} ${unit}`, r.figure]),
+};
+---
+
+<ChartFigure {...props} table={table}>
+  <ul class="dv-legend" slot="legend">
+    {groups.map((g, i) => <li class={`dv-k${i}`}>{g}</li>)}
+  </ul>
+  <div class="gantt" role="group" aria-labelledby={`${props.id}-title`}>
+    {rows.map((r) => {
+      const gi = groups.indexOf(r.group);
+      return (
+        <div class="gantt__row">
+          <p class="gantt__label">{r.label} <strong>{r.figure}</strong></p>
+          <svg class="gantt__track" viewBox="-1 0 102 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            {ticks.map((t) => <line class="dv-grid gantt__tick" x1={pct(t)} x2={pct(t)} y1="0" y2="20" />)}
+            {r.kind === 'span'
+              ? <rect class={`dv-f${gi}`} x={pct(r.start)} y="4" width={Math.max(pct(r.end - r.start), 0.6)} height="12" />
+              : <line class={`dv-s${gi} gantt__point`} x1={pct(r.start)} x2={pct(r.start)} y1="1" y2="19" />}
+          </svg>
+        </div>
+      );
+    })}
+    <div class="gantt__axis" aria-hidden="true">
+      <span class="gantt__spacer"></span>
+      <span class="gantt__ticks">{ticks.map((t) => <span>{t}</span>)}</span>
+    </div>
+    <p class="gantt__unit">Time since the start, in {unit}.</p>
+  </div>
+</ChartFigure>
+
+<style is:global>
+  .gantt {
+    display: grid;
+    gap: var(--sp-2);
+  }
+
+  .gantt__row,
+  .gantt__axis {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sp-1);
+    align-items: center;
+  }
+
+  .gantt__label {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text);
+  }
+
+  .gantt__label strong {
+    display: block;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .gantt__track {
+    display: block;
+    inline-size: 100%;
+    block-size: 1.6rem;
+    border-block: 1px solid var(--color-border);
+  }
+
+  .gantt__tick,
+  .gantt__point {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .gantt__point {
+    stroke-width: 4;
+  }
+
+  .gantt__ticks {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  .gantt__spacer {
+    display: none;
+  }
+
+  .gantt__unit {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 50rem) {
+    .gantt__row,
+    .gantt__axis {
+      grid-template-columns: minmax(14rem, 2fr) minmax(0, 3fr);
+      gap: var(--sp-5);
+    }
+
+    .gantt__spacer {
+      display: block;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .gantt__track rect {
+      fill: CanvasText;
+    }
+
+    .gantt__point {
+      stroke: CanvasText;
+    }
+  }
+</style>

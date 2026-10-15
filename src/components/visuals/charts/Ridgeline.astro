@@ -1,0 +1,83 @@
+---
+/**
+ * Ridgeline: one filled curve per group, stacked down the page with a small overlap, all on the same x and y scale. Each ridge shows how a
+ * quantity (here, the share of establishments that close in a given year of life) moves across x. The row label sits on the left; the
+ * table lists every figure.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { fmt, linePath, sameLength, scale } from './dataviz.ts';
+import type { FigureMeta } from './dataviz.ts';
+
+interface Ridge {
+  readonly label: string;
+  readonly values: readonly number[];
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  xs: readonly number[];
+  ridges: readonly Ridge[];
+  yMax: number;
+  unit?: string;
+  xLabel?: string;
+  /** Column positions printed in the table (default all). */
+  tableXs?: readonly number[];
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { xs, ridges, yMax, unit = '', xLabel = 'Year' } = props;
+if (ridges.length < 2 || ridges.length > 14) throw new Error(`Ridgeline "${props.id}": takes 2 to 14 ridges, got ${ridges.length}`);
+for (const r of ridges) sameLength('Ridgeline', r.label, r.values, xs.length);
+
+const W = 840;
+const left = 74;
+const right = 24;
+const step = 42;
+const ridgeH = 78;
+const H = ridgeH + (ridges.length - 1) * step + 70;
+const xScale = scale([xs[0] ?? 0, xs[xs.length - 1] ?? 1], [left, W - right]);
+const px = xs.map(xScale);
+const base = (i: number): number => ridgeH + i * step;
+const h = scale([0, yMax], [0, ridgeH - 8]);
+const areaPath = (r: Ridge, i: number): string => {
+  const b = base(i);
+  const pts = r.values.map((v, k) => `${(px[k] ?? 0).toFixed(1)} ${(b - h(v)).toFixed(1)}`);
+  return `M${(px[0] ?? 0).toFixed(1)} ${b.toFixed(1)}L${pts.join('L')}L${(px[px.length - 1] ?? 0).toFixed(1)} ${b.toFixed(1)}Z`;
+};
+const xTicks = xs.filter((x) => x % 2 === 1 || x === xs[0]).slice(0, 8);
+const show = (v: number): string => `${fmt(v)}${unit}`;
+const tableXs = props.tableXs ?? xs;
+const table = {
+  caption: props.title,
+  columns: ['Group', ...tableXs.map((x) => `${xLabel} ${x}`)],
+  rows: ridges.map((r) => [r.label, ...tableXs.map((x) => show(r.values[xs.indexOf(x)] ?? 0))]),
+};
+const axisY = base(ridges.length - 1) + 22;
+const noteY = axisY + 28;
+---
+
+<ChartFigure {...props} table={table}>
+  <svg class="dv__svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${props.id}-svg-t ${props.id}-svg-d`}>
+    <title id={`${props.id}-svg-t`}>{props.title}</title>
+    <desc id={`${props.id}-svg-d`}>{props.description}</desc>
+    {xTicks.map((x) => <line class="dv-grid" x1={xScale(x)} x2={xScale(x)} y1={base(0) - ridgeH} y2={base(ridges.length - 1)} />)}
+    {xTicks.map((x) => <text class="dv-axis" x={xScale(x)} y={axisY + 4} text-anchor="middle">{x}</text>)}
+    <g class="dv-reveal">
+      {ridges.map((r, i) => (
+        <>
+          <path class={`dv-f${i % 2 === 0 ? 1 : 3} dv-sep ridge__fill`} d={areaPath(r, i)} />
+          <path class="dv-line dv-s0" d={linePath(px, r.values.map((v) => base(i) - h(v)))} />
+        </>
+      ))}
+    </g>
+    {ridges.map((r, i) => <text class="dv-label" x={left - 10} y={base(i) + 4} text-anchor="end">{r.label}</text>)}
+    <text class="dv-axis" x={left} y={noteY}>{xLabel}. Every curve uses the same vertical scale, 0 to {fmt(yMax)}{unit}.</text>
+  </svg>
+</ChartFigure>
+
+<style is:global>
+  .ridge__fill {
+    fill-opacity: 1;
+  }
+</style>

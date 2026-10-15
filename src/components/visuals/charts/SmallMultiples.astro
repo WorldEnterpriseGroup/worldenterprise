@@ -1,0 +1,107 @@
+---
+/**
+ * SmallMultiples: the same chart repeated per group on identical axes, so groups compare by eye. Each panel is one group; each panel draws
+ * the same named series as lines over shared x and y ranges. Every panel prints the final value of each series, the legend names the
+ * series in text, and the table lists the figures at the chosen x positions. A series may stop early (later opening-year groups have not
+ * been observed as long); it is drawn only as far as it has values.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { cleanText, linePath, niceTicks, scale } from './dataviz.ts';
+import type { FigureMeta } from './dataviz.ts';
+
+interface Series {
+  readonly label: string;
+  readonly values: readonly number[];
+}
+interface Panel {
+  readonly label: string;
+  readonly series: readonly Series[];
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  xs: readonly number[];
+  panels: readonly Panel[];
+  /** Shared y range. */
+  yMax: number;
+  yMin?: number;
+  unit?: string;
+  columns?: number;
+  xLabel?: string;
+  /** Which x values appear in the table (default all). */
+  tableXs?: readonly number[];
+  places?: number;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { xs, panels, yMax, yMin = 0, unit = '', columns = 3, xLabel = 'Year', places = 1 } = props;
+if (panels.length < 2 || panels.length > 12) throw new Error(`SmallMultiples "${props.id}": takes 2 to 12 panels, got ${panels.length}`);
+const names = panels[0]?.series.map((s) => cleanText('SmallMultiples', 'series', s.label)) ?? [];
+for (const p of panels) {
+  if (p.series.length !== names.length) throw new Error(`SmallMultiples "${props.id}": panel "${p.label}" has a different number of series`);
+  for (const s of p.series) if (s.values.length > xs.length || s.values.length === 0) throw new Error(`SmallMultiples "${props.id}": "${p.label}/${s.label}" has ${s.values.length} values for ${xs.length} positions`);
+}
+
+const W = 840;
+const gutter = 28;
+const rowsN = Math.ceil(panels.length / columns);
+const pw = (W - gutter * (columns - 1)) / columns;
+const ph = 150;
+const labelH = 26;
+const axisH = 24;
+const cellH = labelH + ph + axisH + 14;
+const H = rowsN * cellH;
+const x0 = xs[0] ?? 0;
+const x1 = xs[xs.length - 1] ?? 1;
+const xScale = scale([x0, x1], [34, pw - 6]);
+const yScale = scale([yMin, yMax], [labelH + ph, labelH]);
+const yTicks = niceTicks(yMin, yMax, 2);
+const tickStep = [1, 2, 5, 10, 20, 25, 50].find((s) => (x1 - x0) / s <= 4) ?? 50;
+const xTicks = xs.filter((x) => x % tickStep === 0);
+const show = (v: number): string => `${v.toFixed(places)}${unit}`;
+const tableXs = props.tableXs ?? xs;
+const idx = tableXs.map((x) => xs.indexOf(x));
+const table = {
+  caption: props.title,
+  columns: ['Group', 'Series', ...tableXs.map((x) => `${xLabel} ${x}`)],
+  rows: panels.flatMap((p) => p.series.map((s) => [p.label, s.label, ...idx.map((i) => (i < 0 || i >= s.values.length ? 'n/a' : show(s.values[i] ?? 0)))])),
+};
+---
+
+<ChartFigure {...props} table={table}>
+  <ul class="dv-legend" slot="legend">
+    {names.map((n, i) => <li class={`dv-k${i}`}>{n}</li>)}
+  </ul>
+  <svg class="dv__svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${props.id}-svg-t ${props.id}-svg-d`}>
+    <title id={`${props.id}-svg-t`}>{props.title}</title>
+    <desc id={`${props.id}-svg-d`}>{props.description}</desc>
+    {panels.map((p, pi) => {
+      const ox = (pi % columns) * (pw + gutter);
+      const oy = Math.floor(pi / columns) * cellH;
+      return (
+        <g transform={`translate(${ox} ${oy})`}>
+          <text class="dv-strong" x="0" y="16">{p.label}</text>
+          {yTicks.map((t) => (
+            <>
+              <line class="dv-grid" x1="34" x2={pw - 6} y1={yScale(t)} y2={yScale(t)} />
+              <text class="dv-axis" x="28" y={yScale(t) + 4} text-anchor="end">{Number.isInteger(t) ? t : t.toFixed(places)}</text>
+            </>
+          ))}
+          {xTicks.map((x) => <text class="dv-axis" x={xScale(x)} y={labelH + ph + 18} text-anchor="middle">{x}</text>)}
+          <g class="dv-reveal">
+            {p.series.map((s, si) => (
+              <path class={`dv-line dv-s${si}`} d={linePath(xs.slice(0, s.values.length).map(xScale), s.values.map(yScale))} />
+            ))}
+          </g>
+          {p.series.map((s, si) => {
+            const last = s.values.length - 1;
+            return (
+              <circle class={`dv-f${si}`} cx={xScale(xs[last] ?? x1)} cy={yScale(s.values[last] ?? 0)} r="3.5" />
+            );
+          })}
+        </g>
+      );
+    })}
+  </svg>
+</ChartFigure>

@@ -1,0 +1,77 @@
+---
+/**
+ * BeeswarmStrip: every observation as its own dot on one value axis, grouped in rows, so the reader sees the whole spread (and how tight
+ * or loose it is) instead of an average. Dots keep their exact horizontal position; they are pushed up or down only to avoid overlap.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { beeswarm, fmt, niceTicks, scale, wrapText } from './dataviz.ts';
+import type { FigureMeta } from './dataviz.ts';
+
+interface Dot {
+  /** Printed in the table, e.g. the opening year. */
+  readonly label: string;
+  readonly value: number;
+}
+interface Row {
+  readonly label: string;
+  readonly dots: readonly Dot[];
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  rows: readonly Row[];
+  min: number;
+  max: number;
+  unit?: string;
+  /** Header for the dot label column in the table. */
+  dotLabel?: string;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { rows, min, max, unit = '', dotLabel = 'Group' } = props;
+if (rows.length < 1 || rows.length > 8) throw new Error(`BeeswarmStrip "${props.id}": takes 1 to 8 rows, got ${rows.length}`);
+const W = 840;
+const left = 220;
+const right = 30;
+const r = 6;
+const rowH = 72;
+const top = 8;
+const H = top + rows.length * rowH + 30;
+const x = scale([min, max], [left, W - right]);
+const ticks = niceTicks(min, max, 6);
+const placed = rows.map((row) => {
+  const pos = row.dots.map((d) => x(d.value));
+  const off = beeswarm(pos, r);
+  return row.dots.map((d, i) => ({ ...d, cx: pos[i] ?? 0, dy: Math.max(-(rowH / 2 - r - 2), Math.min(rowH / 2 - r - 2, off[i] ?? 0)) }));
+});
+const table = {
+  caption: props.title,
+  columns: ['Row', dotLabel, 'Value'],
+  rows: rows.flatMap((row) => row.dots.map((d) => [row.label, d.label, `${fmt(d.value)}${unit}`])),
+};
+---
+
+<ChartFigure {...props} table={table}>
+  <svg class="dv__svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${props.id}-svg-t ${props.id}-svg-d`}>
+    <title id={`${props.id}-svg-t`}>{props.title}</title>
+    <desc id={`${props.id}-svg-d`}>{props.description}</desc>
+    {ticks.map((t) => (
+      <>
+        <line class="dv-grid" x1={x(t)} x2={x(t)} y1={top} y2={top + rows.length * rowH} />
+        <text class="dv-axis" x={x(t)} y={top + rows.length * rowH + 20} text-anchor="middle">{t}{unit}</text>
+      </>
+    ))}
+    {rows.map((row, i) => {
+      const lines = wrapText(row.label, 24);
+      return (
+        <text class="dv-label" x={left - 14} y={top + i * rowH + rowH / 2 + 4 - ((lines.length - 1) * 9)} text-anchor="end">
+          {lines.map((line, k) => <tspan x={left - 14} dy={k === 0 ? 0 : 18}>{line}</tspan>)}
+        </text>
+      );
+    })}
+    <g class="dv-reveal">
+      {placed.map((dots, i) => dots.map((d) => <circle class={`dv-f${i % 4} dv-sep`} cx={d.cx} cy={top + i * rowH + rowH / 2 + d.dy} r={r} />))}
+    </g>
+  </svg>
+</ChartFigure>
