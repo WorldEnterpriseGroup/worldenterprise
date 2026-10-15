@@ -139,6 +139,11 @@ test('each new chart component renders inside ChartFigure, which supplies the da
     const src = read(`src/components/visuals/charts/${name}.astro`);
     assert.match(src, /<ChartFigure \{\.\.\.props\} table=\{table\}>/, `${name} uses the shell with a table`);
     assert.match(src, /const table = \{/, `${name} builds its table from the same data it draws`);
+    if (name === 'GanttTimeline') {
+      // Real HTML text rows with decorative tracks; the group is named by the figure title.
+      assert.match(src, /role="group" aria-labelledby=\{`\$\{props\.id\}-title`\}/, `${name}: the drawing is a named group`);
+      continue;
+    }
     assert.match(src, /role="img" aria-labelledby=\{`\$\{props\.id\}-svg-t \$\{props\.id\}-svg-d`\}/, `${name}: the drawing is a named image`);
     assert.match(src, /<title id=\{`\$\{props\.id\}-svg-t`\}>/, `${name}: svg title`);
     assert.match(src, /<desc id=\{`\$\{props\.id\}-svg-d`\}>/, `${name}: svg description`);
