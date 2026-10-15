@@ -16,7 +16,7 @@ import { href } from '../../lib/url.ts';
 const page = await getPageEntry('network', 'network/index');
 const { Content } = await render(page);
 const subtree = [
-  { title: 'Who WE works with', href: '/founders/', description: 'The founders and businesses that fit, and what WE asks' },
+  { title: 'Founders: fit and first steps', href: '/founders/', description: 'The founders and businesses that fit, and what WE asks' },
   { title: 'Operator roles', href: '/network/operators/', description: 'The roles WE places around your team' },
   { title: 'For investors', href: '/investors/', description: 'How WE prepares companies, and what WE does not do' },
   { title: NETWORK_COPY.partners.title, href: HREFS.hub, description: NETWORK_COPY.partners.subtreeDescription },
@@ -66,7 +66,7 @@ const parts = [
   <section aria-labelledby="network-parts" class="stack">
     <h2 id="network-parts">{NETWORK_COPY.partsHeading}</h2>
     <Grid min="17rem">
-      <Card title="Founders" href={href('/founders/')} eyebrow="Who WE works with" headingLevel={3}>
+      <Card title="Founders" href={href('/founders/')} eyebrow="Fit and first steps" headingLevel={3}>
         <p>The criteria WE uses, what WE asks of you and what you keep doing yourself.</p>
       </Card>
       <Card title="Operators" href={href('/network/operators/')} eyebrow="Roles on a team" headingLevel={3}>
