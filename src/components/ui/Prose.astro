@@ -1,1 +1,13 @@
-<div class="container container--prose prose"><slot /></div>
+---
+/**
+ * Long-form text. `width="prose"`, the default, is the centred 46rem reading column. `width="content"` (wave 9, W9-4) sits in the
+ * full frame: paragraphs, lists and headings keep the reading measure at the frame's left edge, figures, tables and grids use the width.
+ */
+interface Props {
+  width?: 'prose' | 'content';
+}
+
+const { width = 'prose' } = Astro.props;
+---
+
+<div class:list={['container', width === 'prose' ? 'container--prose' : 'flow-wide', 'prose']}><slot /></div>
