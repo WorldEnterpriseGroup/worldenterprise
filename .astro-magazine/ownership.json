@@ -2443,7 +2443,7 @@
     {
       "wp": "WP-54",
       "path": "tests/unit/wp-18/copy.test.ts",
-      "reason": "Wave 9 (W9-13): the package and pricing copy pins follow the retirement; shared with WP-58 (C-29 lines), disjoint by line."
+      "reason": "Wave 9 (W9-13): the package and pricing copy pins follow the retirement, including line 216 (the engagement model). Shared with WP-58 (C-29 and C-13-peers lines), disjoint by line."
     },
     {
       "wp": "WP-54",
@@ -2608,7 +2608,7 @@
     {
       "wp": "WP-54",
       "path": "src/data/faq.yaml",
-      "reason": "Wave 9 (W9-13): the package and pricing answers follow the engagement model (no prices, start any month, yearly checkpoint review). Those entries only."
+      "reason": "Wave 9 (W9-13): the package and pricing answers follow the engagement model (no prices, start any month, yearly checkpoint review), including the entries how-paid, start-seat-count and start-rate. Those entries only."
     },
     {
       "wp": "WP-54",
@@ -2629,6 +2629,21 @@
       "wp": "WP-54",
       "path": "tests/unit/foundation/ledger.test.ts",
       "reason": "Wave 9 (W9-13): line 24, /pricing/ joins NOINDEX (it points to /how-we-work/). That line only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/components/forms/ContactForm.astro",
+      "reason": "Wave 9 (W9-13): line 10, the seat-rate option label only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-60/fixtures/reference-originals.json",
+      "reason": "Wave 9 (W9-13): the faq hashes for cost, packages and how-paid only."
+    },
+    {
+      "wp": "WP-54",
+      "path": ".astro-magazine/sources/wp-78.json",
+      "reason": "Wave 9 (W9-13): the start-seats-pricing, start-seat-count and start-rate records only; WP-78 is done."
     },
     {
       "wp": "WP-55",
