@@ -1,6 +1,6 @@
 ---
 title: Terms of use
-description: "The terms for using the World Enterprise Incubator website: what the content is for, what it is not, how to use it, and who to contact with questions."
+description: "The terms for using the World Enterprise website: what the content is for, what it is not, how to use it, and who to contact with questions."
 eyebrow: Legal
 hero: H5
 updated: 2026-10-06
