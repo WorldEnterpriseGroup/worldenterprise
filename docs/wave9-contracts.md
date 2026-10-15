@@ -10,6 +10,7 @@ A wave 9 package builds on these names. A missing prop or utility is requested f
 |---|---|---|
 | `--content-max` | `110rem` (1760px) | The content frame. `--page-max` points to it, so every `.container` uses it. |
 | `--page-max` | `var(--content-max)` | Kept for existing rules. |
+| `--root-size` | `max(100%, 100vw / 120)` | The `html` font size. It is the reader's own size up to 1920 and grows with the window above it (about 21px at 2560, 32px at 3840), so the whole rem-based layout scales and a 4K screen shows the 1920 design at 2x. Size things in rem or tokens, never px, or they will not scale. Breakpoints in rem or em are unaffected. |
 | `--prose-max` | `46rem` | Reading column. Unchanged. |
 | `--split-text` | `40rem` | Text column inside a `.split`. |
 | `--gutter` | `clamp(1rem, 0.0769rem + 4.1026vw, 5rem)` | Side gutter: 16px up to 360, 60px at 1440, 80px at 1920. |
@@ -89,7 +90,7 @@ test.beforeEach(({}, info) => {
 });
 ```
 
-Exports: `FULL_HD`, `SMALLEST_PHONE`, `MIN_FRAME_AT_FULL_HD` (1600), `MAX_LEFT_OFFSET_AT_FULL_HD` (160), `MAX_MEASURE_CH` (80); `expectFullWidth(page, scope = 'main')` (the widest visible `.container` in the scope is at least 1600px wide and starts within 160px of the left edge), `expectNoHorizontalScroll(page)`, `expectReadableProse(page, maxCh?)` (paragraphs and top-level lists in `.prose`, `.container--prose`, `.flow-wide` and `.split__text` at most 80ch of their own font; 46rem of 19px body type is about 77ch; returns the count measured), `expectBandsFullBleed(page)` (every visible `.band` spans the viewport; returns the count). WP-51's own spec is `tests/e2e/wave8/wp-51/full-width.spec.ts`. A family package lists its routes in its own spec.
+Exports: `FULL_HD`, `SMALLEST_PHONE`, `MIN_FRAME_AT_FULL_HD` (1600), `MAX_LEFT_OFFSET_AT_FULL_HD` (160), `MAX_MEASURE_CH` (80); `expectFullWidth(page, scope = 'main')` (the widest visible `.container` in the scope is at least 1600px wide and starts within 160px of the left edge), `expectNoHorizontalScroll(page)`, `expectReadableProse(page, maxCh?)` (paragraphs and top-level lists in `.prose`, `.container--prose`, `.flow-wide` and `.split__text` at most 80ch of their own font; 46rem of 19px body type is about 77ch; returns the count measured), `expectBandsFullBleed(page)` (every visible `.band` spans the viewport; returns the count). WP-51's own spec is `tests/e2e/wave8/wp-51/full-width.spec.ts`. For screens above 1920 there are `WIDE_SCREENS` (2560x1440, 3840x2160), `MIN_FRAME_SHARE_WIDE` (0.85) and `expectFrameShare(page, share?, scope?)`, which checks that the widest visible `.container` spans at least that share of the viewport. WP-51's spec for these is `wide-screens.spec.ts`. A family package lists its routes in its own spec.
 
 ## 8. Route owners and the CTA hierarchy (W9-13)
 

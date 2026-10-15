@@ -23,15 +23,12 @@ const HUBS: readonly { readonly path: string; readonly cards: boolean }[] = [
   { path: '/sitemap/', cards: false },
 ];
 
-/**
- * `measure: false` where the reading column belongs to a layout WP-56 does not own: TemplateLayout's "How to use this" box (WP-51)
- * runs a little past 80ch at 1920, which the WP-51 suite owns. WP-56 checks the frame and the ladder there.
- */
+/** `measure: false` would skip the reading-measure check for a route; none needs it since WP-51 capped the template callout at 80ch. */
 const TEMPLATES: readonly { readonly path: string; readonly measure: boolean }[] = [
   { path: '/insights/evaluating-an-llm-feature-before-you-ship-it/', measure: true },
   { path: '/playbooks/build-and-ship-v1/', measure: true },
   { path: '/fundability/data-room/', measure: true },
-  { path: '/library/pricing-page-checklist/', measure: false },
+  { path: '/library/pricing-page-checklist/', measure: true },
   { path: '/industries/fintech/', measure: true },
   { path: '/compare/build-vs-buy/', measure: true },
 ];
