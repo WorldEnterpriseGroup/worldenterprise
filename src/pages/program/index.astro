@@ -129,6 +129,11 @@ const toc = [
 
 <style>
   @layer pages {
+    /* The roadmap panel is taller than the copy; the copy starts at the top so the readiness review stays above the fold. */
+    :global(.hero--console .hero__grid--media) {
+      align-items: start;
+    }
+
     .program-flight .split__text {
       display: grid;
       gap: var(--sp-4);
