@@ -7,7 +7,8 @@
  * orbit links to. Every visual is HTML and SVG drawn at build time; the only scene is the orbit diagram, which falls back to its poster.
  */
 import { getEntry, render } from 'astro:content';
-import { INTRODUCTIONS_DISCLAIMER, INTRODUCTIONS_FLAT_FEE } from '../../components/blocks/introductions.ts';
+import IntroductionsDisclaimer from '../../components/blocks/IntroductionsDisclaimer.astro';
+import { INTRODUCTIONS_FLAT_FEE } from '../../components/blocks/introductions.ts';
 import Band from '../../components/visuals/Band.astro';
 import OrbitDiagram from '../../components/visuals/OrbitDiagram.astro';
 import Split from '../../components/visuals/Split.astro';
@@ -272,8 +273,8 @@ const hex = (cx: number, cy: number, r: number): string =>
         <p class="hww-required">WE makes no promise of funding.</p>
         <div class="hww-addon">
           <h3>Investor Introductions is a separate add-on</h3>
-          <p>{INTRODUCTIONS_DISCLAIMER}</p>
-          <p>{INTRODUCTIONS_FLAT_FEE}</p>
+          <p>It is optional, and a flat fee covers curation and preparation. {INTRODUCTIONS_FLAT_FEE}</p>
+          <IntroductionsDisclaimer />
         </div>
         <figure slot="media" class="hww-pay">
           <ol class="hww-pay__row" role="list" aria-label="Each month: the work, then the payment for it">

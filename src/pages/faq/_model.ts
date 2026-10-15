@@ -58,7 +58,7 @@ export const SEE_ALSO_TITLES: Readonly<Record<string, string>> = {
   '/network/partners/enquire/': 'Send a partner enquiry',
   '/network/partners/faq/': 'Partner FAQ',
   '/network/partners/how-it-works/': 'How partner enquiries work',
-  '/pricing/': 'Seats and pricing',
+  '/how-we-work/': 'How WE works',
   '/program/build/': 'Build: ship the first product',
   '/program/dedicated-teams/': 'Dedicated seats, steered by WE',
   '/program/dream/': 'Dream: validate the problem',

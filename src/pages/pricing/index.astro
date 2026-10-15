@@ -1,11 +1,13 @@
 ---
+/**
+ * /pricing/ (retired by WP-54, wave 9 W9-13): the packages page is gone and /how-we-work/ replaces it. The site has no redirect
+ * mechanism, so this stays a short noindex pointer (src/data/routes.ts sets indexable: false). The required texts live only on
+ * /how-we-work/, their single home.
+ */
 import { getEntry, render } from 'astro:content';
-import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
-import CtaBand from '../../components/ui/CtaBand.astro';
-import FactBand from '../../components/ui/FactBand.astro';
-import { jumpTo } from '../../components/hero/ctas.ts';
 import { photoImage } from '../../components/media/photo-image.ts';
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import { href } from '../../lib/url.ts';
 
 const entry = await getEntry('pages', 'pricing/pricing');
 if (!entry) throw new Error('Missing content entry pages/pricing/pricing (src/content/pages/pricing/pricing.mdx).');
@@ -20,49 +22,24 @@ const band = await photoImage('band-3', { sizes: '(min-width: 62rem) 40rem, 100v
   title={data.title}
   description={data.description}
   eyebrow={data.eyebrow}
-  lead="How dedicated team seats and packages work, and how to ask for the current rate."
+  lead="Packages and seat prices are no longer published. See how WE works instead."
   path="/pricing/"
   photo="inset-pricing"
-  primary={jumpTo('Compare the four packages', '#packages')}
-  secondary={{ label: 'Request the current seat rate', href: '/contact/?topic=seat-rate' }}
+  primary={{ label: 'See how WE works', href: '/how-we-work/' }}
+  secondary={{ label: 'Start a readiness review', href: '/apply/' }}
   updated={data.updated}
   draft={data.draft}
   ogSlot="og-default"
 >
-  <FactBand
-    label="The seat model at a glance"
-    facts={[
-      { label: 'Format', value: 'Fully remote' },
-      { label: 'The unit of work', value: 'A seat dedicated to your company' },
-      { label: 'Start with', value: 'A package or a custom seat plan' },
-      { label: 'Scaling', value: 'Up or down by notice' },
-    ]}
-  />
-
-  <div class="prose pricing-copy"><Content /></div>
-
-  <NoFundingDisclaimer />
-
+  <div class="prose"><Content /></div>
+  <p><a href={href('/how-we-work/')}>Go to How WE works</a></p>
   <div class="pricing-visual">
     <img src={band.src} srcset={band.srcset} sizes={band.srcset === undefined ? undefined : band.sizes} width={band.width} height={band.height} alt={band.alt} loading="lazy" decoding="async" />
   </div>
-
-  <CtaBand
-    slot="after"
-    title="Ask for the current rate"
-    text="Tell WE what you are building, and whether you lean toward a package or a custom seat plan. WE replies with the current rate."
-    cta={{ label: 'Request the rate', href: '/contact/?topic=seat-rate' }}
-    secondary={{ label: 'Compose your team', href: '/tools/team-composer/' }}
-  />
 </ToolLayout>
 
-<style is:global>
+<style>
   @layer pages {
-    /* The page text keeps a reading measure. The package cards, the seat explainer, the picker and the other blocks use the full column. */
-    .pricing-copy > :is(p, ul, ol, h2, h3, .faq-list) {
-      max-inline-size: var(--prose-max);
-    }
-
     .pricing-visual img {
       inline-size: min(100%, 40rem);
       block-size: auto;

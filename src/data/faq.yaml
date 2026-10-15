@@ -61,21 +61,24 @@
   related: [promise-funding, cost]
 - id: cost
   question: "What does it cost?"
-  answer: "Pricing is seat-based. A dedicated seat is the unit of work, and WE arranges seats into four packages or into a custom seat plan. The Pricing page lists no amounts and lets you request the current rate."
+  answer: "WE is paid in cash, monthly, for the team's work. WE is paid for work already done, never in advance of it. Every term, including how steering is valued, is in the agreement you review with your own counsel. This site publishes no price list, because the team is sized to each company."
   group: "Applying and cost"
-  claimsUsed: [C-02, C-10]
+  seeAlso: [/how-we-work/]
+  claimsUsed: [C-02]
   related: [packages, how-paid]
 - id: packages
-  question: "What are Spark, Launch, Accelerate and Studio?"
-  answer: "They are WE's four packages: pre-configured seat plans with a fixed scope, each sized for a company stage. Every package covers all seven service lines at a different depth. You can choose a custom seat plan instead, and seats change by notice either way."
+  question: "Does WE sell packages or seats?"
+  answer: "No. A company brings WE in once, as a long-term partner, and the team WE steers is sized to where the company stands. The readiness review sets the first team, and roles change by notice as the work moves from phase to phase."
   group: "Applying and cost"
-  claimsUsed: [C-02, C-10]
+  seeAlso: [/how-we-work/]
+  claimsUsed: [C-02, C-03]
   related: [cost, scale-by-notice]
 - id: how-paid
   question: "How is WE paid?"
-  answer: "The written agreement sets out how WE is paid. WE shares it before you commit to anything, and you should read it with your own counsel. How seats and packages are priced is explained on the Pricing page."
+  answer: "In cash, monthly, for the team's work. WE is paid for work already done, never in advance of it. Every term is in the written agreement, which WE shares before you sign anything and which you should read with your own counsel."
   group: "Applying and cost"
-  claimsUsed: [C-10]
+  seeAlso: [/how-we-work/]
+  claimsUsed: []
   related: [cost, who-owns-work]
 - id: who-owns-work
   question: "Who owns the work?"
@@ -263,28 +266,28 @@
   claimsUsed: [C-04]
   related: [start-grow, start-lines]
 - id: start-seats-pricing
-  question: "How do seats and packages work together?"
-  answer: "A package is a pre-configured seat plan with a fixed scope, sized for a company stage. If no package fits, you can build a custom seat plan instead, and WE scopes it with you. WE confirms the plan in writing when you ask for the current rate."
+  question: "How is the team sized?"
+  answer: "From where the company stands. The readiness review places the company on its business clock, and the team schedule in your agreement sets the roles. Roles can be added or removed by notice as the company moves from one phase to the next."
   group: "Seats and pricing"
   audience: startup
-  seeAlso: [/pricing/]
-  claimsUsed: [C-02, C-10]
+  seeAlso: [/how-we-work/]
+  claimsUsed: [C-02]
   related: [cost, packages]
 - id: start-seat-count
-  question: "What decides how many seats I need?"
-  answer: "The number of seats follows the work in front of you. The stage of the idea, the roles the product needs, the work in the current cycle and how much you can review and decide each week all shape it."
+  question: "What decides the size of the team?"
+  answer: "The work in front of you. The stage of the company, the roles the product needs, the work in the current cycle and how much you can review and decide each week all shape it."
   group: "Seats and pricing"
   audience: startup
-  seeAlso: [/pricing/]
+  seeAlso: [/how-we-work/]
   claimsUsed: [C-02]
   related: [scale-by-notice, cost]
 - id: start-rate
   question: "Where do I find the price?"
-  answer: "This site lists no amounts. WE shares the current rate for a package or a custom seat plan when you ask for it, so the figure you receive is the one that applies today. Ask through the contact page and choose the topic for the current seat rate."
+  answer: "This site publishes no price list, because the team is sized to each company. WE is paid in cash, monthly, for the team's work, and every term is in the agreement you review before signing. To ask about current terms, use the contact page."
   group: "Seats and pricing"
   audience: startup
-  seeAlso: [/contact/, /pricing/]
-  claimsUsed: [C-10]
+  seeAlso: [/contact/, /how-we-work/]
+  claimsUsed: []
   related: [cost, how-paid]
 - id: inv-meet
   question: "Can I meet a company WE incubates?"

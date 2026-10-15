@@ -30,23 +30,10 @@ test('no field carries a digit, a currency sign or a seat count (F-4, C-06, C-10
   }
 });
 
-test('the package data is the table on the pricing page, until the page renders from it', () => {
-  const rows = [...pricing.matchAll(/^\s*\['(Spark|Launch|Accelerate|Studio)', '((?:[^'\\]|\\.)*)', '((?:[^'\\]|\\.)*)'\],?$/gm)];
-  if (rows.length > 0) {
-    assert.equal(rows.length, 4, 'the pricing table lists exactly the four packages');
-    assert.deepEqual(
-      rows.map((m) => [m[1], m[2], m[3]]),
-      packages.map((p) => [p.name, p.stageFit, p.depth]),
-    );
-  } else {
-    // WP-42 moved the table into a component. Then the page must read this module, so the two cannot drift.
-    assert.match(pricing, /data\/packages(?:\.ts)?['"]/, 'pricing.mdx no longer lists the rows, so it must import src/data/packages.ts');
-  }
-});
-
-test('every package name is on the pricing page, or the page renders from this module', () => {
-  const renderedFromModule = /data\/packages(?:\.ts)?['"]/.test(pricing);
-  for (const p of packages) assert.ok(renderedFromModule || pricing.includes(p.name), `${p.name} on pricing page`);
+test('the retired pricing page no longer lists or renders the packages (wave 9, W9-13)', () => {
+  // The module stays until its last importers move off it; the pricing page itself names no package any more.
+  assert.doesNotMatch(pricing, /data\/packages(?:\.ts)?['"]/);
+  for (const p of packages) assert.doesNotMatch(pricing, new RegExp(`\\b${p.name}\\b`), `${p.name} on the retired pricing page`);
 });
 
 test('isPackageId and getPackage', () => {

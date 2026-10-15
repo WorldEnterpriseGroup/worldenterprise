@@ -407,17 +407,13 @@ Source: `src/content/pages/network/index.mdx:40`. Renders on: /network/.
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-12. Pricing page, body and FAQ
+#### CR-12. How WE works, the add-on paragraph
 
-Source: `src/content/pages/pricing/pricing.mdx:22`. Renders on: /pricing/.
+Source: `src/pages/how-we-work/index.astro:275`. Renders on: /how-we-work/ (it replaced the packages page in wave 9; /pricing/ is now a noindex pointer that names no add-on). The fee sentence after the first sentence of L276 is CR-02, and the disclaimer below it is CR-01 through `IntroductionsDisclaimer`.
 
-> L22: This page lists no amounts. WE shares the current rate for a package, a custom seat plan or the add-on when you ask, so the figure you receive is the one that applies today.
+> L275: Investor Introductions is a separate add-on
 >
-> L47: Not on this page. WE shares the current rate for a package, a custom seat plan or the add-on when you ask for it.
->
-> L64: Is Investor Introductions part of a package?
->
-> L65: No. It is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+> L276: It is optional, and a flat fee covers curation and preparation.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
