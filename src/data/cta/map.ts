@@ -120,6 +120,10 @@ export const SURFACES: readonly SurfaceRule[] = [
   row('library', { collection: 'library' }, ['tools'], []),
   row('research', { collection: 'research' }, ['briefs', 'apply'], ['apply']),
 
+  // Sales literature (WP-58, W9-12): the real clock and the situation pages.
+  row('sales:why-it-takes-time', { prefix: '/why-it-takes-time/' }, ['apply'], ['contact']),
+  row('sales:who-we-work-with', { prefix: '/who-we-work-with/' }, ['apply'], ['contact']),
+
   // About, brand story, manifesto, frameworks, trust, press.
   row('about', { prefix: '/about/' }, ['apply'], ['contact']),
   row('trust', { prefix: '/trust/' }, ['apply'], ['contact']),

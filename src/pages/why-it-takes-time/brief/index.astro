@@ -83,6 +83,9 @@ const findings = [...STATIONS.map((s) => ({ ...s })), { id: 'head-start', when: 
   </section>
 
   <SalesSources ids={ids} />
+
+  {/* The brief ends with its own CTA row above, so the layout's default end band is left out. */}
+  <Fragment slot="cta-end" />
 </MarketingLayout>
 
 <style>
