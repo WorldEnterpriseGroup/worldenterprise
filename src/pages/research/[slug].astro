@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
 import MidCta from '../../components/families/visual/MidCta.astro';
 import OrbitProgress from '../../components/families/visual/OrbitProgress.astro';
 import BriefFacts from '../../components/research/BriefFacts.astro';
@@ -56,5 +57,6 @@ const meta = isDraft(entry)
   <MidCta />
   <BriefsHubLink />
   <OrbitProgress />
+  <EmblemFrame slot="aside" kind="research" seed={slug ?? entry.id} shape="tall" drift={false} />
   <ArticleEnd slot="cta-end" kind="research" seed={slug ?? entry.id} />
 </BriefLayout>
