@@ -1,28 +1,142 @@
 ---
+/**
+ * /about/frameworks/android-ops/: the seven focus areas a team returns to, drawn as seven worlds on one orbit around the droid they
+ * serve (OrbitSystem, the seven-on-one-ring poster), with the four questions a Focus Shift plan is read against.
+ */
 import PageShell from '../../../../components/about/PageShell.astro';
+import Band from '../../../../components/visuals/Band.astro';
+import { START_REVIEW, TALK_TO_WE } from '../../../../components/about/ctas.ts';
+import { ANDROID_PARTS, DROID_PARTS, FOCUS_SHIFT_PARTS } from '../../../../components/about/framework-data.ts';
 import { loadPage } from '../../../../components/about/load-page.ts';
-import { ANDROID_AREAS } from '../../../../components/about/frameworks.ts';
-import CellTrail from '../../../../components/ui/CellTrail.astro';
 import CtaBand from '../../../../components/ui/CtaBand.astro';
 import DataTable from '../../../../components/ui/DataTable.astro';
-import Section from '../../../../components/ui/Section.astro';
+import OrbitSystem from '../../../../components/visuals/OrbitSystem.astro';
 import { flags } from '../../../../data/flags.ts';
 import { href } from '../../../../lib/url.ts';
 
 const entry = await loadPage('about/android-ops');
 ---
 
-<PageShell entry={entry} path="/about/frameworks/android-ops/" ogSlot="og-about" lead="Seven focus areas a team returns to as the work demands, and the four-hour Focus Shift.">
-  {flags.focusShiftConfirmed && <p>Dedicated seat teams plan their work in Focus Shifts.</p>}
+<PageShell
+  entry={entry}
+  path="/about/frameworks/android-ops/"
+  ogSlot="og-about"
+  lead="Seven focus areas a team returns to as the work demands, and the four-hour Focus Shift."
+  primary={START_REVIEW}
+  secondary={{ label: 'See the frameworks', href: '/about/frameworks/' }}
+  art={{ variant: 'flower', glyph: 'A' }}
+>
+  {flags.focusShiftConfirmed && <p>Dedicated teams plan their work in Focus Shifts.</p>}
   <Fragment slot="after">
-    <Section tone="soft" labelledby="ao-summary">
-      <div class="container stack">
-        <h2 id="ao-summary">The loop at a glance</h2>
-        <CellTrail label="ANDROID Ops focus areas" cells={ANDROID_AREAS.map((a) => ({ label: a.name }))} />
-        <DataTable caption="ANDROID Ops focus areas" columns={['Focus area', 'What it asks the team to do']} rows={ANDROID_AREAS.map((a) => [a.name, a.asks])} />
-        <p><a href={href('/about/frameworks/')}>Back to all frameworks</a>, or see <a href={href('/about/frameworks/orbital/')}>ORBITAL</a> for how a plan is written.</p>
+    <Band tone="deep" labelledby="ao-orbit-title" id="orbit">
+      <div class="split split--reverse">
+        <div class="split__text ao-stack">
+          <p class="eyebrow">Seven focus areas</p>
+          <h2 id="ao-orbit-title">One droid, seven worlds around it</h2>
+          <p>
+            A team is not meant to move through the seven areas once, in order. It returns to each as the work demands, the way a world comes
+            round again on its orbit.
+          </p>
+          <p>
+            For a single piece of work there is a shorter loop, D.R.O.I.D.: {DROID_PARTS.map((p) => p.name).join(', ')}.
+          </p>
+        </div>
+        <div class="split__media">
+          <OrbitSystem
+            bodies={ANDROID_PARTS.map((p) => ({ label: p.name, description: p.line }))}
+            rings="single"
+            labelsName="The seven A.N.D.R.O.I.D. focus areas"
+            alt="A sun of blue hexagonal tiles with seven smaller hex-faceted worlds on a single orbit ring: the seven A.N.D.R.O.I.D. focus areas."
+            caption="The seven A.N.D.R.O.I.D. focus areas on one orbit."
+          />
+        </div>
       </div>
-    </Section>
-    <CtaBand title="Put the loop to work" text="The playbooks apply these focus areas stage by stage." cta={{ label: 'Read the playbooks', href: '/playbooks/' }} secondary={{ label: 'Dedicated teams', href: '/program/dedicated-teams/' }} />
+    </Band>
+    <Band tone="soft" labelledby="ao-summary">
+      <h2 id="ao-summary" class="ao-title">The loop at a glance</h2>
+      <DataTable caption="A.N.D.R.O.I.D. focus areas" columns={['Focus area', 'What it asks the team to do']} rows={ANDROID_PARTS.map((a) => [a.name, a.line])} />
+    </Band>
+    <Band labelledby="ao-shift-title">
+      <div class="ao-shift">
+        <div class="ao-stack">
+          <h2 id="ao-shift-title">Four questions for a Focus Shift</h2>
+          <p>
+            WE's framework describes a Focus Shift as a four-hour block spent on one droid, with one or more of the seven focus areas chosen
+            for it. Its plan is read against four questions.
+          </p>
+          <p><a href={href('/about/frameworks/orbital/')}>O.R.B.I.T.A.L.</a> covers how the plan itself is written.</p>
+        </div>
+        <ol class="ao-questions" role="list">
+          {
+            FOCUS_SHIFT_PARTS.map((q) => (
+              <li>
+                <span class="ao-questions__name">{q.name}</span>
+                <span>{q.line}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </Band>
+    <CtaBand
+      title="Put the loop to work"
+      text="A readiness review shows where a team stands and which focus areas the next stage needs."
+      cta={START_REVIEW}
+      secondary={TALK_TO_WE}
+    />
   </Fragment>
 </PageShell>
+
+<style>
+  .ao-stack {
+    display: grid;
+    gap: var(--space-flow);
+    align-content: start;
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .ao-title {
+    margin-block: 0 var(--space-group);
+  }
+
+  .ao-shift {
+    display: grid;
+    gap: var(--space-block);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    align-items: start;
+  }
+
+  .ao-questions {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: q;
+
+    & li {
+      display: grid;
+      gap: var(--sp-1);
+      padding: var(--sp-5);
+      border-radius: var(--radius-lg);
+      border-block-start: 4px solid var(--color-highlight);
+      background: var(--color-bg-soft);
+      counter-increment: q;
+    }
+  }
+
+  .ao-questions__name {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+
+    &::before {
+      content: counter(q) '. ';
+      color: var(--color-text-muted);
+    }
+  }
+</style>

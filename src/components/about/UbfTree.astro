@@ -1,0 +1,128 @@
+---
+/**
+ * How the ten UBF components nest, from the galaxy down to a moon, as a real nested list with drawn connector lines. Built from
+ * UBF_NESTING and UBF_COMPONENTS, so the tree and the definitions can never disagree.
+ */
+import { UBF_COMPONENTS, UBF_NESTING } from './framework-data.ts';
+
+interface Props {
+  /** The component at the top of this branch; the outer call starts at the galaxy. */
+  root?: string;
+  label?: string;
+  /** Internal: true for a nested call. */
+  nested?: boolean;
+}
+
+const { root = 'Galaxy', label = 'How the UBF components nest', nested = false } = Astro.props;
+const node = UBF_COMPONENTS.find((c) => c.name === root);
+if (node === undefined) throw new Error(`UbfTree: "${root}" is not a UBF component`);
+const children = UBF_NESTING.find((n) => n.parent === root)?.children ?? [];
+const slug = root.toLowerCase().replace(/\s+/g, '-');
+---
+
+{
+  nested ? (
+    <li class="ubftree__node">
+      <span class:list={['ubftree__label', `ubftree__label--${slug}`]}>
+        <span class="ubftree__name">{node.name}</span>
+        <span class="ubftree__line">{node.line}</span>
+      </span>
+      {children.length > 0 && (
+        <ul class="ubftree__children" role="list">
+          {children.map((child) => (
+            <Astro.self root={child} nested />
+          ))}
+        </ul>
+      )}
+    </li>
+  ) : (
+    <ul class="ubftree" role="list" aria-label={label}>
+      <Astro.self root={root} nested />
+    </ul>
+  )
+}
+
+<style>
+  .ubftree,
+  .ubftree :global(.ubftree__children) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ubftree {
+    container: ubftree / inline-size;
+    --ubftree-indent: var(--sp-5);
+  }
+
+  .ubftree :global(.ubftree__children) {
+    margin-inline-start: var(--ubftree-indent);
+    padding-inline-start: var(--ubftree-indent);
+    border-inline-start: 2px dashed var(--color-border-strong);
+  }
+
+  .ubftree :global(.ubftree__node) {
+    position: relative;
+    padding-block: var(--sp-2);
+  }
+
+  .ubftree :global(.ubftree__children > .ubftree__node)::before {
+    content: '';
+    position: absolute;
+    inset-block-start: calc(var(--sp-2) + 0.9em);
+    inset-inline-start: calc(-1 * var(--ubftree-indent));
+    inline-size: calc(var(--ubftree-indent) - var(--sp-2));
+    border-block-start: 2px dashed var(--color-border-strong);
+  }
+
+  .ubftree :global(.ubftree__label) {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    column-gap: var(--sp-3);
+    align-items: baseline;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Four levels deep, the moon has little room on a phone: tighter indents, and each line sits under its name. */
+  @container ubftree (width < 36rem) {
+    .ubftree :global(.ubftree__children) {
+      --ubftree-indent: var(--sp-3);
+    }
+
+    .ubftree :global(.ubftree__label) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .ubftree :global(.ubftree__name) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-family: var(--ff-display);
+    font-weight: 700;
+
+    &::before {
+      content: '';
+      inline-size: 0.95em;
+      block-size: 0.82em;
+      clip-path: var(--hex-clip);
+      background: var(--color-accent);
+    }
+  }
+
+  .ubftree :global(.ubftree__label--sun .ubftree__name)::before,
+  .ubftree :global(.ubftree__label--super-star .ubftree__name)::before {
+    background: var(--color-highlight);
+  }
+
+  .ubftree :global(.ubftree__line) {
+    color: var(--color-text-muted);
+  }
+
+  @media (forced-colors: active) {
+    .ubftree :global(.ubftree__name)::before {
+      background: CanvasText;
+    }
+  }
+</style>
