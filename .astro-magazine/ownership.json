@@ -1779,12 +1779,158 @@
         "src/content/briefs/real-timeline.md",
         "infra/intake/briefs/real-timeline.md"
       ]
+    },
+    {
+      "owner": "WP-32",
+      "title": "Wave 10 governance: write sets, ecosystem-context claims rule, ecosystem routes and nav (D-W10-1)",
+      "branch": "wp/32",
+      "stage": 0,
+      "write_set": [
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/plans/wave10/**",
+        ".astro-magazine/decisions.md",
+        "claims-denylist.json",
+        "scripts/audit-claims.mjs",
+        "tests/unit/wp-18/audit-claims.test.ts",
+        "tests/unit/wp-18/copy.test.ts",
+        "tests/unit/wp-60/claims-w8.test.ts",
+        "tests/unit/wp-60/families.test.ts",
+        "src/data/routes.ts",
+        "src/data/nav.ts",
+        "src/data/cta/map.ts",
+        "tests/unit/foundation/fixtures/nav-snapshot.json",
+        "tests/unit/wp-40/denylist.test.ts",
+        "docs/wave10-contracts.md",
+        "tests/unit/wp-32/**",
+        "tests/e2e/wp-32*.spec.ts",
+        "tests/e2e/wave8/wp-32/**",
+        ".astro-magazine/handoffs/wp-32*",
+        ".astro-magazine/sources/wp-32.json"
+      ]
+    },
+    {
+      "owner": "WP-33",
+      "title": "Wave 10 ecosystem directory: /ecosystem/ programs, spaces, groups and investor-relations resources",
+      "branch": "wp/33",
+      "stage": 1,
+      "write_set": [
+        "src/pages/ecosystem/**",
+        "src/content/pages/ecosystem/**",
+        "src/data/ecosystem/**",
+        "src/components/ecosystem/**",
+        "src/scripts/ecosystem*.ts",
+        "tests/unit/wp-33/**",
+        "tests/e2e/wp-33*.spec.ts",
+        "tests/e2e/wave8/wp-33/**",
+        ".astro-magazine/handoffs/wp-33*",
+        ".astro-magazine/sources/wp-33.json"
+      ]
+    },
+    {
+      "owner": "WP-34",
+      "title": "Wave 10 SBIR and STTR: /sbir-sttr/ guide, agencies, calendar, readiness",
+      "branch": "wp/34",
+      "stage": 1,
+      "write_set": [
+        "src/pages/sbir-sttr/**",
+        "src/content/pages/sbir-sttr/**",
+        "src/data/sbir/**",
+        "src/components/sbir/**",
+        "src/scripts/sbir*.ts",
+        "tests/unit/wp-34/**",
+        "tests/e2e/wp-34*.spec.ts",
+        "tests/e2e/wave8/wp-34/**",
+        ".astro-magazine/handoffs/wp-34*",
+        ".astro-magazine/sources/wp-34.json"
+      ]
+    },
+    {
+      "owner": "WP-35",
+      "title": "Wave 10 data: /data/ hub, datasets and new chart components from public and journal sources",
+      "branch": "wp/35",
+      "stage": 1,
+      "write_set": [
+        "src/pages/data/**",
+        "src/content/pages/data/**",
+        "src/data/datasets/**",
+        "src/components/visuals/charts/**",
+        "src/scripts/charts*.ts",
+        "tests/unit/wp-35/**",
+        "tests/e2e/wp-35*.spec.ts",
+        "tests/e2e/wave8/wp-35/**",
+        ".astro-magazine/handoffs/wp-35*",
+        ".astro-magazine/sources/wp-35.json"
+      ]
+    },
+    {
+      "owner": "WP-36",
+      "title": "Wave 10 HTML5 and seamless 3D: full-bleed scenes, WebGPU with WebGL2 fallback, scroll-driven CSS, view transitions",
+      "branch": "wp/36",
+      "stage": 1,
+      "write_set": [
+        "src/components/visuals/**",
+        "src/assets/visuals/**",
+        "src/scripts/scene*/**",
+        "src/scripts/motion*.ts",
+        "tests/unit/wp-36/**",
+        "tests/e2e/wp-36*.spec.ts",
+        "tests/e2e/wave8/wp-36/**",
+        ".astro-magazine/handoffs/wp-36*",
+        ".astro-magazine/sources/wp-36.json"
+      ],
+      "exclude": [
+        "src/components/visuals/charts/**"
+      ]
+    },
+    {
+      "owner": "WP-37",
+      "title": "Wave 10 longevity narrative: home, program, how-we-work, why-it-takes-time, who-we-work-with",
+      "branch": "wp/37",
+      "stage": 2,
+      "write_set": [
+        "src/pages/index.astro",
+        "src/pages/program/**",
+        "src/pages/how-we-work/**",
+        "src/pages/why-it-takes-time/**",
+        "src/pages/who-we-work-with/**",
+        "src/content/pages/home/**",
+        "src/content/pages/program/**",
+        "src/content/pages/how-we-work/**",
+        "src/content/pages/why-it-takes-time/**",
+        "src/content/pages/who-we-work-with/**",
+        "tests/unit/wp-37/**",
+        "tests/e2e/wp-37*.spec.ts",
+        "tests/e2e/wave8/wp-37/**",
+        ".astro-magazine/handoffs/wp-37*",
+        ".astro-magazine/sources/wp-37.json"
+      ],
+      "lane_exceptions": [
+        "src/components/home/HomeHero.astro",
+        "src/pages/program/who-its-for.astro"
+      ]
+    },
+    {
+      "owner": "WP-38",
+      "title": "Wave 10 content expansion: insights, guides, playbooks and their media",
+      "branch": "wp/38",
+      "stage": 1,
+      "write_set": [
+        "src/content/insights/**",
+        "src/content/guides/**",
+        "src/content/playbooks/**",
+        "src/assets/insights/**",
+        "tests/unit/wp-38/**",
+        "tests/e2e/wp-38*.spec.ts",
+        "tests/e2e/wave8/wp-38/**",
+        ".astro-magazine/handoffs/wp-38*",
+        ".astro-magazine/sources/wp-38.json"
+      ]
     }
   ],
   "active_leases": [],
   "handoffs": [],
   "conflicts": [],
-  "updated_at": "2026-10-15T01:00:00.000Z",
+  "updated_at": "2026-10-15T12:00:00.000Z",
   "frozen_paths": [
     "package.json",
     "package-lock.json",
@@ -3574,6 +3720,221 @@
       "wp": "WP-58",
       "path": "tests/unit/wp-60/families.test.ts",
       "reason": "Wave 9 (W9-13): line 69, the owner regex widens to /^WP-(?:[6-9]\\d|5[1-8])$/ for the WaveNineOwner alias. That line only."
+    },
+    {
+      "wp": "WP-32",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 10 (D-W10-1): registers WP-32 to WP-38 (W8-30 pattern)."
+    },
+    {
+      "wp": "WP-32",
+      "path": ".astro-magazine/decisions.md",
+      "reason": "Wave 10 (D-W10-1): records D-W10-1 to D-W10-5."
+    },
+    {
+      "wp": "WP-32",
+      "path": "claims-denylist.json",
+      "reason": "Wave 10 (D-W10-1): scopes the peers, investor-network and demo-day wording to the ecosystem context and adds the always-banned W10 rules."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 10 (D-W10-1): registers /ecosystem/, /sbir-sttr/ and /data/ ahead of their pages and the three per-package blocks."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 10 (D-W10-1): links the three routes from the Network and Resources panels and the footer; inert until the pages exist."
+    },
+    {
+      "wp": "WP-32",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 10 (D-W10-1): the snapshot lists the added nav and footer links (/ecosystem/, /sbir-sttr/, /data/) in its wave8 additions and carries a wave10 note."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/data/cta/map.ts",
+      "reason": "Wave 10 (D-W10-1): CTA rows for the three new route prefixes (cta.test.ts requires a row per launched route); WP-62's narrowed claim on src/data/cta/** is otherwise unchanged."
+    },
+    {
+      "wp": "WP-33",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 10 (D-W10-1): add child rows of your own routes inside the marked `BEGIN WP-33 ecosystem block` ... `END` comment pair only; no other line. WP-32 registered the hub row ahead of the page."
+    },
+    {
+      "wp": "WP-34",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 10 (D-W10-1): add child rows of your own routes inside the marked `BEGIN WP-34 sbir-sttr block` ... `END` comment pair only; no other line. WP-32 registered the hub row ahead of the page."
+    },
+    {
+      "wp": "WP-35",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 10 (D-W10-1): add child rows of your own routes inside the marked `BEGIN WP-35 data block` ... `END` comment pair only; no other line. WP-32 registered the hub row ahead of the page."
+    },
+    {
+      "wp": "WP-35",
+      "path": "tests/unit/wp-45/props-baseline.json",
+      "reason": "Wave 10 (D-W10-1): additive chart props and new chart components change the pinned prop baseline; only the chart entries."
+    },
+    {
+      "wp": "WP-35",
+      "path": "tests/unit/wp-45/pinned-props.test.ts",
+      "reason": "Wave 10 (D-W10-1): only if a new chart component needs a pin; additive."
+    },
+    {
+      "wp": "WP-36",
+      "path": "package.json",
+      "reason": "Wave 10 (D-W10-1): three upgrade if a newer stable release is needed for WebGPURenderer and TSL; `three` and `@types/three` lines only, exact versions."
+    },
+    {
+      "wp": "WP-36",
+      "path": "package-lock.json",
+      "reason": "Wave 10 (D-W10-1): lockfile for the three upgrade, produced with `npm install --package-lock-only`; no other dependency may change."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/layouts/BaseLayout.astro",
+      "reason": "Wave 10 (D-W10-1): <head> additions for the cross-document view transition opt-in, resource hints and any importmap-free module preloads; head only."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/styles/motion.css",
+      "reason": "Wave 10 (D-W10-1): the existing `@view-transition { navigation: auto }` block, `animation-timeline` scroll-driven rules, `@starting-style` and `@property` additions; WP-60 wave 8 file."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/components/seo/SpeculationRules.astro",
+      "reason": "Wave 10 (D-W10-1): speculation rules (prefetch/prerender eagerness and exclusions); keep the CSP script hash."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/components/seo/SeoHead.astro",
+      "reason": "Wave 10 (D-W10-1): only if the head ordering for the speculation rules or view-transition meta needs it."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/lib/seo.ts",
+      "reason": "Wave 10 (D-W10-1): the `speculationRules()` function only."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/scripts/visuals/**",
+      "reason": "Wave 10 (D-W10-1): the existing wave 9 scene scripts (WP-52) live here, not under src/scripts/scene*; the seamless 3D rewrite edits them."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/pages/styleguide.astro",
+      "reason": "Wave 10 (D-W10-1): the styleguide is the demo page for new scenes (WP-52 file)."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-52/**",
+      "reason": "Wave 10 (D-W10-1): pins of the wave 9 scene contracts that the seamless 3D rewrite must update."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-60/motion.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins motion.css; follows the motion additions."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-09/seo.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins the speculation rules; follows the change."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-13/design-system.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins the motion tokens; follows the change."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/e2e/wave7/wp-45/visual-system.spec.ts",
+      "reason": "Wave 10 (D-W10-1): e2e pin of the view-transition and visual system; follows the change."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-45/css-budget.test.ts",
+      "reason": "Wave 10 (D-W10-1): the global CSS gzip budget (limit 11,500 B) may need a measured, documented raise for motion.css; no other assertion."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-45/props-baseline.json",
+      "reason": "Wave 10 (D-W10-1): component props baseline for the scene components; only the entries WP-36 changes."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/components/home/**",
+      "reason": "Wave 10 (D-W10-1): the home page narrative blocks (WP-53 files); HomeHero is a photography-lane file and is also a lane exception."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/components/program/**",
+      "reason": "Wave 10 (D-W10-1): the program page blocks (WP-53 files)."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/pages/program/who-its-for.astro",
+      "reason": "Wave 10 (D-W10-1): photography-lane page inside the program glob (W7-9 pattern); lane exception."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/components/home/HomeHero.astro",
+      "reason": "Wave 10 (D-W10-1): photography-lane file named for the lane rule (W7-9 pattern); lane exception."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/components/sales/**",
+      "reason": "Wave 10 (D-W10-1): the why-it-takes-time and who-we-work-with blocks (WP-58 files)."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/data/sales/**",
+      "reason": "Wave 10 (D-W10-1): the timeline data behind why-it-takes-time (WP-58 files); statistics stay in the register."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/content/sales/**",
+      "reason": "Wave 10 (D-W10-1): the sales literature the longevity narrative draws on (WP-58 files)."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/unit/wp-44/home.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins home copy; follows the narrative."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/unit/wp-53/**",
+      "reason": "Wave 10 (D-W10-1): pins home and program (WP-53)."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/unit/wp-01/program.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins program copy."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/unit/wp-58/**",
+      "reason": "Wave 10 (D-W10-1): pins why-it-takes-time and who-we-work-with copy."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/e2e/wave7/wp-44/**",
+      "reason": "Wave 10 (D-W10-1): e2e pins of the home page."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/e2e/wave8/wp-53/**",
+      "reason": "Wave 10 (D-W10-1): 1920 specs of home and program."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/e2e/wave8/wp-58/**",
+      "reason": "Wave 10 (D-W10-1): 1920 specs of the sales pages."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/e2e/folds.spec.ts",
+      "reason": "Wave 10 (D-W10-1): the home fold at 1440x900; a longer hero headline can move the primary button."
     }
   ],
   "notes": [
@@ -3587,7 +3948,8 @@
     "Wave 8 (issue #40, docs/wave8-contracts.md): assignments WP-60 to WP-99 carry `stage` (0 foundation, 1 authoring, 2 closing) and `pools` (P0b, P1, P2: the sets of packages that can run at the same time). `frozen_paths_wave8` lists files only the owners in `frozen_paths_wave8_owners` (WP-60) may touch; every other owner, WP-99 included, needs a registered exception that names the path. scripts/check-ownership.mjs reads it. An assignment may carry `exceptions_declared` (frozen files its owner registers an exception for when the work needs it) and `serialize_with_release` (release-lane files it edits and must order by hand with WP-30). tests/unit/wp-60/write-sets-wave8.test.ts proves the pools disjoint and clear of the frozen, wave 8 frozen, photography and release lists.",
     "Wave 9 (issue #72, milestone 1784, docs/wave9-contracts.md): assignments WP-51 to WP-57 carry `stage` (0 foundation, 1 visuals, 2 page families in parallel, 3 integration). WP-51 and WP-57 hold the governance files in sequence. Wave 9 write sets supersede the stale wp/62, wp/12b and WP-48 claims on every path they overlap (decision W9-3): WP-62 and WP-48 were narrowed here. tests/unit/wp-51/write-sets-wave9.test.ts proves the wave 9 sets disjoint (except the listed hand-offs in .astro-magazine/plans/wave9/writesets.json), clear of the superseded sets, and covered by an exception wherever they reach a frozen, wave 8 frozen, photography-lane or release-lane path.",
     "Wave 9 (W9-12, CEO positioning change 2026-10-14): WP-54 is rescoped to services, the engagement model, tools and apply (the /pricing/ route becomes the engagement-model page, no prices); WP-58 (issue #79, stage 2) holds the sales literature and the CTA labels.",
-    "Wave 9 (W9-13, sales direction adopted 2026-10-14): WP-54 owns /how-we-work/ (replacing /pricing/) and the retirement of the public packages; WP-58 owns /why-it-takes-time/, /who-we-work-with/ and its seven situation pages, the timeline brief and the C-29 wording; /apply/ stays with WP-54; the CTA labels (\"Start a readiness review\") move to WP-51. Statistics come only from .astro-magazine/plans/wave9/statistics.json (ST-01 to ST-41)."
+    "Wave 9 (W9-13, sales direction adopted 2026-10-14): WP-54 owns /how-we-work/ (replacing /pricing/) and the retirement of the public packages; WP-58 owns /why-it-takes-time/, /who-we-work-with/ and its seven situation pages, the timeline brief and the C-29 wording; /apply/ stays with WP-54; the CTA labels (\"Start a readiness review\") move to WP-51. Statistics come only from .astro-magazine/plans/wave9/statistics.json (ST-01 to ST-41).",
+    "Wave 10 (issue #81): assignments WP-32 to WP-38 with stage 0, 1 and 2 (WP-37 after WP-33 and WP-34); WP-36 `exclude` carves the chart folder out of the visuals glob for WP-35. .astro-magazine/plans/wave10/writesets.json is the map and tests/unit/wp-32/write-sets-wave10.test.ts keeps both equal. The ecosystem context (D-W10-1) is defined in docs/wave10-contracts.md."
   ],
   "lanes": {
     "$comment": "Lanes that wave 7 packages must stay out of. The static floor is read by tests/unit/wp-40/write-sets.test.ts together with the write sets of the registered WP-12* (photography) and WP-30 (release) assignments, so a registration that lands later extends the lane without an edit here.",

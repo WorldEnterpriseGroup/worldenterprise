@@ -160,7 +160,7 @@ function audit(files: Record<string, string>): Finding[] {
 test('the claims audit scans llms.txt, llms-full.txt and the Markdown twins', () => {
   assert.deepEqual(audit({ 'llms.txt': LLMS, 'llms-full.txt': LLMS, 'faq/index.html': home, 'faq.md': '# FAQ\n\nA plain answer.\n' }), []);
   const dirty = audit({ 'llms.txt': `${LLMS}\nApplying is free of charge.\n`, 'insights/x/index.html': home, 'insights/x.md': '# X\n\nWe take no equity.\n' });
-  assert.deepEqual(dirty.map((f) => f.rule).sort(), ['W7-C09-free-of-charge', 'W7-C09-no-equity']);
+  assert.deepEqual(dirty.map((f) => f.rule).sort(), ['W10-free-offer', 'W7-C09-free-of-charge', 'W7-C09-no-equity']);
   assert.match(dirty.map((f) => f.where).join('\n'), /llms\.txt/);
   assert.match(dirty.map((f) => f.where).join('\n'), /x\.md/);
 });
