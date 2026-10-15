@@ -193,10 +193,13 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/program/build/', 'StageLayout', 'WP-01'),
     row('/program/grow/', 'StageLayout', 'WP-01'),
 
-    // Apply (2), Pricing (1), Tools (1)
+    // Apply (2), How WE works (1), the retired pricing page (1), Tools (1)
     row('/apply/', 'FormLayout', 'WP-03'),
     row('/apply/thanks/', 'FormLayout', 'WP-03', { indexable: false }),
-    row('/pricing/', 'ToolLayout', 'WP-03'),
+    row('/how-we-work/', 'MarketingLayout', 'WP-54'),
+    // Wave 9 (W9-13): /how-we-work/ replaces the packages page. The site has no redirect mechanism, so /pricing/ stays as a noindex
+    // pointer for old links and bookmarks, and leaves the sitemap, search and the llms files.
+    row('/pricing/', 'ToolLayout', 'WP-03', { indexable: false }),
     row('/tools/team-composer/', 'ToolLayout', 'WP-03'),
 
     // Services (8)

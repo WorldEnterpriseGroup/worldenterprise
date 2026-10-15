@@ -2,11 +2,10 @@
 // .astro-magazine/sources/wp-43.json (sources.test.ts) and must pass the claims denylist.
 import { readFileSync } from 'node:fs';
 import { ASIDE_COPY, DECIDE_COPY, plainLine } from '../../../src/components/apply/decide-copy.ts';
-import { APPLY_FIELDS, PACKAGE_EMPTY_LABEL, PACKAGE_NOT_SURE_LABEL, PACKAGE_PRICING_NOTE, REVIEW_COPY, STAGE_OPTIONS } from '../../../src/components/apply/fields.ts';
+import { APPLY_FIELDS, CONTEXT_EMPTY_LABEL, CONTEXT_SELECTS, REVIEW_COPY, SITUATION_HEADINGS, STAGE_OPTIONS, contextOptions } from '../../../src/components/apply/fields.ts';
 import { FIT_HEADING, FITS, NOT_FIT_HEADING, NOT_FITS } from '../../../src/components/apply/fit.ts';
 import { APPLY_STEPS } from '../../../src/components/apply/steps.ts';
 import { buildReviewGroups, stepStatus } from '../../../src/components/apply/stepper.ts';
-import { packages } from '../../../src/data/packages.ts';
 
 export interface Surface {
   /** The page or component the strings appear on. */
@@ -71,6 +70,8 @@ export function surfaces(): Surface[] {
   const { read: how, fit, send, no, decide: not, cta } = DECIDE_COPY;
   const stages = STAGE_OPTIONS.filter((o) => o.value !== '').map((o) => o.label);
   const fieldStrings = Object.values(APPLY_FIELDS).flatMap((f) => [f.label, ...('hint' in f ? [f.hint] : [])]);
+  // WP-54: the answers of the readiness review's context questions, without the empty choice (listed once as a control label).
+  const answers = CONTEXT_SELECTS.flatMap((key) => contextOptions(key).filter((o) => o.value !== '').map((o) => o.label));
   return [
     {
       where: 'src/content/pages/program/how-we-decide.mdx',
@@ -94,9 +95,8 @@ export function surfaces(): Surface[] {
         ...sentencesOf(send.intro),
         ...fieldStrings,
         ...stages,
-        PACKAGE_EMPTY_LABEL,
-        ...packages.map((p) => p.name),
-        PACKAGE_NOT_SURE_LABEL,
+        CONTEXT_EMPTY_LABEL,
+        ...answers,
         no.heading,
         ...no.lines,
         plainLine(no.more),
@@ -123,7 +123,7 @@ export function surfaces(): Surface[] {
         ...sentencesOf(REVIEW_COPY.intro),
         REVIEW_COPY.title,
         REVIEW_COPY.empty,
-        ...sentencesOf(PACKAGE_PRICING_NOTE.before + PACKAGE_PRICING_NOTE.link.text + PACKAGE_PRICING_NOTE.after),
+        ...Object.values(SITUATION_HEADINGS).flatMap((heading) => sentencesOf(heading ?? '')),
       ],
     },
   ];

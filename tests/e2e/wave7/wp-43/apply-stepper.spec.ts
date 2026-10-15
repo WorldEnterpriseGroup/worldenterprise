@@ -3,7 +3,7 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import { AXE_TAGS, watch } from '../../support/page-guards.ts';
 import { isBuilt } from '../../support/routes.ts';
 
-// WP-43: the Apply stepper. One spec, run at 1440 and at 390 by the wave 7 projects. It runs against the default build, where the intake
+// WP-43: the Apply stepper, with the readiness review questions of WP-54 (W9-13). One spec, run at 1440 and at 390 by the wave 7 projects. It runs against the default build, where the intake
 // endpoint is unprovisioned and the form is in `disabled` mode: the stepper must work there, and the submit button must stay disabled.
 // Nothing here sends a request; the endpoint-mode flows are tests/e2e/forms.spec.ts.
 
@@ -45,9 +45,9 @@ async function goNext(page: Page, toStatus: string): Promise<void> {
 /** Walks from step 1 to the review with valid answers. */
 async function walkToReview(page: Page): Promise<void> {
   await fillStepOne(page);
-  await goNext(page, 'Step 2 of 4: About the idea');
+  await goNext(page, 'Step 2 of 4: About the company');
   await fillStepTwo(page);
-  await goNext(page, 'Step 3 of 4: Team and package');
+  await goNext(page, 'Step 3 of 4: Team and horizon');
   await goNext(page, 'Step 4 of 4: Review');
 }
 
@@ -70,8 +70,8 @@ test.describe('with JavaScript', () => {
     await expect(form(page).locator('[data-stepper-item]')).toHaveCount(4);
     await expect(form(page).locator('[data-stepper-item][aria-current="step"]')).toHaveCount(1);
 
-    for (const id of ['#apply-name', '#apply-email', '#apply-company']) await expect(form(page).locator(id)).toBeVisible();
-    for (const id of ['#apply-stage', '#apply-message', '#apply-seats', '#apply-package', '[name="consent"]']) await expect(form(page).locator(id)).toBeHidden();
+    for (const id of ['#apply-name', '#apply-email', '#apply-company', '#apply-situation']) await expect(form(page).locator(id)).toBeVisible();
+    for (const id of ['#apply-stage', '#apply-startedMonth', '#apply-message', '#apply-horizon', '#apply-seats', '[name="consent"]']) await expect(form(page).locator(id)).toBeHidden();
     await expect(next(page)).toBeVisible();
     await expect(back(page)).toBeHidden();
     await expect(form(page).locator('[data-submit]')).toBeHidden();
@@ -111,8 +111,8 @@ test.describe('with JavaScript', () => {
     await page.keyboard.type(FOUNDER.email);
     // Enter in a text field of an earlier step means Next.
     await page.keyboard.press('Enter');
-    await expect(status(page)).toHaveText('Step 2 of 4: About the idea');
-    await expect(heading(page, 'About the idea')).toBeFocused();
+    await expect(status(page)).toHaveText('Step 2 of 4: About the company');
+    await expect(heading(page, 'About the company')).toBeFocused();
 
     await tabTo(page, form(page).locator('#apply-stage'));
     await page.keyboard.press('ArrowDown');
@@ -121,15 +121,15 @@ test.describe('with JavaScript', () => {
     await page.keyboard.type(FOUNDER.idea);
     // Enter in a textarea is a new line, not Next.
     await page.keyboard.press('Enter');
-    await expect(status(page)).toHaveText('Step 2 of 4: About the idea');
+    await expect(status(page)).toHaveText('Step 2 of 4: About the company');
     await tabTo(page, next(page));
     await page.keyboard.press('Enter');
-    await expect(status(page)).toHaveText('Step 3 of 4: Team and package');
-    await expect(heading(page, 'Team and package')).toBeFocused();
+    await expect(status(page)).toHaveText('Step 3 of 4: Team and horizon');
+    await expect(heading(page, 'Team and horizon')).toBeFocused();
 
-    await tabTo(page, form(page).locator('#apply-package'));
+    await tabTo(page, form(page).locator('#apply-horizon'));
     await page.keyboard.press('ArrowDown');
-    await expect(form(page).locator('#apply-package')).toHaveValue('spark');
+    await expect(form(page).locator('#apply-horizon')).toHaveValue('under-one');
     await tabTo(page, next(page));
     await page.keyboard.press('Space');
     await expect(status(page)).toHaveText('Step 4 of 4: Review');
@@ -140,13 +140,13 @@ test.describe('with JavaScript', () => {
     await page.keyboard.press('Space');
     await expect(consent).toBeChecked();
     await expect(form(page).locator('[data-review-list]')).toContainText(FOUNDER.email);
-    await expect(form(page).locator('[data-review-list]')).toContainText('Spark');
+    await expect(form(page).locator('[data-review-list]')).toContainText('Under a year');
 
     // And back again from the keyboard: Back keeps the answers.
     await tabTo(page, back(page), 'Tab', 6);
     await page.keyboard.press('Enter');
-    await expect(status(page)).toHaveText('Step 3 of 4: Team and package');
-    await expect(form(page).locator('#apply-package')).toHaveValue('spark');
+    await expect(status(page)).toHaveText('Step 3 of 4: Team and horizon');
+    await expect(form(page).locator('#apply-horizon')).toHaveValue('under-one');
   });
 
   test('the review lists what was entered, Change returns to that step with the answer kept, and Back keeps every answer', async ({ page }) => {
@@ -161,8 +161,8 @@ test.describe('with JavaScript', () => {
     await expect(form(page).locator('[name="consent"]')).toBeVisible();
 
     await form(page).locator('[data-review-change="idea"]').click();
-    await expect(status(page)).toHaveText('Step 2 of 4: About the idea');
-    await expect(heading(page, 'About the idea')).toBeFocused();
+    await expect(status(page)).toHaveText('Step 2 of 4: About the company');
+    await expect(heading(page, 'About the company')).toBeFocused();
     await expect(form(page).locator('#apply-stage')).toHaveValue('validating');
     await expect(form(page).locator('#apply-message')).toHaveValue(FOUNDER.idea);
     await back(page).click();
@@ -174,44 +174,57 @@ test.describe('with JavaScript', () => {
     await open(page);
     await expect(status(page)).toHaveAttribute('aria-live', 'polite');
     await fillStepOne(page);
-    await goNext(page, 'Step 2 of 4: About the idea');
-    await expect(form(page).locator('[data-stepper-item][aria-current="step"]')).toContainText('About the idea');
+    await goNext(page, 'Step 2 of 4: About the company');
+    await expect(form(page).locator('[data-stepper-item][aria-current="step"]')).toContainText('About the company');
     await back(page).click();
     await expect(status(page)).toHaveText('Step 1 of 4: About you');
   });
 
-  test('the package field is script-only, has no name, lists the four packages and Not sure, and shows what each is sized for', async ({ page }) => {
+  test('the context questions are script-only, have no name, list their answers, and reach the review by label', async ({ page }) => {
     await open(page);
+    const situation = form(page).locator('#apply-situation');
+    await expect(situation).toBeVisible();
+    expect(await situation.getAttribute('name'), 'a nameless select cannot be posted by the browser').toBeNull();
+    expect(await situation.locator('option').evaluateAll((options) => options.map((o) => (o as HTMLOptionElement).value))).toEqual(['', 'industry-insider', 'encore', 'repeat-builder', 'global', 'under-backed', 'next-gen', 'restart', 'none']);
+    await situation.selectOption('repeat-builder');
     await fillStepOne(page);
-    await goNext(page, 'Step 2 of 4: About the idea');
+    await goNext(page, 'Step 2 of 4: About the company');
     await fillStepTwo(page);
-    await goNext(page, 'Step 3 of 4: Team and package');
-    const select = form(page).locator('#apply-package');
-    await expect(select).toBeVisible();
-    expect(await select.getAttribute('name'), 'a nameless select cannot be posted by the browser').toBeNull();
-    expect(await select.locator('option').evaluateAll((options) => options.map((o) => (o as HTMLOptionElement).value))).toEqual(['', 'spark', 'launch', 'accelerate', 'studio', 'not-sure']);
-    await select.selectOption('accelerate');
-    await expect(form(page).locator('[data-package-fit]')).toContainText('Accelerate is sized for:');
+    await form(page).locator('#apply-industryYears').selectOption('ten-plus');
+    await goNext(page, 'Step 3 of 4: Team and horizon');
+    for (const id of ['#apply-teamFunding', '#apply-horizon', '#apply-source']) {
+      await expect(form(page).locator(id)).toBeVisible();
+      expect(await form(page).locator(id).getAttribute('name')).toBeNull();
+    }
+    await form(page).locator('#apply-horizon').selectOption('three-to-five');
     await goNext(page, 'Step 4 of 4: Review');
-    await expect(form(page).locator('[data-review-list]')).toContainText('Accelerate');
+    const review = form(page).locator('[data-review-list]');
+    await expect(review).toContainText('Building my second (or later) company');
+    await expect(review).toContainText('Ten years or more');
+    await expect(review).toContainText('Three to five years');
+    await expect(form(page).locator('select:not([name])').filter({ hasText: /Spark|Launch|Accelerate|Studio/ })).toHaveCount(0);
   });
 
-  for (const [query, expected] of [
-    ['?package=launch', 'launch'],
-    ['?package=Studio', 'studio'],
-    ['?package=not-sure', 'not-sure'],
-    ['?package=gold', ''],
-    ['?package=spark&package=launch', ''],
-    ['?package=', ''],
+  for (const [query, expected, heading] of [
+    ['?situation=encore', 'encore', 'Plan a company that fits the next chapter.'],
+    ['?situation=Global', 'global', 'Build here, with a team that knows the ground.'],
+    ['?situation=next-gen', 'next-gen', null],
+    ['?situation=none', '', null],
+    ['?situation=gold', '', null],
+    ['?situation=encore&situation=global', '', null],
+    ['?situation=', '', null],
+    ['?package=launch', '', null],
   ] as const) {
-    test(`${ROUTE}${query} preselects "${expected || 'nothing'}" and never breaks the page`, async ({ page, baseURL }) => {
+    test(`${ROUTE}${query} preselects "${expected || 'nothing'}", shows ${heading === null ? 'no situation heading' : 'its heading'}, and never breaks the page`, async ({ page, baseURL }) => {
       const seen = watch(page, baseURL ?? '');
       await open(page, query);
-      await fillStepOne(page);
-      await goNext(page, 'Step 2 of 4: About the idea');
-      await fillStepTwo(page);
-      await goNext(page, 'Step 3 of 4: Team and package');
-      await expect(form(page).locator('#apply-package')).toHaveValue(expected);
+      await expect(form(page).locator('#apply-situation')).toHaveValue(expected);
+      const shown = form(page).locator('[data-situation-heading]:visible');
+      if (heading === null) await expect(shown).toHaveCount(0);
+      else {
+        await expect(shown).toHaveCount(1);
+        await expect(shown).toHaveText(heading);
+      }
       expect(seen.pageErrors).toEqual([]);
     });
   }
@@ -250,9 +263,9 @@ test.describe('with JavaScript', () => {
     await form(page).locator('#apply-name').fill(FOUNDER.name);
     await form(page).locator('#apply-email').fill(FOUNDER.email);
     await form(page).locator('#apply-email').press('Enter');
-    await expect(status(page)).toHaveText('Step 2 of 4: About the idea');
+    await expect(status(page)).toHaveText('Step 2 of 4: About the company');
     await fillStepTwo(page);
-    await goNext(page, 'Step 3 of 4: Team and package');
+    await goNext(page, 'Step 3 of 4: Team and horizon');
     await goNext(page, 'Step 4 of 4: Review');
     const submit = form(page).locator('[data-submit]');
     await expect(submit).toBeVisible();
@@ -273,10 +286,10 @@ test.describe('with JavaScript', () => {
     };
     await scan('step 1');
     await fillStepOne(page);
-    await goNext(page, 'Step 2 of 4: About the idea');
+    await goNext(page, 'Step 2 of 4: About the company');
     await scan('step 2');
     await fillStepTwo(page);
-    await goNext(page, 'Step 3 of 4: Team and package');
+    await goNext(page, 'Step 3 of 4: Team and horizon');
     await scan('step 3');
     await goNext(page, 'Step 4 of 4: Review');
     await scan('review');
@@ -294,7 +307,7 @@ test.describe('with JavaScript', () => {
 test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
 
-  test('every fieldset is on the page, the stepper controls and the package select are not, and the form is still one POST form', async ({ page }) => {
+  test('every fieldset is on the page, the stepper controls and the context questions are not, and the form is still one POST form', async ({ page }) => {
     await page.goto(ROUTE);
     const f = form(page);
     await expect(f).toHaveAttribute('method', 'post');
@@ -304,8 +317,11 @@ test.describe('without JavaScript', () => {
     await expect(f.locator('[data-stepper]')).toBeHidden();
     await expect(next(page)).toBeHidden();
     await expect(back(page)).toBeHidden();
-    await expect(f.locator('[data-package-field]')).toBeHidden();
-    await expect(f.locator('[name="package"]')).toHaveCount(0);
+    const wrappers = f.locator('[data-context-field]');
+    expect(await wrappers.count()).toBeGreaterThan(0);
+    for (const wrapper of await wrappers.all()) await expect(wrapper).toBeHidden();
+    await expect(f.locator('[name="package"], [name="situation"], [name="startedMonth"], [name="industryYears"], [name="teamFunding"], [name="horizon"], [name="source"]')).toHaveCount(0);
+    await expect(f.locator('[data-situation-heading]:visible')).toHaveCount(0);
     await expect(f.locator('[data-review]')).toBeHidden();
     await expect(f.locator('[data-submit]')).toBeVisible();
     const mode = await f.getAttribute('data-mode');
@@ -368,7 +384,7 @@ for (const viewport of VIEWPORTS) {
       await sweep('step 1 backward', 'Shift+Tab');
       await fillStepOne(page);
       await next(page).click();
-      await expect(status(page)).toHaveText('Step 2 of 4: About the idea');
+      await expect(status(page)).toHaveText('Step 2 of 4: About the company');
       await sweep('step 2 forward', 'Tab');
       await sweep('step 2 backward', 'Shift+Tab');
       await fillStepTwo(page);

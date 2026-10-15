@@ -5,7 +5,6 @@ import type { RenderedTwin } from '../../lib/markdown-twins.ts';
 import { planLlmsFull } from '../../lib/llms.ts';
 import type { LlmsInput, LlmsPage, LlmsServiceLine } from '../../lib/llms.ts';
 import { DESK_DEFINITIONS } from '../../data/desks.ts';
-import { packages } from '../../data/packages.ts';
 import { site } from '../../data/site.ts';
 import { getCollection } from 'astro:content';
 import { deskGroups, familyGroups, fullTiers } from './llms-plan.ts';
@@ -14,7 +13,7 @@ import { getTwins } from './twin-sources.ts';
 
 /**
  * Loads the inputs of /llms.txt and /llms-full.txt: the live routes, the collections and the twins. The text itself is built by
- * src/lib/llms.ts from this data, so a change to packages.ts, site.ts, a page title or the route state changes both files.
+ * src/lib/llms.ts from this data, so a change to site.ts, a service line, a page title or the route state changes both files.
  */
 
 interface KeyPageSpec {
@@ -33,7 +32,7 @@ const KEY_PAGES: readonly KeyPageSpec[] = [
   { route: '/program/how-it-works/', entry: 'program/how-it-works' },
   { route: '/program/dedicated-teams/', entry: 'program/dedicated-teams' },
   { route: '/services/', entry: 'services/index' },
-  { route: '/pricing/', entry: 'pricing/pricing' },
+  { route: '/how-we-work/', entry: 'how-we-work/how-we-work' },
   { route: '/program/who-its-for/', entry: 'program/who-its-for' },
   { route: '/apply/', entry: 'apply/apply' },
   { route: '/faq/', entry: null, title: 'FAQ', description: 'Short, plain answers about what a seat is, how the remote model works, what WE does not do, and how to apply.' },
@@ -115,7 +114,6 @@ export async function loadLlms(): Promise<LlmsLoad> {
 
   const input: LlmsInput = {
     site: { name: site.name, legalName: site.legalName, tagline: site.tagline, description: site.description, origin: site.origin },
-    packages: packages.map((p) => ({ name: p.name, stageFit: p.stageFit, depth: p.depth })),
     serviceLines,
     keyPages: present(KEY_PAGES.map(resolve)),
     desks: deskGroups(state.isLive),

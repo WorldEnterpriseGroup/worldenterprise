@@ -70,8 +70,8 @@ test('stripFrontmatter and absolutizeLinks', () => {
 });
 
 test('requiredStatements repeats the no-funding sentence and the disclaimer where the rules require them', () => {
-  const facts = requiredStatements('/pricing/', 'Plain body.', REQUIRED);
-  assert.ok(facts.includes('WE makes no promise of funding.'), 'pricing carries the no-funding sentence');
+  const facts = requiredStatements('/how-we-work/', 'Plain body.', REQUIRED);
+  assert.ok(facts.includes('WE makes no promise of funding.'), 'how-we-work carries the no-funding sentence');
   const named = requiredStatements('/insights/x/', 'Our investor introductions are optional.', REQUIRED);
   assert.ok(named.includes(INTRODUCTIONS_DISCLAIMER), 'a body that names the add-on gets the disclaimer');
   assert.deepEqual(requiredStatements('/insights/x/', `A body that has it. ${INTRODUCTIONS_DISCLAIMER}`, REQUIRED), [], 'a statement already in the body is not repeated');

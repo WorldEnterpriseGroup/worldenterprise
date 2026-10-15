@@ -455,8 +455,8 @@ function selfTest() {
     ['a denial of peers is not first-person peer wording', () => !hit('<p>WE has no mentors and runs no cohort.</p>').includes('W8-C13-own-peers')],
     ['the C-21 phrase is allowed on the dedicated-teams page only', () => !hit('<h2>Two companies, one objective</h2>', '/program/dedicated-teams/').includes('C-21-phrase') && hit('<h2>Two companies, one objective</h2>', '/pricing/').includes('C-21-phrase')],
     ['UK spelling is caught', () => hit('<p>A programme for your organisation.</p>').includes('Q-spelling')],
-    ['a missing disclaimer is caught', () => disclaimer !== undefined && missing('/pricing/', '<main><p>Pricing.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
-    ['a present disclaimer passes', () => !missing('/pricing/', '<main><p>WE makes no promise of funding. This helps.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
+    ['a missing disclaimer is caught', () => disclaimer !== undefined && missing('/how-we-work/', '<main><p>Pricing.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
+    ['a present disclaimer passes', () => !missing('/how-we-work/', '<main><p>WE makes no promise of funding. This helps.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
     ['the photo line is not required without a generated image', () => !missing('/about/', '<footer>none</footer>', false).includes('R-photo-disclosure')],
     ['the photo line is required with a generated image', () => missing('/about/', '<footer>none</footer>', true).includes('R-photo-disclosure')],
     ['the photo line passes when present', () => !missing('/about/', `<footer><p>${photoLine}</p></footer>`, true).includes('R-photo-disclosure')],
@@ -491,10 +491,10 @@ function selfTest() {
       'a Markdown twin does not stand in for its page in a required text',
       () => {
         const pages = [
-          { route: '/pricing/', html: '<main><p>Pricing.</p></main>', isHtml: true },
-          { route: '/pricing/', html: 'WE makes no promise of funding.', isHtml: false, plain: true },
+          { route: '/how-we-work/', html: '<main><p>Pricing.</p></main>', isHtml: true },
+          { route: '/how-we-work/', html: 'WE makes no promise of funding.', isHtml: false, plain: true },
         ];
-        return checkRequired(pages, set.required.filter((r) => r.id === 'R-C05-no-funding-disclaimer'), {}).some((f) => f.route === '/pricing/');
+        return checkRequired(pages, set.required.filter((r) => r.id === 'R-C05-no-funding-disclaimer'), {}).some((f) => f.route === '/how-we-work/');
       },
     ],
     ['a Markdown twin stands for its page route', () => textRouteOf('insights/x.md') === '/insights/x/' && textRouteOf('index.md') === '/' && textRouteOf('llms.txt') === '/llms.txt'],

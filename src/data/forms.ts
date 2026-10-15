@@ -2,7 +2,6 @@ import { readEnv, readFlag } from '../lib/env.ts';
 import { INTAKE_ENDPOINT_VAR, NEWSLETTER_ENDPOINT_VAR, parseEndpoint, resolveEndpoint } from '../lib/endpoints.ts';
 import { AUDIENCES, BRIEFS } from './families.ts';
 import type { Audience } from './families.ts';
-import { PACKAGE_NOT_SURE, getPackage, isPackageId } from './packages.ts';
 import { site } from './site.ts';
 
 /** Kept here for the callers that import it from the forms module. The parser itself lives in src/lib/endpoints.ts. */
@@ -172,9 +171,84 @@ export const FIELD_KEYS = [
 ] as const;
 export type FieldKey = (typeof FIELD_KEYS)[number];
 
-/** Fields that can carry an error message: the request fields and the apply page's package choice (which is never posted). */
-export type FieldName = FieldKey | 'package';
-export const FIELD_NAMES: readonly FieldName[] = [...FIELD_KEYS, 'package'];
+/**
+ * The readiness review's context questions (SALES.md 6.4, the interim with no contract change). They are never keys of the request body:
+ * the intake schema is closed (docs/forms-contract.md section 3), so composeMessage() carries each answer as one labelled line of `message`.
+ * The controls have no `name`, so a no-JavaScript post never carries them either.
+ */
+export const APPLY_CONTEXT_KEYS = ['situation', 'startedMonth', 'industryYears', 'teamFunding', 'horizon', 'source'] as const;
+export type ApplyContextKey = (typeof APPLY_CONTEXT_KEYS)[number];
+
+export interface ContextChoice {
+  readonly value: string;
+  readonly label: string;
+}
+
+/** The situations of SALES.md 6.3 and 6.4. The ids are the `?situation=` values the situation pages link with. Situation-based only. */
+export const SITUATIONS = [
+  { value: 'industry-insider', label: 'Leaving an industry to build in it' },
+  { value: 'encore', label: 'Starting later in my career' },
+  { value: 'repeat-builder', label: 'Building my second (or later) company' },
+  { value: 'global', label: 'Building a U.S. company from abroad or new to the U.S.' },
+  { value: 'under-backed', label: 'Running a capable business that needs more capacity' },
+  { value: 'next-gen', label: 'Early in my career' },
+  { value: 'restart', label: 'Starting after a job change or disruption' },
+  { value: 'none', label: 'None of these' },
+] as const satisfies readonly ContextChoice[];
+export type SituationId = (typeof SITUATIONS)[number]['value'];
+
+/** Each context question: the label of its line in `message`, and its answers (null for the free start date). */
+export const APPLY_CONTEXT: Readonly<Record<ApplyContextKey, { readonly line: string; readonly choices: readonly ContextChoice[] | null }>> = {
+  situation: { line: 'Situation', choices: SITUATIONS },
+  startedMonth: { line: 'Company started', choices: null },
+  industryYears: {
+    line: 'Years in the industry before starting',
+    choices: [
+      { value: 'none', label: 'None' },
+      { value: 'one-to-two', label: 'One or two years' },
+      { value: 'three-to-nine', label: 'Three to nine years' },
+      { value: 'ten-plus', label: 'Ten years or more' },
+    ],
+  },
+  teamFunding: {
+    line: 'How the company would pay for a team',
+    choices: [
+      { value: 'revenue', label: 'Revenue' },
+      { value: 'savings', label: 'Savings' },
+      { value: 'outside-capital', label: 'Outside capital' },
+      { value: 'corporate-budget', label: 'A corporate budget' },
+      { value: 'not-sure', label: 'Not sure yet' },
+    ],
+  },
+  horizon: {
+    line: 'Expected build horizon',
+    choices: [
+      { value: 'under-one', label: 'Under a year' },
+      { value: 'one-to-three', label: 'One to three years' },
+      { value: 'three-to-five', label: 'Three to five years' },
+      { value: 'longer', label: 'Longer' },
+      { value: 'not-sure', label: 'Not sure' },
+    ],
+  },
+  source: {
+    line: 'Heard about WE through',
+    choices: [
+      { value: 'professional-referral', label: 'Referral from an accountant or attorney' },
+      { value: 'adviser', label: 'Another adviser or center' },
+      { value: 'linkedin', label: 'LinkedIn' },
+      { value: 'search', label: 'Search' },
+      { value: 'event', label: 'An event' },
+      { value: 'other', label: 'Other' },
+    ],
+  },
+};
+
+/** The longest start date the free field accepts. A month control sends `YYYY-MM`; a browser without one sends what was typed. */
+export const STARTED_MONTH_LIMIT = 40;
+
+/** Fields that can carry an error message: the request fields and the readiness review's context questions (which are never posted). */
+export type FieldName = FieldKey | ApplyContextKey;
+export const FIELD_NAMES: readonly FieldName[] = [...FIELD_KEYS, ...APPLY_CONTEXT_KEYS];
 
 /** R required, O optional, - must be empty. */
 export type Presence = 'R' | 'O' | '-';
@@ -273,10 +347,15 @@ export interface FormValues {
   /** Honeypot. Must stay empty. */
   readonly website: string;
   /**
-   * Apply only. A package id, `not-sure` or empty. It is never a key of the payload: the intake schema is closed
-   * (docs/forms-contract.md section 3), so buildPayload carries it as one line of `message`.
+   * Apply only: the readiness review's context answers (APPLY_CONTEXT). None is a key of the payload: the intake schema is closed
+   * (docs/forms-contract.md section 3), so buildPayload carries each as one labelled line of `message`.
    */
-  readonly package?: string;
+  readonly situation?: string;
+  readonly startedMonth?: string;
+  readonly industryYears?: string;
+  readonly teamFunding?: string;
+  readonly horizon?: string;
+  readonly source?: string;
   readonly requestId?: string;
   readonly audience?: string;
   readonly briefId?: string;
@@ -298,21 +377,37 @@ export const UUID_V4_SOURCE = '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a
 const UUID_V4 = new RegExp(UUID_V4_SOURCE, 'i');
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/** The line of `message` that carries the package choice, or '' when none was made (docs/forms-contract.md section 3). */
-export function packageNote(value: string | undefined): string {
-  if (value === undefined || value === '') return '';
-  if (value === PACKAGE_NOT_SURE) return 'Package interest: not sure yet';
-  return isPackageId(value) ? `Package interest: ${getPackage(value).name}` : '';
+/** The answers of the context questions, for composeMessage(). Any key may be missing. */
+export type ApplyContext = Partial<Record<ApplyContextKey, string>>;
+
+/** The label of a choice, or '' for no choice and for a value the list does not hold. */
+export function contextChoiceLabel(key: ApplyContextKey, value: string | undefined): string {
+  const choices = APPLY_CONTEXT[key].choices;
+  const wanted = (value ?? '').trim();
+  if (wanted === '' || choices === null) return '';
+  return choices.find((choice) => choice.value === wanted)?.label ?? '';
+}
+
+/** The labelled lines of `message` that carry the context answers, in question order. An unanswered or unknown answer adds no line. */
+export function contextLines(context: ApplyContext | undefined): string[] {
+  if (context === undefined) return [];
+  const lines: string[] = [];
+  for (const key of APPLY_CONTEXT_KEYS) {
+    const raw = context[key];
+    const answer = APPLY_CONTEXT[key].choices === null ? normaliseText(raw ?? '').replace(/\s+/g, ' ') : contextChoiceLabel(key, raw);
+    if (answer !== '') lines.push(`${APPLY_CONTEXT[key].line}: ${answer}`);
+  }
+  return lines;
 }
 
 export function normaliseText(value: string): string {
   return value.replace(/\r\n?/g, '\n').trim();
 }
 
-/** The message as sent: the visitor's text, then the package line after a blank line. */
-export function composeMessage(message: string, packageValue: string | undefined): string {
+/** The message as sent: the visitor's text, then the context lines after a blank line. */
+export function composeMessage(message: string, context: ApplyContext | undefined): string {
   const text = normaliseText(message);
-  const note = packageNote(packageValue);
+  const note = contextLines(context).join('\n');
   if (note === '') return text;
   return text === '' ? note : `${text}\n\n${note}`;
 }
@@ -375,9 +470,14 @@ export function validate(kind: FormKind, values: FormValues): FieldError[] {
   if (present('seats') && text('seats').length > LIMITS.seats) push('seats', tooLong('The team description', LIMITS.seats));
 
   if (kind === 'apply') {
-    const choice = values.package ?? '';
-    if (choice !== '' && choice !== PACKAGE_NOT_SURE && !isPackageId(choice)) {
-      push('package', 'Choose one of the packages in the list, or choose Not sure yet.');
+    for (const key of APPLY_CONTEXT_KEYS) {
+      const answer = (values[key] ?? '').trim();
+      if (answer === '') continue;
+      if (APPLY_CONTEXT[key].choices === null) {
+        if (answer.length > STARTED_MONTH_LIMIT) push(key, tooLong('The start date', STARTED_MONTH_LIMIT));
+      } else if (contextChoiceLabel(key, answer) === '') {
+        push(key, 'Choose one of the answers in the list, or leave it empty.');
+      }
     }
   }
 
@@ -385,7 +485,7 @@ export function validate(kind: FormKind, values: FormValues): FieldError[] {
 
   if (present('message')) {
     if (rule.message === 'R' && text('message') === '') push('message', 'Write a short message so WE knows how to help.');
-    const sent = kind === 'apply' ? composeMessage(values.message, values.package) : normaliseText(values.message);
+    const sent = kind === 'apply' ? composeMessage(values.message, values) : normaliseText(values.message);
     if (sent.length > LIMITS.message) push('message', tooLong('Your message', LIMITS.message));
   }
 

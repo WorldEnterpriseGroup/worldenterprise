@@ -4,8 +4,9 @@ import type { RenderedTwin } from './markdown-twins.ts';
 
 /**
  * /llms.txt and /llms-full.txt (docs/wave7-contracts.md, section 3). Both are generated from data passed in by the endpoints,
- * never typed by hand: the site identity (site.ts), the packages (packages.ts), the live routes (route state) and the Markdown
- * twins. This module is pure, free of Astro globals, so a unit test can change a package name and see both files change.
+ * never typed by hand: the site identity (site.ts), the service lines, the live routes (route state) and the Markdown twins. This
+ * module is pure, free of Astro globals, so a unit test can change a service line and see both files change. WE publishes no packages
+ * and no prices (WP-54), so neither file names one.
  */
 
 /** The no-funding sentence, required in both files by rule R-W7-C05-no-funding-disclaimer. */
@@ -29,12 +30,6 @@ export interface LlmsSite {
   readonly tagline: string;
   readonly description: string;
   readonly origin: string;
-}
-
-export interface LlmsPackage {
-  readonly name: string;
-  readonly stageFit: string;
-  readonly depth: string;
 }
 
 export interface LlmsServiceLine {
@@ -61,7 +56,6 @@ export interface LlmsGroup {
 
 export interface LlmsInput {
   readonly site: LlmsSite;
-  readonly packages: readonly LlmsPackage[];
   readonly serviceLines: readonly LlmsServiceLine[];
   /** The pages WE points a reader to first. Live routes only; the caller filters. */
   readonly keyPages: readonly LlmsPage[];
@@ -79,8 +73,8 @@ export interface LlmsInput {
   readonly contactRoute: string | null;
   readonly applyRoute: string | null;
   /**
-   * What /about/facts/ says about the paid investor add-on: that it is separate from the packages, the flat-fee sentence and the
-   * verbatim disclaimer. Taken from the facts page so the wording lives in one reviewed place.
+   * What /about/facts/ says about the paid investor add-on: that it is a separate service, the flat-fee sentence and the verbatim
+   * disclaimer. Taken from the facts page so the wording lives in one reviewed place.
    */
   readonly addOnStatement: string;
   /** The FAQ sentence about intake calendars and demo days, verbatim: the denylist allows its wording on the machine files. */
@@ -132,23 +126,23 @@ function limitsSection(input: LlmsInput): string {
 }
 
 function commercialSection(input: LlmsInput): string {
-  const ask = input.contactRoute === null ? 'Ask WE directly for the current rate.' : `Ask for the current rate through the contact form: ${buildAbsolute(input.contactRoute, input.site.origin)}`;
+  const ask = input.contactRoute === null ? 'Ask WE directly about current terms.' : `Ask about current terms through the contact form: ${buildAbsolute(input.contactRoute, input.site.origin)}`;
   return [
     '## Published commercial facts',
     '',
     list([
-      '- The seat is the unit of work. A seat is one dedicated place on a founder’s team, filled by a person who works offshore and works only on that company. WE steers the team and manages the subcontractors who fill the seats.',
-      `- WE offers ${input.packages.length} packages: ${input.packages.map((p) => p.name).join(', ')}. Each is a pre-configured seat plan sized for a company stage and covers all ${input.serviceLines.length} service lines at a different depth. A custom seat plan is the alternative.`,
-      '- Seats scale up or down by notice. The written agreement sets out how.',
-      `- Amounts are not published. ${ask}`,
-      '- The paid add-on named in the section above is separate from the packages.',
+      '- WE is a long-horizon business incubation and consulting firm. A founder brings WE on once, as a long-term partner, and WE steers a dedicated team that works only on that company.',
+      '- There is no intake calendar. A company can start in any month, and the work is paced to the real business clock, with an Orbit Review every year.',
+      '- WE is paid in cash, monthly, for the work of the team. WE is paid for work already done, never in advance of it.',
+      '- Every term is in the written agreement, which the founder reviews with their own counsel. The agreement also sets how WE steps down, by notice.',
+      `- No packages and no amounts are published. ${ask}`,
+      '- The paid add-on named in the section above is a separate service.',
     ]),
   ].join('\n');
 }
 
 function offersSection(input: LlmsInput): string {
   const lines = input.serviceLines.map((s) => `- [${s.title}](${buildAbsolute(s.route, input.site.origin)}): ${s.summary}`);
-  const packages = input.packages.map((p) => `- ${p.name} (depth: ${p.depth}). Sized for: ${p.stageFit}`);
   return [
     `## What WE offers`,
     '',
@@ -156,9 +150,7 @@ function offersSection(input: LlmsInput): string {
     '',
     list(lines),
     '',
-    `${input.packages.length} packages, named for the stage a company is at:`,
-    '',
-    list(packages),
+    'The team is shaped to the company in a readiness review, not chosen from a list of packages.',
   ].join('\n');
 }
 
@@ -167,7 +159,7 @@ function whatSection(input: LlmsInput): string {
   return [
     `## What WE is`,
     '',
-    `${site.name} is ${site.tagline.charAt(0).toLowerCase()}${site.tagline.slice(1)}, run by ${site.legalName}. The work is fully remote and there are no physical offices. Dedicated team seats, steered by WE, take a founder from a first idea toward first customers and the evidence an investor asks for.`,
+    `${site.name} is ${site.tagline.charAt(0).toLowerCase()}${site.tagline.slice(1)}, run by ${site.legalName}. The work is fully remote and there are no physical offices. A dedicated team, steered by WE, takes a founder from a first idea toward first customers and a company that runs without its founder in its daily work.`,
   ].join('\n');
 }
 

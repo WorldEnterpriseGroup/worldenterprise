@@ -15,12 +15,12 @@ const source = (path: string): string => readFileSync(new URL(`../../../${path}`
 const code = (path: string): string => source(path).replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');
 
 test('there are four steps in the order the plan names them, ending with the review', () => {
-  assert.deepEqual(APPLY_STEPS.map((s) => s.title), ['About you', 'About the idea', 'Team and package', 'Review']);
+  assert.deepEqual(APPLY_STEPS.map((s) => s.title), ['About you', 'About the company', 'Team and horizon', 'Review']);
   assert.deepEqual(APPLY_STEPS.map((s) => s.id), ['you', 'idea', 'team', 'review']);
 });
 
 test('every validated field of the apply form sits on exactly one step', () => {
-  const fields: FieldName[] = ['name', 'email', 'company', 'stage', 'message', 'seats', 'package', 'consent'];
+  const fields: FieldName[] = ['name', 'email', 'company', 'situation', 'stage', 'startedMonth', 'industryYears', 'message', 'teamFunding', 'horizon', 'seats', 'source', 'consent'];
   for (const field of fields) {
     const owners = APPLY_STEPS.filter((s) => s.fields.includes(field));
     assert.equal(owners.length, 1, `${field} is on ${owners.length} steps`);
@@ -31,7 +31,7 @@ test('every validated field of the apply form sits on exactly one step', () => {
 
 test('a failed submit goes to the earliest step that holds an error, and to none when no error is on a step', () => {
   assert.equal(stepForErrors([{ field: 'stage', message: 'x' }, { field: 'name', message: 'x' }]), 0);
-  assert.equal(stepForErrors([{ field: 'consent', message: 'x' }, { field: 'package', message: 'x' }]), 2);
+  assert.equal(stepForErrors([{ field: 'consent', message: 'x' }, { field: 'horizon', message: 'x' }]), 2);
   assert.equal(stepForErrors([{ field: 'topic', message: 'x' }]), null);
   assert.equal(stepForErrors([]), null);
   assert.equal(firstStepWithErrors(['message']), 1);
@@ -44,19 +44,23 @@ test('the status line counts steps from one and rejects a step that does not exi
   assert.throws(() => stepStatus(-1), RangeError);
 });
 
-test('the review shows what was entered, says "Not given" for the rest, and names the package or Not sure', () => {
+test('the review shows what was entered, says "Not given" for the rest, and names each context answer by its label', () => {
   const blank = buildReviewGroups(empty);
   assert.deepEqual(blank.map((g) => g.step), ['you', 'idea', 'team']);
   for (const row of blank.flatMap((g) => g.rows)) assert.equal(row.value, REVIEW_COPY.empty, row.label);
 
-  const filled = buildReviewGroups({ ...empty, name: ' Ada ', email: 'ada@example.org', stage: 'validating', message: 'A tool.', package: 'launch' });
+  const filled = buildReviewGroups({ ...empty, name: ' Ada ', email: 'ada@example.org', stage: 'validating', message: 'A tool.', situation: 'encore', startedMonth: '2025-03', industryYears: 'ten-plus', teamFunding: 'savings', horizon: 'three-to-five', source: 'search' });
   const value = (label: string): string | undefined => filled.flatMap((g) => g.rows).find((r) => r.label === label)?.value;
   assert.equal(value('Your name'), 'Ada');
   assert.equal(value('Email address'), 'ada@example.org');
-  assert.equal(value('Where the idea is today'), 'Validating the problem with customers');
-  assert.equal(value('Package you have in mind'), 'Launch');
-  assert.equal(buildReviewGroups({ ...empty, package: 'not-sure' })[2]?.rows[1]?.value, 'Not sure yet');
-  assert.equal(buildReviewGroups({ ...empty, package: 'gold' })[2]?.rows[1]?.value, REVIEW_COPY.empty);
+  assert.equal(value('Where the company is today'), 'Validating the problem with customers');
+  assert.equal(value('Which sounds most like you'), 'Starting later in my career');
+  assert.equal(value('When the company started, or will'), '2025-03');
+  assert.equal(value('Years in this industry before starting'), 'Ten years or more');
+  assert.equal(value('How the company would pay for a team'), 'Savings');
+  assert.equal(value('How long you expect to build'), 'Three to five years');
+  assert.equal(value('How you heard about WE'), 'Search');
+  assert.equal(buildReviewGroups({ ...empty, horizon: 'gold' })[2]?.rows[1]?.value, REVIEW_COPY.empty);
   assert.equal(buildReviewGroups({ ...empty, stage: 'nonsense' })[1]?.rows[0]?.value, REVIEW_COPY.empty);
 });
 
@@ -80,11 +84,12 @@ test('ApplyForm renders one fieldset per step with the ids steps.ts declares, an
   assert.ok(progress.includes('APPLY_STEPS.map'));
 });
 
-test('the package select ships hidden and nameless, so the native no-JS post cannot carry it', () => {
+test('the context questions ship hidden and nameless, so the native no-JS post cannot carry them', () => {
   const form = source('src/components/forms/ApplyForm.astro');
-  assert.match(form, /data-package-field hidden/);
-  assert.match(form, /dataField="package"/);
-  assert.ok(!/name="package"/.test(form), 'the package select must have no name attribute');
+  assert.match(form, /data-context-field hidden/);
+  for (const key of ['situation', 'industryYears', 'teamFunding', 'horizon', 'source']) assert.match(form, new RegExp(`select\\('${key}'\\)`), key);
+  assert.match(form, /data-field="startedMonth"/);
+  assert.ok(!/name="(situation|startedMonth|industryYears|teamFunding|horizon|source|package)"/.test(form), 'a context control must have no name attribute');
   const field = source('src/components/forms/Field.astro');
   assert.match(field, /name\?: string/);
 });
