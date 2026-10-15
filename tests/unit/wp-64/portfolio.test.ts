@@ -24,7 +24,7 @@ const base: PortfolioData = {
 
 test('with no entry the showcase has nothing to list, and shows its one fixed sentence', () => {
   assert.deepEqual(showcaseCards([]), []);
-  assert.equal(SHOWCASE_EMPTY, "No portfolio is published yet. WE lists a company here only with its founder's written consent.");
+  assert.equal(SHOWCASE_EMPTY, "No company is listed yet. WE lists a company here only with its founder's written consent.");
   const component = readFileSync(join(root, 'src/components/investors/PortfolioShowcase.astro'), 'utf8');
   assert.match(component, /cards\.length === 0/);
   assert.match(component, /SHOWCASE_EMPTY/);
