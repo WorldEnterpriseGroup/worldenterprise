@@ -1624,7 +1624,7 @@
     },
     {
       "owner": "WP-54",
-      "title": "Wave 9 services, engagement model, tools and apply: split layouts, orbit diagram, the steered team as part of the engagement (no prices)",
+      "title": "Wave 9 services, how WE works, tools and apply: split layouts, orbit diagram, the steered team as part of the engagement, package retirement (no prices)",
       "branch": "wp/54",
       "stage": 2,
       "write_set": [
@@ -1658,7 +1658,9 @@
         "tests/unit/wp-54/**",
         "tests/e2e/wave8/wp-54/**",
         ".astro-magazine/handoffs/wp-54*",
-        ".astro-magazine/sources/wp-54.json"
+        ".astro-magazine/sources/wp-54.json",
+        "src/pages/how-we-work/**",
+        "src/content/pages/how-we-work/**"
       ],
       "lane_exceptions": [
         "src/components/services/LineAside.astro",
@@ -1759,7 +1761,7 @@
     },
     {
       "owner": "WP-58",
-      "title": "Wave 9 sales literature: who we work with, why it takes time, engagement CTA copy (W9-12)",
+      "title": "Wave 9 sales literature: why it takes time, who we work with, the timeline brief, C-29 wording (W9-12, W9-13)",
       "branch": "wp/58",
       "stage": 2,
       "write_set": [
@@ -1773,14 +1775,16 @@
         "tests/unit/wp-58/**",
         "tests/e2e/wave8/wp-58/**",
         ".astro-magazine/handoffs/wp-58*",
-        ".astro-magazine/sources/wp-58.json"
+        ".astro-magazine/sources/wp-58.json",
+        "src/content/briefs/real-timeline.md",
+        "infra/intake/briefs/real-timeline.md"
       ]
     }
   ],
   "active_leases": [],
   "handoffs": [],
   "conflicts": [],
-  "updated_at": "2026-10-14T23:00:00.000Z",
+  "updated_at": "2026-10-15T01:00:00.000Z",
   "frozen_paths": [
     "package.json",
     "package-lock.json",
@@ -2272,6 +2276,11 @@
       "reason": "Wave 9 (W9-4): hero frame and mode pins move to the wave 9 heroes (additive data-frame='wide', data-hero='scene'); held by WP-60 in wave 8, which is done."
     },
     {
+      "wp": "WP-51",
+      "path": "src/components/islands/we-calc/MetricsCalculator.astro",
+      "reason": "Wave 9 (W9-4): the 110rem frame fits five 15rem fields at 1440, where an error message wraps past its two reserved lines; the field minimum becomes 18rem. One rule; WP-54 keeps the file."
+    },
+    {
       "wp": "WP-52",
       "path": "src/pages/styleguide.astro",
       "reason": "Wave 9: a visuals section on the existing styleguide (PUBLIC_STYLEGUIDE=1), not a new route; last held by WP-45, which is done."
@@ -2312,6 +2321,111 @@
       "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/content/pages/pricing/pricing.mdx, src/content/services/fundability-and-investor-readiness.mdx, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
     },
     {
+      "wp": "WP-54",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 9 (W9-13): launches the /how-we-work/ row, sets /pricing/ indexable:false (a redirect to /how-we-work/), and adds the wave 9 RouteOwner values for WP-54 and WP-58. No other row changes."
+    },
+    {
+      "wp": "WP-54",
+      "path": "claims-denylist.json",
+      "reason": "Wave 9 (W9-13): moves the three required texts from /pricing/ to /how-we-work/; no rule is relaxed."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-18/audit-claims.test.ts",
+      "reason": "Wave 9 (W9-13): the required-text pins follow /pricing/ to /how-we-work/; shared with WP-58 (C-29 lines), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-18/copy.test.ts",
+      "reason": "Wave 9 (W9-13): the package and pricing copy pins follow the retirement; shared with WP-58 (C-29 lines), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-42/pricing-packages.spec.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only: the spec is retired with the packages."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-40/packages.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 9 (W9-13): the Pricing and \"Compare seat options\" links become \"How WE works\" (/how-we-work/). Shared with WP-58 (its own routes) and WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 9 (W9-13): the nav snapshot follows the nav.ts change above; shared with WP-51 and WP-58, disjoint by entry."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/cta/map.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ row becomes the /how-we-work/ row. Shared with WP-58 (its own rows), disjoint by row."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/lib/schema.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only (the package catalog node)."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/packages.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/components/seo/JsonLd.astro",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/lib/llms.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-41/jsonld.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-41/llms.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-91/llms.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-91/twins.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-91/d23.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only; shared with WP-51 (the Apply label pin), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only: the Team Composer ?package= hand-off is retired; shared with WP-51 (the Apply label pin), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/forms.ts",
+      "reason": "Wave 9 (W9-13): the apply form retires the package select and carries the situation lines inside message (SALES.md 6.4 interim, no contract change); the contact topic seat-rate is relabelled \"Current terms\" with its value kept."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/components/forms/ApplyForm.astro",
+      "reason": "Wave 9 (W9-13): the package select is removed and the readiness-review heading and situation preselect (?situation=) are added; no contract change."
+    },
+    {
       "wp": "WP-55",
       "path": "src/data/routes.ts",
       "reason": "Wave 9 (W9-5): launches the UBF detail row /about/frameworks/ubf/ in the same merge request as its page. Scoped to the framework rows; no other row changes."
@@ -2330,6 +2444,21 @@
       "wp": "WP-55",
       "path": ".astro-magazine/release/RELEASE.md",
       "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/pages/founders/index.astro, src/pages/investors/**, src/pages/network/index.astro, src/components/investors/**, src/content/pages/investors/**, src/content/pages/network/index.mdx, src/content/pages/about/facts.mdx, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-55",
+      "path": "tests/unit/wp-40/ci.test.ts",
+      "reason": "W9-5: the UBF row launches; drop it from the cut-frameworks assertion, keep /star/ /shift/ /android/ cut"
+    },
+    {
+      "wp": "WP-55",
+      "path": "tests/unit/wp-41/facts.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only: the /about/facts/ package lines go with them; facts pins only."
+    },
+    {
+      "wp": "WP-55",
+      "path": ".astro-magazine/sources/wp-71.json",
+      "reason": "Wave 9 (W9-13): remaps the brand-story and press quote entries to the new About copy; held by WP-71, which is done. Those entries only."
     },
     {
       "wp": "WP-56",
@@ -2354,27 +2483,122 @@
     {
       "wp": "WP-58",
       "path": "src/data/routes.ts",
-      "reason": "Wave 9 (W9-12): adds and launches the rows of its own routes (/who-we-work-with/, /why-it-takes-time/) in the same merge request as their pages. No other row changes."
+      "reason": "Wave 9 (W9-13): adds and launches the rows of its own routes (/who-we-work-with/ and its seven situation pages, /why-it-takes-time/, /briefs/real-timeline/) in the same merge request as their pages. No other row changes."
     },
     {
       "wp": "WP-58",
       "path": "src/data/nav.ts",
-      "reason": "Wave 9 (W9-12): adds its own routes to the navigation. No other entry moves."
+      "reason": "Wave 9 (W9-13): adds its own routes to the navigation. No other entry moves; WP-54 and WP-51 hold other lines."
     },
     {
       "wp": "WP-58",
       "path": "src/content.config.ts",
-      "reason": "Wave 9 (W9-12): adds the `sales` collection for src/content/sales/** and nothing else."
-    },
-    {
-      "wp": "WP-58",
-      "path": "src/data/cta/index.ts",
-      "reason": "Wave 9 (W9-12): the site-wide primary and secondary CTA labels follow the sales strategy (\"Start a conversation\", \"Apply\"); labels and hrefs only, the CTA structure stays."
+      "reason": "Wave 9 (W9-13): adds the `sales` collection for src/content/sales/** and nothing else."
     },
     {
       "wp": "WP-58",
       "path": "tests/unit/wp-60/cta.test.ts",
-      "reason": "Wave 9 (W9-12): the CTA label pins follow the relabelled CTAs; held by WP-60, which is done."
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA) and its own map rows; shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 9 (W9-13): the nav snapshot follows its own nav entries and the C-29 description; disjoint by entry."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/cta/map.ts",
+      "reason": "Wave 9 (W9-13): adds the rows of its own routes and the timeline brief. Disjoint by row from WP-54."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/families.ts",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): one BRIEF_INPUTS entry, nothing else."
+    },
+    {
+      "wp": "WP-58",
+      "path": "docs/forms-contract.schema.json",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): the brief id joins the brief-request enum."
+    },
+    {
+      "wp": "WP-58",
+      "path": "docs/forms-contract.md",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): the brief id joins the list."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-71/families-registry.test.ts",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): brief count and id pins only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/gated-briefs.test.ts",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): brief count and id pins only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/schemas.test.ts",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): brief enum pins only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/claims.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only. WP-57 reviews the entry at integration."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/site.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only: the site description follows."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/foundation/claims.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/claims-w8.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-18/audit-claims.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-18/copy.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-09/helpers.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-09/audit-seo.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-41/audit-geo.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-71/story-gate.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-74/**",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-73/segment-pages.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
     }
   ],
   "notes": [
@@ -2387,7 +2611,8 @@
     "Wave 8 (issue #40, docs/wave8-contracts.md): assignments WP-60 to WP-99 carry `stage` (0 foundation, 1 authoring, 2 closing) and `pools` (P0b, P1, P2: the sets of packages that can run at the same time). `frozen_paths_wave8` lists files only the owners in `frozen_paths_wave8_owners` may touch; scripts/check-ownership.mjs reads it. An assignment may carry `exceptions_declared` (frozen files its owner registers an exception for when the work needs it) and `serialize_with_release` (release-lane files it edits and must order by hand with WP-30). tests/unit/wp-60/write-sets-wave8.test.ts proves the pools disjoint and clear of the frozen, wave 8 frozen, photography and release lists.",
     "Wave 8 (issue #40, docs/wave8-contracts.md): assignments WP-60 to WP-99 carry `stage` (0 foundation, 1 authoring, 2 closing) and `pools` (P0b, P1, P2: the sets of packages that can run at the same time). `frozen_paths_wave8` lists files only the owners in `frozen_paths_wave8_owners` (WP-60) may touch; every other owner, WP-99 included, needs a registered exception that names the path. scripts/check-ownership.mjs reads it. An assignment may carry `exceptions_declared` (frozen files its owner registers an exception for when the work needs it) and `serialize_with_release` (release-lane files it edits and must order by hand with WP-30). tests/unit/wp-60/write-sets-wave8.test.ts proves the pools disjoint and clear of the frozen, wave 8 frozen, photography and release lists.",
     "Wave 9 (issue #72, milestone 1784, docs/wave9-contracts.md): assignments WP-51 to WP-57 carry `stage` (0 foundation, 1 visuals, 2 page families in parallel, 3 integration). WP-51 and WP-57 hold the governance files in sequence. Wave 9 write sets supersede the stale wp/62, wp/12b and WP-48 claims on every path they overlap (decision W9-3): WP-62 and WP-48 were narrowed here. tests/unit/wp-51/write-sets-wave9.test.ts proves the wave 9 sets disjoint (except the listed hand-offs in .astro-magazine/plans/wave9/writesets.json), clear of the superseded sets, and covered by an exception wherever they reach a frozen, wave 8 frozen, photography-lane or release-lane path.",
-    "Wave 9 (W9-12, CEO positioning change 2026-10-14): WP-54 is rescoped to services, the engagement model, tools and apply (the /pricing/ route becomes the engagement-model page, no prices); WP-58 (issue #79, stage 2) holds the sales literature and the CTA labels."
+    "Wave 9 (W9-12, CEO positioning change 2026-10-14): WP-54 is rescoped to services, the engagement model, tools and apply (the /pricing/ route becomes the engagement-model page, no prices); WP-58 (issue #79, stage 2) holds the sales literature and the CTA labels.",
+    "Wave 9 (W9-13, sales direction adopted 2026-10-14): WP-54 owns /how-we-work/ (replacing /pricing/) and the retirement of the public packages; WP-58 owns /why-it-takes-time/, /who-we-work-with/ and its seven situation pages, the timeline brief and the C-29 wording; /apply/ stays with WP-54; the CTA labels (\"Start a readiness review\") move to WP-51. Statistics come only from .astro-magazine/plans/wave9/statistics.json (ST-01 to ST-41)."
   ],
   "lanes": {
     "$comment": "Lanes that wave 7 packages must stay out of. The static floor is read by tests/unit/wp-40/write-sets.test.ts together with the write sets of the registered WP-12* (photography) and WP-30 (release) assignments, so a registration that lands later extends the lane without an edit here.",
