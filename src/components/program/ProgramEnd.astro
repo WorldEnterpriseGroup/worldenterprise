@@ -1,0 +1,50 @@
+---
+/**
+ * The closing band of a program page (SITE-COPY 2): a deep galaxy band, never the logo, with the readiness review as the one action and,
+ * where the page requires it, the no-funding line.
+ */
+import { NO_FUNDING_LINE } from './clock.ts';
+import { START_REVIEW } from './ctas.ts';
+import type { Action } from './ctas.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  title: string;
+  text: string;
+  /** Show "WE makes no promise of funding." (required on /program/grow/). */
+  noFunding?: boolean;
+  secondary?: Action | undefined;
+}
+
+const { title, text, noFunding = false, secondary } = Astro.props;
+---
+
+<section class="band band--deep program-end" aria-labelledby="program-end-title">
+  <div class="container program-end__inner">
+    <h2 id="program-end-title">{title}</h2>
+    <p class="lead">{text}</p>
+    {noFunding && <p class="program-end__required">{NO_FUNDING_LINE}</p>}
+    <div class="cluster">
+      <a class="btn btn--inverse" href={href(START_REVIEW.href)}>{START_REVIEW.label}</a>
+      {secondary && <a class="btn btn--quiet-inverse" href={href(secondary.href)}>{secondary.label}</a>}
+    </div>
+  </div>
+</section>
+
+<style>
+  @layer pages {
+    .program-end__inner {
+      display: grid;
+      gap: var(--sp-4);
+      justify-items: start;
+    }
+
+    .program-end__inner > p {
+      max-inline-size: var(--prose-max);
+    }
+
+    .program-end__required {
+      font-weight: 600;
+    }
+  }
+</style>

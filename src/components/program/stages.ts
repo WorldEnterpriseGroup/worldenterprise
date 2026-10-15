@@ -124,7 +124,7 @@ export const STAGES: readonly Stage[] = [
       'The baseline checklist is a working tool. It is not an audit or an attestation, and it does not show that the product meets any outside standard.',
     ],
     lines: [
-      { line: 'B', title: 'Product and IT Development', path: '/services/product-and-it-development/', note: 'Design, build and release your SaaS.' },
+      { line: 'B', title: 'Product and IT Development', path: '/services/product-and-it-development/', note: 'Design, build and release the product.' },
       { line: 'D', title: 'Business Management and Operations', path: '/services/business-management-and-operations/', note: 'Cadence, goals, metrics and the weekly rhythm.' },
     ],
   },

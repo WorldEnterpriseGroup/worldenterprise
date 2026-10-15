@@ -1,0 +1,130 @@
+---
+/**
+ * The phases as cards (SITE-COPY 2.2): each with its UBF picture, typical window, the work, the WE methods as constellations and the
+ * checkpoint that closes it. Five across the 1760px frame on the hub, two on a stage page, stacked on a phone.
+ */
+import MethodTrack from './MethodTrack.astro';
+import PhaseGlyph from './PhaseGlyph.astro';
+import type { Phase } from './phases.ts';
+
+interface Props {
+  phases: readonly Phase[];
+  /** Accessible name of the list. */
+  label: string;
+  /** Heading level of each card title (default 3). */
+  level?: 3 | 4;
+}
+
+const { phases, label, level = 3 } = Astro.props;
+const Title = level === 3 ? 'h3' : 'h4';
+---
+
+<ol class:list={['phases', `phases--${phases.length}`]} role="list" aria-label={label}>
+  {
+    phases.map((phase) => (
+      <li class="phases__card">
+        <div class="phases__head">
+          <PhaseGlyph phase={phase.id} />
+          <div>
+            <Title class="phases__name">{phase.name}</Title>
+            <p class="phases__window">{phase.window}</p>
+          </div>
+        </div>
+        <p class="phases__image">{phase.image}</p>
+        <p>{phase.work}.</p>
+        <div class="phases__methods">
+          {phase.methods.map((method) => (
+            <MethodTrack method={method} />
+          ))}
+        </div>
+        <p class="phases__checkpoint">
+          <span class="phases__checkpoint-label">Checkpoint</span> {phase.checkpoint}
+        </p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  @layer pages {
+    .phases {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      @media (min-width: 48rem) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      @media (min-width: 100rem) {
+        &.phases--5 {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 62rem) and (max-width: 99.99rem) {
+        &.phases--5 {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+    }
+
+    .phases__card {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-3);
+      padding: var(--sp-5);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-block-start: 4px solid var(--we-blue);
+      border-radius: var(--radius-md);
+    }
+
+    .phases__head {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--sp-3);
+      align-items: center;
+    }
+
+    .phases__name {
+      font-size: var(--fs-xl);
+      line-height: var(--lh-tight);
+    }
+
+    .phases__window {
+      font-family: var(--ff-display);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .phases__image {
+      font-style: italic;
+      color: var(--color-text-muted);
+    }
+
+    .phases__methods {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .phases__checkpoint {
+      margin-block-start: auto;
+      padding-block-start: var(--sp-3);
+      border-block-start: var(--border-hair);
+      font-weight: 600;
+    }
+
+    .phases__checkpoint-label {
+      display: block;
+      font-size: var(--fs-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-caps);
+      color: var(--color-link);
+    }
+  }
+</style>

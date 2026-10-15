@@ -55,7 +55,8 @@ test('preloadOfPhoto carries the srcset and sizes of a responsive photo, and a v
 
 test('the home page derives its hero preload from the same photoImage() result the hero renders', () => {
   const home = readFileSync(`${ROOT}src/pages/index.astro`, 'utf8');
-  assert.match(home, /const heroImage = await photoImage\('band-1'\);/);
+  // The hero image goes through a typed image helper: a photo slot, or the galaxy poster in the shape of a photo (W9-6).
+  assert.match(home, /const heroImage = await (?:photoImage\('band-1'\)|heroPoster\(\));/);
   assert.match(home, /preloadImage=\{preloadOfPhoto\(heroImage\)\}/);
   assert.match(home, /<HomeHero image=\{heroImage\}/);
   assert.doesNotMatch(home, /image\/svg\+xml/);
