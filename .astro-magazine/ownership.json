@@ -2397,13 +2397,8 @@
     },
     {
       "wp": "WP-53",
-      "path": ".astro-magazine/sources/wp-43.json",
-      "reason": "Wave 9 (W9-13): the changed-sentence entries for the Program copy. Those entries only; WP-43 is done."
-    },
-    {
-      "wp": "WP-53",
       "path": "src/pages/faq/_model.ts",
-      "reason": "Wave 9 (W9-13): line 62, the Program route label. That line only; WP-56 keeps the file."
+      "reason": "Wave 9 (W9-13): lines 62 to 65, the link-title values of /program/build/, /program/dedicated-teams/, /program/dream/ and /program/grow/. Those lines only; line 61 (/pricing/) stays with WP-54, and WP-56 keeps the file."
     },
     {
       "wp": "WP-53",
@@ -2531,6 +2526,91 @@
       "reason": "Wave 9 (W9-13): the package select is removed and the readiness-review heading and situation preselect (?situation=) are added; no contract change."
     },
     {
+      "wp": "WP-54",
+      "path": "tests/unit/foundation/nav.test.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-16/active-section.test.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-46/commands.test.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-46/panels.test.ts",
+      "reason": "Wave 9 (W9-13): the strip links to /pricing/ become /how-we-work/; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-91/palette.test.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/menu.spec.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ current-section check moves to /how-we-work/. Shared with WP-51 (header widths, CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-46/palette.spec.ts",
+      "reason": "Wave 9 (W9-13): the palette search for pricing follows /how-we-work/. That check only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/components/geo/llms-input.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ llms entry becomes /how-we-work/. That entry only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-42/composer-package.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement: the Team Composer ?package= hand-off is removed; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-42/copy-guard.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement: the package sentences leave the Team Composer copy; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-42/package-picker.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement: the package picker is removed; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-43/forms-package.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement: the apply form package select is removed; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-43/sentences.ts",
+      "reason": "Wave 9 (W9-13): package retirement and the readiness-review intake wording; the sentence list follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-43/apply-stepper.spec.ts",
+      "reason": "Wave 9 (W9-13): package retirement and the SALES.md 6.4 interim fields in the apply stepper; the spec follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/scripts/forms.ts",
+      "reason": "Wave 9 (W9-13): scoped wave 9 unfreeze: the package prefill is removed and the SALES.md 6.4 interim fields (situation lines inside message) are added. Nothing else; the forms contract does not change."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/faq.yaml",
+      "reason": "Wave 9 (W9-13): the package and pricing answers follow the engagement model (no prices, start any month, yearly checkpoint review). Those entries only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/pages/faq/_model.ts",
+      "reason": "Wave 9 (W9-13): line 61, the /pricing/ link title becomes the /how-we-work/ one. That line only; lines 62 to 65 are WP-53's, and WP-56 keeps the file."
+    },
+    {
       "wp": "WP-55",
       "path": "src/data/routes.ts",
       "reason": "Wave 9 (W9-5): launches the UBF detail row /about/frameworks/ubf/ in the same merge request as its page. Scoped to the framework rows; no other row changes."
@@ -2618,7 +2698,7 @@
     {
       "wp": "WP-58",
       "path": "src/data/families.ts",
-      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): one BRIEF_INPUTS entry, nothing else."
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): one BRIEF_INPUTS entry, and a WaveNineOwner alias (WP-51 to WP-58) on the owner type. Nothing else; WP-60 keeps the file."
     },
     {
       "wp": "WP-58",
@@ -2704,6 +2784,16 @@
       "wp": "WP-58",
       "path": "tests/unit/wp-73/segment-pages.test.ts",
       "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 (W9-13): the CR-19 quote of the site description follows the C-29 rewording; CR-19 lines only, its counsel box stays unticked."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/families.test.ts",
+      "reason": "Wave 9 (W9-13): line 69, the owner regex widens to /^WP-(?:[6-9]\\d|5[1-8])$/ for the WaveNineOwner alias. That line only."
     }
   ],
   "notes": [
