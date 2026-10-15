@@ -441,11 +441,18 @@ export function ubfAnchor(name: string): string {
   return `ubf-${name.toLowerCase().replace(/\s+/g, '-')}`;
 }
 
-/** The initials a system shows on its sun: "UBF", "DREAM", "FS". */
+/** The longest initials a system's sun can carry: the seven letters of S.T.A.R.T.U.P., O.R.B.I.T.A.L. and A.N.D.R.O.I.D. */
+export const INITIALS_MAX = 7;
+
+/** The initials a system shows on its sun: "UBF", "DREAM", "SN", "FS". */
 export function initials(name: string): string {
   const dotted = name.replace(/ phase$/, '');
   if (/^[A-Z](\.[A-Z])+\.?$/.test(dotted)) return dotted.replace(/\./g, '');
   const words = dotted.split(/\s+/);
-  if (words.length === 1) return dotted.length <= 4 ? dotted : dotted.slice(0, 2);
+  if (words.length === 1) {
+    if (dotted.length <= 4) return dotted;
+    const capitals = dotted.replace(/[^A-Z]/g, '');
+    return capitals.length >= 2 ? capitals : dotted.slice(0, 2);
+  }
   return words.map((w) => w[0] ?? '').join('').toUpperCase();
 }

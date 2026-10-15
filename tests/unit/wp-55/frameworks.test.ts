@@ -6,6 +6,7 @@ import {
   ANDROID_PARTS,
   CONSULTING_LEVELS,
   FRAMEWORK_SYSTEMS,
+  INITIALS_MAX,
   SCALE_LADDER,
   SMART,
   SUPERNOVA_PHASES,
@@ -13,6 +14,7 @@ import {
   UBF_ENGAGEMENT,
   UBF_LIFECYCLE,
   frameworkById,
+  initials,
   ubfAnchor,
 } from '../../../src/components/about/framework-data.ts';
 import { SITUATIONS } from '../../../src/components/network/situations.ts';
@@ -117,6 +119,18 @@ test('the galaxy holds every WE framework once, with UBF at the core', () => {
     assert.equal(frameworkById(id).id, id);
   }
   assert.equal(frameworkById('ubf').path, '/about/frameworks/ubf/');
+});
+
+test('every system fits SystemDiagram: initials of 1 to INITIALS_MAX characters and 1 to 12 worlds', () => {
+  // SystemDiagram throws at render time otherwise (pipeline 68018: "STARTUP" broke the /about/frameworks/ build).
+  for (const system of FRAMEWORK_SYSTEMS) {
+    const mark = initials(system.name);
+    assert.ok(mark.trim().length >= 1 && mark.length <= INITIALS_MAX, `${system.id}: "${mark}"`);
+    assert.ok(system.parts.length >= 1, `${system.id} has parts`);
+  }
+  assert.equal(INITIALS_MAX, 7);
+  assert.deepEqual(['startup', 'orbital', 'android', 'supernova'].map((id) => initials(frameworkById(id).name)), ['STARTUP', 'ORBITAL', 'ANDROID', 'SN']);
+  assert.match(read('src/components/about/SystemDiagram.astro'), /initials\.length > INITIALS_MAX/);
 });
 
 test('the UBF route is launched under the absorbed WP-48 row, and has its page and content', () => {

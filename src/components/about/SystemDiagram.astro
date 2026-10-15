@@ -5,9 +5,10 @@
  * beside it, so the drawing is hidden from assistive technology. The ring turns slowly only when the visitor allows motion.
  */
 import { flower, hexPoints } from '../diagrams/hex.ts';
+import { INITIALS_MAX } from './framework-data.ts';
 
 interface Props {
-  /** The letters on the sun, e.g. "UBF". */
+  /** The letters on the sun, e.g. "UBF"; at most INITIALS_MAX (seven, for S.T.A.R.T.U.P., O.R.B.I.T.A.L. and A.N.D.R.O.I.D.). */
   initials: string;
   /** Number of worlds, 1 to 12. */
   count: number;
@@ -20,7 +21,9 @@ interface Props {
 
 const { initials, count, accent = -1, size = 'sm', class: className } = Astro.props;
 if (!Number.isInteger(count) || count < 1 || count > 12) throw new Error(`SystemDiagram: count must be 1 to 12, got ${count}`);
-if (initials.trim() === '' || initials.length > 6) throw new Error(`SystemDiagram: initials "${initials}" must be 1 to 6 characters`);
+if (initials.trim() === '' || initials.length > INITIALS_MAX) {
+  throw new Error(`SystemDiagram: initials "${initials}" must be 1 to ${INITIALS_MAX} characters`);
+}
 
 const C = 100;
 const sun = flower(C, C, 11.5, 0.1);
@@ -35,7 +38,7 @@ const worlds = Array.from({ length: count }, (_, i) => {
   const a = -Math.PI / 2 + (2 * Math.PI * k) / n + (onInner ? 0 : Math.PI / n);
   return { x: C + r * Math.cos(a), y: C + r * Math.sin(a), ring: onInner ? 0 : 1, accent: i === accent };
 });
-const fontSize = initials.length <= 2 ? 15 : initials.length <= 3 ? 12 : initials.length <= 4 ? 9.5 : 7.5;
+const fontSize = initials.length <= 2 ? 15 : initials.length <= 3 ? 12 : initials.length <= 4 ? 9.5 : initials.length <= 6 ? 7.5 : 6.5;
 ---
 
 <svg class:list={['sysdiag', `sysdiag--${size}`, className]} viewBox="0 0 200 200" aria-hidden="true" focusable="false">
