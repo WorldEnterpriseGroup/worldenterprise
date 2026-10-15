@@ -1,0 +1,223 @@
+{
+  "$comment": "Wave 10 write-set map (WP-32 to WP-38, issues #81 to #87). Stage 0 WP-32 (governance, merges first), stage 1 WP-33 to WP-36 and WP-38 in parallel, stage 2 WP-37 (links to /ecosystem/ and /sbir-sttr/, merges after WP-33 and WP-34 or links only routes that exist). `sharedExceptions` lists the only paths that may appear in the exceptions of more than one package, each limited by its reason text (a marked block of src/data/routes.ts, a baseline json). tests/unit/wp-32/write-sets-wave10.test.ts keeps this file equal to .astro-magazine/ownership.json.",
+  "sharedExceptions": [
+    "src/data/routes.ts",
+    "tests/unit/wp-45/props-baseline.json"
+  ],
+  "workPackages": [
+    {
+      "id": "WP-32",
+      "stage": 0,
+      "branch": "wp/32",
+      "title": "Wave 10 governance: write sets, ecosystem-context claims rule, ecosystem routes and nav (D-W10-1)",
+      "writes": [
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/plans/wave10/**",
+        ".astro-magazine/decisions.md",
+        "claims-denylist.json",
+        "scripts/audit-claims.mjs",
+        "tests/unit/wp-18/audit-claims.test.ts",
+        "tests/unit/wp-18/copy.test.ts",
+        "tests/unit/wp-60/claims-w8.test.ts",
+        "tests/unit/wp-60/families.test.ts",
+        "src/data/routes.ts",
+        "src/data/nav.ts",
+        "src/data/cta/map.ts",
+        "tests/unit/foundation/fixtures/nav-snapshot.json",
+        "tests/unit/wp-40/denylist.test.ts",
+        "docs/wave10-contracts.md",
+        "tests/unit/wp-32/**",
+        "tests/e2e/wp-32*.spec.ts",
+        "tests/e2e/wave8/wp-32/**",
+        ".astro-magazine/handoffs/wp-32*",
+        ".astro-magazine/sources/wp-32.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": [
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/decisions.md",
+        "claims-denylist.json",
+        "src/data/routes.ts",
+        "src/data/nav.ts",
+        "tests/unit/foundation/fixtures/nav-snapshot.json",
+        "src/data/cta/map.ts"
+      ]
+    },
+    {
+      "id": "WP-33",
+      "stage": 1,
+      "branch": "wp/33",
+      "title": "Wave 10 ecosystem directory: /ecosystem/ programs, spaces, groups and investor-relations resources",
+      "writes": [
+        "src/pages/ecosystem/**",
+        "src/content/pages/ecosystem/**",
+        "src/data/ecosystem/**",
+        "src/components/ecosystem/**",
+        "src/scripts/ecosystem*.ts",
+        "tests/unit/wp-33/**",
+        "tests/e2e/wp-33*.spec.ts",
+        "tests/e2e/wave8/wp-33/**",
+        ".astro-magazine/handoffs/wp-33*",
+        ".astro-magazine/sources/wp-33.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": [
+        "src/data/routes.ts"
+      ]
+    },
+    {
+      "id": "WP-34",
+      "stage": 1,
+      "branch": "wp/34",
+      "title": "Wave 10 SBIR and STTR: /sbir-sttr/ guide, agencies, calendar, readiness",
+      "writes": [
+        "src/pages/sbir-sttr/**",
+        "src/content/pages/sbir-sttr/**",
+        "src/data/sbir/**",
+        "src/components/sbir/**",
+        "src/scripts/sbir*.ts",
+        "tests/unit/wp-34/**",
+        "tests/e2e/wp-34*.spec.ts",
+        "tests/e2e/wave8/wp-34/**",
+        ".astro-magazine/handoffs/wp-34*",
+        ".astro-magazine/sources/wp-34.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": [
+        "src/data/routes.ts"
+      ]
+    },
+    {
+      "id": "WP-35",
+      "stage": 1,
+      "branch": "wp/35",
+      "title": "Wave 10 data: /data/ hub, datasets and new chart components from public and journal sources",
+      "writes": [
+        "src/pages/data/**",
+        "src/content/pages/data/**",
+        "src/data/datasets/**",
+        "src/components/visuals/charts/**",
+        "src/scripts/charts*.ts",
+        "tests/unit/wp-35/**",
+        "tests/e2e/wp-35*.spec.ts",
+        "tests/e2e/wave8/wp-35/**",
+        ".astro-magazine/handoffs/wp-35*",
+        ".astro-magazine/sources/wp-35.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": [
+        "src/data/routes.ts",
+        "tests/unit/wp-45/props-baseline.json",
+        "tests/unit/wp-45/pinned-props.test.ts"
+      ]
+    },
+    {
+      "id": "WP-36",
+      "stage": 1,
+      "branch": "wp/36",
+      "title": "Wave 10 HTML5 and seamless 3D: full-bleed scenes, WebGPU with WebGL2 fallback, scroll-driven CSS, view transitions",
+      "writes": [
+        "src/components/visuals/**",
+        "src/assets/visuals/**",
+        "src/scripts/scene*/**",
+        "src/scripts/motion*.ts",
+        "tests/unit/wp-36/**",
+        "tests/e2e/wp-36*.spec.ts",
+        "tests/e2e/wave8/wp-36/**",
+        ".astro-magazine/handoffs/wp-36*",
+        ".astro-magazine/sources/wp-36.json"
+      ],
+      "excludes": [
+        "src/components/visuals/charts/**"
+      ],
+      "laneExceptions": [],
+      "exceptions": [
+        "package.json",
+        "package-lock.json",
+        "src/layouts/BaseLayout.astro",
+        "src/styles/motion.css",
+        "src/components/seo/SpeculationRules.astro",
+        "src/components/seo/SeoHead.astro",
+        "src/lib/seo.ts",
+        "src/scripts/visuals/**",
+        "src/pages/styleguide.astro",
+        "tests/unit/wp-52/**",
+        "tests/unit/wp-60/motion.test.ts",
+        "tests/unit/wp-09/seo.test.ts",
+        "tests/unit/wp-13/design-system.test.ts",
+        "tests/e2e/wave7/wp-45/visual-system.spec.ts",
+        "tests/unit/wp-45/css-budget.test.ts",
+        "tests/unit/wp-45/props-baseline.json"
+      ]
+    },
+    {
+      "id": "WP-37",
+      "stage": 2,
+      "branch": "wp/37",
+      "title": "Wave 10 longevity narrative: home, program, how-we-work, why-it-takes-time, who-we-work-with",
+      "writes": [
+        "src/pages/index.astro",
+        "src/pages/program/**",
+        "src/pages/how-we-work/**",
+        "src/pages/why-it-takes-time/**",
+        "src/pages/who-we-work-with/**",
+        "src/content/pages/home/**",
+        "src/content/pages/program/**",
+        "src/content/pages/how-we-work/**",
+        "src/content/pages/why-it-takes-time/**",
+        "src/content/pages/who-we-work-with/**",
+        "tests/unit/wp-37/**",
+        "tests/e2e/wp-37*.spec.ts",
+        "tests/e2e/wave8/wp-37/**",
+        ".astro-magazine/handoffs/wp-37*",
+        ".astro-magazine/sources/wp-37.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [
+        "src/components/home/HomeHero.astro",
+        "src/pages/program/who-its-for.astro"
+      ],
+      "exceptions": [
+        "src/components/home/**",
+        "src/components/program/**",
+        "src/pages/program/who-its-for.astro",
+        "src/components/home/HomeHero.astro",
+        "src/components/sales/**",
+        "src/data/sales/**",
+        "src/content/sales/**",
+        "tests/unit/wp-44/home.test.ts",
+        "tests/unit/wp-53/**",
+        "tests/unit/wp-01/program.test.ts",
+        "tests/unit/wp-58/**",
+        "tests/e2e/wave7/wp-44/**",
+        "tests/e2e/wave8/wp-53/**",
+        "tests/e2e/wave8/wp-58/**",
+        "tests/e2e/folds.spec.ts"
+      ]
+    },
+    {
+      "id": "WP-38",
+      "stage": 1,
+      "branch": "wp/38",
+      "title": "Wave 10 content expansion: insights, guides, playbooks and their media",
+      "writes": [
+        "src/content/insights/**",
+        "src/content/guides/**",
+        "src/content/playbooks/**",
+        "src/assets/insights/**",
+        "tests/unit/wp-38/**",
+        "tests/e2e/wp-38*.spec.ts",
+        "tests/e2e/wave8/wp-38/**",
+        ".astro-magazine/handoffs/wp-38*",
+        ".astro-magazine/sources/wp-38.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": []
+    }
+  ]
+}

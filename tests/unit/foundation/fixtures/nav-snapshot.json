@@ -487,7 +487,12 @@
    "resources": [
     "/briefs/",
     "/industries/",
-    "/compare/"
+    "/compare/",
+    "/data/"
+   ],
+   "network": [
+    "/ecosystem/",
+    "/sbir-sttr/"
    ]
   },
   "changed": {
@@ -503,10 +508,16 @@
    "/compare/",
    "/network/partners/",
    "/why-it-takes-time/",
-   "/who-we-work-with/"
+   "/who-we-work-with/",
+   "/data/",
+   "/ecosystem/",
+   "/sbir-sttr/"
   ]
  },
  "wave9": {
   "note": "Wave 9 (docs/wave9-contracts.md, section 8; decision W9-13): the header button reads 'Start a readiness review', and the direct Pricing item leaves the top level because the header row has no room for both between 1100 and 1500px. WP-54 retires /pricing/ for /how-we-work/, which sits in the Program column, the Program, Services and Network strips and the footer, and is not a top-level item either."
+ },
+ "wave10": {
+  "note": "Wave 10 (docs/wave10-contracts.md, D-W10-1): the ecosystem, SBIR/STTR and data routes are linked from the Network panel (/ecosystem/, /sbir-sttr/), the Resources Read column (/data/) and the footer. They are launched ledger rows, filtered out of the rendered nav until WP-33, WP-34 and WP-35 build the pages. No top-level item is added."
  }
 }
