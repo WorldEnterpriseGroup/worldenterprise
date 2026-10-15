@@ -1,6 +1,6 @@
 ---
 title: Privacy notice
-description: "What World Enterprise Incubator collects through its six forms, how records and emailed briefs work, and what the site does not do: no cookies, no analytics."
+description: "What World Enterprise collects through its six forms, how records and emailed briefs work, and what the site does not do: no cookies, no analytics."
 eyebrow: Legal
 hero: H5
 updated: 2026-10-10

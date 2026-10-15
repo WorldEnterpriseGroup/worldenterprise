@@ -1,6 +1,6 @@
 ---
 title: Manifesto
-description: "Nine plain commitments that govern how World Enterprise Incubator works with founders, writes its content and handles what it knows."
+description: "Nine plain commitments that govern how World Enterprise works with founders, writes its content and handles what it knows."
 eyebrow: About
 hero: H2
 updated: 2026-10-06
@@ -27,7 +27,7 @@ WE has no office and asks no one to move. A fully digital company can be honest 
 
 ## 5. Steer the team, and answer for it
 
-A dedicated seat works only on your company. WE steers that team and manages its subcontractors, so there is one accountable party to speak to.
+A dedicated team works only on your company. WE steers that team and manages its subcontractors, so there is one accountable party to speak to.
 
 ## 6. Cite the source and correct the record
 
