@@ -5,6 +5,8 @@
  * stands in for it once /why-it-takes-time/ is live. A ladder never promises an outcome, a reply time or scarcity.
  */
 
+import { targetFor } from '../../../data/cta/targets.ts';
+
 export interface LadderCta {
   readonly label: string;
   readonly href: string;
@@ -14,10 +16,13 @@ export interface LadderCta {
 
 export type IsLive = (path: string) => boolean;
 
-/** Primary (commit). */
+const apply = targetFor('apply');
+if (apply === undefined) throw new Error('src/data/cta/targets.ts has no "apply" target: the primary CTA label lives there (docs/wave9-contracts.md section 8).');
+
+/** Primary (commit). The label and target come from the shared CTA data (WP-51), so a family page never writes its own primary. */
 export const READINESS_REVIEW: LadderCta = {
-  label: 'Start a readiness review',
-  href: '/apply/',
+  label: apply.label,
+  href: apply.href,
   note: "Tell WE where the company stands. WE replies to arrange a conversation and a written read of your company's timeline.",
 };
 
