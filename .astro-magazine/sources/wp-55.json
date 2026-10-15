@@ -134,24 +134,22 @@
     },
     {
       "schema_version": "1.0.0",
-      "source_id": "wp41-pricing",
+      "source_id": "wp55-investors-faq",
       "publisher_or_author": "World Enterprise Group (internal)",
-      "title": "The pricing page",
+      "title": "The investors FAQ",
       "source_tier": "operator-statement",
-      "exact_url_or_locator": "src/content/pages/pricing/pricing.mdx",
+      "exact_url_or_locator": "src/components/investors/faq.ts",
       "publication_date": "",
-      "last_updated_date": "2026-10-09",
+      "last_updated_date": "2026-10-14",
       "retrieved_at": "2026-10-14",
       "next_review": "when the source file changes",
       "version_or_release": "n/a",
-      "relevant_locator": "C-02, C-03, C-10",
-      "variables_units_scope": "Seats, packages, how to ask for the rate; no amounts, no seat counts",
-      "methodology_limitations": "Copied, not re-derived. Two sentences are edited for the subject. Carried over from the WP-41 map when WP-55 rewrote the page (2026-10-14).",
+      "relevant_locator": "C-14",
+      "variables_units_scope": "Investor Introductions: a separate, paid add-on with a flat fee",
+      "methodology_limitations": "Copied, not re-derived. One sentence is edited for the subject. Replaces the pricing page source when the public packages were retired (WP-54, 2026-10-14).",
       "funding_conflicts": "none",
       "claims_supported": [
-        "C-02",
-        "C-03",
-        "C-10"
+        "C-14"
       ],
       "claims_not_supported": [
         "C-06",
@@ -416,17 +414,10 @@
       "derivation": "verbatim"
     },
     {
-      "sentence": "No amounts are published on this site.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "This page lists no amounts.",
-      "derivation": "edited"
-    },
-    {
       "sentence": "Investor Introductions is a separate, paid add-on with a flat fee.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "It is a separate, paid add-on with a flat fee.",
+      "source_id": "wp55-investors-faq",
+      "file": "src/components/investors/faq.ts",
+      "locator": "A company can buy Investor Introductions, a separate, paid add-on. A flat fee covers curation and preparation.",
       "derivation": "edited"
     },
     {
