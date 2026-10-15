@@ -17,7 +17,7 @@
       "version_or_release": "wp/71 branched from wp/12d 81f14f1",
       "relevant_locator": "C-01, C-02, C-03, C-04, C-05, C-18",
       "variables_units_scope": "Brand, voice and logo-usage wording only; no history, date, name, count, price or response time beyond what the site already says",
-      "methodology_limitations": "Restatement, not new research. Any new brand claim needs operator input and the whitelab brand-usage sign-off (OP-BRAND) before the kit is published.",
+      "methodology_limitations": "Restatement, not new research. Any new brand claim needs operator input and the brand-owner usage sign-off (OP-BRAND) before the kit is published.",
       "funding_conflicts": "none",
       "claims_supported": [
         "C-01",
@@ -52,9 +52,9 @@
       "retrieved_at": "2026-10-10",
       "next_review": "when tokens.css changes; the kit table is read from the file at build time, so its values cannot drift",
       "version_or_release": "wp/71 branched from wp/12d 81f14f1",
-      "relevant_locator": "Palette source: whitelab brand",
+      "relevant_locator": "Palette source: the WE brand palette",
       "variables_units_scope": "Token names, hex values kept in the stylesheet comments, and the role each color plays",
-      "methodology_limitations": "The kit states how the colors are used on this site, not a full brand manual. Whitelab brand-usage sign-off (OP-BRAND) gates its release.",
+      "methodology_limitations": "The kit states how the colors are used on this site, not a full brand manual. Brand-owner usage sign-off (OP-BRAND) gates its release.",
       "funding_conflicts": "none",
       "claims_supported": [],
       "claims_not_supported": [
@@ -71,7 +71,7 @@
       "ui_label": true
     },
     {
-      "text": "What World Enterprise Incubator is, how WE speaks and how the brand looks, as the rest of this site already states it.",
+      "text": "What World Enterprise is, how WE speaks and how the brand looks, as the rest of this site already states it.",
       "page_frame": true
     },
     {
@@ -555,7 +555,7 @@
         {
           "file": "src/styles/tokens.css",
           "line": 3,
-          "quote": "Palette source: whitelab brand."
+          "quote": "Palette source: the WE brand palette."
         }
       ]
     },
@@ -747,7 +747,7 @@
       ]
     },
     {
-      "text": "World Enterprise Incubator is operated by World Enterprise Group Incorporated, registered in Delaware.",
+      "text": "World Enterprise is operated by World Enterprise Group Incorporated, registered in Delaware.",
       "sources": [
         {
           "file": "src/data/site.ts",

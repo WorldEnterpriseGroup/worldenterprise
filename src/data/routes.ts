@@ -367,7 +367,7 @@ export const L2_RESERVED: readonly RouteRow[] = [
   row('/events/', 'HubLayout', 'WP-08', { requires: ['events', 'dates'] }),
   row('/program/cohorts/', 'StageLayout', 'WP-01', { requires: ['dates'] }),
   row('/program/demo-day/', 'StageLayout', 'WP-01', { requires: ['dates', 'events'] }),
-  row('/press/brand-kit/', 'MarketingLayout', 'WP-71', { launch: false, reason: 'needs whitelab brand-usage sign-off (OP-BRAND)' }),
+  row('/press/brand-kit/', 'MarketingLayout', 'WP-71', { launch: false, reason: 'needs brand-owner usage sign-off (OP-BRAND)' }),
   row('/people/[slug]/', 'MarketingLayout', 'WP-11', { requires: ['people'] }),
 ].map(finalizeRow);
 

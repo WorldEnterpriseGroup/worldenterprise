@@ -151,7 +151,7 @@ export function teamAsText(selection: TeamSelection): string {
   const summary = summariseTeam(selection);
   if (summary.seats === 0) return 'Team sketch: no seats chosen.';
   const lines = summary.lines.map((l) => `- ${l.label}: ${l.seats} ${seatWord(l.seats)}`);
-  return ['Team sketch for World Enterprise Incubator', summary.headline, ...lines].join('\n');
+  return ['Team sketch for World Enterprise', summary.headline, ...lines].join('\n');
 }
 
 /** Seats multiplied by the monthly rate. Used only when the operator publishes the seat rate (flags.seatPrice). */

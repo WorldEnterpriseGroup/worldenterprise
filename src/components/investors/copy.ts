@@ -15,7 +15,7 @@ import type { HeroCta } from '../hero/types.ts';
 export const FUNDING_SENTENCE = 'WE makes no promise of funding.';
 
 /** The one fixed sentence the showcase shows while no consented record exists (W8-17). */
-export const SHOWCASE_EMPTY = "No portfolio is published yet. WE lists a company here only with its founder's written consent.";
+export const SHOWCASE_EMPTY = "No company is listed yet. WE lists a company here only with its founder's written consent.";
 
 /** The hero action on every investor page that is not the form itself. The interest form is the conversion step. */
 export const ASK_TO_MEET: HeroCta = { label: 'Ask to meet a company', href: '/investors/interest/' };

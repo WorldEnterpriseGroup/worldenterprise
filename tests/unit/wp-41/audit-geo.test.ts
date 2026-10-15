@@ -54,9 +54,9 @@ function twin(route: string, h1: string): string {
   return `# ${h1}\n\nCanonical URL: https://worldenterprise.org${route}\n\nPlain text.\n`;
 }
 const LLMS = [
-  '# World Enterprise Incubator',
+  '# World Enterprise',
   '',
-  '> A digital incubator for SaaS.',
+  '> A business incubation and consulting firm.',
   '',
   '## What WE is',
   '',
@@ -104,8 +104,8 @@ test('llms.txt structure: a conforming file passes', () => {
 });
 
 test('llms.txt structure: a wrong title, a missing summary, a missing section and an unknown section are each reported', () => {
-  assert.match(geo.auditLlmsStructure('llms.txt', LLMS.replace('# World Enterprise Incubator', '# Something else')).join('\n'), /first line must be/);
-  assert.match(geo.auditLlmsStructure('llms.txt', LLMS.replace('> A digital', 'A digital')).join('\n'), /summary blockquote/);
+  assert.match(geo.auditLlmsStructure('llms.txt', LLMS.replace('# World Enterprise', '# Something else')).join('\n'), /first line must be/);
+  assert.match(geo.auditLlmsStructure('llms.txt', LLMS.replace('> A business', 'A business')).join('\n'), /summary blockquote/);
   assert.match(geo.auditLlmsStructure('llms.txt', LLMS.replace('## Contact', '## Reach')).join('\n'), /missing section "## Contact"/);
   assert.match(geo.auditLlmsStructure('llms.txt', LLMS.replace('## Key pages', '## Extras')).join('\n'), /unknown section\(s\): "Extras"/);
 });

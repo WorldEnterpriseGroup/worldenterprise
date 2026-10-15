@@ -27,7 +27,7 @@ export const BRIEF_COPY = {
   relatedNone: 'More briefs are on the briefs page.',
   allBriefs: 'All executive briefs',
   applyLead: 'Have an idea of your own?',
-  applyLink: 'Apply to World Enterprise Incubator',
+  applyLink: 'Apply to World Enterprise',
 } as const;
 
 /** The card line under a brief on the hub and in the related list. Dates and counts only: no reading time, no promise. */
@@ -48,7 +48,7 @@ export const THANKS_COPY = {
   asideHeading: 'While you wait',
   moreBriefs: 'Read about the other executive briefs',
   afterApply: 'What happens after you apply',
-  apply: 'Apply to World Enterprise Incubator',
+  apply: 'Apply to World Enterprise',
   contact: 'Contact WE',
 } as const;
 

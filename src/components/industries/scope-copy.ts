@@ -8,7 +8,7 @@ export interface ScopeItem {
   readonly text: string;
 }
 
-export const SCOPE_HEADING = "What WE's seats can and cannot build";
+export const SCOPE_HEADING = "What WE's teams can and cannot build";
 
 export const SCOPE_ITEMS: readonly ScopeItem[] = [
   { text: "WE is a long-horizon business incubation and consulting firm that steers a dedicated, fully remote team building the company with its founder." },

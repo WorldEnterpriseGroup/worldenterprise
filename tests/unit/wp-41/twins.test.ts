@@ -91,7 +91,7 @@ test('renderTwin: H1, lead, canonical URL, date, publisher, body, then the state
   assert.equal(lines[2], 'A lead.');
   assert.match(text, /^Canonical URL: https:\/\/worldenterprise\.org\/insights\/x\/$/m);
   assert.match(text, /^Last updated: 2026-10-06$/m);
-  assert.match(text, /^Publisher: World Enterprise Incubator, run by World Enterprise Group Incorporated$/m);
+  assert.match(text, /^Publisher: World Enterprise, run by World Enterprise Group Incorporated$/m);
   assert.match(text, /\(https:\/\/worldenterprise\.org\/pricing\/\)/);
   assert.match(text, /## Statements that apply to this page\n\nWE makes no promise of funding\.\n$/);
   assert.deepEqual(buildTwin({ route: '/insights/x/', title: 'A title', body: 'Body.' }).problems, []);

@@ -20,7 +20,7 @@ test.describe('llms.txt and llms-full.txt', () => {
     expect(response.ok()).toBe(true);
     expect(response.headers()['content-type'] ?? '').toMatch(/text\/plain/);
     const text = await response.text();
-    expect(text.startsWith('# World Enterprise Incubator')).toBe(true);
+    expect(text.startsWith('# World Enterprise')).toBe(true);
     expect(text).toMatch(/^> .+/m);
     for (const heading of ['What WE is', 'What WE offers', 'What WE does not do', 'Published commercial facts', 'Contact']) {
       expect(text, heading).toContain(`## ${heading}`);

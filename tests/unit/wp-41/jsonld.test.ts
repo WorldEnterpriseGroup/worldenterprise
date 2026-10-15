@@ -34,7 +34,7 @@ const homePage = pageNode({ path: '/', name: 'WE', description: 'D', type: 'WebP
 const withBase = (nodes: readonly Record<string, unknown>[]) => graph([...nodes, websiteNode(), homePage]);
 const orgDoc = (nodes: readonly Record<string, unknown>[] = enriched) => withBase(nodes);
 
-/** An unpriced catalog, built here only to prove the validator's rules; the site itself publishes none (W9-13, WP-54). */
+/** An unpriced catalog, built here only to prove the validator refuses it; the site publishes none (W9-13, WP-54). */
 const catalog = {
   '@type': 'OfferCatalog',
   name: 'Catalog',
@@ -67,20 +67,24 @@ test('sameAs stays the GitHub organisation only', () => {
   assert.deepEqual((org as Record<string, unknown>)['sameAs'], ['https://github.com/WorldEnterpriseGroup']);
 });
 
-test('Offer stays a forbidden type everywhere except inside the organisation catalog', () => {
+test('Offer and OfferCatalog are refused everywhere, the organisation included (W9-13)', () => {
   assert.ok(FORBIDDEN_TYPES.includes('Offer'));
   assert.ok(SCRIPT_FORBIDDEN.has('Offer'));
+  assert.ok(!(ALLOWED_TYPES as readonly string[]).includes('OfferCatalog'));
+  assert.ok(!SCRIPT_ALLOWED.has('OfferCatalog'));
   const bare = { '@context': 'https://schema.org', '@graph': [{ '@type': 'Offer', name: 'x', itemOffered: { '@type': 'Service', name: 'y' } }] };
   assert.ok(validateDocument(bare).some((e: string) => /forbidden @type Offer/.test(e)));
+  const onOrg = validateDocument(orgDoc([{ ...(enriched[0] as Record<string, unknown>), hasOfferCatalog: catalog }]));
+  assert.ok(onOrg.some((e: string) => /forbidden property "hasOfferCatalog"/.test(e)), 'a catalog on the organisation fails');
+  assert.ok(onOrg.some((e: string) => /forbidden @type Offer/.test(e)), 'an Offer inside it fails as well');
   const onPage = { '@context': 'https://schema.org', '@graph': [org, { ...pageNode({ path: '/a/', name: 'A', description: 'D', type: 'WebPage' }), hasOfferCatalog: catalog }] };
-  assert.ok(validateDocument(onPage).some((e: string) => /forbidden @type Offer/.test(e)), 'a catalog on a page node is not the organisation');
+  assert.ok(validateDocument(onPage).some((e: string) => /hasOfferCatalog/.test(e)), 'a catalog on a page node fails');
 });
 
-test('a price inside the catalog still fails the validator', () => {
-  assert.deepEqual(validateDocument(orgDoc([{ ...(enriched[0] as Record<string, unknown>), hasOfferCatalog: catalog }])), [], 'an unpriced catalog on the organisation is allowed');
-  const priced = { ...(enriched[0] as Record<string, unknown>), hasOfferCatalog: { ...catalog, itemListElement: [{ ...catalog.itemListElement[0], price: '1' }, ...catalog.itemListElement.slice(1)] } };
+test('a price anywhere still fails the validator', () => {
+  const priced = { ...(enriched[0] as Record<string, unknown>), price: '1' };
   assert.ok(validateDocument(orgDoc([priced])).some((e: string) => /price/.test(e)));
-  const specified = { ...(enriched[0] as Record<string, unknown>), hasOfferCatalog: { ...catalog, itemListElement: [{ ...catalog.itemListElement[0], priceSpecification: {} }] } };
+  const specified = { ...(enriched[0] as Record<string, unknown>), priceSpecification: {} };
   assert.ok(validateDocument(orgDoc([specified])).some((e: string) => /priceSpecification/.test(e)));
 });
 
@@ -95,7 +99,7 @@ test('the validator accepts a WebApplication node with an id, a name and a url, 
 test('the type lists of the builder and of the validator are identical', () => {
   assert.deepEqual([...ALLOWED_TYPES].sort(), [...SCRIPT_ALLOWED].sort());
   assert.deepEqual([...FORBIDDEN_TYPES].sort(), [...SCRIPT_FORBIDDEN].sort());
-  for (const type of ['OfferCatalog', 'WebApplication', 'CreativeWork']) assert.ok(ALLOWED_TYPES.includes(type as never), type);
+  for (const type of ['WebApplication', 'CreativeWork']) assert.ok(ALLOWED_TYPES.includes(type as never), type);
 });
 
 test('a research brief cites each source as a CreativeWork with its publisher, and validates', () => {

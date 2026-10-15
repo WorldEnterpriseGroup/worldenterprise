@@ -61,7 +61,7 @@ export type PrimaryNavItem =
   | ({ readonly kind: 'direct' } & DirectNavItem);
 
 export const utilityNav: { readonly statement: string; readonly links: readonly NavLink[] } = {
-  statement: 'A digital incubator for SaaS',
+  statement: 'Long-horizon business incubation and consulting',
   links: [
     { label: 'For investors', href: '/investors/' },
     { label: 'Press', href: '/press/' },
@@ -342,7 +342,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     id: 'about',
     label: 'About',
     href: '/about/',
-    lead: 'A digital incubator for SaaS, run by World Enterprise Group Incorporated.',
+    lead: 'A business incubation and consulting firm, run by World Enterprise Group Incorporated.',
     leadLink: 'About WE',
     columns: [
       {

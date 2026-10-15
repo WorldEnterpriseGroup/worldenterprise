@@ -16,8 +16,8 @@ export interface PageHtmlOptions {
 /** Builds HTML shaped like the real dist output: chrome headings before <main>, JSON-LD from the real builders. */
 export function pageHtml(options: PageHtmlOptions = {}): string {
   const path = options.path ?? '/program/';
-  const title = options.title ?? 'Program | World Enterprise Incubator';
-  const description = options.description ?? 'A digital incubator for SaaS program, step by step, from application to the first working cycle.';
+  const title = options.title ?? 'Program | World Enterprise';
+  const description = options.description ?? 'The World Enterprise program, step by step, from application to the first working cycle.';
   const canonical = options.canonical ?? `https://worldenterprise.org${path}`;
   const nodes: JsonLdNode[] = [
     organizationNode('https://worldenterprise.org/logo.svg'),
@@ -30,7 +30,7 @@ export function pageHtml(options: PageHtmlOptions = {}): string {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${title}</title>
 <meta name="description" content="${description}"><link rel="canonical" href="${canonical}">
 <meta name="robots" content="${options.robots ?? 'index,follow'}">
-<meta property="og:site_name" content="World Enterprise Incubator"><meta property="og:type" content="website">
+<meta property="og:site_name" content="World Enterprise"><meta property="og:type" content="website">
 <meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:url" content="${canonical}">
 ${image ? `<meta property="og:image" content="${image}">` : ''}
 <meta name="twitter:card" content="${image ? 'summary_large_image' : 'summary'}">

@@ -4,18 +4,18 @@
  */
 export const site = {
   /** Public brand name. */
-  name: 'World Enterprise Incubator',
+  name: 'World Enterprise',
   /** Legal entity name, used in the footer legal line and JSON-LD legalName (C-18, FLAG-PBC pending). */
   legalName: 'World Enterprise Group Incorporated',
   legalLine: 'World Enterprise Group Incorporated, a Delaware public benefit corporation',
   origin: 'https://worldenterprise.org',
-  tagline: 'A digital incubator for SaaS',
+  tagline: 'A business incubation and consulting firm',
   motto: 'WE Dream. WE Build. WE Grow.',
   signature: 'Where vision becomes evidence.',
   description:
     'Long-horizon business incubation and consulting. WE steers a dedicated, fully remote team that builds a software-enabled company. WE promises no funding.',
-  /** Title suffix: "{Page} | World Enterprise Incubator" (max 60 characters in total). */
-  titleSuffix: 'World Enterprise Incubator',
+  /** Title suffix: "{Page} | World Enterprise" (max 60 characters in total). */
+  titleSuffix: 'World Enterprise',
   locality: 'Lewes',
   region: 'DE',
   country: 'US',
@@ -33,7 +33,7 @@ export const site = {
 
 export type Site = typeof site;
 
-/** Builds a page title of the form "{Page} | World Enterprise Incubator". The home page uses the brand alone. */
+/** Builds a page title of the form "{Page} | World Enterprise". The home page uses the brand alone. */
 export function pageTitle(page?: string): string {
   if (page === undefined || page.trim() === '') return `${site.name}: ${site.tagline}`;
   return `${page.trim()} | ${site.titleSuffix}`;

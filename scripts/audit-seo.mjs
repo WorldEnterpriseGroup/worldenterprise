@@ -12,7 +12,7 @@ import { join, relative, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const ORIGIN = 'https://worldenterprise.org';
-export const TITLE_SUFFIX = 'World Enterprise Incubator';
+export const TITLE_SUFFIX = 'World Enterprise';
 export const TITLE_MAX = 60;
 export const DESCRIPTION_MAX = 160;
 

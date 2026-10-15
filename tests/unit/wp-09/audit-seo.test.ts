@@ -22,9 +22,9 @@ test('file paths map to route paths', () => {
 });
 
 test('title rules: length and suffix', () => {
-  assert.ok(errorsFor('/program/', pageHtml({ title: `${'Long '.repeat(14)}| World Enterprise Incubator` })).some((e) => e.includes('limit 60')));
+  assert.ok(errorsFor('/program/', pageHtml({ title: `${'Long '.repeat(14)}| World Enterprise` })).some((e) => e.includes('limit 60')));
   assert.ok(errorsFor('/program/', pageHtml({ title: 'Program' })).some((e) => e.includes('must end with')));
-  assert.deepEqual(errorsFor('/', pageHtml({ path: '/', title: 'World Enterprise Incubator: A digital incubator for SaaS' })), []);
+  assert.deepEqual(errorsFor('/', pageHtml({ path: '/', title: 'World Enterprise: A business incubation and consulting firm' })), []);
 });
 
 test('canonical must be single, absolute, self-referential and slash-terminated', () => {
