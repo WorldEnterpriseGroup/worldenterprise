@@ -1,0 +1,183 @@
+---
+import { href as resolve } from '../../../lib/url.ts';
+import Emblem from './Emblem.astro';
+import type { EmblemKind } from './emblems.ts';
+
+/**
+ * Large illustrated cards for a content hub (WP-56): each card opens on its family's emblem, seeded by its own slug, so every card has
+ * its own picture in one shared visual language. The cards are equal: the same size, the same marks, no badge and no ranking, and the
+ * title is the card's one link (its pseudo-element makes the whole card the target). The grid adds columns from its own width:
+ * one on a phone, up to four across the 110rem frame at 1920.
+ */
+export interface VisualCardData {
+  readonly title: string;
+  readonly href: string;
+  readonly summary?: string | undefined;
+  readonly eyebrow?: string | undefined;
+  readonly meta?: string | undefined;
+  /** Seed of the picture; defaults to the href. */
+  readonly seed?: string | undefined;
+  /** A position the picture can show (a playbook's step, a journey stop). */
+  readonly index?: number | undefined;
+}
+
+interface Props {
+  kind: EmblemKind;
+  cards: readonly VisualCardData[];
+  headingLevel?: 2 | 3 | 4;
+  /** `large` holds three columns at 1920, `medium` four. */
+  size?: 'large' | 'medium';
+  /** Accessible name of the list, when no heading names it. */
+  label?: string;
+  /** Id of a heading that names the list. */
+  labelledby?: string;
+}
+
+const { kind, cards, headingLevel = 3, size = 'medium', label, labelledby } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+
+{
+  cards.length > 0 && (
+    <ul class="wv-cards" data-size={size} role="list" {...(label !== undefined ? { 'aria-label': label } : {})} {...(labelledby !== undefined ? { 'aria-labelledby': labelledby } : {})}>
+      {cards.map((card) => (
+        <li class="wv-cards__item">
+          <article class="wv-card">
+            <div class="wv-card__sky">
+              <Emblem kind={kind} seed={card.seed ?? card.href} index={card.index ?? 0} />
+            </div>
+            <div class="wv-card__body">
+              {card.eyebrow !== undefined && <p class="wv-card__eyebrow">{card.eyebrow}</p>}
+              <Heading class="wv-card__title">
+                <a class="wv-card__link" href={resolve(card.href)}>
+                  {card.title}
+                </a>
+              </Heading>
+              {card.summary !== undefined && <p class="wv-card__text">{card.summary}</p>}
+              {card.meta !== undefined && <p class="wv-card__meta">{card.meta}</p>}
+            </div>
+          </article>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .wv-cards {
+    --_min: 17rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--_min)), 1fr));
+    gap: var(--sp-5);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .wv-cards[data-size='large'] {
+    --_min: 22rem;
+  }
+
+  @media (min-width: 100rem) {
+    .wv-cards {
+      --_min: 22rem;
+      gap: var(--sp-6);
+    }
+
+    .wv-cards[data-size='large'] {
+      --_min: 30rem;
+    }
+  }
+
+  .wv-cards__item {
+    display: flex;
+  }
+
+  .wv-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    inline-size: 100%;
+    overflow: hidden;
+    background: var(--color-bg);
+    border: var(--border-hair);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out);
+
+    &:is(:hover, :focus-within) {
+      border-color: var(--color-link);
+      box-shadow: var(--shadow-2);
+    }
+  }
+
+  .wv-card__sky {
+    aspect-ratio: 16 / 9;
+    background:
+      radial-gradient(ellipse at 80% 10%, color-mix(in oklch, var(--we-blue) 50%, transparent), transparent 60%),
+      var(--color-bg-inverse);
+  }
+
+  .wv-card__body {
+    display: grid;
+    align-content: start;
+    gap: var(--sp-2);
+    padding: var(--sp-5);
+  }
+
+  .wv-card__eyebrow {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .wv-card__title {
+    font-size: var(--fs-lg);
+    line-height: var(--lh-tight);
+    margin: 0;
+  }
+
+  .wv-card__text {
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  .wv-card__meta {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+    padding-block-start: var(--sp-2);
+    border-block-start: var(--border-hair);
+    margin-block-start: auto;
+  }
+
+  .wv-card__link {
+    color: var(--color-text);
+    text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    &:hover {
+      color: var(--color-link);
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .wv-card {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

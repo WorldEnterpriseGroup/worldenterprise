@@ -1,6 +1,9 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
+import MidCta from '../../components/families/visual/MidCta.astro';
+import OrbitProgress from '../../components/families/visual/OrbitProgress.astro';
 import BriefFacts from '../../components/research/BriefFacts.astro';
 import BriefsHubLink from '../../components/research/BriefsHubLink.astro';
 import BriefNotice from '../../components/research/BriefNotice.astro';
@@ -50,5 +53,8 @@ const meta = isDraft(entry)
   <PrintNote />
   <Toc headings={headings.map((h) => ({ depth: h.depth, slug: h.slug, text: h.text }))} title="In this brief" />
   <Content />
+  <MidCta />
   <BriefsHubLink />
+  <OrbitProgress />
+  <ArticleEnd slot="cta-end" kind="research" seed={slug ?? entry.id} />
 </BriefLayout>

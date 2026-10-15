@@ -1,0 +1,86 @@
+---
+import CtaLadder from './CtaLadder.astro';
+import EmblemFrame from './EmblemFrame.astro';
+import PullStats from './PullStats.astro';
+import RelatedOrbit from './RelatedOrbit.astro';
+import { READING } from './copy.ts';
+import type { EmblemKind } from './emblems.ts';
+import type { StatBlock } from './stats.ts';
+
+/**
+ * The end of a WP-56 reading template, filled into a layout's `cta-end` slot so it spans the full width: a context band where the
+ * pull-stats sit in a readable column beside the family emblem, an optional illustrated related rail, and the CTA ladder ("Start a
+ * readiness review" first). A template passes `stats` only when the figures belong to its subject; industries never pass any.
+ */
+interface RelatedItem {
+  readonly kind: string;
+  readonly title: string;
+  readonly href: string;
+}
+
+interface Props {
+  kind: EmblemKind;
+  seed?: string;
+  stats?: StatBlock | undefined;
+  related?: readonly RelatedItem[];
+}
+
+const { kind, seed, stats, related = [] } = Astro.props;
+---
+
+{
+  stats !== undefined && (
+    <section class="wv-context" aria-label={READING.context}>
+      <div class="container wv-context__grid">
+        <div class="wv-context__text">
+          <PullStats block={stats} id="context-stats" />
+        </div>
+        <div class="wv-context__art">
+          <EmblemFrame kind={kind} {...(seed !== undefined ? { seed } : {})} />
+        </div>
+      </div>
+    </section>
+  )
+}
+{
+  related.length > 0 && (
+    <div class="wv-end-related">
+      <div class="container">
+        <RelatedOrbit items={related} heading={READING.related} />
+      </div>
+    </div>
+  )
+}
+<CtaLadder />
+
+<style>
+  .wv-context,
+  .wv-end-related {
+    padding-block: var(--sp-7);
+  }
+
+  .wv-context__grid {
+    display: grid;
+    gap: var(--sp-6);
+    align-items: center;
+  }
+
+  .wv-context__text {
+    max-inline-size: 40rem;
+  }
+
+  .wv-context__art {
+    display: none;
+  }
+
+  @media (min-width: 62rem) {
+    .wv-context__grid {
+      grid-template-columns: minmax(0, 40rem) minmax(18rem, 34rem);
+      justify-content: space-between;
+    }
+
+    .wv-context__art {
+      display: block;
+    }
+  }
+</style>

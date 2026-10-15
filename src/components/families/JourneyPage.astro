@@ -9,6 +9,8 @@ import Compositions from '../brand/Compositions.astro';
 import Section from '../ui/Section.astro';
 import type { HeroActions } from './actions.ts';
 import { EYEBROWS, FIXED, HEADINGS, stepEyebrow } from './copy.ts';
+import ArticleEnd from './visual/ArticleEnd.astro';
+import WithEmblem from './visual/WithEmblem.astro';
 import JourneyList from './JourneyList.astro';
 import type { JourneyView } from './view.ts';
 
@@ -61,14 +63,14 @@ const kicker = eyebrow ?? (view.current !== undefined ? stepEyebrow(view.current
     {
       view.questions.length > 0 && (
         <Section tone="soft" labelledby="jny-questions">
-          <div class="stack">
+          <WithEmblem kind="journey" seed={path}>
             <h2 id="jny-questions">{HEADINGS.journey.questions}</h2>
             <ul>
               {view.questions.map((question) => (
                 <li>{question}</li>
               ))}
             </ul>
-          </div>
+          </WithEmblem>
         </Section>
       )
     }
@@ -100,6 +102,7 @@ const kicker = eyebrow ?? (view.current !== undefined ? stepEyebrow(view.current
       )
     }
   </Fragment>
+  <ArticleEnd slot="cta-end" kind="journey" seed={path} />
 </MarketingLayout>
 
 <style>

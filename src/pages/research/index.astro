@@ -1,11 +1,15 @@
 ---
 import { getEntry, render } from 'astro:content';
-import BriefCard from '../../components/cards/BriefCard.astro';
 import BriefsHubLink from '../../components/research/BriefsHubLink.astro';
 import { BRIEF_META, briefMeta, readingMinutes } from '../../components/research/briefs.ts';
-import Grid from '../../components/ui/Grid.astro';
+import { IDENTITY } from '../../components/families/visual/copy.ts';
+import CtaLadder from '../../components/families/visual/CtaLadder.astro';
+import { hubActions } from '../../components/families/visual/cta.ts';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
+import VisualCards from '../../components/families/visual/VisualCards.astro';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { getPublished } from '../../lib/content.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 
 // The glob loader may strip a trailing /index from the entry id, so accept either form.
 const page = (await getEntry('pages', 'research/index')) ?? (await getEntry('pages', 'research'));
@@ -19,6 +23,18 @@ const briefs = (await getPublished('research'))
   .filter(({ slug }) => slug in BRIEF_META)
   .sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug));
 const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const actions = hubActions((await getRouteState()).isLive);
+const cards = briefs.map(({ entry, slug }) => {
+  const meta = briefMeta(slug);
+  const asOf = entry.data.updatedDate ?? entry.data.publishedDate;
+  return {
+    title: entry.data.title,
+    href: `/research/${slug}/`,
+    summary: entry.data.description,
+    eyebrow: meta.kindLabel,
+    meta: `Version ${entry.data.version}, as of ${dateFormat.format(asOf)}. ${entry.data.sources.length} sources, ${readingMinutes(entry.body)} min read.`,
+  };
+});
 ---
 
 <HubLayout
@@ -29,25 +45,24 @@ const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'l
   lead={page.data.description}
   updated={page.data.updated}
   draft={page.data.draft}
+  hero="console"
+  primary={actions.primary}
 >
+  <div slot="panel"><EmblemFrame kind="research" caption={IDENTITY.research.caption} /></div>
   <div class="prose"><Content /></div>
-  <Grid>
-    {
-      briefs.map(({ entry, slug }) => {
-        const meta = briefMeta(slug);
-        const asOf = entry.data.updatedDate ?? entry.data.publishedDate;
-        return (
-          <BriefCard
-            title={entry.data.title}
-            summary={entry.data.description}
-            path={`/research/${slug}/`}
-            photo={meta.slot}
-            headingLevel={2}
-            meta={`${meta.kindLabel}. Version ${entry.data.version}, as of ${dateFormat.format(asOf)}. ${entry.data.sources.length} sources, ${readingMinutes(entry.body)} min read.`}
-          />
-        );
-      })
-    }
-  </Grid>
+  <section class="research-briefs" aria-labelledby="research-briefs-title">
+    <h2 id="research-briefs-title">The research briefs</h2>
+    <VisualCards kind="research" cards={cards} headingLevel={3} size="large" labelledby="research-briefs-title" />
+  </section>
   <BriefsHubLink />
+  <CtaLadder slot="cta-end" />
 </HubLayout>
+
+<style>
+  @layer pages {
+    .research-briefs {
+      display: grid;
+      gap: var(--sp-5);
+    }
+  }
+</style>

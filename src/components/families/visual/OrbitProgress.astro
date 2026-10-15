@@ -1,0 +1,105 @@
+---
+/**
+ * The orbit reading indicator of the WP-56 reading frame: a small ring in the corner of a wide screen with a craft that travels once
+ * round it as the page scrolls. Pure CSS (a scroll-driven animation), so it costs no script; it appears only where the browser
+ * supports scroll timelines and the reader has not asked for reduced motion, and it is decorative (the layout's own progress bar
+ * remains). Hidden below 75rem, where the corner belongs to the text.
+ */
+---
+
+<div class="wv-orbit" aria-hidden="true">
+  <svg class="wv-orbit__svg" viewBox="0 0 64 64" focusable="false">
+    <circle class="wv-orbit__track" cx="32" cy="32" r="24"></circle>
+    <circle class="wv-orbit__trail" cx="32" cy="32" r="24" pathLength="100"></circle>
+    <circle class="wv-orbit__core" cx="32" cy="32" r="6"></circle>
+    <g class="wv-orbit__arm">
+      <polygon class="wv-orbit__craft" points="32,4 35.5,6 35.5,10 32,12 28.5,10 28.5,6"></polygon>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .wv-orbit {
+    display: none;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) and (min-width: 75rem) {
+      .wv-orbit {
+        display: block;
+        position: fixed;
+        inset-block-end: var(--sp-5);
+        inset-inline-end: var(--sp-5);
+        z-index: var(--z-header);
+        inline-size: 3.5rem;
+        block-size: 3.5rem;
+        padding: var(--sp-1);
+        border-radius: 50%;
+        background: var(--color-bg-inverse);
+        pointer-events: none;
+      }
+
+      .wv-orbit__svg {
+        display: block;
+        inline-size: 100%;
+        block-size: 100%;
+      }
+
+      .wv-orbit__track {
+        fill: none;
+        stroke: color-mix(in oklch, var(--we-white) 25%, transparent);
+        stroke-width: 1.5;
+      }
+
+      .wv-orbit__trail {
+        fill: none;
+        stroke: var(--we-amber);
+        stroke-width: 2.5;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        transform: rotate(-90deg);
+        transform-origin: 32px 32px;
+        animation: wv-orbit-trail linear both;
+        animation-timeline: scroll(root block);
+      }
+
+      .wv-orbit__core {
+        fill: var(--we-blue);
+      }
+
+      .wv-orbit__arm {
+        transform-origin: 32px 32px;
+        animation: wv-orbit-turn linear both;
+        animation-timeline: scroll(root block);
+      }
+
+      .wv-orbit__craft {
+        fill: var(--we-white);
+      }
+    }
+  }
+
+  @keyframes wv-orbit-trail {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes wv-orbit-turn {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .wv-orbit {
+      display: none;
+    }
+  }
+
+  @media print {
+    .wv-orbit {
+      display: none;
+    }
+  }
+</style>

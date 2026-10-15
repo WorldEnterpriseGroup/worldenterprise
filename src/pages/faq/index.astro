@@ -4,6 +4,8 @@ import FaqList from '../../components/cards/FaqList.astro';
 import { anchorId, faqPageNode } from '../../components/reference/jsonld.ts';
 import Button from '../../components/ui/Button.astro';
 import Callout from '../../components/ui/Callout.astro';
+import { READINESS_REVIEW, TALK_TO_WE } from '../../components/families/visual/cta.ts';
+import ReferenceIntro from '../../components/families/visual/ReferenceIntro.astro';
 import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
@@ -25,8 +27,8 @@ const state = await getRouteState();
 const sections = buildSections(entries, (path) => state.isLive(path));
 const jump = jumpLinks(sections);
 const items = sections.flatMap((section) => section.groups.flatMap((g) => g.items));
-const canApply = state.isLive('/apply/');
-const canContact = state.isLive('/contact/');
+const canApply = state.isLive(READINESS_REVIEW.href);
+const canContact = state.isLive(TALK_TO_WE.href);
 ---
 
 <ReferenceLayout
@@ -37,7 +39,9 @@ const canContact = state.isLive('/contact/');
   lead="Straight answers, including what WE does not do."
   updated={new Date('2026-10-06')}
   jsonLd={[faqPageNode('/faq/', items)]}
+  wide
 >
+  <ReferenceIntro kind="faq" seed="faq">
   {
     jump.length > 1 && (
       <nav class="faq-jump" aria-label="Jump to a set of questions">
@@ -84,14 +88,16 @@ const canContact = state.isLive('/contact/');
   {
     (canApply || canContact) && (
       <Callout title="Still have a question?">
-        <p>Tell WE about your idea, or ask directly.</p>
+        {canApply && <p>{READINESS_REVIEW.note}</p>}
+        {canContact && <p>{TALK_TO_WE.note}</p>}
         <div class="cluster">
-          {canApply && <Button href={href('/apply/')}>Apply to the program</Button>}
-          {canContact && <Button href={href('/contact/')} variant="secondary">Contact WE</Button>}
+          {canApply && <Button href={href(READINESS_REVIEW.href)}>{READINESS_REVIEW.label}</Button>}
+          {canContact && <Button href={href(TALK_TO_WE.href)} variant="secondary">{TALK_TO_WE.label}</Button>}
         </div>
       </Callout>
     )
   }
+  </ReferenceIntro>
 </ReferenceLayout>
 
 <style>

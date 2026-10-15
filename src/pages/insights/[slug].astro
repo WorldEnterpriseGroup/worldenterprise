@@ -2,6 +2,10 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
+import MidCta from '../../components/families/visual/MidCta.astro';
+import OrbitProgress from '../../components/families/visual/OrbitProgress.astro';
+import { TIMELINE_BLOCK } from '../../components/families/visual/stats.ts';
 import InsightCover from '../../components/insights/InsightCover.astro';
 import { insightSlug, listInsights, readingMinutes, relatedFor } from '../../components/insights/articles.ts';
 import { getRenderable, isDraft } from '../../lib/content.ts';
@@ -38,4 +42,7 @@ const related = relatedFor(entry, siblings, (path) => state.isLive(path), await 
 >
   <InsightCover slug={insightSlug(entry)} topic={data.topic} />
   <Content />
+  <MidCta />
+  <OrbitProgress />
+  <ArticleEnd slot="cta-end" kind="insights" seed={`desk-${data.topic}`} stats={TIMELINE_BLOCK} />
 </ArticleLayout>

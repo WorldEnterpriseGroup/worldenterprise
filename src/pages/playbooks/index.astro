@@ -1,8 +1,10 @@
 ---
 import { getEntry, render } from 'astro:content';
-import PlaybookCard from '../../components/cards/PlaybookCard.astro';
+import { IDENTITY } from '../../components/families/visual/copy.ts';
+import { HOW_WE_WORKS, READINESS_REVIEW, hubActions } from '../../components/families/visual/cta.ts';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
+import VisualCards from '../../components/families/visual/VisualCards.astro';
 import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
-import Grid from '../../components/ui/Grid.astro';
 import PlaybookTrail from '../../components/playbooks/PlaybookTrail.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
 import { PLAYBOOKS_HUB_LEAD, liveSequence } from '../../components/playbooks/meta.ts';
@@ -15,14 +17,25 @@ if (!page) throw new Error('Missing content entry: src/content/pages/playbooks/i
 const { Content } = await render(page);
 const { data } = page;
 
+const state = await getRouteState();
 const published = await getPublished('playbooks');
 // Only the playbooks whose route is live in this build, in reading order.
-const sequence = liveSequence((await getRouteState()).isLive);
-const cards = sequence.flatMap((ref) => {
+const sequence = liveSequence(state.isLive);
+const entries = sequence.flatMap((ref) => {
   const entry = published.find((e) => e.id.split('/').at(-1) === ref.slug);
   return entry ? [{ ref, entry }] : [];
 });
 const stageLabel = { dream: 'Dream', build: 'Build', grow: 'Grow' } as const;
+// Each playbook is a mission patch; the pips on the patch count its place in the sequence.
+const cards = entries.map(({ ref, entry }, i) => ({
+  title: ref.short,
+  href: `/playbooks/${ref.slug}/`,
+  summary: entry.data.description,
+  eyebrow: `${i + 1} of ${sequence.length}, ${stageLabel[entry.data.stage]}`,
+  meta: `${entry.data.steps.length} steps`,
+  index: i,
+}));
+const actions = hubActions(state.isLive, { label: 'Open the templates', href: '/library/' });
 ---
 
 <HubLayout
@@ -34,41 +47,38 @@ const stageLabel = { dream: 'Dream', build: 'Build', grow: 'Grow' } as const;
   updated={data.updated}
   draft={isDraft(page)}
   ogSlot="og-playbooks"
-  photo="inset-playbooks"
-  secondary={{ label: 'Open the templates', href: '/library/' }}
-  subtree={cards.map(({ ref, entry }) => ({
+  hero="console"
+  primary={actions.primary}
+  secondary={actions.secondary}
+  subtree={entries.map(({ ref, entry }) => ({
     title: ref.short,
     href: `/playbooks/${ref.slug}/`,
     description: entry.data.description,
   }))}
 >
+  <div slot="panel"><EmblemFrame kind="playbooks" seed="playbooks-hub" index={sequence.length - 1} caption={IDENTITY.playbooks.caption} /></div>
   <div class="prose">
     <Content components={{ a: SmartLink }} />
   </div>
   <PlaybookTrail />
-  <section class="stack" aria-labelledby="pb-list-title">
+  <section class="pb-missions" aria-labelledby="pb-list-title">
     <h2 id="pb-list-title">The playbooks, in order</h2>
-    <Grid min="17rem">
-      {
-        cards.map(({ ref, entry }, i) => (
-          <PlaybookCard
-            title={ref.short}
-            summary={entry.data.description}
-            path={`/playbooks/${ref.slug}/`}
-            {...(ref.slot !== undefined ? { photo: ref.slot } : {})}
-            eyebrow={`${i + 1} of ${sequence.length}, ${stageLabel[entry.data.stage]}`}
-            headingLevel={3}
-            meta={`${entry.data.steps.length} steps`}
-          />
-        ))
-      }
-    </Grid>
+    <VisualCards kind="playbooks" cards={cards} headingLevel={3} size="large" labelledby="pb-list-title" />
   </section>
   <SafeCtaBand
     slot="after"
     title="Work through them with a team behind you"
-    text="WE places dedicated team seats around a founder and steers the work. Apply to see whether the program fits your idea."
-    primary={{ label: 'Apply to the program', href: '/apply/' }}
-    secondary={{ label: 'Open the templates', href: '/library/' }}
+    text="WE steers a dedicated team that builds the company with its founder, for as long as the work is useful. A readiness review is where that starts."
+    primary={{ label: READINESS_REVIEW.label, href: READINESS_REVIEW.href }}
+    secondary={{ label: HOW_WE_WORKS.label, href: HOW_WE_WORKS.href }}
   />
 </HubLayout>
+
+<style>
+  @layer pages {
+    .pb-missions {
+      display: grid;
+      gap: var(--sp-5);
+    }
+  }
+</style>
