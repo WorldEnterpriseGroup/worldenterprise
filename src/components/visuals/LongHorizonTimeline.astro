@@ -1,0 +1,398 @@
+---
+/**
+ * LongHorizonTimeline: the multi-year path of building a company, with a world forming along the track (a seed cell at the start, a
+ * full hex globe at the horizon). Milestones sit at the points where they typically happen (first revenue, break-even...) and survival
+ * gates mark the share of businesses still operating at years one, two, five and ten. WE's engagement is paced to this real timeline,
+ * not to a three-month batch.
+ *
+ * The page supplies the figures and their sources (every statistic needs one; contracts.ts enforces it). The track uses a gentle log
+ * scale so the first months are as readable as the tenth year. Wide containers: milestones above the track, survival gates below.
+ * Narrow containers: a vertical list. All text is HTML; the SVG glyphs are decoration.
+ */
+import { milestones as checkMilestones } from './contracts.ts';
+import type { Milestone, StatSource } from './contracts.ts';
+import { lanes, timelineX, timelineYears, hexagon } from './chart-math.ts';
+import { positionClasses } from '../../scripts/visuals/geometry.ts';
+
+interface Props {
+  milestones: readonly Milestone[];
+  /** Years shown, 1 to 20 (default 10). */
+  horizon?: number;
+  /** Accessible name of the timeline list. */
+  label?: string;
+  caption?: string;
+  /** Prefix for the source-note ids (default "timeline"); set it when a page shows two timelines. */
+  id?: string;
+  class?: string;
+}
+
+const { horizon = 10, label = 'Typical milestones over the life of a new business', caption, id = 'timeline', class: className } = Astro.props;
+const items = checkMilestones('LongHorizonTimeline', Astro.props.milestones, horizon);
+
+/** "Month 9", "Year 2", "Year 2.5". Never "N years" (the claims audit reads "20 years" as an experience claim). */
+const when = (years: number): string => (years < 1 ? `Month ${Math.max(1, Math.round(years * 12))}` : `Year ${Math.round(years * 10) / 10}`);
+
+// Sources, numbered in order of first use.
+const sources: StatSource[] = [];
+const sourceIndex = (s: StatSource | undefined): number | undefined => {
+  if (s === undefined) return undefined;
+  const found = sources.findIndex((x) => x.label === s.label && x.href === s.href);
+  if (found !== -1) return found + 1;
+  sources.push(s);
+  return sources.length;
+};
+
+const MARGIN = 0.05;
+const xOf = (years: number): number => MARGIN + (1 - 2 * MARGIN) * timelineX(years, horizon, 1);
+const events = items.filter((m) => m.kind !== 'survival');
+const gates = items.filter((m) => m.kind === 'survival');
+// Labels are 10rem wide on a track of at least 52rem, so neighbors closer than a fifth of the track take another lane.
+const eventLanes = lanes(events.map((m) => xOf(m.at)), 0.2, 3);
+const gateLanes = lanes(gates.map((m) => xOf(m.at)), 0.2, 2);
+const align = (x: number): string => (x < 0.1 ? 'is-start' : x > 0.9 ? 'is-end' : '');
+
+const rows = items.map((m) => {
+  const x = xOf(m.at);
+  const isGate = m.kind === 'survival';
+  const lane = isGate ? (gateLanes[gates.indexOf(m)] ?? 0) : (eventLanes[events.indexOf(m)] ?? 0);
+  return { ...m, x, lane, isGate, when: when(m.at), note: sourceIndex(m.source) };
+});
+
+// World-forming glyphs at the year marks: a seed cell, a cluster, a ring of cells, a forming globe, a whole world (amber cell last).
+const years = timelineYears(horizon);
+const glyphs = years.map((y, i) => ({ x: xOf(y), stage: Math.round((i / Math.max(1, years.length - 1)) * 4), year: y }));
+const R = 7;
+const cluster = (stage: number): { readonly points: string; readonly lit: boolean; readonly amber: boolean }[] => {
+  const cells: { points: string; lit: boolean; amber: boolean }[] = [{ points: hexagon(40, 40, R), lit: true, amber: stage === 4 }];
+  const ring1 = Array.from({ length: 6 }, (_, k) => [40 + Math.cos((Math.PI / 3) * k + Math.PI / 6) * R * 1.8, 40 + Math.sin((Math.PI / 3) * k + Math.PI / 6) * R * 1.8] as const);
+  const ring2 = Array.from({ length: 12 }, (_, k) => {
+    const a = (Math.PI / 6) * k;
+    const d = k % 2 === 0 ? R * 3.6 : R * 3.12;
+    return [40 + Math.cos(a + Math.PI / 6) * d, 40 + Math.sin(a + Math.PI / 6) * d] as const;
+  });
+  const shown1 = [0, 2, 3, 5, 6, 6][stage] ?? 6;
+  const shown2 = [0, 0, 0, 5, 12, 12][stage] ?? 12;
+  ring1.forEach(([cx, cy], k) => cells.push({ points: hexagon(cx, cy, R), lit: k < shown1, amber: false }));
+  ring2.forEach(([cx, cy], k) => cells.push({ points: hexagon(cx, cy, R), lit: k < shown2, amber: false }));
+  return cells;
+};
+---
+
+<figure class:list={['tl', className]}>
+  <div class="tl__stage">
+    <div class="tl__track" aria-hidden="true">
+      {
+        glyphs.map((g) => (
+          <svg class:list={['tl__glyph', positionClasses(g.x, 0), `tl__glyph--${g.stage}`]} viewBox="0 0 80 80" focusable="false">
+            {cluster(g.stage).map((c) => (
+              <polygon class:list={['tl__cell', c.lit && 'is-lit', c.amber && 'is-amber']} points={c.points} />
+            ))}
+          </svg>
+        ))
+      }
+      {years.map((y) => <span class:list={['tl__tick', positionClasses(xOf(y), 0)]}>{y === 0 ? 'Start' : `Year ${y}`}</span>)}
+    </div>
+    <ol class="tl__list" aria-label={label} role="list">
+      {
+        rows.map((m) => (
+          <li class:list={['tl__item', m.isGate ? 'tl__item--gate' : 'tl__item--event', `lane-${m.lane}`, positionClasses(m.x, 0), align(m.x)]}>
+            <span class="tl__when">{m.when}</span>
+            <span class="tl__label">
+              {m.label}
+              {m.note !== undefined && (
+                <a class="tl__note" href={`#${id}-src-${m.note}`} aria-label={`Source ${m.note}`}>
+                  <sup>{m.note}</sup>
+                </a>
+              )}
+            </span>
+            {m.detail !== undefined && <span class="tl__detail">{m.detail}</span>}
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+  {
+    (caption !== undefined || sources.length > 0) && (
+      <figcaption class="tl__caption">
+        {caption !== undefined && <p>{caption}</p>}
+        {sources.length > 0 && (
+          <ol class="tl__sources" aria-label="Sources">
+            {sources.map((s, i) => (
+              <li id={`${id}-src-${i + 1}`}>
+                {s.href !== undefined ? <a href={s.href}>{s.label}</a> : s.label}
+                {s.period !== undefined && <span>, {s.period}</span>}
+              </li>
+            ))}
+          </ol>
+        )}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .tl {
+    container-type: inline-size;
+    container-name: timeline;
+    margin: 0;
+  }
+
+  /* Narrow: a vertical list along a rule with an amber lead segment. */
+  .tl__track {
+    display: none;
+  }
+
+  .tl__list {
+    position: relative;
+    display: grid;
+    gap: var(--sp-4);
+    margin: 0;
+    padding: 0;
+    padding-inline-start: var(--sp-6);
+    list-style: none;
+  }
+
+  .tl__list::before {
+    content: '';
+    position: absolute;
+    inset-block: var(--sp-2);
+    inset-inline-start: var(--sp-2);
+    inline-size: 2px;
+    background: linear-gradient(to bottom, var(--we-amber) 0 var(--sp-6), var(--we-blue) var(--sp-6));
+  }
+
+  .tl__item {
+    position: relative;
+    display: grid;
+    gap: 2px;
+  }
+
+  .tl__item::before {
+    content: '';
+    position: absolute;
+    inset-block-start: var(--sp-1);
+    inset-inline-start: calc(-1 * var(--sp-6) + var(--sp-2) - 5px);
+    inline-size: 12px;
+    block-size: 12px;
+    background: var(--we-blue);
+    clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+  }
+
+  .tl__item--gate::before {
+    background: var(--we-amber);
+  }
+
+  .tl__when {
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .tl__label {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+    color: var(--color-text);
+  }
+
+  .tl__item--gate .tl__label {
+    color: var(--we-blue-deep);
+  }
+
+  .tl__detail {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .tl__note {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .tl__caption {
+    display: grid;
+    gap: var(--sp-2);
+    margin-block-start: var(--sp-5);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .tl__sources {
+    display: grid;
+    gap: var(--sp-1);
+    margin: 0;
+    padding-inline-start: var(--sp-5);
+  }
+
+  /* Wide: one horizontal track, milestones above it on up to three lanes, survival gates below on up to two. */
+  @container timeline (min-width: 52rem) {
+    .tl__stage {
+      position: relative;
+      block-size: 34rem;
+    }
+
+    .tl__track {
+      position: absolute;
+      inset-inline: 0;
+      inset-block-start: 55%;
+      display: block;
+      block-size: 2px;
+      background: linear-gradient(to right, var(--we-amber) 0 5%, var(--we-blue) 5%);
+    }
+
+    .tl__glyph {
+      position: absolute;
+      left: var(--px);
+      top: 0;
+      inline-size: 3.5rem;
+      block-size: 3.5rem;
+      transform: translate(-50%, -50%);
+      overflow: visible;
+    }
+
+    .tl__cell {
+      fill: var(--color-bg);
+      stroke: var(--we-hairline);
+      stroke-width: 1.2;
+    }
+
+    .tl__cell.is-lit {
+      fill: var(--we-blue);
+      stroke: var(--color-bg);
+    }
+
+    .tl__glyph--0 .tl__cell.is-lit,
+    .tl__glyph--1 .tl__cell.is-lit {
+      fill: var(--we-blue-hi);
+    }
+
+    .tl__cell.is-amber {
+      fill: var(--we-amber);
+    }
+
+    .tl__tick {
+      position: absolute;
+      left: var(--px);
+      top: var(--sp-6);
+      transform: translateX(-50%);
+      font-family: var(--ff-display);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--color-text-muted);
+    }
+
+    .tl__list {
+      position: absolute;
+      inset: 0;
+      display: block;
+      padding: 0;
+    }
+
+    .tl__list::before {
+      display: none;
+    }
+
+    .tl__item {
+      --lane: 0;
+      position: absolute;
+      left: var(--px);
+      inline-size: 10rem;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .tl__item.is-start {
+      transform: translateX(calc(-1 * var(--sp-4)));
+      text-align: start;
+    }
+
+    .tl__item.is-end {
+      transform: translateX(calc(-100% + var(--sp-4)));
+      text-align: end;
+    }
+
+    .lane-1 {
+      --lane: 1;
+    }
+
+    .lane-2 {
+      --lane: 2;
+    }
+
+    .tl__item--event {
+      bottom: calc(45% + var(--sp-7) + var(--lane) * 6.5rem);
+    }
+
+    .tl__item--gate {
+      top: calc(55% + var(--sp-9) + var(--lane) * 5.5rem);
+    }
+
+    /* A hairline from each label to its point on the track, and the point itself as a small hexagon. */
+    .tl__item::before {
+      inset-inline-start: 50%;
+      inline-size: 1px;
+      block-size: calc(var(--sp-7) + var(--lane) * 6.5rem - var(--sp-2));
+      background: var(--we-hairline);
+      clip-path: none;
+      transform: translateX(-50%);
+    }
+
+    .tl__item--event::before {
+      inset-block-start: calc(100% + var(--sp-2));
+    }
+
+    .tl__item--gate::before {
+      inset-block-start: auto;
+      inset-block-end: calc(100% + var(--sp-2));
+      block-size: calc(var(--sp-9) + var(--lane) * 5.5rem - var(--sp-2));
+      background: var(--we-amber);
+    }
+
+    .tl__item.is-start::before {
+      inset-inline-start: var(--sp-4);
+    }
+
+    .tl__item.is-end::before {
+      inset-inline-start: calc(100% - var(--sp-4));
+    }
+
+    .tl__item::after {
+      content: '';
+      position: absolute;
+      inset-inline-start: 50%;
+      inline-size: 14px;
+      block-size: 14px;
+      background: var(--we-blue);
+      clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+      transform: translate(-50%, 50%);
+    }
+
+    .tl__item--event::after {
+      inset-block-start: calc(100% + var(--sp-7) + var(--lane) * 6.5rem - 7px);
+      transform: translate(-50%, 0);
+    }
+
+    .tl__item--gate::after {
+      inset-block-end: calc(100% + var(--sp-9) + var(--lane) * 5.5rem - 7px);
+      background: var(--we-amber);
+      transform: translate(-50%, 0);
+    }
+
+    .tl__item.is-start::after {
+      inset-inline-start: var(--sp-4);
+    }
+
+    .tl__item.is-end::after {
+      inset-inline-start: calc(100% - var(--sp-4));
+    }
+  }
+</style>

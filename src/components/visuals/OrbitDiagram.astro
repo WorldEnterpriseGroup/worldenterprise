@@ -1,0 +1,9 @@
+---
+/** OrbitDiagram: the name docs/wave9-contracts.md 5 gives the orbit visual. The same component as OrbitSystem, with the same props. */
+import type { ComponentProps } from 'astro/types';
+import OrbitSystem from './OrbitSystem.astro';
+
+type Props = ComponentProps<typeof OrbitSystem>;
+---
+
+<OrbitSystem {...Astro.props} />

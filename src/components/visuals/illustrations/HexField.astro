@@ -1,0 +1,78 @@
+---
+/**
+ * HexField: the brand's hex texture as a decorative SVG background, dense at one edge and thinning out, with one amber cell. Seeded,
+ * so it is identical on every build. Place it inside a positioned container; it fills it and sits behind the content.
+ */
+import { hexField, weightBand } from './shapes.ts';
+import type { FieldEdge } from './shapes.ts';
+import { hexagon } from '../chart-math.ts';
+
+interface Props {
+  edge?: FieldEdge;
+  /** 0 (sparse) to 1 (dense). */
+  density?: number;
+  seed?: number;
+  amber?: boolean;
+  /** `dark` draws light cells for a dark band. */
+  tone?: 'light' | 'dark';
+  /** Width to height of the drawing box; the field is cropped to the container (preserveAspectRatio slice). */
+  aspect?: number;
+  class?: string;
+}
+
+const { edge = 'right', density = 0.6, seed = 7, amber = true, tone = 'light', aspect = 2, class: className } = Astro.props;
+const H = 400;
+const W = Math.round(H * aspect);
+const R = 22;
+const cells = hexField(W, H, R, edge, Math.min(1, Math.max(0, density)), seed, amber);
+---
+
+<svg class:list={['hex-field', `hex-field--${tone}`, className]} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  {cells.map((c) => <polygon class:list={['hex-field__cell', `w-${weightBand(c.weight)}`, c.amber && 'is-amber']} points={hexagon(c.x, c.y, R * 0.9)} />)}
+</svg>
+
+<style>
+  .hex-field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    pointer-events: none;
+  }
+
+  .hex-field__cell {
+    fill: var(--we-blue);
+  }
+
+  .w-1 {
+    fill-opacity: 0.06;
+  }
+
+  .w-2 {
+    fill-opacity: 0.12;
+  }
+
+  .w-3 {
+    fill-opacity: 0.22;
+  }
+
+  .w-4 {
+    fill-opacity: 0.36;
+  }
+
+  .hex-field--dark .hex-field__cell {
+    fill: var(--we-tint);
+  }
+
+  .hex-field .is-amber {
+    fill: var(--we-amber);
+    fill-opacity: 0.9;
+  }
+
+  @media (forced-colors: active) {
+    .hex-field {
+      display: none;
+    }
+  }
+</style>
