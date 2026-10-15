@@ -66,7 +66,7 @@ test('entries are ordered from one, have a label of at most 40 characters and an
     family.entries.forEach((e, i) => {
       assert.equal(e.order, i + 1, `${family.id}/${e.slug} order`);
       assert.ok(e.label.length > 0 && e.label.length <= 40, `${family.id}/${e.slug} label "${e.label}" is ${e.label.length} characters`);
-      assert.match(e.owner, /^WP-(?:[6-9]\d|5[1-8])$/, `${family.id}/${e.slug} owner`);
+      assert.match(e.owner, /^WP-(?:[6-9]\d|5[1-8]|3[2-8])$/, `${family.id}/${e.slug} owner`);
     });
   }
 });

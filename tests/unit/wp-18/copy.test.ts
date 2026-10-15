@@ -21,6 +21,7 @@ interface RuleSet {
 }
 const audit = auditMod as unknown as {
   loadDenylist(): RuleSet;
+  stripEcosystemContext(html: string): string;
   hasGeneratedImages(manifest: unknown): boolean;
 };
 
@@ -54,6 +55,24 @@ test('the navigation copy carries no PBC wording and no "fundable" outcome', () 
   assert.match(nav, /lead: 'Long-horizon business incubation\. A dedicated team, steered by WE, from first idea to first customers\.'/);
 });
 
+/** Sources of the ecosystem routes (WP-33, WP-34, WP-35 write sets; docs/wave10-contracts.md section 2). */
+const ECOSYSTEM_SOURCES: readonly string[] = [
+  'src/pages/ecosystem/',
+  'src/content/pages/ecosystem/',
+  'src/data/ecosystem/',
+  'src/components/ecosystem/',
+  'src/scripts/ecosystem',
+  'src/pages/sbir-sttr/',
+  'src/content/pages/sbir-sttr/',
+  'src/data/sbir/',
+  'src/components/sbir/',
+  'src/scripts/sbir',
+  'src/pages/data/',
+  'src/content/pages/data/',
+  'src/data/datasets/',
+  'src/scripts/charts',
+];
+
 test('"fundable" as an outcome and the peers family appear in source only where a rule allows them', () => {
   const byId = new Map(SET.contextRules.map((rule) => [rule.id, rule]));
   const files = [...walk(join(ROOT, 'src'), /\.(astro|ts|md|mdx|yaml)$/)];
@@ -80,10 +99,13 @@ test('"fundable" as an outcome and the peers family appear in source only where 
   for (const [id, exempt] of Object.entries(allowed)) {
     const rule = byId.get(id);
     assert.ok(rule, `${id} is in claims-denylist.json`);
+    // Wave 10 (D-W10-1): a rule marked ecosystemAllowed is lifted in the ecosystem sources and inside data-context="ecosystem" elements.
+    const ecosystemAllowed = (rule as { ecosystemAllowed?: boolean }).ecosystemAllowed === true;
     const offenders = files.map(rel).filter((file) => {
       if (exempt.includes(file)) return false;
+      if (ecosystemAllowed && ECOSYSTEM_SOURCES.some((prefix) => file.startsWith(prefix))) return false;
       rule.regex.lastIndex = 0;
-      return rule.regex.test(read(file));
+      return rule.regex.test(ecosystemAllowed ? audit.stripEcosystemContext(read(file)) : read(file));
     });
     assert.deepEqual(offenders, [], `${id} found in source`);
   }
