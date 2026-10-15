@@ -100,28 +100,30 @@ const fmt = (n: number): string => `${Math.round(n * 10) / 10}%`;
     }
     {paths.map((p, i) => <path class={`survival__line survival__line--${i}`} d={p.line} />)}
   </svg>
-  <table class="visually-hidden">
-    <caption>{title}</caption>
-    <thead>
-      <tr>
-        <th scope="col">Years since opening</th>
-        {series.map((s) => <th scope="col">{s.label}</th>)}
-      </tr>
-    </thead>
-    <tbody>
-      {
-        years.map((yr) => (
-          <tr>
-            <th scope="row">{yr}</th>
-            {series.map((s) => {
-              const p = s.points.find((q) => q.year === yr);
-              return <td>{p === undefined ? 'n/a' : fmt(p.percent)}</td>;
-            })}
-          </tr>
-        ))
-      }
-    </tbody>
-  </table>
+  <div class="visually-hidden">
+    <table>
+      <caption>{title}</caption>
+      <thead>
+        <tr>
+          <th scope="col">Years since opening</th>
+          {series.map((s) => <th scope="col">{s.label}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          years.map((yr) => (
+            <tr>
+              <th scope="row">{yr}</th>
+              {series.map((s) => {
+                const p = s.points.find((q) => q.year === yr);
+                return <td>{p === undefined ? 'n/a' : fmt(p.percent)}</td>;
+              })}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
   {note !== undefined && <p class="survival__note">{note}</p>}
   <SourceNote sources={[source]} />
 </figure>

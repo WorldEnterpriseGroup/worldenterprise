@@ -62,15 +62,17 @@ const show = (d: Datum): string => d.display ?? String(d.value);
       })
     }
   </svg>
-  <table class="visually-hidden">
-    <caption>{title}</caption>
-    <thead>
-      <tr><th scope="col">Group</th><th scope="col">{valueLabel}</th></tr>
-    </thead>
-    <tbody>
-      {items.map((d) => <tr><th scope="row">{d.label}</th><td>{show(d)}</td></tr>)}
-    </tbody>
-  </table>
+  <div class="visually-hidden">
+    <table>
+      <caption>{title}</caption>
+      <thead>
+        <tr><th scope="col">Group</th><th scope="col">{valueLabel}</th></tr>
+      </thead>
+      <tbody>
+        {items.map((d) => <tr><th scope="row">{d.label}</th><td>{show(d)}</td></tr>)}
+      </tbody>
+    </table>
+  </div>
   {note !== undefined && <p class="bar-chart__note">{note}</p>}
   <SourceNote sources={[source]} />
 </figure>

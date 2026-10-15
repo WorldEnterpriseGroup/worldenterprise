@@ -53,7 +53,14 @@ async function attachItems(page: Page, info: TestInfo, suffix: string): Promise<
     await item.scrollIntoViewIfNeeded();
     await page.waitForLoadState('networkidle');
     await page.waitForFunction((el) => Array.from(el.querySelectorAll('img')).every((img) => img.complete), await item.elementHandle());
-    await info.attach(`visual-${String(i + 1).padStart(2, '0')}-${suffix}`, { body: await item.screenshot({ type: 'jpeg', quality: 72 }), contentType: 'image/jpeg' });
+    const name = `visual-${String(i + 1).padStart(2, '0')}-${suffix}`;
+    try {
+      await info.attach(name, { body: await item.screenshot({ type: 'jpeg', quality: 72, animations: 'disabled', timeout: 20_000 }), contentType: 'image/jpeg' });
+    } catch (error) {
+      // A review capture is not an assertion: record why it is missing (the layout checks above and in the other tests still gate).
+      const reason = error instanceof Error ? error.message.split('\n')[0] : String(error);
+      info.annotations.push({ type: 'missing-review-shot', description: `${name}: ${reason}` });
+    }
   }
 }
 
