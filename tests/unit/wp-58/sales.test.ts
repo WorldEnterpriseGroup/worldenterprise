@@ -12,6 +12,7 @@ import { STATS } from '../../../src/data/sales/stats.ts';
 import type { StatId } from '../../../src/data/sales/stats.ts';
 import { APPLICATIONS_BY_YEAR, CHART_STATS, FORMATION_FUNNEL, NECESSITY_SHARE, ODDS_STAIRCASE_2013, PHASES, SURVIVAL_2015 } from '../../../src/data/sales/timeline.ts';
 import { getRoute } from '../../../src/data/routes.ts';
+import { pageTitle } from '../../../src/data/site.ts';
 import { classifyHost, fetchDate } from '../wp-60/sources.ts';
 
 /**
@@ -211,6 +212,7 @@ test('situations are situations: every page is for anyone in it, and no headline
     assert.match(s.situation, /^For any(?:one| capable founder)\b/, `${s.id} situation line`);
     for (const field of [s.headline, s.seoTitle, s.name, s.card, s.worldAlt]) assert.doesNotMatch(field, GROUP_WORDS, `${s.id}: "${field}"`);
     assert.ok(s.description.length <= 160, `${s.id} description is ${s.description.length} characters`);
+    assert.ok(pageTitle(s.seoTitle).length <= 60, `${s.id} title "${pageTitle(s.seoTitle)}" is over 60 characters (audit:seo)`);
     assert.ok(s.objections.length >= 2, `${s.id} answers too few questions`);
     assert.ok(s.stats.length >= 1 && s.stats.length <= 3, `${s.id} shows ${s.stats.length} figures`);
   }

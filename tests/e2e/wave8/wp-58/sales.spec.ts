@@ -106,7 +106,8 @@ test.describe('without JavaScript', () => {
       const drawings = page.locator('main svg[role="img"]');
       expect(await drawings.count()).toBeGreaterThan(0);
       await expect(drawings.first()).toBeVisible();
-      await expect(page.locator('main #sources, main [id^="source-"]').first()).toBeAttached();
+      // The hub prints no figures, so it has no sources ledger; every page with figures has one.
+      if (route !== '/who-we-work-with/') await expect(page.locator('main #sources, main [id^="source-"]').first()).toBeAttached();
     });
   }
 });

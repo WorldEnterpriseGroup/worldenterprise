@@ -83,5 +83,12 @@ const { caption, sources, table, caveat, derived } = Astro.props;
     .sales-chart__data[open] summary {
       margin-block-end: var(--sp-3);
     }
+
+    /* A closed disclosure renders nothing, but some engines still lay its content out when asked for sizes, so a wide table would
+       report a scroll frame that no key can reach. Take the frame out of layout until the reader opens the data; open, it is the
+       normal keyboard-scrollable region (tests/e2e/layout.spec.ts). */
+    .sales-chart__data:not([open]) :global(.table-wrap) {
+      display: none;
+    }
   }
 </style>

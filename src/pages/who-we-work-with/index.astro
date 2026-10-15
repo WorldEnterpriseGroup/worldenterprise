@@ -109,6 +109,11 @@ const lead =
       margin: 0;
     }
 
+    /* Reading lines keep the site measure in the wide two-column bands (the fit lists ran to 85ch at 1920px). */
+    .sales-hub__text > p {
+      max-inline-size: var(--measure);
+    }
+
     .sales-hub__cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
