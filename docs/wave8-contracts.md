@@ -120,7 +120,7 @@ Rows WP-60 pre-registers as `launch: true` (pending until their page exists, a w
 | `/journey/`, `/journey/after-you-apply/`, `/journey/first-months/`, `/journey/onboarding-checklist/` | HubLayout, MarketingLayout | yes | WP-72 |
 | `/resources/` | HubLayout | yes | WP-72 (exists, rebuilt) |
 | `/about/brand-story/` | MarketingLayout | yes | WP-71 |
-| `/press/brand-kit/` | MarketingLayout | no (`launch: false`, reason: needs whitelab brand-usage sign-off, OP-BRAND) | WP-71 |
+| `/press/brand-kit/` | MarketingLayout | no (`launch: false`, reason: needs the brand-owner usage sign-off, OP-BRAND) | WP-71 |
 
 **Tools** (owner WP-76): `/tools/` (exists, hub) and `/tools/runway-calculator/`, `/tools/pricing-page-checker/`, `/tools/cap-table-explainer/`, in the layout of the existing `/tools/team-composer/` page (WP-49). The tool registry WP-49 created is extended additively.
 
