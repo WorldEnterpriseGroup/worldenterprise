@@ -29,9 +29,9 @@ Nothing is collected until you press the submit button of a form. Nothing is sen
 | Company or working name | `company` | Apply, Contact, Request a brief, Investor interest, Partner enquiry | Required for Partner enquiry, optional elsewhere |
 | Website of your organization | `companyUrl` | Investor interest (optional), Partner enquiry | To see who the organization is |
 | Stage of your idea | `stage` | Apply, Request a brief (optional) | To understand where you are |
-| Team seats of interest | `seats` | Apply | Optional text, filled by the Team Composer if you use it |
+| Roles you have in mind | `seats` | Apply | Optional text, filled by the Team Composer if you use it |
 | Topic | `topic` | Contact | To route the message |
-| Your message | `message` | Apply (optional), Contact, Investor interest (optional), Partner enquiry (optional) | The substance of what you want to say. On Apply it can end with a line naming the package you were looking at |
+| Your message | `message` | Apply (optional), Contact, Investor interest (optional), Partner enquiry (optional) | The substance of what you want to say. On Apply it can end with your answers to the optional context questions: your situation, when the company started, your years in the industry, how the company would pay for a team, how long you expect to build and how you heard about WE |
 | Which brief | `briefId` | Request a brief | To know which brief to send |
 | Partner category | `partnerCategory` | Partner enquiry | To route the enquiry |
 | What the organization offers founders | `offer` | Partner enquiry | The substance of the enquiry |
