@@ -100,30 +100,33 @@ const fmt = (n: number): string => `${Math.round(n * 10) / 10}%`;
     }
     {paths.map((p, i) => <path class={`survival__line survival__line--${i}`} d={p.line} />)}
   </svg>
-  <div class="visually-hidden">
-    <table>
-      <caption>{title}</caption>
-      <thead>
-        <tr>
-          <th scope="col">Years since opening</th>
-          {series.map((s) => <th scope="col">{s.label}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        {
-          years.map((yr) => (
-            <tr>
-              <th scope="row">{yr}</th>
-              {series.map((s) => {
-                const p = s.points.find((q) => q.year === yr);
-                return <td>{p === undefined ? 'n/a' : fmt(p.percent)}</td>;
-              })}
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-  </div>
+  <details class="survival__data">
+    <summary>Show the figures as a table</summary>
+    <div class="table-wrap" role="region" tabindex="0" aria-label={`${title}, as a table`}>
+      <table>
+        <caption>{title}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Years since opening</th>
+            {series.map((s) => <th scope="col">{s.label}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            years.map((yr) => (
+              <tr>
+                <th scope="row">{yr}</th>
+                {series.map((s) => {
+                  const p = s.points.find((q) => q.year === yr);
+                  return <td>{p === undefined ? 'n/a' : fmt(p.percent)}</td>;
+                })}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </details>
   {note !== undefined && <p class="survival__note">{note}</p>}
   <SourceNote sources={[source]} />
 </figure>
@@ -252,5 +255,23 @@ const fmt = (n: number): string => `${Math.round(n * 10) / 10}%`;
     .survival__gate-label {
       fill: CanvasText;
     }
+  }
+
+  .survival__data summary {
+    cursor: pointer;
+    color: var(--color-link);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .survival__data[open] summary {
+    margin-block-end: var(--sp-3);
+  }
+
+  /* The figures sit in the site's table frame (a named, focusable scroll region: tests/e2e/layout.spec.ts). Closed, the frame leaves
+     layout so no engine reports a scroll region that no key can reach. */
+  .survival__data:not([open]) .table-wrap {
+    display: none;
   }
 </style>
