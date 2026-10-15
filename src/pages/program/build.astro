@@ -22,7 +22,7 @@ const howLong = pick('howLong', (path: string): boolean => state.isLive(path));
 const following = nextStage(stage.id);
 const next = [
   ...(following ? [{ title: STAGE_VIEWS[following.id].headline, href: following.path, description: STAGE_VIEWS[following.id].subhead.split('. ')[0] + '.' }] : []),
-  { title: 'From first conversation to Day One', href: '/program/how-it-works/', description: 'How an engagement starts.' },
+  { title: 'How the program works', href: '/program/how-it-works/', description: 'From first conversation to Day One.' },
   { title: 'The whole program', href: '/program/', description: 'Five phases on the business clock, and Mission Control.' },
 ];
 const waypoints = METHODS.launch.expansion.map((label) => ({ label }));

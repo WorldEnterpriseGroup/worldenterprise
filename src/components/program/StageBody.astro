@@ -16,6 +16,8 @@ const { stage } = Astro.props;
 ---
 
 <div class="stagebody">
+  {Astro.slots.has('default') && <div class="prose"><slot /></div>}
+
   <section class="stack" aria-labelledby="stage-work">
     <h2 id="stage-work">What you work on in {stage.name}</h2>
     <div class="grid grid--min-15">

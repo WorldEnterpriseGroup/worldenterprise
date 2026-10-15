@@ -1,0 +1,154 @@
+---
+/**
+ * A step rail (SITE-COPY 2.7): an ordered list of round nodes on one track, each with its icon. Wide containers lay the steps side by
+ * side on a horizontal track; narrow ones stack them on a vertical rule. Pure HTML and CSS.
+ */
+import VisualIcon from '../visuals/VisualIcon.astro';
+import type { IconKey } from '../visuals/icons.ts';
+
+export interface RailStep {
+  readonly title: string;
+  readonly body: string;
+  readonly icon: IconKey;
+}
+
+interface Props {
+  steps: readonly RailStep[];
+  /** Heading id that names the list. */
+  labelledby: string;
+}
+
+const { steps, labelledby } = Astro.props;
+---
+
+<ol class="onrail" role="list" aria-labelledby={labelledby} data-count={steps.length}>
+  {
+    steps.map((step, i) => (
+      <li class="onrail__step">
+        <span class="onrail__node">
+          <VisualIcon name={step.icon} size={56} />
+          <span class="onrail__num" aria-hidden="true">
+            {i + 1}
+          </span>
+        </span>
+        <h3 class="onrail__title">{step.title}</h3>
+        <p>{step.body}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  @layer pages {
+    .onrail {
+      --onrail-rule: 3px;
+
+      display: grid;
+      gap: var(--sp-6);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      position: relative;
+    }
+
+    .onrail::before {
+      content: '';
+      position: absolute;
+      inset-block: var(--sp-6);
+      inset-inline-start: calc(2rem - var(--onrail-rule) / 2);
+      inline-size: var(--onrail-rule);
+      background: var(--color-border);
+    }
+
+    .onrail__step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 4rem minmax(0, 1fr);
+      column-gap: var(--sp-4);
+      row-gap: var(--sp-2);
+      align-items: start;
+    }
+
+    .onrail__node {
+      grid-row: span 2;
+      position: relative;
+      display: grid;
+      place-items: center;
+      inline-size: 4rem;
+      block-size: 4rem;
+      background: var(--color-bg);
+      border: 2px solid var(--color-link);
+      border-radius: 50%;
+    }
+
+    .onrail__num {
+      position: absolute;
+      inset-block-start: -0.5rem;
+      inset-inline-end: -0.5rem;
+      display: grid;
+      place-items: center;
+      inline-size: 1.75rem;
+      block-size: 1.75rem;
+      font-family: var(--ff-display);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      color: var(--color-bg);
+      background: var(--color-link);
+      border-radius: 50%;
+    }
+
+    .onrail__title {
+      font-size: var(--fs-lg);
+      line-height: var(--lh-tight);
+    }
+
+    .onrail__step > p {
+      grid-column: 2;
+      max-inline-size: var(--prose-max);
+    }
+
+    @media (min-width: 62rem) {
+      .onrail {
+        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+        grid-auto-flow: column;
+        gap: var(--sp-5);
+      }
+
+      .onrail::before {
+        inset-block: auto;
+        inset-block-start: calc(2rem - var(--onrail-rule) / 2);
+        inset-inline: 2rem;
+        inline-size: auto;
+        block-size: var(--onrail-rule);
+      }
+
+      .onrail__step {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .onrail__node {
+        grid-row: auto;
+      }
+
+      .onrail__step > p {
+        grid-column: auto;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .onrail::before {
+        background: CanvasText;
+      }
+
+      .onrail__node {
+        border-color: CanvasText;
+        background: Canvas;
+      }
+
+      .onrail__num {
+        color: Canvas;
+        background: CanvasText;
+      }
+    }
+  }
+</style>
