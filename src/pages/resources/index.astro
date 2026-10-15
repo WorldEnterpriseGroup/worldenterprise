@@ -9,6 +9,9 @@ import type { PublicCollection } from '../../lib/content.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 import ResourceGroup from './_ResourceGroup.astro';
+import { IDENTITY } from '../../components/families/visual/copy.ts';
+import { READINESS_REVIEW } from '../../components/families/visual/cta.ts';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
 
 const state = await getRouteState();
 
@@ -37,10 +40,12 @@ const secondary = state.isLive('/library/') ? { label: RESOURCES_COPY.openTempla
   eyebrow={RESOURCES_COPY.eyebrow}
   lead={RESOURCES_COPY.lead}
   ogSlot="og-resources"
-  photo="inset-resources"
+  hero="console"
+  primary={state.isLive(READINESS_REVIEW.href) ? { label: READINESS_REVIEW.label, href: READINESS_REVIEW.href } : undefined}
   secondary={secondary}
   toc={toc}
 >
+  <div slot="panel"><EmblemFrame kind="resources" caption={IDENTITY.resources.caption} /></div>
   {
     stage.length > 0 && (
       <section class="stack" aria-labelledby="resources-stage">

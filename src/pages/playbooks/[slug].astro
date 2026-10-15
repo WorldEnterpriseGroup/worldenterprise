@@ -1,8 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
-import RelatedRail from '../../components/blocks/RelatedRail.astro';
-import CtaEnd from '../../components/cta/CtaEnd.astro';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
 import Button from '../../components/ui/Button.astro';
 import PlaybookTrail from '../../components/playbooks/PlaybookTrail.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
@@ -90,15 +89,6 @@ const leadsTo = terminal && (await isLinkable('/fundability/'));
         }
       </div>
     </div>
-    {
-      related.length > 0 && (
-        <div class="section section--soft section--defer">
-          <div class="container"><RelatedRail items={related} title="Related reading" /></div>
-        </div>
-      )
-    }
   </Fragment>
-  <Fragment slot="cta-end">
-    <CtaEnd path={`/playbooks/${slug}/`} collection="playbooks" cta={data.cta} />
-  </Fragment>
+  <ArticleEnd slot="cta-end" kind="playbooks" seed={slug} related={related} />
 </PlaybookLayout>

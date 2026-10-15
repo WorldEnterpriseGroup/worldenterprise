@@ -1,7 +1,9 @@
 /**
  * The capability gate for <we-scene> (ARCHITECTURE 3.2, step 2). A scene runs only on a wide screen with a fine pointer, with motion
  * allowed, outside forced colors, on a device with at least four cores and (where reported) four gigabytes, without Save-Data, and only
- * when WebGL2 works. Lighthouse's mobile run (412 px) therefore never passes, and never fetches three.
+ * when WebGL2 works without a major performance caveat. Lighthouse's mobile run (412 px) therefore never passes, and never fetches three.
+ * Software GL (SwiftShader on a CI runner, or a blocklisted GPU) reports a major performance caveat: three would render on the CPU and
+ * starve the main thread (menus stop responding), so such a browser keeps the poster.
  *
  * `evaluateGate` is a pure function over a capabilities object, so it is unit-tested; `readCapabilities` reads them from a window.
  */
@@ -20,7 +22,7 @@ export interface SceneCapabilities {
   /** navigator.deviceMemory in GB; undefined when the browser does not say (Firefox, Safari). */
   readonly memory: number | undefined;
   readonly saveData: boolean;
-  /** Whether a WebGL2 context can be created. Probed last, because the probe costs a context. */
+  /** Whether a hardware-accelerated WebGL2 context can be created. Probed last, because the probe costs a context. */
   readonly webgl2: () => boolean;
 }
 
@@ -42,11 +44,22 @@ interface NavigatorHints {
   readonly connection?: { readonly saveData?: boolean };
 }
 
-/** Creates a throwaway WebGL2 context and releases it at once. Any failure means no WebGL2. */
-export function probeWebgl2(doc: Document): boolean {
+/**
+ * The context attributes both the probe and the renderer use. `failIfMajorPerformanceCaveat` makes the browser refuse a context it would
+ * render in software, so the gate and the renderer agree on what counts as WebGL2.
+ */
+export const WEBGL_CONTEXT_ATTRIBUTES = { failIfMajorPerformanceCaveat: true, powerPreference: 'high-performance' } as const satisfies WebGLContextAttributes;
+
+/** The part of a document the probe needs (a structural type, so the probe is unit-tested without a DOM). */
+export interface CanvasFactory {
+  createElement(tag: 'canvas'): { getContext(id: 'webgl2', attributes: WebGLContextAttributes): WebGL2RenderingContext | null };
+}
+
+/** Creates a throwaway hardware WebGL2 context and releases it at once. Any failure, or software GL only, means no WebGL2. */
+export function probeWebgl2(doc: CanvasFactory): boolean {
   try {
     const canvas = doc.createElement('canvas');
-    const gl = canvas.getContext('webgl2');
+    const gl = canvas.getContext('webgl2', WEBGL_CONTEXT_ATTRIBUTES);
     if (gl === null) return false;
     gl.getExtension('WEBGL_lose_context')?.loseContext();
     return true;

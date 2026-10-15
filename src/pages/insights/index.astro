@@ -3,6 +3,9 @@ import { getCollection, render } from 'astro:content';
 import ArticleHub from '../../layouts/ArticleHub.astro';
 import DeskRail from '../../components/insights/DeskRail.astro';
 import { DESKS, DESK_LABELS, listInsights } from '../../components/insights/articles.ts';
+import { IDENTITY } from '../../components/families/visual/copy.ts';
+import CtaLadder from '../../components/families/visual/CtaLadder.astro';
+import VisualCards from '../../components/families/visual/VisualCards.astro';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
@@ -12,6 +15,17 @@ if (page === undefined) throw new Error('Missing content entry src/content/pages
 const { Content } = await render(page);
 const state = await getRouteState();
 const desks = await Promise.all(DESKS.map(async (desk) => ({ desk, items: await listInsights(desk) })));
+// The desk map: each desk that holds an article is a galaxy, seeded by its id. A card opens the desk's topic page when it is live and
+// jumps to the desk's rail further down this page otherwise.
+const deskCards = desks
+  .filter(({ items }) => items.length > 0)
+  .map(({ desk, items }) => ({
+    title: DESK_LABELS[desk].name,
+    href: state.isLive(`/insights/topic/${desk}/`) ? `/insights/topic/${desk}/` : `#desk-${desk}`,
+    summary: DESK_LABELS[desk].blurb,
+    meta: items.length === 1 ? '1 article' : `${items.length} articles`,
+    seed: `desk-${desk}`,
+  }));
 ---
 
 <ArticleHub
@@ -26,6 +40,17 @@ const desks = await Promise.all(DESKS.map(async (desk) => ({ desk, items: await 
   <div class="prose">
     <Content />
   </div>
+  {
+    deskCards.length > 0 && (
+      <section class="desk-map" aria-labelledby="desk-map-title">
+        <div class="desk-map__head">
+          <h2 id="desk-map-title">The desks</h2>
+          <p class="muted">{IDENTITY.insights.caption}</p>
+        </div>
+        <VisualCards kind="insights" cards={deskCards} headingLevel={3} labelledby="desk-map-title" />
+      </section>
+    )
+  }
   {
     desks.map(({ desk, items }) => (
       <DeskRail
@@ -49,4 +74,19 @@ const desks = await Promise.all(DESKS.map(async (desk) => ({ desk, items: await 
       }
     </ul>
   </nav>
+  <CtaLadder slot="cta-end" />
 </ArticleHub>
+
+<style>
+  @layer pages {
+    .desk-map {
+      display: grid;
+      gap: var(--sp-5);
+    }
+
+    .desk-map__head {
+      display: grid;
+      gap: var(--sp-2);
+    }
+  }
+</style>

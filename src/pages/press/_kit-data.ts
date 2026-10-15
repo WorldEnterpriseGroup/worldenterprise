@@ -9,7 +9,7 @@ export const KIT_SLUG = 'brand-kit';
 
 /**
  * The static paths of the brand kit: the kit is built only when the live route ledger holds a launched row for it. The row waits in
- * L2_RESERVED with launch false until the whitelab brand-usage sign-off (OP-BRAND), and a page that is not built reaches no sitemap,
+ * L2_RESERVED with launch false until the brand-owner usage sign-off (OP-BRAND), and a page that is not built reaches no sitemap,
  * navigation, search index or llms file. Releasing the kit means moving that row into the live ledger with launch true.
  */
 export function kitStaticPaths(rows: readonly { readonly path: string; readonly launch: boolean }[]): { params: { kit: string } }[] {

@@ -40,11 +40,11 @@ export async function cls(page: Page): Promise<number> {
   );
 }
 
-/** Whether this browser can create a WebGL2 context at all (the gate's last check). */
+/** Whether this browser can create a hardware WebGL2 context, asked exactly as the gate asks (software GL reports a major performance caveat). */
 export async function hasWebGL2(page: Page): Promise<boolean> {
   return page.evaluate(() => {
     try {
-      const gl = document.createElement('canvas').getContext('webgl2');
+      const gl = document.createElement('canvas').getContext('webgl2', { failIfMajorPerformanceCaveat: true });
       gl?.getExtension('WEBGL_lose_context')?.loseContext();
       return gl !== null;
     } catch (error) {
@@ -63,10 +63,12 @@ export async function liveOrPoster(page: Page, scene: Locator, info: TestInfo): 
   if (!(await hasWebGL2(page))) {
     info.annotations.push({
       type: 'no-webgl2',
-      description: 'the runner has no WebGL2: the poster fallback is checked instead',
+      description: 'no hardware WebGL2 (software GL is refused by the gate): the poster fallback is checked instead',
     });
     await page.waitForTimeout(1500);
     await expect(scene.locator('canvas.scene__canvas'), 'no canvas without WebGL2').toHaveCount(0);
+    await expect(scene, 'the gate refused WebGL2 and kept the poster').toHaveAttribute('data-gate', 'webgl2');
+    await expect(scene).toHaveAttribute('data-state', 'poster');
     await expect(poster, 'the poster stays visible without WebGL2').toBeVisible();
     return false;
   }
