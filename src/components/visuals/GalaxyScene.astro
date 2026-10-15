@@ -1,0 +1,65 @@
+---
+/**
+ * GalaxyScene: the "WE build worlds" hero. A spiral galaxy turns while a hex-faceted world assembles at its core and a trail of small hex
+ * cells streams in to join it (BRIEF 2.3 scene 1). Put the hero copy next to it (align="end" moves the core right of center for a
+ * left-hand text column) or over it in a band.
+ *
+ * As the page's LCP image (W9-6, the home hero), the hero renders the poster itself in the `poster` slot, because the image rules keep
+ * high fetch priority inside the hero components:
+ *
+ *   const poster = await posterImage(galaxyPosterKey('end'), sizes);   // and preloadImage = await posterPreload(galaxyPosterKey('end'), sizes)
+ *   <GalaxyScene align="end" sizes={sizes}>
+ *     <img slot="poster" class="scene__poster" src={poster.src} srcset={poster.srcset} sizes={poster.sizes} width={poster.width}
+ *       height={poster.height} alt="..." decoding="async" + high fetch priority />
+ *   </GalaxyScene>
+ */
+import Scene from './Scene.astro';
+import { galaxyPosterKey } from './poster.ts';
+import type { SceneRatio } from './contracts.ts';
+
+interface Props {
+  alt?: string;
+  /** `end` shifts the galaxy core toward the right, leaving the left calm for a headline. */
+  align?: 'center' | 'end';
+  ratio?: Extract<SceneRatio, '16/9' | '21/9'>;
+  sizes?: string;
+  caption?: string;
+  static?: boolean;
+  class?: string;
+}
+
+const {
+  alt = 'A spiral galaxy of blue stars. At its core a world of hexagonal tiles is still assembling, one tile glowing amber, while a trail of small hexagonal cells streams in to join it.',
+  align = 'center',
+  ratio = '16/9',
+  sizes,
+  caption,
+  static: isStatic = false,
+  class: className,
+} = Astro.props;
+
+/** The poster this alignment uses; a hero passes the same key to `posterImage` and `posterPreload` for its own LCP `<img>`. */
+const posterKey = galaxyPosterKey(align);
+
+const sceneProps = {
+  scene: 'galaxy',
+  poster: posterKey,
+  alt,
+  ratio,
+  options: align === 'end' ? { align } : {},
+  sizes,
+  caption,
+  static: isStatic,
+  class: className,
+} as const;
+---
+
+{
+  Astro.slots.has('poster') ? (
+    <Scene {...sceneProps}>
+      <slot name="poster" slot="poster" />
+    </Scene>
+  ) : (
+    <Scene {...sceneProps} />
+  )
+}

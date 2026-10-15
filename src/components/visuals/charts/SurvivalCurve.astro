@@ -1,0 +1,256 @@
+---
+/**
+ * SurvivalCurve: the share of new businesses still operating, year by year, as a stepped SVG line (one to three series) with the
+ * same figures in a visually hidden data table and a required source line. Optional gates mark years the page wants to call out
+ * (e.g. 1, 2, 5, 10). The SVG is decoration for sighted readers; the table is the text equivalent.
+ */
+import SourceNote from './SourceNote.astro';
+import { cleanText, statSource, survivalSeries } from '../contracts.ts';
+import type { StatSource, SurvivalSeries } from '../contracts.ts';
+import { linear, survivalPaths } from '../chart-math.ts';
+
+interface Props {
+  series: readonly SurvivalSeries[];
+  source: StatSource;
+  /** Chart title, shown as the figure caption heading and the table caption. */
+  title: string;
+  /** Years to call out with a labeled gate. */
+  gates?: readonly number[];
+  /** Extra caveat line under the chart (unit, coverage). */
+  note?: string;
+  class?: string;
+}
+
+const { title: rawTitle, gates = [], note, class: className } = Astro.props;
+const title = cleanText('SurvivalCurve', 'title', rawTitle);
+const series = survivalSeries('SurvivalCurve', Astro.props.series);
+const source = statSource('SurvivalCurve', Astro.props.source);
+if (note !== undefined) cleanText('SurvivalCurve', 'note', note);
+
+const W = 720;
+const H = 400;
+const box = { x: 52, y: 24, width: W - 52 - 24, height: H - 24 - 48 };
+const maxYear = Math.max(...series.flatMap((s) => s.points.map((p) => p.year)));
+const x = linear([0, maxYear], [box.x, box.x + box.width]);
+const y = linear([0, 100], [box.y + box.height, box.y]);
+const yTicks = [0, 25, 50, 75, 100];
+const step = maxYear <= 12 ? 1 : maxYear <= 20 ? 2 : 5;
+const xTicks = Array.from({ length: Math.floor(maxYear / step) + 1 }, (_, i) => i * step);
+const paths = series.map((s) => survivalPaths(s.points, box, maxYear));
+
+const primary = series[0];
+const gateMarks = gates
+  .filter((g) => g > 0 && g <= maxYear)
+  .map((g) => {
+    const point = primary?.points.find((p) => p.year === g);
+    return { year: g, x: x(g), y: point === undefined ? undefined : y(point.percent), percent: point?.percent };
+  });
+
+// Table: one row per year present in any series.
+const years = [...new Set(series.flatMap((s) => s.points.map((p) => p.year)))].sort((a, b) => a - b);
+const fmt = (n: number): string => `${Math.round(n * 10) / 10}%`;
+---
+
+<figure class:list={['survival', className]}>
+  <figcaption class="survival__title">{title}</figcaption>
+  {
+    series.length > 1 && (
+      <ul class="survival__legend" aria-hidden="true">
+        {series.map((s, i) => (
+          <li class={`survival__key survival__key--${i}`}>{s.label}</li>
+        ))}
+      </ul>
+    )
+  }
+  <svg class="survival__chart" viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false">
+    <g class="survival__grid">
+      {
+        yTicks.map((t) => (
+          <>
+            <line x1={box.x} x2={box.x + box.width} y1={y(t)} y2={y(t)} />
+            <text class="survival__axis" x={box.x - 10} y={y(t) + 4} text-anchor="end">
+              {t}%
+            </text>
+          </>
+        ))
+      }
+      {
+        xTicks.map((t) => (
+          <text class="survival__axis" x={x(t)} y={box.y + box.height + 22} text-anchor="middle">
+            {t === 0 ? 'Start' : `Yr ${t}`}
+          </text>
+        ))
+      }
+    </g>
+    {paths[0] !== undefined && <path class="survival__area" d={paths[0].area} />}
+    {
+      gateMarks.map((g) => (
+        <g class="survival__gate">
+          <line x1={g.x} x2={g.x} y1={box.y} y2={box.y + box.height} />
+          {g.y !== undefined && g.percent !== undefined && (
+            <>
+              <polygon class="survival__gate-hex" points={`${g.x - 6},${g.y} ${g.x - 3},${g.y - 5.2} ${g.x + 3},${g.y - 5.2} ${g.x + 6},${g.y} ${g.x + 3},${g.y + 5.2} ${g.x - 3},${g.y + 5.2}`} />
+              <text class="survival__gate-label" x={g.x + 10} y={g.y - 10}>
+                {fmt(g.percent)}
+              </text>
+            </>
+          )}
+        </g>
+      ))
+    }
+    {paths.map((p, i) => <path class={`survival__line survival__line--${i}`} d={p.line} />)}
+  </svg>
+  <div class="visually-hidden">
+    <table>
+      <caption>{title}</caption>
+      <thead>
+        <tr>
+          <th scope="col">Years since opening</th>
+          {series.map((s) => <th scope="col">{s.label}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          years.map((yr) => (
+            <tr>
+              <th scope="row">{yr}</th>
+              {series.map((s) => {
+                const p = s.points.find((q) => q.year === yr);
+                return <td>{p === undefined ? 'n/a' : fmt(p.percent)}</td>;
+              })}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  {note !== undefined && <p class="survival__note">{note}</p>}
+  <SourceNote sources={[source]} />
+</figure>
+
+<style>
+  .survival {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+  }
+
+  .survival__title {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .survival__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .survival__key {
+    display: inline-flex;
+    gap: var(--sp-2);
+    align-items: center;
+  }
+
+  .survival__key::before {
+    content: '';
+    inline-size: 1.5rem;
+    block-size: 3px;
+    background: var(--we-blue-deep);
+    border-radius: var(--radius-pill);
+  }
+
+  .survival__key--1::before {
+    background: var(--we-amber);
+  }
+
+  .survival__key--2::before {
+    background: var(--we-grey);
+  }
+
+  .survival__chart {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    overflow: visible;
+  }
+
+  .survival__grid line {
+    stroke: var(--color-border);
+    stroke-width: 1;
+  }
+
+  .survival__axis {
+    font-family: var(--ff-sans);
+    font-size: 13px;
+    fill: var(--color-text-muted);
+  }
+
+  .survival__area {
+    fill: color-mix(in oklab, var(--we-blue) 12%, transparent);
+  }
+
+  .survival__line {
+    fill: none;
+    stroke: var(--we-blue-deep);
+    stroke-width: 3;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  .survival__line--1 {
+    stroke: var(--we-amber);
+    stroke-width: 2.5;
+  }
+
+  .survival__line--2 {
+    stroke: var(--we-grey);
+    stroke-width: 2;
+    stroke-dasharray: 6 5;
+  }
+
+  .survival__gate line {
+    stroke: var(--we-amber);
+    stroke-width: 1;
+    stroke-dasharray: 3 4;
+  }
+
+  .survival__gate-hex {
+    fill: var(--we-amber);
+  }
+
+  .survival__gate-label {
+    font-family: var(--ff-display);
+    font-size: 15px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+
+  .survival__note {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (forced-colors: active) {
+    .survival__line,
+    .survival__grid line {
+      stroke: CanvasText;
+    }
+
+    .survival__axis,
+    .survival__gate-label {
+      fill: CanvasText;
+    }
+  }
+</style>

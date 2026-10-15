@@ -1,0 +1,64 @@
+---
+/**
+ * LaunchTrajectory: Dream, Build and Grow as one flight (BRIEF 2.3 scene 3). An amber hex capsule lifts off the Dream pad (Survey),
+ * threads the Build gate (Blueprint) and settles into orbit around the Grow world (Territory). Optional waypoints (up to eight, such as
+ * the L.A.U.N.C.H. steps) hang below the path. Station labels link to the stage pages by default.
+ */
+import Scene from './Scene.astro';
+import SceneLabel from './SceneLabel.astro';
+import { sceneLabels } from './contracts.ts';
+import type { SceneLabel as Label } from './contracts.ts';
+import { LAUNCH_CAMERA, LAUNCH_ASPECT, launchAnchors, project } from '../../scripts/visuals/geometry.ts';
+
+interface Props {
+  /** Exactly three: the pad, the gate and the world. */
+  stations?: readonly Label[];
+  waypoints?: readonly Label[];
+  alt?: string;
+  caption?: string;
+  labelsName?: string;
+  static?: boolean;
+  class?: string;
+}
+
+const DEFAULT_STATIONS: readonly Label[] = [
+  { label: 'Dream', description: 'Survey: validate the problem', href: '/program/dream/' },
+  { label: 'Build', description: 'Blueprint: ship the product', href: '/program/build/' },
+  { label: 'Grow', description: 'Territory: earn customers', href: '/program/grow/' },
+];
+
+const {
+  stations = DEFAULT_STATIONS,
+  waypoints = [],
+  alt = 'A small amber capsule climbs from a hexagonal launch pad labeled Dream, through a hexagonal gate labeled Build, toward a world of hexagonal tiles labeled Grow, leaving a dotted trail.',
+  caption,
+  labelsName = 'Stages of the flight',
+  static: isStatic = false,
+  class: className,
+} = Astro.props;
+
+const s = sceneLabels('LaunchTrajectory', stations, 3, 3);
+const w = sceneLabels('LaunchTrajectory', waypoints, 0, 8);
+const anchors = launchAnchors(w.length).map((p) => project(p, LAUNCH_CAMERA, LAUNCH_ASPECT));
+---
+
+<Scene
+  scene="launch"
+  poster="launch"
+  alt={alt}
+  ratio="16/9"
+  options={w.length > 0 ? { waypoints: w.length } : {}}
+  caption={caption}
+  labelsName={labelsName}
+  static={isStatic}
+  class={className}
+>
+  <Fragment slot="labels">
+    {s.map((item, i) => <SceneLabel index={i} label={item.label} href={item.href} description={item.description} x={anchors[i]?.x} y={anchors[i]?.y} />)}
+    {
+      w.map((item, i) => (
+        <SceneLabel index={i + 3} label={item.label} href={item.href} description={item.description} x={anchors[i + 3]?.x} y={anchors[i + 3]?.y} below />
+      ))
+    }
+  </Fragment>
+</Scene>

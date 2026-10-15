@@ -1,0 +1,34 @@
+---
+/**
+ * Split: text beside a visual (docs/wave9-contracts.md 2 and 5). From 62rem the text column holds `--split-text` (40rem) from the
+ * container edge and the visual takes the rest of the frame; below that they stack, text first unless `mediaFirst`. The `.split` rules
+ * live in src/styles/layout.css (WP-51). Inside a Band, give the visual `class="bleed-media"` (or `bleed-media bleed-media--start` on
+ * a reversed split) to run it to the viewport edge.
+ *
+ *   <Split>
+ *     <h2>Every company is its own world.</h2>
+ *     <p>...</p>
+ *     <WorldForge slot="media" />
+ *   </Split>
+ */
+interface Props {
+  /** Visual on the left from 62rem. */
+  reverse?: boolean;
+  /** Two equal columns instead of the 40rem text column. */
+  even?: boolean;
+  /** On one column, the visual comes first. */
+  mediaFirst?: boolean;
+  class?: string;
+}
+
+const { reverse = false, even = false, mediaFirst = false, class: className } = Astro.props;
+---
+
+<div class:list={['split', reverse && 'split--reverse', even && 'split--even', mediaFirst && 'split--media-first', className]}>
+  <div class="split__text">
+    <slot />
+  </div>
+  <div class="split__media">
+    <slot name="media" />
+  </div>
+</div>

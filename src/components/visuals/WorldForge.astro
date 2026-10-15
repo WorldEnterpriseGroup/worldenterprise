@@ -1,0 +1,55 @@
+---
+/**
+ * WorldForge, the incubation nursery (BRIEF 2.3 scene 4): a world assembles from hex tiles while seven faint O.R.B.I.T.A.L. rings turn
+ * around it and moons condense from dust on them: the side projects incubating alongside the company, at the pace the work takes.
+ * Labels (up to seven, one per moon, inner ring first) are listed below the frame rather than floated: the moons move too far apart
+ * and too close together over a loop for floating labels to stay readable.
+ */
+import Scene from './Scene.astro';
+import SceneLabel from './SceneLabel.astro';
+import { sceneLabels } from './contracts.ts';
+import type { SceneLabel as Label } from './contracts.ts';
+
+interface Props {
+  /** One label per moon, 0 to 7. The scene draws as many moons as labels (seven when there are none). */
+  moons?: readonly Label[];
+  alt?: string;
+  caption?: string;
+  labelsName?: string;
+  static?: boolean;
+  class?: string;
+}
+
+const {
+  moons = [],
+  alt = 'A world of blue hexagonal tiles still assembling, one tile amber, circled by seven faint orbit rings; on the inner rings small moons have formed, and on the outer rings clouds of dust are gathering into new ones.',
+  caption,
+  labelsName = 'The moons, inner ring first',
+  static: isStatic = false,
+  class: className,
+} = Astro.props;
+const items = sceneLabels('WorldForge', moons, 0, 7);
+---
+
+<Scene
+  scene="worldforge"
+  poster="worldforge"
+  alt={alt}
+  ratio="16/9"
+  options={{ moons: items.length > 0 ? items.length : 7 }}
+  caption={caption}
+  labelsName={labelsName}
+  labels="list"
+  static={isStatic}
+  class={className}
+>
+  {
+    items.length > 0 && (
+      <Fragment slot="labels">
+        {items.map((item, i) => (
+          <SceneLabel index={i} label={item.label} href={item.href} description={item.description} />
+        ))}
+      </Fragment>
+    )
+  }
+</Scene>
