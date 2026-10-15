@@ -29,7 +29,7 @@
     { "id": "C-15-iso-certified", "claim": "C-15", "flags": "i", "pattern": "\\bISO\\s?27001\\s+(?:certified|compliant)\\b", "description": "ISO 27001 certification claim" },
     { "id": "C-15-hipaa-compliant", "claim": "C-15", "flags": "i", "pattern": "\\bHIPAA[- ](?:compliant|certified)\\b", "description": "HIPAA claim" },
     { "id": "C-16-time-to-mvp", "claim": "C-16", "flags": "i", "pattern": "\\b(?:mvp\\s+in\\s+\\d+\\s+(?:days|weeks|months)|10x|guaranteed\\s+growth)\\b", "description": "Time-to-MVP or growth guarantees" },
-    { "id": "C-10-package-tiers", "claim": "C-10", "flags": "i", "pattern": "\\b(?:nine[- ]milestone|milestone\\s+[1-9]\\s+payment|package\\s+tier)\\b", "description": "Whitelab commercial model terms" },
+    { "id": "C-10-package-tiers", "claim": "C-10", "flags": "i", "pattern": "\\b(?:nine[- ]milestone|milestone\\s+[1-9]\\s+payment|package\\s+tier)\\b", "description": "Source proposal commercial model terms" },
     { "id": "C-20-frameworks", "claim": "C-20", "flags": "i", "pattern": "\\b(?:Galactic|World)\\s+Enterprise\\s+Framework\\b", "description": "Excluded framework names" },
     { "id": "C-24-security-controls", "claim": "C-24", "flags": "i", "pattern": "\\b(?:we\\s+(?:enforce|require|use)\\s+(?:MFA|multi-factor)|least[- ]privilege\\s+access\\s+(?:is|are)\\s+enforced|encrypted\\s+at\\s+rest\\s+and\\s+in\\s+transit)\\b", "description": "Specific security controls asserted as practice" },
     { "id": "Q-lorem", "claim": "quality", "flags": "i", "pattern": "\\blorem\\s+ipsum\\b", "description": "Placeholder copy" },

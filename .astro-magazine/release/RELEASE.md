@@ -80,7 +80,7 @@ Routes that are intentionally not launched and will not ship until their conditi
 | `/newsletter/` | `PUBLIC_WE_NEWSLETTER_API_URL` set |
 | `/legal/terms/` | `flags.legalTerms` true after counsel sign-off (C-23) |
 | `/.well-known/security.txt` | `site.securityContact` set |
-| `/press/brand-kit/` | whitelab brand-usage sign-off |
+| `/press/brand-kit/` | brand-owner usage sign-off |
 | `/founders/stories/`, `/founders/portfolio/`, `/case-studies/`, `/network/partners/`, `/network/delivery-partners/`, `/about/team/`, `/careers/`, `/events/`, `/program/cohorts/`, `/program/demo-day/`, `/people/[slug]/` | real content exists (companies, people, dates, events) |
 
 Not checkable from here, and left to the operator because the unauthenticated GitHub API answers 404 for them and the live domain is not reachable from the agent environment:

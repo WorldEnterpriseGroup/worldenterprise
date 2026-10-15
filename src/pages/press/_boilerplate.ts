@@ -13,7 +13,7 @@ export function pressBoilerplate(): string {
   return (
     'World Enterprise Group Incorporated is a business incubation and consulting firm. ' +
     'WE steers dedicated, fully remote teams that build companies with their founders, paced to the years a company really takes. ' +
-    'WE is a services firm, not an investor. WE makes no promise of funding. World Enterprise Incubator is operated by ' +
+    'WE is a services firm, not an investor. WE makes no promise of funding. World Enterprise is operated by ' +
     `${pressEntity()}.`
   );
 }
