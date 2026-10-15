@@ -3,19 +3,18 @@
  * payload building, bot checks, the fetch client and the mailto fallback. The second half mounts the logic onto the
  * server-rendered form markup and touches the DOM only when mountIntakeForms() is called.
  */
-import { PACKAGE_NOT_SURE, PACKAGE_PARAM, parsePackageParam } from '../data/packages.ts';
 import { ApplyStepper } from '../components/apply/stepper.ts';
 import type { ApplyStep } from '../components/apply/steps.ts';
-import { FIELD_NAMES, FORM_KINDS, LIMITS, MAILTO_KINDS, STAGES, TOPICS, composeMessage, normaliseText, packageNote, validate } from '../data/forms.ts';
-import type { FieldError, FieldName, FormKind, FormValues, Stage, Topic } from '../data/forms.ts';
+import { FIELD_NAMES, FORM_KINDS, LIMITS, MAILTO_KINDS, SITUATIONS, STAGES, TOPICS, composeMessage, contextLines, normaliseText, validate } from '../data/forms.ts';
+import type { FieldError, FieldName, FormKind, FormValues, SituationId, Stage, Topic } from '../data/forms.ts';
 import { parseTeamFromLocation, describeTeam } from './team-composer.ts';
 
 /**
  * The rules (the required matrix, the limits, the validators) live in src/data/forms.ts, so the intake Function's tests and this
  * client read one table (docs/forms-contract.md section 3.1). They are re-exported here for the callers that import them from the script.
  */
-export { LIMITS, STAGES, TOPICS, composeMessage, packageNote, validate };
-export type { FieldError, FieldName, FormKind, FormValues, Stage, Topic };
+export { LIMITS, STAGES, TOPICS, composeMessage, contextLines, validate };
+export type { FieldError, FieldName, FormKind, FormValues, SituationId, Stage, Topic };
 
 /** The JSON body (docs/forms-contract.md section 3.1). The newsletter keeps its own, shorter body and carries none of the v2 keys. */
 export interface IntakePayload {
@@ -47,16 +46,19 @@ export const REQUEST_TIMEOUT_MS = 15_000;
 /** Below this fill time the first submit is paused once and the visitor is asked to check their answers. */
 export const MIN_FILL_MS = 3_000;
 
+/** The query parameter the situation pages link to /apply/ with (SALES.md 6.3). */
+export const SITUATION_PARAM = 'situation';
+
 /**
- * Reads the package from a query string. Unknown, empty and repeated values are ignored, never an error, because a stale link must
- * still open the page (docs/wave7-contracts.md section 1). `not-sure` is accepted here too, so a link can say so.
+ * Reads the situation from a query string. Unknown, empty and repeated values are ignored, never an error, because a stale or edited link
+ * must still open the page. `none` is a choice of the list, not a situation, so a link cannot preselect it.
  */
-export function packageFromSearch(search: string): string | null {
-  const values = new URLSearchParams(search).getAll(PACKAGE_PARAM);
+export function situationFromSearch(search: string): SituationId | null {
+  const values = new URLSearchParams(search).getAll(SITUATION_PARAM);
   if (values.length !== 1) return null;
   const raw = (values[0] ?? '').trim().toLowerCase();
-  if (raw === PACKAGE_NOT_SURE) return PACKAGE_NOT_SURE;
-  return parsePackageParam(raw);
+  if (raw === 'none') return null;
+  return SITUATIONS.find((situation) => situation.value === raw)?.value ?? null;
 }
 
 /**
@@ -90,7 +92,7 @@ export function buildPayload(
     stage: kind === 'apply' || kind === 'brief-request' ? values.stage : '',
     seats: kind === 'apply' ? normaliseText(values.seats) : '',
     topic: kind === 'contact' ? values.topic : '',
-    message: kind === 'apply' ? composeMessage(values.message, values.package) : kind === 'brief-request' ? '' : normaliseText(values.message),
+    message: kind === 'apply' ? composeMessage(values.message, values) : kind === 'brief-request' ? '' : normaliseText(values.message),
     consent: values.consent,
     website: values.website,
     startedAt: new Date(timing.startedAt).toISOString(),
@@ -309,7 +311,7 @@ export function topicFromSearch(search: string): Topic | null {
 // DOM mount. Nothing below runs at import time.
 // ---------------------------------------------------------------------------------------------------------------
 
-/** A control by its form field name, or by `data-field` for one that has no name (the package choice, which the browser must not post). */
+/** A control by its form field name, or by `data-field` for one that has no name (a context question, which the browser must not post). */
 function control(form: HTMLFormElement, name: string): HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null {
   const el = form.elements.namedItem(name) ?? form.querySelector(`[data-field="${CSS.escape(name)}"]`);
   return el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement ? el : null;
@@ -329,7 +331,12 @@ function readValues(form: HTMLFormElement): FormValues {
     message: text('message'),
     consent: consent instanceof HTMLInputElement && consent.checked,
     website: text('website'),
-    package: text('package'),
+    situation: text('situation'),
+    startedMonth: text('startedMonth'),
+    industryYears: text('industryYears'),
+    teamFunding: text('teamFunding'),
+    horizon: text('horizon'),
+    source: text('source'),
     requestId: text('requestId'),
     audience: text('audience'),
     briefId: text('briefId'),
@@ -445,24 +452,12 @@ class IntakeFormController {
 
   private attachInputBehaviour(): void {
     this.form.addEventListener('input', (event) => this.clearFieldError(event.target));
-    this.form.addEventListener('change', (event) => {
-      this.clearFieldError(event.target);
-      if (event.target instanceof HTMLSelectElement && event.target.dataset.field === 'package') this.showPackageFit(event.target);
-    });
+    this.form.addEventListener('change', (event) => this.clearFieldError(event.target));
   }
 
   /** The validation errors of one step: validate() runs on every answer and the result is filtered to the step's own fields. */
   private errorsForStep(step: ApplyStep): FieldError[] {
     return validate(this.kind, this.values()).filter((error) => step.fields.includes(error.field));
-  }
-
-  /** Under the package select: the stage each package is sized for, from src/data/packages.ts through the option's data attribute. */
-  private showPackageFit(select: HTMLSelectElement): void {
-    const note = this.form.querySelector<HTMLElement>('[data-package-fit]');
-    if (note === null) return;
-    const option = select.selectedOptions[0];
-    const fit = option?.dataset.stageFit ?? '';
-    note.textContent = fit === '' ? '' : `${option?.textContent ?? ''} is sized for: ${fit}`;
   }
 
   private prefill(): void {
@@ -473,24 +468,25 @@ class IntakeFormController {
       return;
     }
     if (this.kind !== 'apply') return;
-    this.prefillPackage();
+    this.prefillSituation();
     const team = parseTeamFromLocation(window.location.hash, window.location.search);
     const text = describeTeam(team);
     const seats = control(this.form, 'seats');
     if (text !== '' && seats !== null && seats.value.trim() === '') seats.value = text;
   }
 
-  /** `?package=` selects a package. The field is script-only, so it is revealed here and a no-JavaScript visitor never sees it. */
-  private prefillPackage(): void {
-    const field = this.form.querySelector<HTMLElement>('[data-package-field]');
-    const select = control(this.form, 'package');
-    if (field === null || !(select instanceof HTMLSelectElement)) return;
-    field.hidden = false;
-    const chosen = packageFromSearch(window.location.search);
-    if (chosen !== null && select.value === '') {
-      select.value = chosen;
-      this.showPackageFit(select);
-    }
+  /**
+   * The context questions are script-only, so they are revealed here and a visitor without JavaScript never sees them. `?situation=`
+   * preselects the situation and shows the heading written for it (SALES.md 6.3); every other heading stays hidden.
+   */
+  private prefillSituation(): void {
+    for (const wrap of this.form.querySelectorAll<HTMLElement>('[data-context-field]')) wrap.hidden = false;
+    const chosen = situationFromSearch(window.location.search);
+    if (chosen === null) return;
+    const select = control(this.form, 'situation');
+    if (select instanceof HTMLSelectElement && select.value === '') select.value = chosen;
+    const heading = this.form.querySelector<HTMLElement>(`[data-situation-heading="${CSS.escape(chosen)}"]`);
+    if (heading !== null) heading.hidden = false;
   }
 
   private setStatus(message: string): void {

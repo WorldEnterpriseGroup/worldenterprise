@@ -1,20 +1,31 @@
 ---
 import ApplyProgress from '../apply/ApplyProgress.astro';
-import { APPLY_FIELDS, PACKAGE_OPTIONS, PACKAGE_PRICING_NOTE, REVIEW_COPY, STAGE_OPTIONS } from '../apply/fields.ts';
+import { APPLY_FIELDS, CONTEXT_SELECTS, REVIEW_COPY, SITUATION_HEADINGS, SITUATION_IDS, STAGE_OPTIONS, contextOptions } from '../apply/fields.ts';
+import type { FieldCopy } from '../apply/fields.ts';
 import { href } from '../../lib/url.ts';
 import Field from './Field.astro';
 import Fieldset from './Fieldset.astro';
 import FormFrame from './FormFrame.astro';
+
+type ContextSelect = (typeof CONTEXT_SELECTS)[number];
+/** A context select: script-only, so it has no name and ships hidden. The script reveals it and carries the answer inside `message`. */
+const select = (key: ContextSelect) => ({ id: `apply-${key}`, dataField: key, label: APPLY_FIELDS[key].label, type: 'select' as const, options: contextOptions(key) });
+const hintOf = (key: ContextSelect): string | undefined => (APPLY_FIELDS[key] as FieldCopy).hint;
+const started = APPLY_FIELDS.startedMonth;
 ---
 
 <FormFrame
   kind="apply"
   id="apply"
-  submitLabel="Send my application"
+  submitLabel="Start my readiness review"
   thanksPath="/apply/thanks/"
-  consentLabel="I agree that WE may use these details to reply to my application, as described in the privacy notice."
+  consentLabel="I agree that WE may use these details to reply to my readiness review, as described in the privacy notice."
   stepped
 >
+  {/* One heading per situation page (SALES.md 6.3). All ship hidden; the script shows the one `?situation=` names. */}
+  <div slot="top" class="apply-situation">
+    {SITUATION_IDS.map((id) => SITUATION_HEADINGS[id] !== undefined && <h2 class="apply-situation__heading" data-situation-heading={id} hidden>{SITUATION_HEADINGS[id]}</h2>)}
+  </div>
   <ApplyProgress slot="top" />
 
   <Fieldset legend="About you" step="you">
@@ -39,10 +50,23 @@ import FormFrame from './FormFrame.astro';
       hint={APPLY_FIELDS.company.hint}
       reserveError
     />
+    {/* Script-only: no name, so the browser never posts it. The script carries the answer inside `message` (docs/forms-contract.md section 3). */}
+    <div class="apply-context" data-context-field hidden>
+      <Field {...select('situation')} reserveError />
+    </div>
   </Fieldset>
 
-  <Fieldset legend="About the idea" step="idea">
+  <Fieldset legend="About the company" step="idea">
     <Field id="apply-stage" name="stage" label={APPLY_FIELDS.stage.label} type="select" required options={STAGE_OPTIONS} reserveError />
+    <div class="apply-context" data-context-field hidden>
+      <div class="field">
+        <label for="apply-startedMonth">{started.label}</label>
+        <p class="field__hint" id="apply-startedMonth-hint">{started.hint}</p>
+        <input id="apply-startedMonth" type="month" data-field="startedMonth" aria-describedby="apply-startedMonth-hint apply-startedMonth-error" />
+        <p class="field__error" id="apply-startedMonth-error" hidden></p>
+      </div>
+      <Field {...select('industryYears')} hint={hintOf('industryYears')} reserveError />
+    </div>
     <Field
       id="apply-message"
       name="message"
@@ -55,7 +79,11 @@ import FormFrame from './FormFrame.astro';
     />
   </Fieldset>
 
-  <Fieldset legend="Team and package" step="team">
+  <Fieldset legend="Team and horizon" step="team">
+    <div class="apply-context" data-context-field hidden>
+      <Field {...select('teamFunding')} hint={hintOf('teamFunding')} reserveError />
+      <Field {...select('horizon')} hint={hintOf('horizon')} reserveError />
+    </div>
     <Field
       id="apply-seats"
       name="seats"
@@ -67,19 +95,8 @@ import FormFrame from './FormFrame.astro';
       reserveError
     />
     <p class="field__hint">Want help sketching roles? Use the <a href={href('/tools/team-composer/')}>Team Composer</a> first. It brings your roles back to this form.</p>
-    {/* Script-only: no name, so the browser never posts it. The script carries the choice inside `message` (docs/forms-contract.md section 3). */}
-    <div class="apply-package" data-package-field hidden>
-      <Field
-        id="apply-package"
-        dataField="package"
-        label={APPLY_FIELDS.package.label}
-        type="select"
-        options={PACKAGE_OPTIONS}
-        hint={APPLY_FIELDS.package.hint}
-        reserveError
-      />
-      <p class="field__hint" data-package-fit aria-live="polite"></p>
-      <p class="field__hint">{PACKAGE_PRICING_NOTE.before}<a href={href(PACKAGE_PRICING_NOTE.link.href)}>{PACKAGE_PRICING_NOTE.link.text}</a>{PACKAGE_PRICING_NOTE.after}</p>
+    <div class="apply-context" data-context-field hidden>
+      <Field {...select('source')} hint={hintOf('source')} reserveError />
     </div>
   </Fieldset>
 
@@ -95,7 +112,8 @@ import FormFrame from './FormFrame.astro';
     .intake .fieldset[hidden],
     .intake [data-step][hidden],
     .intake .btn[hidden],
-    .intake [data-package-field][hidden] {
+    .intake [data-context-field][hidden],
+    .intake [data-situation-heading][hidden] {
       display: none;
     }
 
@@ -104,9 +122,17 @@ import FormFrame from './FormFrame.astro';
       margin: 0;
     }
 
-    .apply-package {
+    .apply-context {
       display: grid;
-      gap: var(--sp-2);
+      gap: var(--sp-4);
+    }
+
+    .apply-situation__heading {
+      margin: 0;
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 700;
+      color: var(--color-text);
     }
 
     .stepper {

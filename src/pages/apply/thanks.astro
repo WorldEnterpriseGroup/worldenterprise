@@ -14,9 +14,10 @@ const { data } = entry;
 
 <FormLayout
   title={data.title}
+  seoTitle={data.seoTitle}
   description={data.description}
   eyebrow={data.eyebrow}
-  lead="Your application is with WE."
+  lead="WE will write to the address you gave to arrange a conversation."
   path="/apply/thanks/"
   updated={data.updated}
   draft={data.draft}
@@ -28,7 +29,7 @@ const { data } = entry;
     steps={[
       { title: 'WE reviews your application', body: 'WE reviews what you wrote about the idea and the team you have in mind.' },
       { title: 'WE replies', body: 'The reply goes to the email address you gave. If it does not arrive, check your spam folder and then write to WE from the contact page.' },
-      { title: 'Scope and seat the team', body: 'If the idea fits, WE scopes the work with you and seats the roles you need.' },
+      { title: 'Your company clock', body: 'WE sends a one-page read of where the company sits on the business clock. If the idea fits, WE scopes the work with you and drafts agreements for you to review with your own counsel.' },
     ]}
   />
   <Fragment slot="aside">
@@ -38,7 +39,7 @@ const { data } = entry;
       <li><a href={href('/program/how-it-works/')}>How the program works</a></li>
       <li><a href={href('/playbooks/validate-the-problem/')}>Playbook: validate the problem</a></li>
       <li><a href={href('/tools/team-composer/')}>Sketch a team in the Team Composer</a></li>
-      <li><a href={href('/pricing/')}>Seats and pricing</a></li>
+      <li><a href={href('/how-we-work/')}>How WE works</a></li>
       <li><a href={href('/contact/')}>Contact WE</a></li>
     </ul>
     <NoFundingDisclaimer />

@@ -1,5 +1,5 @@
 /**
- * The Apply stepper (WP-43). Progressive enhancement of the one server-rendered <form>: every fieldset is in the DOM and visible
+ * The Apply stepper (WP-43; the readiness review questions are WP-54's). Progressive enhancement of the one server-rendered <form>: every fieldset is in the DOM and visible
  * without JavaScript, and docs/forms-contract.md section 8 is untouched. When src/scripts/forms.ts mounts, this groups the
  * fieldsets into four steps with a progress list, Back and Next, per-step validation, a review step and focus on the step heading.
  *
@@ -8,8 +8,8 @@
  * below it touches the document only when it is constructed.
  */
 import type { FieldError, FormValues } from '../../scripts/forms.ts';
-import { PACKAGE_NOT_SURE, isPackageId, getPackage } from '../../data/packages.ts';
-import { PACKAGE_NOT_SURE_LABEL, REVIEW_COPY, STAGE_OPTIONS } from './fields.ts';
+import { contextChoiceLabel, type ApplyContextKey } from '../../data/forms.ts';
+import { REVIEW_COPY, STAGE_OPTIONS } from './fields.ts';
 import { APPLY_STEPS, firstStepWithErrors, type ApplyStep, type ApplyStepId } from './steps.ts';
 
 export interface ReviewRow {
@@ -28,15 +28,15 @@ function stageLabel(value: string): string {
   return found === undefined ? REVIEW_COPY.empty : found.label;
 }
 
-function packageLabel(value: string | undefined): string {
-  if (value === undefined || value === '') return REVIEW_COPY.empty;
-  if (value === PACKAGE_NOT_SURE) return PACKAGE_NOT_SURE_LABEL;
-  return isPackageId(value) ? getPackage(value).name : REVIEW_COPY.empty;
+/** The label of a context answer, or "Not given" for no answer and for a value the list does not hold. */
+function choiceLabel(key: Exclude<ApplyContextKey, 'startedMonth'>, value: string | undefined): string {
+  const label = contextChoiceLabel(key, value);
+  return label === '' ? REVIEW_COPY.empty : label;
 }
 
 /** What the review step shows, grouped by the step each answer belongs to. An unanswered optional field reads "Not given". */
 export function buildReviewGroups(values: FormValues): readonly ReviewGroup[] {
-  const given = (text: string): string => (text.trim() === '' ? REVIEW_COPY.empty : text.trim());
+  const given = (text: string | undefined): string => ((text ?? '').trim() === '' ? REVIEW_COPY.empty : (text ?? '').trim());
   return [
     {
       step: 'you',
@@ -45,28 +45,33 @@ export function buildReviewGroups(values: FormValues): readonly ReviewGroup[] {
         { label: 'Your name', value: given(values.name) },
         { label: 'Email address', value: given(values.email) },
         { label: 'Company or working name', value: given(values.company) },
+        { label: 'Which sounds most like you', value: choiceLabel('situation', values.situation) },
       ],
     },
     {
       step: 'idea',
-      title: 'About the idea',
+      title: 'About the company',
       rows: [
-        { label: 'Where the idea is today', value: stageLabel(values.stage) },
+        { label: 'Where the company is today', value: stageLabel(values.stage) },
+        { label: 'When the company started, or will', value: given(values.startedMonth) },
+        { label: 'Years in this industry before starting', value: choiceLabel('industryYears', values.industryYears) },
         { label: 'What you are building, and for whom', value: given(values.message) },
       ],
     },
     {
       step: 'team',
-      title: 'Team and package',
+      title: 'Team and horizon',
       rows: [
-        { label: 'Team you have in mind', value: given(values.seats) },
-        { label: 'Package you have in mind', value: packageLabel(values.package) },
+        { label: 'How the company would pay for a team', value: choiceLabel('teamFunding', values.teamFunding) },
+        { label: 'How long you expect to build', value: choiceLabel('horizon', values.horizon) },
+        { label: 'Roles you have in mind', value: given(values.seats) },
+        { label: 'How you heard about WE', value: choiceLabel('source', values.source) },
       ],
     },
   ];
 }
 
-/** "Step 2 of 4: About the idea". The text of the live region and of the progress bar. */
+/** "Step 2 of 4: About the company". The text of the live region and of the progress bar. */
 export function stepStatus(index: number, steps: readonly ApplyStep[] = APPLY_STEPS): string {
   const step = steps[index];
   if (step === undefined) throw new RangeError(`There is no step ${index}.`);

@@ -6,6 +6,7 @@ import AsideStyles from '../../components/forms/AsideStyles.astro';
 import ApplyForm from '../../components/forms/ApplyForm.astro';
 import { jumpTo } from '../../components/hero/ctas.ts';
 import Steps from '../../components/ui/Steps.astro';
+import ReadinessScorecard from '../../components/visuals/illustrations/ReadinessScorecard.astro';
 import FormLayout from '../../layouts/FormLayout.astro';
 import { href } from '../../lib/url.ts';
 
@@ -19,16 +20,17 @@ const { data } = entry;
   title={data.title}
   description={data.description}
   eyebrow={data.eyebrow}
-  lead="Tell WE about your SaaS idea, where it stands and the team you have in mind."
+  lead="Tell WE where the company stands. WE arranges a conversation, then sends a one-page read of where your company sits on the business clock and what the next phase needs."
   path="/apply/"
   photo="inset-apply"
-  primary={jumpTo('Start the application', '#apply-form')}
+  primary={jumpTo('Start a readiness review', '#apply-form')}
   updated={data.updated}
   draft={data.draft}
   ogSlot="og-default"
 >
   <div class="prose apply-intro"><Content /></div>
   <ApplyForm />
+  <p class="field__hint">WE replies to the address you give. WE makes no promise of funding.</p>
 
   <Fragment slot="aside">
     <AsideStyles />
@@ -39,22 +41,22 @@ const { data } = entry;
     <Steps
       headingLevel={3}
       steps={[
-        { title: 'Apply', body: 'Send the form. WE reviews each application.' },
-        { title: 'Scope', body: 'WE replies to the email address you give and, if the idea fits, scopes the work with you.' },
-        { title: 'Seat your team', body: 'You choose a package or the roles you need, and WE seats the team. Seats scale up or down by notice.' },
-        { title: 'Work in focused cycles', body: 'WE steers the team through short cycles with a review at the end of each.' },
+        { title: 'A conversation', body: 'WE reviews each application. WE replies to the email address you give and arranges a conversation about the company and your situation.' },
+        { title: 'Your company clock', body: 'A one-page read: the phase the company is in, the next checkpoint, what the next phase needs and a draft team shape.' },
+        { title: 'Draft agreements, or better help', body: 'If it fits, draft agreements for you to review with your own counsel. If it does not, WE says so and suggests better help.' },
       ]}
     />
-    <p>The full path is on <a href={href('/program/how-it-works/')}>How it works</a>.</p>
+    <ReadinessScorecard title="What a readiness review reads" steps={false} />
+    <p>The whole engagement, from the first conversation to the yearly Orbit Review, is on <a href={href('/how-we-work/')}>How WE works</a>.</p>
     <h2 class="aside-title">What WE collects</h2>
     <p>
       Only what is in this form. WE sets no cookies, runs no analytics and loads no third-party scripts. The
       <a href={href('/legal/privacy/')}>privacy notice</a> says where the answers go.
     </p>
-    <h2 class="aside-title">Not ready to apply?</h2>
+    <h2 class="aside-title">Not ready yet?</h2>
     <p>
-      Sketch a team in the <a href={href('/tools/team-composer/')}>Team Composer</a>, read how <a href={href('/pricing/')}>seats and packages</a> work, or
-      <a href={href('/contact/')}>ask WE a question</a>.
+      Sketch the roles in the <a href={href('/tools/team-composer/')}>Team Composer</a>, see <a href={href('/how-we-work/')}>how WE works</a>, or
+      <a href={href('/contact/')}>talk to WE</a>.
     </p>
     <NoFundingDisclaimer />
   </Fragment>
