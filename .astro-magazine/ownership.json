@@ -2341,6 +2341,16 @@
       "reason": "Wave 9 (W9-13): the keyboard palette check searches 'seat', the name /pricing/ is listed under after Pricing left the top level. That test only; shared with WP-54, disjoint by line."
     },
     {
+      "wp": "WP-51",
+      "path": "infra/intake/render/render.mjs",
+      "reason": "Wave 9 CI reliability (coordinator request): intake:render timed out launching Chromium on the 100m-CPU runners twice (spawnSync ETIMEDOUT). Raise the print timeout and retry once on ETIMEDOUT only; every other failure still fails."
+    },
+    {
+      "wp": "WP-51",
+      "path": "infra/intake/render/render.d.mts",
+      "reason": "Wave 9 CI reliability (coordinator request): intake:render timed out launching Chromium on the 100m-CPU runners twice (spawnSync ETIMEDOUT). Raise the print timeout and retry once on ETIMEDOUT only; every other failure still fails."
+    },
+    {
       "wp": "WP-52",
       "path": "src/pages/styleguide.astro",
       "reason": "Wave 9: a visuals section on the existing styleguide (PUBLIC_STYLEGUIDE=1), not a new route; last held by WP-45, which is done."
