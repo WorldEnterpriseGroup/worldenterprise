@@ -2281,6 +2281,56 @@
       "reason": "Wave 9 (W9-4): the 110rem frame fits five 15rem fields at 1440, where an error message wraps past its two reserved lines; the field minimum becomes 18rem. One rule; WP-54 keeps the file."
     },
     {
+      "wp": "WP-51",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The header button label and its short form for 1100 to 1239px, the two featured panel CTAs, and the removal of the direct Pricing item. WP-54 keeps the Pricing and seat links."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/data/cta/targets.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The apply target label and band heading. That entry only."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/sources/wp-60.json",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. Remaps the apply target label in the WP-60 sentence ledger. That entry only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/nav/commands.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The palette keeps 'Apply' as the command people type, with the button label as its hint. One line; WP-46 keeps the file."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-46/commands.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The pinned first palette command gains the hint."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-71/families-logic.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The pinned hero primary action label."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The snapshot drops the Pricing section and records the change under wave9."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/foundation/nav.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The resolveNav and activeSectionId pins for /pricing/."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-16/active-section.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). /pricing/ has no current section."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-91/palette.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The ranking pin searches 'seat', the name /pricing/ is now listed under."
+    },
+    {
       "wp": "WP-52",
       "path": "src/pages/styleguide.astro",
       "reason": "Wave 9: a visuals section on the existing styleguide (PUBLIC_STYLEGUIDE=1), not a new route; last held by WP-45, which is done."

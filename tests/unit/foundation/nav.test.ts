@@ -121,7 +121,7 @@ test('L2 links never ship: every l2 link points at a non-launch route', () => {
 test('resolveNav hides L2 links and routes that are not live', () => {
   const live = new Set(['/program/', '/program/how-it-works/', '/program/cohorts/', '/pricing/']);
   const nav = resolveNav((href) => live.has(href));
-  assert.deepEqual(nav.map((i) => i.id), ['program', 'pricing']);
+  assert.deepEqual(nav.map((i) => i.id), ['program']);
   const program = nav[0];
   assert.ok(program !== undefined && program.kind === 'mega');
   assert.deepEqual(program.columns.flatMap((c) => c.links.map((l) => l.href)), ['/program/how-it-works/']);
@@ -136,7 +136,7 @@ test('activeSectionId maps paths to their primary section', async () => {
   assert.equal(activeSectionId('/insights/some-article/'), 'resources');
   assert.equal(activeSectionId('/research/saas-security-baseline-year-one/'), 'playbooks');
   assert.equal(activeSectionId('/investors/'), 'network');
-  assert.equal(activeSectionId('/pricing/'), 'pricing');
+  assert.equal(activeSectionId('/pricing/'), null);
   assert.equal(activeSectionId('/legal/privacy/'), null);
   assert.equal(activeSectionId('/briefs/funding-paths/'), 'audiences');
   assert.equal(activeSectionId('/network/partners/enquire/'), 'network');
