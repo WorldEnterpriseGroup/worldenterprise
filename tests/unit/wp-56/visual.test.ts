@@ -15,7 +15,7 @@ import {
 } from '../../../src/components/families/visual/cta.ts';
 import { ACCENT_TONES, EMBLEM_KINDS, emblem, seedOf } from '../../../src/components/families/visual/emblems.ts';
 import { kindForPath } from '../../../src/components/families/visual/kinds.ts';
-import { ESTABLISHED_BLOCK, HONESTY_LINE, TIMELINE_BLOCK } from '../../../src/components/families/visual/stats.ts';
+import { HONESTY_LINE, TIMELINE_BLOCK } from '../../../src/components/families/visual/stats.ts';
 
 // WP-56: the visual layer of the content families. The emblems are pure functions of (kind, seed, index), so a page renders the same
 // picture on every build; the CTA ladder follows SALES.md 6.1 and drops a rung whose route is not live; the copy and the statistics
@@ -101,15 +101,18 @@ test('a hub leads with the readiness review and keeps its own secondary only whe
 
 test('every pull-stat is an ST register figure with a source line, and the honesty line is the SITE-COPY wording', () => {
   assert.equal(HONESTY_LINE, "These figures describe all new U.S. businesses, not WE's results.");
-  const register = new Map([
-    ['ST-01', '77.9%'],
-    ['ST-02', '51.4%'],
-    ['ST-03', '34.7%'],
-    ['ST-05', '42 months'],
-  ]);
-  for (const block of [TIMELINE_BLOCK, ESTABLISHED_BLOCK]) {
-    assert.ok(block.source.length > 10, block.heading);
-    for (const stat of block.stats) assert.equal(register.get(stat.id), stat.figure, stat.id);
+  const file = new URL('../../../.astro-magazine/plans/wave9/statistics.json', import.meta.url);
+  const register = JSON.parse(readFileSync(file, 'utf8')) as { statistics: { id: string; statistic: string; status: string }[] };
+  const ledger = JSON.parse(readFileSync(new URL('../../../.astro-magazine/sources/wp-56.json', import.meta.url), 'utf8')) as {
+    sources: { source_id: string }[];
+  };
+  assert.ok(TIMELINE_BLOCK.source.length > 10);
+  for (const stat of TIMELINE_BLOCK.stats) {
+    const row = register.statistics.find((r) => r.id === stat.id);
+    assert.ok(row !== undefined, `${stat.id} is in the register`);
+    assert.match(row.status, /^VERIFIED/, stat.id);
+    assert.ok(row.statistic.startsWith(`${stat.figure} ${stat.label.replace(/\.$/, '')}`), `${stat.id}: quoted as the register words it`);
+    assert.ok(ledger.sources.some((s) => s.source_id === stat.id), `${stat.id}: a source record in wp-56.json`);
   }
 });
 
@@ -123,7 +126,7 @@ const copy = [
   ...strings(IDENTITY),
   ...strings(READING),
   ...[READINESS_REVIEW, HOW_LONG, HOW_WE_WORKS, TIMELINE_BRIEF, TALK_TO_WE].flatMap((c) => [c.label, c.note ?? '']).filter(Boolean),
-  ...[TIMELINE_BLOCK, ESTABLISHED_BLOCK].flatMap((b) => [b.heading, b.source, ...b.stats.map((s) => s.label)]),
+  ...[TIMELINE_BLOCK].flatMap((b) => [b.heading, b.source, ...b.stats.map((s) => s.label)]),
 ];
 
 test('the visual copy passes the claims denylist', () => {

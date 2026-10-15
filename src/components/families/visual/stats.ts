@@ -34,10 +34,3 @@ export const TIMELINE_BLOCK: StatBlock = {
   ],
   source: 'U.S. Bureau of Labor Statistics, Business Employment Dynamics, Table 7 (March 2025 release).',
 };
-
-/** When a business counts as established (SITE-COPY.md 5.5). ST-05. */
-export const ESTABLISHED_BLOCK: StatBlock = {
-  heading: 'When a business counts as established',
-  stats: [{ id: 'ST-05', figure: '42 months', label: 'of paying wages before a business is counted as established.' }],
-  source: 'Global Entrepreneurship Monitor, U.S. Report.',
-};
