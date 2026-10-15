@@ -164,6 +164,18 @@ test.describe('WP-52 visuals on the styleguide', () => {
     await expect(survival.locator('table tbody tr')).toHaveCount(11);
     await expect(survival.locator('.source-note a[href^="https://"]')).toHaveCount(1);
     await expect(page.locator('#visuals figure.bar-chart table tbody tr')).toHaveCount(6);
+    // Each chart table sits in the site's named, focusable table frame (tests/e2e/layout.spec.ts) behind a disclosure that opens it.
+    for (const chart of [survival, page.locator('#visuals figure.bar-chart')]) {
+      const frame = chart.locator('details > .table-wrap');
+      await expect(frame).toHaveCount(1);
+      await expect(frame).toHaveAttribute('role', 'region');
+      await expect(frame).toHaveAttribute('tabindex', '0');
+      await expect(frame).toHaveAttribute('aria-label', /, as a table$/);
+      await expect(frame).toBeHidden();
+      await chart.locator('details > summary').click();
+      await expect(frame).toBeVisible();
+      await expect(frame.locator('table')).toBeVisible();
+    }
     await expect(page.locator('#visuals .donut__legend li')).toHaveCount(3);
     await expect(page.locator('#visuals .stat-tiles__sources li a[href^="https://"]').first()).toBeVisible();
     const timeline = page.locator('#visuals figure.tl');

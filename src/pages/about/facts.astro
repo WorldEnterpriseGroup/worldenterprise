@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import { loadPage } from '../../components/about/load-page.ts';
 import CiteThis from '../../components/geo/CiteThis.astro';
 import { qaFromMarkdown } from '../../components/geo/qa.ts';
+import { START_REVIEW, TALK_TO_WE } from '../../components/about/ctas.ts';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
 import { getRouteState } from '../../lib/route-state.ts';
@@ -22,7 +23,8 @@ const state = await getRouteState();
 const decides = state.isLive('/program/how-we-decide/');
 const related = [
   { path: '/services/', label: 'The seven service lines' },
-  { path: '/pricing/', label: 'Packages and seats' },
+  { path: '/how-we-work/', label: 'How WE works' },
+  { path: '/about/frameworks/', label: 'The WE frameworks' },
   { path: '/faq/', label: 'Frequently asked questions' },
   { path: '/about/editorial-policy/', label: 'Editorial policy' },
 ].filter((link) => state.isLive(link.path));
@@ -67,6 +69,6 @@ const related = [
   }
   <CiteThis title={title} path={path} date={updated} />
   <Fragment slot="after">
-    <CtaBand title="Questions the facts do not answer?" text="Ask WE a question or apply when you are ready." cta={{ label: 'Apply', href: '/apply/' }} secondary={{ label: 'Contact', href: '/contact/' }} />
+    <CtaBand title="Questions the facts do not answer?" text="Ask WE a question, or start a readiness review when you are ready." cta={START_REVIEW} secondary={TALK_TO_WE} />
   </Fragment>
 </MarketingLayout>

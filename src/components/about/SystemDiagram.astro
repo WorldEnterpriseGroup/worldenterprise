@@ -1,0 +1,147 @@
+---
+/**
+ * One framework drawn as a small solar system (BRIEF 2.1): a hex-faceted sun carrying the framework's initials, and one hex world per
+ * letter or component on an orbit ring (two rings past seven bodies). Purely decorative: the framework's name and parts are real HTML
+ * beside it, so the drawing is hidden from assistive technology. The ring turns slowly only when the visitor allows motion.
+ */
+import { flower, hexPoints } from '../diagrams/hex.ts';
+import { INITIALS_MAX } from './framework-data.ts';
+
+interface Props {
+  /** The letters on the sun, e.g. "UBF"; at most INITIALS_MAX (seven, for S.T.A.R.T.U.P., O.R.B.I.T.A.L. and A.N.D.R.O.I.D.). */
+  initials: string;
+  /** Number of worlds, 1 to 12. */
+  count: number;
+  /** Index of the one amber world; -1 for none. */
+  accent?: number;
+  /** `lg` is the hero size of the core system; `sm` the card size. */
+  size?: 'sm' | 'lg';
+  class?: string;
+}
+
+const { initials, count, accent = -1, size = 'sm', class: className } = Astro.props;
+if (!Number.isInteger(count) || count < 1 || count > 12) throw new Error(`SystemDiagram: count must be 1 to 12, got ${count}`);
+if (initials.trim() === '' || initials.length > INITIALS_MAX) {
+  throw new Error(`SystemDiagram: initials "${initials}" must be 1 to ${INITIALS_MAX} characters`);
+}
+
+const C = 100;
+const sun = flower(C, C, 11.5, 0.1);
+const nested = count > 7;
+const inner = nested ? Math.ceil(count / 2) : count;
+const rings = nested ? [52, 82] : [66];
+const worlds = Array.from({ length: count }, (_, i) => {
+  const onInner = !nested || i < inner;
+  const n = onInner ? inner : count - inner;
+  const k = onInner ? i : i - inner;
+  const r = (onInner ? rings[0] : rings[1]) ?? 66;
+  const a = -Math.PI / 2 + (2 * Math.PI * k) / n + (onInner ? 0 : Math.PI / n);
+  return { x: C + r * Math.cos(a), y: C + r * Math.sin(a), ring: onInner ? 0 : 1, accent: i === accent };
+});
+const fontSize = initials.length <= 2 ? 15 : initials.length <= 3 ? 12 : initials.length <= 4 ? 9.5 : initials.length <= 6 ? 7.5 : 6.5;
+---
+
+<svg class:list={['sysdiag', `sysdiag--${size}`, className]} viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+  {rings.map((r) => <circle class="sysdiag__ring" cx={C} cy={C} r={r} />)}
+  <g class="sysdiag__sun">
+    {sun.map((p, i) => <polygon class:list={['sysdiag__cell', i === 0 && 'sysdiag__cell--core']} points={hexPoints(p.x, p.y, 11.5)} />)}
+  </g>
+  <text class="sysdiag__initials" x={C} y={C} text-anchor="middle" dominant-baseline="central" font-size={fontSize}>{initials}</text>
+  {
+    [0, 1]
+      .filter((ring) => worlds.some((w) => w.ring === ring))
+      .map((ring) => (
+        <g class:list={['sysdiag__orbit', ring === 1 && 'sysdiag__orbit--outer']}>
+          {worlds
+            .filter((w) => w.ring === ring)
+            .map((w) => (
+              <polygon class:list={['sysdiag__world', w.accent && 'sysdiag__world--accent']} points={hexPoints(w.x, w.y, 7)} />
+            ))}
+        </g>
+      ))
+  }
+</svg>
+
+<style>
+  .sysdiag {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    max-inline-size: 12rem;
+    overflow: visible;
+  }
+
+  .sysdiag--lg {
+    max-inline-size: 26rem;
+  }
+
+  .sysdiag__ring {
+    fill: none;
+    stroke: currentColor;
+    stroke-opacity: 0.28;
+    stroke-width: 0.8;
+    stroke-dasharray: 2 3;
+  }
+
+  .sysdiag__cell {
+    fill: var(--color-accent);
+    stroke: var(--color-bg);
+    stroke-width: 1;
+  }
+
+  .sysdiag__cell--core {
+    fill: var(--color-cta);
+  }
+
+  .sysdiag__initials {
+    fill: var(--color-accent-contrast);
+    font-family: var(--ff-display);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .sysdiag__world {
+    fill: var(--color-bg);
+    stroke: currentColor;
+    stroke-width: 1.4;
+  }
+
+  .sysdiag__world--accent {
+    fill: var(--color-highlight);
+    stroke: var(--color-highlight);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sysdiag__orbit {
+      transform-box: view-box;
+      transform-origin: 50% 50%;
+      animation-name: sysdiag-turn;
+      animation-duration: 90s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    .sysdiag__orbit--outer {
+      animation-duration: 140s;
+      animation-direction: reverse;
+    }
+  }
+
+  @keyframes sysdiag-turn {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sysdiag__cell,
+    .sysdiag__cell--core,
+    .sysdiag__world--accent {
+      fill: CanvasText;
+    }
+
+    .sysdiag__initials {
+      fill: Canvas;
+    }
+  }
+</style>

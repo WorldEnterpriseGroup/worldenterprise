@@ -1,35 +1,84 @@
 ---
 import type { ResourceGroup } from '../../components/reference/resources.ts';
+import Emblem from '../../components/families/visual/Emblem.astro';
+import { kindForPath } from '../../components/families/visual/kinds.ts';
 import Card from '../../components/ui/Card.astro';
 import Grid from '../../components/ui/Grid.astro';
 import { href } from '../../lib/url.ts';
 
 /**
  * One group of the Resources hub: a heading, an optional intro, and a grid of cards. The group is named by its heading so a screen
- * reader announces it as a group; each card is a single link to the page it describes.
+ * reader announces it as a group; each card is a single link to the page it describes. On a wide screen the heading sits in its own
+ * column over the emblem of the family the group's first page belongs to (a planet in the solar system of the hub), and the cards take
+ * the rest of the frame.
  */
 interface Props {
   group: ResourceGroup;
-  /** The id of the group's heading. */
+  /** The id of the heading of the group. */
   id: string;
 }
 
 const { group, id } = Astro.props;
+const kind = kindForPath(group.items[0]?.path ?? '/resources/');
 ---
 
-<div class="stack" role="group" aria-labelledby={id}>
-  <h3 id={id}>{group.title}</h3>
-  {group.intro !== undefined && <p class="measure">{group.intro}</p>}
-  <Grid min="16rem" as="ul">
-    {
-      group.items.map((item) => (
-        <li>
-          <Card title={item.title} href={href(item.path)} headingLevel={4}>
-            {item.description !== undefined && <p>{item.description}</p>}
-          </Card>
-        </li>
-      ))
-    }
-  </Grid>
-  <slot />
+<div class="rgroup" role="group" aria-labelledby={id}>
+  <div class="rgroup__head">
+    <h3 id={id}>{group.title}</h3>
+    {group.intro !== undefined && <p class="measure">{group.intro}</p>}
+    <div class="rgroup__sky"><Emblem kind={kind} seed={group.id} /></div>
+  </div>
+  <div class="rgroup__body">
+    <Grid min="16rem" as="ul">
+      {
+        group.items.map((item) => (
+          <li>
+            <Card title={item.title} href={href(item.path)} headingLevel={4}>
+              {item.description !== undefined && <p>{item.description}</p>}
+            </Card>
+          </li>
+        ))
+      }
+    </Grid>
+    <slot />
+  </div>
 </div>
+
+<style>
+  @layer pages {
+    .rgroup {
+      display: grid;
+      gap: var(--sp-5);
+      padding-block: var(--sp-5);
+      border-block-start: var(--border-hair);
+
+      @media (min-width: 62rem) {
+        grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+        gap: var(--sp-7);
+        align-items: start;
+      }
+    }
+
+    .rgroup__head {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .rgroup__sky {
+      display: none;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-radius: var(--radius-md);
+      background: var(--color-bg-inverse);
+
+      @media (min-width: 62rem) {
+        display: block;
+      }
+    }
+
+    .rgroup__body {
+      display: grid;
+      gap: var(--sp-4);
+    }
+  }
+</style>

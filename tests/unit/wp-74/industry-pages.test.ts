@@ -133,11 +133,11 @@ test('no page says that anything is certified, approved, guaranteed or compliant
   }
 });
 
-test('the scope component states what a seat builds and the five limits, in plain sentences', () => {
+test('the scope component states what the team builds and the five limits, in plain sentences', () => {
   const text = SCOPE_ITEMS.map((i) => i.text);
   assert.equal(SCOPE_ITEMS.length, 7);
-  assert.ok(text.some((t) => /digital incubator for SaaS companies/.test(t)));
-  assert.ok(text.some((t) => /builds SaaS software/.test(t) && /pilot/.test(t)));
+  assert.ok(text.some((t) => /long-horizon business incubation and consulting firm/.test(t)));
+  assert.ok(text.some((t) => /builds software/.test(t) && /pilot/.test(t)));
   assert.ok(text.some((t) => /does not run a live service/.test(t)));
   assert.ok(text.some((t) => /does not store or process restricted or regulated data/.test(t)));
   assert.ok(text.some((t) => /no assurance/.test(t) && /audit/.test(t) && /certification/.test(t)));

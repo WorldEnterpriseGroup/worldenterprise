@@ -1,0 +1,111 @@
+---
+/**
+ * How WE applies UBF in an engagement: numbered hex steps on a dashed orbit line, each with the UBF components it works with as chips
+ * that link to their legend cards on the same page.
+ */
+import { UBF_COMPONENTS, ubfAnchor } from './framework-data.ts';
+import type { EngagementStep } from './framework-data.ts';
+
+interface Props {
+  steps: readonly EngagementStep[];
+  label?: string;
+  headingLevel?: 3 | 4;
+}
+
+const { steps, label = 'How WE applies UBF in an engagement', headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}` as 'h3' | 'h4';
+const known = new Set(UBF_COMPONENTS.map((c) => c.name));
+for (const step of steps) for (const name of step.uses) if (!known.has(name)) throw new Error(`EngagementPath: "${name}" is not a UBF component`);
+---
+
+<ol class="engpath" role="list" aria-label={label}>
+  {
+    steps.map((step, i) => (
+      <li class="engpath__step">
+        <span class="engpath__num" aria-hidden="true">
+          {i + 1}
+        </span>
+        <div class="engpath__body">
+          <H class="engpath__title">{step.title}</H>
+          <p>{step.body}</p>
+          <ul class="engpath__uses" role="list" aria-label="UBF components in this step">
+            {step.uses.map((name) => (
+              <li>
+                <a href={`#${ubfAnchor(name)}`}>{name}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .engpath {
+    display: grid;
+    gap: var(--sp-5);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .engpath__step {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-4);
+    align-items: start;
+  }
+
+  .engpath__num {
+    display: grid;
+    place-items: center;
+    inline-size: 3.25rem;
+    block-size: 2.8rem;
+    clip-path: var(--hex-clip);
+    background: var(--color-highlight);
+    color: var(--color-bg-inverse);
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+  }
+
+  .engpath__body {
+    display: grid;
+    gap: var(--sp-2);
+
+    & p {
+      margin: 0;
+    }
+  }
+
+  .engpath__title {
+    margin: 0;
+    font-size: var(--fs-lg);
+  }
+
+  .engpath__uses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--fs-sm);
+
+    & a {
+      display: inline-block;
+      padding: var(--sp-1) var(--sp-3);
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-pill);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .engpath__num {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

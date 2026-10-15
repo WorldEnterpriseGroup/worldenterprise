@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
 import ContextualNext from '../../components/blocks/ContextualNext.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
 import { liveItems } from '../../components/playbooks/links.ts';
@@ -87,4 +88,5 @@ const nextStep = next[0] ? { label: next[0].title, href: next[0].href } : undefi
       )
     }
   </Fragment>
+  <ArticleEnd slot="cta-end" kind="fundability" seed={slug} />
 </GuideLayout>

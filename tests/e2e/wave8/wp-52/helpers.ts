@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import type { Locator, Page, TestInfo } from '@playwright/test';
+import { SOFTWARE_RENDERER } from '../../../../src/scripts/visuals/gate.ts';
 
 // Shared by the WP-52 styleguide specs: visuals.spec.ts (posters, markup, review shots) and visuals-live.spec.ts (live WebGL scenes).
 
@@ -40,18 +41,25 @@ export async function cls(page: Page): Promise<number> {
   );
 }
 
-/** Whether this browser can create a WebGL2 context at all (the gate's last check). */
+/** Whether this browser can create a hardware WebGL2 context, asked exactly as the gate asks (software GL reports a major performance caveat). */
+/** Mirrors the gate's probe: a WebGL2 context without a major performance caveat whose renderer is not a software rasteriser. */
 export async function hasWebGL2(page: Page): Promise<boolean> {
-  return page.evaluate(() => {
+  return page.evaluate((software) => {
     try {
-      const gl = document.createElement('canvas').getContext('webgl2');
-      gl?.getExtension('WEBGL_lose_context')?.loseContext();
-      return gl !== null;
+      const gl = document.createElement('canvas').getContext('webgl2', { failIfMajorPerformanceCaveat: true });
+      if (gl === null) return false;
+      const info = gl.getExtension('WEBGL_debug_renderer_info');
+      const unmasked: unknown = info === null ? undefined : gl.getParameter(info.UNMASKED_RENDERER_WEBGL);
+      const renderer: unknown = typeof unmasked === 'string' && unmasked !== '' ? unmasked : gl.getParameter(gl.RENDERER);
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      const isSoftware = new RegExp(software, 'i').test(typeof renderer === 'string' ? renderer : '');
+      console.info(`webgl2 renderer: ${String(renderer)}${isSoftware ? ' (software)' : ''}`);
+      return !isSoftware;
     } catch (error) {
       console.info('webgl2 probe threw', error);
       return false;
     }
-  });
+  }, SOFTWARE_RENDERER.source);
 }
 
 /**
@@ -63,10 +71,13 @@ export async function liveOrPoster(page: Page, scene: Locator, info: TestInfo): 
   if (!(await hasWebGL2(page))) {
     info.annotations.push({
       type: 'no-webgl2',
-      description: 'the runner has no WebGL2: the poster fallback is checked instead',
+      description:
+        'no hardware WebGL2 (software GL, by caveat or renderer name, is refused by the gate): the poster fallback is checked instead',
     });
     await page.waitForTimeout(1500);
     await expect(scene.locator('canvas.scene__canvas'), 'no canvas without WebGL2').toHaveCount(0);
+    await expect(scene, 'the gate refused WebGL2 and kept the poster').toHaveAttribute('data-gate', 'webgl2');
+    await expect(scene).toHaveAttribute('data-state', 'poster');
     await expect(poster, 'the poster stays visible without WebGL2').toBeVisible();
     return false;
   }

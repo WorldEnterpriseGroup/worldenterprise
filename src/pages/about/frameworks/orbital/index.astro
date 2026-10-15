@@ -1,26 +1,78 @@
 ---
+/**
+ * /about/frameworks/orbital/: the seven-part planning frame. The incubation nursery (WorldForge) draws its seven O.R.B.I.T.A.L. rings,
+ * one moon per component; in UBF terms a moon is a side project that runs on its own O.R.B.I.T.A.L. plan.
+ */
 import PageShell from '../../../../components/about/PageShell.astro';
+import Band from '../../../../components/visuals/Band.astro';
+import { START_REVIEW, TALK_TO_WE } from '../../../../components/about/ctas.ts';
+import { ORBITAL_PARTS } from '../../../../components/about/framework-data.ts';
 import { loadPage } from '../../../../components/about/load-page.ts';
-import { ORBITAL_PARTS } from '../../../../components/about/frameworks.ts';
-import CellTrail from '../../../../components/ui/CellTrail.astro';
 import CtaBand from '../../../../components/ui/CtaBand.astro';
 import DataTable from '../../../../components/ui/DataTable.astro';
-import Section from '../../../../components/ui/Section.astro';
+import WorldForge from '../../../../components/visuals/WorldForge.astro';
 import { href } from '../../../../lib/url.ts';
 
 const entry = await loadPage('about/orbital');
 ---
 
-<PageShell entry={entry} path="/about/frameworks/orbital/" ogSlot="og-about" lead="Seven components a project plan has to answer.">
+<PageShell
+  entry={entry}
+  path="/about/frameworks/orbital/"
+  ogSlot="og-about"
+  lead="Seven components a project plan has to answer, one orbit each."
+  primary={START_REVIEW}
+  secondary={{ label: 'See the frameworks', href: '/about/frameworks/' }}
+  art={{ variant: 'trail', count: 7, active: 1 }}
+>
   <Fragment slot="after">
-    <Section tone="soft" labelledby="or-summary">
-      <div class="container stack">
-        <h2 id="or-summary">The frame at a glance</h2>
-        <CellTrail label="ORBITAL components" cells={ORBITAL_PARTS.map((a) => ({ label: a.name }))} />
-        <DataTable caption="ORBITAL components" columns={['Component', 'What the plan says']} rows={ORBITAL_PARTS.map((a) => [a.name, a.asks])} />
-        <p><a href={href('/about/frameworks/')}>Back to all frameworks</a>, or see <a href={href('/about/frameworks/android-ops/')}>ANDROID Ops</a> for how a team works.</p>
+    <Band tone="deep" labelledby="or-rings-title" id="rings">
+      <div class="split">
+        <div class="split__text or-stack">
+          <p class="eyebrow">Seven rings</p>
+          <h2 id="or-rings-title">A plan in seven orbits</h2>
+          <p>
+            In the UBF sky a moon is a side project, a startup or a department, and each one runs on its own O.R.B.I.T.A.L. plan. The drawing
+            shows a world forming with its seven rings around it, one for each question the plan answers.
+          </p>
+          <p>
+            Read <a href={href('/about/frameworks/')}>the frameworks galaxy</a> for the other systems, or
+            <a href={href('/about/frameworks/android-ops/')}>A.N.D.R.O.I.D. Ops</a> for how a team works.
+          </p>
+        </div>
+        <div class="split__media">
+          <WorldForge
+            moons={ORBITAL_PARTS.map((p) => ({ label: p.name, description: p.line }))}
+            labelsName="The seven O.R.B.I.T.A.L. components, inner ring first"
+            caption="Seven O.R.B.I.T.A.L. rings around a forming world, one moon per component."
+          />
+        </div>
       </div>
-    </Section>
-    <CtaBand title="Plan before you build" text="The Dream playbook starts with the evidence a plan needs." cta={{ label: 'Read the playbooks', href: '/playbooks/' }} secondary={{ label: 'Contact', href: '/contact/' }} />
+    </Band>
+    <Band tone="soft" labelledby="or-summary">
+      <h2 id="or-summary" class="or-title">The frame at a glance</h2>
+      <DataTable caption="O.R.B.I.T.A.L. components" columns={['Component', 'What the plan says']} rows={ORBITAL_PARTS.map((a) => [a.name, a.line])} />
+    </Band>
+    <CtaBand
+      title="Plan before you build"
+      text="A readiness review looks at the plan a company has today and what it still needs to answer."
+      cta={START_REVIEW}
+      secondary={TALK_TO_WE}
+    />
   </Fragment>
 </PageShell>
+
+<style>
+  .or-stack {
+    display: grid;
+    gap: var(--space-flow);
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .or-title {
+    margin-block: 0 var(--space-group);
+  }
+</style>

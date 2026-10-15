@@ -48,7 +48,7 @@ what phones, reduced motion, forced colors, no-JS visitors and Lighthouse see, s
 (`src/scripts/visuals/scene-element.ts`, about 1.6 KB gzip) imports nothing from three; on a capable desktop it waits until the frame
 is within 200px of the viewport and the browser is idle, then imports the runtime (with three) and the scene, and crossfades from the
 poster. The gate (`src/scripts/visuals/gate.ts`): `(min-width: 64rem) and (pointer: fine) and (prefers-reduced-motion: no-preference)`,
-not forced colors, at least four cores, `deviceMemory` absent or at least 4, no Save-Data, and a working WebGL2 context. Device pixel
+not forced colors, at least four cores, `deviceMemory` absent or at least 4, no Save-Data, and a hardware WebGL2 context (asked with `failIfMajorPerformanceCaveat`, and refused when the renderer string, `WEBGL_debug_renderer_info` or `RENDERER`, names a software rasteriser: SwiftShader, llvmpipe, softpipe, Microsoft Basic Render Driver, Mesa offscreen; headless Chrome hands out SwiftShader without the caveat, so the name check is what keeps CI and software-GL visitors on the poster; the renderer uses the same attributes). Device pixel
 ratio is capped at 1.75, only one scene animates at a time, scenes pause offscreen and in hidden tabs, and they dispose on navigation.
 A live scene shows a real **Pause animation** button (WCAG 2.2.2); the canvas is `aria-hidden`.
 
@@ -101,8 +101,8 @@ regenerate them with `node src/assets/visuals/tools/render-posters.mjs [key...]`
 | --- | --- |
 | `charts/StatTile` | One figure: `<StatTile value="49.2%" label="Still operating after five years" source={sba} icon="gate" />`. `value` must contain a number and never a price. Props also `tone` (`light`, `dark`), `hideSource`. |
 | `charts/StatTiles` | A row of one to six figures; shared sources listed once, numbered. `<StatTiles stats={stats} label="Starting a business in the U.S." />`. Props: `stats`, `tone`, `label`, `id`. |
-| `charts/SurvivalCurve` | Share still operating by year, stepped lines (1 to 3 series), optional gates, a hidden data table, a source line. `<SurvivalCurve title="..." series={[{ label, points: [{ year, percent }] }]} source={bls} gates={[1, 2, 5, 10]} />`. Props also `note`. |
-| `charts/BarChart` | Horizontal bars, 2 to 10 rows, one amber highlight. `<BarChart title="..." items={[{ label, value, display? }]} source={src} max={100} highlight={2} valueLabel="Share of firms" />`. |
+| `charts/SurvivalCurve` | Share still operating by year, stepped lines (1 to 3 series), optional gates, the figures as a table behind a "Show the figures as a table" disclosure (inside the site's `.table-wrap` region, named "<title>, as a table"), a source line. `<SurvivalCurve title="..." series={[{ label, points: [{ year, percent }] }]} source={bls} gates={[1, 2, 5, 10]} />`. Props also `note`. |
+| `charts/BarChart` | Horizontal bars, 2 to 10 rows, one amber highlight, the figures as a table behind a disclosure (`.table-wrap` region, as SurvivalCurve). `<BarChart title="..." items={[{ label, value, display? }]} source={src} max={100} highlight={2} valueLabel="Share of firms" />`. |
 | `charts/DonutChart` | Parts of a whole, 2 to 6 segments; the HTML legend carries every figure. `<DonutChart title="..." items={items} source={src} center="47%" centerLabel="at a profit" />`. |
 | `charts/SourceNote` | The "Source:" line: `<SourceNote sources={[src]} />`. |
 

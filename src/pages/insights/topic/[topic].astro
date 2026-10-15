@@ -7,6 +7,9 @@ import type { Desk } from '../../../components/insights/articles.ts';
 import InsightCard from '../../../components/insights/InsightCard.astro';
 import { insightPath, insightSlug, readingMinutes } from '../../../components/insights/articles.ts';
 import { getRenderable } from '../../../lib/content.ts';
+import { IDENTITY } from '../../../components/families/visual/copy.ts';
+import CtaLadder from '../../../components/families/visual/CtaLadder.astro';
+import EmblemFrame from '../../../components/families/visual/EmblemFrame.astro';
 
 // A desk gets a topic page once it holds an article (route-core.ts DESK_TOPIC_PATTERN): a desk nobody has written for has no page.
 export const getStaticPaths = (async () => {
@@ -29,7 +32,14 @@ const items = await listInsights(topic);
   lead={label.blurb}
   {...(page !== undefined ? { updated: page.data.updated, draft: page.data.draft } : {})}
 >
-  {Content !== undefined && <div class="prose"><Content /></div>}
+  <div class="desk-intro">
+    <div class="desk-intro__text">
+      {Content !== undefined ? <div class="prose"><Content /></div> : <p class="muted">{IDENTITY.insights.caption}</p>}
+    </div>
+    <div class="desk-intro__art">
+      <EmblemFrame kind="insights" seed={`desk-${topic}`} />
+    </div>
+  </div>
   {
     items.length > 0 ? (
       <ul class="grid grid--min-16" role="list">
@@ -51,4 +61,23 @@ const items = await listInsights(topic);
       <p class="muted">Articles for this desk are being edited and will appear here when they are ready.</p>
     )
   }
+  <CtaLadder slot="cta-end" />
 </ArticleHub>
+
+<style>
+  @layer pages {
+    .desk-intro {
+      display: grid;
+      gap: var(--sp-6);
+      align-items: center;
+
+      @media (min-width: 62rem) {
+        grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+      }
+    }
+
+    .desk-intro__art {
+      max-inline-size: 44rem;
+    }
+  }
+</style>

@@ -10,6 +10,7 @@
 import { Mesh, PerspectiveCamera, Points, Scene, Sprite, Vector3, WebGLRenderer, LineSegments, Line, InstancedMesh } from 'three';
 import type { Material, Object3D } from 'three';
 import type { SceneInstance, SceneModule, SceneOptions } from './types.ts';
+import { WEBGL_CONTEXT_ATTRIBUTES } from './gate.ts';
 
 export const MAX_DPR = 1.75;
 
@@ -70,7 +71,7 @@ class Controller implements SceneController {
     this.canvas = host.ownerDocument.createElement('canvas');
     this.canvas.className = 'scene__canvas';
     this.canvas.setAttribute('aria-hidden', 'true');
-    this.renderer = new WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    this.renderer = new WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true, ...WEBGL_CONTEXT_ATTRIBUTES });
     this.renderer.setClearColor(0x000000, 0);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_DPR));
     const { width, height } = this.size();

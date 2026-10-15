@@ -2,6 +2,12 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
+import MidCta from '../../components/families/visual/MidCta.astro';
+import OrbitProgress from '../../components/families/visual/OrbitProgress.astro';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
+import PullStats from '../../components/families/visual/PullStats.astro';
+import { TIMELINE_BLOCK } from '../../components/families/visual/stats.ts';
 import InsightCover from '../../components/insights/InsightCover.astro';
 import { insightSlug, listInsights, readingMinutes, relatedFor } from '../../components/insights/articles.ts';
 import { getRenderable, isDraft } from '../../lib/content.ts';
@@ -33,9 +39,25 @@ const related = relatedFor(entry, siblings, (path) => state.isLive(path), await 
   readingMinutes={readingMinutes(entry.body)}
   headings={headings.map((h) => ({ depth: h.depth, slug: h.slug, text: h.text }))}
   sources={data.sources}
-  related={related}
   draft={isDraft(entry)}
 >
   <InsightCover slug={insightSlug(entry)} topic={data.topic} />
   <Content />
+  <MidCta />
+  <OrbitProgress />
+  <div slot="aside" class="article-figures">
+    <EmblemFrame kind="insights" seed={`desk-${data.topic}`} shape="tall" drift={false} />
+    <PullStats block={TIMELINE_BLOCK} id="article-stats" />
+  </div>
+  <ArticleEnd slot="cta-end" kind="insights" seed={`desk-${data.topic}`} related={related} />
 </ArticleLayout>
+
+<style>
+  @layer pages {
+    .article-figures {
+      display: grid;
+      gap: var(--sp-5);
+      margin-block-start: var(--sp-6);
+    }
+  }
+</style>

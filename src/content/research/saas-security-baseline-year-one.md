@@ -77,7 +77,7 @@ On 6 October 2026 the public pages listed under Sources were retrieved and read.
 - The AICPA common-criteria structure and the text of the criteria were not read.
 - Whether NIST has issued a newer SSDF revision was not established.
 - Frameworks change; treat versions and dates as of 6 October 2026.
-- This brief says nothing about controls operated by World Enterprise Group or by any other company, and it is not legal, audit or compliance advice.
+- This brief says nothing about controls operated by World Enterprise Group Incorporated or by any other company, and it is not legal, audit or compliance advice.
 
 ## Appendix: year-one sequencing checklist
 
