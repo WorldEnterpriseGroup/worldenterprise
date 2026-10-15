@@ -45,6 +45,7 @@ sources:
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
+import Steps from '../../../components/ui/Steps.astro';
 import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 The moment a feature sends a customer's text, files or records to a language model, your company has made a data-handling decision, whether or not anyone chose it. The decision is easier to make well before launch than to unwind after customers have asked where their information went. This article sets out the decisions in the order to make them, written for people who will approve the feature rather than build it.
@@ -107,9 +108,25 @@ OWASP's guidance on transparency is to maintain clear policies about data retent
   The GDPR requires a data protection impact assessment where processing is likely to result in a high risk to the rights and freedoms of natural persons. Whether a feature meets that threshold is a judgment for counsel and your privacy lead. Ask the question before launch, and keep the answer on file.
 </Callout>
 
+**The eight decisions in four groups.** The decisions above fall into four groups, and settling them in this order avoids rework.
+
+<Steps
+  headingLevel={4}
+  steps={[
+    { title: 'Scope', body: 'Decide what data the model sees and what the smallest useful set is.' },
+    { title: 'Vendor', body: 'Choose the account, the tier and the processor terms before any customer data flows.' },
+    { title: 'Lifecycle', body: 'Set how long data is kept, where, and how a deletion request will be honored.' },
+    { title: 'Disclosure', body: 'Decide what customers are told and whether anything is used to improve the product.' }
+  ]}
+/>
+
 ## The one-page decision record
 
 Keep one page per feature with the answer to each decision: the data categories, the minimized field list, the approved accounts, the contracts reviewed, the retention table, the deletion method, the improvement policy, the customer wording, and the name and date of the approver. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> covers the conventional controls these answers depend on, and the <MaybeLink path="/research/saas-security-baseline-year-one/">research note on a first-year security baseline</MaybeLink> explains why they come first.
+
+## Where this fits in a long effort
+
+Decisions about customer data are expensive to reverse once a product has users. A record written now is a record a future team member, auditor or buyer can read without guessing. The <MaybeLink path="/insights/choosing-a-model-provider-the-questions-that-matter/">article on choosing a model provider</MaybeLink> covers the vendor group in more depth, and the <MaybeLink path="/insights/metering-and-budgeting-model-usage/">metering and budgeting</MaybeLink> article covers the cost side. A product that will run for years is better served by a short record kept current than a long one nobody reads.
 
 ## What this article cannot tell you
 
