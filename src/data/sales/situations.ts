@@ -89,7 +89,7 @@ const apply = (id: SituationId): string => `/apply/?situation=${id}`;
 const HOW_WE_WORK: SituationCta = { label: 'See how WE works', href: '/how-we-work/' };
 const HOW_IT_WORKS_FALLBACK: SituationCta = { label: 'See how WE works', href: '/program/how-it-works/' };
 const HOW_LONG: SituationCta = { label: 'See how long it really takes', href: '/why-it-takes-time/' };
-const TIMELINE_BRIEF: SituationCta = { label: 'Get the timeline brief', href: '/why-it-takes-time/brief/' };
+const TIMELINE_BRIEF: SituationCta = { label: 'Get the timeline brief', href: '/briefs/real-timeline/' };
 const TALK: SituationCta = { label: 'Talk to WE', href: '/contact/' };
 
 export const SITUATIONS: readonly Situation[] = [

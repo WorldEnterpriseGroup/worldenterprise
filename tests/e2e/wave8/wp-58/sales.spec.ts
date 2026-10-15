@@ -18,7 +18,7 @@ const SITUATIONS = [
   'restart-founders',
 ] as const;
 
-const ROUTES: readonly string[] = ['/why-it-takes-time/', '/why-it-takes-time/brief/', '/who-we-work-with/', ...SITUATIONS.map((s) => `/who-we-work-with/${s}/`)];
+const ROUTES: readonly string[] = ['/why-it-takes-time/', '/who-we-work-with/', ...SITUATIONS.map((s) => `/who-we-work-with/${s}/`)];
 
 const HONESTY = "These figures describe all new U.S. businesses, not WE's results.";
 

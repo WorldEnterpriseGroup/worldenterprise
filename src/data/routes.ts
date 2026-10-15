@@ -283,7 +283,6 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
 
     // Wave 9 sales pages (WP-58, W9-12): the real business clock and the seven situation pages (SITE-COPY.md sections 5 and 6).
     row('/why-it-takes-time/', 'MarketingLayout', 'WP-58'),
-    row('/why-it-takes-time/brief/', 'MarketingLayout', 'WP-58'),
     row('/who-we-work-with/', 'MarketingLayout', 'WP-58'),
     row('/who-we-work-with/industry-insiders/', 'MarketingLayout', 'WP-58'),
     row('/who-we-work-with/encore-founders/', 'MarketingLayout', 'WP-58'),

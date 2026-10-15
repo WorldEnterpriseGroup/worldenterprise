@@ -1,7 +1,7 @@
 ---
 /**
  * Sourced statistics as tiles (WP-58). Each tile shows the figure, what it counts, and a link to its entry in the page's sources list.
- * The honesty line follows every block unless the caller places it once for several blocks (`honesty={false}`).
+ * A derived figure (status DERIVED in the register) carries how it was computed. The honesty line follows every block unless the caller places it once for several blocks (`honesty={false}`).
  */
 import { salesSource, sourceAnchor } from '../../data/sales/sources.ts';
 import { stat } from '../../data/sales/stats.ts';
@@ -35,6 +35,7 @@ const items = stats.map((id) => stat(id));
             ))}
             {`. ${item.period}.`}
           </p>
+          {item.derived !== undefined && <p class="sales-tile__caveat">{`Derived: ${item.derived}`}</p>}
           {item.caveat !== undefined && <p class="sales-tile__caveat">{item.caveat}</p>}
         </li>
       ))

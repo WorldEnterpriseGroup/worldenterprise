@@ -13,7 +13,7 @@ This site is static (GitHub Pages). It runs no server code. Every form submits t
 | `apply` | `/apply/` | Application to the incubator | `PUBLIC_WE_INTAKE_API_URL` |
 | `contact` | `/contact/` | General contact, seat rate requests, press, corrections, questions about information handling | `PUBLIC_WE_INTAKE_API_URL` |
 | `newsletter` | `/newsletter/` and footer | Email subscription (WP-08, WP-03 ships `NewsletterForm`) | `PUBLIC_WE_NEWSLETTER_API_URL` |
-| `brief-request` | `/briefs/<id>/` for each of the ten briefs in `src/data/families.ts` | Request a gated brief by email | `PUBLIC_WE_INTAKE_API_URL` |
+| `brief-request` | `/briefs/<id>/` for each of the eleven briefs in `src/data/families.ts` | Request a gated brief by email | `PUBLIC_WE_INTAKE_API_URL` |
 | `investor-interest` | `/investors/interest/` | An investor asks to meet the companies WE incubates | `PUBLIC_WE_INTAKE_API_URL` |
 | `partner-enquiry` | `/network/partners/enquire/` | A provider describes what it offers founders | `PUBLIC_WE_INTAKE_API_URL` |
 
@@ -81,7 +81,7 @@ Every key is always present for the five intake kinds, and a key the kind does n
 | `seats` | string | `apply` only, optional, at most 500 characters. Free text from the Team Composer or typed by the visitor. |
 | `topic` | `"general"`, `"seat-rate"`, `"press"`, `"correction"`, `"information"` or `""` | Required on `contact`, empty elsewhere. |
 | `message` | string | At most 4000 characters. Required on `contact`, optional on `apply`, `investor-interest` and `partner-enquiry`, empty on `brief-request`. On `apply` the script may append one line, `Package interest: <package name>` or `Package interest: not sure yet`, after the visitor's text and a blank line (section 8, "The Apply stepper"). The line counts toward the 4000 characters. |
-| `briefId` | slug | Required on `brief-request`, empty elsewhere. Must be one of the ten ids in `src/data/families.ts`. |
+| `briefId` | slug | Required on `brief-request`, empty elsewhere. Must be one of the eleven ids in `src/data/families.ts`. |
 | `companyUrl` | https URL, at most 300 characters | Required on `partner-enquiry`, optional on `investor-interest`, empty elsewhere. This is the real organization website. The honeypot stays `website`, so the two never collide. |
 | `partnerCategory` | `"tooling-saas"`, `"cloud-credits"`, `"legal"`, `"finance-accounting"`, `"delivery"`, `"ecosystem"` or `"other"` | Required on `partner-enquiry`, empty elsewhere. |
 | `offer` | string, at most 1500 | Required on `partner-enquiry`: what the organization provides to founders and on what terms. Empty elsewhere. |

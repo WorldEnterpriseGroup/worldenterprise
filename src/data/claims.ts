@@ -59,7 +59,8 @@ export const claimRegistry: Readonly<Record<ClaimId, Claim>> = {
   'C-26': { id: 'C-26', status: 'publish', enabled: true, source: OWNER_2026_10_10, summary: 'An organization that helps or equips founders may send WE an enquiry. Sending one creates no partnership, no referral arrangement and no commitment on either side' },
   'C-27': { id: 'C-27', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; D-23`, summary: 'WE sends a requested brief by email to the address the reader gave' },
   'C-28': { id: 'C-28', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; privacy notice`, summary: 'WE uses the details in a form to answer the request, as the privacy notice describes' },
-  'C-29': { id: 'C-29', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; ${OPERATOR}`, summary: 'WE is a digital incubator for SaaS companies: dedicated offshore team seats steered by WE, fully remote (C-01 to C-03), with no promise of funding (C-05)' },
+  // Wave 9 (W9-13): C-29 follows SALES.md 1.4 (long-horizon business incubation and consulting). C-01 to C-03 and C-05 stay inside the sentence.
+  'C-29': { id: 'C-29', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; ${OPERATOR}`, summary: 'WE is a long-horizon business incubation and consulting firm. WE steers a dedicated, fully remote team that builds a software-enabled company with its founder, for as long as the work is useful. WE makes no promise of funding.' },
 };
 
 /** Named toggles components read. Each maps to one registry entry. */

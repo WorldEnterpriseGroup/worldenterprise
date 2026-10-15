@@ -231,7 +231,7 @@ test('each situation has its own world and a readiness call to action', () => {
 // ---------------------------------------------------------------------------------------------------------------------------------
 
 test('every WP-58 route is a launched ledger row owned by WP-58 with a page file', () => {
-  const paths = ['/why-it-takes-time/', '/why-it-takes-time/brief/', '/who-we-work-with/', ...SITUATIONS.map(situationPath)];
+  const paths = ['/why-it-takes-time/', '/who-we-work-with/', ...SITUATIONS.map(situationPath)];
   for (const path of paths) {
     const row = getRoute(path);
     assert.ok(row !== undefined, `${path} has no ledger row`);
