@@ -1,0 +1,194 @@
+{
+  "wp": "WP-34",
+  "issue": 83,
+  "retrieved": "2026-10-15",
+  "statusStatement": "As of October 15, 2026: SBIR and STTR are authorized through September 30, 2031 (S. 3971, signed April 13, 2026, after the previous authority expired September 30, 2025). Always check sbir.gov for the latest.",
+  "notes": [
+    "Build-time static data only. Nothing on the pages is fetched at runtime.",
+    "Raw award CSV and the NIH workbook were kept outside the repository because the CSV carries contact details.",
+    "Retrieval used a generic user agent and no personal contact details.",
+    "A source with retrieved: null was cited from search results or a secondary page and was not fetched by this build."
+  ],
+  "sources": [
+    {
+      "id": "sba-release-26-43",
+      "title": "Administrator Loeffler Applauds SBIR-STTR Reauthorization (SBA news release 26-43, April 13, 2026)",
+      "publisher": "U.S. Small Business Administration",
+      "url": "https://www.sba.gov/article/2026/04/13/administrator-loeffler-applauds-sbir-sttr-reauthorization",
+      "retrieved": "2026-10-15",
+      "usedFor": "Date of signature (April 13, 2026), end date of authority (September 30, 2031), the statement of more than $81 billion invested in more than 34,000 small businesses since 1982.",
+      "transformation": "None; facts restated."
+    },
+    {
+      "id": "congress-s3971",
+      "title": "S.3971, Small Business Innovation and Economic Security Act (119th Congress)",
+      "publisher": "U.S. Congress, congress.gov",
+      "url": "https://www.congress.gov/bill/119th-congress/senate-bill/3971",
+      "retrieved": null,
+      "usedFor": "Bill number and title; passage dates (Senate March 3, 2026, House March 17, 2026) as reported by the law-firm and university summaries.",
+      "transformation": "None.",
+      "caveat": "congress.gov returned 403 to the retrieval script, so this entry has no retrieval date and the Public Law number (reported as 119-83) is deliberately omitted."
+    },
+    {
+      "id": "crowell-lapse",
+      "title": "SBIR/STTR Programs Reauthorized After Six-Month Lapse",
+      "publisher": "Crowell & Moring LLP",
+      "url": "https://www.crowell.com/en/insights/client-alerts/sbirsttr-programs-reauthorized-after-six-month-lapse",
+      "retrieved": "2026-10-15",
+      "usedFor": "The lapse (September 30, 2025), roughly six months with no new awards, and the provisions of the law: foreign-risk screening, proposal caps from fiscal year 2027, Strategic Breakthrough awards, Phase III and model contracts.",
+      "transformation": "Plain-language restatement of a law-firm summary.",
+      "caveat": "A secondary summary of the statute, not the statute."
+    },
+    {
+      "id": "uw-federal-relations",
+      "title": "Trump signs SBIR/STTR reauthorization bill into law",
+      "publisher": "University of Washington, Office of Federal Relations",
+      "url": "https://www.washington.edu/federalrelations/2026/04/14/trump-signs-sbir-sttr-reauthorization-bill-into-law/",
+      "retrieved": "2026-10-15",
+      "usedFor": "Signing date and the description of the extension as the longest in the programs history.",
+      "transformation": "None."
+    },
+    {
+      "id": "doe-sbir",
+      "title": "SBIR/STTR Programs, Office of Science notice on reauthorization",
+      "publisher": "U.S. Department of Energy",
+      "url": "https://science.osti.gov/sbir",
+      "retrieved": "2026-10-15",
+      "usedFor": "DOE statement that the programs were reauthorized effective April 13, 2026.",
+      "transformation": "None."
+    },
+    {
+      "id": "nasa-sbir",
+      "title": "NASA SBIR/STTR, solicitation schedule (last updated October 14, 2026)",
+      "publisher": "National Aeronautics and Space Administration",
+      "url": "https://www.nasa.gov/sbir_sttr/",
+      "retrieved": "2026-10-15",
+      "usedFor": "Examples of open and planned NASA solicitations in October 2026 (SBIR Ignite, Phase II STTR, Phase II Sequential) and NASA BAA structure.",
+      "transformation": "None.",
+      "caveat": "NASA page updated October 14, 2026; dates change."
+    },
+    {
+      "id": "nih-seed",
+      "title": "Small Business Program Basics",
+      "publisher": "National Institutes of Health, NIH SEED",
+      "url": "https://seed.nih.gov/small-business-funding/small-business-program-basics",
+      "retrieved": "2026-10-15",
+      "usedFor": "NIH SBIR/STTR budget statement ($1.4 billion each year), grants and contract routes.",
+      "transformation": "None."
+    },
+    {
+      "id": "nsf-seed-fund",
+      "title": "America's Seed Fund, powered by NSF",
+      "publisher": "U.S. National Science Foundation",
+      "url": "https://seedfund.nsf.gov/",
+      "retrieved": "2026-10-15",
+      "usedFor": "NSF description: seed funding up to $2 million, takes no ownership, project pitch first.",
+      "transformation": "None."
+    },
+    {
+      "id": "sbir-about",
+      "title": "About SBIR and STTR",
+      "publisher": "U.S. Small Business Administration, SBIR.gov",
+      "url": "https://www.sbir.gov/about",
+      "retrieved": "2026-10-15",
+      "usedFor": "April 2026 award limits without an SBA waiver (Phase I $323,090, Phase II $2,153,927) and login changes.",
+      "transformation": "None."
+    },
+    {
+      "id": "sbir-apply",
+      "title": "How to Apply",
+      "publisher": "U.S. Small Business Administration, SBIR.gov",
+      "url": "https://www.sbir.gov/apply",
+      "retrieved": "2026-10-15",
+      "usedFor": "Phase durations and typical sizes, eligibility (500 employees, ownership), UEI requirement, STTR partner requirement, Phase 0 state programs.",
+      "transformation": "None."
+    },
+    {
+      "id": "sbir-agencies",
+      "title": "Participating Federal Agencies",
+      "publisher": "U.S. Small Business Administration, SBIR.gov",
+      "url": "https://www.sbir.gov/participating-agencies",
+      "retrieved": "2026-10-15",
+      "usedFor": "The table of eleven agencies: funding type, budget, Phase I and II ranges, topics.",
+      "transformation": "Copied into src/data/sbir/agencies.ts; the \"how it feels\" lines are WE reading of agency pages.",
+      "caveat": "SBIR.gov lists DoD as DOW (Department of War); the page uses DoD, the name in the award data."
+    },
+    {
+      "id": "sbir-policy-directive",
+      "title": "SBIR and STTR Policy Directive (May 2023) and the Policy Directives page",
+      "publisher": "U.S. Small Business Administration, SBIR.gov",
+      "url": "https://www.sbir.gov/about/policies",
+      "retrieved": "2026-10-15",
+      "usedFor": "Base guidelines indexed for inflation, venture-capital ownership shares (25 percent for NIH, DOE and NSF, 15 percent for others), principal investigator time, performance-of-work percentages.",
+      "transformation": "None."
+    },
+    {
+      "id": "sbir-fast",
+      "title": "Federal and State Technology (FAST) Partnership Program",
+      "publisher": "U.S. Small Business Administration, SBIR.gov",
+      "url": "https://www.sbir.gov/community/fast",
+      "retrieved": "2026-10-15",
+      "usedFor": "Description of the FAST Partnership Program.",
+      "transformation": "None."
+    },
+    {
+      "id": "sbir-award-data",
+      "title": "SBIR.gov award data download (no-abstract CSV), all agencies, 1983 to 2026",
+      "publisher": "U.S. Small Business Administration, SBIR.gov",
+      "url": "https://data.www.sbir.gov/mod_awarddatapublic_no_abstract/award_data_no_abstract.csv",
+      "retrieved": "2026-10-15",
+      "usedFor": "Every chart on the hub and the agencies pages, the phase-gap chart and the median Phase I chart.",
+      "transformation": "Downloaded the public award CSV (219,649 rows, generic user agent). src/data/sbir/tools/aggregate.py drops contact columns, drops rows without a year or an amount, groups by fiscal year (October to September) and by calendar month of the award date, pools agencies over fiscal years 2020 to 2024, states over 2015 to 2024, and matches companies by normalised name for first-time, repeat-winner and Phase I to Phase II measures. The raw file is never committed; only src/data/sbir/aggregates.ts is.",
+      "caveat": "Name matching undercounts name changes and overcounts first-time awardees. The most recent months can be undercounted while agencies report. The API (api.www.sbir.gov) returned 403, so the bulk file was used."
+    },
+    {
+      "id": "nih-success-rates",
+      "title": "Table 215: NIH SBIR and STTR competing applications, awards, success rates and total funding by phase, fiscal years 2015 to 2025",
+      "publisher": "National Institutes of Health, NIH RePORT",
+      "url": "https://report.nih.gov/funding/nih-budget-and-spending-data-past-fiscal-years/success-rates",
+      "retrieved": "2026-10-15",
+      "usedFor": "The NIH success-rate chart (Phase I combined SBIR and STTR without Fast Track; regular Phase II), fiscal years 2015 to 2025.",
+      "transformation": "Read from the NIH Table 215 workbook (report.nih.gov displayreport rId=584) by tools/aggregate.py; percentages checked against awarded over reviewed in the unit tests.",
+      "caveat": "NIH only. No other agency publishes a comparable standard table that this build found, so the pages do not compare agencies by success rate. Fiscal year 2025 Phase II is not in the table."
+    },
+    {
+      "id": "sam-checklist",
+      "title": "Entity Registration Checklist: Prepare for Entity Registration in SAM.gov",
+      "publisher": "U.S. General Services Administration, SAM.gov",
+      "url": "https://sam.gov/sites/default/files/2024-11/entity-checklist.pdf",
+      "retrieved": null,
+      "usedFor": "SAM.gov advice to allow at least ten business days, yearly renewal, no charge.",
+      "transformation": "None.",
+      "caveat": "Cited through search results; the PDF was not retrieved, so no retrieval date is recorded."
+    },
+    {
+      "id": "sba-sbdc",
+      "title": "Small Business Development Centers (SBDCs)",
+      "publisher": "U.S. Small Business Administration",
+      "url": "https://www.sba.gov/local-assistance/resource-partners/small-business-development-centers-sbdc",
+      "retrieved": "2026-10-15",
+      "usedFor": "SBDC description: counseling and training.",
+      "transformation": "None."
+    },
+    {
+      "id": "taba-nida",
+      "title": "Technical and Business Assistance (TABA) Program",
+      "publisher": "National Institutes of Health, National Institute on Drug Abuse",
+      "url": "https://nida.nih.gov/funding/small-business-innovation-research-sbir-technology-transfer-sttr-programs/entrepreneurship-business-programs/technical-business-assistance",
+      "retrieved": null,
+      "usedFor": "TABA limits: up to $6,500 in Phase I and $50,000 in Phase II (also stated on DOE and USDA NIFA pages).",
+      "transformation": "None.",
+      "caveat": "Cited through search results; the page was not retrieved by this build, so no retrieval date is recorded."
+    },
+    {
+      "id": "apex-search",
+      "title": "APEX Accelerators, Department of Defense Office of Small Business Programs",
+      "publisher": "U.S. Department of Defense, Office of Small Business Programs",
+      "url": "https://business.defense.gov/Engage/News/Article/3821927/apex-accelerators-are-a-critical-front-door-for-businesses",
+      "retrieved": null,
+      "usedFor": "APEX Accelerators description: Department of Defense Office of Small Business Programs, formerly Procurement Technical Assistance Centers.",
+      "transformation": "None.",
+      "caveat": "Cited through search results; the page was not retrieved by this build, so no retrieval date is recorded. Named as an independent program, no affiliation implied."
+    }
+  ]
+}
