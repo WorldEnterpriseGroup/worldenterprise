@@ -100,6 +100,10 @@ const PATH_LABELS: Readonly<Record<string, string>> = {
   '/program/how-it-works/': 'See how the program works',
   '/journey/first-months/': 'Read about the first months',
   '/journey/onboarding-checklist/': 'Open the onboarding checklist',
+  // The sales ladder (SALES.md 6): the families name these by key, not with labels of their own.
+  '/briefs/real-timeline/': 'Get the timeline brief',
+  '/why-it-takes-time/': 'See how long it really takes',
+  '/how-we-work/': 'See how WE works',
 };
 
 /** The registered brief ids and their labels, from the family registry. */
