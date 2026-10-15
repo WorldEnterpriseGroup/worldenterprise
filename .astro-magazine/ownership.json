@@ -2336,6 +2336,11 @@
       "reason": "Wave 9 (W9-13, SALES.md section 6): the apply target label pins (lines 194 and 407) read 'Start a readiness review'. Those lines only; shared with WP-58 (its own rows), disjoint by line."
     },
     {
+      "wp": "WP-51",
+      "path": "tests/e2e/wave7/wp-46/palette.spec.ts",
+      "reason": "Wave 9 (W9-13): the keyboard palette check searches 'seat', the name /pricing/ is listed under after Pricing left the top level. That test only; shared with WP-54, disjoint by line."
+    },
+    {
       "wp": "WP-52",
       "path": "src/pages/styleguide.astro",
       "reason": "Wave 9: a visuals section on the existing styleguide (PUBLIC_STYLEGUIDE=1), not a new route; last held by WP-45, which is done."
