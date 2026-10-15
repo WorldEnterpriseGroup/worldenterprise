@@ -1,0 +1,131 @@
+---
+/**
+ * <we-ecosystem-filter> host (WP-33). The slot holds the whole directory, rendered as plain HTML. The <template> holds the filter
+ * form, which src/scripts/ecosystem-filter.ts inserts and shows only when JavaScript runs. Without JavaScript the template is inert,
+ * so the page is the full directory and the links to the category pages.
+ */
+import {
+  AUDIENCE_LABELS,
+  FILTER_LEGEND,
+  FILTER_NONE,
+  FILTER_STATUS,
+  FILTER_STATUS_ALL,
+  STAGE_LABELS,
+} from '../../data/ecosystem/copy.ts';
+import { ALL_ENTRIES, CATEGORIES } from '../../data/ecosystem/index.ts';
+import { AUDIENCE_IDS, STAGE_IDS } from '../../data/ecosystem/types.ts';
+
+const total = ALL_ENTRIES.length;
+const audiences = AUDIENCE_IDS.filter((a) => a !== 'any');
+---
+
+<we-ecosystem-filter
+  data-total={total}
+  data-all-text={FILTER_STATUS_ALL(-1).replace('-1', '{total}')}
+  data-some-text={FILTER_STATUS(0, 0).replace('0 of 0', '{shown} of {total}')}
+  data-none-text={FILTER_NONE}
+>
+  <template data-eco-form>
+    <form class="eco-filter" role="search" aria-label={FILTER_LEGEND}>
+      <fieldset class="eco-filter__fields">
+        <legend>{FILTER_LEGEND}</legend>
+        <label>
+          <span>Kind of program</span>
+          <select name="category">
+            <option value="any">All kinds</option>
+            {CATEGORIES.map((c) => <option value={c.id}>{c.short}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Stage of company</span>
+          <select name="stage">
+            <option value="any">Any stage</option>
+            {STAGE_IDS.map((s) => <option value={s}>{STAGE_LABELS[s]}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Built for</span>
+          <select name="audience">
+            <option value="any">Everyone</option>
+            {audiences.map((a) => <option value={a}>{AUDIENCE_LABELS[a]}</option>)}
+          </select>
+        </label>
+        <label class="eco-filter__check">
+          <input type="checkbox" name="remote" value="yes" />
+          <span>Has an online option</span>
+        </label>
+        <button class="btn btn--quiet" type="reset">Clear filters</button>
+      </fieldset>
+      <p class="eco-filter__status" role="status" aria-live="polite" data-eco-status></p>
+      <p class="eco-filter__empty" data-eco-empty hidden>{FILTER_NONE}</p>
+    </form>
+  </template>
+  <slot />
+</we-ecosystem-filter>
+
+<script>
+  import '../../scripts/ecosystem-filter.ts';
+</script>
+
+<style is:global>
+  @layer pages {
+    we-ecosystem-filter {
+      display: grid;
+      gap: var(--sp-6);
+    }
+
+    .eco-filter {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .eco-filter__fields {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: var(--sp-4);
+      margin: 0;
+      padding: var(--sp-4) var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    .eco-filter__fields legend {
+      padding-inline: var(--sp-2);
+      font-weight: 600;
+    }
+
+    .eco-filter label {
+      display: grid;
+      gap: var(--sp-1);
+      font-size: var(--fs-sm);
+    }
+
+    .eco-filter .eco-filter__check {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      min-block-size: 2.75rem;
+    }
+
+    .eco-filter select {
+      min-block-size: 2.75rem;
+      padding-inline: var(--sp-3);
+      font: inherit;
+      color: var(--color-text);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+
+    .eco-filter__status {
+      margin: 0;
+      min-block-size: 1.5em;
+      font-weight: 600;
+    }
+
+    .eco-filter__empty {
+      margin: 0;
+    }
+  }
+</style>
