@@ -16,7 +16,7 @@ function listFiles(dir: string, extension: string): string[] {
 }
 
 test('the shared actions use the labels of the header buttons and point at launched routes', () => {
-  assert.deepEqual(APPLY, { label: 'Apply', href: '/apply/' });
+  assert.deepEqual(APPLY, { label: 'Start a readiness review', href: '/apply/' });
   assert.deepEqual(TALK_TO_WE, { label: 'Talk to WE', href: '/contact/' });
   assert.deepEqual(COMPOSE_TEAM, { label: 'Compose your team', href: '/tools/team-composer/' });
   assert.deepEqual(HOW_IT_WORKS, { label: 'See how it works', href: '/program/how-it-works/' });
