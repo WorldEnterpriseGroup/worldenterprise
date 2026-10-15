@@ -2356,6 +2356,61 @@
       "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/components/program/stages.ts, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
     },
     {
+      "wp": "WP-53",
+      "path": ".astro-magazine/sources/wp-75.json",
+      "reason": "Wave 9 (W9-13): the seat and SaaS entries follow the new Program wording. Those entries only; WP-75 is done."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": ".astro-magazine/sources/wp-43.json",
+      "reason": "Wave 9 (W9-13): the changed-sentence entries for the Program copy. Those entries only; WP-43 is done."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/pages/faq/_model.ts",
+      "reason": "Wave 9 (W9-13): line 62, the Program route label. That line only; WP-56 keeps the file."
+    },
+    {
+      "wp": "WP-53",
+      "path": "tests/unit/wp-15/image-type.test.ts",
+      "reason": "Wave 9 (W9-6): the hero regex widens to accept heroPoster() for the galaxy poster LCP. That pattern only; shared with WP-17, disjoint by line."
+    },
+    {
       "wp": "WP-54",
       "path": "src/components/services/LineAside.astro",
       "reason": "Wave 9: layout only; photography lane, WP-12b is merged."
@@ -2558,7 +2613,7 @@
     {
       "wp": "WP-58",
       "path": "src/data/cta/map.ts",
-      "reason": "Wave 9 (W9-13): adds the rows of its own routes and the timeline brief. Disjoint by row from WP-54."
+      "reason": "Wave 9 (W9-12, W9-13): adds the surface rows of its own routes (/why-it-takes-time/, /who-we-work-with/) and the timeline brief row, and nothing else. Disjoint by row from WP-54."
     },
     {
       "wp": "WP-58",
@@ -2618,7 +2673,7 @@
     {
       "wp": "WP-58",
       "path": "tests/unit/wp-18/copy.test.ts",
-      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line."
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line. Also (W9-12) adds src/data/sales/sources.ts to the C-13-peers allowed list: the sources ledger cites the research title of Cohen and Hochberg (2014), which names the program category; the built page wraps the ledger in data-claim-allow=\"C-13-peers\"."
     },
     {
       "wp": "WP-58",
