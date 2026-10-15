@@ -8,6 +8,7 @@ import { loadPage } from '../../components/program/loadPage.ts';
 import { flags } from '../../data/flags.ts';
 import { href } from '../../lib/url.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
+import LongevitySpine from './_longevity/LongevitySpine.astro';
 
 const { data, Content } = await loadPage('program/digital-incubation-model');
 const frameworks = { label: 'Read the frameworks', href: '/about/frameworks/' };
@@ -75,6 +76,7 @@ const next = [
   </section>
 
   <Fragment slot="after">
+    <LongevitySpine detail="brief" tone="soft" lead="Fully remote work lets the team ship every week, and keeps the engagement going for years." />
     <ProgramEnd title="Work with a remote team that writes things down" text="Start a readiness review. WE arranges a conversation, then sends a one-page read of where your company sits on the business clock and what the next phase needs." secondary={frameworks} />
   </Fragment>
 </StageLayout>

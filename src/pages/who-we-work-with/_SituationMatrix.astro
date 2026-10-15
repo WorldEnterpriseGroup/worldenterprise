@@ -1,0 +1,113 @@
+---
+/**
+ * The hub's "where to look" matrix (WP-37, #86): one row per situation, one column per kind of outside program, a mark where it is
+ * worth a look. Drawn from SITUATION_POINTERS, so the matrix and the situation pages cannot disagree. It is a real table (row and
+ * column headers, a visually hidden text in each marked cell). Renders only when /ecosystem/ is built.
+ */
+import Band from '../../components/visuals/Band.astro';
+import { isLiveOnDisk } from '../../data/cta/live.ts';
+import { SITUATIONS, situationPath } from '../../data/sales/situations.ts';
+import { href } from '../../lib/url.ts';
+import { JOIN_NOTE, ROUTES, SITUATION_POINTERS } from '../program/_longevity/data.ts';
+
+const live = isLiveOnDisk(ROUTES.ecosystem);
+const sbirLive = isLiveOnDisk(ROUTES.sbir);
+const columns = [...new Set(SITUATION_POINTERS.flatMap((p) => p.programs.map((x) => x.label)))];
+const rows = SITUATION_POINTERS.map((p) => {
+  const situation = SITUATIONS.find((s) => s.slug === p.slug);
+  if (situation === undefined) throw new Error(`No situation with slug "${p.slug}"`);
+  return { name: situation.name, path: situationPath(situation), marks: columns.map((c) => p.programs.some((x) => x.label === c)), sbir: p.sbir !== undefined };
+});
+---
+
+{
+  live && (
+    <Band tone="plain" id="where-to-look" labelledby="where-to-look-title" class="matrix">
+      <div class="matrix__head">
+        <h2 id="where-to-look-title">Whatever your situation, there are programs to join.</h2>
+        <p class="lead">A quick map of what is worth a look for each situation. Use as many as fit. WE works alongside, for the long run.</p>
+      </div>
+      <div class="matrix__scroll table-wrap" role="region" aria-labelledby="where-to-look-title" tabindex="0">
+        <table class="matrix__table">
+          <caption class="visually-hidden">Kinds of outside programs worth a look, by situation</caption>
+          <thead>
+            <tr>
+              <th scope="col">Situation</th>
+              {columns.map((c) => <th scope="col">{c}</th>)}
+              {sbirLive && <th scope="col">SBIR and STTR</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              rows.map((r) => (
+                <tr>
+                  <th scope="row"><a href={href(r.path)}>{r.name}</a></th>
+                  {r.marks.map((m) => <td class:list={['matrix__cell', m && 'is-on']}>{m ? <><span aria-hidden="true">●</span><span class="visually-hidden">Worth a look</span></> : <span class="visually-hidden">Not a focus</span>}</td>)}
+                  {sbirLive && <td class:list={['matrix__cell', r.sbir && 'is-on']}>{r.sbir ? <><span aria-hidden="true">●</span><span class="visually-hidden">Worth a look</span></> : <span class="visually-hidden">Not a focus</span>}</td>}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="matrix__note">{JOIN_NOTE}</p>
+    </Band>
+  )
+}
+
+<style>
+  @layer pages {
+    .matrix :global(.band__content) {
+      display: grid;
+      gap: var(--sp-5);
+    }
+
+    .matrix__head {
+      display: grid;
+      gap: var(--sp-2);
+      max-inline-size: var(--prose-max);
+    }
+
+    .matrix__head > * {
+      margin: 0;
+    }
+
+    .matrix__scroll {
+      overflow-x: auto;
+    }
+
+    .matrix__table {
+      inline-size: 100%;
+      border-collapse: collapse;
+    }
+
+    .matrix__table th,
+    .matrix__table td {
+      padding: var(--sp-3);
+      border-block-end: var(--border-hair);
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .matrix__table thead th {
+      font-size: var(--fs-sm);
+    }
+
+    .matrix__table tbody th {
+      text-align: start;
+      white-space: nowrap;
+    }
+
+    .matrix__cell.is-on {
+      color: var(--color-accent, var(--color-link));
+      font-size: var(--fs-lg);
+    }
+
+    .matrix__note {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-style: italic;
+    }
+  }
+</style>

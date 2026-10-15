@@ -13,6 +13,8 @@ import { STAGE_VIEWS } from '../../components/program/phases.ts';
 import { getStage, nextStage } from '../../components/program/stages.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
+import LongevitySpine from './_longevity/LongevitySpine.astro';
+import JoinPrograms from './_longevity/JoinPrograms.astro';
 
 const stage = getStage('dream');
 const view = STAGE_VIEWS.dream;
@@ -49,6 +51,8 @@ const next = [
   </StageLong>
   <StageBody stage={stage} />
   <Fragment slot="after">
+    <LongevitySpine detail="brief" tone="plain" lead="Dream is the fastest part of the work, and it still sits inside a long plan. Weeks decide the first proof; years decide the company." />
+    <JoinPrograms />
     <ProgramEnd title="Find out where your company starts" text="Start a readiness review. WE arranges a conversation, then sends a one-page read of where the company sits on the business clock and what Dream would need." secondary={howLong} />
   </Fragment>
 </StageLayout>

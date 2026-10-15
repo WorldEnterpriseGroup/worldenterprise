@@ -21,6 +21,10 @@ import { preloadOfPhoto } from '../lib/image-type.ts';
 import { getRouteState } from '../lib/route-state.ts';
 import { href } from '../lib/url.ts';
 import HomeLayout from '../layouts/HomeLayout.astro';
+import DataTeaser from './program/_longevity/DataTeaser.astro';
+import JoinPrograms from './program/_longevity/JoinPrograms.astro';
+import LongevitySpine from './program/_longevity/LongevitySpine.astro';
+import SbirBand from './program/_longevity/SbirBand.astro';
 
 const { data } = await loadPage('home');
 const state = await getRouteState();
@@ -39,7 +43,7 @@ const situations = SITUATIONS.map((s) => ({ ...s, href: situationHref(s, isLive)
     eyebrow={data.eyebrow ?? 'World Enterprise'}
     title="WE build worlds."
     lead="Long-horizon business incubation and consulting, paced to the years a company really takes."
-    body="WE steers a dedicated team that builds your company with you, from first proof through the years when most new businesses close. Stay for as long as the work is useful."
+    body="Move fast every week. Build for the decade. WE steers a dedicated team that builds your company with you, from first proof through the years when most new businesses close, for as long as the work is useful."
     primary={START_REVIEW}
     secondary={howLong}
   />
@@ -47,6 +51,13 @@ const situations = SITUATIONS.map((s) => ({ ...s, href: situationHref(s, isLive)
   <HomeJourney more={pick('program', isLive)} />
 
   <HomeClock more={howLong} />
+
+  <LongevitySpine
+    detail="track"
+    id="longevity"
+    tone="plain"
+    lead="Startups win by shipping every week. Companies survive by lasting years. WE does both: a weekly rhythm that never slips, on a timeline built for the long run."
+  />
 
   <HomeTeam photo={desk} more={pick('howWeWork', isLive)} paid={pick('paid', isLive)} />
 
@@ -78,6 +89,12 @@ const situations = SITUATIONS.map((s) => ({ ...s, href: situationHref(s, isLive)
       </ul>
     </div>
   </section>
+
+  <JoinPrograms id="join" />
+
+  <SbirBand />
+
+  <DataTeaser tone="soft" />
 
   <LatestInsights />
 

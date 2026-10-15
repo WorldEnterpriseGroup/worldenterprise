@@ -1,0 +1,116 @@
+---
+/**
+ * "Programs worth a look" on a situation page (WP-37, #86): the kinds of outside programs that suit this situation, and a line on
+ * SBIR and STTR where it fits. Generic categories only; named programs live on /ecosystem/. Each link renders only when its route is
+ * built, and the whole band when /ecosystem/ is not.
+ */
+import Band from '../../components/visuals/Band.astro';
+import { isLiveOnDisk } from '../../data/cta/live.ts';
+import { href } from '../../lib/url.ts';
+import { JOIN_NOTE, ROUTES } from '../program/_longevity/data.ts';
+import type { SituationPointer } from '../program/_longevity/data.ts';
+
+interface Props {
+  pointer: SituationPointer;
+}
+
+const { pointer } = Astro.props;
+const ecosystem = isLiveOnDisk(ROUTES.ecosystem);
+const sbir = isLiveOnDisk(ROUTES.sbir);
+---
+
+{
+  ecosystem && (
+    <Band tone="tint-sand" id="programs" labelledby="programs-title" class="situation-programs">
+      <div class="situation-programs__head">
+        <p class="eyebrow">Join the programs that fit</p>
+        <h2 id="programs-title">{pointer.headline}</h2>
+        <p class="lead">{pointer.lead}</p>
+      </div>
+      <ul class="situation-programs__list" role="list" aria-label="Kinds of programs worth a look">
+        {
+          pointer.programs.map((p) => (
+            <li class="situation-programs__item">
+              <h3>{p.label}</h3>
+              <p>{p.line}</p>
+            </li>
+          ))
+        }
+        {
+          sbir && pointer.sbir !== undefined && (
+            <li class="situation-programs__item situation-programs__item--sbir">
+              <h3>SBIR and STTR</h3>
+              <p>{pointer.sbir}</p>
+            </li>
+          )
+        }
+      </ul>
+      <p class="situation-programs__note">{JOIN_NOTE} WE works alongside them, for the long run.</p>
+      <div class="cluster">
+        <a class="btn btn--secondary" href={href(ROUTES.ecosystem)}>Browse every program to join</a>
+        {sbir && <a class="btn btn--quiet" href={href(ROUTES.sbir)}>Apply to SBIR and STTR</a>}
+      </div>
+    </Band>
+  )
+}
+
+<style>
+  @layer pages {
+    .situation-programs :global(.band__content) {
+      display: grid;
+      gap: var(--sp-5);
+    }
+
+    .situation-programs__head {
+      display: grid;
+      gap: var(--sp-3);
+      max-inline-size: var(--prose-max);
+    }
+
+    .situation-programs__head > *,
+    .situation-programs__item > * {
+      margin: 0;
+    }
+
+    .situation-programs__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .situation-programs__item {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-4);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
+
+    .situation-programs__item--sbir {
+      border-color: var(--color-border-strong);
+    }
+
+    .situation-programs__item h3 {
+      font-size: var(--fs-lg);
+      line-height: var(--lh-tight);
+    }
+
+    .situation-programs__note {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-style: italic;
+    }
+
+    @media (forced-colors: active) {
+      .situation-programs__item {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>

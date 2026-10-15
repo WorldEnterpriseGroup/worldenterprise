@@ -14,6 +14,7 @@ import VisualIcon from '../../components/visuals/VisualIcon.astro';
 import { SEAT_ROLE_IDENTITIES } from '../../data/seat-roles.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
+import LongevitySpine from './_longevity/LongevitySpine.astro';
 
 const { data, Content } = await loadPage('program/dedicated-teams');
 const state = await getRouteState();
@@ -97,6 +98,7 @@ const next = [
   </section>
 
   <Fragment slot="after">
+    <LongevitySpine detail="brief" tone="soft" lead="A team that ships every week, and stays long enough to know the company." />
     <ProgramEnd title="Find out which roles your company needs" text="Start a readiness review. WE arranges a conversation, then sends a one-page read of where your company sits on the business clock and what the next phase needs." secondary={howWeWork} />
   </Fragment>
 </StageLayout>
