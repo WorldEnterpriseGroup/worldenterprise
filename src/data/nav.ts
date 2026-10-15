@@ -84,6 +84,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         heading: 'How it works',
         links: [
           { label: 'How it works', href: '/program/how-it-works/', description: 'Apply, scope, seat your team, work in focused cycles' },
+          { label: 'How WE works', href: '/how-we-work/', description: 'Phases, cadence, pricing and how the work ends' },
           { label: 'Your journey', href: '/journey/', description: 'From first visit to the first months inside the program' },
           { label: 'After you apply', href: '/journey/after-you-apply/', description: 'What happens to an application, step by step' },
           { label: 'The digital incubation model', href: '/program/digital-incubation-model/', description: 'Fully remote by design: no office, no relocation' },
@@ -105,7 +106,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     ],
     featured: { label: 'Start here', title: 'Apply to the program', cta: { label: 'Apply', href: '/apply/' }, slot: null },
     strip: [
-      { label: 'Compare seat options', href: '/pricing/' },
+      { label: 'How WE works', href: '/how-we-work/' },
       { label: 'Read the FAQ', href: '/faq/' },
     ],
   },
@@ -144,7 +145,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     },
     strip: [
       { label: 'Dedicated teams', href: '/program/dedicated-teams/' },
-      { label: 'Pricing', href: '/pricing/' },
+      { label: 'How WE works', href: '/how-we-work/' },
     ],
   },
   {
@@ -281,7 +282,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     ],
     featured: { label: 'Founders', title: 'Apply to build with WE', cta: { label: 'Apply', href: '/apply/' }, slot: null },
     strip: [
-      { label: 'Pricing', href: '/pricing/' },
+      { label: 'How WE works', href: '/how-we-work/' },
       { label: 'Contact', href: '/contact/' },
     ],
   },
@@ -379,7 +380,7 @@ export const footerNav: readonly FooterColumn[] = [
       { label: 'How it works', href: '/program/how-it-works/' },
       { label: 'Your journey', href: '/journey/' },
       { label: 'Dedicated teams', href: '/program/dedicated-teams/' },
-      { label: 'Pricing', href: '/pricing/' },
+      { label: 'How WE works', href: '/how-we-work/' },
       { label: 'Apply', href: '/apply/' },
       { label: 'FAQ', href: '/faq/' },
     ],

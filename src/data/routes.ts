@@ -35,7 +35,11 @@ export type RouteOwner =
   | 'WP-01' | 'WP-02' | 'WP-03' | 'WP-04' | 'WP-05' | 'WP-06' | 'WP-07' | 'WP-08'
   | 'WP-09' | 'WP-10' | 'WP-11' | 'WP-12' | 'WP-13'
   | 'WP-40' | 'WP-41' | 'WP-42' | 'WP-43' | 'WP-44' | 'WP-45' | 'WP-46' | 'WP-47' | 'WP-48' | 'WP-49' | 'WP-50'
-  | WaveEightOwner;
+  | WaveEightOwner
+  | WaveNineOwner;
+
+/** The wave 9 packages that launch routes of their own (W9-13): WP-54 /how-we-work/, WP-58 the timeline and situation pages. */
+export type WaveNineOwner = 'WP-54' | 'WP-58';
 
 /** WP-60 to WP-99, the wave 8 packages (docs/wave8-contracts.md, section 1.3). */
 export type { WaveEightOwner };
@@ -192,10 +196,13 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/program/build/', 'StageLayout', 'WP-01'),
     row('/program/grow/', 'StageLayout', 'WP-01'),
 
-    // Apply (2), Pricing (1), Tools (1)
+    // Apply (2), How WE works (1), the retired pricing page (1), Tools (1)
     row('/apply/', 'FormLayout', 'WP-03'),
     row('/apply/thanks/', 'FormLayout', 'WP-03', { indexable: false }),
-    row('/pricing/', 'ToolLayout', 'WP-03'),
+    row('/how-we-work/', 'MarketingLayout', 'WP-54'),
+    // Wave 9 (W9-13): /how-we-work/ replaces the packages page. The site has no redirect mechanism, so /pricing/ stays as a noindex
+    // pointer for old links and bookmarks, and leaves the sitemap, search and the llms files.
+    row('/pricing/', 'ToolLayout', 'WP-03', { indexable: false }),
     row('/tools/team-composer/', 'ToolLayout', 'WP-03'),
 
     // Services (8)
