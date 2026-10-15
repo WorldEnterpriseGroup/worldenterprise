@@ -28,7 +28,7 @@ Never name anything `container--wide` or `--page-wide` (`tests/unit/wp-16/layout
 - `.band`: a full-bleed section with `--band-pad` vertical padding. Put a `.container` inside it. `overflow-x: clip`, so a `.bleed-media` child never adds a horizontal scroll. Tones: `.band--soft` (mist), `.band--tint-blue`, `.band--tint-sand`, `.band--tint-stone`, `.band--deep` (blue-night, a CSS starfield fallback). `.band--deep` re-points `--color-text`, `--color-text-muted`, `--color-link`, `--color-link-hover`, `--color-highlight-ink`, `--color-bg-soft`, `--color-border` and `--color-focus` to the deep tokens, so components inside read light on night blue with no dark rules of their own. A `.band--deep` never holds the logo. `.band` does not combine with `.section` spacing rules; use one or the other.
 - `.split`: one column below 62rem, then `minmax(0, var(--split-text)) minmax(0, 1fr)`: text, then the visual with the rest of the frame (about 1056px at 1920). Gap `--space-block`, items centred. Children: `.split__text`, `.split__media`. Modifiers: `.split--reverse` (visual on the left from 62rem), `.split--even` (1fr 1fr), `.split--media-first` (visual first on one column only). The text column starts at the container edge, so the hero h1 and the first body container keep one left x.
 - `.bleed-media` (on the visual inside `.split__media`, from 62rem): a negative end margin runs it to the viewport edge; `.bleed-media--start` for a visual on the left (`.split--reverse`). Needs a `.band` ancestor, whose clip absorbs the scrollbar width.
-- `.flow-wide`: the default body of `MarketingLayout` in the wide frame. Paragraphs, headings and blockquotes at any depth, and top-level lists, `dl` and `.callout`, keep `--prose-max` at the frame's left edge; figures, tables, grids and splits use the frame. The same cap applies inside every `.prose` block, so prose that sits in a widened `.container` (hubs, services, forms) never runs past 46rem. A component's own width rule wins (layer order).
+- `.flow-wide`: the default body of `MarketingLayout` in the wide frame. Paragraphs, headings and blockquotes at any depth, and top-level lists, `dl` and `.callout`, keep `min(--prose-max, 80ch)` at the frame's left edge; figures, tables, grids and splits use the frame. The same cap applies inside every `.prose` block, so prose that sits in a widened `.container` (hubs, services, forms) never runs past 46rem. A component's own width rule wins (layer order).
 - `.grid` with `--grid-min` adds columns by itself; `.grid--min-20` gives 5 columns at 1760.
 - `.with-rail` (article pages): from 62rem `minmax(0, 46rem) minmax(14rem, 30rem)` with `justify-content: space-between`, so the body keeps the left edge and the rail sits at the frame's right edge.
 
@@ -72,7 +72,7 @@ Hard rules (CI enforces): no `style=""` attribute, no inline script, no data:/bl
 - Desktop specs that do not test a scene emulate `prefers-reduced-motion: reduce`, so SwiftShader WebGL does not slow the e2e jobs.
 - The Lighthouse mobile routes (`/`, `/program/`, `/services/`, `/insights/`, `/about/facts/` and the rest in `lighthouserc.json`) keep 10,240 B of gzipped JS; three never loads there.
 - A file quoted by `.astro-magazine/release/RELEASE.md` moves its quoted line numbers in the same commit, through the package's scoped exception (W9-9).
-- Copy follows `BRIEF.md` and needs a sources file `.astro-magazine/sources/wp-NN.json`; claims C-07 (equity concept, no numbers) and C-17 (genericized figures only) are usable (W9-10); `flags.seatPrice` stays off and no seat price appears anywhere (W9-12). WE is an ongoing business incubation and consulting firm: no seat cart, no employer-of-record framing, no cohorts, no demo day, no fixed batch. Until the sales strategy lands, primary CTAs read "Start a conversation" or "Apply"; WP-58 owns the CTA labels.
+- Copy follows `BRIEF.md`, `SALES.md` and `SITE-COPY.md` and needs a sources file `.astro-magazine/sources/wp-NN.json`; C-17 (genericized figures only) is usable (W9-10); C-07 is off until counsel clears it, so every equity line ships as its non-equity fallback (W9-13); `flags.seatPrice` stays off and no price appears anywhere (W9-12, W9-13). WE is a long-horizon business incubation and consulting firm: no seat cart, no employer-of-record framing, no cohorts, no demo day, no fixed batch, no public packages. CTA labels are WP-51's (section 8).
 
 ## 7. The 1920 test helper (`tests/e2e/wave8/wp-51/lib/full-width.ts`)
 
@@ -89,3 +89,30 @@ test.beforeEach(({}, info) => {
 ```
 
 Exports: `FULL_HD`, `SMALLEST_PHONE`, `MIN_FRAME_AT_FULL_HD` (1600), `MAX_LEFT_OFFSET_AT_FULL_HD` (160), `MAX_MEASURE_CH` (80); `expectFullWidth(page, scope = 'main')` (the widest visible `.container` in the scope is at least 1600px wide and starts within 160px of the left edge), `expectNoHorizontalScroll(page)`, `expectReadableProse(page, maxCh?)` (paragraphs and top-level lists in `.prose`, `.container--prose`, `.flow-wide` and `.split__text` at most 80ch of their own font; 46rem of 19px body type is about 77ch; returns the count measured), `expectBandsFullBleed(page)` (every visible `.band` spans the viewport; returns the count). WP-51's own spec is `tests/e2e/wave8/wp-51/full-width.spec.ts`. A family package lists its routes in its own spec.
+
+## 8. Route owners and the CTA hierarchy (W9-13)
+
+| Route or surface | Owner |
+|---|---|
+| `/`, `/program/**` | WP-53 |
+| `/services/**`, `/how-we-work/` (replaces `/pricing/`), `/tools/**`, `/apply/**` (readiness-review intake), package retirement | WP-54 |
+| `/about/**` (UBF at `/about/frameworks/ubf/`), `/network/**`, `/investors/**`, `/founders/**`, `/press/**`, `/trust/**`, `/contact/**` | WP-55 |
+| `/insights/`, `/research/**`, `/library/**`, `/playbooks/**`, `/fundability/**`, `/briefs/**` (except `real-timeline`), reference and family hubs | WP-56 |
+| `/why-it-takes-time/`, `/who-we-work-with/` and its seven situation pages, `/briefs/real-timeline/`, C-29 wording | WP-58 |
+| CTA labels (`src/data/cta/targets.ts`, the header button, the mobile bar, hero primaries) | WP-51 |
+
+| Level | Label (exact) | Destination |
+|---|---|---|
+| Primary | Start a readiness review | `/apply/` (persona variants per `SITE-COPY.md` go to `/apply/?situation=<id>`) |
+| Secondary | See how long it really takes | `/why-it-takes-time/` |
+| Secondary | See how WE works | `/how-we-work/` |
+| Tertiary | Get the timeline brief | `/briefs/real-timeline/` |
+| Tertiary | Get the Long Game letter | `/newsletter/`, hidden until its endpoint is set |
+| Utility | Talk to WE | `/contact/` |
+| Partner | Refer a founder | `/network/partners/enquire/` |
+
+A family page picks its CTAs from this table and the CTA map (`src/data/cta/map.ts`); it never writes its own label for the primary.
+
+## 9. Statistics (`.astro-magazine/plans/wave9/statistics.json`, W9-13)
+
+The register holds ST-01 to ST-41 (statistic as it may be quoted, original source, research file, status) and the `neverUse` list. A page quotes a figure only as the register words it, next to its source line, and adds one source record per cited figure to its own `.astro-magazine/sources/wp-NN.json` (`source_id` is the ST id; the other fields follow the usual record: `publisher_or_author`, `title`, `source_tier`, `exact_url_or_locator`, `retrieved_at`, `claims_supported`, `claims_not_supported`, `captured_by`). The figures describe the market, never WE's results (C-13); no page says WE improves survival, shortens the time to a raise or makes a company fundable (C-05, C-16). A status of DERIVED or SECONDARY keeps its qualifier on the page.

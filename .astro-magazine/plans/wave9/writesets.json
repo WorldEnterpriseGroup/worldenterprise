@@ -169,7 +169,7 @@
       "id": "WP-54",
       "stage": 2,
       "branch": "wp/54",
-      "title": "Wave 9 services, engagement model, tools and apply: split layouts, orbit diagram, the steered team as part of the engagement (no prices)",
+      "title": "Wave 9 services, how WE works, tools and apply: split layouts, orbit diagram, the steered team as part of the engagement, package retirement (no prices)",
       "writes": [
         "src/pages/services/**",
         "src/content/services/**",
@@ -201,7 +201,9 @@
         "tests/unit/wp-54/**",
         "tests/e2e/wave8/wp-54/**",
         ".astro-magazine/handoffs/wp-54*",
-        ".astro-magazine/sources/wp-54.json"
+        ".astro-magazine/sources/wp-54.json",
+        "src/pages/how-we-work/**",
+        "src/content/pages/how-we-work/**"
       ],
       "laneExceptions": [
         "src/components/services/LineAside.astro",
@@ -210,7 +212,28 @@
       "exceptions": [
         "src/components/services/LineAside.astro",
         "src/pages/pricing/index.astro",
-        ".astro-magazine/release/RELEASE.md"
+        ".astro-magazine/release/RELEASE.md",
+        "src/data/routes.ts",
+        "claims-denylist.json",
+        "tests/unit/wp-18/audit-claims.test.ts",
+        "tests/unit/wp-18/copy.test.ts",
+        "tests/e2e/wave7/wp-42/pricing-packages.spec.ts",
+        "tests/unit/wp-40/packages.test.ts",
+        "src/data/nav.ts",
+        "tests/unit/foundation/fixtures/nav-snapshot.json",
+        "src/data/cta/map.ts",
+        "src/lib/schema.ts",
+        "src/data/packages.ts",
+        "src/components/seo/JsonLd.astro",
+        "src/lib/llms.ts",
+        "tests/unit/wp-41/jsonld.test.ts",
+        "tests/unit/wp-41/llms.test.ts",
+        "tests/unit/wp-91/llms.test.ts",
+        "tests/unit/wp-91/twins.test.ts",
+        "tests/unit/wp-91/d23.test.ts",
+        "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
+        "src/data/forms.ts",
+        "src/components/forms/ApplyForm.astro"
       ]
     },
     {
@@ -248,7 +271,9 @@
         "src/data/routes.ts",
         "tests/unit/wp-62/legacy-founders-page.test.ts",
         "tests/unit/wp-64/legacy-investors-page.test.ts",
-        ".astro-magazine/release/RELEASE.md"
+        ".astro-magazine/release/RELEASE.md",
+        "tests/unit/wp-40/ci.test.ts",
+        "tests/unit/wp-41/facts.test.ts"
       ]
     },
     {
@@ -326,7 +351,7 @@
       "id": "WP-58",
       "stage": 2,
       "branch": "wp/58",
-      "title": "Wave 9 sales literature: who we work with, why it takes time, engagement CTA copy (W9-12)",
+      "title": "Wave 9 sales literature: why it takes time, who we work with, the timeline brief, C-29 wording (W9-12, W9-13)",
       "writes": [
         "src/content/sales/**",
         "src/pages/who-we-work-with/**",
@@ -338,15 +363,36 @@
         "tests/unit/wp-58/**",
         "tests/e2e/wave8/wp-58/**",
         ".astro-magazine/handoffs/wp-58*",
-        ".astro-magazine/sources/wp-58.json"
+        ".astro-magazine/sources/wp-58.json",
+        "src/content/briefs/real-timeline.md",
+        "infra/intake/briefs/real-timeline.md"
       ],
       "laneExceptions": [],
       "exceptions": [
         "src/data/routes.ts",
         "src/data/nav.ts",
         "src/content.config.ts",
-        "src/data/cta/index.ts",
-        "tests/unit/wp-60/cta.test.ts"
+        "tests/unit/wp-60/cta.test.ts",
+        "tests/unit/foundation/fixtures/nav-snapshot.json",
+        "src/data/cta/map.ts",
+        "src/data/families.ts",
+        "docs/forms-contract.schema.json",
+        "docs/forms-contract.md",
+        "tests/unit/wp-71/families-registry.test.ts",
+        "tests/unit/wp-60/gated-briefs.test.ts",
+        "tests/unit/wp-60/schemas.test.ts",
+        "src/data/claims.ts",
+        "src/data/site.ts",
+        "tests/unit/foundation/claims.test.ts",
+        "tests/unit/wp-60/claims-w8.test.ts",
+        "tests/unit/wp-18/audit-claims.test.ts",
+        "tests/unit/wp-18/copy.test.ts",
+        "tests/unit/wp-09/helpers.ts",
+        "tests/unit/wp-09/audit-seo.test.ts",
+        "tests/unit/wp-41/audit-geo.test.ts",
+        "tests/unit/wp-71/story-gate.test.ts",
+        "tests/unit/wp-74/**",
+        "tests/unit/wp-73/segment-pages.test.ts"
       ]
     }
   ]
