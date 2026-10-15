@@ -4,22 +4,24 @@ import type { CollectionEntry } from 'astro:content';
 import type { SlotId } from '../../assets/photo/slots.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
 import BrandCallout from '../brand/BrandCallout.astro';
-import Compositions from '../brand/Compositions.astro';
-import type { CompositionId } from '../brand/types.ts';
 import type { HeroActions } from './actions.ts';
 import { EYEBROWS, FIXED, HEADINGS, HUB_FALLBACK } from './copy.ts';
 import FamilyHub from './FamilyHub.astro';
 import type { FamilyLink } from './types.ts';
+import { IDENTITY } from './visual/copy.ts';
+import { hubActions } from './visual/cta.ts';
+import EmblemFrame from './visual/EmblemFrame.astro';
+import { getRouteState } from '../../lib/route-state.ts';
 
 /**
- * The hub of a family (/industries/, /compare/, /journey/): the console hero with the family's composition in its panel, the hub
+ * The hub of a family (/industries/, /compare/, /journey/): the console hero with the family's emblem in its panel (industries as
+ * hex-faceted planets, comparisons as navigating giants, the journey as a launch; wave 9), the hub
  * page's own MDX body if the content owner wrote one, an optional block of structure above the list (the journey hub puts the
  * ordered steps there) and the list of the family's pages as equal cards. The hub exists as soon as the template does; its list holds
  * only the pages that are live, so a family with no page yet shows its intro and no cards.
  */
 interface Props {
   family: 'industries' | 'compare' | 'journey';
-  composition: CompositionId;
   /** The hub's own `index` page, when the content owner has written it. */
   page?: CollectionEntry<'pages'> | undefined;
   path: string;
@@ -30,7 +32,9 @@ interface Props {
   ogSlot: SlotId;
 }
 
-const { family, composition, page, path, cards, listHeading, actions, ogSlot } = Astro.props;
+const { family, page, path, cards, listHeading, actions, ogSlot } = Astro.props;
+// The readiness review leads every hub (SALES.md 6.1); the family keeps its own secondary action.
+const primary = hubActions((await getRouteState()).isLive).primary ?? actions.primary;
 const fallback = HUB_FALLBACK[family];
 const fixed = FIXED[family === 'compare' ? 'compare' : family === 'industries' ? 'industry' : 'journey'];
 const Content = page !== undefined ? (await render(page)).Content : undefined;
@@ -46,14 +50,14 @@ const Content = page !== undefined ? (await render(page)).Content : undefined;
   {...(page !== undefined ? { updated: page.data.updated, draft: page.data.draft } : {})}
   ogSlot={ogSlot}
   hero="console"
-  primary={actions.primary}
+  primary={primary}
   secondary={actions.secondary}
 >
-  <div slot="panel"><Compositions id={composition} /></div>
+  <div slot="panel"><EmblemFrame kind={family} caption={IDENTITY[family].caption} /></div>
   <BrandCallout tone="note" title={HEADINGS.shared.about}>
     <p>{fixed}</p>
   </BrandCallout>
   {Content !== undefined && <div class="prose"><Content /></div>}
   <slot />
-  <FamilyHub heading={listHeading} id={`${family}-pages`} cards={cards} />
+  <FamilyHub heading={listHeading} id={`${family}-pages`} cards={cards} kind={family} />
 </HubLayout>
