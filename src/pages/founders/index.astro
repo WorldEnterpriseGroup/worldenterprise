@@ -73,6 +73,7 @@ const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...
           <ul class="founders-list" role="list">
             {SITUATIONS.map((s) => <li><strong>{s.label}.</strong> {s.line}</li>)}
           </ul>
+          {state.isLive('/who-we-work-with/') && <p><a href={href('/who-we-work-with/')}>Read who WE works with, situation by situation</a>.</p>}
         </div>
         <div class="split__media">
           <OrbitSystem
