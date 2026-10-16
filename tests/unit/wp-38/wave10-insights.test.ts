@@ -159,4 +159,16 @@ test('no article states a price WE would charge or calls anything free', () => {
   for (const slug of [...NEW_ARTICLES, ...IMPROVED_ARTICLES]) assert.doesNotMatch(bodyOf(slug), /\bWE (?:is|are|as) an? (?:investor|accelerator)\b/i, slug);
 });
 
+test('a component headingLevel sits one level below the Markdown heading before it (audit:a11y and audit:seo heading order)', () => {
+  for (const slug of [...NEW_ARTICLES, ...IMPROVED_ARTICLES]) {
+    let last = 1;
+    for (const line of bodyOf(slug).split('\n')) {
+      const heading = /^(#{2,6}) /.exec(line);
+      if (heading?.[1] !== undefined) last = heading[1].length;
+      const level = /^\s*headingLevel=\{(\d)\}/.exec(line);
+      if (level?.[1] !== undefined) assert.equal(Number(level[1]), last + 1, `${slug}: headingLevel ${level[1]} after an h${last}`);
+    }
+  }
+});
+
 void ROUTED_COLLECTIONS;
