@@ -6,9 +6,11 @@
  *   node src/assets/visuals/tools/render-posters.mjs            # every poster
  *   node src/assets/visuals/tools/render-posters.mjs galaxy launch
  *
- * How: esbuild bundles the scene modules with three into one script, headless Chromium (SwiftShader WebGL, so no GPU is needed)
- * renders each scene once at its `posterTime` over the frame color the Scene component paints, and sharp encodes a 1920-wide AVIF
- * master (quality 58, 4:4:4). Astro derives the 640/1024/1440/1920 srcset from the master at build time.
+ * How: esbuild bundles the scene modules with three into one script, headless Chromium (SwiftShader, so no GPU is needed) renders each
+ * scene once at its `posterTime` through three's WebGPURenderer on its WebGL2 backend (the same node materials the live scene runs),
+ * at a pixel ratio of 2 over the frame color the Scene component paints, and sharp encodes a 3840-wide AVIF master (quality 56, 4:4:4).
+ * Point sizes are CSS pixels, so the frame is the same picture as at 1920, only sharper. Astro derives the 640/1024/1440/1920/2560/3840
+ * srcset from the master at build time.
  *
  * Needs the dev dependencies (three, esbuild, playwright-core, sharp) and a Chromium: the Playwright one by default, or set
  * CHROMIUM_PATH.
@@ -20,6 +22,8 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = fileURLToPath(new URL('../../../../', import.meta.url));
 const OUT = join(ROOT, 'src/assets/visuals/posters');
+/** Master resolution: CSS width x RATIO pixels (1920 x 2 = 3840, the 4K candidate). */
+const RATIO = 2;
 
 /** Every poster the components reference (src/components/visuals/poster.ts POSTER_KEYS), with the scene options it shows. */
 const POSTERS = [
@@ -31,34 +35,40 @@ const POSTERS = [
   { key: 'orbit-base', scene: 'orbit', width: 1920, height: 1080, options: { count: 0 } },
   { key: 'worldforge', scene: 'worldforge', width: 1920, height: 1080, options: { moons: 7 } },
   { key: 'starfield', scene: 'starfield', width: 1920, height: 640, options: {} },
+  { key: 'accretion', scene: 'accretion', width: 1920, height: 1080, options: {} },
+  { key: 'accretion-end', scene: 'accretion', width: 1920, height: 1080, options: { align: 'end' } },
 ];
 
 /** The browser-side renderer: builds a scene, advances it to its poster time, composites it over the frame color, returns a PNG. */
 const ENTRY = `
-import { PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { PerspectiveCamera, Scene, WebGPURenderer } from 'three/webgpu';
 import * as galaxy from './src/scripts/visuals/scenes/galaxy.ts';
 import * as launch from './src/scripts/visuals/scenes/launch.ts';
 import * as orbit from './src/scripts/visuals/scenes/orbit.ts';
 import * as worldforge from './src/scripts/visuals/scenes/worldforge.ts';
 import * as starfield from './src/scripts/visuals/scenes/starfield.ts';
-const MODS = { galaxy, launch, orbit, worldforge, starfield };
-window.renderPoster = (name, w, h, options, background) => {
+import * as accretion from './src/scripts/visuals/scenes/accretion.ts';
+const MODS = { galaxy, launch, orbit, worldforge, starfield, accretion };
+window.renderPoster = async (name, w, h, options, background, ratio) => {
   const canvas = document.createElement('canvas');
-  const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
-  renderer.setPixelRatio(1);
+  const gl = canvas.getContext('webgl2', { alpha: true, antialias: true, depth: true, stencil: false, premultipliedAlpha: true, preserveDrawingBuffer: true });
+  const renderer = new WebGPURenderer({ canvas, antialias: true, alpha: true, forceWebGL: true, context: gl });
+  await renderer.init();
+  renderer.setPixelRatio(ratio);
   renderer.setSize(w, h, false);
   renderer.setClearColor(0x000000, 0);
   const scene = new Scene();
   const camera = new PerspectiveCamera(40, w / h, 0.05, 200);
   const instance = MODS[name].create({ renderer, scene, camera, options, aspect: w / h, quality: 1 });
   instance.update(instance.posterTime, 0);
+  await renderer.compileAsync(scene, camera);
   renderer.render(scene, camera);
   const out = document.createElement('canvas');
-  out.width = w;
-  out.height = h;
+  out.width = w * ratio;
+  out.height = h * ratio;
   const ctx = out.getContext('2d');
   ctx.fillStyle = background;
-  ctx.fillRect(0, 0, w, h);
+  ctx.fillRect(0, 0, out.width, out.height);
   ctx.drawImage(canvas, 0, 0);
   const png = out.toDataURL('image/png');
   instance.dispose();
@@ -99,11 +109,11 @@ async function main() {
       const background = await page.evaluate(() => getComputedStyle(document.getElementById('frame')).backgroundColor);
 
       for (const job of jobs) {
-        const dataUrl = await page.evaluate(([n, w, h, o, bg]) => window.renderPoster(n, w, h, o, bg), [job.scene, job.width, job.height, job.options, background]);
+        const dataUrl = await page.evaluate(([n, w, h, o, bg, r]) => window.renderPoster(n, w, h, o, bg, r), [job.scene, job.width, job.height, job.options, background, RATIO]);
         const png = Buffer.from(dataUrl.slice(dataUrl.indexOf(',') + 1), 'base64');
         const pngPath = join(work, `${job.key}.png`);
         writeFileSync(pngPath, png);
-        const info = await sharp(pngPath).avif({ quality: 58, effort: 7, chromaSubsampling: '4:4:4' }).toFile(join(OUT, `${job.key}.avif`));
+        const info = await sharp(pngPath).avif({ quality: 56, effort: 7, chromaSubsampling: '4:4:4' }).toFile(join(OUT, `${job.key}.avif`));
         console.log(`${job.key}: ${info.width}x${info.height}, ${(info.size / 1024).toFixed(0)} KB`);
       }
     } finally {

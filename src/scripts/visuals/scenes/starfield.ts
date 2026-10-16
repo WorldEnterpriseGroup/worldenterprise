@@ -4,16 +4,15 @@
  *
  * Options: `density` 0.3 to 1.5 (default 1).
  */
-import { Group, Vector3 } from 'three';
-import type { ShaderMaterial } from 'three';
+import { Group, Vector3 } from 'three/webgpu';
 import { AMBER, RAMP } from '../palette.ts';
 import type { SceneContext, SceneInstance } from '../types.ts';
-import { approach, clearGlowCache, makeGlow, makeStarShell, numberOption, seeded, setTime } from './common.ts';
+import { approach, clearGlowCache, makeClock, makeGlow, makeNebula, makeStarShell, numberOption, seeded } from './common.ts';
 
 export function create(ctx: SceneContext): SceneInstance {
-  const { scene, camera, renderer, options } = ctx;
+  const { scene, camera, options } = ctx;
+  const clock = makeClock();
   const rand = seeded(5150);
-  const pixelScale = renderer.getPixelRatio();
   const density = numberOption(options, 'density', 1, 0.3, 1.5);
 
   camera.fov = 50;
@@ -23,16 +22,11 @@ export function create(ctx: SceneContext): SceneInstance {
   camera.lookAt(0, 0, -1);
   camera.updateProjectionMatrix();
 
-  const near = makeStarShell(Math.round(1400 * density * ctx.quality), 12, 22, seeded(5151));
-  const far = makeStarShell(Math.round(3200 * density * ctx.quality), 30, 60, seeded(5152));
-  const materials = [near.material as ShaderMaterial, far.material as ShaderMaterial];
-  for (const m of materials) {
-    const u = m.uniforms.uScale;
-    if (u) u.value = pixelScale;
-  }
-  scene.add(far, near);
+  const near = makeStarShell(Math.round(1400 * density * ctx.quality), 12, 22, seeded(5151), clock);
+  const far = makeStarShell(Math.round(3200 * density * ctx.quality), 30, 60, seeded(5152), clock);
+  scene.add(makeNebula({ radius: 90, intensity: 0.3, seed: 8, shadow: RAMP[0], light: RAMP[2] }, clock), far, near);
 
-  // Nebula: large, very faint glows spread across the band.
+  // Large, very faint glows spread across the band, over the procedural nebula.
   const nebula = new Group();
   const tones = [RAMP[1], RAMP[2], RAMP[0], RAMP[3], RAMP[1]];
   tones.forEach((tone, i) => {
@@ -57,7 +51,7 @@ export function create(ctx: SceneContext): SceneInstance {
     update(t: number, dt: number): void {
       px = approach(px, tx, 1.0, dt);
       py = approach(py, ty, 1.0, dt);
-      for (const m of materials) setTime(m, t);
+      clock.value = t;
       near.rotation.y = t * 0.006;
       far.rotation.y = t * 0.0025;
       look.set(px * 0.04, py * 0.025, -1);

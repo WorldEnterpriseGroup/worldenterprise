@@ -1,44 +1,37 @@
 /**
- * GalaxyScene (BRIEF 5.4 scene 1, the hero): a spiral galaxy of particles turning with differential rotation, a faint nebula, and at the
- * core a hex-faceted world assembling from its tiles. One amber cell in that world is the only warm object. The camera drifts with the
- * pointer. Everything is a pure function of time, so the poster (rendered at `posterTime`) matches the first live frame.
+ * GalaxyScene (BRIEF 5.4 scene 1, the hero): a spiral galaxy of particles turning with differential rotation, a procedural nebula
+ * behind it, and at the core a hex-faceted world assembling from its tiles. One amber cell in that world is the only warm object. The
+ * camera drifts with the pointer. Everything is a pure function of time, so the poster (rendered at `posterTime`) matches the first live
+ * frame.
  *
  * Options: `align` 'center' | 'end' (where the core sits: center, or toward the right for a hero with text on the left).
  */
-import { AdditiveBlending, BufferAttribute, BufferGeometry, Group, Points, ShaderMaterial, Vector3 } from 'three';
+import { Group, Vector3 } from 'three/webgpu';
+import { attribute, cos, float, mix, sin, smoothstep, vec3 } from 'three/tsl';
 import { AMBER, RAMP, ramp } from '../palette.ts';
 import { gaussian } from '../rng.ts';
 import type { SceneContext, SceneInstance } from '../types.ts';
-import { POINT_FRAGMENT, approach, clearGlowCache, enumOption, makeGlobe, makeGlow, makeStarShell, seeded, setTime } from './common.ts';
+import {
+  approach,
+  attenuated,
+  clearGlowCache,
+  cloudGeometry,
+  enumOption,
+  makeClock,
+  makeCloud,
+  makeGlobe,
+  makeGlow,
+  makeNebula,
+  makeStarShell,
+  seeded,
+} from './common.ts';
+import type { Clock } from './common.ts';
 
 const ARMS = 4;
 const POSTER_TIME = 5.5;
 const ASSEMBLE_SECONDS = 9;
 
-const GALAXY_VERTEX = /* glsl */ `
-  attribute float aRadius;
-  attribute float aAngle;
-  attribute float aHeight;
-  attribute float aSize;
-  attribute vec3 color;
-  uniform float uTime;
-  uniform float uScale;
-  varying vec3 vColor;
-  varying float vAlpha;
-  void main() {
-    // Differential rotation: the inner disc turns faster, so the arms wind slowly.
-    float omega = 0.06 / (0.35 + aRadius * 0.22);
-    float a = aAngle + uTime * omega;
-    vec3 p = vec3(aRadius * cos(a), aHeight, aRadius * sin(a));
-    vColor = color;
-    vAlpha = smoothstep(0.0, 0.6, aRadius) * (0.7 + 0.3 * smoothstep(9.0, 2.0, aRadius));
-    vec4 mv = modelViewMatrix * vec4(p, 1.0);
-    gl_PointSize = aSize * uScale * (36.0 / -mv.z);
-    gl_Position = projectionMatrix * mv;
-  }
-`;
-
-function buildDisc(count: number, rand: () => number, dust: boolean): { points: Points; material: ShaderMaterial } {
+function buildDisc(count: number, rand: () => number, dust: boolean, clock: Clock) {
   const radius = new Float32Array(count);
   const angle = new Float32Array(count);
   const height = new Float32Array(count);
@@ -58,109 +51,66 @@ function buildDisc(count: number, rand: () => number, dust: boolean): { points: 
     const tone = dust ? 0.15 + rand() * 0.25 : Math.min(1, 0.12 + Math.exp(-r * 0.45) * 0.7 + rand() * 0.3);
     colors.set(ramp(tone), i * 3);
   }
-  const geometry = new BufferGeometry();
-  // Positions are computed in the shader; `position` is still required for the draw call and bounding sphere.
-  geometry.setAttribute('position', new BufferAttribute(new Float32Array(count * 3), 3));
-  geometry.setAttribute('aRadius', new BufferAttribute(radius, 1));
-  geometry.setAttribute('aAngle', new BufferAttribute(angle, 1));
-  geometry.setAttribute('aHeight', new BufferAttribute(height, 1));
-  geometry.setAttribute('aSize', new BufferAttribute(size, 1));
-  geometry.setAttribute('color', new BufferAttribute(colors, 3));
-  const material = new ShaderMaterial({
-    transparent: true,
-    depthWrite: false,
-    blending: AdditiveBlending,
-    uniforms: { uTime: { value: 0 }, uScale: { value: 1 } },
-    vertexShader: dust ? GALAXY_VERTEX.replace('vAlpha = smoothstep', 'vAlpha = 0.07 * smoothstep') : GALAXY_VERTEX,
-    fragmentShader: POINT_FRAGMENT,
+  const geometry = cloudGeometry(count, {
+    aRadius: { array: radius, size: 1 },
+    aAngle: { array: angle, size: 1 },
+    aHeight: { array: height, size: 1 },
+    aSize: { array: size, size: 1 },
+    aColor: { array: colors, size: 3 },
   });
-  const points = new Points(geometry, material);
-  points.frustumCulled = false;
-  return { points, material };
+  const r = attribute('aRadius', 'float');
+  // Differential rotation: the inner disc turns faster, so the arms wind slowly.
+  const omega = float(0.06).div(r.mul(0.22).add(0.35));
+  const a = attribute('aAngle', 'float').add(clock.mul(omega));
+  const position = vec3(r.mul(cos(a)), attribute('aHeight', 'float'), r.mul(sin(a))).toVar();
+  const fade = smoothstep(0, 0.6, r).mul(float(1).sub(smoothstep(2, 9, r)).mul(0.3).add(0.7));
+  return makeCloud({
+    geometry,
+    position,
+    size: attenuated(position, attribute('aSize', 'float'), 36),
+    rgb: attribute('aColor', 'vec3'),
+    alpha: dust ? fade.mul(0.07) : fade,
+  });
 }
 
 /**
  * The droid trail: small hex cells stream in from the lower left along a curve and dock into the world (the "companies joining" idea).
- * Each cell's position is a quadratic Bezier evaluated in the shader from its phase, so the trail costs one draw call.
+ * Each cell's position is a quadratic Bezier evaluated from its phase, so the trail costs one draw call.
  */
-const TRAIL_VERTEX = /* glsl */ `
-  attribute float aPhase;
-  attribute float aLane;
-  uniform float uTime;
-  uniform float uScale;
-  uniform vec3 uStart;
-  uniform vec3 uBend;
-  uniform vec3 uEnd;
-  varying vec3 vColor;
-  varying float vAlpha;
-  void main() {
-    float s = fract(uTime * 0.045 + aPhase);
-    float e = 1.0 - pow(1.0 - s, 1.6);
-    vec3 start = uStart + vec3(0.0, aLane * 0.5, aLane * 0.3);
-    vec3 bend = uBend + vec3(aLane * 0.35, -aLane * 0.2, 0.0);
-    vec3 p = mix(mix(start, bend, e), mix(bend, uEnd, e), e);
-    vColor = mix(vec3(0.56, 0.74, 0.89), vec3(0.86, 0.92, 0.96), e);
-    vAlpha = smoothstep(0.0, 0.12, s) * (1.0 - smoothstep(0.86, 1.0, s));
-    vec4 mv = modelViewMatrix * vec4(p, 1.0);
-    gl_PointSize = uScale * mix(26.0, 7.0, e) * (10.0 / -mv.z);
-    gl_Position = projectionMatrix * mv;
-  }
-`;
-
-const HEX_FRAGMENT = /* glsl */ `
-  varying vec3 vColor;
-  varying float vAlpha;
-  float hexDist(vec2 p) {
-    p = abs(p);
-    return max(dot(p, vec2(0.8660254, 0.5)), p.y);
-  }
-  void main() {
-    vec2 uv = (gl_PointCoord - 0.5) * 2.0;
-    float d = hexDist(uv);
-    float fill = 1.0 - smoothstep(0.66, 0.74, d);
-    float edge = (1.0 - smoothstep(0.74, 0.8, d)) - fill;
-    float glow = exp(-d * 3.0) * 0.4;
-    float a = (fill * 0.75 + edge + glow) * vAlpha;
-    if (a < 0.01) discard;
-    gl_FragColor = vec4(vColor * (fill * 0.8 + edge * 1.2 + glow), a);
-    #include <colorspace_fragment>
-  }
-`;
-
-function buildTrail(count: number, rand: () => number, pixelScale: number): { points: Points; material: ShaderMaterial } {
+function buildTrail(count: number, rand: () => number, clock: Clock) {
   const phases = new Float32Array(count);
   const lanes = new Float32Array(count);
   for (let i = 0; i < count; i += 1) {
     phases[i] = i / count + rand() * 0.012;
     lanes[i] = gaussian(rand) * 0.5;
   }
-  const geometry = new BufferGeometry();
-  geometry.setAttribute('position', new BufferAttribute(new Float32Array(count * 3), 3));
-  geometry.setAttribute('aPhase', new BufferAttribute(phases, 1));
-  geometry.setAttribute('aLane', new BufferAttribute(lanes, 1));
-  const material = new ShaderMaterial({
-    transparent: true,
-    depthWrite: false,
-    blending: AdditiveBlending,
-    uniforms: {
-      uTime: { value: 0 },
-      uScale: { value: pixelScale },
-      uStart: { value: new Vector3(-9.5, -4.2, 3.5) },
-      uBend: { value: new Vector3(-4.5, -0.6, 2.8) },
-      uEnd: { value: new Vector3(0, 0, 0) },
-    },
-    vertexShader: TRAIL_VERTEX,
-    fragmentShader: HEX_FRAGMENT,
+  const geometry = cloudGeometry(count, { aPhase: { array: phases, size: 1 }, aLane: { array: lanes, size: 1 } });
+  const lane = attribute('aLane', 'float');
+  const s = clock.mul(0.045).add(attribute('aPhase', 'float')).fract();
+  const e = float(1).sub(float(1).sub(s).pow(1.6));
+  const start = vec3(-9.5, -4.2, 3.5).add(vec3(0, lane.mul(0.5), lane.mul(0.3)));
+  const bend = vec3(-4.5, -0.6, 2.8).add(vec3(lane.mul(0.35), lane.mul(-0.2), 0));
+  const end = vec3(0, 0, 0);
+  const position = mix(mix(start, bend, e), mix(bend, end, e), e).toVar();
+  const rgb = mix(vec3(0.56, 0.74, 0.89), vec3(0.86, 0.92, 0.96), e);
+  const alpha = smoothstep(0, 0.12, s).mul(float(1).sub(smoothstep(0.86, 1, s)));
+  return makeCloud({
+    geometry,
+    position,
+    size: attenuated(position, mix(float(26), float(7), e), 1),
+    rgb,
+    alpha,
+    shape: 'hex',
   });
-  const points = new Points(geometry, material);
-  points.frustumCulled = false;
-  return { points, material };
 }
 
 export function create(ctx: SceneContext): SceneInstance {
-  const { scene, camera, renderer, options } = ctx;
+  const { scene, camera, options } = ctx;
   const align = enumOption(options, 'align', ['center', 'end'] as const, 'center');
-  const pixelScale = renderer.getPixelRatio();
+  const clock = makeClock();
+
+  const nebula = makeNebula({ radius: 90, intensity: 0.5, seed: 3, shadow: RAMP[0], light: RAMP[3] }, clock);
+  scene.add(nebula);
 
   const root = new Group();
   // Tilt the disc so it reads as a spiral, not an edge-on line.
@@ -169,23 +119,16 @@ export function create(ctx: SceneContext): SceneInstance {
   scene.add(root);
 
   // Each layer has its own seed: a smaller frame draws fewer particles, and the ones it draws stay where the poster shows them.
-  const stars = buildDisc(Math.round(18000 * ctx.quality), seeded(101), false);
-  const dust = buildDisc(Math.round(900 * ctx.quality), seeded(102), true);
-  root.add(dust.points, stars.points);
-  for (const m of [stars.material, dust.material]) {
-    const u = m.uniforms.uScale;
-    if (u) u.value = pixelScale;
-  }
+  const stars = buildDisc(Math.round(18000 * ctx.quality), seeded(101), false, clock);
+  const dust = buildDisc(Math.round(900 * ctx.quality), seeded(102), true, clock);
+  root.add(dust, stars);
 
   const bulge = makeGlow(RAMP[5], 5.2, 0.55, 0.6);
   const halo = makeGlow(RAMP[2], 14, 0.22, 0.7);
   root.add(halo, bulge);
 
-  const shell = makeStarShell(Math.round(1600 * ctx.quality), 30, 60, seeded(103));
+  const shell = makeStarShell(Math.round(1600 * ctx.quality), 30, 60, seeded(103), clock);
   scene.add(shell);
-  const shellMaterial = shell.material as ShaderMaterial;
-  const shellScale = shellMaterial.uniforms.uScale;
-  if (shellScale) shellScale.value = pixelScale;
 
   // The world at the core: assembles over ASSEMBLE_SECONDS, then turns slowly. It does not tilt with the disc.
   // The amber cell faces the camera at the poster time: the world turns at 0.12 rad/s, so it starts 0.66 rad behind the front.
@@ -195,8 +138,7 @@ export function create(ctx: SceneContext): SceneInstance {
   const core = new Group();
   core.add(worldHalo, world.group, worldGlow);
   scene.add(core);
-  const trail = buildTrail(26, seeded(104), pixelScale);
-  scene.add(trail.points);
+  scene.add(buildTrail(26, seeded(104), clock));
 
   const offsetX = align === 'end' ? 2.6 : 0;
   const base = new Vector3(offsetX * -1, 0, 0);
@@ -224,10 +166,7 @@ export function create(ctx: SceneContext): SceneInstance {
       py = approach(py, ty, 1.6, dt);
       camera.position.set(base.x + px * 0.9, base.y + py * 0.5, base.z);
       camera.lookAt(look);
-      setTime(stars.material, t);
-      setTime(dust.material, t);
-      setTime(shellMaterial, t);
-      setTime(trail.material, t);
+      clock.value = t;
       const assembly = Math.min(1, t / ASSEMBLE_SECONDS);
       world.setAssembly(assembly);
       world.group.rotation.y = t * 0.12;

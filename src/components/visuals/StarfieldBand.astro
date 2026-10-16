@@ -31,9 +31,33 @@ const { labelledby, id, size = 'default', static: isStatic = false, class: class
   .starfield-band {
     position: relative;
     isolation: isolate;
-    overflow: hidden;
+    z-index: 1;
+    --bleed: clamp(2rem, 6vw, 5rem);
+    overflow-x: clip;
     color: var(--color-text-inverse);
     background-color: color-mix(in oklab, var(--we-blue-night) 45%, var(--we-charcoal));
+  }
+
+  /* The sky runs past the band's edges and fades out, so the band melts into the sections around it (see Band `bleed`). */
+  .starfield-band::before,
+  .starfield-band::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    z-index: -1;
+    block-size: var(--bleed);
+    pointer-events: none;
+    --_c: color-mix(in oklab, var(--we-blue-night) 45%, var(--we-charcoal));
+  }
+
+  .starfield-band::before {
+    inset-block-end: 100%;
+    background: linear-gradient(to bottom, transparent, color-mix(in oklab, var(--_c) 14%, transparent), color-mix(in oklab, var(--_c) 40%, transparent), color-mix(in oklab, var(--_c) 72%, transparent), var(--_c));
+  }
+
+  .starfield-band::after {
+    inset-block-start: 100%;
+    background: linear-gradient(to top, transparent, color-mix(in oklab, var(--_c) 14%, transparent), color-mix(in oklab, var(--_c) 40%, transparent), color-mix(in oklab, var(--_c) 72%, transparent), var(--_c));
   }
 
   .starfield-band__inner {

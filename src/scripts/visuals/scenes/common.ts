@@ -1,30 +1,155 @@
 /**
- * Building blocks shared by the scenes: the hex-faceted globe (every world is a Goldberg polyhedron, BRIEF 5.4), a soft additive point
- * material, a star shell, and glow sprites drawn on an in-memory canvas (a CanvasTexture is not an img-src fetch, so the CSP allows it).
+ * Building blocks shared by the scenes, written as TSL node materials so one code path runs on three's WebGPURenderer and on its WebGL2
+ * backend (the renderer picks; see ../runtime.ts). GLSL ShaderMaterial is not supported by WebGPURenderer, so every custom material here is
+ * a node graph: the hex-faceted globe (every world is a Goldberg polyhedron, BRIEF 5.4), soft and hexagonal point clouds, a star shell and
+ * a noise nebula, plus glow sprites drawn on an in-memory canvas (a CanvasTexture is not an img-src fetch, so the CSP allows it).
  * No post-processing: glow comes from additive blending and shader falloff, which keeps the shared chunk small.
+ *
+ * Point clouds are instanced quads (WebGPU draws points one pixel wide, so a sized point is a sprite): one draw call per cloud, the
+ * position, size, colour and alpha of each instance a pure function of its attributes and the scene time, so the poster frame and the
+ * first live frame agree.
  */
 import {
   AdditiveBlending,
+  BackSide,
   BufferAttribute,
   BufferGeometry,
   CanvasTexture,
   Color,
   Group,
+  InstancedBufferAttribute,
+  InstancedBufferGeometry,
   Mesh,
-  NormalBlending,
-  Points,
-  ShaderMaterial,
-  SphereGeometry,
   MeshBasicMaterial,
+  MeshBasicNodeMaterial,
+  NormalBlending,
+  PlaneGeometry,
+  PointsNodeMaterial,
+  SphereGeometry,
   Sprite,
   SpriteMaterial,
   SRGBColorSpace,
-} from 'three';
+} from 'three/webgpu';
+import type { Node } from 'three/webgpu';
+import {
+  Fn,
+  abs,
+  attribute,
+  clamp,
+  cos,
+  dot,
+  exp,
+  float,
+  fract,
+  length,
+  max,
+  mix,
+  modelViewMatrix,
+  normalize,
+  positionLocal,
+  positionViewDirection,
+  pow,
+  sin,
+  smoothstep,
+  step,
+  transformNormalToView,
+  uniform,
+  uv,
+  vec2,
+  vec3,
+  vec4,
+} from 'three/tsl';
 import { AMBER, RAMP, SKY, channels, ramp } from '../palette.ts';
 import { goldbergCells, add, scale, sub } from '../geometry.ts';
 import type { Vec3 } from '../geometry.ts';
 import { gaussian, seeded } from '../rng.ts';
 import type { Random } from '../rng.ts';
+
+/** The scene clock: every material of a scene reads the same uniform, and the scene writes `.value` once per frame. */
+export function makeClock() {
+  return uniform(0);
+}
+export type Clock = ReturnType<typeof makeClock>;
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Instanced point clouds
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+/** One per-instance attribute: a flat float array and how many floats make one item (1 to 3). */
+export interface CloudAttribute {
+  readonly array: Float32Array;
+  readonly size: 1 | 2 | 3;
+}
+
+/** A quad geometry drawn `count` times, with one instanced attribute per entry of `attributes`. */
+export function cloudGeometry(count: number, attributes: Readonly<Record<string, CloudAttribute>>): InstancedBufferGeometry {
+  const quad = new PlaneGeometry(1, 1);
+  const geometry = new InstancedBufferGeometry();
+  geometry.index = quad.index;
+  geometry.setAttribute('position', quad.getAttribute('position'));
+  geometry.setAttribute('uv', quad.getAttribute('uv'));
+  geometry.instanceCount = count;
+  for (const [name, a] of Object.entries(attributes)) geometry.setAttribute(name, new InstancedBufferAttribute(a.array, a.size));
+  quad.dispose();
+  return geometry;
+}
+
+export type CloudShape = 'soft' | 'hex';
+
+export interface CloudSpec {
+  readonly geometry: InstancedBufferGeometry;
+  /** Instance centre in the object's space (vec3). */
+  readonly position: Node<'vec3'>;
+  /** Diameter in CSS pixels at the instance's depth (float). The renderer multiplies by the pixel ratio. */
+  readonly size: Node<'float'>;
+  /** Linear colour (vec3). */
+  readonly rgb: Node<'vec3'>;
+  /** Opacity (float). */
+  readonly alpha: Node<'float'>;
+  readonly shape?: CloudShape;
+}
+
+/** Distance from the centre of a quad pixel in -1..1 units (1 at the edge of the inscribed circle). */
+const radial = (): Node<'float'> => length(uv().sub(0.5)).mul(2);
+
+/** Pixel size of a perspective-attenuated sprite: `base` CSS pixels at a view distance of `reference` world units. */
+export function attenuated(position: Node<'vec3'>, base: Node<'float'> | number, reference: number): Node<'float'> {
+  const viewZ = modelViewMatrix.mul(vec4(position, 1)).z.negate();
+  return (typeof base === 'number' ? float(base) : base).mul(float(reference).div(max(viewZ, 0.001)));
+}
+
+const hexDistance = (p: Node<'vec2'>): Node<'float'> => {
+  const a = abs(p);
+  return max(dot(a, vec2(0.8660254, 0.5)), a.y);
+};
+
+/** A soft additive glow (`soft`) or a hexagonal cell with a hairline edge and a halo (`hex`). */
+export function makeCloud(spec: CloudSpec): Mesh {
+  const material = new PointsNodeMaterial();
+  material.transparent = true;
+  material.depthWrite = false;
+  material.blending = AdditiveBlending;
+  material.sizeAttenuation = false;
+  material.positionNode = spec.position;
+  material.sizeNode = spec.size;
+  if (spec.shape === 'hex') {
+    const d = hexDistance(uv().sub(0.5).mul(2));
+    const fill = float(1).sub(smoothstep(0.66, 0.74, d));
+    const edge = float(1).sub(smoothstep(0.74, 0.8, d)).sub(fill);
+    const glow = exp(d.mul(-3)).mul(0.4);
+    const a = fill.mul(0.75).add(edge).add(glow).mul(spec.alpha);
+    material.colorNode = vec4(spec.rgb.mul(fill.mul(0.8).add(edge.mul(1.2)).add(glow)), a);
+  } else {
+    const d = radial();
+    const core = exp(d.mul(d).mul(-7));
+    const halo = exp(d.mul(-3.2)).mul(0.35);
+    const energy = core.add(halo);
+    material.colorNode = vec4(spec.rgb.mul(energy), energy.mul(spec.alpha).mul(step(d, 1)));
+  }
+  const mesh = new Mesh(spec.geometry, material);
+  mesh.frustumCulled = false;
+  return mesh;
+}
 
 // ---------------------------------------------------------------------------------------------------------------------------------
 // Hex globe
@@ -50,64 +175,11 @@ export interface GlobeOptions {
 
 export interface Globe {
   readonly group: Group;
-  readonly material: ShaderMaterial;
+  readonly material: MeshBasicNodeMaterial;
   /** 0 = scattered, 1 = assembled (each cell has its own delay inside that span). */
   setAssembly(progress: number): void;
-  setTime(t: number): void;
   readonly cellCount: number;
 }
-
-const GLOBE_VERTEX = /* glsl */ `
-  attribute vec3 aCenter;
-  attribute vec3 aScatter;
-  attribute float aDelay;
-  attribute vec3 color;
-  uniform float uAssembly;
-  uniform float uTime;
-  varying vec3 vColor;
-  varying vec3 vNormal;
-  varying vec3 vView;
-  varying float vArrive;
-  float easeOut(float x) { return 1.0 - pow(1.0 - x, 3.0); }
-  void main() {
-    float local = clamp((uAssembly - aDelay * 0.7) / 0.3, 0.0, 1.0);
-    float k = easeOut(local);
-    vArrive = k;
-    vec3 offset = aScatter * (1.0 - k);
-    // A cell in flight spins about its own center, so the tiles tumble in rather than slide.
-    float spin = (1.0 - k) * 6.0 + aDelay * 10.0;
-    vec3 rel = position - aCenter;
-    float c = cos(spin * (1.0 - k));
-    float s = sin(spin * (1.0 - k));
-    rel = vec3(rel.x * c - rel.z * s, rel.y, rel.x * s + rel.z * c);
-    vec3 p = aCenter + rel * mix(0.6, 1.0, k) + offset;
-    vColor = color;
-    vNormal = normalize(normalMatrix * normalize(aCenter));
-    vec4 mv = modelViewMatrix * vec4(p, 1.0);
-    vView = normalize(-mv.xyz);
-    gl_Position = projectionMatrix * mv;
-  }
-`;
-
-const GLOBE_FRAGMENT = /* glsl */ `
-  uniform vec3 uLight;
-  uniform float uRim;
-  uniform vec3 uRimColor;
-  varying vec3 vColor;
-  varying vec3 vNormal;
-  varying vec3 vView;
-  varying float vArrive;
-  void main() {
-    float diffuse = max(dot(normalize(vNormal), normalize(uLight)), 0.0);
-    float rim = pow(1.0 - max(dot(normalize(vNormal), vView), 0.0), 2.4);
-    vec3 base = vColor * (0.32 + 0.78 * diffuse);
-    vec3 col = base + uRimColor * rim * uRim;
-    // Tiles still in flight glow a little brighter, like hot material cooling into place.
-    col += vColor * (1.0 - vArrive) * 0.6;
-    gl_FragColor = vec4(col, 1.0);
-    #include <colorspace_fragment>
-  }
-`;
 
 export function makeGlobe(opts: GlobeOptions): Globe {
   const rand = seeded(opts.seed);
@@ -167,18 +239,30 @@ export function makeGlobe(opts: GlobeOptions): Globe {
   geometry.setAttribute('aCenter', new BufferAttribute(new Float32Array(centers), 3));
   geometry.setAttribute('aScatter', new BufferAttribute(new Float32Array(scatters), 3));
   geometry.setAttribute('aDelay', new BufferAttribute(new Float32Array(delays), 1));
-  geometry.setAttribute('color', new BufferAttribute(new Float32Array(colors), 3));
-  const material = new ShaderMaterial({
-    vertexShader: GLOBE_VERTEX,
-    fragmentShader: GLOBE_FRAGMENT,
-    uniforms: {
-      uAssembly: { value: scatter > 0 ? 0 : 1 },
-      uTime: { value: 0 },
-      uLight: { value: [0.55, 0.65, 0.75] },
-      uRim: { value: opts.rim ?? 0.9 },
-      uRimColor: { value: new Color(RAMP[4]) },
-    },
-  });
+  geometry.setAttribute('aColor', new BufferAttribute(new Float32Array(colors), 3));
+
+  const uAssembly = uniform(scatter > 0 ? 0 : 1);
+  const aCenter = attribute('aCenter', 'vec3');
+  const aScatter = attribute('aScatter', 'vec3');
+  const aDelay = attribute('aDelay', 'float');
+  const aColor = attribute('aColor', 'vec3');
+  // Each tile has its own delay inside the assembly span, eased out; a tile in flight tumbles about its own centre.
+  const local = clamp(uAssembly.sub(aDelay.mul(0.7)).div(0.3), 0, 1);
+  const k = float(1).sub(pow(float(1).sub(local), 3)).toVar();
+  const spin = float(1).sub(k).mul(6).add(aDelay.mul(10)).mul(float(1).sub(k));
+  const rel = positionLocal.sub(aCenter);
+  const c = cos(spin);
+  const s = sin(spin);
+  const tumbled = vec3(rel.x.mul(c).sub(rel.z.mul(s)), rel.y, rel.x.mul(s).add(rel.z.mul(c)));
+  const material = new MeshBasicNodeMaterial();
+  material.positionNode = aCenter.add(tumbled.mul(mix(0.6, 1, k))).add(aScatter.mul(float(1).sub(k)));
+  const normal = normalize(transformNormalToView(normalize(aCenter)));
+  const diffuse = max(dot(normal, normalize(vec3(0.55, 0.65, 0.75))), 0);
+  const rimTerm = pow(float(1).sub(max(dot(normal, positionViewDirection), 0)), 2.4);
+  const base = aColor.mul(diffuse.mul(0.78).add(0.32));
+  const rimColor = uniform(new Color(RAMP[4]));
+  const glowIn = aColor.mul(float(1).sub(k).mul(0.6));
+  material.colorNode = vec4(base.add(rimColor.mul(rimTerm).mul(opts.rim ?? 0.9)).add(glowIn), 1);
   const mesh = new Mesh(geometry, material);
   mesh.frustumCulled = false;
   // The dark core shows through the seams between cells, so the hex grid reads at any distance.
@@ -190,37 +274,18 @@ export function makeGlobe(opts: GlobeOptions): Globe {
     material,
     cellCount: cells.length,
     setAssembly(progress: number): void {
-      const uniform = material.uniforms.uAssembly;
-      if (uniform) uniform.value = Math.min(1, Math.max(0, progress));
+      uAssembly.value = Math.min(1, Math.max(0, progress));
       core.scale.setScalar(0.35 + 0.65 * Math.min(1, Math.max(0, progress * 1.4)));
-    },
-    setTime(t: number): void {
-      const uniform = material.uniforms.uTime;
-      if (uniform) uniform.value = t;
     },
   };
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------
-// Soft additive points
+// Star shell
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-export const POINT_FRAGMENT = /* glsl */ `
-  varying vec3 vColor;
-  varying float vAlpha;
-  void main() {
-    vec2 uv = gl_PointCoord - 0.5;
-    float d = length(uv) * 2.0;
-    if (d > 1.0) discard;
-    float core = exp(-d * d * 7.0);
-    float halo = exp(-d * 3.2) * 0.35;
-    gl_FragColor = vec4(vColor * (core + halo), (core + halo) * vAlpha);
-    #include <colorspace_fragment>
-  }
-`;
-
-/** A star shell around the origin: `count` points at radius `inner` to `outer`, twinkling gently. */
-export function makeStarShell(count: number, inner: number, outer: number, rand: Random): Points {
+/** A star shell around the origin: `count` stars at radius `inner` to `outer`, twinkling gently. */
+export function makeStarShell(count: number, inner: number, outer: number, rand: Random, clock: Clock): Mesh {
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
   const sizes = new Float32Array(count);
@@ -236,43 +301,86 @@ export function makeStarShell(count: number, inner: number, outer: number, rand:
     sizes[i] = rand() < 0.04 ? 2.6 + rand() * 1.6 : 0.7 + rand() * 1.1;
     phases[i] = rand() * Math.PI * 2;
   }
-  const geometry = new BufferGeometry();
-  geometry.setAttribute('position', new BufferAttribute(positions, 3));
-  geometry.setAttribute('color', new BufferAttribute(colors, 3));
-  geometry.setAttribute('aSize', new BufferAttribute(sizes, 1));
-  geometry.setAttribute('aPhase', new BufferAttribute(phases, 1));
-  const material = new ShaderMaterial({
-    transparent: true,
-    depthWrite: false,
-    blending: AdditiveBlending,
-    uniforms: { uTime: { value: 0 }, uScale: { value: 1 } },
-    vertexShader: /* glsl */ `
-      attribute float aSize;
-      attribute float aPhase;
-      attribute vec3 color;
-      uniform float uTime;
-      uniform float uScale;
-      varying vec3 vColor;
-      varying float vAlpha;
-      void main() {
-        vColor = color;
-        vAlpha = 0.55 + 0.45 * sin(uTime * (0.6 + fract(aPhase) * 1.4) + aPhase);
-        vec4 mv = modelViewMatrix * vec4(position, 1.0);
-        gl_PointSize = aSize * uScale * 3.0;
-        gl_Position = projectionMatrix * mv;
-      }
-    `,
-    fragmentShader: POINT_FRAGMENT,
+  const geometry = cloudGeometry(count, {
+    aPos: { array: positions, size: 3 },
+    aColor: { array: colors, size: 3 },
+    aSize: { array: sizes, size: 1 },
+    aPhase: { array: phases, size: 1 },
   });
-  const points = new Points(geometry, material);
-  points.frustumCulled = false;
-  return points;
+  const phase = attribute('aPhase', 'float');
+  return makeCloud({
+    geometry,
+    position: attribute('aPos', 'vec3'),
+    size: attribute('aSize', 'float').mul(3),
+    rgb: attribute('aColor', 'vec3'),
+    alpha: sin(clock.mul(fract(phase).mul(1.4).add(0.6)).add(phase)).mul(0.45).add(0.55),
+  });
 }
 
-/** Sets `uTime` on a shader material if it has one. */
-export function setTime(material: ShaderMaterial, t: number): void {
-  const uniform = material.uniforms.uTime;
-  if (uniform) uniform.value = t;
+// ---------------------------------------------------------------------------------------------------------------------------------
+// Nebula
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+/** Hash-based 3D value noise and a three-octave sum of it: cheap enough for a full-frame backdrop, and identical on both backends. */
+const hash3 = Fn(([p]: [Node<'vec3'>]) => {
+  const q = fract(p.mul(vec3(0.1031, 0.103, 0.0973)));
+  const r = q.add(dot(q, q.yzx.add(33.33)));
+  return fract(r.x.add(r.y).mul(r.z));
+});
+
+const valueNoise = Fn(([p]: [Node<'vec3'>]) => {
+  const i = p.floor();
+  const f = fract(p);
+  const u = f.mul(f).mul(float(3).sub(f.mul(2)));
+  const lerpX = (dy: number, dz: number): Node<'float'> => mix(hash3(i.add(vec3(0, dy, dz))), hash3(i.add(vec3(1, dy, dz))), u.x);
+  const front = mix(lerpX(0, 0), lerpX(1, 0), u.y);
+  const back = mix(lerpX(0, 1), lerpX(1, 1), u.y);
+  return mix(front, back, u.z);
+});
+
+const cloudNoise = Fn(([p]: [Node<'vec3'>]) => {
+  const a = valueNoise(p).mul(0.5);
+  const b = valueNoise(p.mul(2.03).add(7.1)).mul(0.28);
+  const c = valueNoise(p.mul(4.11).add(3.7)).mul(0.22);
+  return a.add(b).add(c);
+});
+
+export interface NebulaOptions {
+  /** Radius of the dome the nebula is painted on. Keep it far outside the scene, so the camera's own movement barely shifts the clouds. */
+  readonly radius: number;
+  /** Overall brightness, 0 to 1. Keep it low behind text. */
+  readonly intensity: number;
+  readonly seed: number;
+  /** Colours of the dark and bright parts of the clouds, 0xRRGGBB. */
+  readonly shadow: number;
+  readonly light: number;
+}
+
+/**
+ * A procedural nebula: soft, banded clouds of the blue ramp painted on the inside of a far dome. The pattern is a pure
+ * function of direction and the scene clock, so it drifts slowly and the poster frame matches the first live frame.
+ */
+export function makeNebula(opts: NebulaOptions, clock: Clock): Mesh {
+  const dir = normalize(positionLocal);
+  const seedShift = vec3(opts.seed * 1.7, opts.seed * 0.9, opts.seed * 2.3);
+  const drift = vec3(clock.mul(0.004), clock.mul(-0.002), clock.mul(0.003));
+  const p = dir.mul(2.6).add(seedShift).add(drift);
+  const warp = cloudNoise(p.mul(0.7).add(11.3));
+  const n = cloudNoise(p.add(warp.mul(1.3)));
+  // Clouds only where the noise passes a threshold, so most of the sky stays dark and the clouds have edges.
+  const density = smoothstep(0.42, 0.82, n);
+  const tint = mix(vec3(...channels(opts.shadow)), vec3(...channels(opts.light)), smoothstep(0.5, 0.9, n));
+  const material = new MeshBasicNodeMaterial();
+  material.side = BackSide;
+  material.transparent = true;
+  material.depthWrite = false;
+  material.depthTest = false;
+  material.blending = AdditiveBlending;
+  material.colorNode = vec4(tint.mul(density), density.mul(opts.intensity));
+  const dome = new Mesh(new SphereGeometry(opts.radius, 32, 16), material);
+  dome.frustumCulled = false;
+  dome.renderOrder = -10;
+  return dome;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------

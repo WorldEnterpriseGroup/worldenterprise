@@ -5,18 +5,18 @@
  *
  * Options: `count` (0 to 12 bodies; 0 draws the sun alone, the base of the generic poster), `rings` 'single' | 'nested', `accent` (index of the amber body, or -1 for an amber cell on the sun).
  */
-import { Color, LineBasicMaterial, LineLoop, Vector3 } from 'three';
-import type { ShaderMaterial, Sprite } from 'three';
+import { Color, LineBasicMaterial, Line, Vector3 } from 'three/webgpu';
+import type { Sprite } from 'three/webgpu';
 import { AMBER, RAMP } from '../palette.ts';
 import { ORBIT_CAMERA, ORBIT_MAX_BODIES, orbitLayout, orbitPosition } from '../geometry.ts';
 import type { SceneContext, SceneInstance } from '../types.ts';
-import { approach, clearGlowCache, enumOption, makeGlobe, makeGlow, makeStarShell, numberOption, ringGeometry, seeded, setTime } from './common.ts';
+import { approach, clearGlowCache, enumOption, makeClock, makeGlobe, makeGlow, makeStarShell, numberOption, ringGeometry, seeded } from './common.ts';
 import type { Globe } from './common.ts';
 
 export function create(ctx: SceneContext): SceneInstance {
-  const { scene, camera, renderer, options } = ctx;
+  const { scene, camera, options } = ctx;
+  const clock = makeClock();
   const rand = seeded(777);
-  const pixelScale = renderer.getPixelRatio();
   const count = Math.round(numberOption(options, 'count', 7, 0, ORBIT_MAX_BODIES));
   const rings = enumOption(options, 'rings', ['single', 'nested'] as const, 'single');
   const accent = Math.round(numberOption(options, 'accent', -1, -1, ORBIT_MAX_BODIES - 1));
@@ -29,10 +29,7 @@ export function create(ctx: SceneContext): SceneInstance {
   const base = new Vector3(...ORBIT_CAMERA.position);
   const look = new Vector3(...ORBIT_CAMERA.target);
 
-  const shell = makeStarShell(Math.round(1800 * ctx.quality), 25, 55, rand);
-  const shellMaterial = shell.material as ShaderMaterial;
-  const shellScale = shellMaterial.uniforms.uScale;
-  if (shellScale) shellScale.value = pixelScale;
+  const shell = makeStarShell(Math.round(1800 * ctx.quality), 25, 55, rand, clock);
   scene.add(shell);
 
   // With no accent body, the amber object is one cell on the sun, turned toward the camera at t = 0 (the poster frame).
@@ -42,10 +39,10 @@ export function create(ctx: SceneContext): SceneInstance {
   const outer = makeGlow(RAMP[2], 9, 0.25, 0.7);
   scene.add(outer, corona);
 
-  const ringLines: LineLoop[] = [];
+  const ringLines: Line[] = [];
   const ringRadii = Array.from(new Set(layout.map((b) => b.radius)));
   for (const radius of ringRadii) {
-    const line = new LineLoop(ringGeometry(radius, 192), new LineBasicMaterial({ color: RAMP[3], transparent: true, opacity: 0.32 }));
+    const line = new Line(ringGeometry(radius, 192), new LineBasicMaterial({ color: RAMP[3], transparent: true, opacity: 0.45 }));
     ringLines.push(line);
     scene.add(line);
   }
@@ -53,7 +50,7 @@ export function create(ctx: SceneContext): SceneInstance {
   interface Body {
     readonly globe: Globe;
     readonly glow: Sprite;
-    readonly ring: LineLoop | undefined;
+    readonly ring: Line | undefined;
     readonly baseGlow: number;
   }
   const bodies: Body[] = layout.map((b, i) => {
@@ -89,7 +86,7 @@ export function create(ctx: SceneContext): SceneInstance {
       py = approach(py, ty, 1.4, dt);
       camera.position.set(base.x + px * 0.6, base.y + py * 0.4, base.z);
       camera.lookAt(look);
-      setTime(shellMaterial, t);
+      clock.value = t;
       sun.group.rotation.y = t * 0.08;
       corona.material.opacity = 0.55 + 0.05 * Math.sin(t * 0.7);
       layout.forEach((b, i) => {
@@ -111,7 +108,7 @@ export function create(ctx: SceneContext): SceneInstance {
         const hot = highlighted !== null && layout[highlighted]?.radius === radius && rings === 'nested';
         const material = line.material as LineBasicMaterial;
         material.color.copy(hot ? ringHot : ringColor);
-        material.opacity = hot ? 0.7 : 0.32;
+        material.opacity = hot ? 0.8 : 0.45;
       });
     },
     anchors(): readonly Vector3[] {

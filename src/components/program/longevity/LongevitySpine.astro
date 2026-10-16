@@ -1,0 +1,186 @@
+---
+/**
+ * The longevity spine (WP-37, issue #86): "Move fast every week. Build for the decade." The two halves of how WE works, shown side by
+ * side: the weekly loop (fast, written, decided by the founder) and the years a company really takes (sourced survival figures, then
+ * the long-horizon track). Used on the home page, the program pages, /how-we-work/, /why-it-takes-time/ and /who-we-work-with/.
+ *
+ * Figures are the register's ST-nn statistics (src/data/sales/stats.ts); the page that uses this band adds none of its own.
+ * `detail` sets how much of the long half shows: `full` (the three tiles and the track), `track` (the track only, for a page that
+ * already shows the three tiles) or `brief` (a sentence, for a page that charts the same figures in full).
+ */
+import Band from '../../visuals/Band.astro';
+import LongHorizonTimeline from '../../visuals/LongHorizonTimeline.astro';
+import VisualIcon from '../../visuals/VisualIcon.astro';
+import StatTiles from '../../visuals/charts/StatTiles.astro';
+import type { BandTone } from '../../visuals/contracts.ts';
+import { isLiveOnDisk } from '../../../data/cta/live.ts';
+import { href } from '../../../lib/url.ts';
+import { DECADE_STATS, ROUTES, SPINE_HEADLINE, WEEKLY_LOOP, decadeMilestones, visualStat } from './data.ts';
+
+interface Props {
+  /** One or two sentences under the headline; each page words its own. */
+  lead: string;
+  tone?: BandTone;
+  /** The id of the band, so a page can link to it (default "longevity"). */
+  id?: string;
+  detail?: 'full' | 'track' | 'brief';
+  /** Where the short call to action goes (default none beyond the page's own). */
+  actions?: 'timeline' | 'none';
+}
+
+const { lead, tone = 'soft', id = 'longevity', detail = 'full', actions = 'timeline' } = Astro.props;
+const titleId = `${id}-title`;
+const stats = DECADE_STATS.map((s) => visualStat(s, 'gate'));
+---
+
+<Band {tone} {id} labelledby={titleId} class="longevity">
+  <div class="longevity__head">
+    <p class="eyebrow">The long game</p>
+    <h2 id={titleId}>{SPINE_HEADLINE}</h2>
+    <p class="lead">{lead}</p>
+  </div>
+
+  <div class="longevity__duo">
+    <section class="longevity__half longevity__half--fast" aria-labelledby={`${id}-fast`}>
+      <p class="longevity__kicker">Every week</p>
+      <h3 id={`${id}-fast`}>Fast, and written down.</h3>
+      <ol class="longevity__loop" role="list">
+        {
+          WEEKLY_LOOP.map((step, i) => (
+            <li class="longevity__step">
+              <VisualIcon name={step.icon} size={40} />
+              <span class="longevity__step-n">{i + 1}</span>
+              <strong>{step.label}</strong>
+              <span>{step.line}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="longevity__half longevity__half--slow" aria-labelledby={`${id}-slow`}>
+      <p class="longevity__kicker">Every year</p>
+      <h3 id={`${id}-slow`}>Patient, because the odds turn slowly.</h3>
+      {
+        detail === 'full' ? (
+          <StatTiles stats={stats} label="How many new businesses are still operating" id={`${id}-tiles`} />
+        ) : (
+          <p class="longevity__note">Most new businesses close in the first five years. After that, each year survived makes the next more likely. WE paces the work to that curve.</p>
+        )
+      }
+    </section>
+  </div>
+
+  {
+    detail !== 'brief' && (
+      <div class="longevity__track">
+        <LongHorizonTimeline
+          milestones={decadeMilestones()}
+          horizon={10}
+          id={`${id}-timeline`}
+          label="Typical milestones across ten years of building a company"
+          caption="Where milestones typically fall, and how many new businesses are still operating at years one, five and ten. Each survival figure comes from a different opening-year group; the sources name them."
+        />
+      </div>
+    )
+  }
+
+  {
+    actions === 'timeline' && (
+      <div class="cluster">
+        {isLiveOnDisk(ROUTES.howLong) && <a class="btn btn--secondary" href={href(ROUTES.howLong)}>See how long it really takes</a>}
+        {isLiveOnDisk(ROUTES.howWeWork) && <a class="btn btn--quiet" href={href(ROUTES.howWeWork)}>See how WE works</a>}
+      </div>
+    )
+  }
+</Band>
+
+<style>
+  @layer pages {
+    .longevity :global(.band__content) {
+      display: grid;
+      gap: var(--sp-6);
+    }
+
+    .longevity__head {
+      display: grid;
+      gap: var(--sp-3);
+      max-inline-size: var(--prose-max);
+    }
+
+    .longevity__head > * {
+      margin: 0;
+    }
+
+    .longevity__duo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+      gap: var(--sp-5);
+      align-items: start;
+    }
+
+    .longevity__half {
+      display: grid;
+      gap: var(--sp-3);
+      padding: var(--sp-5);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
+
+    .longevity__half > * {
+      margin: 0;
+    }
+
+    .longevity__kicker {
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .longevity__note {
+      max-inline-size: var(--measure);
+    }
+
+    .longevity__loop {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+      gap: var(--sp-3);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .longevity__step {
+      position: relative;
+      display: grid;
+      align-content: start;
+      gap: var(--sp-1);
+      padding: var(--sp-3);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-soft, var(--color-bg));
+      border: var(--border-hair);
+    }
+
+    .longevity__step-n {
+      position: absolute;
+      inset-block-start: var(--sp-2);
+      inset-inline-end: var(--sp-3);
+      font-weight: 700;
+      color: var(--color-text-muted);
+    }
+
+    .longevity__track {
+      min-inline-size: 0;
+    }
+
+    @media (forced-colors: active) {
+      .longevity__half,
+      .longevity__step {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>
