@@ -94,7 +94,31 @@ const INSTRUMENT_PUBLISHER_HOSTS: readonly string[] = [
 ];
 
 /** Primary papers an article describes. A scholarly host never sources a regulation. */
-const SCHOLARLY_HOSTS: readonly string[] = ['arxiv.org', 'proceedings.neurips.cc', 'aclanthology.org'];
+const SCHOLARLY_HOSTS: readonly string[] = [
+  'arxiv.org', 'proceedings.neurips.cc', 'aclanthology.org',
+  // D-W10-6 (OP-HOSTS extension): research bodies whose published studies and indicators the data hub cites.
+  'nber.org', 'kauffman.org', 'gemconsortium.org',
+];
+
+/**
+ * D-W10-6: commercial data publishers whose public reports carry a cited statistic (venture data). They may source a statistic with a verbatim
+ * quote and an attributed paraphrase; never a regulation.
+ */
+const DATA_PUBLISHER_HOSTS: readonly string[] = ['carta.com', 'cbinsights.com'];
+
+/**
+ * D-W10-6: program and ecosystem-directory sites. They source a fact about the program itself (what it offers, who runs it), described
+ * neutrally; never a statistic and never a regulation. Big-vendor program pages are listed by exact host, not by domain.
+ */
+const PROGRAM_HOSTS: readonly string[] = [
+  'score.org', 'americassbdc.org', 'angelcapitalassociation.org',
+  '1871.com', '500.co', 'alchemistaccelerator.com', 'aofund.org', 'bgvfoundation.org', 'capitalfactory.com', 'cic.com',
+  'creativedestructionlab.com', 'ecdi.org', 'fi.co', 'hax.co', 'immigrantsrising.org', 'ruralinnovation.us', 'sb.co', 'seedcamp.com',
+  'stationf.co', 'tcaventuregroup.com', 'venturecafeglobal.org', 'vilcap.com', 'web.startx.com', 'activate.org', 'antler.co',
+  'apexaccelerators.us', 'dreamit.com', 'endeavor.org', 'gener8tor.com', 'goldenseeds.com', 'impacthub.net', 'industriousoffice.com',
+  'joinef.com', 'kiva.org', 'newlab.com', 'newyorkangels.com', 'startupbootcamp.org', 'startupschool.org', 'techstars.com', 'wefunder.com',
+  'wework.com', 'startup.google.com', 'www.microsoft.com', 'aws.amazon.com', 'www.nvidia.com',
+];
 
 /** Universities. */
 const UNIVERSITY_SUFFIXES: readonly string[] = ['.edu', '.ac.uk'];
@@ -109,7 +133,7 @@ const VENDOR_DOCUMENTATION_HOSTS: readonly string[] = [
 const onHost = (host: string, hosts: readonly string[]): boolean => hosts.some((h) => host === h || host.endsWith(`.${h}`));
 const onSuffix = (host: string, suffixes: readonly string[]): boolean => suffixes.some((s) => host.endsWith(s) || host === s.slice(1));
 
-export type HostClass = 'government' | 'standards' | 'scholarly' | 'university' | 'vendor' | 'unlisted';
+export type HostClass = 'government' | 'standards' | 'scholarly' | 'university' | 'datapublisher' | 'program' | 'vendor' | 'unlisted';
 
 export function classifyHost(url: string): HostClass {
   let host: string;
@@ -122,6 +146,8 @@ export function classifyHost(url: string): HostClass {
   if (onHost(host, STANDARDS_AND_LAW_HOSTS) || onHost(host, INSTRUMENT_PUBLISHER_HOSTS)) return 'standards';
   if (onHost(host, SCHOLARLY_HOSTS)) return 'scholarly';
   if (onSuffix(host, UNIVERSITY_SUFFIXES)) return 'university';
+  if (onHost(host, DATA_PUBLISHER_HOSTS)) return 'datapublisher';
+  if (onHost(host, PROGRAM_HOSTS)) return 'program';
   if (onHost(host, VENDOR_DOCUMENTATION_HOSTS)) return 'vendor';
   return 'unlisted';
 }
@@ -200,6 +226,7 @@ export function checkSourcesFile(file: SourcesFile, facts: ReadonlyMap<string, D
         if (quote === '') problems.push(`${at}: ${doc.path} claim ${claim.id} is a ${claim.kind} and needs a verbatim quote`);
         else if (wordCount(quote) > MAX_QUOTE_WORDS) problems.push(`${at}: ${doc.path} claim ${claim.id} quote is ${wordCount(quote)} words; at most ${MAX_QUOTE_WORDS}`);
         if (classifyHost(fetched.url) === 'vendor') problems.push(`${at}: ${doc.path} claim ${claim.id} is a ${claim.kind} sourced from a vendor documentation host`);
+        if (claim.kind === 'statistic' && classifyHost(fetched.url) === 'program') problems.push(`${at}: ${doc.path} claim ${claim.id} is a statistic sourced from a program site; a program site sources a fact about the program only`);
         if (claim.kind === 'regulation' && !['government', 'standards'].includes(classifyHost(fetched.url))) {
           problems.push(`${at}: ${doc.path} claim ${claim.id} is a regulation and needs a statute, agency or standards-body source`);
         }
