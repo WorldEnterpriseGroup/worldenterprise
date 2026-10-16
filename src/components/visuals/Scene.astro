@@ -632,9 +632,10 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
   }
 
   /*
-   * Poster state only (no canvas mounted, tested with :has): a slow light sweep across the still frame, so the picture breathes where
-   * the live scene does not run (software GL, a blocked GPU, Save-Data). --sheen is a typed custom property, so the browser interpolates
-   * the gradient position itself. Desktop-width and motion-allowed only: phones and reduced motion keep a still poster.
+   * Poster state only (no canvas mounted, tested with :has): one light sweep across the still frame after load, so the picture comes
+   * alive where the live scene does not run (software GL, a blocked GPU, Save-Data). --sheen is a typed custom property, so the browser
+   * interpolates the gradient position itself. A single pass, never a loop: animating a registered property repaints every frame, which
+   * on a software rasteriser would starve the main thread. Desktop-width and motion-allowed only: phones and reduced motion stay still.
    */
   @property --sheen {
     syntax: '<percentage>';
@@ -656,7 +657,7 @@ const optionsJson = Object.keys(options).length > 0 ? JSON.stringify(options) : 
         color-mix(in oklab, var(--we-tint) 11%, transparent) var(--sheen),
         transparent calc(var(--sheen) + 22%)
       );
-      animation: scene-sheen 26s ease-in-out infinite alternate;
+      animation: scene-sheen 2.4s ease-out 1.2s 1 both;
     }
 
     @keyframes scene-sheen {

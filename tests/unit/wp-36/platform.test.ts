@@ -87,6 +87,8 @@ test('the poster-state sheen is typed, desktop and motion-gated, and :has() keep
   assert.match(scene, /@property --sheen \{\s*syntax: '<percentage>'/);
   assert.match(scene, /\(prefers-reduced-motion: no-preference\) and \(min-width: 64rem\) and \(pointer: fine\)/);
   assert.match(scene, /:not\(:has\(:global\(\.scene__canvas\)\)\)/);
+  // A looping registered-property animation repaints every frame; on a software rasteriser that starves the main thread.
+  assert.doesNotMatch(scene, /\binfinite\b/);
 });
 
 test('bands bleed into their neighbours with decorative skirts, and a deferred band does not (containment would clip them)', () => {

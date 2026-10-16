@@ -120,7 +120,7 @@ top and bottom edges (`bleed`). The poster sits in the same aspect-ratio box as 
 | `@starting-style` | Scene canvas, pause button, key popover, about dialog | Chromium 117+, Safari 17.5+, Firefox 129+; others appear without a fade |
 | Popover and anchor positioning | `legend` slot: `button[popovertarget] + div[popover]`, `position-anchor: auto; position-area` | Popover is baseline; without anchor positioning the browser centres it in the top layer |
 | `<dialog closedby="any">` and invoker commands | `detail` slot: `button[commandfor][command=show-modal]` | Without `commandfor` the stub opens the dialog with `showModal()`; the dialog closes by Esc, outside click or its `form method=dialog` |
-| `@property` typed custom properties | `--sheen` (poster-state light sweep), `--depth` (edge feather) | Chromium, Safari 16.4+, Firefox 128+; the gradients read `var(--depth, 0)` so a browser without `@property` keeps the resting mask |
+| `@property` typed custom properties | `--sheen` (one poster-state light sweep after load, never looped), `--depth` (edge feather) | Chromium, Safari 16.4+, Firefox 128+; the gradients read `var(--depth, 0)` so a browser without `@property` keeps the resting mask |
 | Container queries | Scene labels and feather width (`container-name: scene`) | Baseline |
 | `:has()` | The sheen runs only while the stage has no canvas | Baseline |
 | `content-visibility: auto` | `Band defer` (a deferred band has no skirts, because containment would clip them) | Baseline 2024 |
