@@ -1,0 +1,158 @@
+{
+  "$comment": "Wave 11 write-set map (WP-22 to WP-26, issues #88 to #92, milestone 1811). WP-26 is stage 2 (starts after WP-38 merges). tests/unit/wp-32b/write-sets-wave11.test.ts keeps this file equal to .astro-magazine/ownership.json.",
+  "sharedExceptions": [],
+  "workPackages": [
+    {
+      "id": "WP-22",
+      "stage": 1,
+      "branch": "wp/22-media",
+      "title": "Wave 11 media primitives: video, lightbox, carousel, figures",
+      "writes": [
+        "src/components/media/**",
+        "src/scripts/media-*.ts",
+        "src/assets/video/**",
+        "public/video/**",
+        "src/assets/media/**",
+        "tests/unit/wp-22/**",
+        "tests/e2e/wp-22*.spec.ts",
+        "tests/e2e/wave8/wp-22/**",
+        ".astro-magazine/handoffs/wp-22*",
+        ".astro-magazine/sources/wp-22.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": [
+        "src/pages/about/index.astro",
+        "src/pages/network/index.astro",
+        "scripts/lib/audit-dist.mjs",
+        "scripts/lib/serve.mjs"
+      ]
+    },
+    {
+      "id": "WP-23",
+      "stage": 1,
+      "branch": "wp/23-reference",
+      "title": "Wave 11 reference pages: fundability, research, playbooks, briefs media density",
+      "writes": [
+        "src/pages/fundability/**",
+        "src/pages/research/**",
+        "src/pages/playbooks/**",
+        "src/pages/briefs/index.astro",
+        "src/pages/briefs/[id].astro",
+        "src/components/fundability/**",
+        "src/components/research/**",
+        "src/components/briefs/**",
+        "src/components/playbooks/**",
+        "src/assets/reference/**",
+        "src/content/briefs/**",
+        "src/content/research/**",
+        "src/content/library/**",
+        "tests/unit/wp-23/**",
+        "tests/e2e/wp-23*.spec.ts",
+        "tests/e2e/wave8/wp-23/**",
+        ".astro-magazine/handoffs/wp-23*",
+        ".astro-magazine/sources/wp-23.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": [
+        "src/layouts/BriefLayout.astro",
+        "src/layouts/PlaybookLayout.astro",
+        "src/layouts/ReferenceLayout.astro"
+      ]
+    },
+    {
+      "id": "WP-24",
+      "stage": 1,
+      "branch": "wp/24-hubs",
+      "title": "Wave 11 hubs and tools media density",
+      "writes": [
+        "src/pages/insights/index.astro",
+        "src/pages/insights/topic/**",
+        "src/pages/resources/**",
+        "src/pages/faq/**",
+        "src/pages/tools/**",
+        "src/pages/library/**",
+        "src/pages/industries/**",
+        "src/pages/founders/**",
+        "src/pages/investors/**",
+        "src/pages/journey/**",
+        "src/pages/compare/**",
+        "src/components/families/**",
+        "src/components/tools/**",
+        "src/components/library/**",
+        "src/components/industries/**",
+        "src/components/investors/**",
+        "src/components/hubs/**",
+        "src/scripts/runway.ts",
+        "src/scripts/metrics-calc.ts",
+        "src/scripts/cap-table.ts",
+        "src/scripts/evidence-room.ts",
+        "src/scripts/pricing-checker.ts",
+        "src/assets/hubs/**",
+        "tests/unit/wp-24/**",
+        "tests/e2e/wp-24*.spec.ts",
+        "tests/e2e/wave8/wp-24/**",
+        ".astro-magazine/handoffs/wp-24*",
+        ".astro-magazine/sources/wp-24.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": [
+        "src/layouts/HubLayout.astro",
+        "src/layouts/ToolLayout.astro",
+        "src/layouts/TemplateLayout.astro"
+      ]
+    },
+    {
+      "id": "WP-25",
+      "stage": 1,
+      "branch": "wp/25-cleanup",
+      "title": "Wave 11 cleanup: logo sizes, press dedupe, documents, brief thanks page",
+      "writes": [
+        "public/press/**",
+        "documents/**",
+        "src/pages/briefs/thanks.astro",
+        ".astro-magazine/checkpoint.json",
+        ".astro-magazine/media/**",
+        ".astro-magazine/articles/**",
+        ".astro-magazine/briefs/**",
+        ".astro-magazine/commission.json",
+        "tests/unit/wp-25/**",
+        "tests/e2e/wp-25*.spec.ts",
+        "tests/e2e/wave8/wp-25/**",
+        ".astro-magazine/handoffs/wp-25*",
+        ".astro-magazine/sources/wp-25.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": [
+        "src/components/layout/Header.astro"
+      ]
+    },
+    {
+      "id": "WP-26",
+      "stage": 2,
+      "branch": "wp/26-figures",
+      "title": "Wave 11 insight figures (starts after WP-38 merges)",
+      "writes": [
+        "src/components/insights/**",
+        "src/data/insight-figures/**",
+        "src/assets/insight-figures/**",
+        "tests/unit/wp-26/**",
+        "tests/e2e/wp-26*.spec.ts",
+        "tests/e2e/wave8/wp-26/**",
+        ".astro-magazine/handoffs/wp-26*",
+        ".astro-magazine/sources/wp-26.json"
+      ],
+      "excludes": [],
+      "laneExceptions": [],
+      "exceptions": [
+        "src/layouts/ArticleLayout.astro",
+        "src/components/insights/**",
+        "src/components/geo/mdx-transform.ts",
+        "tests/unit/wp-91/mdx-transform.test.ts"
+      ]
+    }
+  ]
+}
