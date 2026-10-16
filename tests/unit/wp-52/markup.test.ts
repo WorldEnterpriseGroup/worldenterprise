@@ -40,8 +40,8 @@ test('no style attributes, cssText, setAttribute("style"), inline scripts or inl
 });
 
 test('every scene wrapper renders Scene with a poster and alt text, and each scene has a wrapper', () => {
-  const wrappers = astro.filter((f) => /\/(GalaxyScene|LaunchTrajectory|OrbitSystem|WorldForge|StarfieldBand)\.astro$/.test(f));
-  assert.equal(wrappers.length, 5);
+  const wrappers = astro.filter((f) => /\/(GalaxyScene|LaunchTrajectory|OrbitSystem|WorldForge|StarfieldBand|AccretionScene)\.astro$/.test(f));
+  assert.equal(wrappers.length, 6);
   const used = new Set<string>();
   for (const f of wrappers) {
     const src = read(f);
