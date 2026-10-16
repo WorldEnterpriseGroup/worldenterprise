@@ -2,7 +2,7 @@
 
 Status: prepared by WP-25 (issue #91) on 2026-10-16 for a decision by the CEO. It records the decisions; it makes none. Every form on the site stays disabled until the decisions below are taken and an engineer carries them out through a merge request.
 
-Why the forms are off: a connected form collects personal data (names, email addresses, organization details, free-form messages). Doing that lawfully and honestly needs a chosen endpoint and processor, a privacy notice that states what happens to the data, consent wording, a retention period, spam protection and a tested error and success path. None of those is decided yet.
+Why the forms are off: a connected form collects personal data (names, email addresses, organization details, open-text messages). Doing that lawfully and honestly needs a chosen endpoint and processor, a privacy notice that states what happens to the data, consent wording, a retention period, spam protection and a tested error and success path. None of those is decided yet.
 
 Source of truth for this list: the rendered `demo` build of 2026-10-16 (`data-mode="disabled"` on every form), `src/data/forms.ts` (`FORM_ROUTES`, `THANKS_PATHS`, the field rules), `docs/forms-contract.md` (version 2) and `docs/forms-contract.schema.json`.
 
