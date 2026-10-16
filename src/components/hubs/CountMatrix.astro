@@ -3,7 +3,8 @@
  * CountMatrix: a cross-count drawn as a heat grid (WP-24). Rows and columns are two ways of sorting the same pages (for example stage
  * and kind); each cell holds a dot whose area follows its count, the count itself, and, when the caller gives one, a link to where those
  * pages are listed. It is an HTML table, so the drawing is its own text alternative: every row and column header is a real header and
- * every count is printed. The dots are small decorative SVGs with intrinsic sizes; no script, no style attribute.
+ * every count is printed. The table sits in the site's `.table-wrap` frame (focusable, named, scrolls sideways on a phone). The dots are
+ * small decorative SVGs with intrinsic sizes; no script, no style attribute.
  */
 import HubFigure from './HubFigure.astro';
 import { cleanText } from '../visuals/contracts.ts';
@@ -48,7 +49,7 @@ const word = (n: number): string => `${n} ${n === 1 ? unit[0] : unit[1]}`;
 ---
 
 <HubFigure id={id} kind={kind} title={Astro.props.title} caption={Astro.props.caption} credit={Astro.props.credit} drawing="html" tone={tone}>
-  <div class="cm__scroll" role="region" aria-label={`${Astro.props.title} (scrolls sideways on a narrow screen)`} tabindex="0">
+  <div class="table-wrap" role="region" aria-label={`${Astro.props.title} (scrolls sideways on a narrow screen)`} tabindex="0">
     <table class="cm">
       <thead>
         <tr>
@@ -87,17 +88,6 @@ const word = (n: number): string => `${n} ${n === 1 ? unit[0] : unit[1]}`;
 </HubFigure>
 
 <style>
-  .cm__scroll {
-    position: relative;
-    max-inline-size: 100%;
-    overflow-x: auto;
-  }
-
-  .cm__scroll:focus-visible {
-    outline: 3px solid var(--color-focus);
-    outline-offset: 2px;
-  }
-
   .cm {
     inline-size: 100%;
     border-collapse: collapse;
