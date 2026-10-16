@@ -12,6 +12,14 @@ import { founderStageRows } from '../../components/program/stages.ts';
 import Band from '../../components/visuals/Band.astro';
 import OrbitSystem from '../../components/visuals/OrbitSystem.astro';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { tile } from '../../components/hubs/stats.ts';
+import ScatterPlot from '../../components/visuals/charts/ScatterPlot.astro';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
+import { founderAgeScatter } from '../../data/datasets/figures.ts';
+import { RETRIEVED } from '../../data/datasets/sources.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
@@ -58,6 +66,16 @@ const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...
   primary={START_REVIEW}
   secondary={how ?? TALK_TO_WE}
 >
+  <HubLead labelledby="experience-title">
+    <h2 slot="head" id="experience-title" class="founders-head">Experience is an advantage</h2>
+    <HubMoment id="hub-founders-age" kind="chart">
+      <ScatterPlot {...founderAgeScatter} retrieved={RETRIEVED} />
+    </HubMoment>
+    <HubMoment slot="side" id="hub-founders-figures" kind="stats" heading="What the research found" lead="Founders of the fastest-growing new firms were older and more experienced than the typical founder.">
+      <StatTiles stats={[tile('ST-16'), tile('ST-17'), tile('ST-18'), tile('ST-27')]} label="Founder age and experience" id="founders-figures" class="founders-figures" />
+    </HubMoment>
+  </HubLead>
+
   <Content />
 
   <Fragment slot="after">
@@ -134,6 +152,7 @@ const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...
           Accountant, attorney or small business center? <a href={href(REFER_A_FOUNDER.href)}>{REFER_A_FOUNDER.label}</a>.
         </p>
       </div>
+      <HubEcosystem id="founders-ecosystem" />
     </Band>
 
     <CtaBand
@@ -149,6 +168,11 @@ const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...
   /* An even split gives each column half the 110rem frame; reading text keeps the 46rem measure (wave 8 80ch check). */
   .founders-measure {
     max-inline-size: var(--prose-max);
+  }
+
+  /* The figures carry long labels; two tiles a row keep each readable in the narrow column. */
+  :global(.stat-tiles.founders-figures .stat-tiles__grid) {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
   }
 
   .founders-sky {
