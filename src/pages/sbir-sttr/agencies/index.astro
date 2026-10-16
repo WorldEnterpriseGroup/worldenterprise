@@ -38,7 +38,7 @@ import { sbirSource, sourceAnchor } from '../../../data/sbir/sources.ts';
 import type { SbirSourceId } from '../../../data/sbir/sources.ts';
 
 const path = '/sbir-sttr/agencies/';
-const ids: readonly SbirSourceId[] = ['sbir-agencies', 'sbir-award-data', 'sbir-about', 'nih-seed', 'nsf-seed-fund', 'doe-sbir', 'nasa-sbir'];
+const ids: readonly SbirSourceId[] = ['sba-release-26-43', 'sbir-agencies', 'sbir-award-data', 'sbir-about', 'nih-seed', 'nsf-seed-fund', 'doe-sbir', 'nasa-sbir'];
 const bodies = AGENCIES.map((a) => ({ label: a.short, description: a.type === 'Grants and contracts' ? 'Grants and contracts' : a.type, href: `/sbir-sttr/agencies/#agency-${a.id}` }));
 const repeat = AGGREGATES.repeat.rows;
 const topRepeat = repeat[repeat.length - 1];
@@ -48,7 +48,7 @@ const agencyColumns = ['Agency', 'Awards', 'Dollars awarded', 'Median Phase I', 
 
 <MarketingLayout
   title="The eleven SBIR and STTR agencies"
-  seoTitle="SBIR and STTR agencies: DoD, HHS, NSF, DOE, NASA and more compared"
+  seoTitle="SBIR and STTR agencies compared"
   description="The eleven federal agencies that run SBIR and STTR: contracts or grants, topics or open calls, award sizes, and public award data by agency, state, first-time winners and repeat winners."
   lead="Eleven agencies run the programs, and they do not feel alike. Some write contracts for a specific need, others make grants for the best idea. Picking the right one is half the work."
   eyebrow="America’s seed fund"
