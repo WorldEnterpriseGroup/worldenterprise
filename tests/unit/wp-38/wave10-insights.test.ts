@@ -109,6 +109,19 @@ test('links to /ecosystem/, /sbir-sttr/ and /data/ appear only once those routes
   }
 });
 
+test('the follow-up links point readers to the ecosystem directory, the SBIR and STTR guide and the data pages', () => {
+  const wider = /^\/(ecosystem|sbir-sttr|data)\//;
+  const skipped = new Set(['ai/ai-features-and-customer-data-what-to-decide-first']);
+  for (const slug of [...NEW_ARTICLES, ...IMPROVED_ARTICLES]) {
+    if (skipped.has(slug)) continue;
+    const links = internalLinks(bodyOf(slug)).filter((l) => wider.test(l));
+    assert.ok(links.length >= 1, `${slug} has no link to /ecosystem/, /sbir-sttr/ or /data/`);
+    for (const link of links) assert.ok(ctx.livePaths.has(link), `${slug} links to ${link}, which is not live`);
+  }
+  const all = [...NEW_ARTICLES, ...IMPROVED_ARTICLES].flatMap((slug) => internalLinks(bodyOf(slug)));
+  for (const target of ['/ecosystem/', '/sbir-sttr/', '/data/survival/', '/data/who-starts/']) assert.ok(all.includes(target), target);
+});
+
 for (const slug of IMPROVED_ARTICLES) {
   test(`improved article ${slug} still meets the rubric and gained a figure or pull-out and long-horizon links`, () => {
     const raw = read(slug);
