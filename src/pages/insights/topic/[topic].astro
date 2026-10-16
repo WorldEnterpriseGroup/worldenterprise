@@ -10,6 +10,9 @@ import { getRenderable } from '../../../lib/content.ts';
 import { IDENTITY } from '../../../components/families/visual/copy.ts';
 import CtaLadder from '../../../components/families/visual/CtaLadder.astro';
 import EmblemFrame from '../../../components/families/visual/EmblemFrame.astro';
+import DeskConstellation from '../../../components/hubs/DeskConstellation.astro';
+import DotStrip from '../../../components/hubs/DotStrip.astro';
+import { getRouteState } from '../../../lib/route-state.ts';
 
 // A desk gets a topic page once it holds an article (route-core.ts DESK_TOPIC_PATTERN): a desk nobody has written for has no page.
 export const getStaticPaths = (async () => {
@@ -22,6 +25,20 @@ const label = DESK_LABELS[topic];
 const page = (await getCollection('pages')).find((e) => e.id === `insights/topic-${topic}`);
 const Content = page === undefined ? undefined : (await render(page)).Content;
 const items = await listInsights(topic);
+// WP-24: the whole insights sky with this desk lit (the others link to their own pages when live), and the reading time of every
+// article on this desk. Drawn at build time; the page ships no script for it.
+const state = await getRouteState();
+const all = await Promise.all(DESKS.map(async (desk) => ({ desk, items: await listInsights(desk) })));
+const sky = all
+  .filter((d) => d.items.length > 0)
+  .map(({ desk, items: list }) => ({
+    id: desk,
+    name: DESK_LABELS[desk].name,
+    count: list.length,
+    href: desk === topic ? '#desk-articles' : state.isLive(`/insights/topic/${desk}/`) ? `/insights/topic/${desk}/` : '/insights/',
+  }));
+const minutes = items.map((e) => ({ label: e.data.title, value: readingMinutes(e.body) }));
+const readingMax = Math.ceil(Math.max(10, ...minutes.map((m) => m.value)) / 5) * 5;
 ---
 
 <ArticleHub
@@ -41,8 +58,27 @@ const items = await listInsights(topic);
     </div>
   </div>
   {
+    sky.length > 0 && items.length > 0 && (
+      <div class="desk-media">
+        <DeskConstellation id="hub-topic-sky" desks={sky} focus={topic} />
+        <DotStrip
+          id="hub-topic-reading"
+          title={`Reading time on the ${label.name} desk`}
+          caption="One dot per article, in whole minutes; the amber mark is the median."
+          credit="Chart: World Enterprise Group Incorporated, counted at build time from the articles on this desk."
+          rows={[{ label: label.name, dots: minutes }]}
+          min={0}
+          max={readingMax}
+          unit=" min"
+          itemLabel="Article"
+          valueLabel="Reading time"
+        />
+      </div>
+    )
+  }
+  {
     items.length > 0 ? (
-      <ul class="grid grid--min-16" role="list">
+      <ul class="grid grid--min-16" role="list" id="desk-articles">
         {items.map((e) => (
           <li>
             <InsightCard
@@ -74,6 +110,12 @@ const items = await listInsights(topic);
       @media (min-width: 62rem) {
         grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
       }
+    }
+
+    .desk-media {
+      display: grid;
+      gap: var(--space-block, var(--sp-7));
+      min-inline-size: 0;
     }
 
     .desk-intro__art {

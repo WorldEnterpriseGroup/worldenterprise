@@ -93,7 +93,8 @@ const alt = `A dark sky crossed by one spiral arm with ${desks.length} star clus
 </HubFigure>
 
 <style>
-  .hub-sky :global(.is-dim) {
+  /* The figure element is HubFigure's, so it carries no scope attribute of this component; the rule targets the desk groups. */
+  .hub-sky__desk.is-dim {
     opacity: 0.35;
   }
 
