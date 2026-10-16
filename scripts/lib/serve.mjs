@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Minimal static server for the built site, behaving like GitHub Pages for the cases the tests rely on:
 // directory routes serve index.html, a missing trailing slash redirects (301), unknown paths answer 404 with /404.html.
+// Media files answer byte-range requests (206, or 416 for a range outside the file), as browsers need to seek a <video>.
 // Used by Playwright (webServer) and Lighthouse so that no Astro tooling is needed once dist exists.
 // Usage: node scripts/lib/serve.mjs [dist] [port]
 import { createServer } from 'node:http';
@@ -26,7 +27,41 @@ const TYPES = {
   '.woff2': 'font/woff2',
   '.wasm': 'application/wasm',
   '.webmanifest': 'application/manifest+json',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.vtt': 'text/vtt; charset=utf-8',
 };
+
+/** Files served with byte ranges (never compressed or rewritten). */
+const RANGED = new Set(['.mp4', '.webm']);
+
+/**
+ * Parses a `Range` header against a file of `size` bytes (RFC 9110 14.1.2). Only a single `bytes=` range is honored.
+ * Returns `null` when there is no usable header (serve the whole file), `{ start, end }` (inclusive) for a satisfiable range, or
+ * `'unsatisfiable'` when the range is malformed or lies outside the file (answer 416).
+ */
+export function parseRange(header, size) {
+  if (header === undefined || header === null || header === '') return null;
+  const match = /^bytes=(\d*)-(\d*)$/.exec(String(header).trim());
+  if (match === null) return 'unsatisfiable';
+  const [, first, last] = match;
+  if (first === '' && last === '') return 'unsatisfiable';
+  if (!Number.isSafeInteger(size) || size <= 0) return 'unsatisfiable';
+  let start;
+  let end;
+  if (first === '') {
+    // Suffix range: the last N bytes.
+    const length = Number(last);
+    if (!Number.isSafeInteger(length) || length === 0) return 'unsatisfiable';
+    start = Math.max(0, size - length);
+    end = size - 1;
+  } else {
+    start = Number(first);
+    end = last === '' ? size - 1 : Math.min(Number(last), size - 1);
+    if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start >= size || end < start) return 'unsatisfiable';
+  }
+  return { start, end };
+}
 
 /** Resolves a request path to a file under root, or null. Rejects traversal outside root. */
 export function resolveFile(root, pathname) {
@@ -75,6 +110,26 @@ export function createStaticServer(distDir, options = {}) {
     const status = hit === null ? 404 : 200;
     const rewrite = options.rewriteOrigin !== undefined && (ext === '.html' || ext === '.xml');
     const gzip = COMPRESSIBLE.has(ext) && /\bgzip\b/.test(String(req.headers['accept-encoding'] ?? ''));
+    if (status === 200 && RANGED.has(ext)) {
+      const size = statSync(file).size;
+      const range = parseRange(req.headers.range, size);
+      headers['Accept-Ranges'] = 'bytes';
+      if (range === 'unsatisfiable') {
+        res.writeHead(416, { 'Content-Range': `bytes */${size}`, 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
+        res.end();
+        return;
+      }
+      if (range !== null) {
+        res.writeHead(206, { ...headers, 'Content-Range': `bytes ${range.start}-${range.end}/${size}`, 'Content-Length': range.end - range.start + 1 });
+        if (req.method === 'HEAD') res.end();
+        else createReadStream(file, { start: range.start, end: range.end }).on('error', () => res.destroy()).pipe(res);
+        return;
+      }
+      res.writeHead(200, { ...headers, 'Content-Length': size });
+      if (req.method === 'HEAD') res.end();
+      else createReadStream(file).on('error', () => res.destroy()).pipe(res);
+      return;
+    }
     if (!rewrite && !gzip) {
       res.writeHead(status, headers);
       if (req.method === 'HEAD') res.end();

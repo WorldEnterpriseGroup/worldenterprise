@@ -1,0 +1,232 @@
+---
+/**
+ * Carousel (WP-22, #88): a horizontal, scroll-snapping list with real controls. API and rules: src/components/media/README.md.
+ *
+ * - The items are the default slot: `<li>` elements, in order. Without JavaScript the carousel is a plain ordered list that scrolls
+ *   sideways (focusable, so the keyboard can scroll it); browsers with CSS `::scroll-button()` and `::scroll-marker` also draw their
+ *   native buttons and dots there.
+ * - With JavaScript, <we-carousel> (src/scripts/media-carousel.ts) shows the Previous/Next buttons, one button per item ("Item n of N")
+ *   and the "Item n of N" status in a polite live region, and the native CSS controls step aside so nothing is drawn twice.
+ * - Never autoplays. Smooth scrolling only without a reduced-motion preference.
+ * - The region is labelled (`label`), and announced as a carousel.
+ */
+import { cleanText } from '../visuals/contracts.ts';
+
+interface Props {
+  /** Accessible name of the region ("The decade, milestone by milestone"). */
+  label: string;
+  /** Id prefix, unique on the page. */
+  id: string;
+  /** Id of a visible heading that names the carousel; the region is named by it instead of by `label`. */
+  labelledby?: string;
+  /** Item width: `card` (about 22rem) or `wide` (about 36rem). Items never exceed the track. */
+  size?: 'card' | 'wide';
+}
+
+const { label: rawLabel, id, labelledby, size = 'card' } = Astro.props;
+const label = cleanText('Carousel', 'label', rawLabel);
+const trackId = `${id}-track`;
+---
+
+<we-carousel class:list={['carousel', `carousel--${size}`]} id={id}>
+  <section
+    class="carousel__region"
+    aria-roledescription="carousel"
+    aria-labelledby={labelledby}
+    aria-label={labelledby === undefined ? label : undefined}
+  >
+    <ol class="carousel__track" id={trackId} tabindex="0" aria-label={label} data-track>
+      <slot />
+    </ol>
+    <div class="carousel__controls" data-controls hidden>
+      <button type="button" class="carousel__button" data-prev aria-controls={trackId}>
+        <span aria-hidden="true">&larr;</span> Previous<span class="visually-hidden"> item</span>
+      </button>
+      <p class="carousel__status" data-status aria-live="polite" aria-atomic="true"></p>
+      <button type="button" class="carousel__button" data-next aria-controls={trackId}>
+        Next<span class="visually-hidden"> item</span> <span aria-hidden="true">&rarr;</span>
+      </button>
+    </div>
+    <div class="carousel__markers" data-markers role="group" aria-label={`Choose an item: ${label}`} hidden></div>
+  </section>
+</we-carousel>
+
+<script>
+  import { defineWeCarousel } from '../../scripts/media-carousel.ts';
+
+  defineWeCarousel();
+</script>
+
+<style>
+  .carousel {
+    --carousel-item: min(22rem, 85%);
+    display: block;
+    min-inline-size: 0;
+  }
+
+  .carousel--wide {
+    --carousel-item: min(36rem, 90%);
+  }
+
+  .carousel__region {
+    display: grid;
+    gap: var(--sp-4);
+  }
+
+  .carousel__track {
+    position: relative;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--carousel-item);
+    gap: var(--space-group);
+    margin: 0;
+    padding: var(--sp-1) var(--sp-1) var(--sp-3);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--sp-1);
+    scrollbar-width: thin;
+  }
+
+  .carousel__track:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .carousel__track {
+      scroll-behavior: smooth;
+    }
+  }
+
+  .carousel__track > :global(li) {
+    scroll-snap-align: start;
+    min-inline-size: 0;
+  }
+
+  .carousel__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+  }
+
+  .carousel__controls[hidden],
+  .carousel__markers[hidden] {
+    display: none;
+  }
+
+  .carousel__status {
+    margin: 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .carousel__button,
+  .carousel__markers :global(button) {
+    min-inline-size: var(--target-min);
+    min-block-size: var(--target-min);
+    border: var(--border-hair) solid var(--color-border-strong, var(--color-border));
+    border-radius: var(--radius-pill);
+    font: inherit;
+    color: var(--color-text);
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .carousel__button {
+    padding: var(--sp-2) var(--sp-4);
+    font-weight: 600;
+  }
+
+  .carousel__button:disabled {
+    cursor: default;
+    opacity: 0.45;
+  }
+
+  .carousel__button:not(:disabled):hover,
+  .carousel__markers :global(button:hover) {
+    background-color: var(--color-bg-soft);
+  }
+
+  .carousel__button:focus-visible,
+  .carousel__markers :global(button:focus-visible) {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .carousel__markers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--sp-2);
+  }
+
+  .carousel__markers :global(button) {
+    padding: 0 var(--sp-3);
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .carousel__markers :global(button[aria-current='true']) {
+    color: var(--color-bg);
+    background-color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  @media (forced-colors: active) {
+    .carousel__markers :global(button[aria-current='true']) {
+      outline: 3px solid Highlight;
+    }
+  }
+
+  /*
+   * Native carousel controls (CSS Overflow 5) for browsers that have them, only until the script takes over: no-JS visitors get real
+   * buttons and dots, and nothing is drawn twice once <we-carousel> is ready.
+   */
+  @supports selector(::scroll-marker) {
+    .carousel:not([data-ready]) .carousel__track {
+      scroll-marker-group: after;
+    }
+
+    .carousel:not([data-ready]) .carousel__track::scroll-marker-group {
+      display: flex;
+      justify-content: center;
+      gap: var(--sp-2);
+      padding-block: var(--sp-2);
+    }
+
+    .carousel:not([data-ready]) .carousel__track > :global(li)::scroll-marker {
+      content: '';
+      inline-size: 0.75rem;
+      block-size: 0.75rem;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+    }
+
+    .carousel:not([data-ready]) .carousel__track > :global(li)::scroll-marker:target-current {
+      background-color: currentColor;
+    }
+  }
+
+  @supports selector(::scroll-button(*)) {
+    .carousel:not([data-ready]) .carousel__track::scroll-button(*) {
+      inline-size: var(--target-min);
+      block-size: var(--target-min);
+      border: var(--border-hair) solid currentColor;
+      border-radius: 50%;
+      color: var(--color-text);
+      background-color: var(--color-bg);
+    }
+
+    .carousel:not([data-ready]) .carousel__track::scroll-button(left) {
+      content: '\2190' / 'Previous item';
+    }
+
+    .carousel:not([data-ready]) .carousel__track::scroll-button(right) {
+      content: '\2192' / 'Next item';
+    }
+  }
+</style>

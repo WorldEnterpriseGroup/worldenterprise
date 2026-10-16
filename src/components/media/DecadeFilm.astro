@@ -1,0 +1,124 @@
+---
+/**
+ * DecadeFilm (WP-22, #88): "A company's first decade, in one minute", the explainer film, in a CaptionedVideo with its transcript.
+ * Everything here is generated from the storyboard in ./decade.ts, as are the captions and the frames
+ * (src/assets/video/tools/render-decade.mjs), so the film, its captions and its transcript cannot drift apart.
+ */
+import posterMaster from '../../assets/video/decade-poster.avif';
+import captionsUrl from '../../assets/video/decade.en.vtt?url';
+import mp4Url from '../../assets/video/decade.mp4?url';
+import webmUrl from '../../assets/video/decade.webm?url';
+import CaptionedVideo from './CaptionedVideo.astro';
+import { DECADE_CHAPTERS, DECADE_DURATION, DECADE_SIZE, DECADE_TITLE, chapterSources, chapterStat, decadeSources, durationLabel } from './decade.ts';
+
+interface Props {
+  /** Id prefix, unique on the page. */
+  id?: string;
+}
+
+const { id = 'decade-film' } = Astro.props;
+const chapters = DECADE_CHAPTERS.map((chapter) => {
+  const figure = chapterStat(chapter);
+  return {
+    chapter,
+    span: `${durationLabel(chapter.start)} to ${durationLabel(chapter.end)}`,
+    heading: chapter.when === '' ? chapter.title : `${chapter.when}. ${chapter.title}`,
+    onScreen: figure === undefined ? chapter.line : `${chapter.line} ${chapter.statText ?? `${figure.value} ${figure.label}.`}`,
+    sources: chapterSources(chapter),
+  };
+});
+const sources = decadeSources();
+---
+
+<CaptionedVideo
+  id={id}
+  title={DECADE_TITLE}
+  webm={webmUrl}
+  mp4={mp4Url}
+  captions={captionsUrl}
+  poster={posterMaster}
+  width={DECADE_SIZE.width}
+  height={DECADE_SIZE.height}
+  duration={DECADE_DURATION}
+  silent
+  summary="A company's first ten years drawn as a world forming: incubation, launch and growth, with the public survival figures for new U.S. businesses."
+  downloadName="we-first-decade-in-one-minute.mp4"
+>
+  <Fragment slot="transcript">
+    <p>
+      The film has no sound; every word in it is on screen, and the captions repeat them. Only years 1, 5 and 10 on the ring of 100 lights are
+      data. Between those years the film dims lights at an even pace, which is a drawing, not a measurement.
+    </p>
+    <ol class="decade-transcript">
+      {
+        chapters.map((c) => (
+          <li>
+            <p class="decade-transcript__head">
+              <span class="decade-transcript__time">{c.span}.</span> {c.heading}
+            </p>
+            <p>Picture: {c.chapter.picture}</p>
+            <p>On screen: {c.onScreen}</p>
+            {c.sources.length > 0 && <p class="decade-transcript__source">Source: {c.sources.map((s) => s.short).join('; ')}.</p>}
+          </li>
+        ))
+      }
+    </ol>
+    <h3 class="decade-transcript__sources-title">Sources</h3>
+    <ul class="decade-transcript__sources" role="list">
+      {
+        sources.map((s) => (
+          <li>
+            {s.publisher}, <a href={s.url}>{s.title}</a>, accessed {s.accessed}.
+          </li>
+        ))
+      }
+    </ul>
+    <p class="decade-transcript__credit">
+      Made by WE: drawn frame by frame in code from the figures above and encoded by WE. No stock footage, no music.
+    </p>
+  </Fragment>
+</CaptionedVideo>
+
+<style>
+  .decade-transcript,
+  .decade-transcript__sources {
+    display: grid;
+    gap: var(--sp-4);
+    margin: 0;
+    padding-inline-start: var(--sp-5);
+  }
+
+  .decade-transcript li,
+  .decade-transcript__sources li {
+    display: grid;
+    gap: var(--sp-1);
+
+    & p {
+      margin: 0;
+    }
+  }
+
+  .decade-transcript__head {
+    font-weight: 600;
+  }
+
+  .decade-transcript__time {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .decade-transcript__source,
+  .decade-transcript__credit {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .decade-transcript__sources {
+    font-size: var(--fs-sm);
+    list-style: none;
+    padding: 0;
+  }
+
+  .decade-transcript__sources-title {
+    font-size: var(--fs-base);
+  }
+</style>

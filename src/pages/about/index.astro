@@ -9,6 +9,8 @@ import { SEE_FRAMEWORKS, START_REVIEW, TALK_TO_WE, seeHowWeWorks } from '../../c
 import { SCALE_LADDER } from '../../components/about/framework-data.ts';
 import { loadPage } from '../../components/about/load-page.ts';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import DecadeCarousel from '../../components/media/DecadeCarousel.astro';
+import DecadeFilm from '../../components/media/DecadeFilm.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import FactBand from '../../components/ui/FactBand.astro';
 import Band from '../../components/visuals/Band.astro';
@@ -96,6 +98,24 @@ const team = [
             caption="Dream, Build and Grow as one flight. Each label opens that stage."
           />
         </div>
+      </div>
+    </Band>
+
+    <Band tone="deep" labelledby="about-decade" id="decade" defer>
+      <div class="about-stack about-measure">
+        <p class="eyebrow">Show, not tell</p>
+        <h2 id="about-decade">A world takes ten years. Watch one form in a minute.</h2>
+        <p>
+          The film follows one company from its application to its tenth year, drawn as a world forming: dust, a core, a lit world, rings,
+          moons and a system around it. Every figure in it is a public survival statistic for new U.S. businesses, cited below the player.
+        </p>
+      </div>
+      <div class="about-film">
+        <DecadeFilm id="about-film" />
+      </div>
+      <div class="about-milestones">
+        <h3 id="about-milestones-title">The decade, milestone by milestone</h3>
+        <DecadeCarousel id="about-milestones" labelledby="about-milestones-title" />
       </div>
     </Band>
 
@@ -194,6 +214,22 @@ const team = [
 
   .about-ladder {
     margin-block-start: var(--space-block);
+  }
+
+  /* The film takes the whole 110rem frame: near full width on a 1080p screen, and native full screen fills 1440p and 4K. */
+  .about-film {
+    margin-block-start: var(--space-block);
+  }
+
+  .about-milestones {
+    display: grid;
+    gap: var(--space-flow);
+    margin-block-start: var(--space-section);
+
+    & h3 {
+      margin: 0;
+      font-size: var(--fs-h3);
+    }
   }
 
   .about-readon {

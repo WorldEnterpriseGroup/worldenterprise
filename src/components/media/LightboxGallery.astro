@@ -1,0 +1,323 @@
+---
+/**
+ * LightboxGallery (WP-22, #88): an ordered grid of figures whose thumbnails open a full-screen viewer. API and rules:
+ * src/components/media/README.md.
+ *
+ * - Each thumbnail is a real link to the full-size AVIF: without JavaScript (or when the viewer fails) the link simply opens the image.
+ * - With JavaScript, <we-lightbox> (src/scripts/media-lightbox.ts) opens the image in a native modal `<dialog>` instead: focus moves
+ *   into it and returns to the thumbnail on close; Escape, the close button and a click on the backdrop (`closedby="any"`) close it;
+ *   previous and next buttons, the arrow keys (only while the dialog has focus) and Home/End step through the set; "n of N" shows the
+ *   position and a polite live region announces each new item.
+ * - Reduced motion: the viewer opens without its zoom-in transition.
+ * - The dialog's image is created by the script, never server-rendered, so a closed viewer fetches nothing.
+ */
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { cleanText, VisualContractError } from '../visuals/contracts.ts';
+
+export interface LightboxItem {
+  /** The master image (an imported AVIF), ideally 2560 px wide or more. */
+  readonly image: ImageMetadata;
+  readonly alt: string;
+  readonly caption: string;
+  /** Who made the image, shown under the caption ("Rendered by WE"). */
+  readonly credit?: string;
+}
+
+interface Props {
+  items: readonly LightboxItem[];
+  /** Accessible name of the gallery and of the viewer ("Worlds WE builds"). */
+  label: string;
+  /** Id prefix, unique on the page. */
+  id: string;
+  /** Id of a visible heading that names the gallery; when absent the gallery is named by `label`. */
+  labelledby?: string;
+}
+
+const { items, label: rawLabel, id, labelledby } = Astro.props;
+const label = cleanText('LightboxGallery', 'label', rawLabel);
+if (items.length < 2) throw new VisualContractError('LightboxGallery', `"${label}" needs at least two images, got ${items.length}`);
+
+/** Thumbnails show at most 512 CSS px wide (audit:images keeps a 512 px image under 60 KB); the 1024 candidate serves dense screens. */
+const THUMB = 512;
+/** Viewer candidates: full HD, 1440p and 4K screens pick their own; the link opens the widest. */
+const FULL_WIDTHS = [1280, 1920, 2560, 3840];
+const THUMB_SIZES = `(min-width: 64rem) ${THUMB}px, (min-width: 40rem) 45vw, 100vw`;
+
+const prepared = await Promise.all(
+  items.map(async (item, index) => {
+    const alt = cleanText('LightboxGallery', `items[${index}].alt`, item.alt);
+    const caption = cleanText('LightboxGallery', `items[${index}].caption`, item.caption);
+    const credit = item.credit === undefined ? undefined : cleanText('LightboxGallery', `items[${index}].credit`, item.credit);
+    const src = item.image;
+    const thumbWidth = Math.min(THUMB, src.width);
+    const thumbHeight = Math.round((thumbWidth * src.height) / src.width);
+    const thumb = await getImage({
+      src,
+      format: 'avif',
+      width: thumbWidth,
+      height: thumbHeight,
+      widths: [thumbWidth, Math.min(thumbWidth * 2, src.width)].filter((w, i, all) => all.indexOf(w) === i),
+      sizes: THUMB_SIZES,
+    });
+    const widths = FULL_WIDTHS.filter((w) => w <= src.width);
+    const fullWidth = widths[widths.length - 1] ?? src.width;
+    const fullHeight = Math.round((fullWidth * src.height) / src.width);
+    const full = await getImage({ src, format: 'avif', width: fullWidth, height: fullHeight, widths, sizes: '100vw' });
+    return {
+      alt,
+      caption,
+      credit,
+      thumb: { src: thumb.src, srcset: thumb.srcSet.values.length > 0 ? thumb.srcSet.attribute : undefined, sizes: THUMB_SIZES, width: thumbWidth, height: thumbHeight },
+      full: { src: full.src, srcset: full.srcSet.values.length > 0 ? full.srcSet.attribute : undefined, width: fullWidth, height: fullHeight },
+    };
+  }),
+);
+const titleId = `${id}-viewer-title`;
+---
+
+<we-lightbox class="lightbox" id={id} data-label={label}>
+  <ol class="lightbox__grid" role="list" aria-labelledby={labelledby} aria-label={labelledby === undefined ? label : undefined}>
+    {
+      prepared.map((item, index) => (
+        <li class="lightbox__item">
+          <figure class="lightbox__figure">
+            <a
+              class="lightbox__link"
+              href={item.full.src}
+              data-index={index}
+              data-srcset={item.full.srcset}
+              data-width={item.full.width}
+              data-height={item.full.height}
+              data-alt={item.alt}
+              data-caption={item.caption}
+              data-credit={item.credit}
+            >
+              <img
+                src={item.thumb.src}
+                srcset={item.thumb.srcset}
+                sizes={item.thumb.sizes}
+                width={item.thumb.width}
+                height={item.thumb.height}
+                alt={item.alt}
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="visually-hidden">(opens a larger view)</span>
+            </a>
+            <figcaption class="lightbox__caption">
+              <span>{item.caption}</span>
+              {item.credit !== undefined && <span class="lightbox__credit">{item.credit}</span>}
+            </figcaption>
+          </figure>
+        </li>
+      ))
+    }
+  </ol>
+
+  <dialog class="lightbox__dialog" aria-labelledby={titleId} closedby="any">
+    <div class="lightbox__frame">
+      <p class="lightbox__bar">
+        <span class="lightbox__title" id={titleId}>{label}</span>
+        <span class="lightbox__position" data-position aria-hidden="true"></span>
+      </p>
+      <figure class="lightbox__view">
+        <div class="lightbox__stage" data-stage></div>
+        <figcaption class="lightbox__view-caption">
+          <span data-caption></span>
+          <span class="lightbox__credit" data-credit></span>
+        </figcaption>
+      </figure>
+      <div class="lightbox__controls">
+        <button type="button" class="lightbox__button" data-prev>Previous<span class="visually-hidden"> image</span></button>
+        <button type="button" class="lightbox__button" data-next>Next<span class="visually-hidden"> image</span></button>
+        <button type="button" class="lightbox__button lightbox__button--close" data-close>Close<span class="visually-hidden"> viewer</span></button>
+      </div>
+      <p class="visually-hidden" aria-live="polite" aria-atomic="true" data-live></p>
+    </div>
+  </dialog>
+</we-lightbox>
+
+<script>
+  import { defineWeLightbox } from '../../scripts/media-lightbox.ts';
+
+  defineWeLightbox();
+</script>
+
+<style>
+  .lightbox__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-group);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lightbox__figure {
+    display: grid;
+    gap: var(--sp-2);
+    margin: 0;
+  }
+
+  .lightbox__link {
+    display: block;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-color: var(--we-blue-night);
+
+    & img {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lightbox__link img {
+      transition: transform var(--dur-base) var(--ease-out);
+    }
+
+    .lightbox__link:hover img {
+      transform: scale(1.03);
+    }
+  }
+
+  .lightbox__link:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  .lightbox__caption,
+  .lightbox__view-caption {
+    display: grid;
+    gap: var(--sp-1);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-body);
+  }
+
+  .lightbox__credit {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  /* The viewer: a full-viewport dark stage at any screen size, the picture as large as fits above its caption and controls. */
+  .lightbox__dialog {
+    --color-text: var(--color-band-deep-text);
+    --color-text-muted: var(--color-band-deep-muted);
+    --color-focus: var(--color-focus-inverse);
+    inline-size: 100vw;
+    max-inline-size: 100vw;
+    block-size: 100dvh;
+    max-block-size: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--color-text);
+    background-color: var(--color-band-deep-bg);
+    overscroll-behavior: contain;
+  }
+
+  .lightbox__dialog::backdrop {
+    background-color: var(--scrim);
+  }
+
+  .lightbox__frame {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: var(--sp-3);
+    block-size: 100%;
+    padding: var(--sp-4) var(--gutter);
+    box-sizing: border-box;
+  }
+
+  .lightbox__bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    margin: 0;
+    font-family: var(--ff-display);
+    font-weight: 600;
+  }
+
+  .lightbox__view {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: var(--sp-3);
+    min-block-size: 0;
+    margin: 0;
+  }
+
+  .lightbox__stage {
+    display: grid;
+    place-items: center;
+    min-block-size: 0;
+  }
+
+  .lightbox__stage :global(img) {
+    display: block;
+    max-inline-size: 100%;
+    max-block-size: 100%;
+    inline-size: auto;
+    block-size: auto;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lightbox__dialog[open] .lightbox__stage :global(img) {
+      animation: lightbox-in var(--dur-base) var(--ease-out);
+    }
+  }
+
+  @keyframes lightbox-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+
+  .lightbox__view-caption {
+    max-inline-size: var(--measure);
+    justify-self: center;
+    text-align: center;
+  }
+
+  .lightbox__controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--sp-3);
+  }
+
+  .lightbox__button {
+    min-inline-size: var(--target-min);
+    min-block-size: var(--target-min);
+    padding: var(--sp-2) var(--sp-4);
+    border: var(--border-hair) solid var(--color-band-deep-line);
+    border-radius: var(--radius-pill);
+    font: inherit;
+    font-weight: 600;
+    color: var(--color-text);
+    background-color: transparent;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-band-deep-soft);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .lightbox__button {
+      border-color: ButtonText;
+    }
+  }
+</style>
