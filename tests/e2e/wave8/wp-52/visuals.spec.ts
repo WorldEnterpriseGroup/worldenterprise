@@ -9,7 +9,7 @@ import { ROUTE, isDesktop, presentFourCores } from './helpers.ts';
 // errors and CLS under 0.01; on a phone no request for the scene code; reduced motion, forced colors and no JavaScript show the poster.
 
 /** The dynamically imported scene code: the runtime (which carries three) and the five scene modules. The stub is not in this set. */
-const SCENE_CODE = /\/(?:runtime|three[\w.-]*|galaxy|launch|orbit|worldforge|accretion|starfield)\.[\w-]+\.js(?:\?|$)/;
+const SCENE_CODE = /\/(?:runtime|three[\w.-]*|galaxy|launch|orbit|worldforge|starfield)\.[\w-]+\.js(?:\?|$)/;
 
 // Headless Chromium on a CI runner has no GPU. Only the live-scene checks (visuals-live.spec.ts) ask for SwiftShader WebGL2, so this
 // file renders without software GL. Review shots are evidence, not gates: a capture that times out leaves a note. Tests are capped at
