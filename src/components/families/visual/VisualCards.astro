@@ -19,6 +19,8 @@ export interface VisualCardData {
   readonly seed?: string | undefined;
   /** A position the picture can show (a playbook's step, a journey stop). */
   readonly index?: number | undefined;
+  /** Extra classes on the card's list item, e.g. a hub filter's group classes (src/components/hubs/filter.ts). */
+  readonly itemClass?: string | undefined;
 }
 
 interface Props {
@@ -41,7 +43,7 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
   cards.length > 0 && (
     <ul class="wv-cards" data-size={size} role="list" {...(label !== undefined ? { 'aria-label': label } : {})} {...(labelledby !== undefined ? { 'aria-labelledby': labelledby } : {})}>
       {cards.map((card) => (
-        <li class="wv-cards__item">
+        <li class:list={['wv-cards__item', card.itemClass]}>
           <article class="wv-card">
             <div class="wv-card__sky">
               <Emblem kind={kind} seed={card.seed ?? card.href} index={card.index ?? 0} />
