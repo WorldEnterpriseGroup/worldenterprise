@@ -1,8 +1,7 @@
 ---
 /**
  * /how-we-work/ (WP-54, wave 9 W9-13): how a company brings WE on, how the work runs, how WE is paid and how it ends. It replaces the
- * packages page; /pricing/ is a noindex pointer here. Copy and data live in ./_model.ts (SITE-COPY section 4, SALES section 3).
- *
+ * packages page; /pricing/ is a noindex pointer here. Copy and data live in ./_model.ts (SITE-COPY section 4, SALES section 3). Wave 10 (WP-37, #86) adds the longevity and ecosystem bands.
  * Layout: the statement hero, an opening split (the engagement in orbit around your company), then full-bleed bands, each a section the
  * orbit links to. Every visual is HTML and SVG drawn at build time; the only scene is the orbit diagram, which falls back to its poster.
  */
@@ -20,6 +19,7 @@ import ReadinessScorecard from '../../components/visuals/illustrations/Readiness
 import TeamConstellation from '../../components/visuals/seats/TeamConstellation.astro';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
 import { href } from '../../lib/url.ts';
+import { DataTeaser, JoinPrograms, LongevitySpine, SbirBand } from '../../components/program/longevity/index.ts';
 import {
   BEFORE_STEPS,
   CADENCE,
@@ -319,6 +319,12 @@ const hex = (cx: number, cy: number, r: number): string =>
       </Split>
     </Band>
 
+    <LongevitySpine
+      detail="track"
+      tone="soft"
+      lead="The weekly rhythm is the fast half of WE. The slow half is the engagement itself: it has no fixed end date, because a company takes years, and WE is paced to them."
+    />
+
     <Band tone="tint-stone" id="not" labelledby="h-not">
       <h2 id="h-not">What WE is, and what WE is not</h2>
       <div class="hww-table">
@@ -335,6 +341,12 @@ const hex = (cx: number, cy: number, r: number): string =>
         </div>
       </div>
     </Band>
+
+    <JoinPrograms />
+
+    <SbirBand />
+
+    <DataTeaser tone="soft" />
 
     <StarfieldBand labelledby="h-hww-end" size="tall" static>
       <div class="hww-end">

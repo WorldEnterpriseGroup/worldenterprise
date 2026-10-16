@@ -13,6 +13,8 @@ import { METHODS, STAGE_VIEWS } from '../../components/program/phases.ts';
 import { getStage, nextStage } from '../../components/program/stages.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
+import SbirBand from '../../components/program/longevity/SbirBand.astro';
 
 const stage = getStage('build');
 const view = STAGE_VIEWS.build;
@@ -54,6 +56,8 @@ const waypoints = METHODS.launch.expansion.map((label) => ({ label }));
   </StageLong>
   <StageBody stage={stage} />
   <Fragment slot="after">
+    <LongevitySpine detail="brief" tone="soft" lead="Build runs through the years when the odds are hardest. Ship every week, and keep the plan patient." />
+    <SbirBand />
     <ProgramEnd title="Plan the steepest year with WE" text="Start a readiness review. WE arranges a conversation, then sends a one-page read of where the company sits on the business clock and what Build would need." secondary={howLong} />
   </Fragment>
 </StageLayout>

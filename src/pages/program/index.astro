@@ -19,6 +19,10 @@ import LaunchTrajectory from '../../components/visuals/LaunchTrajectory.astro';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
+import DataTeaser from '../../components/program/longevity/DataTeaser.astro';
+import JoinPrograms from '../../components/program/longevity/JoinPrograms.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
+import SbirBand from '../../components/program/longevity/SbirBand.astro';
 
 const { data, Content } = await loadPage('program');
 const state = await getRouteState();
@@ -123,6 +127,10 @@ const toc = [
   </div>
 
   <Fragment slot="after">
+    <LongevitySpine tone="soft" lead="The program has two speeds on purpose. Every week the team plans, ships and reports. Across the years the plan stays patient, because the data says the first five are the hardest." />
+    <JoinPrograms />
+    <SbirBand />
+    <DataTeaser />
     <ProgramEnd title="Where is your company on the clock?" text="Start a readiness review. WE arranges a conversation, then sends a one-page read of where your company sits on the business timeline and what the next phase needs." secondary={howWeWork} />
   </Fragment>
 </HubLayout>
