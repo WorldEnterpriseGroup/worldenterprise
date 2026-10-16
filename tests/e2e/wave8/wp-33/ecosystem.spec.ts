@@ -20,6 +20,8 @@ test.describe('the ecosystem pages', () => {
   for (const route of ROUTES) {
     test(`${route} has one heading, named drawings, marked external links and no axe violations`, async ({ page, baseURL }) => {
       test.skip(!isBuilt(route), `${route} is not built`);
+      // The hub renders all 60+ programs at once; axe over that DOM outlasts the 45 s default on the CPU-starved runner.
+      if (route === '/ecosystem/') test.setTimeout(90_000);
       const seen = watch(page, baseURL ?? '');
       await page.goto(route);
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
