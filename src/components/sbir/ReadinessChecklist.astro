@@ -1,0 +1,111 @@
+---
+/**
+ * <we-sbir-checklist>: the readiness or eligibility list as real checkboxes, server-rendered in full. The script (src/scripts/sbir-checklist.ts)
+ * adds a running count and keeps the ticks in the address after the "#". Without JavaScript the boxes still tick and the list prints.
+ */
+import { sbirSource, sourceAnchor } from '../../data/sbir/sources.ts';
+import type { Check } from '../../data/sbir/prepare.ts';
+
+interface Props {
+  items: readonly Check[];
+  /** Prefix for ids and the key in the address after the "#", so two lists on one page do not collide. Letters only. */
+  name: string;
+  legend: string;
+}
+
+const { items, name, legend } = Astro.props;
+---
+
+<we-sbir-checklist class="sbir-check" data-key={name}>
+  <fieldset class="sbir-check__set">
+    <legend class="sbir-check__legend">{legend}</legend>
+    <ul class="sbir-check__list" role="list">
+      {
+        items.map((item) => (
+          <li class="sbir-check__item">
+            <div class="choice">
+              <input id={`${name}-${item.id}`} type="checkbox" name={`${name}-${item.id}`} data-id={item.id} />
+              <label for={`${name}-${item.id}`}>{item.label}</label>
+            </div>
+            <p class="sbir-check__hint">
+              {item.hint}
+              {item.sources.map((id, i) => (
+                <>
+                  {i === 0 ? ' ' : '; '}
+                  <a href={sourceAnchor(id)}>{sbirSource(id).short}</a>
+                </>
+              ))}
+              .
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </fieldset>
+  <p class="sbir-check__progress" role="status" aria-live="polite" data-progress></p>
+</we-sbir-checklist>
+
+<script>
+  import { defineSbirChecklist } from '../../scripts/sbir-checklist.ts';
+  defineSbirChecklist();
+</script>
+
+<style>
+  @layer pages {
+    .sbir-check {
+      display: block;
+    }
+
+    .sbir-check__set {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      min-inline-size: 0;
+    }
+
+    .sbir-check__legend {
+      padding: 0;
+      margin-block-end: var(--sp-3);
+      font-family: var(--ff-display);
+      font-size: var(--fs-h3);
+      font-weight: 700;
+    }
+
+    .sbir-check__list {
+      display: grid;
+      gap: var(--sp-3);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sbir-check__item {
+      display: grid;
+      gap: var(--sp-1);
+      padding: var(--sp-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .sbir-check__hint {
+      margin: 0;
+      padding-inline-start: var(--sp-6);
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    /* The line is reserved even while empty, so the count appearing never moves the page. */
+    .sbir-check__progress {
+      min-block-size: 1.6em;
+      margin: var(--sp-3) 0 0;
+      font-weight: 700;
+    }
+
+    @media (forced-colors: active) {
+      .sbir-check__item {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>
