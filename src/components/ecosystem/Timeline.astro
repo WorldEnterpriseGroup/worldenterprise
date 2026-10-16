@@ -1,0 +1,172 @@
+---
+/**
+ * The years-long timeline of /ecosystem/ (WP-33): one bar per kind of program, and WE as the long-running thread under all of them.
+ * Illustrative, and labeled so. A table with the same facts follows the drawing, so the figure never carries information alone.
+ */
+import { TIMELINE_NOTE, TIMELINE_TABLE_CAPTION, TIMELINE_THREAD, TIMELINE_YEARS } from '../../data/ecosystem/copy.ts';
+import { TIMELINE_BARS, TIMELINE_SPAN_YEARS, windowText } from '../../data/ecosystem/timeline.ts';
+
+const LABEL_W = 190;
+const W = 940;
+const PLOT_W = W - LABEL_W - 20;
+const ROW = 38;
+const TOP = 34;
+const x = (year: number): number => Math.round((LABEL_W + (year / TIMELINE_SPAN_YEARS) * PLOT_W) * 10) / 10;
+const height = TOP + TIMELINE_BARS.length * ROW + 62;
+const threadY = TOP + TIMELINE_BARS.length * ROW + 24;
+---
+
+<figure class="eco-timeline">
+  <svg class="eco-timeline__svg" viewBox={`0 0 ${W} ${height}`} role="img" aria-labelledby="eco-tl-title eco-tl-desc">
+    <title id="eco-tl-title">When each kind of program often fits across ten years</title>
+    <desc id="eco-tl-desc">{`Bars for each kind of program over years 0 to ${TIMELINE_SPAN_YEARS}, with WE as one thread under all of them. ${TIMELINE_NOTE}`}</desc>
+    {
+      TIMELINE_YEARS.map((t) => (
+        <g>
+          <line class="eco-timeline__grid" x1={x(t.year)} y1={TOP - 8} x2={x(t.year)} y2={TOP + TIMELINE_BARS.length * ROW} />
+          <text class="eco-timeline__tick" x={x(t.year)} y={TOP - 14} text-anchor="middle">{t.label}</text>
+        </g>
+      ))
+    }
+    {
+      TIMELINE_BARS.map((bar, i) => (
+        <g>
+          <text class="eco-timeline__label" x={LABEL_W - 12} y={TOP + i * ROW + 21} text-anchor="end">{bar.label}</text>
+          <rect
+            class:list={['eco-timeline__bar', i % 2 === 1 && 'eco-timeline__bar--alt']}
+            x={x(bar.from)}
+            y={TOP + i * ROW + 6}
+            width={Math.max(x(bar.to) - x(bar.from), 6)}
+            height="22"
+            rx="11"
+          />
+        </g>
+      ))
+    }
+    <rect class="eco-timeline__thread" x={x(0)} y={threadY} width={x(TIMELINE_SPAN_YEARS) - x(0)} height="8" rx="4" />
+    <polygon class="eco-timeline__arrow" points={`${x(TIMELINE_SPAN_YEARS) + 2},${threadY - 6} ${x(TIMELINE_SPAN_YEARS) + 18},${threadY + 4} ${x(TIMELINE_SPAN_YEARS) + 2},${threadY + 14}`} />
+    <text class="eco-timeline__thread-label" x={LABEL_W - 12} y={threadY + 8} text-anchor="end">WE</text>
+    <text class="eco-timeline__note" x={x(0)} y={threadY + 36}>{TIMELINE_THREAD}</text>
+  </svg>
+  <figcaption class="eco-timeline__caption">{TIMELINE_NOTE}</figcaption>
+  <details class="eco-timeline__table">
+    <summary>{TIMELINE_TABLE_CAPTION}</summary>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Table: programs across ten years">
+    <table>
+      <caption class="visually-hidden">{TIMELINE_TABLE_CAPTION}</caption>
+      <thead>
+        <tr><th scope="col">Kind of program</th><th scope="col">Often fits</th></tr>
+      </thead>
+      <tbody>
+        {TIMELINE_BARS.map((bar) => <tr><th scope="row">{bar.label}</th><td>{windowText(bar)}</td></tr>)}
+        <tr><th scope="row">WE</th><td>Alongside, from year 0 to year 10 and beyond</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
+</figure>
+
+<style>
+  @layer pages {
+    .eco-timeline {
+      display: grid;
+      gap: var(--sp-3);
+      margin: 0;
+    }
+
+    .eco-timeline__svg {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+    }
+
+    .eco-timeline__grid {
+      stroke: var(--color-border);
+      stroke-width: 1;
+      stroke-dasharray: 3 6;
+    }
+
+    .eco-timeline__tick,
+    .eco-timeline__label,
+    .eco-timeline__note,
+    .eco-timeline__thread-label {
+      fill: var(--color-text);
+      font-family: inherit;
+      font-size: 15px;
+    }
+
+    .eco-timeline__tick,
+    .eco-timeline__note {
+      fill: var(--color-text-muted);
+      font-size: 13px;
+    }
+
+    .eco-timeline__thread-label {
+      font-weight: 700;
+    }
+
+    .eco-timeline__bar {
+      fill: var(--color-link);
+      opacity: 0.85;
+    }
+
+    .eco-timeline__bar--alt {
+      fill: var(--color-highlight-ink);
+    }
+
+    .eco-timeline__thread,
+    .eco-timeline__arrow {
+      fill: var(--color-highlight-ink);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .eco-timeline__thread {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: eco-timeline-draw 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+    }
+
+    @keyframes eco-timeline-draw {
+      from {
+        transform: scaleX(0);
+      }
+    }
+
+    .eco-timeline__caption {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .eco-timeline__table summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .eco-timeline__table table {
+      inline-size: 100%;
+      max-inline-size: 42rem;
+      margin-block-start: var(--sp-3);
+      border-collapse: collapse;
+    }
+
+    .eco-timeline__table th,
+    .eco-timeline__table td {
+      padding: var(--sp-2) var(--sp-3);
+      border-block-end: 1px solid var(--color-border);
+      text-align: start;
+    }
+
+    @media (forced-colors: active) {
+      .eco-timeline__bar,
+      .eco-timeline__thread,
+      .eco-timeline__arrow {
+        fill: CanvasText;
+      }
+
+      .eco-timeline__grid {
+        stroke: CanvasText;
+      }
+    }
+  }
+</style>
