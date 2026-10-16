@@ -1,0 +1,149 @@
+---
+/**
+ * DotStrip: one row per group, one dot per item on a shared value axis (WP-24). Row labels and the axis are HTML, so they stay readable
+ * at any width and zoom; each row's dots are a small SVG strip scaled to the row. Repeated values stack above and below the line, so
+ * no dot hides another. The data table lists every item. Use it for whole-number spreads such as reading minutes per desk.
+ */
+import HubFigure from './HubFigure.astro';
+import { lerp, stackOffsets } from './geometry.ts';
+import { cleanText } from '../visuals/contracts.ts';
+import type { MomentKind } from './moments.ts';
+
+interface Dot {
+  readonly label: string;
+  readonly value: number;
+}
+
+interface Row {
+  readonly label: string;
+  readonly dots: readonly Dot[];
+}
+
+interface Props {
+  id: string;
+  title: string;
+  caption: string;
+  credit: string;
+  rows: readonly Row[];
+  min: number;
+  max: number;
+  /** Unit printed after values, e.g. " min". */
+  unit: string;
+  /** Header of the item column in the table. */
+  itemLabel: string;
+  /** Header of the value column in the table. */
+  valueLabel: string;
+  kind?: MomentKind;
+}
+
+const { id, rows, min, max, unit, itemLabel, valueLabel, kind = 'chart' } = Astro.props;
+if (rows.length < 1 || rows.length > 16) throw new Error(`DotStrip "${id}": takes 1 to 16 rows, got ${rows.length}`);
+if (!(max > min)) throw new Error(`DotStrip "${id}": max must be above min`);
+for (const row of rows) {
+  cleanText('DotStrip', 'row label', row.label);
+  for (const d of row.dots) if (!Number.isFinite(d.value)) throw new Error(`DotStrip "${id}": "${d.label}" has no value`);
+}
+const W = 600;
+const H = 40;
+const R = 5;
+const ticks = Array.from({ length: 5 }, (_, i) => Math.round(min + ((max - min) * i) / 4));
+const strips = rows.map((row) => {
+  const values = row.dots.map((d) => Math.round(d.value));
+  const off = stackOffsets(values);
+  return {
+    label: row.label,
+    count: row.dots.length,
+    median: [...values].sort((a, b) => a - b)[Math.floor((values.length - 1) / 2)] ?? 0,
+    dots: values.map((v, i) => ({ cx: lerp(v, min, max, R + 1, W - R - 1), cy: Math.max(R, Math.min(H - R, H / 2 + (off[i] ?? 0) * (R * 1.6))) })),
+  };
+});
+const table = {
+  caption: Astro.props.title,
+  columns: ['Group', itemLabel, valueLabel],
+  rows: rows.flatMap((row) => row.dots.map((d) => [row.label, d.label, `${Math.round(d.value)}${unit}`])),
+};
+---
+
+<HubFigure id={id} kind={kind} title={Astro.props.title} caption={Astro.props.caption} credit={Astro.props.credit} drawing="html" table={table}>
+  <div class="ds">
+    {
+      strips.map((s) => (
+        <div class="ds__row">
+          <span class="ds__label">{s.label}</span>
+          <svg class="ds__strip" viewBox={`0 0 ${W} ${H}`} width={W} height={H} aria-hidden="true" focusable="false">
+            <line class="hf-rule" x1="0" y1={H / 2} x2={W} y2={H / 2} />
+            {s.dots.map((d) => (
+              <circle class="hf-blue ds__dot" cx={d.cx} cy={d.cy} r={R} />
+            ))}
+            <rect class="hf-amber" x={lerp(s.median, min, max, R + 1, W - R - 1) - 1.5} y="2" width="3" height={H - 4} />
+          </svg>
+          <span class="ds__meta">{s.count} · median {s.median}{unit}</span>
+        </div>
+      ))
+    }
+    <div class="ds__row ds__row--axis">
+      <span class="ds__label" />
+      <div class="ds__axis">
+        {ticks.map((t) => <span>{t}{unit}</span>)}
+      </div>
+      <span class="ds__meta" />
+    </div>
+  </div>
+  <p class="ds__key" slot="legend">Each dot is one article; the amber mark is the desk’s median.</p>
+</HubFigure>
+
+<style>
+  .ds {
+    display: grid;
+    gap: var(--sp-1);
+  }
+
+  .ds__row {
+    display: grid;
+    grid-template-columns: minmax(7rem, 14rem) minmax(0, 1fr) minmax(6rem, 9rem);
+    gap: var(--sp-3);
+    align-items: center;
+  }
+
+  .ds__label {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  .ds__meta {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  /* The strip scales with its column and keeps its 15:1 ratio, so the dots stay round. */
+  .ds__strip {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+  }
+
+  .ds__axis {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  .ds__key {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 40rem) {
+    .ds__row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .ds__row--axis .ds__label,
+    .ds__row--axis .ds__meta {
+      display: none;
+    }
+  }
+</style>

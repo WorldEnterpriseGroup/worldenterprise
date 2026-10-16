@@ -1,0 +1,62 @@
+---
+/**
+ * HubMoment: marks a reused figure (a WP-35 chart, a scene, a row of sourced figures) as one of a hub's media moments (WP-24). It adds
+ * `data-moment` and `data-media-id` around the slot and, with `heading`, a short heading and lead above it. The figure inside keeps its
+ * own caption, source and table; this wrapper adds no media of its own.
+ */
+import { cleanText } from '../visuals/contracts.ts';
+import { mediaId, momentKind } from './moments.ts';
+import type { MomentKind } from './moments.ts';
+
+interface Props {
+  id: string;
+  kind: MomentKind;
+  heading?: string;
+  headingLevel?: 2 | 3;
+  lead?: string;
+  class?: string;
+}
+
+const { headingLevel = 3, class: className } = Astro.props;
+const id = mediaId(Astro.props.id);
+const kind = momentKind(Astro.props.kind);
+const heading = Astro.props.heading === undefined ? undefined : cleanText('HubMoment', 'heading', Astro.props.heading);
+const lead = Astro.props.lead === undefined ? undefined : cleanText('HubMoment', 'lead', Astro.props.lead);
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+<div class:list={['hm', className]} data-moment={kind} data-media-id={id} id={id} {...(heading !== undefined ? { role: 'group', 'aria-labelledby': `${id}-heading` } : {})}>
+  {
+    heading !== undefined && (
+      <div class="hm__head">
+        <Heading class="hm__heading" id={`${id}-heading`}>{heading}</Heading>
+        {lead !== undefined && <p class="hm__lead">{lead}</p>}
+      </div>
+    )
+  }
+  <slot />
+</div>
+
+<style>
+  .hm {
+    display: grid;
+    gap: var(--sp-4);
+    align-content: start;
+    min-inline-size: 0;
+  }
+
+  .hm__head {
+    display: grid;
+    gap: var(--sp-2);
+    max-inline-size: var(--prose-max);
+  }
+
+  .hm__heading,
+  .hm__lead {
+    margin: 0;
+  }
+
+  .hm__lead {
+    color: var(--color-text-muted);
+  }
+</style>

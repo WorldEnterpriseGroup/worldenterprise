@@ -1,0 +1,147 @@
+---
+/**
+ * ToolCard: one founder tool on the /tools/ hub (WP-24). It opens on the tool's glyph, so each card shows what the tool computes before
+ * the reader opens it, then the verb, the title (the card's one link; its pseudo-element makes the whole card the target), the summary
+ * and one line of what goes in and what comes out.
+ */
+import ToolGlyph from './ToolGlyph.astro';
+import { VERB_LABELS, schematicFor } from './schematics.ts';
+import type { ToolEntry } from './registry.ts';
+import { href as resolve } from '../../lib/url.ts';
+
+interface Props {
+  tool: ToolEntry;
+  /** Station number on the tool map. */
+  mark: number;
+  headingLevel?: 2 | 3;
+}
+
+const { tool, mark, headingLevel = 2 } = Astro.props;
+const s = schematicFor(tool.href);
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+<article class="tool-card">
+  <div class="tool-card__art">
+    <ToolGlyph glyph={s.glyph} />
+    <span class="tool-card__mark" aria-hidden="true">{mark}</span>
+  </div>
+  <div class="tool-card__body">
+    <p class="tool-card__verb">{VERB_LABELS[s.verb]}</p>
+    <Heading class="tool-card__title"><a class="tool-card__link" href={resolve(tool.href)}>{tool.title}</a></Heading>
+    <p class="tool-card__text">{tool.summary}</p>
+    <dl class="tool-card__io">
+      <div><dt>In</dt><dd>{s.inputs.join(' · ')}</dd></div>
+      <div><dt>Out</dt><dd>{s.outputs.join(' · ')}</dd></div>
+    </dl>
+  </div>
+</article>
+
+<style>
+  .tool-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    block-size: 100%;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md, 0.5rem);
+    background: var(--color-bg);
+  }
+
+  .tool-card:has(.tool-card__link:hover) {
+    border-color: var(--color-border-strong);
+  }
+
+  .tool-card:has(.tool-card__link:focus-visible) {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .tool-card__art {
+    position: relative;
+  }
+
+  .tool-card__art :global(.tool-glyph rect:first-child) {
+    rx: 0;
+  }
+
+  .tool-card__mark {
+    position: absolute;
+    inset-block-start: var(--sp-3);
+    inset-inline-start: var(--sp-3);
+    display: inline-grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    border-radius: 50%;
+    background: var(--we-white);
+    color: var(--we-blue-night);
+    font-weight: 700;
+    font-size: var(--fs-sm);
+  }
+
+  .tool-card__body {
+    display: grid;
+    gap: var(--sp-2);
+    align-content: start;
+    padding: var(--sp-5);
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .tool-card__verb {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .tool-card__title {
+    font-size: var(--fs-lg);
+  }
+
+  .tool-card__link {
+    text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .tool-card__io {
+    display: grid;
+    gap: var(--sp-1);
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+
+    & div {
+      display: flex;
+      gap: var(--sp-2);
+    }
+
+    & dt {
+      font-weight: 700;
+      min-inline-size: 2rem;
+    }
+
+    & dd {
+      margin: 0;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .tool-card__mark {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

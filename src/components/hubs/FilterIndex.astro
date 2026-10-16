@@ -1,0 +1,174 @@
+---
+/**
+ * FilterIndex: a filter that needs no script (WP-24). A fieldset of radio buttons ("All" first, checked) sits above the items in the
+ * default slot; choosing an option hides every item outside that group with one `:has(:checked)` rule per slot. Each item carries
+ * the classes `itemClasses()` (filter.ts) returns. Radio buttons are native: Tab reaches the group, arrow keys move between options,
+ * touch works, and the choice survives a reload. Where `:has()` is missing nothing is hidden, so every item stays reachable.
+ *
+ *   const slots = filterSlots(desks.map((d) => ({ key: d.id, label: d.name, count: d.items.length })));
+ *   <FilterIndex id="desk-filter" legend="Show one desk" options={slots} total={n} unit={['article', 'articles']}>
+ *     {desks.map((d) => <div class={itemClasses(slots, [d.id])}>...</div>)}
+ *   </FilterIndex>
+ */
+import { cleanText } from '../visuals/contracts.ts';
+import { FILTER_SLOTS, countLabel } from './filter.ts';
+import type { FilterSlot } from './filter.ts';
+
+interface Props {
+  /** Unique on the page: the radio group's name and the element id. */
+  id: string;
+  legend: string;
+  options: readonly FilterSlot[];
+  /** How many items "All" shows. */
+  total: number;
+  /** Singular and plural nouns for the counts. */
+  unit: readonly [string, string];
+  /** One line under the legend. */
+  hint?: string;
+  class?: string;
+}
+
+const { id, options, total, unit, class: className } = Astro.props;
+if (!/^[a-z][a-z0-9-]*$/.test(id)) throw new Error(`FilterIndex: id "${id}" must be lower-case letters, digits and hyphens`);
+if (options.length > FILTER_SLOTS) throw new Error(`FilterIndex "${id}": ${options.length} options, at most ${FILTER_SLOTS}`);
+const legend = cleanText('FilterIndex', 'legend', Astro.props.legend);
+const hint = Astro.props.hint === undefined ? undefined : cleanText('FilterIndex', 'hint', Astro.props.hint);
+for (const o of options) cleanText('FilterIndex', `option ${o.key}`, o.label);
+---
+
+<div class:list={['fi', className]} id={id} data-filter-index>
+  <fieldset class="fi__set">
+    <legend class="fi__legend">{legend}</legend>
+    {hint !== undefined && <p class="fi__hint">{hint}</p>}
+    <div class="fi__options">
+      <label class="fi__option">
+        <input class="fi__input fi__input--all" type="radio" name={id} value="all" checked />
+        <span>All <span class="fi__count">{countLabel(total, unit[0], unit[1])}</span></span>
+      </label>
+      {
+        options.map((o) => (
+          <label class="fi__option">
+            <input class:list={['fi__input', `fi__input--${o.slot}`]} type="radio" name={id} value={o.key} />
+            <span>
+              {o.label} <span class="fi__count">{countLabel(o.count, unit[0], unit[1])}</span>
+            </span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+  <div class="fi__items">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .fi {
+    display: grid;
+    gap: var(--sp-5);
+    min-inline-size: 0;
+  }
+
+  .fi__set {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+    padding: var(--sp-4);
+    border: var(--border-strong, 1px solid var(--color-border-strong));
+    border-radius: var(--radius-md, 0.5rem);
+    background: var(--color-bg-soft);
+    min-inline-size: 0;
+  }
+
+  .fi__legend {
+    padding-inline: var(--sp-2);
+    font-family: var(--ff-display);
+    font-size: var(--fs-md, var(--fs-base));
+    font-weight: 700;
+  }
+
+  .fi__hint {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .fi__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+  }
+
+  .fi__option {
+    position: relative;
+    display: inline-flex;
+    gap: var(--sp-2);
+    align-items: center;
+    min-block-size: 2.75rem;
+    padding-inline: var(--sp-3) var(--sp-4);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg);
+    cursor: pointer;
+  }
+
+  .fi__option:has(.fi__input:checked) {
+    border-color: var(--we-blue-night);
+    background: var(--we-blue-night);
+    color: var(--we-white);
+  }
+
+  .fi__option:has(.fi__input:focus-visible) {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .fi__input {
+    margin: 0;
+    accent-color: var(--we-amber);
+  }
+
+  .fi__count {
+    font-size: var(--fs-sm);
+    opacity: 0.85;
+  }
+
+  .fi__items {
+    display: grid;
+    gap: var(--sp-6);
+    min-inline-size: 0;
+  }
+
+  /* Grid items default to their content's width; a rail that scrolls sideways inside an item must not widen the page. */
+  .fi__items > :global(*) {
+    min-inline-size: 0;
+  }
+
+  @media (forced-colors: active) {
+    .fi__option:has(.fi__input:checked) {
+      border: 3px solid Highlight;
+      background: Canvas;
+      color: CanvasText;
+    }
+  }
+
+  /* One rule per slot (FILTER_SLOTS in filter.ts): with option n checked, items without the class fi-n leave the layout. */
+  .fi:has(.fi__input--0:checked) .fi__items :global(.fi-item:not(.fi-0)),
+  .fi:has(.fi__input--1:checked) .fi__items :global(.fi-item:not(.fi-1)),
+  .fi:has(.fi__input--2:checked) .fi__items :global(.fi-item:not(.fi-2)),
+  .fi:has(.fi__input--3:checked) .fi__items :global(.fi-item:not(.fi-3)),
+  .fi:has(.fi__input--4:checked) .fi__items :global(.fi-item:not(.fi-4)),
+  .fi:has(.fi__input--5:checked) .fi__items :global(.fi-item:not(.fi-5)),
+  .fi:has(.fi__input--6:checked) .fi__items :global(.fi-item:not(.fi-6)),
+  .fi:has(.fi__input--7:checked) .fi__items :global(.fi-item:not(.fi-7)),
+  .fi:has(.fi__input--8:checked) .fi__items :global(.fi-item:not(.fi-8)),
+  .fi:has(.fi__input--9:checked) .fi__items :global(.fi-item:not(.fi-9)),
+  .fi:has(.fi__input--10:checked) .fi__items :global(.fi-item:not(.fi-10)),
+  .fi:has(.fi__input--11:checked) .fi__items :global(.fi-item:not(.fi-11)),
+  .fi:has(.fi__input--12:checked) .fi__items :global(.fi-item:not(.fi-12)),
+  .fi:has(.fi__input--13:checked) .fi__items :global(.fi-item:not(.fi-13)),
+  .fi:has(.fi__input--14:checked) .fi__items :global(.fi-item:not(.fi-14)),
+  .fi:has(.fi__input--15:checked) .fi__items :global(.fi-item:not(.fi-15)) {
+    display: none;
+  }
+</style>

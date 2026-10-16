@@ -3,6 +3,7 @@ import { getEntry, render } from 'astro:content';
 import { jumpTo } from '../../components/hero/ctas.ts';
 import TeamComposer from '../../components/islands/we-team-composer/TeamComposer.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
+import ToolSchematic from '../../components/tools/ToolSchematic.astro';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 
 const entry = await getEntry('pages', 'tools/team-composer');
@@ -28,6 +29,7 @@ const { data } = entry;
   ]}
   noscript="JavaScript is off. You can still enter seats for each role and continue to the application. The live summary needs JavaScript."
 >
+  <ToolSchematic href="/tools/team-composer/" name={data.title} />
   <div id="composer"><TeamComposer /></div>
   <div class="prose composer-notes"><Content /></div>
   <CtaBand

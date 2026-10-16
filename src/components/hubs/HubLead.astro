@@ -1,0 +1,66 @@
+---
+/**
+ * HubLead: the first section after a hub's hero (WP-24). The main figure takes the wide column and a second moment (sourced figures, a
+ * filter, a next action) the narrow one, so the first screen after the fold holds two media moments side by side across the frame.
+ * Below 62rem the columns stack, main first.
+ */
+interface Props {
+  /** Id of the heading that names the section; the heading is the caller's. */
+  labelledby?: string;
+  label?: string;
+  /** `even` splits the frame in half instead of two to one. */
+  balance?: 'wide' | 'even';
+  class?: string;
+}
+
+const { labelledby, label, balance = 'wide', class: className } = Astro.props;
+---
+
+<section class:list={['hub-lead', `hub-lead--${balance}`, className]} {...(labelledby !== undefined ? { 'aria-labelledby': labelledby } : label !== undefined ? { 'aria-label': label } : {})}>
+  <slot name="head" />
+  <div class="hub-lead__grid">
+    <div class="hub-lead__main">
+      <slot />
+    </div>
+    {
+      Astro.slots.has('side') && (
+        <div class="hub-lead__side">
+          <slot name="side" />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .hub-lead {
+    display: grid;
+    gap: var(--sp-5);
+    min-inline-size: 0;
+  }
+
+  .hub-lead__grid {
+    display: grid;
+    gap: var(--sp-6);
+    align-items: start;
+  }
+
+  .hub-lead__main,
+  .hub-lead__side {
+    display: grid;
+    gap: var(--sp-5);
+    min-inline-size: 0;
+  }
+
+  @media (min-width: 62rem) {
+    .hub-lead--wide .hub-lead__grid {
+      grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+      gap: var(--sp-8);
+    }
+
+    .hub-lead--even .hub-lead__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-8);
+    }
+  }
+</style>
