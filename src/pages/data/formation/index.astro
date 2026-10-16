@@ -1,0 +1,38 @@
+---
+/** /data/formation/ (WP-35): Census Business Formation Statistics, applications by industry and how many become employers. */
+import CtaRow from '../../../components/sales/CtaRow.astro';
+import DataSources from '../../../components/visuals/charts/DataSources.astro';
+import DataStage from '../../../components/visuals/charts/DataStage.astro';
+import SlopeChart from '../../../components/visuals/charts/SlopeChart.astro';
+import StackedArea from '../../../components/visuals/charts/StackedArea.astro';
+import WaffleChart from '../../../components/visuals/charts/WaffleChart.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { HOW_LONG_CTA, PRIMARY_CTA } from '../../../data/sales/copy.ts';
+import { FORMATION_PAGE as P, HONESTY } from '../../../data/datasets/copy.ts';
+import { RETRIEVED } from '../../../data/datasets/sources.ts';
+import { applicationsStack, formationWaffle, payrollSlope, sectorSlope } from '../../../data/datasets/figures.ts';
+
+const [industries, employers] = P.stages;
+---
+
+<MarketingLayout title={P.title} seoTitle={P.seoTitle} description={P.description} path={P.path} eyebrow={P.eyebrow} lead={P.lead}>
+  <p>{P.note}</p>
+  <p>{HONESTY}</p>
+
+  <Fragment slot="after">
+    <DataStage id={industries.id} tone="soft" stage="View 1 of 2" heading={industries.heading} body={industries.body}>
+      <StackedArea {...applicationsStack} retrieved={RETRIEVED} />
+      <SlopeChart {...sectorSlope} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id={employers.id} stage="View 2 of 2" heading={employers.heading} body={employers.body}>
+      <WaffleChart {...formationWaffle} retrieved={RETRIEVED} />
+      <SlopeChart {...payrollSlope} retrieved={RETRIEVED} />
+    </DataStage>
+    <section class="band" aria-label="Next steps">
+      <div class="container">
+        <CtaRow primary={PRIMARY_CTA} more={[[HOW_LONG_CTA]]} label="Next steps from the formation data" />
+      </div>
+    </section>
+    <DataSources ids={['census-bfs-monthly', 'census-bfs-definitions']} />
+  </Fragment>
+</MarketingLayout>

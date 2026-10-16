@@ -7,10 +7,12 @@
  * page. It projects each label's anchor every frame and writes the position as CSS custom properties through the CSSOM (never a style
  * attribute, which the CSP blocks).
  */
-import { Mesh, PerspectiveCamera, Points, Scene, Sprite, Vector3, WebGLRenderer, LineSegments, Line, InstancedMesh } from 'three';
-import type { Material, Object3D } from 'three';
+import { PerspectiveCamera, Scene, Vector3, WebGPURenderer } from 'three/webgpu';
+import type { Material, Object3D } from 'three/webgpu';
 import type { SceneInstance, SceneModule, SceneOptions } from './types.ts';
 import { WEBGL_CONTEXT_ATTRIBUTES } from './gate.ts';
+import { chooseBackend } from './backend.ts';
+import type { Backend, GpuLike } from './backend.ts';
 
 export const MAX_DPR = 1.75;
 
@@ -35,13 +37,65 @@ function disposeMaterial(material: Material | Material[]): void {
   }
 }
 
+/** Anything in the scene graph that owns a geometry and a material (meshes, lines, points, sprites). */
+interface Drawable extends Object3D {
+  readonly geometry: { dispose(): void };
+  readonly material: Material | Material[];
+}
+
+function isDrawable(node: Object3D): node is Drawable {
+  return 'geometry' in node && 'material' in node;
+}
+
 function disposeTree(root: Object3D): void {
   root.traverse((node) => {
-    if (node instanceof Mesh || node instanceof Points || node instanceof Line || node instanceof LineSegments || node instanceof InstancedMesh || node instanceof Sprite) {
-      node.geometry.dispose();
-      disposeMaterial(node.material);
-    }
+    if (!isDrawable(node)) return;
+    node.geometry.dispose();
+    disposeMaterial(node.material);
   });
+}
+
+/** A renderer on the chosen backend, with the canvas it draws to and the WebGL2 context it owns (to release it explicitly). */
+interface Surface {
+  readonly renderer: WebGPURenderer;
+  readonly canvas: HTMLCanvasElement;
+  readonly backend: Backend;
+  readonly gl: WebGL2RenderingContext | null;
+}
+
+/**
+ * Creates and initialises the renderer. WebGPU when a hardware adapter exists; otherwise, or when WebGPU fails to initialise, three's
+ * WebGL2 backend on a context created here with the same attributes the gate probed (so a software context is still refused).
+ */
+async function createSurface(doc: Document, onLost: (reason: string) => void): Promise<Surface> {
+  const make = async (backend: Backend): Promise<Surface> => {
+    const canvas = doc.createElement('canvas');
+    canvas.className = 'scene__canvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    let gl: WebGL2RenderingContext | null = null;
+    if (backend === 'webgl2') {
+      gl = canvas.getContext('webgl2', { alpha: true, antialias: true, depth: true, stencil: false, premultipliedAlpha: true, ...WEBGL_CONTEXT_ATTRIBUTES });
+      if (gl === null) throw new Error('a hardware WebGL2 context could not be created');
+    }
+    const renderer = new WebGPURenderer({ canvas, antialias: true, alpha: true, forceWebGL: backend === 'webgl2', ...(gl === null ? {} : { context: gl }) });
+    try {
+      await renderer.init();
+    } catch (error) {
+      renderer.dispose();
+      throw error;
+    }
+    renderer.onDeviceLost = (info) => onLost(`the graphics device was lost (${info.reason}): ${info.message}`);
+    renderer.setClearColor(0x000000, 0);
+    return { renderer, canvas, backend, gl };
+  };
+  const preferred = await chooseBackend((doc.defaultView?.navigator as (Navigator & { gpu?: GpuLike }) | undefined)?.gpu);
+  if (preferred === 'webgl2') return make('webgl2');
+  try {
+    return await make('webgpu');
+  } catch (error) {
+    console.warn('we-scene: WebGPU failed to initialise, using WebGL2', error);
+    return make('webgl2');
+  }
 }
 
 class Controller implements SceneController {
@@ -51,7 +105,8 @@ class Controller implements SceneController {
   private visible = false;
   private clock = 0;
   private last = 0;
-  private readonly renderer: WebGLRenderer;
+  private readonly renderer: WebGPURenderer;
+  private readonly surface: Surface;
   private readonly scene = new Scene();
   private readonly camera = new PerspectiveCamera(40, 16 / 9, 0.05, 200);
   private readonly instance: SceneInstance;
@@ -64,15 +119,14 @@ class Controller implements SceneController {
   constructor(
     private readonly host: HTMLElement,
     private readonly frame: HTMLElement,
+    surface: Surface,
     mod: SceneModule,
     options: SceneOptions,
     private readonly onFallback: (reason: string, error?: unknown) => void,
   ) {
-    this.canvas = host.ownerDocument.createElement('canvas');
-    this.canvas.className = 'scene__canvas';
-    this.canvas.setAttribute('aria-hidden', 'true');
-    this.renderer = new WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true, ...WEBGL_CONTEXT_ATTRIBUTES });
-    this.renderer.setClearColor(0x000000, 0);
+    this.surface = surface;
+    this.canvas = surface.canvas;
+    this.renderer = surface.renderer;
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_DPR));
     const { width, height } = this.size();
     this.renderer.setSize(width, height, false);
@@ -83,9 +137,16 @@ class Controller implements SceneController {
     this.instance = mod.create({ renderer: this.renderer, scene: this.scene, camera: this.camera, options, aspect: width / height, quality });
     this.clock = this.instance.posterTime;
     this.labels = Array.from(host.querySelectorAll<HTMLElement>('[data-anchor]'));
-    frame.append(this.canvas);
+  }
+
+  /** Compiles every pipeline the scene needs, then draws the first frame and shows the canvas, so the poster never fades to an empty frame. */
+  async start(): Promise<void> {
+    await this.renderer.compileAsync(this.scene, this.camera);
+    if (this.disposed) return;
+    this.frame.append(this.canvas);
     this.renderFrame(0);
-    host.classList.add('is-live');
+    this.host.classList.add('is-live');
+    this.host.dataset.backend = this.surface.backend;
     this.wire();
   }
 
@@ -136,6 +197,7 @@ class Controller implements SceneController {
       event.preventDefault();
       this.fallBack('the WebGL context was lost');
     });
+    this.listen(this.canvas, 'webglcontextrestored', () => undefined);
 
     this.listen(this.frame, 'pointermove', (event) => {
       const e = event as PointerEvent;
@@ -233,16 +295,22 @@ class Controller implements SceneController {
       this.instance.dispose();
       disposeTree(this.scene);
       this.renderer.dispose();
-      this.renderer.forceContextLoss();
+      this.surface.gl?.getExtension('WEBGL_lose_context')?.loseContext();
     } catch (error) {
       console.warn('we-scene: disposing the scene threw', error);
     }
     this.canvas.remove();
     this.host.classList.remove('is-live');
+    delete this.host.dataset.backend;
     for (const label of this.labels) {
       label.style.removeProperty('--x');
       label.style.removeProperty('--y');
     }
+  }
+
+  /** The graphics device went away: tear down and keep the poster. */
+  lose(reason: string): void {
+    this.fallBack(reason);
   }
 
   register(): void {
@@ -252,12 +320,21 @@ class Controller implements SceneController {
 
 /**
  * Mounts a scene in `host` (a <we-scene>). The canvas joins `.scene__frame`, over the poster, and the poster fades only after the first
- * frame has rendered. Throws when the scene cannot be created; the element catches that and keeps the poster.
+ * frame has rendered. Rejects when the scene cannot be created; the element catches that and keeps the poster.
  */
-export function startScene(host: HTMLElement, mod: SceneModule, options: SceneOptions, onFallback: (reason: string, error?: unknown) => void): SceneController {
+export async function startScene(host: HTMLElement, mod: SceneModule, options: SceneOptions, onFallback: (reason: string, error?: unknown) => void): Promise<SceneController> {
   const frame = host.querySelector<HTMLElement>('.scene__frame');
   if (frame === null) throw new Error('we-scene: no .scene__frame inside the element');
-  const controller = new Controller(host, frame, mod, options, onFallback);
+  let controller: Controller | undefined;
+  const surface = await createSurface(host.ownerDocument, (reason) => controller?.lose(reason));
+  try {
+    controller = new Controller(host, frame, surface, mod, options, onFallback);
+    await controller.start();
+  } catch (error) {
+    if (controller === undefined) surface.renderer.dispose();
+    else controller.dispose();
+    throw error;
+  }
   controller.register();
   return controller;
 }

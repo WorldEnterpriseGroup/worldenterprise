@@ -1,0 +1,57 @@
+---
+/**
+ * "See the data behind the long game." (WP-37, issue #86). A teaser for /data/ (WP-35) with three sourced figures that differ from
+ * the ones the longevity spine shows. Renders nothing until /data/ is built.
+ */
+import Band from '../../visuals/Band.astro';
+import StatTiles from '../../visuals/charts/StatTiles.astro';
+import type { BandTone } from '../../visuals/contracts.ts';
+import { isLiveOnDisk } from '../../../data/cta/live.ts';
+import { href } from '../../../lib/url.ts';
+import { DATA_HEADLINE, DATA_LEAD, DATA_STATS, ROUTES, visualStat } from './data.ts';
+import type { StatId } from '../../../data/sales/stats.ts';
+
+interface Props {
+  tone?: BandTone;
+  id?: string;
+  /** Register ids of the figures to show (default: the three in DATA_STATS). */
+  ids?: readonly StatId[];
+}
+
+const { tone = 'plain', id = 'data-teaser', ids = DATA_STATS } = Astro.props;
+const live = isLiveOnDisk(ROUTES.data);
+const titleId = `${id}-title`;
+const stats = ids.map((s) => visualStat(s, 'data'));
+---
+
+{
+  live && (
+    <Band {tone} {id} labelledby={titleId} class="data-teaser">
+      <div class="data-teaser__head">
+        <h2 id={titleId}>{DATA_HEADLINE}</h2>
+        <p class="lead">{DATA_LEAD}</p>
+      </div>
+      <StatTiles stats={stats} label="More figures from public data" id={`${id}-tiles`} />
+      <p><a class="btn btn--secondary" href={href(ROUTES.data)}>Explore the data</a></p>
+    </Band>
+  )
+}
+
+<style>
+  @layer pages {
+    .data-teaser :global(.band__content) {
+      display: grid;
+      gap: var(--sp-5);
+    }
+
+    .data-teaser__head {
+      display: grid;
+      gap: var(--sp-2);
+      max-inline-size: var(--prose-max);
+    }
+
+    .data-teaser__head > * {
+      margin: 0;
+    }
+  }
+</style>

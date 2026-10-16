@@ -6,6 +6,7 @@ import CellTrail from '../../components/ui/CellTrail.astro';
 import Callout from '../../components/ui/Callout.astro';
 import Card from '../../components/ui/Card.astro';
 import Grid from '../../components/ui/Grid.astro';
+import WorldsGallery from '../../components/media/WorldsGallery.astro';
 import NetworkIntro from '../../components/network/NetworkIntro.astro';
 import { getPageEntry } from '../../components/network/pageEntry.ts';
 import { HREFS, NETWORK_COPY } from '../../components/partners/copy.ts';
@@ -35,7 +36,6 @@ const parts = [
   { label: NETWORK_COPY.partners.title, href: HREFS.hub, description: 'Organizations that help founders' },
 ];
 ---
-
 <HubLayout
   title={page.data.title}
   description={page.data.description}
@@ -107,10 +107,24 @@ const parts = [
   <Callout tone="notice" title="No promise of funding">
     <p>WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.</p>
   </Callout>
+
+  <section aria-labelledby="network-worlds" class="stack">
+    <h2 id="network-worlds">Worlds WE builds</h2>
+    <p class="network-measure">
+      A company forms the way a world does: dust, a core, a lit world, then rings and moons, over ten years rather than ten weeks. These
+      stills come from the film <a href={href('/about/#decade')}>"A company's first decade, in one minute"</a>; open one for the full
+      picture. They are drawings of the stages, not of any company.
+    </p>
+    <WorldsGallery id="network-worlds-gallery" labelledby="network-worlds" />
+  </section>
 </HubLayout>
 
 <style>
   .network-map {
     align-items: center;
+  }
+
+  .network-measure {
+    max-inline-size: var(--measure);
   }
 </style>

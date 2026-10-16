@@ -1,0 +1,92 @@
+---
+/**
+ * SlopeChart: how a handful of things changed between two moments. One line per row from its left value to its right value, with the
+ * name and value printed at both ends (labels are spread so none overlaps). The row to emphasise is drawn in amber and heavier.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { cleanText, fmt, scale, spreadLabels } from './dataviz.ts';
+import type { FigureMeta } from './dataviz.ts';
+
+interface Row {
+  readonly label: string;
+  readonly from: number;
+  readonly to: number;
+  readonly highlight?: boolean;
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  /** Names of the two moments, e.g. "2005" and "2025". */
+  fromLabel: string;
+  toLabel: string;
+  rows: readonly Row[];
+  /** Appended to every printed value, e.g. "%" or " quarters". */
+  unit?: string;
+  /** Divides values before printing (1000 prints thousands). */
+  divisor?: number;
+  /** Decimal places printed. */
+  places?: number;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { rows, unit = '', divisor = 1, places = 1 } = props;
+const fromLabel = cleanText('SlopeChart', 'fromLabel', props.fromLabel);
+const toLabel = cleanText('SlopeChart', 'toLabel', props.toLabel);
+if (rows.length < 2 || rows.length > 10) throw new Error(`SlopeChart "${props.id}": takes 2 to 10 rows, got ${rows.length}`);
+
+const W = 760;
+const H = 440;
+const top = 56;
+const bottom = H - 24;
+const xl = 250;
+const xr = 510;
+const all = rows.flatMap((r) => [r.from, r.to]);
+const lo = Math.min(...all, 0);
+const hi = Math.max(...all);
+const y = scale([lo, hi], [bottom, top]);
+const leftYs = spreadLabels(rows.map((r) => y(r.from)), 19, top, bottom);
+const rightYs = spreadLabels(rows.map((r) => y(r.to)), 19, top, bottom);
+const show = (v: number): string => `${(v / divisor).toFixed(places)}${unit}`;
+const table = {
+  caption: props.title,
+  columns: ['Group', fromLabel, toLabel, 'Change'],
+  rows: rows.map((r) => [r.label, show(r.from), show(r.to), `${r.to >= r.from ? '+' : '-'}${fmt(Math.abs((r.to - r.from) / divisor))}${unit}`]),
+};
+---
+
+<ChartFigure {...props} table={table}>
+  <svg class="dv__svg slope" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${props.id}-svg-t ${props.id}-svg-d`}>
+    <title id={`${props.id}-svg-t`}>{props.title}</title>
+    <desc id={`${props.id}-svg-d`}>{props.description}</desc>
+    <text class="dv-strong" x={xl} y="24" text-anchor="middle">{fromLabel}</text>
+    <text class="dv-strong" x={xr} y="24" text-anchor="middle">{toLabel}</text>
+    <line class="dv-grid" x1={xl} x2={xl} y1="36" y2={bottom + 6} />
+    <line class="dv-grid" x1={xr} x2={xr} y1="36" y2={bottom + 6} />
+    <g class="dv-reveal">
+      {rows.map((r) => (
+        <>
+          <line class:list={['dv-line', r.highlight === true ? 'dv-s2 slope__hi' : 'dv-s1']} x1={xl} y1={y(r.from)} x2={xr} y2={y(r.to)} />
+          <circle class:list={[r.highlight === true ? 'dv-f2' : 'dv-f1']} cx={xl} cy={y(r.from)} r="4.5" />
+          <circle class:list={[r.highlight === true ? 'dv-f2' : 'dv-f1']} cx={xr} cy={y(r.to)} r="4.5" />
+        </>
+      ))}
+    </g>
+    {rows.map((r, i) => (
+      <>
+        <text class="dv-label" x={xl - 14} y={(leftYs[i] ?? 0) + 4} text-anchor="end">{r.label} <tspan class="dv-strong">{show(r.from)}</tspan></text>
+        <text class="dv-label" x={xr + 14} y={(rightYs[i] ?? 0) + 4}><tspan class="dv-strong">{show(r.to)}</tspan> {r.label}</text>
+      </>
+    ))}
+  </svg>
+</ChartFigure>
+
+<style is:global>
+  .slope {
+    max-inline-size: 60rem;
+  }
+
+  .dv-line.slope__hi {
+    stroke-width: 4;
+  }
+</style>

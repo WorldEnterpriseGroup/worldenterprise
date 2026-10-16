@@ -308,9 +308,16 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     // END WP-33 ecosystem block
     // BEGIN WP-34 sbir-sttr block
     row('/sbir-sttr/', 'MarketingLayout', 'WP-34'),
+    row('/sbir-sttr/phases/', 'MarketingLayout', 'WP-34'),
+    row('/sbir-sttr/agencies/', 'MarketingLayout', 'WP-34'),
+    row('/sbir-sttr/prepare/', 'MarketingLayout', 'WP-34'),
     // END WP-34 sbir-sttr block
     // BEGIN WP-35 data block
     row('/data/', 'HubLayout', 'WP-35'),
+    row('/data/survival/', 'MarketingLayout', 'WP-35'),
+    row('/data/formation/', 'MarketingLayout', 'WP-35'),
+    row('/data/who-starts/', 'MarketingLayout', 'WP-35'),
+    row('/data/years-to-milestones/', 'MarketingLayout', 'WP-35'),
     // END WP-35 data block
 
     // Wave 8 (docs/wave8-contracts.md, section 1.2), registered ahead of the pages by WP-60 so no page-owning package edits this file.

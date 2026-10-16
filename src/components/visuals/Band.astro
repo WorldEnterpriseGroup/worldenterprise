@@ -21,16 +21,21 @@ interface Props {
   labelledby?: string;
   /** Skip layout and paint until the band nears the viewport (content-visibility: auto). Never on the first band of a page. */
   defer?: boolean;
+  /**
+   * A deep band with a scene dissolves into the sections above and below (a soft skirt of the band colour past its edges) instead of
+   * ending on a hard line. Default on; `false` keeps the hard edge.
+   */
+  bleed?: boolean;
   class?: string;
 }
 
-const { tone = 'plain', id, labelledby, defer = false, class: className } = Astro.props;
+const { tone = 'plain', id, labelledby, defer = false, bleed = true, class: className } = Astro.props;
 const t = bandTone('Band', tone);
 const hasScene = Astro.slots.has('scene');
 ---
 
 <section
-  class:list={['band', t !== 'plain' && `band--${t}`, hasScene && 'band--scene', defer && 'band--defer', className]}
+  class:list={['band', t !== 'plain' && `band--${t}`, hasScene && 'band--scene', hasScene && t === 'deep' && bleed && !defer && 'band--bleed', defer && 'band--defer', className]}
   id={id}
   aria-labelledby={labelledby}
 >
@@ -61,6 +66,51 @@ const hasScene = Astro.slots.has('scene');
   .band--scene .band__content {
     position: relative;
     z-index: 1;
+  }
+
+  /*
+   * Bleed: the band's colour runs past its edges as a gradient that fades to nothing, so the dark band melts into the neighbouring
+   * sections. The skirts are decorative pseudo-elements that never take pointer events; --bleed stays short so they never reach the
+   * neighbours' text (every band pads its content by at least --band-pad).
+   */
+  .band--bleed {
+    --bleed: clamp(2rem, 6vw, 5rem);
+    z-index: 1;
+  }
+
+  .band--bleed::before,
+  .band--bleed::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    z-index: -1;
+    block-size: var(--bleed);
+    pointer-events: none;
+    --_c: var(--color-band-deep-bg);
+  }
+
+  .band--bleed::before {
+    inset-block-end: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in oklab, var(--_c) 14%, transparent),
+      color-mix(in oklab, var(--_c) 40%, transparent),
+      color-mix(in oklab, var(--_c) 72%, transparent),
+      var(--_c)
+    );
+  }
+
+  .band--bleed::after {
+    inset-block-start: 100%;
+    background: linear-gradient(
+      to top,
+      transparent,
+      color-mix(in oklab, var(--_c) 14%, transparent),
+      color-mix(in oklab, var(--_c) 40%, transparent),
+      color-mix(in oklab, var(--_c) 72%, transparent),
+      var(--_c)
+    );
   }
 
   .band--defer {

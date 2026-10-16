@@ -8,6 +8,8 @@ import { loadPage } from '../../components/program/loadPage.ts';
 import { STAGES } from '../../components/program/stages.ts';
 import { href } from '../../lib/url.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
+import JoinPrograms from '../../components/program/longevity/JoinPrograms.astro';
 
 const { data, Content } = await loadPage('program/who-its-for');
 const [primary, secondary] = data.ctas;
@@ -72,6 +74,8 @@ const next = [
   </section>
 
   <Fragment slot="after">
+    <LongevitySpine detail="brief" tone="soft" lead="Founders who mean to build a lasting company: a fast pace every week, and the patience for the years." />
+    <JoinPrograms />
     {primary && <CtaBand title="Think you fit?" text="Apply. The application is short, and a clear no is as useful to you as a yes." cta={primary} secondary={secondary} />}
   </Fragment>
 </StageLayout>

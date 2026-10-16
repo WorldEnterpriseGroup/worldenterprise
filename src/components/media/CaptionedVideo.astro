@@ -1,0 +1,206 @@
+---
+/**
+ * CaptionedVideo (WP-22, #88): one native HTML5 video with captions, a transcript and a content cue. API and rules:
+ * src/components/media/README.md.
+ *
+ * - `preload="none"` and native controls: nothing but the poster is fetched until the visitor presses play. Never autoplays.
+ * - Sources in order: AV1 WebM first (smaller), H.264 MP4 second (every browser decodes it).
+ * - A `<track kind="captions">` WebVTT file; on by default only when `captionsOn` (a silent film whose text is in the picture keeps it off).
+ * - The content cue above the player says what it is, how long it runs and whether it has sound, before anyone presses play.
+ * - The transcript (the `transcript` slot) sits beside the player in a `<details>`; with the download link it is the no-JS and
+ *   no-video fallback, so the film's content never depends on the player.
+ * - <we-video> (src/scripts/media-video.ts) pauses the film when the tab is hidden, when the player scrolls out of view and when the
+ *   visitor leaves the page.
+ */
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { cleanText, VisualContractError } from '../visuals/contracts.ts';
+import { durationLabel, isoDuration } from './decade.ts';
+
+interface Props {
+  /** The film's name: the player's accessible name and the heading of the transcript. */
+  title: string;
+  /** URL of the AV1 WebM (import the file with `?url`). Optional, but the MP4 alone is larger. */
+  webm?: string;
+  /** URL of the H.264 MP4 (import with `?url`). Required: every browser can play it, and it is the download. */
+  mp4: string;
+  /** URL of the WebVTT captions (import with `?url`). */
+  captions: string;
+  /** Caption language (BCP 47) and its menu label. */
+  captionsLang?: string;
+  captionsLabel?: string;
+  /** Show the captions by default. Off by default: the films here are silent and print their words on screen. */
+  captionsOn?: boolean;
+  /** The poster master (an imported AVIF), at least as wide as `posterWidth`. */
+  poster: ImageMetadata;
+  /** Width the poster is encoded at. 3840 keeps it sharp on 4K screens in full screen; an AVIF of a rendered frame stays small. */
+  posterWidth?: number;
+  /** Intrinsic size of the encoded film. */
+  width: number;
+  height: number;
+  /** Running time in seconds, for the content cue. */
+  duration: number;
+  /** The film has no sound track. */
+  silent?: boolean;
+  /** One line on what the film shows, in the content cue. */
+  summary: string;
+  /** File name offered by the download link. */
+  downloadName?: string;
+  /** Id prefix, unique on the page. */
+  id: string;
+}
+
+const {
+  title: rawTitle,
+  webm,
+  mp4,
+  captions,
+  captionsLang = 'en',
+  captionsLabel = 'English',
+  captionsOn = false,
+  poster,
+  posterWidth = 3840,
+  width,
+  height,
+  duration,
+  silent = false,
+  summary: rawSummary,
+  downloadName = 'video.mp4',
+  id,
+} = Astro.props;
+
+const title = cleanText('CaptionedVideo', 'title', rawTitle);
+const summary = cleanText('CaptionedVideo', 'summary', rawSummary);
+if (!Number.isFinite(duration) || duration <= 0) throw new VisualContractError('CaptionedVideo', `duration must be positive, got ${duration}`);
+if (!(width > 0 && height > 0)) throw new VisualContractError('CaptionedVideo', `width and height must be positive, got ${width}x${height}`);
+if (!Astro.slots.has('transcript')) throw new VisualContractError('CaptionedVideo', `"${title}" needs a transcript (slot "transcript")`);
+
+const posterImage = await getImage({ src: poster, format: 'avif', width: Math.min(posterWidth, poster.width) });
+const label = durationLabel(duration);
+const titleId = `${id}-title`;
+const cueId = `${id}-cue`;
+---
+
+<we-video class="cvideo" id={id}>
+  <figure class="cvideo__figure" aria-labelledby={titleId}>
+    <figcaption class="cvideo__head">
+      <span class="cvideo__title" id={titleId}>{title}</span>
+      <span class="cvideo__cue" id={cueId}>
+        Video, <time datetime={isoDuration(duration)}>{label}</time>{silent ? ', no sound' : ''}, captions available. {summary}
+      </span>
+    </figcaption>
+    <video
+      class="cvideo__player"
+      controls
+      preload="none"
+      playsinline
+      poster={posterImage.src}
+      width={width}
+      height={height}
+      aria-labelledby={titleId}
+      aria-describedby={cueId}
+    >
+      {webm !== undefined && <source src={webm} type='video/webm; codecs="av01.0.08M.10"' />}
+      <source src={mp4} type='video/mp4; codecs="avc1.640029"' />
+      <track kind="captions" src={captions} srclang={captionsLang} label={captionsLabel} default={captionsOn} />
+      <p>
+        This browser cannot play the video here. <a href={mp4} download={downloadName}>Download the video (MP4)</a> or read the transcript
+        below.
+      </p>
+    </video>
+  </figure>
+  <details class="cvideo__transcript">
+    <summary>Transcript and sources: {title}</summary>
+    <div class="cvideo__transcript-body">
+      <slot name="transcript" />
+    </div>
+  </details>
+  <p class="cvideo__download">
+    <a href={mp4} download={downloadName}>Download the video</a> (MP4, H.264, {width} by {height}, {label}) or open the
+    <a href={captions}>captions file</a> (WebVTT).
+  </p>
+</we-video>
+
+<script>
+  import { defineWeVideo } from '../../scripts/media-video.ts';
+
+  defineWeVideo();
+</script>
+
+<style>
+  .cvideo {
+    display: grid;
+    gap: var(--space-flow);
+    min-inline-size: 0;
+  }
+
+  .cvideo__figure {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+  }
+
+  .cvideo__head {
+    display: grid;
+    gap: var(--sp-1);
+  }
+
+  .cvideo__title {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    line-height: var(--lh-snug);
+  }
+
+  .cvideo__cue {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    max-inline-size: var(--measure);
+  }
+
+  /* The film scales with its column and keeps its own 16:9 box, so the page never shifts when the poster arrives. */
+  .cvideo__player {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 16 / 9;
+    background-color: var(--we-blue-night);
+    border-radius: var(--radius-md);
+    object-fit: contain;
+  }
+
+  .cvideo__player:fullscreen {
+    border-radius: 0;
+  }
+
+  .cvideo__transcript {
+    border: var(--border-hair) solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--sp-3) var(--sp-4);
+
+    & summary {
+      cursor: pointer;
+      font-weight: 600;
+      min-block-size: var(--target-min);
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .cvideo__transcript-body {
+    display: grid;
+    gap: var(--space-flow);
+    padding-block: var(--sp-3);
+    max-inline-size: var(--prose-max);
+  }
+
+  .cvideo__transcript-body > :global(*) {
+    margin: 0;
+  }
+
+  .cvideo__download {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+</style>
