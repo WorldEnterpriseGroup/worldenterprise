@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { isBuilt } from './support/routes.ts';
-import { FULL_HD, expectBandsFullBleed, expectFullWidth, expectNoHorizontalScroll } from './wave8/wp-51/lib/full-width.ts';
+import { isBuilt } from '../../support/routes.ts';
+import { FULL_HD, expectBandsFullBleed, expectFullWidth, expectNoHorizontalScroll } from '../wp-51/lib/full-width.ts';
 
 // WP-37 (issue #86, wave 10): the longevity narrative ("Move fast every week. Build for the decade.") on the home page, the program
 // pages, /how-we-work/, /why-it-takes-time/ and /who-we-work-with/ with its situation pages; the inclusive ecosystem, SBIR and STTR
@@ -129,6 +129,9 @@ test.describe('the ecosystem, SBIR and STTR, and data moments', () => {
 
 test.describe('at 1920x1080', () => {
   test.use({ viewport: FULL_HD, reducedMotion: 'reduce' });
+  test.beforeEach(({}, info) => {
+    test.skip(info.project.name !== 'wave8-desktop-1440x900', 'width checks run once, in the desktop wave 8 project');
+  });
 
   for (const route of HUBS) {
     test(`${route} fills the frame and its new bands run full bleed`, async ({ page }) => {
