@@ -1,6 +1,6 @@
 {
   "wp": "WP-35",
-  "note": "Data hub /data/ and its four report pages. Every figure is in src/data/datasets/*.ts; each dataset names its source id from sources.ts, its retrieval date (2026-10-15) and its transformation. Carta Data is cited by single published figures only, never re-hosted. Hosts outside the allowlist are held in pendingHostFetches until OP-HOSTS is extended.",
+  "note": "Data hub /data/ and its four report pages. Every figure is in src/data/datasets/*.ts; each dataset names its source id from sources.ts, its retrieval date (2026-10-15) and its transformation. Carta Data is cited by single published figures only, never re-hosted. The Kauffman, NBER, Carta, CB Insights and GEM hosts are on the allowlist (WP-32b), so every source is in fetches.",
   "fetches": [
     {
       "id": "bls-bed-total",
@@ -55,9 +55,7 @@
       "fetchedAt": "2026-10-15T19:54:05Z",
       "status": 200,
       "tool": "curl"
-    }
-  ],
-  "pendingHostFetches": [
+    },
     {
       "id": "kauffman-2025",
       "url": "https://indicators-new.kauffman.org/wp-content/uploads/sites/13/2026/05/2025-Early-Stage-Entrepreneurship-National-Report.pdf",
@@ -65,8 +63,7 @@
       "publisher": "Ewing Marion Kauffman Foundation (Robert W. Fairlie)",
       "fetchedAt": "2026-10-15T19:55:17Z",
       "status": 200,
-      "tool": "curl",
-      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+      "tool": "curl"
     },
     {
       "id": "kauffman-2021",
@@ -75,8 +72,7 @@
       "publisher": "Ewing Marion Kauffman Foundation",
       "fetchedAt": "2026-10-15T19:56:24Z",
       "status": 200,
-      "tool": "curl",
-      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+      "tool": "curl"
     },
     {
       "id": "azoulay-2018",
@@ -85,8 +81,7 @@
       "publisher": "Azoulay, Jones, Kim and Miranda, National Bureau of Economic Research",
       "fetchedAt": "2026-10-15T19:55:31Z",
       "status": 200,
-      "tool": "curl",
-      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+      "tool": "curl"
     },
     {
       "id": "carta-spm-q1-2026",
@@ -95,8 +90,7 @@
       "publisher": "Carta, Inc. (Carta Data)",
       "fetchedAt": "2026-10-15T19:56:38Z",
       "status": 200,
-      "tool": "curl",
-      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+      "tool": "curl"
     },
     {
       "id": "cb-insights-2026",
@@ -105,8 +99,7 @@
       "publisher": "CB Insights",
       "fetchedAt": "2026-10-15T19:55:45Z",
       "status": 200,
-      "tool": "curl",
-      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+      "tool": "curl"
     },
     {
       "id": "gem-us-2020",
@@ -115,8 +108,8 @@
       "publisher": "Babson College, Global Entrepreneurship Monitor",
       "fetchedAt": "2026-10-15T19:56:52Z",
       "status": 200,
-      "tool": "curl",
-      "reason": "OP-HOSTS extension requested; host is outside the allowlist."
+      "tool": "curl"
     }
-  ]
+  ],
+  "pendingHostFetches": []
 }
