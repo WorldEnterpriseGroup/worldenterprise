@@ -82,3 +82,29 @@ test('one 2560x1440 AVIF still per milestone chapter, and nothing else in the fo
     assert.ok(statSync(new URL(`src/assets/media/decade/${name}`, root)).size < 120 * 1024, `${name} master stays small`);
   }
 });
+
+test('the sources ledger records every shipped media file as self-made, with its current hash, and every film figure', async () => {
+  const { createHash } = await import('node:crypto');
+  const ledger = JSON.parse(readFileSync(new URL('.astro-magazine/sources/wp-22.json', root), 'utf8')) as {
+    media: { file: string; sha256: string; bytes: number; origin: string; license: string }[];
+    sources: { source_id: string; captured_by: string }[];
+  };
+  const shipped = [
+    'src/assets/video/decade.webm',
+    'src/assets/video/decade.mp4',
+    'src/assets/video/decade.en.vtt',
+    'src/assets/video/decade-poster.avif',
+    ...readdirSync(new URL('src/assets/media/decade/', root)).map((n) => `src/assets/media/decade/${n}`),
+  ].sort();
+  assert.deepEqual(ledger.media.map((m) => m.file).sort(), shipped);
+  for (const m of ledger.media) {
+    const bytes = file(m.file);
+    assert.equal(m.origin, 'self-made', m.file);
+    assert.ok(m.license.length > 20, `${m.file} license`);
+    assert.equal(m.bytes, bytes.length, `${m.file} size (re-run the ledger update after a re-render)`);
+    assert.equal(m.sha256, createHash('sha256').update(bytes).digest('hex'), `${m.file} hash`);
+  }
+  const cited = DECADE_CHAPTERS.flatMap((c) => (c.stat === undefined ? [] : [c.stat])).sort();
+  assert.deepEqual(ledger.sources.map((s) => s.source_id).sort(), cited);
+  assert.ok(ledger.sources.every((s) => s.captured_by === 'WP-22'));
+});
