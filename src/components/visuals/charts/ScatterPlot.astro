@@ -1,0 +1,87 @@
+---
+/**
+ * ScatterPlot: one dot per item on two numeric axes, with an optional y = x reference line, so the reader sees at once which side of
+ * "equal" every item falls on. Items are named beside their dots (spread so labels do not collide) and listed in the table.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { fmt, niceTicks, scale, spreadLabels } from './dataviz.ts';
+import type { FigureMeta } from './dataviz.ts';
+
+interface Item {
+  readonly label: string;
+  readonly x: number;
+  readonly y: number;
+  readonly highlight?: boolean;
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  items: readonly Item[];
+  xLabel: string;
+  yLabel: string;
+  min: number;
+  max: number;
+  unit?: string;
+  /** Draw the line where y equals x, with this label. */
+  diagonalLabel?: string;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { items, min, max, unit = '', xLabel, yLabel, diagonalLabel } = props;
+if (items.length < 3 || items.length > 14) throw new Error(`ScatterPlot "${props.id}": takes 3 to 14 items, got ${items.length}`);
+const W = 840;
+const box = { x: 64, y: 44, width: 520, height: 420 };
+const H = box.y + box.height + 56;
+const sx = scale([min, max], [box.x, box.x + box.width]);
+const sy = scale([min, max], [box.y + box.height, box.y]);
+const ticks = niceTicks(min, max, 5);
+const order = items.map((it, i) => ({ it, i })).sort((a, b) => sy(a.it.y) - sy(b.it.y));
+const spread = spreadLabels(order.map((o) => sy(o.it.y)), 17, box.y + 8, box.y + box.height);
+const labelY = new Map(order.map((o, k) => [o.i, spread[k] ?? 0]));
+const table = {
+  caption: props.title,
+  columns: ['Group', xLabel, yLabel],
+  rows: items.map((it) => [it.label, `${fmt(it.x)}${unit}`, `${fmt(it.y)}${unit}`]),
+};
+---
+
+<ChartFigure {...props} table={table}>
+  <svg class="dv__svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${props.id}-svg-t ${props.id}-svg-d`}>
+    <title id={`${props.id}-svg-t`}>{props.title}</title>
+    <desc id={`${props.id}-svg-d`}>{props.description}</desc>
+    {ticks.map((t) => (
+      <>
+        <line class="dv-grid" x1={box.x} x2={box.x + box.width} y1={sy(t)} y2={sy(t)} />
+        <line class="dv-grid" x1={sx(t)} x2={sx(t)} y1={box.y} y2={box.y + box.height} />
+        <text class="dv-axis" x={box.x - 8} y={sy(t) + 4} text-anchor="end">{t}</text>
+        <text class="dv-axis" x={sx(t)} y={box.y + box.height + 20} text-anchor="middle">{t}</text>
+      </>
+    ))}
+    {diagonalLabel !== undefined && (
+      <>
+        <line class="dv-line dv-s3 scatter__diag" x1={sx(min)} y1={sy(min)} x2={sx(max)} y2={sy(max)} />
+        <text class="dv-axis scatter__halo" x={sx(max) - 8} y={sy(max) + 22} text-anchor="end">{diagonalLabel}</text>
+      </>
+    )}
+    <text class="dv-strong" x={box.x + box.width / 2} y={H - 8} text-anchor="middle">{xLabel}</text>
+    <text class="dv-strong" x={0} y={16}>{yLabel}</text>
+    {items.map((it, i) => <line class="dv-grid" x1={sx(it.x) + 7} y1={sy(it.y)} x2={box.x + box.width + 12} y2={labelY.get(i) ?? 0} />)}
+    <g class="dv-reveal">
+      {items.map((it) => <circle class:list={[it.highlight === true ? 'dv-f2' : 'dv-f0', 'dv-sep']} cx={sx(it.x)} cy={sy(it.y)} r="7" />)}
+    </g>
+    {items.map((it, i) => <text class="dv-label" x={box.x + box.width + 16} y={(labelY.get(i) ?? 0) + 4}>{it.label}</text>)}
+  </svg>
+</ChartFigure>
+
+<style is:global>
+  .scatter__diag {
+    stroke-dasharray: 6 5;
+  }
+
+  .scatter__halo {
+    paint-order: stroke;
+    stroke: var(--color-bg);
+    stroke-width: 5px;
+  }
+</style>

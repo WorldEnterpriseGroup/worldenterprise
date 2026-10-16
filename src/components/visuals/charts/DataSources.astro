@@ -1,0 +1,103 @@
+---
+/**
+ * DataSources: the sources and method list that closes every /data/ page. Each source has an anchor (`#source-<id>`), and says who
+ * published it, when, where it was fetched and when, what WE did to the figures, and what the figures cannot say.
+ */
+import { datasetSource } from '../../../data/datasets/sources.ts';
+import type { DatasetSourceId } from '../../../data/datasets/types.ts';
+
+interface Props {
+  ids: readonly DatasetSourceId[];
+}
+
+const sources = Astro.props.ids.map((id) => datasetSource(id));
+---
+
+<section class="band data-sources" id="sources" aria-labelledby="data-sources-title">
+  <div class="container">
+    <h2 id="data-sources-title">Sources and method</h2>
+    <p class="data-sources__lead">
+      Every figure is copied from the publisher or computed from published numbers by simple arithmetic, and says how. Figures that could not be
+      verified are left out. These figures describe all new U.S. businesses, not WE's results.
+    </p>
+    <ol class="data-sources__list">
+      {
+        sources.map((s) => (
+          <li id={`source-${s.id}`}>
+            <p class="data-sources__title">
+              <a href={s.url}>{s.title}</a>
+            </p>
+            <p class="data-sources__meta">
+              {s.publisher}. Published: {s.published}. Retrieved {s.retrieved}.
+            </p>
+            <p>
+              <strong>What WE did.</strong> {s.transformation}
+            </p>
+            {s.caveats.length > 0 && (
+              <ul>
+                {s.caveats.map((c) => <li>{c}</li>)}
+              </ul>
+            )}
+            {s.usage !== undefined && <p class="data-sources__meta">{s.usage}</p>}
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  @layer pages {
+    .data-sources h2 {
+      margin-block-end: var(--sp-3);
+    }
+
+    .data-sources__lead {
+      max-inline-size: 62ch;
+      margin-block-end: var(--sp-7);
+    }
+
+    .data-sources__list {
+      display: grid;
+      gap: var(--sp-6);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    @media (min-width: 70rem) {
+      .data-sources__list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: var(--sp-8);
+      }
+    }
+
+    .data-sources__list > li {
+      display: grid;
+      gap: var(--sp-2);
+      align-content: start;
+      padding-block-start: var(--sp-4);
+      border-block-start: 1px solid var(--color-border);
+      font-size: var(--fs-sm);
+      scroll-margin-block-start: var(--sp-8);
+    }
+
+    .data-sources__list p,
+    .data-sources__list ul {
+      margin: 0;
+    }
+
+    .data-sources__list ul {
+      padding-inline-start: var(--sp-5);
+    }
+
+    .data-sources__title {
+      font-weight: 700;
+      font-size: var(--fs-base);
+    }
+
+    .data-sources__meta {
+      color: var(--color-text-muted);
+    }
+  }
+</style>
