@@ -107,7 +107,7 @@ const H = headingLevel === 3 ? 'h3' : 'h4';
 
     .ftree__list {
       list-style: none;
-      margin: 0 0 0 0.85rem;
+      margin: 0 0 0 var(--sp-3);
       padding: 0 0 0 var(--sp-4);
       border-inline-start: 2px solid var(--we-hairline);
       display: grid;
@@ -130,7 +130,7 @@ const H = headingLevel === 3 ? 'h3' : 'h4';
     .ftree__folder::before {
       content: '';
       position: absolute;
-      inset-block-start: 0.7rem;
+      inset-block-start: var(--sp-3);
       inset-inline-start: calc(-1 * var(--sp-4));
       inline-size: calc(var(--sp-4) - 0.25rem);
       border-block-start: 2px solid var(--we-hairline);
@@ -150,7 +150,7 @@ const H = headingLevel === 3 ? 'h3' : 'h4';
 
     .ftree__shows {
       flex-basis: 100%;
-      padding-inline-start: 1.85rem;
+      padding-inline-start: var(--sp-6);
       font-size: var(--fs-xs);
       color: var(--color-text-muted);
     }
@@ -163,7 +163,7 @@ const H = headingLevel === 3 ? 'h3' : 'h4';
     .ftree__items {
       list-style: none;
       margin: 0;
-      padding-inline-start: 1.85rem;
+      padding-inline-start: var(--sp-6);
       font-size: var(--fs-sm);
       color: var(--color-text-muted);
     }

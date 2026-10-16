@@ -1,0 +1,148 @@
+---
+/**
+ * The media bands of the /research/ hub (WP-23, #89), in HubLayout's `after` slot: the four reports as covers, then each report's core
+ * picture (the accessibility failures and rule dates, the security layers and breach trend, the team-model matrix, the NRR bridge) and a
+ * starfield stat band. Figures from data.ts, diagram content from research.ts.
+ */
+import BriefCover from '../briefs/BriefCover.astro';
+import Band from '../visuals/Band.astro';
+import StarfieldBand from '../visuals/StarfieldBand.astro';
+import BarChart from '../visuals/charts/BarChart.astro';
+import StatTiles from '../visuals/charts/StatTiles.astro';
+import { href } from '../../lib/url.ts';
+import BandHead from './media/BandHead.astro';
+import FormulaBridge from './media/FormulaBridge.astro';
+import LayerStack from './media/LayerStack.astro';
+import Moment from './media/Moment.astro';
+import MomentGrid from './media/MomentGrid.astro';
+import RatingMatrix from './media/RatingMatrix.astro';
+import RuleTimeline from './media/RuleTimeline.astro';
+import { ACCESSIBILITY_STATS, BREACH_STATS, DBIR_NOTE, HONESTY_INDUSTRY, SOURCES, THIRD_PARTY_TREND, WCAG_FAILURES, WCAG_NOTE } from './media/data.ts';
+import { ACCESSIBILITY_RULES, NRR_BRIDGE, NRR_FORMULA, NRR_NOTE, SECURITY_LAYERS, TEAM_MATRIX, TEAM_MATRIX_NOTE, TEAM_MODELS } from './media/research.ts';
+
+interface Props {
+  /** The live reports, in hub order. */
+  reports: readonly { readonly slug: string; readonly title: string; readonly href: string }[];
+  /** As-of date for scheduled rule dates, YYYY-MM-DD. */
+  asOf: string;
+}
+
+const { reports, asOf } = Astro.props;
+const stats = [...ACCESSIBILITY_STATS, ...BREACH_STATS.slice(0, 2)];
+---
+
+{
+  reports.length > 0 && (
+    <Band tone="soft" id="research-covers" labelledby="research-covers-title">
+      <BandHead id="research-covers-title" title="Four reports, four worlds" lede="Each report has its own cover: a world drawn from its title, so the same report always looks the same wherever it is linked." />
+      <Moment kind="cover" id="research-cover-wall">
+        <ul class="rh-covers" role="list">
+          {reports.map((r) => (
+            <li>
+              <a class="rh-cover" href={href(r.href)}>
+                <BriefCover slug={r.slug} title={r.title} idSuffix="hub" decorative />
+                <span class="rh-cover__title">{r.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Moment>
+    </Band>
+  )
+}
+
+<Band id="research-launch" labelledby="research-launch-title" defer>
+  <BandHead
+    id="research-launch-title"
+    title="Accessibility: what the web gets wrong, and when rules apply"
+    lede="Automated tests found WCAG failures on almost every one of the top million home pages, and six kinds of error account for nearly all of them. The rules behind the obligation arrive on fixed dates."
+  />
+  <MomentGrid>
+    <Moment kind="chart" id="research-wcag-failures">
+      <BarChart title="The most common detected WCAG failures" items={WCAG_FAILURES} source={SOURCES.webaim} max={100} valueLabel="Share of home pages" highlight={0} note={WCAG_NOTE} />
+    </Moment>
+    <Moment kind="diagram" id="research-rule-timeline">
+      <RuleTimeline title="Standards and rule dates" events={ACCESSIBILITY_RULES} asOf={asOf} note="Not legal advice. Dates after 2024 rest on secondary summaries; check the current rule." />
+    </Moment>
+  </MomentGrid>
+</Band>
+
+<Band tone="tint-blue" id="research-security" labelledby="research-security-title" defer>
+  <BandHead
+    id="research-security-title"
+    title="Security: three documents, three jobs"
+    lede="A test plan, a process vocabulary and a reporting frame. Buyers ask for them because suppliers are a growing part of their own breaches."
+  />
+  <MomentGrid>
+    <Moment kind="diagram" id="research-security-layers">
+      <LayerStack title="How the three documents stack" layers={SECURITY_LAYERS} note="Analysis from the security baseline report: start at the base, decide on attestation last." />
+    </Moment>
+    <Moment kind="chart" id="research-third-party">
+      <BarChart title="Breaches with a third party involved" items={THIRD_PARTY_TREND} source={SOURCES.dbir} max={100} valueLabel="Share of breaches" highlight={2} note={DBIR_NOTE} />
+    </Moment>
+  </MomentGrid>
+</Band>
+
+<Band id="research-models" labelledby="research-models-title" defer>
+  <BandHead id="research-models-title" title="Teams and metrics, drawn" lede="No team model wins on every criterion, and no metric means anything until its formula is written down once." />
+  <MomentGrid>
+    <Moment kind="diagram" id="research-team-matrix">
+      <RatingMatrix title="Three ways to staff the work, ten criteria" columns={TEAM_MODELS} rows={TEAM_MATRIX} note={TEAM_MATRIX_NOTE} />
+    </Moment>
+    <Moment kind="diagram" id="research-nrr-bridge">
+      <FormulaBridge title="Net revenue retention, as a bridge" steps={NRR_BRIDGE} formula={NRR_FORMULA} note={NRR_NOTE} />
+    </Moment>
+  </MomentGrid>
+</Band>
+
+<Moment kind="scene" id="research-starfield">
+  <StarfieldBand labelledby="research-stats-title">
+    <h2 id="research-stats-title" class="rh-sky-title">Four figures behind the reports</h2>
+    <Moment kind="stats" id="research-stats">
+      <StatTiles stats={stats} tone="dark" label="Accessibility and breaches across the industry" id="research-stats" />
+    </Moment>
+    <p class="rh-sky-note">{HONESTY_INDUSTRY}</p>
+  </StarfieldBand>
+</Moment>
+
+<style>
+  @layer pages {
+    .rh-covers {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+      gap: var(--sp-5);
+    }
+
+    .rh-cover {
+      display: grid;
+      gap: var(--sp-2);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .rh-cover__title {
+      font-family: var(--ff-sans);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: var(--we-amber);
+      text-underline-offset: 0.2em;
+    }
+
+    .rh-cover:hover .rh-cover__title,
+    .rh-cover:focus-visible .rh-cover__title {
+      color: var(--color-link);
+    }
+
+    .rh-sky-title {
+      margin-block-end: var(--sp-5);
+    }
+
+    .rh-sky-note {
+      margin: var(--sp-5) 0 0;
+      font-size: var(--fs-sm);
+    }
+  }
+</style>

@@ -1,0 +1,117 @@
+---
+/**
+ * The media bands of the /playbooks/ hub (WP-23, #89), in HubLayout's `after` slot: the playbooks as worlds in one orbit, the Dream,
+ * Build, Grow roadmap, the business clock they are paced against (formation figures, survival with gates, the long-horizon timeline,
+ * why venture-backed startups close) and the launch trajectory as a closing scene.
+ */
+import Band from '../visuals/Band.astro';
+import LaunchTrajectory from '../visuals/LaunchTrajectory.astro';
+import LongHorizonTimeline from '../visuals/LongHorizonTimeline.astro';
+import OrbitSystem from '../visuals/OrbitSystem.astro';
+import Split from '../visuals/Split.astro';
+import BarChart from '../visuals/charts/BarChart.astro';
+import StatTiles from '../visuals/charts/StatTiles.astro';
+import SurvivalCurve from '../visuals/charts/SurvivalCurve.astro';
+import JourneyRoadmap from '../visuals/illustrations/JourneyRoadmap.astro';
+import BandHead from '../research/media/BandHead.astro';
+import Moment from '../research/media/Moment.astro';
+import MomentGrid from '../research/media/MomentGrid.astro';
+import {
+  FORMATION_STATS,
+  HONESTY_BUSINESSES,
+  HONESTY_MARKET,
+  SHUTDOWN_NOTE,
+  SHUTDOWN_REASONS,
+  SOURCES,
+  SURVIVAL_2015,
+  SURVIVAL_NOTE,
+  TIMELINE_CLOCK,
+} from '../research/media/data.ts';
+
+interface Props {
+  /** The live playbooks, in reading order. */
+  playbooks: readonly { readonly label: string; readonly href: string; readonly description?: string | undefined }[];
+}
+
+const { playbooks } = Astro.props;
+const orbit = playbooks.slice(0, 12);
+const allBusinesses = SURVIVAL_2015[0];
+if (allBusinesses === undefined) throw new Error('PlaybooksHubMedia: SURVIVAL_2015 lost its first series');
+---
+
+{
+  orbit.length > 0 && (
+    <Band tone="soft" id="playbooks-orbit" labelledby="playbooks-orbit-title">
+      <Split>
+        <h2 id="playbooks-orbit-title">The playbooks, in one orbit</h2>
+        <p>
+          Each playbook is a world around the company at the center: the problem, the product, the first customers, the records. They are
+          read in order, and a company returns to each one as it grows.
+        </p>
+        <p>Select a world to open its playbook.</p>
+        <Moment slot="media" kind="scene" id="playbooks-orbit-scene">
+          <OrbitSystem
+            bodies={orbit}
+            rings={orbit.length > 7 ? 'nested' : 'single'}
+            accent={0}
+            labelsName="The playbooks"
+            alt={`A sun of blue hexagonal tiles with ${orbit.length} smaller worlds in orbit around it, one for each playbook, the first haloed in amber.`}
+          />
+        </Moment>
+      </Split>
+    </Band>
+  )
+}
+
+<Band id="playbooks-journey" labelledby="playbooks-journey-title" defer>
+  <BandHead id="playbooks-journey-title" title="Dream, Build, Grow" lede="The playbooks follow the same three stages as the work itself, and each stage leaves the company holding something it keeps." />
+  <Moment kind="diagram" id="playbooks-roadmap">
+    <JourneyRoadmap />
+  </Moment>
+</Band>
+
+<Band tone="tint-blue" id="playbooks-clock" labelledby="playbooks-clock-title" defer>
+  <BandHead
+    id="playbooks-clock-title"
+    title="The clock the playbooks are paced against"
+    lede="First payroll comes more than two quarters after applying, a business counts as established after forty-two months of wages, and about a third are still operating at year ten."
+  />
+  <MomentGrid>
+    <Moment kind="stats" id="playbooks-stats" wide>
+      <StatTiles stats={FORMATION_STATS} label="From application to an established business" id="playbooks-stats" />
+    </Moment>
+    <Moment kind="chart" id="playbooks-survival">
+      <SurvivalCurve title="All new U.S. businesses still operating, year by year" series={[allBusinesses]} source={SOURCES.bls} gates={[1, 3, 5, 10]} note={SURVIVAL_NOTE} />
+    </Moment>
+    <Moment kind="chart" id="playbooks-shutdowns">
+      <BarChart title="Why venture-backed startups shut down" items={SHUTDOWN_REASONS} source={SOURCES.cbi} max={100} valueLabel="Share citing the reason" highlight={1} note={SHUTDOWN_NOTE} />
+      <p class="ph-note">{HONESTY_MARKET}</p>
+    </Moment>
+    <Moment kind="diagram" id="playbooks-timeline" wide>
+      <LongHorizonTimeline milestones={TIMELINE_CLOCK} horizon={10} id="playbooks-clock-tl" label="Typical milestones over the first ten years of a new U.S. business" />
+    </Moment>
+  </MomentGrid>
+  <p class="ph-note ph-note--end">{HONESTY_BUSINESSES}</p>
+</Band>
+
+<Band tone="deep" id="playbooks-launch" labelledby="playbooks-launch-title" defer>
+  <h2 id="playbooks-launch-title">One flight, three stages</h2>
+  <Moment kind="scene" id="playbooks-launch-scene">
+    <LaunchTrajectory static caption="Dream validates the problem, Build ships the product, Grow earns customers. The playbooks are the checklists for each leg." />
+  </Moment>
+</Band>
+
+<style>
+  @layer pages {
+    .ph-note {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      max-inline-size: 65ch;
+    }
+
+    .ph-note--end {
+      margin-block-start: var(--sp-6);
+    }
+  }
+</style>

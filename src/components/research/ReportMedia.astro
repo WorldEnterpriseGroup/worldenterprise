@@ -1,0 +1,144 @@
+---
+/**
+ * The media band of one research report (WP-23, #89), in BriefLayout's `after` slot: the report's own structure drawn out (rule dates,
+ * the decision matrix, the formula bridge, the control layers and year-one sequence) beside the sourced figures that frame it. The cover
+ * sits at the top of the report itself. A report without an entry renders nothing.
+ */
+import Band from '../visuals/Band.astro';
+import BarChart from '../visuals/charts/BarChart.astro';
+import StatTiles from '../visuals/charts/StatTiles.astro';
+import BandHead from './media/BandHead.astro';
+import FlowDiagram from './media/FlowDiagram.astro';
+import FormulaBridge from './media/FormulaBridge.astro';
+import LayerStack from './media/LayerStack.astro';
+import Moment from './media/Moment.astro';
+import MomentGrid from './media/MomentGrid.astro';
+import OptionGrid from './media/OptionGrid.astro';
+import RatingMatrix from './media/RatingMatrix.astro';
+import RuleTimeline from './media/RuleTimeline.astro';
+import {
+  ACCESSIBILITY_STATS,
+  BREACH_STATS,
+  DBIR_NOTE,
+  HONESTY_INDUSTRY,
+  HONESTY_MARKET,
+  SHUTDOWN_NOTE,
+  SHUTDOWN_REASONS,
+  SOURCES,
+  THIRD_PARTY_TREND,
+  WCAG_FAILURES,
+  WCAG_NOTE,
+} from './media/data.ts';
+import {
+  ACCESSIBILITY_RULES,
+  METRIC_FORMULAS,
+  NRR_BRIDGE,
+  NRR_FORMULA,
+  NRR_NOTE,
+  SECURITY_LAYERS,
+  SECURITY_YEAR,
+  TEAM_MATRIX,
+  TEAM_MATRIX_NOTE,
+  TEAM_MODELS,
+  TEAM_OPTIONS,
+  TEAM_QUESTIONS,
+  isReportSlug,
+} from './media/research.ts';
+
+interface Props {
+  slug: string;
+  /** The report's as-of date, YYYY-MM-DD. */
+  asOf: string;
+}
+
+const { slug, asOf } = Astro.props;
+const headId = `report-media-${slug}`;
+---
+
+{
+  isReportSlug(slug) && (
+    <Band tone="soft" id="report-media" labelledby={headId} class="report-media">
+      {slug === 'accessibility-as-a-launch-requirement' && (
+        <>
+          <BandHead id={headId} title="The report, drawn" lede="The dates that make accessibility a contract term, and the failures automated tests still find on most of the web." />
+          <MomentGrid>
+            <Moment kind="diagram" id="a11y-rule-timeline">
+              <RuleTimeline title="Standards and rule dates" events={ACCESSIBILITY_RULES} asOf={asOf} note="Not legal advice. Dates after 2024 rest on secondary summaries; check the current rule." />
+            </Moment>
+            <Moment kind="chart" id="a11y-failures">
+              <BarChart title="The most common detected WCAG failures" items={WCAG_FAILURES} source={SOURCES.webaim} max={100} valueLabel="Share of home pages" highlight={0} note={WCAG_NOTE} />
+            </Moment>
+            <Moment kind="stats" id="a11y-stats" wide>
+              <StatTiles stats={ACCESSIBILITY_STATS} label="Accessibility on the top one million home pages" id="a11y-stats" />
+              <p class="rm-note">{HONESTY_INDUSTRY}</p>
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'dedicated-team-agency-or-freelancers' && (
+        <>
+          <BandHead id={headId} title="The report, drawn" lede="Three models, ten criteria and six questions. Weight the criteria for your situation first, then read the matrix." />
+          <MomentGrid>
+            <Moment kind="diagram" id="team-options" wide>
+              <OptionGrid title="The three models" options={TEAM_OPTIONS} />
+            </Moment>
+            <Moment kind="diagram" id="team-matrix">
+              <RatingMatrix title="The decision matrix" columns={TEAM_MODELS} rows={TEAM_MATRIX} note={TEAM_MATRIX_NOTE} />
+            </Moment>
+            <Moment kind="diagram" id="team-questions">
+              <FlowDiagram title="Six questions before choosing" steps={TEAM_QUESTIONS} />
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'early-stage-saas-metrics-definitions' && (
+        <>
+          <BandHead id={headId} title="The report, drawn" lede="Each formula once, as published. Unit economics that never worked are a reason venture-backed startups give when they close." />
+          <MomentGrid>
+            <Moment kind="diagram" id="metrics-nrr">
+              <FormulaBridge title="Net revenue retention, as a bridge" steps={NRR_BRIDGE} formula={NRR_FORMULA} note={NRR_NOTE} />
+            </Moment>
+            <Moment kind="chart" id="metrics-shutdowns">
+              <BarChart title="Why venture-backed startups shut down" items={SHUTDOWN_REASONS} source={SOURCES.cbi} max={100} valueLabel="Share citing the reason" highlight={3} note={SHUTDOWN_NOTE} />
+              <p class="rm-note">{HONESTY_MARKET}</p>
+            </Moment>
+            <Moment kind="diagram" id="metrics-formulas" wide>
+              <OptionGrid title="Six metrics, six formulas" options={METRIC_FORMULAS} highlight={3} />
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'saas-security-baseline-year-one' && (
+        <>
+          <BandHead id={headId} title="The report, drawn" lede="Three documents stacked, four quarters in order, and the breach figures that explain why buyers ask." />
+          <MomentGrid>
+            <Moment kind="diagram" id="security-layers">
+              <LayerStack title="How the three documents stack" layers={SECURITY_LAYERS} />
+            </Moment>
+            <Moment kind="diagram" id="security-year">
+              <FlowDiagram title="A year-one sequence" steps={SECURITY_YEAR} note="A recommendation from the report; quarters are a planning device, not a requirement of any standard." />
+            </Moment>
+            <Moment kind="chart" id="security-third-party">
+              <BarChart title="Breaches with a third party involved" items={THIRD_PARTY_TREND} source={SOURCES.dbir} max={100} valueLabel="Share of breaches" highlight={2} note={DBIR_NOTE} />
+            </Moment>
+            <Moment kind="stats" id="security-stats">
+              <StatTiles stats={BREACH_STATS} label="Where breaches begin" id="security-stats" />
+              <p class="rm-note">{HONESTY_INDUSTRY}</p>
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+    </Band>
+  )
+}
+
+<style>
+  @layer pages {
+    .rm-note {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      max-inline-size: 65ch;
+    }
+  }
+</style>

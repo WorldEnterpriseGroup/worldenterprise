@@ -1,0 +1,161 @@
+---
+/**
+ * The one sourced figure an executive brief page shows (WP-23, #89), chosen by briefFigure() in media.ts, with the honesty line its
+ * population needs. Wrapped in a Moment by the caller.
+ */
+import BarChart from '../visuals/charts/BarChart.astro';
+import StatTiles from '../visuals/charts/StatTiles.astro';
+import SurvivalCurve from '../visuals/charts/SurvivalCurve.astro';
+import {
+  AGE_AT_ROUND,
+  APPROVAL_BY_AGE,
+  FORMATION_STATS,
+  FOUNDER_AGE,
+  FOUNDER_TRACK_RECORD,
+  FUNDING_NOTE,
+  HONESTY_BUSINESSES,
+  HONESTY_MARKET,
+  HONESTY_STUDIES,
+  INDUSTRY_EXPERIENCE,
+  NO_FUNDING,
+  SBCS_NOTE,
+  SHUTDOWN_NOTE,
+  SHUTDOWN_REASONS,
+  SOURCES,
+  SURVIVAL_2015,
+  SURVIVAL_NOTE,
+} from '../research/media/data.ts';
+import type { BriefFigure as Figure } from './media.ts';
+
+interface Props {
+  figure: Figure;
+}
+
+const { figure } = Astro.props;
+const all = SURVIVAL_2015[0];
+const info = SURVIVAL_2015[1];
+if (all === undefined || info === undefined) throw new Error('BriefFigure: SURVIVAL_2015 lost a series');
+const hiring = FORMATION_STATS.slice(0, 2);
+---
+
+<div class="bfig">
+  {
+    figure === 'approval-by-age' && (
+      <>
+        <BarChart title="Loan applicants fully approved, by firm age" items={APPROVAL_BY_AGE} source={SOURCES.sbcs} max={100} valueLabel="Share fully approved" highlight={0} note={SBCS_NOTE} />
+        <p class="bfig__note">{HONESTY_MARKET} {NO_FUNDING}</p>
+      </>
+    )
+  }
+  {
+    figure === 'formation' && (
+      <>
+        <StatTiles stats={FORMATION_STATS} label="From application to an established business" id="brief-formation" />
+        <p class="bfig__note">{HONESTY_BUSINESSES}</p>
+      </>
+    )
+  }
+  {
+    figure === 'hiring' && (
+      <>
+        <StatTiles stats={hiring} label="How long it takes to make a first hire" id="brief-hiring" />
+        <p class="bfig__note">{HONESTY_BUSINESSES}</p>
+      </>
+    )
+  }
+  {
+    figure === 'survival-information' && (
+      <>
+        <SurvivalCurve title="Still operating, year by year: information businesses against all" series={[all, info]} source={SOURCES.bls} gates={[1, 5, 10]} note={`${SURVIVAL_NOTE} Information includes software publishing; it is not software alone.`} />
+        <p class="bfig__note">{HONESTY_BUSINESSES}</p>
+      </>
+    )
+  }
+  {
+    figure === 'survival-all' && (
+      <>
+        <SurvivalCurve title="Still operating, year by year" series={SURVIVAL_2015} source={SOURCES.bls} gates={[1, 3, 5, 10]} note={SURVIVAL_NOTE} />
+        <p class="bfig__note">{HONESTY_BUSINESSES}</p>
+      </>
+    )
+  }
+  {
+    figure === 'shutdowns-fit' && (
+      <>
+        <BarChart title="Why venture-backed startups shut down" items={SHUTDOWN_REASONS} source={SOURCES.cbi} max={100} valueLabel="Share citing the reason" highlight={1} note={SHUTDOWN_NOTE} />
+        <p class="bfig__note">{HONESTY_MARKET}</p>
+      </>
+    )
+  }
+  {
+    figure === 'shutdowns-capital' && (
+      <>
+        <BarChart title="Why venture-backed startups shut down" items={SHUTDOWN_REASONS} source={SOURCES.cbi} max={100} valueLabel="Share citing the reason" highlight={0} note={SHUTDOWN_NOTE} />
+        <p class="bfig__note">{HONESTY_MARKET}</p>
+      </>
+    )
+  }
+  {
+    figure === 'age-at-round' && (
+      <>
+        <BarChart title="Median company age at the round" items={AGE_AT_ROUND} source={SOURCES.carta} valueLabel="Median age" highlight={0} note={FUNDING_NOTE} />
+        <p class="bfig__note">{HONESTY_MARKET} {NO_FUNDING}</p>
+      </>
+    )
+  }
+  {
+    figure === 'track-record' && (
+      <>
+        <BarChart
+          title="Venture-backed founders whose company succeeded, by track record"
+          items={FOUNDER_TRACK_RECORD}
+          source={SOURCES.gompers}
+          max={100}
+          valueLabel="Success rate"
+          highlight={0}
+          note="Venture-backed U.S. founders in the study; success means the company went public or filed to."
+        />
+        <p class="bfig__note">{HONESTY_STUDIES}</p>
+      </>
+    )
+  }
+  {
+    figure === 'founder-age' && (
+      <>
+        <BarChart title="Average founder age at founding" items={FOUNDER_AGE} source={SOURCES.azoulay} valueLabel="Average age" highlight={0} note="U.S. startups with employees, from Census administrative data." />
+        <p class="bfig__note">{HONESTY_STUDIES}</p>
+      </>
+    )
+  }
+  {
+    figure === 'industry-experience' && (
+      <>
+        <BarChart
+          title="Startups reaching the top 0.1% of growth, by the founder's industry experience"
+          items={INDUSTRY_EXPERIENCE}
+          source={SOURCES.azoulay}
+          valueLabel="Share reaching top growth"
+          highlight={0}
+          note="U.S. startups with employees, from Census administrative data. Experience means prior work in the same industry."
+        />
+        <p class="bfig__note">{HONESTY_STUDIES}</p>
+      </>
+    )
+  }
+</div>
+
+<style>
+  @layer pages {
+    .bfig {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .bfig__note {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      max-inline-size: 65ch;
+    }
+  }
+</style>

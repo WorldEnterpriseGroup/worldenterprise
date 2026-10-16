@@ -14,6 +14,8 @@ export const HONESTY_BUSINESSES = "These figures describe all new U.S. businesse
 export const HONESTY_MARKET = "These figures describe the wider market, not WE's results.";
 /** Under the web accessibility and breach figures. */
 export const HONESTY_INDUSTRY = "These figures describe the wider industry, not WE's results.";
+/** Under figures from journal studies of founders. */
+export const HONESTY_STUDIES = "These figures describe the founders in each study, not WE's results.";
 /** Claim C-05, required next to any funding visual. */
 export const NO_FUNDING = 'WE makes no promise of funding.';
 

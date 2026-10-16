@@ -17,10 +17,12 @@ interface Props {
   caption?: boolean;
   /** Suffix for the SVG ids when the same slug is drawn twice on one page. */
   idSuffix?: string;
+  /** Inside a link that already names the brief: hide the art from assistive technology. */
+  decorative?: boolean;
   class?: string;
 }
 
-const { slug, kicker, caption = false, idSuffix = '', class: className } = Astro.props;
+const { slug, kicker, caption = false, idSuffix = '', decorative = false, class: className } = Astro.props;
 const title = cleanText('BriefCover', 'title', Astro.props.title);
 if (kicker !== undefined) cleanText('BriefCover', 'kicker', kicker);
 const m = coverModel(slug);
@@ -29,8 +31,8 @@ const label = `Cover art for ${title}: a world of hexagonal tiles in a starfield
 const ringFront = m.ring === null ? '' : `M ${m.world.cx - m.ring.rx} ${m.world.cy} A ${m.ring.rx} ${m.ring.ry} 0 0 0 ${m.world.cx + m.ring.rx} ${m.world.cy}`;
 ---
 
-<figure class:list={['brief-cover', `brief-cover--${m.palette}`, className]} data-cover-seed={m.seed}>
-  <svg viewBox={`0 0 ${COVER_W} ${COVER_H}`} role="img" aria-label={label} class="brief-cover__art" preserveAspectRatio="xMidYMid slice">
+<figure data-decorative={decorative ? '' : undefined} class:list={['brief-cover', `brief-cover--${m.palette}`, className]} data-cover-seed={m.seed}>
+  <svg viewBox={`0 0 ${COVER_W} ${COVER_H}`} role={decorative ? undefined : 'img'} aria-label={decorative ? undefined : label} class="brief-cover__art" preserveAspectRatio="xMidYMid slice" aria-hidden={decorative ? 'true' : undefined} focusable="false">
     <defs>
       <radialGradient id={`${uid}-sky`} cx="70%" cy="40%" r="85%">
         <stop offset="0" class="bc-sky-a" />

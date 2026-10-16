@@ -96,8 +96,8 @@ const HEX = '30,2 56,17 56,47 30,62 4,47 4,17';
     .flow__step:not(:last-child)::after {
       content: '';
       position: absolute;
-      inset-block: 3.25rem calc(-1 * var(--sp-4));
-      inset-inline-start: 1.5rem;
+      inset-block: calc(var(--sp-7) + var(--sp-1)) calc(-1 * var(--sp-4));
+      inset-inline-start: var(--sp-5);
       border-inline-start: 2px dashed var(--we-blue-hi);
     }
 
@@ -173,8 +173,8 @@ const HEX = '30,2 56,17 56,47 30,62 4,47 4,17';
       }
 
       .flow__step:not(:last-child)::after {
-        inset-block: 1.6rem auto;
-        inset-inline: 3.4rem calc(-1 * var(--sp-4) + 0.2rem);
+        inset-block: calc(var(--sp-5) + 2px) auto;
+        inset-inline: calc(var(--sp-7) + var(--sp-2)) calc(-1 * var(--sp-4) + 3px);
         border-inline-start: 0;
         border-block-start: 2px dashed var(--we-blue-hi);
       }

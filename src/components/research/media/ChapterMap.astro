@@ -2,7 +2,7 @@
 /**
  * ChapterMap (WP-23, #89): a brief's outline as a constellation. Each chapter is a star on a path across a dark sky, numbered in reading
  * order, and the same chapters follow as an ordered list (the content; the sky is aria-hidden). Seeded by the title, so a brief keeps
- * its shape. 3 to 18 chapters. The final "Sources" chapter is drawn amber: every brief ends on its evidence.
+ * its shape. 2 to 24 chapters. The final "Sources" chapter is drawn amber: every brief ends on its evidence.
  */
 import { cleanText } from '../../visuals/contracts.ts';
 import { hashString, seeded } from '../../../scripts/visuals/rng.ts';
@@ -14,13 +14,15 @@ interface Props {
   headingLevel?: 2 | 3;
   /** Heading id, for an aria-labelledby on the surrounding section. */
   id?: string;
+  /** Print the chapters as a list under the sky (default). Set false where the page already lists the outline; the sky then carries a label. */
+  list?: boolean;
   class?: string;
 }
 
-const { headingLevel = 3, id, class: className } = Astro.props;
+const { headingLevel = 3, id, list = true, class: className } = Astro.props;
 const title = cleanText('ChapterMap', 'title', Astro.props.title);
 const note = Astro.props.note === undefined ? undefined : cleanText('ChapterMap', 'note', Astro.props.note);
-if (Astro.props.chapters.length < 3 || Astro.props.chapters.length > 18) throw new Error(`ChapterMap: takes 3 to 18 chapters, got ${Astro.props.chapters.length}`);
+if (Astro.props.chapters.length < 2 || Astro.props.chapters.length > 24) throw new Error(`ChapterMap: takes 2 to 24 chapters, got ${Astro.props.chapters.length}`);
 const chapters = Astro.props.chapters.map((c, i) => cleanText('ChapterMap', `chapter ${i + 1}`, c));
 
 const W = 800;
@@ -40,7 +42,14 @@ const H = headingLevel === 2 ? 'h2' : 'h3';
 
 <figure class:list={['cmap', className]}>
   <H class="cmap__title" id={id}>{title}</H>
-  <svg class="cmap__sky" viewBox={`0 0 ${W} ${VH}`} aria-hidden="true" focusable="false">
+  <svg
+    class="cmap__sky"
+    viewBox={`0 0 ${W} ${VH}`}
+    role={list ? undefined : 'img'}
+    aria-label={list ? undefined : `The ${n} chapters of the brief as stars on one path, ending on its sources. The outline lists them in order.`}
+    aria-hidden={list ? 'true' : undefined}
+    focusable="false"
+  >
     <rect width={W} height={VH} rx="12" class="cmap__bg" />
     {dust.map((d) => <circle cx={d.x} cy={d.y} r={d.r} class="cmap__dust" />)}
     <path d={path} class="cmap__path" />
@@ -55,9 +64,15 @@ const H = headingLevel === 2 ? 'h2' : 'h3';
       ))
     }
   </svg>
-  <ol class="cmap__list">
-    {chapters.map((c) => <li>{c}</li>)}
-  </ol>
+  {
+    list && (
+      <ol class="cmap__list">
+        {chapters.map((c) => (
+          <li>{c}</li>
+        ))}
+      </ol>
+    )
+  }
   {note !== undefined && <figcaption class="cmap__note">{note}</figcaption>}
 </figure>
 
@@ -123,7 +138,7 @@ const H = headingLevel === 2 ? 'h2' : 'h3';
 
     .cmap__list li {
       break-inside: avoid;
-      padding-block: 0.15rem;
+      padding-block: 2px;
     }
 
     .cmap__note {

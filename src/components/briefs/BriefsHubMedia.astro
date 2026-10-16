@@ -1,0 +1,147 @@
+---
+/**
+ * The media bands of the /briefs/ hub (WP-23, #89), in HubLayout's `after` slot: a wall of brief covers, the business clock (survival
+ * curves, the long-horizon timeline, why venture-backed startups close), how a brief reaches a reader, and a starfield stat band.
+ */
+import Band from '../visuals/Band.astro';
+import LongHorizonTimeline from '../visuals/LongHorizonTimeline.astro';
+import StarfieldBand from '../visuals/StarfieldBand.astro';
+import BarChart from '../visuals/charts/BarChart.astro';
+import StatTiles from '../visuals/charts/StatTiles.astro';
+import SurvivalCurve from '../visuals/charts/SurvivalCurve.astro';
+import BandHead from '../research/media/BandHead.astro';
+import FlowDiagram from '../research/media/FlowDiagram.astro';
+import Moment from '../research/media/Moment.astro';
+import MomentGrid from '../research/media/MomentGrid.astro';
+import {
+  BUSINESS_STATS,
+  HONESTY_BUSINESSES,
+  HONESTY_MARKET,
+  SHUTDOWN_NOTE,
+  SHUTDOWN_REASONS,
+  SOURCES,
+  SURVIVAL_2015,
+  SURVIVAL_NOTE,
+  TIMELINE_CLOCK,
+} from '../research/media/data.ts';
+import { href } from '../../lib/url.ts';
+import BriefCover from './BriefCover.astro';
+import { BRIEF_PATH } from './media.ts';
+
+interface Props {
+  briefs: readonly { readonly slug: string; readonly title: string; readonly href: string }[];
+}
+
+const { briefs } = Astro.props;
+---
+
+{
+  briefs.length > 0 && (
+    <Band tone="soft" id="briefs-covers" labelledby="briefs-covers-title">
+      <BandHead id="briefs-covers-title" title="Every brief, its own world" lede="Each cover is drawn from the brief it belongs to: a world of tiles in a starfield, one tile in amber for the company reading it." />
+      <Moment kind="cover" id="briefs-cover-wall">
+        <ul class="bh-covers" role="list">
+          {briefs.map((b) => (
+            <li>
+              <a class="bh-cover" href={href(b.href)}>
+                <BriefCover slug={b.slug} title={b.title} idSuffix="hub" decorative />
+                <span class="bh-cover__title">{b.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Moment>
+    </Band>
+  )
+}
+
+<Band id="briefs-clock" labelledby="briefs-clock-title" defer>
+  <BandHead
+    id="briefs-clock-title"
+    title="The long horizon the briefs are written for"
+    lede="About half of new U.S. businesses are still operating at year five, and about a third at year ten. The briefs are written for the decisions that decide which side of that line a company ends up on."
+  />
+  <MomentGrid>
+    <Moment kind="chart" id="briefs-survival">
+      <SurvivalCurve title="Still operating, year by year" series={SURVIVAL_2015} source={SOURCES.bls} gates={[1, 5, 10]} note={SURVIVAL_NOTE} />
+    </Moment>
+    <Moment kind="chart" id="briefs-shutdowns">
+      <BarChart title="Why venture-backed startups shut down" items={SHUTDOWN_REASONS} source={SOURCES.cbi} max={100} valueLabel="Share citing the reason" highlight={0} note={SHUTDOWN_NOTE} />
+      <p class="bh-note">{HONESTY_MARKET}</p>
+    </Moment>
+    <Moment kind="diagram" id="briefs-timeline" wide>
+      <LongHorizonTimeline milestones={TIMELINE_CLOCK} horizon={10} id="briefs-clock-tl" label="Typical milestones over the first ten years of a new U.S. business" />
+    </Moment>
+  </MomentGrid>
+  <p class="bh-note bh-note--end">{HONESTY_BUSINESSES}</p>
+</Band>
+
+<Band tone="tint-sand" id="briefs-path" labelledby="briefs-path-title" defer>
+  <BandHead id="briefs-path-title" title="How a brief reaches you" />
+  <Moment kind="diagram" id="briefs-flow">
+    <FlowDiagram title="From an outline to the full text" steps={BRIEF_PATH} note="A brief is general information for founders. It is not legal, tax or investment advice." />
+  </Moment>
+</Band>
+
+<Moment kind="scene" id="briefs-starfield">
+  <StarfieldBand labelledby="briefs-stats-title">
+    <h2 id="briefs-stats-title" class="bh-sky-title">Starting a business in the U.S.</h2>
+    <Moment kind="stats" id="briefs-stats">
+      <StatTiles stats={BUSINESS_STATS} tone="dark" label="New U.S. businesses, from application to year ten" id="briefs-stats" />
+    </Moment>
+    <p class="bh-sky-note">{HONESTY_BUSINESSES}</p>
+  </StarfieldBand>
+</Moment>
+
+<style>
+  @layer pages {
+    .bh-covers {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+      gap: var(--sp-5);
+    }
+
+    .bh-cover {
+      display: grid;
+      gap: var(--sp-2);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .bh-cover__title {
+      font-family: var(--ff-sans);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: var(--we-amber);
+      text-underline-offset: 0.2em;
+    }
+
+    .bh-cover:hover .bh-cover__title,
+    .bh-cover:focus-visible .bh-cover__title {
+      color: var(--color-link);
+    }
+
+    .bh-note {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      max-inline-size: 65ch;
+    }
+
+    .bh-note--end {
+      margin-block-start: var(--sp-6);
+    }
+
+    .bh-sky-title {
+      margin-block-end: var(--sp-5);
+    }
+
+    .bh-sky-note {
+      margin: var(--sp-5) 0 0;
+      font-size: var(--fs-sm);
+    }
+  }
+</style>
