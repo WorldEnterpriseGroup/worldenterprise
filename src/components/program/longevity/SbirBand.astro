@@ -1,0 +1,105 @@
+---
+/**
+ * "Apply to SBIR and STTR." (WP-37, issue #86). A dark band that points founders to the federal programs and to the /sbir-sttr/ page
+ * (WP-34), which states the current authorization status with its date. This band makes no claim about status or awards. Renders
+ * nothing until /sbir-sttr/ is built.
+ */
+import StarfieldBand from '../../visuals/StarfieldBand.astro';
+import { isLiveOnDisk } from '../../../data/cta/live.ts';
+import { href } from '../../../lib/url.ts';
+import { ROUTES, SBIR_HEADLINE, SBIR_LEAD, SBIR_NOTE, SBIR_STEPS } from './data.ts';
+
+interface Props {
+  id?: string;
+  lead?: string;
+}
+
+const { id = 'sbir', lead = SBIR_LEAD } = Astro.props;
+const live = isLiveOnDisk(ROUTES.sbir);
+const titleId = `${id}-title`;
+---
+
+{
+  live && (
+    <StarfieldBand {id} labelledby={titleId} static>
+      <div class="sbir">
+        <div class="sbir__text">
+          <p class="eyebrow">Public funding</p>
+          <h2 id={titleId}>{SBIR_HEADLINE}</h2>
+          <p class="lead">{lead}</p>
+          <p class="sbir__note">{SBIR_NOTE}</p>
+          <p>
+            <a class="btn btn--inverse" href={href(ROUTES.sbir)}>
+              See how SBIR and STTR work
+            </a>
+          </p>
+        </div>
+        <ol class="sbir__steps" role="list" aria-label="The path to an application">
+          {
+            SBIR_STEPS.map((s, i) => (
+              <li class="sbir__step">
+                <span class="sbir__n">{i + 1}</span>
+                <strong>{s.label}</strong>
+                <span>{s.line}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </StarfieldBand>
+  )
+}
+
+<style>
+  @layer pages {
+    .sbir {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+      gap: var(--sp-6);
+      align-items: center;
+    }
+
+    .sbir__text {
+      display: grid;
+      gap: var(--sp-3);
+      justify-items: start;
+    }
+
+    .sbir__text > * {
+      margin: 0;
+      max-inline-size: var(--prose-max);
+    }
+
+    .sbir__note {
+      font-weight: 600;
+    }
+
+    .sbir__steps {
+      display: grid;
+      gap: var(--sp-3);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sbir__step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: var(--sp-3);
+      align-items: baseline;
+      padding: var(--sp-4);
+      border: 1px solid color-mix(in oklab, currentColor 30%, transparent);
+      border-radius: var(--radius-md);
+    }
+
+    .sbir__step > :nth-child(n + 3) {
+      grid-column: 2;
+    }
+
+    .sbir__n {
+      grid-row: span 2;
+      font-size: var(--fs-h3, 1.5rem);
+      font-weight: 700;
+    }
+  }
+</style>

@@ -1,0 +1,90 @@
+---
+/**
+ * StackedArea: layers over time, drawn as a stacked area, a 100% area or a streamgraph (symmetric baseline). Every layer is named
+ * directly at the right edge (so color is never the only cue), the legend repeats the names as text, and the same figures sit in a data
+ * table. Pure SVG, built at build time, no script.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { bandPath, fmt, niceTicks, scale, sameLength, spreadLabels, stackLayers } from './dataviz.ts';
+import type { FigureMeta, StackMode } from './dataviz.ts';
+
+interface Layer {
+  readonly label: string;
+  /** Shorter name for the direct label at the right edge. */
+  readonly short?: string;
+  readonly values: readonly number[];
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  /** Positions along x (years). */
+  xs: readonly number[];
+  layers: readonly Layer[];
+  mode?: StackMode;
+  /** Text that follows a value on the axis and in the table, e.g. "%". */
+  unit?: string;
+  /** Divides every value before it is printed (1000 prints thousands), the unit then says so. */
+  divisor?: number;
+  /** Column header for the table's first column. */
+  xLabel?: string;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { xs, mode = 'stack', unit = '', divisor = 1, xLabel = 'Year' } = props;
+if (props.layers.length < 2 || props.layers.length > 7) throw new Error(`StackedArea "${props.id}": takes 2 to 7 layers, got ${props.layers.length}`);
+for (const l of props.layers) sameLength('StackedArea', l.label, l.values, xs.length);
+
+const W = 840;
+const H = 420;
+const box = { x: 48, y: 16, width: 560, height: 360 };
+const { layers, min, max } = stackLayers(props.layers, mode);
+const yScale = scale([min, max], [box.y + box.height, box.y]);
+const xScale = scale([xs[0] ?? 0, xs[xs.length - 1] ?? 1], [box.x, box.x + box.width]);
+const px = xs.map(xScale);
+const paths = layers.map((l) => bandPath(px, l.lower.map(yScale), l.upper.map(yScale)));
+const yTicks = mode === 'stream' ? [] : niceTicks(0, max, 4);
+const first = xs[0] ?? 0;
+const last = xs[xs.length - 1] ?? 0;
+const xTickYears = xs.filter((x) => (x - first) % Math.max(1, Math.round((last - first) / 5)) === 0 || x === last);
+
+// Direct labels at the right edge, centred on each layer's last band, spread so none overlaps.
+const lastIdx = xs.length - 1;
+const mids = layers.map((l) => yScale(((l.lower[lastIdx] ?? 0) + (l.upper[lastIdx] ?? 0)) / 2));
+const labelYs = spreadLabels(mids, 17, box.y + 6, box.y + box.height);
+const show = (v: number): string => `${((v / divisor) + 0).toLocaleString('en-US', { maximumFractionDigits: 1 }).replace(/^-0$/, '0')}${unit}`;
+const table = {
+  caption: props.title,
+  columns: [xLabel, ...props.layers.map((l) => l.label)],
+  rows: xs.map((x, i) => [String(x), ...props.layers.map((l) => show(l.values[i] ?? 0))]),
+};
+---
+
+<ChartFigure {...props} table={table}>
+  <ul class="dv-legend" slot="legend" aria-hidden="true">
+    {props.layers.map((l, i) => <li class={`dv-k${i}`}>{l.label}</li>)}
+  </ul>
+  <svg class="dv__svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${props.id}-svg-t ${props.id}-svg-d`}>
+    <title id={`${props.id}-svg-t`}>{props.title}</title>
+    <desc id={`${props.id}-svg-d`}>{props.description}</desc>
+    <g>
+      {yTicks.map((t) => (
+        <>
+          <line class="dv-grid" x1={box.x} x2={box.x + box.width} y1={yScale(t)} y2={yScale(t)} />
+          <text class="dv-axis" x={box.x - 8} y={yScale(t) + 4} text-anchor="end">{show(t)}</text>
+        </>
+      ))}
+      {xTickYears.map((x) => (
+        <text class="dv-axis" x={xScale(x)} y={box.y + box.height + 22} text-anchor="middle">{x}</text>
+      ))}
+    </g>
+    <g class="dv-reveal">
+      {paths.map((d, i) => <path class={`dv-f${i} dv-sep`} d={d} />)}
+    </g>
+    {layers.map((l, i) => (
+      <text class="dv-label" x={box.x + box.width + 12} y={(labelYs[i] ?? 0) + 4}>
+        <tspan class={`dv-f${i}`}>■ </tspan>{props.layers[i]?.short ?? l.label}
+      </text>
+    ))}
+  </svg>
+</ChartFigure>
