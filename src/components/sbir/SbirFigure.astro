@@ -1,0 +1,95 @@
+---
+/**
+ * The frame of every chart on /sbir-sttr/** (WP-34): the drawing (default slot), a caption, the source line linked into the page's
+ * sources list, any note on how WE derived the figure, and a "Show the data" table that works without JavaScript (a native <details>).
+ */
+import DataTable from '../ui/DataTable.astro';
+import { sbirSource, sourceAnchor } from '../../data/sbir/sources.ts';
+import type { SbirSourceId } from '../../data/sbir/sources.ts';
+
+interface Props {
+  caption: string;
+  sources: readonly SbirSourceId[];
+  table: { readonly caption: string; readonly columns: readonly string[]; readonly rows: readonly (readonly string[])[] };
+  /** How WE derived the figure from the source's data. */
+  derived?: string | undefined;
+  caveat?: string | undefined;
+  /** The text on the data disclosure. */
+  summary?: string;
+}
+
+const { caption, sources, table, derived, caveat, summary = 'Show the data' } = Astro.props;
+---
+
+<figure class="sbir-fig">
+  <div class="sbir-fig__drawing">
+    <slot />
+  </div>
+  <figcaption class="sbir-fig__caption">
+    <p>{caption}</p>
+    <p class="sbir-fig__source">
+      Source:{' '}
+      {
+        sources.map((id, i) => (
+          <>
+            {i > 0 && '; '}
+            <a href={sourceAnchor(id)}>{sbirSource(id).short}</a>
+          </>
+        ))
+      }.
+      {derived !== undefined && ` ${derived}`}
+    </p>
+    {caveat !== undefined && <p class="sbir-fig__source">{caveat}</p>}
+  </figcaption>
+  <details class="sbir-fig__data">
+    <summary>{summary}</summary>
+    <DataTable caption={table.caption} columns={table.columns} rows={table.rows} />
+  </details>
+</figure>
+
+<style>
+  @layer pages {
+    .sbir-fig {
+      display: grid;
+      gap: var(--sp-4);
+      margin: 0;
+      min-inline-size: 0;
+    }
+
+    .sbir-fig__drawing {
+      min-inline-size: 0;
+    }
+
+    .sbir-fig__caption {
+      display: grid;
+      gap: var(--sp-2);
+    }
+
+    .sbir-fig__caption p {
+      margin: 0;
+    }
+
+    .sbir-fig__source {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .sbir-fig__data summary {
+      cursor: pointer;
+      color: var(--color-link);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
+    .sbir-fig__data[open] summary {
+      margin-block-end: var(--sp-3);
+    }
+
+    /* A closed disclosure renders nothing, but some engines still lay its content out when asked for sizes, so a wide table would
+       report a scroll frame that no key can reach. Take the frame out of layout until the reader opens the data. */
+    .sbir-fig__data:not([open]) :global(.table-wrap) {
+      display: none;
+    }
+  }
+</style>
