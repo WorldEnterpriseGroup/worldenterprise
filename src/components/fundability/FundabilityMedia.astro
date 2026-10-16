@@ -1,0 +1,145 @@
+---
+/**
+ * The media bands of the /fundability/ hub (WP-23, #89), rendered in HubLayout's `after` slot: the readiness scorecard beside what it
+ * means, the funding clock (Carta round gaps, Fed approval by firm age, the long-horizon timeline), what a prepared company keeps (the data
+ * room tree and the investor-meeting flow) and a starfield stat band. Every figure comes from research/media/data.ts.
+ */
+import Moment from '../research/media/Moment.astro';
+import MomentGrid from '../research/media/MomentGrid.astro';
+import BandHead from '../research/media/BandHead.astro';
+import FlowDiagram from '../research/media/FlowDiagram.astro';
+import FolderTree from '../research/media/FolderTree.astro';
+import Band from '../visuals/Band.astro';
+import Split from '../visuals/Split.astro';
+import StarfieldBand from '../visuals/StarfieldBand.astro';
+import LongHorizonTimeline from '../visuals/LongHorizonTimeline.astro';
+import BarChart from '../visuals/charts/BarChart.astro';
+import StatTiles from '../visuals/charts/StatTiles.astro';
+import ReadinessScorecard from '../visuals/illustrations/ReadinessScorecard.astro';
+import { DATA_ROOM_FOLDERS, MEETING_FLOW } from './media.ts';
+import {
+  APPROVAL_BY_AGE,
+  FUNDING_CLOCK,
+  FUNDING_NOTE,
+  FUNDING_STATS,
+  HONESTY_MARKET,
+  NO_FUNDING,
+  ROUND_GAPS,
+  SBCS_NOTE,
+  SOURCES,
+} from '../research/media/data.ts';
+---
+
+<Band tone="soft" id="fundability-picture" labelledby="fundability-picture-title">
+  <Split>
+    <h2 id="fundability-picture-title">Readiness, drawn as a shape</h2>
+    <p>
+      Six areas carry most of the questions a careful reader asks: entity and ownership records, IP and compliance, product and technology,
+      market and traction, financials, and team and governance. Readiness is the shape those six make together. A gap on one side shows
+      long before a meeting does.
+    </p>
+    <p>
+      The work is to close the weakest sides first with records a stranger can open, then check the same six areas again a month later.
+    </p>
+    <Moment slot="media" kind="diagram" id="fundability-scorecard">
+      <ReadinessScorecard title="Readiness, area by area: an illustration, not a score" />
+      <p class="fm-note">An illustration of how a review reads a company. No scores, weights or thresholds. {NO_FUNDING}</p>
+    </Moment>
+  </Split>
+</Band>
+
+<Band id="fundability-clock" labelledby="fundability-clock-title" defer>
+  <BandHead
+    id="fundability-clock-title"
+    title="The funding clock is measured in years"
+    lede="For the companies that raise venture money at all, rounds come about two years apart, and a priced Series A arrives at the median when the company is close to three. Preparation is a habit kept for that long, not a sprint before one meeting."
+  />
+  <MomentGrid>
+    <Moment kind="chart" id="fundability-round-gaps">
+      <BarChart title="Median time between rounds" items={ROUND_GAPS} source={SOURCES.carta} valueLabel="Median gap" highlight={0} note={FUNDING_NOTE} />
+    </Moment>
+    <Moment kind="chart" id="fundability-approval-age">
+      <BarChart
+        title="Loan applicants fully approved, by firm age"
+        items={APPROVAL_BY_AGE}
+        source={SOURCES.sbcs}
+        max={100}
+        valueLabel="Share fully approved"
+        highlight={0}
+        note={SBCS_NOTE}
+      />
+    </Moment>
+    <Moment kind="diagram" id="fundability-timeline" wide>
+      <LongHorizonTimeline
+        milestones={FUNDING_CLOCK}
+        horizon={10}
+        id="fundability-clock-tl"
+        label="Median venture rounds against the survival of new U.S. businesses"
+        caption="Rounds are medians for venture-backed companies on Carta; the gates are the share of all new U.S. businesses still operating. Most companies never raise venture money."
+      />
+    </Moment>
+  </MomentGrid>
+  <p class="fm-honesty">{HONESTY_MARKET} {NO_FUNDING}</p>
+</Band>
+
+<Band tone="tint-blue" id="fundability-keep" labelledby="fundability-keep-title" defer>
+  <BandHead
+    id="fundability-keep-title"
+    title="What a prepared company keeps"
+    lede="Two things carry a conversation with an investor: one folder where every claim has a record behind it, and a plain sequence for each meeting, with your own counsel at the end."
+  />
+  <MomentGrid>
+    <Moment kind="diagram" id="fundability-data-room">
+      <FolderTree
+        title="A seed data room, folder by folder"
+        root="Data room"
+        folders={DATA_ROOM_FOLDERS}
+        highlight={0}
+        note="From the seed data room guide. The index is the file a stranger opens first."
+      />
+    </Moment>
+    <Moment kind="diagram" id="fundability-meeting-flow">
+      <FlowDiagram
+        title="From a first note to a signed document"
+        steps={MEETING_FLOW}
+        note="A common sequence, not a promise of any step. WE prepares the evidence; the raise and the legal advice stay with you and your counsel."
+      />
+    </Moment>
+  </MomentGrid>
+</Band>
+
+<Moment kind="scene" id="fundability-starfield">
+  <StarfieldBand labelledby="fundability-stats-title">
+    <h2 id="fundability-stats-title" class="fm-sky-title">Four figures to plan around</h2>
+    <Moment kind="stats" id="fundability-stats">
+      <StatTiles stats={FUNDING_STATS} tone="dark" label="Rounds and lending for young U.S. companies" id="fundability-stats" />
+    </Moment>
+    <p class="fm-sky-note">{HONESTY_MARKET} {NO_FUNDING}</p>
+  </StarfieldBand>
+</Moment>
+
+<style>
+  @layer pages {
+    .fm-note,
+    .fm-honesty {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      max-inline-size: 65ch;
+    }
+
+    .fm-honesty {
+      margin-block-start: var(--sp-6);
+    }
+
+    .fm-sky-title {
+      margin-block-end: var(--sp-5);
+    }
+
+    .fm-sky-note {
+      margin: var(--sp-5) 0 0;
+      font-size: var(--fs-sm);
+      max-inline-size: 65ch;
+    }
+  }
+</style>

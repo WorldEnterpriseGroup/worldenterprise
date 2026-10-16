@@ -1,0 +1,187 @@
+---
+/**
+ * FlowDiagram (WP-23, #89): a process drawn as a chain of numbered hex tiles joined by a track: an ordered list, so the steps read in
+ * order without the drawing. Horizontal when the figure is wide enough (container query), a vertical rail below that. 2 to 8 steps.
+ * Optional `loop` draws a return arrow from the last step to the first (a cycle such as a monthly update).
+ */
+import { cleanText } from '../../visuals/contracts.ts';
+
+export interface FlowStep {
+  readonly label: string;
+  readonly text?: string | undefined;
+}
+
+interface Props {
+  title: string;
+  steps: readonly FlowStep[];
+  /** One line under the figure (what the diagram is, where it comes from). */
+  note?: string;
+  /** The process repeats: draw the return track. */
+  loop?: boolean;
+  /** Text for the return track, e.g. "Repeat every month". */
+  loopLabel?: string;
+  headingLevel?: 3 | 4;
+  class?: string;
+}
+
+const { loop = false, headingLevel = 3, class: className } = Astro.props;
+const title = cleanText('FlowDiagram', 'title', Astro.props.title);
+const note = Astro.props.note === undefined ? undefined : cleanText('FlowDiagram', 'note', Astro.props.note);
+const loopLabel = Astro.props.loopLabel === undefined ? undefined : cleanText('FlowDiagram', 'loop label', Astro.props.loopLabel);
+if (Astro.props.steps.length < 2 || Astro.props.steps.length > 8) throw new Error(`FlowDiagram: takes 2 to 8 steps, got ${Astro.props.steps.length}`);
+const steps = Astro.props.steps.map((s, i) => ({
+  label: cleanText('FlowDiagram', `step ${i + 1} label`, s.label),
+  text: s.text === undefined ? undefined : cleanText('FlowDiagram', `step ${i + 1} text`, s.text),
+}));
+const H = headingLevel === 3 ? 'h3' : 'h4';
+const HEX = '30,2 56,17 56,47 30,62 4,47 4,17';
+---
+
+<figure class:list={['flow', loop && 'flow--loop', className]}>
+  <H class="flow__title">{title}</H>
+  <ol class="flow__steps" role="list">
+    {
+      steps.map((s, i) => (
+        <li class="flow__step">
+          <svg class="flow__badge" viewBox="0 0 60 64" width="48" height="52" aria-hidden="true" focusable="false">
+            <polygon points={HEX} class:list={['flow__hex', i === steps.length - 1 && 'flow__hex--last']} />
+            <text x="30" y="40" text-anchor="middle" class="flow__n">
+              {i + 1}
+            </text>
+          </svg>
+          <div class="flow__body">
+            <strong class="flow__label">{s.label}</strong>
+            {s.text !== undefined && <span class="flow__text">{s.text}</span>}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+  {loop && loopLabel !== undefined && <p class="flow__loop">{loopLabel}</p>}
+  {note !== undefined && <figcaption class="flow__note">{note}</figcaption>}
+</figure>
+
+<style>
+  @layer pages {
+    .flow {
+      container-type: inline-size;
+      margin: 0;
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .flow__title {
+      margin: 0;
+      font-size: var(--fs-h4);
+    }
+
+    .flow__steps {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: var(--sp-4);
+      counter-reset: none;
+    }
+
+    .flow__step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 3rem minmax(0, 1fr);
+      gap: var(--sp-3);
+      align-items: start;
+    }
+
+    /* The track: a line down from each badge to the next. */
+    .flow__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      inset-block: 3.25rem calc(-1 * var(--sp-4));
+      inset-inline-start: 1.5rem;
+      border-inline-start: 2px dashed var(--we-blue-hi);
+    }
+
+    .flow__badge {
+      display: block;
+      inline-size: 3rem;
+      block-size: auto;
+    }
+
+    .flow__hex {
+      fill: var(--we-blue);
+      stroke: var(--we-blue-deep);
+      stroke-width: 2;
+    }
+
+    .flow__hex--last {
+      fill: var(--we-amber);
+      stroke: var(--we-amber-ink);
+    }
+
+    .flow__n {
+      fill: var(--we-white);
+      font-family: var(--ff-display);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .flow__hex--last + .flow__n {
+      fill: var(--we-charcoal);
+    }
+
+    .flow__body {
+      display: grid;
+      gap: var(--sp-1);
+      padding-block-start: var(--sp-2);
+    }
+
+    .flow__label {
+      font-family: var(--ff-sans);
+      font-size: var(--fs-base);
+    }
+
+    .flow__text {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      line-height: var(--lh-snug);
+    }
+
+    .flow__loop {
+      margin: 0;
+      padding-inline-start: var(--sp-3);
+      border-inline-start: 3px solid var(--we-amber);
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    .flow__note {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+
+    /* Wide figure: the chain runs left to right with the track between badges. */
+    @container (min-width: 44rem) {
+      .flow__steps {
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(0, 1fr);
+        gap: var(--sp-4);
+      }
+
+      .flow__step {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: start;
+      }
+
+      .flow__step:not(:last-child)::after {
+        inset-block: 1.6rem auto;
+        inset-inline: 3.4rem calc(-1 * var(--sp-4) + 0.2rem);
+        border-inline-start: 0;
+        border-block-start: 2px dashed var(--we-blue-hi);
+      }
+
+      .flow__body {
+        padding-block-start: 0;
+      }
+    }
+  }
+</style>

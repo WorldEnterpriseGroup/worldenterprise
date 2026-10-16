@@ -1,0 +1,134 @@
+---
+/**
+ * ChapterMap (WP-23, #89): a brief's outline as a constellation. Each chapter is a star on a path across a dark sky, numbered in reading
+ * order, and the same chapters follow as an ordered list (the content; the sky is aria-hidden). Seeded by the title, so a brief keeps
+ * its shape. 3 to 18 chapters. The final "Sources" chapter is drawn amber: every brief ends on its evidence.
+ */
+import { cleanText } from '../../visuals/contracts.ts';
+import { hashString, seeded } from '../../../scripts/visuals/rng.ts';
+
+interface Props {
+  title: string;
+  chapters: readonly string[];
+  note?: string;
+  headingLevel?: 2 | 3;
+  /** Heading id, for an aria-labelledby on the surrounding section. */
+  id?: string;
+  class?: string;
+}
+
+const { headingLevel = 3, id, class: className } = Astro.props;
+const title = cleanText('ChapterMap', 'title', Astro.props.title);
+const note = Astro.props.note === undefined ? undefined : cleanText('ChapterMap', 'note', Astro.props.note);
+if (Astro.props.chapters.length < 3 || Astro.props.chapters.length > 18) throw new Error(`ChapterMap: takes 3 to 18 chapters, got ${Astro.props.chapters.length}`);
+const chapters = Astro.props.chapters.map((c, i) => cleanText('ChapterMap', `chapter ${i + 1}`, c));
+
+const W = 800;
+const VH = 220;
+const rand = seeded(hashString(chapters.join('|')));
+const n = chapters.length;
+const stars = chapters.map((c, i) => {
+  const t = n === 1 ? 0.5 : i / (n - 1);
+  const x = 40 + t * (W - 80);
+  const y = VH / 2 + Math.sin(t * Math.PI * 2.2 + rand()) * 52 + (rand() - 0.5) * 30;
+  return { x: Math.round(x), y: Math.round(y), last: i === n - 1 && /source/i.test(c) };
+});
+const path = stars.map((s, i) => `${i === 0 ? 'M' : 'L'}${s.x} ${s.y}`).join(' ');
+const dust = Array.from({ length: 60 }, () => ({ x: Math.round(rand() * W), y: Math.round(rand() * VH), r: rand() > 0.85 ? 1.4 : 0.7 }));
+const H = headingLevel === 2 ? 'h2' : 'h3';
+---
+
+<figure class:list={['cmap', className]}>
+  <H class="cmap__title" id={id}>{title}</H>
+  <svg class="cmap__sky" viewBox={`0 0 ${W} ${VH}`} aria-hidden="true" focusable="false">
+    <rect width={W} height={VH} rx="12" class="cmap__bg" />
+    {dust.map((d) => <circle cx={d.x} cy={d.y} r={d.r} class="cmap__dust" />)}
+    <path d={path} class="cmap__path" />
+    {
+      stars.map((s, i) => (
+        <g>
+          <circle cx={s.x} cy={s.y} r={s.last ? 9 : 6} class:list={['cmap__star', s.last && 'cmap__star--last']} />
+          <text x={s.x} y={s.y + (i % 2 === 0 ? -16 : 26)} text-anchor="middle" class="cmap__n">
+            {i + 1}
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+  <ol class="cmap__list">
+    {chapters.map((c) => <li>{c}</li>)}
+  </ol>
+  {note !== undefined && <figcaption class="cmap__note">{note}</figcaption>}
+</figure>
+
+<style>
+  @layer pages {
+    .cmap {
+      margin: 0;
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .cmap__title {
+      margin: 0;
+    }
+
+    .cmap__sky {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+    }
+
+    .cmap__bg {
+      fill: var(--we-blue-night);
+    }
+
+    .cmap__dust {
+      fill: var(--we-white);
+      opacity: 0.4;
+    }
+
+    .cmap__path {
+      fill: none;
+      stroke: var(--we-blue-hi);
+      stroke-width: 1.5;
+      stroke-dasharray: 3 5;
+    }
+
+    .cmap__star {
+      fill: var(--we-white);
+      stroke: var(--we-blue-hi);
+      stroke-width: 3;
+    }
+
+    .cmap__star--last {
+      fill: var(--we-amber);
+      stroke: var(--we-amber-wash);
+    }
+
+    .cmap__n {
+      fill: var(--we-mist);
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .cmap__list {
+      margin: 0;
+      padding-inline-start: 1.6em;
+      columns: 18rem 3;
+      column-gap: var(--sp-6);
+      font-size: var(--fs-sm);
+    }
+
+    .cmap__list li {
+      break-inside: avoid;
+      padding-block: 0.15rem;
+    }
+
+    .cmap__note {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+  }
+</style>

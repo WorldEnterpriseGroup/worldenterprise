@@ -1,0 +1,202 @@
+---
+/**
+ * BriefCover (WP-23, #89): the generated cover of one brief or research report (cover.ts). A world of hex tiles in a starfield, seeded
+ * by the slug, so each brief keeps its own world across builds. Pure SVG drawn at build time: no image request, no style attribute, colors
+ * from tokens through scoped classes. `role="img"` with a label that names the brief.
+ */
+import { cleanText } from '../visuals/contracts.ts';
+import { COVER_H, COVER_W, coverModel } from './cover.ts';
+
+interface Props {
+  slug: string;
+  /** The brief title, used in the accessible name and the caption. */
+  title: string;
+  /** Short line over the art, e.g. "Research brief" (optional). */
+  kicker?: string;
+  /** Show the title under the art. */
+  caption?: boolean;
+  /** Suffix for the SVG ids when the same slug is drawn twice on one page. */
+  idSuffix?: string;
+  class?: string;
+}
+
+const { slug, kicker, caption = false, idSuffix = '', class: className } = Astro.props;
+const title = cleanText('BriefCover', 'title', Astro.props.title);
+if (kicker !== undefined) cleanText('BriefCover', 'kicker', kicker);
+const m = coverModel(slug);
+const uid = `bc-${slug.replace(/[^a-z0-9-]/gi, '-')}${idSuffix === '' ? '' : `-${idSuffix}`}`;
+const label = `Cover art for ${title}: a world of hexagonal tiles in a starfield, one tile in amber.`;
+const ringFront = m.ring === null ? '' : `M ${m.world.cx - m.ring.rx} ${m.world.cy} A ${m.ring.rx} ${m.ring.ry} 0 0 0 ${m.world.cx + m.ring.rx} ${m.world.cy}`;
+---
+
+<figure class:list={['brief-cover', `brief-cover--${m.palette}`, className]} data-cover-seed={m.seed}>
+  <svg viewBox={`0 0 ${COVER_W} ${COVER_H}`} role="img" aria-label={label} class="brief-cover__art" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id={`${uid}-sky`} cx="70%" cy="40%" r="85%">
+        <stop offset="0" class="bc-sky-a" />
+        <stop offset="1" class="bc-sky-b" />
+      </radialGradient>
+      <radialGradient id={`${uid}-sea`} cx="35%" cy="30%" r="80%">
+        <stop offset="0" class="bc-sea-a" />
+        <stop offset="1" class="bc-sea-b" />
+      </radialGradient>
+      <clipPath id={`${uid}-clip`}>
+        <circle cx={m.world.cx} cy={m.world.cy} r={m.world.r} />
+      </clipPath>
+    </defs>
+    <rect width={COVER_W} height={COVER_H} fill={`url(#${uid}-sky)`} />
+    <path d={m.arm} class="bc-arm" />
+    {m.stars.map((s) => <circle cx={s.x} cy={s.y} r={s.r} class={`bc-star bc-star--${s.level}`} />)}
+    {m.ring !== null && <ellipse cx={m.world.cx} cy={m.world.cy} rx={m.ring.rx} ry={m.ring.ry} transform={`rotate(${m.ring.angle} ${m.world.cx} ${m.world.cy})`} class="bc-ring bc-ring--back" />}
+    <circle cx={m.world.cx} cy={m.world.cy} r={m.world.r} fill={`url(#${uid}-sea)`} />
+    <g clip-path={`url(#${uid}-clip)`}>
+      {m.tiles.map((t) => <polygon points={t.points} class={`bc-tile bc-tile--${t.tone}`} />)}
+    </g>
+    <circle cx={m.world.cx} cy={m.world.cy} r={m.world.r} class="bc-limb" />
+    {m.ring !== null && <path d={ringFront} transform={`rotate(${m.ring.angle} ${m.world.cx} ${m.world.cy})`} class="bc-ring" />}
+    {m.moon !== null && <circle cx={m.moon.cx} cy={m.moon.cy} r={m.moon.r} class="bc-moon" />}
+  </svg>
+  {kicker !== undefined && <span class="brief-cover__kicker" aria-hidden="true">{kicker}</span>}
+  {caption && <figcaption class="brief-cover__caption">{title}</figcaption>}
+</figure>
+
+<style>
+  @layer pages {
+    .brief-cover {
+      position: relative;
+      margin: 0;
+      display: grid;
+      gap: var(--sp-2);
+    }
+
+    .brief-cover__art {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+      aspect-ratio: 8 / 5;
+      border-radius: var(--radius-md);
+      background: var(--we-blue-night);
+    }
+
+    .brief-cover__kicker {
+      position: absolute;
+      inset-block-start: var(--sp-3);
+      inset-inline-start: var(--sp-3);
+      padding: var(--sp-1) var(--sp-2);
+      border-radius: var(--radius-pill);
+      background: var(--we-blue-night);
+      color: var(--we-white);
+      font-family: var(--ff-sans);
+      font-size: var(--fs-xs);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brief-cover__caption {
+      font-family: var(--ff-sans);
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    .bc-sky-a {
+      stop-color: var(--we-blue-deep);
+    }
+
+    .bc-sky-b {
+      stop-color: var(--we-blue-night);
+    }
+
+    .brief-cover--dawn .bc-sky-a {
+      stop-color: var(--we-blue);
+    }
+
+    .brief-cover--tide .bc-sky-a {
+      stop-color: var(--we-slate);
+    }
+
+    .brief-cover--dusk .bc-sky-a {
+      stop-color: var(--we-charcoal);
+    }
+
+    .bc-sea-a {
+      stop-color: var(--we-blue);
+    }
+
+    .bc-sea-b {
+      stop-color: var(--we-blue-deep);
+    }
+
+    .brief-cover--dusk .bc-sea-a {
+      stop-color: var(--we-blue-hi);
+    }
+
+    .bc-arm {
+      fill: none;
+      stroke: var(--we-blue-hi);
+      stroke-width: 26;
+      stroke-linecap: round;
+      opacity: 0.14;
+    }
+
+    .bc-star {
+      fill: var(--we-white);
+    }
+
+    .bc-star--1 {
+      opacity: 0.35;
+    }
+
+    .bc-star--2 {
+      opacity: 0.6;
+    }
+
+    .bc-star--3 {
+      opacity: 0.95;
+    }
+
+    .bc-tile {
+      stroke: var(--we-blue-deep);
+      stroke-width: 1;
+    }
+
+    .bc-tile--land {
+      fill: var(--we-blue-hi);
+    }
+
+    .bc-tile--high {
+      fill: var(--we-tint);
+    }
+
+    .bc-tile--amber {
+      fill: var(--we-amber);
+    }
+
+    .bc-limb {
+      fill: none;
+      stroke: var(--we-white);
+      stroke-opacity: 0.35;
+      stroke-width: 1.5;
+    }
+
+    .bc-ring {
+      fill: none;
+      stroke: var(--we-mist);
+      stroke-width: 2.5;
+      opacity: 0.8;
+    }
+
+    .bc-ring--back {
+      opacity: 0.35;
+    }
+
+    .bc-moon {
+      fill: var(--we-mist);
+    }
+
+    @media (forced-colors: active) {
+      .brief-cover__art {
+        forced-color-adjust: none;
+      }
+    }
+  }
+</style>

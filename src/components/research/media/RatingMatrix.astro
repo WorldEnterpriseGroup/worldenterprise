@@ -1,0 +1,159 @@
+---
+/**
+ * RatingMatrix (WP-23, #89): a qualitative comparison drawn as a heat matrix. It is a real table (caption, column and row headers); each
+ * cell prints its rating as a word and adds a filled-dot glyph and a tint, so the pattern reads at a glance and the meaning never rests on
+ * color alone. Ratings are editorial judgment from the source brief, never measurements; the caption says so.
+ */
+import { cleanText } from '../../visuals/contracts.ts';
+
+export const RATINGS = ['Stronger', 'Mixed', 'Weaker'] as const;
+export type Rating = (typeof RATINGS)[number];
+
+export interface MatrixRow {
+  readonly criterion: string;
+  readonly ratings: readonly Rating[];
+}
+
+interface Props {
+  title: string;
+  columns: readonly string[];
+  rows: readonly MatrixRow[];
+  note?: string;
+  headingLevel?: 3 | 4;
+  class?: string;
+}
+
+const { headingLevel = 3, class: className } = Astro.props;
+const title = cleanText('RatingMatrix', 'title', Astro.props.title);
+const note = Astro.props.note === undefined ? undefined : cleanText('RatingMatrix', 'note', Astro.props.note);
+const columns = Astro.props.columns.map((c, i) => cleanText('RatingMatrix', `column ${i + 1}`, c));
+if (columns.length < 2 || columns.length > 5) throw new Error(`RatingMatrix: takes 2 to 5 columns, got ${columns.length}`);
+const rows = Astro.props.rows.map((r, i) => {
+  if (r.ratings.length !== columns.length) throw new Error(`RatingMatrix: row ${i + 1} has ${r.ratings.length} ratings for ${columns.length} columns`);
+  for (const rating of r.ratings) if (!(RATINGS as readonly string[]).includes(rating)) throw new Error(`RatingMatrix: "${rating}" is not one of ${RATINGS.join(', ')}`);
+  return { criterion: cleanText('RatingMatrix', `row ${i + 1}`, r.criterion), ratings: r.ratings };
+});
+const dots: Record<Rating, number> = { Stronger: 3, Mixed: 2, Weaker: 1 };
+const H = headingLevel === 3 ? 'h3' : 'h4';
+const titleId = `rm-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+---
+
+<figure class:list={['rmatrix', className]} aria-labelledby={titleId}>
+  <H class="rmatrix__title" id={titleId}>{title}</H>
+  <div class="table-wrap rmatrix__wrap" role="region" aria-label={`${title}, as a table`} tabindex="0">
+    <table class="rmatrix__table">
+      <caption class="rmatrix__caption">{note ?? title}</caption>
+      <thead>
+        <tr>
+          <th scope="col">Criterion</th>
+          {columns.map((c) => <th scope="col">{c}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((r) => (
+            <tr>
+              <th scope="row">{r.criterion}</th>
+              {r.ratings.map((rating) => (
+                <td class:list={['rmatrix__cell', `rmatrix__cell--${rating.toLowerCase()}`]}>
+                  <span class="rmatrix__dots" aria-hidden="true">
+                    {[1, 2, 3].map((d) => (
+                      <span class:list={['rmatrix__dot', d <= dots[rating] && 'rmatrix__dot--on']} />
+                    ))}
+                  </span>
+                  <span class="rmatrix__word">{rating}</span>
+                </td>
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</figure>
+
+<style>
+  @layer pages {
+    .rmatrix {
+      margin: 0;
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .rmatrix__title {
+      margin: 0;
+      font-size: var(--fs-h4);
+    }
+
+    .rmatrix__table {
+      inline-size: 100%;
+      border-collapse: separate;
+      border-spacing: 3px;
+      font-size: var(--fs-sm);
+    }
+
+    .rmatrix__caption {
+      caption-side: bottom;
+      padding-block-start: var(--sp-2);
+      text-align: start;
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+
+    .rmatrix__table th {
+      text-align: start;
+      font-family: var(--ff-sans);
+      font-weight: 600;
+      padding: var(--sp-2);
+    }
+
+    .rmatrix__table thead th {
+      border-block-end: 2px solid var(--we-blue);
+    }
+
+    .rmatrix__cell {
+      padding: var(--sp-2);
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+    }
+
+    .rmatrix__cell--stronger {
+      background: var(--we-tint);
+      color: var(--we-blue-night);
+    }
+
+    .rmatrix__cell--mixed {
+      background: var(--we-mist);
+      color: var(--we-charcoal);
+    }
+
+    .rmatrix__cell--weaker {
+      background: var(--we-amber-wash);
+      color: var(--we-charcoal);
+    }
+
+    .rmatrix__dots {
+      display: inline-flex;
+      gap: 3px;
+      margin-inline-end: var(--sp-2);
+      vertical-align: middle;
+    }
+
+    .rmatrix__dot {
+      inline-size: 0.55rem;
+      block-size: 0.55rem;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+    }
+
+    .rmatrix__dot--on {
+      background: currentColor;
+    }
+
+    @media (forced-colors: active) {
+      .rmatrix__dot--on {
+        background: CanvasText;
+      }
+    }
+  }
+</style>

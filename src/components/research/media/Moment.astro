@@ -1,0 +1,42 @@
+---
+/**
+ * Moment (WP-23, #89): one media moment on a reference page, a chart, diagram, cover, scene or stat band. The wrapper marks it with
+ * `data-moment` (the kind) and `data-media-id` (a stable id per page) so the e2e spec can count moments per route, and gives a sourced
+ * figure an optional caption line in the reader's terms. It adds no landmark and no heading of its own.
+ */
+export const MOMENT_KINDS = ['chart', 'diagram', 'cover', 'scene', 'stats'] as const;
+export type MomentKind = (typeof MOMENT_KINDS)[number];
+
+interface Props {
+  kind: MomentKind;
+  /** Stable id, unique on the page, e.g. "fundability-round-gaps". */
+  id: string;
+  /** Let the moment span every column of a MomentGrid. */
+  wide?: boolean;
+  class?: string;
+}
+
+const { kind, id, wide = false, class: className } = Astro.props;
+if (!(MOMENT_KINDS as readonly string[]).includes(kind)) throw new Error(`Moment: kind "${kind}" is not one of ${MOMENT_KINDS.join(', ')}`);
+if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) throw new Error(`Moment: id "${id}" must be lowercase words joined by hyphens`);
+---
+
+<div class:list={['moment', `moment--${kind}`, wide && 'moment--wide', className]} data-moment={kind} data-media-id={id}>
+  <slot />
+</div>
+
+<style>
+  @layer pages {
+    .moment {
+      display: grid;
+      gap: var(--sp-3);
+      align-content: start;
+      min-inline-size: 0;
+    }
+
+    .moment > :global(*) {
+      margin: 0;
+      min-inline-size: 0;
+    }
+  }
+</style>
