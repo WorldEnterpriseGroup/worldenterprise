@@ -13,6 +13,9 @@
  * - Callout becomes a blockquote with a bold title;
  * - NoFundingDisclaimer becomes a blockquote with its fixed wording (pinned to the component source by tests/unit/wp-91/mdx-transform.test.ts);
  *   IntroductionsDisclaimer is refused, so a page that renders it has no twin (see its handler);
+ * - BarChart, SurvivalCurve, StatTiles and LongHorizonTimeline become a captioned Markdown table of the values the chart draws, followed by
+ *   a "Source:" line (and the chart note when it has one), so the figure's numbers and its source reach the twin;
+ * - SourceNote becomes a "Sources:" list of its sources;
  * - MaybeLink becomes `[text](path)` when the route is live and the bare text when it is not, the same choice the component makes.
  */
 
@@ -279,6 +282,45 @@ type Handler = (props: Props, children: string | undefined, options: MdxTransfor
 
 const block = (markdown: string): string => `\n\n${markdown}\n\n`;
 
+
+interface ChartSource {
+  readonly label: string;
+  readonly href: string | undefined;
+  readonly period: string | undefined;
+}
+
+/** A literal object, not an array: Array.isArray does not narrow a readonly array out of the union, so the check is a guard. */
+function isLiteralObject(value: LiteralValue | undefined): value is { readonly [key: string]: LiteralValue } {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function readSource(name: string, value: LiteralValue | undefined): ChartSource {
+  if (!isLiteralObject(value)) return fail(`<${name}> needs a source object`);
+  const label = value['label'];
+  const href = value['href'];
+  const period = value['period'];
+  if (typeof label !== 'string') return fail(`<${name}> source needs a string label`);
+  if (href !== undefined && typeof href !== 'string') return fail(`<${name}> source href must be a string`);
+  if (period !== undefined && typeof period !== 'string') return fail(`<${name}> source period must be a string`);
+  return { label, href, period };
+}
+
+/** "Source: label, period (https://...)" — the link stays visible as text; the twin lint treats a bare URL as a link address. */
+function sourceLine(source: ChartSource): string {
+  const period = source.period === undefined ? '' : `, ${oneLine(source.period)}`;
+  return source.href === undefined ? `Source: ${oneLine(source.label)}${period}` : `Source: [${oneLine(source.label)}${period}](${source.href})`;
+}
+
+function chartBlock(table: string, source: ChartSource, note: string | undefined): string {
+  return block([table, '', sourceLine(source), ...(note === undefined ? [] : ['', `Note: ${oneLine(note)}`])].join('\n'));
+}
+
+const cellText = (value: LiteralValue | undefined, what: string): string => {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number') return String(value);
+  return fail(`${what} needs a string or number`);
+};
+
 const HANDLERS: Readonly<Record<string, Handler>> = {
   DataTable: (props) => {
     allow('DataTable', props, ['caption', 'columns', 'rows', 'rowHeaders']);
@@ -292,6 +334,65 @@ const HANDLERS: Readonly<Record<string, Handler>> = {
       return row as readonly string[];
     });
     return block(markdownTable(caption, columns, rows));
+  },
+  BarChart: (props) => {
+    allow('BarChart', props, ['items', 'source', 'title', 'max', 'highlight', 'valueLabel', 'note']);
+    const title = stringProp('BarChart', props, 'title');
+    const valueLabel = optionalString('BarChart', props, 'valueLabel') ?? 'Value';
+    const rows = objectList('BarChart', props, 'items').map((item) => {
+      const display = item['display'];
+      return [stringProp('BarChart', item as Props, 'label'), display === undefined ? cellText(item['value'], '<BarChart> item value') : cellText(display, '<BarChart> item display')];
+    });
+    return chartBlock(markdownTable(title, ['Item', valueLabel], rows), readSource('BarChart', props['source']), optionalString('BarChart', props, 'note'));
+  },
+  SurvivalCurve: (props) => {
+    allow('SurvivalCurve', props, ['series', 'source', 'title', 'gates', 'note']);
+    const title = stringProp('SurvivalCurve', props, 'title');
+    const series = objectList('SurvivalCurve', props, 'series').map((entry) => {
+      const label = stringProp('SurvivalCurve', entry as Props, 'label');
+      const points = entry['points'];
+      if (!Array.isArray(points)) return fail('<SurvivalCurve> series need points');
+      const byYear = new Map<number, string>();
+      for (const point of points) {
+        if (typeof point !== 'object' || point === null || Array.isArray(point)) return fail('<SurvivalCurve> points must be objects');
+        const year = point['year'];
+        if (typeof year !== 'number') return fail('<SurvivalCurve> point year must be a number');
+        byYear.set(year, `${cellText(point['percent'], '<SurvivalCurve> point percent')} percent`);
+      }
+      return { label, byYear };
+    });
+    const years = [...new Set(series.flatMap((entry) => [...entry.byYear.keys()]))].sort((a, b) => a - b);
+    const rows = years.map((year) => [`Year ${year}`, ...series.map((entry) => entry.byYear.get(year) ?? '')]);
+    return chartBlock(markdownTable(title, ['Years since opening', ...series.map((entry) => entry.label)], rows), readSource('SurvivalCurve', props['source']), optionalString('SurvivalCurve', props, 'note'));
+  },
+  StatTiles: (props) => {
+    allow('StatTiles', props, ['stats', 'label', 'id', 'tone']);
+    const label = optionalString('StatTiles', props, 'label') ?? 'Key figures';
+    const stats = objectList('StatTiles', props, 'stats');
+    const rows = stats.map((item) => {
+      const source = readSource('StatTiles', item['source']);
+      return [stringProp('StatTiles', item as Props, 'value'), stringProp('StatTiles', item as Props, 'label'), sourceLine(source).replace(/^Source: /, '')];
+    });
+    return block(markdownTable(label, ['Figure', 'What it measures', 'Source'], rows));
+  },
+  LongHorizonTimeline: (props) => {
+    allow('LongHorizonTimeline', props, ['milestones', 'horizon', 'label', 'caption', 'id']);
+    const label = optionalString('LongHorizonTimeline', props, 'label') ?? 'Typical milestones over the life of a new business';
+    const items = objectList('LongHorizonTimeline', props, 'milestones');
+    const rows = items.map((item) => {
+      const detail = item['detail'];
+      const source = item['source'] === undefined ? '' : sourceLine(readSource('LongHorizonTimeline', item['source'])).replace(/^Source: /, '');
+      return [`Year ${cellText(item['at'], '<LongHorizonTimeline> milestone at')}`, stringProp('LongHorizonTimeline', item as Props, 'label'), typeof detail === 'string' ? detail : '', source];
+    });
+    return block(markdownTable(label, ['When', 'Milestone', 'Detail', 'Source'], rows));
+  },
+  SourceNote: (props) => {
+    allow('SourceNote', props, ['sources', 'lead']);
+    const sources = objectList('SourceNote', props, 'sources');
+    if (sources.length === 0) return fail('<SourceNote> needs at least one source');
+    const lead = optionalString('SourceNote', props, 'lead') ?? (sources.length > 1 ? 'Sources' : 'Source');
+    const lines = sources.map((item) => `- ${sourceLine(readSource('SourceNote', item)).replace(/^Source: /, '')}`);
+    return block([`${oneLine(lead)}:`, '', ...lines].join('\n'));
   },
   CellTrail: (props, _children, options) => {
     allow('CellTrail', props, ['cells', 'label', 'current']);
@@ -391,12 +492,12 @@ function transformProse(text: string, options: MdxTransformOptions): string {
 }
 
 /**
- * An element marked `data-generic-definition` or `data-claim-allow` is exempt from a claims rule on the page, but the claims audit reads a
+ * An element marked `data-generic-definition`, `data-claim-allow` or `data-context="ecosystem"` is exempt from a claims rule on the page, but the claims audit reads a
  * Markdown file as plain text and honors no marker (scripts/audit-claims.mjs, `plain`). Converting the element would put the exempt wording
  * in a file where it is a finding, and removing it would make the twin differ from its page, so a page that holds one has no twin.
  */
-const CLAIMS_MARKER = /\bdata-(?:generic-definition|claim-allow)\b/;
-export const CLAIMS_MARKER_REASON = 'the page holds a claims marker (data-generic-definition or data-claim-allow), which the plain-text claims audit cannot honor';
+const CLAIMS_MARKER = /\bdata-(?:generic-definition|claim-allow|context)\b/;
+export const CLAIMS_MARKER_REASON = 'the page holds a claims marker (data-generic-definition, data-claim-allow or data-context), which the plain-text claims audit cannot honor';
 
 /** Splits at fenced code blocks, which pass through untouched. */
 function splitFences(text: string): readonly { readonly code: boolean; readonly text: string }[] {

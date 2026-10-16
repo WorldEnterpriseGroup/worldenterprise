@@ -1,0 +1,140 @@
+---
+/**
+ * /ecosystem/<category>/ (WP-33): one page per kind of program. Native HTML only: a list of programs with their facts, what to ask
+ * before joining, and links to the other kinds. Works with no JavaScript. Ecosystem context (D-W10-1): data-context="ecosystem".
+ */
+import type { GetStaticPaths } from 'astro';
+import { APPLY, TALK_TO_WE } from '../../components/hero/ctas.ts';
+import Button from '../../components/ui/Button.astro';
+import EntryList from '../../components/ecosystem/EntryList.astro';
+import { isLiveOnDisk } from '../../data/cta/live.ts';
+import {
+  ASK_FIRST_HEADING,
+  BEST_FOR_LABEL,
+  CATEGORY_NEXT_HEADING,
+  CTA_HEADING,
+  CTA_TEXT,
+  DISCLAIMER,
+  DISCLAIMER_LONG,
+  HUB_PATH,
+  SOURCE_NOTE,
+  TAGLINE,
+} from '../../data/ecosystem/copy.ts';
+import { CATEGORIES, CATEGORY_IDS, CATEGORY_BY_ID, countByCategory, entriesIn } from '../../data/ecosystem/index.ts';
+import type { CategoryId } from '../../data/ecosystem/types.ts';
+import { directoryNode } from '../../data/ecosystem/schema.ts';
+import { href } from '../../lib/url.ts';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+
+export const getStaticPaths = (() => CATEGORY_IDS.map((category) => ({ params: { category } }))) satisfies GetStaticPaths;
+
+const id = Astro.params.category as CategoryId;
+const info = CATEGORY_BY_ID[id];
+const entries = entriesIn(id);
+const counts = countByCategory();
+const path = `${HUB_PATH}${id}/`;
+const others = CATEGORIES.filter((c) => c.id !== id);
+const sbirLive = (id === 'government' || id === 'sba') && isLiveOnDisk('/sbir-sttr/');
+const description = `${entries.length} verified ${info.short.toLowerCase()} programs: what each offers, who it is for, where it runs. Independent; no affiliation implied.`;
+---
+
+<MarketingLayout
+  title={info.name}
+  seoTitle={`${info.short}: programs to join`}
+  description={description}
+  lead={info.what}
+  path={path}
+  ogSlot="og-network"
+  eyebrow="The wider ecosystem"
+  primary={APPLY}
+  secondary={TALK_TO_WE}
+  schemaType="CollectionPage"
+  jsonLd={[directoryNode(path, `${info.name}: programs to join`, entries)]}
+>
+  <div data-context="ecosystem" class="eco-cat">
+    <p class="eco-cat__fit"><strong>{BEST_FOR_LABEL}:</strong> {info.bestFor}</p>
+    <p class="eco-cat__note"><strong>{DISCLAIMER}</strong> {SOURCE_NOTE}</p>
+
+    <section aria-labelledby="eco-cat-list">
+      <h2 id="eco-cat-list">{entries.length} programs</h2>
+      <EntryList entries={entries} level={3} idPrefix="c-" label={info.name} />
+      {
+        sbirLive && (
+          <p>
+            Public research awards have their own guide: <a href={href('/sbir-sttr/')}>SBIR and STTR</a>.
+          </p>
+        )
+      }
+    </section>
+
+    <section aria-labelledby="eco-cat-ask">
+      <h2 id="eco-cat-ask">{ASK_FIRST_HEADING}</h2>
+      <ul>
+        {info.askFirst.map((q) => <li>{q}</li>)}
+      </ul>
+    </section>
+
+    <section aria-labelledby="eco-cat-next">
+      <h2 id="eco-cat-next">{CATEGORY_NEXT_HEADING}</h2>
+      <ul class="eco-cat__others">
+        {
+          others.map((c) => (
+            <li>
+              <a href={href(`${HUB_PATH}${c.id}/`)}>{c.name}</a> ({counts[c.id]})
+            </li>
+          ))
+        }
+        <li>
+          <a href={href(`${HUB_PATH}#directory`)}>The full directory, with filters</a>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="eco-cat-cta" class="eco-cat__cta">
+      <h2 id="eco-cat-cta">{CTA_HEADING}</h2>
+      <p>{TAGLINE} {CTA_TEXT}</p>
+      <div class="cluster" role="group" aria-label="Next steps">
+        <Button href={APPLY.href} variant="primary">{APPLY.label}</Button>
+        <Button href={TALK_TO_WE.href} variant="secondary">{TALK_TO_WE.label}</Button>
+      </div>
+      <p class="eco-cat__fine">{DISCLAIMER_LONG}</p>
+    </section>
+  </div>
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    .eco-cat {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-7);
+    }
+
+    .eco-cat > *,
+    .eco-cat section {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-4);
+    }
+
+    .eco-cat p,
+    .eco-cat h2 {
+      margin: 0;
+    }
+
+    .eco-cat__fit {
+      font-size: var(--fs-lead);
+      max-inline-size: var(--measure);
+    }
+
+    .eco-cat__fine {
+      font-size: var(--fs-sm);
+    }
+
+    .eco-cat__others {
+      display: grid;
+      gap: var(--sp-2);
+      padding-inline-start: var(--sp-5);
+    }
+  }
+</style>

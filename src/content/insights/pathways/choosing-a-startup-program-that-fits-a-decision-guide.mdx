@@ -1,0 +1,105 @@
+---
+title: "Choosing a startup program that fits: a decision guide"
+seoTitle: Choosing a startup program that fits
+description: Batch programs, incubators and community programs differ in length, terms and fit. What research reports, and ten questions to ask before applying.
+topic: pathways
+publishedDate: 2026-10-15
+sources:
+  - id: yc-faq
+    title: Y Combinator FAQ
+    publisher: Y Combinator
+    url: https://www.ycombinator.com/faq
+    accessed: 2026-10-15
+  - id: gu-leatherbee
+    title: "Effects on venture performance, evidence from Start-Up Chile (Gonzalez-Uribe and Leatherbee, 2018)"
+    publisher: London School of Economics, Review of Financial Studies
+    url: https://researchonline.lse.ac.uk/id/eprint/84553/
+    accessed: 2026-10-15
+evidence: [yc-faq, gu-leatherbee]
+relatedServices: [F]
+relatedPlaybook: prepare-for-investor-conversations
+segments: [first-time-founders, solo-founders, non-technical-founders]
+related:
+  - matching-a-funding-route-to-a-stage-a-decision-guide
+  - from-side-project-to-company-the-decision-points
+  - choosing-the-right-first-investors-for-a-saas-company
+claimsUsed: [C-05]
+---
+import BarChart from '../../../components/visuals/charts/BarChart.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+<div data-context="ecosystem">
+
+A founder with an early idea has more places to turn than at any earlier time: fixed-term batch programs, long-stay incubators, university programs, community workspaces and public programs for research-based companies. They are independent organizations that WE encourages founders to consider, and no affiliation is implied with any program named here. This guide does not rank them. It explains how the main types differ, what the research reports, and which questions help a founder decide whether a particular program fits the company and the years ahead. The decision belongs to the founder, and joining one or several is a sound way to build the support a long project needs.
+
+## Four kinds of program, and one confusing label
+
+People use the word accelerator for almost everything. The research literature separates the types more carefully. In their study of seed programs, Susan Cohen and Yael Hochberg describe accelerators as limited-duration programs lasting roughly three months, run in groups that start together, with a competitive and cyclical selection process and intensive mentoring. They contrast incubators, which typically host companies for one to five years, do not run groups, often charge rent or run as non-profits, select less competitively and offer less hands-on guidance. Angel investors back companies on an ongoing basis.
+
+<BarChart
+  title="Typical length of stay, by type of early-stage support"
+  items={[
+    { label: 'Fixed-term batch program', value: 3, display: 'about 3 months' },
+    { label: 'Incubator, short stay', value: 12, display: '1 year' },
+    { label: 'Incubator, long stay', value: 60, display: '5 years' },
+  ]}
+  max={60}
+  valueLabel="Months"
+  source={{ label: 'Cohen and Hochberg, Table 2', href: 'https://leeds-faculty.colorado.edu/bhagat/Accelerators-Start-Ups.pdf', period: '2014' }}
+  note="The incubator range is the one the authors give for the model, one to five years."
+/>
+
+| Feature | Fixed-term batch program | Incubator |
+|---|---|---|
+| Length | About three months | One to five years |
+| Groups starting together | Yes | No |
+| Selection | Competitive, on a cycle | Less competitive |
+| Typical model | Support in exchange for terms the program sets | Rent or a non-profit model |
+| Guidance | Intensive, in a short window | Lighter, over a longer period |
+
+The authors counted anywhere from several hundred to more than two thousand programs in 2014 and said the count was uncertain. The number is now larger and the models vary, so a label alone tells you little. Read the program's own description of what happens each week.
+
+## What one large program says about itself
+
+Y Combinator is the best known batch program and publishes a frequently asked questions page. It describes a batch as a three-month program that begins with a three-day in-person retreat in San Francisco and includes weekly meetings. It says any startup anywhere can apply, at any stage, from the moment a founding team has an idea it is excited about, and it says it regularly accepts solo founders. The program makes an investment in the companies it accepts, and its terms are published on its own site. Check them there, because terms change.
+
+That description is useful mainly as a template for questions. Every program should be able to tell you the length of the program, where you must be and for how long, who can apply, how many founders it accepts, what it asks in exchange, and what happens when it ends.
+
+## What the research reports
+
+The strongest published test is a study by Juanita Gonzalez-Uribe and Michael Leatherbee of Start-Up Chile, a government-run program that offered funding and a coworking space and, separately, entrepreneurship schooling. Because applicants near an admission cutoff were otherwise similar, the authors could compare those just above and just below it. They report that schooling bundled with basic services can significantly increase new venture performance, and that they find no evidence that basic services alone affect performance on their own.
+
+Read narrowly, this is one program in one country in one period, and it favors learning-plus-resources over resources alone. It does not show that any batch program works, and it says nothing about programs that differ from Start-Up Chile. It is a reason to ask what a program teaches and how, not only what it provides.
+
+## Ten questions before you apply
+
+1. What stage of company does the program accept, and is mine at that stage?
+2. How long is it, and how much of my time does it need each week?
+3. Must I live or work in a particular place for the term, and what does that cost me?
+4. What does the program ask in exchange: shares, a fee, a share of revenue, or nothing? Read the written terms and ask your counsel.
+5. How are founders selected, and what happens if I am not?
+6. What is taught, and by whom? Can I speak to founders who finished the program last year?
+7. What happens after the term: support, introductions, space, a community?
+8. Does the program fit the way I want to build the company over ten years, not only the next three months?
+9. What else could I do with the same time, such as a university program, a community workspace or a public program such as the one described in <MaybeLink path="/insights/grants-and-sbir-programs-for-software-companies/">grants and SBIR programs</MaybeLink>?
+10. Would I do this if the program did not lead to a raise?
+
+The <MaybeLink path="/compare/incubator-vs-other-programs/">comparison of incubators and other programs</MaybeLink> sets out how WE's own model differs from these, and the <MaybeLink path="/insights/matching-a-funding-route-to-a-stage-a-decision-guide/">route-matching guide</MaybeLink> pairs funding routes with stages.
+
+## Places to look beyond batch programs
+
+Batch programs get the attention, but they are a small part of the support available. Universities run entrepreneurship programs and often open them to alumni and to people from the surrounding community. Community workspaces host events where founders meet people a few steps ahead of them. Local business counseling is offered through the federal network described in <MaybeLink path="/insights/using-sba-resource-partners-sbdc-score-wbc-and-vboc/">using SBA resource partners</MaybeLink>, and public research funding is covered in the SBIR article linked above. Each of these asks something different of a founder, and several can be used at once.
+
+For a solo or non-technical founder, the most useful question is often about the group, not the curriculum. Who else will be in the room, and will any of them be building something close enough that a conversation helps? A program that fills a founder's calendar but not their network may not be the one that fits.
+
+## How the types fit a long horizon
+
+A short program can be a good first step for a company that needs a focused push, a network and a deadline. A longer-stay model can suit a company that needs space and steady guidance for years. Public programs, a community workspace and a counseling center can run in parallel with either. The <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article argues that a company is built in sprints inside a decade, and the same applies to support: the right mix often changes as the company does.
+
+The independent programs, workspaces and public offices named in this guide are worth meeting. Join them. WE works alongside, for the long run. A founder who joins a program, a cohort, a coworking space or a community can still use WE's long-horizon work alongside it, because the programs and the long effort answer different questions.
+
+## What this article cannot tell you
+
+This article cannot tell you which program to join, whether you would be accepted, or what any program charges today. Its descriptions of program types come from a 2014 research paper, its description of one program comes from that program's own page on the date shown, and its only causal evidence comes from a single study of Start-Up Chile. It does not describe any program run by WE, it makes no statement about how many applicants are admitted and it names no program as endorsed by or affiliated with WE. Terms, locations and selection change, so confirm each one with the program itself.
+
+</div>

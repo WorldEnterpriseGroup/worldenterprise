@@ -1,0 +1,118 @@
+---
+/**
+ * OptionGrid (WP-23, #89): a set of parallel options (kinds of test, answer statuses, formulas) as hex-icon tiles, for sets that have no
+ * order, where a FlowDiagram would imply one. An unordered list of 2 to 8 tiles; one may be marked amber as the one to start with.
+ */
+import { cleanText } from '../../visuals/contracts.ts';
+import VisualIcon from '../../visuals/VisualIcon.astro';
+import { PROGRAM_ICONS } from '../../visuals/icons.ts';
+import type { ProgramIcon } from '../../visuals/icons.ts';
+
+export interface Option {
+  readonly label: string;
+  readonly text: string;
+  readonly icon?: ProgramIcon | undefined;
+  /** A short second line, e.g. the main risk or a formula. */
+  readonly meta?: string | undefined;
+}
+
+interface Props {
+  title: string;
+  options: readonly Option[];
+  /** Index of the amber tile. */
+  highlight?: number;
+  note?: string;
+  headingLevel?: 3 | 4;
+  class?: string;
+}
+
+const { highlight = -1, headingLevel = 3, class: className } = Astro.props;
+const title = cleanText('OptionGrid', 'title', Astro.props.title);
+const note = Astro.props.note === undefined ? undefined : cleanText('OptionGrid', 'note', Astro.props.note);
+if (Astro.props.options.length < 2 || Astro.props.options.length > 8) throw new Error(`OptionGrid: takes 2 to 8 options, got ${Astro.props.options.length}`);
+const options = Astro.props.options.map((o, i) => {
+  if (o.icon !== undefined && !(PROGRAM_ICONS as readonly string[]).includes(o.icon)) throw new Error(`OptionGrid: icon "${o.icon}" is not a program icon`);
+  return {
+    label: cleanText('OptionGrid', `option ${i + 1} label`, o.label),
+    text: cleanText('OptionGrid', `option ${i + 1} text`, o.text),
+    meta: o.meta === undefined ? undefined : cleanText('OptionGrid', `option ${i + 1} meta`, o.meta),
+    icon: o.icon,
+  };
+});
+const H = headingLevel === 3 ? 'h3' : 'h4';
+---
+
+<figure class:list={['ogrid', className]}>
+  <H class="ogrid__title">{title}</H>
+  <ul class="ogrid__list" role="list">
+    {
+      options.map((o, i) => (
+        <li class:list={['ogrid__item', i === highlight && 'ogrid__item--hl']}>
+          {o.icon !== undefined && <VisualIcon name={o.icon} size={44} class="ogrid__icon" />}
+          <strong class="ogrid__label">{o.label}</strong>
+          <span class="ogrid__text">{o.text}</span>
+          {o.meta !== undefined && <span class="ogrid__meta">{o.meta}</span>}
+        </li>
+      ))
+    }
+  </ul>
+  {note !== undefined && <figcaption class="ogrid__note">{note}</figcaption>}
+</figure>
+
+<style>
+  @layer pages {
+    .ogrid {
+      margin: 0;
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .ogrid__title {
+      margin: 0;
+      font-size: var(--fs-h4);
+    }
+
+    .ogrid__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+      gap: var(--sp-3);
+    }
+
+    .ogrid__item {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-1);
+      padding: var(--sp-4);
+      border: 1px solid var(--color-border);
+      border-block-start: 4px solid var(--we-blue);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .ogrid__item--hl {
+      border-block-start-color: var(--we-amber);
+    }
+
+    .ogrid__label {
+      font-family: var(--ff-sans);
+    }
+
+    .ogrid__text {
+      font-size: var(--fs-sm);
+      line-height: var(--lh-snug);
+    }
+
+    .ogrid__meta {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+
+    .ogrid__note {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+  }
+</style>

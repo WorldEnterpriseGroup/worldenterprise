@@ -1,0 +1,129 @@
+---
+title: "Shutdown data and what survivors do differently"
+seoTitle: Shutdown data and what survivors do
+description: Federal closure data for new businesses, how the first-year drop compares across opening years, and what the survivors measurably do differently.
+topic: ops
+publishedDate: 2026-10-15
+sources:
+  - id: bls-survival-all
+    title: Survival of private sector establishments by opening year
+    publisher: U.S. Bureau of Labor Statistics, Business Employment Dynamics
+    url: https://www.bls.gov/bdm/us_age_naics_00_table7.txt
+    accessed: 2026-10-15
+  - id: bls-decade
+    title: 34.7 percent of business establishments born in 2013 were still operating in 2023
+    publisher: U.S. Bureau of Labor Statistics, The Economics Daily
+    url: https://www.bls.gov/opub/ted/2024/34-7-percent-of-business-establishments-born-in-2013-were-still-operating-in-2023.htm
+    accessed: 2026-10-15
+  - id: bls-survivor-size
+    title: The decline of job creation at new establishments
+    publisher: U.S. Bureau of Labor Statistics, Beyond the Numbers
+    url: https://www.bls.gov/opub/btn/volume-12/the-decline-of-job-creation-at-new-establishments.htm
+    accessed: 2026-10-15
+evidence: [bls-survival-all, bls-decade, bls-survivor-size]
+relatedServices: [F]
+relatedPlaybook: build-repeatable-growth
+segments: [first-time-founders, solo-founders, corporate-innovators]
+related:
+  - the-longevity-paradox-sprint-weekly-endure-for-a-decade
+  - runway-and-burn-the-arithmetic
+  - burnout-recognizing-it-and-what-to-change
+claimsUsed: [C-05]
+---
+import BarChart from '../../../components/visuals/charts/BarChart.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Most advice about startups comes from the companies that lasted. Federal data tell the other half of the story: what share of new establishments close, and when. This article reads the Bureau of Labor Statistics survival tables, compares the drop across several opening years, and then asks a narrower question than the usual "what do survivors do." The data cannot say what survivors do, but they can say what survivors look like, and that is worth knowing before drawing lessons.
+
+## How many close, and when
+
+The Bureau of Labor Statistics tracks private-sector establishments by the year they opened and reports the share still operating each year afterward. For establishments that opened in 2015, 79.6 percent were still operating after one year, 69.1 percent after two and 50.2 percent after five. By year ten the share was 34.7 percent. The Bureau's Economics Daily describes the same figure for the group that opened in March 2013: "In March 2023, 34.7 percent of U.S. private-sector business establishments born in March 2013 were still in operation."
+
+The steepest single drop is the first one. About one in five establishments in the 2015 group was gone after one year, while the later yearly declines were smaller, from about ten points in year two to under three points in year ten. That shape matters for planning: the early months carry the largest share of closures, and a company that passes year two has passed the steepest part of the curve.
+
+<BarChart
+  title="Share of new establishments still operating after two years, by opening year"
+  items={[
+    { label: 'Opened 2013', value: 68.9, display: '68.9 percent' },
+    { label: 'Opened 2015', value: 69.1, display: '69.1 percent' },
+    { label: 'Opened 2020', value: 72.3, display: '72.3 percent' },
+    { label: 'Opened 2023', value: 65.9, display: '65.9 percent' },
+  ]}
+  max={100}
+  valueLabel="Percent still operating at year two"
+  source={{ label: 'U.S. Bureau of Labor Statistics, Business Employment Dynamics, survival by opening year', href: 'https://www.bls.gov/bdm/us_age_naics_00_table7.txt', period: 'Opening years 2013, 2015, 2020 and 2023' }}
+  note="All private-sector industries, establishments rather than companies. Later groups are measured over different calendar years."
+/>
+
+| Opening year | After 1 year | After 2 years | After 5 years | After 10 years |
+|---|---|---|---|---|
+| 2013 | 79.6 percent | 68.9 percent | 50.6 percent | 34.7 percent |
+| 2015 | 79.6 percent | 69.1 percent | 50.2 percent | 34.7 percent |
+| 2020 | 80.9 percent | 72.3 percent | 51.4 percent | not yet observed |
+| 2023 | 78.2 percent | 65.9 percent | not yet observed | not yet observed |
+
+Opening years differ because the calendar years they pass through differ, so a later group has lived through different economic conditions than an earlier one. The 2024 group shows 77.9 percent after one year, the lowest first-year figure in the group of tables compared here, but a single point is a thin basis for a trend. The pattern across the table is steadier than any change from year to year: about eight in ten survive one year, roughly half reach year five, and about a third reach year ten.
+
+## The odds improve with age
+
+The same table reports a second measure: the share of each year's survivors that make it through the following year. For establishments in the 2015 opening group, 79.6 percent of new establishments passed their first year. Of those that began a second year, 86.8 percent passed it, and the figure continued upward: 88.9 percent for year three, 90.2 percent for year four, 90.5 percent for year five, and between 92 and 94 percent for each of years six through ten.
+
+| Year of operation | Share of the previous year's survivors still operating, 2015 group |
+|---|---|
+| 1 | 79.6 percent |
+| 2 | 86.8 percent |
+| 3 | 88.9 percent |
+| 4 | 90.2 percent |
+| 5 | 90.5 percent |
+| 6 | 92.5 percent |
+| 7 | 93.9 percent |
+| 8 | 92.4 percent |
+| 9 | 92.7 percent |
+| 10 | 92.8 percent |
+
+A simple calculation from the earlier table makes the same point. Of the 2015 establishments that reached year five, 34.7 divided by 50.2 is about 69 percent, which means roughly seven in ten of the five-year survivors reached year ten. That figure is this article's own arithmetic from the published rates, not a number the Bureau reports. The pattern suggests that an establishment's first years are the least forgiving, and a company that arrives at year five is on firmer ground than one in year one, though still not safe.
+
+## What the data cannot say about causes
+
+The tables count establishments. They do not record why one closed. An establishment can close because the business failed, because it was sold, merged or moved, or because the owner chose to stop. The tables also include every industry, from restaurants to software. A software founder who reads the table should treat it as a base rate for private-sector establishments and not as a forecast for a software company. The <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article places the information sector alongside the all-industry curve.
+
+For the same reason, the advice that circulates under headlines such as "what survivors do differently" usually rests on interviews with companies that survived, a method that cannot separate habits that helped from habits that merely accompanied success. A reader should ask what the source compares survivors against.
+
+## What survivors look like in the data
+
+There is one thing the data do show about survivors, which is how they grew. The Bureau's Beyond the Numbers series looked at establishments that opened in 2017. Those that survived the first year employed an average of 5.4 employees, those that survived three years employed an average of 7.0, and those that survived five years employed an average of 8.2. The establishments that opened in 1994 started larger and followed the same direction: 9.1, 11.4 and 13.2 employees at the same ages.
+
+<BarChart
+  title="Average employees at surviving establishments, 2017 opening group"
+  items={[
+    { label: 'Survived 1 year', value: 5.4, display: '5.4 employees' },
+    { label: 'Survived 3 years', value: 7.0, display: '7.0 employees' },
+    { label: 'Survived 5 years', value: 8.2, display: '8.2 employees' },
+  ]}
+  max={10}
+  valueLabel="Average employees"
+  source={{ label: 'U.S. Bureau of Labor Statistics, Beyond the Numbers, The decline of job creation at new establishments', href: 'https://www.bls.gov/opub/btn/volume-12/the-decline-of-job-creation-at-new-establishments.htm', period: 'Establishments opened in 2017' }}
+  note="Averages among establishments still operating at each age, which excludes those that closed."
+/>
+
+The survivors' averages rise partly because the smaller establishments close more often, so the average moves up even if no single establishment grows. The data cannot separate those two effects. What they do show is that the establishments still operating after five years were, on average, bigger than they were at one year.
+
+## Reading survival as a pacing problem
+
+The practical use of shutdown data is not to copy survivors. It is to plan for the shape of the curve.
+
+- Treat the first year as the period of highest risk and keep costs low enough to last through it. The <MaybeLink path="/insights/runway-and-burn-the-arithmetic/">runway arithmetic</MaybeLink> article shows how.
+- Expect attrition to continue after year two, and plan the work so that it is sustainable for the founders. The <MaybeLink path="/insights/burnout-recognizing-it-and-what-to-change/">burnout</MaybeLink> article lists the signs to watch for.
+- Look for company, as the research on <MaybeLink path="/insights/coworking-and-community-what-the-research-shows-about-staying-power/">coworking and community</MaybeLink> describes, and use public programs such as those in the <MaybeLink path="/insights/using-sba-resource-partners-sbdc-score-wbc-and-vboc/">SBA resource partners</MaybeLink> article.
+
+A closure is not a verdict on a person. Many founders who closed one business started another, and the data above count establishments, not founders. WE works on the premise that building a durable company takes years, and its <MaybeLink path="/about/manifesto/">manifesto</MaybeLink> says so.
+
+## Using the curve in a planning conversation
+
+A founder can use the curve as a calendar. In year one, the question is whether anyone will pay, and the cheapest evidence is a customer conversation, not a build. By years two and three, the question changes to whether the work can repeat, and the answer lives in retention and in how much of the founder's own time each customer takes. In years five through ten, the survival rates above show a different kind of risk, slower and more tied to the founders' energy, the market and the team's ability to keep learning.
+
+None of these stages is a promise. They are a way to match the questions a team asks to the stage the data describe. A weekly sprint cadence suits the first stage, and a patient quarterly rhythm suits the later ones. The <MaybeLink path="/how-we-work/">how WE works</MaybeLink> page describes how WE paces its work with founders across those stages, and the <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> helps a team check its own numbers against its plan.
+
+## What this article cannot tell you
+
+This article cannot tell you whether your company will survive, why any one company closed, or what habits cause a business to last. The Bureau of Labor Statistics tables count private-sector establishments in all industries, not software companies, and they do not record the reason for a closure. The averages for survivors exclude the establishments that closed. Nothing here describes an outcome for a company that works with WE, and nothing is a promise of results.

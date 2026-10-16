@@ -1,0 +1,44 @@
+---
+/**
+ * BandHead (WP-23, #89): the heading and lede that open a media band. The lede keeps the reading measure (at most 65ch) even when the
+ * band runs the full width of a 1920 screen.
+ */
+import { cleanText } from '../../visuals/contracts.ts';
+
+interface Props {
+  id: string;
+  title: string;
+  lede?: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+const title = cleanText('BandHead', 'title', Astro.props.title);
+const lede = Astro.props.lede === undefined ? undefined : cleanText('BandHead', 'lede', Astro.props.lede);
+---
+
+<header class:list={['band-head', className]}>
+  <h2 id={id}>{title}</h2>
+  {lede !== undefined && <p class="band-head__lede">{lede}</p>}
+</header>
+
+<style>
+  @layer pages {
+    .band-head {
+      display: grid;
+      gap: var(--sp-3);
+      margin-block-end: var(--sp-6);
+      max-inline-size: 65ch;
+    }
+
+    .band-head h2 {
+      margin: 0;
+    }
+
+    .band-head__lede {
+      margin: 0;
+      font-size: var(--fs-lead);
+      line-height: var(--lh-body);
+    }
+  }
+</style>

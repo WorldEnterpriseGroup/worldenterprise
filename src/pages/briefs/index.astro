@@ -3,6 +3,7 @@ import { getCollection, getEntry, render } from 'astro:content';
 import { BRIEF_COPY, HUB_COPY, depthLine } from '../../components/briefs/copy.ts';
 import { groupByAudience, liveBriefs, sectionCount } from '../../components/briefs/plan.ts';
 import { IDENTITY } from '../../components/families/visual/copy.ts';
+import BriefsHubMedia from '../../components/briefs/BriefsHubMedia.astro';
 import CtaLadder from '../../components/families/visual/CtaLadder.astro';
 import { hubActions } from '../../components/families/visual/cta.ts';
 import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
@@ -26,6 +27,7 @@ const research = (await getPublished('research'))
   .map((entry) => ({ entry, path: `/research/${entry.id.split('/').at(-1) ?? entry.id}/` }))
   .filter(({ path }) => state.isLive(path));
 const actions = hubActions(state.isLive);
+const covers = groups.flatMap((group) => group.briefs.map(({ row, abstract }) => ({ slug: row.slug, title: abstract.data.title, href: row.path })));
 ---
 
 <HubLayout
@@ -79,5 +81,6 @@ const actions = hubActions(state.isLive);
       </section>
     )
   }
+  <BriefsHubMedia slot="after" briefs={covers} />
   <CtaLadder slot="cta-end" />
 </HubLayout>

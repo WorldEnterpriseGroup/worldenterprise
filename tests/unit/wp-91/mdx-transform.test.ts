@@ -121,7 +121,7 @@ test('every published insight converts to lint-clean Markdown with every link li
   for (const entry of insights) {
     for (const options of [live, dead]) {
       const result = transformMdx(entry.body ?? '', options);
-      if (/\bdata-(?:generic-definition|claim-allow)\b/.test(entry.body ?? '')) {
+      if (/\bdata-(?:generic-definition|claim-allow|context)\b/.test(entry.body ?? '')) {
         assert.ok(!result.ok && result.reason === CLAIMS_MARKER_REASON, `${entry.id} holds a marker, so it has no twin`);
         continue;
       }
@@ -150,5 +150,27 @@ test('a claims marker refuses the twin, in a paragraph or a span, and a fenced e
 });
 
 test('the known components are exactly the ones the content uses in articles', () => {
-  assert.deepEqual([...KNOWN_COMPONENTS].sort(), ['Callout', 'CellTrail', 'DataTable', 'IntroductionsDisclaimer', 'MaybeLink', 'NoFundingDisclaimer', 'Steps']);
+  assert.deepEqual([...KNOWN_COMPONENTS].sort(), ['BarChart', 'Callout', 'CellTrail', 'DataTable', 'IntroductionsDisclaimer', 'LongHorizonTimeline', 'MaybeLink', 'NoFundingDisclaimer', 'SourceNote', 'StatTiles', 'Steps', 'SurvivalCurve']);
+});
+
+test('chart components become a captioned table with the source line and the note (WP-38)', () => {
+  const bar = ok(`<BarChart title="Days" items={[{ label: 'A', value: 616, display: '616 days' }, { label: 'B', value: 5 }]} valueLabel="Median days" source={{ label: 'Carta', href: 'https://carta.com/data/x/', period: 'Q2 2025' }} note="Medians." />`);
+  assert.equal(bar, ['Table: Days', '', '| Item | Median days |', '| --- | --- |', '| A | 616 days |', '| B | 5 |', '', 'Source: [Carta, Q2 2025](https://carta.com/data/x/)', '', 'Note: Medians.'].join('\n'));
+  const curve = ok(`<SurvivalCurve title="Survival" series={[{ label: 'All', points: [{ year: 1, percent: 79.6 }, { year: 2, percent: 69.1 }] }]} source={{ label: 'BLS' }} />`);
+  assert.match(curve, /\| Year 2 \| 69\.1 percent \|/);
+  assert.match(curve, /^Source: BLS$/m);
+  const tiles = ok(`<StatTiles label="Study size" stats={[{ value: '75', label: 'organizations', source: { label: 'arXiv', href: 'https://arxiv.org/abs/1', period: '2021' } }]} />`);
+  assert.match(tiles, /\| 75 \| organizations \| \[arXiv, 2021\]\(https:\/\/arxiv\.org\/abs\/1\) \|/);
+  const line = ok(`<LongHorizonTimeline id="t" label="Phases" horizon={5} milestones={[{ at: 1, label: 'Phase I', detail: 'Six months', source: { label: 'SBIR.gov' } }]} />`);
+  assert.match(line, /\| Year 1 \| Phase I \| Six months \| SBIR\.gov \|/);
+});
+
+test('a chart with an unknown prop or no source is refused, and a data-context page has no twin', () => {
+  rejects(`<BarChart title="x" items={[]} colour="red" source={{ label: 'a' }} />`, /prop this transform does not read: colour/);
+  rejects(`<BarChart title="x" items={[{ label: 'a', value: 1 }]} />`, /needs a source object/);
+  rejects('<div data-context="ecosystem">\n\nText.\n\n</div>', /claims marker/);
+});
+
+test('a source note becomes a list of its sources (WP-38)', () => {
+  assert.equal(ok(`<SourceNote sources={[{ label: 'A', href: 'https://example.org/a/', period: '2026' }, { label: 'B' }]} />`), 'Sources:\n\n- [A, 2026](https://example.org/a/)\n- B');
 });
