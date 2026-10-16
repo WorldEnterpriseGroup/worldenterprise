@@ -34,6 +34,10 @@ import {
   SURVIVAL_2015,
 } from '../../data/sales/timeline.ts';
 import type { WorldStage } from '../../components/sales/World.astro';
+import DataTeaser from '../../components/program/longevity/DataTeaser.astro';
+import JoinPrograms from '../../components/program/longevity/JoinPrograms.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
+import SbirBand from '../../components/program/longevity/SbirBand.astro';
 
 const path = '/why-it-takes-time/';
 const tones: Readonly<Record<StationId, string>> = {
@@ -265,7 +269,7 @@ const ids = [...STATIONS.flatMap((s) => s.sources), ...PACED.sources, ...HEAD_ST
           </div>
           <div class="split__media">
             <ChartFrame
-              caption="Mean age at founding, U.S. startups that hire, founded 2007 to 2014."
+              caption="Mean age at founding. All U.S. startups that hire: founded 2007 to 2014. The fastest-growing 1 in 1,000: founded 2007 to 2009."
               sources={HEAD_START.sources}
               table={{ caption: 'Mean founder age at founding', columns: ['Founders', 'Mean age'], rows: FOUNDER_AGE.map((b) => [b.label, b.display]) }}
             >
@@ -275,6 +279,13 @@ const ids = [...STATIONS.flatMap((s) => s.sources), ...PACED.sources, ...HEAD_ST
         </div>
       </div>
     </section>
+
+    <LongevitySpine
+      detail="brief"
+      tone="plain"
+      lead="Read the six charts as one rule: the first years are the hardest, and every year survived makes the next more likely. So the week is fast and the plan is patient. WE moves every week on a timeline built for the decade."
+      actions="none"
+    />
 
     <section class="band band--deep sales-end" aria-labelledby="clock-end-title">
       <div class="container">
@@ -291,6 +302,12 @@ const ids = [...STATIONS.flatMap((s) => s.sources), ...PACED.sources, ...HEAD_ST
         </div>
       </div>
     </section>
+
+    <JoinPrograms />
+
+    <SbirBand />
+
+    <DataTeaser ids={['ST-33', 'ST-19', 'ST-27']} />
 
     <section class="section sales-sources" aria-label="Sources for this page">
       <div class="container">

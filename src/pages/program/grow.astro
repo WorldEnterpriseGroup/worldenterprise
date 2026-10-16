@@ -13,6 +13,9 @@ import { METHODS, STAGE_VIEWS } from '../../components/program/phases.ts';
 import { getStage, nextStage } from '../../components/program/stages.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
+import JoinPrograms from '../../components/program/longevity/JoinPrograms.astro';
+import DataTeaser from '../../components/program/longevity/DataTeaser.astro';
 
 const stage = getStage('grow');
 const view = STAGE_VIEWS.grow;
@@ -54,6 +57,9 @@ const moons = METHODS.growth.expansion.map((label) => ({ label }));
   </StageLong>
   <StageBody stage={stage} />
   <Fragment slot="after">
+    <LongevitySpine detail="brief" tone="plain" lead="Grow is where the odds turn: each year survived makes the next more likely. Keep the weekly pace, and stay for the years that matter." />
+    <JoinPrograms />
+    <DataTeaser />
     <ProgramEnd title="Plan the years after the steepest one" text="Start a readiness review. WE arranges a conversation, then sends a one-page read of where the company sits on the business clock and what Grow would need." noFunding secondary={howLong} />
   </Fragment>
 </StageLayout>
