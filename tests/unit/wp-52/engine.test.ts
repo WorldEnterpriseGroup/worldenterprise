@@ -151,7 +151,9 @@ test('no context or a throwing probe keeps the poster', () => {
 
 test('the renderer is created with the same context attributes as the probe', () => {
   const runtime = readFileSync(new URL('../../../src/scripts/visuals/runtime.ts', import.meta.url), 'utf8');
-  assert.match(runtime, /new WebGLRenderer\(\{[^}]*\.\.\.WEBGL_CONTEXT_ATTRIBUTES[^}]*\}\)/);
+  // WP-36: the WebGL2 backend of WebGPURenderer draws on a context the runtime creates with the probe's attributes.
+  assert.match(runtime, /getContext\('webgl2', \{[^}]*\.\.\.WEBGL_CONTEXT_ATTRIBUTES[^}]*\}\)/);
+  assert.match(runtime, /new WebGPURenderer\(\{[^\n]*context: gl/);
 });
 
 test('the media query requires a wide screen, a fine pointer and motion allowed', () => {
@@ -161,7 +163,7 @@ test('the media query requires a wide screen, a fine pointer and motion allowed'
 });
 
 test('scene names are a closed set', () => {
-  assert.deepEqual([...SCENE_NAMES], ['galaxy', 'launch', 'orbit', 'worldforge', 'starfield']);
+  assert.deepEqual([...SCENE_NAMES], ['galaxy', 'launch', 'orbit', 'worldforge', 'starfield', 'accretion']);
   assert.equal(isSceneName('galaxy'), true);
   assert.equal(isSceneName('blackhole'), false);
   assert.equal(isSceneName(undefined), false);

@@ -21,7 +21,7 @@ The wave 9 contract names map onto this library as follows; the alias files forw
 | Contract name | Component |
 | --- | --- |
 | `Band`, `Split` | `Band.astro`, `Split.astro` (below) |
-| `Scene` | `Scene.astro`. Scene names are `galaxy`, `launch`, `orbit`, `worldforge`, `starfield`; the hex field is pure SVG (`HexField`), so it is not a scene. `poster` is a poster key or an imported image. A hero's high-priority poster comes through the `poster` slot (below), not a `priority` prop |
+| `Scene` | `Scene.astro`. Scene names are `galaxy`, `launch`, `orbit`, `worldforge`, `starfield`, `accretion`; the hex field is pure SVG (`HexField`), so it is not a scene. `poster` is a poster key or an imported image. A hero's high-priority poster comes through the `poster` slot (below), not a `priority` prop |
 | `GalaxyScene`, `LaunchTrajectory` | Same names |
 | `OrbitDiagram` | Alias of `OrbitSystem` |
 | `UbfDiagram` | `OrbitSystem` preset with the ten UBF components |
@@ -29,7 +29,7 @@ The wave 9 contract names map onto this library as follows; the alias files forw
 | `SeatBuilder` | Alias of `seats/TeamConstellation`: unpriced, nothing to build or buy (positioning change of 2026-10-14) |
 
 DOM of a scene: `we-scene.scene[data-scene][data-state] > figure.scene__figure > .scene__stage > .scene__frame > img.scene__poster`
-(+ `canvas.scene__canvas` once live), then `ol.scene__labels` and `button.scene__toggle`; `figcaption.scene__caption` closes the
+(+ `canvas.scene__canvas` once live), then `ol.scene__labels`, the optional `div.scene__tools` (key and about buttons), `div.scene__legend[popover]`, `dialog.scene__detail` and `button.scene__toggle`; `figcaption.scene__caption` closes the
 figure.
 
 ## Layout primitives
@@ -38,7 +38,7 @@ The `.band`, `.split` and `.bleed-media` rules live in `src/styles/layout.css` (
 
 | Component | Use |
 | --- | --- |
-| `Band` | A full-bleed section: `section.band.band--<tone> > .container`. `<Band tone="deep" labelledby="h-x"><HexField slot="scene" tone="dark" /><h2 id="h-x">...</h2></Band>`. Props: `tone` (`plain`, `soft`, `tint-blue`, `tint-sand`, `tint-stone`, `deep`), `id`, `labelledby`, `defer` (content-visibility: auto; never the first band), `class`; slot `scene` for a background visual that fills the band under the content (a `HexField`, or `<Scene slot="scene" scene="starfield" poster="starfield" alt="" decorative fill />`). A deep band never holds the logo. |
+| `Band` | A full-bleed section: `section.band.band--<tone> > .container`. `<Band tone="deep" labelledby="h-x"><HexField slot="scene" tone="dark" /><h2 id="h-x">...</h2></Band>`. Props: `tone` (`plain`, `soft`, `tint-blue`, `tint-sand`, `tint-stone`, `deep`), `id`, `labelledby`, `defer` (content-visibility: auto; never the first band), `bleed` (a deep band with a scene melts into its neighbours; default on), `class`; slot `scene` for a background visual that fills the band under the content (a `HexField`, or `<Scene slot="scene" scene="starfield" poster="starfield" alt="" decorative fill />`). A deep band never holds the logo. |
 | `Split` | Text beside a visual: `.split > .split__text + .split__media`. `<Split><h2>...</h2><p>...</p><WorldForge slot="media" /></Split>`. Props: `reverse`, `even`, `mediaFirst`, `class`. In a Band, put `class="bleed-media"` (`bleed-media bleed-media--start` when reversed) on the visual to run it to the viewport edge. |
 
 ## Scenes (three.js, desktop only)
@@ -62,8 +62,9 @@ narrow ones. Arrow keys, Home and End step through the label links.
 | `UbfDiagram` | The UBF planetarium: the ten UBF components (`ubf.ts`, paraphrased one-line definitions) on nested rings, with its own poster. `<UbfDiagram href="/about/frameworks/ubf/" />`. Props: `href` (every label links there), `alt`, `caption`, `static`, `class`. |
 | `OrbitSystem` | A sun with 1 to 12 labeled bodies on orbit rings (service lines, UBF components). `<OrbitSystem bodies={lines} accent={5} />`. Props: `bodies` (`{ label, href?, description? }[]`), `rings` (`single`, `nested`), `accent` (index of the one amber body), `alt`, `caption`, `labelsName`, `static`. Seven on single rings and ten on nested rings have their own posters; any other count draws its rings and bodies in SVG over the sun-only poster. |
 | `WorldForge` | The incubation nursery: a world forming from hex tiles, seven O.R.B.I.T.A.L. rings, moons condensing from dust. `<WorldForge moons={[{ label: 'A side project', description: 'Formed' }]} />`. Props: `moons` (0 to 7 labels; the scene draws that many moons), `alt`, `caption`, `labelsName`, `static`. Labels always list below the frame. |
+| `AccretionScene` | Worlds take years: a disc of dust spiraling in toward a world still forming, planetesimals on the rings, one amber tile. Wide and short, made for a band behind text (home, /data/). `<AccretionScene align="end" ratio="21/9" />`. Props: `alt`, `align` (`center`, `end`: world to the right, copy room on the left), `ratio` (`16/9`, `21/9`, `3/1`), `sizes`, `caption`, `static`, `feather`, `class`. For a full-bleed background use `<Scene slot="scene" scene="accretion" poster="accretion-end" alt="" decorative fill />` in a deep `Band`. |
 | `StarfieldBand` | Dark full-bleed section with a slow starfield behind slot content. `<StarfieldBand labelledby="h-x"><h2 id="h-x">...</h2></StarfieldBand>`. Props: `labelledby`, `id`, `size` (`default`, `tall`), `static`. Decorative sky; never put the logo on a dark band. |
-| `Scene` | The frame the wrappers use; use it directly only for a new scene. Props: `scene`, `poster`, `alt`, `ratio`, `options`, `sizes`, `caption`, `labelsName`, `static`, `fill`, `decorative`, `labels` (`float`, `list`), `class`; slots `labels` and `overlay`. |
+| `Scene` | The frame the wrappers use; use it directly only for a new scene. Props: `scene`, `poster`, `alt`, `ratio`, `options`, `sizes`, `caption`, `labelsName`, `static`, `fill`, `decorative`, `labels` (`float`, `list`), `feather` (`edges` default, `none`), `hero` (names the frame `hero-media` for view transitions), `class`; slots `labels`, `overlay`, `legend` (a popover key) and `detail` (an "About this scene" dialog). |
 | `SceneLabel` | One label in a `labels` slot: `index` (anchor), `label`, `href`, `description`, `x`/`y` (0 to 1, poster position), `below`. |
 
 **Hero poster (W9-6).** A scene's own poster always loads lazily with async decoding (the wp-12b image rules reserve eager loading and high fetch priority for the hero components on their allow list; adding Scene there is a request to the rules owner, see `.astro-magazine/handoffs/wp-52-requests.md`). So a hero whose LCP image is the galaxy poster renders that image itself, in the
@@ -85,9 +86,48 @@ const poster = await posterImage(galaxyPosterKey('end'), sizes);
 
 The slotted image must keep `class="scene__poster"`: Scene positions it, and fades it out when the canvas goes live. Set `static` to show only the poster (a second scene on a page that already has one running, print-like contexts).
 
-Posters live in `src/assets/visuals/posters/` (1920-wide AVIF masters; Astro emits 640/1024/1440/1920). After changing a scene,
-regenerate them with `node src/assets/visuals/tools/render-posters.mjs [key...]` (headless Chromium with SwiftShader; set
+Posters live in `src/assets/visuals/posters/` (3840-wide AVIF masters rendered at pixel ratio 2; Astro emits 640/1024/1440/1920/2560/3840, so 1440p and 4K screens get a sharp frame). After changing a scene,
+regenerate them with `node src/assets/visuals/tools/render-posters.mjs [key...]` (headless Chromium with SwiftShader, through the same WebGPURenderer node materials the live scene runs; set
 `CHROMIUM_PATH` if the Playwright browser is not installed).
+
+## Seamless scenes and the HTML5 platform (WP-36)
+
+**Renderer.** Scenes run on three's `WebGPURenderer` (`three/webgpu`, three 0.186.1, the latest stable) with node (TSL) materials, so one
+code path serves two backends. `src/scripts/visuals/backend.ts` picks WebGPU when `navigator.gpu.requestAdapter()` returns a hardware
+adapter (a software or "fallback" adapter does not count) and WebGL2 otherwise; WebGL2 is three's own backend on a context the runtime
+creates with the gate's `failIfMajorPerformanceCaveat` attributes. If WebGPU fails to initialise it retries once on WebGL2; a lost device
+or context tears the scene down and keeps the poster. The gate itself is unchanged (hardware WebGL2 is still required, so software GL and
+CI keep the poster) and the runtime keeps one live scene, the 1.75 DPR cap, IntersectionObserver and `visibilitychange` pause,
+`pagehide` and disconnect disposal, and the pause button. Point clouds are instanced quads (WebGPU draws points one pixel wide): one draw
+call per cloud, every position, size and colour a pure function of the scene clock, so the poster is exactly frame `posterTime`. The
+nebula is a procedural noise dome in the node graph, not a texture. Everything is lazy: three never loads on phones, reduced motion,
+forced colors, Save-Data or without JavaScript, so the mobile 10,240 B route budget is untouched. `data-backend="webgpu|webgl2"` on a
+live `<we-scene>` says which backend runs. OffscreenCanvas in a worker is deliberately not used: the scenes draw glow textures and project
+labels on the main thread, and a worker would add a separate module chunk and a second copy of three for no visible gain at one scene
+per page.
+
+**Seamless frames.** A framed scene has no box: its frame is masked with two intersecting `mask-image` gradients (`feather="edges"`,
+default), so every edge dissolves into the page, over a fade that shrinks on narrow containers and grows slightly as the scene scrolls
+in or out (`animation-timeline: view()` driving an `@property` number; no movement, no scroll-jacking). A `fill` scene is the background
+of its band or hero, and the band owns the edges: a deep `Band` and `StarfieldBand` extend a soft skirt of the band colour past their
+top and bottom edges (`bleed`). The poster sits in the same aspect-ratio box as the canvas, so the poster-to-canvas swap is a crossfade
+(the canvas fades in with `@starting-style` as the poster fades out) with no layout shift.
+
+| Feature | Where | Support and fallback |
+| --- | --- | --- |
+| Cross-document view transitions | `src/styles/motion.css` (`@view-transition`, header, page title); `Scene hero` names the lead scene frame `hero-media` | Chromium 126+, Safari 18.2+; others navigate normally. Off under reduced motion |
+| Scroll-driven animation | `motion.css` reveals and progress rail; Scene edge materialise | Chromium, Safari 26; others show the resting state. Longhands only (WP-60 finding) |
+| `@starting-style` | Scene canvas, pause button, key popover, about dialog | Chromium 117+, Safari 17.5+, Firefox 129+; others appear without a fade |
+| Popover and anchor positioning | `legend` slot: `button[popovertarget] + div[popover]`, `position-anchor: auto; position-area` | Popover is baseline; without anchor positioning the browser centres it in the top layer |
+| `<dialog closedby="any">` and invoker commands | `detail` slot: `button[commandfor][command=show-modal]` | Without `commandfor` the stub opens the dialog with `showModal()`; the dialog closes by Esc, outside click or its `form method=dialog` |
+| `@property` typed custom properties | `--sheen` (one poster-state light sweep after load, never looped), `--depth` (edge feather) | Chromium, Safari 16.4+, Firefox 128+; the gradients read `var(--depth, 0)` so a browser without `@property` keeps the resting mask |
+| Container queries | Scene labels and feather width (`container-name: scene`) | Baseline |
+| `:has()` | The sheen runs only while the stage has no canvas | Baseline |
+| `content-visibility: auto` | `Band defer` (a deferred band has no skirts, because containment would clip them) | Baseline 2024 |
+| Speculation rules | `components/seo/SpeculationRules.astro`: prerender on hover, inline script registered with `Astro.csp.insertScriptHash`, which `audit:csp` already checks | Chromium; ignored elsewhere |
+| `fetchpriority` on the LCP poster | The hero renders its own poster `<img>` in the `poster` slot (above); Scene's own posters stay lazy | Baseline |
+
+Charts (`charts/**`) belong to the data-visualization package; the key popover and the dialog work for them through `Scene` only.
 
 ## Long-horizon timeline
 

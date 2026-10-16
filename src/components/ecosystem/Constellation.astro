@@ -1,0 +1,146 @@
+---
+/**
+ * The hero visual of /ecosystem/ (WP-33): a founder at the center of eight orbits, one node per kind of program. Pure SVG, no script,
+ * no third-party request. The drawing is an image with a title and a description; the links to the categories sit in the cards below it.
+ * Motion only under prefers-reduced-motion: no-preference. Colors come from tokens, so the deep band and forced colors both work.
+ */
+interface Props {
+  names: readonly string[];
+}
+
+const { names } = Astro.props;
+const C = 300;
+const round = (n: number): number => Math.round(n * 10) / 10;
+const nodes = names.map((name, i) => {
+  const ring = i % 2 === 0 ? 150 : 215;
+  const angle = ((-90 + i * (360 / names.length)) * Math.PI) / 180;
+  return { name, ring, x: round(C + ring * Math.cos(angle)), y: round(C + ring * Math.sin(angle)), alt: i % 3 === 1 };
+});
+// Fixed star positions, so the build is reproducible.
+const stars = Array.from({ length: 46 }, (_, i) => {
+  const a = (i * 137.508 * Math.PI) / 180;
+  const r = 40 + ((i * 53) % 255);
+  return { x: round(C + r * Math.cos(a)), y: round(C + r * Math.sin(a)), r: i % 7 === 0 ? 2 : 1.2 };
+});
+---
+
+<svg class="eco-constellation" viewBox="0 0 600 600" role="img" aria-labelledby="eco-const-title eco-const-desc">
+  <title id="eco-const-title">A founder at the center with eight kinds of program in orbit</title>
+  <desc id="eco-const-desc">{`The kinds of program, from the top clockwise: ${names.join(', ')}.`}</desc>
+  <g class="eco-constellation__stars">
+    {stars.map((s) => <circle cx={s.x} cy={s.y} r={s.r} />)}
+  </g>
+  <circle class="eco-constellation__orbit" cx={C} cy={C} r="150" />
+  <circle class="eco-constellation__orbit" cx={C} cy={C} r="215" />
+  <circle class="eco-constellation__orbit eco-constellation__orbit--far" cx={C} cy={C} r="275" />
+  <g class="eco-constellation__links">
+    {nodes.map((n) => <line x1={C} y1={C} x2={n.x} y2={n.y} />)}
+  </g>
+  <circle class="eco-constellation__glow" cx={C} cy={C} r="52" />
+  <circle class="eco-constellation__core" cx={C} cy={C} r="34" />
+  <g class="eco-constellation__nodes">
+    {
+      nodes.map((n) => (
+        <g>
+          <circle class:list={['eco-constellation__node', n.alt && 'eco-constellation__node--alt']} cx={n.x} cy={n.y} r="15" />
+          <circle class="eco-constellation__halo" cx={n.x} cy={n.y} r="24" />
+        </g>
+      ))
+    }
+  </g>
+</svg>
+
+<style>
+  @layer pages {
+    .eco-constellation {
+      display: block;
+      inline-size: 100%;
+      max-inline-size: 40rem;
+      block-size: auto;
+      margin-inline: auto;
+    }
+
+    .eco-constellation__stars circle {
+      fill: var(--color-text);
+      opacity: 0.55;
+    }
+
+    .eco-constellation__orbit {
+      fill: none;
+      stroke: var(--color-border);
+      stroke-width: 1.5;
+    }
+
+    .eco-constellation__orbit--far {
+      stroke-dasharray: 2 9;
+    }
+
+    .eco-constellation__links line {
+      stroke: var(--color-border);
+      stroke-width: 1;
+      opacity: 0.7;
+    }
+
+    .eco-constellation__glow {
+      fill: var(--color-highlight-ink);
+      opacity: 0.25;
+    }
+
+    .eco-constellation__core {
+      fill: var(--color-highlight-ink);
+    }
+
+    .eco-constellation__node {
+      fill: var(--color-link);
+    }
+
+    .eco-constellation__node--alt {
+      fill: var(--color-highlight-ink);
+    }
+
+    .eco-constellation__halo {
+      fill: none;
+      stroke: var(--color-link);
+      stroke-width: 1;
+      opacity: 0.4;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .eco-constellation__nodes,
+      .eco-constellation__links {
+        transform-box: view-box;
+        transform-origin: 50% 50%;
+        animation: eco-constellation-turn 40s linear infinite;
+      }
+
+      .eco-constellation__glow {
+        animation: eco-constellation-pulse 6s ease-in-out infinite;
+      }
+    }
+
+    @keyframes eco-constellation-turn {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes eco-constellation-pulse {
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .eco-constellation__core,
+      .eco-constellation__node {
+        fill: CanvasText;
+      }
+
+      .eco-constellation__orbit,
+      .eco-constellation__links line,
+      .eco-constellation__halo {
+        stroke: CanvasText;
+      }
+    }
+  }
+</style>
