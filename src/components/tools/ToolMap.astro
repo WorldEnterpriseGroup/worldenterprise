@@ -2,13 +2,14 @@
 /**
  * ToolMap: the founder tools on one launch trajectory (WP-24). The road from idea to investor readiness rises across the frame in five
  * stretches; each tool is a numbered station on the stretch where it helps most. The legend under the drawing names every station
- * and links its tool. Only live tools are drawn. Authored SVG computed at build time; no script.
+ * as plain text: the tool cards below the map carry the one link to each tool, so a screen reader never meets the same link twice
+ * (and the hub keeps one link per tool name, as the tools hub contract expects). Only live tools are drawn. Authored SVG computed at
+ * build time; no script.
  */
 import HubFigure from '../hubs/HubFigure.astro';
 import { r1 } from '../hubs/geometry.ts';
 import { ROAD, VERB_LABELS, schematicFor } from './schematics.ts';
 import type { ToolEntry } from './registry.ts';
-import { href as resolve } from '../../lib/url.ts';
 
 interface Props {
   tools: readonly ToolEntry[];
@@ -77,7 +78,7 @@ const alt = `A launch arc rising from lower left to upper right through five str
       placed.map((p) => (
         <li>
           <span class="tool-map__key" aria-hidden="true">{p.n}</span>
-          <a href={resolve(p.tool.href)}>{p.tool.title}</a>
+          <span class="tool-map__name">{p.tool.title}</span>
           <span class="tool-map__where">{ROAD[p.s.stage]}</span>
         </li>
       ))
@@ -131,6 +132,10 @@ const alt = `A launch arc rising from lower left to upper right through five str
     color: var(--we-white);
     font-weight: 700;
     font-size: var(--fs-xs);
+  }
+
+  .tool-map__name {
+    font-weight: 600;
   }
 
   .tool-map__where {
