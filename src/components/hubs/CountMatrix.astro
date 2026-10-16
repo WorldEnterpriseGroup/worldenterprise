@@ -1,0 +1,188 @@
+---
+/**
+ * CountMatrix: a cross-count drawn as a heat grid (WP-24). Rows and columns are two ways of sorting the same pages (for example stage
+ * and kind); each cell holds a dot whose area follows its count, the count itself, and, when the caller gives one, a link to where those
+ * pages are listed. It is an HTML table, so the drawing is its own text alternative: every row and column header is a real header and
+ * every count is printed. The dots are small decorative SVGs with intrinsic sizes; no script, no style attribute.
+ */
+import HubFigure from './HubFigure.astro';
+import { cleanText } from '../visuals/contracts.ts';
+import { href as resolve } from '../../lib/url.ts';
+import type { MomentKind } from './moments.ts';
+
+interface Axis {
+  readonly key: string;
+  readonly label: string;
+  /** Where the pages of this row or column are listed, e.g. an anchor on the page. */
+  readonly href?: string | undefined;
+}
+
+interface Props {
+  id: string;
+  title: string;
+  caption: string;
+  credit: string;
+  /** The header of the row-label column, e.g. "Stage". */
+  corner: string;
+  rows: readonly Axis[];
+  columns: readonly Axis[];
+  /** counts[r][c]: how many pages sit in row r and column c. */
+  counts: readonly (readonly number[])[];
+  /** Singular and plural nouns for the cell labels. */
+  unit: readonly [string, string];
+  kind?: MomentKind;
+  tone?: 'light' | 'dark';
+}
+
+const { id, rows, columns, counts, unit, kind = 'chart', tone = 'light' } = Astro.props;
+if (rows.length < 1 || columns.length < 1) throw new Error(`CountMatrix "${id}": needs at least one row and one column`);
+if (counts.length !== rows.length || counts.some((r) => r.length !== columns.length)) throw new Error(`CountMatrix "${id}": counts must be ${rows.length} by ${columns.length}`);
+for (const row of counts) for (const n of row) if (!Number.isInteger(n) || n < 0) throw new Error(`CountMatrix "${id}": counts are whole numbers, got ${n}`);
+for (const a of [...rows, ...columns]) cleanText('CountMatrix', `label ${a.key}`, a.label);
+const corner = cleanText('CountMatrix', 'corner', Astro.props.corner);
+const max = Math.max(1, ...counts.flat());
+const D = 36;
+// Area, not radius, follows the count, so a cell with twice the pages reads as twice the ink.
+const radius = (n: number): number => (n === 0 ? 0 : Math.round((4 + 13 * Math.sqrt(n / max)) * 10) / 10);
+const word = (n: number): string => `${n} ${n === 1 ? unit[0] : unit[1]}`;
+---
+
+<HubFigure id={id} kind={kind} title={Astro.props.title} caption={Astro.props.caption} credit={Astro.props.credit} drawing="html" tone={tone}>
+  <div class="cm__scroll" role="region" aria-label={`${Astro.props.title} (scrolls sideways on a narrow screen)`} tabindex="0">
+    <table class="cm">
+      <thead>
+        <tr>
+          <th scope="col" class="cm__corner">{corner}</th>
+          {
+            columns.map((c) => (
+              <th scope="col">{c.href !== undefined ? <a href={resolve(c.href)}>{c.label}</a> : c.label}</th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((r, i) => (
+            <tr>
+              <th scope="row">{r.href !== undefined ? <a href={resolve(r.href)}>{r.label}</a> : r.label}</th>
+              {columns.map((c, j) => {
+                const n = counts[i]?.[j] ?? 0;
+                return (
+                  <td class:list={['cm__cell', { 'cm__cell--empty': n === 0 }]}>
+                    <svg class="cm__dot" width={D} height={D} viewBox={`0 0 ${D} ${D}`} aria-hidden="true" focusable="false">
+                      <circle class="cm__ring" cx={D / 2} cy={D / 2} r={D / 2 - 1} />
+                      {n > 0 && <circle class:list={['cm__fill', { 'cm__fill--max': n === max }]} cx={D / 2} cy={D / 2} r={radius(n)} />}
+                    </svg>
+                    <span class="cm__n">{n}</span>
+                    <span class="visually-hidden">{`${word(n)}: ${r.label}, ${c.label}`}</span>
+                  </td>
+                );
+              })}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</HubFigure>
+
+<style>
+  .cm__scroll {
+    position: relative;
+    max-inline-size: 100%;
+    overflow-x: auto;
+  }
+
+  .cm__scroll:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .cm {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+
+    & th,
+    & td {
+      padding: var(--sp-2);
+      border-block-end: 1px solid var(--color-border);
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    & thead th {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    & tbody th {
+      min-inline-size: 8rem;
+      text-align: start;
+      font-weight: 700;
+    }
+
+    @media (max-width: 40rem) {
+      & th,
+      & td {
+        padding: var(--sp-1);
+      }
+    }
+  }
+
+  .cm__corner {
+    text-align: start;
+  }
+
+  .cm__cell {
+    /* The containing block of the hidden cell label, so it is placed in the cell and never widens the page. */
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .cm__dot {
+    display: block;
+    margin-inline: auto;
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+  }
+
+  .cm__ring {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 1;
+  }
+
+  .cm__fill {
+    fill: var(--we-blue);
+  }
+
+  .cm__fill--max {
+    fill: var(--we-amber);
+  }
+
+  .cm__n {
+    display: block;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+  }
+
+  .cm__cell--empty .cm__n {
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  @media (forced-colors: active) {
+    .cm__ring {
+      stroke: CanvasText;
+    }
+
+    .cm__fill,
+    .cm__fill--max {
+      fill: CanvasText;
+    }
+  }
+</style>
