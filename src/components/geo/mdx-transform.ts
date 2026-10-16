@@ -289,8 +289,13 @@ interface ChartSource {
   readonly period: string | undefined;
 }
 
+/** A literal object, not an array: Array.isArray does not narrow a readonly array out of the union, so the check is a guard. */
+function isLiteralObject(value: LiteralValue | undefined): value is { readonly [key: string]: LiteralValue } {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
 function readSource(name: string, value: LiteralValue | undefined): ChartSource {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) return fail(`<${name}> needs a source object`);
+  if (!isLiteralObject(value)) return fail(`<${name}> needs a source object`);
   const label = value['label'];
   const href = value['href'];
   const period = value['period'];
