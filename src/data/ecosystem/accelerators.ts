@@ -7,7 +7,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'y-combinator',
     name: 'Y Combinator',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.ycombinator.com/apply',
     offers: 'A funded batch in which each company works with a dedicated YC partner, with a kick-off and a batch each season.',
     whoFor: 'Early-stage startups invited to interview after applying.',
@@ -23,7 +23,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'yc-startup-school',
     name: 'Startup School (Y Combinator)',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.startupschool.org',
     offers: 'A self-paced online course on how to start a startup, with co-founder matching and weekly progress tracking.',
     whoFor: 'Early-stage founders, people turning a side project into a company, and the curious.',
@@ -39,7 +39,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'techstars',
     name: 'Techstars',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.techstars.com/accelerators',
     offers: 'Mentorship-driven accelerator programs with access to networks and capital, run in cities and by industry vertical.',
     whoFor: 'Early-stage startups; verticals include health, finance, space and defense, and critical infrastructure.',
@@ -55,7 +55,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: '500-global',
     name: '500 Global',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://500.co',
     offers: 'Flagship accelerator and regional programs for founders, plus programs for investors, mentorship, venture education and events.',
     whoFor: 'Globally ambitious founders building fast-growing technology companies.',
@@ -71,7 +71,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'antler',
     name: 'Antler',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.antler.co',
     offers: 'Pre-seed capital, a network and a local team for founders ready to build, plus scale-up capital through Antler Elevate.',
     whoFor: 'Founders ready to build at pre-seed, and breakout technology companies seeking Series A and later capital.',
@@ -87,7 +87,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'entrepreneur-first',
     name: 'Entrepreneur First',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.joinef.com',
     offers: 'Co-founder matching, a residential retreat and a cohort for individuals who want to build a company, with support through first revenue and demo day.',
     whoFor: 'Individuals who have outperformed their peers and want to build a company, with an idea or without one.',
@@ -104,7 +104,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'alchemist-accelerator',
     name: 'Alchemist Accelerator',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://alchemistaccelerator.com',
     offers: 'A six-month accelerator with coaching, investor access and fundraising support for technical founders building enterprise companies.',
     whoFor: 'Technical founders building enterprise or B2B companies, including AI software and deep tech.',
@@ -121,7 +121,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'hax',
     name: 'HAX',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://hax.co',
     offers: 'Pre-seed investment and hands-on engineering support for hard-tech startups, with industrial-grade space and a technical team.',
     whoFor: 'Pre-seed startups solving hard problems with hard tech: energy, advanced compute, transportation, health tech and manufacturing.',
@@ -137,7 +137,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'gener8tor',
     name: 'gener8tor',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.gener8tor.com',
     offers: 'Investment accelerators, shorter coaching programs, skills accelerators and corporate and sustainability programs.',
     whoFor: 'Startups, creatives, career seekers and corporations, depending on the program.',
@@ -154,7 +154,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'founder-institute',
     name: 'Founder Institute',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://fi.co',
     offers: 'A structured program for founders with an idea: ten sessions, mentor feedback, an AI-assisted curriculum and a funding day.',
     whoFor: 'Founders with an idea who want to build a company, including solo founders.',
@@ -171,7 +171,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'startupbootcamp',
     name: 'Startupbootcamp',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.startupbootcamp.org',
     offers: 'About thirty industry-specific accelerators, including programs for energy and climate, food and agritech, health, mobility, and a program for female founders.',
     whoFor: 'Startups in the industry each program names.',
@@ -187,7 +187,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'creative-destruction-lab',
     name: 'Creative Destruction Lab',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://creativedestructionlab.com',
     offers: 'An objectives-based program run by a nonprofit, organized in streams, with mentors.',
     whoFor: 'Seed-stage, science- and technology-based companies that aim to scale massively.',
@@ -203,7 +203,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'village-capital',
     name: 'Village Capital',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://vilcap.com',
     offers: 'Accelerator programs, resources and tools, with impact investments in equity, debt and revenue share, delivered with local partners.',
     whoFor: 'Impact startups in climate innovation, economic mobility and equitable access to essential services.',
@@ -219,7 +219,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'seedcamp',
     name: 'Seedcamp',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://seedcamp.com',
     offers: 'Seed investment with advice, support and a network for early-stage founders.',
     whoFor: 'Early-stage founders with ambitious plans.',
@@ -235,7 +235,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'dreamit',
     name: 'Dreamit Ventures',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.dreamit.com',
     offers: 'Customer sprints and investor sprints for early-stage cybersecurity startups, with an active partnership on customer acquisition and fundraising.',
     whoFor: 'Pre-Series A U.S. cybersecurity companies with early signs of product-market fit.',
@@ -251,7 +251,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'endeavor',
     name: 'Endeavor',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.endeavor.org',
     offers: 'Entrepreneur programs, a global community of mentors and local boards, and co-investment through the Endeavor Catalyst Fund.',
     whoFor: 'High-impact entrepreneurs who are scaling businesses.',
@@ -267,7 +267,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'google-for-startups',
     name: 'Google for Startups',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://startup.google.com/programs/',
     offers: 'Accelerators for growth-stage startups, Startup School online lessons, AI immersion programs, forums, workshops and API sprints.',
     whoFor: 'Startups from early stage to growth stage, depending on the program.',
@@ -283,7 +283,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'microsoft-for-startups',
     name: 'Microsoft for Startups',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.microsoft.com/en-us/startups',
     offers: 'Cloud credits, AI models and developer tools, technical resources and access to Microsoft’s customer network for go-to-market help.',
     whoFor: 'Startups building, scaling and selling their products.',
@@ -299,7 +299,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'aws-for-startups',
     name: 'AWS for Startups',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://aws.amazon.com/startups',
     offers: 'Cloud credits through AWS Activate, technical guidance, go-to-market support and investor connections.',
     whoFor: 'Startups at any stage, from an early idea to pre-IPO.',
@@ -315,7 +315,7 @@ export const ACCELERATORS: readonly EcosystemEntry[] = [
   {
     id: 'nvidia-inception',
     name: 'NVIDIA Inception',
-    category: 'accelerators',
+    category: 'launch-programs',
     url: 'https://www.nvidia.com/en-us/startups/',
     offers: 'Technical courses, preferred pricing on select hardware and software, cloud credits, a venture-capital connection network and go-to-market opportunities.',
     whoFor: 'AI startups that are incorporated, have a developer and a website, and are under ten years old.',

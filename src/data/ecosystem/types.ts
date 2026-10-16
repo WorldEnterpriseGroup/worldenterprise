@@ -4,7 +4,7 @@
  */
 
 export const CATEGORY_IDS = [
-  'accelerators',
+  'launch-programs',
   'incubators',
   'university',
   'coworking',

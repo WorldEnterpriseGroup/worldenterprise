@@ -3,7 +3,7 @@ import type { CategoryId, CategoryInfo } from './types.ts';
 /** The eight kinds of program. `window` is an illustrative span in years of a company's life (0 = first idea), used by the timeline only. */
 export const CATEGORIES: readonly CategoryInfo[] = [
   {
-    id: 'accelerators',
+    id: 'launch-programs',
     name: 'Accelerators and cohort programs',
     short: 'Accelerators',
     what: 'Time-boxed programs that take a group of companies through a batch of mentoring, peers and a closing showcase.',

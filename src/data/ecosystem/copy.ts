@@ -7,7 +7,7 @@ import type { AudienceId, CategoryId, StageId } from './types.ts';
 
 export const HUB_PATH = '/ecosystem/';
 export const HUB_TITLE = 'Join the ecosystem.';
-export const HUB_SEO_TITLE = 'Join the ecosystem: programs worth joining';
+export const HUB_SEO_TITLE = 'Join the ecosystem: programs to join';
 export const HUB_DESCRIPTION =
   'A directory of accelerators, incubators, university programs, coworking, angel groups, SBA partners, public funding and founder communities. Join them.';
 export const HUB_LEAD =
@@ -33,7 +33,7 @@ export interface ChooseRow {
   readonly why: string;
 }
 export const CHOOSE_ROWS: readonly ChooseRow[] = [
-  { need: 'I have an idea and want peers and a deadline.', category: 'accelerators', why: 'A batch gives a rhythm, a group of peers and a closing showcase.' },
+  { need: 'I have an idea and want peers and a deadline.', category: 'launch-programs', why: 'A batch gives a rhythm, a group of peers and a closing showcase.' },
   { need: 'I need a lab, a shop or a real place to build.', category: 'incubators', why: 'Incubators hold facilities and a community while the company forms.' },
   { need: 'I am a student, researcher or alumnus with technology.', category: 'university', why: 'University programs turn research into customers, often through the school.' },
   { need: 'I want to work around other builders.', category: 'coworking', why: 'A shared space and weekly gatherings cost little and open many doors.' },

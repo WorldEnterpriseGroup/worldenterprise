@@ -8,7 +8,7 @@ import { FULL_HD, SMALLEST_PHONE, expectBandsFullBleed, expectFullWidth, expectN
 // The hub renders the whole directory as plain HTML; <we-ecosystem-filter> narrows it with JavaScript and says how many programs match
 // in a live region; without JavaScript the category pages and anchors carry the task.
 
-const CATEGORIES = ['accelerators', 'incubators', 'university', 'coworking', 'angels', 'sba', 'government', 'communities'] as const;
+const CATEGORIES = ['launch-programs', 'incubators', 'university', 'coworking', 'angels', 'sba', 'government', 'communities'] as const;
 const ROUTES: readonly string[] = ['/ecosystem/', ...CATEGORIES.map((c) => `/ecosystem/${c}/`)];
 const MIN_ENTRIES = 60;
 
@@ -66,7 +66,7 @@ test.describe('the ecosystem pages', () => {
     await expect(status).toHaveText(`Showing all ${total} programs.`);
     await expect(status).toHaveAttribute('aria-live', 'polite');
 
-    await form.getByLabel('Kind of program').selectOption('coworking');
+    await form.getByLabel('Kind of program', { exact: true }).selectOption('coworking');
     const shown = page.locator('[data-eco-row]:not([hidden])');
     const n = await shown.count();
     expect(n).toBeGreaterThan(0);
@@ -75,7 +75,7 @@ test.describe('the ecosystem pages', () => {
     for (const row of await shown.all()) await expect(row).toHaveAttribute('data-category', 'coworking');
     await expect(page.locator('[data-eco-group]:not([hidden])')).toHaveCount(1);
 
-    await form.getByLabel('Built for').selectOption('women');
+    await form.getByLabel('Built for', { exact: true }).selectOption('women');
     await expect(status).toHaveText('No program matches those choices. Clear a filter to see more.');
     await expect(page.locator('[data-eco-empty]')).toBeVisible();
 
@@ -87,14 +87,14 @@ test.describe('the ecosystem pages', () => {
   test('the filter works from the keyboard', async ({ page }) => {
     test.skip(!isBuilt('/ecosystem/'), 'not built');
     await page.goto('/ecosystem/');
-    const select = page.getByLabel('Stage of company');
+    const select = page.getByLabel('Stage of company', { exact: true });
     await select.focus();
     await select.selectOption('scale');
     const total = await page.locator('[data-eco-row]').count();
     expect(await page.locator('[data-eco-row]:not([hidden])').count()).toBeLessThan(total);
-    await page.getByLabel('Has an online option').focus();
+    await page.getByLabel('Has an online option', { exact: true }).focus();
     await page.keyboard.press('Space');
-    await expect(page.getByLabel('Has an online option')).toBeChecked();
+    await expect(page.getByLabel('Has an online option', { exact: true })).toBeChecked();
     const rows = await page.locator('[data-eco-row]:not([hidden])').all();
     for (const row of rows) await expect(row).toHaveAttribute('data-remote', 'yes');
   });
@@ -108,7 +108,7 @@ test.describe('the ecosystem pages', () => {
       await expect(row.locator('a[rel~="noopener"]').first()).toBeAttached();
       await expect(row).toContainText('retrieved October 2026');
     }
-    await expect(page.locator('main a[href$="/ecosystem/accelerators/"]').first()).toBeAttached();
+    await expect(page.locator('main a[href$="/ecosystem/launch-programs/"]').first()).toBeAttached();
   });
 });
 
