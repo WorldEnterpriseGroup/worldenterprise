@@ -36,7 +36,8 @@ const skies = desks.map((d, i) => {
   const center = centers[i] ?? { x: W / 2, y: H / 2 };
   return { ...d, n: i + 1, center, stars: cluster(`desk-${d.id}`, d.count, center, 13), lit: focus === undefined || focus === d.id };
 });
-const background = field('insights-sky', 140, W, H);
+// A light field: the sky sits on the heaviest hub page (every article card below it), so the decoration stays at 64 dots.
+const background = field('insights-sky', 64, W, H);
 // The one amber object: the anchor star of the largest desk (the first, when two are equal), or of the focused desk.
 const amber = focus ?? [...desks].sort((a, b) => b.count - a.count)[0]?.id;
 const focused = focus === undefined ? undefined : desks.find((d) => d.id === focus);
