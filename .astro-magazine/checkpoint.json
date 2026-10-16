@@ -17,7 +17,7 @@
     "claims": 29,
     "sources": 58,
     "basis": {
-      "routes": "Pages emitted by a local build of wp/25-cleanup (index.html files in dist/), demo at 8488cd19; WP-33 /ecosystem/ not yet merged",
+      "routes": "Pages emitted by a local build of wp/25-cleanup (index.html files in dist/) before the WP-37 merge; WP-33 /ecosystem/ not yet merged",
       "articles": "Entries in src/content/insights",
       "briefs": "Entries in src/content/briefs (BRIEFS in src/data/families.ts)",
       "media": "Image and video files in src/assets and public",
@@ -39,7 +39,6 @@
     "WP-25",
     "WP-33",
     "WP-36",
-    "WP-37",
     "WP-38"
   ],
   "active_assignments": [],
@@ -89,7 +88,7 @@
           "wp": "WP-37",
           "issue": 86,
           "branch": "wp/37-longevity",
-          "state": "open MR !84"
+          "state": "merged; issue open until the demo pipeline is green"
         },
         {
           "wp": "WP-38",
@@ -139,13 +138,13 @@
   ],
   "completed_artifacts": [
     "Waves 1 to 9 (milestones 1711, 1725, 1751, 1784)",
-    "WP-32, WP-32b, WP-34, WP-35, WP-22 merged to demo"
+    "WP-32, WP-32b, WP-34, WP-35, WP-37 and WP-22 merged to demo"
   ],
   "gate_results": [
     {
       "gate": "demo pipeline",
-      "pipeline": 69898,
-      "sha": "8488cd19",
+      "pipeline": 69916,
+      "sha": "1291e1fe",
       "status": "pending at checkpoint time"
     }
   ],
@@ -171,7 +170,7 @@
   "last_verified": {
     "timestamp": "2026-10-16T12:02:13.000Z",
     "repository_identity": "git.developerdojo.org/WorldEnterpriseGroup/worldenterprise (project 228)",
-    "build_identity": "origin/demo 8488cd1929f38a76c023a67ed08bc5b91131fa07 merged into wp/25-cleanup",
+    "build_identity": "origin/demo 1291e1f merged into wp/25-cleanup",
     "commands": [
       "git log origin/demo --merges",
       "glab api projects/228/merge_requests?state=opened",
@@ -185,7 +184,7 @@
   "next_action": {
     "owner": "main (integrator)",
     "scope": "Wave 10 and wave 11",
-    "action": "Merge the open wave 10 and 11 MRs as their branch pipelines go green (WP-33, WP-36, WP-37, WP-38, WP-23, WP-24, WP-25), then start WP-26 stage 2 after WP-38; append the wave 10 and 11 events and snapshot this checkpoint",
+    "action": "Merge the open wave 10 and 11 MRs as their branch pipelines go green (WP-33, WP-36, WP-38, WP-23, WP-24, WP-25), then start WP-26 stage 2 after WP-38; append the wave 10 and 11 events and snapshot this checkpoint",
     "prerequisites": [
       "Green branch pipelines",
       "CEO decision on forms (documents/forms-go-live-checklist.md) before any form is connected"
