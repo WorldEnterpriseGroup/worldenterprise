@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { expect, test } from '@playwright/test';
-import { watch } from './support/page-guards.ts';
+import { quiet, watch } from './support/page-guards.ts';
 import { fileFor, liveRoutes, pendingRoutes } from './support/routes.ts';
 
 // Route smoke over every launched ledger route that is built: status, one h1, canonical, console, third parties
@@ -13,6 +13,7 @@ for (const { path: route } of liveRoutes) {
   test(`route ${route}`, async ({ page, baseURL }, info) => {
     const base = baseURL ?? '';
     const seen = watch(page, base);
+    const network = quiet(page);
     const response = await page.goto(route, { waitUntil: 'load' });
     expect(response?.status(), 'HTTP status').toBe(200);
     await expect(page.locator('h1'), 'exactly one h1').toHaveCount(1);
@@ -23,7 +24,7 @@ for (const { path: route } of liveRoutes) {
     expect(canonical, 'canonical link').toMatch(/^https:\/\/worldenterprise\.org\//);
     expect(new URL(canonical ?? '').pathname, 'canonical path').toBe(route);
 
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     expect(seen.pageErrors, 'uncaught exceptions').toEqual([]);
     expect(seen.consoleErrors, 'console errors').toEqual([]);
     expect(seen.thirdParty, 'third-party requests').toEqual([]);
