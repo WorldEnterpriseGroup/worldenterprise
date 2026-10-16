@@ -1,41 +1,195 @@
 {
   "schema_version": "1.0.0",
-  "checkpoint_id": "",
-  "run_id": "",
-  "phase": "wave-1",
-  "status": "unknown",
+  "checkpoint_id": "cp-2026-10-16-wave-11-wp25",
+  "run_id": "worldenterprise-astro-rebuild",
+  "phase": "wave-11",
+  "status": "warn",
   "last_event": {
     "seq": 2,
     "hash": "c67c31f39335a1251bc71d370006f33f561c99afa5476b10d204c358cf2c8d18"
   },
+  "last_event_note": "events.ndjson has not been appended since seq 2 (G0, 2026-10-07). Waves 1 to 11 are recorded in GitLab milestones, issues, merge requests and .astro-magazine/handoffs/. This checkpoint reconciles state from those; the event log append and an immutable snapshot under checkpoints/ belong to the integrator (main).",
   "counts": {
-    "routes": 0,
-    "articles": 0,
-    "briefs": 0,
-    "media": 0,
-    "claims": 0,
-    "sources": 0
+    "routes": 300,
+    "articles": 122,
+    "briefs": 11,
+    "media": 102,
+    "claims": 29,
+    "sources": 58,
+    "basis": {
+      "routes": "Pages emitted by a local build of wp/25-cleanup (index.html files in dist/), demo at 8488cd19; WP-33 /ecosystem/ not yet merged",
+      "articles": "Entries in src/content/insights",
+      "briefs": "Entries in src/content/briefs (BRIEFS in src/data/families.ts)",
+      "media": "Image and video files in src/assets and public",
+      "claims": "CLAIM_IDS in src/data/claims.ts",
+      "sources": "Records in .astro-magazine/sources"
+    }
   },
-  "artifact_hashes": {},
+  "artifact_hashes": {
+    ".astro-magazine/commission.json": "sha256:f5837de6f8aee2022e8f8f7f5f094e17c35c97b167e55aa43a24e2f1a0b5ea32",
+    ".astro-magazine/scope.json": "sha256:10fcf3cd4d7f7d31c74d0aadd374c33c969b464cf7eab000ccf8b9aa711fe7a6",
+    ".astro-magazine/ownership.json": "sha256:b813547477fd094adb818c9e3dc1568c9f855652192656c3a1220ae9a0fc4cf4",
+    ".astro-magazine/decisions.md": "sha256:4609b0b6967e20fcd32fe84d95d66abb4292bda2d56253e34d05ad95ce1a58ec",
+    "documents/forms-go-live-checklist.md": "sha256:ed2f28d0bd4902df22935175feabe71bccc0cf036b25b4f53efc0f7b38765cfe"
+  },
   "active_leases": [],
-  "active_handoffs": [],
+  "active_handoffs": [
+    "WP-23",
+    "WP-24",
+    "WP-25",
+    "WP-33",
+    "WP-36",
+    "WP-37",
+    "WP-38"
+  ],
   "active_assignments": [],
-  "completed_artifacts": [],
-  "gate_results": [],
+  "waves": [
+    {
+      "wave": 10,
+      "milestone_id": 1810,
+      "title": "Wave 10: inclusive ecosystem, SBIR/STTR, data, cutting-edge HTML5",
+      "packages": [
+        {
+          "wp": "WP-32",
+          "issue": 81,
+          "branch": "wp/32-governance",
+          "state": "merged, issue closed"
+        },
+        {
+          "wp": "WP-32b",
+          "issue": 81,
+          "branch": "wp/32b-hosts",
+          "state": "merged"
+        },
+        {
+          "wp": "WP-33",
+          "issue": 82,
+          "branch": "wp/33-ecosystem",
+          "state": "open MR !83"
+        },
+        {
+          "wp": "WP-34",
+          "issue": 83,
+          "branch": "wp/34-sbir-sttr",
+          "state": "merged; issue open until the demo pipeline is green"
+        },
+        {
+          "wp": "WP-35",
+          "issue": 84,
+          "branch": "wp/35-data",
+          "state": "merged; issue open until the demo pipeline is green"
+        },
+        {
+          "wp": "WP-36",
+          "issue": 85,
+          "branch": "wp/36-html5",
+          "state": "open MR !87"
+        },
+        {
+          "wp": "WP-37",
+          "issue": 86,
+          "branch": "wp/37-longevity",
+          "state": "open MR !84"
+        },
+        {
+          "wp": "WP-38",
+          "issue": 87,
+          "branch": "wp/38-content",
+          "state": "open MR !90"
+        }
+      ]
+    },
+    {
+      "wave": 11,
+      "milestone_id": 1811,
+      "title": "Wave 11: media primitives and media density",
+      "packages": [
+        {
+          "wp": "WP-22",
+          "issue": 88,
+          "branch": "wp/22-media",
+          "state": "merged; issue open until the demo pipeline is green"
+        },
+        {
+          "wp": "WP-23",
+          "issue": 89,
+          "branch": "wp/23-reference",
+          "state": "open MR !91"
+        },
+        {
+          "wp": "WP-24",
+          "issue": 90,
+          "branch": null,
+          "state": "in progress, not yet pushed"
+        },
+        {
+          "wp": "WP-25",
+          "issue": 91,
+          "branch": "wp/25-cleanup",
+          "state": "in progress (this checkpoint)"
+        },
+        {
+          "wp": "WP-26",
+          "issue": 92,
+          "branch": null,
+          "state": "not started; stage 2 waits for WP-38"
+        }
+      ]
+    }
+  ],
+  "completed_artifacts": [
+    "Waves 1 to 9 (milestones 1711, 1725, 1751, 1784)",
+    "WP-32, WP-32b, WP-34, WP-35, WP-22 merged to demo"
+  ],
+  "gate_results": [
+    {
+      "gate": "demo pipeline",
+      "pipeline": 69898,
+      "sha": "8488cd19",
+      "status": "pending at checkpoint time"
+    }
+  ],
   "accepted_exceptions": [],
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "B-2",
+      "summary": "Forms disabled: endpoint, processor, privacy notice, consent, retention and mailboxes undecided",
+      "owner": "CEO",
+      "reference": "documents/forms-go-live-checklist.md"
+    },
+    {
+      "id": "OP-RETAIN",
+      "summary": "Retention periods undecided",
+      "owner": "CEO with counsel"
+    },
+    {
+      "id": "OP-COUNSEL",
+      "summary": "Counsel review of the privacy notice and any marketing email",
+      "owner": "CEO counsel"
+    }
+  ],
   "last_verified": {
-    "timestamp": "",
-    "repository_identity": "",
-    "build_identity": "",
-    "commands": [],
-    "evidence": []
+    "timestamp": "2026-10-16T12:02:13.000Z",
+    "repository_identity": "git.developerdojo.org/WorldEnterpriseGroup/worldenterprise (project 228)",
+    "build_identity": "origin/demo 8488cd1929f38a76c023a67ed08bc5b91131fa07 merged into wp/25-cleanup",
+    "commands": [
+      "git log origin/demo --merges",
+      "glab api projects/228/merge_requests?state=opened",
+      "glab api projects/228/issues?milestone=<wave 10|wave 11>",
+      "npx astro build (local, debugging only)"
+    ],
+    "evidence": [
+      ".astro-magazine/handoffs/wp-25.md"
+    ]
   },
   "next_action": {
-    "owner": "WP-00",
-    "scope": "whole repository",
-    "action": "Start Wave 1 work packages WP-01 to WP-13 on wp/NN branches",
-    "prerequisites": []
+    "owner": "main (integrator)",
+    "scope": "Wave 10 and wave 11",
+    "action": "Merge the open wave 10 and 11 MRs as their branch pipelines go green (WP-33, WP-36, WP-37, WP-38, WP-23, WP-24, WP-25), then start WP-26 stage 2 after WP-38; append the wave 10 and 11 events and snapshot this checkpoint",
+    "prerequisites": [
+      "Green branch pipelines",
+      "CEO decision on forms (documents/forms-go-live-checklist.md) before any form is connected"
+    ]
   },
-  "updated_at": "2026-10-07T03:16:21.223Z"
+  "updated_at": "2026-10-16T12:02:13.000Z"
 }
