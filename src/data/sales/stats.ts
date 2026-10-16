@@ -50,9 +50,9 @@ export const STATS: Readonly<Record<StatId, SalesStat>> = {
     id: 'ST-11', value: '70%', label: 'of venture-backed startups that shut down cited running out of capital', sources: ['cb-insights-2026'], period: 'Shutdowns since 2023',
     caveat: 'Venture-backed startups only. A company could give more than one reason.',
   },
-  'ST-16': { id: 'ST-16', value: '45.0', label: 'mean founder age of the fastest-growing 1 in 1,000 new U.S. firms (41.9 for all that hire)', sources: ['azoulay-2018'], period: 'Founders of 2007 to 2014' },
+  'ST-16': { id: 'ST-16', value: '45.0', label: 'mean founder age of the fastest-growing 1 in 1,000 new U.S. firms (41.9 for all that hire)', sources: ['azoulay-2018'], period: 'Founders of 2007 to 2009 (41.9 covers 2007 to 2014)' },
   'ST-17': { id: 'ST-17', value: '1.8x', label: 'as likely: a 50-year-old founder against a 30-year-old, for top-growth firms', sources: ['azoulay-2018'], period: 'Founders of 2007 to 2014' },
-  'ST-18': { id: 'ST-18', value: '0.26%', label: 'top-growth rate with 3+ years in the same industry, against 0.11% with none', sources: ['azoulay-2018'], period: 'Founders of 2007 to 2014' },
+  'ST-18': { id: 'ST-18', value: '0.26%', label: 'top-growth rate with 3+ years in the same industry, against 0.11% with none', sources: ['azoulay-2018'], period: 'Founders of 2007 to 2009' },
   'ST-19': {
     id: 'ST-19', value: '30%', label: 'success rate after a prior success, against 22% after a failure and 21% for first-timers', sources: ['gompers-2006'], period: 'Venture-backed founders',
     caveat: 'Venture-backed founders only; success means the company went public.',
