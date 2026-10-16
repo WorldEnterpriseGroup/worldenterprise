@@ -48,7 +48,7 @@ import {
   </Split>
 </Band>
 
-<Band id="fundability-clock" labelledby="fundability-clock-title" defer>
+<Band id="fundability-clock" labelledby="fundability-clock-title">
   <BandHead
     id="fundability-clock-title"
     title="The funding clock is measured in years"
@@ -60,7 +60,7 @@ import {
     </Moment>
     <Moment kind="chart" id="fundability-approval-age">
       <BarChart
-        title="Loan applicants fully approved, by firm age"
+        title="Loan applicants fully approved, by firm age in years"
         items={APPROVAL_BY_AGE}
         source={SOURCES.sbcs}
         max={100}
@@ -82,7 +82,7 @@ import {
   <p class="fm-honesty">{HONESTY_MARKET} {NO_FUNDING}</p>
 </Band>
 
-<Band tone="tint-blue" id="fundability-keep" labelledby="fundability-keep-title" defer>
+<Band tone="tint-blue" id="fundability-keep" labelledby="fundability-keep-title">
   <BandHead
     id="fundability-keep-title"
     title="What a prepared company keeps"

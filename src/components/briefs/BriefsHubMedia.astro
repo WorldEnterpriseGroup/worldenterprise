@@ -55,7 +55,7 @@ const { briefs } = Astro.props;
   )
 }
 
-<Band id="briefs-clock" labelledby="briefs-clock-title" defer>
+<Band id="briefs-clock" labelledby="briefs-clock-title">
   <BandHead
     id="briefs-clock-title"
     title="The long horizon the briefs are written for"
@@ -76,7 +76,7 @@ const { briefs } = Astro.props;
   <p class="bh-note bh-note--end">{HONESTY_BUSINESSES}</p>
 </Band>
 
-<Band tone="tint-sand" id="briefs-path" labelledby="briefs-path-title" defer>
+<Band tone="tint-sand" id="briefs-path" labelledby="briefs-path-title">
   <BandHead id="briefs-path-title" title="How a brief reaches you" />
   <Moment kind="diagram" id="briefs-flow">
     <FlowDiagram title="From an outline to the full text" steps={BRIEF_PATH} note="A brief is general information for founders. It is not legal, tax or investment advice." />

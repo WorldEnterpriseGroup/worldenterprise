@@ -156,9 +156,9 @@ export const FUNDING_STATS: readonly Stat[] = [
 
 /** W23-05 (replaces the age bands of ST-33 with the report's own bands, page 18). */
 export const APPROVAL_BY_AGE: readonly Datum[] = [
-  { label: 'Firms 0 to 5 years old', value: 48, display: '48%' },
-  { label: 'Firms 6 to 20 years old', value: 51, display: '51%' },
-  { label: 'Firms 21 or more years old', value: 63, display: '63%' },
+  { label: 'Firms aged 0 to 5', value: 48, display: '48%' },
+  { label: 'Firms aged 6 to 20', value: 51, display: '51%' },
+  { label: 'Firms aged 21 or more', value: 63, display: '63%' },
 ];
 
 /** W23-06: share of loan, line of credit and cash advance applicants fully approved, by survey year (page 17). */

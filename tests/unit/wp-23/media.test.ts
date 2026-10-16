@@ -220,3 +220,14 @@ test('every chart moment sits beside its source: each chart component call passe
     for (const call of source.match(/<(BarChart|SurvivalCurve)\b[^>]*\/>/g) ?? []) assert.match(call, /source=\{/, `${file}: ${call.slice(0, 60)}`);
   }
 });
+
+test('media bands render eagerly, tables sit in the shared scroll frame, and no label reads as a years claim', () => {
+  for (const file of COMPONENTS) {
+    const source = read(file);
+    // A deferred band (content-visibility) is laid out at its placeholder height, so its content overlaps what follows for axe.
+    assert.doesNotMatch(source, /<Band\b[^>]*\bdefer\b/, `${file} defers a media band`);
+    if (/<table\b/.test(source)) assert.match(source, /<div class="table-wrap" /, `${file} wraps its table in the table-wrap frame`);
+  }
+  const claim = /\b(?:over\s+)?(?:20|twenty)\+?\s+years?\b|\btwo\s+decades\b/i;
+  for (const text of [...strings(Object.values(D)), ...COMPONENTS.map(read)]) assert.doesNotMatch(text, claim);
+});

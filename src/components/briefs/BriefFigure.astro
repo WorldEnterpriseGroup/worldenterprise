@@ -42,7 +42,7 @@ const hiring = FORMATION_STATS.slice(0, 2);
   {
     figure === 'approval-by-age' && (
       <>
-        <BarChart title="Loan applicants fully approved, by firm age" items={APPROVAL_BY_AGE} source={SOURCES.sbcs} max={100} valueLabel="Share fully approved" highlight={0} note={SBCS_NOTE} />
+        <BarChart title="Loan applicants fully approved, by firm age in years" items={APPROVAL_BY_AGE} source={SOURCES.sbcs} max={100} valueLabel="Share fully approved" highlight={0} note={SBCS_NOTE} />
         <p class="bfig__note">{HONESTY_MARKET} {NO_FUNDING}</p>
       </>
     )

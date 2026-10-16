@@ -40,7 +40,7 @@ const titleId = `rm-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^
 
 <figure class:list={['rmatrix', className]} aria-labelledby={titleId}>
   <H class="rmatrix__title" id={titleId}>{title}</H>
-  <div class="table-wrap rmatrix__wrap" role="region" aria-label={`${title}, as a table`} tabindex="0">
+  <div class="table-wrap" role="region" aria-label={`${title}, as a table`} tabindex="0">
     <table class="rmatrix__table">
       <caption class="rmatrix__caption">{note ?? title}</caption>
       <thead>
