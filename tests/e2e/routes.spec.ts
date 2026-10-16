@@ -7,6 +7,8 @@ import { fileFor, liveRoutes, pendingRoutes } from './support/routes.ts';
 // Route smoke over every launched ledger route that is built: status, one h1, canonical, console, third parties
 // and a screenshot. Horizontal fit is measured per element in layout.spec.ts. Pending routes are listed as skipped so the gap stays visible.
 
+const SHOT_MAX_HEIGHT = 16_384;
+
 const slug = (route: string): string => (route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/[/.]/g, '-'));
 
 for (const { path: route } of liveRoutes) {
@@ -31,7 +33,12 @@ for (const { path: route } of liveRoutes) {
 
     const file = `test-results/screenshots/${info.project.name}/${slug(route)}.jpg`;
     mkdirSync(dirname(file), { recursive: true });
-    await page.screenshot({ path: file, fullPage: true, type: 'jpeg', quality: 55, animations: 'disabled' });
+    // CSS scale and a 16384 px cap (Chrome's texture limit): past it the capture is tiled, and a 55,000 px hub page took 40 s on a CI runner.
+    const height = await page.evaluate(() => document.documentElement.scrollHeight);
+    const width = page.viewportSize()?.width ?? 0;
+    const shot = { path: file, type: 'jpeg', quality: 55, animations: 'disabled', scale: 'css' } as const;
+    await page.screenshot(height > SHOT_MAX_HEIGHT ? { ...shot, fullPage: true, clip: { x: 0, y: 0, width, height: SHOT_MAX_HEIGHT } } : { ...shot, fullPage: true });
+    if (height > SHOT_MAX_HEIGHT) info.annotations.push({ type: 'screenshot', description: `cut at ${SHOT_MAX_HEIGHT} of ${height} px` });
     await info.attach(`${slug(route)}-${info.project.name}`, { path: file, contentType: 'image/jpeg' });
   });
 }
