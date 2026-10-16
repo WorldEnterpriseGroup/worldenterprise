@@ -76,7 +76,9 @@ const ASIDE_LINKS = live([
   {
     (READ_LINKS.length > 0 || ECOSYSTEM_LINKS.length > 0) && (
       <section class="thanks-onward" aria-labelledby="thanks-onward-title">
-        <HexField edge="right" density={0.45} seed={25} aspect={2.4} class="thanks-onward__field" />
+        <div class="thanks-onward__art" aria-hidden="true">
+          <HexField edge="right" density={0.5} seed={25} aspect={1} />
+        </div>
         <div class="thanks-onward__inner stack">
           <h2 id="thanks-onward-title">While the brief is on its way</h2>
           {READ_LINKS.length > 0 && (
@@ -141,7 +143,17 @@ const ASIDE_LINKS = live([
       padding: var(--sp-6) var(--sp-5);
       border: var(--border-hair);
       border-radius: var(--radius-lg);
-      background: var(--tint-blue);
+      background: var(--color-bg-soft);
+    }
+
+    /* The hex field fills the right-hand part of the panel only and fades out towards the text, so no cell sits behind a sentence. */
+    .thanks-onward__art {
+      position: absolute;
+      inset-block: 0;
+      inset-inline-end: 0;
+      z-index: 0;
+      inline-size: min(22rem, 45%);
+      mask-image: linear-gradient(to left, black 30%, transparent);
     }
 
     .thanks-onward__inner {
@@ -195,6 +207,9 @@ const ASIDE_LINKS = live([
     }
 
     .thanks-ecosystem__note {
+      padding: var(--sp-3) var(--sp-4);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
       color: var(--color-text-muted);
       font-size: var(--fs-sm);
     }
