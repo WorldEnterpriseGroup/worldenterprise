@@ -1,6 +1,6 @@
 ---
 /**
- * /sbir-sttr/phases/ (WP-34, #83): Phase I, II and III with the award sizes the programs publish, the new Strategic Breakthrough award,
+ * /sbir-sttr/phases/ (WP-34, #83): Phase I, II and III with the award sizes the programs publish,
  * and three charts from public data: how long Phase I awardees wait for a Phase II, how often NIH funds the applications it reviews,
  * and the typical Phase I award by agency. Ships no JavaScript.
  */
@@ -28,21 +28,18 @@ import {
   usd,
 } from '../../../data/sbir/charts.ts';
 import { PHASES, TABA } from '../../../data/sbir/phases.ts';
-import { LAW_CHANGES } from '../../../data/sbir/status.ts';
 import { sbirSource, sourceAnchor } from '../../../data/sbir/sources.ts';
 import type { SbirSourceId } from '../../../data/sbir/sources.ts';
 import { href } from '../../../lib/url.ts';
 
 const path = '/sbir-sttr/phases/';
 const gap = AGGREGATES.phaseGap;
-const strategic = LAW_CHANGES.find((c) => c.title === 'Strategic Breakthrough awards');
 const ids: readonly SbirSourceId[] = [
   'sba-release-26-43',
   'sbir-apply',
   'sbir-about',
   'sbir-policy-directive',
   'sbir-fast',
-  'crowell-lapse',
   'taba-nida',
   'sbir-award-data',
   'nih-success-rates',
@@ -123,19 +120,6 @@ const gapTiles = [
   </ol>
 
   <Fragment slot="after">
-    <SbirBand
-      id="strategic"
-      tone="deep"
-      title="A bigger second step: Strategic Breakthrough awards"
-      lead="New in the 2026 reauthorization."
-    >
-      <p>{strategic?.body}</p>
-      <p>
-        These awards are for companies that already have momentum. They reward the founders who did Phase I and Phase II well and kept
-        building. Each agency will set its own details, so watch the agency’s page and <a href="https://www.sbir.gov/">sbir.gov</a>.
-      </p>
-    </SbirBand>
-
     <SbirBand
       id="taba"
       tone="soft"

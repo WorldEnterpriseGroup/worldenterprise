@@ -26,8 +26,6 @@ const ecosystemLive = isLiveOnDisk('/ecosystem/');
 const ids: readonly SbirSourceId[] = [
   'sba-release-26-43',
   'congress-s3971',
-  'crowell-lapse',
-  'uw-federal-relations',
   'sbir-about',
   'sbir-apply',
   'sbir-award-data',
@@ -191,8 +189,8 @@ const tiles = [
     <SbirBand
       id="pause"
       tone="blue"
-      title="When the authority lapsed, the awards slowed"
-      lead="The programs lapsed on September 30, 2025 and were renewed on April 13, 2026. The award data shows the gap."
+      title="When the authority paused, the awards slowed"
+      lead="New awards nearly stopped from October 2025 until the law was signed on April 13, 2026. The award data shows the gap."
     >
       <p>
         Awards dated October 2025 through March 2026 number {thousands(PAUSE_COMPARE.during)} in the public data, against {thousands(PAUSE_COMPARE.before)}
@@ -202,7 +200,7 @@ const tiles = [
       <Fragment slot="media">
         <SbirFigure
           caption="Awards by the month of their award date, January 2024 onward. Amber columns are the six months from October 2025 to March 2026."
-          sources={['sbir-award-data', 'crowell-lapse']}
+          sources={['sbir-award-data']}
           derived="Awards counted by WE by calendar month of the award date. Recent months can be undercounted while agencies report."
           table={{ caption: 'SBIR and STTR awards by month', columns: ['Month', 'Awards'], rows: MONTHLY_TABLE }}
         >

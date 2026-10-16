@@ -9,8 +9,6 @@
 export type SbirSourceId =
   | 'sba-release-26-43'
   | 'congress-s3971'
-  | 'crowell-lapse'
-  | 'uw-federal-relations'
   | 'doe-sbir'
   | 'nasa-sbir'
   | 'nih-seed'
@@ -57,22 +55,6 @@ export const SBIR_SOURCES: readonly SbirSource[] = [
     url: 'https://www.congress.gov/bill/119th-congress/senate-bill/3971',
     short: 'congress.gov, S. 3971',
     accessed: null,
-  },
-  {
-    id: 'crowell-lapse',
-    title: 'SBIR/STTR Programs Reauthorized After Six-Month Lapse',
-    publisher: 'Crowell & Moring LLP',
-    url: 'https://www.crowell.com/en/insights/client-alerts/sbirsttr-programs-reauthorized-after-six-month-lapse',
-    short: 'Crowell & Moring client alert on S. 3971',
-    accessed: RETRIEVED,
-  },
-  {
-    id: 'uw-federal-relations',
-    title: 'Trump signs SBIR/STTR reauthorization bill into law',
-    publisher: 'University of Washington, Office of Federal Relations',
-    url: 'https://www.washington.edu/federalrelations/2026/04/14/trump-signs-sbir-sttr-reauthorization-bill-into-law/',
-    short: 'University of Washington Office of Federal Relations',
-    accessed: RETRIEVED,
   },
   {
     id: 'doe-sbir',

@@ -58,9 +58,8 @@ export const PHASES: readonly Phase[] = [
     points: [
       'Typically only Phase I awardees qualify, though some agencies run a direct-to-Phase II route for companies that did Phase I-type work with other funds.',
       'The company must do at least half of the research in an SBIR Phase II.',
-      'The 2026 law adds Strategic Breakthrough awards, a much larger Phase II for companies with a prior award and matching funds, at agencies with large SBIR budgets.',
     ],
-    sources: ['sbir-apply', 'sbir-about', 'sbir-policy-directive', 'crowell-lapse'],
+    sources: ['sbir-apply', 'sbir-about', 'sbir-policy-directive'],
   },
   {
     id: 'phase-3',
@@ -72,9 +71,8 @@ export const PHASES: readonly Phase[] = [
     limit: null,
     points: [
       'A federal agency may buy the result directly, without a new competition, because the work came out of an SBIR or STTR award.',
-      'The 2026 law has SBA update its policy directive to make this transition from research to purchase easier.',
     ],
-    sources: ['sbir-apply', 'crowell-lapse'],
+    sources: ['sbir-apply'],
   },
 ];
 

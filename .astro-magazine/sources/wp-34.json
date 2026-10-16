@@ -2,7 +2,7 @@
   "wp": "WP-34",
   "issue": 83,
   "retrieved": "2026-10-15",
-  "statusStatement": "As of October 15, 2026: SBIR and STTR are authorized through September 30, 2031 (S. 3971, signed April 13, 2026, after the previous authority expired September 30, 2025). Always check sbir.gov for the latest.",
+  "statusStatement": "As of October 15, 2026: SBIR and STTR are authorized through September 30, 2031 (S. 3971, signed April 13, 2026). Always check sbir.gov for the latest.",
   "notes": [
     "Build-time static data only. Nothing on the pages is fetched at runtime.",
     "Raw award CSV and the NIH workbook were kept outside the repository because the CSV carries contact details.",
@@ -25,28 +25,9 @@
       "publisher": "U.S. Congress, congress.gov",
       "url": "https://www.congress.gov/bill/119th-congress/senate-bill/3971",
       "retrieved": null,
-      "usedFor": "Bill number and title; passage dates (Senate March 3, 2026, House March 17, 2026) as reported by the law-firm and university summaries.",
+      "usedFor": "Bill number and title only.",
       "transformation": "None.",
       "caveat": "congress.gov returned 403 to the retrieval script, so this entry has no retrieval date and the Public Law number (reported as 119-83) is deliberately omitted."
-    },
-    {
-      "id": "crowell-lapse",
-      "title": "SBIR/STTR Programs Reauthorized After Six-Month Lapse",
-      "publisher": "Crowell & Moring LLP",
-      "url": "https://www.crowell.com/en/insights/client-alerts/sbirsttr-programs-reauthorized-after-six-month-lapse",
-      "retrieved": "2026-10-15",
-      "usedFor": "The lapse (September 30, 2025), roughly six months with no new awards, and the provisions of the law: foreign-risk screening, proposal caps from fiscal year 2027, Strategic Breakthrough awards, Phase III and model contracts.",
-      "transformation": "Plain-language restatement of a law-firm summary.",
-      "caveat": "A secondary summary of the statute, not the statute."
-    },
-    {
-      "id": "uw-federal-relations",
-      "title": "Trump signs SBIR/STTR reauthorization bill into law",
-      "publisher": "University of Washington, Office of Federal Relations",
-      "url": "https://www.washington.edu/federalrelations/2026/04/14/trump-signs-sbir-sttr-reauthorization-bill-into-law/",
-      "retrieved": "2026-10-15",
-      "usedFor": "Signing date and the description of the extension as the longest in the programs history.",
-      "transformation": "None."
     },
     {
       "id": "doe-sbir",

@@ -177,8 +177,8 @@ export const ELIGIBILITY: readonly Check[] = [
   {
     id: 'foreign',
     label: 'Owners and key personnel are ready for foreign-risk screening.',
-    hint: 'The 2026 law has agencies look at foreign affiliations, investment ties and joint ventures. Gather the facts about ownership and key people before the proposal, not during it.',
-    sources: ['crowell-lapse'],
+    hint: 'SBA says the 2026 law protects against foreign adversaries, and DOE and NIH publish foreign risk pages. Gather the facts about ownership and key people before the proposal, not during it.',
+    sources: ['doe-sbir', 'nih-seed'],
   },
 ];
 

@@ -62,7 +62,7 @@ test.describe('the authorization status', () => {
       assert.ok(e.sources.length >= 1, `event ${e.iso} cites a source`);
       for (const s of e.sources) sbirSource(s);
     }
-    assert.ok(isos.includes('2025-09-30') && isos.includes('2026-04-13'));
+    assert.ok(isos.includes('2025-10-01') && isos.includes('2026-04-13'));
     for (const c of LAW_CHANGES) assert.ok(c.sources.length >= 1, c.title);
   });
 
@@ -94,7 +94,7 @@ test.describe('the sources', () => {
       (f) => !f.endsWith('aggregates.ts') && !f.endsWith('sources.ts'),
     );
     for (const file of files) {
-      for (const [, id] of read(file).matchAll(/'((?:sba|congress|crowell|uw|doe|nasa|nih|nsf|sbir|sam|taba|apex)-[a-z0-9-]+)'/g)) {
+      for (const [, id] of read(file).matchAll(/'((?:sba|congress|doe|nasa|nih|nsf|sbir|sam|taba|apex)-[a-z0-9-]+)'/g)) {
         assert.ok(known.has(id ?? ''), `${file} names an unknown source "${id}"`);
       }
     }
