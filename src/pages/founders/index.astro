@@ -12,14 +12,6 @@ import { founderStageRows } from '../../components/program/stages.ts';
 import Band from '../../components/visuals/Band.astro';
 import OrbitSystem from '../../components/visuals/OrbitSystem.astro';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
-import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
-import HubLead from '../../components/hubs/HubLead.astro';
-import HubMoment from '../../components/hubs/HubMoment.astro';
-import { tile } from '../../components/hubs/stats.ts';
-import ScatterPlot from '../../components/visuals/charts/ScatterPlot.astro';
-import StatTiles from '../../components/visuals/charts/StatTiles.astro';
-import { founderAgeScatter } from '../../data/datasets/figures.ts';
-import { RETRIEVED } from '../../data/datasets/sources.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
@@ -53,6 +45,15 @@ const notFor = [
   'It does not replace your own lawyer or accountant.',
 ];
 const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...(state.isLive(s.path) ? { href: s.path } : {}) }));
+// WP-24 media imports sit below the copy so the release checklist's line references above stay put (RELEASE.md CR-17).
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { tile } from '../../components/hubs/stats.ts';
+import ScatterPlot from '../../components/visuals/charts/ScatterPlot.astro';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
+import { founderAgeScatter } from '../../data/datasets/figures.ts';
+import { RETRIEVED } from '../../data/datasets/sources.ts';
 ---
 
 <MarketingLayout
