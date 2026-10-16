@@ -4180,6 +4180,11 @@
       "wp": "WP-32b",
       "path": ".astro-magazine/plans/wave10/writesets.json",
       "reason": "Wave 11 (D-W11-1): records the WP-38 exceptions on the markdown transform in the wave 10 map."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/lib/route-core.ts",
+      "reason": "Wave 10 follow-up: registers /ecosystem/[category]/ in DYNAMIC_FIXED from WP-33's CATEGORY_IDS, so isLive() sees the eight category pages the directory emits."
     }
   ],
   "notes": [
