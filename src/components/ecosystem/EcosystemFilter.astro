@@ -86,6 +86,8 @@ const audiences = AUDIENCE_IDS.filter((a) => a !== 'any');
       flex-wrap: wrap;
       align-items: end;
       gap: var(--sp-4);
+      /* A fieldset defaults to min-inline-size: min-content, which lets a long option widen it past a 320px screen. */
+      min-inline-size: 0;
       margin: 0;
       padding: var(--sp-4) var(--sp-5);
       border: 1px solid var(--color-border);
@@ -103,6 +105,8 @@ const audiences = AUDIENCE_IDS.filter((a) => a !== 'any');
 
     .eco-filter__field {
       display: grid;
+      flex: 1 1 14rem;
+      min-inline-size: 0;
       gap: var(--sp-1);
     }
 
@@ -114,6 +118,8 @@ const audiences = AUDIENCE_IDS.filter((a) => a !== 'any');
     }
 
     .eco-filter select {
+      inline-size: 100%;
+      max-inline-size: 100%;
       min-block-size: 2.75rem;
       padding-inline: var(--sp-3);
       font: inherit;
