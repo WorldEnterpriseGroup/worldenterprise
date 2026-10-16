@@ -116,13 +116,12 @@ export const ANSWER_LAYERS: readonly Layer[] = [
 ];
 
 /** security-questionnaire-answers.mdx, "Use a small set of honest statuses". */
-/** No icons: the four guides WP-87 added are pinned to show no image in main (tests/e2e/wave8/wp-87), and icons render as img. */
 export const ANSWER_STATUSES: readonly Option[] = [
-  { label: 'In place', text: 'The control exists and you can show it working today.', meta: 'Add the evidence and the date checked' },
-  { label: 'Partly', text: 'It exists for some systems or people, not all.', meta: 'Say what is covered and who owns the rest' },
-  { label: 'Planned', text: 'Decided, not built. Never answer yes to a plan.', meta: 'Add the owner and a target date' },
-  { label: 'Not in place', text: 'It does not exist and is not planned.', meta: 'Say what you do instead, if anything' },
-  { label: 'Not applicable', text: 'The question concerns something you do not have.', meta: 'Say why' },
+  { label: 'In place', text: 'The control exists and you can show it working today.', icon: 'checklist', meta: 'Add the evidence and the date checked' },
+  { label: 'Partly', text: 'It exists for some systems or people, not all.', icon: 'data', meta: 'Say what is covered and who owns the rest' },
+  { label: 'Planned', text: 'Decided, not built. Never answer yes to a plan.', icon: 'calendar', meta: 'Add the owner and a target date' },
+  { label: 'Not in place', text: 'It does not exist and is not planned.', icon: 'gate', meta: 'Say what you do instead, if anything' },
+  { label: 'Not applicable', text: 'The question concerns something you do not have.', icon: 'document', meta: 'Say why' },
 ];
 
 /** pricing-experiments.mdx, "Write the hypothesis first" and what follows. */
@@ -137,11 +136,11 @@ export const PRICING_LOOP: readonly FlowStep[] = [
 
 /** pricing-experiments.mdx, "Choose the kind of test". */
 export const PRICE_TESTS: readonly Option[] = [
-  { label: 'Conversation', text: 'State the price in an interview and record the reaction.', meta: 'Risk: politeness is not a purchase' },
-  { label: 'Quote', text: 'Comparable prospects receive different quotes for the same thing.', meta: 'Risk: groups may not compare' },
-  { label: 'Packaging', text: 'Same price, different contents.', meta: 'Risk: confusion looks like a price effect' },
-  { label: 'Page', text: 'A different price on the pricing page, for a defined group.', meta: 'Risk: too few visitors to read' },
-  { label: 'Term', text: 'Monthly or annual at the same price.', meta: 'Risk: cash flow hides the reaction' },
+  { label: 'Conversation', text: 'State the price in an interview and record the reaction.', icon: 'contact', meta: 'Risk: politeness is not a purchase' },
+  { label: 'Quote', text: 'Comparable prospects receive different quotes for the same thing.', icon: 'document', meta: 'Risk: groups may not compare' },
+  { label: 'Packaging', text: 'Same price, different contents.', icon: 'data', meta: 'Risk: confusion looks like a price effect' },
+  { label: 'Page', text: 'A different price on the pricing page, for a defined group.', icon: 'globe', meta: 'Risk: too few visitors to read' },
+  { label: 'Term', text: 'Monthly or annual at the same price.', icon: 'calendar', meta: 'Risk: cash flow hides the reaction' },
 ];
 
 /** customer-interview-synthesis.mdx, steps 1 to 5. */

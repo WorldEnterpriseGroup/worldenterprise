@@ -59,8 +59,6 @@ const known = isGuideMediaSlug(slug);
 const headId = `guide-media-${slug}`;
 const seedToA = FUNDING_STATS[1];
 const ageAtA = FUNDING_STATS[0];
-/** The breach figures without icons: WP-87 pins its four guides to no image in main, and an icon renders as an img. */
-const breachStats = BREACH_STATS.map((s) => ({ value: s.value, label: s.label, source: s.source }));
 if (seedToA === undefined || ageAtA === undefined) throw new Error('GuideMedia: FUNDING_STATS lost its first two figures');
 ---
 
@@ -171,7 +169,7 @@ if (seedToA === undefined || ageAtA === undefined) throw new Error('GuideMedia: 
               <OptionGrid title="Five honest statuses" options={ANSWER_STATUSES} highlight={2} />
             </Moment>
             <Moment kind="stats" id="questionnaire-stats">
-              <StatTiles stats={breachStats} label="Where breaches begin" id="questionnaire-stats" />
+              <StatTiles stats={BREACH_STATS} label="Where breaches begin" id="questionnaire-stats" />
               <p class="gm-note">{HONESTY_INDUSTRY}</p>
             </Moment>
           </MomentGrid>
