@@ -69,8 +69,9 @@ export class WeCarousel extends HTMLElement {
     // The status speaks only once the scroll has settled, not on every frame of it.
     window.clearTimeout(this.settle);
     this.settle = window.setTimeout(() => {
-      this.sync(true);
+      // The scroll has stopped: whatever was chosen is now either in view (and stays current) or was scrolled away by the visitor.
       this.pending = -1;
+      this.sync(true);
     }, 160);
   };
 
@@ -126,11 +127,13 @@ export class WeCarousel extends HTMLElement {
     const item = this.items[index];
     if (track === undefined || item === undefined) return;
     this.current = index;
-    this.pending = index;
     const rtl = getComputedStyle(track).direction === 'rtl';
-    const left = rtl ? item.offsetLeft + item.offsetWidth - track.clientWidth : item.offsetLeft;
+    const wanted = rtl ? item.offsetLeft + item.offsetWidth - track.clientWidth : item.offsetLeft;
+    const left = Math.max(rtl ? -track.scrollWidth : 0, Math.min(wanted, track.scrollWidth - track.clientWidth));
+    // Hold the choice through the scroll that follows; when the track is already there no scroll event comes, so nothing to hold.
+    this.pending = Math.abs(left - track.scrollLeft) > 1 ? index : -1;
     // `scroll-behavior` on the track decides between smooth and instant, so reduced motion is honored by CSS alone.
-    track.scrollTo({ left: Math.max(rtl ? -track.scrollWidth : 0, Math.min(left, track.scrollWidth - track.clientWidth)) });
+    track.scrollTo({ left });
     this.render(true);
   }
 

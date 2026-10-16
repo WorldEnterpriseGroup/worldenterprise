@@ -128,7 +128,7 @@ const trackId = `${id}-track`;
   .carousel__markers :global(button) {
     min-inline-size: var(--target-min);
     min-block-size: var(--target-min);
-    border: var(--border-hair) solid var(--color-border-strong, var(--color-border));
+    border: var(--border-hair) solid currentColor;
     border-radius: var(--radius-pill);
     font: inherit;
     color: var(--color-text);
@@ -170,10 +170,12 @@ const trackId = `${id}-track`;
     font-variant-numeric: tabular-nums;
   }
 
+  /* The current item: a heavier ring and weight on the soft panel color, which every band tone remaps with a contrast pair. */
   .carousel__markers :global(button[aria-current='true']) {
-    color: var(--color-bg);
-    background-color: var(--color-text);
+    font-weight: 700;
+    border-width: 3px;
     border-color: var(--color-text);
+    background-color: var(--color-bg-soft);
   }
 
   @media (forced-colors: active) {

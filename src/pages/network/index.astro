@@ -36,7 +36,6 @@ const parts = [
   { label: NETWORK_COPY.partners.title, href: HREFS.hub, description: 'Organizations that help founders' },
 ];
 ---
-
 <HubLayout
   title={page.data.title}
   description={page.data.description}
@@ -101,6 +100,14 @@ const parts = [
     </p>
   </section>
 
+  <div class="prose stack"><Content /></div>
+
+  <InvestorIntroductionsOffer variant="brief" headingLevel={2} idPrefix="network-offer" />
+
+  <Callout tone="notice" title="No promise of funding">
+    <p>WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.</p>
+  </Callout>
+
   <section aria-labelledby="network-worlds" class="stack">
     <h2 id="network-worlds">Worlds WE builds</h2>
     <p class="network-measure">
@@ -110,14 +117,6 @@ const parts = [
     </p>
     <WorldsGallery id="network-worlds-gallery" labelledby="network-worlds" />
   </section>
-
-  <div class="prose stack"><Content /></div>
-
-  <InvestorIntroductionsOffer variant="brief" headingLevel={2} idPrefix="network-offer" />
-
-  <Callout tone="notice" title="No promise of funding">
-    <p>WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.</p>
-  </Callout>
 </HubLayout>
 
 <style>

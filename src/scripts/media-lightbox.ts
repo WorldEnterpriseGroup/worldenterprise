@@ -94,8 +94,13 @@ export class WeLightbox extends HTMLElement {
   };
 
   private readonly onKey = (event: KeyboardEvent): void => {
+    if (!this.parts?.dialog.open) return;
+    if (event.key === 'Tab') {
+      this.wrapTab(event);
+      return;
+    }
     const step = KEY_STEPS[event.key];
-    if (step === undefined || !this.parts?.dialog.open) return;
+    if (step === undefined) return;
     event.preventDefault();
     this.show(stepIndex(this.index, this.entries.length, step), true);
   };
@@ -163,6 +168,27 @@ export class WeLightbox extends HTMLElement {
   disconnectedCallback(): void {
     this.removeEventListener('click', this.onClick);
     if (this.parts?.dialog.open) this.parts.dialog.close();
+  }
+
+  /**
+   * The modal dialog already makes the page inert; this closes the last gap, where Tab past the last button would leave for the browser's
+   * own controls: focus cycles between the viewer's buttons instead.
+   */
+  private wrapTab(event: KeyboardEvent): void {
+    const dialog = this.parts?.dialog;
+    if (dialog === undefined) return;
+    const stops = Array.from(dialog.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'));
+    const first = stops[0];
+    const last = stops[stops.length - 1];
+    if (first === undefined || last === undefined) return;
+    const active = document.activeElement;
+    if (event.shiftKey && (active === first || !dialog.contains(active))) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   private open(index: number, opener: HTMLAnchorElement): void {
