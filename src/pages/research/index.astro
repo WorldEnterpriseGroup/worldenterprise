@@ -1,6 +1,7 @@
 ---
 import { getEntry, render } from 'astro:content';
 import BriefsHubLink from '../../components/research/BriefsHubLink.astro';
+import ResearchHubMedia from '../../components/research/ResearchHubMedia.astro';
 import { BRIEF_META, briefMeta, readingMinutes } from '../../components/research/briefs.ts';
 import { IDENTITY } from '../../components/families/visual/copy.ts';
 import CtaLadder from '../../components/families/visual/CtaLadder.astro';
@@ -24,6 +25,9 @@ const briefs = (await getPublished('research'))
   .sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug));
 const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 const actions = hubActions((await getRouteState()).isLive);
+const isoDay = (d: Date): string => d.toISOString().slice(0, 10);
+const reports = briefs.map(({ entry, slug }) => ({ slug, title: entry.data.title, href: `/research/${slug}/` }));
+const asOf = isoDay(page.data.updated ?? new Date());
 const cards = briefs.map(({ entry, slug }) => {
   const meta = briefMeta(slug);
   const asOf = entry.data.updatedDate ?? entry.data.publishedDate;
@@ -55,6 +59,7 @@ const cards = briefs.map(({ entry, slug }) => {
     <VisualCards kind="research" cards={cards} headingLevel={3} size="large" labelledby="research-briefs-title" />
   </section>
   <BriefsHubLink />
+  <ResearchHubMedia slot="after" reports={reports} asOf={asOf} />
   <CtaLadder slot="cta-end" />
 </HubLayout>
 

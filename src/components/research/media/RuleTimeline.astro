@@ -1,0 +1,156 @@
+---
+/**
+ * RuleTimeline (WP-23, #89): dated events (a standard published, a rule adopted, a compliance date) on a vertical track, oldest first,
+ * each with its `<time>` and its source. Future dates are drawn hollow and marked "Scheduled". Dates come from the page's own sourced
+ * brief; nothing here is computed.
+ */
+import { cleanText, statSource } from '../../visuals/contracts.ts';
+import type { StatSource } from '../../visuals/contracts.ts';
+
+export interface RuleEvent {
+  /** ISO date, YYYY-MM-DD or YYYY-MM. */
+  readonly date: string;
+  readonly label: string;
+  readonly detail?: string | undefined;
+  readonly source: StatSource;
+}
+
+interface Props {
+  title: string;
+  events: readonly RuleEvent[];
+  /** The date that splits past from scheduled, YYYY-MM-DD (the page's as-of date). */
+  asOf: string;
+  note?: string;
+  headingLevel?: 3 | 4;
+  class?: string;
+}
+
+const { asOf, headingLevel = 3, class: className } = Astro.props;
+const title = cleanText('RuleTimeline', 'title', Astro.props.title);
+const note = Astro.props.note === undefined ? undefined : cleanText('RuleTimeline', 'note', Astro.props.note);
+if (!/^\d{4}-\d{2}-\d{2}$/.test(asOf)) throw new Error(`RuleTimeline: asOf "${asOf}" must be YYYY-MM-DD`);
+if (Astro.props.events.length < 2 || Astro.props.events.length > 10) throw new Error(`RuleTimeline: takes 2 to 10 events, got ${Astro.props.events.length}`);
+const fmtDay = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const fmtMonth = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', timeZone: 'UTC' });
+const events = Astro.props.events
+  .map((e, i) => {
+    if (!/^\d{4}-\d{2}(-\d{2})?$/.test(e.date)) throw new Error(`RuleTimeline: event ${i + 1} date "${e.date}" must be YYYY-MM-DD or YYYY-MM`);
+    const day = e.date.length === 10;
+    const d = new Date(`${day ? e.date : `${e.date}-01`}T00:00:00Z`);
+    return {
+      date: e.date,
+      shown: day ? fmtDay.format(d) : fmtMonth.format(d),
+      scheduled: (day ? e.date : `${e.date}-01`) > asOf,
+      label: cleanText('RuleTimeline', `event ${i + 1} label`, e.label),
+      detail: e.detail === undefined ? undefined : cleanText('RuleTimeline', `event ${i + 1} detail`, e.detail),
+      source: statSource('RuleTimeline', e.source),
+    };
+  })
+  .sort((a, b) => a.date.localeCompare(b.date));
+const H = headingLevel === 3 ? 'h3' : 'h4';
+---
+
+<figure class:list={['rtl', className]}>
+  <H class="rtl__title">{title}</H>
+  <ol class="rtl__list" role="list">
+    {
+      events.map((e) => (
+        <li class:list={['rtl__event', e.scheduled && 'rtl__event--scheduled']}>
+          <time datetime={e.date} class="rtl__date">
+            {e.shown}
+            {e.scheduled && <span class="rtl__flag">Scheduled</span>}
+          </time>
+          <strong class="rtl__label">{e.label}</strong>
+          {e.detail !== undefined && <span class="rtl__detail">{e.detail}</span>}
+          <span class="rtl__source">
+            Source: {e.source.href !== undefined ? <a href={e.source.href}>{e.source.label}</a> : e.source.label}
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+  {note !== undefined && <figcaption class="rtl__note">{note}</figcaption>}
+</figure>
+
+<style>
+  @layer pages {
+    .rtl {
+      margin: 0;
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .rtl__title {
+      margin: 0;
+      font-size: var(--fs-h4);
+    }
+
+    .rtl__list {
+      list-style: none;
+      margin: 0;
+      padding: 0 0 0 var(--sp-5);
+      border-inline-start: 3px solid var(--we-blue);
+      display: grid;
+      gap: var(--sp-5);
+    }
+
+    .rtl__event {
+      position: relative;
+      display: grid;
+      gap: var(--sp-1);
+    }
+
+    .rtl__event::before {
+      content: '';
+      position: absolute;
+      inset-block-start: var(--sp-1);
+      inset-inline-start: calc(-1 * var(--sp-5) - 0.6rem - 1.5px);
+      inline-size: 1.2rem;
+      block-size: 1.2rem;
+      border-radius: 50%;
+      background: var(--we-blue);
+      border: 3px solid var(--we-white);
+      box-shadow: 0 0 0 2px var(--we-blue);
+    }
+
+    .rtl__event--scheduled::before {
+      background: var(--we-white);
+      box-shadow: 0 0 0 2px var(--we-amber-ink);
+    }
+
+    .rtl__date {
+      font-family: var(--ff-sans);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .rtl__flag {
+      margin-inline-start: var(--sp-2);
+      padding: 0 var(--sp-2);
+      border-radius: var(--radius-pill);
+      background: var(--we-amber-wash);
+      color: var(--we-charcoal);
+      font-size: var(--fs-xs);
+    }
+
+    .rtl__label {
+      font-family: var(--ff-sans);
+    }
+
+    .rtl__detail,
+    .rtl__source {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    .rtl__source {
+      font-size: var(--fs-xs);
+    }
+
+    .rtl__note {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+  }
+</style>
