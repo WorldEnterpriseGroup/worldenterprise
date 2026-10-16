@@ -10,6 +10,16 @@ import { findHubPage, hubStaticPaths, liveCards, pageRefs } from '../../componen
 import { journeySteps } from '../../components/families/view.ts';
 import { PROGRAM_STEPS } from '../../components/program/steps.ts';
 import { JOURNEY } from '../../data/families.ts';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { JOURNEY_CLOCK } from '../../components/hubs/stats.ts';
+import LongHorizonTimeline from '../../components/visuals/LongHorizonTimeline.astro';
+// The timeline places its ticks and glyphs with the shared position classes, which it does not import itself; pages without a scene
+// must load them, or every mark collapses to the left edge.
+import '../../components/visuals/positions.css';
+import BarChart from '../../components/visuals/charts/BarChart.astro';
+import { roundAgeBars } from '../../data/datasets/figures.ts';
 import { getRenderable } from '../../lib/content.ts';
 
 /**
@@ -35,6 +45,14 @@ const questions = family?.id === 'journey' ? family.questions : [];
   actions={journeyActions('index', isLive)}
   ogSlot={ogSlotFor('journey')}
 >
+  <HubLead slot="lead" label="The journey at a glance">
+    <HubMoment id="hub-journey-clock" kind="timeline" heading="The real clock of a company" headingLevel={2} lead="Published figures for all U.S. businesses, not the length of any program step: the first payroll comes in months, the point a business counts as established in years.">
+      <LongHorizonTimeline milestones={JOURNEY_CLOCK} horizon={10} label="Gates on the ten-year clock" id="journey-clock" />
+    </HubMoment>
+    <HubMoment slot="side" id="hub-journey-rounds" kind="chart" heading="How old companies are when they raise" headingLevel={2} lead="For the venture-backed companies that do raise, each round comes years after the start.">
+      <BarChart {...roundAgeBars} max={12} note="Venture-backed companies only. WE makes no promise of funding." />
+    </HubMoment>
+  </HubLead>
   <section class="stack" aria-labelledby="jny-hub-steps">
     <h2 id="jny-hub-steps">{HEADINGS.journey.steps}</h2>
     <JourneyList steps={journeySteps(PROGRAM_STEPS)} label={HEADINGS.journey.steps} />
@@ -51,4 +69,5 @@ const questions = family?.id === 'journey' ? family.questions : [];
       </section>
     )
   }
+  <HubEcosystem id="journey-ecosystem" />
 </FamilyHubPage>

@@ -18,7 +18,8 @@ import { getRouteState } from '../../lib/route-state.ts';
  * hex-faceted planets, comparisons as navigating giants, the journey as a launch; wave 9), the hub
  * page's own MDX body if the content owner wrote one, an optional block of structure above the list (the journey hub puts the
  * ordered steps there) and the list of the family's pages as equal cards. The hub exists as soon as the template does; its list holds
- * only the pages that are live, so a family with no page yet shows its intro and no cards.
+ * only the pages that are live, so a family with no page yet shows its intro and no cards. The `lead` slot sits straight under the hero,
+ * so a hub's first media moments open the page (WP-24); the default slot stays above the list.
  */
 interface Props {
   family: 'industries' | 'compare' | 'journey';
@@ -54,6 +55,7 @@ const Content = page !== undefined ? (await render(page)).Content : undefined;
   secondary={actions.secondary}
 >
   <div slot="panel"><EmblemFrame kind={family} caption={IDENTITY[family].caption} /></div>
+  <slot name="lead" />
   <BrandCallout tone="note" title={HEADINGS.shared.about}>
     <p>{fixed}</p>
   </BrandCallout>
