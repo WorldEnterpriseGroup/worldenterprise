@@ -1,0 +1,39 @@
+---
+/** /data/survival/ (WP-35): thirty years of opening-year groups from BLS Business Employment Dynamics, in three views. */
+import CtaRow from '../../../components/sales/CtaRow.astro';
+import BeeswarmStrip from '../../../components/visuals/charts/BeeswarmStrip.astro';
+import DataSources from '../../../components/visuals/charts/DataSources.astro';
+import DataStage from '../../../components/visuals/charts/DataStage.astro';
+import Ridgeline from '../../../components/visuals/charts/Ridgeline.astro';
+import SmallMultiples from '../../../components/visuals/charts/SmallMultiples.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { HOW_LONG_CTA, PRIMARY_CTA } from '../../../data/sales/copy.ts';
+import { HONESTY, SURVIVAL_PAGE as P } from '../../../data/datasets/copy.ts';
+import { RETRIEVED } from '../../../data/datasets/sources.ts';
+import { exitRidgeline, fiveYearSwarm, survivalMultiples } from '../../../data/datasets/figures.ts';
+
+const [groups, risk, spread] = P.stages;
+---
+
+<MarketingLayout title={P.title} seoTitle={P.seoTitle} description={P.description} path={P.path} eyebrow={P.eyebrow} lead={P.lead}>
+  <p>{P.note}</p>
+  <p>{HONESTY}</p>
+
+  <Fragment slot="after">
+    <DataStage id={groups.id} tone="soft" stage="View 1 of 3" heading={groups.heading} body={groups.body}>
+      <SmallMultiples {...survivalMultiples} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id={risk.id} stage="View 2 of 3" heading={risk.heading} body={risk.body}>
+      <Ridgeline {...exitRidgeline} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id={spread.id} tone="soft" stage="View 3 of 3" heading={spread.heading} body={spread.body}>
+      <BeeswarmStrip {...fiveYearSwarm} retrieved={RETRIEVED} />
+    </DataStage>
+    <section class="band" aria-label="Next steps">
+      <div class="container">
+        <CtaRow primary={PRIMARY_CTA} more={[[HOW_LONG_CTA]]} label="Next steps from the survival data" />
+      </div>
+    </section>
+    <DataSources ids={['bls-bed-total', 'bls-bed-information', 'bls-bed-professional']} />
+  </Fragment>
+</MarketingLayout>

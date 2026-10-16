@@ -1,0 +1,62 @@
+---
+/** /data/years-to-milestones/ (WP-35): published figures on how long each stage takes, and what each round costs in ownership. */
+import BarChart from '../../../components/visuals/charts/BarChart.astro';
+import CtaRow from '../../../components/sales/CtaRow.astro';
+import DataSources from '../../../components/visuals/charts/DataSources.astro';
+import DataStage from '../../../components/visuals/charts/DataStage.astro';
+import GanttTimeline from '../../../components/visuals/charts/GanttTimeline.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { HOW_LONG_CTA, PRIMARY_CTA } from '../../../data/sales/copy.ts';
+import { HONESTY, MILESTONES_PAGE as P } from '../../../data/datasets/copy.ts';
+import { RETRIEVED } from '../../../data/datasets/sources.ts';
+import { dilutionBars, milestoneGantt, roundAgeBars, roundGapBars } from '../../../data/datasets/figures.ts';
+
+const [clock, rounds] = P.stages;
+---
+
+<MarketingLayout title={P.title} seoTitle={P.seoTitle} description={P.description} path={P.path} eyebrow={P.eyebrow} lead={P.lead}>
+  <p>{P.note}</p>
+  <p>{HONESTY}</p>
+
+  <Fragment slot="after">
+    <DataStage id={clock.id} tone="soft" stage="View 1 of 2" heading={clock.heading} body={clock.body}>
+      <GanttTimeline {...milestoneGantt} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id={rounds.id} stage="View 2 of 2" heading={rounds.heading} body={rounds.body}>
+      <div class="data-bars">
+        <BarChart {...roundGapBars} max={3} />
+        <BarChart {...roundAgeBars} max={10} />
+        <BarChart {...dilutionBars} max={25} />
+      </div>
+      <p class="data-bars__retrieved">Retrieved {RETRIEVED}. The funding-round figures are quoted one by one; no dataset is re-hosted.</p>
+    </DataStage>
+    <section class="band" aria-label="Next steps">
+      <div class="container">
+        <CtaRow primary={PRIMARY_CTA} more={[[HOW_LONG_CTA]]} label="Next steps from the funding data" />
+      </div>
+    </section>
+    <DataSources ids={['carta-spm-q1-2026', 'census-bfs-monthly', 'gem-us-2020', 'bls-bed-total', 'cb-insights-2026']} />
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    .data-bars {
+      display: grid;
+      gap: var(--sp-7);
+    }
+
+    @media (min-width: 70rem) {
+      .data-bars {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        column-gap: var(--sp-8);
+      }
+    }
+
+    .data-bars__retrieved {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+  }
+</style>
