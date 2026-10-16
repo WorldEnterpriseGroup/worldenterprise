@@ -50,7 +50,7 @@ const show = (v: number): string => `${fmt(v)}${unit}`;
 const tableXs = props.tableXs ?? xs;
 const table = {
   caption: props.title,
-  columns: ['Group', ...tableXs.map((x) => `${xLabel} ${x}`)],
+  columns: ['Group', ...tableXs.map((x) => `At ${xLabel.toLowerCase()} ${x}`)],
   rows: ridges.map((r) => [r.label, ...tableXs.map((x) => show(r.values[xs.indexOf(x)] ?? 0))]),
 };
 const axisY = base(ridges.length - 1) + 22;

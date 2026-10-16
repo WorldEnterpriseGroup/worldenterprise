@@ -64,7 +64,7 @@ const tableXs = props.tableXs ?? xs;
 const idx = tableXs.map((x) => xs.indexOf(x));
 const table = {
   caption: props.title,
-  columns: ['Group', 'Series', ...tableXs.map((x) => `${xLabel} ${x}`)],
+  columns: ['Group', 'Series', ...tableXs.map((x) => `At ${xLabel.toLowerCase()} ${x}`)],
   rows: panels.flatMap((p) => p.series.map((s) => [p.label, s.label, ...idx.map((i) => (i < 0 || i >= s.values.length ? 'n/a' : show(s.values[i] ?? 0)))])),
 };
 ---

@@ -10,7 +10,7 @@ export const NO_PROMISE = 'No one can promise that a company will survive, and W
 export const HUB = {
   path: '/data/',
   title: 'The long game, in data',
-  seoTitle: 'The long game, in data: how long a business takes',
+  seoTitle: 'The long game, in data',
   eyebrow: 'Data and charts',
   description: 'Public data on how long a business takes: starting, first payroll, survival, funding rounds and exits. Sourced charts with the data behind each.',
   lead: 'A company can be started in a week and run at a fast pace every day. Becoming an established one takes years. Public data shows how many, stage by stage.',
@@ -82,7 +82,7 @@ export const HUB = {
 export const SURVIVAL_PAGE = {
   path: '/data/survival/',
   title: 'How long new businesses last',
-  seoTitle: 'How long new businesses last: survival in data',
+  seoTitle: 'How long new businesses last, in data',
   description: 'Survival of new U.S. establishments over thirty years of opening-year groups: six groups, three industries, every year of life, with the data.',
   eyebrow: 'Data and charts',
   lead: 'Thirty years of opening-year groups, the same shape every time: a steep first five years, then a long, slow tail.',
@@ -138,7 +138,7 @@ export const WHO_PAGE = {
 export const MILESTONES_PAGE = {
   path: '/data/years-to-milestones/',
   title: 'The funding clock',
-  seoTitle: 'The funding clock: years between milestones',
+  seoTitle: 'The funding clock, in years',
   description: 'Published figures on how long each stage takes: first payroll, establishment, funding-round gaps and company age, with ownership given up per round.',
   eyebrow: 'Data and charts',
   lead: 'Each stage of a venture-backed company is measured in years, and every round gives up a share of ownership.',

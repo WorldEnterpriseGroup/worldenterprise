@@ -309,6 +309,7 @@ export const founderAgeRange = {
   min: 20,
   max: 70,
   unit: ' years',
+  axisLabel: 'Mean founder age, in years',
   nLabel: 'Founders in the group',
   sources: [src(AZOULAY_SOURCE)],
   derived: 'Means, standard deviations and founder counts are copied from Table 5 as printed; growth is employment five years after founding.',

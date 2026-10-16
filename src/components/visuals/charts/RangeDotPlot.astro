@@ -23,19 +23,21 @@ interface Props extends FigureMeta {
   min: number;
   max: number;
   unit?: string;
+  /** Printed under the axis, so the tick numbers stay bare. */
+  axisLabel?: string;
   nLabel?: string;
   class?: string | undefined;
 }
 
 const props = Astro.props;
-const { rows, min, max, unit = '', nLabel = 'Count' } = props;
+const { rows, min, max, unit = '', axisLabel, nLabel = 'Count' } = props;
 if (rows.length < 2 || rows.length > 12) throw new Error(`RangeDotPlot "${props.id}": takes 2 to 12 rows, got ${rows.length}`);
 const W = 840;
 const left = 270;
 const right = 40;
 const rowH = 40;
 const top = 12;
-const H = top + rows.length * rowH + 34;
+const H = top + rows.length * rowH + (axisLabel === undefined ? 34 : 56);
 const x = scale([min, max], [left, W - right]);
 const ticks = niceTicks(min, max, 5);
 const hasN = rows.some((r) => r.n !== undefined);
@@ -53,9 +55,10 @@ const table = {
     {ticks.map((t) => (
       <>
         <line class="dv-grid" x1={x(t)} x2={x(t)} y1={top} y2={top + rows.length * rowH} />
-        <text class="dv-axis" x={x(t)} y={top + rows.length * rowH + 20} text-anchor="middle">{t}{unit}</text>
+        <text class="dv-axis" x={x(t)} y={top + rows.length * rowH + 20} text-anchor="middle">{t}</text>
       </>
     ))}
+    {axisLabel !== undefined && <text class="dv-axis" x={(left + W - right) / 2} y={top + rows.length * rowH + 44} text-anchor="middle">{axisLabel}</text>}
     <g class="dv-reveal">
       {rows.map((r, i) => {
         const cy = top + i * rowH + rowH / 2;
