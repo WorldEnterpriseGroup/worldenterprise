@@ -32,6 +32,7 @@ related:
 claimsUsed: [C-05]
 ---
 import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import Steps from '../../../components/ui/Steps.astro';
 import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 <NoFundingDisclaimer />
@@ -69,6 +70,17 @@ The How to Apply page describes the main phases as follows.
 
 The About page gives different figures. It says that, as of April 2026, agencies may issue a Phase I award up to $323,090 and a Phase II award up to $2,153,927 without seeking SBA approval, and that any award above those levels requires a waiver. The first set is a range on a how-to page; the second is a limit on what agencies may issue without a waiver. Neither tells you what a particular agency's solicitation offers, so read the solicitation. The NSF page says it invests up to $2 million in seed funding.
 
+**How a research award moves through its phases.** The programs are built in stages, and each stage asks a different question. The program pages state the exact terms.
+
+<Steps
+  headingLevel={3}
+  steps={[
+    { title: 'Feasibility', body: 'A first, smaller award tests whether the idea can work at all.' },
+    { title: 'Development', body: 'A second, larger award funds the research and development of a prototype.' },
+    { title: 'Commercialization', body: 'The company brings the result to market with other sources of support, because the program itself does not fund this stage.' }
+  ]}
+/>
+
 ## What the awards are for
 
 The awards pay for research and development. The SBIR page calls the programs an important source of early-stage technology funding for small businesses and speaks of R&D-focused entrepreneurs. The NSF page says it offers funding for early stage R&D, supports deep technologies based on discoveries in fundamental science and engineering, and considers a technology's innovativeness, commercial potential and possible societal impact when it reviews applications. It names artificial intelligence among the areas it funds, and two of the companies it features describe software products.
@@ -103,6 +115,10 @@ The SBA also says it works with local partners that help with proposals and SAM 
 - Which of the questions in <MaybeLink path="/insights/questions-to-ask-your-counsel-before-you-sign/">questions to ask your counsel before you sign</MaybeLink> apply to an award agreement?
 
 For unfamiliar words, the <MaybeLink path="/glossary/">glossary</MaybeLink> is the place to start.
+
+## Where this fits in a long effort
+
+These programs are among the longest-horizon sources of public support for a small company, and a company that applies should plan for a process measured in months and years. The <MaybeLink path="/insights/sbir-and-sttr-as-patient-capital-for-research-based-companies/">SBIR and STTR as patient capital</MaybeLink> article looks at the programs as a timeline and records their current status. Public counseling is also available, as the <MaybeLink path="/insights/using-sba-resource-partners-sbdc-score-wbc-and-vboc/">SBA resource partners</MaybeLink> article describes. These are independent public programs that WE encourages founders to consider, and no affiliation is implied.
 
 ## What this article cannot tell you
 

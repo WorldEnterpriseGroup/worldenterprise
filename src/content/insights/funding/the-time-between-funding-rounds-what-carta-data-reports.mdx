@@ -1,0 +1,110 @@
+---
+title: "The time between funding rounds: what Carta data reports"
+seoTitle: The time between funding rounds
+description: Carta reports that the median wait between rounds has stretched past 600 days. The figures, who they cover, and how to turn them into a runway question.
+topic: funding
+publishedDate: 2026-10-15
+sources:
+  - id: carta-series-a-q2-2025
+    title: Series A Fundraising Q2 2025
+    publisher: Carta
+    url: https://carta.com/data/series-a-fundraising-q2-2025/
+    accessed: 2026-10-15
+  - id: carta-spm-q2-2025
+    title: "State of Private Markets, Q2 2025"
+    publisher: Carta
+    url: https://carta.com/data/state-of-private-markets-q2-2025/
+    accessed: 2026-10-15
+  - id: carta-spm-q4-2024
+    title: "State of Private Markets, Q4 and 2024 in review"
+    publisher: Carta
+    url: https://carta.com/data/state-of-private-markets-q4-2024/
+    accessed: 2026-10-15
+evidence: [carta-series-a-q2-2025, carta-spm-q2-2025, carta-spm-q4-2024]
+relatedServices: [F]
+relatedPlaybook: prepare-for-investor-conversations
+relatedTemplate: seed-data-room-checklist
+segments: [first-time-founders, non-technical-founders, solo-founders]
+related:
+  - runway-and-burn-the-arithmetic
+  - the-founder-time-budget-of-a-raise
+  - funding-a-software-startup-the-routes
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import BarChart from '../../../components/visuals/charts/BarChart.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general information, not legal or financial advice. It was written on October 15, 2026, from the public reports of a private company that publishes data about the startups on its platform. The figures are from 2024 and 2025, and newer reports exist. It describes no agreement with WE and no outcome for any company.*
+
+Founders planning a long project ask how much time passes between one funding round and the next. The company that manages shareholder records for many startups, Carta, publishes quarterly data on exactly that, and its reports say the wait has grown. This article quotes the specific figures with their dates, explains whose data they are, and sets out what a founder may reasonably ask after reading them. It quotes only figures that Carta states in its reports, and it links to them so a reader can check the original.
+
+## What Carta reports
+
+Carta's own words are the best summary. In its Series A fundraising report, published on September 19, 2025, it says the median interval between a seed round and a Series A reached 616 days in the second quarter of 2025, or a little more than 20 months, and that this is more than two months longer than the median wait two years earlier. The same report notes that Series A deal count was down 18 percent from a year earlier and cash raised down 23 percent.
+
+Its State of Private Markets report for the second quarter of 2025, published on August 18, 2025, says that the median wait time between new funding rounds across all stages reached 696 days. Its report for the fourth quarter of 2024, published on February 12, 2025, says the median startup that raised a Series A in that quarter had waited 774 days between primary funding rounds, about 2.1 years, and that the median startup that raised a Series C had waited 790 days since its previous round.
+
+<BarChart
+  title="Median days between funding rounds, as reported by Carta"
+  items={[
+    { label: 'Seed to Series A, Q2 2025', value: 616, display: '616 days' },
+    { label: 'All stages, Q2 2025', value: 696, display: '696 days' },
+    { label: 'Series A raised in Q4 2024', value: 774, display: '774 days' },
+    { label: 'Series C raised in Q4 2024', value: 790, display: '790 days' },
+  ]}
+  max={900}
+  valueLabel="Median days since the previous round"
+  source={{ label: 'Carta, Series A Fundraising Q2 2025 and State of Private Markets reports', href: 'https://carta.com/data/series-a-fundraising-q2-2025/', period: 'Q4 2024 and Q2 2025' }}
+  note="Companies that raised on Carta in the quarter shown. Different measures, so the bars are not a single series."
+/>
+
+| Measure | Median | Quarter | Report published |
+|---|---|---|---|
+| Seed to Series A interval | 616 days, a little over 20 months | Q2 2025 | September 19, 2025 |
+| Wait between new rounds, all stages | 696 days | Q2 2025 | August 18, 2025 |
+| Wait before a Series A, since the prior round | 774 days, about 2.1 years | Q4 2024 | February 12, 2025 |
+| Wait before a Series C, since the prior round | 790 days | Q4 2024 | February 12, 2025 |
+
+The measures differ, so the table is a list and not a trend line. Read together, they say that in this data a founder who raises one round and plans to raise the next should expect the gap to be measured in years more often than in months.
+
+## Whose data this is
+
+Carta's figures describe companies that raised money and recorded it on Carta's platform. That is a large group, and it is not all startups. Companies that never raise outside money are missing, as are companies that use other record-keeping tools, so the data are a view of venture-style financing, not of every company that starts. The figures are medians, which means half of the companies waited longer. Carta also measures time between rounds for companies that did raise the next round. A company that waited and never raised does not appear in the interval.
+
+The reports are Carta's own analysis, and Carta sells cap table software. The data are useful, and they are one company's view of its own customers. A founder who wants to cite them should name Carta, give the quarter and link to the report. This article does not reproduce Carta's charts or tables.
+
+## Why the interval matters to a long project
+
+Funding intervals matter because they set the length of time a company must run on the cash it has. If the typical gap is nearly two years, a plan that assumes a new round in twelve months leaves little room for a slow quarter. The <MaybeLink path="/insights/runway-and-burn-the-arithmetic/">runway arithmetic</MaybeLink> shows how to turn cash and burn into months, and the <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> does the division.
+
+Several questions follow for a founder who is thinking about raising, none of which the data answer.
+
+- How many months of cash does my plan have if the next round takes as long as the median?
+- Which milestones would I want to have reached before I start to raise, and when will I reach them?
+- What does raising cost me in founder time? The <MaybeLink path="/insights/the-founder-time-budget-of-a-raise/">founder time budget of a raise</MaybeLink> article describes it.
+- Could revenue, a public research award or a smaller round close part of the gap? The <MaybeLink path="/insights/funding-a-software-startup-the-routes/">routes to funding</MaybeLink> article lists the options, and the <MaybeLink path="/insights/sbir-and-sttr-as-patient-capital-for-research-based-companies/">SBIR and STTR article</MaybeLink> describes one.
+
+## A worked planning question
+
+Suppose a founder's plan shows 15 months of runway and assumes the next round closes at month 12. If the median gap in the data is 20 months, the plan has five months less cash than the gap it assumes. The founder is not predicting a particular outcome. The point of the exercise is to see how much room the plan has if the market behaves like the median, and to decide, with an accountant and an adviser, what to adjust. The numbers are invented for illustration, and no source supports any particular number as right.
+
+## Reading the trend with care
+
+Carta describes the interval as longer than it was two years earlier. The reports also describe a market in which deal counts and cash raised moved in different directions by stage. A founder reading them in 2026 should look for the newest report on Carta's data pages, because the figures change every quarter and the figures here are not current. A longer interval does not mean a company is failing. It can reflect investors taking longer to commit, companies taking longer to reach milestones, or both. The data do not say which.
+
+## Patience as a planning input
+
+Fast-paced startup culture and long timelines coexist in these numbers. A team can ship weekly while the gap between financing events runs past 600 days. The founders who treat that gap as a fixed feature of the market, and not as a sign that something has gone wrong, can plan hiring, spending and customer work around it. A plan that holds up for two years of its own cash is a plan that does not depend on the next round arriving on schedule.
+
+That framing connects to the broader long-horizon picture. Business survival data from the US Bureau of Labor Statistics, covered in the <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article, show that about one in three private-sector establishments is still operating after ten years. Companies that reach year ten usually did so on a mix of revenue, patience and a small number of financing events, not on a fast sequence of rounds.
+
+## Where to look next
+
+Carta publishes new reports each quarter on its data pages, and each report states its own period and method. Read the method note before quoting a number, check whether the measure is a median or a mean, and check which stage and which quarter it covers. Public research programs, covered in the SBIR and STTR article linked above, run on their own schedules and are a different kind of money with a different timeline. The <MaybeLink path="/compare/bootstrapping-vs-outside-funding/">bootstrapping versus outside funding comparison</MaybeLink> sets the options side by side for a founder weighing them.
+
+## What this article cannot tell you
+
+This article cannot tell you how long your own gap between rounds will be, whether raising suits your company, or whether a round is available to you. The figures are Carta's medians for companies on its platform in two earlier periods, they are not a forecast, and they are not a recommendation. Carta is not affiliated with WE, and this article makes no claim about any investor, program or company. It describes no outcome for any company that works with WE, and it offers no promise of funding.

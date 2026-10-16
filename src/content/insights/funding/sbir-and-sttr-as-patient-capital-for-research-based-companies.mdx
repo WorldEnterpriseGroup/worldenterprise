@@ -1,0 +1,125 @@
+---
+title: "SBIR and STTR as patient capital for research-based companies"
+seoTitle: SBIR and STTR as patient capital
+description: How federal SBIR and STTR awards fund research over years without taking shares, what the 2026 reauthorization changed, and what to ask first.
+topic: funding
+publishedDate: 2026-10-15
+sources:
+  - id: sbir-about
+    title: About SBIR and STTR
+    publisher: U.S. Small Business Administration, SBIR.gov
+    url: https://www.sbir.gov/about
+    accessed: 2026-10-15
+  - id: sbir-apply
+    title: How to Apply
+    publisher: U.S. Small Business Administration, SBIR.gov
+    url: https://www.sbir.gov/apply
+    accessed: 2026-10-15
+  - id: nsf-seed
+    title: America's Seed Fund, NSF SBIR/STTR
+    publisher: U.S. National Science Foundation
+    url: https://seedfund.nsf.gov/
+    accessed: 2026-10-15
+  - id: sba-reauth
+    title: Administrator Loeffler Applauds SBIR-STTR Reauthorization
+    publisher: U.S. Small Business Administration
+    url: https://legacy.sba.gov/article/2026/04/13/administrator-loeffler-applauds-sbir-sttr-reauthorization
+    accessed: 2026-10-15
+evidence: [sbir-about, sbir-apply, nsf-seed, sba-reauth]
+relatedServices: [F]
+relatedPlaybook: prepare-for-investor-conversations
+relatedTemplate: seed-data-room-checklist
+segments: [technical-founders, student-founders, second-career-founders]
+related:
+  - grants-and-sbir-programs-for-software-companies
+  - funding-a-software-startup-the-routes
+  - matching-a-funding-route-to-a-stage-a-decision-guide
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import BarChart from '../../../components/visuals/charts/BarChart.astro';
+import LongHorizonTimeline from '../../../components/visuals/LongHorizonTimeline.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general information, not legal or financial advice. It was written on October 15, 2026, from the public pages of the programs it describes. It describes federal programs that WE does not run and is not part of. Programs, limits and deadlines change, so confirm the current position with the agency and your own advisers.*
+
+Most funding routes ask a company to move fast and to repay quickly, either in shares or in growth the next investor can see. The federal Small Business Innovation Research and Small Business Technology Transfer programs work on a different clock. They fund research and development in stages, across years, and the award does not take shares in the company. For a founder building something that needs time to prove, the programs are worth understanding, and the agencies and the Small Business Administration are the place to start. This article describes them as their own pages do. It does not say a company will qualify or win.
+
+## Where the programs stand in 2026
+
+The Small Business Administration published a release on April 13, 2026, reporting that the President had signed the Small Business Innovation and Economic Security Act, which reauthorizes SBIR and STTR through September 30, 2031. It lists reforms that include strengthening program integrity and protection against foreign adversaries, expanding access for new innovative businesses, and ensuring that taxpayer dollars deliver measurable results. Agencies are still updating their policies and solicitations, so the details can differ by agency. Check the agency's own page for the current rules before relying on any figure here.
+
+## What patient means here
+
+The programs fit the word patient in three ways.
+
+- **The money does not take shares.** The National Science Foundation says it offers funding for early stage research and development and does not ask for shares in the company. That leaves ownership with the founders and existing investors. It does not mean there are no conditions, since awards carry reporting and use-of-funds rules.
+- **The work is paced in phases.** The SBIR site describes Phase I as a time for companies to create proofs of concept, usually six to twelve months, and Phase II as the continuation of that research and development, usually twenty-four months. Phase III is commercialization, and no SBIR or STTR funding is awarded in it.
+- **The award is for research, not for sales.** The programs fund the work of finding out whether something can be built and whether it is worth building. They are a different tool from money meant to scale a product that already sells.
+
+<LongHorizonTimeline
+  id="sbir-phases"
+  label="The phases of a federal research award"
+  horizon={5}
+  milestones={[
+    { at: 1, label: 'Phase I work completes', detail: 'Proof of concept, six to twelve months', source: { label: 'SBIR.gov, How to Apply', href: 'https://www.sbir.gov/apply', period: 'accessed October 15, 2026' } },
+    { at: 3, label: 'Phase II work completes', detail: 'Twenty-four months of continued development after it starts; time between phases adds to this', source: { label: 'SBIR.gov, How to Apply', href: 'https://www.sbir.gov/apply', period: 'accessed October 15, 2026' } },
+    { at: 4.5, label: 'Phase III commercialization', detail: 'No SBIR or STTR funding is awarded in this phase', source: { label: 'SBIR.gov, How to Apply', href: 'https://www.sbir.gov/apply', period: 'accessed October 15, 2026' } },
+  ]}
+/>
+
+## The size of the awards
+
+The SBIR site gives award ranges of about 50 thousand to 323 thousand dollars for Phase I and about 650 thousand to 2.2 million dollars for Phase II. Its About page adds that, as of April 2026, agencies may issue Phase I awards up to 323,090 dollars and Phase II awards up to 2,153,927 dollars without an SBA waiver. NSF says it can invest up to 2 million dollars in seed funding.
+
+<BarChart
+  title="Upper end of the published award range, in thousands of US dollars"
+  items={[
+    { label: 'Phase I', value: 323, display: '323' },
+    { label: 'Phase II', value: 2200, display: '2,200' },
+  ]}
+  max={2400}
+  valueLabel="Thousands of US dollars"
+  source={{ label: 'SBIR.gov, How to Apply', href: 'https://www.sbir.gov/apply', period: 'accessed October 15, 2026' }}
+  note="Ranges differ by agency and solicitation. Larger awards require a waiver."
+/>
+
+| Phase | Purpose | Time frame | Published range |
+|---|---|---|---|
+| Phase I | Proof of concept | 6 to 12 months | 50,000 to 323,000 dollars |
+| Phase II | Continue the research and development | 24 months | 650,000 dollars to 2.2 million dollars |
+| Phase III | Commercialization | Not applicable | No SBIR or STTR funding |
+
+These are ceilings and ranges, not typical awards, and a solicitation may offer less. A software founder should compare the award with the cost of the work in the proposal, and with how long the team can stay together.
+
+## Who the programs are for
+
+According to the SBIR site, a small business must be a for-profit entity located in the United States, have fewer than 500 employees and be owned and controlled by U.S. citizens or permanent residents. Venture capital ownership can bring extra restrictions that depend on the agency. The site says the programs are funded through eleven participating federal agencies, and each runs its own program under guidelines set by Congress, so there is no single application.
+
+STTR differs in one respect. The small business must formally partner with a nonprofit research institution in the United States and subcontract part of the award to it. A founder who comes out of a university lab may already have that partner. A founder who does not can ask the institution's technology transfer office whether a partnership is possible.
+
+## Is a software company a fit
+
+Many programs describe their topics as deep technology, meaning discoveries in science and engineering. NSF says it funds startups across nearly all technology areas and markets, and considers a technology's innovativeness and commercial potential in review. That favors a software company whose product rests on new methods, new data or new science. It does not favor a company that is simply writing an application on known techniques. The <MaybeLink path="/insights/grants-and-sbir-programs-for-software-companies/">grants and SBIR programs</MaybeLink> article walks through how a software founder can read a solicitation, and the <MaybeLink path="/insights/funding-a-software-startup-the-routes/">routes to funding</MaybeLink> article places these programs beside the others.
+
+## Reading a solicitation as a long-term plan
+
+A proposal is a plan with a budget, a timeline and a statement of why it matters. Writing one also forces a founder to say what will be proven and by when. That has value even for a company that does not win, and the work carries over into the evidence an investor will ask for. The <MaybeLink path="/fundability/data-room/">data room guide</MaybeLink> shows where such records live, and the <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article explains why a research-paced award can suit a company planning for a decade.
+
+## How an award can sit beside other routes
+
+A research award rarely stands alone over a ten-year horizon. A company might fund early research with an award, add revenue from pilot customers as the product matures, and bring in outside investors later if growth calls for it. Each step changes what the others look like: a completed Phase I can give an investor evidence, a revenue base gives an agency evidence of commercial potential, and a founder who keeps ownership through the early years has more choices when a later round arrives. The <MaybeLink path="/insights/matching-a-funding-route-to-a-stage-a-decision-guide/">route-matching guide</MaybeLink> sets these combinations against stages. None of this is a plan for any particular company, and an award has costs in time, because writing a proposal and waiting for a decision both take it, and each solicitation states its own schedule.
+
+## Questions for the agency, the institution and counsel
+
+- Which agency's topics match my technology, and when is its next solicitation?
+- Is my company eligible, given ownership and any outside investors?
+- If I use STTR, which research institution will partner, and what share of the award does it receive?
+- What are the reporting, accounting and intellectual property rules attached to the award?
+- Who in my area can review a draft, for instance a small business development center?
+
+## What this article cannot tell you
+
+This article cannot tell you whether your company is eligible, whether an agency will fund it, or how long a decision will take. It uses figures from the programs' own pages on the date shown, and those pages carry ranges and ceilings, not averages or success rates. The reauthorization is described from one federal release, and agency rules may still be changing. It does not say that any program funds any company, including any company that works with WE, and WE is not an agency of the federal government.

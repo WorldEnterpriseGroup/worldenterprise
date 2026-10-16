@@ -1,0 +1,130 @@
+---
+title: "Women and immigrant founders: what the Census and research data show"
+seoTitle: Women and immigrant founders data
+description: Census Bureau counts of women-owned and minority-owned firms, and peer-reviewed research on immigrant entrepreneurship, with the limits of each source.
+topic: starting
+publishedDate: 2026-10-15
+sources:
+  - id: census-abs-2025
+    title: Census Bureau Releases New Data on Business Owner Characteristics (CB25-TPS.77)
+    publisher: U.S. Census Bureau
+    url: https://www.census.gov/newsroom/press-releases/2025/business-owner-characteristics.html
+    accessed: 2026-10-15
+  - id: census-abs-2024
+    title: Census Bureau Releases New Data on Employer Businesses (CB24-TPS.122)
+    publisher: U.S. Census Bureau
+    url: https://www.census.gov/newsroom/press-releases/2024/employer-businesses.html
+    accessed: 2026-10-15
+  - id: kellogg-immigration
+    title: Immigration and Entrepreneurship in the United States (Azoulay, Jones, Kim and Miranda)
+    publisher: Kellogg School of Management, Northwestern University
+    url: https://www.kellogg.northwestern.edu/faculty/jones-ben/htm/Immigration_and_Entrepreneurship_in_the_United_States.pdf
+    accessed: 2026-10-15
+evidence: [census-abs-2025, census-abs-2024, kellogg-immigration]
+relatedServices: [F]
+relatedPlaybook: validate-the-problem
+segments: [global-remote-founders, first-time-founders, second-career-founders]
+related:
+  - founding-from-outside-the-united-states-what-changes-for-a-remote-founder
+  - encore-founders-starting-a-company-after-fifty
+  - from-first-filing-to-first-payroll-what-the-timing-data-says
+claimsUsed: [C-05]
+---
+import BarChart from '../../../components/visuals/charts/BarChart.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Public statistics on who owns and starts businesses come from two kinds of sources: government surveys that count owners, and research that follows founders over time. This article collects figures from both, for women founders and for immigrant founders, and states what each figure measures and what it does not. It is written for founders who want to know where they sit in the landscape, and for anyone who wants to cite these numbers correctly. The numbers describe groups. They say nothing about whether a particular person will succeed.
+
+## Who owns employer businesses
+
+In November 2025 the Census Bureau released results from the 2024 Annual Business Survey, which describes 2023. It counted about 5.9 million employer firms, of which 1.4 million, or 22.9 percent, were women-owned and 261,000, or 4.4 percent, were veteran-owned. The same release gives the share of employer firms by owner race and ethnicity.
+
+<BarChart
+  title="Share of US employer firms by owner group, 2023"
+  items={[
+    { label: 'White-owned', value: 80.6, display: '80.6 percent' },
+    { label: 'Asian-owned', value: 11.5, display: '11.5 percent' },
+    { label: 'Hispanic-owned', value: 8.4, display: '8.4 percent' },
+    { label: 'Women-owned', value: 22.9, display: '22.9 percent' },
+    { label: 'Black-owned', value: 3.4, display: '3.4 percent' },
+    { label: 'Veteran-owned', value: 4.4, display: '4.4 percent' },
+  ]}
+  max={100}
+  valueLabel="Percent of employer firms"
+  source={{ label: 'U.S. Census Bureau, Annual Business Survey, release of November 20, 2025', href: 'https://www.census.gov/newsroom/press-releases/2025/business-owner-characteristics.html', period: 'Reference year 2023' }}
+  note="Groups overlap, so the bars do not add to 100 percent."
+/>
+
+| Owner group | Employer firms, 2023 | Share |
+|---|---|---|
+| White-owned | 4.8 million | 80.6 percent |
+| Asian-owned | 685,000 | 11.5 percent |
+| Hispanic-owned | 496,000 | 8.4 percent |
+| Black-owned | 201,000 | 3.4 percent |
+| American Indian and Alaska Native-owned | 55,000 | 0.9 percent |
+| Native Hawaiian and Pacific Islander-owned | 9,000 | 0.2 percent |
+| Women-owned | 1.4 million | 22.9 percent |
+| Veteran-owned | 261,000 | 4.4 percent |
+
+An earlier release, from December 2024, covered reference year 2022 and reported 22.3 percent of employer firms as women-owned, 22.6 percent as minority-owned and 4.7 percent, or 273,542 firms, as veteran-owned. The surveys use different years and methods, so the two releases describe different snapshots, not a trend.
+
+## The larger count: businesses with no employees
+
+Most US businesses have no employees, and the 2025 release also reports on those. In 2023 there were 30.4 million nonemployer businesses, and women owned 12.9 million of them, or 42.3 percent. Among all businesses, employer and nonemployer together, the release counts 36.4 million, with women owning 14.2 million. For a founder, the contrast is useful: women own a far larger share of businesses with no employees than of businesses that hire, so any statement about women founders depends on which of the two groups is being counted. The nonemployer figures also show Hispanic owners at 17.5 percent, Black owners at 14.4 percent and Asian owners at 9.2 percent of nonemployer businesses, again with groups that overlap.
+
+## What research says about immigrant founders
+
+The count of owners is one thing, and the rate of starting firms is another. A paper in the American Economic Review: Insights by Pierre Azoulay, Benjamin Jones, J. Daniel Kim and Javier Miranda, "Immigration and Entrepreneurship in the United States," used Census administrative data on new employer firms from 2005 to 2010. The authors report that 0.83 percent of immigrants in the workforce started a firm in those years, against 0.46 percent of native-born workers. In their words, "Immigrants thus exhibit a 80% higher entrance rate into entrepreneurship."
+
+<BarChart
+  title="Share of workers who founded an employer firm, 2005 to 2010"
+  items={[
+    { label: 'Immigrants', value: 0.83, display: '0.83 percent' },
+    { label: 'Native-born', value: 0.46, display: '0.46 percent' },
+  ]}
+  max={1}
+  valueLabel="Percent of workers who founded a firm"
+  source={{ label: 'Azoulay, Jones, Kim and Miranda, Immigration and Entrepreneurship in the United States', href: 'https://www.kellogg.northwestern.edu/faculty/jones-ben/htm/Immigration_and_Entrepreneurship_in_the_United_States.pdf', period: 'New employer firms 2005 to 2010' }}
+  note="Founders of employer firms only, so self-employment without employees is outside the figure."
+/>
+
+The paper also finds that immigrants start more firms of every size. Its abstract describes immigrants as acting more as "job creators" than "job takers" and playing outsized roles in high-growth entrepreneurship in the United States.
+
+## Reading the data across groups
+
+Three habits help a reader use these numbers well.
+
+- Check the unit. A share of firms, a share of owners and a rate of founding are different measures, and the sources above use all three.
+- Check the population. Employer firms are a minority of businesses, and nonemployer businesses are most of them.
+- Check the period. The surveys cover 2022 and 2023, and the immigration study covers 2005 to 2010.
+
+A founder who is a woman, an immigrant, a veteran or any combination can use this context to see that they are part of a large and long-standing group of owners. The context does not predict results. The <MaybeLink path="/insights/founding-from-outside-the-united-states-what-changes-for-a-remote-founder/">article on founding from outside the United States</MaybeLink> covers practical questions for remote founders, and the <MaybeLink path="/insights/encore-founders-starting-a-company-after-fifty/">encore founders article</MaybeLink> covers age. The <MaybeLink path="/insights/using-sba-resource-partners-sbdc-score-wbc-and-vboc/">SBA resource partners article</MaybeLink> describes Women's Business Centers and Veterans Business Outreach Centers, which are public programs open to founders in these groups.
+
+## How the immigration study was built
+
+The Azoulay, Jones, Kim and Miranda paper combines Census administrative records on firms with records on the people who own them, which lets it follow individuals who start employer firms and compare them across groups. An advantage of that design is that it counts all founders who hired someone and does not rely on a survey sample. A limit is that it covers a single window of years, which included the financial crisis, and a single definition of founder. It counts only firms with employees, so an immigrant who runs a business alone, or whose business has not yet hired, does not appear in the entry rate.
+
+The authors also relate the founding rate to firm outcomes. They find that immigrants start more firms of every size, so the higher rate of entry is not confined to small firms. Readers who want the full set of tables should open the paper through the link in the chart note.
+
+## What the Census releases measure
+
+The Annual Business Survey and the nonemployer statistics are federal statistical programs, and each press release links to tables with margins of error and definitions. A firm can be counted in more than one owner group, such as a firm owned by a woman who is also a veteran, which is why the shares overlap. The exact definitions of each group are in the Census documentation. A founder who wants to cite a figure should link to the release and quote the year.
+
+## Questions to carry into a planning session
+
+These questions are neutral to group and come up for founders of every background.
+
+- Which of the public resources named above would help with the first six months, and which would help with year five?
+- Where do I find customers who already trust me, and what would make a new customer trust me?
+- If I work across borders, which questions about work authorization, tax and contracts belong with a qualified adviser before I start?
+- What is the smallest version of the business that would still be worth running for ten years?
+
+The last question links the topic to the long horizon. A founder who defines a business that is worth running slowly has more room to adapt than one who depends on a single quick outcome. WE works with founders on that kind of plan, over years, and encourages founders to join the public and community programs around them.
+
+## A long-horizon note
+
+Counts of owners are snapshots of businesses that already exist, which means they carry a survival filter. A business that started and closed before the survey is not in the count. That is one reason the figures work as a description of who is in the landscape today, and a weak guide to who tried. The <MaybeLink path="/insights/from-first-filing-to-first-payroll-what-the-timing-data-says/">timing data article</MaybeLink> shows how many applications become employer firms, and the <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article shows how many of those last ten years. Seen together, the figures suggest a founder in any group is better served by a plan for patience than by a comparison with a snapshot.
+
+## What this article cannot tell you
+
+This article cannot tell you how your own business will perform, what barriers you may face, or which program fits you. The Census counts are surveys with their own methods and margins, and they cover owners of existing firms. The immigration research covers new employer firms from 2005 to 2010 and a particular definition of an immigrant founder. Group figures overlap and do not describe individuals. Nothing here describes an outcome for a company that works with WE, and nothing is a promise of results.

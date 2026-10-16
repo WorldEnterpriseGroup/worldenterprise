@@ -1,0 +1,117 @@
+---
+title: "Founder age and growth: what the Census study of 2.7 million founders found"
+seoTitle: Founder age and growth
+description: Mean founder age rises with how fast firms grow. What a Census Bureau study of 2.7 million founders measured, and what it cannot say about one founder.
+topic: starting
+publishedDate: 2026-10-15
+sources:
+  - id: census-carra-age
+    title: Age and High-Growth Entrepreneurship (CARRA Working Paper 2018-03)
+    publisher: U.S. Census Bureau, Center for Administrative Records Research and Applications
+    url: https://www.census.gov/content/dam/Census/library/working-papers/2018/adrm/carra-wp-2018-03.pdf
+    accessed: 2026-10-15
+  - id: census-ces-women-age
+    title: The Metamorphosis of Women Business Owners, A Focus on Age (CES 24-71)
+    publisher: U.S. Census Bureau, Center for Economic Studies
+    url: https://www2.census.gov/ces/wp/2024/CES-WP-24-71.pdf
+    accessed: 2026-10-15
+evidence: [census-carra-age, census-ces-women-age]
+relatedServices: [F]
+relatedPlaybook: validate-the-problem
+segments: [first-time-founders, student-founders, second-career-founders]
+related:
+  - second-career-founders-turning-domain-knowledge-into-a-saas-idea
+  - student-founders-the-questions-to-settle-before-you-start
+  - choosing-a-co-founder-or-deciding-not-to
+claimsUsed: [C-05]
+---
+import BarChart from '../../../components/visuals/charts/BarChart.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+The picture many people carry of a startup founder is a person in their twenties. The public data points somewhere else. A study by Pierre Azoulay, Benjamin Jones, J. Daniel Kim and Javier Miranda, built on Census Bureau administrative records, looked at who founds the businesses that grow fastest. This article describes what they measured, what they found and what the findings do not mean. It is written for anyone deciding whether they are the right age to start, and the short answer from the data is that there is no age that closes the door in either direction.
+
+## What the study measured
+
+The researchers worked from Census records of founders who started companies between 2007 and 2014 and went on to hire at least one employee. That is roughly 2.7 million founders. They then asked how old the founders were when they started, and compared the ages of founders across different outcomes: firms in the top ten percent of growth, the top one percent, the top one in a thousand, and firms that were acquired or went public.
+
+Three features of the design matter. The data cover employer businesses, so a founder who never hired is outside the sample. Growth is measured by employment and revenue records, not by profit or by how a founder feels about the result. And the period includes the aftermath of the 2008 financial crisis, which may have shaped who started firms and how they fared.
+
+## Mean founder age by outcome
+
+The chart uses the study's headline table for the United States, in which the sample of all startups includes about 1.08 million firms.
+
+<BarChart
+  title="Mean founder age at founding, by firm outcome"
+  items={[
+    { label: 'All startups', value: 41.8, display: '41.8' },
+    { label: 'Top 10 percent of growth', value: 41.6, display: '41.6' },
+    { label: 'Top 5 percent', value: 42.1, display: '42.1' },
+    { label: 'Top 1 percent', value: 43.7, display: '43.7' },
+    { label: 'Top 1 in 1,000', value: 45.0, display: '45.0' },
+    { label: 'Successful exit', value: 46.7, display: '46.7' },
+  ]}
+  max={50}
+  highlight={5}
+  valueLabel="Mean age in years"
+  source={{ label: 'Azoulay, Jones, Kim and Miranda, Age and High-Growth Entrepreneurship, Census Bureau working paper 2018-03, Table 5', href: 'https://www.census.gov/content/dam/Census/library/working-papers/2018/adrm/carra-wp-2018-03.pdf', period: 'founders 2007 to 2014' }}
+  note="Founders of employer firms. Exit means acquisition or public listing."
+/>
+
+| Outcome group | Firms in the group | Mean founder age |
+|---|---|---|
+| All startups | about 1,079,000 | 41.8 |
+| Top 10 percent of growth | about 126,000 | 41.6 |
+| Top 5 percent | about 62,000 | 42.1 |
+| Top 1 percent | about 13,000 | 43.7 |
+| Top 1 in 1,000 | about 1,700 | 45.0 |
+| Successful exit | about 4,000 | 46.7 |
+
+The study's own summary is plain: its primary finding, in its words, is that successful entrepreneurs are middle-aged, not young. The mean age rises as the outcome becomes rarer, from 41.8 for all startups to 45.0 for the fastest-growing one in a thousand, and 46.7 for founders whose firms were acquired or listed.
+
+## Odds, not just averages
+
+An average can mislead, because older people also start more firms than younger ones in some periods. The authors address this by looking at the chance of success given that a person starts a firm. Their reported result is that a 50-year-old founder is 1.8 times more likely to achieve upper-tail growth than a 30-year-old founder. They also report that founders in their early twenties have the lowest likelihood of a successful exit or of creating a top-one-in-a-thousand firm, and that the likelihood of a successful exit rises with age until about age sixty.
+
+Read these as patterns across more than a million firms. They do not say that a founder of 25 will fail or that a founder of 55 will succeed. They say that in this period and this population, the founders of the fastest-growing employer firms were on average a few years older than the typical founder, not younger.
+
+## Why age might matter
+
+The study does not claim to know the cause, but it gives evidence for one candidate: experience in the field. It reports that a founder who had worked three or more years in the same two-digit industry as the new firm had about twice the chance of a top one-in-a-thousand outcome as a founder with no such experience. The <MaybeLink path="/insights/second-career-founders-turning-domain-knowledge-into-a-saas-idea/">second-career founders</MaybeLink> article describes how to turn that kind of domain knowledge into a software idea, and the follow-on article on <MaybeLink path="/insights/encore-founders-starting-a-company-after-fifty/">founders after fifty</MaybeLink> returns to the figures.
+
+Other explanations are plausible and untested here: older founders may have more savings, wider networks, more credibility with customers, or a clearer picture of a problem worth solving. Younger founders may have more tolerance for risk or fewer obligations. The data cannot separate these.
+
+## Prior ownership by age
+
+A separate Census paper on women who own employer businesses reports how many had owned an earlier business. Using the 2018 Annual Business Survey, it finds that 6.2 percent of owners under 25, 16.0 percent of those aged 25 to 34 and 21.6 percent of those aged 35 to 44 had at least one prior business, against 27.2 percent of those aged 55 to 64 and 27.6 percent of those 65 and over. Previous ownership is a form of experience, and it rises with age. The sample is women owners only, and it describes who owns businesses, not who succeeds.
+
+## How to read a headline about age
+
+Headlines compress this study into a slogan, and the slogan can mislead in either direction. A claim that founders over forty are better is as unsupported as the claim that founders under thirty are better. Three habits help.
+
+First, ask what was measured. Growth of an employer firm is one outcome. A founder who runs a small, steady business that supports a family, or who sells a product to a niche for a lifetime of work, has succeeded in a way these tables do not count.
+
+Second, ask who is in the sample. Every founder here started a firm that hired someone. People who were deterred from starting by cost, family duties or visa rules are not visible.
+
+Third, ask what you can change. You cannot change your age. You can change how much industry experience, customer contact and cash discipline you bring, and the data suggest those matter.
+
+## What this means for a founder of any age
+
+- **Student founders.** The data do not say to wait. They say that a young founder who lacks industry experience can borrow it, from a co-founder, an adviser or a customer. The <MaybeLink path="/insights/student-founders-the-questions-to-settle-before-you-start/">student founders</MaybeLink> article lists what to settle first.
+- **Mid-career founders.** The data do not say to rush. They say that the years spent in an industry are an asset worth naming in your plan.
+- **Founders over fifty.** The data do not say that age is a barrier. Time horizons differ, which the <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article treats as a planning question, not a verdict.
+- **Teams.** A team can combine ages. The <MaybeLink path="/insights/choosing-a-co-founder-or-deciding-not-to/">co-founder</MaybeLink> article covers how to decide.
+
+## Questions to ask yourself and your advisers
+
+- Which of my years of experience would a customer in this field recognize as relevant?
+- What do I not know about this industry, and who could fill the gap?
+- What time horizon am I planning for, and does my cash and my health plan match it?
+- Which outside support, such as a counseling center or a peer group, could I draw on?
+
+## Why a long horizon helps here
+
+An age pattern in growth outcomes is a reminder that building a company is slow work. A founder who starts at 30 and one who starts at 50 both face the same survival curve, and both benefit from planning for years of effort. The <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article sets that curve out, and the encore founders article linked above takes the age findings further.
+
+## What this article cannot tell you
+
+This article cannot tell you whether your age helps or hurts your own company. The study covers founders of employer firms from 2007 to 2014, measures growth and exits and not happiness or income, and finds associations, not causes. A mean age is a statement about a group. The prior-ownership figures come from women owners alone and from an earlier survey year. Nothing here promises funding, growth or any outcome, and nothing describes a company that works with WE.

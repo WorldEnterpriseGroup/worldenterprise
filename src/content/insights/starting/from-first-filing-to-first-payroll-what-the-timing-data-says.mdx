@@ -1,0 +1,148 @@
+---
+title: "From first filing to first payroll: what the timing data says"
+seoTitle: From first filing to first payroll
+description: How many business filings become employers, and what a panel of 2004 startups earned by year eight. The public data on timing, and where it runs out.
+topic: starting
+publishedDate: 2026-10-15
+sources:
+  - id: census-bfs-series
+    title: Business Formation Statistics, monthly series (CSV)
+    publisher: U.S. Census Bureau
+    url: https://www.census.gov/econ/bfs/csv/bfs_monthly.csv
+    accessed: 2026-10-15
+  - id: census-bfs-definitions
+    title: Business Formation Statistics, definitions
+    publisher: U.S. Census Bureau
+    url: https://www.census.gov/econ/bfs/definitions.html
+    accessed: 2026-10-15
+  - id: bls-survival-all
+    title: Survival of private sector establishments by opening year
+    publisher: U.S. Bureau of Labor Statistics, Business Employment Dynamics
+    url: https://www.bls.gov/bdm/us_age_naics_00_table7.txt
+    accessed: 2026-10-15
+evidence: [census-bfs-series, census-bfs-definitions, bls-survival-all]
+relatedServices: [F]
+relatedPlaybook: build-repeatable-growth
+segments: [first-time-founders, solo-founders]
+related:
+  - the-longevity-paradox-sprint-weekly-endure-for-a-decade
+  - runway-and-burn-the-arithmetic
+  - funding-a-first-saas-from-customer-revenue
+claimsUsed: [C-05]
+---
+import BarChart from '../../../components/visuals/charts/BarChart.astro';
+import SourceNote from '../../../components/visuals/charts/SourceNote.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+A founder planning a first year wants three dates: when the first money arrives, when the company pays its first wages, and when it covers its own costs. Public data answers the second question better than the other two, and it answers it with an uncomfortable trend. This article sets out what the Census Bureau and one long research panel report, what those numbers do and do not measure, and how to build a timing plan from your own evidence. It does not give a typical time to break-even, because no source cited here supports one.
+
+## Four dates that get mixed up
+
+Founders and statistics use the word "start" for different moments.
+
+- **Filing.** The day a business applies for a federal employer identification number. This is the start in the Census application series.
+- **First payroll.** The first instance of payroll tax liabilities. The Census Bureau treats this as formation of an employer business.
+- **First revenue.** The first customer payment. Public data rarely records it.
+- **Break-even.** The month when revenue covers costs. Public data on it is thin, and what exists comes from surveys of firms that chose to answer.
+
+A statistic about one of these dates says nothing about the others. A company can file in January, earn in March, hire in a year and break even in a third year, or never hire at all and still do well.
+
+## How many filings become employers
+
+The Census Bureau's Business Formation Statistics define business formations within four quarters as the employer businesses that originate from business applications within four quarters of the month of application. Dividing those formations by applications gives a conversion rate, which the chart shows for five years.
+
+<BarChart
+  title="Business applications that became employer businesses within four quarters"
+  items={[
+    { label: '2005', value: 17.2, display: '17.2%' },
+    { label: '2010', value: 11.2, display: '11.2%' },
+    { label: '2015', value: 10.4, display: '10.4%' },
+    { label: '2019', value: 8.0, display: '8.0%' },
+    { label: '2021', value: 5.8, display: '5.8%' },
+  ]}
+  max={20}
+  highlight={4}
+  valueLabel="Share of applications"
+  source={{ label: 'U.S. Census Bureau, Business Formation Statistics, author calculation from the monthly series', href: 'https://www.census.gov/econ/bfs/csv/bfs_monthly.csv', period: '2005 to 2021' }}
+  note="Annual sums of formations within four quarters divided by annual business applications, not seasonally adjusted."
+/>
+
+| Year of application | Applications | Became employers within four quarters |
+|---|---|---|
+| 2005 | 2,485,100 | 17.2% |
+| 2010 | 2,473,934 | 11.2% |
+| 2015 | 2,795,897 | 10.4% |
+| 2019 | 3,498,990 | 8.0% |
+| 2021 | 5,390,816 | 5.8% |
+
+The pattern is clear, and the reading needs care. The number of applications grew by more than two million between 2005 and 2021, while the share that reached payroll within a year fell by about two thirds. The series cannot say why. More of the filings may come from people who never planned to hire, such as freelancers and side businesses. Some may be speculative filings that are never used. Some may be real plans that need more than a year. The conversion rate is a measure of how filings behave, not of how well founders do.
+
+For a company with a payroll plan, the useful lesson is that a plan with a first hire inside twelve months is a plan most filings do not follow. That is a reason to write the hiring date as an assumption to be tested, not as a fact. The <MaybeLink path="/insights/runway-and-burn-the-arithmetic/">runway arithmetic</MaybeLink> shows how much a single early hire moves the cash position.
+
+## What a long panel shows about year eight
+
+The Kauffman Firm Survey followed 4,928 businesses that started in 2004 for eight years. Its 2013 overview reports that 44.6 percent of the firms had survived to the end of 2011. Among those survivors, the revenue distribution in 2011 was wide, as the next chart shows.
+
+<BarChart
+  title="Revenue of 2004 startups still operating in 2011, share of surviving firms"
+  items={[
+    { label: 'No revenue', value: 9.7, display: '9.7%' },
+    { label: 'Up to 5 thousand', value: 9.3, display: '9.3%' },
+    { label: '5 to 25 thousand', value: 12.5, display: '12.5%' },
+    { label: '25 to 100 thousand', value: 23.7, display: '23.7%' },
+    { label: '100 thousand to 1 million', value: 31.6, display: '31.6%' },
+    { label: 'Over 1 million', value: 13.2, display: '13.2%' },
+  ]}
+  max={40}
+  valueLabel="Share of surviving firms"
+  source={{ label: 'Kauffman Foundation, An Overview of the Kauffman Firm Survey: Results from 2011 Business Activities, Table 8', href: 'https://www.kauffman.org/wp-content/uploads/2019/12/kauffmanfirmsurvey2013.pdf', period: 'revenue in 2011, US dollars' }}
+  note="Firms started in 2004 across all industries. Survivors only."
+/>
+
+The picture is a decade-shaped one. Eight years in, about 31.5 percent of the surviving firms reported revenue of 25 thousand dollars or less, including 9.7 percent with none, while 44.8 percent reported more than 100 thousand and 13.2 percent more than a million. The report also says that about 53 percent of the surviving firms had employees by 2011, up from about 41 percent of all firms in 2004. Revenue and hiring came slowly, and the spread between firms was large.
+
+Two cautions apply. The panel covers all industries, not software, and began before the cloud and subscription pricing changed how a software company earns. And it covers survivors in 2011, so it says nothing about the firms that closed. The <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article shows the survival curves that sit behind the first figure.
+
+## Why a slow start is not a verdict
+
+Both datasets point the same way: the first year is rarely the whole story. In the Census series, most filings do not reach payroll within four quarters, and the Bureau also publishes an eight-quarter series for businesses that take longer. In the Kauffman panel, the firms that were still open after seven years had added staff and revenue gradually, and a large share were still small. A founder who reads a slow first year as proof of failure may close a company that was on an ordinary path, and a founder who reads a fast first year as proof of success may overspend.
+
+The better habit is to compare progress with your own plan, not with a headline number. Ask whether this quarter's evidence is stronger than last quarter's: more conversations, more repeat use, more money collected, fewer surprises. That is a measure on the long clock, and it is available to every company regardless of how the industry averages move.
+
+## Building a timing plan from your own evidence
+
+If no public number fits your company, your plan needs its own. A plan that holds up has three parts.
+
+1. **Name the milestones as events, not dates.** First paid pilot, tenth paying customer, first month in which revenue exceeds contractor costs. Each can be observed.
+2. **Attach an assumption and a test to each.** For example, a sales cycle of a certain length, checked by timing the first five real conversations.
+3. **Set a review date for the assumption.** When the evidence differs from the plan, change the plan and the cash forecast together.
+
+| Milestone | What you will observe | Evidence so far | Review date |
+|---|---|---|---|
+| First paid pilot | A signed order and a payment | Your conversations to date | A date you choose |
+| Repeatable sale | The same pitch winning twice | Your sales notes | A date you choose |
+| Costs covered | A month with cash in above cash out | Your bank statements | A date you choose |
+
+The <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> turns cash and burn into runway, and the article on <MaybeLink path="/insights/funding-a-first-saas-from-customer-revenue/">funding a first product from customer revenue</MaybeLink> covers the route where revenue is the main source of cash. The <MaybeLink path="/compare/bootstrapping-vs-outside-funding/">comparison of bootstrapping and outside funding</MaybeLink> sets the two paths side by side.
+
+## Questions for your accountant and your advisers
+
+- When do my first wages create payroll tax obligations, and what must I register before then?
+- How should I treat deposits and prepayments in my break-even month?
+- Which of my costs are fixed for a year and which can be cut quickly?
+- What does a counseling center in my area, such as the ones in the <MaybeLink path="/insights/using-sba-resource-partners-sbdc-score-wbc-and-vboc/">SBA resource partner network</MaybeLink>, offer for a first-year plan?
+
+<SourceNote
+  sources={[
+    { label: 'U.S. Census Bureau, Business Formation Statistics definitions', href: 'https://www.census.gov/econ/bfs/definitions.html', period: 'accessed October 15, 2026' },
+    { label: 'Kauffman Foundation, Kauffman Firm Survey overview', href: 'https://www.kauffman.org/wp-content/uploads/2019/12/kauffmanfirmsurvey2013.pdf', period: 'June 2013' },
+  ]}
+/>
+
+## Reading the two sources together
+
+The federal series and the Kauffman survey answer different questions. The federal series asks how many filings become employer businesses, and it covers the whole country in each year. The survey asks what happened to one group of firms, and it covers a single group of firms over eight years. A founder planning for a long horizon can use both: the first to see that a filing is only a first step, and the second to see that even firms that last take years to reach steady revenue.
+
+## What this article cannot tell you
+
+This article cannot tell you how long it will take your company to earn, hire or break even. The Census series counts applications, not plans, and it does not say whether a filing ever intended to hire. The conversion rates are the author's calculation from the Census monthly series and are not published as a headline figure by the Bureau. The Kauffman panel is more than a decade old, covers every industry, and reports on survivors only. Nothing here predicts what will happen to a particular software company, and nothing describes any company that works with WE.
