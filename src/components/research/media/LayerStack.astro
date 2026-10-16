@@ -1,0 +1,207 @@
+---
+/**
+ * LayerStack (WP-23, #89): layers of control stacked like tiles of a world, the base at the bottom: an SVG of isometric slabs beside an
+ * ordered list that names each layer and the question it answers. The list is the content; the slabs are decoration (aria-hidden).
+ * 2 to 5 layers, listed top first.
+ */
+import { cleanText } from '../../visuals/contracts.ts';
+
+export interface Layer {
+  readonly name: string;
+  /** The question the layer answers, or what it holds. */
+  readonly text: string;
+  /** Small tag, e.g. "Test plan". */
+  readonly tag?: string | undefined;
+}
+
+interface Props {
+  title: string;
+  /** Top layer first. */
+  layers: readonly Layer[];
+  note?: string;
+  headingLevel?: 3 | 4;
+  class?: string;
+}
+
+const { headingLevel = 3, class: className } = Astro.props;
+const title = cleanText('LayerStack', 'title', Astro.props.title);
+const note = Astro.props.note === undefined ? undefined : cleanText('LayerStack', 'note', Astro.props.note);
+if (Astro.props.layers.length < 2 || Astro.props.layers.length > 5) throw new Error(`LayerStack: takes 2 to 5 layers, got ${Astro.props.layers.length}`);
+const layers = Astro.props.layers.map((l, i) => ({
+  name: cleanText('LayerStack', `layer ${i + 1} name`, l.name),
+  text: cleanText('LayerStack', `layer ${i + 1} text`, l.text),
+  tag: l.tag === undefined ? undefined : cleanText('LayerStack', `layer ${i + 1} tag`, l.tag),
+}));
+const H = headingLevel === 3 ? 'h3' : 'h4';
+
+// Isometric slabs, drawn bottom first so upper slabs overlap lower ones.
+const W = 320;
+const SLAB = 34;
+const GAP = 22;
+const n = layers.length;
+const VH = 80 + n * (SLAB + GAP);
+const slab = (i: number) => {
+  // i = 0 is the top layer.
+  const y = 30 + i * (SLAB + GAP);
+  const cx = W / 2;
+  const hw = 130;
+  const hd = 34;
+  const top = `${cx},${y} ${cx + hw},${y + hd} ${cx},${y + 2 * hd} ${cx - hw},${y + hd}`;
+  const left = `${cx - hw},${y + hd} ${cx},${y + 2 * hd} ${cx},${y + 2 * hd + 12} ${cx - hw},${y + hd + 12}`;
+  const right = `${cx + hw},${y + hd} ${cx},${y + 2 * hd} ${cx},${y + 2 * hd + 12} ${cx + hw},${y + hd + 12}`;
+  return { top, left, right, labelY: y + hd + 5 };
+};
+const slabs = layers.map((_, i) => slab(i)).reverse();
+---
+
+<figure class:list={['lstack', className]}>
+  <H class="lstack__title">{title}</H>
+  <div class="lstack__body">
+    <svg class="lstack__art" viewBox={`0 0 ${W} ${VH}`} aria-hidden="true" focusable="false">
+      {
+        slabs.map((s, k) => {
+          const i = n - 1 - k;
+          return (
+            <g class:list={['lstack__slab', `lstack__slab--${i}`, i === 0 && 'lstack__slab--top']}>
+              <polygon points={s.left} class="lstack__side" />
+              <polygon points={s.right} class="lstack__side lstack__side--r" />
+              <polygon points={s.top} class="lstack__face" />
+              <text x={W / 2} y={s.labelY} text-anchor="middle" class="lstack__num">
+                {i + 1}
+              </text>
+            </g>
+          );
+        })
+      }
+    </svg>
+    <ol class="lstack__list" role="list">
+      {
+        layers.map((l, i) => (
+          <li class="lstack__item">
+            <span class="lstack__n" aria-hidden="true">
+              {i + 1}
+            </span>
+            <div>
+              <strong class="lstack__name">{l.name}</strong>
+              {l.tag !== undefined && <span class="lstack__tag">{l.tag}</span>}
+              <p class="lstack__text">{l.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+  {note !== undefined && <figcaption class="lstack__note">{note}</figcaption>}
+</figure>
+
+<style>
+  @layer pages {
+    .lstack {
+      margin: 0;
+      display: grid;
+      gap: var(--sp-4);
+      container-type: inline-size;
+    }
+
+    .lstack__title {
+      margin: 0;
+      font-size: var(--fs-h4);
+    }
+
+    .lstack__body {
+      display: grid;
+      gap: var(--sp-4);
+      align-items: center;
+    }
+
+    @container (min-width: 36rem) {
+      .lstack__body {
+        grid-template-columns: minmax(10rem, 0.8fr) minmax(0, 1.2fr);
+      }
+    }
+
+    .lstack__art {
+      display: block;
+      inline-size: 100%;
+      max-inline-size: 22rem;
+      block-size: auto;
+      margin-inline: auto;
+    }
+
+    .lstack__face {
+      fill: var(--we-tint);
+      stroke: var(--we-blue);
+      stroke-width: 1.5;
+    }
+
+    .lstack__side {
+      fill: var(--we-blue);
+    }
+
+    .lstack__side--r {
+      fill: var(--we-blue-deep);
+    }
+
+    .lstack__slab--top .lstack__face {
+      fill: var(--we-amber-wash);
+      stroke: var(--we-amber-ink);
+    }
+
+    .lstack__num {
+      fill: var(--we-blue-deep);
+      font-family: var(--ff-display);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .lstack__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .lstack__item {
+      display: grid;
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: var(--sp-2);
+      align-items: start;
+    }
+
+    .lstack__n {
+      display: grid;
+      place-items: center;
+      inline-size: 2rem;
+      block-size: 2rem;
+      border-radius: 50%;
+      background: var(--we-blue-deep);
+      color: var(--we-white);
+      font-family: var(--ff-display);
+      font-weight: 700;
+    }
+
+    .lstack__name {
+      font-family: var(--ff-sans);
+    }
+
+    .lstack__tag {
+      margin-inline-start: var(--sp-2);
+      padding: 0 var(--sp-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      font-size: var(--fs-xs);
+    }
+
+    .lstack__text {
+      margin: var(--sp-1) 0 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    .lstack__note {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+  }
+</style>
