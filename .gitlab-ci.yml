@@ -234,11 +234,14 @@ e2e:routes:
     # which has its own job (e2e:stability) and is timing-sensitive when four workers share the runner with a thousand other tests.
     - npx playwright test routes layout.spec folds shell --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
 
-# axe on every route and with the navigation open.
+# axe on every route and with the navigation open, split over three jobs like e2e:routes. As one job it ran past the one-hour job timeout
+# in demo pipeline 69466 (571 tests, all passing, at 15-40 s each on the shared runner), and every wave adds routes. `needs: e2e:a11y`
+# waits for all three shards.
 e2e:a11y:
   extends: [.e2e]
+  parallel: 3
   script:
-    - npx playwright test axe
+    - npx playwright test axe --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
 
 # Mega-menu matrix: desktop, mobile touch, no-js, forced-colors, zoom-200.
 e2e:menu:
