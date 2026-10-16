@@ -128,10 +128,7 @@ test('the 18 pinned original articles are not in the improved list', () => {
 // The sources file
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-const sources = JSON.parse(readFileSync(join(root, '.astro-magazine/sources/wp-38.json'), 'utf8')) as SourcesFile & {
-  supplementaryFetches: { id: string; url: string }[];
-  supplementaryDocuments: { path: string }[];
-};
+const sources = JSON.parse(readFileSync(join(root, '.astro-magazine/sources/wp-38.json'), 'utf8')) as SourcesFile;
 
 test('the sources file lists every new article and passes the ledger rules', () => {
   const listed = new Set((sources.documents ?? []).map((d) => d.path));
@@ -142,14 +139,14 @@ test('the sources file lists every new article and passes the ledger rules', () 
   assert.deepEqual(checkSourcesFile(sources, facts), []);
 });
 
-test('every recorded fetch is on the host allowlist; hosts that are not are kept apart and flagged', () => {
+test('every recorded fetch is on the host allowlist, Carta and Kauffman included', () => {
   for (const f of sources.fetches) assert.notEqual(classifyHost(f.url), 'unlisted', f.url);
-  assert.ok(sources.supplementaryFetches.length >= 4);
-  for (const f of sources.supplementaryFetches) assert.equal(classifyHost(f.url), 'unlisted', `${f.url} is allowlisted and belongs in fetches`);
+  assert.ok(sources.fetches.some((f) => f.url.includes('carta.com')));
+  assert.ok(sources.fetches.some((f) => f.url.includes('kauffman.org')));
 });
 
-test('every article source URL is either a recorded fetch or a recorded supplementary fetch', () => {
-  const known = new Set([...sources.fetches.map((f) => f.url), ...sources.supplementaryFetches.map((f) => f.url)]);
+test('every article source URL is a recorded fetch', () => {
+  const known = new Set(sources.fetches.map((f) => f.url));
   for (const slug of NEW_ARTICLES) {
     const facts = documentFactsOf(pathOf(slug), read(slug));
     assert.ok(facts, slug);

@@ -1,6 +1,6 @@
 {
   "wp": "WP-38",
-  "note": "Sources for the wave 10 insights articles. fetchedAt times are nominal (noon UTC); the fetch date, 2026-10-15, is exact. supplementaryFetches and supplementaryDocuments record sources on hosts that are not on the OP-HOSTS allowlist (carta.com, kauffman.org) and are cited in prose with links; they are not checked by the ledger test and await an allowlist decision.",
+  "note": "Sources for the wave 10 insights articles. fetchedAt times are nominal (noon UTC); the fetch date, 2026-10-15, is exact.",
   "fetches": [
     {
       "id": "bls-survival-all",
@@ -190,6 +190,42 @@
       "fetchedAt": "2026-10-15T12:00:00Z",
       "status": 200,
       "tool": "curl"
+    },
+    {
+      "id": "carta-series-a-q2-2025",
+      "url": "https://carta.com/data/series-a-fundraising-q2-2025/",
+      "title": "Series A Fundraising Q2 2025",
+      "publisher": "Carta",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "carta-spm-q2-2025",
+      "url": "https://carta.com/data/state-of-private-markets-q2-2025/",
+      "title": "State of Private Markets, Q2 2025",
+      "publisher": "Carta",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "carta-spm-q4-2024",
+      "url": "https://carta.com/data/state-of-private-markets-q4-2024/",
+      "title": "State of Private Markets, Q4 and 2024 in review",
+      "publisher": "Carta",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "kauffman-kfs-2013",
+      "url": "https://www.kauffman.org/wp-content/uploads/2019/12/kauffmanfirmsurvey2013.pdf",
+      "title": "The Kauffman Firm Survey, 2013 overview",
+      "publisher": "Ewing Marion Kauffman Foundation",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
     }
   ],
   "documents": [
@@ -363,6 +399,11 @@
           "locator": "Phase II section, Time Frame",
           "quote": "Time Frame: 24 months",
           "id": "bootstrapping-versus-rai-04"
+        },
+        {
+          "sentence": "In 2011, 75.5 percent of Kauffman Firm Survey firms reported no new equity and 57.3 percent no new debt; less than 6 percent invested more than 25,000 US dollars in equity.",
+          "sourceId": "kauffman-kfs-2013",
+          "quote": "Less than 6 percent of firms invested more than $25,000 in equity capital in 2011"
         }
       ]
     },
@@ -390,6 +431,10 @@
           "sourceId": "bls-survival-all",
           "locator": "Table 7, year ended March 2015",
           "id": "from-first-filing-to-fir-03"
+        },
+        {
+          "sentence": "The Kauffman Firm Survey followed 4,928 businesses founded in 2004; 44.6 percent survived to the end of 2011; 2011 revenue distribution of survivors.",
+          "sourceId": "kauffman-kfs-2013"
         }
       ]
     },
@@ -489,7 +534,7 @@
           "kind": "statistic",
           "sourceId": "census-abs-2025",
           "locator": "Release text, 2024 ABS, reference year 2023",
-          "quote": "there were approximately 5.9 million U.S. employer firms — 1.4 million (22.9%) were owned by women and 261,000 (4.4%) by veterans",
+          "quote": "there were approximately 5.9 million U.S. employer firms \u2014 1.4 million (22.9%) were owned by women and 261,000 (4.4%) by veterans",
           "id": "women-and-immigrant-foun-01"
         },
         {
@@ -705,54 +750,6 @@
     },
     {
       "path": "src/content/insights/funding/the-time-between-funding-rounds-what-carta-data-reports.mdx",
-      "claims": []
-    }
-  ],
-  "supplementaryFetches": [
-    {
-      "id": "carta-series-a-q2-2025",
-      "url": "https://carta.com/data/series-a-fundraising-q2-2025/",
-      "title": "Series A Fundraising Q2 2025",
-      "publisher": "Carta",
-      "fetchedAt": "2026-10-15T12:00:00Z",
-      "status": 200,
-      "tool": "curl",
-      "note": "Host not on the OP-HOSTS allowlist; cited in prose and chart source notes only, with links. Awaiting an allowlist decision."
-    },
-    {
-      "id": "carta-spm-q2-2025",
-      "url": "https://carta.com/data/state-of-private-markets-q2-2025/",
-      "title": "State of Private Markets, Q2 2025",
-      "publisher": "Carta",
-      "fetchedAt": "2026-10-15T12:00:00Z",
-      "status": 200,
-      "tool": "curl",
-      "note": "Host not on the OP-HOSTS allowlist; cited in prose and chart source notes only, with links. Awaiting an allowlist decision."
-    },
-    {
-      "id": "carta-spm-q4-2024",
-      "url": "https://carta.com/data/state-of-private-markets-q4-2024/",
-      "title": "State of Private Markets, Q4 and 2024 in review",
-      "publisher": "Carta",
-      "fetchedAt": "2026-10-15T12:00:00Z",
-      "status": 200,
-      "tool": "curl",
-      "note": "Host not on the OP-HOSTS allowlist; cited in prose and chart source notes only, with links. Awaiting an allowlist decision."
-    },
-    {
-      "id": "kauffman-kfs-2013",
-      "url": "https://www.kauffman.org/wp-content/uploads/2019/12/kauffmanfirmsurvey2013.pdf",
-      "title": "The Kauffman Firm Survey, 2013 overview",
-      "publisher": "Ewing Marion Kauffman Foundation",
-      "fetchedAt": "2026-10-15T12:00:00Z",
-      "status": 200,
-      "tool": "curl",
-      "note": "Host not on the OP-HOSTS allowlist; cited in prose and chart source notes only, with links. Awaiting an allowlist decision."
-    }
-  ],
-  "supplementaryDocuments": [
-    {
-      "path": "src/content/insights/funding/the-time-between-funding-rounds-what-carta-data-reports.mdx",
       "claims": [
         {
           "sentence": "The median interval between a seed round and a Series A reached 616 days in Q2 2025.",
@@ -775,29 +772,6 @@
           "quote": "waited 790 days since their previous round"
         }
       ]
-    },
-    {
-      "path": "src/content/insights/funding/bootstrapping-versus-raising-over-a-ten-year-horizon.mdx",
-      "claims": [
-        {
-          "sentence": "In 2011, 75.5 percent of Kauffman Firm Survey firms reported no new equity and 57.3 percent no new debt; less than 6 percent invested more than 25,000 US dollars in equity.",
-          "sourceId": "kauffman-kfs-2013",
-          "quote": "Less than 6 percent of firms invested more than $25,000 in equity capital in 2011"
-        }
-      ]
-    },
-    {
-      "path": "src/content/insights/starting/from-first-filing-to-first-payroll-what-the-timing-data-says.mdx",
-      "claims": [
-        {
-          "sentence": "The Kauffman Firm Survey followed 4,928 businesses founded in 2004; 44.6 percent survived to the end of 2011; 2011 revenue distribution of survivors.",
-          "sourceId": "kauffman-kfs-2013"
-        }
-      ]
-    },
-    {
-      "path": "src/content/insights/pathways/choosing-a-startup-program-that-fits-a-decision-guide.mdx",
-      "claims": []
     }
   ]
 }
