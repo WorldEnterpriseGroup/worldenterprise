@@ -15,9 +15,6 @@ import HubLead from '../../components/hubs/HubLead.astro';
 import HubMoment from '../../components/hubs/HubMoment.astro';
 import { JOURNEY_CLOCK } from '../../components/hubs/stats.ts';
 import LongHorizonTimeline from '../../components/visuals/LongHorizonTimeline.astro';
-// The timeline places its ticks and glyphs with the shared position classes, which it does not import itself; pages without a scene
-// must load them, or every mark collapses to the left edge.
-import '../../components/visuals/positions.css';
 import BarChart from '../../components/visuals/charts/BarChart.astro';
 import { roundAgeBars } from '../../data/datasets/figures.ts';
 import { getRenderable } from '../../lib/content.ts';
