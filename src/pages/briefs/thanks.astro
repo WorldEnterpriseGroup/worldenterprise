@@ -2,39 +2,201 @@
 import { getEntry, render } from 'astro:content';
 import { THANKS_COPY } from '../../components/briefs/copy.ts';
 import AsideStyles from '../../components/forms/AsideStyles.astro';
+import Steps from '../../components/ui/Steps.astro';
+import HexField from '../../components/visuals/illustrations/HexField.astro';
+import VisualIcon from '../../components/visuals/VisualIcon.astro';
+import type { ProgramIcon } from '../../components/visuals/icons.ts';
 import FormLayout from '../../layouts/FormLayout.astro';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
-// The page reads nothing from the query string: it never learns which brief was requested, so no title can be injected into it.
+/**
+ * The brief request confirmation (WP-63, made media-rich by WP-25). It reads nothing from the query string: it never learns which brief
+ * was requested, so no title or address can be injected into it. It carries no call-to-action band (D-24: no CTA on a thanks page);
+ * the onward links are reading, not a sales ask. The brief forms stay disabled until the CEO decides the endpoint and the privacy
+ * notice (documents/forms-go-live-checklist.md), so this page is reachable today only by its address.
+ */
 const entry = await getEntry('pages', 'briefs/thanks');
 if (!entry) throw new Error('Missing content entry pages/briefs/thanks (src/content/pages/briefs/thanks.md).');
 const { Content } = await render(entry);
 const { data } = entry;
+
+interface OnwardLink {
+  readonly path: string;
+  readonly title: string;
+  readonly line: string;
+  readonly icon: ProgramIcon;
+}
+
 // Every link is checked against the live routes, so a page that has not shipped is skipped and no link is dead.
 const state = await getRouteState();
-const links = [
+const live = <T extends { readonly path: string }>(links: readonly T[]): T[] => links.filter((link) => state.isLive(link.path));
+
+const NEXT_STEPS = [
+  { title: 'WE receives the request', body: 'The request reaches WE with the brief you chose and the address you gave.' },
+  { title: 'The brief arrives by email', body: 'WE sends the brief to that address. If nothing arrives, check your spam folder.' },
+  { title: 'Read on while you wait', body: 'The pages linked below are open to read now, with no form in front of them.' },
+] as const;
+
+const READ_LINKS = live<OnwardLink>([
+  { path: '/insights/', title: 'Insights', line: 'Practical, sourced articles on validating, building and growing a company.', icon: 'report' },
+  { path: '/data/', title: 'Data and charts', line: 'Public data on how long a business takes, with the source behind every chart.', icon: 'data' },
+]);
+
+const ECOSYSTEM_LINKS = live<OnwardLink>([
+  { path: '/ecosystem/', title: 'The wider ecosystem', line: 'Programs, spaces and founder communities outside WE that founders can join.', icon: 'globe' },
+  { path: '/sbir-sttr/', title: 'SBIR and STTR', line: 'The federal research funding programs: the phases, the agencies and how to prepare.', icon: 'gate' },
+]);
+
+const ASIDE_LINKS = live([
   { path: '/briefs/', label: THANKS_COPY.moreBriefs },
   { path: '/journey/after-you-apply/', label: THANKS_COPY.afterApply },
   { path: '/apply/', label: THANKS_COPY.apply },
   { path: '/contact/', label: THANKS_COPY.contact },
-].filter((link) => state.isLive(link.path));
+]);
 ---
 
 <FormLayout
   title={data.title}
   description={data.description}
   eyebrow={data.eyebrow}
+  lead="The brief comes by email. Here is what happens next, and where to read in the meantime."
   path="/briefs/thanks/"
   updated={data.updated}
   draft={data.draft}
+  art={{ variant: 'trail', count: 3, active: 1 }}
 >
   <div class="prose"><Content /></div>
+
+  <section class="thanks-next stack" aria-labelledby="thanks-next-title">
+    <h2 id="thanks-next-title">What happens next</h2>
+    <Steps headingLevel={3} steps={NEXT_STEPS} />
+  </section>
+
+  {
+    (READ_LINKS.length > 0 || ECOSYSTEM_LINKS.length > 0) && (
+      <section class="thanks-onward" aria-labelledby="thanks-onward-title">
+        <HexField edge="right" density={0.45} seed={25} aspect={2.4} class="thanks-onward__field" />
+        <div class="thanks-onward__inner stack">
+          <h2 id="thanks-onward-title">While the brief is on its way</h2>
+          {READ_LINKS.length > 0 && (
+            <ul class="thanks-links" role="list" aria-label="Read on this site">
+              {READ_LINKS.map((link) => (
+                <li class="thanks-link">
+                  <VisualIcon name={link.icon} size={48} />
+                  <div class="thanks-link__text">
+                    <a class="thanks-link__title" href={href(link.path)}>
+                      {link.title}
+                    </a>
+                    <p>{link.line}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+          {ECOSYSTEM_LINKS.length > 0 && (
+            <div class="thanks-ecosystem stack" data-context="ecosystem">
+              <h3 class="thanks-ecosystem__title">Beyond WE</h3>
+              <ul class="thanks-links" role="list" aria-label="Outside programs to explore">
+                {ECOSYSTEM_LINKS.map((link) => (
+                  <li class="thanks-link">
+                    <VisualIcon name={link.icon} size={48} />
+                    <div class="thanks-link__text">
+                      <a class="thanks-link__title" href={href(link.path)}>
+                        {link.title}
+                      </a>
+                      <p>{link.line}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <p class="thanks-ecosystem__note">Independent programs WE encourages founders to consider; no affiliation implied. Join them. WE works alongside, for the long run.</p>
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+
   <Fragment slot="aside">
     <AsideStyles />
     <h2 class="aside-title">{THANKS_COPY.asideHeading}</h2>
     <ul class="stack" role="list">
-      {links.map((link) => <li><a href={href(link.path)}>{link.label}</a></li>)}
+      {ASIDE_LINKS.map((link) => <li><a href={href(link.path)}>{link.label}</a></li>)}
     </ul>
   </Fragment>
 </FormLayout>
+
+<style>
+  @layer pages {
+    .thanks-next {
+      margin-block-start: var(--sp-7);
+    }
+
+    .thanks-onward {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      margin-block-start: var(--sp-7);
+      padding: var(--sp-6) var(--sp-5);
+      border: var(--border-hair);
+      border-radius: var(--radius-lg);
+      background: var(--tint-blue);
+    }
+
+    .thanks-onward__inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .thanks-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      gap: var(--sp-4);
+      padding: 0;
+      list-style: none;
+    }
+
+    .thanks-link {
+      display: flex;
+      gap: var(--sp-3);
+      align-items: flex-start;
+      padding: var(--sp-4);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .thanks-link__text {
+      display: grid;
+      gap: var(--sp-1);
+      min-inline-size: 0;
+    }
+
+    .thanks-link__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-lg);
+      font-weight: 600;
+    }
+
+    .thanks-link p {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .thanks-ecosystem {
+      padding-block-start: var(--sp-5);
+      border-block-start: var(--border-hair);
+    }
+
+    .thanks-ecosystem__title {
+      font-size: var(--fs-h4);
+    }
+
+    .thanks-ecosystem__note {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+  }
+</style>
