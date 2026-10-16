@@ -1,0 +1,139 @@
+---
+/** The infographic band of /ecosystem/ (WP-33): bar rows counted from the directory's own data, never an outside figure. */
+import { AUDIENCE_LABELS, STAGE_LABELS } from '../../data/ecosystem/copy.ts';
+import { ALL_ENTRIES, CATEGORIES, countByAudience, countByCategory, countByStage, countRemoteFriendly } from '../../data/ecosystem/index.ts';
+import { AUDIENCE_IDS, STAGE_IDS } from '../../data/ecosystem/types.ts';
+
+const total = ALL_ENTRIES.length;
+const byCategory = countByCategory();
+const groups = [
+  {
+    id: 'kind',
+    title: 'By kind of program',
+    rows: CATEGORIES.map((c) => ({ label: c.short, n: byCategory[c.id] })),
+  },
+  {
+    id: 'stage',
+    title: 'By stage of company',
+    rows: STAGE_IDS.map((s) => ({ label: STAGE_LABELS[s], n: countByStage(s) })),
+  },
+  {
+    id: 'group',
+    title: 'Built for particular founders',
+    rows: AUDIENCE_IDS.filter((a) => a !== 'any').map((a) => ({ label: AUDIENCE_LABELS[a], n: countByAudience(a) })),
+  },
+];
+const remote = countRemoteFriendly();
+const pct = (n: number, of: number): number => Math.round((n / of) * 100);
+---
+
+<div class="eco-stats">
+  <ul class="eco-stats__tiles">
+    <li><strong>{total}</strong><span>verified programs</span></li>
+    <li><strong>{CATEGORIES.length}</strong><span>kinds of program</span></li>
+    <li><strong>{remote}</strong><span>with an online option</span></li>
+  </ul>
+  <div class="eco-stats__groups">
+    {
+      groups.map((g) => (
+        <section class="eco-stats__group" aria-labelledby={`eco-stats-${g.id}`}>
+          <h3 id={`eco-stats-${g.id}`}>{g.title}</h3>
+          <ul class="eco-stats__bars">
+            {g.rows.map((r) => (
+              <li>
+                <span class="eco-stats__label">{r.label}</span>
+                <span class="eco-stats__track" aria-hidden="true">
+                  <svg viewBox="0 0 100 8" preserveAspectRatio="none">
+                    <rect class="eco-stats__fill" x="0" y="0" width={Math.max(pct(r.n, total), 2)} height="8" rx="2" />
+                  </svg>
+                </span>
+                <span class="eco-stats__n">{r.n}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  @layer pages {
+    .eco-stats {
+      display: grid;
+      gap: var(--sp-6);
+    }
+
+    .eco-stats__tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .eco-stats__tiles li {
+      display: grid;
+      gap: var(--sp-1);
+      padding: var(--sp-4) var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    .eco-stats__tiles strong {
+      font-size: var(--fs-h2);
+      line-height: 1;
+      color: var(--color-highlight-ink);
+    }
+
+    .eco-stats__groups {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+      gap: var(--sp-6);
+    }
+
+    .eco-stats__group h3 {
+      margin-block: 0 var(--sp-3);
+      font-size: var(--fs-h4);
+    }
+
+    .eco-stats__bars {
+      display: grid;
+      gap: var(--sp-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .eco-stats__bars li {
+      display: grid;
+      grid-template-columns: minmax(8rem, 12rem) 1fr 2rem;
+      align-items: center;
+      gap: var(--sp-3);
+      font-size: var(--fs-sm);
+    }
+
+    .eco-stats__track svg {
+      display: block;
+      inline-size: 100%;
+      block-size: 0.75rem;
+    }
+
+    .eco-stats__fill {
+      fill: var(--color-highlight-ink);
+    }
+
+    .eco-stats__n {
+      text-align: end;
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+    }
+
+    @media (forced-colors: active) {
+      .eco-stats__fill {
+        fill: CanvasText;
+      }
+    }
+  }
+</style>
