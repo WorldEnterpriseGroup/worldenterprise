@@ -94,12 +94,14 @@ const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...
           {state.isLive('/who-we-work-with/') && <p><a href={href('/who-we-work-with/')}>Read who WE works with, situation by situation</a>.</p>}
         </div>
         <div class="split__media">
-          <OrbitSystem
-            bodies={worlds}
-            labelsName="Seven founder situations"
-            alt="A sun of blue hexagonal tiles with seven smaller hex-faceted worlds on one orbit ring, one for each founder situation."
-            caption="Seven situations around one company: where a founder comes from shapes where the work starts."
-          />
+          <HubMoment id="hub-founders-situations" kind="scene">
+            <OrbitSystem
+              bodies={worlds}
+              labelsName="Seven founder situations"
+              alt="A sun of blue hexagonal tiles with seven smaller hex-faceted worlds on one orbit ring, one for each founder situation."
+              caption="Seven situations around one company: where a founder comes from shapes where the work starts."
+            />
+          </HubMoment>
         </div>
       </div>
     </Band>

@@ -12,6 +12,7 @@ import CtaLadder from '../../../components/families/visual/CtaLadder.astro';
 import EmblemFrame from '../../../components/families/visual/EmblemFrame.astro';
 import DeskConstellation from '../../../components/hubs/DeskConstellation.astro';
 import DotStrip from '../../../components/hubs/DotStrip.astro';
+import HubEcosystem from '../../../components/hubs/HubEcosystem.astro';
 import { getRouteState } from '../../../lib/route-state.ts';
 
 // A desk gets a topic page once it holds an article (route-core.ts DESK_TOPIC_PATTERN): a desk nobody has written for has no page.
@@ -97,6 +98,7 @@ const readingMax = Math.ceil(Math.max(10, ...minutes.map((m) => m.value)) / 5) *
       <p class="muted">Articles for this desk are being edited and will appear here when they are ready.</p>
     )
   }
+  <HubEcosystem id="topic-ecosystem" />
   <CtaLadder slot="cta-end" />
 </ArticleHub>
 

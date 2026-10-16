@@ -35,49 +35,64 @@ export const HUB_MOMENTS: Readonly<Record<string, HubInventory>> = {
     moments: ['hub-insights-sky', 'hub-insights-clock', 'hub-insights-desks', 'hub-insights-reading'],
     interaction: 'Desk filter: radio buttons that show one desk at a time, with no script.',
   },
+  '/insights/topic/': {
+    files: ['src/pages/insights/topic/[topic].astro'],
+    moments: ['hub-topic-sky', 'hub-topic-reading'],
+    interaction: 'The desk legend: this desk is lit and every other desk opens its own page.',
+  },
   '/tools/': {
-    files: ['src/pages/tools/index.astro', 'src/components/tools/ToolCard.astro'],
+    files: ['src/pages/tools/index.astro', 'src/components/tools/ToolMap.astro'],
     moments: ['hub-tools-map', 'hub-tools-cards'],
     interaction: 'Verb filter: calculate, check, prepare or sketch.',
   },
   '/library/': {
-    files: ['src/pages/library/index.astro'],
+    files: ['src/pages/library/index.astro', 'src/components/library/ShelfDiagram.astro', 'src/components/library/DocAnatomy.astro'],
     moments: ['hub-library-shelf', 'hub-library-anatomy', 'hub-library-cards'],
     interaction: 'Kind filter: templates, checklists, worksheets or guides.',
   },
   '/resources/': {
     files: ['src/pages/resources/index.astro'],
     moments: ['hub-resources-matrix', 'hub-resources-formation'],
-    interaction: 'Stage filter over the lists by stage.',
+    interaction: 'Stage filter over the lists by stage; every matrix header jumps to its list.',
   },
   '/industries/': {
     files: ['src/pages/industries/[...hub].astro'],
     moments: ['hub-industries-orbit', 'hub-industries-survival', 'hub-industries-swarm'],
-    interaction: 'The orbit labels: hover or focus a world to light it; arrow keys step between them.',
+    interaction: 'The orbit labels: each world is a link to its industry page.',
   },
   '/compare/': {
-    files: ['src/pages/compare/[...hub].astro'],
+    files: ['src/pages/compare/[...hub].astro', 'src/components/hubs/HorizonCompare.astro'],
     moments: ['hub-compare-horizon', 'hub-compare-odds'],
     interaction: 'The horizon figure opens its data table; each card opens one comparison.',
   },
   '/journey/': {
     files: ['src/pages/journey/[...hub].astro'],
     moments: ['hub-journey-clock', 'hub-journey-rounds'],
-    interaction: 'The step list: each step opens its own page; the timeline opens its sources.',
+    interaction: 'The timeline links each gate to its source; the step list opens each step.',
   },
   '/founders/': {
     files: ['src/pages/founders/index.astro'],
-    moments: ['hub-founders-age', 'hub-founders-figures'],
+    moments: ['hub-founders-age', 'hub-founders-figures', 'hub-founders-situations'],
     interaction: 'The founder-age scatter opens its data table; the orbit labels light each situation.',
   },
   '/investors/': {
     files: ['src/pages/investors/index.astro'],
-    moments: ['hub-investors-dilution', 'hub-investors-gaps', 'hub-investors-figures'],
+    moments: ['hub-investors-gaps', 'hub-investors-dilution', 'hub-investors-figures'],
     interaction: 'Each chart opens its data table.',
   },
   '/faq/': {
     files: ['src/pages/faq/index.astro'],
     moments: ['hub-faq-map', 'hub-faq-figures'],
-    interaction: 'The question map: each cell jumps to its set of questions.',
+    interaction: 'The question map: every topic in its legend jumps to its questions.',
   },
 };
+
+/** The tool pages that draw their schematic (`hub-tool-<slug>`) above the tool itself. */
+export const TOOL_SCHEMATIC_PAGES = [
+  'src/pages/tools/runway-calculator.astro',
+  'src/pages/tools/metrics-calculator.astro',
+  'src/pages/tools/cap-table-explainer.astro',
+  'src/pages/tools/evidence-room.astro',
+  'src/pages/tools/pricing-page-checker.astro',
+  'src/pages/tools/team-composer.astro',
+] as const;
