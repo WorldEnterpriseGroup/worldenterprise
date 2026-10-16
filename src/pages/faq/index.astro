@@ -65,6 +65,9 @@ const mapRows = sections.map((section) => ({
       />
     )
   }
+  <HubMoment id="hub-faq-figures" kind="stats" heading="Why the answers talk about years" headingLevel={2} lead="Incubation is measured in years, because that is how long a company takes to become established.">
+    <StatTiles stats={[tile('ST-10'), tile('ST-02')]} label="The long horizon" id="faq-figures" />
+  </HubMoment>
   {
     jump.length > 1 && (
       <nav class="faq-jump" aria-label="Jump to a set of questions">
@@ -108,9 +111,6 @@ const mapRows = sections.map((section) => ({
       ))
     }
   </div>
-  <HubMoment id="hub-faq-figures" kind="stats" heading="Why the answers talk about years" headingLevel={2} lead="Incubation is measured in years, because that is how long a company takes to become established.">
-    <StatTiles stats={[tile('ST-10'), tile('ST-02')]} label="The long horizon" id="faq-figures" />
-  </HubMoment>
   <HubEcosystem id="faq-ecosystem" />
   {
     (canApply || canContact) && (
