@@ -1,0 +1,253 @@
+---
+/**
+ * /sbir-sttr/prepare/ (WP-34, #83): how to get ready. The long, patient timeline from first registration to Phase III, the four
+ * registrations, an eligibility checklist and a readiness checklist (an island that only counts ticks), and the independent help a
+ * founder can use. Complete without JavaScript.
+ */
+import PatientTimeline from '../../../components/sbir/PatientTimeline.astro';
+import ReadinessChecklist from '../../../components/sbir/ReadinessChecklist.astro';
+import SbirBand from '../../../components/sbir/SbirBand.astro';
+import SbirClose from '../../../components/sbir/SbirClose.astro';
+import SbirSources from '../../../components/sbir/SbirSources.astro';
+import StatusPanel from '../../../components/sbir/StatusPanel.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { isLiveOnDisk } from '../../../data/cta/live.ts';
+import { HELP_PROGRAMS, INDEPENDENT_NOTICE } from '../../../data/sbir/help.ts';
+import { ELIGIBILITY, FIRST_AWARD_MONTH, LANES, MEDIAN_GAP_MONTHS, PHASE2_START_MONTH, READINESS, REGISTRATION_STEPS } from '../../../data/sbir/prepare.ts';
+import { sbirSource, sourceAnchor } from '../../../data/sbir/sources.ts';
+import type { SbirSourceId } from '../../../data/sbir/sources.ts';
+import { href } from '../../../lib/url.ts';
+
+const path = '/sbir-sttr/prepare/';
+const ecosystemLive = isLiveOnDisk('/ecosystem/');
+const ids: readonly SbirSourceId[] = [
+  ...new Set<SbirSourceId>([
+    'sba-release-26-43',
+    'sbir-apply',
+    'sbir-about',
+    'sbir-agencies',
+    'sbir-policy-directive',
+    'sbir-award-data',
+    'sam-checklist',
+    'nasa-sbir',
+    'nsf-seed-fund',
+    ...LANES.flatMap((l) => l.sources),
+    ...REGISTRATION_STEPS.flatMap((s) => s.sources),
+    ...ELIGIBILITY.flatMap((c) => c.sources),
+    ...READINESS.flatMap((c) => c.sources),
+    ...HELP_PROGRAMS.flatMap((h) => h.sources),
+  ]),
+];
+---
+
+<MarketingLayout
+  title="How to prepare for SBIR and STTR"
+  seoTitle="Prepare for SBIR and STTR"
+  description="The registrations to start early, an eligibility checklist, a readiness checklist and the long timeline from first registration to Phase III, with independent programs that help founders prepare."
+  lead="The proposal is the short part. The registrations take weeks, the review takes months, and the gap between phases is longer still. Founders who plan for all of it do best."
+  eyebrow="America’s seed fund"
+  path={path}
+  ogSlot="og-program"
+>
+  <StatusPanel compact />
+
+  <Fragment slot="after">
+    <SbirBand
+      id="timeline"
+      tone="deep"
+      title="The long, patient timeline"
+      lead="Five years from a first registration to a business that sells, drawn month by month."
+    >
+      <p>
+        The bars are a planning picture, not a promise. They assume a first award about {FIRST_AWARD_MONTH} months after the first registration, and a Phase II
+        award about {Math.round(MEDIAN_GAP_MONTHS)} months after that, the median wait in the award data. Phase II starts around month {PHASE2_START_MONTH}.
+        Your own dates will differ with the agency and its solicitation calendar.
+      </p>
+      <PatientTimeline />
+    </SbirBand>
+
+    <SbirBand id="registrations" tone="plain" title="Four registrations to start early" lead="None of them is hard. All of them take longer than people expect.">
+      <ol class="sbir-steps">
+        {
+          REGISTRATION_STEPS.map((s) => (
+            <li class="sbir-step" id={`step-${s.id}`}>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+              <p class="sbir-step__cite">
+                {s.sources.map((id, i) => (
+                  <>
+                    {i > 0 && ', '}
+                    <a href={sourceAnchor(id)}>{sbirSource(id).short}</a>
+                  </>
+                ))}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </SbirBand>
+
+    <SbirBand
+      id="eligibility"
+      tone="soft"
+      title="Are we eligible?"
+      lead="Tick what is true today. The list is a guide; the agency’s solicitation is the rule."
+    >
+      <p>
+        Your ticks stay in this page’s address, so you can bookmark or share the page as you left it. Nothing is stored or sent anywhere.
+      </p>
+      <Fragment slot="media">
+        <ReadinessChecklist items={ELIGIBILITY} name="eligible" legend="Eligibility for SBIR and STTR" />
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="readiness"
+      tone="blue"
+      title="Are we ready to write?"
+      lead="Eligible is not the same as ready. These are the questions that decide whether a first proposal is worth the months it takes."
+      mediaFirst
+    >
+      <p>
+        If several boxes stay empty, that is useful to know in October and not in the week of a deadline. WE can walk through the list with you
+        in a readiness review.
+      </p>
+      <Fragment slot="media">
+        <ReadinessChecklist items={READINESS} name="ready" legend="Readiness for a first SBIR or STTR proposal" />
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="help"
+      tone="sand"
+      title="Help around you"
+      lead="Several independent programs exist to help a founder prepare."
+    >
+      <p class="sbir-notice">{INDEPENDENT_NOTICE}</p>
+      <ul class="sbir-help">
+        {
+          HELP_PROGRAMS.map((h) => (
+            <li class="sbir-help__item" id={`help-${h.id}`}>
+              <h3>{h.name}</h3>
+              <p class="sbir-help__by">Run by {h.runBy}</p>
+              <p>{h.body}</p>
+              <p class="sbir-help__links">
+                <a href={h.url} rel="noopener">Visit the program’s page</a>
+                <span>
+                  {h.sources.map((id, i) => (
+                    <>
+                      {i > 0 && ', '}
+                      <a href={sourceAnchor(id)}>{sbirSource(id).short}</a>
+                    </>
+                  ))}
+                </span>
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        ecosystemLive && (
+          <p>
+            <a href={href('/ecosystem/')}>Browse the wider ecosystem of programs</a>
+          </p>
+        )
+      }
+    </SbirBand>
+
+    <SbirClose id="prepare-close" />
+
+    <section class="section sbir-sources" aria-label="Sources for this page">
+      <div class="container">
+        <SbirSources ids={ids} />
+        <p class="sbir-note">
+          Always check <a href="https://www.sbir.gov/">sbir.gov</a> for the latest. Registration steps and portals change.
+        </p>
+      </div>
+    </section>
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    .sbir-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .sbir-step {
+      display: grid;
+      gap: var(--sp-2);
+      align-content: start;
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      counter-increment: step;
+    }
+
+    .sbir-step > * {
+      margin: 0;
+    }
+
+    .sbir-step h3::before {
+      content: counter(step) '. ';
+    }
+
+    .sbir-step__cite,
+    .sbir-help__by,
+    .sbir-help__links span {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .sbir-notice {
+      padding: var(--sp-4);
+      border-inline-start: 4px solid var(--color-link);
+      background: var(--color-bg);
+      font-weight: 600;
+    }
+
+    .sbir-help {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sbir-help__item {
+      display: grid;
+      gap: var(--sp-2);
+      align-content: start;
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .sbir-help__item > * {
+      margin: 0;
+    }
+
+    .sbir-help__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2) var(--sp-4);
+      font-size: var(--fs-sm);
+    }
+
+    .sbir-sources {
+      padding-block: var(--sp-7);
+    }
+
+    .sbir-note {
+      margin-block-start: var(--sp-4);
+    }
+  }
+</style>

@@ -308,6 +308,9 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     // END WP-33 ecosystem block
     // BEGIN WP-34 sbir-sttr block
     row('/sbir-sttr/', 'MarketingLayout', 'WP-34'),
+    row('/sbir-sttr/phases/', 'MarketingLayout', 'WP-34'),
+    row('/sbir-sttr/agencies/', 'MarketingLayout', 'WP-34'),
+    row('/sbir-sttr/prepare/', 'MarketingLayout', 'WP-34'),
     // END WP-34 sbir-sttr block
     // BEGIN WP-35 data block
     row('/data/', 'HubLayout', 'WP-35'),

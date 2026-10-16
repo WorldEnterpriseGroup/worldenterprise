@@ -1,0 +1,247 @@
+---
+/**
+ * The long, patient timeline of /sbir-sttr/prepare/ (WP-34): eight lanes on a 60-month axis, from first registration to Phase III. An SVG
+ * image with a title and a description on containers 48rem and wider, and the same lanes as a numbered list below that. Colors never carry
+ * meaning alone: each lane is named, and its kind (prepare, wait, funded, market) is in the list text.
+ */
+import { LANES, PHASE2_START_MONTH, TIMELINE_MONTHS } from '../../data/sbir/prepare.ts';
+import type { Lane } from '../../data/sbir/prepare.ts';
+import { linear } from '../../data/sales/geometry.ts';
+
+interface Props {
+  lanes?: readonly Lane[];
+  title?: string;
+}
+
+const {
+  lanes = LANES,
+  title = 'From first registration to Phase III, month by month',
+} = Astro.props;
+
+const W = 1000;
+const left = 250;
+const right = 24;
+const top = 44;
+const laneH = 52;
+const H = top + lanes.length * laneH + 28;
+const sx = linear({ min: 0, max: TIMELINE_MONTHS }, left, W - right);
+const KIND_WORD: Readonly<Record<Lane['kind'], string>> = { prepare: 'Preparing', wait: 'Waiting', funded: 'Funded work', market: 'In the market' };
+
+const bars = lanes.map((l, i) => ({
+  ...l,
+  y: top + i * laneH + 10,
+  x: sx(l.from),
+  width: Math.max(6, sx(l.to) - sx(l.from)),
+  cy: top + i * laneH + 10 + 16,
+  kindWord: KIND_WORD[l.kind],
+}));
+const yearTicks = [0, 12, 24, 36, 48, 60].map((m) => ({ m, x: sx(m) }));
+const desc = `Eight steps on a sixty-month axis. ${lanes
+  .map((l) => `${l.label}: month ${l.from} to month ${l.to}${l.open === true ? ' and on' : ''}`)
+  .join('. ')}. A first award lands around month 9 and a second-phase award around month ${PHASE2_START_MONTH}.`;
+const phase2X = sx(PHASE2_START_MONTH);
+---
+
+<div class="ptl">
+  <svg class="ptl__svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ptl-title ptl-desc">
+    <title id="ptl-title">{title}</title>
+    <desc id="ptl-desc">{desc}</desc>
+    <g class="ptl__grid">
+      {yearTicks.map((t) => <line x1={t.x} x2={t.x} y1={top - 8} y2={H - 28} />)}
+    </g>
+    <g class="ptl__axis">
+      {
+        yearTicks.map((t) => (
+          <text x={t.x} y={H - 6} text-anchor="middle">
+            {t.m === 0 ? 'Start' : `Month ${t.m}`}
+          </text>
+        ))
+      }
+    </g>
+    <line class="ptl__marker" x1={phase2X} x2={phase2X} y1={top - 8} y2={H - 28} />
+    {
+      bars.map((b) => (
+        <g class={`ptl__lane ptl__lane--${b.kind}`}>
+          <text class="ptl__label" x={left - 14} y={b.cy + 6} text-anchor="end">
+            {b.label}
+          </text>
+          <rect x={b.x} y={b.y} width={b.width} height="32" rx="6" />
+          {b.open === true && <path class="ptl__arrow" d={`M${b.x + b.width - 2} ${b.y + 4} l14 12 l-14 12 z`} />}
+        </g>
+      ))
+    }
+  </svg>
+  <ol class="ptl__list" aria-label={title}>
+    {
+      lanes.map((l) => (
+        <li class={`ptl__item ptl__item--${l.kind}`}>
+          <p class="ptl__when">
+            {KIND_WORD[l.kind]}. {l.open === true ? `From month ${l.from}` : `Month ${l.from} to ${l.to}`}
+          </p>
+          <p class="ptl__what">{l.label}</p>
+          <p class="ptl__note">{l.note}</p>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  @layer pages {
+    .ptl__svg {
+      display: none;
+      inline-size: 100%;
+      block-size: auto;
+      font-size: 17px;
+    }
+
+    @media (min-width: 48rem) {
+      .ptl__svg {
+        display: block;
+      }
+
+      .ptl__list {
+        display: none;
+      }
+    }
+
+    .ptl__list {
+      display: grid;
+      gap: var(--sp-3);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .ptl__item {
+      display: grid;
+      gap: var(--sp-1);
+      padding: var(--sp-4);
+      border: 1px solid var(--color-border);
+      border-inline-start-width: 6px;
+      border-radius: var(--radius-md);
+    }
+
+    .ptl__item p {
+      margin: 0;
+    }
+
+    .ptl__item--prepare {
+      border-inline-start-color: var(--we-blue);
+    }
+
+    .ptl__item--wait {
+      border-inline-start-color: var(--we-grey-ui);
+    }
+
+    .ptl__item--funded {
+      border-inline-start-color: var(--color-highlight-ink);
+    }
+
+    .ptl__item--market {
+      border-inline-start-color: var(--color-success);
+    }
+
+    .ptl__when {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      letter-spacing: var(--tracking-caps);
+      text-transform: uppercase;
+    }
+
+    .ptl__what {
+      font-weight: 700;
+    }
+
+    .ptl__note {
+      font-size: var(--fs-sm);
+    }
+
+    .ptl__grid line {
+      stroke: var(--color-border);
+      stroke-width: 1;
+    }
+
+    .ptl__axis text {
+      fill: var(--color-text-muted);
+    }
+
+    .ptl__marker {
+      stroke: var(--color-highlight-ink);
+      stroke-width: 2;
+      stroke-dasharray: 6 6;
+    }
+
+    .ptl__label {
+      fill: var(--color-text);
+      font-weight: 600;
+    }
+
+    .ptl__lane rect {
+      fill: var(--we-blue);
+    }
+
+    .ptl__lane--wait rect {
+      fill: var(--we-grey-ui);
+    }
+
+    .ptl__lane--funded rect {
+      fill: var(--color-highlight-ink);
+    }
+
+    .ptl__lane--market rect {
+      fill: var(--color-success);
+    }
+
+    .ptl__arrow {
+      fill: var(--color-success);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: view()) {
+        .ptl__lane rect {
+          transform-box: fill-box;
+          transform-origin: 0 50%;
+          animation-name: ptl-grow;
+          animation-duration: 1ms;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
+          animation-timeline: view();
+          animation-range: entry 5% cover 35%;
+        }
+      }
+    }
+
+    @keyframes ptl-grow {
+      from {
+        transform: scaleX(0.05);
+      }
+
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .ptl__lane rect,
+      .ptl__arrow {
+        fill: CanvasText;
+      }
+
+      .ptl__grid line,
+      .ptl__marker {
+        stroke: CanvasText;
+      }
+
+      .ptl__axis text,
+      .ptl__label {
+        fill: CanvasText;
+      }
+
+      .ptl__item {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>

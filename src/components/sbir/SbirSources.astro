@@ -1,0 +1,28 @@
+---
+/**
+ * The sources ledger of an /sbir-sttr/ page (WP-34): every source a figure or statement on the page cites, with the date it was retrieved
+ * when this build retrieved it. Each entry's id is the anchor that source lines link to (`#source-<id>`).
+ */
+import SourcesList from '../blocks/SourcesList.astro';
+import { sbirSource } from '../../data/sbir/sources.ts';
+import type { SbirSourceId } from '../../data/sbir/sources.ts';
+
+interface Props {
+  ids: readonly SbirSourceId[];
+  title?: string;
+}
+
+const { ids, title = 'Sources' } = Astro.props;
+const sources = [...new Set(ids)].map((id) => {
+  const s = sbirSource(id);
+  return { id: s.id, title: s.title, publisher: s.publisher, url: s.url, accessed: s.accessed === null ? undefined : new Date(`${s.accessed}T00:00:00Z`) };
+});
+---
+
+<div data-context="ecosystem">
+  <SourcesList sources={sources} title={title} />
+  <p class="muted">
+    A source listed without a retrieval date was cited from a reputable index and could not be opened by this build. Dates are when the
+    page was read. Programs change: always check sbir.gov for the latest.
+  </p>
+</div>

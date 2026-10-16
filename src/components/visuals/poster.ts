@@ -4,13 +4,18 @@ import type { PreloadImage } from '../../lib/image-type.ts';
 
 /**
  * Scene posters: frames rendered from the scenes themselves at their `posterTime` (so the live canvas crossfades in without a jump),
- * stored as 1920-wide AVIF masters in src/assets/visuals/posters/. This is what phones, reduced motion, forced colors, no-JS visitors
+ * stored as 3840-wide AVIF masters in src/assets/visuals/posters/. This is what phones, reduced motion, forced colors, no-JS visitors
  * and Lighthouse see. Regenerate them with src/assets/visuals/tools/render-posters.mjs after changing a scene.
  */
 const FILES = import.meta.glob<{ default: ImageMetadata }>('../../assets/visuals/posters/*.avif', { eager: true });
 
-export const POSTER_KEYS = ['galaxy', 'galaxy-end', 'launch', 'orbit-7-single', 'orbit-10-nested', 'orbit-base', 'worldforge', 'starfield'] as const;
+export const POSTER_KEYS = ['galaxy', 'galaxy-end', 'launch', 'orbit-7-single', 'orbit-10-nested', 'orbit-base', 'worldforge', 'starfield', 'accretion', 'accretion-end'] as const;
 export type PosterKey = (typeof POSTER_KEYS)[number];
+
+/** The accretion poster for an alignment (AccretionScene `align`). */
+export function accretionPosterKey(align: 'center' | 'end'): PosterKey {
+  return align === 'end' ? 'accretion-end' : 'accretion';
+}
 
 /** The galaxy poster for an alignment (GalaxyScene `align`). */
 export function galaxyPosterKey(align: 'center' | 'end'): PosterKey {
@@ -19,7 +24,8 @@ export function galaxyPosterKey(align: 'center' | 'end'): PosterKey {
 
 /** Display width of a poster `<img>`: the 1024 px raster cap of audit:images. Wider screens pick a larger srcset candidate. */
 export const POSTER_DISPLAY_WIDTH = 1024;
-const WIDTHS = [640, 1024, 1440, 1920] as const;
+/** 2560 and 3840 are for 1440p and 4K screens (a 3840 master); a smaller master simply drops the candidates it cannot fill. */
+const WIDTHS = [640, 1024, 1440, 1920, 2560, 3840] as const;
 
 export interface PosterImage {
   readonly src: string;
@@ -39,7 +45,7 @@ export function posterAsset(key: PosterKey): ImageMetadata {
 export type PosterSource = PosterKey | ImageMetadata;
 
 /**
- * The responsive `<img>` attributes of a poster: the 1024 px display size, a 640 to 1920 srcset and the given `sizes`. Scene uses it for
+ * The responsive `<img>` attributes of a poster: the 1024 px display size, a 640 to 3840 srcset and the given `sizes`. Scene uses it for
  * its own poster; a hero that makes the poster its LCP image uses it to render that `<img>` itself (see `posterPreload`).
  */
 export async function posterImage(poster: PosterSource, sizes = '100vw'): Promise<PosterImage> {

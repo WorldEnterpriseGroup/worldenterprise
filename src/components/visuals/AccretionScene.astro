@@ -1,0 +1,50 @@
+---
+/**
+ * AccretionScene: worlds take years. A protoplanetary disc of dust and grains spirals in toward a hex-faceted world that is still
+ * growing, with a few planetesimals riding the rings and one amber tile on the world. It is the "incubation is world-building" image:
+ * slow, continuous, never finished. Built wide and short, so it reads as a band behind text (home, /data/) as well as a framed figure;
+ * `align="end"` puts the world on the right and keeps the left calm for copy.
+ *
+ * Seamless by default: the frame's edges feather into the page (see Scene `feather`), so it needs no box. For a full-bleed background
+ * put it in a Band (`<Band tone="deep">`) with `fill decorative` through Scene instead.
+ */
+import Scene from './Scene.astro';
+import { accretionPosterKey } from './poster.ts';
+import type { SceneRatio } from './contracts.ts';
+
+interface Props {
+  alt?: string;
+  /** `end` moves the world to the right of the frame, leaving the left calm for a headline. */
+  align?: 'center' | 'end';
+  ratio?: Extract<SceneRatio, '16/9' | '21/9' | '3/1'>;
+  sizes?: string;
+  caption?: string;
+  static?: boolean;
+  feather?: 'edges' | 'none';
+  class?: string;
+}
+
+const {
+  alt = 'A disc of blue dust and grains spiraling in toward a world that is still forming from hexagonal tiles, one tile glowing amber, with small hexagonal planetesimals riding the rings.',
+  align = 'center',
+  ratio = '21/9',
+  sizes,
+  caption,
+  static: isStatic = false,
+  feather = 'edges',
+  class: className,
+} = Astro.props;
+---
+
+<Scene
+  scene="accretion"
+  poster={accretionPosterKey(align)}
+  alt={alt}
+  ratio={ratio}
+  options={align === 'end' ? { align } : {}}
+  sizes={sizes}
+  caption={caption}
+  static={isStatic}
+  feather={feather}
+  class={className}
+/>

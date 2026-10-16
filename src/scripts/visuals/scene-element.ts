@@ -17,6 +17,7 @@ const LOADERS: Readonly<Record<SceneName, () => Promise<SceneModule>>> = {
   orbit: () => import('./scenes/orbit.ts'),
   worldforge: () => import('./scenes/worldforge.ts'),
   starfield: () => import('./scenes/starfield.ts'),
+  accretion: () => import('./scenes/accretion.ts'),
 };
 
 const idle = (fn: () => void): void => {
@@ -52,8 +53,21 @@ export class WeScene extends HTMLElement {
     items[next]?.focus();
   };
 
+  /**
+   * The "About this scene" button opens a <dialog> by invoker command (`commandfor`, no script) where the browser supports it; elsewhere
+   * the button is revealed and opens the dialog itself. It stays hidden without a dialog, so a no-JS visitor never sees a dead button.
+   */
+  private wireDetail(): void {
+    const button = this.querySelector<HTMLButtonElement>('button[data-detail-for]');
+    const dialog = button === null ? null : document.getElementById(button.dataset.detailFor ?? '');
+    if (button === null || !(dialog instanceof HTMLDialogElement)) return;
+    if (!('commandForElement' in HTMLButtonElement.prototype)) button.addEventListener('click', () => dialog.showModal());
+    button.hidden = false;
+  }
+
   connectedCallback(): void {
     this.addEventListener('keydown', this.onKey);
+    this.wireDetail();
     const name = this.dataset.scene;
     if (this.hasAttribute('data-static') || !isSceneName(name)) {
       if (!isSceneName(name)) console.warn(`we-scene: unknown scene "${String(name)}"; showing the poster`);
@@ -93,7 +107,12 @@ export class WeScene extends HTMLElement {
     try {
       const [runtime, mod] = await Promise.all([import('./runtime.ts'), LOADERS[name]()]);
       if (!this.isConnected) return;
-      this.controller = runtime.startScene(this, mod, parseOptions(this.dataset.options), (reason, error) => this.fallback(reason, error));
+      const controller = await runtime.startScene(this, mod, parseOptions(this.dataset.options), (reason, error) => this.fallback(reason, error));
+      if (!this.isConnected) {
+        controller.dispose();
+        return;
+      }
+      this.controller = controller;
       this.dataset.state = 'live';
     } catch (error) {
       this.fallback(`the ${name} scene could not start`, error);

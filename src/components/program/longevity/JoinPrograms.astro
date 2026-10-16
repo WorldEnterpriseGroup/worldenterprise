@@ -1,0 +1,114 @@
+---
+/**
+ * "Join the programs that fit. WE stays for the long run." (WP-37, issue #86). The inclusive ecosystem moment: WE is not in
+ * competition with the programs around a founder and encourages founders to use them. Renders nothing until /ecosystem/ is built, so
+ * no page links a route that is not live. Wording follows docs/wave10-contracts.md: generic categories here, named programs only on
+ * /ecosystem/.
+ */
+import Band from '../../visuals/Band.astro';
+import VisualIcon from '../../visuals/VisualIcon.astro';
+import type { BandTone } from '../../visuals/contracts.ts';
+import { isLiveOnDisk } from '../../../data/cta/live.ts';
+import { href } from '../../../lib/url.ts';
+import { JOIN_HEADLINE, JOIN_LEAD, JOIN_NOTE, JOIN_TILES, ROUTES } from './data.ts';
+
+interface Props {
+  tone?: BandTone;
+  id?: string;
+  /** Replaces the default lead when a page words its own. */
+  lead?: string;
+}
+
+const { tone = 'tint-sand', id = 'join', lead = JOIN_LEAD } = Astro.props;
+const live = isLiveOnDisk(ROUTES.ecosystem);
+const sbirLive = isLiveOnDisk(ROUTES.sbir);
+const titleId = `${id}-title`;
+---
+
+{
+  live && (
+    <Band {tone} {id} labelledby={titleId} class="join">
+      <div class="join__head">
+        <p class="eyebrow">The wider ecosystem</p>
+        <h2 id={titleId}>{JOIN_HEADLINE}</h2>
+        <p class="lead">{lead}</p>
+      </div>
+      <ul class="join__tiles" role="list" aria-label="Kinds of programs worth joining">
+        {
+          JOIN_TILES.map((t) => (
+            <li class="join__tile">
+              <VisualIcon name={t.icon} size={44} />
+              <h3>{t.label}</h3>
+              <p>{t.line}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="join__note">{JOIN_NOTE}</p>
+      <div class="cluster">
+        <a class="btn btn--secondary" href={href(ROUTES.ecosystem)}>Browse every program to join</a>
+        {sbirLive && <a class="btn btn--quiet" href={href(ROUTES.sbir)}>Apply to SBIR and STTR</a>}
+      </div>
+    </Band>
+  )
+}
+
+<style>
+  @layer pages {
+    .join :global(.band__content) {
+      display: grid;
+      gap: var(--sp-5);
+    }
+
+    .join__head {
+      display: grid;
+      gap: var(--sp-3);
+      max-inline-size: var(--prose-max);
+    }
+
+    .join__head > * {
+      margin: 0;
+    }
+
+    .join__tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .join__tile {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-4);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
+
+    .join__tile > * {
+      margin: 0;
+    }
+
+    .join__tile h3 {
+      font-size: var(--fs-lg);
+      line-height: var(--lh-tight);
+    }
+
+    .join__note {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-style: italic;
+    }
+
+    @media (forced-colors: active) {
+      .join__tile {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>
