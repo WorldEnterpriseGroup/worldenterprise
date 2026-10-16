@@ -53,6 +53,8 @@ const month = 'October 2026';
   @layer pages {
     .eco-row {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      overflow-wrap: anywhere;
       align-content: start;
       gap: var(--sp-3);
       padding: var(--sp-5);

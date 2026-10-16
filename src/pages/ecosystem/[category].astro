@@ -106,12 +106,14 @@ const description = `${entries.length} verified ${info.short.toLowerCase()} prog
   @layer pages {
     .eco-cat {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--sp-7);
     }
 
     .eco-cat > *,
     .eco-cat section {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--sp-4);
     }
 

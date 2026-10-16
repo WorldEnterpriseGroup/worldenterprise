@@ -29,27 +29,27 @@ const audiences = AUDIENCE_IDS.filter((a) => a !== 'any');
     <form class="eco-filter" role="search" aria-label={FILTER_LEGEND}>
       <fieldset class="eco-filter__fields">
         <legend>{FILTER_LEGEND}</legend>
-        <label>
-          <span>Kind of program</span>
-          <select name="category">
+        <div class="eco-filter__field">
+          <label for="eco-f-category">Kind of program</label>
+          <select id="eco-f-category" name="category">
             <option value="any">All kinds</option>
             {CATEGORIES.map((c) => <option value={c.id}>{c.short}</option>)}
           </select>
-        </label>
-        <label>
-          <span>Stage of company</span>
-          <select name="stage">
+        </div>
+        <div class="eco-filter__field">
+          <label for="eco-f-stage">Stage of company</label>
+          <select id="eco-f-stage" name="stage">
             <option value="any">Any stage</option>
             {STAGE_IDS.map((s) => <option value={s}>{STAGE_LABELS[s]}</option>)}
           </select>
-        </label>
-        <label>
-          <span>Built for</span>
-          <select name="audience">
+        </div>
+        <div class="eco-filter__field">
+          <label for="eco-f-audience">Built for</label>
+          <select id="eco-f-audience" name="audience">
             <option value="any">Everyone</option>
             {audiences.map((a) => <option value={a}>{AUDIENCE_LABELS[a]}</option>)}
           </select>
-        </label>
+        </div>
         <label class="eco-filter__check">
           <input type="checkbox" name="remote" value="yes" />
           <span>Has an online option</span>
@@ -71,11 +71,13 @@ const audiences = AUDIENCE_IDS.filter((a) => a !== 'any');
   @layer pages {
     we-ecosystem-filter {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--sp-6);
     }
 
     .eco-filter {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--sp-3);
     }
 
@@ -96,9 +98,12 @@ const audiences = AUDIENCE_IDS.filter((a) => a !== 'any');
     }
 
     .eco-filter label {
+      font-size: var(--fs-sm);
+    }
+
+    .eco-filter__field {
       display: grid;
       gap: var(--sp-1);
-      font-size: var(--fs-sm);
     }
 
     .eco-filter .eco-filter__check {
