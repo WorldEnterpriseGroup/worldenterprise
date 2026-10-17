@@ -1,7 +1,8 @@
 # The intake service pipeline (WP-61). Included from .gitlab-ci.yml (`include: local`, guarded by `rules: exists`), so it only
 # adds jobs; it declares no stage of its own. Stages are the root file's: preflight, qa, deploy, mirror.
 #
-# Always on (every branch pipeline, no credentials, nothing provisioned):
+# Always on on demo, gh-pages and *negatives, and on a wp/* branch that changes this service or the pipeline file compared with demo (the
+# `changes:` list below, issue #105); other branches skip them. No credentials, nothing provisioned:
 #   intake:test    typecheck, unit tests with fakes, the Bicep compile, the what-if gate test, the package build
 #   intake:render  the brief renderer's self-test (HTML and PDF), and the real briefs once they exist
 #
@@ -60,13 +61,22 @@ intake:test:
     paths:
       - infra/intake/dist/function.zip
   rules:
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^(demo|gh-pages)$/ || $CI_COMMIT_BRANCH =~ /negatives$/'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
+      changes:
+        paths:
+          - infra/intake/**/*
+          - .gitlab-ci.yml
+        compare_to: refs/heads/demo
 
 # Runs in the Playwright image, which carries the Chromium the PDF is printed with; nothing is installed.
 intake:render:
   stage: qa
   image: "${PLAYWRIGHT_IMAGE}"
-  needs: []
+  # Waits for the preflight verdict only (no artifacts), so a red verify:static stops it from starting.
+  needs:
+    - job: verify:static
+      artifacts: false
   interruptible: true
   script:
     - node --version
@@ -83,7 +93,13 @@ intake:render:
     paths:
       - infra/intake/render/out/
   rules:
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^(demo|gh-pages)$/ || $CI_COMMIT_BRANCH =~ /negatives$/'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
+      changes:
+        paths:
+          - infra/intake/**/*
+          - .gitlab-ci.yml
+        compare_to: refs/heads/demo
 
 # The gate for every job below. All of these must exist as protected CI/CD variables, and the branch must be demo. Without them
 # the job is not created, so an unconfigured pipeline stays green and shows no deploy job.
