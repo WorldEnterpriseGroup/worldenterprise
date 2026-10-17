@@ -4132,6 +4132,26 @@
       "reason": "Wave 11 (D-W11-1): media slots in the template layout."
     },
     {
+      "wp": "WP-24",
+      "path": "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
+      "reason": "Wave 11 (#90): the no-JS composer round trip runs with reduced motion. With the WP-24 tool schematic above the composer the submit button sits below the fold after the fill, and html smooth scroll plus JavaScript off makes Playwright's actionability scroll never settle; real visitors are unaffected. One test.use line and a comment; the assertions are unchanged."
+    },
+    {
+      "wp": "WP-24",
+      "path": "tests/unit/wp-32b/write-sets-wave11.test.ts",
+      "reason": "Wave 11 (#90): records the WP-24 exceptions above in the wave 11 exception proof."
+    },
+    {
+      "wp": "WP-24",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 11 (#90): registers the WP-24 fix-forward exceptions (W8-30 pattern: each package registers its own)."
+    },
+    {
+      "wp": "WP-24",
+      "path": ".astro-magazine/plans/wave11/writesets.json",
+      "reason": "Wave 11 (#90): mirrors the WP-24 exceptions so tests/unit/wp-32b/write-sets-wave11.test.ts keeps policy and proof equal."
+    },
+    {
       "wp": "WP-25",
       "path": "src/components/layout/Header.astro",
       "reason": "Wave 11 (D-W11-1): logo sizes only."
