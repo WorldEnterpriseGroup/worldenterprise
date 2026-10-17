@@ -175,7 +175,15 @@ test('the layout, page and header exceptions named in the orchestration brief ar
       '.astro-magazine/ownership.json',
       '.astro-magazine/plans/wave11/writesets.json',
     ],
-    'WP-25': ['src/components/layout/Header.astro'],
+    // WP-25 (#91): the studio checkpoint owns the event log and the snapshot directory, which the integrator owned before.
+    'WP-25': [
+      'src/components/layout/Header.astro',
+      '.astro-magazine/events.ndjson',
+      '.astro-magazine/checkpoints/**',
+      '.astro-magazine/ownership.json',
+      'tests/unit/wp-32b/write-sets-wave11.test.ts',
+      '.astro-magazine/plans/wave11/writesets.json',
+    ],
     'WP-26': ['src/layouts/ArticleLayout.astro', 'src/components/insights/**', 'src/components/geo/mdx-transform.ts', 'tests/unit/wp-91/mdx-transform.test.ts'],
   };
   for (const [wp, paths] of Object.entries(want)) {
