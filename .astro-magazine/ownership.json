@@ -4180,6 +4180,31 @@
       "wp": "WP-32b",
       "path": ".astro-magazine/plans/wave10/writesets.json",
       "reason": "Wave 11 (D-W11-1): records the WP-38 exceptions on the markdown transform in the wave 10 map."
+    },
+    {
+      "wp": "WP-23",
+      "path": "tests/e2e/wave8/wp-87/guides-templates.spec.ts",
+      "reason": "Wave 11 (D-W11-1, #89): the wave 8 'no new image' guard on the WP-87 guides predates the wave 11 media brief; replaced by an image-quality check (alt or hidden, explicit dimensions, lazy below the fold). HowTo, h1, Sources and no-funding checks unchanged."
+    },
+    {
+      "wp": "WP-23",
+      "path": "src/components/program/longevity/SituationMatrix.astro",
+      "reason": "Wave 11 (#89): the /who-we-work-with/ matrix table moves into the plain shared table-wrap frame with an aria-label, as layout.spec requires of every table; markup only."
+    },
+    {
+      "wp": "WP-23",
+      "path": "tests/unit/wp-32b/write-sets-wave11.test.ts",
+      "reason": "Wave 11 (#89): records the two WP-23 exceptions above in the wave 11 exception proof."
+    },
+    {
+      "wp": "WP-23",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 11 (#89): registers the WP-23 fix-forward exceptions (W8-30 pattern: each package registers its own)."
+    },
+    {
+      "wp": "WP-23",
+      "path": ".astro-magazine/plans/wave11/writesets.json",
+      "reason": "Wave 11 (#89): mirrors the WP-23 exceptions so tests/unit/wp-32b/write-sets-wave11.test.ts keeps policy and proof equal."
     }
   ],
   "notes": [
