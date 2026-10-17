@@ -4182,6 +4182,26 @@
       "reason": "Wave 11 (D-W11-1): records the WP-38 exceptions on the markdown transform in the wave 10 map."
     },
     {
+      "wp": "WP-32",
+      "path": "src/lib/route-core.ts",
+      "reason": "Wave 10 follow-up: registers /ecosystem/[category]/ in DYNAMIC_FIXED from WP-33's CATEGORY_IDS, so isLive() sees the eight category pages the directory emits."
+    },
+    {
+      "wp": "WP-32",
+      "path": "tests/e2e/support/page-guards.ts",
+      "reason": "Wave 10 follow-up: routes and axe wait for a quiet network through quiet() in page-guards instead of networkidle, which Playwright can raise before domcontentloaded on a long-parsing page and never raise again (/insights/ hang reported by WP-24)."
+    },
+    {
+      "wp": "WP-32",
+      "path": "tests/e2e/routes.spec.ts",
+      "reason": "Wave 10 follow-up: routes and axe wait for a quiet network through quiet() in page-guards instead of networkidle, which Playwright can raise before domcontentloaded on a long-parsing page and never raise again (/insights/ hang reported by WP-24)."
+    },
+    {
+      "wp": "WP-32",
+      "path": "tests/e2e/axe.spec.ts",
+      "reason": "Wave 10 follow-up: routes and axe wait for a quiet network through quiet() in page-guards instead of networkidle, which Playwright can raise before domcontentloaded on a long-parsing page and never raise again (/insights/ hang reported by WP-24)."
+    },
+    {
       "wp": "WP-23",
       "path": "tests/e2e/wave8/wp-87/guides-templates.spec.ts",
       "reason": "Wave 11 (D-W11-1, #89): the wave 8 'no new image' guard on the WP-87 guides predates the wave 11 media brief; replaced by an image-quality check (alt or hidden, explicit dimensions, lazy below the fold). HowTo, h1, Sources and no-funding checks unchanged."

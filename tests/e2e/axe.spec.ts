@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { AXE_TAGS } from './support/page-guards.ts';
+import { AXE_TAGS, quiet } from './support/page-guards.ts';
 import { fileFor, isBuilt, liveRoutes } from './support/routes.ts';
 
 // axe-core at WCAG 2.2 AA on every built route, and again with the mega menu open (desktop) or the drawer open (mobile).
@@ -16,8 +16,9 @@ const summarise = (violations: readonly Violation[]): string[] => violations.map
 
 for (const { path: route } of liveRoutes) {
   test(`axe ${route}`, async ({ page }) => {
+    const network = quiet(page);
     await page.goto(route);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
     expect(summarise(results.violations)).toEqual([]);
   });
