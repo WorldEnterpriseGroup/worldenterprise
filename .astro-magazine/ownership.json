@@ -4260,6 +4260,11 @@
       "wp": "WP-32",
       "path": "src/lib/stylesheet-inlining.ts",
       "reason": "Home LCP fix (wp/32-css-inline): the pure, unit-tested inlining policy astro.config.mjs uses (Astro's 4096 raw-byte fallback left the 4.4 to 13 KB component chunks external)."
+    },
+    {
+      "wp": "WP-35",
+      "path": "src/data/claims.ts",
+      "reason": "Issue #84 gap 2 (wp/35-flow-claims): registers claims C-30 to C-36 for the statistics printed on the four /data/ pages (append-only: CLAIM_IDS and seven registry entries; no existing entry changes)."
     }
   ],
   "notes": [
