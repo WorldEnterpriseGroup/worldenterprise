@@ -4305,6 +4305,16 @@
       "wp": "WP-62",
       "path": "tests/unit/wp-51/write-sets-wave9.test.ts",
       "reason": "Wave 8 landing (#42): the superseded-claims proof named src/pages/index.astro for WP-62, which the landing now reaches through a registered exception; it names a WP-58 path instead (same assertion, same count)."
+    },
+    {
+      "wp": "WP-62",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 8 landing (#42): registers WP-62's scoped exceptions for the landing (append-only)."
+    },
+    {
+      "wp": "WP-62",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 landing (#42): CR-17 cites src/pages/founders/index.astro by line; the segments import moved the quote from line 44 to 45 (W9-9: quoted line numbers move in the same commit)."
     }
   ],
   "notes": [
