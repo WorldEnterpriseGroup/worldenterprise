@@ -3,6 +3,8 @@
  * /ecosystem/ (WP-33, issue #82): "Join the ecosystem". The hub of the directory of outside programs WE encourages founders to join:
  * accelerators, incubators, university programs, coworking, angel groups, SBA partners, public funding and founder communities.
  * Native HTML first: the whole directory is on the page and each category has its own page; <we-ecosystem-filter> only adds filters.
+ * Each category shows its first programs as short rows; its full list sits in a native <details>, so every program and anchor stays
+ * in the DOM while the page stays a reasonable length on a phone. The filter opens those lists while it narrows them.
  * The copy lives in src/data/ecosystem/copy.ts so a test can scan it. Ecosystem context (D-W10-1): data-context="ecosystem".
  */
 import { APPLY, TALK_TO_WE } from '../../components/hero/ctas.ts';
@@ -15,6 +17,10 @@ import Stats from '../../components/ecosystem/Stats.astro';
 import Timeline from '../../components/ecosystem/Timeline.astro';
 import { isLiveOnDisk } from '../../data/cta/live.ts';
 import {
+  ALL_IN_CATEGORY,
+  BEST_FOR_LABEL,
+  CATEGORY_LIST_NAMES,
+  CATEGORY_PAGE_LINK,
   CHOOSE_HEADING,
   CHOOSE_LEAD,
   CHOOSE_ROWS,
@@ -33,6 +39,8 @@ import {
   HUB_SEO_TITLE,
   HUB_TITLE,
   INTRO,
+  PREVIEW_COUNT,
+  PREVIEW_LABEL,
   SOURCE_NOTE,
   STATS_HEADING,
   STATS_NOTE,
@@ -152,9 +160,23 @@ const jsonLd = [directoryNode(HUB_PATH, 'Programs to join: the WE ecosystem dire
                 <h3 id={`group-title-${c.id}`}>
                   {c.name} <span class="eco-group__n">({counts[c.id]})</span>
                 </h3>
-                <EntryList entries={entriesIn(c.id)} level={4} idPrefix="p-" />
+                <p class="eco-group__what"><strong>{BEST_FOR_LABEL}:</strong> {c.bestFor}</p>
+                <div class="eco-group__preview" data-eco-preview>
+                  <EntryList
+                    entries={entriesIn(c.id).slice(0, PREVIEW_COUNT)}
+                    level={4}
+                    idPrefix="top-"
+                    compact
+                    filterable={false}
+                    label={PREVIEW_LABEL(Math.min(PREVIEW_COUNT, counts[c.id]), counts[c.id])}
+                  />
+                </div>
+                <details class="eco-group__all" data-eco-more>
+                  <summary>{ALL_IN_CATEGORY(counts[c.id], CATEGORY_LIST_NAMES[c.id])}</summary>
+                  <EntryList entries={entriesIn(c.id)} level={4} idPrefix="p-" />
+                </details>
                 <p class="eco-group__more">
-                  <a href={href(categoryPath(c.id))}>This kind of program on its own page</a>
+                  <a href={href(categoryPath(c.id))}>{CATEGORY_PAGE_LINK}</a>
                 </p>
               </section>
             ))
@@ -310,6 +332,55 @@ const jsonLd = [directoryNode(HUB_PATH, 'Programs to join: the WE ecosystem dire
       margin: 0;
     }
 
+    .eco-group__what {
+      max-inline-size: var(--measure);
+      color: var(--color-text-muted);
+    }
+
+    .eco-group__preview[hidden] {
+      display: none;
+    }
+
+    .eco-group__all > summary {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      inline-size: fit-content;
+      max-inline-size: 100%;
+      min-block-size: 2.75rem;
+      padding: var(--sp-2) var(--sp-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .eco-group__all > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .eco-group__all > summary::before {
+      content: '+';
+      inline-size: 1em;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .eco-group__all[open] > summary::before {
+      content: '\2212';
+    }
+
+    .eco-group__all[open] > summary {
+      margin-block-end: var(--sp-4);
+    }
+
+    .eco-group__all > summary:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
     .eco-group__n {
       color: var(--color-text-muted);
       font-weight: 400;
@@ -327,7 +398,8 @@ const jsonLd = [directoryNode(HUB_PATH, 'Programs to join: the WE ecosystem dire
     }
 
     @media (forced-colors: active) {
-      .eco-kinds__card {
+      .eco-kinds__card,
+      .eco-group__all > summary {
         border-color: CanvasText;
       }
     }
