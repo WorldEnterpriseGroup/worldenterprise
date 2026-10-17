@@ -41,7 +41,6 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
   <div class="section">
     <div class="container stack">
       <slot />
-      <slot name="media" />
       <section aria-labelledby="steps-title">
         <h2 id="steps-title">The steps</h2>
         <Steps steps={steps} headingLevel={3} />
@@ -49,6 +48,7 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
       <CiteThis title={meta.title} path={meta.path} date={meta.updated} />
     </div>
   </div>
+  <slot name="media" />
   {
     artifacts.length > 0 && (
       <div class="section section--soft section--defer">

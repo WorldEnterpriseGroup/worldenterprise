@@ -1,10 +1,12 @@
 ---
 /**
- * PlaybookMedia (WP-23, #89): the media moments of one playbook page, in PlaybookLayout's `media` slot. The moments come from the typed
+ * PlaybookMedia (WP-23, #89): the media moments of one playbook page, in PlaybookLayout's `media` slot (a full-bleed band after the steps). The moments come from the typed
  * per-slug map in media.ts: a generated cover, one sourced figure (BriefFigure) and a flow diagram of the playbook's own steps.
  */
+import Band from '../visuals/Band.astro';
 import BriefCover from '../briefs/BriefCover.astro';
 import BriefFigure from '../briefs/BriefFigure.astro';
+import BandHead from '../research/media/BandHead.astro';
 import FlowDiagram from '../research/media/FlowDiagram.astro';
 import Moment from '../research/media/Moment.astro';
 import MomentGrid from '../research/media/MomentGrid.astro';
@@ -22,8 +24,8 @@ const { slug, title, steps, kicker } = Astro.props;
 const moments = playbookMedia(slug);
 ---
 
-<section class="stack" aria-labelledby="playbook-media-title">
-  <h2 id="playbook-media-title">The playbook at a glance</h2>
+<Band tone="soft" id="playbook-glance" labelledby="playbook-media-title">
+  <BandHead id="playbook-media-title" title="The playbook at a glance" lede="A cover, one public figure that frames the question this playbook answers, and the steps drawn as one path." />
   <MomentGrid>
     {
       moments.map((m) => {
@@ -49,4 +51,4 @@ const moments = playbookMedia(slug);
       })
     }
   </MomentGrid>
-</section>
+</Band>
