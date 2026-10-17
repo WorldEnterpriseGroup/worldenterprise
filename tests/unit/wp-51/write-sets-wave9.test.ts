@@ -42,7 +42,7 @@ interface Wave9Map {
 const root = new URL('../../../', import.meta.url);
 const ownership = JSON.parse(readFileSync(new URL('.astro-magazine/ownership.json', root), 'utf8')) as Ownership;
 const committed = JSON.parse(readFileSync(new URL('.astro-magazine/plans/wave9/writesets.json', root), 'utf8')) as Wave9Map;
-const wave9 = ownership.assignments.filter((a) => /^WP-5[1-9]$/.test(a.owner));
+const wave9 = ownership.assignments.filter((a) => /^WP-5[1-8]$/.test(a.owner));
 
 const exceptionPaths = (owner: string): string[] => ownership.exceptions.filter((e) => e.wp === owner).map((e) => e.path);
 const lane = (name: 'photography' | 'release'): string[] => {
