@@ -5,10 +5,10 @@
   "phase": "wave-11",
   "status": "warn",
   "last_event": {
-    "seq": 117,
-    "hash": "6aa85b04339d57d359db08a7662c9226fe28df675f6fa3249a2deff507c7f24d"
+    "seq": 118,
+    "hash": "af990c704391f0cef66a857232048a9ef80dfad9033556d2b5c3e96a45f90f66"
   },
-  "last_event_note": "events.ndjson holds seq 1-2 (G0, 2026-10-07) and seq 3-117, reconstructed on 2026-10-17 from GitLab (merged MRs !54 to !101 into demo, demo push pipelines, closed issues of milestones 1784, 1810, 1811, 1841). Merges between 2026-10-07 and 2026-10-14 (waves 2 to 8) are not in the log; they stay in GitLab milestones 1725 and 1751 and in .astro-magazine/handoffs/. Each reconstructed event carries its GitLab source id.",
+  "last_event_note": "events.ndjson holds seq 1-2 (G0, 2026-10-07) and seq 3-118, reconstructed on 2026-10-17 from GitLab (merged MRs !53 to !101 into demo, demo push pipelines, closed issues of milestones 1784, 1810, 1811, 1841). Merges between 2026-10-07 and 2026-10-14 (waves 2 to 8) are not in the log; they stay in GitLab milestones 1725 and 1751 and in .astro-magazine/handoffs/. Each reconstructed event carries its GitLab source id.",
   "counts": {
     "routes": 326,
     "routes_launched": 321,
@@ -24,7 +24,7 @@
       "media": "Files under src/assets and public with an image or video extension (png, jpg, webp, avif, gif, svg, mp4, webm)",
       "claims": "CLAIM_IDS in src/data/claims.ts",
       "sources": "Records in .astro-magazine/sources",
-      "at": "origin/demo 33355b7c merged into wp/25-studio-checkpoint"
+      "at": "origin/demo 49403864 merged into wp/25-studio-checkpoint"
     }
   },
   "artifact_hashes": {
@@ -208,9 +208,9 @@
     },
     {
       "gate": "demo push pipeline (most recent)",
-      "pipeline": 70898,
-      "sha": "33355b7c",
-      "status": "success"
+      "pipeline": 71633,
+      "sha": "49403864",
+      "status": "running"
     }
   ],
   "accepted_exceptions": [],
@@ -233,9 +233,9 @@
     }
   ],
   "last_verified": {
-    "timestamp": "2026-10-17T21:09:16.000Z",
+    "timestamp": "2026-10-17T21:48:43.000Z",
     "repository_identity": "git.developerdojo.org/WorldEnterpriseGroup/worldenterprise (project 228)",
-    "build_identity": "origin/demo 33355b7c merged into wp/25-studio-checkpoint",
+    "build_identity": "origin/demo 49403864 merged into wp/25-studio-checkpoint",
     "commands": [
       "git fetch origin; git merge origin/demo",
       "glab api projects/228/merge_requests?state=merged&target_branch=demo",
@@ -260,15 +260,8 @@
       "Green demo push pipeline before any release step"
     ]
   },
-  "updated_at": "2026-10-17T21:09:16.000Z",
+  "updated_at": "2026-10-17T21:48:43.000Z",
   "open_merge_requests": [
-    {
-      "iid": 53,
-      "branch": "wp/60-carryover",
-      "target": "demo",
-      "title": "docs(handoff): WP-60 carryover for WP-99, CI and ownership rounds 2 and 3 (Refs #49)",
-      "head": "7f233220"
-    },
     {
       "iid": 103,
       "branch": "wp/106-release-prep",
@@ -296,6 +289,27 @@
       "target": "demo",
       "title": "WP-35: FlowChart on /data/formation/ and claims C-30 to C-36",
       "head": "58fae81f"
+    },
+    {
+      "iid": 107,
+      "branch": "wp/25-studio-checkpoint",
+      "target": "demo",
+      "title": "WP-25: studio checkpoint, wave 9 to 11 events and snapshot (Closes #91)",
+      "head": "ec62971e"
+    },
+    {
+      "iid": 108,
+      "branch": "wp/59-seat-copy",
+      "target": "demo",
+      "title": "WP-59: positioning tail, FAQ and investor add-on drop seat/package framing",
+      "head": "ff58a908"
+    },
+    {
+      "iid": 109,
+      "branch": "wp/90-journeys",
+      "target": "demo",
+      "title": "WP-90: customer-journey end-to-end suite (Closes #70)",
+      "head": "0c2ae9c9"
     }
   ],
   "open_issues": [
