@@ -3,6 +3,7 @@
 import CtaRow from '../../../components/sales/CtaRow.astro';
 import DataSources from '../../../components/visuals/charts/DataSources.astro';
 import DataStage from '../../../components/visuals/charts/DataStage.astro';
+import FlowChart from '../../../components/visuals/charts/FlowChart.astro';
 import SlopeChart from '../../../components/visuals/charts/SlopeChart.astro';
 import StackedArea from '../../../components/visuals/charts/StackedArea.astro';
 import WaffleChart from '../../../components/visuals/charts/WaffleChart.astro';
@@ -10,7 +11,7 @@ import MarketingLayout from '../../../layouts/MarketingLayout.astro';
 import { HOW_LONG_CTA, PRIMARY_CTA } from '../../../data/sales/copy.ts';
 import { FORMATION_PAGE as P, HONESTY } from '../../../data/datasets/copy.ts';
 import { RETRIEVED } from '../../../data/datasets/sources.ts';
-import { applicationsStack, formationWaffle, payrollSlope, sectorSlope } from '../../../data/datasets/figures.ts';
+import { applicationsStack, formationFlow, formationWaffle, payrollSlope, sectorSlope } from '../../../data/datasets/figures.ts';
 
 const [industries, employers] = P.stages;
 ---
@@ -25,6 +26,7 @@ const [industries, employers] = P.stages;
       <SlopeChart {...sectorSlope} retrieved={RETRIEVED} />
     </DataStage>
     <DataStage id={employers.id} stage="View 2 of 2" heading={employers.heading} body={employers.body}>
+      <FlowChart {...formationFlow} retrieved={RETRIEVED} />
       <WaffleChart {...formationWaffle} retrieved={RETRIEVED} />
       <SlopeChart {...payrollSlope} retrieved={RETRIEVED} />
     </DataStage>
