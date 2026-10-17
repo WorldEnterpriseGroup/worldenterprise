@@ -128,6 +128,13 @@ function pagesEntryExists(prefixSegments: string[], param: string, ctx: RouteCon
   return ids.has(base) || ids.has(`${base}/index`);
 }
 
+/** Whether the `pages` collection holds the entry, under its id as written or with a trailing `/index` stripped. */
+function hasPagesEntry(id: string, ctx: RouteContext): boolean {
+  const ids = ctx.entryIds.pages;
+  if (ids === undefined) return false;
+  return ids.has(id) || ids.has(id.replace(/\/index$/, ''));
+}
+
 /**
  * The hub of a page family whose entries live in the `pages` collection, mapped to the entry id that holds its copy (`<folder>/index`, the
  * `program/index` precedent). A hub with no such entry is pending: a static `index.astro` alone must not publish an empty hub on fallback copy.
@@ -139,7 +146,10 @@ const HUB_ENTRY_IDS: ReadonlyMap<string, string> = new Map(
 /** Whether a ledger path is backed by a page file (and, for dynamic pages, by a published entry). */
 export function routeExists(path: string, ctx: RouteContext): boolean {
   const hubEntry = HUB_ENTRY_IDS.get(path);
-  if (hubEntry !== undefined && ctx.entryIds.pages?.has(hubEntry) !== true) return false;
+  // The glob loader strips a trailing `/index` from entry ids, so the hub entry `industries/index` is stored as `industries`.
+  // Accept both spellings (the same rule pagesEntryExists applies); matching only `<folder>/index` reported every hub as missing,
+  // which failed the strict release gate ("launch:true route does not exist: /industries/") while the page itself built.
+  if (hubEntry !== undefined && !hasPagesEntry(hubEntry, ctx)) return false;
   for (const page of ctx.pageRoutes) {
     if (!page.dynamic) {
       if (page.pattern === path) return true;

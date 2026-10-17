@@ -202,7 +202,8 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/apply/thanks/', 'FormLayout', 'WP-03', { indexable: false }),
     row('/how-we-work/', 'MarketingLayout', 'WP-54'),
     // Wave 9 (W9-13): /how-we-work/ replaces the packages page. The site has no redirect mechanism, so /pricing/ stays as a noindex
-    // pointer for old links and bookmarks, and leaves the sitemap, search and the llms files.
+    // pointer for old links and bookmarks, and leaves the sitemap, search and the llms files. It is deliberately unlinked while
+    // flags.seatPrice is off, so no page links to it; audit:links exempts indexable:false rows from the orphan check (#106).
     row('/pricing/', 'ToolLayout', 'WP-03', { indexable: false }),
     row('/tools/team-composer/', 'ToolLayout', 'WP-03'),
 
