@@ -113,8 +113,10 @@ async function fillForm(page: Page, take: SubmitTake): Promise<void> {
     await next.click();
   }
   await form.locator('[name="consent"]').check();
-  // Past the 3 second fill check, so the first submit is not paused as too fast.
-  await page.clock.fastForward(3500);
+  // Past the 3 second fill check, so the first submit is not paused as too fast. The page clock is not faked here: a faked clock aborts the
+  // view transitions of the pages the walk clicks through ("ViewTransition opt-in disabled" page error). Waiting longer than the limit
+  // never makes the test flaky; it only makes it slower by at most the limit.
+  await page.waitForTimeout(3500);
 }
 
 /** Answers preflights with 204 and POSTs with 200, and returns the JSON bodies the page sent. */
@@ -210,7 +212,6 @@ export function runJourney(map: JourneyMap): void {
       test.skip(reasonFor(entry) !== undefined, `the entry page ${entry} is not live`);
       const seen = watch(page, baseURL ?? '', [ENDPOINT_ORIGIN]);
       const bodies = await mockEndpoint(page);
-      await page.clock.install();
       const outcome = await walk(page, map, 'endpoint', seen, bodies);
       expect(outcome.clicks, 'the walk clicked at least once').toBeGreaterThan(0);
     });
