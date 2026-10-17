@@ -35,7 +35,7 @@ const KEY_PAGES: readonly KeyPageSpec[] = [
   { route: '/how-we-work/', entry: 'how-we-work/how-we-work' },
   { route: '/program/who-its-for/', entry: 'program/who-its-for' },
   { route: '/apply/', entry: 'apply/apply' },
-  { route: '/faq/', entry: null, title: 'FAQ', description: 'Short, plain answers about what a seat is, how the remote model works, what WE does not do, and how to apply.' },
+  { route: '/faq/', entry: null, title: 'FAQ', description: 'Short, plain answers about what a dedicated team is, how the remote model works, what WE does not do, and how to apply.' },
   { route: '/glossary/', entry: null, title: 'Glossary', description: 'Plain definitions of the funding, finance, product, legal and security terms early-stage SaaS founders meet.' },
   { route: '/playbooks/', entry: 'playbooks/index' },
   { route: '/research/', entry: 'research/index' },
