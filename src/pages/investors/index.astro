@@ -13,6 +13,13 @@ import DataTable from '../../components/ui/DataTable.astro';
 import Steps from '../../components/ui/Steps.astro';
 import ReadinessScorecard from '../../components/visuals/illustrations/ReadinessScorecard.astro';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { tile } from '../../components/hubs/stats.ts';
+import BarChart from '../../components/visuals/charts/BarChart.astro';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
+import { dilutionBars, roundGapBars } from '../../data/datasets/figures.ts';
 
 const page = await getPageEntry('investors', 'investors/index');
 const { Content } = await render(page);
@@ -37,6 +44,25 @@ const secondary = meet && (await isLinkable(meet.href)) ? { label: meet.title, h
   </Callout>
 
   <Content />
+
+  <HubLead labelledby="clock-title">
+    <div slot="head" class="investors-head">
+      <h2 id="clock-title">The funding clock</h2>
+      <p>Published medians for venture-backed companies: rounds come years apart, and each one costs the founders a share of the company.</p>
+    </div>
+    <div class="investors-bars">
+      <HubMoment id="hub-investors-gaps" kind="chart">
+        <BarChart {...roundGapBars} max={3} />
+      </HubMoment>
+      <HubMoment id="hub-investors-dilution" kind="chart">
+        <BarChart {...dilutionBars} max={25} />
+      </HubMoment>
+    </div>
+    <HubMoment slot="side" id="hub-investors-figures" kind="stats">
+      <StatTiles stats={[tile('ST-33'), tile('ST-11')]} label="Young firms and capital" id="investors-figures" />
+      <p class="investors-note">WE makes no promise of funding.</p>
+    </HubMoment>
+  </HubLead>
 
   <h2 id="process-title">{HUB.processHeading}</h2>
   <Steps headingLevel={3} steps={PROCESS_STEPS} />
@@ -67,6 +93,8 @@ const secondary = meet && (await isLinkable(meet.href)) ? { label: meet.title, h
   <p>{HUB.diligence}</p>
 
   <NoFundingDisclaimer />
+
+  <HubEcosystem id="investors-ecosystem" />
 </MarketingLayout>
 
 <style>
@@ -82,6 +110,23 @@ const secondary = meet && (await isLinkable(meet.href)) ? { label: meet.title, h
     & > * {
       margin: 0;
     }
+  }
+
+  .investors-head {
+    display: grid;
+    gap: var(--sp-2);
+    max-inline-size: var(--prose-max);
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .investors-bars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: var(--sp-6);
+    align-items: start;
   }
 
   .investors-note {

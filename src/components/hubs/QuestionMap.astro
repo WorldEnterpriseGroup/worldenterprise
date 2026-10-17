@@ -1,0 +1,203 @@
+---
+/**
+ * QuestionMap: a page of questions drawn as one ledger (WP-24). Each row is a set of questions (an audience on the FAQ) and each segment
+ * in it a topic, as wide as its number of questions, with the count printed inside. The legend under the drawing lists every topic as a
+ * link to its place on the page, numbered like the segments, so the map is also the way in. Authored SVG at build time; no script.
+ */
+import HubFigure from './HubFigure.astro';
+import { r1 } from './geometry.ts';
+import { countLabel } from './filter.ts';
+import { cleanText } from '../visuals/contracts.ts';
+import { href as resolve } from '../../lib/url.ts';
+
+interface Topic {
+  readonly label: string;
+  readonly href: string;
+  readonly count: number;
+}
+
+interface Row {
+  readonly label: string;
+  readonly href: string;
+  readonly topics: readonly Topic[];
+}
+
+interface Props {
+  id: string;
+  title: string;
+  caption: string;
+  credit: string;
+  rows: readonly Row[];
+  /** Singular and plural nouns for the counts. */
+  unit: readonly [string, string];
+}
+
+const { id, unit } = Astro.props;
+const rows = Astro.props.rows.filter((r) => r.topics.length > 0);
+if (rows.length === 0) throw new Error(`QuestionMap "${id}": needs at least one row with a topic`);
+for (const r of rows) {
+  cleanText('QuestionMap', 'row label', r.label);
+  for (const t of r.topics) {
+    cleanText('QuestionMap', 'topic label', t.label);
+    if (!Number.isInteger(t.count) || t.count < 1) throw new Error(`QuestionMap "${id}": topic "${t.label}" needs a whole count of 1 or more`);
+  }
+}
+const W = 1200;
+const labelW = 330;
+const rowH = 64;
+const gap = 18;
+const top = 24;
+const H = top * 2 + rows.length * rowH + (rows.length - 1) * gap;
+const widest = Math.max(...rows.map((r) => r.topics.reduce((n, t) => n + t.count, 0)));
+const unitW = (W - labelW - 40) / widest;
+let n = 0;
+const layout = rows.map((row, i) => {
+  const y = top + i * (rowH + gap);
+  let x = labelW;
+  const segs = row.topics.map((topic, k) => {
+    n += 1;
+    const w = unitW * topic.count;
+    const seg = { topic, n, x: r1(x + 2), w: r1(w - 4), tone: k % 2 === 0 ? 'hf-blue' : 'hf-star' };
+    x += w;
+    return seg;
+  });
+  return { row, y, segs, total: row.topics.reduce((s, t) => s + t.count, 0) };
+});
+const total = layout.reduce((s, l) => s + l.total, 0);
+const alt = `${countLabel(total, unit[0], unit[1])} in ${layout.length} rows. ${layout
+  .map((l) => `${l.row.label}: ${l.segs.map((s) => `${s.topic.label}, ${s.topic.count}`).join('; ')}`)
+  .join('. ')}.`;
+---
+
+<HubFigure
+  id={id}
+  kind="index"
+  title={Astro.props.title}
+  caption={Astro.props.caption}
+  credit={Astro.props.credit}
+  width={W}
+  height={H}
+  alt={alt}
+  table={{
+    caption: 'Questions by set and topic',
+    columns: ['Set', 'Topic', 'Questions'],
+    rows: layout.flatMap((l) => l.segs.map((s) => [l.row.label, s.topic.label, String(s.topic.count)])),
+  }}
+>
+  <rect class="hf-paper" x="0" y="0" width={W} height={H} rx="18" />
+  {
+    layout.map((l) => (
+      <g>
+        <text class="hf-text hf-text--strong qmap__row" x="24" y={l.y + rowH / 2 + 9}>
+          {l.row.label}
+        </text>
+        {l.segs.map((s) => (
+          <g>
+            <rect class={s.n === 1 ? 'hf-amber' : s.tone} x={s.x} y={l.y} width={s.w} height={rowH} rx="8" />
+            <text class:list={['hf-text hf-text--strong qmap__n', { 'qmap__n--light': s.tone === 'hf-blue' && s.n !== 1 }]} x={s.x + s.w / 2} y={l.y + rowH / 2 + 9} text-anchor="middle">
+              {s.n}
+            </text>
+          </g>
+        ))}
+      </g>
+    ))
+  }
+  <div class="qmap__legend" slot="legend">
+    {
+      layout.map((l) => (
+        <div class="qmap__group">
+          <p class="qmap__set">
+            <a href={resolve(l.row.href)}>{l.row.label}</a> <span class="qmap__count">{countLabel(l.total, unit[0], unit[1])}</span>
+          </p>
+          <ol class="qmap__list" role="list">
+            {l.segs.map((s) => (
+              <li>
+                <span class="qmap__key" aria-hidden="true">{s.n}</span>
+                <a href={resolve(s.topic.href)}>{s.topic.label}</a>
+                <span class="qmap__count">{s.topic.count}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))
+    }
+  </div>
+</HubFigure>
+
+<style>
+  .qmap__row {
+    font-size: 26px;
+  }
+
+  .qmap__n {
+    fill: var(--we-blue-night);
+    font-size: 24px;
+  }
+
+  .qmap__n--light {
+    fill: var(--we-white);
+  }
+
+  .qmap__legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: var(--sp-4);
+  }
+
+  .qmap__group {
+    display: grid;
+    gap: var(--sp-1);
+    align-content: start;
+  }
+
+  .qmap__set {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .qmap__list {
+    display: grid;
+    gap: var(--sp-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-sm);
+
+    & li {
+      display: flex;
+      gap: var(--sp-2);
+      align-items: center;
+      min-block-size: 2.75rem;
+    }
+  }
+
+  .qmap__key {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border-radius: 50%;
+    background: var(--we-blue-night);
+    color: var(--we-white);
+    font-weight: 700;
+    font-size: var(--fs-xs);
+  }
+
+  .qmap__count {
+    color: var(--color-text-muted);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (forced-colors: active) {
+    .qmap__n,
+    .qmap__n--light {
+      fill: Canvas;
+    }
+
+    .qmap__key {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

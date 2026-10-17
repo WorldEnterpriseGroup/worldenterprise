@@ -10,11 +10,16 @@ import { findHubPage, hubStaticPaths, liveCards, pageRefs } from '../../componen
 import { journeySteps } from '../../components/families/view.ts';
 import { PROGRAM_STEPS } from '../../components/program/steps.ts';
 import { JOURNEY } from '../../data/families.ts';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import JourneyHolds from '../../components/hubs/JourneyHolds.astro';
+import JourneyLoop from '../../components/hubs/JourneyLoop.astro';
 import { getRenderable } from '../../lib/content.ts';
 
 /**
  * The journey hub (/journey/): the program's steps in order, then the questions the hub page lists (if its content owner wrote any),
- * then the journey pages that are live. The steps are the program's own; the page adds no step and no duration. The hub is a rest route
+ * then the journey pages that are live. The steps are the program's own; the page adds no step and no duration. Its two media moments
+ * (WP-24) draw those same steps: their order and loop, and what each one leaves in the founder's hands, with no time and no figure. The hub is a rest route
  * that yields only the root, so it is built only when its `journey/index` entry exists (pending otherwise, never an empty page).
  */
 export const getStaticPaths = (async () => hubStaticPaths(JOURNEY, await getRenderable('pages'))) satisfies GetStaticPaths;
@@ -35,6 +40,10 @@ const questions = family?.id === 'journey' ? family.questions : [];
   actions={journeyActions('index', isLive)}
   ogSlot={ogSlotFor('journey')}
 >
+  <HubLead slot="lead" label="The journey at a glance" balance="full">
+    <JourneyLoop />
+    <JourneyHolds />
+  </HubLead>
   <section class="stack" aria-labelledby="jny-hub-steps">
     <h2 id="jny-hub-steps">{HEADINGS.journey.steps}</h2>
     <JourneyList steps={journeySteps(PROGRAM_STEPS)} label={HEADINGS.journey.steps} />
@@ -51,4 +60,5 @@ const questions = family?.id === 'journey' ? family.questions : [];
       </section>
     )
   }
+  <HubEcosystem id="journey-ecosystem" />
 </FamilyHubPage>

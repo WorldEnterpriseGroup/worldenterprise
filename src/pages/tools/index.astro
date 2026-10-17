@@ -3,7 +3,14 @@ import { getEntry, render } from 'astro:content';
 import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
 import { liveItems } from '../../components/playbooks/links.ts';
 import { HUB, TOOLS } from '../../components/tools/registry.ts';
-import FeatureCard from '../../components/ui/FeatureCard.astro';
+import FilterIndex from '../../components/hubs/FilterIndex.astro';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { filterSlots, itemClasses } from '../../components/hubs/filter.ts';
+import ToolCard from '../../components/tools/ToolCard.astro';
+import ToolMap from '../../components/tools/ToolMap.astro';
+import { VERB_LABELS, schematicFor } from '../../components/tools/schematics.ts';
+import type { ToolVerb } from '../../components/tools/schematics.ts';
 import Grid from '../../components/ui/Grid.astro';
 import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
 import HubLayout from '../../layouts/HubLayout.astro';
@@ -15,6 +22,9 @@ const { data } = page;
 
 // A tool is listed only when its route is live in this build, so a tool that has not merged is never linked.
 const tools = await liveItems(TOOLS);
+// WP-24: the tool map (where each tool helps on the long road) and a filter by verb over cards that each show what the tool computes.
+const VERBS: readonly ToolVerb[] = ['calculate', 'check', 'prepare', 'sketch'];
+const slots = filterSlots(VERBS.map((verb) => ({ key: verb, label: VERB_LABELS[verb], count: tools.filter((t) => schematicFor(t.href).verb === verb).length })));
 ---
 
 <HubLayout
@@ -30,18 +40,22 @@ const tools = await liveItems(TOOLS);
   secondary={{ label: HUB.secondary, href: '/tools/team-composer/' }}
 >
   <NoFundingDisclaimer />
+  {tools.length > 0 && <ToolMap tools={tools} />}
   <div class="prose"><Content /></div>
-  <Grid min="20rem" as="ul">
-    {
-      tools.map((tool, index) => (
-        <li>
-          <FeatureCard headingLevel={2} title={tool.title} href={tool.href} eyebrow={tool.eyebrow} mark={String(index + 1)} tone="tint">
-            <p>{tool.summary}</p>
-          </FeatureCard>
-        </li>
-      ))
-    }
-  </Grid>
+  <HubMoment id="hub-tools-cards" kind="index">
+    <FilterIndex id="tool-filter" legend="Show tools that" options={slots} total={tools.length} unit={['tool', 'tools']} counts={false}>
+      <Grid min="20rem" as="ul">
+        {
+          tools.map((tool, index) => (
+            <li class={itemClasses(slots, [schematicFor(tool.href).verb])}>
+              <ToolCard tool={tool} mark={index + 1} />
+            </li>
+          ))
+        }
+      </Grid>
+    </FilterIndex>
+  </HubMoment>
+  <HubEcosystem id="tools-ecosystem" />
   <SafeCtaBand
     slot="after"
     title={HUB.ctaTitle}

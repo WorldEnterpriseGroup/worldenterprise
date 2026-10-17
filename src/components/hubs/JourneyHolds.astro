@@ -1,0 +1,117 @@
+---
+/**
+ * JourneyHolds: what the founder holds after each of the program's five steps, as an illustrated index (WP-24). Each card pairs a
+ * program icon from the visuals set (decorative; the words carry the meaning) with the step and the thing it leaves in the founder's
+ * hands, in words from the step's own body (journeyHolds() in ./journey.ts checks them against the program). No figure, no time and no
+ * promise. HTML, so it reads and zooms like text at any width; no script.
+ */
+import HubFigure from './HubFigure.astro';
+import { PHASE_LABELS, journeyHolds } from './journey.ts';
+import VisualIcon from '../visuals/VisualIcon.astro';
+import { cleanText } from '../visuals/contracts.ts';
+
+const holds = journeyHolds();
+for (const h of holds) cleanText('JourneyHolds', h.step, h.holds);
+---
+
+<HubFigure
+  id="hub-journey-hold"
+  kind="index"
+  drawing="html"
+  title="What you hold after each step"
+  caption="Every step leaves something written down or in place before the next one starts, so each decision rests on the one before."
+  credit="Index: World Enterprise Group Incorporated, from the program steps on this page. Icons: World Enterprise Group Incorporated."
+  class="jholds"
+>
+  <ol class="jholds__list" role="list" aria-label="What each step leaves you with">
+    {
+      holds.map((h, i) => (
+        <li class:list={['jholds__item', `jholds__item--${h.phase}`]}>
+          <VisualIcon name={h.icon} size={56} class="jholds__icon" />
+          <div class="jholds__text">
+            <p class="jholds__step">
+              <span class="jholds__n">{i + 1}</span> {h.step}
+            </p>
+            <p class="jholds__holds">{h.holds}</p>
+            <p class="jholds__phase">{PHASE_LABELS[h.phase]}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</HubFigure>
+
+<style>
+  .jholds__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap: var(--sp-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .jholds__item {
+    display: flex;
+    gap: var(--sp-3);
+    align-items: flex-start;
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md, 0.5rem);
+    background: var(--color-bg-soft);
+  }
+
+  /* The cycle steps repeat: a dashed edge marks them apart from the way in. */
+  .jholds__item--cycle {
+    border-style: dashed;
+    border-color: var(--color-border-strong);
+  }
+
+  .jholds__text {
+    display: grid;
+    gap: var(--sp-1);
+    min-inline-size: 0;
+  }
+
+  .jholds__text p {
+    margin: 0;
+  }
+
+  .jholds__step {
+    font-weight: 700;
+  }
+
+  .jholds__n {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 1.6rem;
+    block-size: 1.6rem;
+    margin-inline-end: var(--sp-1);
+    border-radius: 50%;
+    background: var(--we-blue-night);
+    color: var(--we-white);
+    font-size: var(--fs-xs);
+  }
+
+  .jholds__holds {
+    font-size: var(--fs-sm);
+  }
+
+  .jholds__phase {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  @media (forced-colors: active) {
+    .jholds__item {
+      border-color: CanvasText;
+    }
+
+    .jholds__n {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

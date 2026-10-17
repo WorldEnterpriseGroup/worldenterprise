@@ -1,0 +1,107 @@
+---
+/**
+ * HubEcosystem: the short pointer from a hub to the outside ecosystem (WP-24, wave 10 D-W10-1). Programs, public funding and the
+ * public data are independent of WE; the block says so and links the three ecosystem routes once they are live. The whole block is
+ * marked data-context="ecosystem", the one attribute that lets a page name programs outside WE. It names no program and implies no
+ * affiliation. The block sits on every hub, so its words also meet each hub's own copy contract, which reads the whole page whatever
+ * the context (the /investors/ and /journey/ specs; tests/unit/wp-24/journey.test.ts pins it). Renders nothing while none of the three
+ * routes is live.
+ */
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  /** Unique on the page. */
+  id?: string;
+  headingLevel?: 2 | 3;
+}
+
+const { id = 'hub-ecosystem', headingLevel = 2 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const state = await getRouteState();
+// The lines name outside programs, so they are written in the markup below, inside the marked element, never in a script string.
+const live = { ecosystem: state.isLive('/ecosystem/'), sbir: state.isLive('/sbir-sttr/'), data: state.isLive('/data/') };
+---
+
+{
+  (live.ecosystem || live.sbir || live.data) && (
+    <aside class="hub-eco" data-context="ecosystem" aria-labelledby={`${id}-title`}>
+      <div class="hub-eco__head">
+        <Heading class="hub-eco__title" id={`${id}-title`}>Beyond WE: programs, public funding and the data</Heading>
+        <p>
+          Accelerators, incubators, university programs and public funding are independent of WE, and no affiliation is implied. Many founders
+          join them. WE works alongside them, for the long run of building the company.
+        </p>
+      </div>
+      <ul class="hub-eco__list" role="list">
+        {live.ecosystem && (
+          <li class="hub-eco__item">
+            <a class="hub-eco__link" href={href('/ecosystem/')}>The ecosystem directory</a>
+            <p>Programs, university resources and funding sources outside WE, each described by what it is.</p>
+          </li>
+        )}
+        {live.sbir && (
+          <li class="hub-eco__item">
+            <a class="hub-eco__link" href={href('/sbir-sttr/')}>SBIR and STTR</a>
+            <p>How the federal research programs work and who runs them, from the agencies’ own pages.</p>
+          </li>
+        )}
+        {live.data && (
+          <li class="hub-eco__item">
+            <a class="hub-eco__link" href={href('/data/')}>The data</a>
+            <p>Survival, formation and funding timelines from public sources, with every figure dated.</p>
+          </li>
+        )}
+      </ul>
+    </aside>
+  )
+}
+
+<style>
+  .hub-eco {
+    display: grid;
+    gap: var(--sp-5);
+    padding: var(--sp-6);
+    border-radius: var(--radius-md, 0.5rem);
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
+  }
+
+  .hub-eco__head {
+    display: grid;
+    gap: var(--sp-2);
+    max-inline-size: var(--prose-max);
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .hub-eco__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--sp-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hub-eco__item {
+    display: grid;
+    gap: var(--sp-1);
+    align-content: start;
+
+    & > p {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+  }
+
+  .hub-eco__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    font-weight: 700;
+  }
+</style>

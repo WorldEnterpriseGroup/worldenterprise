@@ -1,0 +1,116 @@
+---
+/**
+ * HorizonCompare: two ways of working with a young company, drawn on one five-year axis (WP-24). A fixed-term program is a short bar at
+ * the start; incubation is a long bar from year 1 to year 5, as the typology in ST-10 describes them. The year-1 and year-5 survival
+ * gates from the BLS series (ST-01, ST-02) are marked across both, so the reader sees which program is still there when the gates come.
+ * Every number on the drawing comes from the register; the table lists them with their sources. Authored SVG; no script.
+ */
+import HubFigure from './HubFigure.astro';
+import { r1 } from './geometry.ts';
+import { STATS } from '../../data/sales/stats.ts';
+import { statSourceOf } from './stats.ts';
+
+const W = 1600;
+const H = 440;
+const x0 = 360;
+const x1 = W - 80;
+const years = 5;
+const xAt = (y: number): number => r1(x0 + ((x1 - x0) * y) / years);
+// ST-10: a fixed-term program usually runs about three months; incubation runs one to five years.
+const short = { from: 0, to: 0.25 };
+const long = { from: 1, to: 5 };
+const gates = [
+  { at: 1, value: STATS['ST-01'].value, line: 'still operating at year 1' },
+  { at: 5, value: STATS['ST-02'].value, line: 'still operating at year 5' },
+];
+const rowShort = 150;
+const rowLong = 260;
+const barH = 56;
+const sources = [statSourceOf('ST-10'), statSourceOf('ST-01'), statSourceOf('ST-02')];
+---
+
+<HubFigure
+  id="hub-compare-horizon"
+  kind="diagram"
+  title="Two horizons on one five-year axis"
+  caption="A fixed-term program is over before the first survival gate; incubation is still running at both."
+  credit={`Diagram: World Enterprise Group Incorporated, from ${sources[0]?.label ?? ''} (program lengths) and ${sources[1]?.label ?? ''} (survival gates).`}
+  width={W}
+  height={H}
+  alt={`A five-year axis. A short bar near the start, about three months long, is labelled fixed-term program. A long bar from year 1 to year 5 is labelled incubation. Two dashed gates cross both rows: year 1, ${gates[0]?.value ?? ''} still operating, and year 5, ${gates[1]?.value ?? ''} still operating.`}
+  tone="dark"
+  table={{
+    caption: 'The figures on the drawing',
+    columns: ['What', 'Figure', 'Source'],
+    rows: [
+      ['Fixed-term program, usual length', 'About 3 months', sources[0]?.label ?? ''],
+      ['Incubation, usual length', '1 to 5 years', sources[0]?.label ?? ''],
+      ...gates.map((g, i) => [`Establishments ${g.line}`, g.value, sources[i + 1]?.label ?? '']),
+    ],
+  }}
+>
+  <rect class="hf-sky" x="0" y="0" width={W} height={H} rx="18" />
+  {
+    Array.from({ length: years + 1 }, (_, y) => (
+      <>
+        <line class="hf-line" x1={xAt(y)} y1="90" x2={xAt(y)} y2={H - 70} />
+        <text class="hf-text hf-text--inverse horizon__tick" x={xAt(y)} y={H - 34} text-anchor="middle">
+          {y === 0 ? 'Start' : `Year ${y}`}
+        </text>
+      </>
+    ))
+  }
+  <text class="hf-text hf-text--inverse horizon__row" x="48" y={rowShort + 8}>Fixed-term program</text>
+  <text class="hf-text hf-text--inverse horizon__row" x="48" y={rowLong + 8}>Incubation</text>
+  <rect class="hf-star" x={xAt(short.from)} y={rowShort - barH / 2} width={r1(xAt(short.to) - xAt(short.from))} height={barH} rx="10" />
+  <text class="hf-text hf-text--inverse horizon__label" x={xAt(short.to) + 16} y={rowShort + 8}>About 3 months</text>
+  <rect class="hf-blue" x={xAt(long.from)} y={rowLong - barH / 2} width={r1(xAt(long.to) - xAt(long.from))} height={barH} rx="10" />
+  <text class="hf-text hf-text--strong horizon__label horizon__label--in" x={xAt(long.from) + 24} y={rowLong + 8}>1 to 5 years</text>
+  {
+    gates.map((g) => (
+      <g>
+        <line class="horizon__gate" x1={xAt(g.at)} y1="60" x2={xAt(g.at)} y2={H - 70} />
+        <circle class="hf-amber" cx={xAt(g.at)} cy="60" r="10" />
+        <text class="hf-text hf-text--strong hf-text--inverse horizon__gate-label" x={xAt(g.at) - 18} y="48" text-anchor="end">
+          {`${g.value} ${g.line}`}
+        </text>
+      </g>
+    ))
+  }
+</HubFigure>
+
+<style>
+  .horizon__tick,
+  .horizon__label {
+    font-size: 24px;
+  }
+
+  .horizon__row {
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  .horizon__label--in {
+    fill: var(--we-white);
+  }
+
+  .horizon__gate {
+    stroke: var(--we-amber);
+    stroke-width: 3;
+    stroke-dasharray: 8 8;
+  }
+
+  .horizon__gate-label {
+    font-size: 22px;
+  }
+
+  @media (forced-colors: active) {
+    .horizon__gate {
+      stroke: Highlight;
+    }
+
+    .horizon__label--in {
+      fill: Canvas;
+    }
+  }
+</style>
