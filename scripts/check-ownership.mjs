@@ -35,8 +35,8 @@ export function matches(path, globs) {
 }
 
 export function ownerOf(branch) {
-  // wp/12b is a follow-up work package of its own (WP-12b), not a suffix of WP-12.
-  const m = /^wp\/(\d{2}[a-z]?)(?:-[\w-]+)?$/.exec(branch) ?? /^wp\/\d{2}-(\d{2})$/.exec(branch);
+  // wp/12b is a follow-up work package of its own (WP-12b), not a suffix of WP-12. A three-digit package (WP-108) maps the same way.
+  const m = /^wp\/(\d{2,3}[a-z]?)(?:-[\w-]+)?$/.exec(branch) ?? /^wp\/\d{2}-(\d{2})$/.exec(branch);
   return m ? `WP-${m[1]}` : null;
 }
 
@@ -71,6 +71,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     process.exit(0);
   }
   const ownership = JSON.parse(readFileSync(new URL('../.astro-magazine/ownership.json', import.meta.url), 'utf8'));
+  // Three-digit packages (wp/101, wp/106) predate three-digit mapping and were never registered: they stay unpoliced until they are.
+  if (/^WP-\d{3}/.test(owner) && !ownership.assignments.some((a) => a.owner === owner)) {
+    console.log(`check-ownership: ${owner} has no assignment (three-digit packages are policed once registered), nothing to check`);
+    process.exit(0);
+  }
   let files;
   try {
     files = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`], { encoding: 'utf8' }).split('\n').filter(Boolean);
