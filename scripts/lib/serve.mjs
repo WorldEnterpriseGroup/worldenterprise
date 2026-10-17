@@ -63,6 +63,24 @@ export function parseRange(header, size) {
   return { start, end };
 }
 
+/**
+ * Validates a raw request target (`req.url`) and splits it into `{ pathname, search }`, or returns null when it must be rejected (400).
+ * Only origin-form targets with a single leading slash are accepted: `//` and `//host/x` (scheme-relative, which `new URL` either
+ * throws on or reads as a host), absolute-form targets, backslashes (WHATWG URL treats `\` as `/`, so `/\evil.example` would turn a
+ * redirect into an open redirect), control characters and NUL bytes are all refused. Dot segments are left to `resolveFile`.
+ */
+export function parseRequestTarget(raw) {
+  if (typeof raw !== 'string' || raw.length === 0 || raw[0] !== '/' || raw[1] === '/') return null;
+  if (/[\\\u0000-\u001f\u007f]/.test(raw)) return null;
+  const hash = raw.indexOf('#');
+  const target = hash === -1 ? raw : raw.slice(0, hash);
+  const query = target.indexOf('?');
+  const pathname = query === -1 ? target : target.slice(0, query);
+  const search = query === -1 ? '' : target.slice(query);
+  if (pathname.includes('//')) return null;
+  return { pathname, search };
+}
+
 /** Resolves a request path to a file under root, or null. Rejects traversal outside root. */
 export function resolveFile(root, pathname) {
   let decoded;
@@ -71,6 +89,7 @@ export function resolveFile(root, pathname) {
   } catch {
     return null;
   }
+  if (decoded.includes('\0')) return null;
   const target = normalize(join(root, decoded));
   if (target !== root && !target.startsWith(root + sep)) return null;
   if (existsSync(target) && statSync(target).isFile()) return { file: target, redirect: null };
@@ -91,7 +110,22 @@ export function createStaticServer(distDir, options = {}) {
   const root = resolve(distDir);
   if (!existsSync(root)) throw new Error(`dist directory not found: ${root}`);
   return createServer((req, res) => {
-    const url = new URL(req.url ?? '/', 'http://localhost');
+    try {
+      handle(req, res);
+    } catch (error) {
+      console.error(`serve: ${error instanceof Error ? error.message : String(error)}`);
+      if (!res.headersSent) res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('Internal server error');
+    }
+  });
+
+  function handle(req, res) {
+    const url = parseRequestTarget(req.url);
+    if (url === null) {
+      res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
+      res.end('Bad request');
+      return;
+    }
     const hit = resolveFile(root, url.pathname);
     if (hit?.redirect) {
       res.writeHead(301, { Location: hit.redirect + url.search });
@@ -144,7 +178,7 @@ export function createStaticServer(distDir, options = {}) {
     }
     res.writeHead(status, { ...headers, 'Content-Length': body.length });
     res.end(req.method === 'HEAD' ? undefined : body);
-  });
+  }
 }
 
 export function listen(server, port, host = '127.0.0.1') {
