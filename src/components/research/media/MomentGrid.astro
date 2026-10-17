@@ -1,0 +1,43 @@
+---
+/**
+ * MomentGrid (WP-23, #89): lays media moments side by side so a 1920 screen reads as a spread rather than one long column. One column on
+ * phones, two from 62rem, three from 110rem when `cols` is 3. A `Moment wide` spans the row.
+ */
+interface Props {
+  cols?: 2 | 3;
+  class?: string;
+}
+
+const { cols = 2, class: className } = Astro.props;
+---
+
+<div class:list={['moment-grid', `moment-grid--${cols}`, className]}>
+  <slot />
+</div>
+
+<style>
+  @layer pages {
+    .moment-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-7) var(--sp-6);
+      align-items: start;
+    }
+
+    @media (min-width: 62rem) {
+      .moment-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .moment-grid > :global(.moment--wide) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (min-width: 110rem) {
+      .moment-grid--3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  }
+</style>

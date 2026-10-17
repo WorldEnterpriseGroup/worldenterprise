@@ -4,6 +4,7 @@ import { IDENTITY } from '../../components/families/visual/copy.ts';
 import { HOW_WE_WORKS, READINESS_REVIEW, hubActions } from '../../components/families/visual/cta.ts';
 import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
 import VisualCards from '../../components/families/visual/VisualCards.astro';
+import PlaybooksHubMedia from '../../components/playbooks/PlaybooksHubMedia.astro';
 import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
 import PlaybookTrail from '../../components/playbooks/PlaybookTrail.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
@@ -35,6 +36,7 @@ const cards = entries.map(({ ref, entry }, i) => ({
   meta: `${entry.data.steps.length} steps`,
   index: i,
 }));
+const orbit = entries.map(({ ref }) => ({ label: ref.short, href: `/playbooks/${ref.slug}/` }));
 const actions = hubActions(state.isLive, { label: 'Open the templates', href: '/library/' });
 ---
 
@@ -65,13 +67,15 @@ const actions = hubActions(state.isLive, { label: 'Open the templates', href: '/
     <h2 id="pb-list-title">The playbooks, in order</h2>
     <VisualCards kind="playbooks" cards={cards} headingLevel={3} size="large" labelledby="pb-list-title" />
   </section>
+  <Fragment slot="after">
+  <PlaybooksHubMedia playbooks={orbit} />
   <SafeCtaBand
-    slot="after"
     title="Work through them with a team behind you"
     text="WE steers a dedicated team that builds the company with its founder, for as long as the work is useful. A readiness review is where that starts."
     primary={{ label: READINESS_REVIEW.label, href: READINESS_REVIEW.href }}
     secondary={{ label: HOW_WE_WORKS.label, href: HOW_WE_WORKS.href }}
   />
+  </Fragment>
 </HubLayout>
 
 <style>

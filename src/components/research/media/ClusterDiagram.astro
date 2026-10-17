@@ -1,0 +1,204 @@
+---
+/**
+ * ClusterDiagram (WP-23, #89): affinity sorting drawn out. Observations are dots, coded by kind (did, said, predicted), gathered into
+ * the clusters that become findings. The SVG is aria-hidden; the list under it states every cluster and its evidence in words. Counts
+ * come from the page's own worked example and are passed in; the component never invents them.
+ */
+import { cleanText } from '../../visuals/contracts.ts';
+
+export const CODES = ['D', 'S', 'P'] as const;
+export type Code = (typeof CODES)[number];
+
+export interface Cluster {
+  readonly label: string;
+  /** One code per observation in the cluster. */
+  readonly observations: readonly Code[];
+  readonly confidence: string;
+}
+
+interface Props {
+  title: string;
+  clusters: readonly Cluster[];
+  note: string;
+  headingLevel?: 3 | 4;
+  class?: string;
+}
+
+const { headingLevel = 3, class: className } = Astro.props;
+const title = cleanText('ClusterDiagram', 'title', Astro.props.title);
+const note = cleanText('ClusterDiagram', 'note', Astro.props.note);
+if (Astro.props.clusters.length < 2 || Astro.props.clusters.length > 5) throw new Error(`ClusterDiagram: takes 2 to 5 clusters, got ${Astro.props.clusters.length}`);
+const clusters = Astro.props.clusters.map((c, i) => {
+  if (c.observations.length < 1 || c.observations.length > 12) throw new Error(`ClusterDiagram: cluster ${i + 1} needs 1 to 12 observations`);
+  return { label: cleanText('ClusterDiagram', `cluster ${i + 1}`, c.label), observations: c.observations, confidence: cleanText('ClusterDiagram', `cluster ${i + 1} confidence`, c.confidence) };
+});
+const WORD: Record<Code, string> = { D: 'did', S: 'said', P: 'predicted' };
+const count = (obs: readonly Code[]): string =>
+  CODES.map((code) => ({ code, n: obs.filter((o) => o === code).length }))
+    .filter((x) => x.n > 0)
+    .map((x) => `${x.n} ${WORD[x.code]}`)
+    .join(', ');
+
+const W = 640;
+const VH = 220;
+const colW = W / clusters.length;
+const R = 13;
+const layout = clusters.map((c, ci) => {
+  const cx = colW * ci + colW / 2;
+  const cy = 100;
+  // Dots on a small hex spiral around the cluster center.
+  const ring = [[0, 0], [1, 0], [0.5, 0.87], [-0.5, 0.87], [-1, 0], [-0.5, -0.87], [0.5, -0.87], [2, 0], [1.5, 0.87], [1, 1.73], [-1, 1.73], [-1.5, 0.87]] as const;
+  const dots = c.observations.map((code, i) => {
+    const p = ring[i] ?? [0, 0];
+    return { x: Math.round(cx + p[0] * R * 2.1), y: Math.round(cy + p[1] * R * 2.1), code };
+  });
+  return { cx, cy, dots };
+});
+const H = headingLevel === 3 ? 'h3' : 'h4';
+---
+
+<figure class:list={['cluster', className]}>
+  <H class="cluster__title">{title}</H>
+  <svg class="cluster__art" viewBox={`0 0 ${W} ${VH}`} aria-hidden="true" focusable="false">
+    {
+      layout.map((l, ci) => (
+        <g>
+          <circle cx={l.cx} cy={l.cy + 12} r="74" class="cluster__halo" />
+          {l.dots.map((d) => (
+            <g>
+              <circle cx={d.x} cy={d.y} r={R} class={`cluster__dot cluster__dot--${d.code.toLowerCase()}`} />
+              <text x={d.x} y={d.y + 5} text-anchor="middle" class="cluster__code">
+                {d.code}
+              </text>
+            </g>
+          ))}
+          <text x={l.cx} y={VH - 8} text-anchor="middle" class="cluster__n">
+            Finding {ci + 1}
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+  <ol class="cluster__list">
+    {
+      clusters.map((c) => (
+        <li>
+          <strong>{c.label}</strong> <span class="cluster__ev">({c.observations.length} observations: {count(c.observations)}). {c.confidence}</span>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="cluster__legend">
+    <span class="cluster__key cluster__key--d" aria-hidden="true">D</span> did
+    <span class="cluster__key cluster__key--s" aria-hidden="true">S</span> said about the past
+    <span class="cluster__key cluster__key--p" aria-hidden="true">P</span> predicted
+  </p>
+  <figcaption class="cluster__note">{note}</figcaption>
+</figure>
+
+<style>
+  @layer pages {
+    .cluster {
+      margin: 0;
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .cluster__title {
+      margin: 0;
+      font-size: var(--fs-h4);
+    }
+
+    .cluster__art {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+    }
+
+    .cluster__halo {
+      fill: var(--we-tint);
+      opacity: 0.6;
+    }
+
+    .cluster__dot--d {
+      fill: var(--we-blue-deep);
+    }
+
+    .cluster__dot--s {
+      fill: var(--we-blue-hi);
+    }
+
+    .cluster__dot--p {
+      fill: var(--we-amber);
+    }
+
+    .cluster__code {
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 700;
+      fill: var(--we-white);
+    }
+
+    .cluster__dot--s + .cluster__code,
+    .cluster__dot--p + .cluster__code {
+      fill: var(--we-charcoal);
+    }
+
+    .cluster__n {
+      font-family: var(--ff-sans);
+      font-size: 15px;
+      font-weight: 600;
+      fill: var(--color-text);
+    }
+
+    .cluster__list {
+      margin: 0;
+      padding-inline-start: 1.4em;
+      display: grid;
+      gap: var(--sp-1);
+      font-size: var(--fs-sm);
+    }
+
+    .cluster__ev {
+      color: var(--color-text-muted);
+    }
+
+    .cluster__legend {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--sp-2);
+      font-size: var(--fs-xs);
+    }
+
+    .cluster__key {
+      display: inline-grid;
+      place-items: center;
+      inline-size: 1.4rem;
+      block-size: 1.4rem;
+      border-radius: 50%;
+      font-weight: 700;
+    }
+
+    .cluster__key--d {
+      background: var(--we-blue-deep);
+      color: var(--we-white);
+    }
+
+    .cluster__key--s {
+      background: var(--we-blue-hi);
+      color: var(--we-charcoal);
+    }
+
+    .cluster__key--p {
+      background: var(--we-amber);
+      color: var(--we-charcoal);
+    }
+
+    .cluster__note {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+  }
+</style>

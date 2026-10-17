@@ -48,5 +48,6 @@ const report = articleNode({ path: meta.path, headline: meta.title, description:
       </aside>
     </div>
   </div>
+  <slot name="after" />
   <slot name="cta-end"><CtaEnd path={meta.path} collection="research" cta={cta} /></slot>
 </BaseLayout>

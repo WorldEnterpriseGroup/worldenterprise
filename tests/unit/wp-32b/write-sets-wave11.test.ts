@@ -150,7 +150,18 @@ test('the lists the proof compares against are not empty, so it cannot pass by c
 test('the layout, page and header exceptions named in the orchestration brief are registered, each with a reason', () => {
   const want: Record<string, string[]> = {
     'WP-22': ['src/pages/about/index.astro', 'src/pages/network/index.astro', 'scripts/lib/audit-dist.mjs', 'scripts/lib/serve.mjs'],
-    'WP-23': ['src/layouts/BriefLayout.astro', 'src/layouts/PlaybookLayout.astro', 'src/layouts/ReferenceLayout.astro'],
+    // WP-23 (#89): the WP-87 guide spec's wave 8 image guard gives way to an image-quality check, the /who-we-work-with/ matrix table
+    // moves into the shared table-wrap frame, and WP-23 registers both in the policy, the map and this list.
+    'WP-23': [
+      'src/layouts/BriefLayout.astro',
+      'src/layouts/PlaybookLayout.astro',
+      'src/layouts/ReferenceLayout.astro',
+      'tests/e2e/wave8/wp-87/guides-templates.spec.ts',
+      'src/components/program/longevity/SituationMatrix.astro',
+      'tests/unit/wp-32b/write-sets-wave11.test.ts',
+      '.astro-magazine/ownership.json',
+      '.astro-magazine/plans/wave11/writesets.json',
+    ],
     'WP-24': ['src/layouts/HubLayout.astro', 'src/layouts/ToolLayout.astro', 'src/layouts/TemplateLayout.astro'],
     'WP-25': ['src/components/layout/Header.astro'],
     'WP-26': ['src/layouts/ArticleLayout.astro', 'src/components/insights/**', 'src/components/geo/mdx-transform.ts', 'tests/unit/wp-91/mdx-transform.test.ts'],
