@@ -30,6 +30,8 @@
 #     * wp/*: when the branch changes a site-affecting path compared with demo (the `changes:` list of .qa-rules). A branch that only
 #       changes handoffs, decisions, ownership, docs or unit tests builds the same dist/ as demo, so the qa jobs would repeat demo's run.
 #     * any other branch: preflight only.
+#   Flakes must not cancel a pipeline: the runner retries clone, artifact download and cache restore in place (GET_SOURCES_ATTEMPTS and
+#     friends), and runner-side failures are retried once (default: retry). Test failures and timeouts are never retried automatically.
 #   No suite was removed or weakened: the same jobs run, scheduled where they can find something. QA_STRICT still controls allow_failure.
 
 include:
@@ -82,6 +84,12 @@ variables:
   # Full history for every job: sitemap lastmod reads git dates, check:ownership diffs against demo.
   GIT_DEPTH: "0"
   PLAYWRIGHT_IMAGE: "${IMAGE_REGISTRY}/mcr-proxy/playwright:v1.63.0-noble"
+  # Fail-fast (on_job_failure: all on wp/*) turns one infrastructure flake into a cancelled pipeline: pipeline 70683 lost nine jobs when
+  # verify:release's full-history clone dropped ("RPC failed; curl 18 transfer closed", GIT_DEPTH 0 under cluster congestion). The runner
+  # retries the clone, the artifact download and the cache restore in place, so a transient network error is not a job failure.
+  GET_SOURCES_ATTEMPTS: "3"
+  ARTIFACT_DOWNLOAD_ATTEMPTS: "3"
+  RESTORE_CACHE_ATTEMPTS: "3"
   npm_config_cache: "${CI_PROJECT_DIR}/.npm"
   npm_config_update_notifier: "false"
   # The one operator-gated item verify:release tolerates off gh-pages: the intake and newsletter endpoints are not provisioned,
@@ -99,6 +107,15 @@ variables:
     expand: false
   # Every qa job blocks on every branch (decision I-10). Set by WP-15 after a wp/15 pipeline passed all of them.
   QA_STRICT: "1"
+
+# Runner-side failures (pod lost, scheduler or API error) are retried once; script and test failures, and job timeouts, are not.
+default:
+  retry:
+    max: 1
+    when:
+      - runner_system_failure
+      - scheduler_failure
+      - api_failure
 
 # npm packages are cached per lockfile. Playwright browsers ship inside the Playwright image, so nothing is downloaded per job.
 .npm-cache:
