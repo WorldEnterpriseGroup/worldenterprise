@@ -4248,6 +4248,11 @@
     },
     {
       "wp": "WP-32",
+      "path": "tests/e2e/wave8/wp-72/resources.spec.ts",
+      "reason": "Wave 10 follow-up (CI owner): the resources hub 'no card is empty' check reads every card in one evaluateAll instead of one assertion per card; 115 round trips outran the 45 s timeout on a busy runner (demo pipeline 70210). Same assertion, same failure detail."
+    },
+    {
+      "wp": "WP-32",
       "path": "astro.config.mjs",
       "reason": "Home LCP fix (wp/32-css-inline): vite build.assetsInlineLimit now calls inlineAssetLimit from src/lib/stylesheet-inlining.ts, so every CSS chunk but the shared BaseLayout one is inlined (with CSP hashes) instead of shipping as its own render-blocking stylesheet."
     },

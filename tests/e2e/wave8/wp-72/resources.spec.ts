@@ -35,10 +35,12 @@ test.describe('resources hub', () => {
     await page.goto(ROUTE);
     const groups = page.locator('main [role="group"]');
     expect(await groups.count()).toBeGreaterThan(0);
-    for (const group of await groups.all()) {
-      await expect(group).toHaveAccessibleName(/\S/);
-      for (const card of await group.locator('li').all()) await expect(card.locator('a')).toHaveCount(1);
-    }
+    for (const group of await groups.all()) await expect(group).toHaveAccessibleName(/\S/);
+    // One read for every card: an assertion per card is a round trip per card, and 115 of them outran the timeout on a busy runner.
+    const empty = await groups.evaluateAll((nodes) =>
+      nodes.flatMap((group, g) => [...group.querySelectorAll('li')].flatMap((card, c) => (card.querySelectorAll('a').length === 1 ? [] : [`group ${g + 1}, card ${c + 1}: ${card.querySelectorAll('a').length} links`]))),
+    );
+    expect(empty, 'cards without exactly one link').toEqual([]);
   });
 
   test('every card link resolves to a built page', async ({ page, request }) => {
