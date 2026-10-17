@@ -45,7 +45,24 @@ export const CHOOSE_ROWS: readonly ChooseRow[] = [
 
 export const DIRECTORY_HEADING = 'The directory';
 export const DIRECTORY_LEAD =
-  'Every entry names what the program offers, who it is for, where it is, how it runs, and the page we checked. Filter below, or jump to a category.';
+  'Each category starts with a few programs. Open its full list to see every entry: what the program offers, who it is for, where it is, how it runs, and the page we checked. Filter below, or jump to a category.';
+
+/** How many programs each category of the hub shows before its full list (the rest sits in a native <details>). */
+export const PREVIEW_COUNT = 3;
+/** The plural, mid-sentence name of each category, for the label of its full list on the hub. */
+export const CATEGORY_LIST_NAMES: Readonly<Record<CategoryId, string>> = {
+  'launch-programs': 'accelerators and cohort programs',
+  incubators: 'incubators',
+  university: 'university and research programs',
+  coworking: 'coworking and community spaces',
+  angels: 'angel groups and investor-relations programs',
+  sba: 'SBA resource partners',
+  government: 'government and community funding programs',
+  communities: 'founder communities',
+};
+export const ALL_IN_CATEGORY = (n: number, listName: string): string => `All ${n} ${listName}`;
+export const PREVIEW_LABEL = (shown: number, total: number): string => `${shown} of the ${total}, in short`;
+export const CATEGORY_PAGE_LINK = 'This kind of program on its own page';
 
 export const FILTER_LEGEND = 'Filter the directory';
 export const FILTER_STATUS_ALL = (n: number): string => `Showing all ${n} programs.`;

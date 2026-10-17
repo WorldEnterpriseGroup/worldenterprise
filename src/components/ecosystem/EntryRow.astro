@@ -2,6 +2,9 @@
 /**
  * One program of the directory (WP-33): a list item with a short definition list and an external link. The data-* attributes feed the
  * filter (src/scripts/ecosystem-filter.ts); without JavaScript they do nothing and the row is plain HTML.
+ * `compact` leaves out the definition list and the source line (the hub's short preview of each category; the full row of the same
+ * program, with both, sits in the category's full list and on the category page). `filterable={false}` leaves out the filter
+ * hooks, so a preview row is not counted twice: the full row of the same program sits in the category's full list.
  */
 import { AUDIENCE_LABELS, DELIVERY_LABELS, EXTERNAL_MARK, OPENS_NOTE, STAGE_LABELS } from '../../data/ecosystem/copy.ts';
 import type { EcosystemEntry } from '../../data/ecosystem/types.ts';
@@ -12,9 +15,13 @@ interface Props {
   level?: 3 | 4;
   /** Prefix of the anchor id, so a program can sit on the hub and on its category page without a duplicate id. */
   idPrefix?: string;
+  /** Name, offer and the program link only: no definition list, no source line. */
+  compact?: boolean;
+  /** Carry the data-eco-row hooks the filter reads. */
+  filterable?: boolean;
 }
 
-const { entry: e, level = 3, idPrefix = 'p-' } = Astro.props;
+const { entry: e, level = 3, idPrefix = 'p-', compact = false, filterable = true } = Astro.props;
 const Heading = `h${level}` as 'h3' | 'h4';
 const stages = e.stages.map((s) => STAGE_LABELS[s]).join(', ');
 const audiences = e.audiences.map((a) => AUDIENCE_LABELS[a]).join(', ');
@@ -24,15 +31,16 @@ const month = 'October 2026';
 ---
 
 <li
-  class="eco-row"
-  data-eco-row
+  class:list={['eco-row', { 'eco-row--compact': compact }]}
+  data-eco-row={filterable ? '' : undefined}
   data-category={e.category}
-  data-stages={e.stages.join(' ')}
-  data-audiences={e.audiences.join(' ')}
-  data-remote={remote ? 'yes' : 'no'}
+  data-stages={filterable ? e.stages.join(' ') : undefined}
+  data-audiences={filterable ? e.audiences.join(' ') : undefined}
+  data-remote={filterable ? (remote ? 'yes' : 'no') : undefined}
 >
   <Heading class="eco-row__name" id={id}>{e.name}</Heading>
   <p class="eco-row__offers">{e.offers}</p>
+  {!compact && (
   <dl class="eco-row__facts">
     <div><dt>Who it is for</dt><dd>{e.whoFor}</dd></div>
     <div><dt>Format</dt><dd>{e.format}</dd></div>
@@ -41,11 +49,12 @@ const month = 'October 2026';
     <div><dt>Open to</dt><dd>{audiences}</dd></div>
     {e.terms !== undefined && <div><dt>Stated terms</dt><dd>{e.terms}</dd></div>}
   </dl>
+  )}
   <p class="eco-row__links">
     <a class="eco-row__visit" href={e.url} rel="noopener">
       Visit {e.name}<span class="eco-row__external" aria-hidden="true"> ({EXTERNAL_MARK})</span><span class="visually-hidden"> ({EXTERNAL_MARK}). {OPENS_NOTE}</span>
     </a>
-    <span class="eco-row__source">Source: <a href={e.sourceUrl} rel="noopener">program page</a>, retrieved {month}.</span>
+    {!compact && <span class="eco-row__source">Source: <a href={e.sourceUrl} rel="noopener">program page</a>, retrieved {month}.</span>}
   </p>
 </li>
 
@@ -61,6 +70,11 @@ const month = 'October 2026';
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       background: var(--color-bg);
+    }
+
+    .eco-row--compact {
+      gap: var(--sp-2);
+      padding: var(--sp-4);
     }
 
     .eco-row[hidden] {
