@@ -4205,6 +4205,16 @@
       "wp": "WP-23",
       "path": ".astro-magazine/plans/wave11/writesets.json",
       "reason": "Wave 11 (#89): mirrors the WP-23 exceptions so tests/unit/wp-32b/write-sets-wave11.test.ts keeps policy and proof equal."
+    },
+    {
+      "wp": "WP-32",
+      "path": "astro.config.mjs",
+      "reason": "Home LCP fix (wp/32-css-inline): vite build.assetsInlineLimit now calls inlineAssetLimit from src/lib/stylesheet-inlining.ts, so every CSS chunk but the shared BaseLayout one is inlined (with CSP hashes) instead of shipping as its own render-blocking stylesheet."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/lib/stylesheet-inlining.ts",
+      "reason": "Home LCP fix (wp/32-css-inline): the pure, unit-tested inlining policy astro.config.mjs uses (Astro's 4096 raw-byte fallback left the 4.4 to 13 KB component chunks external)."
     }
   ],
   "notes": [
