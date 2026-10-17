@@ -4260,6 +4260,16 @@
       "wp": "WP-32",
       "path": "src/lib/stylesheet-inlining.ts",
       "reason": "Home LCP fix (wp/32-css-inline): the pure, unit-tested inlining policy astro.config.mjs uses (Astro's 4096 raw-byte fallback left the 4.4 to 13 KB component chunks external)."
+    },
+    {
+      "wp": "WP-25",
+      "path": ".astro-magazine/events.ndjson",
+      "reason": "Studio checkpoint (#91): the append-only event log is integrator-owned; seq 3 onward are the wave 9 to 11 merges, demo push pipelines and issue closures reconstructed from GitLab, each with its source id."
+    },
+    {
+      "wp": "WP-25",
+      "path": ".astro-magazine/checkpoints/**",
+      "reason": "Studio checkpoint (#91): the immutable gate snapshot of checkpoint.json that README.md promises under checkpoints/."
     }
   ],
   "notes": [
