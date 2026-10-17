@@ -2,7 +2,10 @@
   "$comment": "Wave 10 write-set map (WP-32 to WP-38, issues #81 to #87). Stage 0 WP-32 (governance, merges first), stage 1 WP-33 to WP-36 and WP-38 in parallel, stage 2 WP-37 (links to /ecosystem/ and /sbir-sttr/, merges after WP-33 and WP-34 or links only routes that exist). `sharedExceptions` lists the only paths that may appear in the exceptions of more than one package, each limited by its reason text (a marked block of src/data/routes.ts, a baseline json). tests/unit/wp-32/write-sets-wave10.test.ts keeps this file equal to .astro-magazine/ownership.json.",
   "sharedExceptions": [
     "src/data/routes.ts",
-    "tests/unit/wp-45/props-baseline.json"
+    "tests/unit/wp-45/props-baseline.json",
+    "src/data/claims.ts",
+    ".astro-magazine/ownership.json",
+    ".astro-magazine/plans/wave10/writesets.json"
   ],
   "workPackages": [
     {
@@ -124,7 +127,8 @@
         "tests/unit/wp-45/props-baseline.json",
         "tests/unit/wp-45/pinned-props.test.ts",
         "src/data/claims.ts",
-        ".astro-magazine/ownership.json"
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/plans/wave10/writesets.json"
       ]
     },
     {
