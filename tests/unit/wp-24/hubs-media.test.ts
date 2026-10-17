@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { test } from 'node:test';
 import { HUB_MOMENTS, MOMENT_KINDS, TOOL_SCHEMATIC_PAGES, mediaId, momentKind } from '../../../src/components/hubs/moments.ts';
-import { HUB_FIGURES, HUB_STATS, JOURNEY_CLOCK, statSourceOf, tile } from '../../../src/components/hubs/stats.ts';
+import { HUB_FIGURES, HUB_STATS, statSourceOf, tile } from '../../../src/components/hubs/stats.ts';
 import { STATS } from '../../../src/data/sales/stats.ts';
 import type { StatId } from '../../../src/data/sales/stats.ts';
 import { SALES_SOURCES } from '../../../src/data/sales/sources.ts';
@@ -171,18 +171,6 @@ test('every statistic a hub cites is in the register, and the hub files cite onl
       assert.match(source, new RegExp(`\\b${name}\\b`), `${route} does not use ${name}`);
     }
   }
-});
-
-test('the journey clock places each gate where its register entry says', () => {
-  const at = JOURNEY_CLOCK.map((m) => m.at);
-  assert.deepEqual(at, [...at].sort((a, b) => a - b), 'milestones in order');
-  assert.ok(Math.abs((JOURNEY_CLOCK[0]?.at ?? 0) - 2.29 / 4) < 1e-9, 'ST-08: 2.29 quarters');
-  assert.match(STATS['ST-08'].value, /^2\.29 quarters$/);
-  assert.equal(JOURNEY_CLOCK[1]?.label, `${STATS['ST-01'].value} still operating`);
-  assert.equal(JOURNEY_CLOCK[3]?.label, `${STATS['ST-02'].value} still operating`);
-  assert.equal(JOURNEY_CLOCK[4]?.label, `${STATS['ST-03'].value} still operating`);
-  assert.match(STATS['ST-05'].value, /^42 months$/);
-  assert.equal(JOURNEY_CLOCK[2]?.at, 3.5);
 });
 
 interface LedgerSource {

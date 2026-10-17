@@ -8,8 +8,8 @@ interface Props {
   /** Id of the heading that names the section; the heading is the caller's. */
   labelledby?: string;
   label?: string;
-  /** `even` splits the frame in half instead of two to one. */
-  balance?: 'wide' | 'even';
+  /** `even` splits the frame in half instead of two to one; `full` stacks the moments across the whole frame (no side column). */
+  balance?: 'wide' | 'even' | 'full';
   class?: string;
 }
 

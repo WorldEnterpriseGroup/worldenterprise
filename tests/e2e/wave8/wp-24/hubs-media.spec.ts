@@ -25,7 +25,7 @@ const HUBS: readonly Hub[] = [
   { path: '/resources/', moments: ['hub-resources-matrix', 'hub-resources-formation'], kinds: 2 },
   { path: '/industries/', moments: ['hub-industries-orbit', 'hub-industries-survival', 'hub-industries-swarm'], kinds: 3 },
   { path: '/compare/', moments: ['hub-compare-horizon', 'hub-compare-odds'], kinds: 2 },
-  { path: '/journey/', moments: ['hub-journey-clock', 'hub-journey-rounds'], kinds: 2 },
+  { path: '/journey/', moments: ['hub-journey-loop', 'hub-journey-hold'], kinds: 2 },
   { path: '/founders/', moments: ['hub-founders-age', 'hub-founders-figures', 'hub-founders-situations'], kinds: 3 },
   { path: '/investors/', moments: ['hub-investors-gaps', 'hub-investors-dilution', 'hub-investors-figures'], kinds: 2 },
   { path: '/faq/', moments: ['hub-faq-map', 'hub-faq-figures'], kinds: 2 },

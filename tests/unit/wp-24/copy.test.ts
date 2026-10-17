@@ -16,6 +16,7 @@ const COMPONENTS = [
   'src/components/hubs/filter.ts',
   'src/components/hubs/stats.ts',
   'src/components/hubs/moments.ts',
+  'src/components/hubs/journey.ts',
   'src/components/tools/ToolMap.astro',
   'src/components/tools/ToolSchematic.astro',
   'src/components/tools/ToolCard.astro',
@@ -85,5 +86,4 @@ test('the new hub components speak of people per role, never seats or employer-o
 
 test('the funding hubs keep the no-promise line beside the funding figures', () => {
   assert.match(read('src/pages/investors/index.astro'), /hub-investors-figures[\s\S]*?WE makes no promise of funding\./);
-  assert.match(read('src/pages/journey/[...hub].astro'), /roundAgeBars[^\n]*WE makes no promise of funding\./);
 });

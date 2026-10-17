@@ -43,7 +43,7 @@ const slots = filterSlots(VERBS.map((verb) => ({ key: verb, label: VERB_LABELS[v
   {tools.length > 0 && <ToolMap tools={tools} />}
   <div class="prose"><Content /></div>
   <HubMoment id="hub-tools-cards" kind="index">
-    <FilterIndex id="tool-filter" legend="Show tools that" options={slots} total={tools.length} unit={['tool', 'tools']}>
+    <FilterIndex id="tool-filter" legend="Show tools that" options={slots} total={tools.length} unit={['tool', 'tools']} counts={false}>
       <Grid min="20rem" as="ul">
         {
           tools.map((tool, index) => (

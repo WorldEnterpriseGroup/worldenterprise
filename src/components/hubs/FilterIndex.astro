@@ -23,12 +23,14 @@ interface Props {
   total: number;
   /** Singular and plural nouns for the counts. */
   unit: readonly [string, string];
+  /** Show the count beside each option (default). A hub whose copy names no number of items (/tools/) turns it off. */
+  counts?: boolean;
   /** One line under the legend. */
   hint?: string;
   class?: string;
 }
 
-const { id, options, total, unit, class: className } = Astro.props;
+const { id, options, total, unit, counts = true, class: className } = Astro.props;
 if (!/^[a-z][a-z0-9-]*$/.test(id)) throw new Error(`FilterIndex: id "${id}" must be lower-case letters, digits and hyphens`);
 if (options.length > FILTER_SLOTS) throw new Error(`FilterIndex "${id}": ${options.length} options, at most ${FILTER_SLOTS}`);
 const legend = cleanText('FilterIndex', 'legend', Astro.props.legend);
@@ -43,14 +45,28 @@ for (const o of options) cleanText('FilterIndex', `option ${o.key}`, o.label);
     <div class="fi__options">
       <label class="fi__option">
         <input class="fi__input fi__input--all" type="radio" name={id} value="all" checked />
-        <span>All <span class="fi__count">{countLabel(total, unit[0], unit[1])}</span></span>
+        <span>
+          All
+          {counts && (
+            <>
+              {' '}
+              <span class="fi__count">{countLabel(total, unit[0], unit[1])}</span>
+            </>
+          )}
+        </span>
       </label>
       {
         options.map((o) => (
           <label class="fi__option">
             <input class:list={['fi__input', `fi__input--${o.slot}`]} type="radio" name={id} value={o.key} />
             <span>
-              {o.label} <span class="fi__count">{countLabel(o.count, unit[0], unit[1])}</span>
+              {o.label}
+              {counts && (
+                <>
+                  {' '}
+                  <span class="fi__count">{countLabel(o.count, unit[0], unit[1])}</span>
+                </>
+              )}
             </span>
           </label>
         ))

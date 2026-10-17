@@ -66,9 +66,9 @@ export const HUB_MOMENTS: Readonly<Record<string, HubInventory>> = {
     interaction: 'The horizon figure opens its data table; each card opens one comparison.',
   },
   '/journey/': {
-    files: ['src/pages/journey/[...hub].astro'],
-    moments: ['hub-journey-clock', 'hub-journey-rounds'],
-    interaction: 'The timeline links each gate to its source; the step list opens each step.',
+    files: ['src/pages/journey/[...hub].astro', 'src/components/hubs/JourneyLoop.astro', 'src/components/hubs/JourneyHolds.astro'],
+    moments: ['hub-journey-loop', 'hub-journey-hold'],
+    interaction: 'The loop opens its table of steps; the step list below opens each step.',
   },
   '/founders/': {
     files: ['src/pages/founders/index.astro'],

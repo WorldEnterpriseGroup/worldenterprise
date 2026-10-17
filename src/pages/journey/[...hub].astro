@@ -12,16 +12,14 @@ import { PROGRAM_STEPS } from '../../components/program/steps.ts';
 import { JOURNEY } from '../../data/families.ts';
 import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
 import HubLead from '../../components/hubs/HubLead.astro';
-import HubMoment from '../../components/hubs/HubMoment.astro';
-import { JOURNEY_CLOCK } from '../../components/hubs/stats.ts';
-import LongHorizonTimeline from '../../components/visuals/LongHorizonTimeline.astro';
-import BarChart from '../../components/visuals/charts/BarChart.astro';
-import { roundAgeBars } from '../../data/datasets/figures.ts';
+import JourneyHolds from '../../components/hubs/JourneyHolds.astro';
+import JourneyLoop from '../../components/hubs/JourneyLoop.astro';
 import { getRenderable } from '../../lib/content.ts';
 
 /**
  * The journey hub (/journey/): the program's steps in order, then the questions the hub page lists (if its content owner wrote any),
- * then the journey pages that are live. The steps are the program's own; the page adds no step and no duration. The hub is a rest route
+ * then the journey pages that are live. The steps are the program's own; the page adds no step and no duration. Its two media moments
+ * (WP-24) draw those same steps: their order and loop, and what each one leaves in the founder's hands, with no time and no figure. The hub is a rest route
  * that yields only the root, so it is built only when its `journey/index` entry exists (pending otherwise, never an empty page).
  */
 export const getStaticPaths = (async () => hubStaticPaths(JOURNEY, await getRenderable('pages'))) satisfies GetStaticPaths;
@@ -42,13 +40,9 @@ const questions = family?.id === 'journey' ? family.questions : [];
   actions={journeyActions('index', isLive)}
   ogSlot={ogSlotFor('journey')}
 >
-  <HubLead slot="lead" label="The journey at a glance">
-    <HubMoment id="hub-journey-clock" kind="timeline" heading="The real clock of a company" headingLevel={2} lead="Published figures for all U.S. businesses, not the length of any program step: the first payroll comes in months, the point a business counts as established in years.">
-      <LongHorizonTimeline milestones={JOURNEY_CLOCK} horizon={10} label="Gates on the ten-year clock" id="journey-clock" />
-    </HubMoment>
-    <HubMoment slot="side" id="hub-journey-rounds" kind="chart" heading="How old companies are when they raise" headingLevel={2} lead="For the venture-backed companies that do raise, each round comes years after the start.">
-      <BarChart {...roundAgeBars} max={12} note="Venture-backed companies only. WE makes no promise of funding." />
-    </HubMoment>
+  <HubLead slot="lead" label="The journey at a glance" balance="full">
+    <JourneyLoop />
+    <JourneyHolds />
   </HubLead>
   <section class="stack" aria-labelledby="jny-hub-steps">
     <h2 id="jny-hub-steps">{HEADINGS.journey.steps}</h2>

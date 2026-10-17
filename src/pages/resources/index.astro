@@ -39,6 +39,10 @@ const toc = [
   ...(kind.length > 0 ? [{ slug: 'resources-kind', text: RESOURCES_COPY.kind.heading }] : []),
 ];
 // WP-24: the same pages counted two ways (stage by kind), the formation clock beside it, and a filter by stage over the stage groups.
+// The two figures open the "Start where you are" section, under its h2, so that heading stays the page's first h2 (the WP-72 contract)
+// and the formation heading is an h3 beneath it. With no stage groups there is no matrix and the formation figures stand alone.
+const FORMATION_TILES = [tile('ST-06'), tile('ST-07'), tile('ST-08')];
+const FORMATION_LEAD = 'Many companies are filed each year; few reach a first payroll, and the ones that do take longer than they used to.';
 const matrixColumns = kind.filter((k) => stage.some((s) => s.items.some((i) => k.items.some((j) => j.path === i.path))));
 const counts = stage.map((s) => matrixColumns.map((k) => s.items.filter((i) => k.items.some((j) => j.path === i.path)).length));
 const stageSlots = filterSlots(stage.map((g) => ({ key: g.id, label: g.title, count: g.items.length })));
@@ -59,38 +63,38 @@ const secondary = state.isLive('/library/') ? { label: RESOURCES_COPY.openTempla
   toc={toc}
 >
   <div slot="panel"><EmblemFrame kind="resources" caption={IDENTITY.resources.caption} /></div>
-  <HubLead label="The resources at a glance" balance="even">
-    {
-      stage.length > 0 && matrixColumns.length > 0 ? (
-        <CountMatrix
-          id="hub-resources-matrix"
-          title="Where the pages sit, by stage and by kind"
-          caption="Each stage of the long road draws on several kinds of page. A bigger dot means more pages in that cell."
-          credit="Chart: World Enterprise Group Incorporated, counted at build time from the pages listed on this hub."
-          corner="Stage"
-          rows={stage.map((g) => ({ key: g.id, label: g.title, href: `#resources-stage-${g.id}` }))}
-          columns={matrixColumns.map((k) => ({ key: k.id, label: k.title, href: `#resources-kind-${k.id}` }))}
-          counts={counts}
-          unit={['page', 'pages']}
-        />
-      ) : null
-    }
-    <HubMoment
-      slot="side"
-      id="hub-resources-formation"
-      kind="stats"
-      heading="The road from filing to payroll"
-      headingLevel={2}
-      lead="Many companies are filed each year; few reach a first payroll, and the ones that do take longer than they used to."
-    >
-      <StatTiles stats={[tile('ST-06'), tile('ST-07'), tile('ST-08')]} label="From filing to first payroll" id="resources-formation" class="resources-formation" />
-    </HubMoment>
-  </HubLead>
   {
     stage.length > 0 && (
       <section class="stack" aria-labelledby="resources-stage">
         <h2 id="resources-stage">{RESOURCES_COPY.stage.heading}</h2>
         <p class="measure">{RESOURCES_COPY.stage.intro}</p>
+        <HubLead label="The resources at a glance" balance="even">
+          {
+            matrixColumns.length > 0 ? (
+              <CountMatrix
+                id="hub-resources-matrix"
+                title="Where the pages sit, by stage and by kind"
+                caption="Each stage of the long road draws on several kinds of page. A bigger dot means more pages in that cell."
+                credit="Chart: World Enterprise Group Incorporated, counted at build time from the pages listed on this hub."
+                corner="Stage"
+                rows={stage.map((g) => ({ key: g.id, label: g.title, href: `#resources-stage-${g.id}` }))}
+                columns={matrixColumns.map((k) => ({ key: k.id, label: k.title, href: `#resources-kind-${k.id}` }))}
+                counts={counts}
+                unit={['page', 'pages']}
+              />
+            ) : null
+          }
+          <HubMoment
+            slot="side"
+            id="hub-resources-formation"
+            kind="stats"
+            heading="The road from filing to payroll"
+            headingLevel={3}
+            lead={FORMATION_LEAD}
+          >
+            <StatTiles stats={FORMATION_TILES} label="From filing to first payroll" id="resources-formation" class="resources-formation" />
+          </HubMoment>
+        </HubLead>
         <FilterIndex id="stage-filter" legend="Show one stage" options={stageSlots} total={stageTotal} unit={['page', 'pages']}>
           {stage.map((group) => (
             <div class={itemClasses(stageSlots, [group.id])}>
@@ -101,6 +105,13 @@ const secondary = state.isLive('/library/') ? { label: RESOURCES_COPY.openTempla
           ))}
         </FilterIndex>
       </section>
+    )
+  }
+  {
+    stage.length === 0 && (
+      <HubMoment id="hub-resources-formation" kind="stats" heading="The road from filing to payroll" headingLevel={2} lead={FORMATION_LEAD}>
+        <StatTiles stats={FORMATION_TILES} label="From filing to first payroll" id="resources-formation" class="resources-formation" />
+      </HubMoment>
     )
   }
   {
