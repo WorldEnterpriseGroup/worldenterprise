@@ -13,7 +13,7 @@ const {
   seats,
   company = 'Your company sets the goals and makes the decisions.',
   steering = 'WE steers the team and manages its subcontractors.',
-  label = 'How a dedicated team is organized: your company, WE steering, and the seats',
+  label = 'How a dedicated team is organized: your company, WE steering, and the team roles',
 } = Astro.props;
 ---
 
@@ -28,7 +28,7 @@ const {
     <p>{steering}</p>
   </div>
   <div class="seatdiagram__link" aria-hidden="true"></div>
-  <ul class="seatdiagram__seats" role="list" aria-label="Dedicated seats">
+  <ul class="seatdiagram__seats" role="list" aria-label="Roles on the dedicated team">
     {
       seats.map((s) => (
         <li class="seatdiagram__seat">

@@ -15,14 +15,14 @@ test.describe('Team Composer', () => {
     await page.goto('/tools/team-composer/');
     const composer = page.locator('we-team-composer');
     const headline = composer.locator('[data-headline]');
-    await expect(headline).toContainText('No seats chosen yet');
+    await expect(headline).toContainText('No roles chosen yet');
     const first = composer.locator('input.composer__seats').first();
     await first.fill('2');
-    await expect(headline).not.toContainText('No seats chosen yet');
+    await expect(headline).not.toContainText('No roles chosen yet');
     await expect(composer.locator('[data-roster]')).toBeVisible();
     await expect(composer.locator('[data-roster] li')).toHaveCount(1);
     await composer.getByRole('button', { name: 'Clear' }).click();
-    await expect(headline).toContainText('No seats chosen yet');
+    await expect(headline).toContainText('No roles chosen yet');
     expect(seen.consoleErrors).toEqual([]);
   });
 
@@ -38,7 +38,7 @@ test.describe('Team Composer', () => {
     const composer = page.locator('we-team-composer');
     const first = composer.locator('input.composer__seats').first();
     await first.fill('-3');
-    await expect(composer.locator('[data-headline]')).toContainText('No seats chosen yet');
+    await expect(composer.locator('[data-headline]')).toContainText('No roles chosen yet');
     await first.fill('99999');
     const max = Number(await first.getAttribute('max'));
     const text = await composer.locator('[data-headline]').innerText();

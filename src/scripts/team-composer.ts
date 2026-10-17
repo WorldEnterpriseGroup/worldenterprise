@@ -102,8 +102,8 @@ export function parseTeamFromLocation(hash: string, search: string): TeamSelecti
   return normaliseSelection(input);
 }
 
-function seatWord(count: number): string {
-  return count === 1 ? 'seat' : 'seats';
+function personWord(count: number): string {
+  return count === 1 ? 'person' : 'people';
 }
 
 /** Sentence-style description for the Apply form's team field: `Product design (2); Back end (1)`. */
@@ -132,8 +132,8 @@ export function summariseTeam(selection: TeamSelection): TeamSummary {
   }));
   const headline =
     seats === 0
-      ? 'No seats chosen yet.'
-      : `${seats} ${seatWord(seats)} across ${lines.length} ${lines.length === 1 ? 'role' : 'roles'}.`;
+      ? 'No roles chosen yet.'
+      : `${seats} ${personWord(seats)} across ${lines.length} ${lines.length === 1 ? 'role' : 'roles'}.`;
   return { seats, roles: lines.length, headline, lines, groups };
 }
 
@@ -149,8 +149,8 @@ export function applyHandoffHref(applyPath: string, selection: TeamSelection): s
 /** Plain text for the clipboard. */
 export function teamAsText(selection: TeamSelection): string {
   const summary = summariseTeam(selection);
-  if (summary.seats === 0) return 'Team sketch: no seats chosen.';
-  const lines = summary.lines.map((l) => `- ${l.label}: ${l.seats} ${seatWord(l.seats)}`);
+  if (summary.seats === 0) return 'Team sketch: no roles chosen.';
+  const lines = summary.lines.map((l) => `- ${l.label}: ${l.seats} ${personWord(l.seats)}`);
   return ['Team sketch for World Enterprise', summary.headline, ...lines].join('\n');
 }
 
@@ -232,7 +232,7 @@ export function defineTeamComposer(): void {
         roster.replaceChildren(
           ...summary.lines.map((line) => {
             const item = document.createElement('li');
-            item.textContent = `${line.label}: ${line.seats} ${seatWord(line.seats)}`;
+            item.textContent = `${line.label}: ${line.seats} ${personWord(line.seats)}`;
             return item;
           }),
         );
@@ -245,7 +245,7 @@ export function defineTeamComposer(): void {
         meter.max = Math.max(1, summary.seats);
         meter.value = seats;
         const text = query<HTMLElement>(this, `[data-group-text="${meter.dataset.group ?? ''}"]`);
-        if (text !== null) text.textContent = `${seats} ${seatWord(seats)}`;
+        if (text !== null) text.textContent = `${seats} ${personWord(seats)}`;
       });
 
       const cost = query<HTMLElement>(this, '[data-cost]');
@@ -254,7 +254,7 @@ export function defineTeamComposer(): void {
         const rate = Number(rateAttr);
         if (Number.isFinite(rate) && summary.seats > 0) {
           const formatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: cost.dataset.currency ?? 'USD', maximumFractionDigits: 0 });
-          cost.textContent = `${summary.seats} ${seatWord(summary.seats)} at ${formatted.format(rate)} per seat each month: ${formatted.format(seatsTimesRate(summary.seats, rate))} a month.`;
+          cost.textContent = `${summary.seats} ${personWord(summary.seats)} at ${formatted.format(rate)} per person each month: ${formatted.format(seatsTimesRate(summary.seats, rate))} a month.`;
         } else {
           cost.textContent = '';
         }
