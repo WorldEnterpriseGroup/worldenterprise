@@ -1,6 +1,10 @@
 {
   "$comment": "Wave 11 write-set map (WP-22 to WP-26, issues #88 to #92, milestone 1811). WP-26 is stage 2 (starts after WP-38 merges). tests/unit/wp-32b/write-sets-wave11.test.ts keeps this file equal to .astro-magazine/ownership.json.",
-  "sharedExceptions": [],
+  "sharedExceptions": [
+    "tests/unit/wp-32b/write-sets-wave11.test.ts",
+    ".astro-magazine/ownership.json",
+    ".astro-magazine/plans/wave11/writesets.json"
+  ],
   "workPackages": [
     {
       "id": "WP-22",
@@ -106,7 +110,11 @@
       "exceptions": [
         "src/layouts/HubLayout.astro",
         "src/layouts/ToolLayout.astro",
-        "src/layouts/TemplateLayout.astro"
+        "src/layouts/TemplateLayout.astro",
+        "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
+        "tests/unit/wp-32b/write-sets-wave11.test.ts",
+        ".astro-magazine/ownership.json",
+        ".astro-magazine/plans/wave11/writesets.json"
       ]
     },
     {

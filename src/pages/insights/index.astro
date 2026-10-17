@@ -2,7 +2,17 @@
 import { getCollection, render } from 'astro:content';
 import ArticleHub from '../../layouts/ArticleHub.astro';
 import DeskRail from '../../components/insights/DeskRail.astro';
-import { DESKS, DESK_LABELS, listInsights } from '../../components/insights/articles.ts';
+import { DESKS, DESK_LABELS, insightSlug, listInsights, readingMinutes } from '../../components/insights/articles.ts';
+import DeskConstellation from '../../components/hubs/DeskConstellation.astro';
+import DotStrip from '../../components/hubs/DotStrip.astro';
+import FilterIndex from '../../components/hubs/FilterIndex.astro';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { filterSlots, itemClasses } from '../../components/hubs/filter.ts';
+import { tile } from '../../components/hubs/stats.ts';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
+import { HONESTY_LINE } from '../../components/families/visual/stats.ts';
 import { IDENTITY } from '../../components/families/visual/copy.ts';
 import CtaLadder from '../../components/families/visual/CtaLadder.astro';
 import VisualCards from '../../components/families/visual/VisualCards.astro';
@@ -26,6 +36,23 @@ const deskCards = desks
     meta: items.length === 1 ? '1 article' : `${items.length} articles`,
     seed: `desk-${desk}`,
   }));
+// WP-24 media: the desks as one galaxy arm (a star per article), the long clock beside it, a desk filter over the rails and the spread
+// of reading times. Everything is drawn at build time from the collection; the page ships no script for it (JS budget: /insights/).
+const filled = desks.filter(({ items }) => items.length > 0);
+const total = filled.reduce((n, { items }) => n + items.length, 0);
+const sky = filled.map(({ desk, items }) => ({
+  id: desk,
+  name: DESK_LABELS[desk].name,
+  count: items.length,
+  href: state.isLive(`/insights/topic/${desk}/`) ? `/insights/topic/${desk}/` : `#desk-${desk}`,
+}));
+const slots = filterSlots(filled.map(({ desk, items }) => ({ key: desk, label: DESK_LABELS[desk].name, count: items.length })));
+const reading = filled.map(({ desk, items }) => ({
+  label: DESK_LABELS[desk].name,
+  dots: items.map((e) => ({ label: insightSlug(e), value: readingMinutes(e.body) })),
+}));
+const longest = Math.max(10, ...reading.flatMap((r) => r.dots.map((d) => d.value)));
+const readingMax = Math.ceil(longest / 5) * 5;
 ---
 
 <ArticleHub
@@ -37,6 +64,24 @@ const deskCards = desks
   updated={page.data.updated}
   draft={page.data.draft}
 >
+  {
+    sky.length > 0 && (
+      <HubLead labelledby="insights-lead-title">
+        <h2 slot="head" id="insights-lead-title" class="visually-hidden">The desks at a glance</h2>
+        <DeskConstellation id="hub-insights-sky" desks={sky} />
+        <HubMoment
+          slot="side"
+          id="hub-insights-clock"
+          kind="stats"
+          heading="Written for the long clock"
+          lead="The desks follow a company over years, because that is how long a company takes."
+        >
+          <StatTiles stats={[tile('ST-02'), tile('ST-03'), tile('ST-04')]} label="How long a company takes" id="insights-clock" />
+          <p class="insights-honesty">{HONESTY_LINE}</p>
+        </HubMoment>
+      </HubLead>
+    )
+  }
   <div class="prose">
     <Content />
   </div>
@@ -47,20 +92,46 @@ const deskCards = desks
           <h2 id="desk-map-title">The desks</h2>
           <p class="muted">{IDENTITY.insights.caption}</p>
         </div>
-        <VisualCards kind="insights" cards={deskCards} headingLevel={3} labelledby="desk-map-title" />
+        <HubMoment id="hub-insights-desks" kind="index">
+          <VisualCards kind="insights" cards={deskCards} headingLevel={3} labelledby="desk-map-title" />
+        </HubMoment>
       </section>
     )
   }
+  <FilterIndex
+    id="desk-filter"
+    legend="Show one desk"
+    hint="Choose a desk to list only its articles. All is the default."
+    options={slots}
+    total={total}
+    unit={['article', 'articles']}
+  >
+    {
+      filled.map(({ desk, items }) => (
+        <div class={itemClasses(slots, [desk])}>
+          <DeskRail id={`desk-${desk}`} title={DESK_LABELS[desk].name} blurb={DESK_LABELS[desk].blurb} items={items} />
+        </div>
+      ))
+    }
+  </FilterIndex>
   {
-    desks.map(({ desk, items }) => (
-      <DeskRail
-        id={`desk-${desk}`}
-        title={DESK_LABELS[desk].name}
-        blurb={DESK_LABELS[desk].blurb}
-        items={items}
+    reading.length > 0 && (
+      <DotStrip
+        id="hub-insights-reading"
+        title="Reading time of every article, desk by desk"
+        caption="Most pieces take a few minutes; the long ones are the guides worth an evening."
+        credit="Chart: World Enterprise Group Incorporated, counted at build time from the articles on this site at 220 words a minute."
+        rows={reading}
+        min={0}
+        max={readingMax}
+        unit=" min"
+        itemLabel="Article"
+        valueLabel="Reading time"
+        table="summary"
       />
-    ))
+    )
   }
+  <HubEcosystem id="insights-ecosystem" />
   <nav aria-label="Insight desks">
     <ul class="cluster" role="list">
       {
@@ -87,6 +158,12 @@ const deskCards = desks
     .desk-map__head {
       display: grid;
       gap: var(--sp-2);
+    }
+
+    .insights-honesty {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
     }
   }
 </style>

@@ -1,0 +1,147 @@
+---
+/**
+ * ToolSchematic: what a tool computes, drawn as a flow (WP-24): what you put in, the working, what you get back, around the tool's
+ * glyph. The words are HTML lists, so they read and zoom like text at any width; the flow runs across on wide screens and down on a
+ * phone. It is a picture of the tool, not the tool: the calculator itself is the island below it, and still works without script
+ * through its no-JS fallback.
+ */
+import HubFigure from '../hubs/HubFigure.astro';
+import ToolGlyph from './ToolGlyph.astro';
+import { VERB_LABELS, schematicFor } from './schematics.ts';
+import { cleanText } from '../visuals/contracts.ts';
+
+interface Props {
+  href: string;
+  /** The tool's name, for the figure title. */
+  name: string;
+}
+
+const s = schematicFor(Astro.props.href);
+const name = cleanText('ToolSchematic', 'name', Astro.props.name);
+const slug = s.href.replace(/^\/tools\/|\/$/g, '');
+for (const text of [...s.inputs, s.working, ...s.outputs]) cleanText('ToolSchematic', slug, text);
+---
+
+<HubFigure
+  id={`hub-tool-${slug}`}
+  kind="diagram"
+  drawing="html"
+  title={`What the ${name.toLowerCase()} works out`}
+  caption={s.alt}
+  credit="Diagram: World Enterprise Group Incorporated. Illustrative: it shows the working, not any figure of yours."
+  class="tool-schematic"
+>
+  <div class="tool-schematic__flow">
+    <div class="tool-schematic__col">
+      <p class="tool-schematic__label">You put in</p>
+      <ul class="tool-schematic__chips" role="list">
+        {s.inputs.map((t) => <li>{t}</li>)}
+      </ul>
+    </div>
+    <div class="tool-schematic__core">
+      <ToolGlyph glyph={s.glyph} />
+      <p class="tool-schematic__working"><span class="tool-schematic__verb">{VERB_LABELS[s.verb]}</span> {s.working}</p>
+    </div>
+    <div class="tool-schematic__col">
+      <p class="tool-schematic__label">You get back</p>
+      <ul class="tool-schematic__chips tool-schematic__chips--out" role="list">
+        {s.outputs.map((t) => <li>{t}</li>)}
+      </ul>
+    </div>
+  </div>
+</HubFigure>
+
+<style>
+  .tool-schematic__flow {
+    display: grid;
+    gap: var(--sp-4);
+    align-items: center;
+    padding: var(--sp-5);
+    border-radius: var(--radius-md, 0.5rem);
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border);
+  }
+
+  .tool-schematic__col {
+    display: grid;
+    gap: var(--sp-2);
+  }
+
+  .tool-schematic__label {
+    margin: 0;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .tool-schematic__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    & li {
+      padding: var(--sp-2) var(--sp-3);
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-pill);
+      background: var(--color-bg);
+      font-size: var(--fs-sm);
+    }
+  }
+
+  .tool-schematic__chips--out li {
+    border-color: var(--we-blue-night);
+    font-weight: 600;
+  }
+
+  .tool-schematic__core {
+    display: grid;
+    gap: var(--sp-2);
+    justify-items: center;
+    max-inline-size: 16rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .tool-schematic__working {
+    margin: 0;
+    font-size: var(--fs-sm);
+  }
+
+  .tool-schematic__verb {
+    font-weight: 700;
+  }
+
+  /* Across from 56rem: inputs, the working, outputs, with an arrow on each side of the glyph. */
+  @media (min-width: 56rem) {
+    .tool-schematic__flow {
+      grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem) minmax(0, 1fr);
+      gap: var(--sp-6);
+    }
+
+    .tool-schematic__core {
+      position: relative;
+    }
+
+    .tool-schematic__core::before,
+    .tool-schematic__core::after {
+      content: '→' / '';
+      position: absolute;
+      inset-block-start: 35%;
+      font-size: var(--fs-lg);
+      color: var(--color-text-muted);
+    }
+
+    .tool-schematic__core::before {
+      inset-inline-start: calc(-1 * var(--sp-5));
+    }
+
+    .tool-schematic__core::after {
+      inset-inline-end: calc(-1 * var(--sp-5));
+    }
+  }
+</style>

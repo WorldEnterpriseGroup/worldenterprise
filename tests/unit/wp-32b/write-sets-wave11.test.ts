@@ -162,7 +162,17 @@ test('the layout, page and header exceptions named in the orchestration brief ar
       '.astro-magazine/ownership.json',
       '.astro-magazine/plans/wave11/writesets.json',
     ],
-    'WP-24': ['src/layouts/HubLayout.astro', 'src/layouts/ToolLayout.astro', 'src/layouts/TemplateLayout.astro'],
+    // WP-24 (#90): the WP-42 no-JS composer round trip runs with reduced motion (smooth scroll plus JavaScript off never lets
+    // Playwright's actionability scroll settle once the tool schematic puts the button below the fold), registered in all three places.
+    'WP-24': [
+      'src/layouts/HubLayout.astro',
+      'src/layouts/ToolLayout.astro',
+      'src/layouts/TemplateLayout.astro',
+      'tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts',
+      'tests/unit/wp-32b/write-sets-wave11.test.ts',
+      '.astro-magazine/ownership.json',
+      '.astro-magazine/plans/wave11/writesets.json',
+    ],
     'WP-25': ['src/components/layout/Header.astro'],
     'WP-26': ['src/layouts/ArticleLayout.astro', 'src/components/insights/**', 'src/components/geo/mdx-transform.ts', 'tests/unit/wp-91/mdx-transform.test.ts'],
   };

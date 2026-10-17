@@ -58,7 +58,9 @@ test.describe('composer round trip (the project sets the viewport: 1440 and 390)
 });
 
 test.describe('composer round trip without JavaScript', () => {
-  test.use({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
+  // Reduced motion turns off the site's smooth scroll: with JavaScript off, Chromium's smooth scroll never lets Playwright's actionability
+  // scroll settle on a button below the fold (WP-24 #90; visitors are unaffected).
+  test.use({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
   test.beforeEach(() => {
     test.skip(!BUILT, 'the composer or apply route is not built');
   });

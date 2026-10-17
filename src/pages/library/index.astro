@@ -7,6 +7,13 @@ import { hubActions } from '../../components/families/visual/cta.ts';
 import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
 import VisualCards from '../../components/families/visual/VisualCards.astro';
 import { entrySlug } from '../../components/library/markdown.ts';
+import DocAnatomy from '../../components/library/DocAnatomy.astro';
+import ShelfDiagram from '../../components/library/ShelfDiagram.astro';
+import FilterIndex from '../../components/hubs/FilterIndex.astro';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { filterSlots, itemClasses } from '../../components/hubs/filter.ts';
 import { LIBRARY_SLUGS } from '../../data/routes.ts';
 import { getPublished } from '../../lib/content.ts';
 import { getRouteState } from '../../lib/route-state.ts';
@@ -18,10 +25,18 @@ const rank = (slug: string): number => order.get(slug) ?? order.size;
 const templates = [...entries].sort((a, b) => rank(entrySlug(a.id)) - rank(entrySlug(b.id)) || entrySlug(a.id).localeCompare(entrySlug(b.id)));
 
 const KIND_LABEL = { template: 'Template', checklist: 'Checklist', worksheet: 'Worksheet', guide: 'Guide' } as const;
+const KIND_PLURAL = { template: 'Templates', checklist: 'Checklists', worksheet: 'Worksheets', guide: 'Guides' } as const;
+const KINDS = ['template', 'checklist', 'worksheet', 'guide'] as const;
 const actions = hubActions((await getRouteState()).isLive);
+// WP-24: the shelf (one spine per document, by kind), the anatomy every document shares, and a filter by kind over the cards.
+const slots = filterSlots(KINDS.map((kind) => ({ key: kind, label: KIND_PLURAL[kind], count: templates.filter((e) => e.data.kind === kind).length })));
+const bays = KINDS.map((kind) => ({
+  label: KIND_PLURAL[kind],
+  docs: templates.filter((e) => e.data.kind === kind).map((e) => ({ title: e.data.title, href: `/library/${entrySlug(e.id)}/`, slug: entrySlug(e.id) })),
+}));
 const cards = templates.map((entry) => {
   const slug = entrySlug(entry.id);
-  return { title: entry.data.title, href: `/library/${slug}/`, summary: entry.data.description, eyebrow: KIND_LABEL[entry.data.kind] };
+  return { title: entry.data.title, href: `/library/${slug}/`, summary: entry.data.description, eyebrow: KIND_LABEL[entry.data.kind], itemClass: itemClasses(slots, [entry.data.kind]) };
 });
 ---
 
@@ -37,9 +52,21 @@ const cards = templates.map((entry) => {
   <div slot="panel"><EmblemFrame kind="library" caption={IDENTITY.library.caption} /></div>
   {
     cards.length > 0 && (
+      <HubLead label="The library at a glance">
+        <ShelfDiagram bays={bays} />
+        <DocAnatomy slot="side" />
+      </HubLead>
+    )
+  }
+  {
+    cards.length > 0 && (
       <section class="library-shelf" aria-labelledby="library-shelf-title">
         <h2 id="library-shelf-title">The documents</h2>
-        <VisualCards kind="library" cards={cards} headingLevel={3} labelledby="library-shelf-title" />
+        <HubMoment id="hub-library-cards" kind="index">
+          <FilterIndex id="kind-filter" legend="Show one kind" options={slots} total={cards.length} unit={['document', 'documents']}>
+            <VisualCards kind="library" cards={cards} headingLevel={3} labelledby="library-shelf-title" />
+          </FilterIndex>
+        </HubMoment>
       </section>
     )
   }
@@ -49,6 +76,7 @@ const cards = templates.map((entry) => {
       your own notes or tools. They are general working aids and are not legal, financial or accounting advice.
     </p>
   </Callout>
+  <HubEcosystem id="library-ecosystem" />
   <CtaLadder slot="cta-end" />
 </HubLayout>
 

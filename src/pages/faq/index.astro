@@ -10,6 +10,11 @@ import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 import { buildSections, jumpLinks } from './_model.ts';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import QuestionMap from '../../components/hubs/QuestionMap.astro';
+import { tile } from '../../components/hubs/stats.ts';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
 import type { FaqEntry } from './_model.ts';
 
 const entries: FaqEntry[] = (await getCollection('faq'))
@@ -29,6 +34,12 @@ const jump = jumpLinks(sections);
 const items = sections.flatMap((section) => section.groups.flatMap((g) => g.items));
 const canApply = state.isLive(READINESS_REVIEW.href);
 const canContact = state.isLive(TALK_TO_WE.href);
+// WP-24: the whole page as one map (a row per set of questions, a segment per topic) that is also the way in.
+const mapRows = sections.map((section) => ({
+  label: section.label,
+  href: `#${section.slug}`,
+  topics: section.groups.map((g) => ({ label: g.heading, href: `#faq-group-${g.slug}`, count: g.items.length })),
+}));
 ---
 
 <ReferenceLayout
@@ -42,6 +53,21 @@ const canContact = state.isLive(TALK_TO_WE.href);
   wide
 >
   <ReferenceIntro kind="faq" seed="faq">
+  {
+    items.length > 0 && (
+      <QuestionMap
+        id="hub-faq-map"
+        title="Every question on this page, by who asks it"
+        caption="Each segment is one topic, as wide as its number of questions. Pick a topic below to go straight to it."
+        credit="Diagram: World Enterprise Group Incorporated, counted at build time from the questions on this page."
+        rows={mapRows}
+        unit={['question', 'questions']}
+      />
+    )
+  }
+  <HubMoment id="hub-faq-figures" kind="stats" heading="Why the answers talk about years" headingLevel={2} lead="Incubation is measured in years, because that is how long a company takes to become established.">
+    <StatTiles stats={[tile('ST-10'), tile('ST-02')]} label="The long horizon" id="faq-figures" />
+  </HubMoment>
   {
     jump.length > 1 && (
       <nav class="faq-jump" aria-label="Jump to a set of questions">
@@ -85,6 +111,7 @@ const canContact = state.isLive(TALK_TO_WE.href);
       ))
     }
   </div>
+  <HubEcosystem id="faq-ecosystem" />
   {
     (canApply || canContact) && (
       <Callout title="Still have a question?">

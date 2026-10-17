@@ -5,6 +5,7 @@ import PricingChecker from '../../components/islands/we-pricing-checker/PricingC
 import { FORMULAS, FORMULAS_PAGE, PAGE } from '../../components/islands/we-pricing-checker/spec.ts';
 import ToolFormulas from '../../components/tools/ToolFormulas.astro';
 import { webApplicationNode } from '../../components/tools/webApplicationNode.ts';
+import ToolSchematic from '../../components/tools/ToolSchematic.astro';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 
 const entry = await getEntry('pages', 'tools/pricing-page-checker');
@@ -32,6 +33,7 @@ const PATH = '/tools/pricing-page-checker/';
   ]}
   noscript={PAGE.noscript}
 >
+  <ToolSchematic href="/tools/pricing-page-checker/" name={data.title} />
   <div id="checker"><PricingChecker /></div>
   <div id="formulas">
     <ToolFormulas

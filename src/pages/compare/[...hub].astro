@@ -8,6 +8,12 @@ import { ogSlotFor } from '../../components/families/og.ts';
 import { findHubPage, hubStaticPaths, liveCards, pageRefs } from '../../components/families/paths.ts';
 import { COMPARISONS } from '../../data/families.ts';
 import { getRenderable } from '../../lib/content.ts';
+import HorizonCompare from '../../components/hubs/HorizonCompare.astro';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { tile } from '../../components/hubs/stats.ts';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
 
 /**
  * The comparison hub (/compare/). A card for a page that carries a blocked word shows its label alone (contracts section 8.1). The hub is
@@ -27,4 +33,12 @@ const isLive = await loadIsLive();
   listHeading={HEADINGS_HUB.compare}
   actions={compareActions(isLive)}
   ogSlot={ogSlotFor('compare')}
-/>
+>
+  <HubLead slot="lead" label="The horizons at a glance">
+    <HorizonCompare />
+    <HubMoment slot="side" id="hub-compare-odds" kind="stats" heading="The odds improve with time" headingLevel={2} lead="A company that gets through the early years is far more likely to keep going, which is why the horizon matters when you compare options.">
+      <StatTiles stats={[tile('ST-04'), tile('ST-34')]} label="Survival improves with age" id="compare-odds" />
+    </HubMoment>
+  </HubLead>
+  <HubEcosystem id="compare-ecosystem" />
+</FamilyHubPage>
