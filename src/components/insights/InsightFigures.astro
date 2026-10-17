@@ -1,0 +1,88 @@
+---
+/**
+ * InsightFigures: the sourced figures of one /insights/ article (WP-26, wave 11), drawn by ArticleLayout under the article body and before
+ * its sources. Which figures an article shows is set in src/data/insight-figures/registry.ts; a page with no entry (the style guide, and
+ * the articles that carry their figures inline) renders nothing. Every figure is a static SVG or HTML drawing with a caption, a data table
+ * in the site's table frame and a visible source line; there is no script and no third-party request.
+ */
+import InsightBars from './InsightBars.astro';
+import InsightLineChart from './InsightLineChart.astro';
+import InsightRankList from './InsightRankList.astro';
+import RangeDotPlot from '../visuals/charts/RangeDotPlot.astro';
+import Ridgeline from '../visuals/charts/Ridgeline.astro';
+import SlopeChart from '../visuals/charts/SlopeChart.astro';
+import StackedArea from '../visuals/charts/StackedArea.astro';
+import WaffleChart from '../visuals/charts/WaffleChart.astro';
+import { figuresForPath } from '../../data/insight-figures/registry.ts';
+
+interface Props {
+  /** The page path, e.g. "/insights/runway-and-burn-the-arithmetic/". */
+  path: string;
+}
+
+const figures = figuresForPath(Astro.props.path);
+---
+
+{
+  figures.length > 0 && (
+    <section class="insight-figures" aria-labelledby="in-the-data" data-insight-figures>
+      <h2 id="in-the-data">In the data</h2>
+      <p class="insight-figures__lede">These figures describe U.S. businesses in general, not WE’s results. Each one names its source.</p>
+      {figures.map((f) => {
+        switch (f.kind) {
+          case 'bars':
+            return <InsightBars figure={f} />;
+          case 'line':
+            return <InsightLineChart figure={f} />;
+          case 'rank':
+            return <InsightRankList figure={f} />;
+          case 'waffle':
+            return <WaffleChart {...f.props} retrieved={f.retrieved} />;
+          case 'slope':
+            return <SlopeChart {...f.props} retrieved={f.retrieved} />;
+          case 'ridgeline':
+            return <Ridgeline {...f.props} retrieved={f.retrieved} />;
+          case 'range':
+            return <RangeDotPlot {...f.props} retrieved={f.retrieved} />;
+          case 'area':
+            return <StackedArea {...f.props} retrieved={f.retrieved} />;
+        }
+      })}
+    </section>
+  )
+}
+
+<style>
+  .insight-figures {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sp-6);
+    margin-block: var(--sp-8) var(--sp-6);
+    padding-block-start: var(--sp-6);
+    border-block-start: 1px solid var(--color-border);
+    min-inline-size: 0;
+  }
+
+  /* An opened data table scrolls inside its frame (.table-wrap) instead of widening the page: every track below is allowed to shrink. */
+  .insight-figures :global(.dv) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .insight-figures :global(.dv__data),
+  .insight-figures :global(.dv__drawing) {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  .insight-figures > h2 {
+    margin: 0;
+  }
+
+  .insight-figures__lede {
+    margin: 0;
+    margin-block-start: calc(-1 * var(--sp-4));
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+</style>

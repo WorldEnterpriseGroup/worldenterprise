@@ -1,0 +1,83 @@
+---
+/**
+ * InsightBars: horizontal bars for one sourced breakdown on an /insights/ article (WP-26). It sits in the /data/ chart shell (ChartFigure),
+ * so it carries the same title, takeaway, data table in the site's table frame, source line and retrieval date as every /data/ chart. Each
+ * row prints its name above the bar and its figure after it; the row the caption talks about is drawn in amber.
+ */
+import ChartFigure from '../visuals/charts/ChartFigure.astro';
+import { cleanText } from '../visuals/charts/dataviz.ts';
+import type { BarsFigure } from '../../data/insight-figures/figures.ts';
+import { figureValues } from '../../data/insight-figures/figures.ts';
+
+interface Props {
+  figure: BarsFigure;
+}
+
+const { figure: f } = Astro.props;
+if (f.items.length < 2 || f.items.length > 12) throw new Error(`InsightBars "${f.id}": takes 2 to 12 rows, got ${f.items.length}`);
+const max = f.max ?? Math.max(...f.items.map((i) => i.value));
+if (!(max > 0) || f.items.some((i) => !Number.isFinite(i.value) || i.value < 0 || i.value > max)) {
+  throw new Error(`InsightBars "${f.id}": every value must be between 0 and the scale maximum ${max}`);
+}
+const items = f.items.map((i) => ({ ...i, label: cleanText('InsightBars', 'label', i.label), display: cleanText('InsightBars', 'display', i.display) }));
+
+const W = 760;
+const ROW = 54;
+const H = items.length * ROW;
+const TRACK = 480;
+const width = (v: number): number => Math.max(4, (v / max) * TRACK);
+const table = { caption: f.title, columns: [cleanText('InsightBars', 'groupLabel', f.groupLabel), cleanText('InsightBars', 'valueLabel', f.valueLabel)], rows: figureValues(f) };
+---
+
+<ChartFigure
+  id={f.id}
+  title={f.title}
+  description={f.description}
+  caption={f.caption}
+  sources={f.sources}
+  retrieved={f.retrieved}
+  derived={f.derived}
+  note={f.note}
+  table={table}
+>
+  <svg class="dv__svg insight-bars" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${f.id}-svg-t ${f.id}-svg-d`}>
+    <title id={`${f.id}-svg-t`}>{f.title}</title>
+    <desc id={`${f.id}-svg-d`}>{f.description}</desc>
+    {
+      items.map((it, i) => {
+        const y = i * ROW;
+        const w = width(it.value);
+        return (
+          <g>
+            <text class="dv-label" x="0" y={y + 16}>{it.label}</text>
+            <rect class="insight-bars__track" x="0" y={y + 26} width={TRACK} height="16" rx="3" />
+            <rect class:list={['dv-reveal', it.highlight === true ? 'dv-f2' : 'dv-f1']} x="0" y={y + 26} width={w} height="16" rx="3" />
+            <text class="dv-strong" x={w + 10} y={y + 39}>{it.display}</text>
+          </g>
+        );
+      })
+    }
+  </svg>
+</ChartFigure>
+
+<style is:global>
+  .insight-bars {
+    max-inline-size: 52rem;
+  }
+
+  .insight-bars__track {
+    fill: var(--color-bg-soft);
+  }
+
+  @media (forced-colors: active) {
+    .insight-bars .dv-f1,
+    .insight-bars .dv-f2 {
+      fill: CanvasText;
+    }
+
+    .insight-bars__track {
+      fill: Canvas;
+      stroke: GrayText;
+    }
+  }
+</style>
