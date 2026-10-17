@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
 import Button from '../../components/ui/Button.astro';
+import PlaybookMedia from '../../components/playbooks/PlaybookMedia.astro';
 import PlaybookTrail from '../../components/playbooks/PlaybookTrail.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
 import { isLinkable, liveItems } from '../../components/playbooks/links.ts';
@@ -58,6 +59,8 @@ const leadsTo = terminal && (await isLinkable('/fundability/'));
       {data.artifacts.map((artifact) => <li>{artifact}</li>)}
     </ul>
   </section>
+
+  <PlaybookMedia slot="media" slug={slug} title={data.title} steps={data.steps} kicker={`Playbook, ${stageLabel}`} />
 
   <Fragment slot="after">
     <div class="section">
