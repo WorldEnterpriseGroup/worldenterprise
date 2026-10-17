@@ -1,0 +1,92 @@
+---
+/**
+ * StarfieldBand: a dark, full-bleed section with a slowly drifting starfield behind its content (one amber star). The starfield is
+ * decorative (hidden from assistive technology); the slot holds the section's real content, set in inverse text.
+ *
+ * Dark bands never carry the logo (ORCHESTRATION: no inverted wordmark). Pair a band with plain text and a CTA.
+ */
+interface Props {
+  /** Heading id the section is labeled by (the heading lives in the slot). */
+  labelledby?: string;
+  id?: string;
+  /** `tall` gives the band more height for a closing statement. */
+  size?: 'default' | 'tall';
+  static?: boolean;
+  class?: string;
+}
+
+import Scene from './Scene.astro';
+
+const { labelledby, id, size = 'default', static: isStatic = false, class: className } = Astro.props;
+---
+
+<section class:list={['starfield-band', `starfield-band--${size}`, className]} id={id} aria-labelledby={labelledby}>
+  <Scene scene="starfield" poster="starfield" alt="" decorative fill static={isStatic} sizes="100vw" />
+  <div class="starfield-band__inner">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .starfield-band {
+    position: relative;
+    isolation: isolate;
+    z-index: 1;
+    --bleed: clamp(2rem, 6vw, 5rem);
+    overflow-x: clip;
+    color: var(--color-text-inverse);
+    background-color: color-mix(in oklab, var(--we-blue-night) 45%, var(--we-charcoal));
+  }
+
+  /* The sky runs past the band's edges and fades out, so the band melts into the sections around it (see Band `bleed`). */
+  .starfield-band::before,
+  .starfield-band::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    z-index: -1;
+    block-size: var(--bleed);
+    pointer-events: none;
+    --_c: color-mix(in oklab, var(--we-blue-night) 45%, var(--we-charcoal));
+  }
+
+  .starfield-band::before {
+    inset-block-end: 100%;
+    background: linear-gradient(to bottom, transparent, color-mix(in oklab, var(--_c) 14%, transparent), color-mix(in oklab, var(--_c) 40%, transparent), color-mix(in oklab, var(--_c) 72%, transparent), var(--_c));
+  }
+
+  .starfield-band::after {
+    inset-block-start: 100%;
+    background: linear-gradient(to top, transparent, color-mix(in oklab, var(--_c) 14%, transparent), color-mix(in oklab, var(--_c) 40%, transparent), color-mix(in oklab, var(--_c) 72%, transparent), var(--_c));
+  }
+
+  .starfield-band__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--sp-4);
+    justify-items: start;
+    max-inline-size: var(--measure);
+    margin-inline: auto;
+    padding-block: var(--sp-9);
+    padding-inline: var(--sp-5);
+  }
+
+  .starfield-band--tall .starfield-band__inner {
+    padding-block: var(--sp-10);
+  }
+
+  .starfield-band__inner :global(a:not([class])) {
+    color: var(--color-text-inverse);
+    text-decoration-color: var(--we-amber);
+  }
+
+  .starfield-band__inner :global(:focus-visible) {
+    outline-color: var(--color-focus-inverse);
+  }
+
+  /* The pause button of the band's scene stays reachable but out of the text's way. */
+  .starfield-band :global(.scene__toggle) {
+    z-index: 2;
+  }
+</style>

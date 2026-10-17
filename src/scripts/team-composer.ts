@@ -4,8 +4,6 @@
  * enhances server-rendered markup that already works without JavaScript. No storage, no network, no cookies.
  */
 
-import { getPackage, PACKAGE_PARAM, parsePackageParam } from '../data/packages.ts';
-import type { PackageId } from '../data/packages.ts';
 import { SEAT_ROLE_GROUPS, SEAT_ROLE_IDENTITIES } from '../data/seat-roles.ts';
 import type { SeatRoleGroupId, SeatRoleId } from '../data/seat-roles.ts';
 
@@ -140,40 +138,12 @@ export function summariseTeam(selection: TeamSelection): TeamSummary {
 }
 
 /**
- * Reads the package from a query string (`?package=launch`). Anything but exactly one known id is ignored, as the contract says
- * (docs/wave7-contracts.md, section 1): a stale or doubled link must still open the page, just without a selection.
+ * Link target for the Apply form carrying the team in the URL fragment. `applyPath` is already base-aware. Packages are retired
+ * (wave 9, W9-13), so the hand-off carries the team only; the application asks about the company's situation and stage itself.
  */
-export function packageFromSearch(search: string): PackageId | null {
-  const values = new URLSearchParams(search).getAll(PACKAGE_PARAM);
-  return values.length === 1 ? parsePackageParam(values[0]) : null;
-}
-
-/** The heading and sentence above the sketch: which package it is for, and the stage that package is sized for (claim C-10). */
-export interface PackageBanner {
-  readonly title: string;
-  readonly detail: string;
-}
-
-/** What the banner says before any package is chosen, and in the served page. */
-export const CUSTOM_PLAN_BANNER: PackageBanner = {
-  title: 'Sketching a custom seat plan',
-  detail: 'Choose a company stage and the application notes the package sized for it.',
-};
-
-export function packageBanner(id: PackageId | null): PackageBanner {
-  if (id === null) return CUSTOM_PLAN_BANNER;
-  const pkg = getPackage(id);
-  return { title: `Sketching for ${pkg.name}`, detail: `Sized for: ${pkg.stageFit}` };
-}
-
-/**
- * Link target for the Apply form carrying the package in the query and the team in the URL fragment. `applyPath` is already
- * base-aware. The package is optional: a sketch for a custom seat plan carries none.
- */
-export function applyHandoffHref(applyPath: string, selection: TeamSelection, pkg: PackageId | null = null): string {
+export function applyHandoffHref(applyPath: string, selection: TeamSelection): string {
   const team = serializeTeam(selection);
-  const query = pkg === null ? '' : `?${PACKAGE_PARAM}=${pkg}`;
-  return `${applyPath}${query}${team === '' ? '' : `#team=${team}`}`;
+  return `${applyPath}${team === '' ? '' : `#team=${team}`}`;
 }
 
 /** Plain text for the clipboard. */
@@ -181,7 +151,7 @@ export function teamAsText(selection: TeamSelection): string {
   const summary = summariseTeam(selection);
   if (summary.seats === 0) return 'Team sketch: no seats chosen.';
   const lines = summary.lines.map((l) => `- ${l.label}: ${l.seats} ${seatWord(l.seats)}`);
-  return ['Team sketch for World Enterprise Incubator', summary.headline, ...lines].join('\n');
+  return ['Team sketch for World Enterprise', summary.headline, ...lines].join('\n');
 }
 
 /** Seats multiplied by the monthly rate. Used only when the operator publishes the seat rate (flags.seatPrice). */
@@ -209,22 +179,13 @@ export function defineTeamComposer(): void {
       this.form = query<HTMLFormElement>(this, 'form');
       if (this.form === null) return;
       this.setAttribute('data-enhanced', '');
-      const chosen = packageFromSearch(window.location.search);
-      const stage = this.stageSelect();
-      if (stage !== null && chosen !== null) stage.value = chosen;
       this.form.addEventListener('input', () => this.render());
-      stage?.addEventListener('change', () => this.syncUrl());
       this.form.addEventListener('submit', (event) => {
         event.preventDefault();
         window.location.assign(this.handoffHref());
       });
       query<HTMLButtonElement>(this, '[data-copy]')?.addEventListener('click', () => void this.copy());
-      this.form.addEventListener('reset', () =>
-        window.setTimeout(() => {
-          this.render();
-          this.syncUrl();
-        }, 0),
-      );
+      this.form.addEventListener('reset', () => window.setTimeout(() => this.render(), 0));
       this.render();
     }
 
@@ -243,52 +204,28 @@ export function defineTeamComposer(): void {
       return normaliseSelection(input);
     }
 
-    private stageSelect(): HTMLSelectElement | null {
-      return query<HTMLSelectElement>(this, `select[name="${PACKAGE_PARAM}"]`);
-    }
-
-    /** The package the visitor chose, or null for a custom seat plan. */
-    private chosenPackage(): PackageId | null {
-      return parsePackageParam(this.stageSelect()?.value);
-    }
-
     private handoffHref(): string {
       const target = this.form?.getAttribute('action') ?? '/apply/';
-      return applyHandoffHref(target, this.selection(), this.chosenPackage());
+      return applyHandoffHref(target, this.selection());
     }
 
-    /** Keeps `?package=` in the address bar in step with the select, so a reload or a shared link keeps the choice. No navigation, no request. */
-    private syncUrl(): void {
-      const url = new URL(window.location.href);
-      const chosen = this.chosenPackage();
-      if (chosen === null) url.searchParams.delete(PACKAGE_PARAM);
-      else url.searchParams.set(PACKAGE_PARAM, chosen);
-      window.history.replaceState(window.history.state, '', url);
-    }
-
-    /** The Apply buttons of the call-to-action band follow the form, so every way into the application carries the package and the team. */
-    private syncApplyLinks(selection: TeamSelection, pkg: PackageId | null): void {
+    /** The Apply buttons of the call-to-action band follow the form, so every way into the application carries the team. */
+    private syncApplyLinks(selection: TeamSelection): void {
       document.querySelectorAll<HTMLAnchorElement>('.ctaband a[href]').forEach((link) => {
         const original = link.dataset.applyBase ?? link.getAttribute('href') ?? '';
         if (!new URL(original, window.location.href).pathname.endsWith('/apply/')) return;
         link.dataset.applyBase = original;
-        link.setAttribute('href', applyHandoffHref(original, selection, pkg));
+        link.setAttribute('href', applyHandoffHref(original, selection));
       });
     }
 
     private render(): void {
       const selection = this.selection();
-      const pkg = this.chosenPackage();
       const summary = summariseTeam(selection);
       const headline = query<HTMLElement>(this, '[data-headline]');
       if (headline !== null) headline.textContent = summary.headline;
 
-      const banner = packageBanner(pkg);
-      const bannerTitle = query<HTMLElement>(this, '[data-package-title]');
-      const bannerDetail = query<HTMLElement>(this, '[data-package-detail]');
-      if (bannerTitle !== null) bannerTitle.textContent = banner.title;
-      if (bannerDetail !== null) bannerDetail.textContent = banner.detail;
-      this.syncApplyLinks(selection, pkg);
+      this.syncApplyLinks(selection);
 
       const roster = query<HTMLElement>(this, '[data-roster]');
       if (roster !== null) {

@@ -1,0 +1,112 @@
+---
+title: The tax calendar a US software startup should know exists
+seoTitle: A US startup tax calendar
+description: What the IRS tax calendar lists for a small company, how its due dates are worded, and the questions to bring to a tax professional. General information only.
+topic: ops
+publishedDate: 2026-10-10
+segments: [first-time-founders]
+related: [the-83b-election-and-its-deadline, choosing-an-entity-llc-or-c-corporation, books-and-basic-accounting-for-a-software-startup]
+sources:
+  - id: irs-p509
+    title: Publication 509, Tax Calendars
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/publications/p509
+    accessed: 2026-10-10
+  - id: irs-employment-tax-due-dates
+    title: Employment tax due dates
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/businesses/small-businesses-self-employed/employment-tax-due-dates
+    accessed: 2026-10-10
+  - id: irs-estimated-taxes
+    title: Estimated taxes
+    publisher: Internal Revenue Service
+    url: https://www.irs.gov/businesses/small-businesses-self-employed/estimated-taxes
+    accessed: 2026-10-10
+  - id: de-pay-taxes
+    title: Pay taxes
+    publisher: Delaware Division of Corporations
+    url: https://corp.delaware.gov/paytaxes/
+    accessed: 2026-10-10
+evidence: [irs-p509, irs-employment-tax-due-dates, irs-estimated-taxes, de-pay-taxes]
+relatedServices: [D]
+relatedTemplate: weekly-investor-update-template
+claimsUsed: []
+draft: false
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not legal, tax or financial advice. Written October 10, 2026, from US federal and Delaware pages read that day. Which of these dates applies to your company depends on its entity type, its tax year, whether it has employees and where it operates, so confirm each one with a qualified tax professional.*
+
+Most founders meet the tax calendar the hard way: a notice arrives, or an accountant mentions a date that passed last month. The calendar is not a secret. The Internal Revenue Service publishes it. What a first-time founder needs is not the whole calendar but a map of the kinds of obligation it contains, so that the right question reaches the right person early.
+
+This article describes that map for a US software company. It does not turn the rules into dates for your company, because the same rule produces a different date for a company with a different tax year, and a date you compute from an article is a date nobody has checked.
+
+## What a tax calendar is
+
+The IRS publication is titled "Publication 509 (2026), Tax Calendars", and the edition read for this article is marked "For use in 2026". It opens with a plain definition: "A tax calendar is a 12-month calendar divided into quarters." It then lists the specific due dates for the filings and payments that businesses and individuals face.
+
+Two features of the publication matter more than any single date. First, it is organized by calendar quarter, so you can read it as a set of recurring rhythms, not as a list of one-off deadlines. Second, many due dates are stated as a rule relative to something else, such as the end of a tax year or a calendar quarter. You apply the rule to your own situation.
+
+The publication also states what happens when a date lands on a weekend. If a due date "for performing any act for tax purposes falls on a Saturday, Sunday, or legal holiday," the act is timely if it is completed by the next day that is not a weekend or legal holiday. That is a general rule from the IRS page, and your adviser can say whether it covers a particular state filing.
+
+## Four families of obligation
+
+It helps to sort the calendar into four families. A software startup may meet all four within its first two years.
+
+### 1. The company's own income tax return
+
+An entity files a return that reports its income, and the due date depends on how the entity is taxed. The IRS calendar states the rules in relative terms:
+
+<DataTable
+  caption="Annual return rules as the IRS calendar words them"
+  columns={['Return', 'How the IRS calendar words the due date']}
+  rows={[
+    ['Form 1120, the corporation return', 'This form is due on the 15th day of the 4th month after the end of the corporation’s tax year.'],
+    ['Form 1120-S, the S corporation return', 'This form is due on the 15th day of the 3rd month after the end of the corporation’s tax year.'],
+    ['Form 1065, the partnership return', 'This form is due on the 15th day of the 3rd month after the end of the partnership’s tax year.']
+  ]}
+/>
+
+Notice what the table does not say. It does not say which return your company files, and it does not say when your tax year ends. Both depend on choices made at formation, which is why <MaybeLink path="/insights/choosing-an-entity-llc-or-c-corporation/">choosing an entity</MaybeLink> comes before any calendar. The owners of a company taxed as a partnership or an S corporation also have their own personal obligations, which this article does not cover.
+
+### 2. Estimated tax payments
+
+Tax is not always paid once a year. The IRS says "Individuals, including sole proprietors, partners, and S corporation shareholders, generally have to make" estimated payments, and "Corporations generally have to make estimated tax payments if they expect to owe tax of $500 or more when their return is filed." For corporations Publication 509 words the schedule this way: "Payments are due on the 15th day of the 4th, 6th, 9th, and 12th months of the corporation’s tax year."
+
+Whether a young company expects to owe tax is a question about its books, not about the calendar, and it is one for your accountant. The calendar tells you the rhythm. It cannot tell you whether the rhythm applies.
+
+### 3. Payroll and worker-reporting obligations
+
+If the company pays wages, a second set of rules arrives. The IRS employment tax page describes Form 941 as the quarterly return, which you file "if you paid wages subject to employment taxes with the IRS for each quarter". Publication 509 says "This form is due the last day of the first calendar month after the calendar quarter ends." The employment tax page adds that "If you timely deposited all taxes when due, then you have 10 additional calendar days to file the return."
+
+Deposits follow their own rules. The same page says "Federal tax deposits must be made by electronic funds transfers (EFT)." Which deposit schedule applies to the company is a question for your payroll provider or adviser, and the IRS page is where they will check it.
+
+Then there is year-end reporting. The IRS page says "Forms W-2 are required to be provided to employees by Jan. 31." It adds that Form 1099-NEC "must be filed with the IRS and provided to recipients by Jan. 31." Form 1099-NEC reports nonemployee compensation, which is why a founder who pays a contractor should know it exists. Whether a worker is an employee or a contractor is its own question, covered in <MaybeLink path="/insights/contractors-and-employees-the-classification-tests/">the classification tests</MaybeLink>.
+
+Publication 509 also lists an annual federal unemployment return. It says of Form 940, "This form is due the last day of the first calendar month after the calendar year ends."
+
+### 4. State and local obligations
+
+Everything above is federal. A company also deals with the state where it is formed and the states where it operates. One example from the source set is Delaware. The state’s Division of Corporations says that "All active Domestic Corporation Annual Reports and Franchise Taxes for the prior year are due annually" "on or before March 1st and are required to be filed online." For foreign corporations the same page says "Foreign Corporations must file an Annual Report with the Delaware Secretary of State on or before June 30 each year."
+
+That is one state, read on one date, for one kind of entity. It is here to show the shape of a state obligation, not to say that your company owes anything to Delaware. Other states have their own filings, and the sources read for this article do not cover them.
+
+## The 83(b) deadline sits outside the calendar
+
+One date does not appear in the quarterly rhythm and is the least forgiving: the election a founder may make after receiving restricted stock. It has its own deadline, and <MaybeLink path="/insights/the-83b-election-and-its-deadline/">the 83(b) election and its deadline</MaybeLink> explains what the election is and what to ask counsel about it.
+
+<Callout title="Questions to bring to a tax professional">
+  Which return does the company file, and when does its tax year end? Does it owe estimated payments this year? Does it pay anyone through payroll, and on which deposit schedule? Which contractors need a Form 1099-NEC? Which state filings apply, and who tracks them? Who is responsible for each date, and where is the list kept?
+</Callout>
+
+## Turning the map into a working list
+
+You do not need software to start. A single page with four columns is enough: the obligation, the rule as written by the agency, the date your adviser confirms for your company, and the person who owns it. Review it when you plan the quarter, which fits the weekly and quarterly habits described in <MaybeLink path="/insights/a-weekly-operating-rhythm-for-a-founder/">a weekly operating rhythm for a founder</MaybeLink>. Keep the agency’s wording in the rule column so that a later reader can check your list against the source. The records behind each filing are a separate topic, covered in <MaybeLink path="/insights/books-and-basic-accounting-for-a-software-startup/">books and basic accounting</MaybeLink>, and the <MaybeLink path="/glossary/">glossary</MaybeLink> defines common terms.
+
+A runway forecast also benefits from the calendar, because tax payments are cash leaving the account on known dates. The arithmetic is in <MaybeLink path="/insights/runway-and-burn-the-arithmetic/">runway and burn</MaybeLink>.
+
+## What this article cannot tell you
+
+This article cannot tell you which of these obligations apply to your company or when they fall. It rests on four pages read on October 10, 2026: Publication 509 for use in 2026, two IRS pages on employment and estimated taxes, and one Delaware page. It covers US federal rules and one state example, and it does not cover other states, other countries, sales and use tax, the treatment of software development costs, tax credits, or how a founder’s personal return interacts with the company’s. Thresholds and dates change, and a page read on one day may differ from the page on another. Check each date with a qualified tax professional before you rely on it.

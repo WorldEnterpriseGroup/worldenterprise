@@ -23,7 +23,7 @@ What the work needs: people, equipment, materials and technology. The component 
 
 ### 3. Budget
 
-The money the work needs, set out as a financial plan with itemised costs and a timeline for spending. It also covers how costs are controlled and how spending is reported.
+The money the work needs, set out as a financial plan with itemized costs and a timeline for spending. It also covers how costs are controlled and how spending is reported.
 
 ### 4. Indicators
 

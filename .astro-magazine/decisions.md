@@ -6,13 +6,13 @@ Source of truth for scope: `.plan/SAGE-PLAN.md` (internal, untracked). Decisions
 
 ### D-1
 
-**Decision.** **Quarantine `bee90c7`; never push it.** Create local branch `quarantine/httrack-wip` at `bee90c7`, mount it as a read-only reference worktree at `/home/seantech/repos/WorldEnterpriseGroup/_refs/finbiz` (`git worktree add --detach`), repoint local `gh-pages` to `origin/gh-pages`, and start all work from `origin/demo`. Nothing is deleted; the commit stays reachable.
+**Decision.** **Quarantine `bee90c7`; never push it.** Create local branch `quarantine/httrack-wip` at `bee90c7`, mount it as a read-only reference worktree at `~/repos/WorldEnterpriseGroup/_refs/finbiz` (`git worktree add --detach`), repoint local `gh-pages` to `origin/gh-pages`, and start all work from `origin/demo`. Nothing is deleted; the commit stays reachable.
 
 **Why.** Pushing puts 44 MB of unlicensed third-party template into mirrored history. This is the one irreversible-looking step; it is fully reversible because the commit is pinned by a branch. The PostToolUse "push now" nudge does not apply to this commit.
 
 ### D-2
 
-**Decision.** **Template is inspiration only.** No template image, SCSS, JS, icon font or copy is ported. No AVIF conversion of its photography. All imagery is new (ComfyUI or whitelab vectors).
+**Decision.** **Template is inspiration only.** No template image, SCSS, JS, icon font or copy is ported. No AVIF conversion of its photography. All imagery is new (ComfyUI or brand-source vectors).
 
 **Why.** No license file; commercial theme.
 
@@ -48,7 +48,7 @@ Source of truth for scope: `.plan/SAGE-PLAN.md` (internal, untracked). Decisions
 
 ### D-8
 
-**Decision.** **Light theme only** (`color-scheme: light`). No reversed logo (whitelab brand findings: logo is dark-on-light only; do not invent a reversed version). Dark bands may exist but never carry the logo. Recorded as an accepted exception to the project "prefers-color-scheme" suggestion.
+**Decision.** **Light theme only** (`color-scheme: light`). No reversed logo (brand source findings: logo is dark-on-light only; do not invent a reversed version). Dark bands may exist but never carry the logo. Recorded as an accepted exception to the project "prefers-color-scheme" suggestion.
 
 **Why.** Brand integrity over a "nice to have".
 
@@ -86,7 +86,7 @@ Source of truth for scope: `.plan/SAGE-PLAN.md` (internal, untracked). Decisions
 
 **Decision.** **No analytics, no cookies, no third-party scripts at v1.0.** No consent banner.
 
-**Why.** Privacy-first, simpler legal surface. If Sean wants analytics later: self-hosted Umami/Plausible on K8s plus a CSP change.
+**Why.** Privacy-first, simpler legal surface. If the owner wants analytics later: self-hosted Umami/Plausible on K8s plus a CSP change.
 
 ### D-15
 
@@ -148,7 +148,7 @@ The npm `build` script ends with `pagefind --site dist` (npm `postbuild`), so ev
 `src/data/routes.ts` holds the 90 page rows plus `MACHINE_ROUTES` (rss, robots, security.txt) and `L2_RESERVED` (declared, never launched). Nav items that point at an L2 or not-yet-existing route stay hidden.
 
 ### W-7 Fonts are local
-The Astro Fonts API (stable in 7.3.6) is configured with the local provider and the whitelab `.woff` files, so there is no network fetch at generation time and no Google Fonts request. OFL licence texts ship beside the files.
+The Astro Fonts API (stable in 7.3.6) is configured with the local provider and the brand source `.woff` files, so there is no network fetch at generation time and no Google Fonts request. OFL licence texts ship beside the files.
 
 
 ### W-8 Chrome uses the Popover API with a script enhancement layer
@@ -290,9 +290,9 @@ The owner delegated both choices to the orchestrator on 2026-10-09. They superse
 
 ### F-4 Owner decision: hybrid pricing model (claim C-10)
 
-The dedicated team seat stays the unit of work. Four packages, Spark, Launch, Accelerate and Studio (names, the company stage each is sized for and its depth, from `whitelab/template/KEY-VALUES.md` section 1), are pre-configured seat plans with a fixed scope. A founder picks a package or a custom seat plan, and seats change by notice either way (C-02). The site publishes no amount: `flags.seatPrice` stays off, and `/pricing/` says how to ask for the current rate (the contact form topic "Request the current seat rate"). The "not packages" denials on `/pricing/`, the FAQ and the program copy are replaced. `/pricing/` carries a package comparison table (package, stage, depth).
+The dedicated team seat stays the unit of work. Four packages, Spark, Launch, Accelerate and Studio (names, the company stage each is sized for and its depth, from the private operator source, section 1), are pre-configured seat plans with a fixed scope. A founder picks a package or a custom seat plan, and seats change by notice either way (C-02). The site publishes no amount: `flags.seatPrice` stays off, and `/pricing/` says how to ask for the current rate (the contact form topic "Request the current seat rate"). The "not packages" denials on `/pricing/`, the FAQ and the program copy are replaced. `/pricing/` carries a package comparison table (package, stage, depth).
 
-C-10 moves from excluded to publish, narrowed to what the owner approved: package names, stage fit and depth. The nine-milestone scheme, the phases, Delivery Hours, every fee, the rate card, the fee-to-equity election and the twelve-month term stay unpublished, and the site does not use the words "Milestones", "Raise-Ready", "Fundability Certification" or "Delivery Hours" for them. No seat count is published per package: KEY-VALUES gives none, so the page says WE confirms the seat plan in writing when the founder asks for the rate.
+C-10 moves from excluded to publish, narrowed to what the owner approved: package names, stage fit and depth. The nine-milestone scheme, the phases, Delivery Hours, every fee, the rate card, the fee-to-equity election and the twelve-month term stay unpublished, and the site does not use the words "Milestones", "Raise-Ready", "Fundability Certification" or "Delivery Hours" for them. No seat count is published per package: the operator source gives none, so the page says WE confirms the seat plan in writing when the founder asks for the rate.
 
 The twelve-month term is deliberately not stated. It is a fact of the agreement template, not an approved web claim, and "no automatic renewal" would sit uneasily beside "seats change by notice". It is an operator item in the handoff.
 
@@ -635,3 +635,103 @@ Six calls that the contracts left open, recorded once so the packages that build
 4. **`W8-C13-own-peers` is a context rule with no marker and no path allowance.** It catches "our cohort", "WE mentors", "WE runs a cohort" and the like, and passes denials ("WE has no mentors"). It starts green on the demo build (133 files scanned, 0 findings) and has self-test cases in `scripts/audit-claims.mjs` and `tests/unit/wp-60/claims-w8.test.ts`.
 5. **Pending family rows are tolerated by shape, not by path.** `RELEASE_ALLOW` gains one alternative for the five family path shapes (`/founders/<slug>/`, `/industries/...`, `/compare/...`, `/journey/...`, `/briefs/...`), because the registry launches about forty entries before their packages land. Any other missing launched route still fails; a release tag and gh-pages still allow nothing. WP-99 empties the list.
 6. **The sources host allowlist is code in `tests/unit/wp-60/sources.ts`.** Government and regulator suffixes, standards and law bodies, instrument publishers, universities and vendor documentation hosts. A vendor documentation host never sources a statistic or a regulation. OP-HOSTS extends it by a decision that edits that file.
+
+## Decisions made during WP-51 (wave 9 foundation, issue #72)
+
+Wave 9 is the visual redesign ("Visual redesign: full-screen, UBF, galaxy visuals", milestone 1784). CEO direction of 2026-10-14: the site is fully responsive and full screen at 1920x1080 with no wasted side margin, uses the UBF framework and the other org frameworks heavily, and shows rather than tells (graphics, illustrations and three.js scenes: galaxy, launching, incubating). The contracts are in `docs/wave9-contracts.md`.
+
+### W9-1 Wave 9 numbering, stages and governance
+
+Wave 9 uses WP-51 to WP-57 (issues #72 to #78): the only contiguous range no earlier ownership test filters on. WP-58 and WP-59 stay spare for fix-forward splits. Stages: 0 WP-51 (governance and layout foundation), 1 WP-52 (visuals library), 2 WP-53 to WP-56 (page families, in parallel), 3 WP-57 (integration, the 1920 regression pass, exception cleanup, milestone close). Every assignment and every exception is registered once in this governance commit, ahead of the edits (W8-30); WP-57 removes the ones nobody used. Only WP-51 (now) and WP-57 (at close) edit `ownership.json`, `decisions.md` and `.astro-magazine/plans/wave9/**`. `tests/unit/wp-51/write-sets-wave9.test.ts` proves the wave 9 write sets disjoint and equal to `.astro-magazine/plans/wave9/writesets.json`.
+
+### W9-2 Declared hand-offs inside wave 9
+
+Two wave 9 packages may hold one path only when `.astro-magazine/plans/wave9/writesets.json` lists it as a hand-off from an earlier stage to a later one: the governance files and `src/data/claims.ts` (WP-51 to WP-57), and `tests/e2e/folds.spec.ts` (WP-51 edits `HERO_MODES`, then WP-53 edits the home first-viewport assertions through an exception). The four stage-2 page packages share nothing.
+
+### W9-3 Stale claims are superseded where they overlap wave 9
+
+The unmerged `origin/wp/62` (WP-62, #42), the photography branch `origin/wp/12b` (WP-12b, #22, fully merged) and the never-built WP-48 (#37) lose every path a wave 9 package now holds. WP-62 keeps the CTA system (`src/components/cta/**`, `src/data/cta/**`, `ContextualNext.astro`), the insights hub copy and its own tests; home, the founders hub, the wave 7 home tests (`tests/unit/wp-44/**`, `tests/e2e/wave7/wp-44/**`) and `tests/unit/wp-01/**` move to WP-53 and WP-55, and its counsel-checklist exception moves to WP-55 with the founders page. WP-48 keeps only its test and handoff paths; the framework pages move to WP-55, which absorbs #37. The wave 8 map mirrors the narrowed WP-62 set, and the one self-test case that named a moved path now names the insights hub copy. WP-12b keeps its write set; the photography-lane files wave 9 edits are reached through exceptions (W7-9 pattern). None of these branches is deleted.
+
+### W9-4 Full-bleed layout: content frame 110rem, fluid gutters, readable prose
+
+`--content-max: 110rem` (1760px, 80px of margin each side at 1920) and `--page-max` points to it, so every `.container` widens at once. Gutters are fluid, `clamp(1rem, 0.0769rem + 4.1026vw, 5rem)` (16px to 360, 60px at 1440, 80px at 1920). Section backgrounds run full bleed (`.band`). Paragraphs never widen: prose keeps `--prose-max` (46rem), also inside any `.prose` block that now sits in a widened container, and the `.split` grid sets a 40rem text column beside a visual. Every layout defaults to the wide frame, so pages benefit before their family package redesigns them; `MarketingLayout` gains `width?: 'content' | 'prose'` (default `'content'`), where `'content'` keeps the reading measure on text and lets figures, grids, tables and splits use the frame. The heading steps and the fluid rhythm keep their line to 1920 instead of stopping at 1440, with the 360 and 1440 values unchanged; the reading sizes keep their 1440 ceiling. The guide, legal, template and reference reading pages keep their centred 46rem column (pinned); the article rail moves to the frame's right edge. The media hero gives the visual 7/12 of the frame from 100rem only, so the 1440 fold is unchanged. The header widens with the frame; its nav breakpoints (1100, 1279.98 and 1280px) and the logo clamp do not move. Names `container--wide` and `--page-wide` stay forbidden.
+
+### W9-5 D-16 revised: UBF pages are allowed
+
+CEO direction of 2026-10-14 overrides the hub-only part of D-16. A dedicated UBF detail route, `/about/frameworks/ubf/` (the existing `launch: false` row), and further framework detail pages are allowed and wanted. The frameworks hub stays the entry point. Still binding from D-16 and C-19: structures and names from the org frameworks, paraphrased, with no efficacy claims and none of the banned source marketing lines. WP-55 owns the pages and holds a scoped exception on `src/data/routes.ts` to launch the row in the same merge request as the page, so `audit:ledger` and `verify:release` never see a launched route without a page. WP-55 absorbs WP-48 and closes #37.
+
+### W9-6 Home hero: galaxy scene over a still poster
+
+The home hero shows the galaxy scene (three.js, lazy, desktop-only) over a still poster. The poster is the LCP element and is what mobile, no-JS, reduced-motion, forced-colors and Lighthouse users see; the canvas is decoration (`aria-hidden`). `HomeLayout` already forwards `preloadImage` to `BaseLayout`, and WP-53 points it at the poster so the head preload and the hero image name the same source.
+
+### W9-7 Dark visual bands under D-8
+
+Dark "galaxy" bands are allowed: `--color-bg-inverse` (blue-night) with the `--color-band-deep-*` text, muted and link tokens, whose contrast pairs `audit:contrast` verifies. A dark band never carries the logo and the header is never placed over one; the header stays light. The site remains light-theme only.
+
+### W9-8 three.js as a bundled, desktop-gated enhancement
+
+`three` 0.186.1 (dependency) and `@types/three` 0.186.0 (dev dependency) are pinned exactly, added with `npm install --package-lock-only`. three is bundled and self-hosted (D-14) and only fetched behind the `<we-scene>` capability gate (min-width 64rem, fine pointer, no reduced motion, no forced colors, at least 4 cores and 4 GB, no save-data, a WebGL2 context). The CSP does not change: no blob workers, no data: or blob: images, no inline scripts, CSSOM custom properties instead of `style` attributes. The Lighthouse mobile preset never passes the gate, so the 10,240 B per-route JS budget holds.
+
+### W9-9 1920 tests live in the wave 8 directories, and the counsel checklist moves with its copy
+
+There is no 1920 Playwright project and adding one would need a release-lane CI edit. Wave 9 specs live in `tests/e2e/wave8/wp-NN/**`, set a 1920x1080 viewport in the spec and run only in the desktop wave 8 project. The shared assertions are `tests/e2e/wave8/wp-51/lib/full-width.ts`. A wave 9 package that edits a file quoted by `.astro-magazine/release/RELEASE.md` updates the quoted line numbers in the same commit through its scoped exception; WP-99 stays the release owner.
+
+### W9-10 Claims C-07 and C-17 for the wave 9 visuals
+
+Tech-lead decision on the brief, 2026-10-14. C-17 is published for the genericized figures only (the Dream, Build, Grow journey roadmap; a readiness scorecard with no weights or thresholds; the seat-and-steering flow with no amounts and no valuation cap); the original proposal figures stay off the site. C-07 is enabled for the equity concept only ("WE is paid per seat in cash, plus equity earned in arrears for steering"); percentages, caps, valuations and instrument terms stay excluded under C-08. `flags.seatPrice` stays off, so the seat builder ships unpriced. The internal `source` strings of the claims registry name no outside party; WP-57 repeats the scrub review before any gh-pages promotion.
+
+### W9-11 Brand wording for the framework names
+
+"G.R.O.W.T.H. phase" replaces the source name that used the barred word. S.M.A.R.T. expands to Specific, Measurable, Achievable, Relevant, Time-bound. A.N.D.R.O.I.D. uses "Implement". WE is a services provider and build partner, never an investor, fund or accelerator.
+
+### W9-12 Positioning: an ongoing incubation and consulting firm, not a seat seller
+
+CEO direction of 2026-10-14, later the same day; it supersedes the seat parts of W9-10. WE is an ongoing business incubation and consulting firm that a company brings on as a long-term partner with equity alignment: no cohorts, no demo day, no fixed batch, paced to the documented time it takes to build a business. WE is not presented as a seat seller or employer of record. Seat prices are never shown or emphasized; `flags.seatPrice` stays off. The team WE steers appears as part of the engagement (roles, a constellation visual), never as a priced cart. WP-54 is rescoped to services, the engagement model, tools and apply; `/pricing/` stays as a route and becomes the engagement-model page. WP-58 (issue #79, stage 2, one of the spare numbers of W9-1) holds the sales literature: `src/content/sales/**`, the `/who-we-work-with/` and `/why-it-takes-time/` route families, `src/components/sales/**`, `src/data/sales/**`, and scoped exceptions on `src/data/routes.ts`, `src/data/nav.ts`, `src/content.config.ts` and the CTA labels in `src/data/cta/index.ts` (with `tests/unit/wp-60/cta.test.ts`). Until the sales strategy lands, primary CTAs read "Start a conversation" or "Apply". C-07 is reworded to the engagement: paid for the ongoing engagement plus equity earned in arrears for steering, no numbers. The banned words still apply.
+
+### W9-13 Sales direction: how WE works, why it takes time, who WE works with, one CTA hierarchy
+
+CEO adoption of the sales strategy, 2026-10-14; it refines W9-12. The category is "long-horizon business incubation" (consulting in the description), for software-enabled and expertise-led companies. Ownership:
+
+- WP-54 owns `/how-we-work/`, which replaces `/pricing/` (`/pricing/` is not indexable and points to `/how-we-work/`), and it is the single owner of the retirement of the public Spark, Launch, Accelerate and Studio packages: `src/data/packages.ts`, the package catalog node in `src/lib/schema.ts`, `JsonLd.astro`, `src/lib/llms.ts`, the required texts in `claims-denylist.json`, the Team Composer `?package=` hand-off, the apply form package select and their pinning tests, through scoped exceptions. No prices anywhere; start any month; a yearly checkpoint review. `/apply/` stays with WP-54, including the readiness-review intake wording and the `?situation=` preselect (SALES.md 6.4 interim: situation lines inside `message`, no forms-contract change).
+- WP-58 owns `/why-it-takes-time/` (charts from its own `src/data/sales/**`), the `/who-we-work-with/` hub and its seven situation pages, the timeline brief `/briefs/real-timeline/` (one `families.ts` entry, the brief-request enum, `infra/intake/briefs/real-timeline.md`) and the C-29 wording of SALES.md 1.4. Each family updates the old "digital incubator" phrase on its own pages.
+- WP-51 owns the CTA labels: the `apply` target, the header button, the hero, end-band and mobile-bar primaries read "Start a readiness review"; the secondaries are "See how long it really takes" (`/why-it-takes-time/`) and "See how WE works" (`/how-we-work/`); the utility is "Talk to WE"; the partner CTA is "Refer a founder". WP-51 registers its own exceptions on `src/data/cta/**`, `src/data/nav.ts` and the label pins in the follow-up that changes them. The header row has no room for the longer button beside a direct Pricing item from 1100 to 1500px, so Pricing leaves the top level; the compact row (16px nav) runs to 1500px and the button shows "Readiness review" below 1240px with the full label as its accessible name. The palette keeps "Apply" as the command name (hint: the button label); navigation links to `/apply/` in panels and the footer keep "Apply" (docs/wave9-contracts.md, section 8).
+- WP-55 holds exceptions on `tests/unit/wp-40/ci.test.ts` (the UBF row launches; `/star/`, `/shift/` and `/android/` stay cut), `tests/unit/wp-41/facts.test.ts` (the package lines on `/about/facts/`) and `.astro-magazine/sources/wp-71.json` (the brand-story and press quote entries follow the new About copy).
+
+C-07 is off until counsel clears it: every equity line marked "[GATED: C-07]" in the sales literature ships as its non-equity fallback, and every [CONFIRM] item ships in its conservative wording. Never name a competitor or a named program on the site; category comparisons only. Every statistic comes from `.astro-magazine/plans/wave9/statistics.json` (ST-01 to ST-41, generated from the proof library); a page records each figure it cites as a source record in its own `.astro-magazine/sources/wp-NN.json` with `source_id` set to the ST id, and never uses a figure from the register's `neverUse` list.
+
+
+## Wave 10 (2026-10-15, WP-32, issue #81)
+
+### D-W10-1 Inclusive ecosystem: the claims denylist is scoped, not deleted
+
+CEO direction of 2026-10-15: "We aren't competing: we are inclusive. We WANT our clients to join cohorts, cowork spaces, investor relations, incubators, etc: list all of them somewhere and encourage people to join those." This supersedes the wave 9 bans on the words accelerator, cohort, incubator, mentor and mentorship, alumni, investor network and demo day, and on naming outside programs, where those words describe the independent ecosystem a founder is encouraged to join.
+
+Mechanism (docs/wave10-contracts.md, section 2): an **ecosystem context** is (a) the routes `/ecosystem/**`, `/sbir-sttr/**` and `/data/**` (and their Markdown twins), or (b) any element marked `data-context="ecosystem"` on any page. The rules C-13-peers, C-14-investor-network and C-14-demo-day-outcomes carry `"ecosystemAllowed": true` in `claims-denylist.json` and are skipped there; outside the context the old bans stand unchanged. Plain-text machine files (llms.txt) have no marker and stay strict.
+
+Always banned, in the context too: calling WE an accelerator, investor, fund, investor network, employer of record or seat seller (`W10-we-is-accelerator-or-investor`, `W10-own-investor-network`); WE running a cohort, batch or demo day (`W8-C13-own-peers`, `W10-own-demo-day`); implying partnership, endorsement or affiliation with a named program (`W10-named-program-endorsement`, default wording "independent programs WE encourages founders to consider; no affiliation implied"); a price WE would charge (`W10-price`); WE offering anything free (`W10-free-offer`). The per-family tests (wp-74 industry pages, wp-75 content rules, wp-77 glossary, wp-86 playbooks, wp-87 guides) stay strict for their own fixed file lists. Tone toward other programs is generous and specific, never disparaging: "Join them. WE works alongside, for the long run."
+
+### D-W10-2 Seamless, HTML5-driven 3D
+
+CEO direction: the three.js work must be seamless ("stemless") and HTML5 driven, the latest and best use of HTML5, pushing what is new in 2026. Seamless means no boxed canvases: full-bleed scenes with masked, feathered edges that blend into the page bands. Platform features are progressive enhancement: three.js `WebGPURenderer` with a WebGL2 fallback, CSS scroll-driven animations, cross-document View Transitions, `@starting-style`, popover and anchor positioning, `@property`, container queries, `:has()`, speculation rules and `content-visibility`. Unchanged guards: poster LCP, no-JS, reduced motion, save-data, the CSP (no blob workers, no inline scripts, no style attributes), the 10,240 B gzip JS budget on non-exempt Lighthouse routes (heavy code loads lazily) and no scroll-jacking. WP-32 grants WP-36 the frozen-file exceptions it needs (BaseLayout head, motion.css, speculation rules, package files for a three upgrade) in `ownership.json`. The cross-document view transition and the speculation rules already exist (`src/styles/motion.css`, `src/components/seo/SpeculationRules.astro`); WP-36 extends them.
+
+### D-W10-3 Data visualisation sourcing, Carta Data included
+
+CEO direction: more dataviz from statistics, scientific journals and public data; carta.com/data is a good source. Every statistic has a record in the sources ledger with URL, publisher, retrieval date and transformation notes; peer-reviewed and official statistics are preferred. Carta Data figures are cited to the specific report and date, only specific figures are quoted, and no dataset is bulk re-hosted; the page owner reads Carta's terms first and records the outcome in the handoff. Citing a source is not an endorsement or affiliation (D-W10-1). The pages live under `/data/**`, which is an ecosystem-context route.
+
+### D-W10-4 SBIR and STTR are encouraged, never promised
+
+CEO direction: encourage people to go to SBIR and STTR. WP-34 verifies the current 2026 authorization and program status from sbir.gov, SBA and congress.gov before writing, and states it with a retrieval date. WE encourages applying and helps founders prepare alongside; it is not an agency, does not review or score proposals, and guarantees no award. The no-funding statement (C-05) and the Investor Introductions rules stay in force. The two generic scrub patterns for the program names (`\bSBIR\b`, `\bSTTR\b`) were written for a pre-direction false positive; the program names are public and now deliberate site content, so they match by design and are not client identifiers (the tech lead retires them from the kit's scrub list; no other term matches).
+
+### D-W10-5 Wave 10 governance and numbering
+
+WP-32 to WP-38 (issues #81 to #87) are registered once in `ownership.json` ahead of the edits (W8-30 pattern) with `.astro-magazine/plans/wave10/writesets.json` and `tests/unit/wp-32/write-sets-wave10.test.ts` (filter `/^WP-3[2-8]$/`). WP-32 merges first; WP-37 is stage 2 and links only to routes that exist on demo when it merges. WP-33, WP-34 and WP-35 each hold a routes.ts exception limited to a marked block of their own rows, so the shared ledger needs no further governance commit. The routes `/ecosystem/`, `/sbir-sttr/` and `/data/` are launched ledger rows with no page yet: inert (out of nav, sitemap and the link audit) until the page file exists, the mechanism wave 9 used for `/why-it-takes-time/`. They are linked from the Network and Resources panels and the footer; no top-level nav item is added. The ecosystem context never relaxes the confidentiality rule (`scrub-terms.txt`) or the promotion rule (squash-only to gh-pages on the CEO's "ready").
+
+### D-W10-6 OP-HOSTS extension for the wave 10 hubs; ST-16 and ST-18 periods
+
+The sources allowlist (`tests/unit/wp-60/sources.ts`) gains three kinds of host so the ecosystem, SBIR and STTR, and data pages can record their fetches. Research bodies join the scholarly class: nber.org, kauffman.org, gemconsortium.org. A new data-publisher class covers carta.com and cbinsights.com: a cited statistic with a verbatim quote is allowed, a regulation is not. A new program class lists program and ecosystem-directory sites (score.org, americassbdc.org, angelcapitalassociation.org, the accelerator, studio and venture-network sites WP-33 cites, and exact big-vendor program hosts such as aws.amazon.com and startup.google.com); it sources a fact about the program only, never a statistic or a regulation. `.gov` and `.edu` already covered sbir.gov, sba.gov, congress.gov, census.gov, bls.gov, nsf.gov and babson.edu. A law-firm host (crowell.com) is deliberately not added; legal readings come from the statute or agency. Citing a host remains no endorsement (D-W10-1). In `src/data/sales/stats.ts`, the Azoulay et al. top 0.1% figures (ST-16's 45.0, ST-18) are for firms founded 2007 to 2009 (Table 5 and the experience tables); only the 41.9 for all hiring firms spans 2007 to 2014. ST-17 (1.8x, from the abstract) keeps its period until its sample window is verified.
+
+### D-W11-1 Wave 11 registration (media primitives and density)
+
+WP-22 to WP-26 (issues #88 to #92, milestone 1811) are registered once in `ownership.json` ahead of the edits with `.astro-magazine/plans/wave11/writesets.json` and `tests/unit/wp-32b/write-sets-wave11.test.ts` (filter `/^WP-2[2-6]$/`), write sets as in the Wave 11 section of the orchestration brief. WP-26 is stage 2 and starts after WP-38 merges. Layout, page and header files outside a package's globs are exceptions, not write-set entries: about and network index (WP-22), BriefLayout, PlaybookLayout and ReferenceLayout (WP-23), HubLayout, ToolLayout and TemplateLayout (WP-24), Header.astro for logo sizes (WP-25), ArticleLayout (WP-26), plus the wave 8 frozen insights component folder (WP-26). The closed wave 7 photography lane gives `src/components/media/**` to WP-22 and `.astro-magazine/media/**` to WP-25. WP-23 leaves `src/content/playbooks/**` to WP-38. Forms stay disabled until the CEO decides endpoints and the privacy notice.
+
+Additions to D-W11-1: WP-38 and WP-26 hold exceptions on `src/components/geo/mdx-transform.ts` and `tests/unit/wp-91/mdx-transform.test.ts` (wave 10 insights embed chart components and the `data-context` ecosystem element; the Markdown and llms transform converts charts to tables and lists from props and passes `data-context` through). WP-22 holds additive exceptions on `scripts/lib/audit-dist.mjs` (.mp4, .webm, .vtt only) and `scripts/lib/serve.mjs` (video and VTT MIME types, simple Range 206); neither file is frozen or in the release lane.

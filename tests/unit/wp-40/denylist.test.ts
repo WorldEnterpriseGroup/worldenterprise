@@ -149,7 +149,7 @@ test('a Markdown twin stands for its page, and a text file for itself', () => {
 const set = api.parseDenylist({ ...document, required: document.required.filter((r) => r.id.startsWith('R-W7')) });
 const manifest = { slots: [] as [] };
 const NO_FUNDING = 'WE makes no promise of funding.';
-const LLMS = `# World Enterprise Incubator\n\n> A dedicated-team incubator.\n\n## What WE does not do\n\n${NO_FUNDING}\n\n${INTRODUCTIONS_DISCLAIMER}\n\n- [Pricing](https://worldenterprise.org/pricing.md)\n`;
+const LLMS = `# World Enterprise\n\n> A business incubation and consulting firm.\n\n## What WE does not do\n\n${NO_FUNDING}\n\n${INTRODUCTIONS_DISCLAIMER}\n\n- [Pricing](https://worldenterprise.org/pricing.md)\n`;
 const home = '<!doctype html><html lang="en"><head><title>Home</title></head><body><main><h1>Home</h1><p>A page.</p></main></body></html>';
 
 function audit(files: Record<string, string>): Finding[] {
@@ -160,7 +160,7 @@ function audit(files: Record<string, string>): Finding[] {
 test('the claims audit scans llms.txt, llms-full.txt and the Markdown twins', () => {
   assert.deepEqual(audit({ 'llms.txt': LLMS, 'llms-full.txt': LLMS, 'faq/index.html': home, 'faq.md': '# FAQ\n\nA plain answer.\n' }), []);
   const dirty = audit({ 'llms.txt': `${LLMS}\nApplying is free of charge.\n`, 'insights/x/index.html': home, 'insights/x.md': '# X\n\nWe take no equity.\n' });
-  assert.deepEqual(dirty.map((f) => f.rule).sort(), ['W7-C09-free-of-charge', 'W7-C09-no-equity']);
+  assert.deepEqual(dirty.map((f) => f.rule).sort(), ['W10-free-offer', 'W7-C09-free-of-charge', 'W7-C09-no-equity']);
   assert.match(dirty.map((f) => f.where).join('\n'), /llms\.txt/);
   assert.match(dirty.map((f) => f.where).join('\n'), /x\.md/);
 });
@@ -181,7 +181,7 @@ test('a Markdown twin is held to the same denylist as its page, including a seat
 
 test('required rules for the wave 7 pages are skipped until the page is built, then enforced', () => {
   assert.deepEqual(audit({}), [], 'nothing built, nothing required');
-  const lacking = audit({ 'llms.txt': '# World Enterprise Incubator\n', 'program/how-we-decide/index.html': home });
+  const lacking = audit({ 'llms.txt': '# World Enterprise\n', 'program/how-we-decide/index.html': home });
   assert.deepEqual(lacking.map((f) => `${f.rule} ${f.where}`).sort(), [
     'R-W7-C05-no-funding-disclaimer /llms.txt',
     'R-W7-C05-no-funding-disclaimer /program/how-we-decide/',

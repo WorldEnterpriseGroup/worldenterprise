@@ -1,0 +1,38 @@
+---
+import { render } from 'astro:content';
+import { ACTIONS, ENQUIRY_CONTENTS, HOW_PAGE, HREFS } from '../../../components/partners/copy.ts';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import Steps from '../../../components/ui/Steps.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+
+const page = await getPageEntry('network/partners/how-it-works');
+const { Content } = await render(page);
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path={HREFS.howItWorks}
+  eyebrow={page.data.eyebrow}
+  lead={HOW_PAGE.lead}
+  updated={page.data.updated}
+  ogSlot="og-network"
+  primary={ACTIONS.enquire}
+  secondary={ACTIONS.faq}
+>
+  <Content />
+
+  <h2 id="partner-steps">{HOW_PAGE.stepsHeading}</h2>
+  <Steps headingLevel={3} steps={HOW_PAGE.steps} />
+
+  <h2 id="partner-contents">{HOW_PAGE.contentsHeading}</h2>
+  <p>{HOW_PAGE.contentsIntro}</p>
+  <ul>
+    {ENQUIRY_CONTENTS.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <h2 id="partner-promises">{HOW_PAGE.promiseHeading}</h2>
+  <ul>
+    {HOW_PAGE.promises.map((item) => <li>{item}</li>)}
+  </ul>
+</MarketingLayout>

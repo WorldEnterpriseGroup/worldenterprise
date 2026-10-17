@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
-# Wave 8 push slot. Holds one of N slots (default 5) from before `git push` until the pipeline of the pushed commit ends,
+# Wave 8 push slot. Holds one of N slots (default 3) from before `git push` until the pipeline of the pushed commit ends,
 # so that at most N branch pipelines of wave 8 run at once across every worktree of this clone (plan section 4.2, W8-21).
+#
+# The default is 3, down from 5, while FocusApiary/gitlab-k8s#16 is open: the runner gives each job pod 100m of CPU against a 1500m limit,
+# and with five pipelines at once the Playwright and Lighthouse jobs of every pipeline starved each other (e2e:routes took 51 minutes with
+# loop-test timeouts on pipeline 65962; qa:lighthouse failed 5 of 12 routes on pipeline 66023). Raise it again when that issue is fixed.
+# The cap is read from the copy of this script a worktree has, so it takes effect in a worktree once that branch has merged demo; pass
+# `--slots 3` until then.
 #
 # usage:
 #   push-slot.sh push  <branch> [--slots N]   wait for a free slot, push the branch, wait for its pipeline, release the slot
@@ -24,7 +30,7 @@ if [ $# -gt 0 ] && [[ "$1" != --* ]]; then
   target="$1"
   shift
 fi
-slots=5
+slots=3
 while [ $# -gt 0 ]; do
   case "$1" in
     --slots) slots="${2:?--slots needs a number}"; shift 2 ;;
@@ -46,8 +52,20 @@ status_of() {
     "$WAVE8_STATUS_CMD" "$1"
     return
   fi
-  GITLAB_HOST=git.developerdojo.org glab api "projects/$project/pipelines?ref=$1&source=push&per_page=1" |
-    python3 -c 'import json,sys; d=json.load(sys.stdin); print("{} {} {}".format(d[0]["id"], d[0]["status"], d[0]["created_at"]) if d else "none")'
+  # A lookup that gets no answer is not the same as a lookup that answers "none": it returns non-zero (a network error, a timeout, a 5xx
+  # whose body is HTML or an error object), and the caller retries it without counting it as a missing pipeline.
+  GITLAB_HOST=git.developerdojo.org timeout "${WAVE8_LOOKUP_SECONDS:-60}" glab api "projects/$project/pipelines?ref=$1&source=push&per_page=1" |
+    python3 -c '
+import json, sys
+try:
+    d = json.load(sys.stdin)
+except ValueError as e:
+    sys.stderr.write("pipelines lookup: the response is not JSON (%s)\n" % e)
+    sys.exit(4)
+if not isinstance(d, list):
+    sys.stderr.write("pipelines lookup: unexpected response %s\n" % str(d)[:120])
+    sys.exit(4)
+print("{} {} {}".format(d[0]["id"], d[0]["status"], d[0]["created_at"]) if d else "none")'
 }
 
 show_status() {
@@ -86,25 +104,35 @@ acquire() {
 
 wait_for_pipeline() {
   # $1 ref, $2 ISO timestamp the wait started at (a pipeline created earlier is not ours)
-  local ref="$1" started="$2" waited=0 line id state created
+  local ref="$1" started="$2" waited=0 empty=0 line id state created
   while true; do
-    # A lookup that fails once (network, rate limit) is retried at the next poll; under set -e it would end the script and keep the slot.
-    line="$(status_of "$ref" || echo none)"
-    if [ "$line" != "none" ]; then
-      read -r id state created <<<"$line"
-      if [[ "$created" > "$started" || "$created" == "$started" ]]; then
-        echo "pipeline $id: $state"
-        case "$state" in
-          success) return 0 ;;
-          failed|canceled) return 1 ;;
-          skipped) return 3 ;;
-        esac
+    # A lookup that fails (network, rate limit, a 5xx with a non-JSON body, a timeout) is retried at the next poll: under set -e it would end
+    # the script and keep the slot, and it says nothing about whether a pipeline exists, so it never counts toward "no pipeline appeared".
+    if line="$(status_of "$ref")"; then
+      if [ "$line" != "none" ]; then
+        read -r id state created <<<"$line"
+        if [[ "$created" > "$started" || "$created" == "$started" ]]; then
+          echo "pipeline $id: $state"
+          case "$state" in
+            success) return 0 ;;
+            failed|canceled) return 1 ;;
+            skipped) return 3 ;;
+          esac
+          empty=0
+        else
+          empty=$((empty + poll))
+        fi
+      else
+        empty=$((empty + poll))
       fi
+    else
+      echo "pipeline lookup for $ref failed, retrying in ${poll}s" >&2
     fi
     sleep "$poll"
     waited=$((waited + poll))
     if [ "$waited" -ge "$limit" ]; then echo "gave up after ${limit}s" >&2; return 1; fi
-    if [ "$waited" -ge "$appear" ] && { [ "$line" = "none" ] || [[ "$created" < "$started" ]]; }; then
+    # Only answers that showed no pipeline of ours count: a run of failed lookups, however long, is not a missing pipeline.
+    if [ "$empty" -ge "$appear" ]; then
       echo "no pipeline appeared within ${appear}s" >&2
       return 3
     fi

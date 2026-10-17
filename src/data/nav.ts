@@ -18,6 +18,8 @@ export interface NavLink {
   readonly line?: ServiceLine;
   /** Specified for completeness; hidden until the route ships. */
   readonly l2?: boolean;
+  /** A shorter visible label where the header row is tight (1100 to 1239px); the full label stays the accessible name (W9-13). */
+  readonly short?: string;
 }
 
 export interface NavColumn {
@@ -59,7 +61,7 @@ export type PrimaryNavItem =
   | ({ readonly kind: 'direct' } & DirectNavItem);
 
 export const utilityNav: { readonly statement: string; readonly links: readonly NavLink[] } = {
-  statement: 'A digital incubator for SaaS',
+  statement: 'Long-horizon business incubation and consulting',
   links: [
     { label: 'For investors', href: '/investors/' },
     { label: 'Press', href: '/press/' },
@@ -69,7 +71,7 @@ export const utilityNav: { readonly statement: string; readonly links: readonly 
   ],
 };
 
-export const applyButton: NavLink = { label: 'Apply', href: '/apply/' };
+export const applyButton: NavLink = { label: 'Start a readiness review', href: '/apply/', short: 'Readiness review' };
 
 export const primaryNav: readonly PrimaryNavItem[] = [
   {
@@ -77,19 +79,22 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     id: 'program',
     label: 'Program',
     href: '/program/',
-    lead: 'A digital incubator for SaaS. Dedicated team seats, steered by WE, from first idea to first customers.',
+    lead: 'Long-horizon business incubation. A dedicated team, steered by WE, from first idea to first customers.',
     leadLink: 'Explore the program',
     columns: [
       {
         heading: 'How it works',
         links: [
-          { label: 'How it works', href: '/program/how-it-works/', description: 'Apply, scope, seat your team, work in focused cycles' },
+          { label: 'How it works', href: '/program/how-it-works/', description: 'Apply, scope, form your team, work in focused cycles' },
+          { label: 'How WE works', href: '/how-we-work/', description: 'Phases, cadence, pricing and how the work ends' },
           { label: 'Your journey', href: '/journey/', description: 'From first visit to the first months inside the program' },
           { label: 'After you apply', href: '/journey/after-you-apply/', description: 'What happens to an application, step by step' },
           { label: 'The digital incubation model', href: '/program/digital-incubation-model/', description: 'Fully remote by design: no office, no relocation' },
-          { label: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'Offshore seats that work only on your company' },
+          { label: 'Dedicated teams', href: '/program/dedicated-teams/', description: 'A dedicated team that works only on your company' },
           { label: "Who it's for", href: '/program/who-its-for/', description: 'The founders and ideas WE builds with' },
           { label: 'How WE decides', href: '/program/how-we-decide/', description: 'How an application is read' },
+          { label: 'Why it takes time', href: '/why-it-takes-time/', description: 'How long a new business really takes, from public data' },
+          { label: 'Who WE works with', href: '/who-we-work-with/', description: 'Seven situations founders bring to WE' },
         ],
       },
       {
@@ -103,9 +108,9 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         ],
       },
     ],
-    featured: { label: 'Start here', title: 'Apply to the program', cta: { label: 'Apply', href: '/apply/' }, slot: null },
+    featured: { label: 'Start here', title: 'Start with a readiness review', cta: { label: 'Start a readiness review', href: '/apply/' }, slot: null },
     strip: [
-      { label: 'Compare seat options', href: '/pricing/' },
+      { label: 'How WE works', href: '/how-we-work/' },
       { label: 'Read the FAQ', href: '/faq/' },
     ],
   },
@@ -144,7 +149,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
     },
     strip: [
       { label: 'Dedicated teams', href: '/program/dedicated-teams/' },
-      { label: 'Pricing', href: '/pricing/' },
+      { label: 'How WE works', href: '/how-we-work/' },
     ],
   },
   {
@@ -212,6 +217,7 @@ export const primaryNav: readonly PrimaryNavItem[] = [
           { label: 'Briefs', href: '/briefs/' },
           { label: 'Industries', href: '/industries/' },
           { label: 'Compare', href: '/compare/' },
+          { label: 'Data and charts', href: '/data/' },
           { label: 'Newsletter', href: '/newsletter/' },
         ],
       },
@@ -262,6 +268,9 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         links: [
           { label: 'Who WE builds with', href: '/founders/', description: 'The founder profile and the evidence WE looks for' },
           { label: 'Apply', href: '/apply/' },
+          // Wave 10 (D-W10-1): the routes are built by WP-33 and WP-34; a link to a route that does not exist yet is filtered out by resolveNav.
+          { label: 'The wider ecosystem', href: '/ecosystem/', description: 'Independent programs, spaces and groups worth joining alongside WE' },
+          { label: 'SBIR and STTR', href: '/sbir-sttr/', description: 'Federal research funding for small businesses: how to apply' },
           { label: 'Founder stories', href: '/founders/stories/', l2: true },
           { label: 'Portfolio', href: '/founders/portfolio/', l2: true },
         ],
@@ -279,9 +288,9 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         links: [{ label: 'For investors', href: '/investors/', description: 'How WE prepares companies, and what WE does not do' }],
       },
     ],
-    featured: { label: 'Founders', title: 'Apply to build with WE', cta: { label: 'Apply', href: '/apply/' }, slot: null },
+    featured: { label: 'Founders', title: 'Build a company with WE', cta: { label: 'Start a readiness review', href: '/apply/' }, slot: null },
     strip: [
-      { label: 'Pricing', href: '/pricing/' },
+      { label: 'How WE works', href: '/how-we-work/' },
       { label: 'Contact', href: '/contact/' },
     ],
   },
@@ -299,7 +308,6 @@ export const primaryNav: readonly PrimaryNavItem[] = [
           { label: 'Apply', href: '/apply/' },
           { label: 'Founder segments', href: '/founders/' },
           { label: 'What happens after you apply', href: '/journey/after-you-apply/' },
-          { label: 'Briefs', href: '/briefs/' },
           { label: 'Tools', href: '/tools/' },
         ],
       },
@@ -330,16 +338,15 @@ export const primaryNav: readonly PrimaryNavItem[] = [
         ],
       },
     ],
-    featured: { label: 'Start here', title: 'Read a brief', text: 'Open abstracts. The full brief arrives by email.', cta: { label: 'Browse the briefs', href: '/briefs/' }, slot: null },
+    featured: { label: 'Start here', title: 'Read a brief', text: 'Open abstracts. The full brief arrives by email.', cta: { label: 'Read the funding paths brief', href: '/briefs/funding-paths/' }, slot: null },
     strip: [{ label: 'Your journey', href: '/journey/' }],
   },
-  { kind: 'direct', id: 'pricing', label: 'Pricing', href: '/pricing/' },
   {
     kind: 'mega',
     id: 'about',
     label: 'About',
     href: '/about/',
-    lead: 'A digital incubator for SaaS, run by World Enterprise Group Incorporated.',
+    lead: 'A business incubation and consulting firm, run by World Enterprise Group Incorporated.',
     leadLink: 'About WE',
     columns: [
       {
@@ -380,7 +387,9 @@ export const footerNav: readonly FooterColumn[] = [
       { label: 'How it works', href: '/program/how-it-works/' },
       { label: 'Your journey', href: '/journey/' },
       { label: 'Dedicated teams', href: '/program/dedicated-teams/' },
-      { label: 'Pricing', href: '/pricing/' },
+      { label: 'How WE works', href: '/how-we-work/' },
+      { label: 'Why it takes time', href: '/why-it-takes-time/' },
+      { label: 'Who WE works with', href: '/who-we-work-with/' },
       { label: 'Apply', href: '/apply/' },
       { label: 'FAQ', href: '/faq/' },
     ],
@@ -409,6 +418,7 @@ export const footerNav: readonly FooterColumn[] = [
       { label: 'Compare', href: '/compare/' },
       { label: 'Templates', href: '/library/' },
       { label: 'Glossary', href: '/glossary/' },
+      { label: 'Data and charts', href: '/data/' },
       { label: 'Search', href: '/search/' },
     ],
   },
@@ -420,6 +430,8 @@ export const footerNav: readonly FooterColumn[] = [
       { label: 'Frameworks', href: '/about/frameworks/' },
       { label: 'Network', href: '/network/' },
       { label: 'Partners', href: '/network/partners/' },
+      { label: 'The wider ecosystem', href: '/ecosystem/' },
+      { label: 'SBIR and STTR', href: '/sbir-sttr/' },
       { label: 'For investors', href: '/investors/' },
       { label: 'Press', href: '/press/' },
       { label: 'Contact', href: '/contact/' },

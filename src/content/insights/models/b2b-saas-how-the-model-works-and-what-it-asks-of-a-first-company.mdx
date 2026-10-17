@@ -1,0 +1,104 @@
+---
+title: "B2B SaaS: how the model works and what it asks of a first company"
+seoTitle: How B2B SaaS works
+description: What business-to-business software as a service is, how it earns money, and the reliability, security, contract and support work it asks of a first company.
+topic: models
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [first-time-founders, technical-founders]
+relatedServices: [B, C]
+relatedPlaybook: earn-your-first-customers
+relatedTemplate: security-baseline-checklist
+related: [vertical-saas-depth-over-breadth, product-led-and-sales-led-growth-choosing-between-them]
+evidence: [sre-slo, csa-caiq, stripe-pricing-models]
+claimsUsed: [C-29]
+sources:
+  - id: sre-slo
+    title: Service Level Objectives, in Site Reliability Engineering
+    publisher: Google, sre.google
+    url: https://sre.google/sre-book/service-level-objectives/
+    accessed: 2026-10-10
+  - id: csa-caiq
+    title: Consensus Assessments Initiative Questionnaire (CAIQ)
+    publisher: Cloud Security Alliance
+    url: https://cloudsecurityalliance.org/artifacts/consensus-assessments-initiative-questionnaire-v3-0-1
+    accessed: 2026-10-10
+  - id: stripe-pricing-models
+    title: Recurring pricing models
+    publisher: Stripe Documentation
+    url: https://docs.stripe.com/products-prices/pricing-models
+    accessed: 2026-10-10
+---
+
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+Business-to-business software as a service, usually shortened to B2B SaaS, is software that an organization rents instead of buying once and installing. The customer is a company, a team or a public body. The product runs on your infrastructure, the customer reaches it through a browser or an interface, and the customer pays on a recurring basis for as long as the software is useful to them.
+
+That description fits a thousand products, so it does not help you decide anything yet. What helps is seeing what the model asks of the company that runs it. This article walks through the shape of the model, the four promises a business customer expects you to keep, and the questions a first company can answer before it takes its first paying account.
+
+## The shape of the model
+
+Three features define the model, and each one creates work.
+
+**The customer is an organization, and several people inside it matter.** The person who feels the problem, the person who approves the spend and the person who signs the contract are often three different people. The user may love the product and still be unable to buy it. Your first sales conversations are partly a map of who those people are and what each one needs to hear.
+
+**Revenue repeats, so retention becomes the business.** A subscription starts a relationship instead of closing a transaction. If customers leave, the revenue leaves with them, and the cost of finding the next customer returns. That is why a B2B SaaS company watches whether people reach value and stay, not only whether they sign. The <MaybeLink path="/insights/retention-basics-for-a-first-saas/">retention basics article</MaybeLink> sets out the formulas.
+
+**The product is operated, not delivered.** Once a customer depends on your software for part of their working day, an outage is your problem and theirs. Running the service every day, with monitoring, backups, upgrades and support, is a permanent part of the cost of the business. A team that thinks of the product as a thing it ships, rather than a service it runs, tends to discover this on the first bad night.
+
+## Four promises a business customer expects
+
+Business customers rarely say these out loud in a first call, but they appear in the questionnaires, the contracts and the renewal conversations.
+
+### Availability and performance
+
+A business customer wants to know how reliable the service will be and what you will do when it is not. The vocabulary for this comes from site reliability engineering. Google's published book on the subject defines the terms this way: "An SLO is a service level objective: a target value or range of values for a service level that is measured by an SLI." The same chapter describes a service level indicator as a carefully defined quantitative measure of some aspect of the level of service, and describes a service level agreement as a contract with your users that includes consequences of meeting or missing the objectives it contains.
+
+For a first company the practical reading is modest. Decide what you can actually measure, such as whether sign-in works and whether the main screen loads, and keep an honest internal target for it. Make a contractual promise only when you have measured long enough to know you can keep it. An agreement with consequences is a different object from an internal target, and the difference is worth keeping straight in your own head.
+
+### Security and data handling
+
+Larger customers send a security questionnaire before they buy. The Cloud Security Alliance publishes one that is widely used for this purpose. Its own description says the questionnaire "offers an industry-accepted way to document what security controls exist in IaaS, PaaS, and SaaS services", and that it provides a set of yes or no questions a cloud consumer and a cloud auditor may wish to ask of a cloud provider. Whether a given customer uses that questionnaire or one of their own, the questions are similar: who can see our data, how is access controlled, what happens when someone leaves, where is the data stored, and what do you do when something goes wrong.
+
+You do not need a finished program on day one, but you need honest answers. The <MaybeLink path="/library/security-baseline-checklist/">security baseline checklist</MaybeLink> and the <MaybeLink path="/research/saas-security-baseline-year-one/">year-one security baseline</MaybeLink> describe a sensible starting point. Describe what exists as what exists. A report or certificate that you do not hold is not something to imply.
+
+### Administration
+
+A single-user product can get away with one login. A business product cannot. Customers expect roles, a way to add and remove people, a way to see who did what, and, as accounts grow, a way to connect to their own sign-in system. None of this is exciting and all of it appears in the first serious deal. The decision to build these pieces or to buy them is covered in the article on <MaybeLink path="/insights/build-versus-buy-for-auth-billing-and-email/">build versus buy for sign-in, billing and email</MaybeLink>.
+
+### Contract and continuity
+
+Business customers ask what happens to their data if they leave, if you stop operating and if the two of you disagree. Terms of service, a data processing agreement and an order form all exist to answer those questions. What belongs in them is a matter for your counsel and depends on where you and your customers are. What belongs in your head is a plain answer to each question, because a founder who cannot say how a customer exports their data will find the contract harder to write than it should be.
+
+## How the money works
+
+B2B SaaS can be priced in several ways, and the choice shapes both the sales conversation and the support load. Stripe's documentation on recurring pricing models names four patterns. In a flat rate, "Customers choose a service tier (for example, Basic, Starter, or Enterprise) and pay a flat rate for it." Per-seat pricing means "Each pricing unit represents one user." Tiered pricing means "The unit cost changes with quantity (volume-based pricing) or usage (graduated pricing)." And usage-based pricing charges customers by how much they use. These descriptions come from a payments vendor's documentation, so read them as one vendor's account of how its own product models prices, not as a survey of the market.
+
+The article on <MaybeLink path="/insights/usage-based-seat-based-and-hybrid-pricing-models/">usage-based, seat-based and hybrid pricing</MaybeLink> compares them in detail. For now, the useful point is that the pricing unit is a statement about value. Whatever grows when your customer gets more value is a candidate for the unit, and a unit that does not track value invites arguments at renewal.
+
+## What the model asks of a first company
+
+Put together, the model asks for a handful of capabilities that a consumer app can postpone:
+
+- A product that is reliable enough that a business can plan its day around it.
+- An honest account of how customer data is handled, written down and ready to send.
+- Roles and account management that match how organizations actually work.
+- Someone who answers questions from customers, which at the start is usually a founder. The article on <MaybeLink path="/insights/support-at-five-customers-not-fifty/">support at five customers, not fifty</MaybeLink> describes a lightweight way to do it.
+- A way to learn, from conversations, who the buyer is and what they need to see before they say yes. The <MaybeLink path="/playbooks/earn-your-first-customers/">earn your first customers playbook</MaybeLink> is built around this.
+
+None of these requires a large team. All of them require that someone owns them. In a company of two or three people, naming the owner of each is most of the work.
+
+## Questions to answer before your first paying account
+
+1. Who is the user, who approves the spend and who signs? Can you name all three at your first customer?
+2. What will you measure to know the service is healthy, and where will you record it?
+3. What is the shortest honest answer to "where is our data and who can reach it"?
+4. How does a customer leave, and what do they take with them?
+5. What is the unit you charge for, and does it grow when the customer's value grows?
+6. Who answers the customer on a bad day?
+
+If you can write one honest sentence for each, you are in a better position than many companies that have a polished product and no answers.
+
+## What this article cannot tell you
+
+This article describes a model in general terms. It does not tell you whether B2B SaaS is the right model for your idea, how large your market is, or how long a sale will take in your sector, because no source we fetched covers your buyers. The reliability and questionnaire passages come from the documents named above, attributed to their publishers, and the pricing passage comes from one payments vendor's documentation. None of them is a legal source. Contract terms, data protection duties and tax treatment differ by country and by customer, and a qualified lawyer or accountant is the right person to ask. Everything here was checked on 2026-10-10, and the cited pages may change.

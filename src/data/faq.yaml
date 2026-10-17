@@ -1,19 +1,19 @@
 # FAQ entries (WP-08). Schema: src/content.config.ts, collection "faq". Answers follow SAGE-PLAN 7.5 and cite only enabled claims.
 - id: what-is-we
-  question: "What is World Enterprise Incubator?"
-  answer: "World Enterprise Incubator is a digital incubator for SaaS, run by World Enterprise Group Incorporated. Dedicated team seats, steered by WE, take a founder from first idea toward first customers and the evidence an investor will ask for. The work is fully remote."
+  question: "What is World Enterprise?"
+  answer: "World Enterprise is a long-horizon business incubation and consulting firm, run by World Enterprise Group Incorporated. WE steers a dedicated, fully remote team that builds a software-enabled company with its founder, for as long as the work is useful. WE makes no promise of funding."
   group: "About WE"
-  claimsUsed: [C-01, C-03, C-18]
+  claimsUsed: [C-01, C-02, C-03, C-05, C-18, C-29]
   related: [digital-incubator-meaning, what-is-a-seat]
 - id: is-it-an-accelerator
   question: "Is WE an accelerator?"
-  answer: "WE describes itself as a digital incubator. It builds with your company through dedicated team seats. This site does not describe a cohort calendar or a demo day."
+  answer: "No. WE is a long-horizon business incubation and consulting firm. It builds with your company through a dedicated team that WE steers, for as long as the work is useful. This site does not describe a cohort calendar or a demo day."
   group: "About WE"
-  claimsUsed: [C-01, C-02]
+  claimsUsed: [C-01, C-02, C-03, C-29]
   related: [what-is-we, digital-incubator-meaning]
 - id: digital-incubator-meaning
-  question: "What does \"digital incubator\" mean?"
-  answer: "It means the incubator is fully digital. There are no physical offices. Planning, building and reviewing all happen online, so you can work with WE from wherever you are."
+  question: "What does it mean that WE is fully digital?"
+  answer: "It means WE works fully online. There are no physical offices. Planning, building and reviewing all happen online, so you can work with WE from wherever you are."
   group: "About WE"
   claimsUsed: [C-01]
   related: [relocate]
@@ -61,21 +61,24 @@
   related: [promise-funding, cost]
 - id: cost
   question: "What does it cost?"
-  answer: "Pricing is seat-based. A dedicated seat is the unit of work, and WE arranges seats into four packages or into a custom seat plan. The Pricing page lists no amounts and lets you request the current rate."
+  answer: "WE is paid in cash, monthly, for the team's work. WE is paid for work already done, never in advance of it. Every term, including how steering is valued, is in the agreement you review with your own counsel. This site publishes no price list, because the team is sized to each company."
   group: "Applying and cost"
-  claimsUsed: [C-02, C-10]
+  seeAlso: [/how-we-work/]
+  claimsUsed: [C-02]
   related: [packages, how-paid]
 - id: packages
-  question: "What are Spark, Launch, Accelerate and Studio?"
-  answer: "They are WE's four packages: pre-configured seat plans with a fixed scope, each sized for a company stage. Every package covers all seven service lines at a different depth. You can choose a custom seat plan instead, and seats change by notice either way."
+  question: "Does WE sell packages or seats?"
+  answer: "No. A company brings WE in once, as a long-term partner, and the team WE steers is sized to where the company stands. The readiness review sets the first team, and roles change by notice as the work moves from phase to phase."
   group: "Applying and cost"
-  claimsUsed: [C-02, C-10]
+  seeAlso: [/how-we-work/]
+  claimsUsed: [C-02, C-03]
   related: [cost, scale-by-notice]
 - id: how-paid
   question: "How is WE paid?"
-  answer: "The written agreement sets out how WE is paid. WE shares it before you commit to anything, and you should read it with your own counsel. How seats and packages are priced is explained on the Pricing page."
+  answer: "In cash, monthly, for the team's work. WE is paid for work already done, never in advance of it. Every term is in the written agreement, which WE shares before you sign anything and which you should read with your own counsel."
   group: "Applying and cost"
-  claimsUsed: [C-10]
+  seeAlso: [/how-we-work/]
+  claimsUsed: []
   related: [cost, who-owns-work]
 - id: who-owns-work
   question: "Who owns the work?"
@@ -107,3 +110,361 @@
   group: "Scope and limits"
   claimsUsed: [C-01, C-04, C-05]
   related: [promise-funding, what-stage]
+- id: site-cookies
+  question: "Does this site use cookies or analytics?"
+  answer: "No. This site sets no cookies and loads no third-party scripts, no analytics and no advertising or tracking pixels. The website itself keeps no record of your visits. The host, GitHub Pages, receives technical data about each request and handles it under its own terms."
+  group: "Your details and this site"
+  seeAlso: [/legal/privacy/]
+  claimsUsed: []
+  related: [site-form-details]
+- id: site-form-details
+  question: "What happens to the details I send in a form?"
+  answer: "Nothing is collected until you press the submit button of a form, and nothing is sent while you type. WE uses the details in a form to answer the request, as the privacy notice describes. WE does not sell the details and does not pass them to advertisers."
+  group: "Your details and this site"
+  seeAlso: [/legal/privacy/]
+  claimsUsed: [C-28]
+  related: [site-your-data, site-cookies]
+- id: site-your-data
+  question: "Can I ask what WE holds about me?"
+  answer: "Yes. You can ask what WE holds about you, ask for it to be corrected, or ask for it to be deleted. Use the contact page and choose the topic about how WE handles information."
+  group: "Your details and this site"
+  seeAlso: [/contact/, /legal/privacy/]
+  claimsUsed: [C-28]
+  related: [site-form-details]
+- id: tools-account
+  question: "Do the founder tools need an account?"
+  answer: "No. Each tool runs in your browser, needs no account and quotes no price. You type your own numbers or make your own choices, and nothing is saved or sent anywhere."
+  group: "Founder tools"
+  seeAlso: [/tools/]
+  claimsUsed: []
+  related: [tools-readiness, cost]
+- id: tools-readiness
+  question: "Does a tool tell me whether my company is ready to raise money?"
+  answer: "No. The tools only arrange what you give them. They do not tell you whether a company is ready, and they do not predict an outcome. WE makes no promise of funding."
+  group: "Founder tools"
+  seeAlso: [/tools/]
+  claimsUsed: [C-05]
+  related: [tools-account, promise-funding]
+- id: start-application
+  question: "What does the application ask for?"
+  answer: "The application is short and asks only what WE needs to judge fit. It asks who you are, where the idea stands and, if you add it, the team you have in mind. The team, the context questions and a longer description of what you are building are optional."
+  group: "Applying"
+  audience: startup
+  seeAlso: [/apply/]
+  claimsUsed: []
+  related: [how-to-apply, start-after-apply]
+- id: start-after-apply
+  question: "What happens after I apply?"
+  answer: "WE reviews each application and replies to the email address you give. WE does not state a response time on this site. If the idea fits, WE and the founder choose which service lines the company needs and what each one will and will not cover. The scope is written down in an agreement, so both companies work from the same page."
+  group: "Applying"
+  audience: startup
+  seeAlso: [/program/how-we-decide/]
+  claimsUsed: []
+  related: [how-to-apply, start-application]
+- id: start-fit
+  question: "How do I know whether I am a good fit?"
+  answer: "You are a good fit if you have a SaaS idea or an early product and can say who it is for. You can describe the problem as the customer would, and you are willing to test the idea with real customers, including when the answers are unwelcome. You can make decisions for the company and join a review at each cycle."
+  group: "Applying"
+  audience: startup
+  seeAlso: [/program/who-its-for/, /program/how-we-decide/]
+  claimsUsed: []
+  related: [what-stage, start-not-fit]
+- id: start-not-fit
+  question: "When is WE probably not the right fit?"
+  answer: "WE is probably not the right fit if you need a physical office, on-site staff or in-person work, because WE is fully remote. It is also probably not the right fit if you are looking for money rather than a team, or if your idea is not a software-as-a-service product. A clear no is as useful to you as a yes."
+  group: "Applying"
+  audience: startup
+  seeAlso: [/program/who-its-for/]
+  claimsUsed: [C-01, C-05]
+  related: [not-for, promise-funding]
+- id: start-join-stage
+  question: "Can I apply with only an idea, or when I already have customers?"
+  answer: "WE serves a company from first idea to its first customers. A founder can join at the stage that matches the evidence already in hand: with an idea, at Dream; with a validated problem, at Build; with a product in use, at Grow."
+  group: "Applying"
+  audience: startup
+  seeAlso: [/program/who-its-for/]
+  claimsUsed: []
+  related: [what-stage, start-dream]
+- id: start-optional-team
+  question: "Do I need to choose a team before I apply?"
+  answer: "No. The team is optional on the application. You can sketch the roles in the Team Composer first and carry the sketch to the application in the link if you choose to. The application works without JavaScript, with the same questions on one page."
+  group: "Applying"
+  audience: startup
+  seeAlso: [/tools/team-composer/, /apply/]
+  claimsUsed: []
+  related: [how-to-apply, cost]
+- id: start-steps
+  question: "What are the steps from application to a working team?"
+  answer: "You apply, and then WE and the founder agree the scope in a written agreement. WE assembles dedicated offshore seats for the roles the scope calls for and steers them. The team works in short, reviewed cycles, and at each review you decide what the next cycle holds."
+  group: "How the program works"
+  audience: startup
+  seeAlso: [/program/how-it-works/]
+  claimsUsed: [C-02, C-03]
+  related: [what-is-a-seat, start-cycle]
+- id: start-cycle
+  question: "What happens in a cycle?"
+  answer: "WE and the founder agree the goal of the cycle in a short written plan, and the dedicated team does the work. The work in progress is open to you at any time. At the review you see what exists now, what changed and what is next, and you decide what the next cycle holds."
+  group: "How the program works"
+  audience: startup
+  seeAlso: [/program/how-it-works/]
+  claimsUsed: [C-02, C-03]
+  related: [start-steps, start-who-decides]
+- id: start-who-decides
+  question: "Who decides what the team works on?"
+  answer: "You do. You decide where the company is going and what the next cycle holds, and you keep ownership of the direction. WE decides how the team gets there with you, and answers for how it is run."
+  group: "How the program works"
+  audience: startup
+  seeAlso: [/program/dedicated-teams/]
+  claimsUsed: [C-03]
+  related: [start-who-manages, what-is-a-seat]
+- id: start-who-manages
+  question: "Do I hire or manage the people in the seats?"
+  answer: "No. You do not recruit, contract or manage the people in the seats. WE does, including any subcontractors it brings in, and the seats work on your company and on nothing else."
+  group: "How the program works"
+  audience: startup
+  seeAlso: [/program/dedicated-teams/]
+  claimsUsed: [C-02, C-03]
+  related: [what-is-a-seat, scale-by-notice]
+- id: start-dream
+  question: "What happens in Dream?"
+  answer: "Dream is the first stage: frame the problem, talk to real customers and decide on evidence whether to build, change course or stop. Sizing the market is built from counts you can check, not from third-party reports. Dream does not predict whether the idea will succeed."
+  group: "Dream, Build and Grow"
+  audience: startup
+  seeAlso: [/program/dream/]
+  claimsUsed: [C-04]
+  related: [start-join-stage, start-build]
+- id: start-build
+  question: "What happens in Build?"
+  answer: "Build turns the validated idea into a first release: design the product, cut the first release to what the evidence supports and ship it in reviewed cycles. Each cycle ends with something you can open and a review with you. Build does not promise a ship date and does not include production operations or round-the-clock support."
+  group: "Dream, Build and Grow"
+  audience: startup
+  seeAlso: [/program/build/]
+  claimsUsed: [C-04]
+  related: [start-dream, start-grow]
+- id: start-grow
+  question: "What happens in Grow?"
+  answer: "Grow is the stage for winning first customers, reporting metrics consistently and assembling the evidence investors ask for. WE does not promise a meeting with any investor and does not run a raise on your behalf. WE makes no promise of funding."
+  group: "Dream, Build and Grow"
+  audience: startup
+  seeAlso: [/program/grow/]
+  claimsUsed: [C-04, C-05]
+  related: [promise-funding, start-build]
+- id: start-lines
+  question: "What do the service lines cover?"
+  answer: "The service lines run from A to G. They cover brand and identity, product and IT development, customer relations and market development, business management and operations, digital incubation, fundability and investor readiness, and professional-services coordination. Each line says what it does not cover."
+  group: "Service lines"
+  audience: startup
+  seeAlso: [/services/]
+  claimsUsed: [C-04]
+  related: [packages, legal-advice]
+- id: start-no-deals
+  question: "Will WE close deals for me?"
+  answer: "No. Selling stays with you and your company. WE helps with customer discovery, pilot design and a written way to track every prospect from first contact to decision, and it makes no promise that conversations will turn into customers or revenue."
+  group: "Service lines"
+  audience: startup
+  seeAlso: [/services/customer-and-market-development/]
+  claimsUsed: [C-04]
+  related: [start-grow, start-lines]
+- id: start-seats-pricing
+  question: "How is the team sized?"
+  answer: "From where the company stands. The readiness review places the company on its business clock, and the team schedule in your agreement sets the roles. Roles can be added or removed by notice as the company moves from one phase to the next."
+  group: "Seats and pricing"
+  audience: startup
+  seeAlso: [/how-we-work/]
+  claimsUsed: [C-02]
+  related: [cost, packages]
+- id: start-seat-count
+  question: "What decides the size of the team?"
+  answer: "The work in front of you. The stage of the company, the roles the product needs, the work in the current cycle and how much you can review and decide each week all shape it."
+  group: "Seats and pricing"
+  audience: startup
+  seeAlso: [/how-we-work/]
+  claimsUsed: [C-02]
+  related: [scale-by-notice, cost]
+- id: start-rate
+  question: "Where do I find the price?"
+  answer: "This site publishes no price list, because the team is sized to each company. WE is paid in cash, monthly, for the team's work, and every term is in the agreement you review before signing. To ask about current terms, use the contact page."
+  group: "Seats and pricing"
+  audience: startup
+  seeAlso: [/contact/, /how-we-work/]
+  claimsUsed: []
+  related: [cost, how-paid]
+- id: inv-meet
+  question: "Can I meet a company WE incubates?"
+  answer: "You can ask, using the interest form. WE asks the founder, and the founder decides. WE cannot promise a meeting or a reply. WE makes no promise of funding."
+  group: "Asking to meet a company"
+  audience: investor
+  seeAlso: [/investors/meet-startups/]
+  claimsUsed: [C-05, C-25]
+  related: [investor-introductions, promise-funding]
+- id: inv-which
+  question: "Which companies can I see?"
+  answer: "WE lists a company only with its founder's written consent. WE names no company until a written record exists. WE shares only what the founder agreed to share. WE makes no promise of funding."
+  group: "Asking to meet a company"
+  audience: investor
+  seeAlso: [/investors/what-you-can-see/]
+  claimsUsed: [C-05, C-25]
+  related: [inv-meet]
+- id: inv-after-form
+  question: "What happens after I send the interest form?"
+  answer: "WE uses the details you sent to answer your request, as the privacy notice describes. WE asks a founder whether to take part, and the founder may say no. WE cannot promise a meeting or a reply. WE makes no promise of funding."
+  group: "Asking to meet a company"
+  audience: investor
+  seeAlso: [/investors/interest/]
+  claimsUsed: [C-05, C-25, C-28]
+  related: [inv-meet, site-form-details]
+- id: inv-form-fields
+  question: "What does the interest form ask for?"
+  answer: "The form asks for your name and email address. The firm, website, how you describe yourself, the sectors and stages you want to see, and a message are optional. It asks for no accreditation status, no amounts and no fund size. WE makes no promise of funding."
+  group: "Before you ask"
+  audience: investor
+  seeAlso: [/investors/interest/]
+  claimsUsed: [C-05, C-28]
+  related: [inv-after-form]
+- id: inv-ready
+  question: "How does a founder get ready to meet investors?"
+  answer: "A founder can work through the readiness checklist and the self-check before asking for anything. WE judges whether its readiness criteria are met, and meeting them does not mean an introduction will be made. WE makes no promise of funding."
+  group: "Before you ask"
+  audience: investor
+  seeAlso: [/fundability/, /investors/readiness-criteria/]
+  claimsUsed: [C-05, C-14]
+  related: [investor-introductions, inv-meet]
+- id: inv-securities
+  question: "Is this an offer of securities?"
+  answer: "No. Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security. WE does not negotiate terms, advise on securities or handle funds. WE makes no promise of funding."
+  group: "What WE does and does not do"
+  audience: investor
+  claimsUsed: [C-05, C-14]
+  related: [investor-introductions, inv-recommend]
+- id: inv-recommend
+  question: "Does WE recommend a company as an investment?"
+  answer: "No. WE does not advise investors or recommend any company as an investment, and an introduction is not an endorsement. WE does not verify a company's statements, which remain that company's own. WE makes no promise of funding."
+  group: "What WE does and does not do"
+  audience: investor
+  claimsUsed: [C-05, C-14]
+  related: [inv-securities, inv-diligence]
+- id: inv-funding
+  question: "Does WE promise a company funding?"
+  answer: "No. WE makes no promise of funding. It does not predict that any company will raise money. The work helps a founder prepare the evidence investors ask for."
+  group: "What WE does and does not do"
+  audience: investor
+  claimsUsed: [C-05]
+  related: [promise-funding, inv-securities]
+- id: inv-diligence
+  question: "Does WE do my diligence on a company?"
+  answer: "No. Any company that shows you materials prepared with WE's help is making its own case. You decide whether to reply, and you do your own diligence. WE makes no promise of funding."
+  group: "What WE does and does not do"
+  audience: investor
+  claimsUsed: [C-05, C-14]
+  related: [inv-recommend]
+- id: part-program
+  question: "Does WE have a partner program?"
+  answer: "WE takes enquiries from organizations that help or equip founders. WE names no partner on this site. Sending an enquiry does not create a partnership."
+  group: "Who can send an enquiry"
+  audience: partner
+  seeAlso: [/network/partners/]
+  claimsUsed: [C-26]
+  related: [part-who]
+- id: part-who
+  question: "Which organizations can send an enquiry?"
+  answer: "Any organization that helps or equips founders may send one. The form groups them in categories and has a Something else option."
+  group: "Who can send an enquiry"
+  audience: partner
+  seeAlso: [/network/partners/categories/]
+  claimsUsed: [C-26]
+  related: [part-program, part-say]
+- id: part-say
+  question: "What should a partner enquiry say?"
+  answer: "An enquiry should name the organization, its website, its category, what it provides to founders and the terms a founder would see."
+  group: "Who can send an enquiry"
+  audience: partner
+  seeAlso: [/network/partners/how-it-works/]
+  claimsUsed: [C-26]
+  related: [part-who, part-reply]
+- id: part-introduce
+  question: "Will WE introduce my organization to founders?"
+  answer: "WE may introduce an organization to a founder when that founder asks for help in its category and agrees to the introduction. WE cannot promise an introduction, a meeting or a reply."
+  group: "What an enquiry does and does not create"
+  audience: partner
+  seeAlso: [/network/partners/how-it-works/]
+  claimsUsed: [C-26]
+  related: [part-offer, part-endorse]
+- id: part-endorse
+  question: "Does WE endorse a partner's product?"
+  answer: "WE does not say on this site that WE uses, endorses or works with any named product. WE names no partner on this site until a written record exists."
+  group: "What an enquiry does and does not create"
+  audience: partner
+  seeAlso: [/network/partners/faq/]
+  claimsUsed: [C-26]
+  related: [part-introduce]
+- id: part-offer
+  question: "What can WE offer a partner?"
+  answer: "WE can offer a warm introduction to a founder, when that founder asks for help in the partner's category. WE can also write content together with the partner, or give it a place in a founder playbook where the offer fits. None of it is promised in advance."
+  group: "What an enquiry does and does not create"
+  audience: partner
+  seeAlso: [/network/partners/]
+  claimsUsed: [C-26]
+  related: [part-introduce, part-program]
+- id: part-delivery
+  question: "Can a delivery team join as a partner?"
+  answer: "A delivery partner is a category on the form, and WE lists none. WE steers its own dedicated teams and manages their subcontractors, and an enquiry does not change that."
+  group: "What an enquiry does and does not create"
+  audience: partner
+  seeAlso: [/network/partners/categories/]
+  claimsUsed: [C-03, C-26]
+  related: [what-is-a-seat, part-who]
+- id: part-reply
+  question: "How long does a partner reply take?"
+  answer: "WE does not state a response time on this site. WE replies to the email address in the enquiry when it decides to talk further."
+  group: "After you send an enquiry"
+  audience: partner
+  seeAlso: [/network/partners/enquire/]
+  claimsUsed: [C-26]
+  related: [part-say, part-details]
+- id: part-details
+  question: "What does WE do with the details in a partner enquiry?"
+  answer: "WE uses the details in a form to answer the enquiry, as the privacy notice describes. WE sets no cookies, runs no analytics and loads no third-party scripts."
+  group: "After you send an enquiry"
+  audience: partner
+  seeAlso: [/legal/privacy/]
+  claimsUsed: [C-28]
+  related: [part-reply, site-form-details]
+- id: corp-start
+  question: "Where does someone who works for an employer start?"
+  answer: "Start with the page about who the program is for, which describes a good fit. If a question about your employment is not answered there, ask through the contact page. WE is a long-horizon business incubation and consulting firm, and WE makes no promise of funding."
+  group: "Starting from an employer"
+  audience: corporate
+  seeAlso: [/program/who-its-for/, /contact/]
+  claimsUsed: [C-05, C-29]
+  related: [what-stage, corp-ask]
+- id: corp-ask
+  question: "Where do I ask about my own situation?"
+  answer: "Ask through the contact page, and choose the topic that fits best. WE routes your message."
+  group: "Starting from an employer"
+  audience: corporate
+  seeAlso: [/contact/]
+  claimsUsed: []
+  related: [corp-start]
+- id: corp-legal
+  question: "Does WE advise on who owns what I made at work?"
+  answer: "No. WE does not give legal advice. Questions about your employment agreement are for your own lawyer, and Service Line G coordinates your own counsel and does not replace them."
+  group: "What WE does and does not do for you"
+  audience: corporate
+  seeAlso: [/services/professional-services-coordination/]
+  claimsUsed: [C-04]
+  related: [legal-advice, who-owns-work]
+- id: corp-remote
+  question: "Does the work happen on site at my organization?"
+  answer: "No. WE is fully remote, with no physical offices and no in-person program. Planning, building and reviewing all happen online."
+  group: "What WE does and does not do for you"
+  audience: corporate
+  claimsUsed: [C-01]
+  related: [relocate, digital-incubator-meaning]
+- id: corp-customer
+  question: "Does WE help when my first customer is a large organization?"
+  answer: "Customer Relations and Market Development, Service Line C, covers pilot design, a written pipeline discipline and proposal support. Selling stays with you and your company."
+  group: "What WE does and does not do for you"
+  audience: corporate
+  seeAlso: [/services/customer-and-market-development/]
+  claimsUsed: [C-04]
+  related: [start-no-deals]

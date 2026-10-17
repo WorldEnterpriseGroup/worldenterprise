@@ -1,0 +1,52 @@
+---
+import { getEntry, render } from 'astro:content';
+import { jumpTo } from '../../components/hero/ctas.ts';
+import CapTable from '../../components/islands/we-cap-table/CapTable.astro';
+import { FORMULAS, FORMULAS_PAGE, PAGE } from '../../components/islands/we-cap-table/spec.ts';
+import ToolFormulas from '../../components/tools/ToolFormulas.astro';
+import { webApplicationNode } from '../../components/tools/webApplicationNode.ts';
+import ToolSchematic from '../../components/tools/ToolSchematic.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+
+const entry = await getEntry('pages', 'tools/cap-table-explainer');
+if (!entry) throw new Error('Missing content entry pages/tools/cap-table-explainer (src/content/pages/tools/cap-table-explainer.mdx).');
+const { Content } = await render(entry);
+const { data } = entry;
+const PATH = '/tools/cap-table-explainer/';
+---
+
+<ToolLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead={PAGE.lead}
+  path={PATH}
+  primary={jumpTo(PAGE.jump, '#explainer')}
+  secondary={{ label: PAGE.secondary, href: '#formulas' }}
+  updated={data.updated}
+  draft={data.draft}
+  jsonLd={[webApplicationNode({ path: PATH, name: data.title, description: data.description })]}
+  crumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Tools', href: '/tools/' },
+    { label: 'Cap table explainer', href: PATH },
+  ]}
+  noscript={PAGE.noscript}
+>
+  <ToolSchematic href="/tools/cap-table-explainer/" name={data.title} />
+  <div id="explainer"><CapTable /></div>
+  <div id="formulas">
+    <ToolFormulas
+      title={FORMULAS_PAGE.title}
+      intro={FORMULAS_PAGE.intro}
+      caption={FORMULAS_PAGE.caption}
+      regionLabel={FORMULAS_PAGE.regionLabel}
+      headers={FORMULAS_PAGE.headers}
+      rows={FORMULAS.map((row) => ({ id: row.id, name: row.name, second: row.formula, third: row.assumptions }))}
+      methodology={FORMULAS_PAGE.methodology}
+      limitations={FORMULAS_PAGE.limitations}
+      updated={data.updated}
+    />
+  </div>
+  <div class="prose"><Content /></div>
+</ToolLayout>

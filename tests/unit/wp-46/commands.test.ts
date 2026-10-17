@@ -9,7 +9,7 @@ const sources = (isLive: (href: string) => boolean) => ({ items: resolveNav(isLi
 
 test('the palette lists Apply first, under "Start here", then the navigation in its own order', () => {
   const commands = buildPaletteCommands(sources(everythingLive), everythingLive);
-  assert.deepEqual(commands[0], { label: 'Apply', href: '/apply/', group: 'Start here' });
+  assert.deepEqual(commands[0], { label: 'Apply', href: '/apply/', group: 'Start here', hint: 'Start a readiness review' });
   const hubs = primaryNav.filter((item) => item.kind === 'mega').map((item) => item.href);
   const positions = hubs.map((hub) => commands.findIndex((command) => command.href === hub));
   assert.ok(positions.every((at) => at > 0), 'every hub is listed');
@@ -20,16 +20,22 @@ test('a path is listed once, under the first place that names it', () => {
   const commands = buildPaletteCommands(sources(everythingLive), everythingLive);
   const hrefs = commands.map((command) => command.href);
   assert.equal(new Set(hrefs).size, hrefs.length);
-  // /pricing/ is a direct item, a strip link of Program, Services and Network, and a footer link: the direct item is listed first,
-  // under its own name, so a search for "pricing" finds it.
-  assert.deepEqual(commands.find((command) => command.href === '/pricing/'), { label: 'Pricing', href: '/pricing/', group: 'Pricing' });
+  // /how-we-work/ is a link of the Program column, a strip link of Program, Services and Network, and a footer link (wave 9, W9-13,
+  // WP-54): the Program column names it first, with its description as the hint.
+  assert.deepEqual(commands.find((command) => command.href === '/how-we-work/'), {
+    label: 'How WE works',
+    href: '/how-we-work/',
+    group: 'Program',
+    hint: 'Phases, cadence, pricing and how the work ends',
+  });
+  assert.ok(!commands.some((command) => command.href === '/pricing/'), 'the retired /pricing/ page is in no menu');
   // /apply/ is the Apply button first, and a link of Network later.
   assert.equal(commands.find((command) => command.href === '/apply/')?.group, 'Start here');
 });
 
 test('a search for a page by its own name finds it first', () => {
   const commands = buildPaletteCommands(sources(everythingLive), everythingLive);
-  for (const [query, href] of [['pricing', '/pricing/'], ['program', '/program/'], ['faq', '/faq/'], ['apply', '/apply/']] as const) {
+  for (const [query, href] of [['how we work', '/how-we-work/'], ['program', '/program/'], ['faq', '/faq/'], ['apply', '/apply/']] as const) {
     assert.equal(rankCommands(commands, query)[0]?.command.href, href, query);
   }
 });
@@ -42,11 +48,11 @@ test('a section hub carries its lead link as the hint, and a link its descriptio
 });
 
 test('a route that is not live never reaches the palette, whatever the caller passes in', () => {
-  const live = (href: string): boolean => href !== '/pricing/' && href !== '/faq/';
+  const live = (href: string): boolean => href !== '/how-we-work/' && href !== '/faq/';
   // The sources are resolved with everything live on purpose: the builder checks again.
   const commands = buildPaletteCommands(sources(everythingLive), live);
   const hrefs = commands.map((command) => command.href);
-  assert.ok(!hrefs.includes('/pricing/'));
+  assert.ok(!hrefs.includes('/how-we-work/'));
   assert.ok(!hrefs.includes('/faq/'));
   assert.ok(hrefs.includes('/program/'));
 });

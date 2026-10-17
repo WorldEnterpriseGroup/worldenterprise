@@ -1,0 +1,68 @@
+---
+title: "Proptech SaaS considerations"
+description: "What a founder weighs before building SaaS for real estate: who buys, the regulatory perimeter, data questions and the sales cycle."
+eyebrow: Industry considerations
+hero: H2
+updated: 2026-10-10
+claimsUsed: [C-29]
+family:
+  id: industries
+  slug: proptech
+  buyer: "Buyers include landlords, property managers, brokerages and lenders, and the person who wants the product is not always the person who signs. Name the budget owner, the owner of the leasing or listing workflow and the reviewer of legal risk before the first demo."
+  perimeter:
+    - title: "Advertising a sale or rental"
+      text: "The Fair Housing Act, 42 U.S.C. 3604, makes it unlawful to make, print or publish, or cause to be made, printed or published, any notice, statement or advertisement that indicates any preference, limitation or discrimination. A listing or marketing product that publishes text for others sits close to that prohibition."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: usc-42-3604
+    - title: "Screening reports about applicants"
+      text: "The Fair Credit Reporting Act defines a consumer reporting agency as a person that regularly assembles or evaluates consumer credit information or other information on consumers to furnish consumer reports to third parties. A product that assembles screening information about applicants should check whether it falls inside that definition."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: usc-15-1681a
+    - title: "Electronic signatures and records"
+      text: "A federal statute, 15 U.S.C. 7001, provides that a signature, contract or other record relating to a transaction in or affecting interstate or foreign commerce may not be denied legal effect, validity or enforceability solely because it is in electronic form."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: usc-15-7001
+    - title: "Real estate settlement services"
+      text: "Regulation X, 12 CFR 1024, is issued by the Consumer Financial Protection Bureau to implement the Real Estate Settlement Procedures Act of 1974. A product that touches settlement workflows should find out whether the Act applies to the services it provides."
+      jurisdiction: "US federal"
+      asOf: 2026-10-10
+      sourceId: cfpb-12-cfr-1024-1
+  dataQuestions:
+    - "Does the product assemble information about applicants or tenants, and for whom?"
+    - "Which listings or advertisements does the product publish, and who reviews their wording?"
+    - "Which signed or stored documents does the product hold, and how does the buyer retrieve them?"
+    - "Which personal and financial details does the product collect, and who at the buyer can see them?"
+  salesCycle: "Property buyers often work through listing, leasing and settlement steps that touch several laws, so legal review can sit in the middle of a sale. Ask early who reviews advertising, screening and signed-document workflows."
+  sources:
+    - id: usc-42-3604
+      title: "42 U.S. Code 3604, Discrimination in the sale or rental of housing and other prohibited practices"
+      publisher: "Legal Information Institute, Cornell Law School"
+      url: "https://www.law.cornell.edu/uscode/text/42/3604"
+      accessed: 2026-10-10
+    - id: usc-15-1681a
+      title: "15 U.S. Code 1681a, Definitions; rules of construction"
+      publisher: "Legal Information Institute, Cornell Law School"
+      url: "https://www.law.cornell.edu/uscode/text/15/1681a"
+      accessed: 2026-10-10
+    - id: usc-15-7001
+      title: "15 U.S. Code 7001, General rule of validity"
+      publisher: "Legal Information Institute, Cornell Law School"
+      url: "https://www.law.cornell.edu/uscode/text/15/7001"
+      accessed: 2026-10-10
+    - id: cfpb-12-cfr-1024-1
+      title: "Regulation X, 12 CFR 1024.1 Designation"
+      publisher: "Consumer Financial Protection Bureau (eCFR)"
+      url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-12.xml?part=1024&section=1024.1"
+      accessed: 2026-10-10
+---
+
+import SeatScope from '../../../components/industries/SeatScope.astro';
+
+This page sets out what building SaaS for real estate asks of a founder, in general terms.
+
+The perimeter below is drawn from United States federal sources, and the rules of other countries and of the states are outside this page.
+
+<SeatScope />

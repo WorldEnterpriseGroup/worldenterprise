@@ -1,7 +1,9 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
 import ContextualNext from '../../components/blocks/ContextualNext.astro';
+import GuideMedia from '../../components/fundability/GuideMedia.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
 import { liveItems } from '../../components/playbooks/links.ts';
 import Button from '../../components/ui/Button.astro';
@@ -26,6 +28,22 @@ const NEXT: Readonly<Record<string, readonly { title: string; href: string; desc
   'investor-updates': [
     { title: 'Weekly investor update template', href: '/library/weekly-investor-update-template/', description: 'A fixed structure you can copy and fill in.' },
     { title: 'Define your metrics once', href: '/research/early-stage-saas-metrics-definitions/', description: 'Definitions and formulas so every update counts the same way.' },
+  ],
+  'term-sheet-checklist': [
+    { title: 'Prepare questions for your counsel', href: '/insights/questions-to-ask-your-counsel-before-you-sign/', description: 'A brief for the lawyer who works for you.' },
+    { title: 'Read a term sheet line by line', href: '/insights/reading-a-term-sheet-line-by-line/', description: 'What each common clause says and why it is there.' },
+  ],
+  'security-questionnaire-answers': [
+    { title: 'Security baseline checklist', href: '/library/security-baseline-checklist/', description: 'The controls to put in place before the questionnaire arrives.' },
+    { title: 'Answer a questionnaire well', href: '/insights/answering-a-security-and-privacy-questionnaire/', description: 'How to answer each question honestly and keep the answers consistent.' },
+  ],
+  'pricing-experiments': [
+    { title: 'Pricing page checklist', href: '/library/pricing-page-checklist/', description: 'A checklist for the page that shows what you charge.' },
+    { title: 'Check a pricing page', href: '/tools/pricing-page-checker/', description: 'Test your page against the questions a buyer asks.' },
+  ],
+  'customer-interview-synthesis': [
+    { title: 'Interview synthesis sheet', href: '/library/interview-synthesis-sheet/', description: 'A one-page sheet for turning notes into findings.' },
+    { title: 'Customer interview guide', href: '/library/customer-interview-guide/', description: 'Questions to ask before you have anything to synthesize.' },
   ],
 };
 
@@ -58,6 +76,7 @@ const nextStep = next[0] ? { label: next[0].title, href: next[0].href } : undefi
 >
   <Content components={{ a: SmartLink }} />
   <Fragment slot="after">
+    <GuideMedia slug={slug} />
     {
       next.length > 0 && (
         <div class="section section--soft section--defer">
@@ -71,4 +90,5 @@ const nextStep = next[0] ? { label: next[0].title, href: next[0].href } : undefi
       )
     }
   </Fragment>
+  <ArticleEnd slot="cta-end" kind="fundability" seed={slug} />
 </GuideLayout>

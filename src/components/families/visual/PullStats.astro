@@ -1,0 +1,93 @@
+---
+import { HONESTY_LINE } from './stats.ts';
+import type { StatBlock } from './stats.ts';
+
+/**
+ * A block of pull-stats: large figures with one-line labels, the source line under them and the honesty line under that (SITE-COPY.md
+ * rule 5). Only blocks from stats.ts are accepted, so every figure is in the ST register. Lays out from its own width: a column in a
+ * side rail, a row of tiles in a wide band.
+ */
+interface Props {
+  block: StatBlock;
+  /** Heading level of the block's title. */
+  headingLevel?: 2 | 3;
+  id?: string;
+}
+
+const { block, headingLevel = 2, id = 'pull-stats' } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+<section class="wv-stats" aria-labelledby={id}>
+  <Heading id={id} class="wv-stats__title">{block.heading}</Heading>
+  <dl class="wv-stats__list">
+    {
+      block.stats.map((stat) => (
+        <div class="wv-stats__item">
+          <dt class="wv-stats__figure">{stat.figure}</dt>
+          <dd class="wv-stats__label">{stat.label}</dd>
+        </div>
+      ))
+    }
+  </dl>
+  <p class="wv-stats__source">Source: {block.source}</p>
+  <p class="wv-stats__honesty">{HONESTY_LINE}</p>
+</section>
+
+<style>
+  .wv-stats {
+    container-type: inline-size;
+    display: grid;
+    gap: var(--sp-3);
+    padding: var(--sp-5);
+    background: var(--color-bg-soft);
+    border-inline-start: 4px solid var(--color-highlight);
+    border-radius: var(--radius-md);
+  }
+
+  .wv-stats__title {
+    font-size: var(--fs-sm);
+    font-family: var(--ff-sans);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .wv-stats__list {
+    display: grid;
+    gap: var(--sp-4);
+    margin: 0;
+
+    @container (min-width: 36rem) {
+      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    }
+  }
+
+  .wv-stats__item {
+    display: grid;
+    gap: var(--sp-1);
+  }
+
+  .wv-stats__figure {
+    font-family: var(--ff-display);
+    font-size: var(--fs-2xl);
+    font-weight: 700;
+    line-height: var(--lh-tight);
+    color: var(--color-text);
+  }
+
+  .wv-stats__label {
+    margin: 0;
+    font-size: var(--fs-sm);
+  }
+
+  .wv-stats__source,
+  .wv-stats__honesty {
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  .wv-stats__honesty {
+    font-style: italic;
+  }
+</style>

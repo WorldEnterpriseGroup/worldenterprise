@@ -1,0 +1,5 @@
+{
+  "wp": "WP-52",
+  "note": "WP-52 builds the visuals library and fetched no page. The components publish no statistic of their own: every figure is a prop the page supplies with its source, and the contracts refuse a figure without one. The styleguide samples (src/components/visuals/styleguide/samples.ts, dev route only) reuse figures from the redesign kit research file research/timeline-stats.json (compiled 2026-10-14; statuses VERIFIED or DERIVED from verified data): BLS Business Employment Dynamics survival tables, SBA Office of Advocacy FAQ 2026, Census Business Formation Statistics, GEM definitions, Azoulay et al. (AER: Insights 2020) and the Federal Reserve Small Business Credit Survey 2026. A sales page that publishes any of them records its own fetches.",
+  "sources": []
+}

@@ -1,0 +1,124 @@
+---
+title: Writing a product requirements document people read
+seoTitle: Writing a requirements doc
+description: A short structure for a product requirements document that engineers and teammates actually open, with an invented, labelled example you can adapt.
+topic: build
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [non-technical-founders]
+relatedServices: [B]
+relatedPlaybook: build-and-ship-v1
+related: [product-management-for-a-first-saas-roles-backlog-and-decisions, estimating-a-first-release-ranges-and-what-they-hide]
+evidence: [shapeup-pitch, shapeup-appetite, gds-user-stories, scrum-guide]
+sources:
+  - id: shapeup-pitch
+    title: Shape Up, Chapter 6, Write the Pitch
+    publisher: Basecamp
+    url: https://basecamp.com/shapeup/1.5-chapter-06
+    accessed: 2026-10-10
+  - id: shapeup-appetite
+    title: Shape Up, Chapter 2, Principles of Shaping
+    publisher: Basecamp
+    url: https://basecamp.com/shapeup/1.1-chapter-02
+    accessed: 2026-10-10
+  - id: gds-user-stories
+    title: Writing user stories
+    publisher: Government Digital Service, GOV.UK Service Manual
+    url: https://www.gov.uk/service-manual/agile-delivery/writing-user-stories
+    accessed: 2026-10-10
+  - id: scrum-guide
+    title: The Scrum Guide
+    publisher: Ken Schwaber and Jeff Sutherland, scrumguides.org
+    url: https://scrumguides.org/scrum-guide.html
+    accessed: 2026-10-10
+---
+
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+A product requirements document, usually shortened to PRD, has a reputation. It is the long file that a founder writes, a team nods at and nobody opens again. The reputation is earned by a particular kind of PRD: one written to be approved rather than to be used.
+
+A document people read is a different object. It is short enough to read in one sitting, specific enough to argue with and honest about what it does not know. This article gives a structure for that kind of document, an invented example and a few tests for whether yours works. It is written mainly for non-technical founders who need to brief engineers they may never meet in person, though a technical founder briefing a teammate faces the same problem.
+
+## What the document is for
+
+A requirements document has one job: to let a person who was not in your head understand what you want built, why, and what you do not want built. Everything else is decoration.
+
+That framing explains why length hurts. Each section you add is a section someone must read and keep consistent. Basecamp's *Shape Up* describes a "pitch" with five named ingredients, which gives a useful skeleton: a handful of parts, each answering one question. You can borrow the shape without adopting the method.
+
+It helps to name the readers before you write. An engineer reads to find out what to build and what to leave alone. A designer, if you have one, reads to learn who the screen is for. A teammate who joins later reads to find out why the product is the way it is. And you, in three months, read to remember what you agreed. Each reader needs the problem and the exclusions more than they need a long description of the solution, because the solution is the part they will refine with you in conversation.
+
+A document also works best when it starts a conversation rather than ending one. Send it before a call, ask for the first thing that is unclear, and treat the answer as an edit to the page.
+
+## The five ingredients, and what each is for
+
+*Shape Up* names the parts of a pitch. In its words, the problem is "the raw idea, a use case, or something we’ve seen that motivates us to work on this." The appetite is "how much time we want to spend and how that constrains the solution." The solution is "the core elements we came up with, presented in a form that’s easy for people to immediately understand." Rabbit holes are "details about the solution worth calling out to avoid problems." And no-gos are "anything specifically excluded from the concept: functionality or use cases we intentionally aren’t covering."
+
+Translate those into a PRD for a small software company and you get a structure you can fill in an afternoon.
+
+<DataTable
+  caption="A PRD structure, with the question each part answers"
+  columns={['Part', 'The question it answers', 'Guide to length']}
+  rows={[
+    ['Decision line', 'What are we being asked to agree to, and by when?', 'One sentence'],
+    ['Problem', 'Who has this problem, and what do they do about it today?', 'A short paragraph'],
+    ['Appetite', 'How much effort is this worth, and what happens if it does not fit?', 'Two or three sentences'],
+    ['Solution', 'What does the customer see and do, from start to finish?', 'A short list or a sketch'],
+    ['Acceptance', 'How will we know it works for the person it is meant for?', 'Three to six outcomes'],
+    ['Risks and open questions', 'What could go wrong, and what do we not yet know?', 'A list with an owner for each'],
+    ['No-gos', 'What are we deliberately not doing?', 'A list']
+  ]}
+/>
+
+Two of these deserve more comment, because they are the parts most often missing.
+
+**The appetite.** *Shape Up* explains why a time limit belongs inside the document: "Completing the project within that fixed amount of time requires limiting the scope and leaving specific things out." A requirements document without a stated limit invites every reasonable addition. Stating an appetite, even a rough one, gives readers a way to say "that does not fit" without it becoming a personal disagreement. The <MaybeLink path="/insights/estimating-a-first-release-ranges-and-what-they-hide/">article on estimating a first release</MaybeLink> is about the difference between an appetite and an estimate.
+
+**The no-gos.** A list of exclusions does more work than most inclusions. If you write "no second user role in this release," an engineer does not have to guess, and a customer request for a second role becomes a decision rather than a surprise.
+
+## Acceptance in the customer's words
+
+The acceptance section is where requirements become checkable. The UK Government Digital Service's service manual describes writing user stories that "describe a user and the reason why they need to use the service you’re building," and describes acceptance criteria as "a list of outcomes that you use as a checklist." Both are cheap to write, and both change the conversation. A criterion such as "the receptionist can see all unconfirmed patients on one screen" can be tested by a person. A criterion such as "the list is intuitive" cannot.
+
+Write each outcome so that a stranger could answer yes or no after trying it. If you find you cannot, the requirement is still a wish, and the useful next step is a conversation, not a longer document.
+
+## An invented example
+
+The following is an illustration, not a client document. It shows the register and the length, and every detail is made up.
+
+<Callout title="Example PRD, invented: confirmation list for clinics">
+  **Decision line.** Agree by Friday that the first release contains a daily list of patients who have not confirmed tomorrow's appointment.
+
+  **Problem.** Receptionists at small clinics phone patients the day before an appointment. They keep track on paper, and unconfirmed appointments are found late. We have interviewed a handful of receptionists; we have not measured how often this causes missed appointments.
+
+  **Appetite.** A small piece of the first release. If it does not fit, we drop the sort options before we drop the list.
+
+  **Solution.** A reminder message goes out. The patient replies to confirm or cancel. The receptionist sees one list of unconfirmed patients, ordered by appointment time.
+
+  **Acceptance.** The list shows only unconfirmed, not-cancelled patients. A cancellation reply removes the patient from the list. A receptionist can complete the morning phone round from the list alone.
+
+  **Risks and open questions.** Which message channels the clinics allow (owner: founder). Whether replies arrive in a consistent format (owner: engineer).
+
+  **No-gos.** Calendar sync. Two-way chat. Any reporting.
+</Callout>
+
+Notice that the problem paragraph says what was and was not measured. That sentence costs nothing and protects every reader from assuming you know more than you do.
+
+## Three tests before you share it
+
+**The read-aloud test.** Read the document to a colleague in under five minutes, out loud. Where you stumble, a reader would too.
+
+**The stranger test.** Ask someone outside the project what the document asks them to decide. If they cannot say, the decision line is not yet a decision line.
+
+**The change test.** After the first build conversation, count how many sentences changed. A document that never changes is probably not being used. One that is rewritten each time is probably missing a no-go.
+
+## Keep it alive, and keep it small
+
+A PRD that is not updated becomes a source of arguments about what was agreed. Put the date and a status line at the top. When a decision changes, change the sentence and note the date. If a part grows beyond a page, it is probably two documents. The Scrum Guide describes the product backlog as "an emergent, ordered list," a useful reminder that the document describing a product is expected to change as you learn. If you would like a companion exercise, the <MaybeLink path="/library/one-page-problem-brief/">one-page problem brief</MaybeLink> covers the problem section on its own, and the <MaybeLink path="/library/mvp-cut-line-worksheet/">cut-line worksheet</MaybeLink> helps you fill in the no-gos. Terms used here are defined in the <MaybeLink path="/glossary/">glossary</MaybeLink>.
+
+## What this article cannot tell you
+
+The structure above is adapted from published practice and is not a standard. Basecamp describes its own pitch format, and the UK service manual describes user stories for government services; neither was designed for a small commercial software company, and neither tested whether a document of this shape produces better products. We make no such claim.
+
+The article does not cover regulated products, where requirements documents may carry formal obligations, and it does not cover contracts with outside developers, where a requirements document may become part of the legal agreement. For those, ask your counsel and your delivery partner what the document must contain. It also cannot tell you whether the problem you chose is the right one, which only customers can.

@@ -1,0 +1,117 @@
+---
+title: "Bootstrapping versus raising over a ten-year horizon"
+seoTitle: Bootstrapping versus raising
+description: Most new firms start with little outside money. What Kauffman Firm Survey and federal survival data say about funding choices when the horizon is ten years.
+topic: funding
+publishedDate: 2026-10-15
+sources:
+  - id: bls-survival-all
+    title: Survival of private sector establishments by opening year
+    publisher: U.S. Bureau of Labor Statistics, Business Employment Dynamics
+    url: https://www.bls.gov/bdm/us_age_naics_00_table7.txt
+    accessed: 2026-10-15
+  - id: sbir-apply
+    title: How to apply for SBIR and STTR awards
+    publisher: SBIR.gov, U.S. Small Business Administration
+    url: https://www.sbir.gov/apply
+    accessed: 2026-10-15
+evidence: [bls-survival-all, sbir-apply]
+relatedServices: [F]
+relatedPlaybook: prepare-for-investor-conversations
+relatedTemplate: seed-data-room-checklist
+segments: [first-time-founders, solo-founders, second-career-founders]
+related:
+  - funding-a-first-saas-from-customer-revenue
+  - runway-and-burn-the-arithmetic
+  - funding-a-software-startup-the-routes
+claimsUsed: [C-05]
+---
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import BarChart from '../../../components/visuals/charts/BarChart.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+<NoFundingDisclaimer />
+
+*This article is general information, not legal or financial advice. It was written on October 15, 2026. It compares funding paths using public data and describes no outcome for any company.*
+
+Founders are often told that the choice is between bootstrapping and raising money, as if one were fast and the other slow. Over a ten-year horizon the picture is less tidy. The public data say that most new firms begin with modest outside money, that many do not survive ten years whichever route they take, and that the firms that last tend to be the ones that kept their costs aligned with their income for a long time. This article reviews that evidence, lays out what each path asks of a founder, and lists questions to take to an accountant or counsel.
+
+## What most new firms actually do
+
+The Kauffman Firm Survey followed about 5,000 firms that started in 2004 and re-surveyed them each year through 2011. Its 2013 overview reports the new financing the surviving firms put in during 2011. Most did not put in any new equity: 75.5 percent reported none, which means 24.5 percent did. On the debt side, 57.3 percent reported none, and the report notes that only 43 percent made debt investments in 2011, down from 53 percent in 2008. The report also says that less than 6 percent of firms invested more than 25,000 US dollars in equity capital in 2011.
+
+<BarChart
+  title="Share of surviving 2004 startups that added new financing in 2011"
+  items={[
+    { label: 'Added any new debt', value: 42.7, display: '42.7 percent' },
+    { label: 'Added any new equity', value: 24.5, display: '24.5 percent' },
+    { label: 'Added more than 25 thousand US dollars of equity', value: 6, display: 'under 6 percent' },
+  ]}
+  max={60}
+  valueLabel="Percent of surviving firms"
+  source={{ label: 'Ewing Marion Kauffman Foundation, Kauffman Firm Survey 2013 overview, Table 3 and text', href: 'https://www.kauffman.org/wp-content/uploads/2019/12/kauffmanfirmsurvey2013.pdf', period: 'Survey year 2011, firms founded 2004' }}
+  note="The first two bars are 100 minus the published share reporting none. The third is the published bound."
+/>
+
+Two cautions follow. The survey covers firms that survived to 2011, so it describes the financing behavior of survivors, not of all starters. And the sample was drawn in 2004, so it reflects a different financing market than today's.
+
+## What ten years looks like
+
+The Bureau of Labor Statistics tracks establishments by the year they opened. In the 2015 opening-year group, 79.6 percent of private-sector establishments were still operating after one year, 55.4 percent after four, and 34.7 percent after ten. The ten-year figure is steady across groups, and the earlier 2013 group also reached 34.7 percent.
+
+| Years since opening | Share still operating, 2015 group |
+|---|---|
+| 1 | 79.6 percent |
+| 2 | 69.1 percent |
+| 3 | 61.4 percent |
+| 4 | 55.4 percent |
+| 5 | 50.2 percent |
+| 6 | 46.4 percent |
+| 7 | 43.6 percent |
+| 8 | 40.3 percent |
+| 9 | 37.4 percent |
+| 10 | 34.7 percent |
+
+Those rates describe all private-sector establishments, and the data do not split them by funding route. They do show that the horizon is long and that attrition continues well after the first year. A funding path that is sized for a two-year story runs into the decade that follows. The <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article walks through the curves in more detail.
+
+## What each path asks of a founder
+
+Bootstrapping means funding the company from revenue and the founders' own resources. It asks for patience about growth, discipline about costs and a willingness to do work that a larger team might delegate. Its benefit is that the founder keeps the decisions and the ownership. Its limit is speed: some products need capital before they can earn, and a founder with little savings may not be able to wait. The <MaybeLink path="/insights/funding-a-first-saas-from-customer-revenue/">article on funding a first SaaS from customer revenue</MaybeLink> describes the mechanics.
+
+Raising outside money asks for time and attention. A raise has a process, a data room and a series of conversations, and the <MaybeLink path="/insights/the-founder-time-budget-of-a-raise/">founder time budget of a raise</MaybeLink> article puts hours against each step. It also brings shared ownership and the expectation of a larger outcome. Carta reports that the median gap between rounds now runs past 600 days in the data it holds, so a raise is a financing event spread over years, as the <MaybeLink path="/insights/the-time-between-funding-rounds-what-carta-data-reports/">time-between-rounds article</MaybeLink> shows.
+
+A third path sits between the two for research-based companies. The SBIR and STTR programs make awards to small businesses. According to SBIR.gov, a Phase I award runs six to twelve months and a Phase II award runs 24 months, and the programs do not take ownership in the company. The <MaybeLink path="/insights/sbir-and-sttr-as-patient-capital-for-research-based-companies/">SBIR and STTR article</MaybeLink> covers the program in detail, and the US Small Business Administration describes its current reauthorization.
+
+## Combinations
+
+The choice is rarely pure. Many companies start from revenue, add a research award, take a small outside investment later and keep part of the business funded from customers throughout. The <MaybeLink path="/compare/bootstrapping-vs-outside-funding/">bootstrapping versus outside funding comparison</MaybeLink> sets the paths side by side, and the <MaybeLink path="/insights/funding-a-software-startup-the-routes/">routes to funding</MaybeLink> article lists the options with their conditions. The long horizon matters because each choice reaches into years: money taken in year one shapes who has a voice in year seven.
+
+## What survivors report as their problems
+
+The same survey asked firms about their biggest challenges in 2011. The report lists slow or lost sales as the most common, at 36 percent, followed by unpredictable business conditions at 28 percent. Neither of those is a financing problem in the narrow sense, and both are problems that revenue helps to ease and that capital eases only for a while. The report also finds that surviving employer firms grew: the average employer firm in the survey went from 4.6 employees to 8.7 over the period it describes. A firm that grows steadily on customer revenue for years is not a failure of ambition. It is the pattern the survey describes for survivors.
+
+That does not make outside capital a mistake. Companies whose products need long development before they can sell, such as those that depend on research, often cannot grow from revenue at the start. The point of the data is narrower: sales are the problem survivors name most often, so a plan that treats the next round as the answer to a sales problem leaves the problem in place.
+
+## Pacing the money to the clock
+
+A ten-year horizon changes how a founder thinks about cash. Instead of asking how much to raise, the question becomes how many years the money should last and what the company will have shown by then. Three habits help a long-horizon company, whichever path it takes.
+
+- Track runway in months and revisit it monthly, using the <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> and the <MaybeLink path="/insights/runway-and-burn-the-arithmetic/">runway arithmetic</MaybeLink> article.
+- Keep a small number of costs fixed and the rest variable, so that a slow quarter does not force a hard decision.
+- Write down the milestones that would justify new money, so that raising is a decision made from evidence and not from alarm.
+
+WE is a long-horizon business incubation and consulting firm, and it works alongside founders over years. The <MaybeLink path="/how-we-work/">how WE works</MaybeLink> page describes the rhythm.
+
+A third path sits between the two. Federal research awards, covered in the <MaybeLink path="/sbir-sttr/">SBIR and STTR guide</MaybeLink>, fund work without a sale of shares, and are worth applying for when the work fits a solicitation. The <MaybeLink path="/data/survival/">survival data page</MaybeLink> has the ten-year series behind the chart above, and the <MaybeLink path="/ecosystem/">ecosystem directory</MaybeLink> lists independent angel groups, incubators and SBA partners for either route.
+
+## Questions to take to an adviser
+
+- If my business plan took ten years to reach its goal, what would each path require in year three and year seven?
+- How many months of cash do I have under each path, and how does that compare with the time a next round typically takes?
+- Which public programs, such as SBA resource partners, SBIR or STTR, would a company like mine be eligible for, and who can check the eligibility rules?
+- What would I be willing to give up, in ownership or in control, for a faster start, and what would I want in writing?
+- What would a slower, smaller version of the business look like, and would it be worth running?
+
+## What this article cannot tell you
+
+This article cannot tell you which funding path is right for your company, whether you can raise, or whether a research award fits your work. The Kauffman figures describe survivors of one 2004 sample in 2011, the Bureau of Labor Statistics figures cover all private-sector establishments and do not split by funding route, and neither shows that one path causes a longer life. A founder should ask a qualified accountant and counsel before deciding. Nothing here describes an outcome for a company that works with WE, and nothing is a promise of funding or results.

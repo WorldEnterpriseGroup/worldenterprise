@@ -1,0 +1,39 @@
+---
+/** /data/who-starts/ (WP-35): Kauffman age trends and the Azoulay, Jones, Kim and Miranda founder-age study. */
+import CtaRow from '../../../components/sales/CtaRow.astro';
+import DataSources from '../../../components/visuals/charts/DataSources.astro';
+import DataStage from '../../../components/visuals/charts/DataStage.astro';
+import ScatterPlot from '../../../components/visuals/charts/ScatterPlot.astro';
+import SmallMultiples from '../../../components/visuals/charts/SmallMultiples.astro';
+import StackedArea from '../../../components/visuals/charts/StackedArea.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { HOW_LONG_CTA, PRIMARY_CTA } from '../../../data/sales/copy.ts';
+import { HONESTY, WHO_PAGE as P } from '../../../data/datasets/copy.ts';
+import { RETRIEVED } from '../../../data/datasets/sources.ts';
+import { ageRateMultiples, ageShareArea, founderAgeScatter } from '../../../data/datasets/figures.ts';
+
+const [shares, rates, growth] = P.stages;
+---
+
+<MarketingLayout title={P.title} seoTitle={P.seoTitle} description={P.description} path={P.path} eyebrow={P.eyebrow} lead={P.lead}>
+  <p>{P.note}</p>
+  <p>{HONESTY}</p>
+
+  <Fragment slot="after">
+    <DataStage id={shares.id} tone="soft" stage="View 1 of 3" heading={shares.heading} body={shares.body}>
+      <StackedArea {...ageShareArea} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id={rates.id} stage="View 2 of 3" heading={rates.heading} body={rates.body}>
+      <SmallMultiples {...ageRateMultiples} retrieved={RETRIEVED} />
+    </DataStage>
+    <DataStage id={growth.id} tone="soft" stage="View 3 of 3" heading={growth.heading} body={growth.body}>
+      <ScatterPlot {...founderAgeScatter} retrieved={RETRIEVED} />
+    </DataStage>
+    <section class="band" aria-label="Next steps">
+      <div class="container">
+        <CtaRow primary={PRIMARY_CTA} more={[[HOW_LONG_CTA]]} label="Next steps from the founder data" />
+      </div>
+    </section>
+    <DataSources ids={['kauffman-2025', 'kauffman-2021', 'azoulay-2018']} />
+  </Fragment>
+</MarketingLayout>

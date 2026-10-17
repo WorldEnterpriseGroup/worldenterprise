@@ -55,7 +55,7 @@ test('other look-alike top-level text files stay off the allowlist', () => {
 test('a Markdown twin beside its page is published, at the top level and in a folder', () => {
   assert.equal(audit({ 'dist/insights/first-idea.md': '# First idea\n' }), '');
   assert.equal(audit({ 'dist/pricing.md': '# Pricing\n' }), '');
-  assert.equal(audit({ 'dist/index.md': '# World Enterprise Incubator\n' }), '');
+  assert.equal(audit({ 'dist/index.md': '# World Enterprise\n' }), '');
 });
 
 test('a Markdown file with no page beside it is refused, with a message that names the missing page', () => {

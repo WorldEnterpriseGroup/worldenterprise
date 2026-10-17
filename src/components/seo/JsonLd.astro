@@ -1,5 +1,4 @@
 ---
-import { packages } from '../../data/packages.ts';
 import { getPublished } from '../../lib/content.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import type { JsonLdNode } from '../../lib/schema.ts';
@@ -16,13 +15,13 @@ const { nodes } = Astro.props;
 const state = await getRouteState();
 const withSearch = state.isLive('/search/') ? withSearchAction(nodes) : nodes;
 
-// The organisation lists the four packages as an OfferCatalog without price, and the live service lines as knowsAbout.
+// The organisation lists the live service lines as knowsAbout. It carries no offer catalog: the public packages are retired (W9-13).
 const services = await getPublished('services');
 const serviceLines = services
   .filter((entry) => state.isLive(`/services/${entry.id.split('/').at(-1) ?? entry.id}/`))
   .sort((a, b) => a.data.line.localeCompare(b.data.line))
   .map((entry) => entry.data.title);
-const finalNodes = withOrganizationEnrichment(withSearch, { packages, serviceLines });
+const finalNodes = withOrganizationEnrichment(withSearch, { serviceLines });
 ---
 
 <script type="application/ld+json" is:inline set:html={serializeJsonLd(graph(finalNodes))} />

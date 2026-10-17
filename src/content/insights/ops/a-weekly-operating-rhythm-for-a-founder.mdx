@@ -1,0 +1,120 @@
+---
+title: A weekly operating rhythm for a founder
+seoTitle: A founder's weekly rhythm
+description: "How a founder can set a repeating week with a plan, protected work blocks, an admin block and a review, borrowing the idea of fixed-length cycles from Scrum."
+topic: ops
+publishedDate: 2026-10-10
+noStatistics: true
+segments: [solo-founders, first-time-founders]
+related: [the-founder-time-budget-of-a-raise, an-operating-rhythm-for-a-remote-offshore-team]
+sources:
+  - id: scrum-guide
+    title: The Scrum Guide
+    publisher: Scrum Guides (Ken Schwaber and Jeff Sutherland)
+    url: https://scrumguides.org/scrum-guide.html
+    accessed: 2026-10-10
+  - id: nimh-caring
+    title: Caring for your mental health
+    publisher: National Institute of Mental Health
+    url: https://www.nimh.nih.gov/health/topics/caring-for-your-mental-health
+    accessed: 2026-10-10
+evidence: [scrum-guide, nimh-caring]
+relatedServices: [D]
+relatedTemplate: weekly-investor-update-template
+claimsUsed: []
+draft: false
+---
+import DataTable from '../../../components/ui/DataTable.astro';
+import Callout from '../../../components/ui/Callout.astro';
+import Steps from '../../../components/ui/Steps.astro';
+import MaybeLink from '../../../components/insights/MaybeLink.astro';
+
+*General information, not management, medical or financial advice. Written October 10, 2026. This article describes one way to structure a week. It makes no promise about what the structure will produce for any company.*
+
+Many founders do not run a week. They run an inbox. The day goes to whatever arrived last, and the work that would move the company, such as talking to customers, shipping a change or reading the numbers, waits for a gap that rarely comes. A repeating week does not make the work smaller. It gives each kind of work a place, so that the urgent does not decide everything by default.
+
+Two existing articles sit near this one, and it differs from both. <MaybeLink path="/insights/the-founder-time-budget-of-a-raise/">The founder time budget of a raise</MaybeLink> is about the time that raising money consumes over a limited period. <MaybeLink path="/insights/an-operating-rhythm-for-a-remote-offshore-team/">An operating rhythm for a remote offshore team</MaybeLink> is about how a distributed team coordinates. This article is about the founder’s own week, whether the company has one person or several, and it applies when nothing special is going on.
+
+## Where the idea of a fixed cycle comes from
+
+The Scrum Guide describes a framework for teams, and a founder does not need to adopt it to borrow one idea from it. The guide says "Events are used in Scrum to create regularity and to minimize the need for meetings not defined in Scrum." Of its cycles, called Sprints, it says "They are fixed length events of one month or less to create consistency."
+
+Two of its event purposes translate to a week. The guide says "The purpose of the Sprint Review is to inspect the outcome of the Sprint and determine future adaptations." and "The purpose of the Sprint Retrospective is to plan ways to increase quality and effectiveness." For a solo founder those become two questions asked on a schedule: what happened, and what changes next week. Nothing here requires a team, a backlog or a named role.
+
+The guide governs how a team works on a product. Scrum describes a team, and a week for one founder is a looser thing. The idea carried over is that a fixed cadence creates consistency and that a fixed point for review makes the next cycle better informed.
+
+## The week, in five parts
+
+The design below has five parts. It is a starting arrangement to change, and a founder who finds that a part never gets used should remove it.
+
+<DataTable
+  caption="A weekly rhythm in five parts"
+  columns={['Part', 'What it is for', 'What goes in it']}
+  rows={[
+    ['A short plan', 'Decide the few outcomes that matter this week before the inbox decides for you', 'Two or three outcomes written as results, a list of what is explicitly not this week'],
+    ['Customer time', 'Keep the company pointed at the people it serves', 'Calls, support replies, interviews and sales follow-ups, set at fixed times'],
+    ['Making time', 'Protect long blocks for the work that needs concentration', 'Building, writing, designing, with notifications off'],
+    ['An admin block', 'Contain the small obligations that otherwise leak into every day', 'Invoices, books, tool renewals, filings, replies to non-urgent messages'],
+    ['A review', 'Look at what happened and decide what changes', 'Outcomes met or missed, the numbers, one change for next week']
+  ]}
+/>
+
+### A short plan
+
+Begin the week by choosing outcomes. A task list records activity, and an outcome describes what is different if the work is done: "the pricing page states what the product does", not "work on the pricing page". Two or three is the number a week usually holds. The list of what is not this week matters as much as the list of what is, because it is where the real trade-offs get written down.
+
+### Customer time and making time
+
+These two kinds of work pull against each other. Customer time is interruptible and social. Making time is not. Putting both on the calendar, at fixed hours, is the point of the rhythm: a call that is booked cannot eat the long block that was also booked, and the long block does not quietly absorb every hour the customers needed. If you are early in your search for customers, the playbook on <MaybeLink path="/playbooks/earn-your-first-customers/">earning your first customers</MaybeLink> describes the work that belongs in customer time.
+
+### An admin block
+
+Small obligations tend to spread through a week if nothing contains them. A single block gives them a home. It is the natural place to read the items on <MaybeLink path="/insights/books-and-basic-accounting-for-a-software-startup/">the books</MaybeLink>, check the dates on <MaybeLink path="/insights/the-tax-calendar-a-us-software-startup-should-know-exists/">the tax calendar</MaybeLink> your adviser has confirmed and look at the tool register described in <MaybeLink path="/insights/choosing-and-managing-a-small-companys-software-stack/">choosing and managing a software stack</MaybeLink>.
+
+### A review
+
+End the week with the Scrum idea in a founder-sized form. Compare the outcomes you set with what happened. Look at the few numbers the company watches; the <MaybeLink path="/tools/runway-calculator/">runway calculator</MaybeLink> and <MaybeLink path="/tools/metrics-calculator/">metrics calculator</MaybeLink> let you work the arithmetic with your own figures. Then pick one change for next week. One is enough. A review that produces seven resolutions produces none.
+
+## Longer loops inside the week
+
+A weekly rhythm does not replace the longer horizon. It carries a few items that repeat at a lower frequency, and the admin block is where they surface. A monthly pass over cash and the books. A quarterly look at the tool register and at tax dates. A periodic check on whether the company’s plan still holds, using the stopping rules in <MaybeLink path="/insights/kill-criteria-deciding-in-advance-when-to-stop/">kill criteria</MaybeLink>. Each of these should be a line item in the review, with a date, not a promise to remember.
+
+**The week sits inside longer loops.** Each loop is a larger version of the same habit: look at what happened, decide what to change, write it down. The loops nest, so a founder who keeps the weekly one has the material for the others.
+
+<Steps
+  headingLevel={3}
+  steps={[
+    { title: 'Week', body: 'Plan three outcomes, protect customer time and review on a fixed day.' },
+    { title: 'Month', body: 'Look at cash, the customer list and the one measure that matters most this quarter.' },
+    { title: 'Quarter', body: 'Revisit the bet the company is making and decide whether to keep it, narrow it or drop it.' },
+    { title: 'Year', body: 'Ask what the company should look like if it is still running in ten years, and what the next year must protect.' }
+  ]}
+/>
+
+## When the week breaks
+
+Some weeks will not hold. A customer has an emergency, a deadline moves or a person is ill. The rhythm is not a promise to yourself that nothing will change, and a broken week is not a failure of discipline. When one breaks, the cheap repair is to keep the review. Look at what displaced the plan, decide whether it was a one-off or a pattern, and set the next week from there. If the same thing displaces the plan three weeks running, that is information about the work and belongs in the plan, as a block of its own with a fixed time.
+
+It also helps to keep the plan small enough that one lost day does not sink it. A plan with two outcomes can lose a day and still land one of them. A plan with nine cannot lose an hour. If you share the week with a co-founder, share the plan too, and spend a few minutes comparing the two before the week starts so that the same outcome is not owned twice or by no one.
+
+## The founder is part of the system
+
+The rhythm is a design for the work, and the person doing the work needs a place in it. The National Institute of Mental Health lists everyday steps for mental health in general, among them "Make sleep a priority.", "Set goals and priorities." and "Stay connected." Those are the institute’s words about mental health in general, not a plan for a founder’s week, and an article about a calendar cannot tell you what your own health needs. A week that has no room for rest, for a meal or for contact with other people is a week designed against the person who has to live it.
+
+If a rhythm like this one starts to feel like pressure instead of relief, take that as information about the design, and see <MaybeLink path="/insights/burnout-recognizing-it-and-what-to-change/">burnout and what to change</MaybeLink> for what public bodies say about work stress and where they point for help.
+
+<Callout title="A short set-up for next week">
+  Write two or three outcomes for the week. Put customer time and one long block on the calendar before anything else. Choose a fixed hour for admin. Choose a fixed hour for the review. After the review, write down one change.
+</Callout>
+
+The <MaybeLink path="/glossary/">glossary</MaybeLink> defines shared terms.
+
+## Where this fits in a long effort
+
+A week is the smallest unit of a long effort, and the habit that matters is repetition. The <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article sets the weekly cycle against federal survival data, and <MaybeLink path="/insights/shutdown-data-and-what-survivors-do-differently/">the shutdown data article</MaybeLink> shows where in the first years the risk sits. WE is a long-horizon business incubation and consulting firm, and its <MaybeLink path="/how-we-work/">way of working</MaybeLink> is paced the same way.
+
+A weekly rhythm is easier to keep in company. The coworking and founder-community sections of the <MaybeLink path="/ecosystem/">ecosystem directory</MaybeLink> list independent places where founders work beside others who keep a similar cadence.
+
+## What this article cannot tell you
+
+This article cannot tell you whether a weekly rhythm will improve your company, or which arrangement suits your work, your time zone or your life. It rests on the Scrum Guide and one National Institute of Mental Health page, both read on October 10, 2026. The Scrum Guide is written for teams building a product, and the NIMH page is about mental health in general, so neither speaks to a founder’s week. The five parts and the examples are this article’s own design. It does not cover teams of several people, remote coordination, health conditions or any outcome. A health concern is a question for a qualified professional.

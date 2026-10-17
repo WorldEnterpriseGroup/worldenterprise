@@ -1,0 +1,161 @@
+---
+/**
+ * ToolGlyph: the small authored drawing of what one tool computes (WP-24): a runway that steps down month by month, a metrics dial,
+ * two ownership rings, a stack of evidence, a ticked checklist, a team as a constellation. 240 by 150 user units, decorative (the
+ * schematic around it carries the words). Colors from the shared hub drawing palette (HubFigure.astro), so forced colors hold.
+ */
+import type { ToolGlyph } from './schematics.ts';
+import '../hubs/palette.css';
+
+interface Props {
+  glyph: ToolGlyph;
+  class?: string;
+}
+
+const { glyph, class: className } = Astro.props;
+const W = 240;
+const H = 150;
+// Runway: twelve monthly bars stepping down to zero, the last month in amber.
+const runway = Array.from({ length: 12 }, (_, i) => ({ x: 22 + i * 17, h: Math.round(100 * (1 - i / 12) ** 1.2) + 6 }));
+// Team: three groups of role nodes around a center, joined by hairlines.
+const team = [
+  { x: 70, y: 52 }, { x: 46, y: 88 }, { x: 84, y: 104 },
+  { x: 150, y: 34 }, { x: 178, y: 62 },
+  { x: 160, y: 110 }, { x: 196, y: 116 },
+];
+const hub = { x: 122, y: 76 };
+const arc = (cx: number, cy: number, r: number, from: number, to: number): string => {
+  const a = (from - 90) * (Math.PI / 180);
+  const b = (to - 90) * (Math.PI / 180);
+  const large = to - from > 180 ? 1 : 0;
+  return `M${(cx + r * Math.cos(a)).toFixed(1)} ${(cy + r * Math.sin(a)).toFixed(1)} A${r} ${r} 0 ${large} 1 ${(cx + r * Math.cos(b)).toFixed(1)} ${(cy + r * Math.sin(b)).toFixed(1)}`;
+};
+---
+
+<svg class:list={['tool-glyph', className]} viewBox={`0 0 ${W} ${H}`} width={W} height={H} aria-hidden="true" focusable="false">
+  <rect class="hf-sky" x="0" y="0" width={W} height={H} rx="12" />
+  {
+    glyph === 'runway' && (
+      <g>
+        {runway.map((b, i) => (
+          <rect class={i === runway.length - 1 ? 'hf-amber' : 'hf-star'} x={b.x} y={128 - b.h} width="11" height={b.h} rx="2" />
+        ))}
+        <line class="hf-line" x1="16" y1="129" x2="226" y2="129" />
+      </g>
+    )
+  }
+  {
+    glyph === 'metrics' && (
+      <g>
+        <path class="tool-glyph__track" d={arc(120, 104, 70, -110, 110)} />
+        <path class="tool-glyph__value" d={arc(120, 104, 70, -110, 40)} />
+        <circle class="hf-amber" cx="120" cy="104" r="9" />
+        <line class="tool-glyph__needle" x1="120" y1="104" x2="164" y2="62" />
+        {[0, 1, 2, 3, 4, 5].map((i) => <circle class="hf-star" cx={44 + i * 30} cy="138" r="3.5" />)}
+      </g>
+    )
+  }
+  {
+    glyph === 'cap-table' && (
+      <g>
+        <circle class="tool-glyph__track" cx="70" cy="75" r="40" />
+        <path class="tool-glyph__value" d={arc(70, 75, 40, 0, 216)} />
+        <circle class="tool-glyph__track" cx="170" cy="75" r="40" />
+        <path class="tool-glyph__value" d={arc(170, 75, 40, 0, 162)} />
+        <path class="tool-glyph__amber" d={arc(170, 75, 40, 300, 359)} />
+        <path class="hf-line" d="M114 75 L126 75 M121 69 L127 75 L121 81" />
+      </g>
+    )
+  }
+  {
+    glyph === 'evidence' && (
+      <g>
+        {[0, 1, 2].map((i) => <rect class={i === 2 ? 'hf-star' : 'hf-star--dim'} x={58 + i * 14} y={22 + i * 12} width="96" height="104" rx="6" />)}
+        {[0, 1, 2, 3].map((i) => (
+          <>
+            <rect class={i < 2 ? 'hf-blue' : 'hf-mist'} x="98" y={52 + i * 18} width="10" height="10" rx="2" />
+            <rect class="hf-mist" x="114" y={54 + i * 18} width="44" height="6" rx="3" />
+          </>
+        ))}
+        <circle class="hf-amber" cx="176" cy="40" r="8" />
+      </g>
+    )
+  }
+  {
+    glyph === 'pricing' && (
+      <g>
+        <rect class="hf-star" x="40" y="18" width="160" height="114" rx="8" />
+        {[0, 1, 2, 3, 4].map((i) => (
+          <>
+            <rect class={i < 3 ? 'hf-blue' : 'tool-glyph__box'} x="56" y={30 + i * 20} width="12" height="12" rx="2" />
+            <rect class="hf-mist" x="76" y={33 + i * 20} width={i % 2 === 0 ? 96 : 72} height="6" rx="3" />
+          </>
+        ))}
+        <circle class="hf-amber" cx="184" cy="122" r="8" />
+      </g>
+    )
+  }
+  {
+    glyph === 'team' && (
+      <g>
+        {team.map((n) => <line class="hf-line" x1={hub.x} y1={hub.y} x2={n.x} y2={n.y} />)}
+        {team.map((n, i) => <circle class={i === 3 ? 'hf-amber' : 'hf-star'} cx={n.x} cy={n.y} r="9" />)}
+        <circle class="hf-blue" cx={hub.x} cy={hub.y} r="13" />
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  .tool-glyph {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+  }
+
+  .tool-glyph__track {
+    fill: none;
+    stroke: var(--we-blue);
+    stroke-width: 12;
+    opacity: 0.5;
+  }
+
+  .tool-glyph__value {
+    fill: none;
+    stroke: var(--we-white);
+    stroke-width: 12;
+    stroke-linecap: round;
+  }
+
+  .tool-glyph__amber {
+    fill: none;
+    stroke: var(--we-amber);
+    stroke-width: 12;
+  }
+
+  .tool-glyph__needle {
+    stroke: var(--we-amber);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  .tool-glyph__box {
+    fill: none;
+    stroke: var(--we-slate);
+    stroke-width: 2;
+  }
+
+  @media (forced-colors: active) {
+    .tool-glyph__track,
+    .tool-glyph__value,
+    .tool-glyph__box {
+      stroke: CanvasText;
+      opacity: 1;
+    }
+
+    .tool-glyph__amber,
+    .tool-glyph__needle {
+      stroke: Highlight;
+    }
+  }
+</style>

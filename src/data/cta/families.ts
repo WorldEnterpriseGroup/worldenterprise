@@ -89,7 +89,7 @@ export const FAMILY_SURFACES: readonly FamilySurface[] = [
   page('program:how-we-decide', 'program', '/program/how-we-decide/', { primary: 'apply', secondary: 'journey' }),
   page('pricing', 'pricing', '/pricing/', { primary: 'apply', secondary: 'contact' }),
   entry('services', 'services', 'services', '/services/digital-incubation/', { primary: 'contact', secondary: 'apply' }),
-  page('founders-hub', 'founders-hub', '/founders/', APPLY_AND_BRIEFS),
+  page('founders-hub', 'founders-hub', '/founders/', { primary: 'apply', secondary: 'path:/how-we-work/' }),
 
   article('funding', 'brief:funding-paths', 'apply'),
   article('legal', 'brief:company-setup', 'apply'),

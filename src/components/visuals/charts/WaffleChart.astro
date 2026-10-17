@@ -1,0 +1,98 @@
+---
+/**
+ * WaffleChart: a unit chart. `total` squares (100 or 1,000) stand for the whole, and each group takes its share of them, so "35 of 100"
+ * is something a reader counts instead of reads off an axis. Counts come from the largest-remainder method so they add to exactly the
+ * total; the exact figures are in the table. Each group is one SVG path, so 1,000 squares weigh a few hundred bytes.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { apportion, cellsPath, cleanText } from './dataviz.ts';
+import type { FigureMeta } from './dataviz.ts';
+
+interface Group {
+  readonly label: string;
+  /** The exact value (a count or a percent) this group stands for; only the proportions matter. */
+  readonly value: number;
+  /** How the exact value is printed in the table and legend, e.g. "34.7%". */
+  readonly display: string;
+  /** Palette slot 0 to 6 (the dv-f classes); defaults to the group's position. */
+  readonly tone?: number;
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  groups: readonly Group[];
+  /** 100 (10 by 10) or 1,000 (50 by 20). */
+  total?: 100 | 1000;
+  /** What one square stands for, e.g. "one establishment" or "1 in 1,000 applications". */
+  unit: string;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { groups, total = 100 } = props;
+const unit = cleanText('WaffleChart', 'unit', props.unit);
+if (groups.length < 2 || groups.length > 6) throw new Error(`WaffleChart "${props.id}": takes 2 to 6 groups, got ${groups.length}`);
+const counts = apportion(groups.map((g) => g.value), total);
+const cols = total === 100 ? 10 : 50;
+const rows = total / cols;
+const cell = total === 100 ? 24 : 12;
+const gap = total === 100 ? 3 : 2;
+const W = cols * cell;
+const H = rows * cell;
+let cursor = 0;
+const paths = groups.map((_, i) => {
+  const start = cursor;
+  cursor += counts[i] ?? 0;
+  return cellsPath(start, counts[i] ?? 0, cols, rows, cell, gap);
+});
+const table = {
+  caption: props.title,
+  columns: ['Group', 'Exact figure', `Squares (of ${total})`],
+  rows: groups.map((g, i) => [g.label, g.display, String(counts[i])]),
+};
+---
+
+<ChartFigure {...props} table={table}>
+  <ul class="dv-legend" slot="legend">
+    {groups.map((g, i) => <li class={`dv-k${g.tone ?? i}`}><strong>{g.display}</strong>&nbsp;{g.label}</li>)}
+  </ul>
+  <svg class:list={['dv__svg', 'waffle', total === 1000 && 'waffle--wide']} viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${props.id}-svg-t ${props.id}-svg-d`}>
+    <title id={`${props.id}-svg-t`}>{props.title}</title>
+    <desc id={`${props.id}-svg-d`}>{props.description}</desc>
+    <g class="dv-reveal">
+      {paths.map((d, i) => <path class={`dv-f${groups[i]?.tone ?? i} waffle__cells`} d={d} />)}
+    </g>
+  </svg>
+  <p class="waffle__unit">Each square is {unit}. Squares are rounded so they add to {total}; the exact figures are in the table.</p>
+</ChartFigure>
+
+<style is:global>
+  .waffle {
+    max-inline-size: 44rem;
+  }
+
+  .waffle--wide {
+    max-inline-size: 60rem;
+  }
+
+  .waffle__cells {
+    stroke: none;
+  }
+
+  .waffle__unit {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (forced-colors: active) {
+    .waffle--wide {
+    max-inline-size: 60rem;
+  }
+
+  .waffle__cells {
+      fill: CanvasText;
+    }
+  }
+</style>

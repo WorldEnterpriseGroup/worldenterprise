@@ -1,0 +1,48 @@
+---
+/**
+ * The calls to action of a sales page (WP-58): one primary, then the first live choice of each later group. A target whose route this
+ * build does not emit is skipped, never rendered as a dead link (the CTA liveness rule, src/data/cta/live.ts).
+ */
+import Button from '../ui/Button.astro';
+import { isLiveOnDisk } from '../../data/cta/live.ts';
+
+interface Cta {
+  readonly label: string;
+  readonly href: string;
+}
+
+interface Props {
+  primary: Cta;
+  /** Each group is a list of choices in order of preference; the first live one is shown. */
+  more?: readonly (readonly Cta[])[];
+  /** Accessible name of the group. */
+  label?: string;
+}
+
+const { primary, more = [], label = 'Next steps' } = Astro.props;
+const pathOf = (href: string): string => href.split(/[?#]/)[0] ?? href;
+const live = (cta: Cta): boolean => isLiveOnDisk(pathOf(cta.href));
+const shown = [primary, ...more.map((group) => group.find(live)).filter((c): c is Cta => c !== undefined)].filter(
+  (cta, i, all) => live(cta) && all.findIndex((other) => other.href === cta.href) === i,
+);
+---
+
+{
+  shown.length > 0 && (
+    <div class="sales-ctas cluster" role="group" aria-label={label}>
+      {shown.map((cta, i) => (
+        <Button href={cta.href} variant={i === 0 ? 'primary' : i === 1 ? 'secondary' : 'quiet'}>
+          {cta.label}
+        </Button>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  @layer pages {
+    .sales-ctas {
+      --cluster-gap: var(--sp-4);
+    }
+  }
+</style>

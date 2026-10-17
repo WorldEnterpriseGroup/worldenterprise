@@ -1,32 +1,47 @@
 ---
 import FamilyCard from './FamilyCard.astro';
 import type { FamilyLink } from './types.ts';
+import type { EmblemKind } from './visual/emblems.ts';
+import VisualCards from './visual/VisualCards.astro';
 
 /**
- * The list of pages in a family, as equal cards in registry order. The caller passes only the cards whose route is live
- * (`liveCards` in paths.ts), so a page that is not built leaves no card and no dead link. Renders nothing for an empty list.
+ * The list of pages in a family, as equal illustrated cards in registry order (wave 9: each card opens on the family's emblem, seeded by
+ * its own page, so an industry is its own planet and a comparison its own pair of giants; still no badge, no ranking). Without a `kind`
+ * (the segment reading path) the list keeps the plain `FamilyCard`. The caller passes only the cards whose route is live (`liveCards`
+ * in paths.ts), so a page that is not built leaves no card and no dead link. Renders nothing for an empty list.
  */
 interface Props {
   heading: string;
   /** Id of the heading, so the list is named by it. */
   id: string;
   cards: readonly FamilyLink[];
+  /** The emblem of the family. Without one the list uses the plain family card. */
+  kind?: EmblemKind | undefined;
 }
 
-const { heading, id, cards } = Astro.props;
+const { heading, id, cards, kind } = Astro.props;
 ---
 
 {
   cards.length > 0 && (
     <section class="fhub" aria-labelledby={id}>
       <h2 id={id}>{heading}</h2>
-      <ul class="fhub__list" role="list">
-        {cards.map((card) => (
-          <li>
-            <FamilyCard title={card.title} href={card.href} description={card.description} headingLevel={3} />
-          </li>
-        ))}
-      </ul>
+      {kind !== undefined ? (
+        <VisualCards
+          kind={kind}
+          headingLevel={3}
+          labelledby={id}
+          cards={cards.map((card, index) => ({ title: card.title, href: card.href, summary: card.description, index }))}
+        />
+      ) : (
+        <ul class="fhub__list" role="list">
+          {cards.map((card) => (
+            <li>
+              <FamilyCard title={card.title} href={card.href} description={card.description} headingLevel={3} />
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   )
 }
@@ -34,7 +49,7 @@ const { heading, id, cards } = Astro.props;
 <style>
   .fhub {
     display: grid;
-    gap: var(--space-group);
+    gap: var(--sp-6);
     container-type: inline-size;
   }
 

@@ -3,6 +3,7 @@ import { getEntry, render } from 'astro:content';
 import EvidenceRoom from '../../components/islands/we-evidence-room/EvidenceRoom.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import { webApplicationNode } from '../../components/tools/webApplicationNode.ts';
+import ToolSchematic from '../../components/tools/ToolSchematic.astro';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 
 const entry = await getEntry('pages', 'tools/evidence-room');
@@ -30,6 +31,7 @@ const PATH = '/tools/evidence-room/';
   ]}
   noscript="JavaScript is off. The whole checklist is below and you can tick the boxes and print the page. The stage filter, the copy button and the saved address need JavaScript."
 >
+  <ToolSchematic href="/tools/evidence-room/" name={data.title} />
   <EvidenceRoom />
   <div class="prose"><Content /></div>
   <CtaBand

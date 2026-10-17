@@ -1,0 +1,110 @@
+/**
+ * The hub drawing palette (WP-24): night sky, star light, the one amber object, hairlines and labels, as classes on SVG shapes. Shared
+ * by every hub drawing and tool glyph, imported by HubFigure.astro and ToolGlyph.astro. Tokens only; system colors in forced-colors mode.
+ */
+.hf-sky {
+  fill: var(--we-blue-night);
+}
+
+.hf-paper {
+  fill: var(--we-tint);
+}
+
+.hf-star {
+  fill: var(--we-white);
+}
+
+.hf-star--dim {
+  fill: var(--we-blue-hi);
+  opacity: 0.45;
+}
+
+.hf-blue {
+  fill: var(--we-blue);
+}
+
+.hf-ink {
+  fill: var(--we-blue-night);
+}
+
+.hf-slate {
+  fill: var(--we-slate);
+}
+
+.hf-mist {
+  fill: var(--we-mist);
+}
+
+.hf-amber {
+  fill: var(--we-amber);
+}
+
+.hf-line {
+  fill: none;
+  stroke: var(--we-blue-hi);
+  stroke-width: 1.5;
+  opacity: 0.55;
+}
+
+.hf-rule {
+  fill: none;
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+}
+
+.hf-rule--dash {
+  stroke-dasharray: 6 6;
+}
+
+.hf-text {
+  font-family: var(--ff-sans);
+  font-size: 15px;
+  fill: var(--color-text);
+}
+
+.hf-text--strong {
+  font-weight: 700;
+}
+
+.hf-text--muted {
+  fill: var(--color-text-muted);
+}
+
+.hf-text--inverse {
+  fill: var(--we-white);
+}
+
+/* Forced colors: the drawing keeps its shapes in system colors so nothing disappears into the background. */
+@media (forced-colors: active) {
+  .hf-sky,
+  .hf-paper,
+  .hf-mist {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+
+  .hf-star,
+  .hf-star--dim,
+  .hf-blue,
+  .hf-ink,
+  .hf-slate {
+    fill: CanvasText;
+    opacity: 1;
+  }
+
+  .hf-amber {
+    fill: Highlight;
+  }
+
+  .hf-line,
+  .hf-rule {
+    stroke: CanvasText;
+    opacity: 1;
+  }
+
+  .hf-text,
+  .hf-text--muted,
+  .hf-text--inverse {
+    fill: CanvasText;
+  }
+}

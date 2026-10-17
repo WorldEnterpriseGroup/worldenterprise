@@ -1,0 +1,60 @@
+---
+title: Build or buy
+description: A plain comparison of building a product and buying one, each described from named public sources, with no product ranked.
+eyebrow: Comparison
+updated: 2026-10-10
+claimsUsed:
+  - C-29
+family:
+  id: compare
+  slug: build-vs-buy
+  sides:
+    - name: Build
+      whatItIs: From the blueprint altitude, the team draws what a first release must do, cuts the scope to that, and builds it in reviewed cycles.
+      whoItFits: Build starts from a problem you have tested. You want a team and a method to carry out the work, and you will keep ownership of the direction.
+      asksOfFounder: You can make decisions for the company and join a review at each cycle. A dedicated team does the work, and WE steers it.
+      askThis:
+        - What must a first release do, and what can wait?
+        - Who owns the code and the data?
+        - Who maintains the product after the first release?
+    - name: Buy
+      whatItIs: NIST defines commercial off-the-shelf as a software or hardware product that is commercially ready-made and available for sale, lease or license to the general public.
+      whoItFits: The GOV.UK Service Manual says to use standard government technology components where possible.
+      asksOfFounder: It says to make sure you always have full control of any data you store. It also lists reducing the chance of getting locked in to long contracts for specific tools and providers.
+      askThis:
+        - Which parts of the need does a ready-made product already meet?
+        - Can the founder export and control the data stored in it?
+        - How hard is it to change tools or providers later?
+  whereEachFits:
+    - "The aim is a first product that a real customer can use, plus the paper trail that explains it: the scope, the decisions and the open items."
+    - The manual says to use software that other departments have built, and to make it easy to use software that you build.
+  definitions:
+    - term: Commercial off-the-shelf
+      text: The NIST glossary describes commercial off-the-shelf as a ready-made product available to the general public.
+      sourceId: nist
+    - term: Open standards
+      text: The GOV.UK Service Manual says using open standards makes it easier to make changes later.
+      sourceId: govtech
+  sources:
+    - id: nist
+      title: commercial-off-the-shelf (COTS), Glossary
+      publisher: Computer Security Resource Center, National Institute of Standards and Technology
+      url: https://csrc.nist.gov/glossary/term/commercial_off_the_shelf
+      accessed: 2026-10-10
+    - id: govtech
+      title: "Choosing technology: an introduction"
+      publisher: GOV.UK Service Manual
+      url: https://www.gov.uk/service-manual/technology/choosing-technology-an-introduction
+      accessed: 2026-10-10
+---
+
+This page sets two categories of support side by side on the same questions. Each statement about a category names a public source, and the sources are listed at the end of the page.
+
+## Where WE sits
+
+WE is a long-horizon business incubation and consulting firm. WE steers a dedicated, fully remote team that builds a software-enabled company with its founder, for as long as the work is useful. WE makes no promise of funding.
+
+## WE is probably not the right fit if
+
+- Your idea is not a software-as-a-service product.
+- You want WE to run your product in production or to provide round-the-clock support.

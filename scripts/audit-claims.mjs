@@ -7,7 +7,9 @@
 //   rules / contextRules  Wording that must not appear. A context rule may be switched off by a flag
 //                         (disabledByFlag), skipped on named routes (allowPaths), skipped inside elements
 //                         marked data-claim-allow="<rule id>" or "*" (markerAllowed), or skipped inside
-//                         data-generic-definition elements (genericDefinitionAllowed, SAFE terms only).
+//                         data-generic-definition elements (genericDefinitionAllowed, SAFE terms only). A rule with
+//                         ecosystemAllowed is also skipped on the ecosystem routes (ECOSYSTEM_ROUTES) and inside elements marked
+//                         data-context="ecosystem" (wave 10, D-W10-1; docs/wave10-contracts.md). Rules without it are never relaxed.
 //   required              Text that must be visible on the listed routes, or on every page ("*"), optionally
 //                         only when the photo manifest has a generated image (when: "generatedImages") or only
 //                         on pages whose <main> text matches a pattern (whenMatches, with whenFlags, default "i").
@@ -212,6 +214,17 @@ export function stripClaimAllowed(html, ruleId) {
   });
 }
 
+/** Routes whose whole page describes the outside ecosystem (wave 10, D-W10-1). Plain-text twins of these routes share the route. */
+export const ECOSYSTEM_ROUTES = /^\/(?:ecosystem|sbir-sttr|data)(?:\/|$)/;
+
+const ECOSYSTEM_CONTEXT = /\bdata-context\s*=\s*(?:"ecosystem"|'ecosystem'|ecosystem(?=[\s>/]))/i;
+
+/** Removes elements marked data-context="ecosystem": the one attribute that opens the ecosystem context on any page. */
+export function stripEcosystemContext(html) {
+  if (!/data-context/i.test(html)) return html;
+  return stripElements(html, (tag) => ECOSYSTEM_CONTEXT.test(tag));
+}
+
 /** Reduces markup to the strings a reader or crawler can see. */
 export function visibleText(html) {
   const jsonLd = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1]);
@@ -270,6 +283,7 @@ export function scan(html, options = {}) {
   for (const rule of rules) {
     if (typeof rule.disabledByFlag === 'string' && flagIsOn(flagValues, rule.disabledByFlag)) continue;
     if (rule.allow.some((re) => re.test(route))) continue;
+    if (rule.ecosystemAllowed === true && ECOSYSTEM_ROUTES.test(route)) continue;
     if (plain !== null) {
       rule.regex.lastIndex = 0;
       const found = rule.regex.exec(plain);
@@ -282,6 +296,7 @@ export function scan(html, options = {}) {
       source = relaxed;
     }
     if (rule.markerAllowed) source = stripClaimAllowed(source, rule.id);
+    if (rule.ecosystemAllowed === true) source = stripEcosystemContext(source);
     let text;
     if (source === html) {
       strict ??= visibleText(html);
@@ -452,11 +467,14 @@ function selfTest() {
     ['a marker for another rule does not help', () => hit('<p><span data-claim-allow="C-21-phrase">a cohort</span></p>').includes('C-13-peers')],
     ['first-person peer wording is caught', () => hit('<p>Our mentors review every plan.</p>').includes('W8-C13-own-peers') && hit('<p>WE runs a cohort twice a year.</p>').includes('W8-C13-own-peers')],
     ['a marker cannot exempt first-person peer wording, and the FAQ path is not exempt', () => hit('<p><span data-claim-allow="*">Our cohort starts soon.</span></p>').includes('W8-C13-own-peers') && hit('<p>Our cohort starts soon.</p>', '/faq/').includes('W8-C13-own-peers')],
+    ['the ecosystem routes may name an accelerator and a cohort (D-W10-1)', () => !hit('<p>Many founders join an accelerator or a cohort.</p>', '/ecosystem/').includes('C-13-peers') && hit('<p>Many founders join an accelerator.</p>', '/ecosystems/').includes('C-13-peers')],
+    ['a data-context="ecosystem" element may name a mentor on any page (D-W10-1)', () => !hit('<div data-context="ecosystem"><p>A mentor.</p></div>').includes('C-13-peers') && hit('<p>A mentor.</p>').includes('C-13-peers')],
+    ['WE as an accelerator is caught in the ecosystem context', () => hit('<p>WE is an accelerator.</p>', '/ecosystem/').includes('W10-we-is-accelerator-or-investor') && !hit('<p>WE is not an accelerator.</p>', '/ecosystem/').includes('W10-we-is-accelerator-or-investor')],
     ['a denial of peers is not first-person peer wording', () => !hit('<p>WE has no mentors and runs no cohort.</p>').includes('W8-C13-own-peers')],
     ['the C-21 phrase is allowed on the dedicated-teams page only', () => !hit('<h2>Two companies, one objective</h2>', '/program/dedicated-teams/').includes('C-21-phrase') && hit('<h2>Two companies, one objective</h2>', '/pricing/').includes('C-21-phrase')],
     ['UK spelling is caught', () => hit('<p>A programme for your organisation.</p>').includes('Q-spelling')],
-    ['a missing disclaimer is caught', () => disclaimer !== undefined && missing('/pricing/', '<main><p>Pricing.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
-    ['a present disclaimer passes', () => !missing('/pricing/', '<main><p>WE makes no promise of funding. This helps.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
+    ['a missing disclaimer is caught', () => disclaimer !== undefined && missing('/how-we-work/', '<main><p>Pricing.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
+    ['a present disclaimer passes', () => !missing('/how-we-work/', '<main><p>WE makes no promise of funding. This helps.</p></main>', false).includes('R-C05-no-funding-disclaimer')],
     ['the photo line is not required without a generated image', () => !missing('/about/', '<footer>none</footer>', false).includes('R-photo-disclosure')],
     ['the photo line is required with a generated image', () => missing('/about/', '<footer>none</footer>', true).includes('R-photo-disclosure')],
     ['the photo line passes when present', () => !missing('/about/', `<footer><p>${photoLine}</p></footer>`, true).includes('R-photo-disclosure')],
@@ -491,10 +509,10 @@ function selfTest() {
       'a Markdown twin does not stand in for its page in a required text',
       () => {
         const pages = [
-          { route: '/pricing/', html: '<main><p>Pricing.</p></main>', isHtml: true },
-          { route: '/pricing/', html: 'WE makes no promise of funding.', isHtml: false, plain: true },
+          { route: '/how-we-work/', html: '<main><p>Pricing.</p></main>', isHtml: true },
+          { route: '/how-we-work/', html: 'WE makes no promise of funding.', isHtml: false, plain: true },
         ];
-        return checkRequired(pages, set.required.filter((r) => r.id === 'R-C05-no-funding-disclaimer'), {}).some((f) => f.route === '/pricing/');
+        return checkRequired(pages, set.required.filter((r) => r.id === 'R-C05-no-funding-disclaimer'), {}).some((f) => f.route === '/how-we-work/');
       },
     ],
     ['a Markdown twin stands for its page route', () => textRouteOf('insights/x.md') === '/insights/x/' && textRouteOf('index.md') === '/' && textRouteOf('llms.txt') === '/llms.txt'],

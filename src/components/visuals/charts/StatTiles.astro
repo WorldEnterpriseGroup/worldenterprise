@@ -1,0 +1,78 @@
+---
+/**
+ * StatTiles: a row of sourced figures (two to six). Sources shared by several tiles are listed once, numbered, under the row.
+ */
+import StatTile from './StatTile.astro';
+import { stat } from '../contracts.ts';
+import type { Stat, StatSource } from '../contracts.ts';
+
+interface Props {
+  stats: readonly Stat[];
+  tone?: 'light' | 'dark';
+  /** Accessible name for the group. */
+  label?: string;
+  /** Prefix for the source-note ids; set it when a page has two groups with the same label. */
+  id?: string;
+  class?: string;
+}
+
+const { tone = 'light', label = 'Key figures', class: className } = Astro.props;
+const id = Astro.props.id ?? `stat-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+if (Astro.props.stats.length < 1 || Astro.props.stats.length > 6) throw new Error(`StatTiles: takes 1 to 6 stats, got ${Astro.props.stats.length}`);
+const items = Astro.props.stats.map((s) => stat('StatTiles', s));
+
+const sources: StatSource[] = [];
+const notes = items.map((s) => {
+  const found = sources.findIndex((x) => x.label === s.source.label && x.href === s.source.href && x.period === s.source.period);
+  if (found !== -1) return found + 1;
+  sources.push(s.source);
+  return sources.length;
+});
+---
+
+<div class:list={['stat-tiles', `stat-tiles--${tone}`, className]} role="group" aria-label={label}>
+  <div class="stat-tiles__grid">
+    {items.map((s, i) => <StatTile {...s} tone={tone} hideSource note={notes[i]} noteHref={`#${id}-${notes[i]}`} />)}
+  </div>
+  <ol class="stat-tiles__sources" aria-label="Sources">
+    {
+      sources.map((s, i) => (
+        <li id={`${id}-${i + 1}`}>
+          {s.href !== undefined ? <a href={s.href}>{s.label}</a> : s.label}
+          {s.period !== undefined && <span>, {s.period}</span>}
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .stat-tiles {
+    display: grid;
+    gap: var(--sp-3);
+  }
+
+  .stat-tiles__grid {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  }
+
+  .stat-tiles__sources {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    padding-inline-start: var(--sp-5);
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  .stat-tiles__sources a {
+    color: inherit;
+  }
+
+  .stat-tiles--dark .stat-tiles__sources {
+    color: var(--we-tint);
+  }
+</style>

@@ -12,7 +12,7 @@ import { isBuilt } from '../../support/routes.ts';
 const pointsAt = (href: string, path: string): boolean => new URL(href, 'http://localhost').pathname.endsWith(path);
 
 function suite(): void {
-  test('home: the audience band sits between the hero and "What you leave with", with one door for each audience page that is built', async ({ page }) => {
+  test('home: the audience band sits between the hero and the journey band, with one door for each audience page that is built', async ({ page }) => {
     test.skip(!isBuilt('/'), 'home is not built');
     const open = AUDIENCE_LINKS.filter((link) => isBuilt(link.href));
     await page.goto('/');
@@ -31,16 +31,16 @@ function suite(): void {
 
     const heroBottom = (await page.locator('h1').first().boundingBox())?.y ?? -1;
     const bandTop = (await band.boundingBox())?.y ?? -1;
-    const nextTop = (await page.locator('#home-leave-with').boundingBox())?.y ?? -1;
+    const nextTop = (await page.locator('section[aria-labelledby="home-journey"]').boundingBox())?.y ?? -1;
     expect(bandTop, 'the band is below the hero heading').toBeGreaterThan(heroBottom);
-    expect(nextTop, 'the band is above "What you leave with"').toBeGreaterThan(bandTop);
+    expect(nextTop, 'the band is above the journey band').toBeGreaterThan(bandTop);
   });
 
-  test('home: one end band, and the old hard-coded band is gone', async ({ page }) => {
+  test('home: one closing band (the wave 9 band, W9-13) and no second band from the CTA system', async ({ page }) => {
     test.skip(!isBuilt('/'), 'home is not built');
     await page.goto('/');
-    await expect(page.locator('[data-cta="end"]')).toHaveCount(1);
-    await expect(page.locator('[data-cta="mid"]')).toHaveCount(0);
+    await expect(page.locator('section[aria-labelledby="home-end-title"]')).toHaveCount(1);
+    await expect(page.locator('[data-cta]')).toHaveCount(0);
     await expect(page.getByText('Ready to test your idea?')).toHaveCount(0);
   });
 

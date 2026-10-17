@@ -5,7 +5,23 @@ description: What a seed-stage data room is, the folders it usually holds, and h
 disclaimers:
   - no-funding
   - not-legal-advice
-updated: 2026-10-06
+sources:
+  - id: cornell-17usc204
+    title: 17 U.S. Code section 204, Execution of transfers of copyright ownership
+    publisher: Legal Information Institute, Cornell Law School
+    url: https://www.law.cornell.edu/uscode/text/17/204
+    accessed: 2026-10-10
+  - id: dgcl-219
+    title: Delaware Code, Title 8, section 219, the stock ledger and the stockholder list
+    publisher: Delaware General Assembly
+    url: https://delcode.delaware.gov/title8/c001/sc07/index.html
+    accessed: 2026-10-10
+  - id: dgcl-151
+    title: Delaware Code, Title 8, section 151, Classes and series of stock; redemption; rights
+    publisher: Delaware General Assembly
+    url: https://delcode.delaware.gov/title8/c001/sc05/index.html
+    accessed: 2026-10-10
+updated: 2026-10-10
 ---
 import DataTable from '../../components/ui/DataTable.astro';
 
@@ -39,6 +55,39 @@ Building the folder early is useful even if nobody asks for it. The act of filli
   ]}
 />
 
+## The index that holds it together
+
+The index is the one file a stranger opens first. Make it a simple table with one row per document, so that nothing in the folder is reachable only by someone who already knows where to look.
+
+<DataTable
+  caption="Columns for the data room index"
+  columns={['Column', 'What it holds', 'Why it matters']}
+  rows={[
+    ['Document', 'The file name and a plain description in a few words.', 'A reader can tell what a file is without opening it.'],
+    ['Folder', 'The folder number from the table above.', 'The index and the folders agree.'],
+    ['Date', 'When the document was signed, issued or last updated.', 'Stale records are visible at a glance.'],
+    ['Owner', 'The person who keeps the document current.', 'Someone is accountable for each file.'],
+    ['Status', 'Final, draft, missing or not applicable, with a date for anything missing.', 'Gaps are stated, not hidden.'],
+    ['Access', 'Who may open it: everyone with access, or named people only.', 'Staged sharing is a decision you recorded, not an accident.'],
+  ]}
+/>
+
+## Records that prove ownership
+
+Two folders carry the claims people check hardest: who wrote the product, and who owns the company. Both rest on signed paper.
+
+For the product, start with the statute. The U.S. Copyright Act says a transfer of copyright ownership [is not valid unless an instrument of conveyance](https://www.law.cornell.edu/uscode/text/17/204), or a note or memorandum of the transfer, is in writing and signed by the owner or the owner's authorized agent. In plain terms, if a contractor or an early cofounder wrote code or design for the company, the company's claim to that work rests on a signed document, not on everyone remembering the arrangement. Keep one signed assignment per contributor in folder 5, and list each contributor beside their assignment in the index. Whether a particular arrangement works is a question for your counsel.
+
+For the company, keep a dated stock ledger next to the cap table. Section 219 of the Delaware General Corporation Law says the stock ledger [shall be the only evidence as to who are the stockholders entitled by this section to examine the list](https://delcode.delaware.gov/title8/c001/sc07/index.html) of stockholders. That rule is narrow, and it applies to Delaware corporations. The practical point is wider: the record a statute points to and the spreadsheet you share should agree. If your company is organized somewhere else, ask your counsel which record your own law treats as the ledger.
+
+Keep the charter and every amendment in folder 1 as well. Section 151 of the same law lets a corporation create classes and series of stock, and says which may have [voting powers, full or limited, or no voting powers](https://delcode.delaware.gov/title8/c001/sc05/index.html). A reader who sees a class on your cap table will look for the document that creates it. The article on [cap table basics for founders](/insights/cap-table-basics-for-founders/) explains what each column means, and the [cap table explainer](/tools/cap-table-explainer/) lets you test your own layout.
+
+## Share in stages
+
+A data room is not all-or-nothing. A reasonable order is to share the overview folders first, which are the company, the product and the metrics, and to open the sensitive folders only when a conversation has reached the point where they are needed. Record each step in the access log. The article on [ordering a pre-seed evidence pack](/insights/ordering-a-pre-seed-evidence-pack/) goes through the order in more detail, and the [evidence room tool](/tools/evidence-room/) helps you see which records you already hold.
+
+For intellectual property and access, the article on [IP, contracts and access diligence for small engineering teams](/insights/ip-contracts-and-access-diligence-for-small-engineering-teams/) lists what a technical reader tends to ask for.
+
 ## Keep it honest
 
 If a record is missing, leave a short note in the index that says what is missing and when you expect it. A visible gap with a date is easier to trust than a quiet one. Never fill a folder with documents you hope will pass. Anyone reading it is looking for the places where the story and the paperwork disagree.
@@ -54,5 +103,9 @@ Do not put secrets in the folder: passwords, private keys and personal data abou
 5. Keep a log of who was given access and when.
 
 The [seed data room checklist](/library/seed-data-room-checklist/) is the same set of folders as a template you can copy and tick. Use this guide to understand the purpose of each folder and the checklist to do the work. The [investor readiness checklist](/fundability/investor-readiness-checklist/) shows which statements each folder helps you prove.
+
+## About the evidence
+
+The three legal points in this guide come from the statute text itself, read on the dates listed under Sources: 17 U.S.C. section 204 on the form of a copyright transfer, and sections 219 and 151 of Title 8 of the Delaware Code on the stock ledger and classes of stock. Everything else here, including the folder structure, the index and the order of sharing, is working practice rather than a rule, and your counsel may suggest a different one. A statute can be amended, so check the current text before you rely on a point.
 
 This guide is general information. It describes a common structure and is not legal advice. Which documents you hold, and what you may share, depend on your company and your jurisdiction.

@@ -80,7 +80,7 @@ Routes that are intentionally not launched and will not ship until their conditi
 | `/newsletter/` | `PUBLIC_WE_NEWSLETTER_API_URL` set |
 | `/legal/terms/` | `flags.legalTerms` true after counsel sign-off (C-23) |
 | `/.well-known/security.txt` | `site.securityContact` set |
-| `/press/brand-kit/` | whitelab brand-usage sign-off |
+| `/press/brand-kit/` | brand-owner usage sign-off |
 | `/founders/stories/`, `/founders/portfolio/`, `/case-studies/`, `/network/partners/`, `/network/delivery-partners/`, `/about/team/`, `/careers/`, `/events/`, `/program/cohorts/`, `/program/demo-day/`, `/people/[slug]/` | real content exists (companies, people, dates, events) |
 
 Not checkable from here, and left to the operator because the unauthenticated GitHub API answers 404 for them and the live domain is not reachable from the agent environment:
@@ -184,7 +184,7 @@ How to read this checklist:
 
 #### CR-01. The disclaimer, verbatim (shown wherever the add-on is named)
 
-Source: `src/components/blocks/introductions.ts:15`. Renders on: Every page that renders `IntroductionsDisclaimer`: /investors/, /network/, /pricing/, /services/fundability-and-investor-readiness/ and the Fundable article on choosing first investors. Also the /faq/ answer (below).
+Source: `src/components/blocks/introductions.ts:15`. Renders on: Every page that renders `IntroductionsDisclaimer`: /investors/, /network/, /how-we-work/, /services/fundability-and-investor-readiness/ and the Fundable article on choosing first investors. Also the /faq/ answer (below).
 
 > L15: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
@@ -193,7 +193,7 @@ Source: `src/components/blocks/introductions.ts:15`. Renders on: Every page that
 
 #### CR-02. The sentence that fixes the fee structure
 
-Source: `src/components/blocks/introductions.ts:18`. Renders on: Inside the add-on block on /investors/, /network/, /pricing/ and /services/fundability-and-investor-readiness/.
+Source: `src/components/blocks/introductions.ts:18`. Renders on: Inside the add-on block on /investors/, /network/, /how-we-work/ and /services/fundability-and-investor-readiness/.
 
 > L18: The fee does not depend on whether any investment closes.
 
@@ -239,9 +239,9 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:26`. Renders on:
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-06. Add-on block, brief variant (/pricing/ and /network/)
+#### CR-06. Add-on block, brief variant (/investors/meet-startups/ and /network/)
 
-Source: `src/components/blocks/InvestorIntroductionsOffer.astro:31`. Renders on: /pricing/ and /network/. The sentence after "A flat fee covers curation and preparation." is the fee sentence above, then the text continues.
+Source: `src/components/blocks/InvestorIntroductionsOffer.astro:31`. Renders on: /investors/meet-startups/ and /network/. The sentence after "A flat fee covers curation and preparation." is the fee sentence above, then the text continues.
 
 > L31: Investor Introductions is a separate, paid add-on. It is not part of any package, and no package requires it. A flat fee covers curation and preparation.
 >
@@ -271,73 +271,149 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:43`. Renders on:
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-08. Investors page, intro and limits
+#### CR-08. Investors page, content file (rewritten for the investor journey)
 
 Source: `src/content/pages/investors/index.mdx:3`. Renders on: /investors/ (meta description and body).
 
-> L3: What WE does for companies preparing to raise, and what it does not do. WE offers no securities, runs no raise for a company and promises no funding.
+> L3: Ask to meet a company WE incubates. The founder decides what to share. WE makes no promise of funding, and nothing here is an offer of securities.
 >
-> L22: It is not a fund, a broker-dealer, an investment adviser or a marketplace, and this page is written to make that plain to anyone who arrives from an investor's side.
+> L16: WE is a long-horizon business incubation and consulting firm. Investors can ask to meet the companies WE incubates.
 >
-> L28: A company that has finished the readiness work can also buy Investor Introductions. It is a separate, paid add-on with a flat fee, and it is described in full below.
+> L18: WE asks each founder first. A company appears on this site only when its founder has agreed in writing.
+
+New wording that needs counsel review (OP-COUNSEL): all three lines. The sentence "WE makes no promise of funding." inside L3 is the claim C-05 wording counsel already reviewed. The wave 7 paragraphs of this file (under "Read this first" and the old "What WE does") are no longer rendered.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-09. Investors page, lead, "Not an offer of securities" box, "The limits of WE's role" list and the investor paragraph
+#### CR-09. Investors page, lead, "Not an offer of securities" box, "The limits of WE's role" list and the diligence line
 
-Source: `src/pages/investors/index.astro:25`. Renders on: /investors/.
+Source: `src/components/investors/copy.ts:63`. Renders on: /investors/.
 
-> L38: WE prepares a company's evidence. It does not raise money, place securities or promise funding.
+> L63: Ask to meet a company WE incubates. WE asks the founder first, and the founder decides.
 >
-> L46: Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security. WE does not offer securities through this site or in any other way described on it.
+> L66: Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security. WE does not offer securities through this site or in any other way described on it.
 >
-> L25: WE does not offer, sell or place securities, and takes no part in any financing.
+> L81: WE does not offer, sell or place securities, and takes no part in any financing.
 >
-> L26: WE does not negotiate terms, advise on securities or handle funds.
+> L82: WE does not negotiate terms, advise on securities or handle funds.
 >
-> L27: WE does not advise investors or recommend any company as an investment, and an introduction is not an endorsement.
+> L83: WE does not advise investors or recommend any company as an investment, and an introduction is not an endorsement.
 >
-> L29: WE does not promise or predict a meeting, a reply or funding for any company.
+> L84: WE does not verify a company’s statements. They remain that company’s own.
 >
-> L68: An introduction through the add-on above is not an endorsement or a recommendation to invest. You decide whether to reply, and you do your own diligence.
+> L85: WE does not promise or predict a meeting, a reply or funding for any company.
+>
+> L89: Any company that shows you materials prepared with WE’s help is making its own case. You decide whether to reply, and you do your own diligence.
+
+Carried verbatim from the wave 7 entry (already reviewed): L66, L81, L82, L83 and L85, and the second sentence of L89. The L83 sentence also renders at L99 on /investors/meet-startups/, and the L84 sentence at L117 on /investors/what-you-can-see/. New wording that needs counsel review (OP-COUNSEL): L63, L84 and the first sentence of L89. Dropped with the old page, no longer rendered: the old lead ("WE prepares a company's evidence...") and "An introduction through the add-on above is not an endorsement or a recommendation to invest."
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-22. Investor journey, the other pages (new wording, OP-COUNSEL)
+
+Source: `src/components/investors/copy.ts:18`. Renders on: /investors/ (the showcase), /investors/meet-startups/ and /investors/what-you-can-see/.
+
+> L18: No company is listed yet. WE lists a company here only with its founder's written consent.
+>
+> L93: How an investor asks to meet a company WE incubates, and how the founder decides.
+>
+> L97: WE cannot promise a meeting, a reply or funding.
+>
+> L98: WE names no company until a written record exists.
+>
+> L111: A company appears only when its founder has agreed in writing. The written record names each permission.
+>
+> L116: WE cannot show a company that has not agreed.
+
+All lines are new wording that needs counsel review (OP-COUNSEL).
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-23. Investor FAQ, all ten answers (new wording, OP-COUNSEL; the add-on answer carries the disclaimer verbatim)
+
+Source: `src/components/investors/faq.ts:20`. Renders on: /investors/faq/ (and in its FAQPage JSON-LD).
+
+> L20: You can ask. Send the interest form and say what you look for. WE asks the founder, and the founder decides. WE cannot promise a meeting, a reply or funding.
+>
+> L27: WE lists a company only with its founder's written consent. WE names no company until a written record exists.
+>
+> L34: Nothing on this site is an offer to sell, or a solicitation of an offer to buy, any security. WE does not negotiate terms, advise on securities or handle funds.
+>
+> L41: WE does not advise investors or recommend any company as an investment, and an introduction is not an endorsement. WE does not verify a company’s statements. They remain that company’s own.
+>
+> L47: WE makes no promise of funding. It does not predict that any company will raise money.
+>
+> L54: The form asks for your name and email address. The firm, website, how you describe yourself, the sectors and stages you want to see, and a message are optional. It asks for no accreditation status, no amounts and no fund size.
+>
+> L60: WE uses the details in the form to answer your request, as the privacy notice describes.
+>
+> L66: WE cannot promise a reply or a meeting.
+>
+> L73: A company can buy Investor Introductions, a separate, paid add-on. A flat fee covers curation and preparation. The fee does not depend on whether any investment closes. Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
+>
+> L80: A founder can work through the readiness checklist and the self-check before asking for anything. WE judges whether its readiness criteria are met.
+
+All lines are new wording that needs counsel review (OP-COUNSEL), except the disclaimer sentence inside L73, which is CR-01 verbatim, and the sentence "WE makes no promise of funding." at L47.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-24. Readiness criteria page, introduction (new wording, OP-COUNSEL; the disclaimer renders below it from the shared block)
+
+Source: `src/content/pages/investors/readiness-criteria/index.mdx:3`. Renders on: /investors/readiness-criteria/.
+
+> L3: The evidence WE expects before it curates any introduction, and a twelve-statement self-check a founder can run first. WE judges whether they are met.
+>
+> L13: These are the criteria WE judges before it curates any introduction. A company that wants Investor Introductions, a separate, paid add-on, meets them first.
+
+Both lines are new wording that needs counsel review (OP-COUNSEL).
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-25. Readiness criteria page, the criteria table (no copy of its own: it renders CR-03)
+
+Source: `src/pages/investors/readiness-criteria/index.astro:17`. Renders on: /investors/readiness-criteria/.
+
+> L17: const rows = INTRODUCTIONS_READINESS.map((c) => [c.artifact, c.inPlace]);
+
+This file holds no sentence. It builds the table from the shared readiness criteria quoted in CR-03, so counsel reads the table there. It is listed because it names the add-on's constant (the unit test lists every file under `src` that does). The page's own sentences are in CR-24.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-10. Network page, card and callout
 
-Source: `src/pages/network/index.astro:69`. Renders on: /network/.
+Source: `src/pages/network/index.astro:76`. Renders on: /network/.
 
-> L69: WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.
+> L76: WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.
 >
-> L88: WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.
+> L108: WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-11. Network page, body
 
-Source: `src/content/pages/network/index.mdx:34`. Renders on: /network/.
+Source: `src/content/pages/network/index.mdx:40`. Renders on: /network/.
 
-> L34: There is no logo wall, no client list, no investor network and no partner program or perks scheme.
+> L40: There is no logo wall, no client list and no investor network.
 >
-> L34: Investor Introductions is a paid add-on for one company at a time. It is not a membership of any network.
+> L40: Investor Introductions is a separate, paid add-on. It is not a membership of any network.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-12. Pricing page, body and FAQ
+#### CR-12. How WE works, the add-on paragraph
 
-Source: `src/content/pages/pricing/pricing.mdx:22`. Renders on: /pricing/.
+Source: `src/pages/how-we-work/index.astro:276`. Renders on: /how-we-work/ (it replaced the packages page in wave 9; /pricing/ is now a noindex pointer that names no add-on). The fee sentence after the first sentence of L277 is CR-02, and the disclaimer below it is CR-01 through `IntroductionsDisclaimer`.
 
-> L22: This page lists no amounts. WE shares the current rate for a package, a custom seat plan or the add-on when you ask, so the figure you receive is the one that applies today.
+> L276: Investor Introductions is a separate add-on
 >
-> L47: Not on this page. WE shares the current rate for a package, a custom seat plan or the add-on when you ask for it.
->
-> L64: Is Investor Introductions part of a package?
->
-> L65: No. It is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+> L277: It is optional, and a flat fee covers curation and preparation.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -392,9 +468,9 @@ Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-
 
 #### CR-17. Founders page, what WE does not do
 
-Source: `src/pages/founders/index.astro:38`. Renders on: /founders/.
+Source: `src/pages/founders/index.astro:45`. Renders on: /founders/.
 
-> L38: It does not promise funding or investor meetings, or predict whether any company will raise money.
+> L45: It does not promise funding or investor meetings, or predict whether any company will raise money.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -412,7 +488,7 @@ Source: `src/components/program/stages.ts:164`. Renders on: /program/grow/ and e
 
 Source: `src/data/site.ts:16`. Renders on: Any page that uses the site description.
 
-> L16: A fully remote digital incubator for SaaS. Dedicated team seats, steered by WE, help a founder build evidence for investors. WE promises no funding.
+> L16: Long-horizon business incubation and consulting. WE steers a dedicated, fully remote team that builds a software-enabled company. WE promises no funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -430,13 +506,13 @@ Source: `src/data/faq.yaml:57`. Renders on: /faq/.
 
 #### CR-21. Facts page, the question about the add-on (Release 2 scope: not in release-1-rc2; counsel reviews it with the next candidate)
 
-Source: `src/content/pages/about/facts.mdx:51`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
+Source: `src/content/pages/about/facts.mdx:40`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
 
-> L51: Is Investor Introductions part of a package?
+> L40: Is Investor Introductions part of the engagement?
 >
-> L53: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+> L42: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
 >
-> L55: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
+> L44: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -464,7 +540,7 @@ Before step 6, record: the head SHA of GitLab and GitHub `gh-pages` (`d7a65dd` t
 
 After step 9, check each on `https://worldenterprise.org`:
 
-- Home, `/apply/`, `/contact/`, `/pricing/`, `/investors/`, `/network/`, `/services/fundability-and-investor-readiness/` respond 200 and show the release wording from section 8.
+- Home, `/apply/`, `/contact/`, `/how-we-work/`, `/investors/`, `/network/`, `/services/fundability-and-investor-readiness/` respond 200 and show the release wording from section 8.
 - `/robots.txt`, `/sitemap-index.xml`, `/rss.xml` respond. `/.well-known/security.txt` responds only if section 6 was done.
 - Submit one test application and one contact message through the live forms and confirm they arrive in the inbox the endpoint feeds. Submit with the browser console open and confirm no CSP violation.
 - No preview markers (the GitLab preview build sets `PUBLIC_PREVIEW`, the release build must not show it) and no `/styleguide/` route.

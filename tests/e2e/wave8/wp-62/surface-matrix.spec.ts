@@ -54,23 +54,32 @@ async function assertNoTracking(page: Page): Promise<void> {
 }
 
 /**
- * A page that hands the layout its own `slot="after"` band (the old `section.ctaband`) keeps that band and the layout draws no default one:
- * the pages of the program, pricing, services, playbooks, tools, network and about families and the guides are not WP-62's files, and
- * moving them to the CTA system is a migration for their owners. Such a page is accepted when it has exactly one such band, no second band
- * of any kind and no `data-cta` element, and the gap is recorded as an annotation so the report names it. A page with a `data-cta="end"`
- * band must have no old band beside it.
+ * The closing bands that wave 9 and the earlier hand-placed pages put in a layout's `after` or `cta-end` slot, which take the place of the
+ * default band of the map: the sales ladder of the reading templates (`data-cta-ladder`, WP-56, SALES.md 6), the program closing band
+ * (`program-end`, WP-53), the home page's closing band (`home-end`, W9-13), the contact page's next-step band and the old `section.ctaband`.
+ * Such a page is accepted when it has exactly one of them, no `data-cta="end"` element beside it (a page the CTA system closes has none of
+ * them), and the gap is recorded as an annotation so the report names it. A mid-body band is the CTA system's and may sit in either kind.
  */
+const CLOSING_BANDS = [
+  '[data-cta-ladder]',
+  'section.ctaband',
+  'section.program-end',
+  'section[aria-labelledby="home-end-title"]',
+  'section#next',
+  'section[aria-labelledby="contact-next"]',
+].join(', ');
+
 async function isLegacyBand(page: Page): Promise<boolean> {
   const drawn = await page.locator('[data-cta="end"]').count();
-  const legacy = await page.locator('section.ctaband').count();
+  const closing = await page.locator(CLOSING_BANDS).count();
   if (drawn === 1) {
-    expect(legacy, 'a page with a data-cta end band has no old closing band beside it').toBe(0);
+    expect(closing, 'a page with a data-cta end band has no other closing band beside it').toBe(0);
     return false;
   }
   expect(drawn, 'at most one end band').toBe(0);
-  expect(legacy, 'a page with no data-cta end band keeps exactly one hand-placed closing band').toBe(1);
-  await expect(page.locator('[data-cta]'), 'a page on the old closing band carries no other band').toHaveCount(0);
-  test.info().annotations.push({ type: 'legacy-band', description: `${new URL(page.url()).pathname} closes with its own section.ctaband, not the CTA system` });
+  expect(closing, 'a page with no data-cta end band keeps exactly one hand-placed closing band').toBe(1);
+  await expect(page.locator('[data-cta="end"]'), 'a page on a hand-placed closing band has no CTA system end band').toHaveCount(0);
+  test.info().annotations.push({ type: 'legacy-band', description: `${new URL(page.url()).pathname} closes with its own band, not the CTA system` });
   return true;
 }
 

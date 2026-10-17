@@ -176,7 +176,7 @@
   related: [backlog]
 - id: seat
   term: Seat
-  definition: "In WE's model, a dedicated role on a founder's team, filled from WE's offshore team, that works on the founder's company."
+  definition: "The contract unit in WE's agreements: one dedicated role on a founder's team, steered by WE, that works only on the founder's company."
   group: WE vocabulary
   claimsUsed: [C-02, C-03]
   related: [steering]
@@ -204,3 +204,485 @@
   group: WE vocabulary
   claimsUsed: [C-19]
   related: [droid]
+- id: accredited-investor
+  term: "Accredited investor"
+  definition: "A category of investor defined in Rule 501 of Regulation D, the federal securities rule. An accredited investor may purchase or be offered securities that are not registered, under an exemption from registration. This is a general definition, not legal advice."
+  group: Funding
+  related: [angel-investor, venture-capital]
+- id: angel-investor
+  term: "Angel investor"
+  definition: "An individual who invests personal money directly in an emerging business. Angel investors are generally high-net-worth individuals, and they tend to invest in early funding rounds."
+  group: Funding
+  related: [seed-round, accredited-investor]
+- id: pre-seed
+  term: "Pre-seed"
+  definition: "A funding round at the earliest stage of a company's life cycle, named alongside the seed round. Friends and family tend to invest in it."
+  group: Funding
+  related: [seed-round, bootstrapping]
+- id: seed-round
+  term: "Seed round"
+  definition: "A funding round at the earliest stages of a company's life cycle. Friends and family tend to invest in it, and angel investors tend to invest in early rounds that include it."
+  group: Funding
+  related: [pre-seed, angel-investor, safe]
+- id: venture-capital
+  term: "Venture capital"
+  definition: "An important source of funding for new businesses, such as start-ups, that lack other sources like bank loans. Venture capital funds invest across a company's growth life cycle, from Series A through a public offering."
+  group: Funding
+  related: [angel-investor, term-sheet]
+- id: dilution
+  term: "Dilution"
+  definition: "The reduction in the proportional ownership interest that each existing share represents when a company issues new shares. Issuing new shares increases the total number of shares outstanding."
+  group: Funding
+  related: [cap-table, option-pool]
+  seeAlso: ["/tools/cap-table-explainer/"]
+- id: liquidation-preference
+  term: "Liquidation preference"
+  definition: "A term of preferred stock under which, if the company is liquidated, the holders of the preferred receive their investment back before holders of junior stock, such as common stock, receive anything."
+  group: Funding
+  related: [term-sheet, cap-table]
+  seeAlso: ["/tools/cap-table-explainer/"]
+- id: option-pool
+  term: "Option pool"
+  definition: "A pool of stock options that enables management to bring in additional personnel. It is a term commonly discussed in venture financing negotiations."
+  group: Funding
+  related: [dilution, term-sheet, cap-table, stock-option]
+  seeAlso: ["/tools/cap-table-explainer/"]
+- id: venture-debt
+  term: "Venture debt"
+  definition: "A loan to companies that have raised money from venture capital investors. It is borrowed money that is repaid, unlike an equity investment."
+  group: Funding
+  related: [venture-capital, convertible-note]
+- id: bootstrapping
+  term: "Bootstrapping"
+  definition: "The process of funding a start-up without any external resources. It typically takes the form of the entrepreneur funding the business through savings or credit cards."
+  group: Funding
+  related: [pre-seed, runway]
+- id: trademark
+  term: "Trademark"
+  definition: "A word, name, symbol or design, or any combination of them, used in commerce to identify and distinguish one seller's goods from those of others and to indicate where the goods come from. This is a general definition, not legal advice."
+  group: Legal and contracts
+  related: [copyright, patent]
+- id: patent
+  term: "Patent"
+  definition: "An exclusive right that lets its holder stop others from making, using, importing or selling a patented invention for a limited time. The right is meant to encourage innovation in exchange for disclosure of the invention. This is a general definition, not legal advice."
+  group: Legal and contracts
+  related: [provisional-patent-application, trade-secret]
+- id: provisional-patent-application
+  term: "Provisional patent application"
+  definition: "A national patent application filed with the United States Patent and Trademark Office that can be filed without a formal patent claim, oath or declaration. It provides a way to establish an early effective filing date."
+  group: Legal and contracts
+  related: [patent, ip-assignment]
+- id: copyright
+  term: "Copyright"
+  definition: "A type of intellectual property that protects original works of authorship as soon as the author fixes the work in a tangible form of expression. It is the exclusive legal right to reproduce, publish, sell or distribute the work."
+  group: Legal and contracts
+  related: [trademark, ip-assignment]
+- id: trade-secret
+  term: "Trade secret"
+  definition: "A type of intellectual property that protects valuable confidential information. To qualify, the information must have independent economic value because others do not generally know it, and its owner must take reasonable measures to keep it secret."
+  group: Legal and contracts
+  related: [nda, patent]
+- id: indemnification
+  term: "Indemnification"
+  definition: "Compensating a person for damages or losses. In a contract, one party, the indemnitor, typically promises to cover specified future losses of the other party, the indemnitee. Also called indemnity."
+  group: Legal and contracts
+  related: [sla]
+- id: qsbs
+  term: "QSBS"
+  definition: "Qualified small business stock. Stock in a C corporation that meets the conditions of section 1202 of the Internal Revenue Code, which provides a partial exclusion from gross income for gain on certain small business stock. Eligibility depends on detailed statutory conditions."
+  group: Legal and contracts
+  related: [delaware-c-corporation, 83b-election, cap-table]
+- id: 83b-election
+  term: "Section 83(b) election"
+  definition: "An election under section 83(b) of the Internal Revenue Code that lets a person who receives property in connection with services include its value in gross income for the year of transfer. If the election is made, the usual rule in section 83(a) does not apply to that transfer."
+  group: Legal and contracts
+  related: [qsbs, cap-table]
+- id: open-source-license
+  term: "Open source license"
+  definition: "A license whose terms comply with the Open Source Definition, the criteria the Open Source Initiative publishes for distributing open source software. Open source means more than access to the source code."
+  group: Legal and contracts
+  related: [copyright, ip-assignment]
+- id: delaware-c-corporation
+  term: "Delaware C corporation"
+  definition: "A corporation formed in Delaware by filing a certificate of incorporation with the state, and treated as a C corporation, that is, one that is not an S corporation under the Internal Revenue Code. Its assets are separate from its owners' assets."
+  group: Legal and contracts
+  related: [qsbs, cap-table]
+- id: accrual-accounting
+  term: "Accrual accounting"
+  definition: "An accounting method that records income in the period it is earned and expenses in the period they are incurred. This is a general definition, not tax advice."
+  group: Finance and metrics
+  related: [revenue-recognition, cash-flow]
+- id: revenue-recognition
+  term: "Revenue recognition"
+  definition: "The accounting practice of deciding when revenue is counted in financial statements. Under accrual accounting, revenue is recognized when it is earned, that is, when the company has substantially met its obligation."
+  group: Finance and metrics
+  related: [accrual-accounting, deferred-revenue]
+- id: deferred-revenue
+  term: "Deferred revenue"
+  definition: "Cash a company receives before the related revenue is earned. The amount is not counted as earned revenue until the company has substantially met its obligation."
+  group: Finance and metrics
+  related: [revenue-recognition, accrual-accounting]
+- id: working-capital
+  term: "Working capital"
+  definition: "The amount calculated by subtracting a business's current liabilities from its current assets."
+  group: Finance and metrics
+  related: [cash-flow, runway]
+  seeAlso: ["/tools/runway-calculator/"]
+- id: cash-flow
+  term: "Cash flow"
+  definition: "The flows of cash into and out of a business. A cash flow statement is a listing of those inflows and outflows."
+  group: Finance and metrics
+  related: [burn, working-capital]
+  seeAlso: ["/tools/runway-calculator/"]
+- id: cogs
+  term: "Cost of goods sold"
+  definition: "The sum of all the direct costs used to make the products that a company sells. Often shortened to COGS, it applies to companies that make and sell products."
+  group: Finance and metrics
+  related: [gross-margin]
+- id: product-market-fit
+  term: "Product-market fit"
+  definition: "The degree to which a product satisfies a strong market demand. It is also described as being in a good market with a product that can satisfy that market."
+  group: Customers and product
+  related: [icp, mvp]
+- id: user-persona
+  term: "User persona"
+  definition: "A fictional, research-based representation of a type of user. It is not a real person, and teams use it to understand and communicate with an audience."
+  group: Customers and product
+  related: [icp]
+- id: jobs-to-be-done
+  term: "Jobs to be done"
+  definition: "A theory of customer demand in which people, when faced with a job that needs doing, hire a product to do that job. Markets can be segmented by these jobs."
+  group: Customers and product
+  related: [icp]
+- id: net-promoter-score
+  term: "Net promoter score"
+  definition: "A measure calculated from customers' survey responses to a question asking how likely they are to recommend a company, product or service to a friend or colleague."
+  group: Customers and product
+  related: [churn, nrr]
+- id: product-roadmap
+  term: "Product roadmap"
+  definition: "A shared plan that articulates the direction of a product. Teams often keep it as a living document that is updated as research comes in."
+  group: Customers and product
+  related: [backlog, mvp]
+- id: a-b-test
+  term: "A/B test"
+  definition: "A controlled experiment that compares two versions of something, A and B, by showing each to randomly selected users and comparing the outcomes. It is also called split testing."
+  group: Customers and product
+  related: [activation, usability-testing]
+- id: usability-testing
+  term: "Usability testing"
+  definition: "A type of user research in which people are asked to navigate a product or perform tasks while an observer watches. It may include open-ended questions."
+  group: Customers and product
+  related: [user-persona, a-b-test]
+- id: go-to-market-strategy
+  term: "Go-to-market strategy"
+  definition: "A detailed plan for how a company will reach its target customers. It is typically judged by how quickly customers are reached and converted and by how profitable those efforts are."
+  group: Go-to-market
+  related: [icp, value-proposition, positioning]
+- id: positioning
+  term: "Positioning"
+  definition: "How a brand establishes a place for itself among competitors in the minds of customers. A positioning statement is the written form of that intent and defines how the brand is perceived."
+  group: Go-to-market
+  related: [value-proposition, market-segmentation]
+- id: value-proposition
+  term: "Value proposition"
+  definition: "A statement that conveys what a company does and how it differs from competitors. It tells a target customer why the offering is worth choosing."
+  group: Go-to-market
+  related: [positioning, icp]
+- id: product-led-growth
+  term: "Product-led growth"
+  definition: "A growth model in which the product itself attracts and converts customers. Qualified sales leads emerge from the people who try an entry-level or trial version."
+  group: Go-to-market
+  related: [activation]
+- id: conversion-rate
+  term: "Conversion rate"
+  definition: "The percentage of visitors to a website or digital platform who take a desired action. It is one of the marketing indicators used to judge how well a page or campaign performs."
+  group: Go-to-market
+  related: [activation]
+- id: total-addressable-market
+  term: "Total addressable market"
+  definition: "An estimate of the full customer base for a product and the revenue it represents. A common calculation multiplies the number of potential customers by the average annual revenue per customer, so the result depends heavily on assumptions."
+  group: Go-to-market
+  related: [beachhead-market, market-segmentation]
+- id: beachhead-market
+  term: "Beachhead market"
+  definition: "A tightly defined market that a company enters first and aims to dominate before moving on to adjacent markets. Customers within it tend to buy similar products and share a similar sales cycle."
+  group: Go-to-market
+  related: [total-addressable-market, icp]
+- id: usage-based-pricing
+  term: "Usage-based pricing"
+  definition: "A pricing model that charges customers according to how much they use a product or service. It is a common pricing model for software businesses."
+  group: Go-to-market
+  related: [subscription-billing, mrr]
+  seeAlso: ["/tools/pricing-page-checker/"]
+- id: subscription-billing
+  term: "Subscription billing"
+  definition: "A way of charging customers on a recurring basis for access to a product or service. A billing system typically generates invoices, attempts collection and tracks the status of each subscription."
+  group: Go-to-market
+  related: [mrr, dunning, proration]
+  seeAlso: ["/tools/pricing-page-checker/"]
+- id: proration
+  term: "Proration"
+  definition: "A partial charge or credit that reflects part of a billing period. It arises when a subscription changes mid-period and the customer is charged a percentage of the subscription's cost for the time actually used."
+  group: Go-to-market
+  related: [subscription-billing, usage-based-pricing]
+- id: dunning
+  term: "Dunning"
+  definition: "The set of steps a subscription business takes to recover recurring payments that fail, such as retrying the charge and emailing the customer. It aims to reduce revenue lost to involuntary churn."
+  group: Go-to-market
+  related: [subscription-billing, churn]
+- id: search-engine-optimization
+  term: "Search engine optimization"
+  definition: "The practice of helping search engines understand the content of a website. It is often shortened to SEO."
+  group: Go-to-market
+  related: [conversion-rate, positioning]
+- id: market-segmentation
+  term: "Market segmentation"
+  definition: "The practice of organizing consumers with similar needs and preferences into groups called segments. Segmenting lets a company tailor its offer and message to each group."
+  group: Go-to-market
+  related: [icp, positioning, beachhead-market]
+- id: scrum
+  term: "Scrum"
+  definition: "A lightweight framework that helps people, teams and organizations generate value through adaptive solutions. Work is carried out by a Scrum Team in a repeating cycle of events."
+  group: Product delivery
+  related: [sprint, backlog, product-owner]
+- id: product-owner
+  term: "Product owner"
+  definition: "The member of a Scrum Team who is accountable for maximizing the value of the product that results from the work of the team."
+  group: Product delivery
+  related: [scrum, backlog]
+- id: definition-of-done
+  term: "Definition of done"
+  definition: "A formal description of the state of a product increment when it meets the quality measures required. Work counts as done only when it satisfies this description."
+  group: Product delivery
+  related: [scrum, backlog]
+- id: technical-debt
+  term: "Technical debt"
+  definition: "A metaphor for thinking about the cruft in a codebase as if it were a financial debt, a cost that is carried until it is dealt with."
+  group: Product delivery
+  related: [mvp]
+- id: continuous-integration
+  term: "Continuous integration"
+  definition: "A software development practice in which each member of a team merges their changes into a shared codebase together with their colleagues' changes at least daily."
+  group: Product delivery
+  related: [technical-debt, feature-flag]
+- id: feature-flag
+  term: "Feature flag"
+  definition: "A switch in software that is controlled at runtime. In the most basic case it works like an if/else statement that decides which behavior is active."
+  group: Product delivery
+  related: [continuous-integration]
+- id: service-level-objective
+  term: "Service level objective"
+  definition: "A target value or range of values for a service level that is measured by a service level indicator. It states how well a service is meant to perform."
+  group: Product delivery
+  related: [sla]
+- id: postmortem
+  term: "Postmortem"
+  definition: "A written record of an incident that covers its impact, the actions taken to resolve it, its root causes and the follow-up actions meant to prevent a repeat."
+  group: Product delivery
+  related: [service-level-objective, observability]
+- id: observability
+  term: "Observability"
+  definition: "The ability to understand a system from the outside by asking questions about that system."
+  group: Product delivery
+  related: [service-level-objective, postmortem]
+- id: multi-tenancy
+  term: "Multi-tenancy"
+  definition: "An approach in which one solution is used by multiple customers, called tenants. Multiple users from a single organization form a single tenant."
+  group: Product delivery
+  related: [feature-flag, service-level-objective]
+- id: shape-up
+  term: "Shape Up"
+  definition: "A product development approach described by Basecamp. Work runs in six-week cycles, is shaped before it goes to a team, and a small integrated team has full responsibility for it."
+  group: Product delivery
+  related: [sprint, scrum, backlog]
+- id: vesting
+  term: "Vesting"
+  definition: "The process by which an equity award, such as a stock option, becomes the holder's own rather than subject to a company's right to reacquire it. Vesting is typically tied to continued service and often follows a schedule."
+  group: Team and hiring
+  related: [cliff, stock-option]
+- id: cliff
+  term: "Vesting cliff"
+  definition: "A set waiting period at the start of a vesting schedule that must pass before all or a portion of an option grant vests at once."
+  group: Team and hiring
+  related: [vesting, stock-option]
+- id: stock-option
+  term: "Stock option"
+  definition: "A contract that gives the holder the right to purchase a specific number of shares of stock at a fixed price, often called the exercise price or strike price. Companies commonly grant options to employees."
+  group: Team and hiring
+  related: [vesting, incentive-stock-option, cap-table, option-pool]
+- id: incentive-stock-option
+  term: "Incentive stock option"
+  definition: "A statutory stock option that section 422 of the Internal Revenue Code defines as an option granted to an individual for any reason connected with employment, when the conditions of that section are met."
+  group: Team and hiring
+  related: [non-qualified-stock-option, stock-option, vesting]
+- id: non-qualified-stock-option
+  term: "Non-qualified stock option"
+  definition: "A stock option that is granted neither under an employee stock purchase plan nor under an incentive stock option plan. The Internal Revenue Service calls these nonstatutory stock options."
+  group: Team and hiring
+  related: [incentive-stock-option, stock-option]
+- id: independent-contractor
+  term: "Independent contractor"
+  definition: "An individual or entity hired to accomplish certain tasks who is distinguished from an employee. Whether a worker is one turns on the whole relationship, including the extent of the right to direct and control the worker."
+  group: Team and hiring
+  related: [employee-classification]
+- id: employee-classification
+  term: "Worker classification"
+  definition: "The determination of whether a worker is an employee or an independent contractor. Misclassification occurs when an employer treats a worker who is an employee under the Fair Labor Standards Act as an independent contractor."
+  group: Team and hiring
+  related: [independent-contractor]
+- id: at-will-employment
+  term: "At-will employment"
+  definition: "An employment arrangement in which the employee may quit at any time and the employer may end the employment for any reason and at any point, as long as the dismissal is not for an unlawful reason."
+  group: Team and hiring
+  related: [employee-classification]
+- id: professional-employer-organization
+  term: "Professional employer organization"
+  definition: "A firm that handles various payroll administration and tax reporting responsibilities for its business clients and is typically paid a fee based on payroll costs. The IRS describes it as a type of third party payer."
+  group: Team and hiring
+  related: [employee-classification]
+- id: structured-interview
+  term: "Structured interview"
+  definition: "An assessment method designed to measure the job-related competencies of candidates by systematically asking about their behavior in past experiences, their proposed behavior in hypothetical situations, or both."
+  group: Team and hiring
+  related: [onboarding-employee]
+- id: onboarding-employee
+  term: "Employee onboarding"
+  definition: "The process of welcoming and acclimating new employees into an organization and providing them with the knowledge, tools and resources they need to be successful and productive. It is broader and longer-term than orientation."
+  group: Team and hiring
+  related: [structured-interview, at-will-employment]
+- id: artificial-intelligence
+  term: "Artificial intelligence"
+  definition: "A set of techniques, including machine learning, that is designed to approximate a cognitive task. Machine learning is named as one such technique."
+  group: AI and data
+  related: [machine-learning, large-language-model]
+- id: machine-learning
+  term: "Machine learning"
+  definition: "The development and use of computer systems that adapt and learn from data with the goal of improving accuracy. It is one of the techniques used to build artificial intelligence systems."
+  group: AI and data
+  related: [artificial-intelligence, training-data]
+- id: large-language-model
+  term: "Large language model"
+  definition: "A language model with a very high number of parameters. More informally, the term is used for any language model built on the Transformer architecture."
+  group: AI and data
+  related: [prompt, token, fine-tuning]
+- id: prompt
+  term: "Prompt"
+  definition: "Any text entered as input to a large language model to condition the model to behave in a certain way. The inputs to text generation models are commonly called prompts."
+  group: AI and data
+  related: [large-language-model, context-window]
+- id: context-window
+  term: "Context window"
+  definition: "The number of tokens a model can process in a given prompt. It covers all the text a language model can reference when generating a response, including the response itself."
+  group: AI and data
+  related: [token, prompt]
+- id: token
+  term: "Token"
+  definition: "In a language model, the atomic unit that the model is training on and making predictions on. Text is processed in chunks called tokens, which represent commonly occurring sequences of characters."
+  group: AI and data
+  related: [context-window, embedding]
+- id: embedding
+  term: "Embedding"
+  definition: "A vector representation of a piece of data, such as some text, that is meant to preserve aspects of its content or its meaning."
+  group: AI and data
+  related: [retrieval-augmented-generation]
+- id: retrieval-augmented-generation
+  term: "Retrieval-augmented generation"
+  definition: "Retrieval-augmented generation, often shortened to RAG. An approach to language generation that combines a pre-trained model's built-in knowledge, called parametric memory, with a separate retrievable store of information, called non-parametric memory."
+  group: AI and data
+  related: [embedding, hallucination]
+- id: fine-tuning
+  term: "Fine-tuning"
+  definition: "A second, task-specific training pass on a pre-trained model that refines its parameters for a specific use case."
+  group: AI and data
+  related: [training-data, large-language-model]
+- id: hallucination
+  term: "Hallucination"
+  definition: "The production of plausible-seeming but factually incorrect output by a generative AI model. The output can read as credible while stating something false."
+  group: AI and data
+  related: [large-language-model, retrieval-augmented-generation]
+- id: ai-agent
+  term: "AI agent"
+  definition: "Software that can reason about user inputs to plan and execute actions on behalf of the user. In an agentic workflow, an agent plans and carries out actions on its own to achieve a goal."
+  group: AI and data
+  related: [large-language-model, prompt]
+- id: training-data
+  term: "Training data"
+  definition: "The data used to train a model. In machine learning vocabulary this is the training set, the subset of a dataset used to train a model, where training means determining the parameters that make up the model."
+  group: AI and data
+  related: [machine-learning, fine-tuning]
+- id: ai-risk-management-framework
+  term: "NIST AI Risk Management Framework"
+  definition: "A framework from the National Institute of Standards and Technology to better manage risks to individuals, organizations and society associated with artificial intelligence. Its use is voluntary."
+  group: AI and data
+  related: [artificial-intelligence, eu-ai-act]
+- id: eu-ai-act
+  term: "EU AI Act"
+  definition: "The European Union's legal framework on artificial intelligence, which applies different rules by risk level. It bans AI systems considered a clear threat to the safety, livelihoods and rights of people and classifies other use cases as high-risk when they can pose serious risks to health, safety or fundamental rights. This is a general definition, not legal advice."
+  group: AI and data
+  related: [ai-risk-management-framework, artificial-intelligence]
+- id: personal-data
+  term: "Personal data"
+  definition: "Information that relates to an identified or identifiable individual. This is the definition used in UK data protection guidance, a general definition and not legal advice."
+  group: AI and data
+  related: [dpa]
+- id: multi-factor-authentication
+  term: "Multi-factor authentication"
+  definition: "An authentication approach that requires more than one authentication factor for successful authentication. The three factors are something a person knows, something a person has and something a person is."
+  group: Security and accessibility
+  related: [single-sign-on, least-privilege]
+- id: least-privilege
+  term: "Least privilege"
+  definition: "A security principle under which each entity is granted only the minimum system resources and authorizations that it needs to perform its function."
+  group: Security and accessibility
+  related: [zero-trust, multi-factor-authentication]
+- id: oauth
+  term: "OAuth"
+  definition: "An authorization framework, specified as OAuth 2.0 in RFC 6749, that enables a third-party application to obtain limited access to an HTTP service."
+  group: Security and accessibility
+  related: [single-sign-on, least-privilege]
+- id: penetration-testing
+  term: "Penetration testing"
+  definition: "Security testing in which evaluators mimic real-world attacks to identify ways to circumvent the security features of an application, system or network."
+  group: Security and accessibility
+  related: [threat-modeling, owasp-top-10]
+- id: threat-modeling
+  term: "Threat modeling"
+  definition: "A form of risk assessment that models the attack and defense sides of a logical entity, such as a piece of data, an application, a host, a system or an environment."
+  group: Security and accessibility
+  related: [penetration-testing, owasp-top-10]
+- id: owasp-top-10
+  term: "OWASP Top 10"
+  definition: "A reference standard published by the OWASP Foundation that covers the most critical web application security risks."
+  group: Security and accessibility
+  related: [owasp-asvs, penetration-testing]
+- id: sbom
+  term: "Software bill of materials"
+  definition: "A formal record of the components used in building software, with the details and supply chain relationships of those components. It enumerates the components in a product."
+  group: Security and accessibility
+  related: [nist-ssdf, due-diligence]
+- id: zero-trust
+  term: "Zero trust"
+  definition: "A collection of concepts and ideas designed to minimize uncertainty in making accurate, least-privilege access decisions for each request, in the face of a network viewed as compromised."
+  group: Security and accessibility
+  related: [least-privilege, multi-factor-authentication]
+- id: single-sign-on
+  term: "Single sign-on"
+  definition: "An authentication process in which one account and its authenticators are used to access multiple applications, generally implemented with a federation protocol."
+  group: Security and accessibility
+  related: [multi-factor-authentication, oauth]
+- id: gdpr
+  term: "GDPR"
+  definition: "General Data Protection Regulation. The main data protection law of the European Union, which protects personal data regardless of the technology used for processing that data."
+  group: Security and accessibility
+  related: [ccpa, dpa]
+- id: ccpa
+  term: "CCPA"
+  definition: "California Consumer Privacy Act. A California law that gives consumers more control over the personal information that businesses collect about them."
+  group: Security and accessibility
+  related: [gdpr, dpa]
+- id: screen-reader
+  term: "Screen reader"
+  definition: "Assistive software that reads aloud web pages for people who cannot read the text. It also reads aloud the alternative text provided for visual images."
+  group: Security and accessibility
+  related: [wcag]

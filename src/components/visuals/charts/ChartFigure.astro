@@ -1,0 +1,261 @@
+---
+/**
+ * ChartFigure: the shell every WP-35 chart sits in. It supplies what a chart on /data/ must carry (the figure and its title, a visible
+ * takeaway, the drawing in the default slot, a legend slot, the accessible data table, the source line with the retrieval date, and the
+ * note on how WE derived what is drawn) so each chart component only draws. It also holds the shared, `dv-` prefixed drawing classes
+ * (colors, axes, forced-colors fallbacks and the optional scroll-driven reveal), so no chart repeats them.
+ *
+ * Progressive enhancement: the reveal animates only SVG shapes (never text), only where `animation-timeline: view()` exists, and
+ * never under prefers-reduced-motion. Without it the chart is simply drawn. No script, no style attribute, no third-party request.
+ */
+import SourceNote from './SourceNote.astro';
+import DataTable from '../../ui/DataTable.astro';
+import { cleanText, figureMeta } from './dataviz.ts';
+import type { FigureMeta, TableData } from './dataviz.ts';
+
+interface Props extends FigureMeta {
+  /** The visible one-sentence takeaway under the title. */
+  caption?: string | undefined;
+  table: TableData;
+  /** Label of the disclosure that opens the table. */
+  tableLabel?: string;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const meta = figureMeta('ChartFigure', props);
+const caption = props.caption === undefined ? undefined : cleanText('ChartFigure', 'caption', props.caption);
+if (props.table.rows.length === 0) throw new Error(`ChartFigure "${meta.id}": the data table has no rows`);
+const tableLabel = props.tableLabel ?? 'Show the data as a table';
+---
+
+<figure class:list={['dv', props.class]} id={meta.id} aria-labelledby={`${meta.id}-title`}>
+  <figcaption class="dv__head">
+    <span class="dv__title" id={`${meta.id}-title`}>{meta.title}</span>
+    {caption !== undefined && <span class="dv__caption">{caption}</span>}
+  </figcaption>
+  <slot name="legend" />
+  <div class="dv__drawing">
+    <slot />
+  </div>
+  <details class="dv__data">
+    <summary>{tableLabel}</summary>
+    <DataTable caption={props.table.caption} columns={props.table.columns} rows={props.table.rows} />
+  </details>
+  {meta.note !== undefined && <p class="dv__note">{meta.note}</p>}
+  <div class="dv__source">
+    <SourceNote sources={meta.sources} />
+    <p class="source-note">Retrieved {meta.retrieved}.{meta.derived !== undefined && ` ${meta.derived}`}</p>
+  </div>
+</figure>
+
+<style is:global>
+  .dv {
+    display: grid;
+    gap: var(--sp-4);
+    margin: 0;
+    min-inline-size: 0;
+  }
+
+  .dv__head {
+    display: grid;
+    gap: var(--sp-1);
+  }
+
+  .dv__title {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .dv__caption {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-base);
+    color: var(--color-text-muted);
+    max-inline-size: 60ch;
+  }
+
+  .dv__drawing {
+    min-inline-size: 0;
+  }
+
+  .dv__note {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .dv__source {
+    display: grid;
+    gap: var(--sp-1);
+  }
+
+  .dv__source .source-note {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  .dv__data summary {
+    cursor: pointer;
+    color: var(--color-link);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .dv__data[open] summary {
+    margin-block-end: var(--sp-3);
+  }
+
+  /* A closed disclosure renders nothing, but some engines still lay its content out when asked for sizes, so a wide table would report
+     a scroll frame no key can reach. Out of layout until opened; open, it is the keyboard-scrollable region (tests/e2e/layout.spec.ts). */
+  .dv__data:not([open]) .table-wrap {
+    display: none;
+  }
+
+  .dv__svg {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    overflow: visible;
+  }
+
+  /* Legend: an HTML list, so it wraps and zooms like text. */
+  .dv-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  .dv-legend li {
+    display: inline-flex;
+    gap: var(--sp-2);
+    align-items: center;
+  }
+
+  .dv-legend li::before {
+    content: '';
+    inline-size: 0.9rem;
+    block-size: 0.9rem;
+    border-radius: 2px;
+    background: var(--dv-key, var(--we-blue));
+    border: 1px solid transparent;
+  }
+
+  .dv-legend .dv-k0::before { --dv-key: var(--we-blue-night); }
+  .dv-legend .dv-k1::before { --dv-key: var(--we-blue); }
+  .dv-legend .dv-k2::before { --dv-key: var(--we-amber); }
+  .dv-legend .dv-k3::before { --dv-key: var(--we-slate); }
+  .dv-legend .dv-k4::before { --dv-key: var(--we-amber-ink); }
+  .dv-legend .dv-k5::before { --dv-key: var(--we-grey-ui); }
+  .dv-legend .dv-k6::before { --dv-key: color-mix(in oklab, var(--we-blue) 45%, var(--we-white)); }
+
+  /* Series colors, as fills and as strokes. Seven are enough: a chart with more says so in its table, not in more colors. */
+  .dv-f0 { fill: var(--we-blue-night); }
+  .dv-f1 { fill: var(--we-blue); }
+  .dv-f2 { fill: var(--we-amber); }
+  .dv-f3 { fill: var(--we-slate); }
+  .dv-f4 { fill: var(--we-amber-ink); }
+  .dv-f5 { fill: var(--we-grey-ui); }
+  .dv-f6 { fill: color-mix(in oklab, var(--we-blue) 45%, var(--we-white)); }
+  .dv-s0 { stroke: var(--we-blue-night); }
+  .dv-s1 { stroke: var(--we-blue); }
+  .dv-s2 { stroke: var(--we-amber); }
+  .dv-s3 { stroke: var(--we-slate); }
+  .dv-s4 { stroke: var(--we-amber-ink); }
+  .dv-s5 { stroke: var(--we-grey-ui); }
+  .dv-s6 { stroke: color-mix(in oklab, var(--we-blue) 45%, var(--we-white)); }
+
+  .dv-line {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  .dv-grid {
+    stroke: var(--color-border);
+    stroke-width: 1;
+  }
+
+  .dv-axis {
+    font-family: var(--ff-sans);
+    font-size: 13px;
+    fill: var(--color-text-muted);
+  }
+
+  .dv-label {
+    font-family: var(--ff-sans);
+    font-size: 14px;
+    fill: var(--color-text);
+  }
+
+  .dv-strong {
+    font-family: var(--ff-display);
+    font-size: 15px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+
+  .dv-sep {
+    stroke: var(--color-bg, var(--we-white));
+    stroke-width: 1;
+  }
+
+  /* Optional reveal: shapes only, one pass, never under reduced motion. */
+  @keyframes dv-rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .dv-reveal {
+        animation: dv-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 80%;
+      }
+    }
+  }
+
+  @media (forced-colors: active) {
+    .dv-line {
+      stroke: CanvasText;
+    }
+
+    .dv-grid {
+      stroke: GrayText;
+    }
+
+    .dv-axis,
+    .dv-label,
+    .dv-strong {
+      fill: CanvasText;
+    }
+
+    .dv-sep {
+      stroke: CanvasText;
+    }
+
+    .dv-legend li::before {
+      background: CanvasText;
+    }
+  }
+</style>

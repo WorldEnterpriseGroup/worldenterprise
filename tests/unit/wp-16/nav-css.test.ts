@@ -26,11 +26,21 @@ test('the logo holds its 160px brand minimum from 1100px and reaches 256px by 12
   assert.ok(logoWidthAt(1140) < logoWidthAt(1230), 'it grows with the viewport');
 });
 
-test('the logo cannot be squeezed by the flex row from 1100px, and the nav type steps down to 16px under 1280px', () => {
+test('the logo cannot be squeezed by the flex row from 1100px, and the nav type steps down to 16px under 1500px (W9-13)', () => {
   const css = stripComments(read('src/styles/components.css'));
   assert.match(css, /@media \(min-width: 1100px\) \{\s*\.site-header__logo \{\s*flex: 0 0 auto;/);
   // The items take their size from the list (`font: inherit`), so the step-down is set on the list, not on the items.
-  assert.match(css, /@media \(min-width: 1100px\) and \(max-width: 1279\.98px\) \{\s*\.mega-nav__list \{\s*gap: var\(--sp-3\);\s*font-size: 1rem;/);
+  assert.match(css, /@media \(min-width: 1100px\) and \(max-width: 1499\.98px\) \{\s*\.mega-nav__list \{\s*gap: var\(--sp-1\);\s*font-size: 1rem;/);
+});
+
+test('the 1100 to 1499px override of the nav list comes after the base rule, because both have the same specificity and the later one wins', () => {
+  const css = stripComments(read('src/styles/components.css'));
+  const base = css.search(/\n {2}\.mega-nav__list \{/);
+  const override = css.search(/@media \(min-width: 1100px\) and \(max-width: 1499\.98px\) \{\s*\.mega-nav__list \{/);
+  assert.ok(base >= 0, 'the base .mega-nav__list rule is found at the top level of its block');
+  assert.ok(override >= 0, 'the narrow-desktop override is found');
+  assert.ok(override > base, 'the override comes after the base rule; before it, the base gap (--sp-4) beat the override and the header row overflowed at 1100 and 1140px');
+  assert.equal(css.match(/\n {2}\.mega-nav__list \{/g)?.length, 1, 'one base rule, so "after the base rule" is unambiguous');
 });
 
 test('--apply-bar-h is defined once and drives the bar, the scroll padding and the footer', () => {
@@ -56,6 +66,15 @@ test('disclosure buttons do not declare a popup type, because the panels are gro
 
 test('the header Apply button is marked as the current page on /apply/', () => {
   assert.match(read('src/components/layout/Header.astro'), /site-header__apply" href=\{href\(apply\.href\)\} aria-current=\{currentPath === apply\.href \? 'page' : undefined\}/);
+});
+
+test('the header button names the readiness review in full, and shows the short label only from 1100 to 1239px (W9-13)', () => {
+  const header = read('src/components/layout/Header.astro');
+  assert.match(header, /aria-label=\{apply\.short === undefined \? undefined : apply\.label\}/);
+  assert.match(header, /site-header__apply-short" aria-hidden="true">\{apply\.short\}/);
+  const css = stripComments(read('src/styles/components.css'));
+  assert.match(css, /\.site-header__apply-short \{\s*display: none;/);
+  assert.match(css, /@media \(min-width: 1100px\) and \(max-width: 1239\.98px\) \{\s*\.site-header__apply-full \{\s*display: none;\s*\}\s*\.site-header__apply-short \{\s*display: inline;/);
 });
 
 test('hover and leave timers belong to one trigger, not to the module', () => {

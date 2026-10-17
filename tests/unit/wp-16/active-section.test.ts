@@ -3,7 +3,7 @@ import test from 'node:test';
 import { activeSectionId, primaryNav } from '../../../src/data/nav.ts';
 
 test('the pages that a panel only lists have no current section', () => {
-  for (const path of ['/apply/', '/apply/thanks/', '/contact/', '/trust/']) {
+  for (const path of ['/apply/', '/apply/thanks/', '/contact/', '/trust/', '/pricing/']) {
     assert.equal(activeSectionId(path), null, path);
   }
 });
@@ -22,7 +22,6 @@ test('the sections around them keep theirs', () => {
     '/glossary/': 'resources',
     '/tools/team-composer/': 'resources',
     '/insights/some-article/': 'resources',
-    '/pricing/': 'pricing',
     '/program/dream/': 'program',
     '/services/digital-incubation/': 'services',
   };

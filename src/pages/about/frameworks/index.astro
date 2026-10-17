@@ -1,44 +1,118 @@
 ---
+/**
+ * /about/frameworks/: the frameworks galaxy (W9-5). Every WE framework is a solar system; UBF, the map the others sit on, is the core
+ * system. Then the SuperNova journey as one flight, the five consulting altitudes and a table of what each framework answers.
+ */
 import PageShell from '../../../components/about/PageShell.astro';
+import AltitudeStack from '../../../components/about/AltitudeStack.astro';
+import Band from '../../../components/visuals/Band.astro';
+import FrameworkGalaxy from '../../../components/about/FrameworkGalaxy.astro';
+import { START_REVIEW, TALK_TO_WE, seeHowWeWorks } from '../../../components/about/ctas.ts';
+import { CONSULTING_LEVELS, FRAMEWORK_SYSTEMS, SUPERNOVA_PHASES } from '../../../components/about/framework-data.ts';
 import { loadPage } from '../../../components/about/load-page.ts';
-import { FRAMEWORKS } from '../../../components/about/frameworks.ts';
 import CtaBand from '../../../components/ui/CtaBand.astro';
 import DataTable from '../../../components/ui/DataTable.astro';
-import Grid from '../../../components/ui/Grid.astro';
-import Card from '../../../components/ui/Card.astro';
-import Section from '../../../components/ui/Section.astro';
+import LaunchTrajectory from '../../../components/visuals/LaunchTrajectory.astro';
 import { flags } from '../../../data/flags.ts';
-import { href } from '../../../lib/url.ts';
+import { getRouteState } from '../../../lib/route-state.ts';
 
 const entry = await loadPage('about/frameworks');
-const deep = FRAMEWORKS.filter((f) => f.path !== null);
+const state = await getRouteState();
+const ubfLive = state.isLive('/about/frameworks/ubf/');
+const how = seeHowWeWorks(state.isLive);
+const phases = SUPERNOVA_PHASES.map((p) => ({ label: p.name, description: p.line }));
 ---
 
-<PageShell entry={entry} path="/about/frameworks/" ogSlot="og-about" lead="Five working methods that give a team shared words for what it is doing.">
-  {
-    flags.focusShiftConfirmed && (
-      <p>Dedicated seat teams plan their work in Focus Shifts.</p>
-    )
-  }
+<PageShell
+  entry={entry}
+  path="/about/frameworks/"
+  ogSlot="og-about"
+  lead="A galaxy of working methods: UBF maps the business universe, and every other framework is a system inside it."
+  primary={ubfLive ? { label: 'Explore UBF', href: '/about/frameworks/ubf/' } : START_REVIEW}
+  secondary={how ?? TALK_TO_WE}
+  art={{ variant: 'flower', glyph: 'WE' }}
+>
+  {flags.focusShiftConfirmed && <p>Dedicated teams plan their work in Focus Shifts.</p>}
   <Fragment slot="after">
-    <Section tone="soft" labelledby="fw-glance">
-      <div class="container stack">
-        <h2 id="fw-glance">The frameworks at a glance</h2>
-        <DataTable
-          caption="WE operating frameworks"
-          columns={['Framework', 'What it describes', 'In one line']}
-          rows={FRAMEWORKS.map((f) => [f.name, f.short, f.summary])}
-        />
+    <Band tone="deep" labelledby="fw-galaxy-title" id="galaxy">
+      <div class="fw-head">
+        <p class="eyebrow">The galaxy</p>
+        <h2 id="fw-galaxy-title">Every framework is a system</h2>
+        <p>
+          Each system is drawn with one world for every letter or component it names. UBF sits at the core because it is the map the others
+          are placed on.
+        </p>
       </div>
-    </Section>
-    <Section labelledby="fw-deep">
-      <div class="container stack">
-        <h2 id="fw-deep">Read the detail</h2>
-        <Grid>
-          {deep.map((f) => <Card title={f.name} href={href(f.path ?? '/about/frameworks/')} headingLevel={3}><p>{f.summary}</p></Card>)}
-        </Grid>
+      <FrameworkGalaxy systems={FRAMEWORK_SYSTEMS} />
+    </Band>
+
+    <Band tone="tint-blue" labelledby="fw-journey-title" id="journey">
+      <div class="split">
+        <div class="split__text fw-stack">
+          <p class="eyebrow">SuperNova</p>
+          <h2 id="fw-journey-title">The journey, phase by phase</h2>
+          <p>
+            The SuperNova strategy strings eight phases together, from framing the idea to the company finding its place in the market. WE's
+            three stages carry the same flight: WE Dream, WE Build, WE Grow.
+          </p>
+          <p>The pace is the company's own. Each phase takes as long as the work takes.</p>
+        </div>
+        <div class="split__media">
+          <LaunchTrajectory
+            waypoints={phases}
+            labelsName="The eight SuperNova phases along the flight"
+            caption="Dream, Build and Grow as one flight, with the eight SuperNova phases along the way."
+          />
+        </div>
       </div>
-    </Section>
-    <CtaBand title="See the frameworks at work" text="The playbooks turn each stage into steps you can follow." cta={{ label: 'Read the playbooks', href: '/playbooks/' }} secondary={{ label: 'How the program works', href: '/program/how-it-works/' }} />
+    </Band>
+
+    <Band labelledby="fw-alt-title" id="altitudes">
+      <div class="fw-head">
+        <p class="eyebrow">Consulting levels</p>
+        <h2 id="fw-alt-title">Five altitudes of advice</h2>
+        <p>
+          A conversation can be about the whole universe of possibilities or about one task on the ground. The consulting levels name the
+          altitude, so everyone knows how far out or how close in the advice is.
+        </p>
+      </div>
+      <AltitudeStack levels={CONSULTING_LEVELS} />
+    </Band>
+
+    <Band tone="soft" labelledby="fw-glance-title" id="glance">
+      <div class="fw-head">
+        <h2 id="fw-glance-title">What each framework answers</h2>
+      </div>
+      <DataTable
+        caption="The WE frameworks at a glance"
+        columns={['Framework', 'It answers', 'In one line']}
+        rows={FRAMEWORK_SYSTEMS.map((f) => [f.name, f.role, f.summary])}
+      />
+    </Band>
+
+    <CtaBand
+      title="See the frameworks at work"
+      text="A readiness review is where the map starts: where the company sits, and what the next stage needs."
+      cta={START_REVIEW}
+      secondary={how ?? TALK_TO_WE}
+    />
   </Fragment>
 </PageShell>
+
+<style>
+  .fw-head,
+  .fw-stack {
+    display: grid;
+    gap: var(--space-flow);
+    align-content: start;
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .fw-head {
+    max-inline-size: var(--prose-max);
+    margin-block-end: var(--space-block);
+  }
+</style>

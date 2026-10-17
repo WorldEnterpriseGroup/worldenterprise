@@ -4,7 +4,7 @@ import { readFlag } from './env.ts';
 import { buildAbsolute, normalizeBase } from './url-core.ts';
 
 /**
- * SEO helpers (SAGE-PLAN 6.9). Titles are "{Page} | World Enterprise Incubator" and stay within 60 characters;
+ * SEO helpers (SAGE-PLAN 6.9). Titles are "{Page} | World Enterprise" and stay within 60 characters;
  * descriptions stay within 160. Canonicals are always absolute production URLs, even on preview builds.
  */
 export const TITLE_MAX = 60;

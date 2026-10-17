@@ -5,7 +5,7 @@ description: "A criteria-based decision framework for choosing between a dedicat
 publishedDate: 2026-10-06
 version: "1.0"
 methodology: "Defines three staffing models, derives ten decision criteria, and rates each model per criterion as analysis. Public legal and standards pages are cited only for the facts they state: worker classification tests, written-agreement rules for copyright, and security reference documents."
-limitations: "This is analysis, not research: it contains no survey data, costs or benchmarks. The ratings are judgment. World Enterprise Group offers dedicated team seats, so the reader should weigh the framing accordingly. It is not legal advice."
+limitations: "This is analysis, not research: it contains no survey data, costs or benchmarks. The ratings are judgment. WE steers dedicated teams, so the reader should weigh the framing accordingly. It is not legal advice."
 sources:
   - { id: irs-classification, title: "Independent contractor (self-employed) or employee?", publisher: "Internal Revenue Service", url: "https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee", accessed: 2026-10-06 }
   - { id: dol-misclassification, title: "Misclassification of Employees as Independent Contractors Under the Fair Labor Standards Act", publisher: "U.S. Department of Labor, Wage and Hour Division", url: "https://www.dol.gov/agencies/whd/flsa/misclassification", accessed: 2026-10-06 }
@@ -18,7 +18,7 @@ draft: false
 
 ## Disclosure and label
 
-This brief is **analysis**. It reasons from criteria and trade-offs; it does not report a study, and it contains no statistics. World Enterprise Group sells dedicated team seats, which is one of the three models compared. The criteria are set out so that you can test any model, including ours, and reach your own answer.
+This brief is **analysis**. It reasons from criteria and trade-offs; it does not report a study, and it contains no statistics. WE steers dedicated teams, which is one of the three models compared. The criteria are set out so that you can test any model, including ours, and reach your own answer.
 
 ## The three models
 

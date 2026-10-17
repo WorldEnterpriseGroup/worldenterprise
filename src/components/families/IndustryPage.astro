@@ -9,6 +9,8 @@ import Compositions from '../brand/Compositions.astro';
 import Section from '../ui/Section.astro';
 import type { HeroActions } from './actions.ts';
 import { EYEBROWS, FIXED, HEADINGS } from './copy.ts';
+import ArticleEnd from './visual/ArticleEnd.astro';
+import WithEmblem from './visual/WithEmblem.astro';
 import FamilyItems from './FamilyItems.astro';
 import type { IndustryView } from './view.ts';
 
@@ -27,7 +29,7 @@ interface Props {
 
 const { page, view, path, actions, ogSlot } = Astro.props;
 const { Content } = await render(page);
-const { title, description, eyebrow, updated, draft } = page.data;
+const { title, seoTitle, description, eyebrow, updated, draft } = page.data;
 
 const perimeter = view.perimeter.map((item) => ({
   title: item.title,
@@ -39,6 +41,7 @@ const perimeter = view.perimeter.map((item) => ({
 
 <MarketingLayout
   title={title}
+  seoTitle={seoTitle}
   description={description}
   path={path}
   lead={description}
@@ -57,10 +60,10 @@ const perimeter = view.perimeter.map((item) => ({
   <Content />
   <Fragment slot="after">
     <Section labelledby="ind-buyer">
-      <div class="stack">
+      <WithEmblem kind="industries" seed={path}>
         <h2 id="ind-buyer">{HEADINGS.industries.buyer}</h2>
         <p>{view.buyer}</p>
-      </div>
+      </WithEmblem>
     </Section>
     <Section tone="soft" labelledby="ind-perimeter">
       <div class="stack">
@@ -86,4 +89,5 @@ const perimeter = view.perimeter.map((item) => ({
       <SourcesList sources={view.sources} title={HEADINGS.shared.sources} />
     </Section>
   </Fragment>
+  <ArticleEnd slot="cta-end" kind="industries" seed={path} />
 </MarketingLayout>

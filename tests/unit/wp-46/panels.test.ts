@@ -39,15 +39,16 @@ test('the page a tile points at is not repeated as a column link', () => {
 test('a strip link that a column already names is dropped, and the strip that remains keeps its own links', () => {
   const base = section('program');
   const duplicated: NavSection = { ...base, strip: [...base.strip, { label: 'Dream again', href: '/program/dream/' }] };
-  assert.deepEqual(panelModel(duplicated).strip.map((link) => link.href), ['/pricing/', '/faq/']);
+  // How WE works is a Program column link (wave 9), so its strip twin is dropped too.
+  assert.deepEqual(panelModel(duplicated).strip.map((link) => link.href), ['/faq/']);
   const playbooks = panelModel(section('playbooks'));
   // Templates and Glossary are strip links of Playbooks and appear in no Playbooks column, so they stay.
   assert.deepEqual(playbooks.strip.map((link) => link.href), ['/library/', '/glossary/']);
 });
 
-test('pages are not removed across panels: Pricing is still in the Services and Network panels', () => {
-  assert.ok(panelModel(section('services')).strip.some((link) => link.href === '/pricing/'));
-  assert.ok(panelModel(section('network')).strip.some((link) => link.href === '/pricing/'));
+test('pages are not removed across panels: How WE works is still in the Services and Network panels', () => {
+  assert.ok(panelModel(section('services')).strip.some((link) => link.href === '/how-we-work/'));
+  assert.ok(panelModel(section('network')).strip.some((link) => link.href === '/how-we-work/'));
 });
 
 test('a column shows descriptions only when every one of its links has one', () => {

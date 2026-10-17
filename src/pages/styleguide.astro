@@ -52,6 +52,7 @@ import SeatRosterPanel from '../components/diagrams/SeatRosterPanel.astro';
 import ServiceLinesStrip from '../components/diagrams/ServiceLinesStrip.astro';
 import WeeklyReviewPanel from '../components/diagrams/WeeklyReviewPanel.astro';
 import Reveal from '../components/motion/Reveal.astro';
+import VisualsShowcase from '../components/visuals/styleguide/VisualsShowcase.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { readPairs } from '../lib/contrast.ts';
 import { STYLEGUIDE_PATH } from '../data/routes.ts';
@@ -85,6 +86,7 @@ const headings = [
   { depth: 2, slug: 'system', text: 'Visual system' },
   { depth: 2, slug: 'states', text: 'States' },
   { depth: 2, slug: 'diagrams', text: 'Diagrams and panels' },
+  { depth: 2, slug: 'visuals', text: 'Visuals' },
   { depth: 2, slug: 'motion', text: 'Motion' },
   { depth: 2, slug: 'heroes', text: 'Heroes' },
   { depth: 2, slug: 'contrast', text: 'Contrast pairs' },
@@ -94,7 +96,7 @@ const headings = [
 
 <BaseLayout
   title="Styleguide"
-  description="Internal reference for the World Enterprise Incubator design system: tokens, components, heroes and layouts."
+  description="Internal reference for the World Enterprise design system: tokens, components, heroes and layouts."
   path={STYLEGUIDE_PATH}
   draft
 >
@@ -281,7 +283,12 @@ const headings = [
     </div>
   </Section>
 
-  <Section id="motion" labelledby="h-motion">
+  <Section id="visuals" labelledby="h-visuals">
+    <h2 id="h-visuals">Visuals</h2>
+    <VisualsShowcase />
+  </Section>
+
+  <Section id="motion" labelledby="h-motion" tone="soft">
     <h2 id="h-motion">Motion</h2>
     <p class="muted">Cards lift on hover, groups reveal in sequence on scroll where the browser supports scroll timelines, and every effect is off under reduced motion.</p>
     <Reveal as="ul" stagger class="grid sg-reveal">

@@ -5,31 +5,37 @@ import InvestorIntroductionsOffer from '../../components/blocks/InvestorIntroduc
 import CellTrail from '../../components/ui/CellTrail.astro';
 import Callout from '../../components/ui/Callout.astro';
 import Card from '../../components/ui/Card.astro';
-import CtaBand from '../../components/ui/CtaBand.astro';
 import Grid from '../../components/ui/Grid.astro';
+import WorldsGallery from '../../components/media/WorldsGallery.astro';
 import NetworkIntro from '../../components/network/NetworkIntro.astro';
 import { getPageEntry } from '../../components/network/pageEntry.ts';
+import { HREFS, NETWORK_COPY } from '../../components/partners/copy.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
+import OrbitSystem from '../../components/visuals/OrbitSystem.astro';
 import { href } from '../../lib/url.ts';
 
 const page = await getPageEntry('network', 'network/index');
 const { Content } = await render(page);
-
 const subtree = [
-  { title: 'Who WE builds with', href: '/founders/', description: 'The founder profile and the evidence WE looks for' },
+  { title: 'Founders: fit and first steps', href: '/founders/', description: 'The founders and businesses that fit, and what WE asks' },
   { title: 'Operator roles', href: '/network/operators/', description: 'The roles WE places around your team' },
   { title: 'For investors', href: '/investors/', description: 'How WE prepares companies, and what WE does not do' },
+  { title: NETWORK_COPY.partners.title, href: HREFS.hub, description: NETWORK_COPY.partners.subtreeDescription },
 ] as const;
-
 const trail = [
-  { label: 'Founder applies', href: href('/apply/') },
-  { label: 'WE scopes the work', href: href('/program/how-it-works/') },
-  { label: 'Operator roles seated', href: href('/network/operators/') },
+  { label: 'Readiness review', href: href('/apply/') },
+  { label: 'WE plans the work', href: href('/program/how-it-works/') },
+  { label: 'The team is steered', href: href('/network/operators/') },
   { label: 'Evidence gathered', href: href('/fundability/') },
-  { label: 'Investor-ready materials', href: href('/investors/') },
+  { label: 'The company grows', href: href('/program/grow/') },
+];
+const parts = [
+  { label: 'Founders', href: '/founders/', description: 'Who WE works with, and what WE asks' },
+  { label: 'Operator roles', href: '/network/operators/', description: 'The roles a team can include' },
+  { label: 'Investors', href: '/investors/', description: 'What WE does and does not do' },
+  { label: NETWORK_COPY.partners.title, href: HREFS.hub, description: 'Organizations that help founders' },
 ];
 ---
-
 <HubLayout
   title={page.data.title}
   description={page.data.description}
@@ -43,13 +49,14 @@ const trail = [
   secondary={{ label: 'See the operator roles', href: '/network/operators/' }}
 >
   <Fragment slot="panel">
-    <p class="eyebrow">Three places to start</p>
+    <p class="eyebrow">{NETWORK_COPY.partsHeading}</p>
     <HexAtlas
-      label="The three parts of the WE network"
+      label={NETWORK_COPY.partsLabel}
       cells={[
         { label: 'Founders', href: '/founders/', line: 'F' },
         { label: 'Operator roles', href: '/network/operators/', line: 'O' },
         { label: 'Investors', href: '/investors/', line: 'I' },
+        { label: NETWORK_COPY.partners.title, href: HREFS.hub, line: 'P' },
       ]}
     />
   </Fragment>
@@ -57,23 +64,36 @@ const trail = [
   <NetworkIntro />
 
   <section aria-labelledby="network-parts" class="stack">
-    <h2 id="network-parts">Three places to start</h2>
+    <h2 id="network-parts">{NETWORK_COPY.partsHeading}</h2>
     <Grid min="17rem">
-      <Card title="Founders" href={href('/founders/')} eyebrow="Who WE builds with" headingLevel={3}>
+      <Card title="Founders" href={href('/founders/')} eyebrow="Fit and first steps" headingLevel={3}>
         <p>The criteria WE uses, what WE asks of you and what you keep doing yourself.</p>
       </Card>
-      <Card title="Operators" href={href('/network/operators/')} eyebrow="Roles on a seat" headingLevel={3}>
-        <p>Nine roles that can staff a dedicated team seat, and what each one does not do.</p>
+      <Card title="Operators" href={href('/network/operators/')} eyebrow="Roles on a team" headingLevel={3}>
+        <p>The roles a dedicated team can include, and what each one does not do.</p>
       </Card>
       <Card title="Investors" href={href('/investors/')} eyebrow="What WE does and does not do" headingLevel={3}>
         <p>WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.</p>
       </Card>
+      <Card title={NETWORK_COPY.partners.title} href={href(HREFS.hub)} eyebrow={NETWORK_COPY.partners.eyebrow} headingLevel={3}><p>{NETWORK_COPY.partners.text}</p></Card>
     </Grid>
   </section>
-
   <section aria-labelledby="network-path" class="stack">
     <h2 id="network-path">From application to investor-ready materials</h2>
-    <CellTrail label="How a company moves through the WE network" cells={trail} />
+    <div class="split network-map">
+      <div class="split__text">
+        <CellTrail label="How a company moves through the WE network" cells={trail} />
+      </div>
+      <div class="split__media">
+        <OrbitSystem
+          static
+          bodies={parts}
+          labelsName="The parts of the network around one company"
+          alt="A sun of blue hexagonal tiles with four smaller hex-faceted worlds on one orbit ring: founders, operator roles, investors and partners around one company."
+          caption="The network drawn as one system: every part turns around the company, not around WE."
+        />
+      </div>
+    </div>
     <p>
       Preparing materials is not a route to funding. Read <a href={href('/fundability/')}>how investor readiness works</a>,
       <a href={href('/about/frameworks/')}>how WE steers a team</a> and the <a href={href('/trust/')}>trust center</a>.
@@ -88,11 +108,23 @@ const trail = [
     <p>WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.</p>
   </Callout>
 
-  <CtaBand
-    slot="after"
-    title="Ask a question, or apply"
-    text="Tell WE about your company, or ask how the network works. Neither commits you to anything."
-    cta={{ label: 'Contact', href: '/contact/' }}
-    secondary={{ label: 'Apply', href: '/apply/' }}
-  />
+  <section aria-labelledby="network-worlds" class="stack">
+    <h2 id="network-worlds">Worlds WE builds</h2>
+    <p class="network-measure">
+      A company forms the way a world does: dust, a core, a lit world, then rings and moons, over ten years rather than ten weeks. These
+      stills come from the film <a href={href('/about/#decade')}>"A company's first decade, in one minute"</a>; open one for the full
+      picture. They are drawings of the stages, not of any company.
+    </p>
+    <WorldsGallery id="network-worlds-gallery" labelledby="network-worlds" />
+  </section>
 </HubLayout>
+
+<style>
+  .network-map {
+    align-items: center;
+  }
+
+  .network-measure {
+    max-inline-size: var(--measure);
+  }
+</style>

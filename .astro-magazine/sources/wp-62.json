@@ -1,39 +1,76 @@
 {
   "wp": "WP-62",
-  "note": "The sentence ledger of the copy WP-62 put on the site: the new 'Who WE works with' section of the home page, the two headings in src/data/cta/hubs.ts (the audience band under the hero and the segments list on the founders hub), and the desk paragraphs of the insights hub (docs/wave8-contracts.md, section 9; the WP-60 pattern). Each sentence maps to one claim (C-nn), one existing page, or is a control label of seven words at most. tests/unit/wp-62/copy-ledger.test.ts enumerates the sentences from the files, fails on one with no mapping and on a mapping with no sentence, checks each mapping with tests/unit/wp-60/sources.ts, and runs the claims denylist over all of them. The file has no fetches: it quotes no outside source. The CTA strings of the page families (src/data/cta/families.ts holds a table of expectations, not copy) come from src/data/cta/targets.ts and src/data/cta/audiences.ts, which WP-60 ledgers in .astro-magazine/sources/wp-60.json and which WP-62 did not change. The home page's end band and the audience strip take those strings; src/pages/index.astro and src/components/home/LatestInsights.astro add no copy of their own (the latter shows desk names read from src/data/desks.ts).",
+  "note": "The sentence ledger of the copy WP-62 put on the site: the two headings in src/data/cta/hubs.ts (the audience band under the hero and the segments list on the founders hub), and the desk paragraphs of the insights hub (docs/wave8-contracts.md, section 9; the WP-60 pattern). Each sentence maps to one claim (C-nn), one existing page, or is a control label of seven words at most. tests/unit/wp-62/copy-ledger.test.ts enumerates the sentences from the files, fails on one with no mapping and on a mapping with no sentence, checks each mapping with tests/unit/wp-60/sources.ts, and runs the claims denylist over all of them. The file has no fetches: it quotes no outside source. The CTA strings of the page families (src/data/cta/families.ts holds a table of expectations, not copy) come from src/data/cta/targets.ts and src/data/cta/audiences.ts, which WP-60 ledgers in .astro-magazine/sources/wp-60.json and which WP-62 did not change. The audience strip takes those strings, and the home page keeps the closing band of wave 9 (W9-13); src/pages/index.astro and src/components/home/LatestInsights.astro add no copy of their own (the latter shows desk names read from src/data/desks.ts).",
   "fetches": [],
   "documents": [
     {
-      "path": "src/content/pages/home/index.mdx",
-      "sentences": [
-        { "text": "Founders apply to work with a dedicated team that WE steers.", "claim": "C-03" },
-        { "text": "Investors may ask to meet the companies WE incubates, and WE cannot promise a meeting, a reply or funding.", "claim": "C-25" },
-        { "text": "An organization that helps or equips founders may send WE an enquiry, and sending one creates no partnership, no referral arrangement and no commitment on either side.", "claim": "C-26" }
-      ]
-    },
-    {
       "path": "src/data/cta/hubs.ts",
       "sentences": [
-        { "text": "Choose where to start", "label": true },
-        { "text": "Find the path that fits you", "label": true }
+        {
+          "text": "Choose where to start",
+          "label": true
+        },
+        {
+          "text": "Find the path that fits you",
+          "label": true
+        }
       ]
     },
     {
       "path": "src/content/pages/insights/index.mdx",
       "sentences": [
-        { "text": "The articles are grouped into desks.", "page": "src/data/desks.ts" },
-        { "text": "Dream covers deciding what to build, Build covers scoping and running a team, Grow covers the first customers and Fundable covers the evidence an investor will test.", "page": "src/data/desks.ts" },
-        { "text": "The other desks cover the rest of what founders ask.", "page": "src/data/desks.ts" },
-        { "text": "Starting out is for the founder who is deciding where to begin.", "page": "src/data/desks.ts" },
-        { "text": "Funding and capital explains the money a company can raise or borrow.", "page": "src/data/desks.ts" },
-        { "text": "Legal and company basics covers the company, equity, IP and privacy, and is not legal advice.", "page": "src/data/desks.ts" },
-        { "text": "Team and hiring is about running a small team, in-house or remote.", "page": "src/data/desks.ts" },
-        { "text": "AI-native building is for a product that depends on a model.", "page": "src/data/desks.ts" },
-        { "text": "Go-to-market covers positioning, pricing and reaching the first customers.", "page": "src/data/desks.ts" },
-        { "text": "Pathways sets the routes into a company beside the routes to capital.", "page": "src/data/desks.ts" },
-        { "text": "Business models covers how B2B SaaS, vertical SaaS, marketplaces, platforms and developer products work.", "page": "src/data/desks.ts" },
-        { "text": "Sectors covers building software in fintech, healthtech, edtech and climate tech.", "page": "src/data/desks.ts" },
-        { "text": "Operations and wellbeing is about running the company and looking after the founder, without advice.", "page": "src/data/desks.ts" }
+        {
+          "text": "The articles are grouped into desks.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Dream covers deciding what to build, Build covers scoping and running a team, Grow covers the first customers and Fundable covers the evidence an investor will test.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "The other desks cover the rest of what founders ask.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Starting out is for the founder who is deciding where to begin.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Funding and capital explains the money a company can raise or borrow.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Legal and company basics covers the company, equity, IP and privacy, and is not legal advice.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Team and hiring is about running a small team, in-house or remote.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "AI-native building is for a product that depends on a model.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Go-to-market covers positioning, pricing and reaching the first customers.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Pathways sets the routes into a company beside the routes to capital.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Business models covers how B2B SaaS, vertical SaaS, marketplaces, platforms and developer products work.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Sectors covers building software in fintech, healthtech, edtech and climate tech.",
+          "page": "src/data/desks.ts"
+        },
+        {
+          "text": "Operations and wellbeing is about running the company and looking after the founder, without advice.",
+          "page": "src/data/desks.ts"
+        }
       ]
     }
   ]

@@ -1,0 +1,138 @@
+---
+/**
+ * One program of the directory (WP-33): a list item with a short definition list and an external link. The data-* attributes feed the
+ * filter (src/scripts/ecosystem-filter.ts); without JavaScript they do nothing and the row is plain HTML.
+ * `compact` leaves out the definition list and the source line (the hub's short preview of each category; the full row of the same
+ * program, with both, sits in the category's full list and on the category page). `filterable={false}` leaves out the filter
+ * hooks, so a preview row is not counted twice: the full row of the same program sits in the category's full list.
+ */
+import { AUDIENCE_LABELS, DELIVERY_LABELS, EXTERNAL_MARK, OPENS_NOTE, STAGE_LABELS } from '../../data/ecosystem/copy.ts';
+import type { EcosystemEntry } from '../../data/ecosystem/types.ts';
+
+interface Props {
+  entry: EcosystemEntry;
+  /** The heading level of the program name. */
+  level?: 3 | 4;
+  /** Prefix of the anchor id, so a program can sit on the hub and on its category page without a duplicate id. */
+  idPrefix?: string;
+  /** Name, offer and the program link only: no definition list, no source line. */
+  compact?: boolean;
+  /** Carry the data-eco-row hooks the filter reads. */
+  filterable?: boolean;
+}
+
+const { entry: e, level = 3, idPrefix = 'p-', compact = false, filterable = true } = Astro.props;
+const Heading = `h${level}` as 'h3' | 'h4';
+const stages = e.stages.map((s) => STAGE_LABELS[s]).join(', ');
+const audiences = e.audiences.map((a) => AUDIENCE_LABELS[a]).join(', ');
+const remote = e.delivery === 'online' || e.delivery === 'hybrid';
+const id = `${idPrefix}${e.id}`;
+const month = 'October 2026';
+---
+
+<li
+  class:list={['eco-row', { 'eco-row--compact': compact }]}
+  data-eco-row={filterable ? '' : undefined}
+  data-category={e.category}
+  data-stages={filterable ? e.stages.join(' ') : undefined}
+  data-audiences={filterable ? e.audiences.join(' ') : undefined}
+  data-remote={filterable ? (remote ? 'yes' : 'no') : undefined}
+>
+  <Heading class="eco-row__name" id={id}>{e.name}</Heading>
+  <p class="eco-row__offers">{e.offers}</p>
+  {!compact && (
+  <dl class="eco-row__facts">
+    <div><dt>Who it is for</dt><dd>{e.whoFor}</dd></div>
+    <div><dt>Format</dt><dd>{e.format}</dd></div>
+    <div><dt>Where</dt><dd>{e.where} ({DELIVERY_LABELS[e.delivery]})</dd></div>
+    <div><dt>Stage</dt><dd>{stages}</dd></div>
+    <div><dt>Open to</dt><dd>{audiences}</dd></div>
+    {e.terms !== undefined && <div><dt>Stated terms</dt><dd>{e.terms}</dd></div>}
+  </dl>
+  )}
+  <p class="eco-row__links">
+    <a class="eco-row__visit" href={e.url} rel="noopener">
+      Visit {e.name}<span class="eco-row__external" aria-hidden="true"> ({EXTERNAL_MARK})</span><span class="visually-hidden"> ({EXTERNAL_MARK}). {OPENS_NOTE}</span>
+    </a>
+    {!compact && <span class="eco-row__source">Source: <a href={e.sourceUrl} rel="noopener">program page</a>, retrieved {month}.</span>}
+  </p>
+</li>
+
+<style>
+  @layer pages {
+    .eco-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      overflow-wrap: anywhere;
+      align-content: start;
+      gap: var(--sp-3);
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .eco-row--compact {
+      gap: var(--sp-2);
+      padding: var(--sp-4);
+    }
+
+    .eco-row[hidden] {
+      display: none;
+    }
+
+    .eco-row > * {
+      margin: 0;
+    }
+
+    .eco-row__name {
+      font-size: var(--fs-h4);
+    }
+
+    .eco-row__facts {
+      display: grid;
+      gap: var(--sp-2);
+      margin: 0;
+      font-size: var(--fs-sm);
+    }
+
+    .eco-row__facts > div {
+      display: grid;
+      gap: 0;
+    }
+
+    .eco-row__facts dt {
+      color: var(--color-text-muted);
+      font-weight: 600;
+    }
+
+    .eco-row__facts dd {
+      margin: 0;
+    }
+
+    .eco-row__links {
+      display: grid;
+      gap: var(--sp-1);
+      font-size: var(--fs-sm);
+    }
+
+    .eco-row__visit {
+      font-weight: 600;
+    }
+
+    .eco-row__external {
+      font-weight: 400;
+      color: var(--color-text-muted);
+    }
+
+    .eco-row__source {
+      color: var(--color-text-muted);
+    }
+
+    @media (forced-colors: active) {
+      .eco-row {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>

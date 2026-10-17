@@ -1,0 +1,113 @@
+---
+stage: build
+order: 3
+title: Set up the company
+description: Settle who owns what, bring the right questions to your own counsel and accountant, and keep signed records in one place before others write code for you.
+steps:
+  - title: Write down who is contributing what
+    body: For each founder, list the role, the time promised, any money put in and any work or code that existed before the company did. Where a contribution is unclear, mark it as a question.
+  - title: Turn the open points into questions for your counsel
+    body: Group the points into entity, equity and vesting, intellectual property, founder agreements, names and tax. Write each as a question, so a meeting with counsel produces answers and not a general conversation.
+  - title: Engage your own counsel and accountant directly
+    body: The company hires them, and they advise the company. Share the questions in advance and ask each adviser what they need from you to give a firm answer.
+  - title: Sign what counsel advises and keep the originals together
+    body: Keep every signed agreement, filing and receipt in one folder with an index. Anyone who later does diligence on your company will ask for it, so build the habit now.
+  - title: Ask your accountant which tax registrations apply
+    body: The company may need an employer identification number from the IRS and other registrations that depend on where you operate. Ask your accountant what applies and apply through the official agency.
+  - title: Keep a cap table that matches counsel's records
+    body: Record who holds what, when and under which agreement. Reconcile your table with your counsel's records every time something changes, and note the date of the check.
+artifacts:
+  - A list of what each founder contributes
+  - A list of questions for your counsel and accountant
+  - A folder of signed agreements with an index
+  - A short list of registrations and the status of each
+  - A cap table that matches your counsel's records
+relatedLibrary:
+  - seed-data-room-checklist
+updated: 2026-10-10
+---
+import Callout from '../../components/ui/Callout.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import MaybeLink from '../../components/insights/MaybeLink.astro';
+
+This playbook does not give legal or tax advice, and it does not tell you which structure to choose. It helps you arrive at your own counsel and accountant with clear questions and clean records. They give the advice.
+
+## What good looks like
+
+Good company setup is dull and well documented. A stranger who reads your folder can tell who owns what, which agreements are signed and which questions are still open.
+
+- Each founder's contribution is written down, including anything that existed before the company did.
+- Every question you took to counsel has a written answer, or is marked open with a date.
+- Signed agreements sit in one folder with an index, and the copies are the signed ones.
+- Your cap table matches your counsel's records, and the date of the last check is on it.
+- You know which registrations the company needs, who is responsible for each and whether it is done.
+
+<Callout title="Illustrative example, not a real company">
+
+Two friends plan a billing tool for veterinary clinics. One has written most of the early prototype in evenings while employed elsewhere. The other has the clinic contacts. They have not written down who owns what. Before they hire anyone to write code, they list their contributions, mark the prototype as an open question and note that one of them has an employment agreement to read. They write a page of questions on entity, equity, vesting and ownership of the prototype, and send it to a lawyer they have hired. The meeting is shorter, because the lawyer starts from their list.
+
+</Callout>
+
+## Decision aid: questions to bring to your counsel
+
+Use the table to build your list. Each row names a topic, the question to ask and what to bring so the answer can be specific. It does not say what the answer is.
+
+<DataTable
+  caption="Questions to bring to your own counsel when setting up the company"
+  columns={["Topic", "What to ask your counsel", "What to bring"]}
+  rows={[
+    ["Entity", "Which kind of entity fits our plans, and what does each choice change for us?", "Your plan for the next two years, where the founders live and how you plan to pay for the work."],
+    ["Founder equity", "How should ownership be split and recorded, and what does vesting do in our case?", "The contribution list and any understanding the founders already have."],
+    ["Tax timing", "Are there tax elections or deadlines connected to how our shares are issued?", "Dates and terms for any shares or grants. Ask your accountant as well as your counsel."],
+    ["Ownership of work", "Who owns the work created before the company existed, and what has to be signed?", "A list of what was built, when and by whom, plus any employment or consulting agreements."],
+    ["Open-source and third-party code", "What do the licenses on the parts we use allow in a commercial product?", "A list of the libraries and services you use."],
+    ["Name", "What should we check before we commit to a company or product name?", "The names you are considering and where you plan to use them."],
+    ["Customer documents", "What terms and privacy documents do we need before customers sign up?", "A description of what the product stores and who can see it."]
+  ]}
+/>
+
+## The tax identifier
+
+The IRS says that businesses, organizations and some retirement trusts need an employer identification number (EIN) to manage their taxes, and its list of reasons to get one includes hiring employees. Whether and when your company needs one, and which other registrations apply, is a question for your accountant. Ask early, since the answer affects what you do before your first hire.
+
+## Common mistakes
+
+<DataTable
+  caption="Common mistakes when setting up a company"
+  columns={["Mistake", "Why it costs you", "Do this instead"]}
+  rows={[
+    ["Leaving the founder understanding unwritten", "Memories differ when money or credit is at stake, and a later investor will ask what was agreed.", "Write the understanding down and ask your counsel how to record it."],
+    ["Using a generic template without asking", "A template can answer a question you do not have and miss the one you do.", "Bring your facts to your counsel and ask what has to change."],
+    ["Writing code before ownership is settled", "Work done before the company existed may belong to someone else.", "Ask your counsel who owns existing work before anyone new writes code."],
+    ["Treating an online article as legal advice", "An article cannot know your facts, your state or your deadlines.", "Use articles to prepare questions. Take the answers from your counsel."],
+    ["Keeping records across personal accounts", "Nobody can find the signed copy when a buyer or investor asks.", "Keep one company folder with an index and put every signed document in it."],
+    ["Missing a dated deadline", "Some filings and elections have dates that cannot be moved.", "Ask your counsel and accountant for a list of dated deadlines and put them in a calendar."]
+  ]}
+/>
+
+## Evidence to check before you move on
+
+Move to <MaybeLink path="/playbooks/build-and-ship-v1/">Build and ship version one</MaybeLink> when you can show each of these.
+
+- The contribution list exists and has been read by every founder.
+- Your counsel has answered each question on your list, or the open ones carry a date.
+- Signed agreements are in one folder with an index.
+- Your cap table matches your counsel's records, with the check dated.
+
+## Where WE can help
+
+WE's Professional-Services Coordination line helps your own counsel, accountant and other specialists get the context they need, and keeps a shared list of open questions with an owner for each. WE is not a law firm or an accountancy, does not give legal or tax advice and does not engage specialists for you. The <MaybeLink path="/services/professional-services-coordination/">service line page</MaybeLink> lists what it covers and what it does not.
+
+## Sources
+
+The questions in the decision aid draw on the articles and the template below. The tax identifier paragraph draws on the IRS page named in the last item. None of them replaces advice from your counsel.
+
+- <MaybeLink path="/insights/choosing-an-entity-llc-or-c-corporation/">Choosing an entity: LLC or C corporation</MaybeLink>
+- <MaybeLink path="/insights/founder-equity-splits-and-vesting/">Founder equity splits and vesting</MaybeLink>
+- <MaybeLink path="/insights/the-83b-election-and-its-deadline/">The 83(b) election and its deadline</MaybeLink>
+- <MaybeLink path="/insights/founder-ip-assignment-and-confidentiality-agreements/">Founder IP assignment and confidentiality agreements</MaybeLink>
+- <MaybeLink path="/insights/open-source-licenses-inside-a-commercial-product/">Open-source licenses inside a commercial product</MaybeLink>
+- <MaybeLink path="/insights/trademark-name-clearance-before-you-commit/">Trademark name clearance before you commit</MaybeLink>
+- <MaybeLink path="/insights/cap-table-basics-for-founders/">Cap table basics for founders</MaybeLink>
+- <MaybeLink path="/library/seed-data-room-checklist/">Seed data room checklist</MaybeLink>
+- [IRS, Get an employer identification number, read October 10, 2026](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)

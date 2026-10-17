@@ -21,7 +21,7 @@ import { ALLOWED_TYPES as SCRIPT_ALLOWED, FORBIDDEN_TYPES as SCRIPT_FORBIDDEN, v
 const org = organizationNode('https://worldenterprise.org/logo.svg');
 
 test('the home page graph (no breadcrumbs) has no dangling breadcrumb reference', () => {
-  const home = graph([org, websiteNode(), pageNode({ path: '/', name: 'World Enterprise Incubator', description: 'D', type: 'WebPage' })]);
+  const home = graph([org, websiteNode(), pageNode({ path: '/', name: 'World Enterprise', description: 'D', type: 'WebPage' })]);
   const page = (home['@graph'] as readonly Record<string, unknown>[]).find((n) => n['@type'] === 'WebPage');
   assert.equal(page?.breadcrumb, undefined);
   assert.deepEqual(validateDocument(home), []);

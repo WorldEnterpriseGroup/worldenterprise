@@ -1,0 +1,374 @@
+---
+/**
+ * /sbir-sttr/agencies/ (WP-34, #83): the eleven participating agencies and how each one feels to apply to, with public award data on
+ * where the dollars have gone, which states win, how many awardees are new, and how much of the money goes to repeat winners.
+ * Ships no JavaScript.
+ */
+import BarList from '../../../components/sales/BarList.astro';
+import LineChart from '../../../components/sales/LineChart.astro';
+import SbirBand from '../../../components/sbir/SbirBand.astro';
+import SbirClose from '../../../components/sbir/SbirClose.astro';
+import SbirFigure from '../../../components/sbir/SbirFigure.astro';
+import SbirSources from '../../../components/sbir/SbirSources.astro';
+import StatusPanel from '../../../components/sbir/StatusPanel.astro';
+import OrbitSystem from '../../../components/visuals/OrbitSystem.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+import { AGGREGATES } from '../../../data/sbir/aggregates.ts';
+import { AGENCIES } from '../../../data/sbir/agencies.ts';
+import {
+  AGENCY_DOLLAR_BARS,
+  AGENCY_TABLE,
+  AGENCY_WINDOW,
+  FIRST_TIME_RECENT,
+  FIRST_TIME_SERIES,
+  FIRST_TIME_TABLE,
+  PHASE2_PER_100_BARS,
+  PHASE2_PER_100_TABLE,
+  REPEAT_BARS,
+  REPEAT_TABLE,
+  STATE_BARS,
+  STATE_TABLE,
+  STATE_TOP,
+  STATE_TOP_SHARE,
+  STTR_MAIN,
+  STTR_OTHER_COUNT,
+  thousands,
+} from '../../../data/sbir/charts.ts';
+import { sbirSource, sourceAnchor } from '../../../data/sbir/sources.ts';
+import type { SbirSourceId } from '../../../data/sbir/sources.ts';
+
+const path = '/sbir-sttr/agencies/';
+const ids: readonly SbirSourceId[] = ['sba-release-26-43', 'sbir-agencies', 'sbir-award-data', 'sbir-about', 'nih-seed', 'nsf-seed-fund', 'doe-sbir', 'nasa-sbir'];
+const bodies = AGENCIES.map((a) => ({ label: a.short, description: a.type === 'Grants and contracts' ? 'Grants and contracts' : a.type, href: `/sbir-sttr/agencies/#agency-${a.id}` }));
+const repeat = AGGREGATES.repeat.rows;
+const topRepeat = repeat[repeat.length - 1];
+const oneAward = repeat[0];
+const agencyColumns = ['Agency', 'Awards', 'Dollars awarded', 'Median Phase I', 'Median Phase II', 'STTR awards'];
+---
+
+<MarketingLayout
+  title="The eleven SBIR and STTR agencies"
+  seoTitle="SBIR and STTR agencies compared"
+  description="The eleven federal agencies that run SBIR and STTR: contracts or grants, topics or open calls, award sizes, and public award data by agency, state, first-time winners and repeat winners."
+  lead="Eleven agencies run the programs, and they do not feel alike. Some write contracts for a specific need, others make grants for the best idea. Picking the right one is half the work."
+  eyebrow="America’s seed fund"
+  path={path}
+  ogSlot="og-program"
+  secondary={{ label: 'Prepare for your first proposal', href: '/sbir-sttr/prepare/' }}
+>
+  <StatusPanel compact />
+
+  <Fragment slot="after">
+    <SbirBand
+      id="system"
+      tone="deep"
+      title="Eleven agencies, one program"
+      lead="Contracts, grants and agreements, each with its own way in."
+    >
+      <p>
+        Every agency below sets aside money for small businesses that do research, and the list is the one SBIR.gov publishes. Select an
+        agency to jump to its card.
+      </p>
+      <Fragment slot="media">
+        <OrbitSystem
+          bodies={bodies}
+          alt="A sun of blue hexagonal tiles with eleven smaller worlds orbiting it, one for each SBIR and STTR agency: DoD, HHS, DOE, NSF, NASA, USDA, DHS, DOT, ED, EPA and DOC."
+          caption="The eleven participating agencies."
+          labelsName="SBIR and STTR agencies"
+        />
+      </Fragment>
+    </SbirBand>
+
+    <section class="band band--soft sbir-band" id="cards" aria-labelledby="cards-title">
+      <div class="container sbir-cards">
+        <h2 id="cards-title">Each agency, in plain words</h2>
+        <p class="sbir-cards__lead">
+          Budgets and ranges are as SBIR.gov lists them. How each agency feels to apply to is WE’s reading of the agency’s own pages and of the award
+          data. Always read the current solicitation.
+        </p>
+        <ul class="sbir-cards__grid">
+          {
+            AGENCIES.map((a) => (
+              <li class="sbir-agency" id={`agency-${a.id}`}>
+                <h3>
+                  {a.short}
+                  <span class="sbir-agency__name">{a.name}</span>
+                </h3>
+                <dl class="sbir-agency__facts">
+                  <div>
+                    <dt>Funding type</dt>
+                    <dd>{a.type}</dd>
+                  </div>
+                  <div>
+                    <dt>Yearly budget</dt>
+                    <dd>{a.budget}</dd>
+                  </div>
+                  <div>
+                    <dt>Phase I</dt>
+                    <dd>{a.phase1}</dd>
+                  </div>
+                  <div>
+                    <dt>Phase II</dt>
+                    <dd>{a.phase2}</dd>
+                  </div>
+                  <div>
+                    <dt>STTR</dt>
+                    <dd>{a.sttr ? 'Offered' : 'Not offered'}</dd>
+                  </div>
+                </dl>
+                <p>
+                  <strong>Topics.</strong> {a.topics}
+                </p>
+                <p>
+                  <strong>How it feels.</strong> {a.style}
+                </p>
+                <p class="sbir-agency__links">
+                  <a href={a.url} rel="noopener">The agency’s SBIR/STTR page</a>
+                  <span class="sbir-agency__cite">
+                    {a.sources.map((s, i) => (
+                      <>
+                        {i > 0 && ', '}
+                        <a href={sourceAnchor(s)}>{sbirSource(s).short}</a>
+                      </>
+                    ))}
+                  </span>
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <SbirBand
+      id="dollars"
+      tone="plain"
+      title="Where the dollars have gone"
+      lead={`Total dollars awarded by agency, fiscal years ${AGENCY_WINDOW}.`}
+    >
+      <p>
+        Defense and health together account for most of the money, and both make a lot of awards. The smaller agencies make fewer awards
+        and publish fewer topics to choose from.
+      </p>
+      <p>
+        STTR is concentrated too: in this window {STTR_MAIN.join(', ')} made almost every STTR award, and all other agencies together
+        made {thousands(STTR_OTHER_COUNT)}.
+      </p>
+      <Fragment slot="media">
+        <SbirFigure
+          caption={`Dollars awarded by agency, fiscal years ${AGENCY_WINDOW}. Amber is the largest.`}
+          sources={['sbir-award-data']}
+          derived="Awards pooled over five fiscal years and summed by WE. Medians are of award amounts in the window."
+          table={{ caption: 'Awards by agency', columns: agencyColumns, rows: AGENCY_TABLE }}
+        >
+          <BarList bars={AGENCY_DOLLAR_BARS} label="Dollars awarded by agency" />
+        </SbirFigure>
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="second-phase"
+      tone="blue"
+      title="Second-phase awards for every hundred first-phase awards"
+      lead="A sign of how often an agency carries work forward, not a success rate."
+    >
+      <p>
+        For every 100 Phase I awards in this window, DoD made about 73 Phase II awards and EPA about 33. The ratio compares counts in the same
+        years, so it is not the chance that a given Phase I company receives a Phase II. Use it as a hint about how the agency treats continuing work, and ask
+        the program staff.
+      </p>
+      <Fragment slot="media">
+        <SbirFigure
+          caption={`Phase II awards per 100 Phase I awards, fiscal years ${AGENCY_WINDOW}. Agencies with fewer than 50 Phase I awards are left out.`}
+          sources={['sbir-award-data']}
+          derived="A ratio of counts in the same window, computed by WE. It is not a conversion rate."
+          table={{ caption: 'Phase II awards per 100 Phase I awards', columns: ['Agency', 'Phase I awards', 'Phase II awards', 'Phase II per 100 Phase I'], rows: PHASE2_PER_100_TABLE }}
+        >
+          <BarList bars={PHASE2_PER_100_BARS} label="Phase II awards per 100 Phase I awards, by agency" />
+        </SbirFigure>
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="first-time"
+      tone="plain"
+      title="New names win every year"
+      lead={`About ${FIRST_TIME_RECENT.percent} in 100 Phase I awards from ${FIRST_TIME_RECENT.from} to ${FIRST_TIME_RECENT.to} went to a company with no earlier award.`}
+    >
+      <p>
+        The programs are not closed to newcomers. Each year a large share of Phase I awards goes to a company that has never had an SBIR or
+        STTR award. That is the reason to start preparing now, even if the first proposal is a year away.
+      </p>
+      <Fragment slot="media">
+        <SbirFigure
+          caption="Share of each year’s Phase I awards that went to a company with no earlier SBIR or STTR award in the data."
+          sources={['sbir-award-data']}
+          derived="Companies are matched by name in the award data, which undercounts name changes. Years near the start of the data have less history to match against, so they overstate newcomers."
+          caveat="A company that changed its name can look new twice."
+          table={{ caption: 'Phase I awards to first-time awardees by year', columns: ['Year', 'Phase I awards', 'To a first-time awardee', 'Share'], rows: FIRST_TIME_TABLE }}
+        >
+          <LineChart
+            id="chart-first-time"
+            title="Share of Phase I awards to first-time awardees, by year"
+            desc="The share runs from about 17 percent to 33 percent between 2000 and 2025, and has stayed near 28 to 33 percent since 2018."
+            series={FIRST_TIME_SERIES}
+            x={{ min: 2000, max: 2025 }}
+            y={{ min: 0, max: 40 }}
+            xStep={5}
+            xStepNarrow={10}
+            yStep={10}
+            yUnit="%"
+            area
+          />
+        </SbirFigure>
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="states"
+      tone="sand"
+      title="Every state, a few at the top"
+      lead={`${AGGREGATES.states.distinct} states and territories have winners, and the top ${STATE_TOP} took ${STATE_TOP_SHARE} in 100 awards from ${AGGREGATES.states.from} to ${AGGREGATES.states.to}.`}
+    >
+      <p>
+        The winners cluster where universities, laboratories and defense customers cluster. That says where support is dense, not where a good idea can
+        come from. Many states run matching programs of their own to help companies elsewhere compete.
+      </p>
+      <Fragment slot="media">
+        <SbirFigure
+          caption={`Awards by state, the ${STATE_TOP} with the most, fiscal years ${AGGREGATES.states.from} to ${AGGREGATES.states.to}. The table lists the 25 with the most awards and the rest together.`}
+          sources={['sbir-award-data']}
+          derived="Counted by WE by the state recorded for the awardee."
+          table={{ caption: 'SBIR and STTR awards by state', columns: ['State', 'Awards', 'Dollars awarded'], rows: STATE_TABLE }}
+        >
+          <BarList bars={STATE_BARS} label={`Awards by state, top ${STATE_TOP}`} />
+        </SbirFigure>
+      </Fragment>
+    </SbirBand>
+
+    <SbirBand
+      id="repeat"
+      tone="plain"
+      title="The programs reward staying power"
+      lead={`${topRepeat === undefined ? '' : `${thousands(topRepeat.companies)} companies with ten or more awards hold ${topRepeat.dollarSharePercent} percent of the dollars.`}`}
+    >
+      <p>
+        {oneAward === undefined ? '' : `${thousands(oneAward.companies)} companies have only ever won one award, and together they hold ${oneAward.dollarSharePercent} percent of the dollars.`}
+        The companies that keep winning are the ones that keep proposing, year after year. For a founder who plans in years, that is good news.
+      </p>
+      <Fragment slot="media">
+        <SbirFigure
+          caption="Share of all dollars awarded, by how many awards a company has won, 1983 to 2025."
+          sources={['sbir-award-data']}
+          derived="Companies are matched by name in the award data and grouped by award count. Shares are of total dollars."
+          table={{ caption: 'Companies and dollar share by number of awards', columns: ['Awards won', 'Companies', 'Share of dollars'], rows: REPEAT_TABLE }}
+        >
+          <BarList bars={REPEAT_BARS} label="Share of dollars awarded by number of awards won" max={100} />
+        </SbirFigure>
+      </Fragment>
+    </SbirBand>
+
+    <SbirClose id="agencies-close" />
+
+    <section class="section sbir-sources" aria-label="Sources for this page">
+      <div class="container">
+        <SbirSources ids={ids} />
+        <p class="sbir-note">Always check <a href="https://www.sbir.gov/">sbir.gov</a> for the latest list of agencies, topics and deadlines.</p>
+      </div>
+    </section>
+  </Fragment>
+</MarketingLayout>
+
+<style>
+  @layer pages {
+    .sbir-cards {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .sbir-cards > * {
+      margin: 0;
+    }
+
+    .sbir-cards__lead {
+      max-inline-size: 62ch;
+      color: var(--color-text-muted);
+    }
+
+    .sbir-cards__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+      gap: var(--sp-5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sbir-agency {
+      display: grid;
+      gap: var(--sp-3);
+      align-content: start;
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+      scroll-margin-block-start: var(--sp-8);
+    }
+
+    .sbir-agency > * {
+      margin: 0;
+    }
+
+    .sbir-agency h3 {
+      display: grid;
+      gap: var(--sp-1);
+    }
+
+    .sbir-agency__name {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+      font-weight: 400;
+    }
+
+    .sbir-agency__facts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+      gap: var(--sp-2) var(--sp-4);
+      margin: 0;
+    }
+
+    .sbir-agency__facts div {
+      display: grid;
+      gap: 0;
+    }
+
+    .sbir-agency__facts dt {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .sbir-agency__facts dd {
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .sbir-agency__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2) var(--sp-4);
+      font-size: var(--fs-sm);
+    }
+
+    .sbir-agency__cite {
+      color: var(--color-text-muted);
+    }
+
+    .sbir-sources {
+      padding-block: var(--sp-7);
+    }
+
+    .sbir-note {
+      margin-block-start: var(--sp-4);
+    }
+  }
+</style>

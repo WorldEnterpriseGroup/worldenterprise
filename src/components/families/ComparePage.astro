@@ -8,6 +8,8 @@ import BrandCallout from '../brand/BrandCallout.astro';
 import Compositions from '../brand/Compositions.astro';
 import DataTable from '../ui/DataTable.astro';
 import Section from '../ui/Section.astro';
+import ArticleEnd from './visual/ArticleEnd.astro';
+import WithEmblem from './visual/WithEmblem.astro';
 import type { HeroActions } from './actions.ts';
 import { COMPARE_CAPTION, COMPARE_QUESTION_COLUMN, EYEBROWS, FIXED, HEADINGS } from './copy.ts';
 import type { CompareView } from './view.ts';
@@ -28,7 +30,7 @@ interface Props {
 
 const { page, view, path, actions, ogSlot } = Astro.props;
 const { Content } = await render(page);
-const { title, description, eyebrow, updated, draft } = page.data;
+const { title, seoTitle, description, eyebrow, updated, draft } = page.data;
 
 const columns = [COMPARE_QUESTION_COLUMN, ...view.names];
 const rows = view.rows.map((row) => [row.label, ...row.cells]);
@@ -36,6 +38,7 @@ const rows = view.rows.map((row) => [row.label, ...row.cells]);
 
 <MarketingLayout
   title={title}
+  seoTitle={seoTitle}
   description={description}
   path={path}
   lead={description}
@@ -56,7 +59,9 @@ const rows = view.rows.map((row) => [row.label, ...row.cells]);
     <Section labelledby="cmp-table">
       <div class="stack">
         <h2 id="cmp-table">{HEADINGS.compare.table}</h2>
-        <DataTable caption={COMPARE_CAPTION} columns={columns} rows={rows} />
+        <div class="cmp-table">
+          <DataTable caption={COMPARE_CAPTION} columns={columns} rows={rows} />
+        </div>
       </div>
     </Section>
     <Section tone="soft" labelledby="cmp-ask">
@@ -94,7 +99,7 @@ const rows = view.rows.map((row) => [row.label, ...row.cells]);
       </div>
     </Section>
     <Section tone="soft" labelledby="cmp-defs">
-      <div class="stack">
+      <WithEmblem kind="compare" seed={path}>
         <h2 id="cmp-defs">{HEADINGS.compare.definitions}</h2>
         <dl class="cmp-defs">
           {
@@ -108,15 +113,29 @@ const rows = view.rows.map((row) => [row.label, ...row.cells]);
             ))
           }
         </dl>
-      </div>
+      </WithEmblem>
     </Section>
     <Section tone="stone">
       <SourcesList sources={view.sources} title={HEADINGS.shared.sources} />
     </Section>
   </Fragment>
+  <ArticleEnd slot="cta-end" kind="compare" seed={path} />
 </MarketingLayout>
 
 <style>
+  /* The option columns are equal: a fixed layout sizes the columns from the header row, not from how much text a side has, so no side
+     gets more room. The question column takes a fixed share and the remaining columns split the rest evenly. Below the minimum width the
+     table keeps its columns and the frame scrolls (DataTable's own region) instead of squeezing them. Scoped to this table: the shared
+     .data-table keeps its automatic layout elsewhere. */
+  .cmp-table :global(.data-table) {
+    table-layout: fixed;
+    min-inline-size: 36rem;
+  }
+
+  .cmp-table :global(.data-table thead th:first-child) {
+    inline-size: 26%;
+  }
+
   /* Two equal columns, the same width and the same padding, in the order the data gives. Nothing here distinguishes one side. */
   .cmp-pair {
     display: grid;

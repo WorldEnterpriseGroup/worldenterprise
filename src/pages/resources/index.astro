@@ -1,79 +1,145 @@
 ---
-import ArticleCard from '../../components/cards/ArticleCard.astro';
-import BriefCard from '../../components/cards/BriefCard.astro';
-import { liveGroups, RESOURCE_STRIP } from '../../components/reference/resources.ts';
-import { entrySlug } from '../../components/library/markdown.ts';
-import Card from '../../components/ui/Card.astro';
-import Grid from '../../components/ui/Grid.astro';
+import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.astro';
+import { kindGroups, liveGroups, metaLookup, RESOURCE_STRIP, RESOURCES_COPY } from '../../components/reference/resources.ts';
+import type { MetaCollection, MetaEntry } from '../../components/reference/resources.ts';
+import { routes } from '../../data/routes.ts';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { getPublished } from '../../lib/content.ts';
+import type { PublicCollection } from '../../lib/content.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
+import ResourceGroup from './_ResourceGroup.astro';
+import { IDENTITY } from '../../components/families/visual/copy.ts';
+import { READINESS_REVIEW } from '../../components/families/visual/cta.ts';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
+import CountMatrix from '../../components/hubs/CountMatrix.astro';
+import FilterIndex from '../../components/hubs/FilterIndex.astro';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { filterSlots, itemClasses } from '../../components/hubs/filter.ts';
+import { tile } from '../../components/hubs/stats.ts';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
 
 const state = await getRouteState();
-const groups = liveGroups(state.isLive);
-const strip = RESOURCE_STRIP.filter((item) => state.isLive(item.path));
 
-const briefs = (await getPublished('research')).sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime());
-const newestBrief = briefs[0];
-const insights = (await getPublished('insights'))
-  .sort((a, b) => b.data.publishedDate.getTime() - a.data.publishedDate.getTime())
-  .slice(0, 3);
+/** The title and description of every content entry a list can link to, read once from the collections. */
+async function entriesOf(collection: MetaCollection & PublicCollection): Promise<MetaEntry[]> {
+  const entries = await getPublished(collection);
+  return entries.map((entry) => ({ collection, id: entry.id, title: entry.data.title, description: entry.data.description }));
+}
+const collections: readonly (MetaCollection & PublicCollection)[] = ['pages', 'library', 'guides', 'playbooks', 'research'];
+const meta = metaLookup((await Promise.all(collections.map(entriesOf))).flat());
+
+const stage = liveGroups(state.isLive, meta);
+const kind = kindGroups(routes, state.isLive, meta);
+const strip = RESOURCE_STRIP.filter((item) => state.isLive(item.path));
+const toc = [
+  ...(stage.length > 0 ? [{ slug: 'resources-stage', text: RESOURCES_COPY.stage.heading }] : []),
+  ...(kind.length > 0 ? [{ slug: 'resources-kind', text: RESOURCES_COPY.kind.heading }] : []),
+];
+// WP-24: the same pages counted two ways (stage by kind), the formation clock beside it, and a filter by stage over the stage groups.
+// The two figures open the "Start where you are" section, under its h2, so that heading stays the page's first h2 (the WP-72 contract)
+// and the formation heading is an h3 beneath it. With no stage groups there is no matrix and the formation figures stand alone.
+const FORMATION_TILES = [tile('ST-06'), tile('ST-07'), tile('ST-08')];
+const FORMATION_LEAD = 'Many companies are filed each year; few reach a first payroll, and the ones that do take longer than they used to.';
+const matrixColumns = kind.filter((k) => stage.some((s) => s.items.some((i) => k.items.some((j) => j.path === i.path))));
+const counts = stage.map((s) => matrixColumns.map((k) => s.items.filter((i) => k.items.some((j) => j.path === i.path)).length));
+const stageSlots = filterSlots(stage.map((g) => ({ key: g.id, label: g.title, count: g.items.length })));
+const stageTotal = stage.reduce((n, g) => n + g.items.length, 0);
+const secondary = state.isLive('/library/') ? { label: RESOURCES_COPY.openTemplates, href: '/library/' } : undefined;
 ---
 
 <HubLayout
-  title="Resources"
-  description="Read it, use it, check it: insights, research briefs, templates, a glossary, an FAQ and site search from World Enterprise Incubator."
+  title={RESOURCES_COPY.title}
+  description={RESOURCES_COPY.description}
   path="/resources/"
-  eyebrow="Resources"
-  lead="Read it, use it, check it."
+  eyebrow={RESOURCES_COPY.eyebrow}
+  lead={RESOURCES_COPY.lead}
   ogSlot="og-resources"
-  photo="inset-resources"
-  secondary={{ label: 'Open the templates', href: '/library/' }}
+  hero="console"
+  primary={state.isLive(READINESS_REVIEW.href) ? { label: READINESS_REVIEW.label, href: READINESS_REVIEW.href } : undefined}
+  secondary={secondary}
+  toc={toc}
 >
+  <div slot="panel"><EmblemFrame kind="resources" caption={IDENTITY.resources.caption} /></div>
   {
-    groups.map((group) => (
-      <section class="stack" aria-labelledby={`resources-${group.id}`}>
-        <h2 id={`resources-${group.id}`}>{group.title}</h2>
-        <Grid min="16rem">
-          {group.items.map((item) => (
-            <Card title={item.title} href={href(item.path)} headingLevel={3}>
-              <p>{item.description}</p>
-            </Card>
+    stage.length > 0 && (
+      <section class="stack" aria-labelledby="resources-stage">
+        <h2 id="resources-stage">{RESOURCES_COPY.stage.heading}</h2>
+        <p class="measure">{RESOURCES_COPY.stage.intro}</p>
+        <HubLead label="The resources at a glance" balance="even">
+          {
+            matrixColumns.length > 0 ? (
+              <CountMatrix
+                id="hub-resources-matrix"
+                title="Where the pages sit, by stage and by kind"
+                caption="Each stage of the long road draws on several kinds of page. A bigger dot means more pages in that cell."
+                credit="Chart: World Enterprise Group Incorporated, counted at build time from the pages listed on this hub."
+                corner="Stage"
+                rows={stage.map((g) => ({ key: g.id, label: g.title, href: `#resources-stage-${g.id}` }))}
+                columns={matrixColumns.map((k) => ({ key: k.id, label: k.title, href: `#resources-kind-${k.id}` }))}
+                counts={counts}
+                unit={['page', 'pages']}
+              />
+            ) : null
+          }
+          <HubMoment
+            slot="side"
+            id="hub-resources-formation"
+            kind="stats"
+            heading="The road from filing to payroll"
+            headingLevel={3}
+            lead={FORMATION_LEAD}
+          >
+            <StatTiles stats={FORMATION_TILES} label="From filing to first payroll" id="resources-formation" class="resources-formation" />
+          </HubMoment>
+        </HubLead>
+        <FilterIndex id="stage-filter" legend="Show one stage" options={stageSlots} total={stageTotal} unit={['page', 'pages']}>
+          {stage.map((group) => (
+            <div class={itemClasses(stageSlots, [group.id])}>
+              <ResourceGroup group={group} id={`resources-stage-${group.id}`}>
+                {group.id === 'raise' && <NoFundingDisclaimer />}
+              </ResourceGroup>
+            </div>
           ))}
-        </Grid>
-      </section>
-    ))
-  }
-  {
-    newestBrief !== undefined && (
-      <section class="stack" aria-labelledby="resources-newest">
-        <h2 id="resources-newest">Newest research brief</h2>
-        <Grid min="20rem">
-          <BriefCard title={newestBrief.data.title} summary={newestBrief.data.description} path={`/research/${entrySlug(newestBrief.id)}/`} headingLevel={3} />
-        </Grid>
+        </FilterIndex>
       </section>
     )
   }
   {
-    insights.length > 0 && (
-      <section class="stack" aria-labelledby="resources-latest">
-        <h2 id="resources-latest">Latest insights</h2>
-        <Grid min="16rem">
-          {insights.map((entry) => (
-            <ArticleCard title={entry.data.title} summary={entry.data.description} path={`/insights/${entrySlug(entry.id)}/`} headingLevel={3} />
-          ))}
-        </Grid>
+    stage.length === 0 && (
+      <HubMoment id="hub-resources-formation" kind="stats" heading="The road from filing to payroll" headingLevel={2} lead={FORMATION_LEAD}>
+        <StatTiles stats={FORMATION_TILES} label="From filing to first payroll" id="resources-formation" class="resources-formation" />
+      </HubMoment>
+    )
+  }
+  {
+    kind.length > 0 && (
+      <section class="stack" aria-labelledby="resources-kind">
+        <h2 id="resources-kind">{RESOURCES_COPY.kind.heading}</h2>
+        <p class="measure">{RESOURCES_COPY.kind.intro}</p>
+        {kind.map((group) => (
+          <ResourceGroup group={group} id={`resources-kind-${group.id}`} />
+        ))}
       </section>
     )
   }
   {
     strip.length > 0 && (
-      <nav class="cluster" aria-label="About these resources">
+      <nav class="cluster" aria-label={RESOURCES_COPY.stripLabel}>
         {strip.map((item) => (
           <a href={href(item.path)}>{item.title}</a>
         ))}
       </nav>
     )
   }
+  <HubEcosystem id="resources-ecosystem" />
 </HubLayout>
+
+<style>
+  /* The formation figures are long numbers; give each tile room for its value in the half-frame column. */
+  :global(.stat-tiles.resources-formation .stat-tiles__grid) {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  }
+</style>

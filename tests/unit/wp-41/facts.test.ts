@@ -5,7 +5,6 @@ import { parse } from 'yaml';
 import { INTRODUCTIONS_DISCLAIMER, INTRODUCTIONS_FLAT_FEE } from '../../../src/components/blocks/introductions.ts';
 import { CITATION_AUTHOR, citationText } from '../../../src/components/geo/cite.ts';
 import { qaFromMarkdown } from '../../../src/components/geo/qa.ts';
-import { packages } from '../../../src/data/packages.ts';
 import { read } from './content.ts';
 
 interface SentenceRow {
@@ -24,7 +23,8 @@ interface SourcesFile {
 const raw = read('src/content/pages/about/facts.mdx');
 const frontmatter = parse(/^---\n([\s\S]*?)\n---/.exec(raw)?.[1] ?? '') as Record<string, unknown>;
 const body = raw.replace(/^---\n[\s\S]*?\n---\n/, '');
-const map = JSON.parse(read('.astro-magazine/sources/wp-41.json')) as SourcesFile;
+// WP-55 (wave 9) owns the page copy since the package wording was retired, so the sentence map lives in its sources file.
+const map = JSON.parse(read('.astro-magazine/sources/wp-55.json')) as SourcesFile;
 const squash = (text: string): string => text.replace(/\s+/g, ' ').replace(/’/g, "'").trim();
 
 /** The sentences of the body: one per line item or sentence, headings and the one-word "No." excluded. */
@@ -40,17 +40,17 @@ function sentencesOf(markdown: string): string[] {
 
 test('the facts page frontmatter fits the layout limits and cites usable claims', () => {
   assert.equal(frontmatter['title'], 'Facts about WE');
-  assert.ok(`${String(frontmatter['title'])} | World Enterprise Incubator`.length <= 60);
+  assert.ok(`${String(frontmatter['title'])} | World Enterprise`.length <= 60);
   const description = String(frontmatter['description']);
   assert.ok(description.length >= 50 && description.length <= 160, `description is ${description.length} characters`);
   assert.equal(new Date(String(frontmatter['updated'])).getTime() <= Date.now(), true, 'the date is not in the future');
 });
 
-test('every sentence of the facts page is mapped in sources/wp-41.json to a file that holds its locator', () => {
-  assert.equal(map.wp, 'WP-41');
+test('every sentence of the facts page is mapped in sources/wp-55.json to a file that holds its locator', () => {
+  assert.equal(map.wp, 'WP-55');
   const sourceIds = new Set(map.sources.map((s) => s.source_id));
   for (const source of map.sources) {
-    assert.equal(source.captured_by, 'WP-41');
+    assert.equal(source.captured_by, 'WP-55');
     assert.equal(source.funding_conflicts, 'none');
   }
   const mapped = new Map(map.sentences.map((row) => [squash(row.sentence), row] as const));
@@ -65,12 +65,8 @@ test('every sentence of the facts page is mapped in sources/wp-41.json to a file
   for (const row of map.sentences) assert.ok(present.has(squash(row.sentence)), `mapped but not on the page: ${row.sentence}`);
 });
 
-test('the package list on the page is the package data, in order', () => {
-  const bullets = body.split('\n').filter((line) => /^- (?:Spark|Launch|Accelerate|Studio), depth /.test(line));
-  assert.deepEqual(
-    bullets,
-    packages.map((p) => `- ${p.name}, depth ${p.depth}: ${p.stageFit}`),
-  );
+test('the page names no package and no seat plan: the packages are retired site-wide (wave 9)', () => {
+  assert.doesNotMatch(body, /\b(?:Spark|Accelerate|Studio)\b|\bLaunch, depth\b|\bpackages?\b|\bseat plan\b/i);
 });
 
 test('the seven service lines on the page are the service entries', () => {
@@ -107,7 +103,7 @@ test('the questions are H2 headings and each has an answer', () => {
   const pairs = qaFromMarkdown(body);
   assert.deepEqual(
     pairs.map((p) => p.question),
-    ['What is World Enterprise Incubator?', 'What is WE not?', 'What does WE offer?', 'How do seats and packages work?', 'Is Investor Introductions part of a package?', 'How do I reach WE?'],
+    ['What is World Enterprise?', 'What is WE not?', 'What does WE offer?', 'How does an engagement work?', 'Is Investor Introductions part of the engagement?', 'How do I reach WE?'],
   );
   for (const pair of pairs) assert.ok(pair.answer.length > 20, pair.question);
 });
@@ -123,10 +119,10 @@ test('qaFromMarkdown strips syntax, ignores fenced code and text before the firs
 
 test('the suggested citation names the editorial author, the title, the updated date and the production URL', () => {
   const text = citationText({ title: 'A title.', path: '/insights/x/', date: new Date('2026-10-09T00:00:00Z') });
-  assert.equal(text, 'World Enterprise Editorial. “A title.” World Enterprise Incubator, updated October 9, 2026. https://worldenterprise.org/insights/x/');
+  assert.equal(text, 'World Enterprise Editorial. “A title.” World Enterprise, updated October 9, 2026. https://worldenterprise.org/insights/x/');
   assert.equal(CITATION_AUTHOR, 'World Enterprise Editorial');
-  assert.equal(citationText({ title: 'T', path: '/p/' }), 'World Enterprise Editorial. “T.” World Enterprise Incubator. https://worldenterprise.org/p/');
-  assert.equal(citationText({ title: 'T', path: '/p/', date: new Date('nope') }), 'World Enterprise Editorial. “T.” World Enterprise Incubator. https://worldenterprise.org/p/');
+  assert.equal(citationText({ title: 'T', path: '/p/' }), 'World Enterprise Editorial. “T.” World Enterprise. https://worldenterprise.org/p/');
+  assert.equal(citationText({ title: 'T', path: '/p/', date: new Date('nope') }), 'World Enterprise Editorial. “T.” World Enterprise. https://worldenterprise.org/p/');
 });
 
 test('CiteThis reuses the we-copy island and adds no script or third-party request', () => {

@@ -1,0 +1,223 @@
+---
+/**
+ * The media band of one fundability guide (WP-23, #89), rendered in GuideLayout's `after` slot: three or four moments that draw the
+ * guide's own structure (a flow, a tree, a stack) beside the sourced figures that explain why it matters. Diagram content is in media.ts;
+ * figures are in research/media/data.ts. A guide without an entry renders nothing.
+ */
+import Moment from '../research/media/Moment.astro';
+import MomentGrid from '../research/media/MomentGrid.astro';
+import BandHead from '../research/media/BandHead.astro';
+import ClusterDiagram from '../research/media/ClusterDiagram.astro';
+import FlowDiagram from '../research/media/FlowDiagram.astro';
+import FolderTree from '../research/media/FolderTree.astro';
+import LayerStack from '../research/media/LayerStack.astro';
+import OptionGrid from '../research/media/OptionGrid.astro';
+import Band from '../visuals/Band.astro';
+import BarChart from '../visuals/charts/BarChart.astro';
+import StatTiles from '../visuals/charts/StatTiles.astro';
+import ReadinessScorecard from '../visuals/illustrations/ReadinessScorecard.astro';
+import {
+  AGE_AT_ROUND,
+  BREACH_STATS,
+  DBIR_NOTE,
+  FUNDING_NOTE,
+  FUNDING_STATS,
+  HONESTY_INDUSTRY,
+  HONESTY_MARKET,
+  MONTHLY_UPDATES_BEFORE_A,
+  NO_FUNDING,
+  ROUND_GAPS,
+  SHUTDOWN_NOTE,
+  SHUTDOWN_REASONS,
+  SOURCES,
+  THIRD_PARTY_TREND,
+} from '../research/media/data.ts';
+import {
+  ANSWER_LAYERS,
+  ANSWER_STATUSES,
+  ARTIFACT_FLOW,
+  DATA_ROOM_FOLDERS,
+  PRICE_TESTS,
+  PRICING_LOOP,
+  SAFE_FLOW,
+  SAFE_VS_PRICED,
+  SHARE_STAGES,
+  SYNTHESIS_EXAMPLE,
+  SYNTHESIS_STEPS,
+  TERM_SHEET_PREP,
+  TERM_SHEET_SECTIONS,
+  UPDATE_PARTS,
+  isGuideMediaSlug,
+} from './media.ts';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const known = isGuideMediaSlug(slug);
+const headId = `guide-media-${slug}`;
+const seedToA = FUNDING_STATS[1];
+const ageAtA = FUNDING_STATS[0];
+if (seedToA === undefined || ageAtA === undefined) throw new Error('GuideMedia: FUNDING_STATS lost its first two figures');
+---
+
+{
+  known && (
+    <Band tone="soft" id="guide-media" labelledby={headId} class="guide-media">
+      {slug === 'investor-readiness-checklist' && (
+        <>
+          <BandHead id={headId} title="The checklist, drawn" lede="Each statement becomes true only when a record stands behind it. The shape below grows as the records do." />
+          <MomentGrid>
+            <Moment kind="diagram" id="checklist-scorecard">
+              <ReadinessScorecard title="Six areas, one shape: an illustration, not a score" />
+              <p class="gm-note">No scores, weights or thresholds. {NO_FUNDING}</p>
+            </Moment>
+            <Moment kind="diagram" id="checklist-artifact-flow">
+              <FlowDiagram title="From a statement to an artifact" steps={ARTIFACT_FLOW} loop loopLabel="Run the list again next month." />
+            </Moment>
+            <Moment kind="chart" id="checklist-shutdowns">
+              <BarChart title="Why venture-backed startups shut down" items={SHUTDOWN_REASONS} source={SOURCES.cbi} max={100} valueLabel="Share citing the reason" highlight={0} note={SHUTDOWN_NOTE} />
+            </Moment>
+            <Moment kind="stats" id="checklist-stats">
+              <StatTiles stats={FUNDING_STATS} label="Rounds and lending for young companies" id="checklist-stats" />
+              <p class="gm-note">{HONESTY_MARKET}</p>
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'data-room' && (
+        <>
+          <BandHead id={headId} title="The data room, drawn" lede="Ten places, one index, shared in stages. Keep it current for as long as the next round is away, which for venture-backed companies is about two years." />
+          <MomentGrid>
+            <Moment kind="diagram" id="data-room-tree">
+              <FolderTree title="The folders and what each shows" root="Seed data room" folders={DATA_ROOM_FOLDERS} highlight={0} />
+            </Moment>
+            <Moment kind="diagram" id="data-room-stages">
+              <FlowDiagram title="Share in stages" steps={SHARE_STAGES} note="Never put passwords, private keys or personal data about customers or staff in the folder." />
+            </Moment>
+            <Moment kind="chart" id="data-room-gaps" wide>
+              <BarChart title="How long a data room has to stay current: median time between rounds" items={ROUND_GAPS} source={SOURCES.carta} valueLabel="Median gap" highlight={0} note={FUNDING_NOTE} />
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'safe-explained' && (
+        <>
+          <BandHead id={headId} title="A SAFE, drawn" lede="A right to shares now, shares later. The time between the two is the time until the next priced round." />
+          <MomentGrid>
+            <Moment kind="diagram" id="safe-flow" wide>
+              <FlowDiagram title="How a SAFE turns into shares" steps={SAFE_FLOW} note="Paraphrased from the standard forms' own description. Not legal advice." />
+            </Moment>
+            <Moment kind="diagram" id="safe-compare">
+              <OptionGrid title="Three instruments, three moments of pricing" options={SAFE_VS_PRICED} highlight={1} />
+            </Moment>
+            <Moment kind="chart" id="safe-gaps">
+              <BarChart title="Median time between rounds" items={ROUND_GAPS} source={SOURCES.carta} valueLabel="Median gap" highlight={0} note={FUNDING_NOTE} />
+            </Moment>
+            <Moment kind="stats" id="safe-stats" wide>
+              <StatTiles stats={[seedToA, ageAtA]} label="When the conversion event tends to come" id="safe-stats" />
+              <p class="gm-note">{HONESTY_MARKET} {NO_FUNDING}</p>
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'investor-updates' && (
+        <>
+          <BandHead id={headId} title="An update, drawn" lede="Six parts, in the same order every time. Over the median gap between a seed round and a Series A, a monthly habit is two dozen updates a reader can compare." />
+          <MomentGrid>
+            <Moment kind="diagram" id="updates-parts" wide>
+              <FlowDiagram title="The six parts of an update" steps={UPDATE_PARTS} loop loopLabel="The next update reports on the goals in the last part." />
+            </Moment>
+            <Moment kind="stats" id="updates-stats">
+              <StatTiles stats={[MONTHLY_UPDATES_BEFORE_A, seedToA]} label="The update habit over one funding gap" id="updates-stats" />
+              <p class="gm-note">Twenty-four is derived: the median gap of 2.0 years times twelve months. {HONESTY_MARKET}</p>
+            </Moment>
+            <Moment kind="chart" id="updates-gaps">
+              <BarChart title="Median time between rounds" items={ROUND_GAPS} source={SOURCES.carta} valueLabel="Median gap" highlight={0} note={FUNDING_NOTE} />
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'term-sheet-checklist' && (
+        <>
+          <BandHead id={headId} title="A term sheet, drawn" lede="Most of the work happens before a term sheet arrives. The sections then group into five questions: economics, control, protection, founders and process." />
+          <MomentGrid>
+            <Moment kind="diagram" id="term-sheet-prep">
+              <FlowDiagram title="Before the term sheet arrives" steps={TERM_SHEET_PREP} />
+            </Moment>
+            <Moment kind="diagram" id="term-sheet-anatomy">
+              <FolderTree title="The sections, grouped" root="Term sheet" folders={TERM_SHEET_SECTIONS} note="Read each row with your own counsel. Whether a term is usual is a question for them." />
+            </Moment>
+            <Moment kind="chart" id="term-sheet-age" wide>
+              <BarChart title="Median company age at the round" items={AGE_AT_ROUND} source={SOURCES.carta} valueLabel="Median age" highlight={0} note={FUNDING_NOTE} />
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'security-questionnaire-answers' && (
+        <>
+          <BandHead id={headId} title="An answer, drawn" lede="Buyers ask because their suppliers are now part of their risk: the share of breaches with a third party involved has risen sharply in two editions of the Verizon report." />
+          <MomentGrid>
+            <Moment kind="diagram" id="questionnaire-layers">
+              <LayerStack title="What stands behind each answer" layers={ANSWER_LAYERS} />
+            </Moment>
+            <Moment kind="chart" id="questionnaire-third-party">
+              <BarChart title="Breaches with a third party involved" items={THIRD_PARTY_TREND} source={SOURCES.dbir} max={100} valueLabel="Share of breaches" highlight={2} note={DBIR_NOTE} />
+            </Moment>
+            <Moment kind="diagram" id="questionnaire-statuses">
+              <OptionGrid title="Five honest statuses" options={ANSWER_STATUSES} highlight={2} />
+            </Moment>
+            <Moment kind="stats" id="questionnaire-stats">
+              <StatTiles stats={BREACH_STATS} label="Where breaches begin" id="questionnaire-stats" />
+              <p class="gm-note">{HONESTY_INDUSTRY}</p>
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'pricing-experiments' && (
+        <>
+          <BandHead id={headId} title="A pricing test, drawn" lede="Write the rule before the result. Unit economics that never worked are one of the reasons venture-backed startups give when they close." />
+          <MomentGrid>
+            <Moment kind="diagram" id="pricing-loop" wide>
+              <FlowDiagram title="From a hypothesis to a decision" steps={PRICING_LOOP} loop loopLabel="Each result becomes the next hypothesis." />
+            </Moment>
+            <Moment kind="diagram" id="pricing-tests">
+              <OptionGrid title="Five ways to test a price" options={PRICE_TESTS} highlight={0} />
+            </Moment>
+            <Moment kind="chart" id="pricing-shutdowns">
+              <BarChart title="Why venture-backed startups shut down" items={SHUTDOWN_REASONS} source={SOURCES.cbi} max={100} valueLabel="Share citing the reason" highlight={3} note={SHUTDOWN_NOTE} />
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+      {slug === 'customer-interview-synthesis' && (
+        <>
+          <BandHead id={headId} title="A synthesis, drawn" lede="Observations become clusters, clusters become findings, and each finding carries its evidence. Poor product-market fit is the second most cited reason venture-backed startups close." />
+          <MomentGrid>
+            <Moment kind="diagram" id="synthesis-steps" wide>
+              <FlowDiagram title="Five steps from notes to findings" steps={SYNTHESIS_STEPS} />
+            </Moment>
+            <Moment kind="diagram" id="synthesis-clusters">
+              <ClusterDiagram title="The worked example, sorted" clusters={SYNTHESIS_EXAMPLE} note="Illustrative example from this guide, not a real company: eight fictional interviews." />
+            </Moment>
+            <Moment kind="chart" id="synthesis-shutdowns">
+              <BarChart title="Why venture-backed startups shut down" items={SHUTDOWN_REASONS} source={SOURCES.cbi} max={100} valueLabel="Share citing the reason" highlight={1} note={SHUTDOWN_NOTE} />
+            </Moment>
+          </MomentGrid>
+        </>
+      )}
+    </Band>
+  )
+}
+
+<style>
+  @layer pages {
+    .gm-note {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      max-inline-size: 65ch;
+    }
+  }
+</style>

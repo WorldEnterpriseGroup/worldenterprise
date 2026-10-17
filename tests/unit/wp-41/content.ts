@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { parse } from 'yaml';
 import { assembleTwins } from '../../../src/components/geo/assemble.ts';
 import type { AssembledTwins, TwinContent } from '../../../src/components/geo/assemble.ts';
+import type { FamilyData } from '../../../src/components/families/types.ts';
 import { routes } from '../../../src/data/routes.ts';
 import type { RequiredRuleLike } from '../../../src/lib/markdown-twins.ts';
 
@@ -45,6 +46,16 @@ const date = (value: unknown): Date => new Date(String(value));
 const optionalDate = (value: unknown): Date | undefined => (value === undefined || value === null ? undefined : date(value));
 const list = (value: unknown): readonly never[] => (Array.isArray(value) ? (value as never[]) : []);
 
+/** The `family` object of a page: the schema turns the date strings (a source's `accessed`, a perimeter item's `asOf`) into Dates. */
+export function toFamily(raw: unknown): FamilyData | undefined {
+  if (raw === null || typeof raw !== 'object') return undefined;
+  const record = raw as Record<string, unknown>;
+  const mapList = (key: string, field: string): unknown =>
+    Array.isArray(record[key]) ? (record[key] as Record<string, unknown>[]).map((item) => ({ ...item, [field]: date(item[field]) })) : record[key];
+  // The schema defaults `sources` to an empty list (a journey page may cite none).
+  return { ...record, sources: mapList('sources', 'accessed') ?? [], ...(record['perimeter'] === undefined ? {} : { perimeter: mapList('perimeter', 'asOf') }) } as unknown as FamilyData;
+}
+
 export function loadContent(): TwinContent {
   const faq = parse(read('src/data/faq.yaml')) as { question: string; answer: string; group: string }[];
   const glossary = parse(read('src/data/glossary.yaml')) as { term: string; definition: string; group: string }[];
@@ -52,7 +63,7 @@ export function loadContent(): TwinContent {
     insights: collection('insights').map((e) => ({
       id: e.id,
       body: e.body,
-      data: { title: String(e.data['title']), description: String(e.data['description']), publishedDate: date(e.data['publishedDate']), updatedDate: optionalDate(e.data['updatedDate']), sources: list(e.data['sources']) },
+      data: { title: String(e.data['title']), description: String(e.data['description']), topic: String(e.data['topic']), segments: Array.isArray(e.data['segments']) ? (e.data['segments'] as unknown[]).map(String) : [], publishedDate: date(e.data['publishedDate']), updatedDate: optionalDate(e.data['updatedDate']), sources: list(e.data['sources']) },
     })),
     research: collection('research').map((e) => ({
       id: e.id,
@@ -67,7 +78,12 @@ export function loadContent(): TwinContent {
         sources: list(e.data['sources']),
       },
     })),
-    pages: collection('pages').map((e) => ({ id: e.id, body: e.body, data: { title: String(e.data['title']), updated: date(e.data['updated']) } })),
+    pages: collection('pages').map((e) => ({ id: e.id, body: e.body, data: { title: String(e.data['title']), updated: date(e.data['updated']), description: e.data['description'] === undefined ? undefined : String(e.data['description']), family: toFamily(e.data['family']) } })),
+    guides: collection('guides').map((e) => ({
+      id: e.id,
+      body: e.body,
+      data: { section: String(e.data['section']), title: String(e.data['title']), description: String(e.data['description']), sources: list(e.data['sources']), updated: date(e.data['updated']) },
+    })),
     services: collection('services').map((e) => ({
       id: e.id,
       body: e.body,
@@ -77,6 +93,11 @@ export function loadContent(): TwinContent {
       id: e.id,
       body: e.body,
       data: { title: String(e.data['title']), description: String(e.data['description']), steps: list(e.data['steps']), artifacts: list(e.data['artifacts']), updated: date(e.data['updated']) },
+    })),
+    briefs: collection('briefs').map((e) => ({
+      id: e.id,
+      body: e.body,
+      data: { title: String(e.data['title']), description: String(e.data['description']), outline: list(e.data['outline']), updated: date(e.data['updated']) },
     })),
     faq,
     glossary,

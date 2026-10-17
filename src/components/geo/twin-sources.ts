@@ -23,12 +23,14 @@ const INDEXABLE: ReadonlySet<string> = new Set(routes.filter((r) => r.indexable)
 
 async function load(): Promise<AssembledTwins> {
   const state = await getRouteState();
-  const [insights, research, pages, services, playbooks, faq, glossary] = await Promise.all([
+  const [insights, research, pages, guides, services, playbooks, briefs, faq, glossary] = await Promise.all([
     getPublished('insights'),
     getPublished('research'),
     getPublished('pages'),
+    getPublished('guides'),
     getPublished('services'),
     getPublished('playbooks'),
+    getCollection('briefs'),
     getCollection('faq'),
     getCollection('glossary'),
   ]);
@@ -36,13 +38,19 @@ async function load(): Promise<AssembledTwins> {
     insights,
     research,
     pages,
+    guides,
+    briefs: briefs.filter((e) => e.data.draft !== true),
     services,
     playbooks,
     faq: faq.filter((e) => e.data.draft !== true).map((e) => ({ question: e.data.question, answer: e.data.answer, group: e.data.group })),
     glossary: glossary.filter((e) => e.data.draft !== true).map((e) => ({ term: e.data.term, definition: e.data.definition, group: e.data.group })),
     referenceUpdated: REFERENCE_UPDATED,
   };
-  return assembleTwins(content, { isEligible: (route) => state.isLive(route) && INDEXABLE.has(route), required: REQUIRED });
+  return assembleTwins(content, {
+    isEligible: (route) => state.isLive(route) && INDEXABLE.has(route),
+    isLive: (route) => state.isLive(route),
+    required: REQUIRED,
+  });
 }
 
 let cached: Promise<AssembledTwins> | undefined;

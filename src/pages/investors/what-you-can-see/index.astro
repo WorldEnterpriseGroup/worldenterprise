@@ -1,0 +1,43 @@
+---
+import { render } from 'astro:content';
+import LimitsBlock from '../../../components/blocks/LimitsBlock.astro';
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import { ASK_TO_MEET, CONSENT_SCOPES, HUB, MATERIAL_LINKS, SEE } from '../../../components/investors/copy.ts';
+import LinkList from '../../../components/investors/LinkList.astro';
+import PortfolioShowcase from '../../../components/investors/PortfolioShowcase.astro';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import DataTable from '../../../components/ui/DataTable.astro';
+import MarketingLayout from '../../../layouts/MarketingLayout.astro';
+
+const page = await getPageEntry('investors/what-you-can-see', 'investors/what-you-can-see/index');
+const { Content } = await render(page);
+const scopes = CONSENT_SCOPES.map((s) => [s.label, s.text]);
+---
+
+<MarketingLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/investors/what-you-can-see/"
+  eyebrow={page.data.eyebrow}
+  lead={SEE.lead}
+  updated={page.data.updated}
+  ogSlot="og-network"
+  primary={ASK_TO_MEET}
+>
+  <Content />
+
+  <h2 id="open-title">{SEE.openHeading}</h2>
+  <DataTable caption={SEE.openCaption} columns={SEE.openColumns} rows={HUB.materials} />
+  <LinkList items={MATERIAL_LINKS} />
+
+  <h2 id="consent-title">{SEE.consentHeading}</h2>
+  <p>{SEE.consentLead}</p>
+  <DataTable caption={SEE.scopeCaption} columns={SEE.scopeColumns} rows={scopes} />
+
+  <h2 id="companies-title">{SEE.companiesHeading}</h2>
+  <PortfolioShowcase headingLevel={3} />
+
+  <LimitsBlock title={SEE.limitsHeading} items={SEE.limits} headingLevel={2} />
+
+  <NoFundingDisclaimer />
+</MarketingLayout>

@@ -158,7 +158,9 @@ test('RELEASE_ALLOW covers the fixed wave 8 pending rows and the form routes, an
       `${path} is no longer tolerated`,
     );
   }
-  for (const path of ['/about/frameworks/ubf/', '/star/', '/shift/', '/android/']) {
+  // WP-55 (wave 9) absorbed WP-48 and wrote the UBF page, so its row is launched again; the other three stay cut.
+  assert.equal(getRoute('/about/frameworks/ubf/')?.launch, true, '/about/frameworks/ubf/ is launched with its page');
+  for (const path of ['/star/', '/shift/', '/android/']) {
     const framework = getRoute(path);
     assert.equal(framework?.launch, false, `${path} is cut`);
     assert.ok((framework?.reason ?? '').length > 0, `${path} says why`);
@@ -199,6 +201,16 @@ test('RELEASE_ALLOW covers every pending page-family row of the registry by path
     'launch:true route does not exist: /compare/x/index.html',
   ]) {
     assert.deepEqual(unallowed([problem], allow), [problem], `${problem} still fails`);
+  }
+});
+
+test('RELEASE_ALLOW tolerates the pending wave 10 hubs and their children by path shape, and nothing that merely looks like them (D-W10-5)', () => {
+  const allow = branchAllow();
+  for (const path of ['/ecosystem/', '/ecosystem/programs/', '/sbir-sttr/', '/sbir-sttr/phase-i/', '/data/', '/data/startup-survival/']) {
+    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [], `${path} is tolerated while pending`);
+  }
+  for (const path of ['/ecosystems/', '/database/', '/data/a/b/', '/ecosystem', '/sbir/']) {
+    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [`launch:true route does not exist: ${path}`], `${path} still fails`);
   }
 });
 

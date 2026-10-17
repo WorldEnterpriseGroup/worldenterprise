@@ -50,7 +50,7 @@ test('"What you can send" lists the form fields under the words the form uses', 
   test.skip(!isBuilt('/apply/'), '/apply/ is not built');
   await page.goto('/apply/');
   const labels: string[] = [];
-  for (const id of ['apply-name', 'apply-email', 'apply-company', 'apply-stage', 'apply-message', 'apply-seats', 'apply-package']) {
+  for (const id of ['apply-name', 'apply-email', 'apply-company', 'apply-stage', 'apply-message', 'apply-seats', 'apply-situation']) {
     const text = (await page.locator(`label[for="${id}"]`).first().innerText()).replace(/\s*\(required\)\s*$/, '').trim();
     labels.push(text);
   }

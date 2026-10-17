@@ -1,0 +1,42 @@
+---
+import { render } from 'astro:content';
+import NoFundingDisclaimer from '../../../components/blocks/NoFundingDisclaimer.astro';
+import AsideStyles from '../../../components/forms/AsideStyles.astro';
+import InvestorInterestForm from '../../../components/forms/InvestorInterestForm.astro';
+import { jumpTo } from '../../../components/hero/ctas.ts';
+import { INTEREST, OPEN_NOW_LINKS } from '../../../components/investors/copy.ts';
+import LinkList from '../../../components/investors/LinkList.astro';
+import { getPageEntry } from '../../../components/network/pageEntry.ts';
+import Steps from '../../../components/ui/Steps.astro';
+import FormLayout from '../../../layouts/FormLayout.astro';
+
+const page = await getPageEntry('investors/interest', 'investors/interest/index');
+const { Content } = await render(page);
+const { data } = page;
+---
+
+<FormLayout
+  title={data.title}
+  description={data.description}
+  eyebrow={data.eyebrow}
+  lead={INTEREST.lead}
+  path="/investors/interest/"
+  primary={jumpTo(INTEREST.start, '#investor-interest-form')}
+  updated={data.updated}
+  draft={data.draft}
+  ogSlot="og-network"
+>
+  <div class="prose"><Content /></div>
+  <InvestorInterestForm />
+
+  <Fragment slot="aside">
+    <AsideStyles />
+    <h2 class="aside-title">{INTEREST.asideHeading}</h2>
+    <p>{INTEREST.asideNote}</p>
+    <h2 class="aside-title">{INTEREST.nextHeading}</h2>
+    <Steps headingLevel={3} steps={INTEREST.next} />
+    <h2 class="aside-title">{INTEREST.asideLinksHeading}</h2>
+    <LinkList items={OPEN_NOW_LINKS} />
+    <NoFundingDisclaimer />
+  </Fragment>
+</FormLayout>

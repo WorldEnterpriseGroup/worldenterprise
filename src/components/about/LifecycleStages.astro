@@ -1,0 +1,139 @@
+---
+/**
+ * The five UBF lifecycle steps grouped under WE's three stages, Dream, Build and Grow: three columns, each linking to its stage page
+ * when that page is live, with the steps that belong to it and the picture each step paints in the UBF sky.
+ */
+import { getRouteState } from '../../lib/route-state.ts';
+import { href } from '../../lib/url.ts';
+import type { LifecycleStep } from './framework-data.ts';
+
+interface Props {
+  steps: readonly LifecycleStep[];
+  headingLevel?: 3 | 4;
+}
+
+const { steps, headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}` as 'h3' | 'h4';
+const state = await getRouteState();
+const STAGES = [
+  { name: 'Dream', path: '/program/dream/', line: 'Test the idea and write the plan.' },
+  { name: 'Build', path: '/program/build/', line: 'Carry out the plan and watch it closely.' },
+  { name: 'Grow', path: '/program/grow/', line: 'Widen what works and join the ecosystem.' },
+] as const;
+const columns = STAGES.map((stage) => ({ ...stage, live: state.isLive(stage.path), steps: steps.filter((s) => s.stage === stage.name) }));
+for (const column of columns) if (column.steps.length === 0) throw new Error(`LifecycleStages: no step maps to ${column.name}`);
+---
+
+<div class="lifecycle">
+  {
+    columns.map((column) => (
+      <section class:list={['lifecycle__stage', `lifecycle__stage--${column.name.toLowerCase()}`]} aria-labelledby={`lifecycle-${column.name.toLowerCase()}`}>
+        <H class="lifecycle__name" id={`lifecycle-${column.name.toLowerCase()}`}>
+          {column.live ? <a href={href(column.path)}>WE {column.name}</a> : <>WE {column.name}</>}
+        </H>
+        <p class="lifecycle__line">{column.line}</p>
+        <ol class="lifecycle__steps" role="list">
+          {column.steps.map((step) => (
+            <li class="lifecycle__step">
+              <span class="lifecycle__num" aria-hidden="true">
+                {step.step}
+              </span>
+              <span class="lifecycle__text">
+                <span class="lifecycle__title">
+                  <span class="visually-hidden">Step {step.step}: </span>
+                  {step.name}
+                </span>
+                <span class="lifecycle__desc">{step.line}</span>
+                <span class="lifecycle__picture">{step.picture}</span>
+              </span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .lifecycle {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+
+  .lifecycle__stage {
+    display: grid;
+    align-content: start;
+    gap: var(--sp-3);
+    padding: var(--sp-5);
+    border-radius: var(--radius-lg);
+    border-block-start: 4px solid var(--color-accent);
+    background: var(--color-bg);
+  }
+
+  .lifecycle__stage--build {
+    border-block-start-color: var(--color-cta);
+  }
+
+  .lifecycle__stage--grow {
+    border-block-start-color: var(--color-highlight);
+  }
+
+  .lifecycle__name {
+    margin: 0;
+    font-size: var(--fs-xl);
+  }
+
+  .lifecycle__line {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .lifecycle__steps {
+    display: grid;
+    gap: var(--sp-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .lifecycle__step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-3);
+    align-items: start;
+  }
+
+  .lifecycle__num {
+    display: grid;
+    place-items: center;
+    inline-size: 2.4rem;
+    block-size: 2.1rem;
+    clip-path: var(--hex-clip);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-family: var(--ff-display);
+    font-weight: 700;
+  }
+
+  .lifecycle__text {
+    display: grid;
+    gap: var(--sp-1);
+  }
+
+  .lifecycle__title {
+    font-weight: 700;
+  }
+
+  .lifecycle__picture {
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    font-style: italic;
+  }
+
+  @media (forced-colors: active) {
+    .lifecycle__num {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

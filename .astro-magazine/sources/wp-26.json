@@ -1,0 +1,2196 @@
+{
+  "wp": "WP-26",
+  "note": "Sources for the figures on /insights/ article pages (wave 11, issue #92). curl fetch times are exact; the two bls.gov pages refuse curl, so they were read with WebFetch and their time is nominal (the date, 2026-10-16, is exact). Figures reused from the /data/ hub cite fetches in wp-35.json. `figures` records, for every figure, the values it prints, generated from src/data/insight-figures and checked against it by tests/unit/wp-26.",
+  "fetches": [
+    {
+      "id": "census-bds-2023-fa",
+      "url": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_fa.csv",
+      "title": "Business Dynamics Statistics, firm age table (bds2023_fa.csv)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-16T16:24:49Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-bds-2023-fz",
+      "url": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_fz.csv",
+      "title": "Business Dynamics Statistics, firm size table (bds2023_fz.csv)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-16T16:24:50Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-bds-2023-sec-fa",
+      "url": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_sec_fa.csv",
+      "title": "Business Dynamics Statistics, sector by firm age table (bds2023_sec_fa.csv)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-16T16:24:50Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-bds-2023-economy",
+      "url": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023.csv",
+      "title": "Business Dynamics Statistics, economy-wide table (bds2023.csv)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-16T16:24:51Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-bds-faq",
+      "url": "https://www.census.gov/programs-surveys/bds/about/faq.html",
+      "title": "BDS FAQ",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-16T16:32:44Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-btos-national",
+      "url": "https://www.census.gov/hfp/btos/downloads/National.xlsx",
+      "title": "Business Trends and Outlook Survey, national estimates (National.xlsx)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-16T16:26:24Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-ai-use-story",
+      "url": "https://www.census.gov/library/stories/2026/05/ai-use-businesses.html",
+      "title": "Large Firms With at Least 20 Employees Biggest AI Users (America Counts, May 26, 2026)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-16T16:25:59Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "nist-ai-rmf",
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+      "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0), NIST AI 100-1",
+      "publisher": "National Institute of Standards and Technology",
+      "fetchedAt": "2026-10-16T16:27:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "owasp-llm-2025",
+      "url": "https://genai.owasp.org/llm-top-10/",
+      "title": "OWASP Top 10 for LLM Applications 2025",
+      "publisher": "OWASP Gen AI Security Project",
+      "fetchedAt": "2026-10-16T16:27:14Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "bls-tenure-2026",
+      "url": "https://www.bls.gov/news.release/tenure.t01.htm",
+      "title": "Employee Tenure, Table 1: Median years of tenure with current employer by age and sex",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "fetchedAt": "2026-10-16T16:30:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "bls-alternative-2023",
+      "url": "https://www.bls.gov/news.release/conemp.nr0.htm",
+      "title": "Contingent and Alternative Employment Arrangements, July 2023",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "fetchedAt": "2026-10-16T16:30:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    }
+  ],
+  "figures": [
+    {
+      "id": "bds-exit-by-firm-age",
+      "kind": "bars",
+      "title": "Share of establishments that closed in 2023, by the age of the firm that owned them",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_fa.csv",
+          "period": "1978 to 2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Rates are the published establishment exit rates (exits in 2023 over the average count of establishments in 2022 and 2023), rounded to one decimal.",
+      "values": [
+        [
+          "Age 1",
+          "25.7%"
+        ],
+        [
+          "Age 2",
+          "18.1%"
+        ],
+        [
+          "Age 3",
+          "14.0%"
+        ],
+        [
+          "Age 4",
+          "12.5%"
+        ],
+        [
+          "Age 5",
+          "11.5%"
+        ],
+        [
+          "Age 6 to 10",
+          "9.9%"
+        ],
+        [
+          "Age 11 to 15",
+          "8.5%"
+        ],
+        [
+          "Age 16 to 20",
+          "7.9%"
+        ],
+        [
+          "Age 21 to 25",
+          "7.5%"
+        ],
+        [
+          "Age 26 and older",
+          "7.1%"
+        ]
+      ],
+      "articles": [
+        "build/product-management-for-a-first-saas-roles-backlog-and-decisions",
+        "build/writing-a-product-requirements-document-people-read",
+        "funding/funding-a-first-saas-from-customer-revenue",
+        "grow/feedback-loops-that-reach-the-product",
+        "gtm/trials-demos-and-self-serve-how-a-customer-first-meets-the-product",
+        "ops/a-weekly-operating-rhythm-for-a-founder",
+        "ops/insurance-for-a-software-startup-what-exists-and-what-to-ask",
+        "starting/a-technical-founders-blind-spots-selling-pricing-and-saying-no"
+      ]
+    },
+    {
+      "id": "bds-jobs-by-firm-age",
+      "kind": "bars",
+      "title": "Share of U.S. employer jobs, by the age of the firm, 2023",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-economy"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_fa.csv",
+          "period": "1978 to 2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Each share is the sum of the published employment (or firm) counts of the age classes in the group, divided by the sum over all classes, which equals the economy-wide total in bds2023.csv.",
+      "values": [
+        [
+          "Age 0 to 5",
+          "10.7% of jobs, 36.2% of firms"
+        ],
+        [
+          "Age 6 to 10",
+          "7.8% of jobs, 16.4% of firms"
+        ],
+        [
+          "Age 11 to 15",
+          "6.8% of jobs, 10.9% of firms"
+        ],
+        [
+          "Age 16 to 25",
+          "12.4% of jobs, 15.9% of firms"
+        ],
+        [
+          "Age 26 and older",
+          "24.2% of jobs, 15.4% of firms"
+        ],
+        [
+          "Founded before 1977 (exact age not measured)",
+          "38.1% of jobs, 5.4% of firms"
+        ]
+      ],
+      "articles": [
+        "dream/mapping-the-alternatives-a-customer-already-uses",
+        "fundable/answering-a-security-and-privacy-questionnaire",
+        "fundable/customer-evidence-and-reference-calls",
+        "grow/your-first-ten-customers-a-founder-led-sequence",
+        "gtm/customer-references-and-case-studies-without-breaking-ftc-rules",
+        "gtm/founder-led-sales-calls-a-structure",
+        "models/b2b-saas-how-the-model-works-and-what-it-asks-of-a-first-company",
+        "models/platforms-and-ecosystems-when-a-product-becomes-a-platform",
+        "pathways/acquiring-a-small-software-product-instead-of-building-one"
+      ]
+    },
+    {
+      "id": "bds-firms-by-size",
+      "kind": "bars",
+      "title": "U.S. employer firms by number of employees, 2023",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fz"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, firm size",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_fz.csv",
+          "period": "2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Shares are published firm counts divided by the sum of the size classes in the firm-size file; the five largest classes are added together.",
+      "values": [
+        [
+          "1 to 4 employees",
+          "59.7%"
+        ],
+        [
+          "5 to 9 employees",
+          "17.3%"
+        ],
+        [
+          "10 to 19 employees",
+          "11.1%"
+        ],
+        [
+          "20 to 99 employees",
+          "9.7%"
+        ],
+        [
+          "100 to 499 employees",
+          "1.7%"
+        ],
+        [
+          "500 or more employees",
+          "0.4%"
+        ]
+      ],
+      "articles": [
+        "build/build-versus-buy-for-auth-billing-and-email",
+        "build/observability-for-a-small-team-logs-metrics-and-alerts-you-will-actually-read",
+        "dream/bottom-up-market-sizing-for-a-first-saas",
+        "fundable/ip-contracts-and-access-diligence-for-small-engineering-teams",
+        "grow/pricing-page-fundamentals-for-a-first-saas",
+        "grow/support-at-five-customers-not-fifty",
+        "gtm/choosing-your-first-channels",
+        "gtm/cold-outreach-that-follows-can-spam",
+        "legal/privacy-law-basics-for-a-small-product",
+        "legal/terms-of-service-and-privacy-policy-what-each-document-is-for",
+        "models/product-led-and-sales-led-growth-choosing-between-them",
+        "models/usage-based-seat-based-and-hybrid-pricing-models",
+        "ops/choosing-and-managing-a-small-companys-software-stack",
+        "ops/the-tax-calendar-a-us-software-startup-should-know-exists",
+        "starting/solo-founders-where-a-second-pair-of-eyes-comes-from",
+        "team/your-first-hire-what-to-settle-before-you-write-the-job"
+      ]
+    },
+    {
+      "id": "bds-startups-by-year",
+      "kind": "line",
+      "title": "New U.S. employer firms each year, 1978 to 2023",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_fa.csv",
+          "period": "1978 to 2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Values are the published firm counts at firm age 0, copied as printed.",
+      "values": [
+        [
+          "1978",
+          "488,103"
+        ],
+        [
+          "1979",
+          "473,471"
+        ],
+        [
+          "1980",
+          "439,667"
+        ],
+        [
+          "1981",
+          "430,100"
+        ],
+        [
+          "1982",
+          "418,627"
+        ],
+        [
+          "1983",
+          "456,610"
+        ],
+        [
+          "1984",
+          "529,584"
+        ],
+        [
+          "1985",
+          "512,439"
+        ],
+        [
+          "1986",
+          "517,516"
+        ],
+        [
+          "1987",
+          "513,574"
+        ],
+        [
+          "1988",
+          "507,091"
+        ],
+        [
+          "1989",
+          "502,558"
+        ],
+        [
+          "1990",
+          "493,080"
+        ],
+        [
+          "1991",
+          "450,750"
+        ],
+        [
+          "1992",
+          "438,701"
+        ],
+        [
+          "1993",
+          "461,135"
+        ],
+        [
+          "1994",
+          "475,989"
+        ],
+        [
+          "1995",
+          "495,030"
+        ],
+        [
+          "1996",
+          "493,289"
+        ],
+        [
+          "1997",
+          "494,483"
+        ],
+        [
+          "1998",
+          "477,206"
+        ],
+        [
+          "1999",
+          "451,218"
+        ],
+        [
+          "2000",
+          "446,204"
+        ],
+        [
+          "2001",
+          "436,993"
+        ],
+        [
+          "2002",
+          "455,162"
+        ],
+        [
+          "2003",
+          "467,532"
+        ],
+        [
+          "2004",
+          "505,056"
+        ],
+        [
+          "2005",
+          "518,727"
+        ],
+        [
+          "2006",
+          "541,317"
+        ],
+        [
+          "2007",
+          "509,517"
+        ],
+        [
+          "2008",
+          "471,285"
+        ],
+        [
+          "2009",
+          "395,235"
+        ],
+        [
+          "2010",
+          "379,145"
+        ],
+        [
+          "2011",
+          "395,680"
+        ],
+        [
+          "2012",
+          "408,546"
+        ],
+        [
+          "2013",
+          "405,350"
+        ],
+        [
+          "2014",
+          "411,948"
+        ],
+        [
+          "2015",
+          "421,155"
+        ],
+        [
+          "2016",
+          "442,414"
+        ],
+        [
+          "2017",
+          "439,859"
+        ],
+        [
+          "2018",
+          "442,078"
+        ],
+        [
+          "2019",
+          "453,027"
+        ],
+        [
+          "2020",
+          "455,725"
+        ],
+        [
+          "2021",
+          "485,256"
+        ],
+        [
+          "2022",
+          "521,312"
+        ],
+        [
+          "2023",
+          "508,777"
+        ]
+      ],
+      "articles": [
+        "dream/is-your-saas-idea-a-business-or-a-feature",
+        "legal/trademark-name-clearance-before-you-commit",
+        "starting/founding-from-outside-the-united-states-what-changes-for-a-remote-founder"
+      ]
+    },
+    {
+      "id": "bed-information-survival-2015",
+      "kind": "line",
+      "title": "Share of establishments still open, by years since opening, 2015 opening-year group",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "bls-bed-information"
+        },
+        {
+          "wp": "WP-35",
+          "sourceId": "bls-bed-total"
+        }
+      ],
+      "sources": [
+        {
+          "label": "BLS Business Employment Dynamics, Table 7, Information (NAICS 51)",
+          "href": "https://www.bls.gov/bdm/us_age_naics_51_table7.txt",
+          "period": "Data through March 2025"
+        },
+        {
+          "label": "U.S. Bureau of Labor Statistics, Business Employment Dynamics, Table 7",
+          "href": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+          "period": "Data through March 2025"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Values are the published survival rates since birth, copied as printed.",
+      "values": [
+        [
+          "Year 0",
+          "100.0%",
+          "100.0%"
+        ],
+        [
+          "Year 1",
+          "80.8%",
+          "79.6%"
+        ],
+        [
+          "Year 2",
+          "70.0%",
+          "69.1%"
+        ],
+        [
+          "Year 3",
+          "60.8%",
+          "61.4%"
+        ],
+        [
+          "Year 4",
+          "53.3%",
+          "55.4%"
+        ],
+        [
+          "Year 5",
+          "46.8%",
+          "50.2%"
+        ],
+        [
+          "Year 6",
+          "42.6%",
+          "46.4%"
+        ],
+        [
+          "Year 7",
+          "38.6%",
+          "43.6%"
+        ],
+        [
+          "Year 8",
+          "35.4%",
+          "40.3%"
+        ],
+        [
+          "Year 9",
+          "33.0%",
+          "37.4%"
+        ],
+        [
+          "Year 10",
+          "30.0%",
+          "34.7%"
+        ]
+      ],
+      "articles": [
+        "build/a-boring-first-technology-stack",
+        "build/architecture-decisions-to-defer-in-the-first-six-months",
+        "build/shipping-safely-with-feature-flags-and-rollback",
+        "legal/founder-ip-assignment-and-confidentiality-agreements",
+        "legal/open-source-licenses-inside-a-commercial-product",
+        "models/api-first-products-and-developer-tools",
+        "models/open-core-and-open-source-businesses",
+        "starting/a-non-technical-founder-building-saas-what-to-own-and-what-to-delegate"
+      ]
+    },
+    {
+      "id": "bds-exit-health-care",
+      "kind": "bars",
+      "title": "Share of establishments that closed in 2023, by firm age: Health care and social assistance",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-sec-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, sector by firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_sec_fa.csv",
+          "period": "2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Rates are the published establishment exit rates (exits in 2023 over the average count of establishments in 2022 and 2023), rounded to one decimal.",
+      "values": [
+        [
+          "Age 1",
+          "17.4%"
+        ],
+        [
+          "Age 2",
+          "12.9%"
+        ],
+        [
+          "Age 3",
+          "10.9%"
+        ],
+        [
+          "Age 4",
+          "9.1%"
+        ],
+        [
+          "Age 5",
+          "8.8%"
+        ],
+        [
+          "Age 6 to 10",
+          "7.7%"
+        ],
+        [
+          "Age 11 to 15",
+          "6.7%"
+        ],
+        [
+          "Age 16 to 20",
+          "6.3%"
+        ],
+        [
+          "Age 21 to 25",
+          "6.1%"
+        ],
+        [
+          "Age 26 and older",
+          "8.0%"
+        ]
+      ],
+      "articles": [
+        "sectors/healthtech-saas-considerations-before-you-build"
+      ]
+    },
+    {
+      "id": "bds-exit-finance",
+      "kind": "bars",
+      "title": "Share of establishments that closed in 2023, by firm age: Finance and insurance",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-sec-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, sector by firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_sec_fa.csv",
+          "period": "2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Rates are the published establishment exit rates (exits in 2023 over the average count of establishments in 2022 and 2023), rounded to one decimal.",
+      "values": [
+        [
+          "Age 1",
+          "25.0%"
+        ],
+        [
+          "Age 2",
+          "17.3%"
+        ],
+        [
+          "Age 3",
+          "13.0%"
+        ],
+        [
+          "Age 4",
+          "11.8%"
+        ],
+        [
+          "Age 5",
+          "10.3%"
+        ],
+        [
+          "Age 6 to 10",
+          "9.5%"
+        ],
+        [
+          "Age 11 to 15",
+          "10.0%"
+        ],
+        [
+          "Age 16 to 20",
+          "8.9%"
+        ],
+        [
+          "Age 21 to 25",
+          "9.7%"
+        ],
+        [
+          "Age 26 and older",
+          "8.7%"
+        ]
+      ],
+      "articles": [
+        "sectors/fintech-saas-considerations-before-you-build"
+      ]
+    },
+    {
+      "id": "bds-exit-education",
+      "kind": "bars",
+      "title": "Share of establishments that closed in 2023, by firm age: Educational services",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-sec-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, sector by firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_sec_fa.csv",
+          "period": "2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Rates are the published establishment exit rates (exits in 2023 over the average count of establishments in 2022 and 2023), rounded to one decimal.",
+      "values": [
+        [
+          "Age 1",
+          "22.0%"
+        ],
+        [
+          "Age 2",
+          "15.3%"
+        ],
+        [
+          "Age 3",
+          "11.6%"
+        ],
+        [
+          "Age 4",
+          "11.1%"
+        ],
+        [
+          "Age 5",
+          "10.0%"
+        ],
+        [
+          "Age 6 to 10",
+          "8.3%"
+        ],
+        [
+          "Age 11 to 15",
+          "8.1%"
+        ],
+        [
+          "Age 16 to 20",
+          "6.1%"
+        ],
+        [
+          "Age 21 to 25",
+          "5.4%"
+        ],
+        [
+          "Age 26 and older",
+          "5.1%"
+        ]
+      ],
+      "articles": [
+        "sectors/edtech-saas-considerations-before-you-build"
+      ]
+    },
+    {
+      "id": "bds-exit-professional",
+      "kind": "bars",
+      "title": "Share of establishments that closed in 2023, by firm age: Professional, scientific and technical services",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-sec-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, sector by firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_sec_fa.csv",
+          "period": "2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Rates are the published establishment exit rates (exits in 2023 over the average count of establishments in 2022 and 2023), rounded to one decimal.",
+      "values": [
+        [
+          "Age 1",
+          "26.0%"
+        ],
+        [
+          "Age 2",
+          "19.2%"
+        ],
+        [
+          "Age 3",
+          "15.3%"
+        ],
+        [
+          "Age 4",
+          "13.5%"
+        ],
+        [
+          "Age 5",
+          "12.0%"
+        ],
+        [
+          "Age 6 to 10",
+          "10.7%"
+        ],
+        [
+          "Age 11 to 15",
+          "9.7%"
+        ],
+        [
+          "Age 16 to 20",
+          "8.7%"
+        ],
+        [
+          "Age 21 to 25",
+          "8.0%"
+        ],
+        [
+          "Age 26 and older",
+          "8.3%"
+        ]
+      ],
+      "articles": [
+        "sectors/government-software-considerations-for-selling-to-the-public-sector",
+        "sectors/legal-software-considerations-before-you-build"
+      ]
+    },
+    {
+      "id": "bds-exit-information",
+      "kind": "bars",
+      "title": "Share of establishments that closed in 2023, by firm age: Information",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-sec-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, sector by firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_sec_fa.csv",
+          "period": "2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Rates are the published establishment exit rates (exits in 2023 over the average count of establishments in 2022 and 2023), rounded to one decimal.",
+      "values": [
+        [
+          "Age 1",
+          "29.8%"
+        ],
+        [
+          "Age 2",
+          "21.4%"
+        ],
+        [
+          "Age 3",
+          "18.7%"
+        ],
+        [
+          "Age 4",
+          "17.2%"
+        ],
+        [
+          "Age 5",
+          "15.5%"
+        ],
+        [
+          "Age 6 to 10",
+          "13.3%"
+        ],
+        [
+          "Age 11 to 15",
+          "11.9%"
+        ],
+        [
+          "Age 16 to 20",
+          "10.1%"
+        ],
+        [
+          "Age 21 to 25",
+          "10.4%"
+        ],
+        [
+          "Age 26 and older",
+          "9.8%"
+        ]
+      ],
+      "articles": [
+        "sectors/security-software-considerations-before-you-build"
+      ]
+    },
+    {
+      "id": "bds-exit-administrative",
+      "kind": "bars",
+      "title": "Share of establishments that closed in 2023, by firm age: Administrative and support services",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-sec-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, sector by firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_sec_fa.csv",
+          "period": "2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Rates are the published establishment exit rates (exits in 2023 over the average count of establishments in 2022 and 2023), rounded to one decimal.",
+      "values": [
+        [
+          "Age 1",
+          "30.7%"
+        ],
+        [
+          "Age 2",
+          "20.2%"
+        ],
+        [
+          "Age 3",
+          "14.8%"
+        ],
+        [
+          "Age 4",
+          "13.5%"
+        ],
+        [
+          "Age 5",
+          "11.9%"
+        ],
+        [
+          "Age 6 to 10",
+          "10.7%"
+        ],
+        [
+          "Age 11 to 15",
+          "10.4%"
+        ],
+        [
+          "Age 16 to 20",
+          "8.6%"
+        ],
+        [
+          "Age 21 to 25",
+          "11.3%"
+        ],
+        [
+          "Age 26 and older",
+          "9.3%"
+        ]
+      ],
+      "articles": [
+        "sectors/hr-and-recruiting-software-considerations-before-you-build"
+      ]
+    },
+    {
+      "id": "bds-exit-utilities",
+      "kind": "bars",
+      "title": "Share of establishments that closed in 2023, by firm age: Utilities",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-sec-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-2023-fa"
+        },
+        {
+          "wp": "WP-26",
+          "sourceId": "census-bds-faq"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Dynamics Statistics, sector by firm age",
+          "href": "https://www2.census.gov/programs-surveys/bds/tables/time-series/2023/bds2023_sec_fa.csv",
+          "period": "2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Rates are the published establishment exit rates (exits in 2023 over the average count of establishments in 2022 and 2023), rounded to one decimal.",
+      "values": [
+        [
+          "Age 1",
+          "25.4%"
+        ],
+        [
+          "Age 2",
+          "15.5%"
+        ],
+        [
+          "Age 3",
+          "13.6%"
+        ],
+        [
+          "Age 4",
+          "10.2%"
+        ],
+        [
+          "Age 5",
+          "8.8%"
+        ],
+        [
+          "Age 6 to 10",
+          "8.7%"
+        ],
+        [
+          "Age 11 to 15",
+          "4.7%"
+        ],
+        [
+          "Age 16 to 20",
+          "4.4%"
+        ],
+        [
+          "Age 21 to 25",
+          "9.1%"
+        ],
+        [
+          "Age 26 and older",
+          "3.0%"
+        ]
+      ],
+      "articles": [
+        "sectors/climate-tech-software-considerations-before-you-build"
+      ]
+    },
+    {
+      "id": "btos-ai-use",
+      "kind": "line",
+      "title": "Share of U.S. businesses using AI in any business function, two-week periods, November 2025 to October 2026",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-btos-national"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Trends and Outlook Survey",
+          "href": "https://www.census.gov/hfp/btos/downloads/National.xlsx",
+          "period": "November 17, 2025 to October 4, 2026"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Values are the published national estimates (answer \"Yes\"), copied as printed.",
+      "values": [
+        [
+          "Nov 17 to 30, 2025",
+          "17.3%",
+          "21.1%"
+        ],
+        [
+          "Dec 1 to 14, 2025",
+          "17.2%",
+          "20.9%"
+        ],
+        [
+          "Dec 15 to 28, 2025",
+          "17.8%",
+          "21.3%"
+        ],
+        [
+          "Dec 29, 2025 to Jan 11, 2026",
+          "17.7%",
+          "22.4%"
+        ],
+        [
+          "Jan 12 to 25, 2026",
+          "18.2%",
+          "22.1%"
+        ],
+        [
+          "Jan 26 to Feb 8, 2026",
+          "18.9%",
+          "22.1%"
+        ],
+        [
+          "Feb 9 to 22, 2026",
+          "17.5%",
+          "21.0%"
+        ],
+        [
+          "Feb 23 to Mar 8, 2026",
+          "18.2%",
+          "21.8%"
+        ],
+        [
+          "Mar 9 to 22, 2026",
+          "18.9%",
+          "22.3%"
+        ],
+        [
+          "Mar 23 to Apr 5, 2026",
+          "19.1%",
+          "22.5%"
+        ],
+        [
+          "Apr 6 to 19, 2026",
+          "19.8%",
+          "23.0%"
+        ],
+        [
+          "Apr 20 to May 3, 2026",
+          "19.8%",
+          "22.8%"
+        ],
+        [
+          "May 4 to 17, 2026",
+          "19.5%",
+          "22.7%"
+        ],
+        [
+          "May 18 to 31, 2026",
+          "20.6%",
+          "23.7%"
+        ],
+        [
+          "Jun 1 to 14, 2026",
+          "20.6%",
+          "23.9%"
+        ],
+        [
+          "Jun 15 to 28, 2026",
+          "20.6%",
+          "23.7%"
+        ],
+        [
+          "Jun 29 to Jul 12, 2026",
+          "21.7%",
+          "24.5%"
+        ],
+        [
+          "Jul 13 to 26, 2026",
+          "21.5%",
+          "24.3%"
+        ],
+        [
+          "Jul 27 to Aug 9, 2026",
+          "21.8%",
+          "25.9%"
+        ],
+        [
+          "Aug 10 to 23, 2026",
+          "22.4%",
+          "25.9%"
+        ],
+        [
+          "Aug 24 to Sep 6, 2026",
+          "23.2%",
+          "27.3%"
+        ],
+        [
+          "Sep 7 to 20, 2026",
+          "23.8%",
+          "27.6%"
+        ],
+        [
+          "Sep 21 to Oct 4, 2026",
+          "23.8%",
+          "27.7%"
+        ]
+      ],
+      "articles": [
+        "ai/ai-regulation-for-a-small-saas-company-what-to-ask-counsel",
+        "ai/choosing-a-model-provider-the-questions-that-matter"
+      ]
+    },
+    {
+      "id": "btos-ai-by-sector",
+      "kind": "bars",
+      "title": "Share of businesses using AI, selected sectors, survey period ending May 3, 2026",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "census-ai-use-story"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, AI Use at U.S. Businesses (Business Trends and Outlook Survey)",
+          "href": "https://www.census.gov/library/stories/2026/05/ai-use-businesses.html",
+          "period": "data collected to May 3, 2026"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Values are quoted from the Census Bureau story; the retail figure is printed there as \"around 14%\".",
+      "values": [
+        [
+          "Information",
+          "39.7%"
+        ],
+        [
+          "Finance and insurance",
+          "33.9%"
+        ],
+        [
+          "All businesses",
+          "19.8%"
+        ],
+        [
+          "Retail trade",
+          "about 14%"
+        ]
+      ],
+      "articles": [
+        "ai/ai-features-and-customer-data-what-to-decide-first"
+      ]
+    },
+    {
+      "id": "nist-ai-rmf-core",
+      "kind": "bars",
+      "title": "The four functions of the NIST AI Risk Management Framework, by number of subcategories",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "nist-ai-rmf"
+        }
+      ],
+      "sources": [
+        {
+          "label": "NIST, AI Risk Management Framework 1.0 (NIST AI 100-1)",
+          "href": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf",
+          "period": "January 2023, Tables 1 to 4"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Counts are the numbered categories and subcategories in Tables 1 to 4 of the framework.",
+      "values": [
+        [
+          "Govern",
+          "19 subcategories in 6 categories"
+        ],
+        [
+          "Map",
+          "18 subcategories in 5 categories"
+        ],
+        [
+          "Measure",
+          "22 subcategories in 4 categories"
+        ],
+        [
+          "Manage",
+          "13 subcategories in 4 categories"
+        ]
+      ],
+      "articles": [
+        "ai/ai-regulation-for-a-small-saas-company-what-to-ask-counsel",
+        "ai/human-review-in-an-ai-feature-where-to-keep-a-person-in-the-loop",
+        "ai/the-nist-ai-risk-management-framework-for-a-small-team"
+      ]
+    },
+    {
+      "id": "owasp-llm-top-10-2025",
+      "kind": "rank",
+      "title": "The OWASP Top 10 for LLM Applications, 2025 list",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "owasp-llm-2025"
+        }
+      ],
+      "sources": [
+        {
+          "label": "OWASP Gen AI Security Project, Top 10 for LLM Applications 2025",
+          "href": "https://genai.owasp.org/llm-top-10/",
+          "period": "2025 list"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Codes and names are copied as published.",
+      "values": [
+        [
+          "LLM01:2025",
+          "Prompt Injection"
+        ],
+        [
+          "LLM02:2025",
+          "Sensitive Information Disclosure"
+        ],
+        [
+          "LLM03:2025",
+          "Supply Chain"
+        ],
+        [
+          "LLM04:2025",
+          "Data and Model Poisoning"
+        ],
+        [
+          "LLM05:2025",
+          "Improper Output Handling"
+        ],
+        [
+          "LLM06:2025",
+          "Excessive Agency"
+        ],
+        [
+          "LLM07:2025",
+          "System Prompt Leakage"
+        ],
+        [
+          "LLM08:2025",
+          "Vector and Embedding Weaknesses"
+        ],
+        [
+          "LLM09:2025",
+          "Misinformation"
+        ],
+        [
+          "LLM10:2025",
+          "Unbounded Consumption"
+        ]
+      ],
+      "articles": [
+        "ai/evaluating-an-llm-feature-before-you-ship-it",
+        "ai/metering-and-budgeting-model-usage",
+        "ai/prompt-injection-and-the-owasp-top-10-for-llm-applications",
+        "ai/retrieval-augmented-generation-what-it-is-and-where-it-breaks"
+      ]
+    },
+    {
+      "id": "bls-tenure-by-age",
+      "kind": "bars",
+      "title": "Median years with the current employer, by age, January 2026",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "bls-tenure-2026"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Bureau of Labor Statistics, Employee Tenure, Table 1",
+          "href": "https://www.bls.gov/news.release/tenure.t01.htm",
+          "period": "January 2026"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Values are the published medians for both sexes, copied as printed.",
+      "values": [
+        [
+          "Ages 20 to 24",
+          "1.5 years"
+        ],
+        [
+          "Ages 25 to 34",
+          "3.0 years"
+        ],
+        [
+          "Ages 35 to 44",
+          "4.7 years"
+        ],
+        [
+          "Ages 45 to 54",
+          "7.0 years"
+        ],
+        [
+          "Ages 55 to 64",
+          "9.6 years"
+        ],
+        [
+          "Ages 65 and over",
+          "9.9 years"
+        ],
+        [
+          "All workers 16 and over",
+          "4.1 years"
+        ]
+      ],
+      "articles": [
+        "build/an-operating-rhythm-for-a-remote-offshore-team",
+        "build/what-a-dedicated-team-seat-is-and-is-not",
+        "ops/meetings-async-work-and-decision-records-for-a-small-team",
+        "pathways/joining-as-a-founding-team-member-what-to-ask-before-you-commit",
+        "team/offer-letters-what-they-should-state",
+        "team/onboarding-a-new-team-member-what-to-prepare-before-day-one",
+        "team/structured-interviews-for-a-small-team",
+        "team/writing-a-job-description-people-can-answer",
+        "team/writing-down-how-a-remote-team-works-a-team-handbook"
+      ]
+    },
+    {
+      "id": "bls-alternative-arrangements",
+      "kind": "bars",
+      "title": "Workers in alternative arrangements as a share of total U.S. employment, July 2023",
+      "ledger": [
+        {
+          "wp": "WP-26",
+          "sourceId": "bls-alternative-2023"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Bureau of Labor Statistics, Contingent and Alternative Employment Arrangements",
+          "href": "https://www.bls.gov/news.release/conemp.nr0.htm",
+          "period": "July 2023"
+        }
+      ],
+      "retrieved": "2026-10-16",
+      "derived": "Values are quoted from the release, copied as printed.",
+      "values": [
+        [
+          "Independent contractors",
+          "7.4% (11.9 million)"
+        ],
+        [
+          "On-call workers",
+          "1.7% (2.8 million)"
+        ],
+        [
+          "Temporary help agency workers",
+          "0.6% (945,000)"
+        ],
+        [
+          "Workers provided by contract firms",
+          "0.5% (862,000)"
+        ]
+      ],
+      "articles": [
+        "pathways/paying-a-first-team-before-funding-the-options-and-what-each-risks",
+        "team/contractors-and-employees-the-classification-tests",
+        "team/hiring-across-borders-employees-contractors-and-employers-of-record"
+      ]
+    },
+    {
+      "id": "carta-round-gaps",
+      "kind": "bars",
+      "title": "Median years between funding rounds",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "carta-spm-q1-2026"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Carta, State of Private Markets: Q1 2026",
+          "href": "https://carta.com/data/state-of-private-markets-q1-2026-full-report/",
+          "period": "2026-05-29"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Single figures quoted from the report as printed; no dataset is re-hosted.",
+      "values": [
+        [
+          "Seed to Series A",
+          "2.0 years"
+        ],
+        [
+          "Series A to Series B",
+          "2.1 years"
+        ],
+        [
+          "Series B to Series C",
+          "2.4 years"
+        ]
+      ],
+      "articles": [
+        "fundable/evidence-over-narrative-what-diligence-actually-tests",
+        "fundable/ordering-a-pre-seed-evidence-pack",
+        "fundable/the-founder-time-budget-of-a-raise",
+        "funding/revenue-based-financing-and-venture-debt-when-they-apply",
+        "funding/runway-and-burn-the-arithmetic",
+        "pathways/customers-as-capital-pilots-prepayment-and-design-partners"
+      ]
+    },
+    {
+      "id": "carta-round-ages",
+      "kind": "bars",
+      "title": "Median age of the company at each round",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "carta-spm-q1-2026"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Carta, State of Private Markets: Q1 2026",
+          "href": "https://carta.com/data/state-of-private-markets-q1-2026-full-report/",
+          "period": "2026-05-29"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Single figures quoted from the report as printed; no dataset is re-hosted.",
+      "values": [
+        [
+          "Series A",
+          "2.8 years old"
+        ],
+        [
+          "Series D",
+          "7.4 years old"
+        ],
+        [
+          "Series E or later",
+          "9.5 years old"
+        ]
+      ],
+      "articles": [
+        "fundable/choosing-the-right-first-investors-for-a-saas-company",
+        "funding/angels-micro-funds-and-funds-what-the-rules-say-and-what-to-ask",
+        "funding/funding-a-software-startup-the-routes",
+        "pathways/matching-a-funding-route-to-a-stage-a-decision-guide"
+      ]
+    },
+    {
+      "id": "carta-dilution",
+      "kind": "bars",
+      "title": "Median ownership given up in each round, by stage",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "carta-spm-q1-2026"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Carta, State of Private Markets: Q1 2026",
+          "href": "https://carta.com/data/state-of-private-markets-q1-2026-full-report/",
+          "period": "2026-05-29"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Single figures quoted from the report as printed; no dataset is re-hosted.",
+      "values": [
+        [
+          "Seed",
+          "about 19%"
+        ],
+        [
+          "Series A",
+          "about 18%"
+        ],
+        [
+          "Series B",
+          "about 13%"
+        ],
+        [
+          "Series C",
+          "about 9.5%"
+        ],
+        [
+          "Series D",
+          "about 4.9%"
+        ]
+      ],
+      "articles": [
+        "fundable/questions-to-ask-your-counsel-before-you-sign",
+        "funding/cap-table-basics-for-founders",
+        "funding/reading-a-term-sheet-line-by-line",
+        "funding/safe-or-convertible-note-how-the-two-instruments-differ",
+        "legal/the-83b-election-and-its-deadline",
+        "team/stock-options-for-early-employees-what-an-option-is-and-what-to-ask"
+      ]
+    },
+    {
+      "id": "waffle-2015",
+      "kind": "waffle",
+      "title": "Of 100 establishments that opened in 2015, how many were still open at year 10",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "bls-bed-total"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Bureau of Labor Statistics, Business Employment Dynamics, Table 7",
+          "href": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+          "period": "Data through March 2025"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Each share is a difference between two published survival rates (all private industries); the squares are rounded to add to 100.",
+      "values": [
+        [
+          "closed in year 1",
+          "20.4%"
+        ],
+        [
+          "closed in years 2 to 5",
+          "29.4%"
+        ],
+        [
+          "closed in years 6 to 10",
+          "15.5%"
+        ],
+        [
+          "still open at year 10",
+          "34.7%"
+        ]
+      ],
+      "articles": [
+        "dream/kill-criteria-deciding-in-advance-when-to-stop",
+        "funding/crowdfunding-and-regulation-cf-for-a-software-company",
+        "funding/grants-and-sbir-programs-for-software-companies",
+        "legal/founder-equity-splits-and-vesting",
+        "ops/books-and-basic-accounting-for-a-software-startup",
+        "ops/working-through-a-disagreement-with-a-co-founder",
+        "starting/choosing-a-co-founder-or-deciding-not-to",
+        "starting/what-a-first-time-founder-should-settle-first"
+      ]
+    },
+    {
+      "id": "waffle-2021-applications",
+      "kind": "waffle",
+      "title": "Of 1,000 business applications filed in 2021, how many became employers",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "census-bfs-monthly"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Formation Statistics",
+          "href": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv",
+          "period": "Release of 2026-10-14 (September 2026 data)"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Counts are the 2021 annual sums of applications (BA_BA) and of formations within four and eight quarters; the squares are rounded to add to 1,000. An application is not a launched business.",
+      "values": [
+        [
+          "formed within 4 quarters",
+          "315,318"
+        ],
+        [
+          "formed in quarters 5 to 8",
+          "87,754"
+        ],
+        [
+          "no employer business within 8 quarters",
+          "4,987,744"
+        ]
+      ],
+      "articles": [
+        "dream/fake-door-and-concierge-tests",
+        "dream/write-the-problem-brief-before-the-code",
+        "gtm/landing-page-tests-you-can-read",
+        "legal/choosing-an-entity-llc-or-c-corporation"
+      ]
+    },
+    {
+      "id": "slope-payroll",
+      "kind": "slope",
+      "title": "Average quarters from application to first payroll, 2005 and 2021",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "census-bfs-monthly"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Formation Statistics",
+          "href": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv",
+          "period": "Release of 2026-10-14 (September 2026 data)"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Values are the published average duration (BF_DUR4Q and BF_DUR8Q) for applications filed that year. They cover only applications that formed an employer business.",
+      "values": [
+        [
+          "Within 8 quarters",
+          "1.48",
+          "2.29"
+        ],
+        [
+          "Within 4 quarters",
+          "0.95",
+          "1.39"
+        ]
+      ],
+      "articles": [
+        "build/cutting-an-mvp-the-cut-line-test",
+        "build/estimating-a-first-release-ranges-and-what-they-hide",
+        "pathways/from-side-project-to-company-the-decision-points",
+        "starting/part-time-to-full-time-deciding-when-to-commit"
+      ]
+    },
+    {
+      "id": "slope-sectors",
+      "kind": "slope",
+      "title": "Business applications by industry, 2005 and 2025",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "census-bfs-monthly"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Census Bureau, Business Formation Statistics",
+          "href": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv",
+          "period": "Release of 2026-10-14 (September 2026 data)"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Values are annual sums of monthly counts.",
+      "values": [
+        [
+          "Retail trade",
+          "299948",
+          "1166015"
+        ],
+        [
+          "Professional and technical",
+          "309091",
+          "764007"
+        ],
+        [
+          "Construction",
+          "356729",
+          "519090"
+        ],
+        [
+          "Health care",
+          "148083",
+          "352046"
+        ],
+        [
+          "Transportation",
+          "127188",
+          "366727"
+        ],
+        [
+          "Information",
+          "49080",
+          "110329"
+        ],
+        [
+          "Accommodation and food",
+          "124827",
+          "300236"
+        ]
+      ],
+      "articles": [
+        "dream/customer-discovery-interviews-without-false-positives",
+        "gtm/a-one-page-positioning-statement",
+        "gtm/marketplaces-and-partner-channels-when-a-listing-helps",
+        "gtm/writing-a-landing-page-that-says-what-the-product-does",
+        "models/marketplaces-the-two-sided-start-up-problem",
+        "models/vertical-saas-depth-over-breadth",
+        "pathways/from-client-work-to-a-product-productizing-a-service-business"
+      ]
+    },
+    {
+      "id": "ridgeline-exits",
+      "kind": "ridgeline",
+      "title": "Share of survivors that close in each year of life, seven opening-year groups",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "bls-bed-total"
+        }
+      ],
+      "sources": [
+        {
+          "label": "U.S. Bureau of Labor Statistics, Business Employment Dynamics, Table 7",
+          "href": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+          "period": "Data through March 2025"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Each value is 100 minus the published survival rate of the previous year's survivors (all private industries).",
+      "values": [
+        [
+          "1994",
+          "20.4",
+          "14.4",
+          "11",
+          "10.4",
+          "8.6",
+          "8.8",
+          "8.3",
+          "7.6",
+          "6.7",
+          "5.9",
+          "5.5",
+          "4.5",
+          "5.4"
+        ],
+        [
+          "1997",
+          "21.5",
+          "13",
+          "11.9",
+          "11.8",
+          "10.2",
+          "8.3",
+          "7.3",
+          "7",
+          "5.4",
+          "6.1",
+          "5.8",
+          "7.1",
+          "5.9"
+        ],
+        [
+          "2000",
+          "21.6",
+          "15.8",
+          "11.8",
+          "9.3",
+          "8.6",
+          "7.3",
+          "7",
+          "7.2",
+          "8",
+          "7.4",
+          "5",
+          "4.6",
+          "4"
+        ],
+        [
+          "2003",
+          "20.7",
+          "13.7",
+          "10.2",
+          "10",
+          "9.6",
+          "10.3",
+          "8.7",
+          "6.9",
+          "5.4",
+          "5.1",
+          "5.5",
+          "4.9",
+          "5.2"
+        ],
+        [
+          "2006",
+          "21.7",
+          "15.4",
+          "14.5",
+          "12.1",
+          "8.8",
+          "6.8",
+          "6.4",
+          "6.4",
+          "6.2",
+          "5.9",
+          "5.4",
+          "5.6",
+          "5.5"
+        ],
+        [
+          "2009",
+          "23.3",
+          "13.4",
+          "9.8",
+          "8.5",
+          "8.5",
+          "7.9",
+          "7.3",
+          "7",
+          "6.3",
+          "6.1",
+          "6.6",
+          "5.9",
+          "4.7"
+        ],
+        [
+          "2012",
+          "20.8",
+          "13.3",
+          "10.9",
+          "9.6",
+          "9.4",
+          "7.5",
+          "7.4",
+          "7.6",
+          "6.8",
+          "5.6",
+          "7.6",
+          "6.5",
+          "6.3"
+        ]
+      ],
+      "articles": [
+        "grow/onboarding-is-acquisition-time-to-first-value",
+        "grow/retention-basics-for-a-first-saas",
+        "gtm/pricing-a-first-saas-value-packaging-and-the-questions-to-ask",
+        "ops/burnout-recognizing-it-and-what-to-change",
+        "pathways/acquisitions-acqui-hires-and-wind-downs-the-exits-to-recognize"
+      ]
+    },
+    {
+      "id": "range-founder-age",
+      "kind": "range",
+      "title": "Average founder age by growth tier, startups founded 2007 to 2009",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "azoulay-2018"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Azoulay, Jones, Kim and Miranda, Age and High-Growth Entrepreneurship (NBER WP 24489; AER: Insights 2020)",
+          "href": "https://www.nber.org/system/files/working_papers/w24489/w24489.pdf",
+          "period": "April 2018 (working paper); March 2020 (AER: Insights)"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Means, standard deviations and founder counts are copied from Table 5 as printed; growth is employment five years after founding.",
+      "values": [
+        [
+          "All startups",
+          "41.8",
+          "11.9"
+        ],
+        [
+          "Fastest-growing 10%",
+          "41.6",
+          "11.5"
+        ],
+        [
+          "Fastest-growing 5%",
+          "42.1",
+          "11.5"
+        ],
+        [
+          "Fastest-growing 1%",
+          "43.7",
+          "11.1"
+        ],
+        [
+          "Fastest-growing 1 in 1,000",
+          "45",
+          "10.7"
+        ],
+        [
+          "Successful exit (IPO or acquisition)",
+          "46.7",
+          "10.6"
+        ]
+      ],
+      "articles": [
+        "pathways/spinning-a-product-out-of-an-employer-what-to-settle-first",
+        "starting/founders-inside-a-company-intellectual-property-and-employment-agreements",
+        "starting/student-founders-the-questions-to-settle-before-you-start"
+      ]
+    },
+    {
+      "id": "area-age-share",
+      "kind": "area",
+      "title": "Share of new entrepreneurs by age group, 1996 to 2021",
+      "ledger": [
+        {
+          "wp": "WP-35",
+          "sourceId": "kauffman-2021"
+        }
+      ],
+      "sources": [
+        {
+          "label": "Kauffman Foundation, Who Is the Entrepreneur? 1996 to 2021",
+          "href": "https://www.kauffman.org/wp-content/uploads/2022/10/Kauffman_Trends-in-Entrepreneurship-Who-Is-The-Entrepreneur-2021.pdf",
+          "period": "October 2022"
+        }
+      ],
+      "retrieved": "2026-10-15",
+      "derived": "Values are copied as printed (Table 3); the chart redraws each year to 100.",
+      "values": [
+        [
+          "Ages 20 to 34",
+          "34.3",
+          "36.2",
+          "32.7",
+          "33.9",
+          "29",
+          "29.3",
+          "29.4",
+          "27.1",
+          "28.7",
+          "32.1",
+          "27.1",
+          "27.2",
+          "28.1",
+          "24.7",
+          "26",
+          "29.4",
+          "26.2",
+          "22.7",
+          "24.7",
+          "25",
+          "24.4",
+          "25.5",
+          "25",
+          "27.2",
+          "25.7",
+          "26.2"
+        ],
+        [
+          "Ages 35 to 44",
+          "27.4",
+          "27.1",
+          "29.8",
+          "28.2",
+          "27.9",
+          "27.4",
+          "27.6",
+          "29.9",
+          "25.7",
+          "25.7",
+          "24.2",
+          "26.1",
+          "24.5",
+          "26.6",
+          "26",
+          "22",
+          "24.2",
+          "24",
+          "22.9",
+          "25.5",
+          "24",
+          "22.5",
+          "24",
+          "22.9",
+          "23",
+          "26.1"
+        ],
+        [
+          "Ages 45 to 54",
+          "23.5",
+          "21.3",
+          "21.3",
+          "22.5",
+          "24.9",
+          "25.7",
+          "26.2",
+          "24.3",
+          "24.7",
+          "21.9",
+          "28.1",
+          "27.7",
+          "26.2",
+          "26",
+          "25.2",
+          "27.7",
+          "26.3",
+          "30",
+          "26.6",
+          "25.3",
+          "26.1",
+          "26",
+          "25.3",
+          "24.8",
+          "26.7",
+          "24.9"
+        ],
+        [
+          "Ages 55 to 64",
+          "14.8",
+          "15.4",
+          "16.3",
+          "15.4",
+          "18.2",
+          "17.6",
+          "16.8",
+          "18.7",
+          "20.8",
+          "20.2",
+          "20.6",
+          "19.1",
+          "21.2",
+          "22.7",
+          "22.9",
+          "20.9",
+          "23.4",
+          "23.4",
+          "25.8",
+          "24.3",
+          "25.5",
+          "26",
+          "25.8",
+          "25.1",
+          "24.5",
+          "22.8"
+        ]
+      ],
+      "articles": [
+        "pathways/three-ways-to-start-an-idea-a-skill-a-lived-problem",
+        "starting/second-career-founders-turning-domain-knowledge-into-a-saas-idea"
+      ]
+    }
+  ]
+}

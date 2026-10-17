@@ -33,7 +33,7 @@ function context(files: string[], entryIds: Record<string, string[]>): RouteCont
 
 const kitRow = L2_RESERVED.find((row) => row.path === KIT_PATH);
 
-test('the brand kit row is launch:false in L2_RESERVED, absent from the launch ledger, and waits for the whitelab sign-off', () => {
+test('the brand kit row is launch:false in L2_RESERVED, absent from the launch ledger, and waits for the brand-owner sign-off', () => {
   assert.ok(kitRow !== undefined, `${KIT_PATH} has no row in L2_RESERVED`);
   assert.equal(kitRow.launch, false, 'the kit row must stay launch:false until OP-BRAND is signed off');
   assert.match(kitRow.reason ?? '', /sign-off/);

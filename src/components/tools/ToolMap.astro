@@ -1,0 +1,158 @@
+---
+/**
+ * ToolMap: the founder tools on one launch trajectory (WP-24). The road from idea to investor readiness rises across the frame in five
+ * stretches; each tool is a numbered station on the stretch where it helps most. The legend under the drawing names every station
+ * as plain text: the tool cards below the map carry the one link to each tool, so a screen reader never meets the same link twice
+ * (and the hub keeps one link per tool name, as the tools hub contract expects). Only live tools are drawn. Authored SVG computed at
+ * build time; no script.
+ */
+import HubFigure from '../hubs/HubFigure.astro';
+import { r1 } from '../hubs/geometry.ts';
+import { ROAD, VERB_LABELS, schematicFor } from './schematics.ts';
+import type { ToolEntry } from './registry.ts';
+
+interface Props {
+  tools: readonly ToolEntry[];
+}
+
+const W = 1600;
+const H = 380;
+const x0 = 80;
+const x1 = W - 80;
+// The trajectory: a quadratic rise from the lower left to the upper right, like a launch arc.
+const yAt = (t: number): number => r1(H - 70 - (H - 150) * t ** 1.6);
+const xAt = (t: number): number => r1(x0 + (x1 - x0) * t);
+const path = Array.from({ length: 41 }, (_, i) => i / 40)
+  .map((t, i) => `${i === 0 ? 'M' : 'L'}${xAt(t)} ${yAt(t)}`)
+  .join(' ');
+const stretch = (i: number): number => (i + 0.5) / ROAD.length;
+const items = Astro.props.tools.map((tool) => ({ tool, s: schematicFor(tool.href) }));
+// Tools on the same stretch spread a little along it, in registry order.
+const placed = items.map((item, n) => {
+  const peers = items.filter((o) => o.s.stage === item.s.stage);
+  const k = peers.indexOf(item);
+  const t = stretch(item.s.stage) + (k - (peers.length - 1) / 2) * 0.07;
+  return { ...item, n: n + 1, x: xAt(t), y: yAt(t) };
+});
+const alt = `A launch arc rising from lower left to upper right through five stretches: ${ROAD.join(', ')}. ${placed
+  .map((p) => `Station ${p.n}, ${p.tool.title}, on ${ROAD[p.s.stage] ?? ''}`)
+  .join('; ')}.`;
+---
+
+<HubFigure
+  id="hub-tools-map"
+  kind="diagram"
+  title="Where each tool helps on the road from idea to raise"
+  caption="Six stations on one arc. The tools are small; the road is long, and each one helps at its own stretch."
+  credit="Diagram: World Enterprise Group Incorporated. The stretches are illustrative and take years, not weeks."
+  width={W}
+  height={H}
+  alt={alt}
+  tone="dark"
+  table={{ caption: 'The tools by stretch of the road', columns: ['Tool', 'Stretch', 'What it does'], rows: placed.map((p) => [p.tool.title, ROAD[p.s.stage] ?? '', `${VERB_LABELS[p.s.verb]}: ${p.s.working.toLowerCase()}`]) }}
+>
+  <rect class="hf-sky" x="0" y="0" width={W} height={H} rx="18" />
+  {
+    ROAD.map((label, i) => (
+      <>
+        <line class="hf-line" x1={xAt(i / ROAD.length)} y1="30" x2={xAt(i / ROAD.length)} y2={H - 30} />
+        <text class="hf-text hf-text--inverse tool-map__road" x={xAt(stretch(i))} y={H - 28} text-anchor="middle">
+          {label}
+        </text>
+      </>
+    ))
+  }
+  <path class="tool-map__arc" d={path} />
+  {
+    placed.map((p, i) => (
+      <g>
+        <circle class={i === 0 ? 'hf-amber' : 'hf-star'} cx={p.x} cy={p.y} r="22" />
+        <text class="hf-text hf-text--strong tool-map__num" x={p.x} y={p.y + 7} text-anchor="middle">
+          {p.n}
+        </text>
+      </g>
+    ))
+  }
+  <ol class="tool-map__legend" slot="legend" aria-label="Stations on the map">
+    {
+      placed.map((p) => (
+        <li>
+          <span class="tool-map__key" aria-hidden="true">{p.n}</span>
+          <span class="tool-map__name">{p.tool.title}</span>
+          <span class="tool-map__where">{ROAD[p.s.stage]}</span>
+        </li>
+      ))
+    }
+  </ol>
+</HubFigure>
+
+<style>
+  .tool-map__arc {
+    fill: none;
+    stroke: var(--we-blue-hi);
+    stroke-width: 4;
+    stroke-dasharray: 2 10;
+    stroke-linecap: round;
+  }
+
+  .tool-map__road {
+    font-size: 22px;
+  }
+
+  .tool-map__num {
+    fill: var(--we-blue-night);
+    font-size: 22px;
+  }
+
+  .tool-map__legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: var(--sp-2) var(--sp-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-sm);
+
+    & li {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-1) var(--sp-2);
+      align-items: center;
+      min-block-size: 2.75rem;
+    }
+  }
+
+  .tool-map__key {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border-radius: 50%;
+    background: var(--we-blue-night);
+    color: var(--we-white);
+    font-weight: 700;
+    font-size: var(--fs-xs);
+  }
+
+  .tool-map__name {
+    font-weight: 600;
+  }
+
+  .tool-map__where {
+    color: var(--color-text-muted);
+  }
+
+  @media (forced-colors: active) {
+    .tool-map__arc {
+      stroke: CanvasText;
+    }
+
+    .tool-map__num {
+      fill: Canvas;
+    }
+
+    .tool-map__key {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

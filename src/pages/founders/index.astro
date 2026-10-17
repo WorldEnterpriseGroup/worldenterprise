@@ -2,42 +2,59 @@
 import { render } from 'astro:content';
 import Callout from '../../components/ui/Callout.astro';
 import FounderSegments from '../../components/cta/FounderSegments.astro';
+import CtaEnd from '../../components/cta/CtaEnd.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import Steps from '../../components/ui/Steps.astro';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
-import { APPLY } from '../../components/hero/ctas.ts';
+import { REFER_A_FOUNDER, START_REVIEW, TALK_TO_WE, seeHowWeWorks } from '../../components/about/ctas.ts';
 import { getPageEntry } from '../../components/network/pageEntry.ts';
+import { SITUATIONS } from '../../components/network/situations.ts';
 import { founderStageRows } from '../../components/program/stages.ts';
+import Band from '../../components/visuals/Band.astro';
+import OrbitSystem from '../../components/visuals/OrbitSystem.astro';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
 const page = await getPageEntry('founders', 'founders/index');
 const { Content } = await render(page);
+const state = await getRouteState();
+const how = seeHowWeWorks(state.isLive);
 
 const criteria: readonly (readonly [string, string])[] = [
-  ['A software product sold by subscription', 'The company is a SaaS company, or intends to be one.'],
+  ['A business built on a screen', 'The core work is software, a digital product, or a service run on software and expertise.'],
   ['A named customer and a named problem', 'You can say whose problem it is in a sentence, and why it matters to them.'],
-  ['Contact with real customers', 'You have spoken with them, or you will start in the first cycle.'],
+  ['A way to fund a team', 'Revenue, savings, outside capital or a corporate budget: any of them works.'],
   ['Time and decisions', 'A founder is available each week to review work and make decisions.'],
-  ['Written working habits', 'You are willing to work from a written plan and written results for each cycle.'],
+  ['Written working habits', 'You are willing to work from a written plan and written results at each checkpoint.'],
 ];
 
 // Stage labels and service lines come from the single mapping in src/components/program/stages.ts.
 const stages = founderStageRows();
 
 const steps = [
-  { title: 'Apply', body: 'Tell WE about the company, the customer and the stage it is at.' },
+  { title: 'Start a readiness review', body: 'Tell WE about the company, the customer and the stage it is at.' },
   { title: 'Agree the scope', body: 'You and WE choose the service lines and roles that fit. A line you do not choose is not provided.' },
-  { title: 'Meet your team', body: 'WE seats a dedicated team for your company and steers it.' },
-  { title: 'Work in cycles', body: 'Each cycle starts with a written plan you approve and ends with written results.' },
+  { title: 'Meet your team', body: 'WE steers a dedicated team that works on your company and no other.' },
+  { title: 'Work to checkpoints', body: 'Each stretch of work starts with a written plan you approve and ends with written results.' },
 ];
 
 const notFor = [
   'It is not for founders who want someone else to run the company.',
-  'It is not for companies that need an office, in-person sessions or physical premises.',
+  'It is not for a business whose core work is physical, or that needs an office, in-person sessions or premises.',
   'It does not promise funding or investor meetings, or predict whether any company will raise money.',
   'It does not replace your own lawyer or accountant.',
 ];
+const worlds = SITUATIONS.map((s) => ({ label: s.label, description: s.line, ...(state.isLive(s.path) ? { href: s.path } : {}) }));
+// WP-24 media imports sit below the copy so the release checklist's line references above stay put (RELEASE.md CR-17).
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { tile } from '../../components/hubs/stats.ts';
+import ScatterPlot from '../../components/visuals/charts/ScatterPlot.astro';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
+import { founderAgeScatter } from '../../data/datasets/figures.ts';
+import { RETRIEVED } from '../../data/datasets/sources.ts';
 ---
 
 <MarketingLayout
@@ -45,36 +62,158 @@ const notFor = [
   description={page.data.description}
   path="/founders/"
   eyebrow={page.data.eyebrow}
-  lead="WE builds with founders who know whose problem they want to solve. Here is what that asks of you."
+  lead="Founders who mean to build a lasting company, especially those whose experience predicts success, and capable founders who need more capacity than they can hire."
   updated={page.data.updated}
   ogSlot="og-network"
-  primary={APPLY}
-  secondary={{ label: 'See the operator roles', href: '/network/operators/' }}
+  primary={START_REVIEW}
+  secondary={how ?? TALK_TO_WE}
 >
+  <HubLead labelledby="experience-title">
+    <h2 slot="head" id="experience-title" class="founders-head">Experience is an advantage</h2>
+    <HubMoment id="hub-founders-age" kind="chart">
+      <ScatterPlot {...founderAgeScatter} retrieved={RETRIEVED} />
+    </HubMoment>
+    <HubMoment slot="side" id="hub-founders-figures" kind="stats" heading="What the research found" lead="Founders of the fastest-growing new firms were older and more experienced than the typical founder.">
+      <StatTiles stats={[tile('ST-16'), tile('ST-17'), tile('ST-18'), tile('ST-27')]} label="Founder age and experience" id="founders-figures" class="founders-figures" />
+    </HubMoment>
+  </HubLead>
+
   <Content />
 
-  <FounderSegments />
+  <Fragment slot="after">
+    <Band tone="deep" labelledby="situations-title" id="situations">
+      <div class="split founders-sky">
+        <div class="split__text founders-stack">
+          <p class="eyebrow">Seven situations</p>
+          <h2 id="situations-title">One solar system, seven ways in</h2>
+          <p>
+            Founders reach WE from different places. Each world stands for a situation, never an identity: for anyone in that situation, the
+            work starts where the company is.
+          </p>
+          <ul class="founders-list" role="list">
+            {SITUATIONS.map((s) => <li><strong>{s.label}.</strong> {s.line}</li>)}
+          </ul>
+          {state.isLive('/who-we-work-with/') && <p><a href={href('/who-we-work-with/')}>Read who WE works with, situation by situation</a>.</p>}
+        </div>
+        <div class="split__media">
+          <HubMoment id="hub-founders-situations" kind="scene">
+            <OrbitSystem
+              bodies={worlds}
+              labelsName="Seven founder situations"
+              alt="A sun of blue hexagonal tiles with seven smaller hex-faceted worlds on one orbit ring, one for each founder situation."
+              caption="Seven situations around one company: where a founder comes from shapes where the work starts."
+            />
+          </HubMoment>
+        </div>
+      </div>
+    </Band>
 
-  <h2 id="criteria-title">The evidence WE looks for</h2>
-  <DataTable caption="Criteria WE uses when deciding whether a company is a fit" columns={['Criterion', 'What it means']} rows={criteria} />
+    <Band tone="soft" labelledby="segments-title" id="segments">
+      <div class="founders-stack">
+        <FounderSegments />
+      </div>
+    </Band>
 
-  <h2 id="stages-title">Stages WE works with</h2>
-  <DataTable caption="Company stages from idea to first customers" columns={['Stage', 'What fits']} rows={stages} />
-  <p>
-    The program page <a href={href('/program/who-its-for/')}>describes who the program is for</a>. This page describes
-    the working relationship.
-  </p>
+    <Band labelledby="fit-title" id="fit">
+      <div class="split split--even">
+        <div class="split__text founders-stack founders-measure">
+          <h2 id="fit-title">What fits</h2>
+          <p>
+            The core of the business can be built on a screen: software, a digital product, or a service run on software and expertise. You
+            can fund a team from revenue, savings, outside capital or a corporate budget.
+          </p>
+          <DataTable caption="Criteria WE uses when deciding whether a company is a fit" columns={['Criterion', 'What it means']} rows={criteria} />
+        </div>
+        <div class="split__text founders-stack founders-measure">
+          <h2 id="notfit-title">What does not fit</h2>
+          <p>
+            WE is not the right help if the core work of the business is physical (food service, retail floors, manufacturing, clinical
+            care), if you want capital above all, or if you need one deliverable. If so, WE will say so and point you to better help.
+          </p>
+          <LimitsBlock title="Limits to know before you start" items={notFor} headingLevel={3} />
+        </div>
+      </div>
+    </Band>
 
-  <h2 id="start-title">What happens after you apply</h2>
-  <Steps steps={steps} headingLevel={3} />
+    <Band tone="tint-blue" labelledby="stages-title" id="stages">
+      <div class="founders-stack founders-head">
+        <h2 id="stages-title">Stages WE works with</h2>
+        <p>
+          A company can start with WE at the stage it is in. The program page <a href={href('/program/who-its-for/')}>describes who the program
+          is for</a>; this page describes the working relationship.
+        </p>
+      </div>
+      <DataTable caption="Company stages from idea to first customers" columns={['Stage', 'What fits']} rows={stages} />
+    </Band>
 
-  <h2 id="notfor-title">Who this is not for</h2>
-  <LimitsBlock title="Limits to know before you apply" items={notFor} headingLevel={3} />
+    <Band tone="soft" labelledby="start-title" id="start">
+      <div class="founders-stack founders-head">
+        <h2 id="start-title">What happens after a readiness review</h2>
+      </div>
+      <Steps steps={steps} headingLevel={3} />
+      <div class="founders-note">
+        <Callout tone="notice" title="No promise of funding">
+          <p>
+            WE makes no promise of funding. Working with WE does not mean investors will back your company. Read
+            <a href={href('/investors/')}>what WE does and does not do</a> for investors.
+          </p>
+        </Callout>
+        <p>
+          Accountant, attorney or small business center? <a href={href(REFER_A_FOUNDER.href)}>{REFER_A_FOUNDER.label}</a>.
+        </p>
+      </div>
+      <HubEcosystem id="founders-ecosystem" />
+    </Band>
 
-  <Callout tone="notice" title="No promise of funding">
-    <p>
-      WE makes no promise of funding. Working with WE does not mean investors will back your company. Read
-      <a href={href('/investors/')}>what WE does and does not do</a> for investors.
-    </p>
-  </Callout>
+    <CtaEnd path="/founders/" collection="pages" />
+  </Fragment>
 </MarketingLayout>
+
+<style>
+  /* An even split gives each column half the 110rem frame; reading text keeps the 46rem measure (wave 8 80ch check). */
+  .founders-measure {
+    max-inline-size: var(--prose-max);
+  }
+
+  /* The figures carry long labels; two tiles a row keep each readable in the narrow column. */
+  :global(.stat-tiles.founders-figures .stat-tiles__grid) {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  }
+
+  .founders-sky {
+    align-items: center;
+  }
+
+  .founders-stack {
+    display: grid;
+    gap: var(--space-flow);
+    align-content: start;
+
+    & > * {
+      margin: 0;
+    }
+  }
+
+  .founders-head {
+    max-inline-size: var(--prose-max);
+    margin-block-end: var(--space-group);
+  }
+
+  .founders-list {
+    display: grid;
+    gap: var(--sp-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .founders-note {
+    display: grid;
+    gap: var(--space-flow);
+    max-inline-size: var(--prose-max);
+    margin-block-start: var(--space-block);
+
+    & > p {
+      margin: 0;
+    }
+  }
+</style>

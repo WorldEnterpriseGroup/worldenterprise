@@ -25,38 +25,43 @@ export type ClaimId = (typeof CLAIM_IDS)[number];
 const OPERATOR = 'Operator brief';
 const OWNER_2026_10_09 = 'Owner decision 2026-10-09 (.astro-magazine/decisions.md)';
 const OWNER_2026_10_10 = 'CEO direction 2026-10-10; D-21 (.astro-magazine/decisions.md)';
+const OWNER_2026_10_14 = 'CEO direction 2026-10-14; W9-10 (.astro-magazine/decisions.md)';
 
 export const claimRegistry: Readonly<Record<ClaimId, Claim>> = {
-  'C-01': { id: 'C-01', status: 'publish', enabled: true, source: `${OPERATOR}; whitelab README`, summary: 'Fully digital, fully remote; no physical offices' },
-  'C-02': { id: 'C-02', status: 'publish', enabled: true, source: OPERATOR, summary: 'Dedicated offshore team seats, scalable by notice (no notice period, no seat counts)' },
+  'C-01': { id: 'C-01', status: 'publish', enabled: true, source: `${OPERATOR}; operator README`, summary: 'Fully digital, fully remote; no physical offices' },
+  'C-02': { id: 'C-02', status: 'publish', enabled: true, source: OPERATOR, summary: 'A dedicated team that works only on your company, scaled by notice (no notice period or team size published)' },
   'C-03': { id: 'C-03', status: 'publish', enabled: true, source: `${OPERATOR}; agreement recital D`, summary: 'WE steers the team and manages its subcontractors' },
-  'C-04': { id: 'C-04', status: 'publish', enabled: true, source: 'whitelab/drafts/10-packet-2.md:237-243', summary: 'Service Lines A to G, each with a "does not do" block' },
+  'C-04': { id: 'C-04', status: 'publish', enabled: true, source: 'Operator draft packet 2, lines 237-243', summary: 'Service Lines A to G, each with a "does not do" block' },
   'C-05': { id: 'C-05', status: 'publish', enabled: true, source: OPERATOR, summary: 'No promise of funding (mandatory disclaimer). Never an outcome promise such as "fundable company"' },
   'C-06': { id: 'C-06', status: 'excluded', enabled: false, source: OPERATOR, summary: 'Seat price figure: flag-gated through flags.seatPrice.published' },
-  'C-07': { id: 'C-07', status: 'softened', enabled: false, source: OPERATOR, summary: 'SAFE as compensation concept (FLAG-SAFE, counsel clearance)' },
+  // Wave 9 (W9-13): off until counsel clears it; every equity line ships as its non-equity fallback. Every mechanic stays excluded under C-08.
+  'C-07': { id: 'C-07', status: 'softened', enabled: false, source: OWNER_2026_10_14, summary: 'Equity concept only: WE is paid for the ongoing engagement, plus equity earned in arrears for steering, so WE is aligned with the company long term; nothing is granted for work not yet done. No prices, percentages, caps, valuations or instrument terms (C-08)' },
   'C-08': { id: 'C-08', status: 'excluded', enabled: false, source: OPERATOR, summary: 'SAFE mechanics: tranche timing, cap, discount, MFN, pro-rata, percentages' },
   'C-09': { id: 'C-09', status: 'excluded', enabled: false, source: OPERATOR, summary: '"No success fees" pending counsel' },
-  'C-10': { id: 'C-10', status: 'publish', enabled: true, source: `whitelab/template/KEY-VALUES.md section 1; ${OWNER_2026_10_09}`, summary: 'Packages Spark, Launch, Accelerate and Studio: names, the company stage each is sized for and its depth only. Seat plans with a fixed scope; seats change by notice. The milestone scheme, phases, delivery hours, fees, rate card, fee-to-equity election and the twelve-month term stay unpublished' },
+  // Wave 9 (W9-13): the public packages are retired. C-10 now only fixes what stays unpublished about the commercial model.
+  'C-10': { id: 'C-10', status: 'publish', enabled: true, source: `${OPERATOR}; ${OWNER_2026_10_09}; W9-13`, summary: 'Commercial terms are set in the agreement a founder reviews, not on the site. No package, price, seat count, rate card, milestone or payment scheme, fee election or term is published' },
   'C-11': { id: 'C-11', status: 'softened', enabled: false, source: 'ORBITAL registry description', summary: '"Over 20 years of experience" (FLAG-YEARS)' },
   'C-12': { id: 'C-12', status: 'excluded', enabled: false, source: 'ORBITAL registry description', summary: 'Premier, market dominance, scientific approach, industry leaders' },
   'C-13': { id: 'C-13', status: 'excluded', enabled: false, source: 'none exist', summary: 'Portfolio, clients, case studies, testimonials, funding raised, metrics, logo walls; also peer sessions, cohorts, mentors and alumni while none exist' },
   'C-14': { id: 'C-14', status: 'publish', enabled: true, source: `${OWNER_2026_10_09}; counsel to review before the gh-pages release`, summary: 'Investor Introductions as a separate paid add-on: a flat fee for curation and preparation that does not depend on any investment closing; no success fee, stake or transaction-based pay; WE negotiates no terms, gives no securities advice and handles no funds; curated, limited and only after the line F readiness criteria are met; no promise of a meeting, a reply or funding; the disclaimer is shown wherever the add-on is named. Still excluded: an investor network, Demo Day outcomes, success-based or guaranteed wording' },
   'C-15': { id: 'C-15', status: 'excluded', enabled: false, source: 'none evidenced', summary: 'Security or compliance certifications' },
   'C-16': { id: 'C-16', status: 'excluded', enabled: false, source: 'none', summary: 'Time-to-MVP, runway, 10x, growth guarantees' },
-  'C-17': { id: 'C-17', status: 'excluded', enabled: false, source: 'whitelab elevate/C-graphics', summary: 'Whitelab figures 02, 03 and 05' },
+  // Wave 9 (W9-10): only the genericized figures are published; the source figures stay off the site.
+  'C-17': { id: 'C-17', status: 'publish', enabled: true, source: OWNER_2026_10_14, summary: 'Genericized concept figures only: the Dream, Build, Grow journey roadmap; a readiness scorecard with no weights or thresholds; the engagement-and-steering flow with no amounts and no valuation cap. Source figures stay excluded' },
   'C-18': { id: 'C-18', status: 'publish', enabled: true, source: 'ORBITAL registry', summary: 'Legal entity name and Delaware PBC (FLAG-PBC); never EIN, SIN, PSC, SIC' },
   'C-19': { id: 'C-19', status: 'publish', enabled: true, source: 'dot-github/Frameworks', summary: 'WE operating frameworks, paraphrased, no efficacy claims (FLAG-FOCUS)' },
   'C-20': { id: 'C-20', status: 'excluded', enabled: false, source: 'registry mentions only', summary: 'Galactic Enterprise Framework, World Enterprise Framework' },
-  'C-21': { id: 'C-21', status: 'publish', enabled: true, source: 'whitelab design spec', summary: '"Two companies, one objective" as a phrase on the dedicated-teams page only' },
+  'C-21': { id: 'C-21', status: 'publish', enabled: true, source: 'Operator design spec', summary: '"Two companies, one objective" as a phrase on the dedicated-teams page only' },
   'C-22': { id: 'C-22', status: 'softened', enabled: false, source: 'Exhibit J', summary: 'security@ mailbox in security.txt once confirmed monitored' },
   'C-23': { id: 'C-23', status: 'softened', enabled: false, source: 'counsel', summary: 'Terms of use ship only when counsel signs; privacy and accessibility statements are factual' },
-  'C-24': { id: 'C-24', status: 'excluded', enabled: false, source: 'whitelab agreement draft Exhibit D (unratified)', summary: 'Specific security and confidentiality controls (FLAG-SECURITY)' },
+  'C-24': { id: 'C-24', status: 'excluded', enabled: false, source: 'Operator agreement draft Exhibit D (unratified)', summary: 'Specific security and confidentiality controls (FLAG-SECURITY)' },
   // Wave 8 (WP-60): the claims the investor, partner and gated-brief pages cite. Each says what WE does and never what it will deliver.
   'C-25': { id: 'C-25', status: 'publish', enabled: true, source: OWNER_2026_10_10, summary: 'Investors may ask to meet the companies WE incubates. WE cannot promise a meeting, a reply or funding, and names no company until a written record exists (D-21)' },
   'C-26': { id: 'C-26', status: 'publish', enabled: true, source: OWNER_2026_10_10, summary: 'An organization that helps or equips founders may send WE an enquiry. Sending one creates no partnership, no referral arrangement and no commitment on either side' },
   'C-27': { id: 'C-27', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; D-23`, summary: 'WE sends a requested brief by email to the address the reader gave' },
   'C-28': { id: 'C-28', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; privacy notice`, summary: 'WE uses the details in a form to answer the request, as the privacy notice describes' },
-  'C-29': { id: 'C-29', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; ${OPERATOR}`, summary: 'WE is a digital incubator for SaaS companies: dedicated offshore team seats steered by WE, fully remote (C-01 to C-03), with no promise of funding (C-05)' },
+  // Wave 9 (W9-13): C-29 follows SALES.md 1.4 (long-horizon business incubation and consulting). C-01 to C-03 and C-05 stay inside the sentence.
+  'C-29': { id: 'C-29', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; ${OPERATOR}`, summary: 'WE is a long-horizon business incubation and consulting firm. WE steers a dedicated, fully remote team that builds a software-enabled company with its founder, for as long as the work is useful. WE makes no promise of funding.' },
 };
 
 /** Named toggles components read. Each maps to one registry entry. */

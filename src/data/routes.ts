@@ -3,7 +3,7 @@ import type { InsightFile } from '../lib/content-files.ts';
 import { DESK_DEFINITIONS, DESK_OWNERS, DESKS, deskPath, isDeskId } from './desks.ts';
 import type { Desk, DeskId } from './desks.ts';
 import { FAMILIES } from './families.ts';
-import type { WaveEightOwner } from './families.ts';
+import type { WaveEightOwner, WaveNineOwner } from './families.ts';
 import { flags } from './flags.ts';
 import { forms } from './forms.ts';
 import { site } from './site.ts';
@@ -35,7 +35,12 @@ export type RouteOwner =
   | 'WP-01' | 'WP-02' | 'WP-03' | 'WP-04' | 'WP-05' | 'WP-06' | 'WP-07' | 'WP-08'
   | 'WP-09' | 'WP-10' | 'WP-11' | 'WP-12' | 'WP-13'
   | 'WP-40' | 'WP-41' | 'WP-42' | 'WP-43' | 'WP-44' | 'WP-45' | 'WP-46' | 'WP-47' | 'WP-48' | 'WP-49' | 'WP-50'
+  | WaveNineOwner
+  | WaveTenOwner
   | WaveEightOwner;
+
+/** WP-32 to WP-38, the wave 10 packages (docs/wave10-contracts.md). Declared here, not in families.ts, which stays untouched. */
+export type WaveTenOwner = `WP-3${'2' | '3' | '4' | '5' | '6' | '7' | '8'}`;
 
 /** WP-60 to WP-99, the wave 8 packages (docs/wave8-contracts.md, section 1.3). */
 export type { WaveEightOwner };
@@ -192,10 +197,13 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/program/build/', 'StageLayout', 'WP-01'),
     row('/program/grow/', 'StageLayout', 'WP-01'),
 
-    // Apply (2), Pricing (1), Tools (1)
+    // Apply (2), How WE works (1), the retired pricing page (1), Tools (1)
     row('/apply/', 'FormLayout', 'WP-03'),
     row('/apply/thanks/', 'FormLayout', 'WP-03', { indexable: false }),
-    row('/pricing/', 'ToolLayout', 'WP-03'),
+    row('/how-we-work/', 'MarketingLayout', 'WP-54'),
+    // Wave 9 (W9-13): /how-we-work/ replaces the packages page. The site has no redirect mechanism, so /pricing/ stays as a noindex
+    // pointer for old links and bookmarks, and leaves the sitemap, search and the llms files.
+    row('/pricing/', 'ToolLayout', 'WP-03', { indexable: false }),
     row('/tools/team-composer/', 'ToolLayout', 'WP-03'),
 
     // Services (8)
@@ -274,11 +282,51 @@ function rawRows(listing: ContentListing): readonly RawRow[] {
     row('/tools/metrics-calculator/', 'ToolLayout', 'WP-49'),
     row('/tools/evidence-room/', 'ToolLayout', 'WP-49'),
     // WP-48 was deferred in wave 7 and its four pages do not exist; wave 8 flips them to launch:false (contracts section 10). A future package that writes a page
-    // flips its row back to launch:true in the same change.
-    row('/about/frameworks/ubf/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
+    // flips its row back to launch:true in the same change. WP-55 (wave 9, D-16 revised) absorbed WP-48 and wrote the UBF page; the row keeps the
+    // WP-48 owner because RouteOwner names no wave 9 package.
+    row('/about/frameworks/ubf/', 'MarketingLayout', 'WP-48'),
     row('/star/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
     row('/shift/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
     row('/android/', 'MarketingLayout', 'WP-48', { launch: false, reason: 'the framework pages (WP-48) were deferred in wave 7 and are not part of wave 8' }),
+
+    // Wave 9 sales pages (WP-58, W9-12): the real business clock and the seven situation pages (SITE-COPY.md sections 5 and 6).
+    row('/why-it-takes-time/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/industry-insiders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/encore-founders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/repeat-builders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/global-founders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/under-backed-builders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/next-gen-founders/', 'MarketingLayout', 'WP-58'),
+    row('/who-we-work-with/restart-founders/', 'MarketingLayout', 'WP-58'),
+
+    // Wave 10 (docs/wave10-contracts.md, D-W10-1), registered ahead of the pages by WP-32. A launched row with no page is inert (out of nav,
+    // sitemap and the link audit until the page file exists). Each page-owning package holds a scoped exception on its own block below and
+    // adds child rows only inside it (WP-33 ecosystem, WP-34 sbir-sttr, WP-35 data).
+    // BEGIN WP-33 ecosystem block
+    row('/ecosystem/', 'HubLayout', 'WP-33'),
+    row('/ecosystem/launch-programs/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/incubators/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/university/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/coworking/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/angels/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/sba/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/government/', 'MarketingLayout', 'WP-33'),
+    row('/ecosystem/communities/', 'MarketingLayout', 'WP-33'),
+    // END WP-33 ecosystem block
+    // BEGIN WP-34 sbir-sttr block
+    row('/sbir-sttr/', 'MarketingLayout', 'WP-34'),
+    row('/sbir-sttr/phases/', 'MarketingLayout', 'WP-34'),
+    row('/sbir-sttr/agencies/', 'MarketingLayout', 'WP-34'),
+    row('/sbir-sttr/prepare/', 'MarketingLayout', 'WP-34'),
+    // END WP-34 sbir-sttr block
+    // BEGIN WP-35 data block
+    row('/data/', 'HubLayout', 'WP-35'),
+    row('/data/survival/', 'MarketingLayout', 'WP-35'),
+    row('/data/formation/', 'MarketingLayout', 'WP-35'),
+    row('/data/who-starts/', 'MarketingLayout', 'WP-35'),
+    row('/data/years-to-milestones/', 'MarketingLayout', 'WP-35'),
+    // END WP-35 data block
 
     // Wave 8 (docs/wave8-contracts.md, section 1.2), registered ahead of the pages by WP-60 so no page-owning package edits this file.
     // A launched row with no page is inert: out of nav and sitemap, a warning in audit:ledger. The page file makes it live.
@@ -351,7 +399,7 @@ export const L2_RESERVED: readonly RouteRow[] = [
   row('/events/', 'HubLayout', 'WP-08', { requires: ['events', 'dates'] }),
   row('/program/cohorts/', 'StageLayout', 'WP-01', { requires: ['dates'] }),
   row('/program/demo-day/', 'StageLayout', 'WP-01', { requires: ['dates', 'events'] }),
-  row('/press/brand-kit/', 'MarketingLayout', 'WP-71', { launch: false, reason: 'needs whitelab brand-usage sign-off (OP-BRAND)' }),
+  row('/press/brand-kit/', 'MarketingLayout', 'WP-71', { launch: false, reason: 'needs brand-owner usage sign-off (OP-BRAND)' }),
   row('/people/[slug]/', 'MarketingLayout', 'WP-11', { requires: ['people'] }),
 ].map(finalizeRow);
 

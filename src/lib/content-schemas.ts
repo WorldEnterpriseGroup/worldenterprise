@@ -23,7 +23,7 @@ const draft = z.boolean().default(false);
 
 /**
  * Optional short title for the document title and social cards, for headings that cannot fit in 60 characters once
- * " | World Enterprise Incubator" is added. The heading itself is never shortened.
+ * " | World Enterprise" is added. The heading itself is never shortened.
  */
 const seoTitle = z.string().min(1).max(TITLE_MAX - ` | ${site.titleSuffix}`.length).optional();
 const serviceLine = z.enum(['A', 'B', 'C', 'D', 'E', 'F', 'G']);

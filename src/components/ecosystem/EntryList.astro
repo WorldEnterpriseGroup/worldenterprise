@@ -1,0 +1,39 @@
+---
+/** A list of programs as a responsive grid of rows. */
+import type { EcosystemEntry } from '../../data/ecosystem/types.ts';
+import EntryRow from './EntryRow.astro';
+
+interface Props {
+  entries: readonly EcosystemEntry[];
+  level?: 3 | 4;
+  idPrefix?: string;
+  label?: string;
+  /** Rows without the definition list (see EntryRow). */
+  compact?: boolean;
+  /** Rows the filter reads (see EntryRow). */
+  filterable?: boolean;
+}
+
+const { entries, level = 3, idPrefix = 'p-', label, compact = false, filterable = true } = Astro.props;
+---
+
+<ul class:list={['eco-list', { 'eco-list--compact': compact }]} aria-label={label}>
+  {entries.map((entry) => <EntryRow entry={entry} level={level} idPrefix={idPrefix} compact={compact} filterable={filterable} />)}
+</ul>
+
+<style>
+  @layer pages {
+    .eco-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+      gap: var(--sp-5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .eco-list--compact {
+      gap: var(--sp-3);
+    }
+  }
+</style>

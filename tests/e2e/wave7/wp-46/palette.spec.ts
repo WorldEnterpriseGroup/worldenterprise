@@ -19,8 +19,8 @@ test.describe('the command palette, keyboard only', () => {
     test.skip(isMobile, 'the keyboard flows run on the desktop project; the mobile project opens it from the drawer');
   });
 
-  test('Ctrl or Cmd plus K opens it, "pricing" finds Pricing, Enter goes there, and the new page has no palette open', async ({ page, baseURL }) => {
-    test.skip(!isBuilt('/pricing/'), '/pricing/ is not built');
+  test('Ctrl or Cmd plus K opens it, "how we work" finds How WE works, Enter goes there, and the new page has no palette open', async ({ page, baseURL }) => {
+    test.skip(!isBuilt('/how-we-work/'), '/how-we-work/ is not built');
     const seen = watch(page, baseURL ?? '');
     await page.goto('/');
     await expect(page.locator('[data-palette-open]').first()).toBeVisible();
@@ -30,13 +30,14 @@ test.describe('the command palette, keyboard only', () => {
     const input = dialog.getByRole('combobox');
     await expect(input).toBeFocused();
     await expect(input).toHaveAttribute('aria-expanded', 'true');
-    await page.keyboard.type('pricing');
+    // Wave 9 (W9-13, WP-54): /how-we-work/ replaces the retired /pricing/ page; no palette entry mentions seats.
+    await page.keyboard.type('how we work');
     const first = dialog.getByRole('option').first();
-    await expect(first).toHaveAccessibleName(/Pricing/);
+    await expect(first).toHaveAccessibleName(/How WE works/);
     await expect(first).toHaveAttribute('aria-selected', 'true');
     await expect(input).toHaveAttribute('aria-activedescendant', (await first.getAttribute('id')) ?? '');
     await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/\/pricing\/$/);
+    await expect(page).toHaveURL(/\/how-we-work\/$/);
     await expect(page.getByRole('dialog', { name: 'Search the site' })).toBeHidden();
     expect(seen.thirdParty, 'no third-party request').toEqual([]);
     expect(seen.consoleErrors, 'no console error').toEqual([]);

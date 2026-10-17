@@ -1,0 +1,287 @@
+{
+  "wp": "WP-24",
+  "note": "Hub media density (issue #90). Every external figure on the hubs is reused from the ST register (src/data/sales/stats.ts, sources fetched 2026-10-14 per WP-58) or from the WP-35 datasets (src/data/datasets/figures.ts, retrieved 2026-10-15); WP-24 fetched nothing new. The ids per route are HUB_STATS and HUB_FIGURES in src/components/hubs/stats.ts. Counts drawn on the hubs (articles per desk, documents per kind, pages per stage and kind, questions per topic, reading minutes) are computed at build time from this site's own content and are credited to World Enterprise Group Incorporated; they are not external claims. Diagrams and illustrations are authored SVG with no third-party imagery.",
+  "sources": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-bls-bed-total",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (total private)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-01: 77.9% of new U.S. establishments were still operating after one year (Opened in the year to March 2024); shown on /compare/",
+        "ST-02: 51.4% were still operating after five years (Opened in the year to March 2020); shown on /insights/, /compare/, /industries/, /faq/",
+        "ST-03: 34.7% were still operating after ten years (Opened in the year to March 2015); shown on /insights/",
+        "ST-34: 94.4% of establishments still open after eight years survived their ninth, against 79.6% in their first (Opened in the year to March 2013); shown on /compare/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-sba-faq-2026",
+      "publisher_or_author": "U.S. Small Business Administration, Office of Advocacy",
+      "title": "Frequently Asked Questions About Small Business, 2026",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://advocacy.sba.gov/wp-content/uploads/2026/02/FINAL_FAQsAboutSmallBusiness_2026_012826.pdf",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-04: 69.5% of businesses that reach five years also reach ten (1994 to 2022 average); shown on /insights/, /compare/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-census-bfs",
+      "publisher_or_author": "U.S. Census Bureau",
+      "title": "Business Formation Statistics, monthly data (CSV)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-06: 5,671,836 U.S. business applications in 2025, the most in any year of the series (2025); shown on /resources/",
+        "ST-07: 7.5% of 2021 applications became employer businesses within two years (Applications filed in 2021); shown on /resources/",
+        "ST-08: 2.29 quarters from application to first payroll in 2021, against 1.48 in 2005 (2021 and 2005 applications); shown on /resources/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-census-bfs-definitions",
+      "publisher_or_author": "U.S. Census Bureau",
+      "title": "Business Formation Statistics: Definitions",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.census.gov/econ/bfs/definitions.html",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-07: 7.5% of 2021 applications became employer businesses within two years (Applications filed in 2021); shown on /resources/",
+        "ST-08: 2.29 quarters from application to first payroll in 2021, against 1.48 in 2005 (2021 and 2005 applications); shown on /resources/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-cohen-hochberg-2014",
+      "publisher_or_author": "University of Colorado Boulder, Leeds School of Business (faculty copy)",
+      "title": "Accelerating Startups: The Seed Accelerator Phenomenon (Cohen and Hochberg, 2014), Table 2",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://leeds-faculty.colorado.edu/bhagat/Accelerators-Start-Ups.pdf",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-10: 3 months is the usual length of a fixed-term program; incubation runs 1 to 5 years (Typology, 2014); shown on /compare/, /faq/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-cb-insights-2026",
+      "publisher_or_author": "CB Insights",
+      "title": "The top reasons startups fail",
+      "source_tier": "secondary",
+      "exact_url_or_locator": "https://www.cbinsights.com/research/report/startup-failure-reasons-top/",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-11: 70% of venture-backed startups that shut down cited running out of capital (Shutdowns since 2023); shown on /investors/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-azoulay-2018",
+      "publisher_or_author": "National Bureau of Economic Research",
+      "title": "Age and High-Growth Entrepreneurship (Azoulay, Jones, Kim and Miranda), NBER Working Paper 24489",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.nber.org/system/files/working_papers/w24489/w24489.pdf",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-16: 45.0 mean founder age of the fastest-growing 1 in 1,000 new U.S. firms (41.9 for all that hire) (Founders of 2007 to 2009 (41.9 covers 2007 to 2014)); shown on /founders/",
+        "ST-17: 1.8x as likely: a 50-year-old founder against a 30-year-old, for top-growth firms (Founders of 2007 to 2014); shown on /founders/",
+        "ST-18: 0.26% top-growth rate with 3+ years in the same industry, against 0.11% with none (Founders of 2007 to 2009); shown on /founders/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-kauffman-2021",
+      "publisher_or_author": "Ewing Marion Kauffman Foundation",
+      "title": "Trends in Entrepreneurship: Who Is the Entrepreneur? 1996 to 2021",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.kauffman.org/wp-content/uploads/2022/10/Kauffman_Trends-in-Entrepreneurship-Who-Is-The-Entrepreneur-2021.pdf",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-27: 22.8% of new entrepreneurs were aged 55 to 64 in 2021, up from 14.8% in 1996 (1996 and 2021); shown on /founders/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-fed-sbcs-2026",
+      "publisher_or_author": "Federal Reserve Banks",
+      "title": "Small Business Credit Survey: 2026 Report on Employer Firms",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.fedsmallbusiness.org/-/media/project/clevelandfedtenant/fsbsite/reports/2026/2026-report-on-employer-firms/2026-report-on-employer-firms.pdf",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-33: 48% of firms aged 0 to 5 years were fully approved for financing, against 63% of firms aged 21 or more (Applicants in the prior 12 months); shown on /investors/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-bls-bed-information",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Information, NAICS 51)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_51_table7.txt",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-35: 45.7% of Information-sector establishments survived five years (50.8% in professional and technical services) (Opened in the year to March 2020); shown on /industries/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-bls-bed-professional",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Professional, Scientific, and Technical Services, NAICS 54)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_54_table7.txt",
+      "retrieved_at": "2026-10-14",
+      "claims_supported": [
+        "ST-35: 45.7% of Information-sector establishments survived five years (50.8% in professional and technical services) (Opened in the year to March 2020); shown on /industries/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any promise of survival, funding or growth for a company"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-data-bls-bed-total",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Total Private)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "retrieved_at": "2026-10-15",
+      "claims_supported": [
+        "fiveYearSwarm (Share still open at year 5, every opening-year group from 1994 to 2020); shown on /industries/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any figure beyond the published values the chart copies"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-data-bls-bed-information",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Information, NAICS 51)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_51_table7.txt",
+      "retrieved_at": "2026-10-15",
+      "claims_supported": [
+        "fiveYearSwarm (Share still open at year 5, every opening-year group from 1994 to 2020); shown on /industries/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any figure beyond the published values the chart copies"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-data-bls-bed-professional",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Professional, Scientific, and Technical Services, NAICS 54)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_54_table7.txt",
+      "retrieved_at": "2026-10-15",
+      "claims_supported": [
+        "fiveYearSwarm (Share still open at year 5, every opening-year group from 1994 to 2020); shown on /industries/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any figure beyond the published values the chart copies"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-data-azoulay-2018",
+      "publisher_or_author": "Azoulay, Jones, Kim and Miranda, National Bureau of Economic Research",
+      "title": "Age and High-Growth Entrepreneurship (NBER Working Paper 24489; published in American Economic Review: Insights 2(1), 2020)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.nber.org/system/files/working_papers/w24489/w24489.pdf",
+      "retrieved_at": "2026-10-15",
+      "claims_supported": [
+        "founderAgeScatter (Founder age: all startups against the fastest-growing 1 in 1,000, nine groups of firms); shown on /founders/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any figure beyond the published values the chart copies"
+      ],
+      "captured_by": "WP-24"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "wp24-data-carta-spm-q1-2026",
+      "publisher_or_author": "Carta, Inc. (Carta Data)",
+      "title": "State of Private Markets: Q1 2026",
+      "source_tier": "secondary",
+      "exact_url_or_locator": "https://carta.com/data/state-of-private-markets-q1-2026-full-report/",
+      "retrieved_at": "2026-10-15",
+      "claims_supported": [
+        "dilutionBars (Median ownership given up in each round, by stage); shown on /investors/",
+        "roundGapBars (Median years between funding rounds); shown on /investors/"
+      ],
+      "claims_not_supported": [
+        "Any result of companies that work with WE",
+        "Any figure beyond the published values the chart copies"
+      ],
+      "captured_by": "WP-24"
+    }
+  ]
+}

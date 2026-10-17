@@ -1,4 +1,3 @@
-import { STAGE_LABELS } from '../../pricing/stages.ts';
 import { readinessStatements } from '../we-readiness-check/statements.ts';
 
 /**
@@ -18,6 +17,13 @@ export type EvidenceStage = (typeof STAGE_ORDER)[number];
 export type StageFilter = 'all' | EvidenceStage;
 
 export const STAGE_FILTERS: readonly StageFilter[] = ['all', ...STAGE_ORDER];
+
+/** Short names for the filter's stages. They were the package stage labels; the stages stay WE's own suggested order. */
+const STAGE_LABELS: Readonly<Record<EvidenceStage, string>> = {
+  'idea-or-prototype': 'Idea or prototype',
+  'first-product': 'First product',
+  'early-customer-evidence': 'Early customer evidence',
+};
 
 export function stageName(stage: StageFilter): string {
   return stage === 'all' ? 'All items' : STAGE_LABELS[stage];

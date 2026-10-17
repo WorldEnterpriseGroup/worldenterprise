@@ -1,0 +1,124 @@
+---
+/**
+ * The legend of the UBF planetarium: each of the ten components as a hex-badged card with its scale, the source definition and how WE
+ * uses the idea with a founder. Each card carries an id (`ubf-<name>`) so the planetarium labels can link to it.
+ */
+import { UBF_COMPONENTS, ubfAnchor } from './framework-data.ts';
+
+interface Props {
+  headingLevel?: 3 | 4;
+}
+
+const { headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}` as 'h3' | 'h4';
+---
+
+<ul class="ubflegend" role="list">
+  {
+    UBF_COMPONENTS.map((c, i) => (
+      <li class:list={['ubflegend__item', `ubflegend__item--${c.scale.toLowerCase()}`]} id={ubfAnchor(c.name)}>
+        <p class="ubflegend__badge" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </p>
+        <H class="ubflegend__name">{c.name}</H>
+        <p class="ubflegend__scale">{c.scale}</p>
+        <p class="ubflegend__definition">{c.definition}</p>
+        <p class="ubflegend__practice">
+          <strong>In an engagement: </strong>
+          {c.inPractice}
+        </p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .ubflegend {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ubflegend__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'badge name'
+      'badge scale'
+      'def def'
+      'practice practice';
+    column-gap: var(--sp-3);
+    row-gap: var(--sp-2);
+    align-content: start;
+    padding: var(--sp-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg);
+    scroll-margin-block-start: calc(var(--header-h) + var(--sp-4));
+  }
+
+  .ubflegend__item:target {
+    outline: 2px solid var(--color-highlight);
+    outline-offset: 2px;
+  }
+
+  .ubflegend__badge {
+    grid-area: badge;
+    display: grid;
+    place-items: center;
+    inline-size: 3rem;
+    block-size: 2.6rem;
+    margin: 0;
+    clip-path: var(--hex-clip);
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+    font-family: var(--ff-display);
+    font-weight: 700;
+  }
+
+  .ubflegend__item--industry .ubflegend__badge {
+    background: var(--color-bg-inverse);
+  }
+
+  .ubflegend__item--ecosystem .ubflegend__badge {
+    background: var(--color-cta);
+  }
+
+  .ubflegend__name {
+    grid-area: name;
+    margin: 0;
+    font-size: var(--fs-lg);
+  }
+
+  .ubflegend__scale {
+    grid-area: scale;
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .ubflegend__definition {
+    grid-area: def;
+    margin: 0;
+  }
+
+  .ubflegend__practice {
+    grid-area: practice;
+    margin: 0;
+    padding-block-start: var(--sp-2);
+    border-block-start: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+  }
+
+  @media (forced-colors: active) {
+    .ubflegend__badge {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

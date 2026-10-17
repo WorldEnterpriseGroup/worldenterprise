@@ -21,8 +21,11 @@ test('excluded claims are never enabled or usable', () => {
   }
 });
 
-test('softened claims default off', () => {
-  assert.equal(claims.safeConcept, false);
+test('softened claims default off; the equity concept waits for counsel and carries no number (W9-10, W9-13)', () => {
+  assert.equal(claims.safeConcept, false, 'C-07 is off until counsel clears it; equity lines ship as their non-equity fallback (W9-13)');
+  assert.equal(claimRegistry['C-08'].status, 'excluded', 'the mechanics behind C-07 stay excluded');
+  assert.equal(claimRegistry['C-08'].enabled, false);
+  assert.doesNotMatch(claimRegistry['C-07'].summary.replace(/C-\d{2}/g, ''), /\d/, 'the equity concept carries no number');
   assert.equal(claims.years20, false);
   assert.equal(claims.securityPractices, false);
   assert.equal(flags.seatPrice.published, false);

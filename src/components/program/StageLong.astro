@@ -1,0 +1,108 @@
+---
+/**
+ * The long-horizon layer of a stage page (SITE-COPY 2.4 to 2.6, BRIEF 6): the stage copy beside its picture, where the stage sits on the
+ * business clock with its phases and WE methods, the public figures with their sources and the honesty line, and what the company keeps,
+ * drawn as artifacts. The page passes the copy (its MDX body) in the default slot and the picture in the `visual` slot.
+ */
+import StatTiles from '../visuals/charts/StatTiles.astro';
+import VisualIcon from '../visuals/VisualIcon.astro';
+import ClockBar from './ClockBar.astro';
+import PhaseCards from './PhaseCards.astro';
+import { HONESTY_LINE, stats } from './clock.ts';
+import { STAGE_VIEWS, phasesOf } from './phases.ts';
+import type { StageId } from './stages.ts';
+
+interface Props {
+  stage: StageId;
+  /** Stage name for the headings ("Dream"). */
+  name: string;
+}
+
+const { stage, name } = Astro.props;
+const view = STAGE_VIEWS[stage];
+const phases = phasesOf(stage);
+---
+
+<div class="stagelong">
+  <section class="split stagelong__intro" aria-labelledby="stage-intro">
+    <div class="split__text stagelong__text">
+      <h2 id="stage-intro">{name} on the long horizon</h2>
+      <p class="lead">{view.subhead}</p>
+      <div class="prose"><slot /></div>
+    </div>
+    <div class="split__media">
+      <slot name="visual" />
+    </div>
+  </section>
+
+  <section class="stack" aria-labelledby="stage-clock">
+    <h2 id="stage-clock">Where {name} sits on the business clock</h2>
+    <ClockBar current={stage} labelledby="stage-clock" />
+    <PhaseCards phases={phases} label={`The phases of ${name}`} />
+  </section>
+
+  <section class="stack" aria-labelledby="stage-figures">
+    <h2 id="stage-figures">What the public data shows</h2>
+    <StatTiles stats={stats(...view.stats)} label={`Figures for the ${name} window`} id={`stage-${stage}-stats`} />
+    <p class="stagelong__honesty">{HONESTY_LINE}</p>
+  </section>
+
+  <section class="stack" aria-labelledby="stage-keeps">
+    <h2 id="stage-keeps">What the company keeps</h2>
+    <ul class="stagelong__keeps" role="list">
+      {
+        view.keeps.map((keep) => (
+          <li class="stagelong__keep">
+            <VisualIcon name={keep.icon} size={64} />
+            <h3 class="stagelong__keep-title">{keep.title}</h3>
+            <p>{keep.note}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</div>
+
+<style>
+  @layer pages {
+    .stagelong {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-8);
+    }
+
+    .stagelong__text {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .stagelong__honesty {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    .stagelong__keeps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .stagelong__keep {
+      display: grid;
+      align-content: start;
+      gap: var(--sp-3);
+      padding: var(--sp-5);
+      background: var(--color-bg-soft);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
+
+    .stagelong__keep-title {
+      font-size: var(--fs-lg);
+      line-height: var(--lh-tight);
+    }
+  }
+</style>

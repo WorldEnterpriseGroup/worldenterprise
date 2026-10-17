@@ -1,0 +1,115 @@
+---
+stage: grow
+order: 8
+title: Run a first outbound sequence
+description: Write to a short list of named prospects with one specific reason, follow the sending rules your counsel confirms and learn from every reply in one log.
+steps:
+  - title: Build a short list of named prospects
+    body: Choose people who match the problem brief, with a reason to write to each one. Record the name, the role, the reason and where you found them, so you can explain why you wrote to a person who asks.
+  - title: Write one message with one specific reason and one ask
+    body: Say who you are, why you are writing to this person and what you would like to try together. Make the ask small enough to answer in a line, such as a short call.
+  - title: Check the sending rules with your own adviser
+    body: Ask your counsel which rules apply to the messages you plan to send, and where your prospects are. Set up the sender details, the postal address and the opt-out before the first message goes.
+  - title: Plan a short sequence with a stop rule
+    body: Decide how many messages each prospect gets, how many days apart, and what ends the sequence for a person. A reply of any kind, and any request to stop, ends it at once.
+  - title: Log every send, reply and outcome in one place
+    body: Record each message, the date, the reply and what you learned. Mark each opt-out request the day it arrives and make sure no later message reaches that person.
+  - title: Review a batch and change one thing at a time
+    body: Wait until a batch has run its full sequence. Then change one variable, such as the list, the reason or the ask, so that you can tell what made the difference.
+artifacts:
+  - A list of named prospects with the reason for each
+  - The message and the sequence plan
+  - A sending checklist agreed with your adviser
+  - A log of sends, replies, opt-outs and outcomes
+  - A review of each batch with one change
+relatedLibrary:
+  - customer-interview-guide
+  - outreach-sequence-worksheet
+updated: 2026-10-10
+---
+import Callout from '../../components/ui/Callout.astro';
+import DataTable from '../../components/ui/DataTable.astro';
+import MaybeLink from '../../components/insights/MaybeLink.astro';
+
+This playbook does not give legal advice about marketing messages. The rules depend on the kind of message, who receives it and where they are. Your own counsel tells you which ones apply to you.
+
+## What good looks like
+
+A good first sequence is small, personal and careful. You can say why you wrote to each person, you can show what you sent and when, and nobody who asked you to stop received another message.
+
+- Every person on the list has a stated reason, and the reason would hold up if the person asked.
+- The message is short, says who you are and asks for one small thing.
+- The sender details, the postal address and the way to opt out were set up and checked before the first send.
+- The log holds every send, every reply and every opt-out, with dates.
+- Each batch ends with a review and one change you can name.
+
+<Callout title="Illustrative example, not a real company">
+
+A founder of a tool that tracks warranty claims for appliance repair shops builds a list of twenty shop owners from the interviews she did earlier. Beside each name she writes the reason, such as a comment about chasing manufacturers for payment. Her message is four sentences and asks for a short call. She asks her lawyer which rules apply and sets up the sender details and the opt-out before the first message goes. Two owners reply, one asks to stop, and she records all three in the log. In the next batch she changes only the opening line, so she can tell whether it made a difference.
+
+</Callout>
+
+## What the FTC's compliance guide says
+
+The Federal Trade Commission publishes a compliance guide for businesses on the CAN-SPAM Act. Among its points, it says not to use false or misleading header information, and it says your message must include your valid physical postal address. It also says to tell recipients how to opt out of receiving future marketing email from you, and that you must honor a recipient's opt-out request within 10 business days.
+
+The guide is about email. Rules for other channels, and rules in other countries, can differ. Ask your counsel which apply to the messages you plan to send, and treat the guide as a list of questions, not a ruling on your case.
+
+## Decision aid: reading the replies and choosing the next change
+
+After a full batch, find the row that matches what you saw. Make one change and write it in the log.
+
+<DataTable
+  caption="What a batch of outbound replies usually means and the next change"
+  columns={["What you see", "What it usually means", "The next change"]}
+  rows={[
+    ["Almost no replies from a carefully chosen list", "The reason or the ask is not landing, or the list is wrong.", "Change the reason in the opening line, then run a new batch."],
+    ["Replies that ask who you are and why you wrote", "The message does not explain itself.", "Say who you are and why you chose this person in the first two sentences."],
+    ["Polite replies that decline", "The problem may not be urgent for these people.", "Ask what they use today and what would make them look at something new. Record the answer."],
+    ["Replies from people who are not the right role", "The list is aimed at the wrong person.", "Ask for an introduction to the right person and change the list."],
+    ["Interest in the idea but no call booked", "The ask is too large, or the next step is unclear.", "Shrink the ask to a single short call with a proposed time."],
+    ["A request to stop", "The person does not want more messages.", "Record it the same day, stop all messages to that person and review whether the list was right."],
+    ["Good calls that do not become pilots", "Interest is there, but the offer or the proof is weak.", "Move to the pilot scope in the earn-your-first-customers playbook and look at what blocked each one."]
+  ]}
+/>
+
+## Common mistakes
+
+<DataTable
+  caption="Common mistakes in a first outbound sequence"
+  columns={["Mistake", "Why it costs you", "Do this instead"]}
+  rows={[
+    ["Buying a large list and sending to everyone", "The messages carry no reason, so replies teach you little and complaints are likely.", "Write to a short list of named people, each with a reason."],
+    ["Hiding who you are in the sender details", "Misleading senders break trust and the rules your counsel will tell you about.", "Use your real name and company in the sender details."],
+    ["Leaving out an opt-out", "People who want to stop have no easy way, and you have a problem to fix later.", "Put a plain way to opt out in every message and honor each request quickly."],
+    ["Sending a long message about the product", "The reader sees a pitch and does not reply.", "Write a few sentences about the reader's problem and ask for one small step."],
+    ["Changing several things between batches", "You cannot tell which change made the difference.", "Change one variable per batch and note it in the log."],
+    ["Sending a fifth follow-up to someone who has not replied", "It looks like pressure and can harm your name.", "Decide the number of messages before you start and stop when the sequence ends."],
+    ["Keeping the log in the inbox", "Opt-outs and replies get lost, and the next batch repeats the mistake.", "Keep one log with a row for each person and each message."]
+  ]}
+/>
+
+## Evidence to check before you move on
+
+Move to <MaybeLink path="/playbooks/build-repeatable-growth/">Build repeatable growth</MaybeLink> when you can show each of these.
+
+- The list shows a reason for every name and a status for every person.
+- Your counsel has told you which sending rules apply to your messages.
+- The log holds every send, reply and opt-out, with dates, and no opt-out was followed by another message.
+- At least one full batch ran its whole sequence, and the review names the change you made next.
+
+## Where WE can help
+
+WE's Customer Relations and Market Development line covers pipeline discipline, which is one written way to track every prospect from first contact to decision. It does not send messages for you, close deals or promise that conversations will turn into customers or revenue. The <MaybeLink path="/services/customer-and-market-development/">service line page</MaybeLink> lists what it covers and what it does not.
+
+## Sources
+
+The steps and the decision aid draw on the articles and template below. The paragraph on commercial email draws on the FTC page named in the last item.
+
+- <MaybeLink path="/insights/cold-outreach-that-follows-can-spam/">Cold outreach that follows CAN-SPAM</MaybeLink>
+- <MaybeLink path="/insights/your-first-ten-customers-a-founder-led-sequence/">Your first ten customers: a founder-led sequence</MaybeLink>
+- <MaybeLink path="/insights/choosing-your-first-channels/">Choosing your first channels</MaybeLink>
+- <MaybeLink path="/insights/founder-led-sales-calls-a-structure/">Founder-led sales calls: a structure</MaybeLink>
+- <MaybeLink path="/insights/a-one-page-positioning-statement/">A one-page positioning statement</MaybeLink>
+- <MaybeLink path="/library/customer-interview-guide/">Customer interview guide</MaybeLink>
+- [FTC, CAN-SPAM Act: A Compliance Guide for Business, read October 10, 2026](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
