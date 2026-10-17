@@ -1,0 +1,91 @@
+---
+/**
+ * InsightRankList: a published ranked list (such as the OWASP Top 10 for LLM Applications) for an /insights/ article (WP-26), drawn as a
+ * numbered list in the /data/ chart shell, so it carries the same title, takeaway, data table, source line and retrieval date as a chart.
+ */
+import ChartFigure from '../visuals/charts/ChartFigure.astro';
+import { cleanText } from '../visuals/charts/dataviz.ts';
+import type { RankFigure } from '../../data/insight-figures/figures.ts';
+import { figureValues } from '../../data/insight-figures/figures.ts';
+
+interface Props {
+  figure: RankFigure;
+}
+
+const { figure: f } = Astro.props;
+if (f.items.length < 2) throw new Error(`InsightRankList "${f.id}": needs at least two entries`);
+const items = f.items.map((i) => ({ code: cleanText('InsightRankList', 'code', i.code), name: cleanText('InsightRankList', 'name', i.name) }));
+const table = { caption: f.title, columns: ['Code', 'Risk'], rows: figureValues(f) };
+---
+
+<ChartFigure
+  id={f.id}
+  title={f.title}
+  description={f.description}
+  caption={f.caption}
+  sources={f.sources}
+  retrieved={f.retrieved}
+  derived={f.derived}
+  note={f.note}
+  table={table}
+>
+  <ol class="insight-rank" aria-label={f.title}>
+    {
+      items.map((it, i) => (
+        <li class:list={['insight-rank__item', i === 0 && 'is-first']}>
+          <span class="insight-rank__code">{it.code}</span>
+          <span class="insight-rank__name">{it.name}</span>
+        </li>
+      ))
+    }
+  </ol>
+</ChartFigure>
+
+<style>
+  .insight-rank {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--sp-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .insight-rank__item {
+    display: grid;
+    gap: var(--sp-1);
+    padding: var(--sp-3);
+    border: 1px solid var(--color-border);
+    border-inline-start: 4px solid var(--we-blue);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-soft);
+    min-inline-size: 0;
+  }
+
+  .insight-rank__item.is-first {
+    border-inline-start-color: var(--we-amber);
+  }
+
+  .insight-rank__code {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .insight-rank__name {
+    font-family: var(--ff-display);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    color: var(--color-text);
+    overflow-wrap: anywhere;
+  }
+
+  @media (forced-colors: active) {
+    .insight-rank__item,
+    .insight-rank__item.is-first {
+      border-color: CanvasText;
+    }
+  }
+</style>

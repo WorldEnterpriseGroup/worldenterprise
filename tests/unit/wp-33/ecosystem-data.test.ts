@@ -67,7 +67,8 @@ function copyStrings(): readonly string[] {
   };
   for (const value of Object.values(copy)) {
     if (typeof value === 'function') {
-      out.push(String(value(3, 10)));
+      // Every copy function takes numbers, or a number and a string; called with numbers each one still yields its full wording.
+      out.push(String((value as (...args: readonly unknown[]) => unknown)(3, 10)));
       continue;
     }
     visit(value);

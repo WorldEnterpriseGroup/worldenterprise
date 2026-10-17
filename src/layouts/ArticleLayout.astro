@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import CtaEnd from '../components/cta/CtaEnd.astro';
 import CiteThis from '../components/geo/CiteThis.astro';
 import HeroArticle from '../components/hero/HeroArticle.astro';
+import InsightFigures from '../components/insights/InsightFigures.astro';
 import RelatedRail from '../components/blocks/RelatedRail.astro';
 import SourcesList from '../components/blocks/SourcesList.astro';
 import type { DeskId } from '../data/desks.ts';
@@ -60,6 +61,7 @@ const article = articleNode({ path: meta.path, headline: meta.title, description
       <div class="container with-rail">
         <div class="prose">
           <slot />
+          <InsightFigures path={meta.path} />
           <SourcesList sources={sources} />
           <CiteThis title={meta.title} path={meta.path} date={updatedDate ?? publishedDate} />
           {

@@ -1,0 +1,98 @@
+---
+/**
+ * InsightLineChart: one or two series over time (or over years since opening) for an /insights/ article (WP-26), in the /data/ chart shell
+ * (ChartFigure): title, takeaway, legend, data table in the site's table frame, source line and retrieval date. Static SVG, no script.
+ */
+import ChartFigure from '../visuals/charts/ChartFigure.astro';
+import { cleanText, linePath, niceTicks, scale } from '../visuals/charts/dataviz.ts';
+import type { LineFigure } from '../../data/insight-figures/figures.ts';
+import { figureValues } from '../../data/insight-figures/figures.ts';
+
+interface Props {
+  figure: LineFigure;
+}
+
+const { figure: f } = Astro.props;
+if (f.series.length < 1 || f.series.length > 3) throw new Error(`InsightLineChart "${f.id}": takes 1 to 3 series, got ${f.series.length}`);
+if (f.points.length < 2) throw new Error(`InsightLineChart "${f.id}": needs at least two points`);
+for (const s of f.series) {
+  if (s.values.length !== f.points.length) throw new Error(`InsightLineChart "${f.id}": series "${s.label}" has ${s.values.length} values for ${f.points.length} points`);
+  if (s.values.some((v) => !Number.isFinite(v) || v < f.yMin || v > f.yMax)) throw new Error(`InsightLineChart "${f.id}": series "${s.label}" leaves the axis range`);
+}
+
+const W = 760;
+const H = 380;
+const left = 64;
+const right = W - 24;
+const top = 16;
+const bottom = H - 44;
+const xs = f.points.map((p) => p.x);
+const x0 = xs[0] ?? 0;
+const x1 = xs[xs.length - 1] ?? 1;
+const x = scale([x0, x1], [left, right]);
+const y = scale([f.yMin, f.yMax], [bottom, top]);
+const yTicks = niceTicks(f.yMin, f.yMax, 4);
+const axis = (v: number): string => `${Math.round((v / f.axisDivisor) * 100) / 100}${f.axisUnit}`;
+/** Series colors: the first series is the one the caption talks about (amber), then blue, then slate. */
+const TONES = [2, 1, 3] as const;
+const series = f.series.map((s, i) => ({ label: cleanText('InsightLineChart', 'series', s.label), values: s.values, tone: TONES[i] ?? 1 }));
+const table = { caption: f.title, columns: [cleanText('InsightLineChart', 'xLabel', f.xLabel), ...series.map((s) => s.label)], rows: figureValues(f) };
+---
+
+<ChartFigure
+  id={f.id}
+  title={f.title}
+  description={f.description}
+  caption={f.caption}
+  sources={f.sources}
+  retrieved={f.retrieved}
+  derived={f.derived}
+  note={f.note}
+  table={table}
+>
+  {
+    series.length > 1 && (
+      <ul class="dv-legend" slot="legend">
+        {series.map((s) => <li class={`dv-k${s.tone}`}>{s.label}</li>)}
+      </ul>
+    )
+  }
+  <svg class="dv__svg insight-line" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${f.id}-svg-t ${f.id}-svg-d`}>
+    <title id={`${f.id}-svg-t`}>{f.title}</title>
+    <desc id={`${f.id}-svg-d`}>{f.description}</desc>
+    {
+      yTicks.map((t) => (
+        <>
+          <line class="dv-grid" x1={left} x2={right} y1={y(t)} y2={y(t)} />
+          <text class="dv-axis" x={left - 8} y={y(t) + 4} text-anchor="end">{axis(t)}</text>
+        </>
+      ))
+    }
+    {
+      f.ticks.map((t, i) => (
+        <text class="dv-axis" x={x(t.x)} y={bottom + 24} text-anchor={i === 0 ? 'start' : i === f.ticks.length - 1 ? 'end' : 'middle'}>
+          {cleanText('InsightLineChart', 'tick', t.label)}
+        </text>
+      ))
+    }
+    <g class="dv-reveal">
+      {
+        series.map((s) => {
+          const last = s.values.length - 1;
+          return (
+            <>
+              <path class={`dv-line dv-s${s.tone}`} d={linePath(xs.map(x), s.values.map(y))} />
+              <circle class={`dv-f${s.tone}`} cx={x(xs[last] ?? x1)} cy={y(s.values[last] ?? 0)} r="4.5" />
+            </>
+          );
+        })
+      }
+    </g>
+  </svg>
+</ChartFigure>
+
+<style is:global>
+  .insight-line {
+    max-inline-size: 52rem;
+  }
+</style>
