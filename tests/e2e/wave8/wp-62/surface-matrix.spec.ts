@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
-import { resolveCta, resolveMidCta, FAMILY_SURFACES } from '../../../../src/data/cta/index.ts';
+import { CLOSING_BANDS, resolveCta, resolveMidCta, FAMILY_SURFACES } from '../../../../src/data/cta/index.ts';
 import type { CtaModel, FamilySurface, ResolveInput } from '../../../../src/data/cta/index.ts';
 import { listInsightFiles } from '../../../../src/lib/content-files.ts';
 import { isBuilt } from '../../support/routes.ts';
@@ -54,37 +54,27 @@ async function assertNoTracking(page: Page): Promise<void> {
 }
 
 /**
- * The closing bands that wave 9 and the earlier hand-placed pages put in a layout's `after` or `cta-end` slot, which take the place of the
- * default band of the map: the sales ladder of the reading templates (`data-cta-ladder`, WP-56, SALES.md 6), the program closing band
- * (`program-end`, WP-53), the home page's closing band (`home-end`, W9-13), the contact page's next-step band and the old `section.ctaband`.
- * Such a page is accepted when it has exactly one of them, no `data-cta="end"` element beside it (a page the CTA system closes has none of
- * them), and the gap is recorded as an annotation so the report names it. A mid-body band is the CTA system's and may sit in either kind.
+ * A row listed in `CLOSING_BANDS` (src/data/cta/closing-bands.ts) closes with its own band: it must have exactly that band, one element,
+ * and no `data-cta="end"` element; the gap is recorded as an annotation so the report names it. Every other row with a band must have
+ * exactly one `data-cta="end"` element and none of the listed bands: there is no fallback. Returns true when the row was a listed one.
  */
-const CLOSING_BANDS = [
-  '[data-cta-ladder]',
-  'section.ctaband',
-  'section.program-end',
-  'section[aria-labelledby="home-end-title"]',
-  'section#next',
-  'section[aria-labelledby="contact-next"]',
-].join(', ');
-
-async function isLegacyBand(page: Page): Promise<boolean> {
-  const drawn = await page.locator('[data-cta="end"]').count();
-  const closing = await page.locator(CLOSING_BANDS).count();
-  if (drawn === 1) {
-    expect(closing, 'a page with a data-cta end band has no other closing band beside it').toBe(0);
+async function isLegacyBand(page: Page, rowId: string): Promise<boolean> {
+  const listed = CLOSING_BANDS[rowId];
+  const drawn = page.locator('[data-cta="end"]');
+  const anyListed = Array.from(new Set(Object.values(CLOSING_BANDS).map((band) => band.selector))).join(', ');
+  if (listed === undefined) {
+    await expect(drawn, `${rowId} is not on the closing-band list, so it has exactly one data-cta end band`).toHaveCount(1);
+    await expect(page.locator(anyListed), `${rowId} has no hand-placed closing band beside its data-cta end band`).toHaveCount(0);
     return false;
   }
-  expect(drawn, 'at most one end band').toBe(0);
-  expect(closing, 'a page with no data-cta end band keeps exactly one hand-placed closing band').toBe(1);
-  await expect(page.locator('[data-cta="end"]'), 'a page on a hand-placed closing band has no CTA system end band').toHaveCount(0);
-  test.info().annotations.push({ type: 'legacy-band', description: `${new URL(page.url()).pathname} closes with its own band, not the CTA system` });
+  await expect(drawn, `${rowId} closes with its own band, so it has no data-cta end band`).toHaveCount(0);
+  await expect(page.locator(listed.selector), `${rowId} closes with exactly one ${listed.selector} (${listed.source})`).toHaveCount(1);
+  test.info().annotations.push({ type: 'legacy-band', description: `${new URL(page.url()).pathname} closes with ${listed.source}, not the CTA system` });
   return true;
 }
 
-async function assertEndBand(page: Page, model: CtaModel): Promise<void> {
-  if (await isLegacyBand(page)) return;
+async function assertEndBand(page: Page, model: CtaModel, rowId: string): Promise<void> {
+  if (await isLegacyBand(page, rowId)) return;
   const band = page.locator('[data-cta="end"]');
   await expect(band, 'exactly one end band').toHaveCount(1);
   await expect(band.locator('h2, h3').first(), 'the heading of the band').toHaveText(model.heading);
@@ -108,7 +98,7 @@ function matrix(): void {
           await expect(page.locator('[data-cta]'), 'a form, legal, thanks, search, style guide or 404 page carries no band').toHaveCount(0);
           return;
         }
-        await assertEndBand(page, model);
+        await assertEndBand(page, model, sample.row.id);
         expect(await page.locator('[data-cta="mid"]').count(), 'at most one mid-body band').toBeLessThanOrEqual(1);
         if (resolveMidCta(sample.input, isLive) === null) await expect(page.locator('[data-cta="mid"]'), 'no mid-body band where the map gives none').toHaveCount(0);
       });

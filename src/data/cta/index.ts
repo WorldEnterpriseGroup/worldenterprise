@@ -114,3 +114,5 @@ export function ctaForTarget(
   const primary = pick([keyForVariant(variant, options.briefId)], isLive, { band: true });
   return primary === undefined ? null : modelFrom(primary.key, options.audience ?? 'startup', primary, undefined);
 }
+export { CLOSING_BANDS } from './closing-bands.ts';
+export type { ClosingBand } from './closing-bands.ts';

@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import * as claimsAudit from '../../../scripts/audit-claims.mjs';
-import { ARTICLE_DESKS, FAMILY_SURFACES, findSurface, resolveCta, resolveMidCta, targetFor, withCtaItem } from '../../../src/data/cta/index.ts';
+import { ARTICLE_DESKS, CLOSING_BANDS, FAMILY_SURFACES, findSurface, resolveCta, resolveMidCta, targetFor, withCtaItem } from '../../../src/data/cta/index.ts';
 import type { CtaModel, FamilyKey } from '../../../src/data/cta/index.ts';
 import { DESKS } from '../../../src/data/desks.ts';
 import { FAMILIES, familyPaths } from '../../../src/data/families.ts';
@@ -175,4 +175,15 @@ test('every model of the table passes the claims denylist', () => {
       }
     }
   }
+});
+
+test('every id of the closing-band list is a row of the family table with a band, so the list cannot rot', () => {
+  const rows = new Map(FAMILY_SURFACES.map((row) => [row.id, row]));
+  for (const [id, band] of Object.entries(CLOSING_BANDS)) {
+    const row = rows.get(id);
+    assert.ok(row !== undefined, `${id} is not a row of FAMILY_SURFACES`);
+    assert.ok(row.expect !== null, `${id} has no band in the table, so it needs no closing-band entry`);
+    assert.ok(band.selector !== '' && band.source !== '', `${id} names its selector and its source`);
+  }
+  for (const desk of ARTICLE_DESKS) assert.ok(`articles:${desk}` in CLOSING_BANDS, `articles:${desk} closes with the ladder`);
 });

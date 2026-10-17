@@ -4315,6 +4315,11 @@
       "wp": "WP-62",
       "path": ".astro-magazine/release/RELEASE.md",
       "reason": "Wave 8 landing (#42), scoped to the CR-17 entry (src/pages/founders/index.astro quote line 44 to 45 after the segments import; W9-9), no other CR entry, no runbook section. WP-99 stays the release owner."
+    },
+    {
+      "wp": "WP-62",
+      "path": "src/components/families/SegmentPage.astro",
+      "reason": "Wave 8 landing (#42): a segment page fills the layout's after slot and so drew no closing band; it now ends with CtaEnd (the map row for /founders/<segment>/), one added line and its import."
     }
   ],
   "notes": [
