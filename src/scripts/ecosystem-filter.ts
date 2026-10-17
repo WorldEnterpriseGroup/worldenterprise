@@ -6,6 +6,10 @@
  *
  * Rows: `[data-eco-row]` with data-category, data-stages (space separated), data-audiences (space separated), data-remote ("yes"/"no").
  * Groups: `[data-eco-group]` sections, hidden when none of their rows match.
+ * Disclosures: each group keeps its full list in a native `<details data-eco-more>` and a short preview in `[data-eco-preview]`.
+ * While any filter is active the element opens every list it narrows and hides the previews, so a match is never folded away; when
+ * the filters clear it closes the lists it opened (a list the reader opened stays open). On load and on hashchange, a URL that targets
+ * an element inside a closed list (a `#p-` program anchor) opens that list and scrolls the target into view.
  * Attributes of the element: data-total (number of rows), data-all-text, data-some-text, data-none-text (templates with {shown} and
  * {total}). Texts come from the server so that the copy stays in one place.
  */
@@ -29,13 +33,21 @@ function fill(template: string | null, shown: number, total: number, fallback: s
 class WeEcosystemFilter extends HTMLElement {
   private rows: HTMLElement[] = [];
   private groups: HTMLElement[] = [];
+  private lists: HTMLDetailsElement[] = [];
+  private previews: HTMLElement[] = [];
+  private readonly onHash = (): void => this.revealHash(true);
   private status: HTMLElement | null = null;
   private empty: HTMLElement | null = null;
   private form: HTMLFormElement | null = null;
   private ready = false;
 
   connectedCallback(): void {
+    window.addEventListener('hashchange', this.onHash);
     if (this.ready) return;
+    this.lists = Array.from(this.querySelectorAll<HTMLDetailsElement>('details[data-eco-more]'));
+    this.previews = Array.from(this.querySelectorAll<HTMLElement>('[data-eco-preview]'));
+    // Reveal a linked program even when the filter cannot start (no form, no rows).
+    this.revealHash(true);
     const template = this.querySelector<HTMLTemplateElement>('template[data-eco-form]');
     if (template === null) return;
     this.rows = Array.from(this.querySelectorAll<HTMLElement>('[data-eco-row]'));
@@ -55,6 +67,29 @@ class WeEcosystemFilter extends HTMLElement {
     this.ready = true;
     this.setAttribute('data-ready', '');
     this.apply();
+  }
+
+  disconnectedCallback(): void {
+    window.removeEventListener('hashchange', this.onHash);
+  }
+
+  /** Opens the list that holds the element the URL fragment names, if that list is closed, and scrolls the element into view. */
+  private revealHash(scroll: boolean): void {
+    let id: string;
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1));
+    } catch (error) {
+      // A malformed escape cannot name an element; leave the page as it is.
+      console.warn('ecosystem-filter: ignoring a malformed URL fragment', error);
+      return;
+    }
+    if (id === '') return;
+    const target = document.getElementById(id);
+    if (target === null || !this.contains(target)) return;
+    const list = target.closest<HTMLDetailsElement>('details[data-eco-more]');
+    if (list === null || list.open) return;
+    list.open = true;
+    if (scroll) target.scrollIntoView({ block: 'start' });
   }
 
   private criteria(): Criteria {
@@ -96,6 +131,16 @@ class WeEcosystemFilter extends HTMLElement {
             : fill(this.getAttribute('data-all-text'), shown, total, 'Showing all {total} programs.');
     }
     if (this.empty !== null) this.empty.hidden = shown !== 0;
+    for (const preview of this.previews) preview.hidden = filtered;
+    for (const list of this.lists) {
+      if (filtered && !list.open) {
+        list.open = true;
+        list.dataset.ecoAutoOpen = '';
+      } else if (!filtered && list.dataset.ecoAutoOpen !== undefined) {
+        list.open = false;
+        delete list.dataset.ecoAutoOpen;
+      }
+    }
   }
 }
 
