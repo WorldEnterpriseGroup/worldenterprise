@@ -1,48 +1,104 @@
 {
   "schema_version": "1.0.0",
-  "checkpoint_id": "cp-2026-10-16-wave-11-wp25",
+  "checkpoint_id": "cp-2026-10-17-wave-11-studio",
   "run_id": "worldenterprise-astro-rebuild",
   "phase": "wave-11",
   "status": "warn",
   "last_event": {
-    "seq": 2,
-    "hash": "c67c31f39335a1251bc71d370006f33f561c99afa5476b10d204c358cf2c8d18"
+    "seq": 117,
+    "hash": "6aa85b04339d57d359db08a7662c9226fe28df675f6fa3249a2deff507c7f24d"
   },
-  "last_event_note": "events.ndjson has not been appended since seq 2 (G0, 2026-10-07). Waves 1 to 11 are recorded in GitLab milestones, issues, merge requests and .astro-magazine/handoffs/. This checkpoint reconciles state from those; the event log append and an immutable snapshot under checkpoints/ belong to the integrator (main).",
+  "last_event_note": "events.ndjson holds seq 1-2 (G0, 2026-10-07) and seq 3-117, reconstructed on 2026-10-17 from GitLab (merged MRs !54 to !101 into demo, demo push pipelines, closed issues of milestones 1784, 1810, 1811, 1841). Merges between 2026-10-07 and 2026-10-14 (waves 2 to 8) are not in the log; they stay in GitLab milestones 1725 and 1751 and in .astro-magazine/handoffs/. Each reconstructed event carries its GitLab source id.",
   "counts": {
-    "routes": 300,
-    "articles": 122,
+    "routes": 326,
+    "routes_launched": 321,
+    "articles": 134,
     "briefs": 11,
-    "media": 102,
+    "media": 104,
     "claims": 29,
-    "sources": 58,
+    "sources": 65,
     "basis": {
-      "routes": "Pages emitted by a local build of wp/25-cleanup (index.html files in dist/) before the WP-37 merge; WP-33 /ecosystem/ not yet merged",
-      "articles": "Entries in src/content/insights",
+      "routes": "Rows of the route ledger: node scripts/lib/export-ledger.mjs (the export-ledger line of the verify:static job, pipeline 70898 job 1180503 reports 326 routes, 321 launched); routes_launched is the launch:true subset",
+      "articles": "Entries (.md and .mdx) in src/content/insights",
       "briefs": "Entries in src/content/briefs (BRIEFS in src/data/families.ts)",
-      "media": "Image and video files in src/assets and public",
+      "media": "Files under src/assets and public with an image or video extension (png, jpg, webp, avif, gif, svg, mp4, webm)",
       "claims": "CLAIM_IDS in src/data/claims.ts",
-      "sources": "Records in .astro-magazine/sources"
+      "sources": "Records in .astro-magazine/sources",
+      "at": "origin/demo 33355b7c merged into wp/25-studio-checkpoint"
     }
   },
   "artifact_hashes": {
     ".astro-magazine/commission.json": "sha256:f5837de6f8aee2022e8f8f7f5f094e17c35c97b167e55aa43a24e2f1a0b5ea32",
     ".astro-magazine/scope.json": "sha256:10fcf3cd4d7f7d31c74d0aadd374c33c969b464cf7eab000ccf8b9aa711fe7a6",
-    ".astro-magazine/ownership.json": "sha256:b813547477fd094adb818c9e3dc1568c9f855652192656c3a1220ae9a0fc4cf4",
+    ".astro-magazine/ownership.json": "sha256:4d0c8fb10fff389348fde5d5e5d74b175fa89a4b019197e3b6279ce7036b80fc",
     ".astro-magazine/decisions.md": "sha256:4609b0b6967e20fcd32fe84d95d66abb4292bda2d56253e34d05ad95ce1a58ec",
-    "documents/forms-go-live-checklist.md": "sha256:ed2f28d0bd4902df22935175feabe71bccc0cf036b25b4f53efc0f7b38765cfe"
+    "documents/forms-go-live-checklist.md": "sha256:d54d2a19d97f9e9ac4a8b8252878612861fb35376dc9644fe09127d0c27a8b61"
   },
   "active_leases": [],
-  "active_handoffs": [
-    "WP-23",
-    "WP-24",
-    "WP-25",
-    "WP-33",
-    "WP-36",
-    "WP-38"
-  ],
+  "active_handoffs": [],
   "active_assignments": [],
   "waves": [
+    {
+      "wave": 9,
+      "milestone_id": 1784,
+      "title": "Visual redesign: full-screen, UBF, galaxy visuals",
+      "packages": [
+        {
+          "wp": "WP-51",
+          "issue": 72,
+          "branch": "wp/51-governance",
+          "state": "!55 merged (706659b6); !56 merged (e02c8ff0); !57 merged (a46700e3); !59 merged (a46700e3); !60 merged (90eaa97d); !61 merged (709ae9e6); !62 merged (0f7b92b1); !64 merged (b04557c3); !71 merged (8b4a3872); !74 merged (594c8925); !75 merged (3114635a); !77 merged (0e8b7502); !78 merged (aac72458); !79 merged (d5476186); !81 merged (895a94f3); issue closed"
+        },
+        {
+          "wp": "WP-52",
+          "issue": 73,
+          "branch": "wp/52-visuals",
+          "state": "!58 merged (5b432e05); !69 merged (1f39b011); !72 merged (a65caea3); issue closed"
+        },
+        {
+          "wp": "WP-53",
+          "issue": 74,
+          "branch": "wp/53-home-program",
+          "state": "!67 merged (bb7c91f2); issue closed"
+        },
+        {
+          "wp": "WP-54",
+          "issue": 75,
+          "branch": "wp/54-engagement",
+          "state": "!73 merged (56ad9ef4); issue closed"
+        },
+        {
+          "wp": "WP-55",
+          "issue": 76,
+          "branch": "wp/55-about-frameworks",
+          "state": "!68 merged (dfd6a0dd); issue closed"
+        },
+        {
+          "wp": "WP-56",
+          "issue": 77,
+          "branch": "wp/56-content-hubs",
+          "state": "!65 merged (9b5abd1e); !70 merged (90b65a3f); issue closed"
+        },
+        {
+          "wp": "WP-57",
+          "issue": 78,
+          "branch": "wp/57-sweep",
+          "state": "!66 merged (f7500b25); !80 merged (0f19bac9); issue closed"
+        },
+        {
+          "wp": "WP-58",
+          "issue": 79,
+          "branch": "wp/58-sales-pages",
+          "state": "!63 merged (12d24810); issue closed"
+        },
+        {
+          "wp": "WP-59",
+          "issue": 80,
+          "branch": "wp/51-positioning-tail",
+          "state": "!81 merged (895a94f3); issue open"
+        }
+      ]
+    },
     {
       "wave": 10,
       "milestone_id": 1810,
@@ -52,49 +108,49 @@
           "wp": "WP-32",
           "issue": 81,
           "branch": "wp/32-governance",
-          "state": "merged, issue closed"
+          "state": "!82 merged (f51e1f25); !94 merged (f50357d8); !99 merged (e5fc8ed8); !100 merged (33355b7c); issue closed"
         },
         {
           "wp": "WP-32b",
           "issue": 81,
           "branch": "wp/32b-hosts",
-          "state": "merged"
+          "state": "!85 merged (31d1f57e); issue closed"
         },
         {
           "wp": "WP-33",
           "issue": 82,
           "branch": "wp/33-ecosystem",
-          "state": "open MR !83"
+          "state": "!83 merged (7676c2a4); !98 merged (185bd976); issue closed"
         },
         {
           "wp": "WP-34",
           "issue": 83,
           "branch": "wp/34-sbir-sttr",
-          "state": "merged; issue open until the demo pipeline is green"
+          "state": "!86 merged (8488cd19); issue closed"
         },
         {
           "wp": "WP-35",
           "issue": 84,
           "branch": "wp/35-data",
-          "state": "merged; issue open until the demo pipeline is green"
+          "state": "!88 merged (52dc3d12); issue open"
         },
         {
           "wp": "WP-36",
           "issue": 85,
           "branch": "wp/36-html5",
-          "state": "open MR !87"
+          "state": "!87 merged (c1a76282); !95 merged (529716fd); issue closed"
         },
         {
           "wp": "WP-37",
           "issue": 86,
           "branch": "wp/37-longevity",
-          "state": "merged; issue open until the demo pipeline is green"
+          "state": "!84 merged (1291e1fe); issue closed"
         },
         {
           "wp": "WP-38",
           "issue": 87,
           "branch": "wp/38-content",
-          "state": "open MR !90"
+          "state": "!90 merged (c9cf85da); !96 merged (8a71560b); issue closed"
         }
       ]
     },
@@ -107,45 +163,54 @@
           "wp": "WP-22",
           "issue": 88,
           "branch": "wp/22-media",
-          "state": "merged; issue open until the demo pipeline is green"
+          "state": "!89 merged (e85da716); issue closed"
         },
         {
           "wp": "WP-23",
           "issue": 89,
           "branch": "wp/23-reference",
-          "state": "open MR !91"
+          "state": "!91 merged (b4ae6445); issue open"
         },
         {
           "wp": "WP-24",
           "issue": 90,
-          "branch": null,
-          "state": "in progress, not yet pushed"
+          "branch": "wp/24-hubs",
+          "state": "!92 merged (f0dfd8c9); issue closed"
         },
         {
           "wp": "WP-25",
           "issue": 91,
           "branch": "wp/25-cleanup",
-          "state": "in progress (this checkpoint)"
+          "state": "!93 merged (30a5d5e3); issue open; studio state refreshed by wp/25-studio-checkpoint"
         },
         {
           "wp": "WP-26",
           "issue": 92,
-          "branch": null,
-          "state": "not started; stage 2 waits for WP-38"
+          "branch": "wp/26-figures",
+          "state": "!97 merged (aa49a254); issue closed"
         }
       ]
     }
   ],
   "completed_artifacts": [
     "Waves 1 to 9 (milestones 1711, 1725, 1751, 1784)",
-    "WP-32, WP-32b, WP-34, WP-35, WP-37 and WP-22 merged to demo"
+    "Wave 10 (milestone 1810): WP-32, WP-32b, WP-33, WP-34, WP-36, WP-37, WP-38 merged to demo; WP-35 data hub merged (!88), issue #84 open",
+    "Wave 11 (milestone 1811): WP-22, WP-24, WP-25, WP-26 merged to demo; WP-23 reference media merged (!91), issue #89 open",
+    "CI load reduction (milestone 1841, closed): one pipeline per push (!101)"
   ],
   "gate_results": [
     {
-      "gate": "demo pipeline",
-      "pipeline": 69916,
-      "sha": "1291e1fe",
-      "status": "pending at checkpoint time"
+      "gate": "demo push pipeline (latest success)",
+      "pipeline": 70898,
+      "sha": "33355b7c",
+      "status": "success",
+      "note": "2026-10-17T07:19:44.720Z; verify:static, e2e, qa:lighthouse and intake:render jobs green"
+    },
+    {
+      "gate": "demo push pipeline (most recent)",
+      "pipeline": 70898,
+      "sha": "33355b7c",
+      "status": "success"
     }
   ],
   "accepted_exceptions": [],
@@ -168,27 +233,126 @@
     }
   ],
   "last_verified": {
-    "timestamp": "2026-10-16T12:02:13.000Z",
+    "timestamp": "2026-10-17T21:09:16.000Z",
     "repository_identity": "git.developerdojo.org/WorldEnterpriseGroup/worldenterprise (project 228)",
-    "build_identity": "origin/demo 1291e1f merged into wp/25-cleanup",
+    "build_identity": "origin/demo 33355b7c merged into wp/25-studio-checkpoint",
     "commands": [
-      "git log origin/demo --merges",
+      "git fetch origin; git merge origin/demo",
+      "glab api projects/228/merge_requests?state=merged&target_branch=demo",
       "glab api projects/228/merge_requests?state=opened",
-      "glab api projects/228/issues?milestone=<wave 10|wave 11>",
-      "npx astro build (local, debugging only)"
+      "glab api projects/228/pipelines?ref=demo&source=push",
+      "glab api projects/228/issues?state=all",
+      "node scripts/lib/export-ledger.mjs"
     ],
     "evidence": [
+      "gitlab:pipeline/70898",
+      ".astro-magazine/events.ndjson",
       ".astro-magazine/handoffs/wp-25.md"
     ]
   },
   "next_action": {
-    "owner": "main (integrator)",
-    "scope": "Wave 10 and wave 11",
-    "action": "Merge the open wave 10 and 11 MRs as their branch pipelines go green (WP-33, WP-36, WP-38, WP-23, WP-24, WP-25), then start WP-26 stage 2 after WP-38; append the wave 10 and 11 events and snapshot this checkpoint",
+    "owner": "main (integrator) with the CEO",
+    "scope": "Release 1 launch (#106) and the redesign approval gate (#94)",
+    "action": "Work #106, the owner and operator steps for release 1, and keep nothing public until the CEO says ready. Redesign v2 phases (#95 to #100, #102, #103) do not start until the CEO approves on #94. Open after their merged MRs: #84 (WP-35) and #89 (WP-23); also open: #107 (photography pass phase B), #101 (serve.mjs malformed URL)",
     "prerequisites": [
-      "Green branch pipelines",
-      "CEO decision on forms (documents/forms-go-live-checklist.md) before any form is connected"
+      "CEO decision on forms (documents/forms-go-live-checklist.md) before any form is connected",
+      "CEO approval on #94 before any redesign phase work",
+      "Green demo push pipeline before any release step"
     ]
   },
-  "updated_at": "2026-10-16T12:02:13.000Z"
+  "updated_at": "2026-10-17T21:09:16.000Z",
+  "open_merge_requests": [
+    {
+      "iid": 53,
+      "branch": "wp/60-carryover",
+      "target": "demo",
+      "title": "docs(handoff): WP-60 carryover for WP-99, CI and ownership rounds 2 and 3 (Refs #49)",
+      "head": "7f233220"
+    },
+    {
+      "iid": 103,
+      "branch": "wp/106-release-prep",
+      "target": "demo",
+      "title": "Release prep (#106): hub route state, strict link audit, entry lookups",
+      "head": "78691b68"
+    },
+    {
+      "iid": 104,
+      "branch": "wp/101-serve-malformed-url",
+      "target": "demo",
+      "title": "fix(serve): reject malformed request targets instead of crashing (#101)",
+      "head": "f5b5fbc4"
+    },
+    {
+      "iid": 105,
+      "branch": "wp/23-playbook-media",
+      "target": "demo",
+      "title": "WP-23: media moments on the ten playbook pages",
+      "head": "6edab3c1"
+    },
+    {
+      "iid": 106,
+      "branch": "wp/35-flow-claims",
+      "target": "demo",
+      "title": "WP-35: FlowChart on /data/formation/ and claims C-30 to C-36",
+      "head": "58fae81f"
+    }
+  ],
+  "open_issues": [
+    {
+      "issue": 42,
+      "title": "WP-62 CTA system and home: audience variants, hub and page placement, mid-body map, home, founders hub",
+      "milestone_id": 1751
+    },
+    {
+      "issue": 49,
+      "title": "WP-99 Integrator: seams, mega-menu final IA, cut flags, release gate, handoff, close-out",
+      "milestone_id": 1751
+    },
+    {
+      "issue": 70,
+      "title": "WP-90 Customer-journey end-to-end suite: one map per audience, primary and secondary call to action per page family",
+      "milestone_id": 1751
+    },
+    {
+      "issue": 80,
+      "title": "WP-59: positioning tail (remaining seat/package wording and legacy name in repo metadata)",
+      "milestone_id": 1784
+    },
+    {
+      "issue": 84,
+      "title": "WP-35: data-viz expansion from public data, journals and Carta Data (/data/)",
+      "milestone_id": 1810
+    },
+    {
+      "issue": 89,
+      "title": "WP-23: reference families media (fundability, research, briefs, playbooks)",
+      "milestone_id": 1811
+    },
+    {
+      "issue": 91,
+      "title": "WP-25: release cleanup (logo sizes, duplicate logo, studio checkpoint, brief PDF editions)",
+      "milestone_id": 1811
+    },
+    {
+      "issue": 94,
+      "title": "Redesign v2 handover + CEO approval gate (START HERE)",
+      "milestone_id": 1837
+    },
+    {
+      "issue": 101,
+      "title": "serve.mjs crashes on malformed URL //",
+      "milestone_id": 1837
+    },
+    {
+      "issue": 106,
+      "title": "Release 1 launch: owner and operator steps (carried over from #20)",
+      "milestone_id": 1751
+    },
+    {
+      "issue": 107,
+      "title": "Photography pass phase B: generate the raster slots (carried over from #22)",
+      "milestone_id": 1811
+    }
+  ]
 }
