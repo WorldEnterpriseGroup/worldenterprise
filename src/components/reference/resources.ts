@@ -85,7 +85,7 @@ export const STATIC_META: Readonly<Record<string, ResourceMeta>> = {
   },
   '/faq/': {
     title: 'FAQ',
-    description: 'Short, plain answers about World Enterprise: what a seat is, how the remote model works, what WE does not do, and how to apply.',
+    description: 'Short, plain answers about World Enterprise: what a dedicated team is, how the remote model works, what WE does not do, and how to apply.',
   },
   '/search/': {
     title: 'Search',

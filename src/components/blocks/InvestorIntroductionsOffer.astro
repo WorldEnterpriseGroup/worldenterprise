@@ -28,7 +28,7 @@ const rows = INTRODUCTIONS_READINESS.map((c) => [c.artifact, c.inPlace]);
     variant === 'brief' ? (
       <>
         <p>
-          Investor Introductions is a separate, paid add-on. It is not part of any package, and no package requires it. A flat fee covers
+          Investor Introductions is a separate, optional add-on to an engagement, and no engagement requires it. A flat fee covers
           curation and preparation. {INTRODUCTIONS_FLAT_FEE} WE curates and limits the introductions, and makes them only after the readiness
           criteria of <a href={href('/services/fundability-and-investor-readiness/')}>Service Line F</a> are met.
         </p>
@@ -40,8 +40,8 @@ const rows = INTRODUCTIONS_READINESS.map((c) => [c.artifact, c.inPlace]);
     ) : (
       <>
         <p>
-          Investor Introductions is a separate, paid add-on for a company that has finished the readiness work in Service Line F. It is not part
-          of any package, and no package requires it.
+          Investor Introductions is a separate, optional add-on to an engagement, for a company that has finished the readiness work in Service
+          Line F. No engagement requires it.
         </p>
         <div class="limits">
           <SubHeading id={`${idPrefix}-how`}>How the add-on works</SubHeading>
