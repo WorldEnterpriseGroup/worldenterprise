@@ -140,7 +140,12 @@
       "excludes": [],
       "laneExceptions": [],
       "exceptions": [
-        "src/components/layout/Header.astro"
+        "src/components/layout/Header.astro",
+        ".astro-magazine/events.ndjson",
+        ".astro-magazine/checkpoints/**",
+        ".astro-magazine/ownership.json",
+        "tests/unit/wp-32b/write-sets-wave11.test.ts",
+        ".astro-magazine/plans/wave11/writesets.json"
       ]
     },
     {
