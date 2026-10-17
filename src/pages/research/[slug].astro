@@ -1,7 +1,15 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
+import MidCta from '../../components/families/visual/MidCta.astro';
+import OrbitProgress from '../../components/families/visual/OrbitProgress.astro';
 import BriefFacts from '../../components/research/BriefFacts.astro';
+import BriefCover from '../../components/briefs/BriefCover.astro';
+import ReportMedia from '../../components/research/ReportMedia.astro';
+import Moment from '../../components/research/media/Moment.astro';
+import BriefsHubLink from '../../components/research/BriefsHubLink.astro';
 import BriefNotice from '../../components/research/BriefNotice.astro';
 import PrintNote from '../../components/research/PrintNote.astro';
 import { briefMeta, readingMinutes } from '../../components/research/briefs.ts';
@@ -23,6 +31,7 @@ const { data } = entry;
 const meta = isDraft(entry)
   ? { kindLabel: 'Draft', notice: 'Draft, not published.', noticeTitle: 'Draft' }
   : briefMeta(slug ?? entry.id);
+const asOf = (data.updatedDate ?? data.publishedDate).toISOString().slice(0, 10);
 ---
 
 <BriefLayout
@@ -38,6 +47,9 @@ const meta = isDraft(entry)
   sources={data.sources}
   draft={isDraft(entry)}
 >
+  <Moment kind="cover" id="report-cover">
+    <BriefCover slug={slug ?? entry.id} title={data.title} kicker="Research brief" />
+  </Moment>
   <BriefFacts
     version={data.version}
     asOf={data.updatedDate ?? data.publishedDate}
@@ -49,4 +61,10 @@ const meta = isDraft(entry)
   <PrintNote />
   <Toc headings={headings.map((h) => ({ depth: h.depth, slug: h.slug, text: h.text }))} title="In this brief" />
   <Content />
+  <MidCta />
+  <BriefsHubLink />
+  <OrbitProgress />
+  <EmblemFrame slot="aside" kind="research" seed={slug ?? entry.id} shape="tall" drift={false} />
+  <ReportMedia slot="after" slug={slug ?? entry.id} asOf={asOf} />
+  <ArticleEnd slot="cta-end" kind="research" seed={slug ?? entry.id} />
 </BriefLayout>

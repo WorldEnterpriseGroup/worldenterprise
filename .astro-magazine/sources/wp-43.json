@@ -47,7 +47,7 @@
       ]
     },
     {
-      "text": "How WE reads an application to World Enterprise Incubator: who fits, who probably does not, what you can send and what WE does not decide.",
+      "text": "How WE reads an application to World Enterprise: who fits, who probably does not, what you can send and what WE does not decide.",
       "sources": [
         {
           "file": "src/pages/apply/index.astro",
@@ -502,16 +502,6 @@
       ]
     },
     {
-      "text": "Where is the idea today?",
-      "sources": [
-        {
-          "file": "src/components/apply/fields.ts",
-          "line": 24,
-          "quote": "label: 'Where is the idea today?'"
-        }
-      ]
-    },
-    {
       "text": "What are you building, and for whom?",
       "sources": [
         {
@@ -532,57 +522,12 @@
       ]
     },
     {
-      "text": "Team you have in mind",
-      "sources": [
-        {
-          "file": "src/components/apply/fields.ts",
-          "line": 30,
-          "quote": "label: 'Team you have in mind'"
-        }
-      ]
-    },
-    {
       "text": "Optional. Sketch the roles in the Team Composer and they appear here, or describe them yourself.",
       "sources": [
         {
           "file": "src/components/apply/fields.ts",
           "line": 31,
           "quote": "Optional. Sketch the roles in the Team Composer"
-        }
-      ]
-    },
-    {
-      "text": "Package you have in mind",
-      "sources": [
-        {
-          "file": "src/data/packages.ts",
-          "line": 4,
-          "quote": "WP-43 (the package field on the apply form)"
-        },
-        {
-          "claims": [
-            "C-10"
-          ]
-        }
-      ]
-    },
-    {
-      "text": "Optional. Choose one of the four packages, or say that you are not sure.",
-      "sources": [
-        {
-          "file": "src/data/packages.ts",
-          "line": 4,
-          "quote": "WP-43 (the package field on the apply form)"
-        },
-        {
-          "file": "src/pages/pricing/index.astro",
-          "line": 26,
-          "quote": "Compare the four packages"
-        },
-        {
-          "claims": [
-            "C-10"
-          ]
         }
       ]
     },
@@ -613,80 +558,6 @@
           "file": "src/components/apply/fields.ts",
           "line": 16,
           "quote": "label: 'Building the first version'"
-        }
-      ]
-    },
-    {
-      "text": "Live, and looking for the first customers",
-      "sources": [
-        {
-          "file": "src/components/apply/fields.ts",
-          "line": 17,
-          "quote": "label: 'Live, and looking for the first customers'"
-        }
-      ]
-    },
-    {
-      "text": "Choose a package",
-      "ui_label": true
-    },
-    {
-      "text": "Spark",
-      "sources": [
-        {
-          "file": "src/data/packages.ts",
-          "line": 33,
-          "quote": "name: 'Spark'"
-        },
-        {
-          "claims": [
-            "C-10"
-          ]
-        }
-      ]
-    },
-    {
-      "text": "Launch",
-      "sources": [
-        {
-          "file": "src/data/packages.ts",
-          "line": 40,
-          "quote": "name: 'Launch'"
-        },
-        {
-          "claims": [
-            "C-10"
-          ]
-        }
-      ]
-    },
-    {
-      "text": "Accelerate",
-      "sources": [
-        {
-          "file": "src/data/packages.ts",
-          "line": 47,
-          "quote": "name: 'Accelerate'"
-        },
-        {
-          "claims": [
-            "C-10"
-          ]
-        }
-      ]
-    },
-    {
-      "text": "Studio",
-      "sources": [
-        {
-          "file": "src/data/packages.ts",
-          "line": 54,
-          "quote": "name: 'Studio'"
-        },
-        {
-          "claims": [
-            "C-10"
-          ]
         }
       ]
     },
@@ -919,7 +790,7 @@
         {
           "file": "src/content/pages/apply/apply.mdx",
           "line": 10,
-          "quote": "who you are, where the idea stands, the team and package you have in mind"
+          "quote": "who you are, where the company stands, the team and horizon you have in mind"
         }
       ]
     },
@@ -944,92 +815,12 @@
       ]
     },
     {
-      "text": "The form has four short steps: who you are, where the idea stands, the team and package you have in mind, and a review before you send.",
-      "sources": [
-        {
-          "file": ".astro-magazine/plans/wave7.md",
-          "line": 205,
-          "quote": "About you, About the idea, Team and package, Review"
-        },
-        {
-          "file": "src/components/apply/steps.ts",
-          "line": 22,
-          "quote": "title: 'Team and package'"
-        }
-      ]
-    },
-    {
-      "text": "The team and the package are optional, and so is a longer description of what you are building.",
-      "sources": [
-        {
-          "file": "src/components/apply/fields.ts",
-          "line": 27,
-          "quote": "Optional. A few plain sentences are enough"
-        },
-        {
-          "file": "src/components/apply/fields.ts",
-          "line": 31,
-          "quote": "Optional. Sketch the roles in the Team Composer"
-        },
-        {
-          "file": "src/components/apply/fields.ts",
-          "line": 35,
-          "quote": "Optional. Choose one of the four packages"
-        }
-      ]
-    },
-    {
-      "text": "Without JavaScript the same questions appear on one page.",
-      "sources": [
-        {
-          "file": "docs/forms-contract.md",
-          "line": 122,
-          "quote": "### The Apply stepper (WP-43)"
-        },
-        {
-          "file": "docs/forms-contract.md",
-          "line": 124,
-          "quote": "Without JavaScript all of them are visible"
-        }
-      ]
-    },
-    {
       "text": "About you",
       "sources": [
         {
           "file": "src/components/apply/steps.ts",
           "line": 20,
           "quote": "title: 'About you'"
-        },
-        {
-          "file": ".astro-magazine/plans/wave7.md",
-          "line": 205,
-          "quote": "About you, About the idea, Team and package, Review"
-        }
-      ]
-    },
-    {
-      "text": "About the idea",
-      "sources": [
-        {
-          "file": "src/components/apply/steps.ts",
-          "line": 21,
-          "quote": "title: 'About the idea'"
-        },
-        {
-          "file": ".astro-magazine/plans/wave7.md",
-          "line": 205,
-          "quote": "About you, About the idea, Team and package, Review"
-        }
-      ]
-    },
-    {
-      "text": "Team and package",
-      "sources": [
-        {
-          "file": "src/components/apply/steps.ts",
-          "line": 22,
-          "quote": "title: 'Team and package'"
         },
         {
           "file": ".astro-magazine/plans/wave7.md",
@@ -1077,17 +868,525 @@
       "ui_label": true
     },
     {
-      "text": "Seats and packages are explained on the pricing page.",
+      "text": "Which sounds most like you? (optional)",
       "sources": [
         {
-          "file": "src/pages/pricing/index.astro",
-          "line": 26,
-          "quote": "Compare the four packages"
+          "file": "src/components/apply/fields.ts",
+          "line": 27,
+          "quote": "Which sounds most like you? (optional)"
+        }
+      ]
+    },
+    {
+      "text": "Where is the company today?",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 28,
+          "quote": "Where is the company today?"
+        }
+      ]
+    },
+    {
+      "text": "When did the company start, or when will it?",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 29,
+          "quote": "When did the company start, or when will it?"
+        }
+      ]
+    },
+    {
+      "text": "Optional. It places the company on the business clock.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 29,
+          "quote": "Optional. It places the company on the business clock."
+        }
+      ]
+    },
+    {
+      "text": "Years in this industry before starting",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 30,
+          "quote": "Years in this industry before starting"
+        }
+      ]
+    },
+    {
+      "text": "How would the company pay for a team?",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 35,
+          "quote": "How would the company pay for a team?"
+        }
+      ]
+    },
+    {
+      "text": "Optional. This helps WE size a team you can sustain.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 35,
+          "quote": "Optional. This helps WE size a team you can sustain."
+        }
+      ]
+    },
+    {
+      "text": "How long do you expect to build before the company runs without you in its daily work?",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 36,
+          "quote": "How long do you expect to build before the company runs without you in its daily work?"
+        }
+      ]
+    },
+    {
+      "text": "Roles you have in mind",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 38,
+          "quote": "Roles you have in mind"
+        }
+      ]
+    },
+    {
+      "text": "Operating, with customers or revenue",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 20,
+          "quote": "Operating, with customers or revenue"
+        }
+      ]
+    },
+    {
+      "text": "Optional.",
+      "ui_label": true
+    },
+    {
+      "text": "How did you hear about WE?",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 41,
+          "quote": "How did you hear about WE?"
+        }
+      ]
+    },
+    {
+      "text": "Choose an answer",
+      "ui_label": true
+    },
+    {
+      "text": "Leaving an industry to build in it",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 189,
+          "quote": "label: 'Leaving an industry to build in it'"
+        }
+      ]
+    },
+    {
+      "text": "Starting later in my career",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 190,
+          "quote": "label: 'Starting later in my career'"
+        }
+      ]
+    },
+    {
+      "text": "Building my second (or later) company",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 191,
+          "quote": "label: 'Building my second (or later) company'"
+        }
+      ]
+    },
+    {
+      "text": "Building a U.S. company from abroad or new to the U.S.",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 192,
+          "quote": "label: 'Building a U.S. company from abroad or new to the U.S.'"
+        }
+      ]
+    },
+    {
+      "text": "Running a capable business that needs more capacity",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 193,
+          "quote": "label: 'Running a capable business that needs more capacity'"
+        }
+      ]
+    },
+    {
+      "text": "Early in my career",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 194,
+          "quote": "label: 'Early in my career'"
+        }
+      ]
+    },
+    {
+      "text": "Starting after a job change or disruption",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 195,
+          "quote": "label: 'Starting after a job change or disruption'"
+        }
+      ]
+    },
+    {
+      "text": "None of these",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 196,
+          "quote": "label: 'None of these'"
+        }
+      ]
+    },
+    {
+      "text": "None",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 207,
+          "quote": "label: 'None'"
+        }
+      ]
+    },
+    {
+      "text": "One or two years",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 208,
+          "quote": "label: 'One or two years'"
+        }
+      ]
+    },
+    {
+      "text": "Three to nine years",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 209,
+          "quote": "label: 'Three to nine years'"
+        }
+      ]
+    },
+    {
+      "text": "Ten years or more",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 210,
+          "quote": "label: 'Ten years or more'"
+        }
+      ]
+    },
+    {
+      "text": "Revenue",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 216,
+          "quote": "label: 'Revenue'"
+        }
+      ]
+    },
+    {
+      "text": "Savings",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 217,
+          "quote": "label: 'Savings'"
+        }
+      ]
+    },
+    {
+      "text": "Outside capital",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 218,
+          "quote": "label: 'Outside capital'"
+        }
+      ]
+    },
+    {
+      "text": "A corporate budget",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 219,
+          "quote": "label: 'A corporate budget'"
+        }
+      ]
+    },
+    {
+      "text": "Under a year",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 226,
+          "quote": "label: 'Under a year'"
+        }
+      ]
+    },
+    {
+      "text": "One to three years",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 227,
+          "quote": "label: 'One to three years'"
+        }
+      ]
+    },
+    {
+      "text": "Three to five years",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 228,
+          "quote": "label: 'Three to five years'"
+        }
+      ]
+    },
+    {
+      "text": "Longer",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 229,
+          "quote": "label: 'Longer'"
+        }
+      ]
+    },
+    {
+      "text": "Not sure",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 230,
+          "quote": "label: 'Not sure'"
+        }
+      ]
+    },
+    {
+      "text": "Referral from an accountant or attorney",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 236,
+          "quote": "label: 'Referral from an accountant or attorney'"
+        }
+      ]
+    },
+    {
+      "text": "Another adviser or center",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 237,
+          "quote": "label: 'Another adviser or center'"
+        }
+      ]
+    },
+    {
+      "text": "LinkedIn",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 238,
+          "quote": "label: 'LinkedIn'"
+        }
+      ]
+    },
+    {
+      "text": "Search",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 239,
+          "quote": "label: 'Search'"
+        }
+      ]
+    },
+    {
+      "text": "An event",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 240,
+          "quote": "label: 'An event'"
+        }
+      ]
+    },
+    {
+      "text": "Other",
+      "sources": [
+        {
+          "file": "src/data/forms.ts",
+          "line": 241,
+          "quote": "label: 'Other'"
+        }
+      ]
+    },
+    {
+      "text": "The form has four short steps: who you are, where the company stands, the team and horizon you have in mind, and a review before you send.",
+      "sources": [
+        {
+          "file": "src/components/apply/steps.ts",
+          "line": 21,
+          "quote": "title: 'About the company'"
         },
         {
-          "claims": [
-            "C-10"
-          ]
+          "file": "src/components/apply/steps.ts",
+          "line": 22,
+          "quote": "title: 'Team and horizon'"
+        }
+      ]
+    },
+    {
+      "text": "Only your name, your email address and the company's stage are required.",
+      "sources": [
+        {
+          "file": "src/components/forms/ApplyForm.astro",
+          "line": 60,
+          "quote": "<Field id=\"apply-stage\" name=\"stage\" label={APPLY_FIELDS.stage.label} type=\"select\" required"
+        },
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 30,
+          "quote": "hint: 'Optional.'"
+        }
+      ]
+    },
+    {
+      "text": "Without JavaScript the core questions appear on one page.",
+      "sources": [
+        {
+          "file": "docs/forms-contract.md",
+          "line": 122,
+          "quote": "### The Apply stepper (WP-43)"
+        },
+        {
+          "file": "docs/forms-contract.md",
+          "line": 124,
+          "quote": "Without JavaScript all of them are visible"
+        }
+      ]
+    },
+    {
+      "text": "About the company",
+      "sources": [
+        {
+          "file": "src/components/apply/steps.ts",
+          "line": 21,
+          "quote": "title: 'About the company'"
+        }
+      ]
+    },
+    {
+      "text": "Team and horizon",
+      "sources": [
+        {
+          "file": "src/components/apply/steps.ts",
+          "line": 22,
+          "quote": "title: 'Team and horizon'"
+        }
+      ]
+    },
+    {
+      "text": "Map the company your industry years can build.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 60,
+          "quote": "Map the company your industry years can build."
+        }
+      ]
+    },
+    {
+      "text": "Plan a company that fits the next chapter.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 61,
+          "quote": "Plan a company that fits the next chapter."
+        }
+      ]
+    },
+    {
+      "text": "Start the second one at the phase it is in.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 62,
+          "quote": "Start the second one at the phase it is in."
+        }
+      ]
+    },
+    {
+      "text": "Build here, with a team that knows the ground.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 63,
+          "quote": "Build here, with a team that knows the ground."
+        }
+      ]
+    },
+    {
+      "text": "Capacity now, credibility over time.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 64,
+          "quote": "Capacity now, credibility over time."
+        }
+      ]
+    },
+    {
+      "text": "Is this a company yet?",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 65,
+          "quote": "Is this a company yet?"
+        }
+      ]
+    },
+    {
+      "text": "A year-one planning session.",
+      "sources": [
+        {
+          "file": "src/components/apply/fields.ts",
+          "line": 65,
+          "quote": "A year-one planning session."
         }
       ]
     }

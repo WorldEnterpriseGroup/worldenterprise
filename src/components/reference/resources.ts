@@ -85,11 +85,11 @@ export const STATIC_META: Readonly<Record<string, ResourceMeta>> = {
   },
   '/faq/': {
     title: 'FAQ',
-    description: 'Short, plain answers about World Enterprise Incubator: what a seat is, how the remote model works, what WE does not do, and how to apply.',
+    description: 'Short, plain answers about World Enterprise: what a seat is, how the remote model works, what WE does not do, and how to apply.',
   },
   '/search/': {
     title: 'Search',
-    description: 'Search every public page of World Enterprise Incubator: program, services, playbooks, templates, research and reference.',
+    description: 'Search every public page of World Enterprise: program, services, playbooks, templates, research and reference.',
   },
   '/briefs/': { title: 'All briefs' },
   '/industries/': { title: 'All industries' },

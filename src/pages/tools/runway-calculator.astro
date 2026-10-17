@@ -5,6 +5,7 @@ import RunwayCalculator from '../../components/islands/we-runway/RunwayCalculato
 import { FORMULAS, FORMULAS_PAGE, PAGE } from '../../components/islands/we-runway/spec.ts';
 import ToolFormulas from '../../components/tools/ToolFormulas.astro';
 import { webApplicationNode } from '../../components/tools/webApplicationNode.ts';
+import ToolSchematic from '../../components/tools/ToolSchematic.astro';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 
 const entry = await getEntry('pages', 'tools/runway-calculator');
@@ -32,6 +33,7 @@ const PATH = '/tools/runway-calculator/';
   ]}
   noscript={PAGE.noscript}
 >
+  <ToolSchematic href="/tools/runway-calculator/" name={data.title} />
   <div id="calculator"><RunwayCalculator /></div>
   <div id="formulas">
     <ToolFormulas

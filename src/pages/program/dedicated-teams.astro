@@ -1,18 +1,30 @@
 ---
+/**
+ * The team WE steers (SITE-COPY 4.3, W9-12, WP-53): the team as part of the engagement, drawn as a constellation of roles around the
+ * company, never as a priced cart. No seat counts, no prices, no selector.
+ */
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
-import CtaBand from '../../components/ui/CtaBand.astro';
-import DataTable from '../../components/ui/DataTable.astro';
-import SeatDiagram from '../../components/program/SeatDiagram.astro';
+import ProgramEnd from '../../components/program/ProgramEnd.astro';
+import { START_REVIEW, pick } from '../../components/program/ctas.ts';
 import { loadPage } from '../../components/program/loadPage.ts';
 import { SEAT_ROLES } from '../../components/program/roles.ts';
+import DataTable from '../../components/ui/DataTable.astro';
+import TeamConstellation from '../../components/visuals/seats/TeamConstellation.astro';
+import VisualIcon from '../../components/visuals/VisualIcon.astro';
+import { SEAT_ROLE_IDENTITIES } from '../../data/seat-roles.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
 
 const { data, Content } = await loadPage('program/dedicated-teams');
-const [primary, secondary] = data.ctas;
+const state = await getRouteState();
+const howWeWork = pick('howWeWork', (path: string): boolean => state.isLive(path));
+const constellation = SEAT_ROLE_IDENTITIES.map((r) => ({ role: r.label, group: r.group }));
+const contacts = ['Delivery Lead', 'Technical Lead', 'Executive Sponsor'] as const;
 const next = [
-  { title: 'Compose your team', href: '/tools/team-composer/', description: 'Sketch the roles you need. No sign-up, no price.' },
-  { title: 'Seats and pricing', href: '/pricing/', description: 'How seats are priced, and how to request the current rate.' },
-  { title: 'What a dedicated team seat is and is not', href: '/insights/what-a-dedicated-team-seat-is-and-is-not/', description: 'The longer explanation.' },
+  { title: 'How the program works', href: '/program/how-it-works/', description: 'From first conversation to Day One.' },
+  { title: 'Remote by design', href: '/program/digital-incubation-model/', description: 'How a fully remote team works day to day.' },
+  { title: 'The whole program', href: '/program/', description: 'Five phases on the business clock, and Mission Control.' },
 ];
 ---
 
@@ -21,56 +33,102 @@ const next = [
   description={data.description}
   path="/program/dedicated-teams/"
   eyebrow={data.eyebrow}
-  lead="Offshore seats that work only on your company, managed by WE."
+  lead="You set where the company goes. WE answers for how the team gets there."
   updated={data.updated}
   draft={data.draft}
-  primary={primary}
-  secondary={secondary}
+  primary={START_REVIEW}
+  secondary={howWeWork}
   ogSlot="og-program"
   next={next}
 >
-  <div class="prose measure"><Content /></div>
-
-  <section class="stack" aria-labelledby="seat-map">
-    <h2 id="seat-map">How a seat fits</h2>
-    <SeatDiagram labelledby="seat-map" />
+  <section class="split team-intro" aria-labelledby="team-intro">
+    <div class="split__text stack">
+      <h2 id="team-intro">A team inside your company</h2>
+      <div class="prose"><Content /></div>
+      <ul class="team-points">
+        <li>The team works only on your company, role by role, as written in your team schedule.</li>
+        <li>WE recruits the people, manages them and replaces them when needed, including subcontractors.</li>
+        <li>WE gives direction, planning, coaching, quality oversight and reporting.</li>
+        <li>You set where the company goes.</li>
+      </ul>
+    </div>
+    <div class="split__media">
+      <TeamConstellation roles={constellation} label="Roles a team can include" caption="Illustration only. Your plan decides which roles your team holds." />
+    </div>
   </section>
 
-  <section class="stack" aria-labelledby="seat-roles">
-    <h2 id="seat-roles">The roles a team can include</h2>
-    <p class="measure">
-      Roles are functions, not named people. Your scope decides which of them your team needs, and the Team Composer helps you sketch
-      the shape before you apply.
-    </p>
-    <DataTable caption="Roles a dedicated team can include" columns={['Role', 'What the role does']} rows={SEAT_ROLES.map((r) => [r.role, r.does])} />
+  <section class="stack" aria-labelledby="team-contacts">
+    <h2 id="team-contacts">Your named contacts at WE</h2>
+    <ul class="team-contacts" role="list" aria-labelledby="team-contacts">
+      {
+        contacts.map((c) => (
+          <li class="team-contact">
+            <VisualIcon name="steering" size={48} />
+            <span>{c}</span>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
-  <section class="stack" aria-labelledby="seat-scale">
-    <h2 id="seat-scale">Scale up or down by notice</h2>
-    <p class="measure">
-      Seats can be added or released as the company's needs change. The notice terms are set out in the written agreement, not on this
-      page.
-    </p>
+  <section class="stack" aria-labelledby="team-roles">
+    <h2 id="team-roles">The roles a team can include</h2>
+    <p class="measure">Roles are functions, not named people. Your plan decides which of them your team holds, and roles change by notice as the agreement sets out.</p>
+    <DataTable caption="Roles a team can include" columns={['Role', 'What the role does']} rows={SEAT_ROLES.map((r) => [r.role, r.does])} />
   </section>
 
-  <section class="stack" aria-labelledby="seat-two">
-    <h2 id="seat-two">Two companies, one objective</h2>
-    <p class="measure">
-      WE and your company are two companies with one objective: a product that customers use and a company whose evidence holds up. That
-      is why a seat is dedicated. The team's work is measured against your company's goals, and WE answers for how the team is steered.
-    </p>
+  <section class="split split--even" aria-labelledby="team-two">
+    <div class="split__text stack">
+      <h2 id="team-two">Two companies, one objective</h2>
+      <p class="measure-prose">
+        WE and your company are two companies with one objective: a product that customers use and a company whose evidence holds up. That is
+        why the team is dedicated. Its work is measured against your company's goals, and WE answers for how the team is steered.
+      </p>
+    </div>
+    <div class="split__media">
+      <LimitsBlock
+        title="What the team is not"
+        items={[
+          'The team is not a set of freelancers you must recruit, brief and manage. WE does that.',
+          'The team is not a fixed promise of output. WE steers the work, and what ships depends on the scope and on your decisions.',
+          'It is not legal, tax or accounting help. Those stay with your own counsel and accountant.',
+        ]}
+      />
+    </div>
   </section>
-
-  <LimitsBlock
-    title="What a seat is not"
-    items={[
-      'A seat is not a freelancer you must recruit, brief and manage. WE does that.',
-      'A seat is not a fixed promise of output. WE steers the work, and what ships depends on the scope and on your decisions.',
-      'A seat is not legal, tax or accounting help. Those stay with your own counsel and accountant.',
-    ]}
-  />
 
   <Fragment slot="after">
-    {primary && <CtaBand title="Sketch the team you would need" text="The Team Composer shows a team shape in a few clicks. It asks for no sign-up and shows no price." cta={primary} secondary={secondary} />}
+    <LongevitySpine detail="brief" tone="soft" lead="A team that ships every week, and stays long enough to know the company." />
+    <ProgramEnd title="Find out which roles your company needs" text="Start a readiness review. WE arranges a conversation, then sends a one-page read of where your company sits on the business clock and what the next phase needs." secondary={howWeWork} />
   </Fragment>
 </StageLayout>
+
+<style>
+  @layer pages {
+    .team-points {
+      display: grid;
+      gap: var(--sp-2);
+    }
+
+    .team-contacts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      gap: var(--sp-4);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .team-contact {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+      padding: var(--sp-4);
+      font-family: var(--ff-display);
+      font-weight: 700;
+      background: var(--color-bg-soft);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
+  }
+</style>

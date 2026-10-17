@@ -6,6 +6,7 @@ import sitemap from '@astrojs/sitemap';
 import { fileURLToPath } from 'node:url';
 import { loadEnv } from 'vite';
 import { buildCsp } from './src/lib/csp.ts';
+import { inlineAssetLimit } from './src/lib/stylesheet-inlining.ts';
 import { resolveEndpoints } from './src/lib/endpoints.ts';
 import { createLastmodLookup } from './src/lib/lastmod.ts';
 import { isSitemapUrl, withLastmod } from './src/lib/seo.ts';
@@ -115,11 +116,12 @@ export default defineConfig({
   vite: {
     build: {
       /**
-       * Only stylesheets may be inlined. Astro's `inlineStylesheets: 'auto'` inlines a CSS chunk when it is under this limit
-       * (4096 B when the function returns undefined), which turns the per-component chunks into one inline style block per
-       * page. Everything else (images, scripts, fonts) must stay a file: a data: URI would need a CSP source we do not grant.
+       * Only stylesheets may be inlined, and all of them except the shared base chunk (src/lib/stylesheet-inlining.ts): a page ships
+       * one render-blocking stylesheet, the cached base, and its component CSS as hashed inline style blocks. Astro's own fallback
+       * (4096 raw bytes when the function returns undefined) left every component chunk external. Everything else (images, scripts,
+       * fonts) must stay a file: a data: URI would need a CSP source we do not grant.
        */
-      assetsInlineLimit: (/** @type {string} */ file) => (file.endsWith('.css') ? undefined : false),
+      assetsInlineLimit: inlineAssetLimit,
     },
   },
 });

@@ -146,7 +146,7 @@ export const HUB = {
     question: 'Know an organization that helps founders?',
     action: 'Share the enquiry form with them.',
   },
-  body: ['WE is a digital incubator for SaaS companies.', 'An organization that helps or equips founders may send WE an enquiry.'],
+  body: ['WE is a long-horizon business incubation and consulting firm.', 'An organization that helps or equips founders may send WE an enquiry.'],
 } as const;
 
 export const CATEGORIES_PAGE = {
@@ -282,7 +282,7 @@ export const THANKS_PAGE = {
 export const NETWORK_COPY = {
   introHeading: 'Described by roles and criteria',
   intro: [
-    'WE is a fully remote digital incubator for SaaS, so its network is not a building or a member list.',
+    'WE is a fully remote business incubation and consulting firm, so its network is not a building or a member list.',
     'It has four parts you can read about today.',
     'This section names no people and no companies.',
   ],

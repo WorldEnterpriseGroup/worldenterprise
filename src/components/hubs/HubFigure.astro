@@ -1,0 +1,154 @@
+---
+/**
+ * HubFigure: the shell of every authored hub drawing (WP-24). It carries what a figure on a hub must have: a title and a one-line
+ * caption, the drawing with intrinsic width and height (so it reserves its box before it paints: no layout shift), a text alternative,
+ * an optional legend, the data as a table when the drawing shows numbers, and a credit line saying who made it and from what.
+ *
+ * `drawing="svg"` (the default) wraps the slot in an <svg> with role="img", a <title> and a <desc>; `drawing="html"` renders the slot
+ * as is (a table drawn as a chart already is its own text alternative). The figure is marked with `data-moment` and `data-media-id`.
+ * No script, no style attribute; colors come from tokens and fall back to system colors in forced-colors mode.
+ */
+import DataTable from '../ui/DataTable.astro';
+import './palette.css';
+import { cleanText } from '../visuals/contracts.ts';
+import { mediaId, momentKind } from './moments.ts';
+import type { MomentKind } from './moments.ts';
+
+interface Table {
+  readonly caption: string;
+  readonly columns: readonly string[];
+  readonly rows: readonly (readonly string[])[];
+}
+
+interface Props {
+  /** Stable media id, `hub-...`; also the element id. */
+  id: string;
+  kind: MomentKind;
+  title: string;
+  /** The visible one-sentence takeaway. */
+  caption: string;
+  /** Who made the drawing and from what, e.g. "Diagram: World Enterprise Group Incorporated, drawn from this site's articles." */
+  credit: string;
+  drawing?: 'svg' | 'html';
+  /** viewBox width and height of the SVG drawing (required for `svg`). */
+  width?: number;
+  height?: number;
+  /** What the drawing shows, for assistive technology (required for `svg`). */
+  alt?: string;
+  table?: Table | undefined;
+  tableLabel?: string;
+  /** `dark` sets the drawing on the night sky. */
+  tone?: 'light' | 'dark';
+  class?: string | undefined;
+}
+
+const { drawing = 'svg', width, height, table, tableLabel = 'Show the figures as a table', tone = 'light', class: className } = Astro.props;
+const id = mediaId(Astro.props.id);
+const kind = momentKind(Astro.props.kind);
+const title = cleanText('HubFigure', 'title', Astro.props.title);
+const caption = cleanText('HubFigure', 'caption', Astro.props.caption);
+const credit = cleanText('HubFigure', 'credit', Astro.props.credit);
+if (drawing === 'svg') {
+  if (width === undefined || height === undefined || !(width > 0) || !(height > 0)) throw new Error(`HubFigure "${id}": an SVG drawing needs a positive width and height`);
+  if (Astro.props.alt === undefined) throw new Error(`HubFigure "${id}": an SVG drawing needs alt text`);
+}
+const alt = Astro.props.alt === undefined ? undefined : cleanText('HubFigure', 'alt', Astro.props.alt);
+if (table !== undefined) {
+  if (table.rows.length === 0) throw new Error(`HubFigure "${id}": the data table has no rows`);
+  cleanText('HubFigure', 'table caption', table.caption);
+  for (const row of table.rows) for (const cell of row) cleanText('HubFigure', 'table cell', cell, { allowEmpty: true });
+}
+---
+
+<figure class:list={['hf', `hf--${tone}`, className]} id={id} data-moment={kind} data-media-id={id} aria-labelledby={`${id}-title`}>
+  <figcaption class="hf__head">
+    <span class="hf__title" id={`${id}-title`}>{title}</span>
+    <span class="hf__caption">{caption}</span>
+  </figcaption>
+  {
+    drawing === 'svg' ? (
+      <div class="hf__drawing">
+        <svg class="hf__svg" viewBox={`0 0 ${width} ${height}`} width={width} height={height} role="img" aria-labelledby={`${id}-svg-t ${id}-svg-d`}>
+          <title id={`${id}-svg-t`}>{title}</title>
+          <desc id={`${id}-svg-d`}>{alt}</desc>
+          <slot />
+        </svg>
+      </div>
+    ) : (
+      <div class="hf__drawing hf__drawing--html">
+        <slot />
+      </div>
+    )
+  }
+  <slot name="legend" />
+  {
+    table !== undefined && (
+      <details class="hf__data">
+        <summary>{tableLabel}</summary>
+        <DataTable caption={table.caption} columns={table.columns} rows={table.rows} />
+      </details>
+    )
+  }
+  <p class="hf__credit">{credit}</p>
+</figure>
+
+<style is:global>
+  .hf {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+    min-inline-size: 0;
+  }
+
+  .hf__head {
+    display: grid;
+    gap: var(--sp-1);
+  }
+
+  .hf__title {
+    font-family: var(--ff-display);
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .hf__caption {
+    max-inline-size: 60ch;
+    font-size: var(--fs-base);
+    color: var(--color-text-muted);
+  }
+
+  .hf__drawing {
+    min-inline-size: 0;
+  }
+
+  .hf__svg {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    border-radius: var(--radius-md, 0.5rem);
+  }
+
+  .hf__credit {
+    margin: 0;
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+  }
+
+  .hf__data summary {
+    cursor: pointer;
+    color: var(--color-link);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .hf__data[open] summary {
+    margin-block-end: var(--sp-3);
+  }
+
+  .hf__data:not([open]) .table-wrap {
+    display: none;
+  }
+</style>

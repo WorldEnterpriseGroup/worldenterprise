@@ -70,8 +70,8 @@ test('stripFrontmatter and absolutizeLinks', () => {
 });
 
 test('requiredStatements repeats the no-funding sentence and the disclaimer where the rules require them', () => {
-  const facts = requiredStatements('/pricing/', 'Plain body.', REQUIRED);
-  assert.ok(facts.includes('WE makes no promise of funding.'), 'pricing carries the no-funding sentence');
+  const facts = requiredStatements('/how-we-work/', 'Plain body.', REQUIRED);
+  assert.ok(facts.includes('WE makes no promise of funding.'), 'how-we-work carries the no-funding sentence');
   const named = requiredStatements('/insights/x/', 'Our investor introductions are optional.', REQUIRED);
   assert.ok(named.includes(INTRODUCTIONS_DISCLAIMER), 'a body that names the add-on gets the disclaimer');
   assert.deepEqual(requiredStatements('/insights/x/', `A body that has it. ${INTRODUCTIONS_DISCLAIMER}`, REQUIRED), [], 'a statement already in the body is not repeated');
@@ -91,7 +91,7 @@ test('renderTwin: H1, lead, canonical URL, date, publisher, body, then the state
   assert.equal(lines[2], 'A lead.');
   assert.match(text, /^Canonical URL: https:\/\/worldenterprise\.org\/insights\/x\/$/m);
   assert.match(text, /^Last updated: 2026-10-06$/m);
-  assert.match(text, /^Publisher: World Enterprise Incubator, run by World Enterprise Group Incorporated$/m);
+  assert.match(text, /^Publisher: World Enterprise, run by World Enterprise Group Incorporated$/m);
   assert.match(text, /\(https:\/\/worldenterprise\.org\/pricing\/\)/);
   assert.match(text, /## Statements that apply to this page\n\nWE makes no promise of funding\.\n$/);
   assert.deepEqual(buildTwin({ route: '/insights/x/', title: 'A title', body: 'Body.' }).problems, []);

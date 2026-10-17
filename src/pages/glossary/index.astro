@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import ReferenceIntro from '../../components/families/visual/ReferenceIntro.astro';
 import GlossaryList from '../../components/reference/GlossaryList.astro';
 import { definedTermSetNode } from '../../components/reference/jsonld.ts';
 import { metaLookup } from '../../components/reference/resources.ts';
@@ -44,7 +45,9 @@ const terms = entries.map((entry) => ({
   lead="Terms founders meet, defined neutrally. These are general definitions, not legal or financial advice."
   wide
   updated={new Date('2026-10-10')}
-  jsonLd={[definedTermSetNode('/glossary/', 'World Enterprise Incubator glossary', terms)]}
+  jsonLd={[definedTermSetNode('/glossary/', 'World Enterprise glossary', terms)]}
 >
-  <GlossaryList terms={terms} />
+  <ReferenceIntro kind="glossary" seed="glossary">
+    <GlossaryList terms={terms} />
+  </ReferenceIntro>
 </ReferenceLayout>

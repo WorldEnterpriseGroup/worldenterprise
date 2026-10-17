@@ -35,6 +35,7 @@ claimsUsed: [C-29]
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
+import Steps from '../../../components/ui/Steps.astro';
 import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 *General information, not legal advice. Written October 10, 2026. The rules on job advertisements and job duties differ by country and state, so have your own counsel check anything you publish.*
@@ -87,6 +88,18 @@ Candidates deserve to know how hiring will work, and saying so is also a courtes
 
 Add a line on how a candidate can ask for an adjustment to the process. It tells them you have thought about it, and it gives them a way to ask without having to guess.
 
+**From outcome to posting.** A description that people can answer starts with the work and ends with the process, in this order.
+
+<Steps
+  headingLevel={3}
+  steps={[
+    { title: 'Outcome', body: 'Describe what will be different in a year if the hire goes well.' },
+    { title: 'Requirements', body: 'Separate what the job requires from what you would like.' },
+    { title: 'Wording check', body: 'Read the text for wording that excludes people for reasons unrelated to the work.' },
+    { title: 'Next steps', body: 'Tell applicants what happens after they apply and roughly when.' }
+  ]}
+/>
+
 ## A template of headings, not of words
 
 You do not need a template of sentences. A set of headings is enough to organize your thinking:
@@ -96,6 +109,12 @@ You do not need a template of sentences. A set of headings is enough to organize
 </Callout>
 
 Fill each heading from the one-page record described in <MaybeLink path="/insights/your-first-hire-what-to-settle-before-you-write-the-job/">your first hire</MaybeLink>. If you cannot fill a heading, the decision behind it has not been made yet, and finishing the posting will not make it for you. The <MaybeLink path="/glossary/">glossary</MaybeLink> may help with terms a candidate from outside the startup world has not met.
+
+## Where this fits in a long effort
+
+A job description is the first document a new team member reads about the company, so it sets the tone for a relationship that, ideally, lasts years. The <MaybeLink path="/insights/your-first-hire-what-to-settle-before-you-write-the-job/">first hire article</MaybeLink> covers what to settle before writing, and the <MaybeLink path="/insights/writing-down-how-a-remote-team-works-a-team-handbook/">team handbook article</MaybeLink> covers what the hire will read next. The <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article explains why a team that stays together is worth the care taken in hiring it.
+
+SBA resource partners, listed in the <MaybeLink path="/ecosystem/">ecosystem directory</MaybeLink>, offer counseling on first hires, and founder communities are a good place to ask how others wrote theirs.
 
 ## What this article cannot tell you
 

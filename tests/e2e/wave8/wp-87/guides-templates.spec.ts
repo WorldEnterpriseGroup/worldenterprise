@@ -147,7 +147,25 @@ for (const guide of NEW_GUIDES) {
       expect(await sources.count(), 'the outside sources are linked').toBeGreaterThan(1);
       const types = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((n) => n.textContent ?? ''));
       for (const raw of types) expect(raw).not.toContain('HowTo');
-      expect(await page.locator('main img').count(), 'no new image').toBe(0);
+      // Wave 11 (WP-23, #89) adds media to the guides: every image in main is either described or decorative (alt="" or aria-hidden),
+      // has explicit dimensions, and loads lazily when it starts below the first viewport.
+      const images = await page.locator('main img').evaluateAll((els) =>
+        els.map((el) => ({
+          src: el.getAttribute('src') ?? '',
+          alt: el.getAttribute('alt'),
+          hidden: el.getAttribute('aria-hidden') === 'true',
+          width: el.getAttribute('width'),
+          height: el.getAttribute('height'),
+          loading: el.getAttribute('loading'),
+          below: el.getBoundingClientRect().top + window.scrollY > window.innerHeight,
+        })),
+      );
+      for (const img of images) {
+        expect(img.alt !== null || img.hidden, `${img.src} has an alt attribute or is hidden`).toBe(true);
+        expect(Number(img.width), `${img.src} has a width`).toBeGreaterThan(0);
+        expect(Number(img.height), `${img.src} has a height`).toBeGreaterThan(0);
+        if (img.below) expect(img.loading, `${img.src} below the fold loads lazily`).toBe('lazy');
+      }
       expect(seen.consoleErrors).toEqual([]);
       expect(seen.pageErrors).toEqual([]);
       expect(seen.thirdParty).toEqual([]);

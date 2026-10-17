@@ -1,4 +1,4 @@
-# World Enterprise Incubator: GitLab is the release authority.
+# World Enterprise: GitLab is the release authority.
 #
 #   preflight  verify:static   type check, unit tests, contrast, production-shaped build, route ledger export
 #              check:ownership  wp/* branches only: the diff stays inside the branch owner's paths
@@ -14,11 +14,29 @@
 # package merge may use while a heavy suite is being repaired; gh-pages, and any branch whose name ends in "negatives", is always
 # strict. The negatives branch is how each gate is proven able to fail.
 #
-# The Launch Sequence include is pinned to an immutable commit (D-6).
+# The Launch Sequence include is pinned to an immutable commit (D-6). The pin is a SHA, not a tag: Launch Sequence tags stop at v0.2.5.3
+# (July), older than the template changes this project uses. Nothing bumps it automatically (this project has no renovate.json, and
+# Renovate cannot follow a bare SHA); the owner of a CI change bumps it in a merge request, after reading the Launch Sequence diff for
+# the four files used here (pipelines/static-site.yml, jobs/preflight.yml, jobs/pages-deploy.yml, jobs/github-mirror.yml).
+#
+# Pipeline policy (issue #105, milestone "CI load reduction"). Measured over 72h to 2026-10-17: 19,999 job-min, 26% of cluster CI.
+#   One pipeline per push. Merge request pipelines are never created: they had 0 jobs and always failed, and the branch push pipeline is
+#     the merge gate (handover #104, push-slot.sh asks for source=push). A new commit cancels the superseded pipeline's interruptible jobs.
+#   wp/* pipelines also cancel themselves when any job fails (on_job_failure: all), so a red pipeline stops spending runner time.
+#     demo, gh-pages and release tags keep running after a failure so that their evidence set is complete.
+#   Tiers. Every branch gets verify:static (type check, unit tests, build). The qa stage (audits, e2e, Lighthouse, release gate) runs on
+#     * demo, gh-pages, *negatives, schedules and manual runs: always, in full. This is the backstop that the path filter below relies on.
+#     * release-* tags: always, strict, with verify:release allowing nothing.
+#     * wp/*: when the branch changes a site-affecting path compared with demo (the `changes:` list of .qa-rules). A branch that only
+#       changes handoffs, decisions, ownership, docs or unit tests builds the same dist/ as demo, so the qa jobs would repeat demo's run.
+#     * any other branch: preflight only.
+#   Flakes must not cancel a pipeline: the runner retries clone, artifact download and cache restore in place (GET_SOURCES_ATTEMPTS and
+#     friends), and runner-side failures are retried once (default: retry). Test failures and timeouts are never retried automatically.
+#   No suite was removed or weakened: the same jobs run, scheduled where they can find something. QA_STRICT still controls allow_failure.
 
 include:
   - project: 'DroidOpsInc/launch-sequence'
-    ref: 6c547b757f89ec5552b5d769dfa64700e9bd4289 # immutable Launch Sequence commit, checked 2026-10-06
+    ref: def0ef097972b7608622aa7df91a4f985368424c # immutable Launch Sequence commit (main on 2026-10-17); bump by merge request, see D-6 below
     file: '/pipelines/static-site.yml'
   # The intake service (WP-61, contracts section 4) keeps its own jobs in infra/intake/ci.yml. The include is added once, here, and is
   # inert until that file exists, so WP-61 never edits this file. Nothing under infra/ reaches the GitHub mirror (decision R-2).
@@ -26,6 +44,30 @@ include:
     rules:
       - exists:
           - infra/intake/ci.yml
+
+workflow:
+  auto_cancel:
+    on_new_commit: interruptible
+  rules:
+    # Merge request pipelines are not created (see the policy above). Without this rule a push to a branch with an open merge request
+    # produced a second, jobless and failed pipeline on the same commit.
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    # Explicitly started or chained pipelines (schedules, "Run pipeline", API, triggers) are always created.
+    - if: '$CI_PIPELINE_SOURCE =~ /^(schedule|web|api|trigger|pipeline|parent_pipeline|chat)$/'
+    # Tags, release candidates included: never auto-canceled.
+    - if: '$CI_COMMIT_TAG'
+      auto_cancel:
+        on_new_commit: none
+    # Integration and release branches: a newer commit supersedes the older run; a failure lets the other jobs finish.
+    - if: '$CI_COMMIT_BRANCH =~ /^(demo|gh-pages)$/'
+      auto_cancel:
+        on_new_commit: interruptible
+    # Work-package and every other branch: supersede on a new commit and stop at the first failed job.
+    - if: '$CI_COMMIT_BRANCH'
+      auto_cancel:
+        on_new_commit: interruptible
+        on_job_failure: all
 
 # The include declares preflight, deploy and mirror. qa is added between preflight and deploy.
 stages:
@@ -42,6 +84,12 @@ variables:
   # Full history for every job: sitemap lastmod reads git dates, check:ownership diffs against demo.
   GIT_DEPTH: "0"
   PLAYWRIGHT_IMAGE: "${IMAGE_REGISTRY}/mcr-proxy/playwright:v1.63.0-noble"
+  # Fail-fast (on_job_failure: all on wp/*) turns one infrastructure flake into a cancelled pipeline: pipeline 70683 lost nine jobs when
+  # verify:release's full-history clone dropped ("RPC failed; curl 18 transfer closed", GIT_DEPTH 0 under cluster congestion). The runner
+  # retries the clone, the artifact download and the cache restore in place, so a transient network error is not a job failure.
+  GET_SOURCES_ATTEMPTS: "3"
+  ARTIFACT_DOWNLOAD_ATTEMPTS: "3"
+  RESTORE_CACHE_ATTEMPTS: "3"
   npm_config_cache: "${CI_PROJECT_DIR}/.npm"
   npm_config_update_notifier: "false"
   # The one operator-gated item verify:release tolerates off gh-pages: the intake and newsletter endpoints are not provisioned,
@@ -52,13 +100,22 @@ variables:
   # industries, compare, journey, briefs), the investor and partner pages, the brand story and three founder tools are launch:true in
   # src/data/routes.ts before their packages write the page. Each shape is anchored at both ends, so a launched route anywhere else
   # that does not exist still fails. The wave 7 patterns are gone: those pages exist, and the four framework pages WP-48 never built
-  # are launch:false. WP-99 removes the wave 8 shapes when the last page lands, leaving the form routes. A release tag and gh-pages
+  # are launch:false. Wave 10 (WP-32, D-W10-5) adds the /ecosystem/, /sbir-sttr/ and /data/ shapes while WP-33, WP-34 and WP-35 build them; WP-37 or the last of them removes the shapes. WP-99 removes the wave 8 shapes when the last page lands, leaving the form routes. A release tag and gh-pages
   # set RELEASE_ALLOW to empty (verify:release below), so none of this can reach a release. expand: false keeps the `$`.
   RELEASE_ALLOW:
-    value: '^launched form route,^launch:true route does not exist: (/(?:founders/[a-z0-9-]+|industries|industries/[a-z0-9-]+|compare|compare/[a-z0-9-]+|journey|journey/[a-z0-9-]+|briefs|briefs/[a-z0-9-]+|investors/(?:meet-startups|what-you-can-see|readiness-criteria|showcase-format|faq|interest|interest/thanks)|network/partners|network/partners/(?:categories|how-it-works|faq|enquire|enquire/thanks)|about/brand-story|tools/(?:runway-calculator|pricing-page-checker|cap-table-explainer))/)$'
+    value: '^launched form route,^launch:true route does not exist: (/(?:founders/[a-z0-9-]+|industries|industries/[a-z0-9-]+|compare|compare/[a-z0-9-]+|journey|journey/[a-z0-9-]+|briefs|briefs/[a-z0-9-]+|investors/(?:meet-startups|what-you-can-see|readiness-criteria|showcase-format|faq|interest|interest/thanks)|network/partners|network/partners/(?:categories|how-it-works|faq|enquire|enquire/thanks)|about/brand-story|tools/(?:runway-calculator|pricing-page-checker|cap-table-explainer)|ecosystem|ecosystem/[a-z0-9-]+|sbir-sttr|sbir-sttr/[a-z0-9-]+|data|data/[a-z0-9-]+)/)$'
     expand: false
   # Every qa job blocks on every branch (decision I-10). Set by WP-15 after a wp/15 pipeline passed all of them.
   QA_STRICT: "1"
+
+# Runner-side failures (pod lost, scheduler or API error) are retried once; script and test failures, and job timeouts, are not.
+default:
+  retry:
+    max: 1
+    when:
+      - runner_system_failure
+      - scheduler_failure
+      - api_failure
 
 # npm packages are cached per lockfile. Playwright browsers ship inside the Playwright image, so nothing is downloaded per job.
 .npm-cache:
@@ -71,13 +128,42 @@ variables:
     policy: pull-push
 
 # Strict on gh-pages, on *negatives branches, on release-* tags and when QA_STRICT=1; otherwise allowed to fail.
+# Which branches run the qa stage at all is the tiering in the policy at the top: demo, gh-pages, *negatives and release tags always;
+# wp/* only when the branch changes a site-affecting path compared with demo (`compare_to`, so the whole branch is judged, not one push);
+# no other branch. The path list is anchored here and reused by the jobs below that repeat these rules for their `exists:` guards.
+# It is every path that can change dist/ or what a qa job measures, so a branch that only touches handoffs, decisions, ownership, docs,
+# unit tests or the intake service skips the stage: its dist/ is the dist/ of demo, which the demo pipeline already checked in full.
 .qa-rules:
   rules:
     - if: '$CI_COMMIT_TAG =~ /^release-/'
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || $QA_STRICT == "1"'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\// && $QA_STRICT == "1"'
+      changes:
+        paths: &site-paths
+          - src/**/*
+          - public/**/*
+          - scripts/**/*
+          - tests/e2e/**/*
+          - astro.config.mjs
+          - package.json
+          - package-lock.json
+          - tsconfig.json
+          - playwright.config.ts
+          - lighthouserc.json
+          - claims-denylist.json
+          - CNAME
+          - .node-version
+          - .gitlab-ci.yml
+        compare_to: refs/heads/demo
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
+      changes:
+        paths: *site-paths
+        compare_to: refs/heads/demo
+      allow_failure: true
+    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || ($CI_COMMIT_BRANCH == "demo" && $QA_STRICT == "1")'
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH == "demo"'
       allow_failure: true
 
 .needs-build:
@@ -234,11 +320,14 @@ e2e:routes:
     # which has its own job (e2e:stability) and is timing-sensitive when four workers share the runner with a thousand other tests.
     - npx playwright test routes layout.spec folds shell --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
 
-# axe on every route and with the navigation open.
+# axe on every route and with the navigation open, split over three jobs like e2e:routes. As one job it ran past the one-hour job timeout
+# in demo pipeline 69466 (571 tests, all passing, at 15-40 s each on the shared runner), and every wave adds routes. `needs: e2e:a11y`
+# waits for all three shards.
 e2e:a11y:
   extends: [.e2e]
+  parallel: 3
   script:
-    - npx playwright test axe
+    - npx playwright test axe --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
 
 # Mega-menu matrix: desktop, mobile touch, no-js, forced-colors, zoom-200.
 e2e:menu:
@@ -272,11 +361,25 @@ e2e:wave7:
       exists:
         - tests/e2e/wave7/**/*.spec.ts
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || $QA_STRICT == "1"'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\// && $QA_STRICT == "1"'
+      changes:
+        paths: *site-paths
+        compare_to: refs/heads/demo
       exists:
         - tests/e2e/wave7/**/*.spec.ts
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
+      changes:
+        paths: *site-paths
+        compare_to: refs/heads/demo
+      exists:
+        - tests/e2e/wave7/**/*.spec.ts
+      allow_failure: true
+    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || ($CI_COMMIT_BRANCH == "demo" && $QA_STRICT == "1")'
+      exists:
+        - tests/e2e/wave7/**/*.spec.ts
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH == "demo"'
       exists:
         - tests/e2e/wave7/**/*.spec.ts
       allow_failure: true
@@ -294,11 +397,25 @@ e2e:wave8:
       exists:
         - tests/e2e/wave8/**/*.spec.ts
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || $QA_STRICT == "1"'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\// && $QA_STRICT == "1"'
+      changes:
+        paths: *site-paths
+        compare_to: refs/heads/demo
       exists:
         - tests/e2e/wave8/**/*.spec.ts
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
+      changes:
+        paths: *site-paths
+        compare_to: refs/heads/demo
+      exists:
+        - tests/e2e/wave8/**/*.spec.ts
+      allow_failure: true
+    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || ($CI_COMMIT_BRANCH == "demo" && $QA_STRICT == "1")'
+      exists:
+        - tests/e2e/wave8/**/*.spec.ts
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH == "demo"'
       exists:
         - tests/e2e/wave8/**/*.spec.ts
       allow_failure: true
@@ -316,11 +433,55 @@ audit:gated:
       exists:
         - infra/intake/briefs/*.md
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || $QA_STRICT == "1"'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\// && $QA_STRICT == "1"'
+      changes:
+        paths:
+          - src/**/*
+          - public/**/*
+          - scripts/**/*
+          - tests/e2e/**/*
+          - astro.config.mjs
+          - package.json
+          - package-lock.json
+          - tsconfig.json
+          - playwright.config.ts
+          - lighthouserc.json
+          - claims-denylist.json
+          - CNAME
+          - .node-version
+          - .gitlab-ci.yml
+          - infra/intake/briefs/**/*
+        compare_to: refs/heads/demo
       exists:
         - infra/intake/briefs/*.md
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
+      changes:
+        paths:
+          - src/**/*
+          - public/**/*
+          - scripts/**/*
+          - tests/e2e/**/*
+          - astro.config.mjs
+          - package.json
+          - package-lock.json
+          - tsconfig.json
+          - playwright.config.ts
+          - lighthouserc.json
+          - claims-denylist.json
+          - CNAME
+          - .node-version
+          - .gitlab-ci.yml
+          - infra/intake/briefs/**/*
+        compare_to: refs/heads/demo
+      exists:
+        - infra/intake/briefs/*.md
+      allow_failure: true
+    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || ($CI_COMMIT_BRANCH == "demo" && $QA_STRICT == "1")'
+      exists:
+        - infra/intake/briefs/*.md
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH == "demo"'
       exists:
         - infra/intake/briefs/*.md
       allow_failure: true
@@ -336,11 +497,25 @@ audit:geo:
       exists:
         - scripts/audit-geo.mjs
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || $QA_STRICT == "1"'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\// && $QA_STRICT == "1"'
+      changes:
+        paths: *site-paths
+        compare_to: refs/heads/demo
       exists:
         - scripts/audit-geo.mjs
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
+      changes:
+        paths: *site-paths
+        compare_to: refs/heads/demo
+      exists:
+        - scripts/audit-geo.mjs
+      allow_failure: true
+    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || ($CI_COMMIT_BRANCH == "demo" && $QA_STRICT == "1")'
+      exists:
+        - scripts/audit-geo.mjs
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH == "demo"'
       exists:
         - scripts/audit-geo.mjs
       allow_failure: true
@@ -352,7 +527,11 @@ e2e:forms:
   stage: qa
   image: "${PLAYWRIGHT_IMAGE}"
   interruptible: true
-  needs: []
+  # It builds its own dist/ with an endpoint, so it needs nothing from verify:static but its verdict: a red preflight stops the job
+  # from running at all (it used to start in parallel with `needs: []`).
+  needs:
+    - job: verify:static
+      artifacts: false
   variables:
     CI: "1"
     PUBLIC_WE_INTAKE_API_URL: "https://intake.example.test/api/intake"
@@ -423,7 +602,10 @@ verify:release:
   stage: qa
   image: "${NODE_IMAGE}"
   interruptible: true
-  needs: []
+  # Gated on the preflight like every other qa job (it used to start in parallel with `needs: []`).
+  needs:
+    - job: verify:static
+      artifacts: false
   script:
     - npm ci --prefer-offline --no-audit --no-fund
     - npm run verify:release
@@ -438,9 +620,19 @@ verify:release:
       variables:
         RELEASE_ALLOW: ""
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH =~ /negatives$/ || $QA_STRICT == "1"'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\// && $QA_STRICT == "1"'
+      changes:
+        paths: *site-paths
+        compare_to: refs/heads/demo
       allow_failure: false
-    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
+      changes:
+        paths: *site-paths
+        compare_to: refs/heads/demo
+      allow_failure: true
+    - if: '$CI_COMMIT_BRANCH == "gh-pages" || $CI_COMMIT_BRANCH =~ /negatives$/ || ($CI_COMMIT_BRANCH == "demo" && $QA_STRICT == "1")'
+      allow_failure: false
+    - if: '$CI_COMMIT_BRANCH == "demo"'
       allow_failure: true
 
 # The shared Pages job defaults to Alpine without Node and copies the repository

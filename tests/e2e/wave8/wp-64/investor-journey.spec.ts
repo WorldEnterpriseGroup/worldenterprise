@@ -87,7 +87,7 @@ test.describe('the hub', () => {
     await expect(showcase).toHaveCount(1);
     const mode = await showcase.getAttribute('data-showcase');
     if (mode === 'empty') {
-      await expect(showcase).toHaveText("No portfolio is published yet. WE lists a company here only with its founder's written consent.");
+      await expect(showcase).toHaveText("No company is listed yet. WE lists a company here only with its founder's written consent.");
       await expect(page.locator('ul[data-showcase="list"]')).toHaveCount(0);
     } else {
       // A consented record exists: every card shows a name, and a link only when it is an http or https address.

@@ -1,0 +1,30 @@
+---
+import { BRIEF_COPY } from './copy.ts';
+
+interface Props {
+  /** Section titles of the full brief, in order. Titles only: the outline never quotes the brief. */
+  outline: readonly string[];
+}
+
+const { outline } = Astro.props;
+---
+
+<section class="brief-outline stack" id="outline" aria-labelledby="outline-heading">
+  <h2 id="outline-heading">{BRIEF_COPY.outlineHeading}</h2>
+  <p>{BRIEF_COPY.outlineIntro} {BRIEF_COPY.outlineSends}</p>
+  <ol class="brief-outline__list" role="list">
+    {outline.map((title) => <li>{title}</li>)}
+  </ol>
+</section>
+
+<style>
+  .brief-outline {
+    scroll-margin-top: var(--sp-8);
+  }
+  .brief-outline__list {
+    margin: 0;
+    padding-inline-start: 1.5em;
+    display: grid;
+    gap: var(--sp-2);
+  }
+</style>

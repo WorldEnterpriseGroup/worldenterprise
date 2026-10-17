@@ -69,7 +69,6 @@ test('a page the transform refuses has no twin, and nothing links to a twin it d
   const twinRoutes = new Set(twins.map((t) => t.route));
   const text = buildLlmsTxt({
     site: { name: site.name, legalName: site.legalName, tagline: site.tagline, description: site.description, origin: site.origin },
-    packages: [],
     serviceLines: [],
     keyPages: [],
     optionalPages: [

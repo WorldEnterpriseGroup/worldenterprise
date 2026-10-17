@@ -1,17 +1,17 @@
 ---
-title: About WE
-description: "World Enterprise Incubator is a digital incubator for SaaS. Fully remote, with dedicated team seats steered by WE, from first idea to first customers."
-eyebrow: About
+title: WE build worlds
+description: "World Enterprise Group Incorporated is a business incubation and consulting firm: long-horizon incubation, paced to the years a company takes."
+eyebrow: About WE
 hero: H2
-updated: 2026-10-06
-claimsUsed: [C-01, C-02, C-03, C-18, C-19]
+updated: 2026-10-14
+claimsUsed: [C-01, C-02, C-03, C-05, C-18, C-19]
 ---
 
-World Enterprise Incubator is a digital incubator for SaaS. A founder brings an idea for a software product. WE brings a dedicated team of offshore seats, steers that team, manages its subcontractors, and works with the founder through three stages that carry the motto: WE Dream. WE Build. WE Grow.
+WE steers dedicated, fully remote teams that build companies with their founders, paced to the years a company really takes. WE is a services firm, not an investor. WE makes no promise of funding.
 
-## What WE does
+The work follows one motto: WE Dream. WE Build. WE Grow. A founder brings a company, or the idea for one. WE plans the work with them, steers the team that does it, and stays for the years it takes the company to find its place.
 
-WE exists to help one kind of founder: a person with a software-as-a-service idea who needs a team, a method and a record of evidence before anyone will fund it. The program is built around that job.
+## Dream, Build, Grow
 
 - **Dream** is where the problem and the customer are tested before anything is built.
 - **Build** turns the validated idea into a product that ships.
@@ -21,12 +21,7 @@ Each stage produces artifacts you can open and inspect: a playbook, a template, 
 
 ## Fully remote, on purpose
 
-WE is fully digital. There is no office to visit and no relocation to plan. Work happens in shared documents, written plans and scheduled reviews, with the team seats placed offshore and scaled up or down by notice. That is why this site shows no street address.
+WE is fully digital. There is no office to visit and no relocation to plan.
 
-## What WE does not do
+WE does not promise funding, and nothing here predicts that a company will raise money. WE does not keep your books, file your taxes or replace your lawyer.
 
-WE does not promise funding, and nothing here predicts that a company will raise money. WE does not keep your books, file your taxes or replace your lawyer; the program coordinates the professionals you already use. WE does not publish client logos, customer quotes or results.
-
-## How WE works
-
-WE runs on a small set of operating frameworks that it wrote for its own use. They give a team shared words for what it is doing this week. You can read them, in plain language, on the frameworks page.

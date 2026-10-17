@@ -25,6 +25,7 @@ draft: false
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
+import Steps from '../../../components/ui/Steps.astro';
 import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 *General information, not management or legal advice. Written October 10, 2026. This article describes practices and sources. It does not promise that any practice will improve a team's results.*
@@ -86,6 +87,18 @@ The framework is about architecture decisions in government digital services, an
 
 Keep records in one place the whole team can search, and write them at the time of the decision. A record written months afterward is a story about the decision. If a record is later replaced, mark it replaced and link to the new one, and do not edit the old one in place.
 
+**A decision, from question to record.** The same four moves work for a meeting and for a written thread. What changes is where the discussion happens.
+
+<Steps
+  headingLevel={3}
+  steps={[
+    { title: 'Write the question', body: 'State the decision in one sentence and name who will make it.' },
+    { title: 'Collect views in writing', body: 'Give people a set time to add facts, options and objections before anyone talks.' },
+    { title: 'Decide and say why', body: 'The named person decides and writes the reasoning in two or three sentences.' },
+    { title: 'File the record', body: 'Store the decision with its date where the whole team can find it later.' }
+  ]}
+/>
+
 ## What to bring together in a week
 
 These habits fit together. A short, regular meeting handles what needs voices in a room. Written updates handle the rest. A decision record keeps what was settled. A founder can fold the three into the weekly pattern in <MaybeLink path="/insights/a-weekly-operating-rhythm-for-a-founder/">a weekly operating rhythm for a founder</MaybeLink>, and a team with a product to ship can see how decisions feed a plan in <MaybeLink path="/insights/product-management-for-a-first-saas-roles-backlog-and-decisions/">product management for a first SaaS</MaybeLink>. Decision records are also what you point to when two people remember a choice differently, which is one reason they help in <MaybeLink path="/insights/working-through-a-disagreement-with-a-co-founder/">working through a disagreement with a co-founder</MaybeLink>.
@@ -95,6 +108,12 @@ These habits fit together. A short, regular meeting handles what needs voices in
 </Callout>
 
 The <MaybeLink path="/glossary/">glossary</MaybeLink> defines shared terms.
+
+## Where this fits in a long effort
+
+A decision record costs a few minutes and saves the team from reopening the same question in a year. For a company expecting to last, the archive of past decisions is a form of memory that survives staff changes. The <MaybeLink path="/insights/a-weekly-operating-rhythm-for-a-founder/">weekly operating rhythm</MaybeLink> article shows where a decision review fits in the week, and the <MaybeLink path="/how-we-work/">how WE works</MaybeLink> page describes WE's own practice. The <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article explains why a written record matters most in the later years of a company.
+
+Other founders are often the best test of a decision-record format. The founder communities in the <MaybeLink path="/ecosystem/">ecosystem directory</MaybeLink> are independent groups where small teams compare how they run their weeks.
 
 ## What this article cannot tell you
 

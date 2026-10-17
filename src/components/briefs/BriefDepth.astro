@@ -1,0 +1,49 @@
+---
+import { BRIEF_COPY } from './copy.ts';
+
+interface Props {
+  updated: Date;
+  sections: number;
+}
+
+const { updated, sections } = Astro.props;
+const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+// Format, date and section count only. A reading time would be a promise about the reader, so none is shown.
+const facts = [
+  { label: BRIEF_COPY.formatLabel, value: BRIEF_COPY.formatValue },
+  { label: BRIEF_COPY.updatedLabel, value: dateFormat.format(updated) },
+  { label: BRIEF_COPY.sectionsLabel, value: String(sections) },
+];
+---
+
+<section class="brief-depth" aria-label={BRIEF_COPY.depthLabel}>
+  <dl class="brief-depth__list">
+    {facts.map((f) => <div class="brief-depth__item"><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+  </dl>
+</section>
+
+<style>
+  .brief-depth {
+    border-block: var(--border-strong);
+    padding-block: var(--sp-4);
+    font-family: var(--ff-sans);
+  }
+  .brief-depth__list {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    margin: 0;
+  }
+  .brief-depth__item dt {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--color-text-muted);
+  }
+  .brief-depth__item dd {
+    margin: 0;
+    font-size: var(--fs-base);
+  }
+</style>

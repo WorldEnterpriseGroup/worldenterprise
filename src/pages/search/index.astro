@@ -1,4 +1,5 @@
 ---
+import ReferenceIntro from '../../components/families/visual/ReferenceIntro.astro';
 import WeSearch from '../../components/islands/we-search/WeSearch.astro';
 import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
 import { getRouteState } from '../../lib/route-state.ts';
@@ -16,10 +17,13 @@ const fallback = candidates.filter((link) => state.isLive(link.path));
 
 <ReferenceLayout
   title="Search"
-  description="Search every public page of World Enterprise Incubator: program, services, playbooks, templates, research and reference."
+  description="Search every public page of World Enterprise: program, services, playbooks, templates, research and reference."
   path="/search/"
   eyebrow="Reference"
   lead="Find a page by what it says."
+  wide
 >
-  <WeSearch fallback={fallback} />
+  <ReferenceIntro kind="search" seed="search">
+    <WeSearch fallback={fallback} />
+  </ReferenceIntro>
 </ReferenceLayout>

@@ -5,6 +5,7 @@ import MetricsCalculator from '../../components/islands/we-calc/MetricsCalculato
 import FormulaTable from '../../components/tools/FormulaTable.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import { webApplicationNode } from '../../components/tools/webApplicationNode.ts';
+import ToolSchematic from '../../components/tools/ToolSchematic.astro';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 
 const entry = await getEntry('pages', 'tools/metrics-calculator');
@@ -32,6 +33,7 @@ const PATH = '/tools/metrics-calculator/';
   ]}
   noscript="JavaScript is off. The fields below need JavaScript, but the formulas still work by hand: every one is listed in the table further down."
 >
+  <ToolSchematic href="/tools/metrics-calculator/" name={data.title} />
   <div id="calculator"><MetricsCalculator /></div>
   <div id="formulas"><FormulaTable updated={data.updated} /></div>
   <div class="prose"><Content /></div>

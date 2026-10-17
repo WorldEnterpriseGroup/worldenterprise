@@ -4,7 +4,11 @@ import NoFundingDisclaimer from '../../components/blocks/NoFundingDisclaimer.ast
 import ReadinessCheck from '../../components/islands/we-readiness-check/ReadinessCheck.astro';
 import SmartLink from '../../components/playbooks/SmartLink.astro';
 import SafeCtaBand from '../../components/playbooks/SafeCtaBand.astro';
+import FundabilityMedia from '../../components/fundability/FundabilityMedia.astro';
 import { jumpTo } from '../../components/hero/ctas.ts';
+import { IDENTITY } from '../../components/families/visual/copy.ts';
+import { READINESS_REVIEW } from '../../components/families/visual/cta.ts';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
 import HubLayout from '../../layouts/HubLayout.astro';
 import { getPublished, isDraft } from '../../lib/content.ts';
 
@@ -34,9 +38,9 @@ const guides = (await getPublished('guides'))
   updated={data.updated}
   draft={isDraft(page)}
   ogSlot="og-fundability"
-  photo="inset-fundability"
+  hero="console"
   primary={jumpTo('Run the readiness check', '#self-check')}
-  secondary={{ label: 'Apply', href: '/apply/' }}
+  secondary={{ label: READINESS_REVIEW.label, href: READINESS_REVIEW.href }}
   toc={[
     { slug: 'what-it-means', text: 'What it means' },
     { slug: 'self-check', text: 'Self-check' },
@@ -44,6 +48,7 @@ const guides = (await getPublished('guides'))
   ]}
   subtree={guides.map((g) => ({ title: g.data.title, href: `/fundability/${g.id}/`, description: g.data.description }))}
 >
+  <div slot="panel"><EmblemFrame kind="fundability" caption={IDENTITY.fundability.caption} /></div>
   <NoFundingDisclaimer />
   <section id="what-it-means" class="prose" aria-label="What investor readiness means">
     <Content components={{ a: SmartLink }} />
@@ -51,13 +56,15 @@ const guides = (await getPublished('guides'))
   <section id="self-check" aria-label="Investor readiness self-check" class="scroll-target">
     <ReadinessCheck />
   </section>
+  <Fragment slot="after">
+  <FundabilityMedia />
   <SafeCtaBand
-    slot="after"
     title="Prepare with a team that steers the work"
     text="Service Line F covers fundability and investor readiness inside the program. WE prepares the evidence. The raise itself, and the legal advice around it, stay with you and your own counsel."
     primary={{ label: 'See Service Line F', href: '/services/fundability-and-investor-readiness/' }}
-    secondary={{ label: 'Apply', href: '/apply/' }}
+    secondary={{ label: READINESS_REVIEW.label, href: READINESS_REVIEW.href }}
   />
+  </Fragment>
 </HubLayout>
 
 <style>

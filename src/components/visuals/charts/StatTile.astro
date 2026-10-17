@@ -1,0 +1,117 @@
+---
+/**
+ * StatTile: one sourced figure. A large value, what it measures, an optional hex icon, and its source. The value must contain a number
+ * and can never be a price; the source is required (contracts.ts: stat).
+ */
+import VisualIcon from '../VisualIcon.astro';
+import SourceNote from './SourceNote.astro';
+import { stat } from '../contracts.ts';
+import type { Stat } from '../contracts.ts';
+import { isIconKey } from '../icons.ts';
+
+interface Props extends Stat {
+  /** `dark` for tiles on a starfield band. */
+  tone?: 'light' | 'dark';
+  /** Hide the source line when a group shows the sources once below (StatTiles does). */
+  hideSource?: boolean;
+  /** Footnote number pointing at a shared source list. */
+  note?: number | undefined;
+  /** Fragment the footnote links to (StatTiles sets it). */
+  noteHref?: string | undefined;
+  class?: string;
+}
+
+const { tone = 'light', hideSource = false, note, noteHref, class: className } = Astro.props;
+const item = stat('StatTile', { value: Astro.props.value, label: Astro.props.label, source: Astro.props.source, icon: Astro.props.icon });
+if (item.icon !== undefined && !isIconKey(item.icon)) throw new Error(`StatTile: unknown icon "${item.icon}"`);
+const icon = item.icon !== undefined && isIconKey(item.icon) ? item.icon : undefined;
+---
+
+<div class:list={['stat-tile', `stat-tile--${tone}`, className]}>
+  {icon !== undefined && <VisualIcon name={icon} size={44} class="stat-tile__icon" />}
+  <p class="stat-tile__value">
+    {item.value}
+    {
+      note !== undefined && noteHref !== undefined && (
+        <a class="stat-tile__note" href={noteHref} aria-label={`Source ${note}`}>
+          <sup>{note}</sup>
+        </a>
+      )
+    }
+  </p>
+  <p class="stat-tile__label">{item.label}</p>
+  {!hideSource && <SourceNote sources={[item.source]} class="stat-tile__source" />}
+</div>
+
+<style>
+  .stat-tile {
+    position: relative;
+    display: grid;
+    gap: var(--sp-2);
+    align-content: start;
+    padding: var(--sp-5);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-block-start: 3px solid var(--we-blue);
+    border-radius: var(--radius-md);
+  }
+
+  .stat-tile__icon {
+    margin-block-end: var(--sp-1);
+  }
+
+  .stat-tile__value {
+    margin: 0;
+    font-family: var(--ff-display);
+    font-size: var(--fs-3xl);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--we-blue-deep);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-tile__note {
+    font-size: var(--fs-sm);
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .stat-tile__label {
+    margin: 0;
+    font-family: var(--ff-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .stat-tile__source {
+    margin-block-start: auto;
+  }
+
+  .stat-tile--dark {
+    color: var(--color-text-inverse);
+    background: color-mix(in oklab, var(--we-blue-night) 70%, transparent);
+    border-color: color-mix(in oklab, var(--we-tint) 30%, transparent);
+    border-block-start-color: var(--we-amber);
+  }
+
+  .stat-tile--dark .stat-tile__value,
+  .stat-tile--dark .stat-tile__label {
+    color: var(--color-text-inverse);
+  }
+
+  .stat-tile--dark :global(.source-note) {
+    color: var(--we-tint);
+  }
+
+  .stat-tile--dark .stat-tile__note {
+    color: var(--we-tint);
+  }
+
+  @media (forced-colors: active) {
+    .stat-tile {
+      border-color: CanvasText;
+    }
+  }
+</style>

@@ -80,7 +80,7 @@ Routes that are intentionally not launched and will not ship until their conditi
 | `/newsletter/` | `PUBLIC_WE_NEWSLETTER_API_URL` set |
 | `/legal/terms/` | `flags.legalTerms` true after counsel sign-off (C-23) |
 | `/.well-known/security.txt` | `site.securityContact` set |
-| `/press/brand-kit/` | whitelab brand-usage sign-off |
+| `/press/brand-kit/` | brand-owner usage sign-off |
 | `/founders/stories/`, `/founders/portfolio/`, `/case-studies/`, `/network/partners/`, `/network/delivery-partners/`, `/about/team/`, `/careers/`, `/events/`, `/program/cohorts/`, `/program/demo-day/`, `/people/[slug]/` | real content exists (companies, people, dates, events) |
 
 Not checkable from here, and left to the operator because the unauthenticated GitHub API answers 404 for them and the live domain is not reachable from the agent environment:
@@ -184,7 +184,7 @@ How to read this checklist:
 
 #### CR-01. The disclaimer, verbatim (shown wherever the add-on is named)
 
-Source: `src/components/blocks/introductions.ts:15`. Renders on: Every page that renders `IntroductionsDisclaimer`: /investors/, /network/, /pricing/, /services/fundability-and-investor-readiness/ and the Fundable article on choosing first investors. Also the /faq/ answer (below).
+Source: `src/components/blocks/introductions.ts:15`. Renders on: Every page that renders `IntroductionsDisclaimer`: /investors/, /network/, /how-we-work/, /services/fundability-and-investor-readiness/ and the Fundable article on choosing first investors. Also the /faq/ answer (below).
 
 > L15: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
@@ -193,7 +193,7 @@ Source: `src/components/blocks/introductions.ts:15`. Renders on: Every page that
 
 #### CR-02. The sentence that fixes the fee structure
 
-Source: `src/components/blocks/introductions.ts:18`. Renders on: Inside the add-on block on /investors/, /network/, /pricing/ and /services/fundability-and-investor-readiness/.
+Source: `src/components/blocks/introductions.ts:18`. Renders on: Inside the add-on block on /investors/, /network/, /how-we-work/ and /services/fundability-and-investor-readiness/.
 
 > L18: The fee does not depend on whether any investment closes.
 
@@ -239,9 +239,9 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:26`. Renders on:
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-06. Add-on block, brief variant (/pricing/ and /network/)
+#### CR-06. Add-on block, brief variant (/investors/meet-startups/ and /network/)
 
-Source: `src/components/blocks/InvestorIntroductionsOffer.astro:31`. Renders on: /pricing/ and /network/. The sentence after "A flat fee covers curation and preparation." is the fee sentence above, then the text continues.
+Source: `src/components/blocks/InvestorIntroductionsOffer.astro:31`. Renders on: /investors/meet-startups/ and /network/. The sentence after "A flat fee covers curation and preparation." is the fee sentence above, then the text continues.
 
 > L31: Investor Introductions is a separate, paid add-on. It is not part of any package, and no package requires it. A flat fee covers curation and preparation.
 >
@@ -277,7 +277,7 @@ Source: `src/content/pages/investors/index.mdx:3`. Renders on: /investors/ (meta
 
 > L3: Ask to meet a company WE incubates. The founder decides what to share. WE makes no promise of funding, and nothing here is an offer of securities.
 >
-> L16: WE is a digital incubator for SaaS companies. Investors can ask to meet the companies WE incubates.
+> L16: WE is a long-horizon business incubation and consulting firm. Investors can ask to meet the companies WE incubates.
 >
 > L18: WE asks each founder first. A company appears on this site only when its founder has agreed in writing.
 
@@ -315,7 +315,7 @@ Carried verbatim from the wave 7 entry (already reviewed): L66, L81, L82, L83 an
 
 Source: `src/components/investors/copy.ts:18`. Renders on: /investors/ (the showcase), /investors/meet-startups/ and /investors/what-you-can-see/.
 
-> L18: No portfolio is published yet. WE lists a company here only with its founder's written consent.
+> L18: No company is listed yet. WE lists a company here only with its founder's written consent.
 >
 > L93: How an investor asks to meet a company WE incubates, and how the founder decides.
 >
@@ -387,11 +387,11 @@ This file holds no sentence. It builds the table from the shared readiness crite
 
 #### CR-10. Network page, card and callout
 
-Source: `src/pages/network/index.astro:69`. Renders on: /network/.
+Source: `src/pages/network/index.astro:76`. Renders on: /network/.
 
-> L69: WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.
+> L76: WE prepares evidence and offers curated introductions as a paid add-on. It offers no securities and promises no funding.
 >
-> L88: WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.
+> L108: WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -407,17 +407,13 @@ Source: `src/content/pages/network/index.mdx:40`. Renders on: /network/.
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-12. Pricing page, body and FAQ
+#### CR-12. How WE works, the add-on paragraph
 
-Source: `src/content/pages/pricing/pricing.mdx:22`. Renders on: /pricing/.
+Source: `src/pages/how-we-work/index.astro:276`. Renders on: /how-we-work/ (it replaced the packages page in wave 9; /pricing/ is now a noindex pointer that names no add-on). The fee sentence after the first sentence of L277 is CR-02, and the disclaimer below it is CR-01 through `IntroductionsDisclaimer`.
 
-> L22: This page lists no amounts. WE shares the current rate for a package, a custom seat plan or the add-on when you ask, so the figure you receive is the one that applies today.
+> L276: Investor Introductions is a separate add-on
 >
-> L47: Not on this page. WE shares the current rate for a package, a custom seat plan or the add-on when you ask for it.
->
-> L64: Is Investor Introductions part of a package?
->
-> L65: No. It is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+> L277: It is optional, and a flat fee covers curation and preparation.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -472,9 +468,9 @@ Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-
 
 #### CR-17. Founders page, what WE does not do
 
-Source: `src/pages/founders/index.astro:38`. Renders on: /founders/.
+Source: `src/pages/founders/index.astro:44`. Renders on: /founders/.
 
-> L38: It does not promise funding or investor meetings, or predict whether any company will raise money.
+> L44: It does not promise funding or investor meetings, or predict whether any company will raise money.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -492,7 +488,7 @@ Source: `src/components/program/stages.ts:164`. Renders on: /program/grow/ and e
 
 Source: `src/data/site.ts:16`. Renders on: Any page that uses the site description.
 
-> L16: A fully remote digital incubator for SaaS. Dedicated team seats, steered by WE, help a founder build evidence for investors. WE promises no funding.
+> L16: Long-horizon business incubation and consulting. WE steers a dedicated, fully remote team that builds a software-enabled company. WE promises no funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -510,13 +506,13 @@ Source: `src/data/faq.yaml:57`. Renders on: /faq/.
 
 #### CR-21. Facts page, the question about the add-on (Release 2 scope: not in release-1-rc2; counsel reviews it with the next candidate)
 
-Source: `src/content/pages/about/facts.mdx:51`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
+Source: `src/content/pages/about/facts.mdx:40`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
 
-> L51: Is Investor Introductions part of a package?
+> L40: Is Investor Introductions part of the engagement?
 >
-> L53: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
+> L42: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
 >
-> L55: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
+> L44: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______
@@ -544,7 +540,7 @@ Before step 6, record: the head SHA of GitLab and GitHub `gh-pages` (`d7a65dd` t
 
 After step 9, check each on `https://worldenterprise.org`:
 
-- Home, `/apply/`, `/contact/`, `/pricing/`, `/investors/`, `/network/`, `/services/fundability-and-investor-readiness/` respond 200 and show the release wording from section 8.
+- Home, `/apply/`, `/contact/`, `/how-we-work/`, `/investors/`, `/network/`, `/services/fundability-and-investor-readiness/` respond 200 and show the release wording from section 8.
 - `/robots.txt`, `/sitemap-index.xml`, `/rss.xml` respond. `/.well-known/security.txt` responds only if section 6 was done.
 - Submit one test application and one contact message through the live forms and confirm they arrive in the inbox the endpoint feeds. Submit with the browser console open and confirm no CSP violation.
 - No preview markers (the GitLab preview build sets `PUBLIC_PREVIEW`, the release build must not show it) and no `/styleguide/` route.

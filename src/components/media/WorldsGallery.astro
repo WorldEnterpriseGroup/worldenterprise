@@ -1,0 +1,30 @@
+---
+/**
+ * WorldsGallery (WP-22, #88): "Worlds WE builds", the stills of the first-decade film in a LightboxGallery. The images are rendered by
+ * WE from the film's own scene (src/assets/video/tools/render-decade.mjs, `stills`), without on-screen text; alt texts and captions come
+ * from the storyboard (./decade.ts).
+ */
+import type { ImageMetadata } from 'astro';
+import LightboxGallery from './LightboxGallery.astro';
+import type { LightboxItem } from './LightboxGallery.astro';
+import { DECADE_CHAPTERS } from './decade.ts';
+
+interface Props {
+  id?: string;
+  /** Id of the visible heading that names the gallery. */
+  labelledby?: string;
+}
+
+const { id = 'worlds-gallery', labelledby } = Astro.props;
+const FILES = import.meta.glob<{ default: ImageMetadata }>('../../assets/media/decade/*.avif', { eager: true });
+const CREDIT = 'Rendered by WE from the film "A company\'s first decade, in one minute".';
+
+const items: LightboxItem[] = DECADE_CHAPTERS.flatMap((chapter) => {
+  if (chapter.still === undefined) return [];
+  const file = FILES[`../../assets/media/decade/${chapter.id}.avif`];
+  if (file === undefined) throw new Error(`WorldsGallery: the still "${chapter.id}.avif" is missing from src/assets/media/decade/`);
+  return [{ image: file.default, alt: chapter.still.alt, caption: chapter.still.caption, credit: CREDIT }];
+});
+---
+
+<LightboxGallery id={id} items={items} label="Worlds WE builds" labelledby={labelledby} />

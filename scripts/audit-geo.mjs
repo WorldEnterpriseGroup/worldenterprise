@@ -66,7 +66,7 @@ export function targetOfLink(url, origin = ORIGIN) {
 }
 
 /** Structure of llms.txt: title, blockquote summary, then the contract's sections in order, with the two required sentences. */
-export function auditLlmsStructure(name, text, { sentences = requiredSentences(), siteName = 'World Enterprise Incubator' } = {}) {
+export function auditLlmsStructure(name, text, { sentences = requiredSentences(), siteName = 'World Enterprise' } = {}) {
   const errors = [];
   const err = (msg) => errors.push(`${name}: ${msg}`);
   const lines = text.split('\n');

@@ -1,0 +1,13 @@
+---
+/**
+ * SeatBuilder: the name docs/wave9-contracts.md 5 gives the team visual. Since the positioning change of 2026-10-14 (ORCHESTRATION)
+ * there is nothing to build or buy: it renders TeamConstellation, the unpriced team WE steers for a company, with the same props. No
+ * selector, cart, seat count or price, whatever flags.seatPrice says.
+ */
+import type { ComponentProps } from 'astro/types';
+import TeamConstellation from './seats/TeamConstellation.astro';
+
+type Props = ComponentProps<typeof TeamConstellation>;
+---
+
+<TeamConstellation {...Astro.props} />

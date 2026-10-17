@@ -11,7 +11,9 @@ export function pressEntity(): string {
 
 export function pressBoilerplate(): string {
   return (
-    'World Enterprise Incubator is a digital incubator for SaaS. Dedicated team seats, steered by WE, work with a founder from first idea toward a company that can show investors its evidence. WE is fully remote and makes no promise of funding. World Enterprise Incubator is operated by ' +
+    'World Enterprise Group Incorporated is a business incubation and consulting firm. ' +
+    'WE steers dedicated, fully remote teams that build companies with their founders, paced to the years a company really takes. ' +
+    'WE is a services firm, not an investor. WE makes no promise of funding. World Enterprise is operated by ' +
     `${pressEntity()}.`
   );
 }

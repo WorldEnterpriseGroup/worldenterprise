@@ -1,0 +1,338 @@
+---
+/**
+ * A line chart in SVG (WP-58): survival curves and other series over time. The SVG is an image with a title and a description; the
+ * legend and the phase key are real text below it, and the ChartFrame around it carries the data table. Two drawings are emitted, a
+ * wide one and a narrow one, so axis text stays readable on a phone; CSS shows one of them and the hidden one leaves the a11y tree.
+ */
+import { areaPath, linePath, plot, ticks } from '../../data/sales/geometry.ts';
+import type { Box, Domain } from '../../data/sales/geometry.ts';
+import type { PhaseBand, Series } from '../../data/sales/timeline.ts';
+
+interface Mark {
+  readonly x: number;
+  readonly y: number;
+  readonly label: string;
+}
+
+interface Props {
+  id: string;
+  title: string;
+  desc: string;
+  series: readonly Series[];
+  x: Domain;
+  y: Domain;
+  xStep: number;
+  /** A wider tick step for the narrow drawing. Defaults to xStep. */
+  xStepNarrow?: number;
+  yStep: number;
+  /** How an x tick reads: a bare number, or "Yr n". */
+  xLabel?: 'number' | 'year';
+  /** Appended to y ticks, e.g. "%". */
+  yUnit?: string;
+  bands?: readonly PhaseBand[];
+  /** The text key of the bands, shown under the chart. */
+  bandKey?: string;
+  marks?: readonly Mark[];
+  /** Shade the area under the primary series. */
+  area?: boolean;
+}
+
+const {
+  id,
+  title,
+  desc,
+  series,
+  x,
+  y,
+  xStep,
+  xStepNarrow = xStep,
+  yStep,
+  xLabel = 'number',
+  yUnit = '',
+  bands = [],
+  bandKey,
+  marks = [],
+  area = false,
+} = Astro.props;
+
+const primary = series.find((s) => s.primary === true) ?? series[0];
+const fmtX = (v: number): string => (xLabel === 'year' ? `Yr ${v}` : String(v));
+
+const boxes: readonly { key: 'wide' | 'narrow'; box: Box; step: number; bandLabels: boolean }[] = [
+  { key: 'wide', box: { width: 800, height: 440, top: 24, right: 28, bottom: 60, left: 76 }, step: xStep, bandLabels: true },
+  { key: 'narrow', box: { width: 420, height: 400, top: 24, right: 20, bottom: 56, left: 70 }, step: xStepNarrow, bandLabels: false },
+];
+
+const drawings = boxes.map(({ key, box, step, bandLabels }) => {
+  const { sx, sy } = plot(box, x, y);
+  const clampX = (v: number): number => Math.min(x.max, Math.max(x.min, v));
+  return {
+    key,
+    box,
+    titleId: `${id}-${key}-title`,
+    descId: `${id}-${key}-desc`,
+    xs: ticks(x, step).map((v) => ({ v, at: sx(v) })),
+    ys: ticks(y, yStep).map((v) => ({ v, at: sy(v) })),
+    floor: sy(y.min),
+    bands: bands
+      .filter((b) => b.from < x.max)
+      .map((b, i) => ({
+        label: b.label,
+        x: sx(clampX(b.from)),
+        width: Math.max(0, sx(clampX(b.to)) - sx(clampX(b.from))),
+        alt: i % 2 === 1,
+        labelY: box.top + (i % 2 === 0 ? 26 : 54),
+      })),
+    bandLabels,
+    area: area && primary !== undefined ? areaPath(primary.points, sx, sy, y.min) : undefined,
+    paths: series.map((s, i) => ({ d: linePath(s.points, sx, sy), n: i + 1, primary: s.primary === true })),
+    marks: marks.map((m) => ({ ...m, cx: sx(m.x), cy: sy(m.y), anchor: sx(m.x) > box.width - 120 ? 'end' : sx(m.x) < box.left + 60 ? 'start' : 'middle' })),
+  };
+});
+---
+
+<div class="sales-line">
+  {
+    drawings.map((d) => (
+      <svg class:list={['sales-line__svg', `sales-line__svg--${d.key}`]} viewBox={`0 0 ${d.box.width} ${d.box.height}`} role="img" aria-labelledby={`${d.titleId} ${d.descId}`}>
+        <title id={d.titleId}>{title}</title>
+        <desc id={d.descId}>{desc}</desc>
+        {d.bands.map((b) => (
+          <g class:list={['sales-line__band', b.alt && 'sales-line__band--alt']}>
+            <rect x={b.x} y={d.box.top} width={b.width} height={d.box.height - d.box.top - d.box.bottom} />
+            {d.bandLabels && (
+              <text class="sales-line__band-label" x={b.x + 6} y={b.labelY}>
+                {b.label}
+              </text>
+            )}
+          </g>
+        ))}
+        <g class="sales-line__grid">
+          {d.ys.map((t) => (
+            <line x1={d.box.left} x2={d.box.width - d.box.right} y1={t.at} y2={t.at} />
+          ))}
+        </g>
+        <g class="sales-line__axis">
+          {d.ys.map((t) => (
+            <text x={d.box.left - 12} y={t.at + 7} text-anchor="end">
+              {`${t.v}${yUnit}`}
+            </text>
+          ))}
+          {d.xs.map((t) => (
+            <text x={t.at} y={d.box.height - d.box.bottom + 34} text-anchor="middle">
+              {fmtX(t.v)}
+            </text>
+          ))}
+          <line x1={d.box.left} x2={d.box.width - d.box.right} y1={d.floor} y2={d.floor} />
+        </g>
+        {d.area !== undefined && <path class="sales-line__area" d={d.area} />}
+        {d.paths.map((p) => (
+          <path class:list={['sales-line__path', `sales-line__path--${p.n}`, p.primary && 'sales-line__path--primary']} d={p.d} />
+        ))}
+        {d.marks.map((m) => (
+          <g class="sales-line__mark">
+            <circle cx={m.cx} cy={m.cy} r="7" />
+            <text x={m.cx} y={m.cy - 16} text-anchor={m.anchor}>
+              {m.label}
+            </text>
+          </g>
+        ))}
+      </svg>
+    ))
+  }
+  {
+    series.length > 1 && (
+      <ul class="sales-line__legend" aria-label="Lines in this chart">
+        {series.map((s, i) => (
+          <li class:list={['sales-line__key', `sales-line__key--${i + 1}`]}>
+            <svg viewBox="0 0 24 8" aria-hidden="true" focusable="false">
+              <line x1="0" x2="24" y1="4" y2="4" />
+            </svg>
+            {s.label}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {bandKey !== undefined && <p class="sales-line__band-key">{bandKey}</p>}
+</div>
+
+<style>
+  @layer pages {
+    .sales-line {
+      display: grid;
+      gap: var(--sp-3);
+    }
+
+    .sales-line__svg {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+      overflow: visible;
+      font-size: 22px;
+    }
+
+    .sales-line__svg--wide {
+      display: none;
+    }
+
+    @media (min-width: 40rem) {
+      .sales-line__svg--wide {
+        display: block;
+      }
+
+      .sales-line__svg--narrow {
+        display: none;
+      }
+    }
+
+    .sales-line__band rect {
+      fill: var(--color-bg-soft);
+      opacity: 0.7;
+    }
+
+    .sales-line__band--alt rect {
+      opacity: 0.3;
+    }
+
+    .sales-line__band-label {
+      fill: var(--color-text-muted);
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .sales-line__grid line {
+      stroke: var(--color-border);
+      stroke-width: 1;
+    }
+
+    .sales-line__axis text {
+      fill: var(--color-text-muted);
+    }
+
+    .sales-line__axis line {
+      stroke: var(--color-text-muted);
+      stroke-width: 2;
+    }
+
+    .sales-line__area {
+      fill: var(--color-highlight-ink);
+      opacity: 0.12;
+    }
+
+    .sales-line__path {
+      fill: none;
+      stroke-width: 3;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+
+    .sales-line__path--1,
+    .sales-line__key--1 line {
+      stroke: var(--color-highlight-ink);
+    }
+
+    .sales-line__path--2,
+    .sales-line__key--2 line {
+      stroke: var(--color-link);
+      stroke-dasharray: 10 6;
+    }
+
+    .sales-line__path--3,
+    .sales-line__key--3 line {
+      stroke: var(--color-text-muted);
+      stroke-dasharray: 3 6;
+    }
+
+    .sales-line__path--primary {
+      stroke-width: 5;
+    }
+
+    .sales-line__mark circle {
+      fill: var(--color-highlight-ink);
+    }
+
+    .sales-line__mark text {
+      fill: var(--color-text);
+      font-weight: 700;
+    }
+
+    .sales-line__legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2) var(--sp-5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: var(--fs-sm);
+    }
+
+    .sales-line__key {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .sales-line__key svg {
+      inline-size: 2rem;
+      block-size: 0.75rem;
+      flex: none;
+    }
+
+    .sales-line__key line {
+      stroke-width: 3;
+    }
+
+    .sales-line__band-key {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: view()) {
+        .sales-line__path {
+          animation-name: sales-line-in;
+          animation-duration: 1ms;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
+          animation-timeline: view();
+          animation-range: entry 10% cover 40%;
+        }
+      }
+    }
+
+    @keyframes sales-line-in {
+      from {
+        opacity: 0.25;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .sales-line__path,
+      .sales-line__key line,
+      .sales-line__grid line,
+      .sales-line__axis line {
+        stroke: CanvasText;
+      }
+
+      .sales-line__axis text,
+      .sales-line__band-label,
+      .sales-line__mark text,
+      .sales-line__mark circle {
+        fill: CanvasText;
+      }
+
+      .sales-line__band rect,
+      .sales-line__area {
+        fill: Canvas;
+      }
+    }
+  }
+</style>

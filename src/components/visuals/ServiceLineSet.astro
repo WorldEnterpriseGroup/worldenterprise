@@ -1,0 +1,127 @@
+---
+/**
+ * ServiceLineSet: the seven service lines (A to G) as a hex-icon grid, each a real link to its service page. Names and routes come from
+ * the primary navigation. `only` narrows the set (e.g. the lines a stage uses); `layout="honeycomb"` offsets alternate rows on wide
+ * containers.
+ */
+import VisualIcon from './VisualIcon.astro';
+import { serviceLines } from './icons.ts';
+import type { ServiceLine } from '../../data/nav.ts';
+import { href as link } from '../../lib/url.ts';
+
+interface Props {
+  only?: readonly ServiceLine[];
+  /** Show each line's one-line description under its name. */
+  descriptions?: boolean;
+  layout?: 'grid' | 'honeycomb';
+  label?: string;
+  class?: string;
+}
+
+const { only, descriptions = true, layout = 'grid', label = 'Service lines', class: className } = Astro.props;
+const lines = serviceLines().filter((l) => only === undefined || only.includes(l.line));
+---
+
+<div class:list={['service-set', `service-set--${layout}`, className]}>
+<ul class="service-set__list" aria-label={label} role="list">
+  {
+    lines.map((l) => (
+      <li class="service-set__item">
+        <a class="service-set__link" href={link(l.href)}>
+          <VisualIcon name={l.line} size={56} />
+          <span class="service-set__text">
+            <span class="service-set__letter">Line {l.line}</span>
+            <span class="service-set__name">{l.label}</span>
+            {descriptions && l.description !== undefined && <span class="service-set__desc">{l.description}</span>}
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+</div>
+
+<style>
+  .service-set {
+    container-type: inline-size;
+  }
+
+  .service-set__list {
+    display: grid;
+    gap: var(--sp-3);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .service-set__link {
+    display: flex;
+    gap: var(--sp-3);
+    align-items: flex-start;
+    block-size: 100%;
+    padding: var(--sp-3);
+    color: var(--color-text);
+    text-decoration: none;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .service-set__link:hover {
+    border-color: var(--color-accent);
+  }
+
+  .service-set__link:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .service-set__text {
+    display: grid;
+    gap: 2px;
+  }
+
+  .service-set__letter {
+    font-family: var(--ff-display);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .service-set__name {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    line-height: var(--lh-snug);
+    color: var(--color-link);
+  }
+
+  .service-set__desc {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* Honeycomb: on wide containers alternate rows step half a tile, like the hex field they come from. */
+  @container (min-width: 60rem) {
+    .service-set--honeycomb .service-set__list {
+      grid-template-columns: repeat(8, 1fr);
+    }
+
+    .service-set--honeycomb .service-set__item {
+      grid-column: span 2;
+    }
+
+    .service-set--honeycomb .service-set__item:nth-child(7n + 5) {
+      grid-column: 2 / span 2;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .service-set__link {
+      border-color: CanvasText;
+    }
+  }
+</style>

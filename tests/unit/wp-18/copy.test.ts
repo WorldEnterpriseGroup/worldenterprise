@@ -21,6 +21,7 @@ interface RuleSet {
 }
 const audit = auditMod as unknown as {
   loadDenylist(): RuleSet;
+  stripEcosystemContext(html: string): string;
   hasGeneratedImages(manifest: unknown): boolean;
 };
 
@@ -51,8 +52,26 @@ test('the navigation copy carries no PBC wording and no "fundable" outcome', () 
   const nav = read('src/data/nav.ts');
   assert.doesNotMatch(nav, /public benefit|benefit corporation|\bPBC\b/i);
   assert.doesNotMatch(nav, /fundable/i);
-  assert.match(nav, /lead: 'A digital incubator for SaaS\. Dedicated team seats, steered by WE, from first idea to first customers\.'/);
+  assert.match(nav, /lead: 'Long-horizon business incubation\. A dedicated team, steered by WE, from first idea to first customers\.'/);
 });
+
+/** Sources of the ecosystem routes (WP-33, WP-34, WP-35 write sets; docs/wave10-contracts.md section 2). */
+const ECOSYSTEM_SOURCES: readonly string[] = [
+  'src/pages/ecosystem/',
+  'src/content/pages/ecosystem/',
+  'src/data/ecosystem/',
+  'src/components/ecosystem/',
+  'src/scripts/ecosystem',
+  'src/pages/sbir-sttr/',
+  'src/content/pages/sbir-sttr/',
+  'src/data/sbir/',
+  'src/components/sbir/',
+  'src/scripts/sbir',
+  'src/pages/data/',
+  'src/content/pages/data/',
+  'src/data/datasets/',
+  'src/scripts/charts',
+];
 
 test('"fundable" as an outcome and the peers family appear in source only where a rule allows them', () => {
   const byId = new Map(SET.contextRules.map((rule) => [rule.id, rule]));
@@ -71,16 +90,22 @@ test('"fundable" as an outcome and the peers family appear in source only where 
       'src/data/families.ts',
       // The denylist already allows the word on the route ^/compare/incubator-vs-other-programs/$, because that page compares the category.
       'src/content/pages/compare/incubator-vs-other-programs.mdx',
+      // The sales sources ledger cites a research title that names the program category (Cohen and Hochberg 2014); the built ledger is
+      // wrapped in data-claim-allow="C-13-peers" (WP-58 exception, W9-12).
+      'src/data/sales/sources.ts',
     ],
     'C-21-phrase': ['src/data/claims.ts', 'src/pages/program/dedicated-teams.astro'],
   };
   for (const [id, exempt] of Object.entries(allowed)) {
     const rule = byId.get(id);
     assert.ok(rule, `${id} is in claims-denylist.json`);
+    // Wave 10 (D-W10-1): a rule marked ecosystemAllowed is lifted in the ecosystem sources and inside data-context="ecosystem" elements.
+    const ecosystemAllowed = (rule as { ecosystemAllowed?: boolean }).ecosystemAllowed === true;
     const offenders = files.map(rel).filter((file) => {
       if (exempt.includes(file)) return false;
+      if (ecosystemAllowed && ECOSYSTEM_SOURCES.some((prefix) => file.startsWith(prefix))) return false;
       rule.regex.lastIndex = 0;
-      return rule.regex.test(read(file));
+      return rule.regex.test(ecosystemAllowed ? audit.stripEcosystemContext(read(file)) : read(file));
     });
     assert.deepEqual(offenders, [], `${id} found in source`);
   }
@@ -194,26 +219,23 @@ test('claims C-10 and C-14 are usable, and the seat price and legal flags stay o
   assert.equal(flags.focusShiftConfirmed, false);
 });
 
-test('the pricing page names the four packages, publishes no amounts or seat counts, and says how to ask for the rate', () => {
-  const sources = [read('src/content/pages/pricing/pricing.mdx'), read('src/pages/pricing/index.astro')];
-  const mdx = sources[0] ?? '';
-  for (const name of PACKAGES) assert.match(mdx, new RegExp(`\\b${name}\\b`), `${name} is on the pricing page`);
+test('the retired pricing page names no package, publishes no amounts or seat counts, and points to How WE works (W9-13)', () => {
+  const sources = [read('src/content/pages/pricing/pricing.mdx'), read('src/pages/pricing/index.astro'), read('src/content/pages/how-we-work/how-we-work.mdx')];
+  for (const name of PACKAGES) assert.doesNotMatch(sources[0] ?? '', new RegExp(`\\b${name}\\b`), `${name} is gone from the pricing page`);
   for (const text of sources) {
     assert.doesNotMatch(text, /\$\s?\d|\bdollars?\b|\bper month\b|\/mo\b/i, 'an amount');
     assert.doesNotMatch(text, /\b(?:\d+|two|three|four|five|six|seven|eight|nine|ten|twelve)\s+(?:dedicated\s+)?seats?\b/i, 'a seat count');
-    assert.doesNotMatch(text, /\bnot packages\b|does not list [^.]*\bpackages?\b|\bwithout packages\b/i, 'a denial of packages');
+    // Words from KEY-VALUES.md that this site does not publish: the milestone scheme and the term.
+    assert.doesNotMatch(text, /\bnine Milestones\b|\bRaise-Ready\b|\bFundability Certification\b|\bDelivery Hours\b|\b12[- ]month\b|\btwelve[- ]month\b/i);
+    assert.doesNotMatch(text, /\bUSD\b/);
   }
-  // Words from KEY-VALUES.md that this site does not publish: the milestone scheme, the phases and the term.
-  for (const text of sources) assert.doesNotMatch(text, /\bnine Milestones\b|\bRaise-Ready\b|\bFundability Certification\b|\bDelivery Hours\b|\b12[- ]month\b|\btwelve[- ]month\b/i);
-  // The page formats a rate only behind flags.seatPrice, which stays off (asserted above).
-  assert.doesNotMatch(mdx, /\bUSD\b/);
-  assert.match(mdx, /contact\/\?topic=seat-rate/);
+  assert.match(read('src/pages/pricing/index.astro'), /href: '\/how-we-work\/'/);
 });
 
-test('the contact form offers the seat-rate topic the pricing page links to', () => {
+test('the contact form keeps the seat-rate topic value, labelled as a request for current terms', () => {
   const form = read('src/components/forms/ContactForm.astro');
   assert.match(form, /seat-rate/);
-  assert.match(form, /Request the current seat rate/);
+  assert.match(form, /Request current terms/);
 });
 
 test('every source page that names Investor Introductions shows the verbatim disclaimer', () => {
@@ -247,7 +269,7 @@ test('every source page that names Investor Introductions shows the verbatim dis
     'src/pages/investors/index.astro',
     'src/pages/network/index.astro',
     'src/content/services/fundability-and-investor-readiness.mdx',
-    'src/content/pages/pricing/pricing.mdx',
+    'src/pages/how-we-work/index.astro',
     'src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx',
   ]) assert.match(read(file), uses, `${file} renders the disclaimer`);
   const topic = read('src/content/pages/insights/topic-fundable.mdx').replace(/\s+/g, ' ');
@@ -266,8 +288,8 @@ test('the FAQ answers the two new questions, and the add-on answer carries the d
   assert.match(intro.answer, /does not depend on whether any investment closes/);
   const packages = list.find((item) => item.id === 'packages');
   assert.ok(packages, 'the packages entry exists');
-  assert.ok(packages.claimsUsed.includes('C-10'));
-  assert.doesNotMatch(packages.answer, /\$|\d/);
+  // Wave 9 (W9-13): the packages are retired, so the entry names none of them and quotes no amount.
+  assert.doesNotMatch(`${packages.question} ${packages.answer}`, /\b(?:Spark|Accelerate|Studio)\b|\$|\d/);
   assert.ok(list.every((item) => !/\bnot packages\b/i.test(item.answer)), 'no entry denies packages');
 });
 

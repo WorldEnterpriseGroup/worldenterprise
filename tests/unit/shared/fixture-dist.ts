@@ -24,7 +24,7 @@ interface PageOptions {
 
 /** A small page that satisfies every structural audit. Options introduce one defect at a time. */
 export function page(options: PageOptions = {}): string {
-  const { title = 'Page | World Enterprise Incubator', body = '<h1>Heading</h1><p>Text.</p>', head = '', lang = 'en', skipLink = true, robots } = options;
+  const { title = 'Page | World Enterprise', body = '<h1>Heading</h1><p>Text.</p>', head = '', lang = 'en', skipLink = true, robots } = options;
   const langAttr = lang === null ? '' : ` lang="${lang}"`;
   return `<!doctype html><html${langAttr}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title>${robots !== undefined ? `<meta name="robots" content="${robots}">` : ''}${head}</head><body>${skipLink ? '<a class="skip-link" href="#main">Skip to content</a>' : ''}<header><nav aria-label="Primary"><a href="/">Home</a></nav></header><main id="main" tabindex="-1">${body}</main><footer><p>Footer</p></footer></body></html>`;
 }

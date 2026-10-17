@@ -17,7 +17,7 @@ export interface CitationInput {
   readonly date?: Date | undefined;
 }
 
-/** For example: World Enterprise Editorial. “Title.” World Enterprise Incubator, updated October 9, 2026. https://worldenterprise.org/insights/x/ */
+/** For example: World Enterprise Editorial. “Title.” World Enterprise, updated October 9, 2026. https://worldenterprise.org/insights/x/ */
 export function citationText({ title, path, date }: CitationInput): string {
   const heading = title.replace(/[.!?]+$/, '');
   const stamp = date === undefined || Number.isNaN(date.getTime()) ? '' : `, updated ${dateFormat.format(date)}`;

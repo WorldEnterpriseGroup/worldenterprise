@@ -32,7 +32,7 @@ export function buildMarkdownDownload(source: MarkdownSource): string {
     '',
     '---',
     '',
-    `World Enterprise Incubator, https://worldenterprise.org/. Last updated ${isoDate(source.updated)}.`,
+    `World Enterprise, https://worldenterprise.org/. Last updated ${isoDate(source.updated)}.`,
     '',
   ].join('\n');
 }

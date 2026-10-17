@@ -1,0 +1,883 @@
+{
+  "wp": "WP-58",
+  "note": "Sales pages /why-it-takes-time/ and /who-we-work-with/, and the timeline brief infra/intake/briefs/real-timeline.md (its seven sources are the allowlisted fetches below). Every figure is in src/data/sales/stats.ts and timeline.ts; this file records each fetch and the quote behind each figure. Hosts outside the allowlist are held in pendingHostFetches until OP-HOSTS is extended (handoff wp-58.md).",
+  "fetches": [
+    {
+      "id": "bls-bed-total",
+      "url": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (total private)",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "fetchedAt": "2026-10-14T20:51:22Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "bls-bed-information",
+      "url": "https://www.bls.gov/bdm/us_age_naics_51_table7.txt",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Information, NAICS 51)",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "fetchedAt": "2026-10-14T20:56:22Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "bls-bed-professional",
+      "url": "https://www.bls.gov/bdm/us_age_naics_54_table7.txt",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Professional, Scientific, and Technical Services, NAICS 54)",
+      "publisher": "U.S. Bureau of Labor Statistics",
+      "fetchedAt": "2026-10-14T20:56:23Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-faq-2026",
+      "url": "https://advocacy.sba.gov/wp-content/uploads/2026/02/FINAL_FAQsAboutSmallBusiness_2026_012826.pdf",
+      "title": "Frequently Asked Questions About Small Business, 2026",
+      "publisher": "U.S. Small Business Administration, Office of Advocacy",
+      "fetchedAt": "2026-10-14T20:51:18Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-bfs",
+      "url": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv",
+      "title": "Business Formation Statistics, monthly data (CSV)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-14T20:51:09Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-bfs-definitions",
+      "url": "https://www.census.gov/econ/bfs/definitions.html",
+      "title": "Business Formation Statistics: Definitions",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-14T20:52:14Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "gem-usa-2026",
+      "url": "https://entrepreneurship.babson.edu/gem-usa-2026/",
+      "title": "GEM USA 2025/2026 report coverage",
+      "publisher": "Babson College",
+      "fetchedAt": "2026-10-14T20:51:18Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "cohen-hochberg-2014",
+      "url": "https://leeds-faculty.colorado.edu/bhagat/Accelerators-Start-Ups.pdf",
+      "title": "Accelerating Startups: The Seed Accelerator Phenomenon (Cohen and Hochberg, 2014), Table 2",
+      "publisher": "University of Colorado Boulder, Leeds School of Business (faculty copy)",
+      "fetchedAt": "2026-10-14T20:53:07Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "cb-insights-2026",
+      "url": "https://www.cbinsights.com/research/report/startup-failure-reasons-top/",
+      "title": "The top reasons startups fail",
+      "publisher": "CB Insights",
+      "fetchedAt": "2026-10-14T20:53:06Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "azoulay-2018",
+      "url": "https://www.nber.org/system/files/working_papers/w24489/w24489.pdf",
+      "title": "Age and High-Growth Entrepreneurship (Azoulay, Jones, Kim and Miranda), NBER Working Paper 24489",
+      "publisher": "National Bureau of Economic Research",
+      "fetchedAt": "2026-10-14T20:52:44Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "gompers-2006",
+      "url": "https://www.nber.org/system/files/working_papers/w12592/w12592.pdf",
+      "title": "Skill vs. Luck in Entrepreneurship and Venture Capital (Gompers, Kovner, Lerner and Scharfstein), NBER Working Paper 12592",
+      "publisher": "National Bureau of Economic Research",
+      "fetchedAt": "2026-10-14T20:53:26Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "kauffman-2025",
+      "url": "https://indicators-new.kauffman.org/wp-content/uploads/sites/13/2026/05/2025-Early-Stage-Entrepreneurship-National-Report.pdf",
+      "title": "National Report on Early-Stage Entrepreneurship in the United States: 2025",
+      "publisher": "Ewing Marion Kauffman Foundation",
+      "fetchedAt": "2026-10-14T20:51:09Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "kauffman-2021",
+      "url": "https://www.kauffman.org/wp-content/uploads/2022/10/Kauffman_Trends-in-Entrepreneurship-Who-Is-The-Entrepreneur-2021.pdf",
+      "title": "Trends in Entrepreneurship: Who Is the Entrepreneur? 1996 to 2021",
+      "publisher": "Ewing Marion Kauffman Foundation",
+      "fetchedAt": "2026-10-14T20:51:09Z",
+      "status": 200,
+      "tool": "curl"
+    }
+  ],
+  "pendingHostFetches": [
+    {
+      "id": "fed-sbcs-2026",
+      "url": "https://www.fedsmallbusiness.org/-/media/project/clevelandfedtenant/fsbsite/reports/2026/2026-report-on-employer-firms/2026-report-on-employer-firms.pdf",
+      "title": "Small Business Credit Survey: 2026 Report on Employer Firms",
+      "publisher": "Federal Reserve Banks",
+      "fetchedAt": "2026-10-14T20:53:08Z",
+      "status": 200,
+      "tool": "curl",
+      "reason": "OP-HOSTS extension requested (fedsmallbusiness.org, the Federal Reserve Banks small business credit survey site); not added by D-W10-6."
+    }
+  ],
+  "statistics": [
+    {
+      "st": "ST-01",
+      "sourceId": "bls-bed-total",
+      "locator": "Table 7, opened March 2024, survival rate since birth, 2025",
+      "quote": "77.9"
+    },
+    {
+      "st": "ST-02",
+      "sourceId": "bls-bed-total",
+      "locator": "Table 7, opened March 2020, survival rate since birth, 2025",
+      "quote": "51.4"
+    },
+    {
+      "st": "ST-03",
+      "sourceId": "bls-bed-total",
+      "locator": "Table 7, opened March 2015, survival rate since birth, 2025",
+      "quote": "34.7"
+    },
+    {
+      "st": "ST-34",
+      "sourceId": "bls-bed-total",
+      "locator": "Table 7, opened March 2013, survival rates of previous year survivors",
+      "quote": "94.4"
+    },
+    {
+      "st": "ST-35",
+      "sourceId": "bls-bed-information",
+      "locator": "Table 7 (NAICS 51), opened March 2020, survival rate since birth, 2025",
+      "quote": "45.7"
+    },
+    {
+      "st": "ST-35",
+      "sourceId": "bls-bed-professional",
+      "locator": "Table 7 (NAICS 54), opened March 2020, survival rate since birth, 2025",
+      "quote": "50.8"
+    },
+    {
+      "st": "ST-04",
+      "sourceId": "sba-faq-2026",
+      "locator": "Survival question, page 2",
+      "quote": "more than two thirds of businesses (69.5 percent) that reach five years reach ten"
+    },
+    {
+      "st": "ST-02",
+      "sourceId": "sba-faq-2026",
+      "locator": "Survival question, page 2",
+      "quote": "the five-year survival rate was 49.2 percent"
+    },
+    {
+      "st": "ST-03",
+      "sourceId": "sba-faq-2026",
+      "locator": "Survival question, page 2",
+      "quote": "the ten-year survival rate was 33.9 percent"
+    },
+    {
+      "st": "ST-06",
+      "sourceId": "census-bfs",
+      "locator": "bfs_monthly.csv, BA_BA, US, NSA, 2025 months summed (derived)",
+      "quote": "BA_BA"
+    },
+    {
+      "st": "ST-07",
+      "sourceId": "census-bfs",
+      "locator": "bfs_monthly.csv, BF_BF8Q and BA_BA, US, NSA, 2021 months summed (derived)",
+      "quote": "BF_BF8Q"
+    },
+    {
+      "st": "ST-07",
+      "sourceId": "census-bfs-definitions",
+      "locator": "Definitions page, BF8Q",
+      "quote": "BF8Q: Business Formations within 8 Quarters - This series provides the number of employer businesses that originate from Business Applications (BA)"
+    },
+    {
+      "st": "ST-08",
+      "sourceId": "census-bfs",
+      "locator": "bfs_monthly.csv, BF_DUR8Q, US, 2021 and 2005 monthly means (derived)",
+      "quote": "BF_DUR8Q"
+    },
+    {
+      "st": "ST-05",
+      "sourceId": "gem-usa-2026",
+      "locator": "Report summary",
+      "quote": "which GEM defines as being at least 3½ years old."
+    },
+    {
+      "st": "ST-28",
+      "sourceId": "gem-usa-2026",
+      "locator": "Report summary (secondary, shown as reported)",
+      "quote": "the TEA rate is high (greater than 20%) among 18- to 34-year-olds"
+    },
+    {
+      "st": "ST-10",
+      "sourceId": "cohen-hochberg-2014",
+      "locator": "Table 2, Duration row",
+      "quote": "Duration 3 months 1-5 yrs Ongoing"
+    },
+    {
+      "st": "ST-11",
+      "sourceId": "cb-insights-2026",
+      "locator": "Top reasons section",
+      "quote": "“Ran out of capital” tops the list at 70%"
+    },
+    {
+      "st": "ST-16",
+      "sourceId": "azoulay-2018",
+      "locator": "Section on founder age, page 2",
+      "quote": "The mean founder age for the 1 in 1,000 fastest growing new ventures is 45.0."
+    },
+    {
+      "st": "ST-17",
+      "sourceId": "azoulay-2018",
+      "locator": "Introduction",
+      "quote": "a 50-year-old founder is 1.8 times more likely to achieve upper-tail growth than a 30-year-old founder"
+    },
+    {
+      "st": "ST-18",
+      "sourceId": "azoulay-2018",
+      "locator": "Section on industry experience",
+      "quote": "having no experience in the 2-digit level industry leads to a success rate of 0.11%"
+    },
+    {
+      "st": "ST-18",
+      "sourceId": "azoulay-2018",
+      "locator": "Section on industry experience",
+      "quote": "to 0.26% (6-digit NAICS experience)"
+    },
+    {
+      "st": "ST-19",
+      "sourceId": "gompers-2006",
+      "locator": "Section on predicted success rates",
+      "quote": "The predicted success rate of entrepreneurs with a track record of success is 30.6%, compared to only 22.1%"
+    },
+    {
+      "st": "ST-21",
+      "sourceId": "kauffman-2025",
+      "locator": "Nativity section, Figure 4",
+      "quote": "The 2025 rate of new entrepreneurs among immigrants was 0.60 percent, which is substantially higher than the 0.30 percent rate for the native born."
+    },
+    {
+      "st": "ST-29",
+      "sourceId": "kauffman-2025",
+      "locator": "Key findings (necessity share derived as 100 minus opportunity share)",
+      "quote": "The opportunity share of new entrepreneurs increased to 83.3 percent in 2025 from its low of 69.8 percent in 2020"
+    },
+    {
+      "st": "ST-27",
+      "sourceId": "kauffman-2021",
+      "locator": "Age section",
+      "quote": "In 1996, 14.8% of entrepreneurs were 55-64 years old compared to 22.8% in 2021."
+    },
+    {
+      "st": "ST-33",
+      "sourceId": "fed-sbcs-2026",
+      "locator": "Application outcomes, share fully approved by firm age",
+      "quote": "Older and larger firms were more likely than younger and smaller ones to be fully approved for the financing they sought."
+    }
+  ],
+  "sources": [
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-01",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (total private)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Table 7, opened March 2024, survival rate since birth, 2025",
+      "variables_units_scope": "Register wording (statistics.json): 77.9% of new U.S. establishments were still operating after one year. About 1 in 5 close in year one. Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-01"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-02",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics; U.S. Small Business Administration, Office of Advocacy",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (total private); Frequently Asked Questions About Small Business, 2026",
+      "source_tier": "primary; primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt ; https://advocacy.sba.gov/wp-content/uploads/2026/02/FINAL_FAQsAboutSmallBusiness_2026_012826.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Table 7, opened March 2020, survival rate since birth, 2025; Survival question, page 2",
+      "variables_units_scope": "Register wording (statistics.json): 51.4% survive five years (2020 group). The 1994 to 2022 average is 49.2%. \"About half are gone by year five\". Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-02"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-03",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics; U.S. Small Business Administration, Office of Advocacy",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (total private); Frequently Asked Questions About Small Business, 2026",
+      "source_tier": "primary; primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt ; https://advocacy.sba.gov/wp-content/uploads/2026/02/FINAL_FAQsAboutSmallBusiness_2026_012826.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Table 7, opened March 2015, survival rate since birth, 2025; Survival question, page 2",
+      "variables_units_scope": "Register wording (statistics.json): 34.7% survive ten years (2015 group); the average is 33.9%. \"About a third are still operating at year ten\". Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-03"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-04",
+      "publisher_or_author": "U.S. Small Business Administration, Office of Advocacy",
+      "title": "Frequently Asked Questions About Small Business, 2026",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://advocacy.sba.gov/wp-content/uploads/2026/02/FINAL_FAQsAboutSmallBusiness_2026_012826.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Survival question, page 2",
+      "variables_units_scope": "Register wording (statistics.json): The odds improve with time: 69.5% of five-year survivors reach year ten, and 76.1% of ten-year survivors reach year fifteen. Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-04"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-05",
+      "publisher_or_author": "Babson College",
+      "title": "GEM USA 2025/2026 report coverage",
+      "source_tier": "secondary",
+      "exact_url_or_locator": "https://entrepreneurship.babson.edu/gem-usa-2026/",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Report summary",
+      "variables_units_scope": "Register wording (statistics.json): GEM counts a business as \"established\" only after 42 months (3.5 years) of paying wages. Status: VERIFIED (definition).",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-05"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-06",
+      "publisher_or_author": "U.S. Census Bureau",
+      "title": "Business Formation Statistics, monthly data (CSV)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "bfs_monthly.csv, BA_BA, US, NSA, 2025 months summed (derived)",
+      "variables_units_scope": "Register wording (statistics.json): A record 5,671,836 U.S. business applications in 2025, the highest year since the series began. Status: DERIVED. The Census revision on 2026-11-12 may change it.",
+      "methodology_limitations": "Derived by WP-58 from the published monthly values; the page and the brief say how, and the figure moves with each annual revision. Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-06"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-07",
+      "publisher_or_author": "U.S. Census Bureau; U.S. Census Bureau",
+      "title": "Business Formation Statistics, monthly data (CSV); Business Formation Statistics: Definitions",
+      "source_tier": "primary; primary",
+      "exact_url_or_locator": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv ; https://www.census.gov/econ/bfs/definitions.html",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "bfs_monthly.csv, BF_BF8Q and BA_BA, US, NSA, 2021 months summed (derived); Definitions page, BF8Q",
+      "variables_units_scope": "Register wording (statistics.json): Of 2021 applications, 5.8% became employer businesses within a year and 7.5% within two. Status: DERIVED.",
+      "methodology_limitations": "Derived by WP-58 from the published monthly values; the page and the brief say how, and the figure moves with each annual revision. Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-07"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-08",
+      "publisher_or_author": "U.S. Census Bureau",
+      "title": "Business Formation Statistics, monthly data (CSV)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "bfs_monthly.csv, BF_DUR8Q, US, 2021 and 2005 monthly means (derived)",
+      "variables_units_scope": "Register wording (statistics.json): Applicants that hired took 2.29 quarters on average to reach first payroll (2021), against 1.48 in 2005. Status: DERIVED.",
+      "methodology_limitations": "Derived by WP-58 from the published monthly values; the page and the brief say how, and the figure moves with each annual revision. Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-08"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-10",
+      "publisher_or_author": "University of Colorado Boulder, Leeds School of Business (faculty copy)",
+      "title": "Accelerating Startups: The Seed Accelerator Phenomenon (Cohen and Hochberg, 2014), Table 2",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://leeds-faculty.colorado.edu/bhagat/Accelerators-Start-Ups.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Table 2, Duration row",
+      "variables_units_scope": "Register wording (statistics.json): Three-month programs last about 3 months. Incubators last 1 to 5 years. Status: VERIFIED (typology).",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-10"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-11",
+      "publisher_or_author": "CB Insights",
+      "title": "The top reasons startups fail",
+      "source_tier": "primary-vendor",
+      "exact_url_or_locator": "https://www.cbinsights.com/research/report/startup-failure-reasons-top/",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Top reasons section",
+      "variables_units_scope": "Register wording (statistics.json): Among VC-backed startups that shut down, 70% cited running out of capital and 43% cited poor product-market fit. Status: VERIFIED. VC-backed only; multiple answers allowed.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-11"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-16",
+      "publisher_or_author": "National Bureau of Economic Research",
+      "title": "Age and High-Growth Entrepreneurship (Azoulay, Jones, Kim and Miranda), NBER Working Paper 24489",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.nber.org/system/files/working_papers/w24489/w24489.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Section on founder age, page 2",
+      "variables_units_scope": "Register wording (statistics.json): The average founder of the fastest-growing 0.1% of U.S. startups was 45 at founding. The average for all hiring startups was 41.9. Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-16"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-17",
+      "publisher_or_author": "National Bureau of Economic Research",
+      "title": "Age and High-Growth Entrepreneurship (Azoulay, Jones, Kim and Miranda), NBER Working Paper 24489",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.nber.org/system/files/working_papers/w24489/w24489.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Introduction",
+      "variables_units_scope": "Register wording (statistics.json): A 50-year-old founder is 1.8 times as likely as a 30-year-old to build a top-growth company. Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-17"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-18",
+      "publisher_or_author": "National Bureau of Economic Research",
+      "title": "Age and High-Growth Entrepreneurship (Azoulay, Jones, Kim and Miranda), NBER Working Paper 24489",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.nber.org/system/files/working_papers/w24489/w24489.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Section on industry experience; Section on industry experience",
+      "variables_units_scope": "Register wording (statistics.json): Founders with 3+ years in the same industry reach top-0.1% growth at about twice the rate of founders without (0.26% vs 0.12%). Status: VERIFIED.",
+      "methodology_limitations": "The register prints 0.12% for no industry experience; the paper text says 0.11%, which the page uses. Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-18"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-19",
+      "publisher_or_author": "National Bureau of Economic Research",
+      "title": "Skill vs. Luck in Entrepreneurship and Venture Capital (Gompers, Kovner, Lerner and Scharfstein), NBER Working Paper 12592",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.nber.org/system/files/working_papers/w12592/w12592.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Section on predicted success rates",
+      "variables_units_scope": "Register wording (statistics.json): Founders with a prior success succeed 30% of the time. First-timers succeed 21% of the time, and founders whose last venture failed 22%. Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-19"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-21",
+      "publisher_or_author": "Ewing Marion Kauffman Foundation",
+      "title": "National Report on Early-Stage Entrepreneurship in the United States: 2025",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://indicators-new.kauffman.org/wp-content/uploads/sites/13/2026/05/2025-Early-Stage-Entrepreneurship-National-Report.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Nativity section, Figure 4",
+      "variables_units_scope": "Register wording (statistics.json): Immigrants start businesses at twice the U.S.-born rate (0.60% vs 0.30% of adults a month, 2025), and are 28.2% of new entrepreneurs. Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-21"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-27",
+      "publisher_or_author": "Ewing Marion Kauffman Foundation",
+      "title": "Trends in Entrepreneurship: Who Is the Entrepreneur? 1996 to 2021",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.kauffman.org/wp-content/uploads/2022/10/Kauffman_Trends-in-Entrepreneurship-Who-Is-The-Entrepreneur-2021.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Age section",
+      "variables_units_scope": "Register wording (statistics.json): More than 1 in 5 new U.S. entrepreneurs (22.8%) is aged 55 to 64, up from about 1 in 7 (14.8%) in 1996. Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-27"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-28",
+      "publisher_or_author": "Babson College",
+      "title": "GEM USA 2025/2026 report coverage",
+      "source_tier": "secondary",
+      "exact_url_or_locator": "https://entrepreneurship.babson.edu/gem-usa-2026/",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Report summary (secondary, shown as reported)",
+      "variables_units_scope": "Register wording (statistics.json): More than 1 in 5 Americans aged 18 to 34 are starting or running a new business, yet only 5.7% of employer-business owners are under 35. Status: SECONDARY / VERIFIED.",
+      "methodology_limitations": "Secondary: shown on the page as reported. Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-28"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-29",
+      "publisher_or_author": "Ewing Marion Kauffman Foundation",
+      "title": "National Report on Early-Stage Entrepreneurship in the United States: 2025",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://indicators-new.kauffman.org/wp-content/uploads/sites/13/2026/05/2025-Early-Stage-Entrepreneurship-National-Report.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Key findings (necessity share derived as 100 minus opportunity share)",
+      "variables_units_scope": "Register wording (statistics.json): About 1 in 6 new entrepreneurs (16.7%) start out of necessity. The share jumped to 30.2% in 2020. Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-29"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-33",
+      "publisher_or_author": "Federal Reserve Banks",
+      "title": "Small Business Credit Survey: 2026 Report on Employer Firms",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.fedsmallbusiness.org/-/media/project/clevelandfedtenant/fsbsite/reports/2026/2026-report-on-employer-firms/2026-report-on-employer-firms.pdf",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Application outcomes, share fully approved by firm age",
+      "variables_units_scope": "Register wording (statistics.json): Firms aged 0 to 5 years were fully approved for financing 48% of the time, against 61% for firms aged 16 or more. Status: VERIFIED.",
+      "methodology_limitations": "The register prints 61% for firms aged 16 or more; the survey reports 63% for firms aged 21 or more, which the page uses. Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-33"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-34",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (total private)",
+      "source_tier": "primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Table 7, opened March 2013, survival rates of previous year survivors",
+      "variables_units_scope": "Register wording (statistics.json): Each year a business survives, its odds of surviving the next year rise: from 79.6% in year one to 94.4% in year nine (2013 group). Status: VERIFIED.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-34"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "source_id": "ST-35",
+      "publisher_or_author": "U.S. Bureau of Labor Statistics; U.S. Bureau of Labor Statistics",
+      "title": "Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Information, NAICS 51); Business Employment Dynamics, Table 7: Survival of private sector establishments by opening year (Professional, Scientific, and Technical Services, NAICS 54)",
+      "source_tier": "primary; primary",
+      "exact_url_or_locator": "https://www.bls.gov/bdm/us_age_naics_51_table7.txt ; https://www.bls.gov/bdm/us_age_naics_54_table7.txt",
+      "publication_date": "",
+      "last_updated_date": "",
+      "retrieved_at": "2026-10-14",
+      "next_review": "The next release of each source",
+      "version_or_release": "As retrieved on 2026-10-14",
+      "relevant_locator": "Table 7 (NAICS 51), opened March 2020, survival rate since birth, 2025; Table 7 (NAICS 54), opened March 2020, survival rate since birth, 2025",
+      "variables_units_scope": "Register wording (statistics.json): Information-sector (including software) establishments: 71.6% survive year one and 45.7% survive five years. Professional and technical services: 74.5% and 50.8%. Status: VERIFIED. Information is not \"software\" alone.",
+      "methodology_limitations": "Describes the market, never WE results.",
+      "funding_conflicts": "none known",
+      "claims_supported": [
+        "ST-35"
+      ],
+      "claims_not_supported": [
+        "C-05",
+        "C-13",
+        "C-16"
+      ],
+      "license_access_attribution": "Public document, cited with a link",
+      "freshness_trigger": "A new release or revision of the source",
+      "captured_by": "WP-58"
+    }
+  ]
+}

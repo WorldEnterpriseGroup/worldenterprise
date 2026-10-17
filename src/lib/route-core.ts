@@ -1,4 +1,5 @@
 import { isDeskId } from '../data/desks.ts';
+import { CATEGORY_IDS as ECOSYSTEM_CATEGORY_IDS } from '../data/ecosystem/types.ts';
 import { FAMILIES } from '../data/families.ts';
 import { MACHINE_ROUTES, routes } from '../data/routes.ts';
 import type { RouteRow } from '../data/routes.ts';
@@ -24,6 +25,9 @@ export const DYNAMIC_COLLECTIONS: Readonly<Record<string, string>> = {
 export const DYNAMIC_FIXED: Readonly<Record<string, readonly string[]>> = {
   // src/pages/newsletter/[...slug].astro emits only /newsletter/ itself (an empty rest segment).
   '/newsletter/[...slug]/': [''],
+  // src/pages/ecosystem/[category].astro emits one page per directory category, from the same list (WP-33). Without this row isLive()
+  // treated every /ecosystem/<category>/ page as missing, so no CTA or band could link to one.
+  '/ecosystem/[category]/': ECOSYSTEM_CATEGORY_IDS,
 };
 
 /**

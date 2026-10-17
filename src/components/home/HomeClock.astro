@@ -1,0 +1,50 @@
+---
+/**
+ * The real clock (SITE-COPY 1.2): why a company takes years. The survival curve of one opening-year group beside the copy, three
+ * figures under it, the honesty line, and the way to the full page on why it takes time.
+ */
+import StatTiles from '../visuals/charts/StatTiles.astro';
+import SurvivalCurve from '../visuals/charts/SurvivalCurve.astro';
+import { HONESTY_LINE, SOURCES, SURVIVAL_2015, SURVIVAL_NOTE, stats } from '../program/clock.ts';
+import type { Action } from '../program/ctas.ts';
+import { href } from '../../lib/url.ts';
+
+interface Props {
+  more?: Action | undefined;
+}
+
+const { more } = Astro.props;
+---
+
+<section class="band band--soft home-clock" aria-labelledby="home-clock-title">
+  <div class="container stack stack--loose">
+    <div class="split">
+      <div class="split__text home-clock__text">
+        <p class="eyebrow">Why it takes time</p>
+        <h2 id="home-clock-title">A company takes years. WE is set up for the years.</h2>
+        <p class="lead">About 1 in 5 new businesses close in their first year. About half are gone by year five. About a third are still operating at year ten.</p>
+        <p>Most help for founders is short. WE works on the clock businesses actually follow, with checkpoints at the points where the data shows most companies close.</p>
+        {more && <p><a class="btn btn--secondary" href={href(more.href)}>{more.label}</a></p>}
+      </div>
+      <div class="split__media">
+        <SurvivalCurve title="Share of new U.S. businesses still operating, year by year" series={[SURVIVAL_2015]} source={SOURCES.bls} gates={[1, 5, 10]} note={SURVIVAL_NOTE} />
+      </div>
+    </div>
+    <StatTiles stats={stats('ST-01', 'ST-02', 'ST-03')} label="Still operating after one, five and ten years" id="home-clock-stats" />
+    <p class="home-clock__honesty">{HONESTY_LINE}</p>
+  </div>
+</section>
+
+<style>
+  @layer pages {
+    .home-clock__text {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .home-clock__honesty {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+  }
+</style>

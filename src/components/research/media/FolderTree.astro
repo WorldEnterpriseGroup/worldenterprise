@@ -1,0 +1,181 @@
+---
+/**
+ * FolderTree (WP-23, #89): a shared folder drawn as a tree, root at the top, each folder with a few of the records it holds. Nested lists
+ * carry the structure for screen readers; the folder glyphs and branch lines are decoration.
+ */
+import { cleanText } from '../../visuals/contracts.ts';
+
+export interface Folder {
+  readonly name: string;
+  /** Up to four sample records. */
+  readonly items?: readonly string[] | undefined;
+  /** What the folder proves, in a few words. */
+  readonly shows?: string | undefined;
+}
+
+interface Props {
+  title: string;
+  root: string;
+  folders: readonly Folder[];
+  note?: string;
+  /** Index of the folder drawn in amber (the one a stranger opens first). */
+  highlight?: number;
+  headingLevel?: 3 | 4;
+  class?: string;
+}
+
+const { highlight = -1, headingLevel = 3, class: className } = Astro.props;
+const title = cleanText('FolderTree', 'title', Astro.props.title);
+const root = cleanText('FolderTree', 'root', Astro.props.root);
+const note = Astro.props.note === undefined ? undefined : cleanText('FolderTree', 'note', Astro.props.note);
+if (Astro.props.folders.length < 2 || Astro.props.folders.length > 12) throw new Error(`FolderTree: takes 2 to 12 folders, got ${Astro.props.folders.length}`);
+const folders = Astro.props.folders.map((f, i) => {
+  if ((f.items?.length ?? 0) > 4) throw new Error(`FolderTree: folder ${i + 1} lists more than four records`);
+  return {
+    name: cleanText('FolderTree', `folder ${i + 1}`, f.name),
+    items: (f.items ?? []).map((it, j) => cleanText('FolderTree', `folder ${i + 1} record ${j + 1}`, it)),
+    shows: f.shows === undefined ? undefined : cleanText('FolderTree', `folder ${i + 1} shows`, f.shows),
+  };
+});
+const H = headingLevel === 3 ? 'h3' : 'h4';
+---
+
+<figure class:list={['ftree', className]}>
+  <H class="ftree__title">{title}</H>
+  <div class="ftree__root">
+    <svg class="ftree__icon ftree__icon--root" viewBox="0 0 24 20" width="28" height="24" aria-hidden="true" focusable="false">
+      <path d="M1 3h8l2 2h12v14H1z" />
+    </svg>
+    <strong>{root}</strong>
+  </div>
+  <ul class="ftree__list" role="list">
+    {
+      folders.map((f, i) => (
+        <li class:list={['ftree__folder', i === highlight && 'ftree__folder--hl']}>
+          <div class="ftree__row">
+            <svg class="ftree__icon" viewBox="0 0 24 20" width="22" height="18" aria-hidden="true" focusable="false">
+              <path d="M1 3h8l2 2h12v14H1z" />
+            </svg>
+            <span class="ftree__name">{f.name}</span>
+            {f.shows !== undefined && <span class="ftree__shows">{f.shows}</span>}
+          </div>
+          {f.items.length > 0 && (
+            <ul class="ftree__items" role="list">
+              {f.items.map((it) => (
+                <li>{it}</li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+  {note !== undefined && <figcaption class="ftree__note">{note}</figcaption>}
+</figure>
+
+<style>
+  @layer pages {
+    .ftree {
+      margin: 0;
+      display: grid;
+      gap: var(--sp-3);
+      container-type: inline-size;
+    }
+
+    .ftree__title {
+      margin: 0;
+      font-size: var(--fs-h4);
+    }
+
+    .ftree__root {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-family: var(--ff-sans);
+    }
+
+    .ftree__icon path {
+      fill: var(--we-tint);
+      stroke: var(--we-blue);
+      stroke-width: 1.5;
+    }
+
+    .ftree__icon--root path {
+      fill: var(--we-blue);
+      stroke: var(--we-blue-deep);
+    }
+
+    .ftree__list {
+      list-style: none;
+      margin: 0 0 0 var(--sp-3);
+      padding: 0 0 0 var(--sp-4);
+      border-inline-start: 2px solid var(--we-hairline);
+      display: grid;
+      gap: var(--sp-2);
+    }
+
+    @container (min-width: 40rem) {
+      .ftree__list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: var(--sp-5);
+      }
+    }
+
+    .ftree__folder {
+      position: relative;
+      display: grid;
+      gap: var(--sp-1);
+    }
+
+    .ftree__folder::before {
+      content: '';
+      position: absolute;
+      inset-block-start: var(--sp-3);
+      inset-inline-start: calc(-1 * var(--sp-4));
+      inline-size: calc(var(--sp-4) - 0.25rem);
+      border-block-start: 2px solid var(--we-hairline);
+    }
+
+    .ftree__row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--sp-1) var(--sp-2);
+    }
+
+    .ftree__name {
+      font-family: var(--ff-sans);
+      font-weight: 600;
+    }
+
+    .ftree__shows {
+      flex-basis: 100%;
+      padding-inline-start: var(--sp-6);
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+
+    .ftree__folder--hl .ftree__icon path {
+      fill: var(--we-amber);
+      stroke: var(--we-amber-ink);
+    }
+
+    .ftree__items {
+      list-style: none;
+      margin: 0;
+      padding-inline-start: var(--sp-6);
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    .ftree__items li::before {
+      content: '\2014\00a0';
+      color: var(--we-blue-hi);
+    }
+
+    .ftree__note {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+  }
+</style>

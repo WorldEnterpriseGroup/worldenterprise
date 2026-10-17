@@ -55,6 +55,10 @@ export const SURFACES: readonly SurfaceRule[] = [
   row('home', { path: '/' }, ['apply'], ['briefs']),
   row('program:how-we-decide', { path: '/program/how-we-decide/' }, ['apply'], ['journey']),
   row('program', { prefix: '/program/' }, ['apply'], ['journey']),
+
+  // How WE works (WP-54, W9-13): the engagement page closes on the readiness review, with Talk to WE as the secondary (SALES 6.2).
+  // /pricing/ is a noindex pointer to it and keeps the same band.
+  row('how-we-work', { path: '/how-we-work/' }, ['apply'], ['contact']),
   row('pricing', { path: '/pricing/' }, ['apply'], ['contact']),
 
   // Services: the seven lines and their hub.
@@ -69,6 +73,11 @@ export const SURFACES: readonly SurfaceRule[] = [
   // Industries and comparisons.
   row('industries', { prefix: '/industries/' }, ['apply'], ['path:/insights/topic/sectors/', 'briefs']),
   row('compare', { prefix: '/compare/' }, ['apply'], ['path:/program/how-it-works/']),
+
+  // Wave 10 (D-W10-1): the ecosystem directory, the SBIR and STTR guide and the data pages. Readers here are researching, so Apply leads and the briefs follow.
+  row('ecosystem', { prefix: '/ecosystem/' }, ['apply'], ['briefs']),
+  row('sbir-sttr', { prefix: '/sbir-sttr/' }, ['apply'], ['briefs']),
+  row('data', { prefix: '/data/' }, ['apply'], ['briefs']),
 
   // The customer journey.
   row('journey:after-you-apply', { path: '/journey/after-you-apply/' }, ['apply'], ['path:/journey/first-months/']),
@@ -119,6 +128,10 @@ export const SURFACES: readonly SurfaceRule[] = [
   row('guides', { collection: 'guides' }, ['tools'], ['apply'], { mid: 'apply' }),
   row('library', { collection: 'library' }, ['tools'], []),
   row('research', { collection: 'research' }, ['briefs', 'apply'], ['apply']),
+
+  // Sales literature (WP-58, W9-12): the real clock and the situation pages.
+  row('sales:why-it-takes-time', { prefix: '/why-it-takes-time/' }, ['apply'], ['contact']),
+  row('sales:who-we-work-with', { prefix: '/who-we-work-with/' }, ['apply'], ['contact']),
 
   // About, brand story, manifesto, frameworks, trust, press.
   row('about', { prefix: '/about/' }, ['apply'], ['contact']),

@@ -27,16 +27,45 @@ const newestBrief = briefs.find((entry) => state.isLive(`/research/${entry.id.sp
 const newestResearch: NewestResearch | null =
   newestBrief === undefined ? null : { title: newestBrief.data.title, href: `/research/${newestBrief.id.split('/').at(-1) ?? newestBrief.id}/` };
 
+// The rendered width of the header wordmark at each breakpoint (src/styles/components.css, `.site-header__logo`), so the browser never
+// assumes the 100vw default. Below 1100px: 11rem until 30vw passes it (587px), 30vw, then 16rem from 854px. From 1100px: 10rem plus
+// 0.536px per viewport pixel over 1100, capped at 16rem from 1280px. From 1920px the root size is 100vw / 120 (tokens.css, --root-size),
+// so 16rem is 16 / 120 of the viewport (13.3334vw); a rem in `sizes` is the initial 16px and would understate it there.
+// HTML allows `sizes` only beside a `srcset` with width descriptors, so the one vector file is listed there with its intrinsic width.
+const LOGO_SIZES =
+  '(min-width: 1920px) 13.3334vw, (min-width: 1280px) 16rem, (min-width: 1100px) calc(10rem + (100vw - 1100px) * 0.536), (min-width: 854px) 16rem, (min-width: 587px) 30vw, 11rem';
+
 const commands = buildPaletteCommands({ items, utility: resolveUtility(state.isLive), apply, footer: resolveFooter(state.isLive) }, state.isLive);
 ---
 
 <header class="site-header">
   <div class="container site-header__inner">
     <a href={href('/')} class="site-header__logo" aria-label={`${site.name}, home`}>
-      <img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="World Enterprise" decoding="async" />
+      <img
+        src={wordmark.src}
+        srcset={`${wordmark.src} ${wordmark.width}w`}
+        sizes={LOGO_SIZES}
+        width={wordmark.width}
+        height={wordmark.height}
+        alt="World Enterprise"
+        decoding="async"
+      />
     </a>
     {items.length > 0 && <MegaNav items={items} currentPath={currentPath} newestResearch={newestResearch} />}
-    {apply && <a class="btn btn--primary site-header__apply" href={href(apply.href)} aria-current={currentPath === apply.href ? 'page' : undefined}>{apply.label}</a>}
+    {
+      apply && (
+        <a class="btn btn--primary site-header__apply" href={href(apply.href)} aria-current={currentPath === apply.href ? 'page' : undefined} aria-label={apply.short === undefined ? undefined : apply.label}>
+          {apply.short === undefined ? (
+            apply.label
+          ) : (
+            <>
+              <span class="site-header__apply-full" aria-hidden="true">{apply.label}</span>
+              <span class="site-header__apply-short" aria-hidden="true">{apply.short}</span>
+            </>
+          )}
+        </a>
+      )
+    }
     {items.length > 0 && <MobileNav items={items} apply={apply} currentPath={currentPath} newestResearch={newestResearch} />}
   </div>
   <WePalette commands={commands} />

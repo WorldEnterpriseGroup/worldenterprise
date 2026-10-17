@@ -25,6 +25,7 @@ claimsUsed: [C-29]
 ---
 import DataTable from '../../../components/ui/DataTable.astro';
 import Callout from '../../../components/ui/Callout.astro';
+import Steps from '../../../components/ui/Steps.astro';
 import MaybeLink from '../../../components/insights/MaybeLink.astro';
 
 *General information, not legal advice. Written October 10, 2026. A handbook can create obligations under local employment law, and those rules differ by country, so have an adviser licensed where your people work review anything you plan to call policy.*
@@ -90,6 +91,18 @@ Write down how a person asks for time away, whom they tell, and how the calendar
 
 A handbook should not repeat the law, promise outcomes or set rules you do not plan to follow. It should not list consequences you have not thought through. It should not contain anything you would be uncomfortable showing a person who was upset with you. If you are unsure whether a sentence belongs, ask whether it describes how the team actually works. If not, cut it or change the behavior.
 
+**A handbook grows in passes.** No team writes a complete handbook on day one. A pass-based approach lets the document follow the work.
+
+<Steps
+  headingLevel={3}
+  steps={[
+    { title: 'Write the first page', body: 'Hours, channels, reply times and who decides what. One page is enough.' },
+    { title: 'Add after the first surprise', body: 'Each time a misunderstanding costs the team a day, add the sentence that would have prevented it.' },
+    { title: 'Prune on a schedule', body: 'Every quarter, delete what nobody has used and fix what has changed.' },
+    { title: 'Hand it to the next person', body: 'Ask each new team member what was unclear and edit while the confusion is fresh.' }
+  ]}
+/>
+
 ## How to keep it alive
 
 A handbook that is never updated becomes a document nobody trusts. Give it an owner, put a review date on the first page, and change it whenever a habit changes. Invite the team to correct it. People who work remotely often see gaps before you do, because they are the ones who hit them. Keep a list of changes at the top so the team can see what moved.
@@ -99,6 +112,12 @@ The best test is a new person's first week. <MaybeLink path="/insights/onboardin
 <Callout title="A starting outline">
   Page one: what the team does and who is on it. Then hours and time zones, channels and replies, how decisions are recorded, devices and access, time off, and who to ask. Finish with the date of the last review and the name of the owner.
 </Callout>
+
+## Where this fits in a long effort
+
+A handbook is a record of how a team has agreed to work, and it matters more the longer the team stays together. Teams that expect to last years benefit from a document that a new person can read in an hour. The research on <MaybeLink path="/insights/coworking-and-community-what-the-research-shows-about-staying-power/">coworking and community</MaybeLink> describes why shared norms and regular contact matter to people who work alone, and the <MaybeLink path="/insights/the-longevity-paradox-sprint-weekly-endure-for-a-decade/">longevity paradox</MaybeLink> article explains why a team that writes things down is easier to sustain over a decade.
+
+Founder communities and coworking spaces, listed in the <MaybeLink path="/ecosystem/">ecosystem directory</MaybeLink>, are good places to compare handbooks with other small teams before writing your own.
 
 ## What this article cannot tell you
 

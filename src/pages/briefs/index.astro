@@ -1,0 +1,86 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import { BRIEF_COPY, HUB_COPY, depthLine } from '../../components/briefs/copy.ts';
+import { groupByAudience, liveBriefs, sectionCount } from '../../components/briefs/plan.ts';
+import { IDENTITY } from '../../components/families/visual/copy.ts';
+import BriefsHubMedia from '../../components/briefs/BriefsHubMedia.astro';
+import CtaLadder from '../../components/families/visual/CtaLadder.astro';
+import { hubActions } from '../../components/families/visual/cta.ts';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
+import VisualCards from '../../components/families/visual/VisualCards.astro';
+import { AUDIENCE_LABELS, BRIEFS } from '../../data/families.ts';
+import HubLayout from '../../layouts/HubLayout.astro';
+import { getPublished } from '../../lib/content.ts';
+import { getRouteState, isReleaseBuild } from '../../lib/route-state.ts';
+
+// The glob loader may strip a trailing /index from the entry id, so accept either form.
+const page = (await getEntry('pages', 'briefs/index')) ?? (await getEntry('pages', 'briefs'));
+if (page === undefined) {
+  throw new Error('Missing content entry src/content/pages/briefs/index.md for the /briefs/ hub.');
+}
+const { Content } = await render(page);
+const live = liveBriefs(BRIEFS.entries, await getCollection('briefs'), { includeDrafts: !isReleaseBuild() });
+const groups = groupByAudience(live);
+// The open research briefs stay open (W8-16). Each is linked only while its page exists.
+const state = await getRouteState();
+const research = (await getPublished('research'))
+  .map((entry) => ({ entry, path: `/research/${entry.id.split('/').at(-1) ?? entry.id}/` }))
+  .filter(({ path }) => state.isLive(path));
+const actions = hubActions(state.isLive);
+const covers = groups.flatMap((group) => group.briefs.map(({ row, abstract }) => ({ slug: row.slug, title: abstract.data.title, href: row.path })));
+---
+
+<HubLayout
+  title={page.data.title}
+  description={page.data.description}
+  path="/briefs/"
+  {...(page.data.eyebrow !== undefined ? { eyebrow: page.data.eyebrow } : {})}
+  lead={page.data.description}
+  updated={page.data.updated}
+  draft={page.data.draft}
+  hero="console"
+  primary={actions.primary}
+>
+  <div slot="panel"><EmblemFrame kind="briefs" caption={IDENTITY.briefs.caption} /></div>
+  <div class="prose"><Content /></div>
+  {
+    groups.length === 0 && (
+      <p data-briefs-empty>{HUB_COPY.emptyText}</p>
+    )
+  }
+  {
+    groups.map((group) => (
+      <section class="stack" aria-labelledby={`briefs-${group.audience}`}>
+        <h2 id={`briefs-${group.audience}`}>{AUDIENCE_LABELS[group.audience]}</h2>
+        <VisualCards
+          kind="briefs"
+          headingLevel={3}
+          labelledby={`briefs-${group.audience}`}
+          cards={group.briefs.map(({ row, abstract }) => ({
+            title: abstract.data.title,
+            href: row.path,
+            summary: abstract.data.description,
+            eyebrow: BRIEF_COPY.eyebrow,
+            meta: depthLine(abstract.data.updated, sectionCount(abstract)),
+          }))}
+        />
+      </section>
+    ))
+  }
+  {
+    research.length > 0 && (
+      <section class="stack" aria-labelledby="briefs-research">
+        <h2 id="briefs-research">{HUB_COPY.researchHeading}</h2>
+        <p>{HUB_COPY.researchText}</p>
+        <VisualCards
+          kind="research"
+          headingLevel={3}
+          labelledby="briefs-research"
+          cards={research.map(({ entry, path }) => ({ title: entry.data.title, href: path, summary: entry.data.description }))}
+        />
+      </section>
+    )
+  }
+  <BriefsHubMedia slot="after" briefs={covers} />
+  <CtaLadder slot="cta-end" />
+</HubLayout>

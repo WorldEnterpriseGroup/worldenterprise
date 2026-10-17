@@ -106,7 +106,7 @@ export function toMarkdown(state: RoomState): string {
     lines.push('', `## ${group.title}`, '');
     for (const item of items) lines.push(`- [${done.has(item.code) ? 'x' : ' '}] ${item.label}`);
   }
-  lines.push('', '---', '', 'A preparation list from the World Enterprise Incubator evidence room. WE makes no promise of funding.', '');
+  lines.push('', '---', '', 'A preparation list from the World Enterprise evidence room. WE makes no promise of funding.', '');
   return lines.join('\n');
 }
 

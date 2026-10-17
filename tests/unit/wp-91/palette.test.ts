@@ -63,7 +63,8 @@ test('a desk and a tool route appear by the registry and the ledger, and only wh
   assert.ok(desk !== undefined);
   assert.ok(build(allLive).some((command) => command.href === deskPath(desk.id)));
   assert.ok(!build((href) => href !== deskPath(desk.id)).some((command) => command.href === deskPath(desk.id)));
-  const tools = routes.filter((row) => row.layout === 'ToolLayout' && row.path !== '/tools/').map((row) => row.path);
+  // The tool routes under /tools/: the retired /pricing/ pointer also uses ToolLayout but is in no menu and no palette (WP-54).
+  const tools = routes.filter((row) => row.layout === 'ToolLayout' && row.path.startsWith('/tools/') && row.path !== '/tools/').map((row) => row.path);
   assert.ok(tools.length >= 3, 'the ledger has tool routes');
   const hrefs = new Set(build(allLive).map((command) => command.href));
   for (const path of tools) assert.ok(hrefs.has(path), path);
@@ -94,10 +95,14 @@ test('a path is listed once, and no list carries a label or hint with a word the
   }
 });
 
-test('the registry entries do not change what the existing entries rank: "pricing" still ranks Pricing first on the real list', () => {
+test('the registry entries do not change what the existing entries rank: "how we work" ranks How WE works first on the real list', () => {
+  // Wave 9 (W9-13, WP-54): /how-we-work/ replaces the retired /pricing/ page, and a search for "pricing" still reaches it by its hint.
+  // No entry mentions seats.
   for (const isLive of [allLive, ledgerLive]) {
-    const ranked = rankCommands(build(isLive), 'pricing');
-    assert.equal(ranked[0]?.command.href, '/pricing/');
+    const commands = build(isLive);
+    assert.equal(rankCommands(commands, 'how we work')[0]?.command.href, '/how-we-work/');
+    assert.ok(rankCommands(commands, 'pricing').some((ranked) => ranked.command.href === '/how-we-work/'));
+    assert.deepEqual(rankCommands(commands, 'seat'), []);
   }
 });
 

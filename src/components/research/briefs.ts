@@ -36,7 +36,7 @@ export const BRIEF_META: Readonly<Record<string, BriefMeta>> = {
     kindLabel: 'Analysis, no statistics',
     noticeTitle: 'Analysis, with a disclosed interest',
     notice:
-      'This is reasoning from criteria, not a study. World Enterprise Group sells dedicated team seats, one of the three models compared, so test the criteria yourself.',
+      'This is reasoning from criteria, not a study. WE steers dedicated teams, one of the three models compared, so test the criteria yourself.',
   },
   'early-stage-saas-metrics-definitions': {
     kind: 'definitions',

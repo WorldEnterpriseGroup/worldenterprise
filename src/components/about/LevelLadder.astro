@@ -1,0 +1,136 @@
+---
+/**
+ * Two ladders side by side: Agile's five levels of a project and UBF's ten levels, from the industry down (UBF_2.md). Each ladder is an
+ * ordered list; the rungs narrow as the scale shrinks. No level of one ladder is mapped onto the other: the source draws no mapping.
+ */
+interface Ladder {
+  readonly title: string;
+  readonly note: string;
+  readonly rungs: readonly string[];
+}
+
+interface Props {
+  ladders: readonly [Ladder, Ladder];
+}
+
+const { ladders } = Astro.props;
+for (const ladder of ladders) if (ladder.rungs.length === 0) throw new Error(`LevelLadder: "${ladder.title}" has no levels`);
+const widest = Math.max(...ladders.map((l) => l.rungs.length));
+const widthClass = (i: number, n: number): string => `ladder2__rung--w${Math.round(10 - (i / Math.max(1, n - 1)) * 5)}`;
+---
+
+<div class="ladder2">
+  {
+    ladders.map((ladder, li) => (
+      <section class:list={['ladder2__col', li === 1 && 'ladder2__col--ubf']} aria-labelledby={`ladder2-${li}`}>
+        <h3 id={`ladder2-${li}`} class="ladder2__title">
+          {ladder.title}
+          <span class="ladder2__count">{ladder.rungs.length} levels</span>
+        </h3>
+        <p class="ladder2__note">{ladder.note}</p>
+        <ol class:list={['ladder2__rungs', ladder.rungs.length === widest && 'ladder2__rungs--full']} role="list">
+          {ladder.rungs.map((rung, i) => (
+            <li class:list={['ladder2__rung', widthClass(i, ladder.rungs.length)]}>{rung}</li>
+          ))}
+        </ol>
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .ladder2 {
+    display: grid;
+    gap: var(--sp-6);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    align-items: start;
+  }
+
+  .ladder2__col {
+    display: grid;
+    gap: var(--sp-3);
+  }
+
+  .ladder2__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sp-3);
+    margin: 0;
+  }
+
+  .ladder2__count {
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    font-weight: 400;
+  }
+
+  .ladder2__note {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .ladder2__rungs {
+    display: grid;
+    gap: var(--sp-1);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: rung;
+  }
+
+  .ladder2__rung {
+    justify-self: center;
+    padding: var(--sp-2) var(--sp-4);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-strong);
+    text-align: center;
+    counter-increment: rung;
+
+    &::before {
+      content: counter(rung) '. ';
+      color: var(--color-text-muted);
+    }
+  }
+
+  .ladder2__col--ubf .ladder2__rung {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-accent-contrast);
+
+    &::before {
+      color: inherit;
+    }
+  }
+
+  .ladder2__rung--w10 {
+    inline-size: 100%;
+  }
+
+  .ladder2__rung--w9 {
+    inline-size: 90%;
+  }
+
+  .ladder2__rung--w8 {
+    inline-size: 80%;
+  }
+
+  .ladder2__rung--w7 {
+    inline-size: 70%;
+  }
+
+  .ladder2__rung--w6 {
+    inline-size: 60%;
+  }
+
+  .ladder2__rung--w5 {
+    inline-size: 50%;
+  }
+
+  @media (forced-colors: active) {
+    .ladder2__col--ubf .ladder2__rung {
+      border-color: CanvasText;
+    }
+  }
+</style>

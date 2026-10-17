@@ -3,7 +3,7 @@ import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
 import type { SlotId } from '../../assets/photo/slots.ts';
-import type { HeroCta } from '../hero/types.ts';
+import type { HeroArtProps, HeroCta } from '../hero/types.ts';
 import type { PageSchemaType } from '../../lib/schema.ts';
 
 interface Props {
@@ -16,9 +16,11 @@ interface Props {
   primary?: HeroCta | undefined;
   secondary?: HeroCta | undefined;
   photo?: SlotId | undefined;
+  /** Vector art for the hero when no photo is given (a hex flower with a glyph, or a cell trail). */
+  art?: HeroArtProps | undefined;
 }
 
-const { entry, path, lead, ogSlot, schemaType, primary, secondary, photo } = Astro.props;
+const { entry, path, lead, ogSlot, schemaType, primary, secondary, photo, art } = Astro.props;
 const { Content } = await render(entry);
 const { title, description, eyebrow, updated, draft } = entry.data;
 ---
@@ -33,6 +35,7 @@ const { title, description, eyebrow, updated, draft } = entry.data;
   primary={primary}
   secondary={secondary}
   photo={photo}
+  art={art}
   {...(eyebrow !== undefined ? { eyebrow } : {})}
   {...(ogSlot !== undefined ? { ogSlot } : {})}
   {...(schemaType !== undefined ? { schemaType } : {})}

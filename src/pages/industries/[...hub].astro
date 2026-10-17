@@ -8,6 +8,15 @@ import { ogSlotFor } from '../../components/families/og.ts';
 import { findHubPage, hubStaticPaths, liveCards, pageRefs } from '../../components/families/paths.ts';
 import { INDUSTRIES } from '../../data/families.ts';
 import { getRenderable } from '../../lib/content.ts';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { tile } from '../../components/hubs/stats.ts';
+import OrbitSystem from '../../components/visuals/OrbitSystem.astro';
+import BeeswarmStrip from '../../components/visuals/charts/BeeswarmStrip.astro';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
+import { fiveYearSwarm } from '../../data/datasets/figures.ts';
+import { RETRIEVED } from '../../data/datasets/sources.ts';
 
 /**
  * The industries hub (/industries/): the structure is the template's, the intro is the content owner's `industries/index` page. The hub
@@ -18,15 +27,35 @@ export const getStaticPaths = (async () => hubStaticPaths(INDUSTRIES, await getR
 
 const pages = await getRenderable('pages');
 const isLive = await loadIsLive();
+const cards = liveCards(INDUSTRIES, pageRefs(pages), isLive);
+// WP-24: the live industries as worlds around one sun (the orbit holds at most 12), the sourced five-year odds beside them, and every
+// opening-year group from the BLS series as a swarm, so the hub shows that the long clock runs in every industry.
+const bodies = cards.slice(0, 12).map((c) => ({ label: c.title, href: c.href }));
 ---
 
 <FamilyHubPage
   family="industries"
-  composition="industries"
   page={findHubPage(INDUSTRIES, pages)}
   path="/industries/"
-  cards={liveCards(INDUSTRIES, pageRefs(pages), isLive)}
+  cards={cards}
   listHeading={HEADINGS_HUB.industries}
   actions={industryActions(isLive)}
   ogSlot={ogSlotFor('industries')}
-/>
+>
+  <HubLead slot="lead" label="The industries at a glance">
+    {
+      bodies.length > 0 && (
+        <HubMoment id="hub-industries-orbit" kind="scene" heading="One sun, many worlds" headingLevel={2} lead="Each industry WE writes about is its own world, with its own buyers and rules; the work of building a company around it is the same long orbit.">
+          <OrbitSystem static bodies={bodies} accent={0} labelsName="Industries" caption="Illustration: World Enterprise Group Incorporated. One world per industry page on this site; select a world to open it." />
+        </HubMoment>
+      )
+    }
+    <HubMoment slot="side" id="hub-industries-survival" kind="stats" heading="The five-year odds, by industry" headingLevel={2} lead="About half of new establishments are still open at year five; in the information sector, fewer than half are.">
+      <StatTiles stats={[tile('ST-35'), tile('ST-02')]} label="Five-year survival by industry" id="industries-survival" />
+    </HubMoment>
+  </HubLead>
+  <HubMoment id="hub-industries-swarm" kind="chart" heading="Every opening year, the same clock" headingLevel={2} lead="Twenty-seven groups of new establishments, one dot each: the five-year share barely moves from year to year or industry to industry.">
+    <BeeswarmStrip {...fiveYearSwarm} retrieved={RETRIEVED} />
+  </HubMoment>
+  <HubEcosystem id="industries-ecosystem" />
+</FamilyHubPage>

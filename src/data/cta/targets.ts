@@ -30,10 +30,10 @@ export const NO_FUNDING_NOTE = 'WE makes no promise of funding.';
 const FIXED: Readonly<Record<'apply' | 'briefs' | 'journey' | 'contact' | 'tools' | 'investor-interest' | 'partner-enquiry', Target>> = {
   apply: {
     href: '/apply/',
-    label: 'Tell WE about your company',
+    label: 'Start a readiness review',
     variant: 'apply',
     band: {
-      heading: 'Tell WE about your company',
+      heading: 'Start a readiness review',
       body: 'The application form asks about your company, your team and what you are building.',
     },
   },
@@ -57,10 +57,10 @@ const FIXED: Readonly<Record<'apply' | 'briefs' | 'journey' | 'contact' | 'tools
   },
   contact: {
     href: '/contact/',
-    label: 'Ask WE a question',
+    label: 'Talk to WE',
     variant: 'contact',
     band: {
-      heading: 'Ask WE a question',
+      heading: 'Talk to WE',
       body: 'Send a message through the contact form and say what you want to talk about.',
     },
   },
@@ -84,7 +84,7 @@ const FIXED: Readonly<Record<'apply' | 'briefs' | 'journey' | 'contact' | 'tools
   },
   'partner-enquiry': {
     href: '/network/partners/enquire/',
-    label: 'Start a partner enquiry',
+    label: 'Refer a founder',
     variant: 'partner-enquiry',
     band: {
       heading: 'Ask about partnering with WE',
@@ -100,6 +100,10 @@ const PATH_LABELS: Readonly<Record<string, string>> = {
   '/program/how-it-works/': 'See how the program works',
   '/journey/first-months/': 'Read about the first months',
   '/journey/onboarding-checklist/': 'Open the onboarding checklist',
+  // The sales ladder (SALES.md 6): the families name these by key, not with labels of their own.
+  '/briefs/real-timeline/': 'Get the timeline brief',
+  '/why-it-takes-time/': 'See how long it really takes',
+  '/how-we-work/': 'See how WE works',
 };
 
 /** The registered brief ids and their labels, from the family registry. */

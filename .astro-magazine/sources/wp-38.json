@@ -1,0 +1,777 @@
+{
+  "wp": "WP-38",
+  "note": "Sources for the wave 10 insights articles. fetchedAt times are nominal (noon UTC); the fetch date, 2026-10-15, is exact.",
+  "fetches": [
+    {
+      "id": "bls-survival-all",
+      "url": "https://www.bls.gov/bdm/us_age_naics_00_table7.txt",
+      "title": "Survival of private sector establishments by opening year",
+      "publisher": "U.S. Bureau of Labor Statistics, Business Employment Dynamics",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "bls-survival-information",
+      "url": "https://www.bls.gov/bdm/us_age_naics_51_table7.txt",
+      "title": "Survival of information sector establishments by opening year",
+      "publisher": "U.S. Bureau of Labor Statistics, Business Employment Dynamics",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "bls-decade",
+      "url": "https://www.bls.gov/opub/ted/2024/34-7-percent-of-business-establishments-born-in-2013-were-still-operating-in-2023.htm",
+      "title": "34.7 percent of business establishments born in 2013 were still operating in 2023",
+      "publisher": "U.S. Bureau of Labor Statistics, The Economics Daily",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "bls-survivor-size",
+      "url": "https://www.bls.gov/opub/btn/volume-12/the-decline-of-job-creation-at-new-establishments.htm",
+      "title": "The decline of job creation at new establishments",
+      "publisher": "U.S. Bureau of Labor Statistics, Beyond the Numbers",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "census-bfs-series",
+      "url": "https://www.census.gov/econ/bfs/csv/bfs_monthly.csv",
+      "title": "Business Formation Statistics, monthly series",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-bfs-definitions",
+      "url": "https://www.census.gov/econ/bfs/definitions.html",
+      "title": "Business Formation Statistics, definitions",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-carra-age",
+      "url": "https://www.census.gov/content/dam/Census/library/working-papers/2018/adrm/carra-wp-2018-03.pdf",
+      "title": "Age and High-Growth Entrepreneurship (CARRA Working Paper 2018-03)",
+      "publisher": "U.S. Census Bureau, Center for Administrative Records Research and Applications",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-ces-women-age",
+      "url": "https://www2.census.gov/ces/wp/2024/CES-WP-24-71.pdf",
+      "title": "The Metamorphosis of Women Business Owners, A Focus on Age (CES 24-71)",
+      "publisher": "U.S. Census Bureau, Center for Economic Studies",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-abs-2025",
+      "url": "https://www.census.gov/newsroom/press-releases/2025/business-owner-characteristics.html",
+      "title": "Census Bureau Releases New Data on Business Owner Characteristics (CB25-TPS.77)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "census-abs-2024",
+      "url": "https://www.census.gov/newsroom/press-releases/2024/employer-businesses.html",
+      "title": "Census Bureau Releases New Data on Employer Businesses (CB24-TPS.122)",
+      "publisher": "U.S. Census Bureau",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "kellogg-immigration",
+      "url": "https://www.kellogg.northwestern.edu/faculty/jones-ben/htm/Immigration_and_Entrepreneurship_in_the_United_States.pdf",
+      "title": "Immigration and Entrepreneurship in the United States (Azoulay, Jones, Kim and Miranda)",
+      "publisher": "Kellogg School of Management, Northwestern University",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "yc-faq",
+      "url": "https://www.ycombinator.com/faq",
+      "title": "Y Combinator FAQ",
+      "publisher": "Y Combinator",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "gu-leatherbee",
+      "url": "https://researchonline.lse.ac.uk/id/eprint/84553/",
+      "title": "Effects on venture performance, evidence from Start-Up Chile (Gonzalez-Uribe and Leatherbee, 2018)",
+      "publisher": "London School of Economics and Political Science, LSE Research Online",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "cohen-hochberg",
+      "url": "https://leeds-faculty.colorado.edu/bhagat/Accelerators-Start-Ups.pdf",
+      "title": "Accelerating Startups: The Seed Accelerator Phenomenon (Cohen and Hochberg, 2014)",
+      "publisher": "University of Colorado Boulder, Leeds School of Business",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "moore-coworking",
+      "url": "https://arxiv.org/abs/2111.09866",
+      "title": "Coworking spaces study (Moore)",
+      "publisher": "arXiv",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "WebFetch"
+    },
+    {
+      "id": "sba-resource-partners",
+      "url": "https://www.sba.gov/local-assistance/resource-partners",
+      "title": "SBA resource partners",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "sba-2021-counseling",
+      "url": "https://www.sba.gov/blog/2022/2022-03/sba-reports-uptick-direct-counseling-training-services-nearly-35-million-entrepreneurs-small",
+      "title": "SBA reports uptick in direct counseling and training services",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "sbir-about",
+      "url": "https://www.sbir.gov/about",
+      "title": "About SBIR and STTR",
+      "publisher": "SBIR.gov, U.S. Small Business Administration",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "sbir-apply",
+      "url": "https://www.sbir.gov/apply",
+      "title": "How to apply for SBIR and STTR awards",
+      "publisher": "SBIR.gov, U.S. Small Business Administration",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "nsf-seed",
+      "url": "https://seedfund.nsf.gov/",
+      "title": "America's Seed Fund, National Science Foundation",
+      "publisher": "National Science Foundation",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "sba-reauth",
+      "url": "https://legacy.sba.gov/article/2026/04/13/administrator-loeffler-applauds-sbir-sttr-reauthorization",
+      "title": "Administrator Loeffler applauds SBIR-STTR reauthorization",
+      "publisher": "U.S. Small Business Administration",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "carta-series-a-q2-2025",
+      "url": "https://carta.com/data/series-a-fundraising-q2-2025/",
+      "title": "Series A Fundraising Q2 2025",
+      "publisher": "Carta",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "carta-spm-q2-2025",
+      "url": "https://carta.com/data/state-of-private-markets-q2-2025/",
+      "title": "State of Private Markets, Q2 2025",
+      "publisher": "Carta",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "carta-spm-q4-2024",
+      "url": "https://carta.com/data/state-of-private-markets-q4-2024/",
+      "title": "State of Private Markets, Q4 and 2024 in review",
+      "publisher": "Carta",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    },
+    {
+      "id": "kauffman-kfs-2013",
+      "url": "https://www.kauffman.org/wp-content/uploads/2019/12/kauffmanfirmsurvey2013.pdf",
+      "title": "The Kauffman Firm Survey, 2013 overview",
+      "publisher": "Ewing Marion Kauffman Foundation",
+      "fetchedAt": "2026-10-15T12:00:00Z",
+      "status": 200,
+      "tool": "curl"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/content/insights/ops/the-longevity-paradox-sprint-weekly-endure-for-a-decade.mdx",
+      "claims": [
+        {
+          "sentence": "For the 2015 opening group, 34.7 percent of private-sector establishments were still operating after ten years.",
+          "kind": "statistic",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2015, March 2025 row, Survival Rates Since Birth",
+          "quote": "March 2025         235,071       2,759,210             34.7             92.8                11.7",
+          "id": "the-longevity-paradox-sp-01"
+        },
+        {
+          "sentence": "For the 2015 opening group, 79.6 percent of establishments were still operating after one year.",
+          "kind": "statistic",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2015, March 2016 row",
+          "quote": "March 2016         539,701       3,073,279             79.6             79.6                 5.7",
+          "id": "the-longevity-paradox-sp-02"
+        },
+        {
+          "sentence": "By year ten, 30.0 percent of the 2015 information-sector establishments remained.",
+          "kind": "paraphrase",
+          "sourceId": "bls-survival-information",
+          "locator": "Table 7 for NAICS 51, year ended March 2015, March 2025 row, Survival Rates Since Birth column",
+          "id": "the-longevity-paradox-sp-03"
+        },
+        {
+          "sentence": "In March 2023, 34.7 percent of establishments born in March 2013 were still in operation.",
+          "kind": "statistic",
+          "sourceId": "bls-decade",
+          "locator": "The Economics Daily, January 12, 2024, first sentence",
+          "quote": "In March 2023, 34.7 percent of U.S. private-sector business establishments born in March 2013 were still in operation.",
+          "id": "the-longevity-paradox-sp-04"
+        },
+        {
+          "sentence": "Surviving 2017-group establishments employed an average of 5.4 people after one year.",
+          "kind": "statistic",
+          "sourceId": "bls-survivor-size",
+          "locator": "Beyond the Numbers vol. 12, text on 2017 cohort",
+          "quote": "[T]hose that survived the first year employed an average of 5.4 employees.",
+          "id": "the-longevity-paradox-sp-05"
+        },
+        {
+          "sentence": "Surviving 2017-group establishments employed an average of 7.0 people after three years.",
+          "kind": "statistic",
+          "sourceId": "bls-survivor-size",
+          "locator": "Beyond the Numbers vol. 12, text on 2017 cohort",
+          "quote": "After 3 years, surviving establishments employed an average of 7.0 employees.",
+          "id": "the-longevity-paradox-sp-06"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ops/shutdown-data-and-what-survivors-do-differently.mdx",
+      "claims": [
+        {
+          "sentence": "For the 2015 group, 79.6 percent of establishments were operating after one year.",
+          "kind": "statistic",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2015, March 2016 row",
+          "quote": "March 2016         539,701       3,073,279             79.6             79.6                 5.7",
+          "id": "shutdown-data-and-what-s-01"
+        },
+        {
+          "sentence": "For the 2015 group, 50.2 percent were operating after five years.",
+          "kind": "statistic",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2015, March 2020 row",
+          "quote": "March 2020         340,281       2,985,597             50.2             90.5                 8.8",
+          "id": "shutdown-data-and-what-s-02"
+        },
+        {
+          "sentence": "For the 2020 group, 72.3 percent were operating after two years.",
+          "kind": "statistic",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2020, March 2022 row",
+          "quote": "March 2022         554,747       3,286,496             72.3             89.3                 5.9",
+          "id": "shutdown-data-and-what-s-03"
+        },
+        {
+          "sentence": "For the 2023 group, 65.9 percent were operating after two years.",
+          "kind": "statistic",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2023, March 2025 row",
+          "quote": "March 2025         691,774       3,522,548             65.9             84.4                 5.1",
+          "id": "shutdown-data-and-what-s-04"
+        },
+        {
+          "sentence": "For the 2024 group, 77.9 percent were operating after one year.",
+          "kind": "statistic",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2024, March 2025 row",
+          "quote": "March 2025         769,449       3,417,043             77.9             77.9                 4.4",
+          "id": "shutdown-data-and-what-s-05"
+        },
+        {
+          "sentence": "About 69 percent of 2015-group five-year survivors reached year ten (34.7 divided by 50.2); the article states this is its own arithmetic.",
+          "kind": "paraphrase",
+          "sourceId": "bls-survival-all",
+          "locator": "Calculation from the Survival Rates Since Birth column of Table 7, year ended March 2015, March 2020 and March 2025 rows",
+          "id": "shutdown-data-and-what-s-06"
+        },
+        {
+          "sentence": "In March 2023, 34.7 percent of establishments born in March 2013 were still in operation.",
+          "kind": "statistic",
+          "sourceId": "bls-decade",
+          "locator": "The Economics Daily, January 12, 2024, first sentence",
+          "quote": "In March 2023, 34.7 percent of U.S. private-sector business establishments born in March 2013 were still in operation.",
+          "id": "shutdown-data-and-what-s-07"
+        },
+        {
+          "sentence": "Surviving 2017-group establishments employed an average of 5.4 employees after one year.",
+          "kind": "statistic",
+          "sourceId": "bls-survivor-size",
+          "locator": "Beyond the Numbers vol. 12",
+          "quote": "[T]hose that survived the first year employed an average of 5.4 employees.",
+          "id": "shutdown-data-and-what-s-08"
+        },
+        {
+          "sentence": "They averaged 7.0 employees after three years.",
+          "kind": "statistic",
+          "sourceId": "bls-survivor-size",
+          "locator": "Beyond the Numbers vol. 12",
+          "quote": "After 3 years, surviving establishments employed an average of 7.0 employees.",
+          "id": "shutdown-data-and-what-s-09"
+        },
+        {
+          "sentence": "They averaged 8.2 employees after five years.",
+          "kind": "statistic",
+          "sourceId": "bls-survivor-size",
+          "locator": "Beyond the Numbers vol. 12",
+          "quote": "Those establishments that survived 5 years after their 2017 birth employed an average of 8.2 employees.",
+          "id": "shutdown-data-and-what-s-10"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/funding/bootstrapping-versus-raising-over-a-ten-year-horizon.mdx",
+      "claims": [
+        {
+          "sentence": "For the 2015 group, 34.7 percent of establishments were operating after ten years.",
+          "kind": "statistic",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2015, March 2025 row",
+          "quote": "March 2025         235,071       2,759,210             34.7             92.8                11.7",
+          "id": "bootstrapping-versus-rai-01"
+        },
+        {
+          "sentence": "For the 2015 group, 55.4 percent were operating after four years.",
+          "kind": "statistic",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2015, March 2019 row",
+          "quote": "March 2019         375,833       3,043,285             55.4             90.2                 8.1",
+          "id": "bootstrapping-versus-rai-02"
+        },
+        {
+          "sentence": "A Phase I award runs six to twelve months.",
+          "kind": "statistic",
+          "sourceId": "sbir-apply",
+          "locator": "Phase I section, Time Frame",
+          "quote": "Time Frame: 6-12 months",
+          "id": "bootstrapping-versus-rai-03"
+        },
+        {
+          "sentence": "A Phase II award runs 24 months.",
+          "kind": "statistic",
+          "sourceId": "sbir-apply",
+          "locator": "Phase II section, Time Frame",
+          "quote": "Time Frame: 24 months",
+          "id": "bootstrapping-versus-rai-04"
+        },
+        {
+          "sentence": "In 2011, 75.5 percent of Kauffman Firm Survey firms reported no new equity and 57.3 percent no new debt; less than 6 percent invested more than 25,000 US dollars in equity.",
+          "sourceId": "kauffman-kfs-2013",
+          "quote": "Less than 6 percent of firms invested more than $25,000 in equity capital in 2011"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/starting/from-first-filing-to-first-payroll-what-the-timing-data-says.mdx",
+      "claims": [
+        {
+          "sentence": "BF4Q counts employer businesses that originate from business applications within four quarters of the application.",
+          "kind": "definition",
+          "sourceId": "census-bfs-definitions",
+          "locator": "Series definitions, BF4Q",
+          "quote": "This series provides the number of employer businesses that originate from Business Applications (BA) within four quarters from the month of application.",
+          "id": "from-first-filing-to-fir-01"
+        },
+        {
+          "sentence": "The article divides annual business formations within four quarters by annual business applications to get the conversion shares for 2005, 2010, 2015, 2019 and 2021; this is its own calculation.",
+          "kind": "paraphrase",
+          "sourceId": "census-bfs-series",
+          "locator": "bfs_monthly.csv, series BA_BA and BF_BF4Q, national totals, summed by year",
+          "id": "from-first-filing-to-fir-02"
+        },
+        {
+          "sentence": "The article cites the all-industry survival curve for context only.",
+          "kind": "paraphrase",
+          "sourceId": "bls-survival-all",
+          "locator": "Table 7, year ended March 2015",
+          "id": "from-first-filing-to-fir-03"
+        },
+        {
+          "sentence": "The Kauffman Firm Survey followed 4,928 businesses founded in 2004; 44.6 percent survived to the end of 2011; 2011 revenue distribution of survivors.",
+          "sourceId": "kauffman-kfs-2013"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/starting/founder-age-and-growth-what-the-census-study-of-2-7-million-founders-found.mdx",
+      "claims": [
+        {
+          "sentence": "Successful entrepreneurs are middle-aged, not young.",
+          "kind": "statistic",
+          "sourceId": "census-carra-age",
+          "locator": "Abstract",
+          "quote": "Our primary finding is that successful entrepreneurs are middle-aged, not young.",
+          "id": "founder-age-and-growth-w-01"
+        },
+        {
+          "sentence": "The mean founder age for the one in 1,000 fastest-growing new ventures is 45.0.",
+          "kind": "statistic",
+          "sourceId": "census-carra-age",
+          "locator": "Abstract",
+          "quote": "The mean founder age for the 1 in 1,000 fastest growing new ventures is 45.0.",
+          "id": "founder-age-and-growth-w-02"
+        },
+        {
+          "sentence": "A 50-year-old founder is 1.8 times more likely to achieve upper-tail growth than a 30-year-old founder.",
+          "kind": "statistic",
+          "sourceId": "census-carra-age",
+          "locator": "Results",
+          "quote": "a 50-year-old founder is 1.8 times more likely to achieve upper-tail growth than a 30-year-old founder",
+          "id": "founder-age-and-growth-w-03"
+        },
+        {
+          "sentence": "27.2 percent of women owners aged 55 to 64 and 27.6 percent aged 65 and over had at least one prior business.",
+          "kind": "statistic",
+          "sourceId": "census-ces-women-age",
+          "locator": "Section on prior business ownership, Table 3",
+          "quote": "27.2% of those aged 55 to 64 and 27.6% of those aged 65 and over had at least one prior business.",
+          "id": "founder-age-and-growth-w-04"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/starting/encore-founders-starting-a-company-after-fifty.mdx",
+      "claims": [
+        {
+          "sentence": "Successful entrepreneurs are middle-aged, not young.",
+          "kind": "statistic",
+          "sourceId": "census-carra-age",
+          "locator": "Abstract",
+          "quote": "Our primary finding is that successful entrepreneurs are middle-aged, not young.",
+          "id": "encore-founders-starting-01"
+        },
+        {
+          "sentence": "A 50-year-old founder is 1.8 times more likely to achieve upper-tail growth than a 30-year-old founder.",
+          "kind": "statistic",
+          "sourceId": "census-carra-age",
+          "locator": "Results",
+          "quote": "a 50-year-old founder is 1.8 times more likely to achieve upper-tail growth than a 30-year-old founder",
+          "id": "encore-founders-starting-02"
+        },
+        {
+          "sentence": "Longer experience in the same two-digit industry is strongly predictive of success at all growth thresholds.",
+          "kind": "statistic",
+          "sourceId": "census-carra-age",
+          "locator": "Section V.A, discussion of Table 6",
+          "quote": "longer experience is strongly predictive of success for all growth thresholds",
+          "id": "encore-founders-starting-03"
+        },
+        {
+          "sentence": "Top-10-percent growth rates of 8.6, 10.1 and 15.0 percent for founders with no, one-to-two and three-or-more years of same-industry experience, and the other rows of the article table.",
+          "kind": "paraphrase",
+          "sourceId": "census-carra-age",
+          "locator": "Table 6, Panel A (2-digit NAICS)",
+          "id": "encore-founders-starting-04"
+        },
+        {
+          "sentence": "27.2 percent of women owners aged 55 to 64 and 27.6 percent aged 65 and over had at least one prior business.",
+          "kind": "statistic",
+          "sourceId": "census-ces-women-age",
+          "locator": "Table 3 discussion",
+          "quote": "27.2% of those aged 55 to 64 and 27.6% of those aged 65 and over had at least one prior business.",
+          "id": "encore-founders-starting-05"
+        },
+        {
+          "sentence": "Share of women owners with no prior business by age band: 93.8, 84.0, 78.4, 74.2, 72.7 and 72.4 percent.",
+          "kind": "paraphrase",
+          "sourceId": "census-ces-women-age",
+          "locator": "Table 3, no prior business row, age bands under 25 through 65 and over",
+          "id": "encore-founders-starting-06"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/starting/women-and-immigrant-founders-what-the-census-and-research-data-show.mdx",
+      "claims": [
+        {
+          "sentence": "About 5.9 million employer firms in 2023; 1.4 million (22.9 percent) women-owned and 261,000 (4.4 percent) veteran-owned.",
+          "kind": "statistic",
+          "sourceId": "census-abs-2025",
+          "locator": "Release text, 2024 ABS, reference year 2023",
+          "quote": "there were approximately 5.9 million U.S. employer firms \u2014 1.4 million (22.9%) were owned by women and 261,000 (4.4%) by veterans",
+          "id": "women-and-immigrant-foun-01"
+        },
+        {
+          "sentence": "Asian-owned firms were 11.5 percent (685,000) of employer businesses.",
+          "kind": "statistic",
+          "sourceId": "census-abs-2025",
+          "locator": "Release text",
+          "quote": "Asian-owned firms accounted for 11.5% (685,000) of employer businesses",
+          "id": "women-and-immigrant-foun-02"
+        },
+        {
+          "sentence": "There were 30.4 million nonemployer businesses in 2023 and women owned 12.9 million (42.3 percent).",
+          "kind": "statistic",
+          "sourceId": "census-abs-2025",
+          "locator": "Release text, 2023 NES-D",
+          "quote": "there were 30.4 million U.S. nonemployer businesses",
+          "id": "women-and-immigrant-foun-03"
+        },
+        {
+          "sentence": "Women owned 12.9 million (42.3 percent) of nonemployer businesses.",
+          "kind": "statistic",
+          "sourceId": "census-abs-2025",
+          "locator": "Release text, 2023 NES-D",
+          "quote": "Women owned 12.9 million (42.3%) of them",
+          "id": "women-and-immigrant-foun-04"
+        },
+        {
+          "sentence": "Reference year 2022: around 1.3 million employer firms (22.3 percent) were women-owned and 273,542 (4.7 percent) veteran-owned.",
+          "kind": "statistic",
+          "sourceId": "census-abs-2024",
+          "locator": "Release text, 2023 ABS",
+          "quote": "273,542 (4.7%) were veteran-owned; and around 1.3 million (22.3%) were owned by women",
+          "id": "women-and-immigrant-foun-05"
+        },
+        {
+          "sentence": "2005 to 2010: 0.83 percent of immigrants in the workforce start a firm, against 0.46 percent of native-born individuals.",
+          "kind": "statistic",
+          "sourceId": "kellogg-immigration",
+          "locator": "Section on 2005-2010 entry rates",
+          "quote": "0.83% of immigrants in the workforce start a firm, compared to 0.46% of native-born individuals in the workforce.",
+          "id": "women-and-immigrant-foun-06"
+        },
+        {
+          "sentence": "Immigrants exhibit an 80 percent higher entrance rate into entrepreneurship.",
+          "kind": "statistic",
+          "sourceId": "kellogg-immigration",
+          "locator": "Section on entry rates",
+          "quote": "Immigrants thus exhibit a 80% higher entrance rate into entrepreneurship.",
+          "id": "women-and-immigrant-foun-07"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/ops/coworking-and-community-what-the-research-shows-about-staying-power.mdx",
+      "claims": [
+        {
+          "sentence": "The study uses primary data from 75 organizations in 17 coworking spaces.",
+          "kind": "statistic",
+          "sourceId": "moore-coworking",
+          "locator": "Abstract, Methodology",
+          "quote": "primary data from 75 organizations in 17 coworking spaces",
+          "id": "coworking-and-community-01"
+        },
+        {
+          "sentence": "Schooling bundled with basic services can significantly increase new venture performance.",
+          "kind": "statistic",
+          "sourceId": "gu-leatherbee",
+          "locator": "Abstract",
+          "quote": "schooling bundled with basic services can significantly increase new venture performance",
+          "id": "coworking-and-community-02"
+        },
+        {
+          "sentence": "SBA lists SCORE, Small Business Development Centers, Women's Business Centers and Veterans Business Outreach Centers as resource partners.",
+          "kind": "paraphrase",
+          "sourceId": "sba-resource-partners",
+          "locator": "SBA resource partners page, program descriptions",
+          "id": "coworking-and-community-03"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/pathways/choosing-a-startup-program-that-fits-a-decision-guide.mdx",
+      "claims": [
+        {
+          "sentence": "The program accepts solo founders on a regular basis.",
+          "kind": "statistic",
+          "sourceId": "yc-faq",
+          "locator": "FAQ, solo founders question",
+          "quote": "We regularly accept solo founders.",
+          "id": "choosing-a-startup-progr-01"
+        },
+        {
+          "sentence": "The program describes a batch as three months.",
+          "kind": "paraphrase",
+          "sourceId": "yc-faq",
+          "locator": "FAQ, questions about the batch",
+          "id": "choosing-a-startup-progr-02"
+        },
+        {
+          "sentence": "Schooling bundled with basic services can significantly increase new venture performance.",
+          "kind": "statistic",
+          "sourceId": "gu-leatherbee",
+          "locator": "Abstract",
+          "quote": "schooling bundled with basic services can significantly increase new venture performance",
+          "id": "choosing-a-startup-progr-03"
+        },
+        {
+          "sentence": "Cohen and Hochberg describe time-limited programs lasting roughly three months.",
+          "kind": "statistic",
+          "sourceId": "cohen-hochberg",
+          "locator": "Section on definitions",
+          "quote": "lasting roughly three months",
+          "id": "choosing-a-startup-progr-04"
+        },
+        {
+          "sentence": "Length-of-stay chart: 3 months, one to five years (12 to 60 months), ongoing, from Table 2.",
+          "kind": "paraphrase",
+          "sourceId": "cohen-hochberg",
+          "locator": "Table 2, Duration row",
+          "id": "choosing-a-startup-progr-05"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/pathways/using-sba-resource-partners-sbdc-score-wbc-and-vboc.mdx",
+      "claims": [
+        {
+          "sentence": "In 2021 Small Business Development Centers counseled and trained over 818,000 clients.",
+          "kind": "statistic",
+          "sourceId": "sba-2021-counseling",
+          "locator": "SBA blog, March 17, 2022",
+          "quote": "counseled and trained over 818,000 clients",
+          "id": "using-sba-resource-partn-01"
+        },
+        {
+          "sentence": "SCORE counseled and trained over 569,000 clients.",
+          "kind": "statistic",
+          "sourceId": "sba-2021-counseling",
+          "locator": "SBA blog",
+          "quote": "counseled and trained over 569,000 clients",
+          "id": "using-sba-resource-partn-02"
+        },
+        {
+          "sentence": "Women's Business Centers assisted more than 87,000 businesses.",
+          "kind": "statistic",
+          "sourceId": "sba-2021-counseling",
+          "locator": "SBA blog",
+          "quote": "assisted more than 87,000 businesses",
+          "id": "using-sba-resource-partn-03"
+        },
+        {
+          "sentence": "Veterans Business Outreach Centers counseled and trained over 59,000 clients.",
+          "kind": "statistic",
+          "sourceId": "sba-2021-counseling",
+          "locator": "SBA blog",
+          "quote": "counseled and trained over 59,000 clients",
+          "id": "using-sba-resource-partn-04"
+        },
+        {
+          "sentence": "SBA has 31 organizations serving as VBOCs.",
+          "kind": "statistic",
+          "sourceId": "sba-resource-partners",
+          "locator": "VBOC section",
+          "quote": "SBA has 31 organizations participating in this cooperative agreement and serving as VBOCs.",
+          "id": "using-sba-resource-partn-05"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/funding/sbir-and-sttr-as-patient-capital-for-research-based-companies.mdx",
+      "claims": [
+        {
+          "sentence": "S. 3971 reauthorizes SBIR and STTR through September 30, 2031.",
+          "kind": "regulation",
+          "sourceId": "sba-reauth",
+          "locator": "SBA release, April 13, 2026",
+          "quote": "S. 3971 reauthorizes SBIR and STTR programs through September 30, 2031",
+          "id": "sbir-and-sttr-as-patient-01"
+        },
+        {
+          "sentence": "Phase I: 6 to 12 months, $50,000 to $323,000.",
+          "kind": "statistic",
+          "sourceId": "sbir-apply",
+          "locator": "Phase I section",
+          "quote": "Time Frame: 6-12 months Award Amounts: $50,000-$323,000",
+          "id": "sbir-and-sttr-as-patient-02"
+        },
+        {
+          "sentence": "Phase II: 24 months, $650,000 to $2.2 million.",
+          "kind": "statistic",
+          "sourceId": "sbir-apply",
+          "locator": "Phase II section",
+          "quote": "Time Frame: 24 months Award Amounts: $650,000-$2.2 million",
+          "id": "sbir-and-sttr-as-patient-03"
+        },
+        {
+          "sentence": "Agencies may issue a Phase I award up to $323,090 and a Phase II award up to $2,153,927 without SBA approval.",
+          "kind": "statistic",
+          "sourceId": "sbir-about",
+          "locator": "Award levels text, as of April 2026",
+          "quote": "may issue a Phase I award (including modifications) up to $ 323,090 and a Phase II award (including modifications) up to $2,153,927",
+          "id": "sbir-and-sttr-as-patient-04"
+        },
+        {
+          "sentence": "The NSF seed fund invests up to $2 million and takes zero equity.",
+          "kind": "statistic",
+          "sourceId": "nsf-seed",
+          "locator": "Home page",
+          "quote": "We invest up to $2 million in seed funding. And take zero equity.",
+          "id": "sbir-and-sttr-as-patient-05"
+        }
+      ]
+    },
+    {
+      "path": "src/content/insights/funding/the-time-between-funding-rounds-what-carta-data-reports.mdx",
+      "claims": [
+        {
+          "sentence": "The median interval between a seed round and a Series A reached 616 days in Q2 2025.",
+          "sourceId": "carta-series-a-q2-2025",
+          "quote": "The median interval reached 616 days in Q2, or a little more than 20 months"
+        },
+        {
+          "sentence": "The median wait between new funding rounds across all stages reached 696 days in Q2 2025.",
+          "sourceId": "carta-spm-q2-2025",
+          "quote": "median wait time between new funding rounds across all stages reached 696 days in Q2"
+        },
+        {
+          "sentence": "The median startup that raised a Series A in Q4 2024 had waited 774 days between primary funding rounds.",
+          "sourceId": "carta-spm-q4-2024",
+          "quote": "had waited 774 days between primary funding rounds"
+        },
+        {
+          "sentence": "The median Series C company waited 790 days since its previous round.",
+          "sourceId": "carta-spm-q4-2024",
+          "quote": "waited 790 days since their previous round"
+        }
+      ]
+    }
+  ]
+}

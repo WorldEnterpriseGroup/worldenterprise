@@ -1,11 +1,22 @@
 ---
-import Grid from '../../components/ui/Grid.astro';
-import TemplateCard from '../../components/cards/TemplateCard.astro';
 import Callout from '../../components/ui/Callout.astro';
 import HubLayout from '../../layouts/HubLayout.astro';
+import { IDENTITY } from '../../components/families/visual/copy.ts';
+import CtaLadder from '../../components/families/visual/CtaLadder.astro';
+import { hubActions } from '../../components/families/visual/cta.ts';
+import EmblemFrame from '../../components/families/visual/EmblemFrame.astro';
+import VisualCards from '../../components/families/visual/VisualCards.astro';
 import { entrySlug } from '../../components/library/markdown.ts';
+import DocAnatomy from '../../components/library/DocAnatomy.astro';
+import ShelfDiagram from '../../components/library/ShelfDiagram.astro';
+import FilterIndex from '../../components/hubs/FilterIndex.astro';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubLead from '../../components/hubs/HubLead.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import { filterSlots, itemClasses } from '../../components/hubs/filter.ts';
 import { LIBRARY_SLUGS } from '../../data/routes.ts';
 import { getPublished } from '../../lib/content.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 
 const entries = await getPublished('library');
 // The first six templates keep their order; every template written after them follows by name, so a new file is listed without a code change.
@@ -14,6 +25,19 @@ const rank = (slug: string): number => order.get(slug) ?? order.size;
 const templates = [...entries].sort((a, b) => rank(entrySlug(a.id)) - rank(entrySlug(b.id)) || entrySlug(a.id).localeCompare(entrySlug(b.id)));
 
 const KIND_LABEL = { template: 'Template', checklist: 'Checklist', worksheet: 'Worksheet', guide: 'Guide' } as const;
+const KIND_PLURAL = { template: 'Templates', checklist: 'Checklists', worksheet: 'Worksheets', guide: 'Guides' } as const;
+const KINDS = ['template', 'checklist', 'worksheet', 'guide'] as const;
+const actions = hubActions((await getRouteState()).isLive);
+// WP-24: the shelf (one spine per document, by kind), the anatomy every document shares, and a filter by kind over the cards.
+const slots = filterSlots(KINDS.map((kind) => ({ key: kind, label: KIND_PLURAL[kind], count: templates.filter((e) => e.data.kind === kind).length })));
+const bays = KINDS.map((kind) => ({
+  label: KIND_PLURAL[kind],
+  docs: templates.filter((e) => e.data.kind === kind).map((e) => ({ title: e.data.title, href: `/library/${entrySlug(e.id)}/`, slug: entrySlug(e.id) })),
+}));
+const cards = templates.map((entry) => {
+  const slug = entrySlug(entry.id);
+  return { title: entry.data.title, href: `/library/${slug}/`, summary: entry.data.description, eyebrow: KIND_LABEL[entry.data.kind], itemClass: itemClasses(slots, [entry.data.kind]) };
+});
 ---
 
 <HubLayout
@@ -22,23 +46,28 @@ const KIND_LABEL = { template: 'Template', checklist: 'Checklist', worksheet: 'W
   path="/library/"
   eyebrow="Library"
   lead="Documents you can use today. Copy them, print them or download them as Markdown."
+  hero="console"
+  primary={actions.primary}
 >
+  <div slot="panel"><EmblemFrame kind="library" caption={IDENTITY.library.caption} /></div>
   {
-    templates.length > 0 && (
-      <Grid min="18rem">
-        {templates.map((entry) => {
-          const slug = entrySlug(entry.id);
-          return (
-            <TemplateCard
-              title={entry.data.title}
-              summary={entry.data.description}
-              path={`/library/${slug}/`}
-              eyebrow={KIND_LABEL[entry.data.kind]}
-              headingLevel={2}
-            />
-          );
-        })}
-      </Grid>
+    cards.length > 0 && (
+      <HubLead label="The library at a glance">
+        <ShelfDiagram bays={bays} />
+        <DocAnatomy slot="side" />
+      </HubLead>
+    )
+  }
+  {
+    cards.length > 0 && (
+      <section class="library-shelf" aria-labelledby="library-shelf-title">
+        <h2 id="library-shelf-title">The documents</h2>
+        <HubMoment id="hub-library-cards" kind="index">
+          <FilterIndex id="kind-filter" legend="Show one kind" options={slots} total={cards.length} unit={['document', 'documents']}>
+            <VisualCards kind="library" cards={cards} headingLevel={3} labelledby="library-shelf-title" />
+          </FilterIndex>
+        </HubMoment>
+      </section>
     )
   }
   <Callout title="How to use these documents">
@@ -47,4 +76,15 @@ const KIND_LABEL = { template: 'Template', checklist: 'Checklist', worksheet: 'W
       your own notes or tools. They are general working aids and are not legal, financial or accounting advice.
     </p>
   </Callout>
+  <HubEcosystem id="library-ecosystem" />
+  <CtaLadder slot="cta-end" />
 </HubLayout>
+
+<style>
+  @layer pages {
+    .library-shelf {
+      display: grid;
+      gap: var(--sp-5);
+    }
+  }
+</style>

@@ -17,7 +17,7 @@
       "version_or_release": "wp/71 branched from wp/12d 81f14f1",
       "relevant_locator": "C-01, C-02, C-03, C-04, C-05, C-18",
       "variables_units_scope": "Brand, voice and logo-usage wording only; no history, date, name, count, price or response time beyond what the site already says",
-      "methodology_limitations": "Restatement, not new research. Any new brand claim needs operator input and the whitelab brand-usage sign-off (OP-BRAND) before the kit is published.",
+      "methodology_limitations": "Restatement, not new research. Any new brand claim needs operator input and the brand-owner usage sign-off (OP-BRAND) before the kit is published.",
       "funding_conflicts": "none",
       "claims_supported": [
         "C-01",
@@ -52,9 +52,9 @@
       "retrieved_at": "2026-10-10",
       "next_review": "when tokens.css changes; the kit table is read from the file at build time, so its values cannot drift",
       "version_or_release": "wp/71 branched from wp/12d 81f14f1",
-      "relevant_locator": "Palette source: whitelab brand",
+      "relevant_locator": "Palette source: the WE brand palette",
       "variables_units_scope": "Token names, hex values kept in the stylesheet comments, and the role each color plays",
-      "methodology_limitations": "The kit states how the colors are used on this site, not a full brand manual. Whitelab brand-usage sign-off (OP-BRAND) gates its release.",
+      "methodology_limitations": "The kit states how the colors are used on this site, not a full brand manual. Brand-owner usage sign-off (OP-BRAND) gates its release.",
       "funding_conflicts": "none",
       "claims_supported": [],
       "claims_not_supported": [
@@ -71,7 +71,7 @@
       "ui_label": true
     },
     {
-      "text": "What World Enterprise Incubator is, how WE speaks and how the brand looks, as the rest of this site already states it.",
+      "text": "What World Enterprise is, how WE speaks and how the brand looks, as the rest of this site already states it.",
       "page_frame": true
     },
     {
@@ -79,12 +79,17 @@
       "ui_label": true
     },
     {
-      "text": "World Enterprise Incubator is a digital incubator for SaaS.",
+      "text": "World Enterprise Group Incorporated is a business incubation and consulting firm.",
       "sources": [
         {
-          "file": "src/content/pages/about/index.md",
-          "line": 10,
-          "quote": "World Enterprise Incubator is a digital incubator for SaaS."
+          "file": "src/pages/about/index.astro",
+          "line": 51,
+          "quote": "World Enterprise Group Incorporated is a business incubation and consulting firm."
+        },
+        {
+          "claims": [
+            "C-18"
+          ]
         }
       ]
     },
@@ -265,7 +270,7 @@
       "sources": [
         {
           "file": "src/content/pages/about/index.md",
-          "line": 28,
+          "line": 26,
           "quote": "WE does not promise funding, and nothing here predicts that a company will raise money."
         },
         {
@@ -550,7 +555,7 @@
         {
           "file": "src/styles/tokens.css",
           "line": 3,
-          "quote": "Palette source: whitelab brand."
+          "quote": "Palette source: the WE brand palette."
         }
       ]
     },
@@ -701,46 +706,48 @@
       ]
     },
     {
-      "text": "Dedicated team seats, steered by WE, work with a founder from first idea toward a company that can show investors its evidence.",
-      "paraphrase": true,
-      "note": "Moved verbatim from the press page boilerplate; the same facts are on the facts page.",
+      "text": "WE steers dedicated, fully remote teams that build companies with their founders, paced to the years a company really takes.",
       "sources": [
         {
-          "file": "src/content/pages/about/facts.mdx",
-          "line": 12,
-          "quote": "Dedicated team seats, steered by WE, take a founder from first idea toward first customers"
+          "file": "src/content/pages/about/index.md",
+          "line": 10,
+          "quote": "WE steers dedicated, fully remote teams that build companies with their founders, paced to the years a company really takes."
         },
         {
           "claims": [
-            "C-02",
+            "C-01",
             "C-03"
           ]
         }
       ]
     },
     {
-      "text": "WE is fully remote and makes no promise of funding.",
+      "text": "WE is a services firm, not an investor.",
       "sources": [
         {
-          "file": "src/pages/press/index.astro",
-          "line": 49,
-          "quote": "WE makes no promise of funding"
-        },
+          "file": "src/content/pages/about/index.md",
+          "line": 10,
+          "quote": "WE is a services firm, not an investor."
+        }
+      ]
+    },
+    {
+      "text": "WE makes no promise of funding.",
+      "sources": [
         {
-          "file": "src/content/pages/about/facts.mdx",
-          "line": 12,
-          "quote": "The work is fully remote."
+          "file": "src/content/pages/about/index.md",
+          "line": 10,
+          "quote": "WE makes no promise of funding."
         },
         {
           "claims": [
-            "C-01",
             "C-05"
           ]
         }
       ]
     },
     {
-      "text": "World Enterprise Incubator is operated by World Enterprise Group Incorporated, registered in Delaware.",
+      "text": "World Enterprise is operated by World Enterprise Group Incorporated, registered in Delaware.",
       "sources": [
         {
           "file": "src/data/site.ts",

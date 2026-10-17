@@ -1,5 +1,5 @@
 /**
- * The four steps of the Apply form (WP-43). ApplyForm.astro renders one fieldset per step, in the DOM for everyone, and
+ * The four steps of the readiness review form (WP-43, revised by WP-54). ApplyForm.astro renders one fieldset per step, in the DOM for everyone, and
  * src/scripts/forms.ts groups them into a stepper when JavaScript runs. Without JavaScript every fieldset stays visible and the
  * form is the single native POST that docs/forms-contract.md section 8 describes.
  *
@@ -17,9 +17,9 @@ export interface ApplyStep {
 }
 
 export const APPLY_STEPS: readonly ApplyStep[] = [
-  { id: 'you', title: 'About you', fields: ['name', 'email', 'company'] },
-  { id: 'idea', title: 'About the idea', fields: ['stage', 'message'] },
-  { id: 'team', title: 'Team and package', fields: ['seats', 'package'] },
+  { id: 'you', title: 'About you', fields: ['name', 'email', 'company', 'situation'] },
+  { id: 'idea', title: 'About the company', fields: ['stage', 'startedMonth', 'industryYears', 'message'] },
+  { id: 'team', title: 'Team and horizon', fields: ['teamFunding', 'horizon', 'seats', 'source'] },
   { id: 'review', title: 'Review', fields: ['consent'] },
 ];
 

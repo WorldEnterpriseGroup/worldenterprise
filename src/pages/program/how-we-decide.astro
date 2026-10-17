@@ -8,6 +8,7 @@ import CtaBand from '../../components/ui/CtaBand.astro';
 import Steps from '../../components/ui/Steps.astro';
 import { href } from '../../lib/url.ts';
 import StageLayout from '../../layouts/StageLayout.astro';
+import LongevitySpine from '../../components/program/longevity/LongevitySpine.astro';
 
 const { data, Content } = await loadPage('program/how-we-decide');
 const [primary, secondary] = data.ctas;
@@ -25,7 +26,7 @@ const fields: readonly SendField[] = [
   { ...APPLY_FIELDS.stage, options: stages },
   APPLY_FIELDS.message,
   APPLY_FIELDS.seats,
-  APPLY_FIELDS.package,
+  APPLY_FIELDS.situation,
 ];
 ---
 
@@ -111,6 +112,7 @@ const fields: readonly SendField[] = [
   </section>
 
   <Fragment slot="after">
+    <LongevitySpine detail="brief" tone="soft" lead="Decisions are made every week and revisited at each yearly review. Fast cycles, long memory." />
     {primary && <CtaBand title={cta.title} text={cta.text} cta={primary} secondary={secondary} />}
   </Fragment>
 </StageLayout>

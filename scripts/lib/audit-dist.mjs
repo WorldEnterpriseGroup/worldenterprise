@@ -33,6 +33,8 @@ export const ALLOWED_EXTENSIONS = new Set([
   '.html', '.css', '.js', '.mjs', '.json', '.xml', '.txt', '.svg', '.avif', '.png', '.ico', '.webmanifest', '.woff2',
   // Pagefind index files and its WebAssembly reader.
   '.pf_fragment', '.pf_index', '.pf_meta', '.pf_filter', '.pagefind',
+  // Self-hosted video (WP-22): AV1 WebM, H.264 MP4 and their WebVTT captions, emitted to _astro/ by the media components.
+  '.mp4', '.webm', '.vtt',
 ]);
 /**
  * Extensions that are allowed only below a folder: the library templates are published as Markdown downloads. A `.md` file elsewhere is a

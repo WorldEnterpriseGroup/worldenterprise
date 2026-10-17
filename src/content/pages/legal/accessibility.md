@@ -1,6 +1,6 @@
 ---
 title: Accessibility statement
-description: "World Enterprise Incubator aims for WCAG 2.2 level AA. This statement describes how the site is built and tested, its known gaps, and how to report a barrier."
+description: "World Enterprise aims for WCAG 2.2 level AA. This statement describes how the site is built and tested, its known gaps, and how to report a barrier."
 eyebrow: Legal
 hero: H5
 updated: 2026-10-06

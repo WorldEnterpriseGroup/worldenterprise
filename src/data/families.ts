@@ -21,6 +21,9 @@ type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 /** WP-60 to WP-99: the wave 8 packages. The route ledger's `RouteOwner` includes it. */
 export type WaveEightOwner = `WP-${'6' | '7' | '8' | '9'}${Digit}`;
 
+/** WP-51 to WP-58: the wave 9 packages that own a family entry (W9-13: WP-58 owns the timeline brief). */
+export type WaveNineOwner = `WP-5${'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'}`;
+
 export type FamilyId = 'segments' | 'industries' | 'compare' | 'journey' | 'briefs';
 
 export interface FamilyEntry {
@@ -32,7 +35,7 @@ export interface FamilyEntry {
   readonly label: string;
   readonly order: number;
   /** The content owner package, for example 'WP-73'. */
-  readonly owner: WaveEightOwner;
+  readonly owner: WaveEightOwner | WaveNineOwner;
   /** False = first cut within the family (plan 4.6). */
   readonly core: boolean;
   /** True by default; WP-99 flips a cut entry and records a reason. */
@@ -129,6 +132,8 @@ const BRIEF_INPUTS: readonly BriefInput[] = [
   { slug: 'ai-company-diligence', label: 'AI company diligence', owner: 'WP-80', core: false, audience: ['investor'], desks: ['ai'] },
   { slug: 'partnering-with-founders', label: 'Partnering with founders', owner: 'WP-80', core: false, audience: ['partner'], desks: ['pathways'] },
   { slug: 'corporate-spinouts', label: 'Corporate spinouts', owner: 'WP-80', core: false, audience: ['corporate'], desks: ['pathways'] },
+  // Wave 9 (W9-13): the timeline brief, the tertiary CTA of the sales literature.
+  { slug: 'real-timeline', label: 'The real timeline', owner: 'WP-58', core: false, audience: ['startup'], desks: ['starting'] },
 ];
 
 export const SEGMENTS: FamilyDefinition<SegmentEntry> = {

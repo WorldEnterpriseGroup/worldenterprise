@@ -1,0 +1,91 @@
+---
+/**
+ * DataStage: one stage of the founder's long journey on /data/ pages. A full-bleed band with a stage label, a heading, a short
+ * paragraph that ties the figures to the long-horizon message, and the charts in the default slot at the full container width.
+ */
+import { href as link } from '../../../lib/url.ts';
+
+interface Props {
+  id: string;
+  /** Short stage label, e.g. "Stage 1 of 5". */
+  stage: string;
+  heading: string;
+  /** One or two paragraphs. */
+  body: readonly string[];
+  tone?: 'plain' | 'soft';
+  /** Optional deeper page for this stage. */
+  more?: { readonly label: string; readonly href: string } | undefined;
+}
+
+const { id, stage, heading, body, tone = 'plain', more } = Astro.props;
+---
+
+<section class:list={['band', tone === 'soft' && 'band--soft', 'data-stage']} id={id} aria-labelledby={`${id}-title`}>
+  <div class="container">
+    <header class="data-stage__head">
+      <p class="data-stage__stage">{stage}</p>
+      <h2 id={`${id}-title`}>{heading}</h2>
+      <div class="data-stage__body">
+        {body.map((p) => <p>{p}</p>)}
+        {more !== undefined && <p><a class="data-stage__more" href={link(more.href)}>{more.label}</a></p>}
+      </div>
+    </header>
+    <div class="data-stage__charts">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  @layer pages {
+    .data-stage__head {
+      display: grid;
+      gap: var(--sp-3);
+      margin-block-end: var(--sp-7);
+    }
+
+    .data-stage__stage {
+      margin: 0;
+      font-family: var(--ff-sans);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--we-amber-ink);
+    }
+
+    .data-stage__head h2 {
+      margin: 0;
+      max-inline-size: 28ch;
+    }
+
+    .data-stage__body {
+      display: grid;
+      gap: var(--sp-3);
+      max-inline-size: 62ch;
+      font-size: var(--fs-lg);
+    }
+
+    .data-stage__body p {
+      margin: 0;
+    }
+
+    .data-stage__charts {
+      display: grid;
+      gap: var(--sp-9);
+      min-inline-size: 0;
+    }
+
+    @media (min-width: 70rem) {
+      .data-stage__head {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+        column-gap: var(--sp-8);
+        align-items: end;
+      }
+
+      .data-stage__stage {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+</style>

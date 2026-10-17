@@ -5,6 +5,7 @@ import CapTable from '../../components/islands/we-cap-table/CapTable.astro';
 import { FORMULAS, FORMULAS_PAGE, PAGE } from '../../components/islands/we-cap-table/spec.ts';
 import ToolFormulas from '../../components/tools/ToolFormulas.astro';
 import { webApplicationNode } from '../../components/tools/webApplicationNode.ts';
+import ToolSchematic from '../../components/tools/ToolSchematic.astro';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 
 const entry = await getEntry('pages', 'tools/cap-table-explainer');
@@ -32,6 +33,7 @@ const PATH = '/tools/cap-table-explainer/';
   ]}
   noscript={PAGE.noscript}
 >
+  <ToolSchematic href="/tools/cap-table-explainer/" name={data.title} />
   <div id="explainer"><CapTable /></div>
   <div id="formulas">
     <ToolFormulas

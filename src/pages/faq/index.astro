@@ -1,60 +1,169 @@
 ---
 import { getCollection } from 'astro:content';
 import FaqList from '../../components/cards/FaqList.astro';
-import { anchorId, faqPageNode, groupBy } from '../../components/reference/jsonld.ts';
+import { anchorId, faqPageNode } from '../../components/reference/jsonld.ts';
 import Button from '../../components/ui/Button.astro';
 import Callout from '../../components/ui/Callout.astro';
+import { READINESS_REVIEW, TALK_TO_WE } from '../../components/families/visual/cta.ts';
+import ReferenceIntro from '../../components/families/visual/ReferenceIntro.astro';
 import ReferenceLayout from '../../layouts/ReferenceLayout.astro';
 import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
+import { buildSections, jumpLinks } from './_model.ts';
+import HubEcosystem from '../../components/hubs/HubEcosystem.astro';
+import HubMoment from '../../components/hubs/HubMoment.astro';
+import QuestionMap from '../../components/hubs/QuestionMap.astro';
+import { tile } from '../../components/hubs/stats.ts';
+import StatTiles from '../../components/visuals/charts/StatTiles.astro';
+import type { FaqEntry } from './_model.ts';
 
-const entries = (await getCollection('faq')).filter((entry) => entry.data.draft !== true);
-const items = entries.map((entry) => ({
-  id: entry.data.id,
-  question: entry.data.question,
-  answer: entry.data.answer,
-  group: entry.data.group,
-}));
-const slugify = (value: string): string => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-// One accordion per group: opening a question closes the others in its group only.
-const groups = groupBy(items).map((g) => ({
-  heading: g.group,
-  slug: slugify(g.group),
-  questions: g.items.map((item) => ({ id: anchorId('faq', item.id), question: item.question, answer: item.answer })),
-}));
+const entries: FaqEntry[] = (await getCollection('faq'))
+  .filter((entry) => entry.data.draft !== true)
+  .map((entry) => ({
+    id: entry.data.id,
+    question: entry.data.question,
+    answer: entry.data.answer,
+    group: entry.data.group,
+    audience: entry.data.audience,
+    seeAlso: entry.data.seeAlso,
+  }));
 const state = await getRouteState();
-const canApply = state.isLive('/apply/');
-const canContact = state.isLive('/contact/');
+// Audience first, then topic. One FAQPage node names every question, in the order the page shows them.
+const sections = buildSections(entries, (path) => state.isLive(path));
+const jump = jumpLinks(sections);
+const items = sections.flatMap((section) => section.groups.flatMap((g) => g.items));
+const canApply = state.isLive(READINESS_REVIEW.href);
+const canContact = state.isLive(TALK_TO_WE.href);
+// WP-24: the whole page as one map (a row per set of questions, a segment per topic) that is also the way in.
+const mapRows = sections.map((section) => ({
+  label: section.label,
+  href: `#${section.slug}`,
+  topics: section.groups.map((g) => ({ label: g.heading, href: `#faq-group-${g.slug}`, count: g.items.length })),
+}));
 ---
 
 <ReferenceLayout
   title="FAQ"
-  description="Short, plain answers about World Enterprise Incubator: what a seat is, how the remote model works, what WE does not do, and how to apply."
+  description="Short, plain answers about World Enterprise: what a seat is, how the remote model works, what WE does not do, and how to apply."
   path="/faq/"
   eyebrow="Reference"
   lead="Straight answers, including what WE does not do."
   updated={new Date('2026-10-06')}
   jsonLd={[faqPageNode('/faq/', items)]}
+  wide
 >
+  <ReferenceIntro kind="faq" seed="faq">
+  {
+    items.length > 0 && (
+      <QuestionMap
+        id="hub-faq-map"
+        title="Every question on this page, by who asks it"
+        caption="Each segment is one topic, as wide as its number of questions. Pick a topic below to go straight to it."
+        credit="Diagram: World Enterprise Group Incorporated, counted at build time from the questions on this page."
+        rows={mapRows}
+        unit={['question', 'questions']}
+      />
+    )
+  }
+  <HubMoment id="hub-faq-figures" kind="stats" heading="Why the answers talk about years" headingLevel={2} lead="Incubation is measured in years, because that is how long a company takes to become established.">
+    <StatTiles stats={[tile('ST-10'), tile('ST-02')]} label="The long horizon" id="faq-figures" />
+  </HubMoment>
+  {
+    jump.length > 1 && (
+      <nav class="faq-jump" aria-label="Jump to a set of questions">
+        <p class="faq-jump__label">Jump to</p>
+        <ul class="faq-jump__list">
+          {jump.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
   <div class="stack stack--loose">
     {
-      groups.map((g) => (
-        <section aria-labelledby={`faq-group-${g.slug}`} class="stack">
-          <h2 id={`faq-group-${g.slug}`}>{g.heading}</h2>
-          <FaqList items={g.questions} name={`faq-${g.slug}`} />
+      sections.map((section) => (
+        <section aria-labelledby={section.slug} class="stack stack--loose faq-section">
+          <h2 id={section.slug}>{section.label}</h2>
+          {section.groups.map((g) => (
+            <div class="stack">
+              <h3 id={`faq-group-${g.slug}`}>{g.heading}</h3>
+              <FaqList
+                items={g.items.map((item) => ({ id: anchorId('faq', item.id), question: item.question, answer: item.answer }))}
+                name={`faq-${g.slug}`}
+              />
+              {g.seeAlso.length > 0 && (
+                <p class="faq-more">
+                  <span class="faq-more__label">Read more: </span>
+                  {g.seeAlso.map((link, index) => (
+                    <>
+                      {index > 0 && ', '}
+                      <a href={href(link.href)}>{link.title}</a>
+                    </>
+                  ))}
+                </p>
+              )}
+            </div>
+          ))}
         </section>
       ))
     }
   </div>
+  <HubEcosystem id="faq-ecosystem" />
   {
     (canApply || canContact) && (
       <Callout title="Still have a question?">
-        <p>Tell WE about your idea, or ask directly.</p>
+        {canApply && <p>{READINESS_REVIEW.note}</p>}
+        {canContact && <p>{TALK_TO_WE.note}</p>}
         <div class="cluster">
-          {canApply && <Button href={href('/apply/')}>Apply to the program</Button>}
-          {canContact && <Button href={href('/contact/')} variant="secondary">Contact WE</Button>}
+          {canApply && <Button href={href(READINESS_REVIEW.href)}>{READINESS_REVIEW.label}</Button>}
+          {canContact && <Button href={href(TALK_TO_WE.href)} variant="secondary">{TALK_TO_WE.label}</Button>}
         </div>
       </Callout>
     )
   }
+  </ReferenceIntro>
 </ReferenceLayout>
+
+<style>
+  .faq-jump {
+    display: grid;
+    gap: var(--sp-2);
+    margin-block-end: var(--sp-6);
+  }
+
+  .faq-jump__label {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .faq-jump__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .faq-jump__list a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    padding-inline: var(--sp-4);
+    border: var(--border-strong);
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+  }
+
+  .faq-section h2 {
+    scroll-margin-block-start: var(--sp-6);
+  }
+
+  .faq-more {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+</style>

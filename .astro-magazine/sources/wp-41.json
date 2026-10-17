@@ -58,117 +58,6 @@
     },
     {
       "schema_version": "1.0.0",
-      "source_id": "wp41-pricing",
-      "publisher_or_author": "World Enterprise Group (internal)",
-      "title": "The pricing page",
-      "source_tier": "operator-statement",
-      "exact_url_or_locator": "src/content/pages/pricing/pricing.mdx",
-      "publication_date": "",
-      "last_updated_date": "2026-10-09",
-      "retrieved_at": "2026-10-09",
-      "next_review": "when the source file changes",
-      "version_or_release": "n/a",
-      "relevant_locator": "C-02, C-03, C-10",
-      "variables_units_scope": "Seats, packages, how to ask for the rate; no amounts, no seat counts",
-      "methodology_limitations": "Copied, not re-derived. Two sentences are edited for the subject.",
-      "funding_conflicts": "none",
-      "claims_supported": [
-        "C-02",
-        "C-03",
-        "C-10"
-      ],
-      "claims_not_supported": [
-        "C-06",
-        "C-09"
-      ],
-      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
-      "freshness_trigger": "Any change to the quoted text in the source file",
-      "captured_by": "WP-41"
-    },
-    {
-      "schema_version": "1.0.0",
-      "source_id": "wp41-seat-explainer",
-      "publisher_or_author": "World Enterprise Group (internal)",
-      "title": "The seat explainer on the pricing page",
-      "source_tier": "operator-statement",
-      "exact_url_or_locator": "src/components/pricing/SeatExplainer.astro",
-      "publication_date": "",
-      "last_updated_date": "2026-10-09",
-      "retrieved_at": "2026-10-09",
-      "next_review": "when the source file changes",
-      "version_or_release": "n/a",
-      "relevant_locator": "C-02, C-03",
-      "variables_units_scope": "What a seat is, who fills it, who steers the team; the unit of work",
-      "methodology_limitations": "Copied, not re-derived. One sentence joins two facts of the list.",
-      "funding_conflicts": "none",
-      "claims_supported": [
-        "C-02",
-        "C-03"
-      ],
-      "claims_not_supported": [
-        "C-06",
-        "C-09"
-      ],
-      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
-      "freshness_trigger": "Any change to the quoted text in the source file",
-      "captured_by": "WP-41"
-    },
-    {
-      "schema_version": "1.0.0",
-      "source_id": "wp41-package-cards",
-      "publisher_or_author": "World Enterprise Group (internal)",
-      "title": "The package cards on the pricing page",
-      "source_tier": "operator-statement",
-      "exact_url_or_locator": "src/components/pricing/PackageCards.astro",
-      "publication_date": "",
-      "last_updated_date": "2026-10-09",
-      "retrieved_at": "2026-10-09",
-      "next_review": "when the source file changes",
-      "version_or_release": "n/a",
-      "relevant_locator": "C-10",
-      "variables_units_scope": "Every package covers all seven lines; the packages differ in depth",
-      "methodology_limitations": "Edited: the line letters and the sentence break are removed.",
-      "funding_conflicts": "none",
-      "claims_supported": [
-        "C-10"
-      ],
-      "claims_not_supported": [
-        "C-06",
-        "C-09"
-      ],
-      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
-      "freshness_trigger": "Any change to the quoted text in the source file",
-      "captured_by": "WP-41"
-    },
-    {
-      "schema_version": "1.0.0",
-      "source_id": "wp41-pricing-page",
-      "publisher_or_author": "World Enterprise Group (internal)",
-      "title": "The pricing page lead",
-      "source_tier": "operator-statement",
-      "exact_url_or_locator": "src/pages/pricing/index.astro",
-      "publication_date": "",
-      "last_updated_date": "2026-10-09",
-      "retrieved_at": "2026-10-09",
-      "next_review": "when the source file changes",
-      "version_or_release": "n/a",
-      "relevant_locator": "C-10",
-      "variables_units_scope": "There are four packages",
-      "methodology_limitations": "Edited: the call to action becomes a statement.",
-      "funding_conflicts": "none",
-      "claims_supported": [
-        "C-10"
-      ],
-      "claims_not_supported": [
-        "C-06",
-        "C-09"
-      ],
-      "license_access_attribution": "Internal; verbatim or edited as the derivation field of each sentence says",
-      "freshness_trigger": "Any change to the quoted text in the source file",
-      "captured_by": "WP-41"
-    },
-    {
-      "schema_version": "1.0.0",
       "source_id": "wp41-packages",
       "publisher_or_author": "World Enterprise Group (internal)",
       "title": "The package data module",
@@ -323,25 +212,25 @@
   ],
   "sentences": [
     {
-      "sentence": "World Enterprise Incubator is a digital incubator for SaaS, run by World Enterprise Group Incorporated.",
+      "sentence": "World Enterprise is a long-horizon business incubation and consulting firm, run by World Enterprise Group Incorporated.",
       "source_id": "wp41-faq",
       "file": "src/data/faq.yaml",
-      "locator": "World Enterprise Incubator is a digital incubator for SaaS, run by World Enterprise Group Incorporated.",
+      "locator": "World Enterprise is a long-horizon business incubation and consulting firm, run by World Enterprise Group Incorporated.",
       "derivation": "verbatim"
     },
     {
-      "sentence": "Dedicated team seats, steered by WE, take a founder from first idea toward first customers and the evidence an investor will ask for.",
+      "sentence": "WE steers a dedicated, fully remote team that builds a software-enabled company with its founder, for as long as the work is useful.",
       "source_id": "wp41-faq",
       "file": "src/data/faq.yaml",
-      "locator": "Dedicated team seats, steered by WE, take a founder from first idea toward first customers and the evidence an investor will ask for.",
+      "locator": "WE steers a dedicated, fully remote team that builds a software-enabled company with its founder, for as long as the work is useful.",
       "derivation": "verbatim"
     },
     {
       "sentence": "The work is fully remote.",
       "source_id": "wp41-faq",
       "file": "src/data/faq.yaml",
-      "locator": "The work is fully remote.",
-      "derivation": "verbatim"
+      "locator": "It means WE works fully online.",
+      "derivation": "edited"
     },
     {
       "sentence": "There are no physical offices.",
@@ -372,17 +261,17 @@
       "derivation": "verbatim"
     },
     {
-      "sentence": "WE describes itself as a digital incubator.",
+      "sentence": "WE is a long-horizon business incubation and consulting firm.",
       "source_id": "wp41-faq",
       "file": "src/data/faq.yaml",
-      "locator": "WE describes itself as a digital incubator.",
+      "locator": "WE is a long-horizon business incubation and consulting firm.",
       "derivation": "verbatim"
     },
     {
-      "sentence": "It builds with your company through dedicated team seats.",
+      "sentence": "It builds with your company through a dedicated team that WE steers, for as long as the work is useful.",
       "source_id": "wp41-faq",
       "file": "src/data/faq.yaml",
-      "locator": "It builds with your company through dedicated team seats.",
+      "locator": "It builds with your company through a dedicated team that WE steers, for as long as the work is useful.",
       "derivation": "verbatim"
     },
     {
@@ -463,34 +352,6 @@
       "derivation": "verbatim-of-fields"
     },
     {
-      "sentence": "The seat is the unit of work.",
-      "source_id": "wp41-seat-explainer",
-      "file": "src/components/pricing/SeatExplainer.astro",
-      "locator": "The seat is the unit of work.",
-      "derivation": "verbatim"
-    },
-    {
-      "sentence": "A seat is one dedicated place on your team.",
-      "source_id": "wp41-seat-explainer",
-      "file": "src/components/pricing/SeatExplainer.astro",
-      "locator": "A seat is one dedicated place on your team.",
-      "derivation": "verbatim"
-    },
-    {
-      "sentence": "A person fills it, works offshore and works only on your company.",
-      "source_id": "wp41-seat-explainer",
-      "file": "src/components/pricing/SeatExplainer.astro",
-      "locator": "A person fills the seat and works only on your company.",
-      "derivation": "edited"
-    },
-    {
-      "sentence": "WE steers the team and manages the subcontractors who fill the seats, so you work with one team instead of coordinating individuals.",
-      "source_id": "wp41-seat-explainer",
-      "file": "src/components/pricing/SeatExplainer.astro",
-      "locator": "WE steers the team and manages the subcontractors who fill the seats, so you work with one team instead of coordinating individuals.",
-      "derivation": "verbatim"
-    },
-    {
       "sentence": "Seats can be scaled up or down by notice.",
       "source_id": "wp41-faq",
       "file": "src/data/faq.yaml",
@@ -503,27 +364,6 @@
       "file": "src/data/faq.yaml",
       "locator": "The notice mechanics are set out in the written agreement.",
       "derivation": "verbatim"
-    },
-    {
-      "sentence": "A package is a pre-configured seat plan with a fixed scope, sized for a company stage.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "A package is a pre-configured seat plan with a fixed scope, sized for a company stage.",
-      "derivation": "verbatim"
-    },
-    {
-      "sentence": "WE offers four.",
-      "source_id": "wp41-pricing-page",
-      "file": "src/pages/pricing/index.astro",
-      "locator": "Compare the four packages",
-      "derivation": "edited"
-    },
-    {
-      "sentence": "Every package covers all seven service lines, and the packages differ in depth.",
-      "source_id": "wp41-package-cards",
-      "file": "src/components/pricing/PackageCards.astro",
-      "locator": "Every package covers all seven service lines, A to G. The packages differ in depth.",
-      "derivation": "edited"
     },
     {
       "sentence": "Spark, depth Core: An idea or a prototype before revenue, with one or two founders and no institutional capital yet.",
@@ -552,34 +392,6 @@
       "file": "src/data/packages.ts",
       "locator": "A company with several products, or in a regulated or capital-intensive field, that needs an embedded WE team.",
       "derivation": "verbatim-of-fields"
-    },
-    {
-      "sentence": "If no package fits, you can build a custom seat plan instead.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "If no package fits, you can build a custom seat plan instead.",
-      "derivation": "verbatim"
-    },
-    {
-      "sentence": "WE shares the current rate for a package, a custom seat plan or the add-on when you ask, so the figure you receive is the one that applies today.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "WE shares the current rate for a package, a custom seat plan or the add-on when you ask, so the figure you receive is the one that applies today.",
-      "derivation": "verbatim"
-    },
-    {
-      "sentence": "No amounts are published on this site.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "This page lists no amounts.",
-      "derivation": "edited"
-    },
-    {
-      "sentence": "Investor Introductions is a separate, paid add-on with a flat fee.",
-      "source_id": "wp41-pricing",
-      "file": "src/content/pages/pricing/pricing.mdx",
-      "locator": "It is a separate, paid add-on with a flat fee.",
-      "derivation": "edited"
     },
     {
       "sentence": "The fee does not depend on whether any investment closes.",

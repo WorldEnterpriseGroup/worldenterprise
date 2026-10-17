@@ -1,0 +1,407 @@
+---
+/**
+ * /ecosystem/ (WP-33, issue #82): "Join the ecosystem". The hub of the directory of outside programs WE encourages founders to join:
+ * accelerators, incubators, university programs, coworking, angel groups, SBA partners, public funding and founder communities.
+ * Native HTML first: the whole directory is on the page and each category has its own page; <we-ecosystem-filter> only adds filters.
+ * Each category shows its first programs as short rows; its full list sits in a native <details>, so every program and anchor stays
+ * in the DOM while the page stays a reasonable length on a phone. The filter opens those lists while it narrows them.
+ * The copy lives in src/data/ecosystem/copy.ts so a test can scan it. Ecosystem context (D-W10-1): data-context="ecosystem".
+ */
+import { APPLY, TALK_TO_WE } from '../../components/hero/ctas.ts';
+import Faq from '../../components/ui/Faq.astro';
+import Button from '../../components/ui/Button.astro';
+import Constellation from '../../components/ecosystem/Constellation.astro';
+import EcosystemFilter from '../../components/ecosystem/EcosystemFilter.astro';
+import EntryList from '../../components/ecosystem/EntryList.astro';
+import Stats from '../../components/ecosystem/Stats.astro';
+import Timeline from '../../components/ecosystem/Timeline.astro';
+import { isLiveOnDisk } from '../../data/cta/live.ts';
+import {
+  ALL_IN_CATEGORY,
+  BEST_FOR_LABEL,
+  CATEGORY_LIST_NAMES,
+  CATEGORY_PAGE_LINK,
+  CHOOSE_HEADING,
+  CHOOSE_LEAD,
+  CHOOSE_ROWS,
+  CONSTELLATION_HEADING,
+  CONSTELLATION_TEXT,
+  CTA_HEADING,
+  CTA_TEXT,
+  DIRECTORY_HEADING,
+  DIRECTORY_LEAD,
+  DISCLAIMER,
+  DISCLAIMER_LONG,
+  FAQ,
+  HUB_DESCRIPTION,
+  HUB_LEAD,
+  HUB_PATH,
+  HUB_SEO_TITLE,
+  HUB_TITLE,
+  INTRO,
+  PREVIEW_COUNT,
+  PREVIEW_LABEL,
+  SOURCE_NOTE,
+  STATS_HEADING,
+  STATS_NOTE,
+  TAGLINE,
+  TIMELINE_HEADING,
+  TIMELINE_TEXT,
+  UNDER_REVIEW_HEADING,
+  UNDER_REVIEW_TEXT,
+} from '../../data/ecosystem/copy.ts';
+import { ALL_ENTRIES, CATEGORIES, CATEGORY_BY_ID, countByCategory, entriesIn } from '../../data/ecosystem/index.ts';
+import { directoryNode } from '../../data/ecosystem/schema.ts';
+import { faqPageNode } from '../../lib/schema.ts';
+import { href } from '../../lib/url.ts';
+import HubLayout from '../../layouts/HubLayout.astro';
+
+const counts = countByCategory();
+const total = ALL_ENTRIES.length;
+const sbirLive = isLiveOnDisk('/sbir-sttr/');
+const categoryPath = (id: string): string => `${HUB_PATH}${id}/`;
+const jsonLd = [directoryNode(HUB_PATH, 'Programs to join: the WE ecosystem directory'), faqPageNode(HUB_PATH, FAQ)];
+---
+
+<HubLayout
+  title={HUB_TITLE}
+  seoTitle={HUB_SEO_TITLE}
+  description={HUB_DESCRIPTION}
+  lead={HUB_LEAD}
+  path={HUB_PATH}
+  ogSlot="og-network"
+  eyebrow="The wider ecosystem"
+  primary={APPLY}
+  secondary={TALK_TO_WE}
+  hero="console"
+  jsonLd={jsonLd}
+>
+  <Fragment slot="panel">
+    <Constellation names={CATEGORIES.map((c) => c.short)} />
+  </Fragment>
+
+  <div data-context="ecosystem" class="eco-intro">
+    <p class="eco-intro__text">{INTRO}</p>
+    <p class="eco-intro__note"><strong>{DISCLAIMER}</strong> {SOURCE_NOTE}</p>
+  </div>
+
+  <Fragment slot="after">
+    <section class="band band--soft" aria-labelledby="eco-kinds-title" data-context="ecosystem">
+      <div class="container eco-stack">
+        <h2 id="eco-kinds-title">{CONSTELLATION_HEADING}</h2>
+        <p class="eco-lead">{CONSTELLATION_TEXT} {TAGLINE} {total} programs are listed below.</p>
+        <ul class="eco-kinds">
+          {
+            CATEGORIES.map((c) => (
+              <li class="eco-kinds__card">
+                <h3 class="eco-kinds__title">
+                  <a href={href(categoryPath(c.id))}>{c.name}</a>
+                </h3>
+                <p>{c.what}</p>
+                <p class="eco-kinds__count">{counts[c.id]} programs</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="eco-choose-title" data-context="ecosystem">
+      <div class="container eco-stack">
+        <h2 id="eco-choose-title">{CHOOSE_HEADING}</h2>
+        <p class="eco-lead">{CHOOSE_LEAD}</p>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Table: how to choose a kind of program">
+        <table class="eco-choose">
+          <caption class="visually-hidden">{CHOOSE_HEADING}</caption>
+          <thead>
+            <tr>
+              <th scope="col">What you need</th>
+              <th scope="col">Look at</th>
+              <th scope="col">Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              CHOOSE_ROWS.map((r) => (
+                <tr>
+                  <th scope="row">{r.need}</th>
+                  <td>
+                    <a href={href(categoryPath(r.category))}>{CATEGORY_BY_ID[r.category].short}</a>
+                  </td>
+                  <td>{r.why}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--tint-blue" id="directory" aria-labelledby="eco-dir-title" data-context="ecosystem">
+      <div class="container eco-stack">
+        <h2 id="eco-dir-title">{DIRECTORY_HEADING}</h2>
+        <p class="eco-lead">{DIRECTORY_LEAD}</p>
+        <p class="eco-jump">
+          Jump to:
+          {
+            CATEGORIES.map((c, i) => (
+              <>
+                {i > 0 && ', '}
+                <a href={`#group-${c.id}`}>{c.short}</a>
+              </>
+            ))
+          }
+        </p>
+        <EcosystemFilter>
+          {
+            CATEGORIES.map((c) => (
+              <section class="eco-group" id={`group-${c.id}`} data-eco-group aria-labelledby={`group-title-${c.id}`}>
+                <h3 id={`group-title-${c.id}`}>
+                  {c.name} <span class="eco-group__n">({counts[c.id]})</span>
+                </h3>
+                <p class="eco-group__what"><strong>{BEST_FOR_LABEL}:</strong> {c.bestFor}</p>
+                <div class="eco-group__preview" data-eco-preview>
+                  <EntryList
+                    entries={entriesIn(c.id).slice(0, PREVIEW_COUNT)}
+                    level={4}
+                    idPrefix="top-"
+                    compact
+                    filterable={false}
+                    label={PREVIEW_LABEL(Math.min(PREVIEW_COUNT, counts[c.id]), counts[c.id])}
+                  />
+                </div>
+                <details class="eco-group__all" data-eco-more>
+                  <summary>{ALL_IN_CATEGORY(counts[c.id], CATEGORY_LIST_NAMES[c.id])}</summary>
+                  <EntryList entries={entriesIn(c.id)} level={4} idPrefix="p-" />
+                </details>
+                <p class="eco-group__more">
+                  <a href={href(categoryPath(c.id))}>{CATEGORY_PAGE_LINK}</a>
+                </p>
+              </section>
+            ))
+          }
+        </EcosystemFilter>
+        {
+          sbirLive && (
+            <p>
+              Public research awards have their own guide: <a href={href('/sbir-sttr/')}>SBIR and STTR</a>.
+            </p>
+          )
+        }
+        <p class="eco-fine">{DISCLAIMER_LONG}</p>
+      </div>
+    </section>
+
+    <section class="band band--deep" aria-labelledby="eco-time-title" data-context="ecosystem">
+      <div class="container eco-stack">
+        <h2 id="eco-time-title">{TIMELINE_HEADING}</h2>
+        <p class="eco-lead">{TIMELINE_TEXT}</p>
+        <Timeline />
+        <p>
+          <a href={href('/why-it-takes-time/')}>Why a company takes the time it takes</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="band band--soft" aria-labelledby="eco-stats-title" data-context="ecosystem">
+      <div class="container eco-stack">
+        <h2 id="eco-stats-title">{STATS_HEADING}</h2>
+        <p class="eco-lead">{STATS_NOTE}</p>
+        <Stats />
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="eco-faq-title" data-context="ecosystem">
+      <div class="container eco-stack">
+        <h2 id="eco-faq-title">Questions</h2>
+        <div class="eco-faq">
+          {FAQ.map((f) => <Faq question={f.question} name="eco-faq">{f.answer}</Faq>)}
+        </div>
+        <h3>{UNDER_REVIEW_HEADING}</h3>
+        <p class="eco-lead">{UNDER_REVIEW_TEXT}</p>
+      </div>
+    </section>
+
+    <section class="band band--deep" aria-labelledby="eco-cta-title" data-context="ecosystem">
+      <div class="container eco-stack">
+        <h2 id="eco-cta-title">{CTA_HEADING}</h2>
+        <p class="eco-lead">{CTA_TEXT}</p>
+        <div class="cluster" role="group" aria-label="Next steps">
+          <Button href={APPLY.href} variant="primary">{APPLY.label}</Button>
+          <Button href={TALK_TO_WE.href} variant="secondary">{TALK_TO_WE.label}</Button>
+        </div>
+      </div>
+    </section>
+  </Fragment>
+</HubLayout>
+
+<style>
+  @layer pages {
+    .eco-intro {
+      display: grid;
+      gap: var(--sp-4);
+    }
+
+    .eco-intro > *,
+    .eco-stack > * {
+      margin: 0;
+    }
+
+    .eco-intro__text,
+    .eco-lead {
+      font-size: var(--fs-lead);
+      max-inline-size: var(--measure);
+    }
+
+    .eco-stack {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-4);
+    }
+
+
+    .eco-kinds {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+      gap: var(--sp-5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .eco-kinds__card {
+      position: relative;
+      display: grid;
+      align-content: start;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
+    }
+
+    .eco-kinds__card > * {
+      margin: 0;
+    }
+
+    .eco-kinds__title {
+      font-size: var(--fs-h4);
+    }
+
+    .eco-kinds__title a::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    .eco-kinds__card:focus-within {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .eco-kinds__count {
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .eco-choose {
+      inline-size: 100%;
+      border-collapse: collapse;
+    }
+
+    .eco-choose th,
+    .eco-choose td {
+      padding: var(--sp-3) var(--sp-4);
+      border-block-end: 1px solid var(--color-border);
+      text-align: start;
+      vertical-align: top;
+    }
+
+    .eco-group {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--sp-4);
+    }
+
+    .eco-group[hidden] {
+      display: none;
+    }
+
+    .eco-group > * {
+      margin: 0;
+    }
+
+    .eco-group__what {
+      max-inline-size: var(--measure);
+      color: var(--color-text-muted);
+    }
+
+    .eco-group__preview[hidden] {
+      display: none;
+    }
+
+    .eco-group__all > summary {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      inline-size: fit-content;
+      max-inline-size: 100%;
+      min-block-size: 2.75rem;
+      padding: var(--sp-2) var(--sp-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .eco-group__all > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .eco-group__all > summary::before {
+      content: '+';
+      inline-size: 1em;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .eco-group__all[open] > summary::before {
+      content: '\2212';
+    }
+
+    .eco-group__all[open] > summary {
+      margin-block-end: var(--sp-4);
+    }
+
+    .eco-group__all > summary:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .eco-group__n {
+      color: var(--color-text-muted);
+      font-weight: 400;
+    }
+
+    .eco-jump,
+    .eco-fine {
+      font-size: var(--fs-sm);
+    }
+
+    .eco-faq {
+      display: grid;
+      gap: var(--sp-2);
+      max-inline-size: var(--measure);
+    }
+
+    @media (forced-colors: active) {
+      .eco-kinds__card,
+      .eco-group__all > summary {
+        border-color: CanvasText;
+      }
+    }
+  }
+</style>

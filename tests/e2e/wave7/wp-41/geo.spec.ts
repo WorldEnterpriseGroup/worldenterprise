@@ -20,7 +20,7 @@ test.describe('llms.txt and llms-full.txt', () => {
     expect(response.ok()).toBe(true);
     expect(response.headers()['content-type'] ?? '').toMatch(/text\/plain/);
     const text = await response.text();
-    expect(text.startsWith('# World Enterprise Incubator')).toBe(true);
+    expect(text.startsWith('# World Enterprise')).toBe(true);
     expect(text).toMatch(/^> .+/m);
     for (const heading of ['What WE is', 'What WE offers', 'What WE does not do', 'Published commercial facts', 'Contact']) {
       expect(text, heading).toContain(`## ${heading}`);
@@ -169,7 +169,7 @@ test.describe('facts page', () => {
       await expect(page.locator('main h1')).toHaveCount(1);
       await expect(page.locator('main h1')).toHaveText('Facts about WE');
       const questions = await page.locator('main h2').allInnerTexts();
-      expect(questions).toEqual(expect.arrayContaining(['What is WE not?', 'Is Investor Introductions part of a package?']));
+      expect(questions).toEqual(expect.arrayContaining(['What is WE not?', 'Is Investor Introductions part of the engagement?']));
       const text = squash(await page.locator('main').innerText());
       expect(text).toContain(NO_FUNDING);
       expect(text).toContain(DISCLAIMER_START);

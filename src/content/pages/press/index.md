@@ -1,6 +1,6 @@
 ---
 title: Press
-description: "Facts, a short boilerplate and logo downloads for anyone writing about World Enterprise Incubator, and how to reach WE for a question or a correction."
+description: "Facts, a short boilerplate and logo downloads for anyone writing about World Enterprise, and how to reach WE for a question or a correction."
 eyebrow: Company
 hero: H2
 updated: 2026-10-06

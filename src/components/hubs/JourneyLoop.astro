@@ -1,0 +1,139 @@
+---
+/**
+ * JourneyLoop: the program's five steps as one drawing (WP-24). The first three run in a row from the left, the way in; the last two
+ * sit on a loop on the right, because the work runs in reviewed cycles and each review sets the next one (the bodies of steps four and
+ * five in src/components/program/steps.ts). It draws order only: no time, no length and no figure, as the journey pages require.
+ * Authored SVG computed at build time from journeyHolds(); no script.
+ */
+import HubFigure from './HubFigure.astro';
+import { r1 } from './geometry.ts';
+import { PHASE_LABELS, journeyHolds } from './journey.ts';
+
+const holds = journeyHolds();
+const wayIn = holds.filter((h) => h.phase === 'way-in');
+const cycle = holds.filter((h) => h.phase === 'cycle');
+if (cycle.length !== 2) throw new Error(`JourneyLoop: the loop draws two cycle steps, the program has ${cycle.length}`);
+
+const W = 1600;
+const H = 440;
+const R = 26;
+const rowY = 230;
+// The way in: evenly spaced stations from the left edge to the loop.
+const wayX = wayIn.map((_, i) => r1(150 + i * 290));
+// The loop: an ellipse on the right; the first cycle step sits at its top, the second at its bottom.
+const cx = 1190;
+const cy = rowY;
+const rx = 300;
+const ry = 140;
+const onLoop = (deg: number): { x: number; y: number } => ({ x: r1(cx + rx * Math.cos((deg * Math.PI) / 180)), y: r1(cy + ry * Math.sin((deg * Math.PI) / 180)) });
+const top = onLoop(-90);
+const bottom = onLoop(90);
+// Two arcs that stop short of the stations, so each arrowhead lands beside a step instead of under it.
+const a1 = onLoop(-68);
+const a2 = onLoop(68);
+const b1 = onLoop(112);
+const b2 = onLoop(248);
+const rightArc = `M${a1.x} ${a1.y} A${rx} ${ry} 0 0 1 ${a2.x} ${a2.y}`;
+const leftArc = `M${b1.x} ${b1.y} A${rx} ${ry} 0 0 1 ${b2.x} ${b2.y}`;
+const lastWay = wayX.at(-1) ?? 0;
+const entry = { x1: r1(lastWay + R + 10), x2: r1(cx - rx - 6) };
+
+const stations = [
+  ...wayIn.map((h, i) => ({ n: i + 1, title: h.step, x: wayX[i] ?? 0, y: rowY, labelY: rowY - R - 22 })),
+  { n: wayIn.length + 1, title: cycle[0]?.step ?? '', x: top.x, y: top.y, labelY: top.y - R - 18 },
+  { n: wayIn.length + 2, title: cycle[1]?.step ?? '', x: bottom.x, y: bottom.y, labelY: bottom.y + R + 40 },
+];
+const leadsTo = (i: number): string => (i < holds.length - 1 ? (holds[i + 1]?.step ?? '') : `${cycle[0]?.step ?? ''}, for the next cycle`);
+const alt = `Five numbered steps. ${PHASE_LABELS['way-in']}, in a row from the left: ${wayIn
+  .map((h, i) => `${i + 1}, ${h.step}`)
+  .join('; ')}. The row leads into a loop on the right: ${wayIn.length + 1}, ${cycle[0]?.step ?? ''}, at the top, and ${wayIn.length + 2}, ${
+  cycle[1]?.step ?? ''
+}, at the bottom, with arrows going round, because each review sets the next cycle.`;
+---
+
+<HubFigure
+  id="hub-journey-loop"
+  kind="diagram"
+  title="Three steps in, then a cycle that repeats"
+  caption="The way in happens once. After it, the work runs in reviewed cycles, and each review sets what the next cycle holds."
+  credit="Diagram: World Enterprise Group Incorporated, drawn from the program steps on this page. It shows order, not time."
+  width={W}
+  height={H}
+  alt={alt}
+  tone="dark"
+  table={{
+    caption: 'The steps in order',
+    columns: ['Step', 'Part of the journey', 'Leads to'],
+    rows: holds.map((h, i) => [`${i + 1}. ${h.step}`, PHASE_LABELS[h.phase], leadsTo(i)]),
+  }}
+>
+  <defs>
+    <marker id="jloop-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="hf-star" d="M0 0L10 5L0 10z" />
+    </marker>
+  </defs>
+  <rect class="hf-sky" x="0" y="0" width={W} height={H} rx="18" />
+  <text class="hf-text hf-text--inverse jloop__phase" x={wayX[1] ?? 0} y="56" text-anchor="middle">{PHASE_LABELS['way-in']}</text>
+  {
+    wayX.slice(1).map((x, i) => (
+      <line class="jloop__path" x1={r1((wayX[i] ?? 0) + R + 10)} y1={rowY} x2={r1(x - R - 12)} y2={rowY} marker-end="url(#jloop-arrow)" />
+    ))
+  }
+  <line class="jloop__path" x1={entry.x1} y1={rowY} x2={entry.x2} y2={rowY} />
+  <ellipse class="hf-line" cx={cx} cy={cy} rx={rx} ry={ry} />
+  <path class="jloop__path" d={rightArc} marker-end="url(#jloop-arrow)" />
+  <path class="jloop__path" d={leftArc} marker-end="url(#jloop-arrow)" />
+  <text class="hf-text hf-text--inverse hf-text--strong jloop__phase" x={cx} y={cy - 14} text-anchor="middle">{PHASE_LABELS.cycle}</text>
+  <text class="hf-text hf-text--inverse jloop__note" x={cx} y={cy + 20} text-anchor="middle">each review sets</text>
+  <text class="hf-text hf-text--inverse jloop__note" x={cx} y={cy + 48} text-anchor="middle">the next cycle</text>
+  {
+    stations.map((s) => (
+      <g>
+        <circle class={s.n === 1 ? 'hf-amber' : 'hf-star'} cx={s.x} cy={s.y} r={R} />
+        <text class="hf-text hf-text--strong jloop__num" x={s.x} y={s.y + 8} text-anchor="middle">
+          {s.n}
+        </text>
+        <text class="hf-text hf-text--inverse hf-text--strong jloop__label" x={s.x} y={s.labelY} text-anchor="middle">
+          {s.title}
+        </text>
+      </g>
+    ))
+  }
+</HubFigure>
+
+<style>
+  .jloop__path {
+    fill: none;
+    stroke: var(--we-blue-hi);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  .jloop__label {
+    font-size: 30px;
+  }
+
+  .jloop__num {
+    fill: var(--we-blue-night);
+    font-size: 24px;
+  }
+
+  .jloop__phase {
+    font-size: 26px;
+    letter-spacing: 0.04em;
+  }
+
+  .jloop__note {
+    font-size: 24px;
+  }
+
+  @media (forced-colors: active) {
+    .jloop__path {
+      stroke: CanvasText;
+    }
+
+    .jloop__num {
+      fill: Canvas;
+    }
+  }
+</style>

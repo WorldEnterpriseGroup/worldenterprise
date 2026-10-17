@@ -1,0 +1,86 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
+import WithEmblem from '../../components/families/visual/WithEmblem.astro';
+import BriefCover from '../../components/briefs/BriefCover.astro';
+import BriefFigure from '../../components/briefs/BriefFigure.astro';
+import { briefFigure } from '../../components/briefs/media.ts';
+import BandHead from '../../components/research/media/BandHead.astro';
+import ChapterMap from '../../components/research/media/ChapterMap.astro';
+import Moment from '../../components/research/media/Moment.astro';
+import MomentGrid from '../../components/research/media/MomentGrid.astro';
+import Band from '../../components/visuals/Band.astro';
+import BriefDepth from '../../components/briefs/BriefDepth.astro';
+import BriefOutline from '../../components/briefs/BriefOutline.astro';
+import BriefRequestPanel from '../../components/briefs/BriefRequestPanel.astro';
+import RelatedBriefs from '../../components/briefs/RelatedBriefs.astro';
+import { BRIEF_COPY } from '../../components/briefs/copy.ts';
+import { liveBriefs, relatedFor, sectionCount, staticPaths } from '../../components/briefs/plan.ts';
+import { jumpTo } from '../../components/hero/ctas.ts';
+import Section from '../../components/ui/Section.astro';
+import { BRIEFS } from '../../data/families.ts';
+import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import { isReleaseBuild } from '../../lib/route-state.ts';
+
+/**
+ * The squeeze page of a gated brief. One page per open abstract in the `briefs` collection whose registry entry launches. The page holds the
+ * abstract and the outline only: the text of the brief lives under infra/intake/briefs/, which no build path reads (D-23).
+ */
+export const getStaticPaths = (async () => {
+  const abstracts = await getCollection('briefs');
+  return [...staticPaths(BRIEFS.entries, abstracts, { includeDrafts: !isReleaseBuild() })];
+}) satisfies GetStaticPaths;
+
+const { brief } = Astro.props;
+const { abstract, row } = brief;
+const { Content } = await render(abstract);
+const { data } = abstract;
+const live = liveBriefs(BRIEFS.entries, await getCollection('briefs'), { includeDrafts: !isReleaseBuild() });
+const related = relatedFor(row.slug, live);
+const figure = briefFigure(row.slug);
+const figureKind = figure === 'formation' || figure === 'hiring' ? 'stats' : 'chart';
+---
+
+<MarketingLayout
+  title={data.title}
+  description={data.description}
+  path={row.path}
+  eyebrow={BRIEF_COPY.eyebrow}
+  lead={data.subtitle}
+  primary={jumpTo(BRIEF_COPY.heroPrimary, 'request')}
+  secondary={jumpTo(BRIEF_COPY.heroSecondary, 'outline')}
+  updated={data.updated}
+  draft={data.draft}
+>
+  <Moment kind="cover" id="brief-cover">
+    <BriefCover slug={row.slug} title={data.title} kicker={BRIEF_COPY.eyebrow} />
+  </Moment>
+  <Content />
+  <Fragment slot="after">
+    <Band id="glance" labelledby="glance-title">
+      <BandHead id="glance-title" title="The brief at a glance" lede="The chapters in reading order, and one public figure that frames the question the brief answers." />
+      <MomentGrid>
+        <Moment kind="diagram" id="brief-chapter-map">
+          <ChapterMap title="The chapters, as a constellation" chapters={data.outline} list={false} />
+        </Moment>
+        <Moment kind={figureKind} id="brief-figure">
+          <BriefFigure figure={figure} />
+        </Moment>
+      </MomentGrid>
+    </Band>
+    <Section tone="soft">
+      <WithEmblem kind="briefs" seed={row.slug}>
+        <BriefDepth updated={data.updated} sections={sectionCount(abstract)} />
+        <BriefOutline outline={data.outline} />
+      </WithEmblem>
+    </Section>
+    <Section>
+      <BriefRequestPanel briefId={row.slug} />
+    </Section>
+    <Section tone="soft">
+      <RelatedBriefs related={related} />
+    </Section>
+  </Fragment>
+  <ArticleEnd slot="cta-end" kind="briefs" seed={row.slug} />
+</MarketingLayout>

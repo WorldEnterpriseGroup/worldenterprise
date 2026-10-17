@@ -1,0 +1,210 @@
+---
+/**
+ * ShelfDiagram: the library as one bookcase (WP-24). Each kind of document has its own bay and each document is a spine in it, numbered
+ * in the order of the list below the drawing, where every number is a link. Spine heights vary by a seed from the slug, so the shelf
+ * looks used rather than ruled; the counts are exact. Authored SVG at build time; no script.
+ */
+import HubFigure from '../hubs/HubFigure.astro';
+import { rng, r1 } from '../hubs/geometry.ts';
+import { countLabel } from '../hubs/filter.ts';
+import { href as resolve } from '../../lib/url.ts';
+
+interface Doc {
+  readonly title: string;
+  readonly href: string;
+  readonly slug: string;
+}
+
+interface Bay {
+  readonly label: string;
+  readonly docs: readonly Doc[];
+}
+
+interface Props {
+  bays: readonly Bay[];
+}
+
+const bays = Astro.props.bays.filter((b) => b.docs.length > 0);
+if (bays.length === 0) throw new Error('ShelfDiagram: needs at least one document');
+// A squarer frame than the other hub diagrams, so the spines stay legible when the column narrows to a phone.
+const W = 1200;
+const H = 440;
+const pad = 40;
+const floor = H - 76;
+const spineW = 56;
+const gap = 8;
+const total = bays.reduce((n, b) => n + b.docs.length, 0);
+// Bay widths follow their document counts, with room for the divider.
+const inner = W - 2 * pad;
+const unit = inner / total;
+let cursor = pad;
+let n = 0;
+const layout = bays.map((bay, b) => {
+  const width = unit * bay.docs.length;
+  const x = cursor;
+  cursor += width;
+  const span = bay.docs.length * spineW + (bay.docs.length - 1) * gap;
+  const start = x + (width - span) / 2;
+  const spines = bay.docs.map((doc, i) => {
+    n += 1;
+    const next = rng(`shelf-${doc.slug}`);
+    const h = r1(190 + next() * 110);
+    return { doc, n, x: r1(start + i * (spineW + gap)), y: r1(floor - h), h, tone: (b + i) % 3, accent: n === 1 };
+  });
+  return { bay, x: r1(x), width: r1(width), spines };
+});
+const alt = `A bookcase in ${layout.length} bays. ${layout
+  .map((l) => `${l.bay.label}: ${countLabel(l.bay.docs.length, 'spine', 'spines')}, numbered ${l.spines[0]?.n ?? ''} to ${l.spines.at(-1)?.n ?? ''}`)
+  .join('; ')}.`;
+const TONES = ['hf-star', 'library-shelf__spine--blue', 'library-shelf__spine--mist'];
+---
+
+<HubFigure
+  id="hub-library-shelf"
+  kind="diagram"
+  title="The library shelf, by kind of document"
+  caption={`${countLabel(total, 'working document', 'working documents')} in ${layout.length} bays. Each spine is one document you can open, print or take as Markdown.`}
+  credit="Diagram: World Enterprise Group Incorporated, drawn at build time from the documents published in this library."
+  width={W}
+  height={H}
+  alt={alt}
+  table={{ caption: 'Documents by kind', columns: ['Kind', 'Documents'], rows: layout.map((l) => [l.bay.label, String(l.bay.docs.length)]) }}
+>
+  <rect class="hf-sky" x="0" y="0" width={W} height={H} rx="18" />
+  <rect class="library-shelf__board" x={pad - 12} y={floor} width={W - 2 * pad + 24} height="12" rx="3" />
+  {
+    layout.map((l, b) => (
+      <g>
+        {b > 0 && <line class="hf-line" x1={l.x} y1="40" x2={l.x} y2={floor} />}
+        {l.spines.map((s) => (
+          <g>
+            <rect class={s.accent ? 'hf-amber' : TONES[s.tone]} x={s.x} y={s.y} width={spineW} height={s.h} rx="5" />
+            <rect class="library-shelf__band" x={s.x} y={s.y + 22} width={spineW} height="8" />
+            <text class:list={['hf-text hf-text--strong library-shelf__num', { 'library-shelf__num--light': s.tone === 1 && !s.accent }]} x={s.x + spineW / 2} y={floor - 22} text-anchor="middle">
+              {s.n}
+            </text>
+          </g>
+        ))}
+        <text class="hf-text hf-text--inverse library-shelf__bay" x={l.x + l.width / 2} y={H - 24} text-anchor="middle">
+          {l.bay.label}
+        </text>
+      </g>
+    ))
+  }
+  <div class="library-shelf__legend" slot="legend">
+    {
+      layout.map((l) => (
+        <div class="library-shelf__group">
+          <p class="library-shelf__kind">{l.bay.label}</p>
+          <ol class="library-shelf__list" role="list">
+            {l.spines.map((s) => (
+              <li>
+                <span class="library-shelf__key" aria-hidden="true">{s.n}</span>
+                <a href={resolve(s.doc.href)}>{s.doc.title}</a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))
+    }
+  </div>
+</HubFigure>
+
+<style>
+  .library-shelf__board {
+    fill: var(--we-blue-hi);
+  }
+
+  .library-shelf__spine--blue {
+    fill: var(--we-blue);
+  }
+
+  .library-shelf__spine--mist {
+    fill: var(--we-mist);
+  }
+
+  .library-shelf__band {
+    fill: var(--we-blue-night);
+    opacity: 0.35;
+  }
+
+  .library-shelf__num {
+    fill: var(--we-blue-night);
+    font-size: 26px;
+  }
+
+  .library-shelf__num--light {
+    fill: var(--we-white);
+  }
+
+  .library-shelf__bay {
+    font-size: 28px;
+  }
+
+  .library-shelf__legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    gap: var(--sp-4);
+  }
+
+  .library-shelf__group {
+    display: grid;
+    gap: var(--sp-1);
+    align-content: start;
+  }
+
+  .library-shelf__kind {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .library-shelf__list {
+    display: grid;
+    gap: var(--sp-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-sm);
+
+    & li {
+      display: flex;
+      gap: var(--sp-2);
+      align-items: center;
+      min-block-size: 2.75rem;
+    }
+  }
+
+  .library-shelf__key {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border-radius: 50%;
+    background: var(--we-blue-night);
+    color: var(--we-white);
+    font-weight: 700;
+    font-size: var(--fs-xs);
+  }
+
+  @media (forced-colors: active) {
+    .library-shelf__board,
+    .library-shelf__spine--blue,
+    .library-shelf__spine--mist {
+      fill: CanvasText;
+    }
+
+    .library-shelf__band {
+      fill: Canvas;
+    }
+
+    .library-shelf__num,
+    .library-shelf__num--light {
+      fill: Canvas;
+    }
+
+    .library-shelf__key {
+      border: 1px solid CanvasText;
+    }
+  }
+</style>
