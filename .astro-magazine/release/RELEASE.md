@@ -66,6 +66,10 @@ allowed  launched form route /apply/ has form "intake" in disabled mode
 allowed  launched form route /contact/ has form "intake" in disabled mode
 ```
 
+Update of 2026-10-17 (issue #106, demo `33355b7`): the wave 8 forms add more launched routes behind the same endpoint, so with the variable unset `verify:release` lists 16 `launched form route` lines (`/apply/`, `/contact/`, `/investors/interest/`, `/network/partners/enquire/` and the ten `/briefs/<id>/` squeeze pages), not two. They all clear together once `PUBLIC_WE_INTAKE_API_URL` is set. The earlier three `launch:true route does not exist` lines for the `/industries/`, `/compare/` and `/journey/` hubs were a bug in `src/lib/route-core.ts` (the glob loader stores the hub entry `industries/index` as `industries`), fixed on `wp/106-release-prep`. The strict GitHub build also runs `audit:links --strict`, where an orphan route is an error: it now exempts ledger rows with `indexable: false`, which are the form success pages and `/pricing/`.
+
+Expected warning, not a defect: `audit:links` (non-strict, on demo) used to list `/pricing/` as an orphan. It is deliberate (decision W9-13, WP-54): `/how-we-work/` replaced the packages page, `/pricing/` stays only as a noindex pointer for old links and bookmarks, leaves the sitemap, search and the llms files, and no page links to it while `flags.seatPrice` is off. Do not add a link to it.
+
 Warnings and hints, none blocking:
 
 - `astro check` hint at `src/pages/styleguide.astro:212` (unreachable code in an `onsubmit` attribute). The styleguide is not built in a release.

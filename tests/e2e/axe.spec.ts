@@ -19,6 +19,11 @@ for (const { path: route } of liveRoutes) {
     const network = quiet(page);
     await page.goto(route);
     await network.settled();
+    // axe walks every element, so its cost grows with the page. The glossary and the insights hub (about 120 entries each) took 49 to
+    // 53 s on a loaded runner and failed all three attempts at the 45 s default (pipeline 71653, job 1192229). The budget is 45 s plus
+    // 10 s per 1,000 elements, capped at 3 minutes, so a big page gets time in proportion and a hung scan still fails.
+    const elements = await page.locator('*').count();
+    test.setTimeout(Math.min(45_000 + Math.ceil(elements / 1_000) * 10_000, 180_000));
     const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
     expect(summarise(results.violations)).toEqual([]);
   });
