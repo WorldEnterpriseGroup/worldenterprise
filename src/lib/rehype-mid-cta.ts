@@ -16,6 +16,11 @@
  * It sits between two top-level blocks, so it is never inside a list, table, blockquote, figure or code block, and never between a
  * heading and the paragraph that follows it. A paragraph that introduces a list (it ends in a colon) is skipped. At most one per document.
  *
+ * The measure is the words of the document's own top-level blocks, which is the article body and nothing the layout adds after it (the
+ * timeline offer, the figures, the sources, the citation box). When no valid paragraph boundary falls in the 50 to 90 percent window, the
+ * document gets no band: the rule never moves the band outside the window to find a boundary, because a band in the first half or the last
+ * tenth breaks the contract. The e2e spec measures the same body, stopping at the first piece of layout furniture.
+ *
  * The plugin reads the document's place from `ctx.fileURL` (`src/content/insights/<desk>/<slug>.mdx`, `src/content/guides/<slug>.mdx`):
  * Sätteri does not hand a plugin the route. Any other document is left alone. `insertAfter` is part of Sätteri's context, so the fallback
  * (a marker element that the layout fills) was not needed. The imports are types only apart from the data modules, which load under

@@ -121,9 +121,15 @@ function matrix(): void {
           const words = (text: string): number => text.split(/\s+/).filter((w) => /[A-Za-z0-9]/.test(w)).length;
           if (band === null) return { has: false as const, total: 0, before: 0, afterTag: '' };
           const parent = band.parentElement;
-          const siblings = parent === null ? [] : Array.from(parent.children).filter((child) => child !== band);
-          const index = parent === null ? -1 : Array.from(parent.children).indexOf(band);
-          const before = Array.from(parent?.children ?? []).slice(0, index).reduce((sum, el) => sum + words(el.textContent ?? ''), 0);
+          // The text the plugin measures is the article body. Everything the layout puts after it in the same container (the timeline offer,
+          // the "In the data" figures, the sources, the citation box) is page furniture, not article text, so the count stops at the first of them.
+          const furniture = '[data-cta-mid], [data-insight-figures], .sources, [data-cite-this]';
+          const all = Array.from(parent?.children ?? []);
+          const end = all.findIndex((child) => child.matches(furniture));
+          const body = end === -1 ? all : all.slice(0, end);
+          const siblings = body.filter((child) => child !== band);
+          const index = body.indexOf(band);
+          const before = body.slice(0, index).reduce((sum, el) => sum + words(el.textContent ?? ''), 0);
           const total = siblings.reduce((sum, el) => sum + words(el.textContent ?? ''), 0);
           return { has: true as const, total, before, afterTag: band.previousElementSibling?.tagName ?? '' };
         });
