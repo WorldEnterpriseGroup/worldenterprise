@@ -23,7 +23,7 @@ test.describe('composer round trip (the project sets the viewport: 1440 and 390)
     await network.settled();
     const composer = page.locator('we-team-composer');
     await composer.locator('input.composer__seats').first().fill('2');
-    await expect(composer.locator('[data-headline]')).not.toContainText('No seats chosen yet');
+    await expect(composer.locator('[data-headline]')).not.toContainText('No roles chosen yet');
     // The primary link of the call-to-action band follows the form.
     await expect(page.locator('.ctaband').getByRole('link', { name: 'Start a readiness review' })).toHaveAttribute('href', /\/apply\/#team=/);
 
@@ -40,7 +40,7 @@ test.describe('composer round trip (the project sets the viewport: 1440 and 390)
     await page.goto(`${COMPOSER}?package=launch`);
     const composer = page.locator('we-team-composer');
     await expect(composer.locator('select')).toHaveCount(0);
-    await expect(composer.locator('[data-headline]')).toHaveText('No seats chosen yet.');
+    await expect(composer.locator('[data-headline]')).toHaveText('No roles chosen yet.');
   });
 
   test('the Composer page passes axe, and nothing overflows', async ({ page }) => {

@@ -1,5 +1,5 @@
 /**
- * Roles that can staff a seat. The ids and titles come from src/data/seat-roles.ts, the same list the Team Composer offers (SAGE-PLAN
+ * Roles a dedicated team can include. The ids and titles come from src/data/seat-roles.ts, the same list the Team Composer offers (SAGE-PLAN
  * 6.8); this module adds only what the operator network pages say about each role. Roles are functions, never individuals: no person is
  * named anywhere in this module or on the pages that use it.
  */

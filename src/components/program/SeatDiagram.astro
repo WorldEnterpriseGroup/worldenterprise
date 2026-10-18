@@ -18,17 +18,17 @@ const { labelledby } = Astro.props;
     <span class="seat__link" aria-hidden="true"></span>
     <div class="seat__node seat__node--we">
       <p class="seat__label">WE steers</p>
-      <p>Plans each cycle, assigns the seats and manages any subcontractors.</p>
+      <p>Plans each cycle, assigns the work to the roles and manages any subcontractors.</p>
     </div>
     <span class="seat__link" aria-hidden="true"></span>
     <div class="seat__node seat__node--seats">
-      <p class="seat__label">Dedicated seats</p>
+      <p class="seat__label">Dedicated team roles</p>
       <ul class="seat__roles" role="list">
         {SEAT_ROLES.map((r) => <li>{r.role}</li>)}
       </ul>
     </div>
   </div>
-  <figcaption>The seats work for your company. WE is accountable for how they are steered.</figcaption>
+  <figcaption>The team works only for your company. WE is accountable for how they are steered.</figcaption>
 </figure>
 
 <style>

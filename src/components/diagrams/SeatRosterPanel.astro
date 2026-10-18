@@ -18,7 +18,7 @@ const defaults: readonly Seat[] = [
   { role: 'Engineering', focus: 'Build and release', state: 'Starting' },
   { role: 'Quality assurance', focus: 'Test and verify', state: 'Open' },
 ];
-const { seats = defaults, title = 'seat roster' } = Astro.props;
+const { seats = defaults, title = 'team roster' } = Astro.props;
 ---
 
 <ConsolePanel title={title}>
