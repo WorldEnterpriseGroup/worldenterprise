@@ -35,6 +35,19 @@ const BRIEFS = [
   'real-timeline',
 ] as const;
 
+const PLAYBOOKS = [
+  'validate-the-problem',
+  'design-the-product',
+  'set-up-the-company',
+  'build-and-ship-v1',
+  'hire-your-first-team-member',
+  'price-your-first-saas-product',
+  'earn-your-first-customers',
+  'run-your-first-outbound-sequence',
+  'build-repeatable-growth',
+  'prepare-for-investor-conversations',
+] as const;
+
 /** Route and the fewest media moments it may show. */
 const ROUTES: readonly (readonly [string, number])[] = [
   ['/fundability/', 6],
@@ -44,6 +57,7 @@ const ROUTES: readonly (readonly [string, number])[] = [
   ['/briefs/', 6],
   ...BRIEFS.map((id) => [`/briefs/${id}/`, 3] as const),
   ['/playbooks/', 6],
+  ...PLAYBOOKS.map((slug) => [`/playbooks/${slug}/`, 3] as const),
 ];
 
 async function open(page: Page, route: string): Promise<void> {

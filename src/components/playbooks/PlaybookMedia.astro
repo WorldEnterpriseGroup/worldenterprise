@@ -1,0 +1,54 @@
+---
+/**
+ * PlaybookMedia (WP-23, #89): the media moments of one playbook page, in PlaybookLayout's `media` slot (a full-bleed band after the steps). The moments come from the typed
+ * per-slug map in media.ts: a generated cover, one sourced figure (BriefFigure) and a flow diagram of the playbook's own steps.
+ */
+import Band from '../visuals/Band.astro';
+import BriefCover from '../briefs/BriefCover.astro';
+import BriefFigure from '../briefs/BriefFigure.astro';
+import BandHead from '../research/media/BandHead.astro';
+import FlowDiagram from '../research/media/FlowDiagram.astro';
+import Moment from '../research/media/Moment.astro';
+import MomentGrid from '../research/media/MomentGrid.astro';
+import { figureKind, playbookMedia } from './media.ts';
+
+interface Props {
+  slug: string;
+  title: string;
+  steps: readonly { readonly title: string }[];
+  /** "Playbook, dream" and the like, printed over the cover. */
+  kicker: string;
+}
+
+const { slug, title, steps, kicker } = Astro.props;
+const moments = playbookMedia(slug);
+---
+
+<Band tone="soft" id="playbook-glance" labelledby="playbook-media-title">
+  <BandHead id="playbook-media-title" title="The playbook at a glance" lede="A cover, one public figure that frames the question this playbook answers, and the steps drawn as one path." />
+  <MomentGrid>
+    {
+      moments.map((m) => {
+        if (m.type === 'cover') {
+          return (
+            <Moment kind="cover" id={m.id}>
+              <BriefCover slug={slug} title={title} kicker={kicker} />
+            </Moment>
+          );
+        }
+        if (m.type === 'figure') {
+          return (
+            <Moment kind={figureKind(m.figure)} id={m.id}>
+              <BriefFigure figure={m.figure} />
+            </Moment>
+          );
+        }
+        return (
+          <Moment kind="diagram" id={m.id} wide>
+            <FlowDiagram title="The steps, in order" steps={steps.map((s) => ({ label: s.title }))} note="The same steps as below, drawn as one path from the first to the last." />
+          </Moment>
+        );
+      })
+    }
+  </MomentGrid>
+</Band>
