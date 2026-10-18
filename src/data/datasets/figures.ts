@@ -252,6 +252,27 @@ export const formationWaffle = {
   derived: 'Counts are the 2021 annual sums of applications (BA_BA) and of formations within four and eight quarters; the squares are rounded to add to 1,000. An application is not a launched business.',
 };
 
+export const formationFlow = {
+  id: 'flow-2021-applications',
+  title: 'From business application to employer business, applications filed in 2021',
+  description: `A flow diagram. Of ${thousandsOf(APPS_2021)} business applications filed in 2021, ${thousandsOf(F4_2021)} formed an employer business within four quarters, ${thousandsOf(F8_2021 - F4_2021)} more in quarters five to eight, and ${thousandsOf(APPS_2021 - F8_2021)} had not formed an employer business within eight quarters.`,
+  caption: `The flow narrows fast: of ${thousandsOf(APPS_2021)} applications, ${thousandsOf(F8_2021)} reached a first payroll within eight quarters.`,
+  nodes: [
+    { id: 'applications', label: 'Applications filed in 2021', column: 0, tone: 1 },
+    { id: 'formed-4q', label: 'Employer business within 4 quarters', column: 1, tone: 0 },
+    { id: 'formed-5-8q', label: 'Employer business in quarters 5 to 8', column: 1, tone: 2 },
+    { id: 'not-formed', label: 'No employer business within 8 quarters', column: 1, tone: 5 },
+  ],
+  links: [
+    { from: 'applications', to: 'formed-4q', value: F4_2021 },
+    { from: 'applications', to: 'formed-5-8q', value: F8_2021 - F4_2021 },
+    { from: 'applications', to: 'not-formed', value: APPS_2021 - F8_2021 },
+  ],
+  valueLabel: 'Applications',
+  sources: [src('census-bfs-monthly')],
+  derived: 'Counts are the 2021 annual sums of applications (BA_BA) and of formations within four and eight quarters (BF_BF4Q, BF_BF8Q); the second link is the eight-quarter count minus the four-quarter count. An application is not a launched business.',
+};
+
 // ---------------------------------------------------------------------------------------------------------------------------------
 // Who starts
 // ---------------------------------------------------------------------------------------------------------------------------------

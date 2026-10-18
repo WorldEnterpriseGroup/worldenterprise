@@ -2,6 +2,7 @@
  * Words on the /data/ pages (WP-35). Pure data so the unit tests can scan every line against the claims rules. The through-line is the
  * CEO's: a fast pace day to day, and the patience that years take. Every figure in a sentence here also lives in a dataset.
  */
+import type { ClaimId } from '../claims.ts';
 import { SURVIVAL_2015_YEAR10, SURVIVAL_2015_YEAR5, APPLICATIONS_2025, QUARTERS_8Q_2021, thousandsOf } from './figures.ts';
 
 export const HONESTY = "These figures describe all new U.S. businesses, not WE's results.";
@@ -9,6 +10,8 @@ export const NO_PROMISE = 'No one can promise that a company will survive, and W
 
 export const HUB = {
   path: '/data/',
+  /** Claim register entries (src/data/claims.ts) for the statistics this page prints; tests/unit/wp-35/claims.test.ts holds each to the printed wording. */
+  claimsUsed: ['C-30', 'C-32', 'C-33', 'C-34', 'C-35', 'C-36'] as readonly ClaimId[],
   title: 'The long game, in data',
   seoTitle: 'The long game, in data',
   eyebrow: 'Data and charts',
@@ -81,6 +84,8 @@ export const HUB = {
 
 export const SURVIVAL_PAGE = {
   path: '/data/survival/',
+  /** Claim register entries (src/data/claims.ts) for the statistics this page prints; tests/unit/wp-35/claims.test.ts holds each to the printed wording. */
+  claimsUsed: ['C-30', 'C-31'] as readonly ClaimId[],
   title: 'How long new businesses last',
   seoTitle: 'How long new businesses last, in data',
   description: 'Survival of new U.S. establishments over thirty years of opening-year groups: six groups, three industries, every year of life, with the data.',
@@ -108,6 +113,8 @@ export const SURVIVAL_PAGE = {
 
 export const FORMATION_PAGE = {
   path: '/data/formation/',
+  /** Claim register entries (src/data/claims.ts) for the statistics this page prints; tests/unit/wp-35/claims.test.ts holds each to the printed wording. */
+  claimsUsed: ['C-32', 'C-33'] as readonly ClaimId[],
   title: 'Who files, and what happens next',
   seoTitle: 'Starting a business: formation in data',
   description: 'U.S. business applications by industry since 2005, how many become employers, and how long that takes, from the Census Bureau, with the data.',
@@ -122,6 +129,8 @@ export const FORMATION_PAGE = {
 
 export const WHO_PAGE = {
   path: '/data/who-starts/',
+  /** Claim register entries (src/data/claims.ts) for the statistics this page prints; tests/unit/wp-35/claims.test.ts holds each to the printed wording. */
+  claimsUsed: ['C-34', 'C-35'] as readonly ClaimId[],
   title: 'Who starts, and who builds fast',
   seoTitle: 'Who starts a business: founders in data',
   description: 'Founder age in the United States: the share and rate of new entrepreneurs by age since 1996, and the age of founders of the fastest-growing firms.',
@@ -137,6 +146,8 @@ export const WHO_PAGE = {
 
 export const MILESTONES_PAGE = {
   path: '/data/years-to-milestones/',
+  /** Claim register entries (src/data/claims.ts) for the statistics this page prints; tests/unit/wp-35/claims.test.ts holds each to the printed wording. */
+  claimsUsed: ['C-30', 'C-33', 'C-36'] as readonly ClaimId[],
   title: 'The funding clock',
   seoTitle: 'The funding clock, in years',
   description: 'Published figures on how long each stage takes: first payroll, establishment, funding-round gaps and company age, with ownership given up per round.',
