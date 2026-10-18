@@ -247,7 +247,7 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:26`. Renders on:
 
 Source: `src/components/blocks/InvestorIntroductionsOffer.astro:31`. Renders on: /investors/meet-startups/ and /network/. The sentence after "A flat fee covers curation and preparation." is the fee sentence above, then the text continues.
 
-> L31: Investor Introductions is a separate, paid add-on. It is not part of any package, and no package requires it. A flat fee covers curation and preparation.
+> L31: Investor Introductions is a separate, optional add-on to an engagement, and no engagement requires it. A flat fee covers curation and preparation.
 >
 > L32: WE curates and limits the introductions, and makes them only after the readiness
 >
@@ -262,7 +262,7 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:31`. Renders on:
 
 Source: `src/components/blocks/InvestorIntroductionsOffer.astro:43`. Renders on: /investors/ and /services/fundability-and-investor-readiness/.
 
-> L43: Investor Introductions is a separate, paid add-on for a company that has finished the readiness work in Service Line F. It is not part of any package, and no package requires it.
+> L43: Investor Introductions is a separate, optional add-on to an engagement, for a company that has finished the readiness work in Service Line F. No engagement requires it.
 >
 > L49: A flat fee covers curation and preparation: choosing which investors may fit your company, and preparing your materials for them.
 >

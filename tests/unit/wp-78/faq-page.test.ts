@@ -123,7 +123,7 @@ test('the page source keeps what other tests and the sitemap pin, and needs no J
   assert.ok(page.includes("faqPageNode('/faq/', items)"));
   assert.match(page, /title="FAQ"/);
   assert.match(page, /path="\/faq\/"/);
-  assert.match(page, /description="Short, plain answers about World Enterprise: what a seat is, how the remote model works, what WE does not do, and how to apply\."/);
+  assert.match(page, /description="Short, plain answers about World Enterprise: what a dedicated team is, how the remote model works, what WE does not do, and how to apply\."/);
   assert.doesNotMatch(page, /<script/, 'the page works without JavaScript and adds none');
 });
 
