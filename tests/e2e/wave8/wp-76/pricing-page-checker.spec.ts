@@ -1,8 +1,8 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { findOverflow } from '../../support/overflow.ts';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 import { trackEgress } from './egress.ts';
 
@@ -18,8 +18,9 @@ const openDetail = (page: Page) => page.locator('[data-result="open"] [data-deta
 const boxes = (page: Page) => page.locator('we-pricing-checker input[type="checkbox"]');
 
 async function openPage(page: Page): Promise<void> {
+  const network = quiet(page);
   await page.goto(ROUTE);
-  await page.waitForLoadState('networkidle');
+  await network.settled();
   await expect(page.locator('we-pricing-checker')).toHaveAttribute('data-enhanced', '');
 }
 
@@ -192,7 +193,7 @@ test.describe('pricing page checker (the project sets the viewport: 1440 and 390
 
   // One test per state, so each has its own time budget: a full axe scan is slow on a loaded runner.
   const scan = async (page: Page, label: string): Promise<void> => {
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => `${label} ${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     expect(await findOverflow(page)).toEqual([]);
   };

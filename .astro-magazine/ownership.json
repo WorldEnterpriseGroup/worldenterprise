@@ -1781,6 +1781,15 @@
       ]
     },
     {
+      "owner": "WP-59",
+      "title": "Positioning tail: remaining seat and package wording (issue #80); every touched path is a registered exception",
+      "branch": "wp/59",
+      "stage": 3,
+      "write_set": [
+        ".astro-magazine/handoffs/wp-59*"
+      ]
+    },
+    {
       "owner": "WP-32",
       "title": "Wave 10 governance: write sets, ecosystem-context claims rule, ecosystem routes and nav (D-W10-1)",
       "branch": "wp/32",
@@ -4320,6 +4329,71 @@
       "wp": "WP-62",
       "path": "src/components/families/SegmentPage.astro",
       "reason": "Wave 8 landing (#42): a segment page fills the layout's after slot and so drew no closing band; it now ends with CtaEnd (the map row for /founders/<segment>/), one added line and its import."
+    },
+    {
+      "wp": "WP-59",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the counsel checklist quotes of InvestorIntroductionsOffer.astro follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": ".astro-magazine/sources/wp-78.json",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the sentence ledger follows the four reworded FAQ sentences."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-51/write-sets-wave9.test.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): the wave 9 write-set test selects the eight packages WP-51 to WP-58; WP-59 is a follow-up and is not one of them."
+    },
+    {
+      "wp": "WP-59",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Issue #80 (wp/59-seat-copy): registers the WP-59 assignment and its path exceptions."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/blocks/InvestorIntroductionsOffer.astro",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/geo/llms-input.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/reference/resources.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/data/faq.yaml",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/data/glossary.yaml",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/pages/faq/index.astro",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-60/fixtures/reference-originals.json",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language ; the pinned FAQ and glossary hashes follow the reworded originals (what-is-a-seat is now what-is-a-dedicated-team, seat is now team-role)."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-78/faq-data.test.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the pinned startup group \"Seats and pricing\" is now \"Team size and pricing\"."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-78/faq-page.test.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the pinned FAQ meta description follows the reworded page description."
     },
     {
       "wp": "WP-25",

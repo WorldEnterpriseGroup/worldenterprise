@@ -1,6 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page, type Route } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-65: the partner journey. One spec, run at 1440 and at 390 by the wave 8 projects.
@@ -106,7 +106,7 @@ test.describe('the six routes', () => {
       await page.goto(route);
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
       await expect(page.locator('main a[href^="mailto:"]')).toHaveCount(0);
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const results = await analyzePage(page);
       expect(results.violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
       expect(seen.consoleErrors).toEqual([]);
       expect(seen.pageErrors).toEqual([]);

@@ -1,6 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-43: /program/how-we-decide/, the "What WE reads" aside on /apply/ and the cross-link on /contact/. Runs at 1440 and at 390.
@@ -97,9 +97,10 @@ test('has its own canonical URL, and no horizontal scroll at this width', async 
 });
 
 test('axe finds nothing at WCAG 2.2 AA', async ({ page }) => {
+  const network = quiet(page);
   await page.goto(ROUTE);
-  await page.waitForLoadState('networkidle');
-  const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+  await network.settled();
+  const results = await analyzePage(page);
   expect(results.violations.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
 });
 

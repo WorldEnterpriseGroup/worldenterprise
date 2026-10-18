@@ -1,7 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import type { Page, TestInfo } from '@playwright/test';
-import { AXE_TAGS } from '../../support/page-guards.ts';
+import { analyzePage, budgetForItems } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 import { FULL_HD, expectFullWidth, expectNoHorizontalScroll } from '../wp-51/lib/full-width.ts';
 
@@ -85,7 +84,9 @@ for (const hub of HUBS) {
       }
 
       // Every figure moment is captioned and credited, and its drawing has a size and a text alternative.
-      for (const figure of await page.locator('main figure[data-media-id]').all()) {
+      const figures = await page.locator('main figure[data-media-id]').all();
+      budgetForItems(figures.length * 2, 1_000);
+      for (const figure of figures) {
         const id = (await figure.getAttribute('data-media-id')) ?? '';
         await expect(figure.locator('figcaption'), id).not.toHaveCount(0);
         expect(((await figure.locator('figcaption').first().textContent()) ?? '').trim().length, `${id} caption`).toBeGreaterThan(20);
@@ -105,7 +106,7 @@ for (const hub of HUBS) {
       await page.goto(hub.path);
       await expectFullWidth(page);
       await expectNoHorizontalScroll(page);
-      const results = await new AxeBuilder({ page }).withTags([...AXE_TAGS]).include('main').analyze();
+      const results = await analyzePage(page, { include: 'main' });
       expect(axeList(results.violations)).toEqual([]);
     });
   });
