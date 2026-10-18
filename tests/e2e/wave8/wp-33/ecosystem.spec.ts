@@ -1,6 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { watch } from '../../support/page-guards.ts';
+import { analyzePage, budgetForItems } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 import { FULL_HD, SMALLEST_PHONE, expectBandsFullBleed, expectFullWidth, expectNoHorizontalScroll } from '../wp-51/lib/full-width.ts';
 
@@ -44,7 +44,7 @@ test.describe('the ecosystem pages', () => {
       expect(external, 'every external link carries rel="noopener"').toBe(0);
       await expect(page.locator('main')).toContainText('no affiliation implied');
       await expectNoHorizontalScroll(page);
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const results = await analyzePage(page);
       expect(results.violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
       expect(seen.consoleErrors).toEqual([]);
       expect(seen.pageErrors).toEqual([]);
@@ -68,6 +68,8 @@ test.describe('the ecosystem pages', () => {
     await page.goto('/ecosystem/');
     const groups = page.locator('[data-eco-group]');
     await expect(groups).toHaveCount(CATEGORIES.length);
+    // About a dozen assertions per category, then one per program in the coworking list: 47 s x3 on the CPU-starved runner (issue #110).
+    budgetForItems(CATEGORIES.length * 12 + (await page.locator('#group-coworking [data-eco-row]').count()), 1_000);
     for (const c of CATEGORIES) {
       const group = page.locator(`#group-${c}`);
       const all = group.locator('details[data-eco-more]');
@@ -139,6 +141,7 @@ test.describe('the ecosystem pages', () => {
     await form.getByLabel('Kind of program', { exact: true }).selectOption('coworking');
     const shown = page.locator('[data-eco-row]:not([hidden])');
     const n = await shown.count();
+    budgetForItems(n * 2 + total, 1_000);
     expect(n).toBeGreaterThan(0);
     expect(n).toBeLessThan(total);
     await expect(status).toHaveText(`Showing ${n} of ${total} programs.`);
@@ -199,6 +202,7 @@ test.describe('the ecosystem pages', () => {
     await page.goto('/ecosystem/sba/');
     const rows = page.locator('[data-eco-row]');
     expect(await rows.count()).toBeGreaterThanOrEqual(5);
+    budgetForItems((await rows.count()) * 2, 1_000);
     for (const row of await rows.all()) {
       await expect(row.locator('a[rel~="noopener"]').first()).toBeAttached();
       await expect(row).toContainText('retrieved October 2026');
@@ -218,6 +222,8 @@ test.describe('without JavaScript', () => {
     await page.goto('/ecosystem/');
     const rows = page.locator('[data-eco-row]');
     expect(await rows.count()).toBeGreaterThanOrEqual(MIN_ENTRIES);
+    // One click per list and one visibility check per program.
+    budgetForItems(CATEGORIES.length + (await rows.count()), 1_000);
     await expect(page.locator('[data-eco-preview] .eco-row').first()).toBeVisible();
     // <details> needs no script: opening every list shows every program.
     for (const summary of await page.locator('details[data-eco-more] > summary').all()) await summary.click();

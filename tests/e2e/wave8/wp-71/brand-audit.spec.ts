@@ -1,6 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { liveRoutes } from '../../support/routes.ts';
 
 // WP-71 brand consistency audit, rendered half (the static half is tests/unit/wp-71/brand-audit.test.ts). One sample page per family,
@@ -44,8 +44,9 @@ for (const family of FAMILIES) {
     test.beforeEach(async ({ page, baseURL }) => {
       if (route === undefined) return;
       const record = watch(page, baseURL ?? 'http://localhost');
+      const network = quiet(page);
       await page.goto(route);
-      await page.waitForLoadState('networkidle');
+      await network.settled();
       expect(record.consoleErrors, 'console errors').toEqual([]);
       expect(record.pageErrors, 'uncaught exceptions').toEqual([]);
       expect(record.thirdParty, 'third-party requests').toEqual([]);
@@ -138,7 +139,7 @@ for (const family of FAMILIES) {
     });
 
     test('axe at WCAG 2.2 AA finds nothing', async ({ page }) => {
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const results = await analyzePage(page);
       expect(results.violations.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     });
   });

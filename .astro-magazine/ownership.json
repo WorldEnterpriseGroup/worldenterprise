@@ -2,6 +2,16 @@
   "schema_version": "1.0.0",
   "assignments": [
     {
+      "owner": "WP-108",
+      "title": "Client-privacy gate: PII by shape in dist, image metadata, people consent (issue #108); every touched path outside its own tests is a registered exception",
+      "branch": "wp/108",
+      "stage": 3,
+      "write_set": [
+        "tests/unit/wp-108/**",
+        ".astro-magazine/handoffs/wp-108*"
+      ]
+    },
+    {
       "owner": "WP-01",
       "title": "Home and Program",
       "branch": "wp/01",
@@ -1781,6 +1791,15 @@
       ]
     },
     {
+      "owner": "WP-59",
+      "title": "Positioning tail: remaining seat and package wording (issue #80); every touched path is a registered exception",
+      "branch": "wp/59",
+      "stage": 3,
+      "write_set": [
+        ".astro-magazine/handoffs/wp-59*"
+      ]
+    },
+    {
       "owner": "WP-32",
       "title": "Wave 10 governance: write sets, ecosystem-context claims rule, ecosystem routes and nav (D-W10-1)",
       "branch": "wp/32",
@@ -2096,6 +2115,61 @@
   ],
   "always_allowed": [],
   "exceptions": [
+    {
+      "wp": "WP-108",
+      "path": "scripts/check-ownership.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): ownerOf maps a three-digit branch (wp/108) to WP-108, and a three-digit package without an assignment (wp/101, wp/106) stays unpoliced as before."
+    },
+    {
+      "wp": "WP-108",
+      "path": "tests/unit/shared/fixture-dist.ts",
+      "reason": "Issue #108 (wp/108-privacy-gate): makeDist accepts bytes and pagefindFragment builds a real gzip fragment, because audit:dist now decodes fragments for the privacy scan."
+    },
+    {
+      "wp": "WP-108",
+      "path": "tests/unit/wp-19/audit-dist.test.ts",
+      "reason": "Issue #108 (wp/108-privacy-gate): its clean dist carries a real gzip fragment instead of filler bytes, which the privacy scan cannot decode."
+    },
+    {
+      "wp": "WP-108",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Issue #108 (wp/108-privacy-gate): registers the WP-108 assignment and its path exceptions."
+    },
+    {
+      "wp": "WP-108",
+      "path": ".gitlab-ci.yml",
+      "reason": "Issue #108 (wp/108-privacy-gate): runs the audit:dist and audit:images self-tests in verify:static on every pipeline."
+    },
+    {
+      "wp": "WP-108",
+      "path": "claims-denylist.json",
+      "reason": "Issue #108 (wp/108-privacy-gate): C-13 gains the social-proof shapes (our customers, customers include, clients such as, used by, case study:)."
+    },
+    {
+      "wp": "WP-108",
+      "path": "package.json",
+      "reason": "Issue #108 (wp/108-privacy-gate): adds the audit:dist:selftest and audit:images:selftest scripts."
+    },
+    {
+      "wp": "WP-108",
+      "path": "scripts/audit-claims.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): self-test seeds for the new C-13 shapes."
+    },
+    {
+      "wp": "WP-108",
+      "path": "scripts/audit-images.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): audit:images reads embedded metadata and gains --self-test."
+    },
+    {
+      "wp": "WP-108",
+      "path": "scripts/lib/audit-dist.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): audit:dist scans for personal data by shape and gains --self-test."
+    },
+    {
+      "wp": "WP-108",
+      "path": "scripts/lib/image-metadata.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): the container parsers and planted-metadata self-test behind audit:images."
+    },
     {
       "wp": "WP-03",
       "path": "src/data/forms.ts",
@@ -4262,6 +4336,71 @@
       "reason": "Home LCP fix (wp/32-css-inline): the pure, unit-tested inlining policy astro.config.mjs uses (Astro's 4096 raw-byte fallback left the 4.4 to 13 KB component chunks external)."
     },
     {
+      "wp": "WP-59",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the counsel checklist quotes of InvestorIntroductionsOffer.astro follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": ".astro-magazine/sources/wp-78.json",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the sentence ledger follows the four reworded FAQ sentences."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-51/write-sets-wave9.test.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): the wave 9 write-set test selects the eight packages WP-51 to WP-58; WP-59 is a follow-up and is not one of them."
+    },
+    {
+      "wp": "WP-59",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Issue #80 (wp/59-seat-copy): registers the WP-59 assignment and its path exceptions."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/blocks/InvestorIntroductionsOffer.astro",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/geo/llms-input.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/reference/resources.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/data/faq.yaml",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/data/glossary.yaml",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/pages/faq/index.astro",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-60/fixtures/reference-originals.json",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language ; the pinned FAQ and glossary hashes follow the reworded originals (what-is-a-seat is now what-is-a-dedicated-team, seat is now team-role)."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-78/faq-data.test.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the pinned startup group \"Seats and pricing\" is now \"Team size and pricing\"."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-78/faq-page.test.ts",
+      "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the pinned FAQ meta description follows the reworded page description."
+    },
+    {
       "wp": "WP-25",
       "path": ".astro-magazine/events.ndjson",
       "reason": "Studio checkpoint (#91): the append-only event log is integrator-owned; seq 3 onward are the wave 9 to 11 merges, demo push pipelines and issue closures reconstructed from GitLab, each with its source id."
@@ -4290,6 +4429,156 @@
       "wp": "WP-23",
       "path": ".astro-magazine/plans/wave9/statistics.json",
       "reason": "Wave 11 (#89): corrects register entry ST-33 to the Fed SBCS 2026 age bands the page prints (48% for firms aged 0 to 5, 63% for firms aged 21 or more); the register said 61% for 16 or more."
+    },
+    {
+      "wp": "WP-60",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3), WP-99 closing package (#49): scoped to the CR entries for src/components/forms/copy.ts, files in this package's own write set. The brief consent line, the delivery sentence and the partner no-partnership notice are pinned there (WP-63 and WP-65 handoffs). The counsel record is written by the release owner from the handoff's proposed entries (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-75",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3), WP-99 closing package (#49): scoped to the CR entries for src/content/pages/compare/incubator-vs-venture-studio.mdx, dedicated-team-vs-freelancers.mdx, incubator-vs-other-programs.mdx and onshore-vs-offshore-teams.mdx under src/content/pages/compare/, files in this package's own write set. The entries are the counsel items proposed in the WP-75 handoff. The counsel record is written by the release owner from the handoff's proposed entries (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-80",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3), WP-99 closing package (#49): scoped to the CR entries for src/content/briefs/*.md and infra/intake/briefs/*.md for the four audience briefs (early-stage-diligence, ai-company-diligence, corporate-spinouts, partnering-with-founders), files in this package's own write set. The entries are the counsel items proposed in the WP-80 handoff. The counsel record is written by the release owner from the handoff's proposed entries (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-99",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 close (#49 gap item 5, wp/99-counsel-register): adds the counsel entries CR-26 to CR-41 proposed in the WP-63, WP-64, WP-65, WP-75 and WP-80 handoffs and corrects the form-route counts in the #106 section. scoped to adding CR-26 to CR-41 and correcting the form-route counts in the one #106 paragraph of section 3. No other CR entry, no runbook section is changed. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-99",
+      "path": ".astro-magazine/handoffs/wp-78.md",
+      "reason": "Wave 8 close (#49 gap item 5): records the resolution of the open WP-78 question for WP-99 (the cost answer no longer says seat-based). That one line only."
+    },
+    {
+      "wp": "WP-99",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 8 close (#49 gap item 5): appends the WP-60, WP-75, WP-80 and WP-99 RELEASE.md exceptions that the new counsel entries need (frozen path, append-only)."
+    },
+    {
+      "wp": "WP-59",
+      "path": ".astro-magazine/sources/wp-65.json",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": ".astro-magazine/sources/wp-72.json",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/diagrams/SeatDiagram.astro",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/diagrams/SeatRosterPanel.astro",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/islands/we-team-composer/TeamComposer.astro",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/network/roles.ts",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/program/SeatDiagram.astro",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/program/roles.ts",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/components/tools/registry.ts",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/content/pages/journey/after-you-apply.mdx",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/content/pages/journey/onboarding-checklist.mdx",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/content/pages/network/index.mdx",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/content/pages/network/operators.mdx",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/content/pages/tools/team-composer.mdx",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/pages/network/operators/index.astro",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/pages/services/index.astro",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/pages/styleguide.astro",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/pages/tools/team-composer.astro",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "src/scripts/team-composer.ts",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/e2e/interaction.spec.ts",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-03/team-composer.test.ts",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-59/no-seat-framing.test.ts",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+    },
+    {
+      "wp": "WP-59",
+      "path": "tests/unit/wp-76/surfaces.ts",
+      "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
     },
     {
       "wp": "WP-35",

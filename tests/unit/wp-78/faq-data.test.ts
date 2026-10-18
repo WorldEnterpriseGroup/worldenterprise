@@ -25,7 +25,7 @@ const AUDIENCES = ['startup', 'investor', 'partner', 'corporate'] as const;
 /** The groups WP-78 adds, per audience, in the order the page shows them. The general group lists only the topics WP-78 added to it. */
 const NEW_GROUPS: Readonly<Record<'general' | (typeof AUDIENCES)[number], readonly string[]>> = {
   general: ['Your details and this site', 'Founder tools'],
-  startup: ['Applying', 'How the program works', 'Dream, Build and Grow', 'Service lines', 'Seats and pricing'],
+  startup: ['Applying', 'How the program works', 'Dream, Build and Grow', 'Service lines', 'Team size and pricing'],
   investor: ['Asking to meet a company', 'Before you ask', 'What WE does and does not do'],
   partner: ['Who can send an enquiry', 'What an enquiry does and does not create', 'After you send an enquiry'],
   corporate: ['Starting from an employer', 'What WE does and does not do for you'],

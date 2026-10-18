@@ -1,6 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 import { FULL_HD, SMALLEST_PHONE, expectBandsFullBleed, expectFullWidth, expectNoHorizontalScroll, expectReadableProse } from '../wp-51/lib/full-width.ts';
 
@@ -62,7 +62,7 @@ test.describe('the sales pages', () => {
       await expectNamedDrawings(page);
       await expectSourceLinksResolve(page);
       await expectNoHorizontalScroll(page);
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const results = await analyzePage(page);
       expect(results.violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
       expect(seen.consoleErrors).toEqual([]);
       expect(seen.pageErrors).toEqual([]);

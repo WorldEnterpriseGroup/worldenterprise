@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -145,4 +145,128 @@ test('a lookup that hangs is cut off at the lookup timeout and retried', { skip:
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+// Merge mode (#111): `push-slot.sh merge <iid> <sha>` serializes merges to demo. The status lookup and the merge call are stand-ins
+// (WAVE8_STATUS_CMD, WAVE8_MERGE_CMD). Before the merge the stand-in demo pipeline is "running" for `runningLookups` lookups and then
+// success; once the merge stand-in has run, the newest demo pipeline is the merge commit's, with the result in the `result` file.
+
+interface MergeSandbox {
+  readonly dir: string;
+  readonly env: NodeJS.ProcessEnv;
+  readonly events: () => readonly string[];
+}
+
+function mergeSandbox(options: { readonly runningLookups?: number; readonly result?: string; readonly mergeFails?: boolean; readonly mergeSeconds?: number }): MergeSandbox {
+  const dir = mkdtempSync(join(tmpdir(), 'push-slot-merge-'));
+  const events = join(dir, 'events.log');
+  writeFileSync(events, '');
+  writeFileSync(join(dir, 'lookups'), '0');
+  writeFileSync(join(dir, 'result'), options.result ?? 'success');
+  writeFileSync(
+    join(dir, 'status.sh'),
+    [
+      '#!/usr/bin/env bash',
+      `now="$(date -u +%Y-%m-%dT%H:%M:%SZ)"`,
+      `n=$(( $(cat "${join(dir, 'lookups')}") + 1 )); echo "$n" > "${join(dir, 'lookups')}"`,
+      `if [ -e "${join(dir, 'merged')}" ]; then echo "10 $(cat "${join(dir, 'result')}") $now"; exit 0; fi`,
+      `if [ "$n" -le ${options.runningLookups ?? 0} ]; then echo "9 running 2000-01-01T00:00:00Z"; else echo "9 success 2000-01-01T00:00:00Z"; fi`,
+    ].join('\n'),
+    { mode: 0o755 },
+  );
+  writeFileSync(
+    join(dir, 'merge.sh'),
+    [
+      '#!/usr/bin/env bash',
+      `echo "+ $1 lookups=$(cat "${join(dir, 'lookups')}")" >> "${events}"`,
+      options.mergeFails ? 'echo \'{"message":"405 Method Not Allowed"}\'; echo "- $1" >> "' + events + '"; exit 1' : '',
+      `sleep ${options.mergeSeconds ?? 0}`,
+      `touch "${join(dir, 'merged')}"`,
+      `echo "- $1" >> "${events}"`,
+      'echo \'{"state":"merged"}\'',
+    ].join('\n'),
+    { mode: 0o755 },
+  );
+  const env = {
+    ...process.env,
+    WAVE8_SLOT_DIR: join(dir, 'slots'),
+    WAVE8_STATUS_CMD: join(dir, 'status.sh'),
+    WAVE8_MERGE_CMD: join(dir, 'merge.sh'),
+    WAVE8_POLL_SECONDS: '1',
+    WAVE8_APPEAR_SECONDS: '5',
+  };
+  return { dir, env, events: () => readFileSync(events, 'utf8').split('\n').filter(Boolean) };
+}
+
+function runMerge(box: MergeSandbox, iid: string) {
+  return spawnSync('bash', [slotScript, 'merge', iid, 'abc123', '--project', '228'], { encoding: 'utf8', timeout: 60_000, env: box.env });
+}
+
+test('merge waits while the newest demo pipeline is running, and merges only once it is final', { skip: skipReason }, () => {
+  const box = mergeSandbox({ runningLookups: 3 });
+  try {
+    const run = runMerge(box, '7');
+    assert.equal(run.status, 0, `${run.stdout}\n${run.stderr}`);
+    assert.match(run.stdout, /newest demo pipeline 9 is running, waiting/);
+    assert.match(run.stdout, /newest demo pipeline 9 is final: success/);
+    const merged = box.events().find((line) => line.startsWith('+ 7'));
+    assert.ok(merged, 'the merge call happened');
+    assert.match(merged, /lookups=4/, 'three lookups saw the pipeline running before the merge');
+  } finally {
+    rmSync(box.dir, { recursive: true, force: true });
+  }
+});
+
+test('the demo merge lock is exclusive: two merges never overlap', { skip: skipReason, timeout: 60_000 }, async () => {
+  const box = mergeSandbox({ mergeSeconds: 2 });
+  try {
+    const start = (iid: string) =>
+      new Promise<number | null>((resolve) => {
+        const child = spawn('bash', [slotScript, 'merge', iid, 'abc123'], { env: box.env, stdio: 'ignore' });
+        child.on('close', resolve);
+      });
+    const codes = await Promise.all([start('1'), start('2')]);
+    assert.deepEqual(codes, [0, 0]);
+    const log = box.events().map((line) => line.split(' ').slice(0, 2).join(' '));
+    assert.equal(log.length, 4);
+    // Each merge ends before the other begins: the pairs are adjacent.
+    assert.equal(log[0]?.slice(2), log[1]?.slice(2));
+    assert.equal(log[2]?.slice(2), log[3]?.slice(2));
+    assert.equal(log[0]?.[0], '+');
+    assert.equal(log[1]?.[0], '-');
+  } finally {
+    rmSync(box.dir, { recursive: true, force: true });
+  }
+});
+
+test('a merge the API refuses exits 2, shows the API message and does not wait for a pipeline', { skip: skipReason }, () => {
+  const box = mergeSandbox({ mergeFails: true });
+  try {
+    const run = runMerge(box, '8');
+    assert.equal(run.status, 2, `${run.stdout}\n${run.stderr}`);
+    assert.match(run.stdout, /405 Method Not Allowed/);
+    assert.match(run.stderr, /merge refused \(405\)/);
+    assert.doesNotMatch(run.stdout, /waiting for the demo pipeline of the merge commit/);
+  } finally {
+    rmSync(box.dir, { recursive: true, force: true });
+  }
+});
+
+test('the demo pipeline of the merge commit becomes the exit code: success 0, failed 1, canceled 1', { skip: skipReason }, () => {
+  for (const [result, code] of [['success', 0], ['failed', 1], ['canceled', 1]] as const) {
+    const box = mergeSandbox({ result });
+    try {
+      const run = runMerge(box, '9');
+      assert.equal(run.status, code, `${result}: ${run.stdout}\n${run.stderr}`);
+      assert.match(run.stdout, new RegExp(`pipeline 10: ${result}`));
+    } finally {
+      rmSync(box.dir, { recursive: true, force: true });
+    }
+  }
+});
+
+test('merge needs a numeric merge request iid and a sha', { skip: skipReason }, () => {
+  const run = spawnSync('bash', [slotScript, 'merge', 'abc'], { encoding: 'utf8', timeout: 30_000, env: { ...process.env, WAVE8_SLOT_DIR: join(tmpdir(), 'push-slot-usage') } });
+  assert.equal(run.status, 2);
+  assert.match(run.stderr, /usage: push-slot.sh merge <mr-iid> <sha>/);
 });

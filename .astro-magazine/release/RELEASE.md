@@ -66,7 +66,7 @@ allowed  launched form route /apply/ has form "intake" in disabled mode
 allowed  launched form route /contact/ has form "intake" in disabled mode
 ```
 
-Update of 2026-10-17 (issue #106, demo `33355b7`): the wave 8 forms add more launched routes behind the same endpoint, so with the variable unset `verify:release` lists 16 `launched form route` lines (`/apply/`, `/contact/`, `/investors/interest/`, `/network/partners/enquire/` and the ten `/briefs/<id>/` squeeze pages), not two. They all clear together once `PUBLIC_WE_INTAKE_API_URL` is set. The earlier three `launch:true route does not exist` lines for the `/industries/`, `/compare/` and `/journey/` hubs were a bug in `src/lib/route-core.ts` (the glob loader stores the hub entry `industries/index` as `industries`), fixed on `wp/106-release-prep`. The strict GitHub build also runs `audit:links --strict`, where an orphan route is an error: it now exempts ledger rows with `indexable: false`, which are the form success pages and `/pricing/`.
+Update of 2026-10-17 (issue #106, demo `33355b7`): the wave 8 forms add more launched routes behind the same endpoint, so with the variable unset `verify:release` lists 15 `launched form route` lines (`/apply/`, `/contact/`, `/investors/interest/`, `/network/partners/enquire/` and the eleven `/briefs/<id>/` squeeze pages: the ten briefs and the timeline brief `/briefs/real-timeline/`), not two. The count of 16 first written here was the number of keys in `FORM_ROUTES` in `src/data/forms.ts`, which includes `/newsletter/`; that route is `launch: false` while its endpoint is unset, so it is not a launched form route. Measured on demo `5616017` by filtering `routes` for `launch` and a form in `disabled` mode: 15 lines, 11 of them under `/briefs/`. They all clear together once `PUBLIC_WE_INTAKE_API_URL` is set. The earlier three `launch:true route does not exist` lines for the `/industries/`, `/compare/` and `/journey/` hubs were a bug in `src/lib/route-core.ts` (the glob loader stores the hub entry `industries/index` as `industries`), fixed on `wp/106-release-prep`. The strict GitHub build also runs `audit:links --strict`, where an orphan route is an error: it now exempts ledger rows with `indexable: false`, which are the form success pages and `/pricing/`.
 
 Expected warning, not a defect: `audit:links` (non-strict, on demo) used to list `/pricing/` as an orphan. It is deliberate (decision W9-13, WP-54): `/how-we-work/` replaced the packages page, `/pricing/` stays only as a noindex pointer for old links and bookmarks, leaves the sitemap, search and the llms files, and no page links to it while `flags.seatPrice` is off. Do not add a link to it.
 
@@ -247,7 +247,7 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:26`. Renders on:
 
 Source: `src/components/blocks/InvestorIntroductionsOffer.astro:31`. Renders on: /investors/meet-startups/ and /network/. The sentence after "A flat fee covers curation and preparation." is the fee sentence above, then the text continues.
 
-> L31: Investor Introductions is a separate, paid add-on. It is not part of any package, and no package requires it. A flat fee covers curation and preparation.
+> L31: Investor Introductions is a separate, optional add-on to an engagement, and no engagement requires it. A flat fee covers curation and preparation.
 >
 > L32: WE curates and limits the introductions, and makes them only after the readiness
 >
@@ -262,7 +262,7 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:31`. Renders on:
 
 Source: `src/components/blocks/InvestorIntroductionsOffer.astro:43`. Renders on: /investors/ and /services/fundability-and-investor-readiness/.
 
-> L43: Investor Introductions is a separate, paid add-on for a company that has finished the readiness work in Service Line F. It is not part of any package, and no package requires it.
+> L43: Investor Introductions is a separate, optional add-on to an engagement, for a company that has finished the readiness work in Service Line F. No engagement requires it.
 >
 > L49: A flat fee covers curation and preparation: choosing which investors may fit your company, and preparing your materials for them.
 >
@@ -517,6 +517,257 @@ Source: `src/content/pages/about/facts.mdx:40`. Renders on: /about/facts/, its M
 > L42: No. Investor Introductions is a separate, paid add-on with a flat fee. The fee does not depend on whether any investment closes.
 >
 > L44: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-26. Brief request, the consent line (new wording, OP-COUNSEL)
+
+Source: `src/components/forms/copy.ts:66`. Renders on: /briefs/<id>/ (the squeeze form of each brief).
+
+Proposed in the WP-63 handoff (`.astro-magazine/handoffs/wp-63.md`, "Counsel entries proposed", item 1) and the WP-80 handoff (`.astro-magazine/handoffs/wp-80.md`, item 1); claims C-05 and C-27. Counsel confirms that the line covers sending the brief by email and a reply to the request, that it implies no marketing consent, no offer and no investor relationship, and that no further consent line is needed per brief. If counsel wants the investor briefs to differ, the sentence to consider is: "WE does not treat this request as an expression of interest in any investment."
+
+> L66: I agree that WE may use these details to send me this brief and answer my request, as described in the privacy notice.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-27. Brief request, the delivery sentence in the form notice (new wording, OP-COUNSEL)
+
+Source: `src/components/forms/copy.ts:56`. Renders on: /briefs/<id>/.
+
+Proposed in the WP-63 handoff ("Counsel entries proposed", item 2); claim C-27, decision W7-5. Counsel confirms that the sentence states the delivery by email and gives no delivery time.
+
+> L56: WE sends the brief by email to the address you give.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-28. Brief pages, the outline and delivery sentence, the not-accepting message, the not-advice line and the research link (new wording, OP-COUNSEL)
+
+Source: `src/components/briefs/copy.ts:15`. Renders on: /briefs/<id>/ (outline and delivery sentence, not-advice line), the same pages while no endpoint is set (not-accepting message), and the open research pages (research link).
+
+Proposed in the WP-63 handoff ("Counsel entries proposed", items 2 to 4); decisions W7-5 and W8-24, claim C-27. Counsel confirms that the not-advice line is enough for the legal and AI briefs, which describe tax classification and the EU AI Act, and says whether the briefs should carry a "current as of" date in the body as they do now. OP-ENDPOINT-VAR (`PUBLIC_WE_INTAKE_API_URL`) decides whether the not-accepting message or the live form shows.
+
+> L15: WE sends the full text by email to the address you give.
+>
+> L24: WE is not accepting brief requests on this page yet, and the form cannot be sent.
+>
+> L25: This brief gives considerations for founders. It is not legal, tax or investment advice.
+>
+> L58: WE also writes longer executive briefs for founders, which are sent by email on request.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-29. Brief request, the thanks page (new wording, OP-COUNSEL)
+
+Source: `src/content/pages/briefs/thanks.md:10`. Renders on: /briefs/thanks/ (noindex).
+
+Proposed in the WP-63 handoff ("Counsel entries proposed", item 2); claim C-27. Counsel confirms that the page states the delivery by email and gives no delivery time.
+
+> L10: Your request has been sent to WE. WE sends the brief by email to the address you gave. WE does not state a delivery time on this site, so check that the address you entered is one you read, and look in your spam folder if nothing arrives.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-30. AI-native build brief, the EU AI Act and the not-advice line (new wording, OP-COUNSEL)
+
+Source: `src/content/briefs/ai-native-build.md:30`. Renders on: /briefs/ai-native-build/.
+
+Proposed in the WP-63 handoff ("Counsel entries proposed", item 5). Counsel confirms that reporting the European Commission page for a general audience, and saying to check the current schedule, is the right level for a page read by founders who may sell in the European Union.
+
+> L30: It reports what the National Institute of Standards and Technology, OWASP, the European Commission and two model vendors publish on six considerations, and it labels its own analysis as analysis.
+>
+> L36: It is general information for founders. It is not legal, tax or investment advice.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-31. Early-stage diligence brief, the investor abstract and its not-advice line (new wording, OP-COUNSEL)
+
+Source: `src/content/briefs/early-stage-diligence.md:33`. Renders on: /briefs/early-stage-diligence/.
+
+Proposed in the WP-80 handoff (`.astro-magazine/handoffs/wp-80.md`, "Counsel entries proposed", items 2 and 4). Counsel confirms that the line is enough for a brief that describes securities exemptions, tax elections and AI rules, and that "investment advice" is the right term for the investor pair.
+
+> L33: The brief describes how the subject works in general. It is about no company and is not an assessment of any. It is general information for investors. It is not legal, tax or investment advice.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-32. Early-stage diligence brief, the gated text: securities-law summaries and the closing (new wording, OP-COUNSEL; sent by email, not rendered on a page)
+
+Source: `infra/intake/briefs/early-stage-diligence.md:75`. Renders on: The email that carries the brief (gated; the open page shows only the abstract in the entry above).
+
+Proposed in the WP-80 handoff ("Counsel entries proposed", items 3 and 4). Counsel confirms that reporting Rule 506(b), the Form D notice period, the accredited investor definition, Rule 83(b) elections and section 1202 as general information, each attributed to a government source and quoted within 25 words, is not an offer or a solicitation, and that the brief says enough to avoid reading as an offering document. Counsel confirms the no-promise sentence.
+
+> L75: A company that sold shares to investors had to fit each sale within a registration or an exemption from it.
+>
+> L77: The regulation defines who an accredited investor is.
+>
+> L151: This brief cannot tell you whether any company is worth engaging with. It is not an assessment of any company, and it is not a recommendation to invest in one. WE makes no promise of funding.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-33. AI company diligence brief, the investor abstract and the closing (new wording, OP-COUNSEL)
+
+Source: `src/content/briefs/ai-company-diligence.md:34`. Renders on: /briefs/ai-company-diligence/.
+
+Proposed in the WP-80 handoff ("Counsel entries proposed", items 2 and 3). Counsel confirms that the line is enough for a brief that describes AI rules, and that "investment advice" is the right term for the investor pair.
+
+> L34: It makes no assessment of any company, offers no recommendation to invest, and names no company.
+>
+> L36: This brief is general information for investors. It is not legal, tax or investment advice.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-34. AI company diligence brief, the gated closing (new wording, OP-COUNSEL; sent by email, not rendered on a page)
+
+Source: `infra/intake/briefs/ai-company-diligence.md:174`. Renders on: The email that carries the brief (gated).
+
+Proposed in the WP-80 handoff ("Counsel entries proposed", item 3). Counsel confirms the no-promise wording.
+
+> L174: This brief is general information. It is not an assessment of any company, and it is not a recommendation to invest in one. WE makes no promise of funding.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-35. Corporate spinouts brief, the abstract and its not-advice line (new wording, OP-COUNSEL)
+
+Source: `src/content/briefs/corporate-spinouts.md:36`. Renders on: /briefs/corporate-spinouts/.
+
+Proposed in the WP-80 handoff ("Counsel entries proposed", items 2 and 5). Counsel confirms that the brief claims nothing about any corporate client.
+
+> L36: The brief ends with questions to put to counsel and with a plain statement of the limits of its sources, which are federal rules plus one state's company law. No company is named, no particular arrangement is described and no corporate client is claimed.
+>
+> L38: This brief is general information for corporate teams. It is not legal, tax or investment advice.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-36. Corporate spinouts brief, the gated text: Rule 701, section 409A and the no-promise sentence (new wording, OP-COUNSEL; sent by email, not rendered on a page)
+
+Source: `infra/intake/briefs/corporate-spinouts.md:76`. Renders on: The email that carries the brief (gated).
+
+Proposed in the WP-80 handoff ("Counsel entries proposed", items 3 and 5). Counsel confirms the report of SBA affiliation, Rule 701 and sections 355, 409A and 83, and the no-promise sentence, and whether this brief should carry that sentence at all, since it does not concern funding.
+
+> L76: Each step has a securities question.
+>
+> L82: Section 409A of the Code concerns nonqualified deferred compensation plans.
+>
+> L162: WE makes no promise of funding, and nothing in this brief is an offer, a recommendation or a promise of any outcome for any venture.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-37. Partnering with founders brief, the abstract (new wording, OP-COUNSEL)
+
+Source: `src/content/briefs/partnering-with-founders.md:34`. Renders on: /briefs/partnering-with-founders/.
+
+Proposed in the WP-80 handoff ("Counsel entries proposed", items 2, 3 and 5). Counsel confirms that the brief names no company and promises no introduction, and whether it should carry the no-promise sentence that the other three carry.
+
+> L34: The brief names no company and describes no particular arrangement. It makes no promise of an introduction, a partnership or funding, and it does not recommend a structure.
+>
+> L36: This brief is general information for partners. It is not legal, tax or investment advice.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-38. Partners pages, the no-partnership and no-promise sentences (new wording, OP-COUNSEL)
+
+Source: `src/components/partners/copy.ts:68`. Renders on: /network/partners/, /network/partners/how-it-works/, /network/partners/faq/ and /network/partners/enquire/.
+
+Proposed in the WP-65 handoff (`.astro-magazine/handoffs/wp-65.md`, "Open items", item 3, CR-new-a): the hub and FAQ answers on "does an enquiry create a partnership" and "does WE endorse". Counsel confirms that the sentences create no partnership, referral arrangement or endorsement, and that the introduction sentence is acceptable. The sentences and their sources are enumerated in `.astro-magazine/sources/wp-65.json`.
+
+> L68: An enquiry creates no partnership, no referral arrangement and no commitment on either side.
+>
+> L69: WE reads each enquiry and decides whether to talk further.
+>
+> L70: WE names no partner on this site until a written record exists.
+>
+> L71: WE does not state a response time on this site.
+>
+> L72: WE does not promise a partner a meeting, a reply, an introduction or a place on this site.
+>
+> L73: WE introduces a partner to a founder only when the founder asks for help in that category and agrees to the introduction.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-39. Partner enquiry form, the no-partnership notice (new wording, OP-COUNSEL)
+
+Source: `src/components/forms/copy.ts:60`. Renders on: /network/partners/enquire/.
+
+Proposed in the WP-65 handoff ("Open items", item 3, CR-new-b). Counsel confirms the notice.
+
+> L60: Sending an enquiry does not create a partnership. WE decides whether to talk further.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-40. Partner enquiry thanks page (new wording, OP-COUNSEL)
+
+Source: `src/content/pages/network/partners/thanks.mdx:11`. Renders on: /network/partners/enquire/thanks/ (noindex).
+
+Proposed in the WP-65 handoff ("Open items", item 3, CR-new-c). Counsel confirms the page.
+
+> L11: Your enquiry has been sent to WE. WE reads each enquiry and decides whether to talk further. WE does not state a response time on this site, so check that the address you entered is one you read.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-41. Comparison page: incubator vs venture studio, the "where each fits" cells and the silent-source statement (new wording, OP-COUNSEL)
+
+Source: `src/content/pages/compare/incubator-vs-venture-studio.mdx:17`. Renders on: /compare/incubator-vs-venture-studio/.
+
+Proposed in the WP-75 handoff (`.astro-magazine/handoffs/wp-75.md`, "Open items for main and counsel", item 6). Items (a) and (b). Counsel confirms that the wording about venture studios is neutral, and that stating that the sources are silent on a point is acceptable.
+
+> L17: The sources cited here do not state what incubators ask of a founder. The questions below cover what a given offer asks.
+>
+> L24: A Knowledge at Wharton report says a standalone venture studio can be the external party through which startups are created, launched and scaled.
+>
+> L32: An MIT study says studios apply venture-building methods to identify market opportunities and develop ideas for businesses.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-42. Comparison page: dedicated team vs freelancers, the "where each fits" cells (new wording, OP-COUNSEL)
+
+Source: `src/content/pages/compare/dedicated-team-vs-freelancers.mdx:23`. Renders on: /compare/dedicated-team-vs-freelancers/.
+
+Proposed in the WP-75 handoff (`.astro-magazine/handoffs/wp-75.md`, "Open items for main and counsel", item 6). Item (a). Counsel confirms that the wording about freelancers is neutral.
+
+> L23: The GOV.UK Service Manual says a team lacking needed skills may need to hire third parties or contractors.
+>
+> L31: It also says to buy only the skills needed and not to lock a service into a long contract with a fixed cost.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-43. Comparison page: incubator vs other programs, the silent-source statement (new wording, OP-COUNSEL)
+
+Source: `src/content/pages/compare/incubator-vs-other-programs.mdx:18`. Renders on: /compare/incubator-vs-other-programs/.
+
+Proposed in the WP-75 handoff (`.astro-magazine/handoffs/wp-75.md`, "Open items for main and counsel", item 6). Item (b). Counsel confirms that stating that the sources are silent on a point is acceptable.
+
+> L18: The sources cited here do not state what incubators ask of a founder. The questions below cover what a given offer asks.
+
+- [ ] Counsel approves as written
+- [ ] Counsel requires this change: ______
+
+#### CR-44. Comparison page: onshore vs offshore teams, the silent-source statement and the 2005 report (new wording, OP-COUNSEL)
+
+Source: `src/content/pages/compare/onshore-vs-offshore-teams.mdx:16`. Renders on: /compare/onshore-vs-offshore-teams/.
+
+Proposed in the WP-75 handoff (`.astro-magazine/handoffs/wp-75.md`, "Open items for main and counsel", item 6). Items (b) and (c). Counsel confirms that stating that the sources are silent on a point is acceptable, and that the dated references to the 2005 Government Accountability Office report (a PDF, cited as a dated report) are acceptable.
+
+> L16: The sources cited here do not state what an onshore team asks of a founder. The questions below cover what a given offer asks.
+>
+> L23: Its 2005 report says that, according to several business studies, a primary reason that organizations engage in offshoring is to reduce costs.
+>
+> L31: The 2005 report adds that access to a workforce in different time zones may enable companies to conduct work around the clock.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______

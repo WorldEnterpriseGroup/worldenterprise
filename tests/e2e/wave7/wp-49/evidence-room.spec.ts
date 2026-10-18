@@ -1,8 +1,8 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { findOverflow } from '../../support/overflow.ts';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-49: the evidence room builder. The checklist is the page without JavaScript; with it, the stage filter, the ticks and the copy
@@ -20,8 +20,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
   });
 
   test('ticks and the stage live in the address, survive a reload, and open the same list from a shared link', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await expect(page.locator('we-evidence-room')).toHaveAttribute('data-enhanced', '');
     await expect(page).not.toHaveURL(/#/);
     await box(page, '1b').check();
@@ -51,8 +52,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
   });
 
   test('a stage hides the items suggested for later stages, and a folder with nothing left disappears', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     const shown = page.locator('we-evidence-room [data-item]:not([hidden])');
     const all = await shown.count();
     await page.getByRole('radio', { name: 'Idea or prototype' }).check();
@@ -73,8 +75,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
   });
 
   test('a tick on an item a stage hides is kept, and comes back with the stage', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await box(page, '9a').check();
     await page.getByRole('radio', { name: 'Idea or prototype' }).check();
     await expect(page).toHaveURL(/done=9a/);
@@ -85,8 +88,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
   });
 
   test('an in-page anchor, such as the skip link, does not clear the ticks, and a bad hash is ignored', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await box(page, '2a').check();
     await page.evaluate(() => {
       window.location.hash = 'main';
@@ -98,8 +102,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
   });
 
   test('Clear all ticks empties the list and the address, and keeps the stage', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(`${ROUTE}#stage=first-product&done=1a.1b.2a`);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await expect(box(page, '2a')).toBeChecked();
     await page.getByRole('button', { name: 'Clear all ticks' }).click();
     await expect(box(page, '2a')).not.toBeChecked();
@@ -109,8 +114,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
 
   test('Copy as Markdown puts the shown list, with the ticks, on the clipboard', async ({ page, context, baseURL }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: baseURL ?? '' });
+    const network = quiet(page);
     await page.goto(`${ROUTE}#stage=idea-or-prototype&done=1a`);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await page.getByRole('button', { name: 'Copy as Markdown' }).click();
     await expect(page.locator('[data-message]')).toHaveText('Copied the checklist as Markdown.');
     const text = await page.evaluate(() => navigator.clipboard.readText());
@@ -126,8 +132,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
     await page.addInitScript(() => {
       Object.defineProperty(navigator, 'clipboard', { value: { writeText: () => Promise.reject(new Error('blocked')) }, configurable: true });
     });
+    const network = quiet(page);
     await page.goto(`${ROUTE}#done=1a`);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await page.getByRole('button', { name: 'Copy as Markdown' }).click();
     await expect(page.locator('[data-message]')).toContainText('Could not copy automatically (blocked)');
     await expect(page.locator('[data-fallback]')).toHaveJSProperty('open', true);
@@ -141,8 +148,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
         (window as unknown as { __printed: number }).__printed += 1;
       };
     });
+    const network = quiet(page);
     await page.goto(`${ROUTE}#done=1a`);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await page.getByRole('button', { name: 'Print this list' }).click();
     expect(await page.evaluate(() => (window as unknown as { __printed: number }).__printed)).toBe(1);
     await page.emulateMedia({ media: 'print' });
@@ -153,8 +161,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
 
   test('nothing is stored and no request leaves the page after it has loaded', async ({ page, baseURL }) => {
     const seen = watch(page, baseURL ?? '');
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     const after: string[] = [];
     page.on('request', (request) => after.push(`${request.method()} ${request.url()}`));
     await box(page, '1a').check();
@@ -169,8 +178,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
   });
 
   test('ticking and filtering change no layout above the list', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     const top = () => page.evaluate(() => Math.round((document.querySelector('.evroom__controls')?.getBoundingClientRect().height ?? 0) + (document.querySelector('.evroom__group')?.getBoundingClientRect().top ?? 0) + window.scrollY));
     const before = await top();
     await box(page, '1a').check();
@@ -188,8 +198,9 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
   });
 
   test('every item has a labelled checkbox in a row of at least 24px, and the stage group is a labelled radio group', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     const boxes = page.locator('we-evidence-room input[data-code]');
     const count = await boxes.count();
     expect(count).toBeGreaterThan(40);
@@ -206,9 +217,10 @@ test.describe('evidence room (the project sets the viewport: 1440 and 390)', () 
   });
 
   test('the page passes axe, with a stage chosen and items ticked, and nothing overflows', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(`${ROUTE}#stage=first-product&done=1a.r3.s2`);
-    await page.waitForLoadState('networkidle');
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    await network.settled();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     expect(await findOverflow(page)).toEqual([]);
   });
