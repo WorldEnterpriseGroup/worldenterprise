@@ -51,6 +51,19 @@ const stateOf = (index: number): 'done' | 'current' | 'next' => (index < current
     position: relative;
   }
 
+  /* The first stop holds the left edge of the frame and the last the right edge, so the three stops span the frame (WP-109). */
+  @media (min-width: 52rem) {
+    .stagerail__stop:last-child .stagerail__link {
+      justify-items: end;
+      text-align: end;
+    }
+
+    .stagerail__stop:not(:first-child, :last-child) .stagerail__link {
+      justify-items: center;
+      text-align: center;
+    }
+  }
+
   /* The node on top, its name under it, so the line to the next stop runs through the node row alone. */
   .stagerail__link {
     display: grid;

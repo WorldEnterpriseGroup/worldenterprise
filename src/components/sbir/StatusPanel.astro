@@ -99,6 +99,24 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3';
       font-size: var(--fs-h3);
     }
 
+    /* The compact status is a row at the wide frame: the stamp and the headline at the left, the statement at the right edge. */
+    @media (min-width: 62rem) {
+      .sbir-status--compact {
+        grid-template-columns: minmax(0, 1fr) fit-content(min(52rem, 60%));
+        column-gap: var(--space-block);
+        align-items: center;
+      }
+
+      .sbir-status--compact > :is(.sbir-status__stamp, .sbir-status__title) {
+        grid-column: 1;
+      }
+
+      .sbir-status--compact > :not(.sbir-status__stamp, .sbir-status__title) {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+    }
+
     .sbir-status__events {
       display: grid;
       gap: var(--sp-3);

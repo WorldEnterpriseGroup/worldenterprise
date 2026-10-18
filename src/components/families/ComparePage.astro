@@ -140,10 +140,11 @@ const rows = view.rows.map((row) => [row.label, ...row.cells]);
   .cmp-pair {
     display: grid;
     gap: var(--sp-5);
-    container-type: inline-size;
 
-    @container (min-width: 40rem) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    @media (min-width: 52rem) {
+      /* Equal columns, each at most 40rem so a short list stays a card, one pinned to each edge of the frame. */
+      grid-template-columns: repeat(2, minmax(0, 40rem));
+      justify-content: space-between;
     }
   }
 
