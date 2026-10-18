@@ -63,7 +63,7 @@ function stringsIn(value: unknown): string[] {
 export const UNCHANGED: ReadonlySet<string> = new Set([
   'Team Composer',
   'Sketch',
-  'Choose the roles your SaaS team needs and how many seats each role takes, then carry the sketch to the application.',
+  'Choose the roles your SaaS team needs and how many people each one needs, then carry the sketch to the application.',
   'No sign-up, no price.',
   'Metrics calculator',
   'Calculate',

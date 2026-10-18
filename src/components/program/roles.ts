@@ -1,4 +1,4 @@
-/** Seat roles as functions, not people (SAGE-PLAN 6.8 and 7.1). Used by the dedicated-teams page. Names come from src/data/seat-roles.ts. */
+/** Team roles as functions, not people (SAGE-PLAN 6.8 and 7.1). Used by the dedicated-teams page. Names come from src/data/seat-roles.ts. */
 import { seatRoleLabel } from '../../data/seat-roles.ts';
 import type { SeatRoleId } from '../../data/seat-roles.ts';
 

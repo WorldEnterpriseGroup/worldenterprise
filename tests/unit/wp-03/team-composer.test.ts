@@ -59,16 +59,16 @@ test('summary reports totals, lines and group seats', () => {
   const summary = summariseTeam({ 'front-end': 2, qa: 1, brand: 1 });
   assert.equal(summary.seats, 4);
   assert.equal(summary.roles, 3);
-  assert.equal(summary.headline, '4 seats across 3 roles.');
+  assert.equal(summary.headline, '4 people across 3 roles.');
   assert.deepEqual(summary.groups.map((g) => [g.id, g.seats]), [['build', 3], ['company', 1], ['coordination', 0]]);
-  assert.equal(summariseTeam({}).headline, 'No seats chosen yet.');
-  assert.equal(summariseTeam({ qa: 1 }).headline, '1 seat across 1 role.');
+  assert.equal(summariseTeam({}).headline, 'No roles chosen yet.');
+  assert.equal(summariseTeam({ qa: 1 }).headline, '1 person across 1 role.');
 });
 
 test('description and clipboard text are readable', () => {
   assert.equal(describeTeam({ 'back-end': 1, qa: 2 }), 'Back end (1); Quality assurance (2)');
-  assert.match(teamAsText({ qa: 2 }), /Quality assurance: 2 seats/);
-  assert.equal(teamAsText({}), 'Team sketch: no seats chosen.');
+  assert.match(teamAsText({ qa: 2 }), /Quality assurance: 2 people/);
+  assert.equal(teamAsText({}), 'Team sketch: no roles chosen.');
 });
 
 test('hand-off link carries the team in the fragment and nothing when empty', () => {

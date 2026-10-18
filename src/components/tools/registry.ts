@@ -18,7 +18,7 @@ export const TOOLS: readonly ToolEntry[] = [
     title: 'Team Composer',
     href: '/tools/team-composer/',
     eyebrow: 'Sketch',
-    summary: 'Choose the roles your SaaS team needs and how many seats each role takes, then carry the sketch to the application. No sign-up, no price.',
+    summary: 'Choose the roles your SaaS team needs and how many people each one needs, then carry the sketch to the application. No sign-up, no price.',
   },
   {
     title: 'Metrics calculator',
