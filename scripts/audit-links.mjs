@@ -3,7 +3,9 @@
 //   internal targets must exist in dist (directory routes through index.html); #fragments must exist in the target page;
 //   a link to a launched ledger route that is not built yet is "pending" (warning; error with --strict);
 //   external links must be https, and target=_blank links need rel noopener. External URLs are listed, never fetched.
-// It also reports orphan routes: built ledger routes that no other page links to (warning; error with --strict).
+// It also reports orphan routes: built ledger routes that no other page links to (warning; error with --strict). A ledger row with
+// `indexable: false` is exempt: a noindex route is not part of the discoverable site (form success pages, the /pricing/ pointer that
+// /how-we-work/ replaced), so having no inbound link is its design. Without the exemption the strict GitHub Pages build failed on them.
 // Usage: node scripts/audit-links.mjs [--dist dist] [--ledger reports/ledger.json] [--strict] [--json reports/links.json]
 import { existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -157,7 +159,7 @@ export function auditLinks({ distDir, pages, ledger = null, strict = false }) {
 
   const orphans = [];
   for (const row of ledger?.routes ?? []) {
-    if (!row.launch || !byRoute.has(row.path) || row.path === '/' || row.path === '/404.html' || FLOW_TARGETS.has(row.path)) continue;
+    if (!row.launch || !byRoute.has(row.path) || row.path === '/' || row.path === '/404.html' || FLOW_TARGETS.has(row.path) || row.indexable === false) continue;
     if ((inbound.get(row.path) ?? 0) === 0) orphans.push(row.path);
   }
   for (const [path, hit] of pendingHits) {

@@ -31,3 +31,17 @@ test('the form success page is a flow target, not an orphan, but a truly unlinke
   const result = linksApi.auditLinks({ distDir: root, pages: htmlApi.readPages(root), ledger });
   assert.deepEqual(result.orphans, ['/orphan/']);
 });
+
+test('a noindex route (a form success page, the /pricing/ pointer) is exempt from the orphan check, also under --strict', () => {
+  const noindex = (path: string) => ({ ...row(path), indexable: false });
+  const l = { routes: [row('/'), noindex('/pricing/'), noindex('/briefs/thanks/'), row('/orphan/')], l2: [], machine: [], styleguide: '/styleguide/' };
+  const root = makeDist({
+    ...cleanSite(),
+    'pricing/index.html': page({ body: '<h1>Pricing</h1>' }),
+    'briefs/thanks/index.html': page({ body: '<h1>Thanks</h1>' }),
+    'orphan/index.html': page({ body: '<h1>Orphan</h1>' }),
+  });
+  const result = linksApi.auditLinks({ distDir: root, pages: htmlApi.readPages(root), ledger: l, strict: true });
+  assert.deepEqual(result.orphans, ['/orphan/']);
+  assert.deepEqual(result.findings.filter((f) => f.level === 'error').map((f) => f.where), ['/orphan/']);
+});

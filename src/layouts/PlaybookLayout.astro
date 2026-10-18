@@ -48,6 +48,7 @@ const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
       <CiteThis title={meta.title} path={meta.path} date={meta.updated} />
     </div>
   </div>
+  <slot name="media" />
   {
     artifacts.length > 0 && (
       <div class="section section--soft section--defer">

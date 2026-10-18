@@ -92,3 +92,11 @@ test('computeRouteState reports launched routes that do not exist', () => {
   assert.ok(state.missing.includes('/program/'));
   assert.equal(state.isLive('/favicon.svg'), true);
 });
+
+test('a family hub exists when its pages entry id is stored with or without the trailing /index', () => {
+  const files = ['/src/pages/industries/[...hub].astro'];
+  // The glob loader strips `/index`, so a built hub entry `industries/index.mdx` has the id `industries`.
+  assert.equal(routeExists('/industries/', ctx(files, { pages: ['industries', 'industries/fintech'] })), true);
+  assert.equal(routeExists('/industries/', ctx(files, { pages: ['industries/index'] })), true);
+  assert.equal(routeExists('/industries/', ctx(files, { pages: ['industries/fintech'] })), false);
+});

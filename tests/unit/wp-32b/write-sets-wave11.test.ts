@@ -161,6 +161,8 @@ test('the layout, page and header exceptions named in the orchestration brief ar
       'tests/unit/wp-32b/write-sets-wave11.test.ts',
       '.astro-magazine/ownership.json',
       '.astro-magazine/plans/wave11/writesets.json',
+      // #89: ST-33 in the statistics register is corrected to the Fed report bands the page prints.
+      '.astro-magazine/plans/wave9/statistics.json',
     ],
     // WP-24 (#90): the WP-42 no-JS composer round trip runs with reduced motion (smooth scroll plus JavaScript off never lets
     // Playwright's actionability scroll settle once the tool schematic puts the button below the fold), registered in all three places.
@@ -173,7 +175,15 @@ test('the layout, page and header exceptions named in the orchestration brief ar
       '.astro-magazine/ownership.json',
       '.astro-magazine/plans/wave11/writesets.json',
     ],
-    'WP-25': ['src/components/layout/Header.astro'],
+    // WP-25 (#91): the studio checkpoint owns the event log and the snapshot directory, which the integrator owned before.
+    'WP-25': [
+      'src/components/layout/Header.astro',
+      '.astro-magazine/events.ndjson',
+      '.astro-magazine/checkpoints/**',
+      '.astro-magazine/ownership.json',
+      'tests/unit/wp-32b/write-sets-wave11.test.ts',
+      '.astro-magazine/plans/wave11/writesets.json',
+    ],
     'WP-26': ['src/layouts/ArticleLayout.astro', 'src/components/insights/**', 'src/components/geo/mdx-transform.ts', 'tests/unit/wp-91/mdx-transform.test.ts'],
   };
   for (const [wp, paths] of Object.entries(want)) {

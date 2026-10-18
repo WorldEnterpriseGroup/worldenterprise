@@ -4262,6 +4262,36 @@
       "reason": "Home LCP fix (wp/32-css-inline): the pure, unit-tested inlining policy astro.config.mjs uses (Astro's 4096 raw-byte fallback left the 4.4 to 13 KB component chunks external)."
     },
     {
+      "wp": "WP-25",
+      "path": ".astro-magazine/events.ndjson",
+      "reason": "Studio checkpoint (#91): the append-only event log is integrator-owned; seq 3 onward are the wave 9 to 11 merges, demo push pipelines and issue closures reconstructed from GitLab, each with its source id."
+    },
+    {
+      "wp": "WP-25",
+      "path": ".astro-magazine/checkpoints/**",
+      "reason": "Studio checkpoint (#91): the immutable gate snapshot of checkpoint.json that README.md promises under checkpoints/."
+    },
+    {
+      "wp": "WP-25",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Studio checkpoint (#91): registers the two WP-25 exceptions above (frozen path, append-only)."
+    },
+    {
+      "wp": "WP-25",
+      "path": "tests/unit/wp-32b/write-sets-wave11.test.ts",
+      "reason": "Studio checkpoint (#91): the wave 11 exception pin lists the WP-25 exceptions it now carries."
+    },
+    {
+      "wp": "WP-25",
+      "path": ".astro-magazine/plans/wave11/writesets.json",
+      "reason": "Studio checkpoint (#91): the wave 11 write-set map mirrors the WP-25 exceptions registered in ownership.json."
+    },
+    {
+      "wp": "WP-23",
+      "path": ".astro-magazine/plans/wave9/statistics.json",
+      "reason": "Wave 11 (#89): corrects register entry ST-33 to the Fed SBCS 2026 age bands the page prints (48% for firms aged 0 to 5, 63% for firms aged 21 or more); the register said 61% for 16 or more."
+    },
+    {
       "wp": "WP-35",
       "path": "src/data/claims.ts",
       "reason": "Issue #84 gap 2 (wp/35-flow-claims): registers claims C-30 to C-36 for the statistics printed on the four /data/ pages (append-only: CLAIM_IDS and seven registry entries; no existing entry changes)."
