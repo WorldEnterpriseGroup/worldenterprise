@@ -1,11 +1,12 @@
 import { expect, test } from '@playwright/test';
+import { ensureBudget } from '../../support/budgets.ts';
 import { isBuilt, liveRoutes } from '../../support/routes.ts';
 import { FULL_HD, expectNoHorizontalScroll } from '../wp-51/lib/full-width.ts';
 import { ALLOWED_BANDS, ALLOWED_ROUTES, expectContentExtent, measureBands, offenders } from '../wp-51/lib/content-extent.ts';
 
 // WP-109 (issue #109): at 1920x1080 the content of every band, not only its frame, uses the width. `expectFullWidth` proves a .container
-// spans the 110rem frame; this proves that what is inside it does too: a band whose text, media and cards span at least 1440px and leave
-// at most 240px empty on either side. Running text keeps its 46rem measure but never sits alone (a rail carries the page's contents list,
+// spans the 110rem frame; this proves that what is inside it does too: a band whose text, media and cards span at least 1440px, leave
+// at most 240px empty on either side and have no empty run over 160px between them. Running text keeps its reading measure (46rem, growing to 57rem with the type from 1440px) but never sits alone (a rail carries the page's contents list,
 // call to action and sources beside it); cards, grids and tables span the frame; a hero without media is a two-column arrangement.
 
 /** One route per page family, so a failure names the family. A route that is not built is skipped, not failed. */
@@ -51,7 +52,8 @@ test.describe('content extent at 1920x1080', () => {
   }
 
   test('every live route passes the content-extent gate', async ({ page }) => {
-    test.setTimeout(900_000);
+    // The walk is 320 pages at about two seconds each on a loaded runner, past the 3 minute cap of budgetForItems, so it asks for its own size.
+    ensureBudget(Math.max(180_000, liveRoutes.length * 3_000));
     const allowed = new Set(ALLOWED_ROUTES.map((a) => a.path));
     const skip = ALLOWED_BANDS.map((a) => a.match);
     const failures: string[] = [];
