@@ -12,6 +12,17 @@
       ]
     },
     {
+      "owner": "WP-109",
+      "title": "1920 content extent: no lone reading columns or empty hero halves (issue #109); every touched path outside its own tests is a registered exception",
+      "branch": "wp/109",
+      "stage": 3,
+      "write_set": [
+        "tests/unit/wp-109/**",
+        "tests/e2e/wave8/wp-109/**",
+        ".astro-magazine/handoffs/wp-109*"
+      ]
+    },
+    {
       "owner": "WP-01",
       "title": "Home and Program",
       "branch": "wp/01",
@@ -2169,6 +2180,171 @@
       "wp": "WP-108",
       "path": "scripts/lib/image-metadata.mjs",
       "reason": "Issue #108 (wp/108-privacy-gate): the container parsers and planted-metadata self-test behind audit:images."
+    },
+    {
+      "wp": "WP-109",
+      "path": "tests/unit/wp-16/layout-css.test.ts",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "tests/e2e/wave8/wp-51/lib/content-extent.ts",
+      "reason": "The content-extent gate lives next to expectFullWidth (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/styles/layout.css",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/styles/hero.css",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/styles/components.css",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/pages/pricing/index.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/pages/press/index.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/pages/playbooks/[slug].astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/pages/ecosystem/index.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/pages/about/frameworks/ubf/index.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/lib/rail-toc.ts",
+      "reason": "New shared helper: reads the h2 headings of a rendered body for the on-this-page list and detects blocks laid out for the frame."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/layouts/TemplateLayout.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/layouts/MarketingLayout.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/layouts/LegalLayout.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/layouts/GuideLayout.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/visuals/charts/DataSources.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/sbir/StatusPanel.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/sales/SituationPage.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/sales/BarList.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/research/media/MomentGrid.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/research/ResearchHubMedia.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/program/longevity/LongevitySpine.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/program/StageRail.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/layout/ProseRail.astro",
+      "reason": "New shared primitive: the rail beside running text (contents list, call to action, sources)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/families/visual/RelatedOrbit.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/families/JourneyPage.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/families/FamilyItems.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/families/ComparePage.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/ecosystem/Constellation.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/cta/page-cta.ts",
+      "reason": "Resolves the page call to action once for the end band and the rail."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/cta/cta.css",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/cta/CtaEnd.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
+    },
+    {
+      "wp": "WP-109",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
     },
     {
       "wp": "WP-03",
