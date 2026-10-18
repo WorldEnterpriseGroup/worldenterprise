@@ -25,5 +25,10 @@
     "maxGzipBytes": 10240,
     "exemptPrefixes": ["/tools/", "/fundability/", "/search/", "/apply/", "/contact/", "/pricing/", "/newsletter/"]
   },
-  "runs": 3
+  "runs": 3,
+  "benchmark": {
+    "$comment": "A run whose Lighthouse CPU benchmark index (environment.benchmarkIndex, measured once as the run starts) is under `floor` began on a starved runner. It is judged on every metric except TBT, the CPU-bound one, and its route gets up to `maxExtraRuns` extra runs to find a healthy one; a route whose every run is starved fails as 'TBT inconclusive', not as a regression. A healthy run over the TBT budget still fails. No budget is changed. The floor comes from the qa:lighthouse traces of 22 jobs (348 runs, pipelines 70271 to 73611). Twenty jobs without a CPU-starvation failure: 310 runs, index 989 to 3105, typically 1300 to 3000, and only 4 runs under 1200 (989, 1024, 1116 and 1171, all with TBT under 110 ms), so the floor costs those jobs almost no extra runs. Failed demo job 1227959 (pipeline 73611, merge 13936b3 changed tests only, the home page ships 9683 bytes of JavaScript): 20 runs at index 493 to 1303, and / read TBT 641/474/323 ms at index 989/969/1143, against 174 ms at index 1989 on green demo 73405 (job 1224704). All 6 runs over 200 ms at an index under 1200 (323 to 641 ms) are in job 1227959 and are excluded by 1200. The two borderline runs at index 1588 and 1599 (224 and 210 ms, in green jobs 1220778 and 1188696) stay judged, as does the one real regression seen (job 1176680, /library/one-page-problem-brief/, TBT 1969 ms at index 2208), which still fails.",
+    "floor": 1200,
+    "maxExtraRuns": 3
+  }
 }
