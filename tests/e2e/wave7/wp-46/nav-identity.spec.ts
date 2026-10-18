@@ -1,6 +1,5 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { AXE_TAGS } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 
 // WP-46: mega-menu identity (one tile per panel, each page once, consistent descriptions) and the mobile drawer.
 
@@ -65,7 +64,7 @@ test.describe('the mega panels', () => {
     await page.locator('[data-mega-trigger]').first().click();
     const panel = page.locator('[data-mega-panel]:popover-open');
     await expect(panel).toBeVisible();
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     const box = await panel.boundingBox();
     expect((box?.y ?? 0) + (box?.height ?? 0) <= (page.viewportSize()?.height ?? 0) + 1).toBe(true);
@@ -104,7 +103,7 @@ test.describe('the mobile drawer', () => {
     await page.getByRole('button', { name: 'Menu' }).tap();
     const drawer = page.locator('[data-mobile-drawer]');
     await expect(drawer).toBeVisible();
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     await expect(drawer.locator('.mobile-drawer__apply a')).toHaveAttribute('href', /\/apply\/$/);
   });

@@ -1,7 +1,7 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { findOverflow } from '../../support/overflow.ts';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-42, revised in wave 9 (W9-13, WP-54): the Composer round trip without packages. The Composer sketches roles, the call-to-action
@@ -18,8 +18,9 @@ test.describe('composer round trip (the project sets the viewport: 1440 and 390)
 
   test('a sketch reaches the application with the team in the fragment', async ({ page, baseURL }) => {
     const seen = watch(page, baseURL ?? '');
+    const network = quiet(page);
     await page.goto(COMPOSER);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     const composer = page.locator('we-team-composer');
     await composer.locator('input.composer__seats').first().fill('2');
     await expect(composer.locator('[data-headline]')).not.toContainText('No seats chosen yet');
@@ -43,9 +44,10 @@ test.describe('composer round trip (the project sets the viewport: 1440 and 390)
   });
 
   test('the Composer page passes axe, and nothing overflows', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(COMPOSER);
-    await page.waitForLoadState('networkidle');
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    await network.settled();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     expect(await findOverflow(page)).toEqual([]);
   });

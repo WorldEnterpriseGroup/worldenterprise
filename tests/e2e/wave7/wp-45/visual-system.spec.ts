@@ -1,8 +1,8 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { findOverflow } from '../../support/overflow.ts';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-45 (visual system v2): the statement hero, the stage rail, the scroll-driven and view-transition moments, and the three modes
@@ -192,7 +192,7 @@ test.describe('accessibility', () => {
       test.skip(!isBuilt(route), `${route} is not built`);
       await page.emulateMedia({ reducedMotion: 'reduce' });
       await page.goto(route);
-      const result = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const result = await analyzePage(page);
       expect(result.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);
     });
   }

@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { AXE_TAGS, quiet } from './support/page-guards.ts';
+import { analyzePage } from './support/budgets.ts';
 import { fileFor, isBuilt, liveRoutes } from './support/routes.ts';
 
 // axe-core at WCAG 2.2 AA on every built route, and again with the mega menu open (desktop) or the drawer open (mobile).
@@ -19,12 +20,7 @@ for (const { path: route } of liveRoutes) {
     const network = quiet(page);
     await page.goto(route);
     await network.settled();
-    // axe walks every element, so its cost grows with the page. The glossary and the insights hub (about 120 entries each) took 49 to
-    // 53 s on a loaded runner and failed all three attempts at the 45 s default (pipeline 71653, job 1192229). The budget is 45 s plus
-    // 10 s per 1,000 elements, capped at 3 minutes, so a big page gets time in proportion and a hung scan still fails.
-    const elements = await page.locator('*').count();
-    test.setTimeout(Math.min(45_000 + Math.ceil(elements / 1_000) * 10_000, 180_000));
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    const results = await analyzePage(page);
     expect(summarise(results.violations)).toEqual([]);
   });
 }
@@ -41,7 +37,7 @@ test('axe with the navigation open', async ({ page, isMobile }) => {
     await page.locator('[data-mega-trigger]').first().click();
     await expect(page.locator('[data-mega-panel]:popover-open')).toBeVisible();
   }
-  const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+  const results = await analyzePage(page);
   expect(summarise(results.violations)).toEqual([]);
 });
 

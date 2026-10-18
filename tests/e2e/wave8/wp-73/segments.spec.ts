@@ -1,9 +1,9 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { readdirSync, readFileSync } from 'node:fs';
 import { parse } from 'yaml';
 import { findOverflow } from '../../support/overflow.ts';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-73: the eight founder segment pages (/founders/<segment>/). Runs at 1440 and at 390. Each page is skipped until its route is built.
@@ -111,23 +111,25 @@ for (const { route, front } of pages) {
 
     test('the one path to apply goes to /apply/, and the page makes no third-party request', async ({ page, baseURL }) => {
       const seen = watch(page, baseURL ?? '');
+      const network = quiet(page);
       await page.goto(route);
       // The hero's primary action. The header also links /apply/, in a menu that is closed at some widths, so it is not the one to test.
       const apply = page.locator('a[data-hero-action="primary"]');
       await expect(apply).toHaveCount(1);
       await expect(apply).toHaveAttribute('href', /\/apply\/$/);
       await expect(apply).toBeVisible();
-      await page.waitForLoadState('networkidle');
+      await network.settled();
       expect(seen.thirdParty, 'requests that left the site while the page loaded').toEqual([]);
       await apply.click();
       await expect(page).toHaveURL(/\/apply\/$/);
     });
 
     test('no horizontal scroll at this width, and axe finds nothing at WCAG 2.2 AA', async ({ page }) => {
+      const network = quiet(page);
       await page.goto(route);
-      await page.waitForLoadState('networkidle');
+      await network.settled();
       expect(await findOverflow(page)).toEqual([]);
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const results = await analyzePage(page);
       expect(results.violations.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     });
   });

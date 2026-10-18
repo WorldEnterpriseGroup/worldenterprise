@@ -1,6 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-87: the guides, the templates and the readiness check's extra reading. A page that is not built yet is skipped, never failed, and a
@@ -46,9 +46,10 @@ test.describe('fundability hub', () => {
   });
 
   test('axe finds nothing at WCAG 2.2 AA', async ({ page }) => {
+    const network = quiet(page);
     await page.goto('/fundability/');
-    await page.waitForLoadState('networkidle');
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    await network.settled();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => v.id)).toEqual([]);
   });
 });
@@ -122,9 +123,10 @@ test.describe('library index', () => {
   });
 
   test('axe finds nothing at WCAG 2.2 AA', async ({ page }) => {
+    const network = quiet(page);
     await page.goto('/library/');
-    await page.waitForLoadState('networkidle');
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    await network.settled();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => v.id)).toEqual([]);
   });
 });
@@ -179,9 +181,10 @@ for (const guide of NEW_GUIDES) {
     });
 
     test('axe finds nothing at WCAG 2.2 AA', async ({ page }) => {
+      const network = quiet(page);
       await page.goto(route);
-      await page.waitForLoadState('networkidle');
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      await network.settled();
+      const results = await analyzePage(page);
       expect(results.violations.map((v) => v.id)).toEqual([]);
     });
   });

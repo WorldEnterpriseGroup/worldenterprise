@@ -1,6 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-74: the seven industry pages and the /industries/ hub. Runs at 1440 and at 390 (projects wave8-desktop and wave8-mobile).
@@ -81,7 +81,7 @@ for (const slug of VERTICALS) {
 
     test('axe finds no violation and no touch target is under 24 pixels', async ({ page }) => {
       await page.goto(route);
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const results = await analyzePage(page);
       expect(results.violations).toEqual([]);
       const small = await page.locator('main a, main button').evaluateAll((els) =>
         els
@@ -116,7 +116,7 @@ test.describe(HUB, () => {
 
   test('axe finds no violation on the hub', async ({ page }) => {
     await page.goto(HUB);
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    const results = await analyzePage(page);
     expect(results.violations).toEqual([]);
   });
 });

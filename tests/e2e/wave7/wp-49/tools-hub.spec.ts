@@ -1,7 +1,7 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { findOverflow } from '../../support/overflow.ts';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-49: the /tools/ hub lists the Team Composer and the tools after it, each a link that works without a script. WP-76 adds the runway
@@ -77,9 +77,10 @@ test.describe('tools hub (the project sets the viewport: 1440 and 390)', () => {
   });
 
   test('the hub passes axe and nothing overflows', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(HUB);
-    await page.waitForLoadState('networkidle');
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    await network.settled();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     expect(await findOverflow(page)).toEqual([]);
   });
