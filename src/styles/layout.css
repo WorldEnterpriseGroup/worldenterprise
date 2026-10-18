@@ -4,6 +4,13 @@
     margin-inline: auto;
   }
 
+  /* A container inside a container is the same frame, not a second inset (WP-109): without this a page that wraps its own .container in
+     a Section's one lost twice the gutter and its text sat 80px inside the frame. */
+  .container > .container:not(.container--prose) {
+    inline-size: auto;
+    margin-inline: 0;
+  }
+
   .container--prose {
     inline-size: min(100% - 2 * var(--gutter), var(--prose-max));
   }
@@ -182,6 +189,65 @@
     }
   }
 
+  /*
+   * The rail of a prose page (WP-109, ProseRail). The body takes the frame less the rail: running text in it holds the reading measure
+   * at the left edge (the .prose cap below) while tables, figures and grids use the whole column. The rail's sticky part (list and call
+   * to action) sits in the first row and the sources close the second row beside the end of the body, so nothing slides over them.
+   * Below 62rem the list is hidden and the call to action and sources follow the body.
+   */
+  .with-rail--page {
+    @media (min-width: 62rem) {
+      grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem);
+    }
+
+    & > .with-rail__body {
+      min-inline-size: 0;
+    }
+
+    & .toc-rail {
+      @media (max-width: 61.99rem) {
+        display: none;
+      }
+
+      /* The list is a card at the wide frame, as the call to action under it is, so the rail reads as one column of equal panels. */
+      @media (min-width: 62rem) {
+        padding: var(--sp-4) var(--sp-5);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+      }
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .with-rail--page > .with-rail__body {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+    }
+
+    .with-rail--page > .rail {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .with-rail--page > .rail-sources {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: end;
+    }
+
+    .with-rail--page:not(.with-rail--sources) {
+      grid-template-rows: auto;
+    }
+
+    .with-rail--page:not(.with-rail--sources) > .with-rail__body {
+      grid-row: 1;
+    }
+
+    .with-rail--page.with-rail--sources {
+      grid-template-rows: 1fr auto;
+    }
+  }
+
   .rail {
     position: sticky;
     inset-block-start: calc(var(--header-h) + var(--sp-5));
@@ -241,6 +307,92 @@
     background-size: 13rem 11rem, 17rem 19rem, 23rem 29rem, 100% 100%;
   }
 
+  /*
+   * Equal cards spread over the frame (WP-109). A list of questions, of challenges or of next steps is a set of cards, not one strip of
+   * text in the corner: two columns of at most 40rem, one pinned to each edge of the frame, and three equal columns from three items
+   * on. A card is never wider than 40rem, so a short card does not become a wide panel with a few words in it. Each card sizes itself
+   * (the rows align to the start), so opening one question never stretches its neighbours.
+   */
+  :is(.faq-list, .fitems, .sales-situation__qa, .eco-faq, .jny-check) {
+    @media (min-width: 52rem) {
+      grid-template-columns: repeat(2, minmax(0, 40rem));
+      justify-content: space-between;
+      align-items: start;
+    }
+
+    @media (min-width: 75rem) {
+      &:has(> :nth-child(3)) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  }
+
+  /*
+   * A heading with one short block of text (WP-109). A section that is only a heading and a paragraph or a plain list is a label and
+   * its text: at the wide frame the heading holds the left edge and the text takes the right edge, in one row, instead of two lines
+   * stacked in the corner. The text column hugs its longest line (never wider than 56rem), so the line stays readable. Sections with
+   * anything else in them (grids, tables, several blocks) are left to their own layout.
+   */
+  @media (min-width: 62rem) {
+    :is(.section, .band) > .container:is(.stack, :has(> .stack:only-child)) {
+      &.stack:has(> h2:first-child + :is(p, ul, ol):not(.fitems, .grid, .cards, .faq-list, .accordion):last-child),
+      & > .stack:has(> h2:first-child + :is(p, ul, ol):not(.fitems, .grid, .cards, .faq-list, .accordion):last-child) {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) fit-content(min(56rem, 62%));
+        column-gap: var(--space-block);
+        align-items: start;
+
+        & > h2 {
+          grid-column: 1;
+        }
+
+        & > :is(p, ul, ol) {
+          grid-column: 2;
+          grid-row: 1;
+          margin-block: 0;
+        }
+      }
+    }
+  }
+
+  /* A band that holds only a row of actions: the first at the left edge and the last at the right edge of the frame. */
+  @media (min-width: 62rem) {
+    .band > .container > .cluster:only-child {
+      justify-content: space-between;
+    }
+  }
+
+  /*
+   * The closing band of a page (WP-109): the question and its text at the left of the frame, the actions at the right edge, in one row
+   * at the wide frame. It stacks below 62rem. The band's container holds the heading, the text and one .cluster of actions. Any band
+   * built that way is a closing band, whether or not it carries .band--end.
+   */
+  .band--end > .container,
+  .band > .container:has(> h2:first-child):has(> .cluster:last-child):not(:has(> :is(.grid, .split, ul, ol, table, figure, form))) {
+    display: grid;
+    gap: var(--sp-4);
+    justify-items: start;
+
+    @media (min-width: 62rem) {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: var(--space-block);
+      align-items: center;
+
+      & > * {
+        grid-column: 1;
+      }
+
+      & > .cluster {
+        grid-column: 2;
+        grid-row: 1 / span 4;
+        flex-direction: column;
+        align-items: stretch;
+        justify-self: end;
+        text-align: center;
+      }
+    }
+  }
+
   /* Text beside a visual: the text column holds --split-text from the container edge, the visual takes the rest of the frame. */
   .split {
     display: grid;
@@ -254,6 +406,19 @@
 
     @media (min-width: 62rem) {
       grid-template-columns: minmax(0, var(--split-text)) minmax(0, 1fr);
+
+      /* A fixed-size picture sits at the frame's far edge, so the pair spans the frame instead of leaving the art floating mid-column
+         (WP-109). Fluid media (a chart, a figure, a panel) keeps the whole column: it has no width of its own to push to the edge. */
+      & > .split__media:has(> :is(svg, img, picture):only-child) {
+        justify-self: end;
+      }
+
+      /* A column of text on the media side (a heading and its paragraph) is one block that keeps its own width and holds the far edge. */
+      & > .split__media:has(> h2:first-child):not(:has(> :is(figure, table, ul.grid, .grid))) {
+        justify-self: end;
+        inline-size: fit-content;
+        max-inline-size: 100%;
+      }
     }
   }
 
@@ -264,6 +429,7 @@
   @media (min-width: 62rem) {
     .split--even {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+
     }
 
     .split--media-first > .split__media {
@@ -272,6 +438,10 @@
 
     .split--reverse {
       grid-template-columns: minmax(0, 1fr) minmax(0, var(--split-text));
+
+      & > .split__media:has(> :is(svg, img, picture):only-child) {
+        justify-self: start;
+      }
 
       & > .split__media {
         order: -1;

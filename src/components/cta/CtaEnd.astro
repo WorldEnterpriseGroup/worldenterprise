@@ -1,8 +1,7 @@
 ---
-import { resolveCta } from '../../data/cta/index.ts';
 import type { CtaCollection, CtaVariant } from '../../data/cta/index.ts';
-import { getRouteState } from '../../lib/route-state.ts';
 import CtaBand from './CtaBand.astro';
+import { resolvePageCta } from './page-cta.ts';
 
 /**
  * The default content of the `cta-end` slot of every layout: the band that the default map of `src/data/cta` gives this document,
@@ -17,16 +16,7 @@ interface Props {
 }
 
 const { path, collection, topic, cta } = Astro.props;
-const state = await getRouteState();
-const model = resolveCta(
-  {
-    path,
-    collection,
-    ...(topic !== undefined ? { topic } : {}),
-    ...(cta !== undefined ? { frontmatterCta: { variant: cta.variant, ...(cta.briefId !== undefined ? { briefId: cta.briefId } : {}) } } : {}),
-  },
-  state.isLive,
-);
+const model = await resolvePageCta({ path, collection, topic, cta });
 ---
 
 <CtaBand model={model} />

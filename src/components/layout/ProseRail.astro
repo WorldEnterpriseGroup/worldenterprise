@@ -1,0 +1,106 @@
+---
+import CtaAside from '../cta/CtaAside.astro';
+import { resolvePageCta } from '../cta/page-cta.ts';
+import SourcesList from '../blocks/SourcesList.astro';
+import type { CtaCollection, CtaVariant } from '../../data/cta/index.ts';
+import { railToc } from '../../lib/rail-toc.ts';
+import { href as withBase } from '../../lib/url.ts';
+import type { HeroCta } from '../hero/types.ts';
+
+/**
+ * The body of a prose page in the 110rem frame (WP-109, issue #109). Running text keeps the 46rem reading measure at the frame's left
+ * edge and never sits alone: beside it a rail carries what helps a reader of a long page. That is an "on this page" list built from
+ * the h2 headings of the body, the call to action the default map gives this page, and the sources where the page has any. The rail
+ * is sticky on a wide screen. Below 62rem it is not a rail: the list is hidden and the rest follows the body.
+ *
+ * The body is rendered to HTML here so the list can be read from it; `railToc` gives every h2 an id, so no page has to declare a
+ * table of contents. Slots: the default slot is the body, `before` and `after` sit in the body column around it, and `rail` adds
+ * content to the sticky rail between the list and the call to action.
+ */
+interface Source {
+  readonly id: string;
+  readonly title: string;
+  readonly publisher: string;
+  readonly url: string;
+  readonly accessed?: Date | undefined;
+}
+
+interface Props {
+  path: string;
+  collection: CtaCollection;
+  /** The frontmatter `cta` override of the document. */
+  cta?: { readonly variant: CtaVariant; readonly briefId?: string | undefined } | undefined;
+  /** Classes of the element that wraps the body: `prose` for Markdown and long-form text, `flow-wide` for a marketing body. */
+  bodyClass?: string;
+  sources?: readonly Source[];
+  /** The body, already rendered to HTML by a layout that had to look at it. Without it the default slot is the body. */
+  html?: string;
+  /**
+   * Links for the rail of a page that has neither a list of headings nor a call to action (a squeeze page, a form page): the page's own
+   * hero actions, so the rail still tells the reader where to go.
+   */
+  jump?: readonly (HeroCta | undefined)[];
+  /** The list needs at least this many h2 headings to be worth showing. */
+  minHeadings?: number;
+}
+
+const { path, collection, cta, bodyClass = 'prose', sources = [], html: given, minHeadings = 2, jump = [] } = Astro.props;
+const { html, items } = railToc(given ?? (await Astro.slots.render('default')));
+const showToc = items.length >= minHeadings;
+const model = await resolvePageCta({ path, collection, cta });
+const hasRailSlot = Astro.slots.has('rail');
+const hasSources = sources.length > 0;
+const jumpLinks = showToc || model !== null ? [] : jump.filter((a): a is HeroCta => a !== undefined);
+const hasRail = showToc || hasRailSlot || model !== null || jumpLinks.length > 0;
+---
+
+<div class:list={['container', 'with-rail', 'with-rail--page', hasSources && 'with-rail--sources', !hasRail && !hasSources && 'with-rail--alone']}>
+  <div class="with-rail__body stack">
+    <slot name="before" />
+    <div class={bodyClass} set:html={html} />
+    <slot name="after" />
+  </div>
+  {
+    hasRail && (
+      <aside class="rail" aria-label="About this page">
+        {
+          showToc && (
+            <nav class="toc-rail" aria-label="On this page">
+              <p class="eyebrow">On this page</p>
+              <ol role="list">
+                {items.map((item) => (
+                  <li>
+                    <a href={`#${item.id}`}>{item.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )
+        }
+        {
+          jumpLinks.length > 0 && (
+            <nav class="toc-rail" aria-label="On this page">
+              <p class="eyebrow">On this page</p>
+              <ol role="list">
+                {jumpLinks.map((link) => (
+                  <li>
+                    <a href={withBase(link.href)}>{link.label}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )
+        }
+        <slot name="rail" />
+        <CtaAside model={model} />
+      </aside>
+    )
+  }
+  {
+    hasSources && (
+      <div class="rail-sources">
+        <SourcesList sources={sources} />
+      </div>
+    )
+  }
+</div>

@@ -105,6 +105,44 @@
     }
   }
 
+  /*
+   * A compact hero has no media, so on a wide screen its copy is two columns instead of one column with an empty right half (WP-109):
+   * the title at the frame's left edge, the lead and the actions at its right edge, the rule closing both. The grid places by the DOM
+   * order of the copy stack, so a hero without an eyebrow, a lead or actions still closes up; `dense` lets the lead and the actions
+   * fill beside the title. The second column fits its widest line (up to --hero-aside) and sits at the frame's right edge. The reading-column measure ('prose') keeps its one column, and so does everything below 62rem.
+   */
+  @media (min-width: 62rem) {
+    .hero--compact:not([data-measure='prose']) .hero__copy,
+    .hero--article:not([data-measure='prose']) .hero__copy {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) fit-content(var(--hero-aside, min(44rem, 45%)));
+      grid-auto-flow: row dense;
+      column-gap: var(--space-block);
+      row-gap: var(--sp-4);
+      align-items: start;
+
+      & > * {
+        grid-column: 1 / -1;
+      }
+
+      & > :is(h1, h2) {
+        grid-column: 1;
+        grid-row: span 2;
+        align-self: end;
+      }
+
+      & > .lead,
+      & > .byline,
+      & > .hero__actions {
+        grid-column: 2;
+      }
+
+      & > .lead {
+        align-self: end;
+      }
+    }
+  }
+
   /* Editorial mode keeps the soft wash; the first band after any hero starts one block below it. */
   .hero + .section,
   .hero + .toc + .section {
@@ -153,9 +191,19 @@
     }
   }
 
-  /* The article copy starts at the left edge of the article body and holds the reading measure. */
+  /* The article copy starts at the left edge of the article body and holds the reading measure. A wide screen splits it in two (see
+     above): the title at the left, the lead and byline over the article's rail at the right. */
   .hero[data-measure='rail'] .hero__copy {
     max-inline-size: var(--prose-max);
+
+    @media (min-width: 62rem) {
+      max-inline-size: none;
+    }
+  }
+
+  /* The article's second column is as wide as the rail under it. */
+  .hero--article {
+    --hero-aside: min(30rem, 45%);
   }
 
   .hero--console {
@@ -169,6 +217,11 @@
 
     & .hero__panel {
       box-shadow: var(--shadow-3);
+    }
+
+    /* A picture in the panel holds the panel's far edge, so the panel reads as the art's frame and the hero reaches the frame's edge. */
+    & .hero__panel > svg {
+      margin-inline-start: auto;
     }
   }
 

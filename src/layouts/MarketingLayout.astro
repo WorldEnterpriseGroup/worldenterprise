@@ -3,6 +3,8 @@ import BaseLayout from './BaseLayout.astro';
 import CtaEnd from '../components/cta/CtaEnd.astro';
 import HeroCompact from '../components/hero/HeroCompact.astro';
 import PageHero from '../components/hero/PageHero.astro';
+import ProseRail from '../components/layout/ProseRail.astro';
+import { hasFrameBlocks } from '../lib/rail-toc.ts';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 type Props = PageMeta &
@@ -10,7 +12,9 @@ type Props = PageMeta &
     title: string;
     /**
      * Body width (wave 9, W9-4). 'content', the default, is the full 110rem frame: text keeps the reading measure at the frame's left
-     * edge (.flow-wide) while figures, grids, tables and splits use the width. 'prose' is the centred 46rem reading column.
+     * edge (.flow-wide) while figures, grids, tables and splits use the width. A body of running text, one with no block laid out for
+     * the frame (hasFrameBlocks), gets the ProseRail beside it: an on-this-page list, the page's call to action. 'prose' is the
+     * centred 46rem reading column.
      */
     width?: 'content' | 'prose';
   };
@@ -23,6 +27,10 @@ const hasMedia = photo !== undefined || art !== undefined;
 // The hero copy shares the body's left edge: the frame edge in the wide body, the reading column in the 'prose' body.
 const heroMeasure = measure ?? (hasMedia || width === 'content' ? 'default' : 'prose');
 const bodyClass = width === 'prose' ? 'container container--prose prose' : 'container flow-wide prose';
+// The body is rendered once so the layout can see what it holds: running text sits beside the rail, a body with blocks made for the
+// frame keeps the whole width.
+const body = await Astro.slots.render('default');
+const railed = width === 'content' && body.trim() !== '' && !hasFrameBlocks(body);
 ---
 
 <BaseLayout {...meta} crumbs={crumbs}>
@@ -34,9 +42,13 @@ const bodyClass = width === 'prose' ? 'container container--prose prose' : 'cont
     )
   }
   <div class="section">
-    <div class={bodyClass}>
-      <slot />
-    </div>
+    {
+      railed ? (
+        <ProseRail html={body} path={meta.path} collection="pages" cta={cta} bodyClass="flow-wide prose" jump={[primary, secondary]} />
+      ) : (
+        <div class={bodyClass}><slot /></div>
+      )
+    }
   </div>
   <slot name="after" />
   <slot name="cta-end">{!Astro.slots.has('after') && <CtaEnd path={meta.path} collection="pages" cta={cta} />}</slot>

@@ -44,6 +44,30 @@
     padding-block: var(--space-block);
   }
 
+  /*
+   * On a wide screen the closing band is two columns that use the frame (WP-109): the words hold their measure at the left, the actions
+   * sit at the right edge of the card, so a 1760px band is not a 650px paragraph with an empty right half.
+   */
+  @media (min-width: 62rem) {
+    .cta--end {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: var(--sp-8);
+      align-items: center;
+
+      & > :not(.cta__actions) {
+        grid-column: 1;
+      }
+
+      & > .cta__actions {
+        grid-column: 2;
+        grid-row: 1 / span 3;
+        justify-self: end;
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  }
+
   .cta--aside {
     padding: var(--sp-5);
 

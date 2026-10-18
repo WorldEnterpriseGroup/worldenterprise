@@ -850,6 +850,27 @@
     font-size: var(--fs-sm);
   }
 
+  /* A sources band is a label and a list. At the wide frame the label sits at the left edge and the list at the right (WP-109), so the
+     band is one row that uses the frame instead of a short list in the corner. The rail's own sources stay stacked. */
+  @media (min-width: 62rem) {
+    .sources:not(.rail-sources .sources) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) fit-content(min(56rem, 60%));
+      column-gap: var(--space-block);
+      align-items: start;
+
+      & > :is(h2, h3) {
+        grid-column: 1;
+      }
+
+      & > .sources__list {
+        grid-column: 2;
+        grid-row: 1;
+        margin-block: 0;
+      }
+    }
+  }
+
   .methodology {
     padding: var(--sp-5);
     background: var(--color-bg-soft);
@@ -880,10 +901,30 @@
   .next__list {
     display: grid;
     gap: var(--sp-4);
+    /* Cards stay at most 40rem wide and spread to both edges of the frame, so two cards do not become two wide panels with a few words (WP-109). */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
     list-style: none;
     padding: 0;
     margin-block-start: var(--sp-4);
+
+    @media (min-width: 62rem) {
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 40rem));
+      justify-content: space-between;
+    }
+  }
+
+  /* One next step is a row across the frame: its name at the left edge, its description at the right (WP-109). */
+  @media (min-width: 62rem) {
+    .next__list:has(> li:only-child) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .next__list > li:only-child .next__link {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--sp-6);
+    }
   }
 
   .next__link,
@@ -1046,6 +1087,13 @@
     gap: var(--sp-2) var(--sp-4);
     list-style: none;
     padding: 0;
+
+    /* A jump bar: first entry at the left edge of the frame, last at the right edge (WP-109). */
+    @media (min-width: 62rem) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
   }
 
   .toc-rail {
@@ -1323,10 +1371,12 @@
     padding-block: var(--sp-6);
   }
 
+  /* The facts hold their own width: the first at the left edge of the frame, the last at the right edge (WP-109). */
   .factband__list {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: var(--sp-5);
-    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
     inline-size: min(100% - 2 * var(--gutter), var(--page-max));
     margin-inline: auto;
   }
@@ -1364,6 +1414,11 @@
 
     @media (min-width: 52rem) {
       grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+
+      /* The actions close the band at the frame's right edge (WP-109) instead of hanging under the words' column. */
+      & > .cluster {
+        justify-content: flex-end;
+      }
     }
   }
 
