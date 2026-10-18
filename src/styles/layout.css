@@ -190,14 +190,17 @@
   }
 
   /*
-   * The rail of a prose page (WP-109, ProseRail). The body takes the frame less the rail: running text in it holds the reading measure
-   * at the left edge (the .prose cap below) while tables, figures and grids use the whole column. The rail's sticky part (list and call
-   * to action) sits in the first row and the sources close the second row beside the end of the body, so nothing slides over them.
-   * Below 62rem the list is hidden and the call to action and sources follow the body.
+   * The rail of a prose page (WP-109, ProseRail): three columns that fill the frame. The start rail (the list of headings, or the
+   * call to action) and the end rail flex around the body, which holds the reading measure (--prose-max grows with the screen, with
+   * the reading type), so the width left over goes to the rails and the gaps and no track is empty. The sources close the last
+   * column's second row. Below 75rem the page is one column and the list is hidden.
    */
   .with-rail--page {
-    @media (min-width: 62rem) {
-      grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem);
+    @media (min-width: 75rem) {
+      grid-template-columns: minmax(0, var(--prose-max));
+      justify-content: space-between;
+      grid-template-rows: auto;
+      grid-auto-flow: row;
     }
 
     & > .with-rail__body {
@@ -205,46 +208,66 @@
     }
 
     & .toc-rail {
-      @media (max-width: 61.99rem) {
+      @media (max-width: 74.99rem) {
         display: none;
       }
 
-      /* The list is a card at the wide frame, as the call to action under it is, so the rail reads as one column of equal panels. */
-      @media (min-width: 62rem) {
+      /* The list is a card at the wide frame, as the call to action beside it is, so both rails read as equal panels. */
+      @media (min-width: 75rem) {
         padding: var(--sp-4) var(--sp-5);
         border: var(--border-hair);
         border-radius: var(--radius-md);
       }
     }
+
+    & > .rail--start:not(.rail--cta):has(> .toc-rail:only-child) {
+      @media (max-width: 74.99rem) {
+        display: none;
+      }
+    }
   }
 
-  @media (min-width: 62rem) {
-    .with-rail--page > .with-rail__body {
+  @media (min-width: 75rem) {
+    .with-rail--page.with-rail--start {
+      grid-template-columns: minmax(14rem, 1fr) minmax(0, var(--prose-max));
+    }
+
+    .with-rail--page.with-rail--end {
+      grid-template-columns: minmax(0, var(--prose-max)) minmax(16rem, 1.4fr);
+    }
+
+    .with-rail--page.with-rail--start.with-rail--end {
+      grid-template-columns: minmax(14rem, 1fr) minmax(0, var(--prose-max)) minmax(16rem, 1.4fr);
+    }
+
+    .with-rail--page > .rail--start {
       grid-column: 1;
       grid-row: 1 / span 2;
     }
 
-    .with-rail--page > .rail {
+    .with-rail--page > .with-rail__body {
+      grid-row: 1 / span 2;
+      grid-column: 1;
+    }
+
+    .with-rail--page.with-rail--start > .with-rail__body {
       grid-column: 2;
+    }
+
+    .with-rail--page > .rail--end {
       grid-row: 1;
+      grid-column: -2;
     }
 
     .with-rail--page > .rail-sources {
-      grid-column: 2;
       grid-row: 2;
+      grid-column: -2;
       align-self: end;
     }
 
-    .with-rail--page:not(.with-rail--sources) {
-      grid-template-rows: auto;
-    }
-
-    .with-rail--page:not(.with-rail--sources) > .with-rail__body {
-      grid-row: 1;
-    }
-
-    .with-rail--page.with-rail--sources {
-      grid-template-rows: 1fr auto;
+    /* A page with neither rail but sources keeps the sources beside the body. */
+    .with-rail--page:not(.with-rail--start):not(.with-rail--end).with-rail--sources {
+      grid-template-columns: minmax(0, var(--prose-max)) minmax(16rem, 1.4fr);
     }
   }
 
@@ -470,6 +493,10 @@
    * otherwise run past 80 characters in 46rem; body type reaches 46rem first. A callout straight in a prose container (a template's
    * "How to use this" box) is held the same way.
    */
+  :is(.flow-wide, .prose) {
+    font-size: var(--fs-read);
+  }
+
   :is(.flow-wide, .prose) :where(p, blockquote, h2, h3, h4, h5, h6),
   :is(.flow-wide, .prose) > :where(ul, ol, dl, .callout),
   .container--prose > :where(.callout) {

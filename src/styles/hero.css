@@ -107,17 +107,18 @@
 
   /*
    * A compact hero has no media, so on a wide screen its copy is two columns instead of one column with an empty right half (WP-109):
-   * the title at the frame's left edge, the lead and the actions at its right edge, the rule closing both. The grid places by the DOM
+   * the title at the frame's left edge, the lead in the middle and the actions at the right edge, all three level with the foot of the title, the rule closing the row. The grid places by the DOM
    * order of the copy stack, so a hero without an eyebrow, a lead or actions still closes up; `dense` lets the lead and the actions
-   * fill beside the title. The second column fits its widest line (up to --hero-aside) and sits at the frame's right edge. The reading-column measure ('prose') keeps its one column, and so does everything below 62rem.
+   * fill beside the title. The title and the lead fit their widest line (up to --hero-title and --hero-aside) and the actions take what they need, so the three share the width and the slack between them is a gutter, not a void. The reading-column measure ('prose') keeps its one column, and so does everything below 62rem.
    */
   @media (min-width: 62rem) {
     .hero--compact:not([data-measure='prose']) .hero__copy,
     .hero--article:not([data-measure='prose']) .hero__copy {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) fit-content(var(--hero-aside, min(44rem, 45%)));
+      grid-template-columns: fit-content(var(--hero-title, 44%)) fit-content(var(--hero-aside, 40rem)) auto;
+      justify-content: space-between;
       grid-auto-flow: row dense;
-      column-gap: var(--space-block);
+      column-gap: var(--sp-7);
       row-gap: var(--sp-4);
       align-items: start;
 
@@ -132,13 +133,15 @@
       }
 
       & > .lead,
-      & > .byline,
-      & > .hero__actions {
+      & > .byline {
         grid-column: 2;
+        align-self: end;
       }
 
-      & > .lead {
+      & > .hero__actions {
+        grid-column: 3;
         align-self: end;
+        margin-block-start: 0;
       }
     }
   }

@@ -90,6 +90,7 @@
     --fs-xs: clamp(0.8rem, 0.78rem + 0.1vw, 0.875rem);
     --fs-sm: clamp(0.9rem, 0.88rem + 0.1vw, 0.975rem);
     --fs-base: clamp(1.0625rem, 1.03rem + 0.16vw, 1.1875rem); /* 17 to 19px */
+    --fs-read: clamp(var(--fs-base), calc(var(--fs-base) + (100vw - 1440px) * 0.0104), 1.375rem); /* running text: the body size to 22px at 1920 */
     --fs-lead: clamp(1.1639rem, 1.0971rem + 0.2969vw, 1.3643rem); /* 18.6 to 21.8px, half a step */
     --fs-lg: clamp(1.275rem, 1.1775rem + 0.4333vw, 1.6975rem); /* 20.4 to 25.1px, step 1 */
     --fs-xl: clamp(1.53rem, 1.3503rem + 0.7987vw, 2.3087rem); /* 24.5 to 33.1px, step 2 */
@@ -158,7 +159,9 @@
      */
     --root-size: max(100%, 100vw / 120);
     --page-max: var(--content-max);
-    --prose-max: 46rem;
+    /* The reading measure and the reading type grow together from 1440px to 1920px (46rem to 57rem, 80ch of the larger type), so a wide
+       screen gets a larger page of text at the same line length, not a longer line. Below 1440px both are at their floors. */
+    --prose-max: clamp(46rem, 46rem + (100vw - 1440px) * 0.375, 57rem);
     --split-text: 40rem;
     --gutter: clamp(1rem, 0.0769rem + 4.1026vw, 5rem); /* 16px to 360, 60px at 1440, 80px at 1920 */
     --band-pad: clamp(3rem, 1.8462rem + 5.1282vw, 8rem); /* 48px at 360, 128px at 1920 */

@@ -16,7 +16,7 @@ const hero = strip(read('src/styles/hero.css'));
 test('the content frame is 110rem and every container uses it through --page-max', () => {
   assert.match(tokens, /--content-max:\s*110rem;/);
   assert.match(tokens, /--page-max:\s*var\(--content-max\);/);
-  assert.match(tokens, /--prose-max:\s*46rem;/, 'the reading column does not widen');
+  assert.match(tokens, /--prose-max:\s*clamp\(46rem,[^;]*57rem\);/, 'the reading column holds 46rem and grows to 57rem only together with the reading type');
   assert.match(tokens, /--split-text:\s*40rem;/);
   assert.match(layout, /\.container\s*\{\s*inline-size:\s*min\(100% - 2 \* var\(--gutter\), var\(--page-max\)\);/);
 });

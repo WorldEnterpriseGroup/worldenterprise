@@ -8,10 +8,12 @@ import { href as withBase } from '../../lib/url.ts';
 import type { HeroCta } from '../hero/types.ts';
 
 /**
- * The body of a prose page in the 110rem frame (WP-109, issue #109). Running text keeps the 46rem reading measure at the frame's left
- * edge and never sits alone: beside it a rail carries what helps a reader of a long page. That is an "on this page" list built from
- * the h2 headings of the body, the call to action the default map gives this page, and the sources where the page has any. The rail
- * is sticky on a wide screen. Below 62rem it is not a rail: the list is hidden and the rest follows the body.
+ * The body of a prose page in the 110rem frame (WP-109, issue #109). Running text keeps its reading measure and never sits alone: it is
+ * the middle of three columns that together fill the frame. The start column is an "on this page" list built from the h2 headings of
+ * the body (a page without a list gives the column to its call to action), the end column is the call to action the default map
+ * gives this page and the sources where the page has any. Both rails are sticky. The measure and the reading type grow together at
+ * wide screens (--prose-max, --fs-read), so the leftover width is absorbed by larger type and rails that flex, not by an empty
+ * track. Below 75rem the page is one column: the list is hidden and the rails follow the body.
  *
  * The body is rendered to HTML here so the list can be read from it; `railToc` gives every h2 an id, so no page has to declare a
  * table of contents. Slots: the default slot is the body, `before` and `after` sit in the body column around it, and `rail` adds
@@ -51,18 +53,27 @@ const model = await resolvePageCta({ path, collection, cta });
 const hasRailSlot = Astro.slots.has('rail');
 const hasSources = sources.length > 0;
 const jumpLinks = showToc || model !== null ? [] : jump.filter((a): a is HeroCta => a !== undefined);
-const hasRail = showToc || hasRailSlot || model !== null || jumpLinks.length > 0;
+const hasToc = showToc || jumpLinks.length > 0;
+const hasCta = model !== null;
+// The start column: the list of headings, or the call to action when the page has no list. The end column: what is left.
+const ctaAtStart = !hasToc && hasCta;
+const hasStart = hasToc || ctaAtStart;
+const hasEnd = hasRailSlot || (hasCta && !ctaAtStart);
 ---
 
-<div class:list={['container', 'with-rail', 'with-rail--page', hasSources && 'with-rail--sources', !hasRail && !hasSources && 'with-rail--alone']}>
-  <div class="with-rail__body stack">
-    <slot name="before" />
-    <div class={bodyClass} set:html={html} />
-    <slot name="after" />
-  </div>
+<div
+  class:list={[
+    'container',
+    'with-rail',
+    'with-rail--page',
+    hasStart && 'with-rail--start',
+    hasEnd && 'with-rail--end',
+    hasSources && 'with-rail--sources',
+  ]}
+>
   {
-    hasRail && (
-      <aside class="rail" aria-label="About this page">
+    hasStart && (
+      <aside class:list={['rail', 'rail--start', !hasToc && 'rail--cta']} aria-label={hasToc ? 'On this page' : 'About this page'}>
         {
           showToc && (
             <nav class="toc-rail" aria-label="On this page">
@@ -91,8 +102,20 @@ const hasRail = showToc || hasRailSlot || model !== null || jumpLinks.length > 0
             </nav>
           )
         }
+        {ctaAtStart && <CtaAside model={model} />}
+      </aside>
+    )
+  }
+  <div class="with-rail__body stack">
+    <slot name="before" />
+    <div class={bodyClass} set:html={html} />
+    <slot name="after" />
+  </div>
+  {
+    hasEnd && (
+      <aside class="rail rail--end" aria-label="About this page">
         <slot name="rail" />
-        <CtaAside model={model} />
+        {!ctaAtStart && <CtaAside model={model} />}
       </aside>
     )
   }
