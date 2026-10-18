@@ -59,6 +59,16 @@ export async function requireLink(page: Page, link: LinkRef, what: string): Prom
   return first;
 }
 
+/**
+ * Page errors that are the site's own. Chromium reports a skipped cross-document view transition (the site opts in with
+ * `@view-transition { navigation: auto }` in src/styles/motion.css) as an uncaught "Transition was aborted because of invalid
+ * state. ViewTransition opt-in disabled" error when a page is left while its transition is still pending, which a click-through
+ * walk does on purpose. The site has no startViewTransition or pageswap code of its own, so this is browser noise; the same
+ * filter is used in tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts. Every other page error still fails the step.
+ */
+const BENIGN_VIEW_TRANSITION = 'ViewTransition opt-in disabled';
+const realPageErrors = (seen: Watch): string[] => seen.pageErrors.filter((message) => !message.includes(BENIGN_VIEW_TRANSITION));
+
 /** Every step: the URL, one h1, a way forward, the page's primary and secondary actions, and no console error, page error or third party. */
 async function assertStep(page: Page, step: Step, seen: Watch): Promise<void> {
   await expect(page, `the visitor must be on ${step.page}`).toHaveURL((url) => url.pathname === step.page);
@@ -72,7 +82,7 @@ async function assertStep(page: Page, step: Step, seen: Watch): Promise<void> {
   }, new URL(page.url()).pathname);
   expect(forward, `${step.page} is a dead end: its main region links to no other page`).toBeGreaterThan(0);
   expect(seen.consoleErrors, `console errors on ${step.page}`).toEqual([]);
-  expect(seen.pageErrors, `page errors on ${step.page}`).toEqual([]);
+  expect(realPageErrors(seen), `page errors on ${step.page}`).toEqual([]);
   expect(seen.thirdParty, `${step.page} contacts only the site`).toEqual([]);
 }
 
