@@ -23,6 +23,14 @@ export const MIN_VISUAL_WIDTH = 240;
 /** The content of a band leaves at most this much empty between it and either viewport edge. */
 export const MAX_SIDE_GAP = 240;
 
+/**
+ * The widest empty run allowed inside a band, between its leftmost and rightmost content (WP-109 follow-up). The outer extent alone
+ * cannot see a title at the left edge and its lead at the right edge with 900px of nothing between them, so the gate also projects the
+ * band's content onto the x-axis and fails on the largest uncovered gap. The widest grid gap in the tokens is --sp-8 (4rem, 64px), so
+ * 160px is two gaps and a ragged line end: room for a gutter between columns, none for a column's worth of nothing.
+ */
+export const MAX_INTERNAL_GAP = 160;
+
 export interface BandExtent {
   /** A readable name for the band: tag, classes and its first heading. */
   readonly name: string;
@@ -34,6 +42,10 @@ export interface BandExtent {
   readonly right: number;
   /** Width of the union of the band's content. */
   readonly span: number;
+  /** The largest horizontal run, in px, between the leftmost and rightmost content that no content covers. */
+  readonly gap: number;
+  /** Where that run starts, in px from the viewport's left edge (the run ends at `gapAt + gap`). */
+  readonly gapAt: number;
 }
 
 /**
@@ -68,13 +80,17 @@ export function measureBands(): BandExtent[] {
     return border || fill;
   };
   const MEDIA = new Set(['IMG', 'VIDEO', 'CANVAS', 'IFRAME', 'INPUT', 'SELECT', 'TEXTAREA', 'TABLE', 'svg']);
-  const extent = (root: Element): { l: number; r: number } | null => {
+  const extent = (root: Element): { l: number; r: number; gap: number; gapAt: number } | null => {
     let l = Number.POSITIVE_INFINITY;
     let r = Number.NEGATIVE_INFINITY;
-    const add = (box: DOMRect): void => {
+    // The x-intervals of what is really painted: line boxes, media and cards. A block's own box (the extension that makes wrapped text
+    // count to its column edge) is not painted content, so it does not close a gap.
+    const solid: Array<[number, number]> = [];
+    const add = (box: DOMRect, paints = true): void => {
       if (box.width <= 0 || box.height <= 0 || box.right <= 0 || box.left >= W) return;
       l = Math.min(l, Math.max(0, box.left));
       r = Math.max(r, Math.min(W, box.right));
+      if (paints) solid.push([Math.max(0, box.left), Math.min(W, box.right)]);
     };
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
     for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
@@ -94,7 +110,7 @@ export function measureBands(): BandExtent[] {
           if (block !== null && block !== root) {
             const box = block.getBoundingClientRect();
             const pad = Number.parseFloat(getComputedStyle(block).paddingRight) || 0;
-            add(new DOMRect(box.left, box.top, box.width - pad, box.height));
+            add(new DOMRect(box.left, box.top, box.width - pad, box.height), false);
           }
         }
       } else if (node instanceof Element && isCard(node)) {
@@ -108,7 +124,19 @@ export function measureBands(): BandExtent[] {
         add(box);
       }
     }
-    return Number.isFinite(l) ? { l, r } : null;
+    if (!Number.isFinite(l)) return null;
+    solid.sort((a, b) => a[0] - b[0]);
+    let gap = 0;
+    let gapAt = 0;
+    let reach = solid.length > 0 ? solid[0][1] : 0;
+    for (const [from, to] of solid) {
+      if (from - reach > gap) {
+        gap = from - reach;
+        gapAt = reach;
+      }
+      reach = Math.max(reach, to);
+    }
+    return { l, r, gap, gapAt };
   };
   const main = document.querySelector('main');
   if (main === null) return [];
@@ -123,7 +151,7 @@ export function measureBands(): BandExtent[] {
     if (box.height < 20 || !visible(band) || hidden(band)) continue;
     const e = extent(band);
     if (e === null) continue;
-    found.push({ name: label(band), height: Math.round(box.height), left: Math.round(e.l), right: Math.round(W - e.r), span: Math.round(e.r - e.l) });
+    found.push({ name: label(band), height: Math.round(box.height), left: Math.round(e.l), right: Math.round(W - e.r), span: Math.round(e.r - e.l), gap: Math.round(e.gap), gapAt: Math.round(e.gapAt) });
   }
   return found;
 }
@@ -131,8 +159,8 @@ export function measureBands(): BandExtent[] {
 /** A band that fails the gate, with the reason in numbers. */
 export function offenders(bands: readonly BandExtent[], allow: readonly string[] = []): string[] {
   return bands
-    .filter((b) => (b.span < MIN_CONTENT_SPAN || b.left > MAX_SIDE_GAP || b.right > MAX_SIDE_GAP) && !allow.some((a) => b.name.includes(a)))
-    .map((b) => `${b.name}: content ${b.span}px wide, ${b.left}px empty on the left, ${b.right}px empty on the right`);
+    .filter((b) => (b.span < MIN_CONTENT_SPAN || b.left > MAX_SIDE_GAP || b.right > MAX_SIDE_GAP || b.gap > MAX_INTERNAL_GAP) && !allow.some((a) => b.name.includes(a)))
+    .map((b) => `${b.name}: content ${b.span}px wide, ${b.left}px empty on the left, ${b.right}px empty on the right, widest internal gap ${b.gap}px at x=${b.gapAt}`);
 }
 
 /**

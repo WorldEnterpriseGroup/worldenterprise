@@ -4,7 +4,7 @@ import test from 'node:test';
 import { ALLOWED_BANDS, ALLOWED_ROUTES, MAX_SIDE_GAP, MIN_CONTENT_SPAN, offenders } from '../../e2e/wave8/wp-51/lib/content-extent.ts';
 import type { BandExtent } from '../../e2e/wave8/wp-51/lib/content-extent.ts';
 
-const band = (name: string, left: number, right: number): BandExtent => ({ name, height: 400, left, right, span: 1920 - left - right });
+const band = (name: string, left: number, right: number): BandExtent => ({ name, height: 400, left, right, span: 1920 - left - right, gap: 0, gapAt: 0 });
 const read = (path: string): string => readFileSync(new URL(`../../../${path}`, import.meta.url), 'utf8');
 
 test('a band that spans the frame passes and a lone reading column fails with its numbers', () => {
