@@ -12,8 +12,8 @@ import HubLayout from '../../layouts/HubLayout.astro';
 import { getPublished } from '../../lib/content.ts';
 import { getRouteState } from '../../lib/route-state.ts';
 
-// The glob loader may strip a trailing /index from the entry id, so accept either form.
-const page = (await getEntry('pages', 'research/index')) ?? (await getEntry('pages', 'research'));
+// The glob loader strips a trailing /index from the entry id; ask for the stripped id first so Astro does not log a miss.
+const page = (await getEntry('pages', 'research')) ?? (await getEntry('pages', 'research/index'));
 if (page === undefined) {
   throw new Error('Missing content entry src/content/pages/research/index.md for the /research/ hub.');
 }
