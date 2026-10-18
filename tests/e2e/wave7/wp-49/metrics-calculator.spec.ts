@@ -1,8 +1,8 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { findOverflow } from '../../support/overflow.ts';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-49: the metrics calculator. The numbers a founder types never leave the page, bad entries are described and never become NaN or
@@ -59,8 +59,9 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
   });
 
   test('a full month works out, with the working shown, and the numbers never reach the address bar', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await expect(page.locator('we-calc')).toHaveAttribute('data-enhanced', '');
     await fillMonth(page);
     await expect(value(page, 'netNewMrr')).toHaveText('1,500');
@@ -78,8 +79,9 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
 
   test('no request leaves the page after it has loaded, however many numbers are typed', async ({ page, baseURL }) => {
     const seen = watch(page, baseURL ?? '');
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     const after: string[] = [];
     page.on('request', (request) => after.push(`${request.method()} ${request.url()}`));
     page.on('websocket', (socket) => after.push(`websocket ${socket.url()}`));
@@ -97,8 +99,9 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
   });
 
   test('a bad entry is described next to its field and never becomes NaN or Infinity', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await fillMonth(page);
     await expect(value(page, 'runway')).toHaveText('8.0 months');
     const bad: readonly [string, string, RegExp][] = [
@@ -122,8 +125,9 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
   });
 
   test('zero and negative months are answered in words, not with an error', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await fillMonth(page, { ...MONTH, churnedMrr: '0', contractionMrr: '0' });
     await expect(value(page, 'ltv')).toHaveText('Not defined');
     await expect(page.locator('[data-metric="ltv"] [data-detail]')).toContainText('never lost');
@@ -147,8 +151,9 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
   });
 
   test('updating the results, or showing an error, moves nothing on the page', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await page.locator('#calc-startingMrr').scrollIntoViewIfNeeded();
     const empty = await geometry(page);
     await fillMonth(page);
@@ -162,8 +167,9 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
   });
 
   test('typing is announced once it settles, not once for every key', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await fillMonth(page);
     await expect(value(page, 'runway')).toHaveText('8.0 months');
     await page.locator('#calc-cash').fill('');
@@ -181,8 +187,9 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
   });
 
   test('Clear all numbers empties every field and returns every result to waiting', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await fillMonth(page);
     await expect(value(page, 'runway')).toHaveText('8.0 months');
     await page.getByRole('button', { name: 'Clear all numbers' }).click();
@@ -208,36 +215,40 @@ test.describe('metrics calculator (the project sets the viewport: 1440 and 390)'
 
   // One test per state, so each has its own time budget: a full axe scan of this page is slow on a loaded runner.
   const scan = async (page: Page, label: string): Promise<void> => {
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => `${label} ${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     expect(await findOverflow(page)).toEqual([]);
   };
 
   test('the empty page passes axe and nothing overflows', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await scan(page, 'empty');
   });
 
   test('the filled page passes axe and nothing overflows', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await fillMonth(page);
     await expect(value(page, 'runway')).toHaveText('8.0 months');
     await scan(page, 'filled');
   });
 
   test('the page with errors passes axe and nothing overflows', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     await fillMonth(page, { cash: 'abc', grossMarginPct: '120' });
     await expect(page.locator('[data-note="cash"]')).toContainText('enter a number');
     await scan(page, 'errors');
   });
 
   test('every field is labelled, reachable by keyboard, and at least 24px tall', async ({ page }) => {
+    const network = quiet(page);
     await page.goto(ROUTE);
-    await page.waitForLoadState('networkidle');
+    await network.settled();
     const inputs = page.locator('we-calc input');
     await expect(inputs).toHaveCount(10);
     for (let i = 0; i < 10; i += 1) {

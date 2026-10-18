@@ -1,6 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { budgetForItems } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 import { expectNoHorizontalScroll } from '../wp-51/lib/full-width.ts';
 
@@ -159,7 +160,9 @@ test.describe('at every width', () => {
     test(`${path} never scrolls sideways at 1920, 1440, 390 or 320 pixels, with every table open`, async ({ page }) => {
       test.skip(!isBuilt(path), `${path} is not built`);
       await page.goto(path);
-      for (const summary of await page.locator('[data-insight-figures] details summary').all()) await summary.click();
+      const summaries = await page.locator('[data-insight-figures] details summary').all();
+      budgetForItems(summaries.length + WIDTHS.length * 2, 1_000);
+      for (const summary of summaries) await summary.click();
       for (const size of WIDTHS) {
         await page.setViewportSize(size);
         await expectNoHorizontalScroll(page);

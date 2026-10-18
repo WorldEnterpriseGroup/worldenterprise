@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-46: the command palette (<we-palette>). Keyboard only, roles, timing, and the guards (no third party, no console error).
@@ -109,7 +109,7 @@ test.describe('the command palette, keyboard only', () => {
       - button "Close"
       - listbox "Pages and search results"
     `);
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    const results = await analyzePage(page);
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
     await page.setViewportSize({ width: 720, height: 450 });
     const box = await dialog.boundingBox();

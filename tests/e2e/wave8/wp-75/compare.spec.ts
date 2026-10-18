@@ -1,8 +1,8 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { findOverflow, formatOffenders } from '../../support/overflow.ts';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { quiet, watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-75 comparison pages, rendered half (the wording and ledger rules are tests/unit/wp-75). The hub and one sampled page get the full
@@ -56,17 +56,19 @@ for (const viewport of VIEWPORTS) {
 
       test('loads clean: no console error, no exception, no third-party request', async ({ page, baseURL }) => {
         const record = watch(page, baseURL ?? 'http://localhost');
+        const network = quiet(page);
         await page.goto(route);
-        await page.waitForLoadState('networkidle');
+        await network.settled();
         expect(record.consoleErrors, 'console errors').toEqual([]);
         expect(record.pageErrors, 'uncaught exceptions').toEqual([]);
         expect(record.thirdParty, 'third-party requests').toEqual([]);
       });
 
       test('axe at WCAG 2.2 AA finds nothing', async ({ page }) => {
+        const network = quiet(page);
         await page.goto(route);
-        await page.waitForLoadState('networkidle');
-        const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+        await network.settled();
+        const results = await analyzePage(page);
         expect(results.violations.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`)).toEqual([]);
       });
 
@@ -75,15 +77,17 @@ for (const viewport of VIEWPORTS) {
       });
 
       test('nothing leaves the viewport sideways', async ({ page }) => {
+        const network = quiet(page);
         await page.goto(route);
-        await page.waitForLoadState('networkidle');
+        await network.settled();
         const offenders = await findOverflow(page);
         expect(offenders, formatOffenders(offenders)).toEqual([]);
       });
 
       test('every link and button in the page body is at least 24px square', async ({ page }) => {
+        const network = quiet(page);
         await page.goto(route);
-        await page.waitForLoadState('networkidle');
+        await network.settled();
         const small = await page.locator('main a[href], main button').evaluateAll(
           (els, min) =>
             els

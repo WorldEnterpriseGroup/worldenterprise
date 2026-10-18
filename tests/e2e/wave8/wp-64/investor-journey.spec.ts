@@ -1,6 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-64: the investor journey. The hub, the five information pages, the interest form and its thank-you page. Runs at 1440 and at 390.
@@ -62,7 +62,7 @@ for (const entry of PAGES) {
 
     test('has no axe violation at WCAG 2.2 AA', async ({ page }) => {
       await page.goto(entry.route);
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const results = await analyzePage(page);
       expect(results.violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
     });
   });

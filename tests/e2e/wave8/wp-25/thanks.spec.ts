@@ -1,6 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 
 // WP-25: the brief request confirmation. It reads nothing from the address, carries no call-to-action band (D-24), shows the next steps
 // and onward reading, and every link on it leads to a page that exists. The e2e:wave8 job runs it at 1440x900 and 390x844.
@@ -80,7 +80,7 @@ test.describe('/briefs/thanks/', () => {
 
   test('passes axe at WCAG 2.2 AA', async ({ page }) => {
     await page.goto(ROUTE);
-    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    const results = await analyzePage(page);
     expect(results.violations.map((violation) => `${violation.id}: ${violation.nodes.length}`)).toEqual([]);
   });
 

@@ -1,7 +1,7 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
-import { AXE_TAGS, watch } from '../../support/page-guards.ts';
+import { watch } from '../../support/page-guards.ts';
+import { analyzePage } from '../../support/budgets.ts';
 import { isBuilt } from '../../support/routes.ts';
 import { FULL_HD, expectBandsFullBleed, expectFullWidth, expectNoHorizontalScroll, expectReadableProse } from '../wp-51/lib/full-width.ts';
 
@@ -83,7 +83,7 @@ for (const [route, min] of ROUTES) {
 
     test('axe finds no violation', async ({ page }) => {
       await open(page, route);
-      const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      const results = await analyzePage(page);
       expect(results.violations).toEqual([]);
     });
   });
