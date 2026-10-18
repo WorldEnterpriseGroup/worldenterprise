@@ -1,9 +1,15 @@
 import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
+import { gzipSync } from 'node:zlib';
 
-/** Writes a throwaway dist tree for audit tests. Keys are dist-relative paths; values are text or a byte count of filler. */
-export function makeDist(files: Readonly<Record<string, string | number>>): string {
+/** A Pagefind fragment as the indexer writes it: a 12-byte prefix, then JSON, all gzipped. A filler byte count is not one and cannot be decoded. */
+export function pagefindFragment(content: string): Buffer {
+  return gzipSync(Buffer.from(`pagefind_dcd${JSON.stringify({ url: '/x/', content, meta: { title: 'x' } })}`));
+}
+
+/** Writes a throwaway dist tree for audit tests. Keys are dist-relative paths; values are text, bytes or a byte count of filler. */
+export function makeDist(files: Readonly<Record<string, string | number | Buffer>>): string {
   const root = mkdtempSync(join(tmpdir(), 'we-dist-'));
   for (const [rel, content] of Object.entries(files)) {
     const full = join(root, rel);

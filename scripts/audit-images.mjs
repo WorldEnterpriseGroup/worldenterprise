@@ -7,10 +7,14 @@
 //           imagesrcset carries the same srcset and sizes as that <img> (otherwise the browser fetches the image twice).
 //   Size:   no raster displays wider than 1024 CSS px; a card (<= 512 px) weighs <= 60 KB, a band <= 120 KB, and the images
 //           a page loads by default weigh <= 400 KB in total.
-// Usage: node scripts/audit-images.mjs [--dist dist] [--json reports/images.json]
-import { existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+//   Metadata: no embedded EXIF (GPS included), XMP, IPTC, C2PA, comment, author or copyright tag in an AVIF, PNG, JPEG, MP4 or WebM, and no SVG
+//           <metadata>, dc:creator or absolute home path (WP-108; scripts/lib/image-metadata.mjs). A file that cannot be parsed fails too.
+// Usage: node scripts/audit-images.mjs [--dist dist] [--json reports/images.json] | --self-test
+//   --self-test  plant each kind of metadata in a synthetic file of its own container and fail unless every plant is found
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { dirname, extname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { METADATA_TYPES, metadataFindings, selfTest } from './lib/image-metadata.mjs';
 import { distRel, isDevRoute, metaContent, ORIGIN, parseArgs, readPages, report, srcsetUrls, startTags, stripNonMarkup, walkFiles } from './lib/html.mjs';
 
 export const BUDGET = { card: 60 * 1024, band: 120 * 1024, page: 400 * 1024, cardMaxWidth: 512, maxWidth: 1024 };
@@ -27,6 +31,18 @@ export function auditFiles(root) {
     if (RASTER.test(rel) && !ALLOWED_RASTER.has(rel)) {
       findings.push({ level: 'error', where: rel, message: 'non-AVIF raster in dist (AVIF only; SVG for vector art)' });
     }
+  }
+  return findings;
+}
+
+/** Embedded metadata in the images and video of dist. `where` is the dist-relative path. */
+export function auditMetadata(root) {
+  const findings = [];
+  for (const file of walkFiles(root)) {
+    const rel = distRel(root, file);
+    const ext = extname(rel).toLowerCase();
+    if (METADATA_TYPES[ext] === undefined) continue;
+    findings.push(...metadataFindings(rel, readFileSync(file), ext));
   }
   return findings;
 }
@@ -144,13 +160,18 @@ export function auditMarkup({ root, pages, sizeOf = (rel) => (existsSync(join(ro
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist', json: 'reports/images.json' });
+  if (args['self-test'] === true) {
+    const results = selfTest(auditMetadata);
+    for (const r of results) (r.ok ? console.log : console.error)(`self-test ${r.ok ? 'ok' : 'FAIL'}: ${r.label}`);
+    process.exit(results.every((r) => r.ok) ? 0 : 1);
+  }
   try {
     const pages = readPages(args.dist);
     const fileFindings = auditFiles(args.dist);
     const markup = auditMarkup({ root: args.dist, pages });
     mkdirSync(dirname(args.json), { recursive: true });
     writeFileSync(args.json, `${JSON.stringify(markup.stats, null, 2)}\n`);
-    process.exit(report('audit-images', [...fileFindings, ...markup.findings], `${pages.length} pages`));
+    process.exit(report('audit-images', [...fileFindings, ...markup.findings, ...auditMetadata(args.dist)], `${pages.length} pages`));
   } catch (error) {
     console.error(`audit-images: ${error instanceof Error ? error.message : String(error)}`);
     process.exit(2);

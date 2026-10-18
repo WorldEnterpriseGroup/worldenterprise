@@ -2,6 +2,16 @@
   "schema_version": "1.0.0",
   "assignments": [
     {
+      "owner": "WP-108",
+      "title": "Client-privacy gate: PII by shape in dist, image metadata, people consent (issue #108); every touched path outside its own tests is a registered exception",
+      "branch": "wp/108",
+      "stage": 3,
+      "write_set": [
+        "tests/unit/wp-108/**",
+        ".astro-magazine/handoffs/wp-108*"
+      ]
+    },
+    {
       "owner": "WP-01",
       "title": "Home and Program",
       "branch": "wp/01",
@@ -2105,6 +2115,61 @@
   ],
   "always_allowed": [],
   "exceptions": [
+    {
+      "wp": "WP-108",
+      "path": "scripts/check-ownership.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): ownerOf maps a three-digit branch (wp/108) to WP-108, and a three-digit package without an assignment (wp/101, wp/106) stays unpoliced as before."
+    },
+    {
+      "wp": "WP-108",
+      "path": "tests/unit/shared/fixture-dist.ts",
+      "reason": "Issue #108 (wp/108-privacy-gate): makeDist accepts bytes and pagefindFragment builds a real gzip fragment, because audit:dist now decodes fragments for the privacy scan."
+    },
+    {
+      "wp": "WP-108",
+      "path": "tests/unit/wp-19/audit-dist.test.ts",
+      "reason": "Issue #108 (wp/108-privacy-gate): its clean dist carries a real gzip fragment instead of filler bytes, which the privacy scan cannot decode."
+    },
+    {
+      "wp": "WP-108",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Issue #108 (wp/108-privacy-gate): registers the WP-108 assignment and its path exceptions."
+    },
+    {
+      "wp": "WP-108",
+      "path": ".gitlab-ci.yml",
+      "reason": "Issue #108 (wp/108-privacy-gate): runs the audit:dist and audit:images self-tests in verify:static on every pipeline."
+    },
+    {
+      "wp": "WP-108",
+      "path": "claims-denylist.json",
+      "reason": "Issue #108 (wp/108-privacy-gate): C-13 gains the social-proof shapes (our customers, customers include, clients such as, used by, case study:)."
+    },
+    {
+      "wp": "WP-108",
+      "path": "package.json",
+      "reason": "Issue #108 (wp/108-privacy-gate): adds the audit:dist:selftest and audit:images:selftest scripts."
+    },
+    {
+      "wp": "WP-108",
+      "path": "scripts/audit-claims.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): self-test seeds for the new C-13 shapes."
+    },
+    {
+      "wp": "WP-108",
+      "path": "scripts/audit-images.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): audit:images reads embedded metadata and gains --self-test."
+    },
+    {
+      "wp": "WP-108",
+      "path": "scripts/lib/audit-dist.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): audit:dist scans for personal data by shape and gains --self-test."
+    },
+    {
+      "wp": "WP-108",
+      "path": "scripts/lib/image-metadata.mjs",
+      "reason": "Issue #108 (wp/108-privacy-gate): the container parsers and planted-metadata self-test behind audit:images."
+    },
     {
       "wp": "WP-03",
       "path": "src/data/forms.ts",

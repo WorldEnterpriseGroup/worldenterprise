@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import * as distAudit from '../../../scripts/lib/audit-dist.mjs';
-import { makeDist } from '../shared/fixture-dist.ts';
+import { makeDist, pagefindFragment } from '../shared/fixture-dist.ts';
 
 // code-security P1-5: the published-output gate is an allowlist, recursive, with a leak scan, and it checks dist/CNAME. Every case
 // below is a negative proof: the clean dist passes, and each defect on its own makes the gate fail with a message that names it.
@@ -17,7 +17,7 @@ const api = distAudit as unknown as {
   LEAK_PATTERNS: readonly { name: string }[];
 };
 
-const CLEAN: Record<string, string | number> = {
+const CLEAN: Record<string, string | number | Buffer> = {
   CNAME: 'worldenterprise.org\n',
   'dist/index.html': '<html><body><h1>Home</h1></body></html>',
   'dist/404.html': '<html><body><h1>Not found</h1></body></html>',
@@ -33,7 +33,7 @@ const CLEAN: Record<string, string | number> = {
   'dist/_astro/fonts/abc123.woff2': 50,
   'dist/pagefind/pagefind-entry.json': '{}',
   'dist/pagefind/wasm.en.pagefind': 30,
-  'dist/pagefind/fragment/x.pf_fragment': 30,
+  'dist/pagefind/fragment/x.pf_fragment': pagefindFragment('A page about nothing in particular.'),
   'dist/pagefind/index/x.pf_index': 30,
   'dist/pagefind/pagefind.en_x.pf_meta': 30,
   'dist/press/index.html': '<html/>',
@@ -45,8 +45,8 @@ const CLEAN: Record<string, string | number> = {
   'dist/.well-known/security.txt': 'Contact: mailto:security@worldenterprise.org\n',
 };
 
-function audit(extra: Record<string, string | number | null> = {}, options: { cnameInDist?: boolean } = {}): string {
-  const files: Record<string, string | number> = { ...CLEAN };
+function audit(extra: Record<string, string | number | Buffer | null> = {}, options: { cnameInDist?: boolean } = {}): string {
+  const files: Record<string, string | number | Buffer> = { ...CLEAN };
   for (const [key, value] of Object.entries(extra)) {
     if (value === null) delete files[key];
     else files[key] = value;
