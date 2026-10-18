@@ -8,6 +8,7 @@ import { join } from 'node:path';
 import { test } from 'node:test';
 import { COVER_H, COVER_W, PALETTES, coverModel } from '../../../src/components/briefs/cover.ts';
 import { BRIEF_FIGURES, BRIEF_PATH, briefFigure } from '../../../src/components/briefs/media.ts';
+import { FIGURE_SOURCE, PLAYBOOK_FIGURES, playbookMedia } from '../../../src/components/playbooks/media.ts';
 import * as fundability from '../../../src/components/fundability/media.ts';
 import { GUIDE_MEDIA_SLUGS } from '../../../src/components/fundability/media.ts';
 import * as D from '../../../src/components/research/media/data.ts';
@@ -166,7 +167,7 @@ test('every diagram and figure string is free of denied words and prices', () =>
 
 const COMPONENT_DIRS = ['src/components/fundability', 'src/components/research', 'src/components/research/media', 'src/components/briefs', 'src/components/playbooks'];
 const COMPONENTS = COMPONENT_DIRS.flatMap((dir) => readdirSync(join(ROOT, dir)).filter((f) => f.endsWith('.astro')).map((f) => `${dir}/${f}`));
-const PAGES = ['src/pages/fundability/index.astro', 'src/pages/fundability/[slug].astro', 'src/pages/research/index.astro', 'src/pages/research/[slug].astro', 'src/pages/briefs/index.astro', 'src/pages/briefs/[id].astro', 'src/pages/playbooks/index.astro'];
+const PAGES = ['src/pages/fundability/index.astro', 'src/pages/fundability/[slug].astro', 'src/pages/research/index.astro', 'src/pages/research/[slug].astro', 'src/pages/briefs/index.astro', 'src/pages/briefs/[id].astro', 'src/pages/playbooks/index.astro', 'src/pages/playbooks/[slug].astro', 'src/layouts/PlaybookLayout.astro'];
 
 test('no inline style attribute, inline script or raster image in the components and pages', () => {
   for (const file of [...COMPONENTS, ...PAGES]) {
@@ -202,6 +203,30 @@ test('each research report has a cover and at least three more moments', () => {
 test('each brief page has a cover, a chapter map and a figure', () => {
   const page = read('src/pages/briefs/[id].astro');
   for (const id of ['brief-cover', 'brief-chapter-map', 'brief-figure']) assert.match(page, new RegExp(`id="${id}"`));
+});
+
+test('every playbook has a media entry of at least three moments, and every figure has an https source', () => {
+  assert.deepEqual(Object.keys(PLAYBOOK_FIGURES).sort(), slugsIn('src/content/playbooks'));
+  for (const slug of [...slugsIn('src/content/playbooks'), 'a-playbook-added-later']) {
+    const entries = playbookMedia(slug);
+    assert.ok(entries.length >= 3, `${slug}: ${entries.length} moments`);
+    assert.equal(new Set(entries.map((e) => e.id)).size, entries.length, `${slug}: moment ids are unique`);
+    assert.deepEqual(entries.map((e) => e.type).sort(), ['cover', 'figure', 'flow'], slug);
+    for (const e of entries) {
+      if (e.type !== 'figure') continue;
+      assert.equal(e.source, FIGURE_SOURCE[e.figure], `${slug}: source follows the figure`);
+      assert.match(D.SOURCES[e.source].href, /^https:\/\//, `${slug}: ${e.figure} links its source`);
+    }
+  }
+});
+
+test('the playbook page renders its media through the layout slot and the typed map, not inline', () => {
+  assert.match(read('src/layouts/PlaybookLayout.astro'), /<slot name="media"/);
+  assert.match(read('src/pages/playbooks/[slug].astro'), /<PlaybookMedia slot="media"/);
+  const media = read('src/components/playbooks/PlaybookMedia.astro');
+  for (const kind of ['cover', 'diagram']) assert.match(media, new RegExp(`kind="${kind}"`));
+  assert.match(media, /figureKind\(/);
+  for (const slug of slugsIn('src/content/playbooks')) assert.doesNotMatch(read(`src/content/playbooks/${slug}.mdx`), /<Moment\b/, `${slug} has no inline moment`);
 });
 
 test('each hub has at least six media moments', () => {
