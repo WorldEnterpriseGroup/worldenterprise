@@ -4,12 +4,12 @@ import { href } from '../../../lib/url.ts';
 import { MAX_SEATS_PER_ROLE, ROLE_GROUPS, ROLES } from '../../../scripts/team-composer.ts';
 
 /**
- * <we-team-composer>: choose roles and seat counts, see a team-shape summary and carry it to the Apply form.
+ * <we-team-composer>: choose roles and the number of people for each, see a team-shape summary and carry it to the Apply form.
  * The server-rendered form is a complete no-JavaScript tool (a plain GET to /apply/). The script enhances it.
  * The price renders only when flags.seatPrice.published is true (claim C-06).
  *
  * The team WE steers is part of an engagement, never a priced cart: the Composer sketches roles for the readiness review. Packages are
- * retired (wave 9, W9-13), so the form carries roles and seat counts only.
+ * retired (wave 9, W9-13), so the form carries roles and people per role only.
  */
 const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
 ---
@@ -51,17 +51,17 @@ const rate = flags.seatPrice.published ? flags.seatPrice.monthlyRate : null;
 
       <section class="composer__summary" aria-labelledby="composer-summary-title">
         <h2 id="composer-summary-title">Your team sketch</h2>
-        <p class="composer__static">Enter the number of seats for each role. Then continue to the application. Your choices travel in the link, not to a server.</p>
+        <p class="composer__static">Enter how many people each role needs. Then continue to the application. Your choices travel in the link, not to a server.</p>
         <div class="composer__live stack">
-          <p class="composer__headline" data-headline role="status">No seats chosen yet.</p>
+          <p class="composer__headline" data-headline role="status">No roles chosen yet.</p>
           <ul class="composer__roster" data-roster role="list" hidden></ul>
           <ul class="composer__groups" role="list">
             {
               ROLE_GROUPS.map((group) => (
                 <li>
                   <span id={`group-${group.id}-label`}>{group.label}</span>
-                  <meter data-group={group.id} min="0" max="1" value="0" aria-labelledby={`group-${group.id}-label`}>0 seats</meter>
-                  <span data-group-text={group.id}>0 seats</span>
+                  <meter data-group={group.id} min="0" max="1" value="0" aria-labelledby={`group-${group.id}-label`}>0 people</meter>
+                  <span data-group-text={group.id}>0 people</span>
                 </li>
               ))
             }
