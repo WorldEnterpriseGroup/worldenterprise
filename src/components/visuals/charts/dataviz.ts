@@ -182,6 +182,134 @@ export function cellsPath(start: number, count: number, cols: number, rows: numb
   return parts.join('');
 }
 
+export interface FlowNodeInput {
+  readonly id: string;
+  readonly label: string;
+  /** Column index from 0 (left); every link must run to a higher column. */
+  readonly column: number;
+}
+
+export interface FlowLinkInput {
+  readonly from: string;
+  readonly to: string;
+  /** The exact quantity that moves along the link, in data units. */
+  readonly value: number;
+}
+
+export interface FlowNodeBox {
+  readonly id: string;
+  readonly label: string;
+  readonly column: number;
+  /** Data units the node stands for: what flows in, or what flows out when nothing flows in. */
+  readonly value: number;
+  readonly x: number;
+  readonly y: number;
+  readonly width: number;
+  readonly height: number;
+}
+
+export interface FlowLinkShape {
+  readonly from: string;
+  readonly to: string;
+  readonly value: number;
+  /** Share of the source node's value, 0 to 100. */
+  readonly percentOfSource: number;
+  /** Ribbon thickness in SVG units. */
+  readonly thickness: number;
+  /** A closed path: a filled ribbon between the two nodes. */
+  readonly path: string;
+}
+
+export interface FlowGeometry {
+  readonly nodes: readonly FlowNodeBox[];
+  readonly links: readonly FlowLinkShape[];
+  /** SVG units per data unit. */
+  readonly k: number;
+}
+
+/**
+ * Lays out a flow (Sankey) diagram. Node height is proportional to the value that passes through it, one scale for every column, and
+ * each ribbon is exactly as thick as its value, so areas can be compared. A node that has links on both sides must pass on exactly what
+ * it receives (flow is conserved); the check fails the build otherwise. Columns are centred vertically; ribbons leave and enter each
+ * node in the order of the node they connect to, so they do not cross within a node.
+ */
+export function flowLayout(
+  nodes: readonly FlowNodeInput[],
+  links: readonly FlowLinkInput[],
+  box: { readonly width: number; readonly height: number; readonly nodeWidth: number; readonly gap: number },
+): FlowGeometry {
+  const C = 'flowLayout';
+  if (nodes.length < 2) throw new VisualContractError(C, 'needs at least two nodes');
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+  if (byId.size !== nodes.length) throw new VisualContractError(C, 'node ids must be unique');
+  if (links.length === 0) throw new VisualContractError(C, 'needs at least one link');
+  const out = new Map<string, number>();
+  const into = new Map<string, number>();
+  for (const l of links) {
+    const a = byId.get(l.from);
+    const b = byId.get(l.to);
+    if (a === undefined || b === undefined) throw new VisualContractError(C, `link ${l.from} to ${l.to} names an unknown node`);
+    if (!(b.column > a.column)) throw new VisualContractError(C, `link ${l.from} to ${l.to} must run to a later column`);
+    if (!Number.isFinite(l.value) || !(l.value > 0)) throw new VisualContractError(C, `link ${l.from} to ${l.to} needs a positive value`);
+    out.set(l.from, (out.get(l.from) ?? 0) + l.value);
+    into.set(l.to, (into.get(l.to) ?? 0) + l.value);
+  }
+  const value = new Map<string, number>();
+  for (const n of nodes) {
+    const i = into.get(n.id);
+    const o = out.get(n.id);
+    if (i === undefined && o === undefined) throw new VisualContractError(C, `node "${n.id}" has no link`);
+    if (i !== undefined && o !== undefined && Math.abs(i - o) > 1e-6 * Math.max(i, o)) throw new VisualContractError(C, `node "${n.id}" receives ${i} but passes on ${o}`);
+    value.set(n.id, i ?? o ?? 0);
+  }
+  const columns = [...new Set(nodes.map((n) => n.column))].sort((a, b) => a - b);
+  const members = (c: number): readonly FlowNodeInput[] => nodes.filter((n) => n.column === c);
+  const total = (c: number): number => members(c).reduce((a, n) => a + (value.get(n.id) ?? 0), 0);
+  const k = Math.min(...columns.map((c) => (box.height - box.gap * (members(c).length - 1)) / total(c)));
+  const x = scale([0, Math.max(1, columns.length - 1)], [0, box.width - box.nodeWidth]);
+  const boxes = new Map<string, FlowNodeBox>();
+  columns.forEach((c, ci) => {
+    const list = members(c);
+    const used = total(c) * k + box.gap * (list.length - 1);
+    let y = (box.height - used) / 2;
+    for (const n of list) {
+      const v = value.get(n.id) ?? 0;
+      boxes.set(n.id, { id: n.id, label: n.label, column: c, value: v, x: x(ci), y, width: box.nodeWidth, height: v * k });
+      y += v * k + box.gap;
+    }
+  });
+  const outCursor = new Map<string, number>();
+  const inCursor = new Map<string, number>();
+  const topOf = (id: string): number => boxes.get(id)?.y ?? 0;
+  const ordered = [...links].sort((a, b) => topOf(a.to) - topOf(b.to) || topOf(a.from) - topOf(b.from));
+  const inOrder = [...links].sort((a, b) => topOf(a.from) - topOf(b.from) || topOf(a.to) - topOf(b.to));
+  const sourceY = new Map<FlowLinkInput, number>();
+  for (const l of ordered) {
+    const cursor = outCursor.get(l.from) ?? topOf(l.from);
+    sourceY.set(l, cursor);
+    outCursor.set(l.from, cursor + l.value * k);
+  }
+  const targetY = new Map<FlowLinkInput, number>();
+  for (const l of inOrder) {
+    const cursor = inCursor.get(l.to) ?? topOf(l.to);
+    targetY.set(l, cursor);
+    inCursor.set(l.to, cursor + l.value * k);
+  }
+  const shapes = links.map((l): FlowLinkShape => {
+    const a = boxes.get(l.from) as FlowNodeBox;
+    const b = boxes.get(l.to) as FlowNodeBox;
+    const t = l.value * k;
+    const x0 = a.x + a.width;
+    const x1 = b.x;
+    const xm = (x0 + x1) / 2;
+    const y0 = sourceY.get(l) ?? 0;
+    const y1 = targetY.get(l) ?? 0;
+    const path = `M${fmt(x0)} ${fmt(y0)} C${fmt(xm)} ${fmt(y0)} ${fmt(xm)} ${fmt(y1)} ${fmt(x1)} ${fmt(y1)} L${fmt(x1)} ${fmt(y1 + t)} C${fmt(xm)} ${fmt(y1 + t)} ${fmt(xm)} ${fmt(y0 + t)} ${fmt(x0)} ${fmt(y0 + t)} Z`;
+    return { from: l.from, to: l.to, value: l.value, percentOfSource: (l.value / a.value) * 100, thickness: t, path };
+  });
+  return { nodes: nodes.map((n) => boxes.get(n.id) as FlowNodeBox), links: shapes, k };
+}
+
 // ---------------------------------------------------------------------------------------------------------------------------------
 // Contracts
 // ---------------------------------------------------------------------------------------------------------------------------------

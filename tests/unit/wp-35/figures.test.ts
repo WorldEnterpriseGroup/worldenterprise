@@ -25,6 +25,7 @@ const CHART_PROPS = {
   sectorSlope: figures.sectorSlope,
   payrollSlope: figures.payrollSlope,
   formationWaffle: figures.formationWaffle,
+  formationFlow: figures.formationFlow,
   ageShareArea: figures.ageShareArea,
   ageRateMultiples: figures.ageRateMultiples,
   founderAgeRange: figures.founderAgeRange,
@@ -42,7 +43,7 @@ test('every chart carries an id, a title, a description, https sources and the r
     for (const s of c.sources) assert.match(s.href ?? '', /^https:\/\//, `${name}: source href`);
     assert.ok('caption' in c && c.caption.length > 20, `${name}: has a takeaway caption`);
   }
-  assert.equal(ids.size, 13);
+  assert.equal(ids.size, 14);
 });
 
 test('every source a chart cites is in the registry, and every registered source is cited somewhere', () => {
@@ -124,7 +125,7 @@ test('the longevity message runs through the hub: fast pace day to day, patience
 // Source-level checks on the components and pages (the build renders them; CI e2e checks the output)
 // ---------------------------------------------------------------------------------------------------------------------------------
 
-const CHARTS = ['StackedArea', 'SlopeChart', 'WaffleChart', 'SmallMultiples', 'Ridgeline', 'RangeDotPlot', 'BeeswarmStrip', 'ScatterPlot', 'GanttTimeline'];
+const CHARTS = ['StackedArea', 'SlopeChart', 'WaffleChart', 'SmallMultiples', 'Ridgeline', 'RangeDotPlot', 'BeeswarmStrip', 'ScatterPlot', 'GanttTimeline', 'FlowChart'];
 
 test('each new chart component renders inside ChartFigure, which supplies the data table, the source line and the retrieval date', () => {
   const shell = read('src/components/visuals/charts/ChartFigure.astro');
@@ -168,7 +169,7 @@ test('no new file sets a style attribute, runs inline script or calls a third pa
 const PAGES: readonly { readonly file: string; readonly used: readonly (keyof typeof CHART_PROPS)[]; readonly extra?: readonly DatasetSourceId[] }[] = [
   { file: 'index', used: ['survivalWaffle', 'applicationsStack', 'payrollSlope', 'exitRidgeline', 'milestoneGantt', 'founderAgeRange'], extra: HUB.tiles.map((t) => t.source) },
   { file: 'survival/index', used: ['survivalMultiples', 'exitRidgeline', 'fiveYearSwarm'] },
-  { file: 'formation/index', used: ['applicationsStack', 'sectorSlope', 'formationWaffle', 'payrollSlope'] },
+  { file: 'formation/index', used: ['applicationsStack', 'sectorSlope', 'formationFlow', 'formationWaffle', 'payrollSlope'] },
   { file: 'who-starts/index', used: ['ageShareArea', 'ageRateMultiples', 'founderAgeScatter'] },
   { file: 'years-to-milestones/index', used: ['milestoneGantt'], extra: ['carta-spm-q1-2026'] },
 ];
