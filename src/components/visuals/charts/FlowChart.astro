@@ -1,0 +1,102 @@
+---
+/**
+ * FlowChart: a flow (Sankey) diagram of counts that split between stages, e.g. applications flowing to employer businesses. Node height
+ * and ribbon thickness are drawn to one scale, so a ribbon twice as thick carries twice as many. Flow is conserved (a node passes on
+ * exactly what it receives; the build fails otherwise). Every link is in the table with its share of the source. Pure SVG at build time.
+ */
+import ChartFigure from './ChartFigure.astro';
+import { cleanText, fmt, flowLayout, spreadLabels, thousands } from './dataviz.ts';
+import type { FigureMeta } from './dataviz.ts';
+
+interface Node {
+  readonly id: string;
+  readonly label: string;
+  /** Column from 0 (left); links run to a later column. */
+  readonly column: number;
+  /** Palette slot 0 to 6 (the dv-f classes); defaults to the column. */
+  readonly tone?: number;
+}
+
+interface Link {
+  readonly from: string;
+  readonly to: string;
+  /** The exact count that flows. */
+  readonly value: number;
+}
+
+interface Props extends FigureMeta {
+  caption?: string | undefined;
+  nodes: readonly Node[];
+  links: readonly Link[];
+  /** What the counts are, for the table header, e.g. "Applications". */
+  valueLabel: string;
+  class?: string | undefined;
+}
+
+const props = Astro.props;
+const { nodes, links } = props;
+const valueLabel = cleanText('FlowChart', 'valueLabel', props.valueLabel);
+if (nodes.length < 3 || nodes.length > 12) throw new Error(`FlowChart "${props.id}": takes 3 to 12 nodes, got ${nodes.length}`);
+const W = 840;
+const H = 340;
+const leftPad = 230;
+const rightPad = 300;
+const geometry = flowLayout(nodes, links, { width: W - leftPad - rightPad, height: H, nodeWidth: 16, gap: 22 });
+const toneOf = new Map(nodes.map((n) => [n.id, n.tone ?? n.column]));
+const label = (id: string): string => geometry.nodes.find((n) => n.id === id)?.label ?? id;
+const lastColumn = Math.max(...nodes.map((n) => n.column));
+const rightNodes = geometry.nodes.filter((n) => n.column === lastColumn);
+const rightY = spreadLabels(rightNodes.map((n) => n.y + n.height / 2), 40, 14, H - 14);
+const table = {
+  caption: props.title,
+  columns: ['From', 'To', valueLabel, 'Share of the source'],
+  rows: geometry.links.map((l) => [label(l.from), label(l.to), thousands(l.value), `${fmt(l.percentOfSource)}%`]),
+};
+---
+
+<ChartFigure {...props} table={table}>
+  <svg class="dv__svg flow" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${props.id}-svg-t ${props.id}-svg-d`}>
+    <title id={`${props.id}-svg-t`}>{props.title}</title>
+    <desc id={`${props.id}-svg-d`}>{props.description}</desc>
+    <g transform={`translate(${leftPad} 0)`}>
+      <g class="dv-reveal">
+        {geometry.links.map((l) => <path class={`dv-f${toneOf.get(l.to) ?? 0} flow__ribbon`} d={l.path} />)}
+        {geometry.nodes.map((n) => <rect class={`dv-f${toneOf.get(n.id) ?? 0} flow__node`} x={n.x} y={n.y} width={n.width} height={Math.max(n.height, 1)} />)}
+      </g>
+      {geometry.nodes.filter((n) => n.column !== lastColumn).map((n) => (
+        <text class="dv-label" x={n.x - 12} y={n.y + n.height / 2 - 2} text-anchor="end">
+          <tspan x={n.x - 12} dy="0">{n.label}</tspan>
+          <tspan class="dv-strong" x={n.x - 12} dy="19">{thousands(n.value)}</tspan>
+        </text>
+      ))}
+      {rightNodes.map((n, i) => (
+        <text class="dv-label" x={n.x + n.width + 12} y={(rightY[i] ?? 0) - 2}>
+          <tspan x={n.x + n.width + 12} dy="0">{n.label}</tspan>
+          <tspan class="dv-strong" x={n.x + n.width + 12} dy="19">{thousands(n.value)}</tspan>
+        </text>
+      ))}
+    </g>
+  </svg>
+</ChartFigure>
+
+<style is:global>
+  .flow {
+    max-inline-size: 60rem;
+  }
+
+  .flow__ribbon {
+    fill-opacity: 0.38;
+    stroke: none;
+  }
+
+  @media (forced-colors: active) {
+    .flow__ribbon {
+      fill: GrayText;
+      fill-opacity: 0.5;
+    }
+
+    .flow__node {
+      fill: CanvasText;
+    }
+  }
+</style>

@@ -17,7 +17,7 @@ export interface Claim {
 export const CLAIM_IDS = [
   'C-01', 'C-02', 'C-03', 'C-04', 'C-05', 'C-06', 'C-07', 'C-08', 'C-09', 'C-10', 'C-11', 'C-12',
   'C-13', 'C-14', 'C-15', 'C-16', 'C-17', 'C-18', 'C-19', 'C-20', 'C-21', 'C-22', 'C-23', 'C-24',
-  'C-25', 'C-26', 'C-27', 'C-28', 'C-29',
+  'C-25', 'C-26', 'C-27', 'C-28', 'C-29', 'C-30', 'C-31', 'C-32', 'C-33', 'C-34', 'C-35', 'C-36',
 ] as const;
 
 export type ClaimId = (typeof CLAIM_IDS)[number];
@@ -25,6 +25,7 @@ export type ClaimId = (typeof CLAIM_IDS)[number];
 const OPERATOR = 'Operator brief';
 const OWNER_2026_10_09 = 'Owner decision 2026-10-09 (.astro-magazine/decisions.md)';
 const OWNER_2026_10_10 = 'CEO direction 2026-10-10; D-21 (.astro-magazine/decisions.md)';
+const WP35 = 'WP-35 sources ledger (.astro-magazine/sources/wp-35.json)';
 const OWNER_2026_10_14 = 'CEO direction 2026-10-14; W9-10 (.astro-magazine/decisions.md)';
 
 export const claimRegistry: Readonly<Record<ClaimId, Claim>> = {
@@ -62,6 +63,15 @@ export const claimRegistry: Readonly<Record<ClaimId, Claim>> = {
   'C-28': { id: 'C-28', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; privacy notice`, summary: 'WE uses the details in a form to answer the request, as the privacy notice describes' },
   // Wave 9 (W9-13): C-29 follows SALES.md 1.4 (long-horizon business incubation and consulting). C-01 to C-03 and C-05 stay inside the sentence.
   'C-29': { id: 'C-29', status: 'publish', enabled: true, source: `${OWNER_2026_10_10}; ${OPERATOR}`, summary: 'WE is a long-horizon business incubation and consulting firm. WE steers a dedicated, fully remote team that builds a software-enabled company with its founder, for as long as the work is useful. WE makes no promise of funding.' },
+  // Wave 10 (WP-35, #84): third-party public statistics quoted on /data/. Each says what the source published about all new U.S. businesses,
+  // never what WE delivers (the pages say so). Retrieval dates and transformations are in .astro-magazine/sources/wp-35.json.
+  'C-30': { id: 'C-30', status: 'publish', enabled: true, source: `${WP35}; BLS Business Employment Dynamics, Table 7 (bls-bed-total)`, summary: 'About half of new establishments are gone by year 5: of the 2015 opening-year group, 50.2% were still open at year 5 and 34.7% at year 10' },
+  'C-31': { id: 'C-31', status: 'publish', enabled: true, source: `${WP35}; BLS Business Employment Dynamics, Table 7 (bls-bed-total)`, summary: 'In year 1 about one in five establishments closes; by year 13 the yearly figure is between 4 and 6 in 100, and the first years look alike in every opening-year group from 1994 to 2020' },
+  'C-32': { id: 'C-32', status: 'publish', enabled: true, source: `${WP35}; Census Business Formation Statistics (census-bfs-monthly)`, summary: 'Applications to start a business reached 5,671,836 in 2025, more than double the 2,485,100 of 2005, and rose in every industry shown; an application is not a launched business' },
+  'C-33': { id: 'C-33', status: 'publish', enabled: true, source: `${WP35}; Census Business Formation Statistics (census-bfs-monthly)`, summary: 'Of the 5,390,816 applications filed in 2021, 403,072 (fewer than 8 in 100) became an employer business within eight quarters; among applications that formed within eight quarters, the average wait to a first payroll rose from 1.48 quarters in 2005 to 2.29 in 2021' },
+  'C-34': { id: 'C-34', status: 'publish', enabled: true, source: `${WP35}; Kauffman Indicators of Entrepreneurship, 2021 and 2025 (kauffman-2021, kauffman-2025)`, summary: 'The share of new entrepreneurs aged 20 to 34 fell from 34.3% in 1996 to 26.2% in 2021, while the share aged 55 to 64 rose from 14.8% to 22.8%' },
+  'C-35': { id: 'C-35', status: 'publish', enabled: true, source: `${WP35}; Azoulay, Jones, Kim and Miranda, NBER Working Paper 24489, Table 5 (founder age)`, summary: 'Among U.S. startups founded in 2007 to 2009, the fastest-growing 1 in 1,000 had founders averaging 45.0 years old, against 41.8 for all startups, and founders of companies that exited averaged 46.7; an association, not a cause' },
+  'C-36': { id: 'C-36', status: 'publish', enabled: true, source: `${WP35}; Carta State of Private Markets Q1 2026 (carta-spm-q1-2026), single quoted figures, not re-hosted`, summary: 'Among venture-backed companies, the median gap from Seed to Series A is 2.0 years, from A to B 2.1 and from B to C 2.4, and a company raising a Series E or later is a median 9.5 years old' },
 };
 
 /** Named toggles components read. Each maps to one registry entry. */
