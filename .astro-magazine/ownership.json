@@ -4396,6 +4396,11 @@
       "reason": "Wave 8 landing (#42): a segment page fills the layout's after slot and so drew no closing band; it now ends with CtaEnd (the map row for /founders/<segment>/), one added line and its import."
     },
     {
+      "wp": "WP-62",
+      "path": "src/lib/rehype-mid-cta.ts",
+      "reason": "Wave 8 landing (#42): documentation only, a comment block stating that the band is measured against the article body and that a document with no valid boundary in the 50 to 90 percent window gets no band; no code changed."
+    },
+    {
       "wp": "WP-59",
       "path": ".astro-magazine/release/RELEASE.md",
       "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the counsel checklist quotes of InvestorIntroductionsOffer.astro follow the new wording."
