@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { matches, violations } from '../../../scripts/check-ownership.mjs';
+import { loadOwnership } from '../../../scripts/lib/ownership-load.mjs';
 
 // Wave 7 stage-1 packages run in parallel. This test is the proof that their write sets cannot collide with each other, with the frozen
 // files WP-40 owns, with the photography lane (WP-12, WP-12b, WP-12c, WP-12d) or with the release lane (WP-30). The lanes are read from
@@ -23,7 +23,7 @@ interface Ownership {
   lanes: { photography: string[]; release: string[] };
 }
 
-const ownership = JSON.parse(readFileSync(new URL('../../../.astro-magazine/ownership.json', import.meta.url), 'utf8')) as Ownership;
+const ownership = loadOwnership() as unknown as Ownership;
 const wave7 = ownership.assignments.filter((a) => /^WP-(?:4\d|50)$/.test(a.owner));
 const stage1 = wave7.filter((a) => a.stage === 1);
 

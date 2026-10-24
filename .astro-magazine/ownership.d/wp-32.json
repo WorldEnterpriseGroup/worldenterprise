@@ -1,0 +1,80 @@
+{
+  "owner": "WP-32",
+  "exceptions": [
+    {
+      "wp": "WP-32",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 10 (D-W10-1): registers WP-32 to WP-38 (W8-30 pattern)."
+    },
+    {
+      "wp": "WP-32",
+      "path": ".astro-magazine/decisions.md",
+      "reason": "Wave 10 (D-W10-1): records D-W10-1 to D-W10-5."
+    },
+    {
+      "wp": "WP-32",
+      "path": "claims-denylist.json",
+      "reason": "Wave 10 (D-W10-1): scopes the peers, investor-network and demo-day wording to the ecosystem context and adds the always-banned W10 rules."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 10 (D-W10-1): registers /ecosystem/, /sbir-sttr/ and /data/ ahead of their pages and the three per-package blocks."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 10 (D-W10-1): links the three routes from the Network and Resources panels and the footer; inert until the pages exist."
+    },
+    {
+      "wp": "WP-32",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 10 (D-W10-1): the snapshot lists the added nav and footer links (/ecosystem/, /sbir-sttr/, /data/) in its wave8 additions and carries a wave10 note."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/data/cta/map.ts",
+      "reason": "Wave 10 (D-W10-1): CTA rows for the three new route prefixes (cta.test.ts requires a row per launched route); WP-62's narrowed claim on src/data/cta/** is otherwise unchanged."
+    },
+    {
+      "wp": "WP-32",
+      "path": ".gitlab-ci.yml",
+      "reason": "Wave 10 (D-W10-5): RELEASE_ALLOW gains the /ecosystem/, /sbir-sttr/ and /data/ shapes (hub and one child level) so verify:release tolerates the launched rows until WP-33, WP-34 and WP-35 build the pages; the release-lane edit is the RELEASE_ALLOW value only, and a release tag or gh-pages still sets it empty."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/lib/route-core.ts",
+      "reason": "Wave 10 follow-up: registers /ecosystem/[category]/ in DYNAMIC_FIXED from WP-33's CATEGORY_IDS, so isLive() sees the eight category pages the directory emits."
+    },
+    {
+      "wp": "WP-32",
+      "path": "tests/e2e/support/page-guards.ts",
+      "reason": "Wave 10 follow-up: routes and axe wait for a quiet network through quiet() in page-guards instead of networkidle, which Playwright can raise before domcontentloaded on a long-parsing page and never raise again (/insights/ hang reported by WP-24)."
+    },
+    {
+      "wp": "WP-32",
+      "path": "tests/e2e/routes.spec.ts",
+      "reason": "Wave 10 follow-up: routes and axe wait for a quiet network through quiet() in page-guards instead of networkidle, which Playwright can raise before domcontentloaded on a long-parsing page and never raise again (/insights/ hang reported by WP-24)."
+    },
+    {
+      "wp": "WP-32",
+      "path": "tests/e2e/axe.spec.ts",
+      "reason": "Wave 10 follow-up: routes and axe wait for a quiet network through quiet() in page-guards instead of networkidle, which Playwright can raise before domcontentloaded on a long-parsing page and never raise again (/insights/ hang reported by WP-24)."
+    },
+    {
+      "wp": "WP-32",
+      "path": "tests/e2e/wave8/wp-72/resources.spec.ts",
+      "reason": "Wave 10 follow-up (CI owner): the resources hub 'no card is empty' check reads every card in one evaluateAll instead of one assertion per card; 115 round trips outran the 45 s timeout on a busy runner (demo pipeline 70210). Same assertion, same failure detail."
+    },
+    {
+      "wp": "WP-32",
+      "path": "astro.config.mjs",
+      "reason": "Home LCP fix (wp/32-css-inline): vite build.assetsInlineLimit now calls inlineAssetLimit from src/lib/stylesheet-inlining.ts, so every CSS chunk but the shared BaseLayout one is inlined (with CSP hashes) instead of shipping as its own render-blocking stylesheet."
+    },
+    {
+      "wp": "WP-32",
+      "path": "src/lib/stylesheet-inlining.ts",
+      "reason": "Home LCP fix (wp/32-css-inline): the pure, unit-tested inlining policy astro.config.mjs uses (Astro's 4096 raw-byte fallback left the 4.4 to 13 KB component chunks external)."
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "owner": "WP-36",
+  "exceptions": [
+    {
+      "wp": "WP-36",
+      "path": "package.json",
+      "reason": "Wave 10 (D-W10-1): three upgrade if a newer stable release is needed for WebGPURenderer and TSL; `three` and `@types/three` lines only, exact versions."
+    },
+    {
+      "wp": "WP-36",
+      "path": "package-lock.json",
+      "reason": "Wave 10 (D-W10-1): lockfile for the three upgrade, produced with `npm install --package-lock-only`; no other dependency may change."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/layouts/BaseLayout.astro",
+      "reason": "Wave 10 (D-W10-1): <head> additions for the cross-document view transition opt-in, resource hints and any importmap-free module preloads; head only."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/styles/motion.css",
+      "reason": "Wave 10 (D-W10-1): the existing `@view-transition { navigation: auto }` block, `animation-timeline` scroll-driven rules, `@starting-style` and `@property` additions; WP-60 wave 8 file."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/components/seo/SpeculationRules.astro",
+      "reason": "Wave 10 (D-W10-1): speculation rules (prefetch/prerender eagerness and exclusions); keep the CSP script hash."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/components/seo/SeoHead.astro",
+      "reason": "Wave 10 (D-W10-1): only if the head ordering for the speculation rules or view-transition meta needs it."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/lib/seo.ts",
+      "reason": "Wave 10 (D-W10-1): the `speculationRules()` function only."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/scripts/visuals/**",
+      "reason": "Wave 10 (D-W10-1): the existing wave 9 scene scripts (WP-52) live here, not under src/scripts/scene*; the seamless 3D rewrite edits them."
+    },
+    {
+      "wp": "WP-36",
+      "path": "src/pages/styleguide.astro",
+      "reason": "Wave 10 (D-W10-1): the styleguide is the demo page for new scenes (WP-52 file)."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-52/**",
+      "reason": "Wave 10 (D-W10-1): pins of the wave 9 scene contracts that the seamless 3D rewrite must update."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-60/motion.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins motion.css; follows the motion additions."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-09/seo.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins the speculation rules; follows the change."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-13/design-system.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins the motion tokens; follows the change."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/e2e/wave7/wp-45/visual-system.spec.ts",
+      "reason": "Wave 10 (D-W10-1): e2e pin of the view-transition and visual system; follows the change."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-45/css-budget.test.ts",
+      "reason": "Wave 10 (D-W10-1): the global CSS gzip budget (limit 11,500 B) may need a measured, documented raise for motion.css; no other assertion."
+    },
+    {
+      "wp": "WP-36",
+      "path": "tests/unit/wp-45/props-baseline.json",
+      "reason": "Wave 10 (D-W10-1): component props baseline for the scene components; only the entries WP-36 changes."
+    }
+  ]
+}

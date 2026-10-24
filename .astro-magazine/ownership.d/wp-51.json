@@ -1,0 +1,205 @@
+{
+  "owner": "WP-51",
+  "exceptions": [
+    {
+      "wp": "WP-51",
+      "path": "package.json",
+      "reason": "Wave 9 (W9-8): three and @types/three, exact pins, added with npm install --package-lock-only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "package-lock.json",
+      "reason": "Wave 9 (W9-8): the lock entries for three and @types/three and nothing else."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 9 governance (W9-1): registers WP-51 to WP-57, their exceptions, and narrows the superseded WP-62 and WP-48 sets (W9-3)."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/decisions.md",
+      "reason": "Wave 9 governance: decisions W9-1 onward."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/plans/wave8/writesets.json",
+      "reason": "Wave 9 (W9-3): mirrors the narrowed WP-62 write set so tests/unit/wp-60/write-sets-wave8.test.ts keeps policy and proof equal. No other wave 8 entry changes."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/plans/wave8/selftest.mjs",
+      "reason": "Wave 9 (W9-3): the one self-test case that named a WP-62 path handed to wave 9 now names a path WP-62 keeps. No other case changes."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/data/claims.ts",
+      "reason": "Wave 9 (W9-10): C-07 equity concept enabled with no numbers, C-17 genericized figures published, internal source strings made generic."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/foundation/claims.test.ts",
+      "reason": "Wave 9 (W9-10): the softened-default pin for C-07 becomes the W9-10 assertion (enabled, C-08 mechanics still excluded)."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/layouts/**",
+      "reason": "Wave 9 (W9-4): every layout defaults to the full-width content frame; additive props only (W8 frozen, WP-60 done)."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/layout/**",
+      "reason": "Wave 9 (W9-4): the header and footer widen with --content-max; nav breakpoints unchanged (W8 frozen, WP-60 done)."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/hero/HeroEditorial.astro",
+      "reason": "Wave 9 (W9-4): photography-lane file; layout width only, the image markup and slot stay as WP-12b left them."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/hero/HeroAtlas.astro",
+      "reason": "Wave 9 (W9-4): photography-lane file; layout width only, the image markup and slot stay as WP-12b left them."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-17/heroes.test.ts",
+      "reason": "Wave 9 (W9-4): hero frame and mode pins move to the wave 9 heroes (additive data-frame='wide', data-hero='scene'); held by WP-60 in wave 8, which is done."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/islands/we-calc/MetricsCalculator.astro",
+      "reason": "Wave 9 (W9-4): the 110rem frame fits five 15rem fields at 1440, where an error message wraps past its two reserved lines; the field minimum becomes 18rem. One rule; WP-54 keeps the file."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The header button label and its short form for 1100 to 1239px, the two featured panel CTAs, and the removal of the direct Pricing item. WP-54 keeps the Pricing and seat links."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/data/cta/targets.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The apply target label and band heading. That entry only."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/sources/wp-60.json",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. Remaps the apply target label in the WP-60 sentence ledger. That entry only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/nav/commands.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The palette keeps 'Apply' as the command people type, with the button label as its hint. One line; WP-46 keeps the file."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-46/commands.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The pinned first palette command gains the hint."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-71/families-logic.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The pinned hero primary action label."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The snapshot drops the Pricing section and records the change under wave9."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/foundation/nav.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The resolveNav and activeSectionId pins for /pricing/."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-16/active-section.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). /pricing/ has no current section."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-91/palette.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The ranking pin searches 'seat', the name /pricing/ is now listed under."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-60/cta.test.ts",
+      "reason": "Wave 9 (W9-13, SALES.md section 6): the apply target label pins (lines 194 and 407) read 'Start a readiness review'. Those lines only; shared with WP-58 (its own rows), disjoint by line."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/e2e/wave7/wp-46/palette.spec.ts",
+      "reason": "Wave 9 (W9-13): the keyboard palette check searches 'seat', the name /pricing/ is listed under after Pricing left the top level. That test only; shared with WP-54, disjoint by line."
+    },
+    {
+      "wp": "WP-51",
+      "path": "infra/intake/render/render.mjs",
+      "reason": "Wave 9 CI reliability (coordinator request): intake:render timed out launching Chromium on the 100m-CPU runners twice (spawnSync ETIMEDOUT). Raise the print timeout and retry once on ETIMEDOUT only; every other failure still fails."
+    },
+    {
+      "wp": "WP-51",
+      "path": "infra/intake/render/render.d.mts",
+      "reason": "Wave 9 CI reliability (coordinator request): intake:render timed out launching Chromium on the 100m-CPU runners twice (spawnSync ETIMEDOUT). Raise the print timeout and retry once on ETIMEDOUT only; every other failure still fails."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/e2e/wave8/wp-56/families-1920.spec.ts",
+      "reason": "Wave 9 (coordinator grant from WP-56's handoff): the library template's measure skip is lifted once WP-51 caps the 'How to use this' callout at 80ch; the TEMPLATES measure flag and its comment only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/program/steps.ts",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the step title 'Seat your team' becomes 'Assemble your team' only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/content/pages/journey/first-months.mdx",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the heading that mirrors the step title only."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".astro-magazine/sources/wp-72.json",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the label row for the renamed step heading only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-53/program.test.ts",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the step-title pin and the PINNED_TITLE allowance follow the rename."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/services/lines.ts",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the line G dedicated-teams description only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/geo/assemble.ts",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the /about/facts/ lead only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "tests/unit/wp-60/claims-w8.test.ts",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the negative sample that mirrored the old C-02 wording follows the new summary."
+    },
+    {
+      "wp": "WP-51",
+      "path": "src/components/forms/Field.astro",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the name prop doc comment drops 'the package choice' only."
+    },
+    {
+      "wp": "WP-51",
+      "path": "README.md",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); naming decision 1: the title line reads 'World Enterprise'."
+    },
+    {
+      "wp": "WP-51",
+      "path": "infra/intake/package.json",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); naming decision 1: the description only."
+    },
+    {
+      "wp": "WP-51",
+      "path": ".gitlab-ci.yml",
+      "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); naming decision 1: the line 1 comment only."
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "owner": "WP-62",
+  "exceptions": [
+    {
+      "wp": "WP-62",
+      "path": "src/pages/index.astro",
+      "reason": "Wave 8 landing (#42): adds the HomeAudience strip under the hero; everything else is demo's wave 9 home. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+    },
+    {
+      "wp": "WP-62",
+      "path": "src/components/home/LatestInsights.astro",
+      "reason": "Wave 8 landing (#42): desk-aware insights row from the desk registry. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+    },
+    {
+      "wp": "WP-62",
+      "path": "src/components/home/audience/HomeAudience.astro",
+      "reason": "Wave 8 landing (#42): new: the audience strip band (static, no script). W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+    },
+    {
+      "wp": "WP-62",
+      "path": "src/content/pages/home/index.mdx",
+      "reason": "Wave 8 landing (#42): kept as demo has it (metadata only); listed because the merge touched it. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+    },
+    {
+      "wp": "WP-62",
+      "path": "src/pages/founders/index.astro",
+      "reason": "Wave 8 landing (#42): adds the segments list from the registry and takes the end band from the CTA system (CtaEnd). W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+    },
+    {
+      "wp": "WP-62",
+      "path": "tests/e2e/wave7/wp-44/home-folds.spec.ts",
+      "reason": "Wave 8 landing (#42): the fold spec admits the audience strip between the hero and the journey band. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+    },
+    {
+      "wp": "WP-62",
+      "path": "tests/unit/wp-44/home.test.ts",
+      "reason": "Wave 8 landing (#42): the planned-order pin lists the audience strip after the hero. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+    },
+    {
+      "wp": "WP-62",
+      "path": "src/data/cta/map.ts",
+      "reason": "Wave 8 landing (#42): the founders hub row offers 'See how WE works' (path:/how-we-work/, W9-13 label) as its secondary before the briefs, as the hub's hard-coded band did on demo; the WP-60 map owner is otherwise unchanged."
+    },
+    {
+      "wp": "WP-62",
+      "path": "tests/unit/wp-51/write-sets-wave9.test.ts",
+      "reason": "Wave 8 landing (#42): the superseded-claims proof named src/pages/index.astro for WP-62, which the landing now reaches through a registered exception; it names a WP-58 path instead (same assertion, same count)."
+    },
+    {
+      "wp": "WP-62",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 8 landing (#42): registers WP-62's scoped exceptions for the landing (append-only)."
+    },
+    {
+      "wp": "WP-62",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 landing (#42), scoped to the CR-17 entry (src/pages/founders/index.astro quote line 44 to 45 after the segments import; W9-9), no other CR entry, no runbook section. WP-99 stays the release owner."
+    },
+    {
+      "wp": "WP-62",
+      "path": "src/components/families/SegmentPage.astro",
+      "reason": "Wave 8 landing (#42): a segment page fills the layout's after slot and so drew no closing band; it now ends with CtaEnd (the map row for /founders/<segment>/), one added line and its import."
+    },
+    {
+      "wp": "WP-62",
+      "path": "src/lib/rehype-mid-cta.ts",
+      "reason": "Wave 8 landing (#42): documentation only, a comment block stating that the band is measured against the article body and that a document with no valid boundary in the 50 to 90 percent window gets no band; no code changed."
+    }
+  ]
+}

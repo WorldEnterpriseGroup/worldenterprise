@@ -1,0 +1,15 @@
+{
+  "owner": "WP-42",
+  "exceptions": [
+    {
+      "wp": "WP-42",
+      "path": "src/pages/pricing/index.astro",
+      "reason": "Wave 7, decision W7-9: the photography lane (WP-12b exception) reserves this page, and phase B photo generation is deferred, so the page is released to this package now. Phase B will rebase onto wave 7."
+    },
+    {
+      "wp": "WP-42",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "WP-42 (#31): the reordered pricing.mdx moves four CR-12 quotes (wording unchanged), so only their line numbers are refreshed, plus a note that line numbers track demo while the rc2 text is the copy of this file at tag release-1-rc2."
+    }
+  ]
+}

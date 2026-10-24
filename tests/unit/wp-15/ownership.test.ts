@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import * as mod from '../../../scripts/check-ownership.mjs';
+import { loadOwnership } from '../../../scripts/lib/ownership-load.mjs';
 
 interface Ownership {
   assignments: { owner: string; branch: string; write_set: string[] }[];
@@ -13,7 +13,7 @@ const api = mod as unknown as {
   ownerOf(branch: string): string | null;
   violations(files: string[], owner: string, o: Ownership): { path: string; reason: string }[];
 };
-const ownership = JSON.parse(readFileSync(new URL('../../../.astro-magazine/ownership.json', import.meta.url), 'utf8')) as Ownership;
+const ownership = loadOwnership() as unknown as Ownership;
 
 test('wp/12b is its own work package, and the numeric branches keep their owners', () => {
   assert.equal(api.ownerOf('wp/12b'), 'WP-12b');

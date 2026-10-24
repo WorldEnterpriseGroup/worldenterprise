@@ -1,0 +1,20 @@
+{
+  "owner": "WP-15",
+  "exceptions": [
+    {
+      "wp": "WP-15",
+      "path": "{src,scripts,tests,docs,public}/**",
+      "reason": "The integrator is the sole writer of frozen files in Wave 2 (plan 8.4). CNAME, CLAUDE.md, plan.md and .claude/** stay outside this exception."
+    },
+    {
+      "wp": "WP-15",
+      "path": "{package.json,package-lock.json,astro.config.mjs,tsconfig.json,.node-version,claims-denylist.json}",
+      "reason": "Frozen build and claim configuration changes route through the integrator (plan 8.4)."
+    },
+    {
+      "wp": "WP-15",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "The integrator records the flag snapshot and accepted CSP exceptions (plan 8.4) and registers its own assignment."
+    }
+  ]
+}

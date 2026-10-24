@@ -1,0 +1,35 @@
+{
+  "owner": "WP-35",
+  "exceptions": [
+    {
+      "wp": "WP-35",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 10 (D-W10-1): add child rows of your own routes inside the marked `BEGIN WP-35 data block` ... `END` comment pair only; no other line. WP-32 registered the hub row ahead of the page."
+    },
+    {
+      "wp": "WP-35",
+      "path": "tests/unit/wp-45/props-baseline.json",
+      "reason": "Wave 10 (D-W10-1): additive chart props and new chart components change the pinned prop baseline; only the chart entries."
+    },
+    {
+      "wp": "WP-35",
+      "path": "tests/unit/wp-45/pinned-props.test.ts",
+      "reason": "Wave 10 (D-W10-1): only if a new chart component needs a pin; additive."
+    },
+    {
+      "wp": "WP-35",
+      "path": "src/data/claims.ts",
+      "reason": "Issue #84 gap 2 (wp/35-flow-claims): registers claims C-30 to C-36 for the statistics printed on the four /data/ pages (append-only: CLAIM_IDS and seven registry entries; no existing entry changes)."
+    },
+    {
+      "wp": "WP-35",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Issue #84 gap 2 (wp/35-flow-claims): registers the src/data/claims.ts exception above, append-only."
+    },
+    {
+      "wp": "WP-35",
+      "path": ".astro-magazine/plans/wave10/writesets.json",
+      "reason": "Issue #84 gap 2 (wp/35-flow-claims): the committed wave 10 map lists the WP-35 exceptions, so it gains the same two paths and the shared-exception entries."
+    }
+  ]
+}

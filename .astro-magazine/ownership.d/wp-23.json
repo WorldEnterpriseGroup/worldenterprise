@@ -1,0 +1,50 @@
+{
+  "owner": "WP-23",
+  "exceptions": [
+    {
+      "wp": "WP-23",
+      "path": "src/layouts/BriefLayout.astro",
+      "reason": "Wave 11 (D-W11-1): media slots in the brief layout."
+    },
+    {
+      "wp": "WP-23",
+      "path": "src/layouts/PlaybookLayout.astro",
+      "reason": "Wave 11 (D-W11-1): media slots in the playbook layout."
+    },
+    {
+      "wp": "WP-23",
+      "path": "src/layouts/ReferenceLayout.astro",
+      "reason": "Wave 11 (D-W11-1): media slots in the reference layout."
+    },
+    {
+      "wp": "WP-23",
+      "path": "tests/e2e/wave8/wp-87/guides-templates.spec.ts",
+      "reason": "Wave 11 (D-W11-1, #89): the wave 8 'no new image' guard on the WP-87 guides predates the wave 11 media brief; replaced by an image-quality check (alt or hidden, explicit dimensions, lazy below the fold). HowTo, h1, Sources and no-funding checks unchanged."
+    },
+    {
+      "wp": "WP-23",
+      "path": "src/components/program/longevity/SituationMatrix.astro",
+      "reason": "Wave 11 (#89): the /who-we-work-with/ matrix table moves into the plain shared table-wrap frame with an aria-label, as layout.spec requires of every table; markup only."
+    },
+    {
+      "wp": "WP-23",
+      "path": "tests/unit/wp-32b/write-sets-wave11.test.ts",
+      "reason": "Wave 11 (#89): records the two WP-23 exceptions above in the wave 11 exception proof."
+    },
+    {
+      "wp": "WP-23",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 11 (#89): registers the WP-23 fix-forward exceptions (W8-30 pattern: each package registers its own)."
+    },
+    {
+      "wp": "WP-23",
+      "path": ".astro-magazine/plans/wave11/writesets.json",
+      "reason": "Wave 11 (#89): mirrors the WP-23 exceptions so tests/unit/wp-32b/write-sets-wave11.test.ts keeps policy and proof equal."
+    },
+    {
+      "wp": "WP-23",
+      "path": ".astro-magazine/plans/wave9/statistics.json",
+      "reason": "Wave 11 (#89): corrects register entry ST-33 to the Fed SBCS 2026 age bands the page prints (48% for firms aged 0 to 5, 63% for firms aged 21 or more); the register said 61% for 16 or more."
+    }
+  ]
+}

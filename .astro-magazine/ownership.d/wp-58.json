@@ -1,0 +1,135 @@
+{
+  "owner": "WP-58",
+  "exceptions": [
+    {
+      "wp": "WP-58",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 9 (W9-13): adds and launches the rows of its own routes (/who-we-work-with/ and its seven situation pages, /why-it-takes-time/, /briefs/real-timeline/) in the same merge request as their pages. No other row changes."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 9 (W9-13): adds its own routes to the navigation. No other entry moves; WP-54 and WP-51 hold other lines."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/content.config.ts",
+      "reason": "Wave 9 (W9-13): adds the `sales` collection for src/content/sales/** and nothing else."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/cta.test.ts",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA) and its own map rows; shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 9 (W9-13): the nav snapshot follows its own nav entries and the C-29 description; disjoint by entry."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/cta/map.ts",
+      "reason": "Wave 9 (W9-12, W9-13): adds the surface rows of its own routes (/why-it-takes-time/, /who-we-work-with/) and the timeline brief row, and nothing else. Disjoint by row from WP-54."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/families.ts",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): one BRIEF_INPUTS entry, and a WaveNineOwner alias (WP-51 to WP-58) on the owner type. Nothing else; WP-60 keeps the file."
+    },
+    {
+      "wp": "WP-58",
+      "path": "docs/forms-contract.schema.json",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): the brief id joins the brief-request enum."
+    },
+    {
+      "wp": "WP-58",
+      "path": "docs/forms-contract.md",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): the brief id joins the list."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-71/families-registry.test.ts",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): brief count and id pins only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/gated-briefs.test.ts",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): brief count and id pins only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/schemas.test.ts",
+      "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): brief enum pins only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/claims.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only. WP-57 reviews the entry at integration."
+    },
+    {
+      "wp": "WP-58",
+      "path": "src/data/site.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only: the site description follows."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/foundation/claims.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/claims-w8.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-18/audit-claims.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-18/copy.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line. Also (W9-12) adds src/data/sales/sources.ts to the C-13-peers allowed list: the sources ledger cites the research title of Cohen and Hochberg (2014), which names the program category; the built page wraps the ledger in data-claim-allow=\"C-13-peers\"."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-09/helpers.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-09/audit-seo.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-41/audit-geo.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-71/story-gate.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-74/**",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-73/segment-pages.test.ts",
+      "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+    },
+    {
+      "wp": "WP-58",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 (W9-13): the CR-19 quote of the site description follows the C-29 rewording; CR-19 lines only, its counsel box stays unticked."
+    },
+    {
+      "wp": "WP-58",
+      "path": "tests/unit/wp-60/families.test.ts",
+      "reason": "Wave 9 (W9-13): line 69, the owner regex widens to /^WP-(?:[6-9]\\d|5[1-8])$/ for the WaveNineOwner alias. That line only."
+    }
+  ]
+}

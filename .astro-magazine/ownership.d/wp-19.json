@@ -1,0 +1,20 @@
+{
+  "owner": "WP-19",
+  "exceptions": [
+    {
+      "wp": "WP-19",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 4: registers the WP-19 assignment (common rules: every WP adds its own row)."
+    },
+    {
+      "wp": "WP-19",
+      "path": "{package.json,package-lock.json}",
+      "reason": "Wave 4 brief: dependency currency (astro 7.3.7, Playwright 1.64, other outdated packages)."
+    },
+    {
+      "wp": "WP-19",
+      "path": "astro.config.mjs",
+      "reason": "Wave 4 brief: stylesheet inlining, WOFF2 font sources and one endpoint source for the CSP and the forms."
+    }
+  ]
+}

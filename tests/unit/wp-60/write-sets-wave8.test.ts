@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { check, matchesPath, overlaps } from '../../../.astro-magazine/plans/wave8/lib.mjs';
 import { matches, violations } from '../../../scripts/check-ownership.mjs';
+import { loadOwnership } from '../../../scripts/lib/ownership-load.mjs';
 
 // Wave 8 runs up to ten authoring agents and five pipelines at once (plan 4.2). Their write sets are proved pairwise disjoint within each
 // pool (P0b, P1, P2) and clear of the frozen, wave 8 frozen, photography and release lists (W8-1). The wave 7 test in tests/unit/wp-40
@@ -45,7 +46,7 @@ interface WriteSetMap {
 }
 
 const root = new URL('../../../', import.meta.url);
-const ownership = JSON.parse(readFileSync(new URL('.astro-magazine/ownership.json', root), 'utf8')) as Ownership;
+const ownership = loadOwnership() as unknown as Ownership;
 const committed = JSON.parse(readFileSync(new URL('.astro-magazine/plans/wave8/writesets.json', root), 'utf8')) as WriteSetMap;
 const wave8 = ownership.assignments.filter((a) => /^WP-(?:6\d|7\d|8\d|9\d)$/.test(a.owner));
 

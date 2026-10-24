@@ -1,0 +1,25 @@
+{
+  "owner": "WP-26",
+  "exceptions": [
+    {
+      "wp": "WP-26",
+      "path": "src/layouts/ArticleLayout.astro",
+      "reason": "Wave 11 (D-W11-1): figure slots in the article layout."
+    },
+    {
+      "wp": "WP-26",
+      "path": "src/components/insights/**",
+      "reason": "Wave 11 (D-W11-1): the insights component folder is wave 8 frozen; WP-26 adds figure components there."
+    },
+    {
+      "wp": "WP-26",
+      "path": "src/components/geo/mdx-transform.ts",
+      "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+    },
+    {
+      "wp": "WP-26",
+      "path": "tests/unit/wp-91/mdx-transform.test.ts",
+      "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+    }
+  ]
+}
