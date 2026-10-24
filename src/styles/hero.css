@@ -25,7 +25,7 @@
 
     /* Wave 9 (W9-4): on a full-HD screen the visual gets the larger share of the 110rem frame; the copy keeps about 44rem. */
     @media (min-width: 100rem) {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 60rem);
     }
   }
 
@@ -171,6 +171,17 @@
   @media (min-width: 90rem) {
     .hero--compact:not([data-measure='prose']) .hero__copy > :is(h1, h2) {
       font-size: var(--fs-4xl);
+    }
+  }
+
+  /* Beside a picture the lead is a panel too (WP-109), so a one-line lead holds its column up to the picture and the two are not
+     separated by 200px of nothing. */
+  @media (min-width: 62rem) {
+    .hero__grid--media > .hero__copy > .lead {
+      padding: var(--sp-4) var(--sp-5);
+      background: color-mix(in oklch, currentColor 7%, transparent);
+      border: 1px solid color-mix(in oklch, currentColor 22%, transparent);
+      border-radius: var(--radius-md);
     }
   }
 

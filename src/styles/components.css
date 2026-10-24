@@ -1098,11 +1098,20 @@
     list-style: none;
     padding: 0;
 
-    /* A jump bar: first entry at the left edge of the frame, last at the right edge (WP-109). */
+    /* A jump bar (WP-109): the entries are equal chips that share the frame, the first at its left edge and the last at its right edge,
+       so a bar of two or five short words is not a few links with gaps of 400px between them. The tracks are counted from the number
+       of entries, never from the width of the words. */
     @media (min-width: 62rem) {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+
+      & > li > a {
+        display: block;
+        padding: var(--sp-2) var(--sp-4);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+        background: var(--color-bg-soft);
+        text-align: center;
+      }
     }
   }
 
