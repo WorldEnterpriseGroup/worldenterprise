@@ -83,14 +83,14 @@ export function measureBands(): BandExtent[] {
   const extent = (root: Element): { l: number; r: number; gap: number; gapAt: number } | null => {
     let l = Number.POSITIVE_INFINITY;
     let r = Number.NEGATIVE_INFINITY;
-    // The x-intervals of what is really painted: line boxes, media and cards. A block's own box (the extension that makes wrapped text
-    // count to its column edge) is not painted content, so it does not close a gap.
+    // The x-intervals of what is painted: line boxes, media and cards, and the box of a block of wrapped text (its ragged line ends are
+    // how text sets, so the block is solid up to its column edge). A wrapper that merely contains content is never added, only leaves.
     const solid: Array<[number, number]> = [];
-    const add = (box: DOMRect, paints = true): void => {
+    const add = (box: DOMRect): void => {
       if (box.width <= 0 || box.height <= 0 || box.right <= 0 || box.left >= W) return;
       l = Math.min(l, Math.max(0, box.left));
       r = Math.max(r, Math.min(W, box.right));
-      if (paints) solid.push([Math.max(0, box.left), Math.min(W, box.right)]);
+      solid.push([Math.max(0, box.left), Math.min(W, box.right)]);
     };
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
     for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
@@ -110,7 +110,7 @@ export function measureBands(): BandExtent[] {
           if (block !== null && block !== root) {
             const box = block.getBoundingClientRect();
             const pad = Number.parseFloat(getComputedStyle(block).paddingRight) || 0;
-            add(new DOMRect(box.left, box.top, box.width - pad, box.height), false);
+            add(new DOMRect(box.left, box.top, box.width - pad, box.height));
           }
         }
       } else if (node instanceof Element && isCard(node)) {
