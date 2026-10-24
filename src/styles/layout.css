@@ -586,9 +586,9 @@
   :is(.flow-wide, .prose) :where(p, blockquote, h2, h3, h4, h5, h6),
   :is(.flow-wide, .prose) > :where(ul, ol, dl, .callout),
   .container--prose > :where(.callout),
-  /* Text beside a visual, in a prose container or in a callout holds the same measure (WP-109): --prose-max grows to 57rem with the
+  /* Text beside a visual or in a prose container holds the same measure (WP-109): --prose-max grows to 57rem with the
      reading type, and 57rem of 22px type is 84 characters, so the character cap is what binds from 1440px up, at every viewport. */
-  :is(.split__text, .container--prose, .callout) :where(p),
+  :is(.split__text, .container--prose) :where(p),
   :is(.split__text, .container--prose) > :where(ul, ol) {
     max-inline-size: min(var(--prose-max), 76ch);
   }

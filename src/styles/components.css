@@ -1150,11 +1150,11 @@
     }
   }
 
-  /* A thank-you page has a short note and its steps beside the aside: the aside is wide enough (44rem) that the note and the aside share
+  /* A thank-you page has a short note and its steps beside the aside: the aside is wide enough (48rem) that the note and the aside share
      the frame instead of leaving 280px between them (WP-109). */
   @media (min-width: 62rem) {
     .form-layout:has(> .stack > .steps) {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 44rem);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 48rem);
     }
   }
 
