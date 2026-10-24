@@ -167,14 +167,19 @@ const HEX = '30,2 56,17 56,47 30,62 4,47 4,17';
         gap: var(--sp-4);
       }
 
+      /* Each step is a card of its own track, so a chain of short steps holds the figure's width to the last edge (WP-109). */
       .flow__step {
         grid-template-columns: minmax(0, 1fr);
         justify-items: start;
+        padding: var(--sp-4);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+        background: var(--color-bg);
       }
 
       .flow__step:not(:last-child)::after {
-        inset-block: calc(var(--sp-5) + 2px) auto;
-        inset-inline: calc(var(--sp-7) + var(--sp-2)) calc(-1 * var(--sp-4) + 3px);
+        inset-block: calc(var(--sp-4) + var(--sp-5) + 2px) auto;
+        inset-inline: calc(var(--sp-4) + var(--sp-7) + var(--sp-2)) calc(-1 * var(--sp-4) + 3px);
         border-inline-start: 0;
         border-block-start: 2px dashed var(--we-blue-hi);
       }

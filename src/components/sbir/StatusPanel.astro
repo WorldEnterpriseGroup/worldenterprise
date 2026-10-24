@@ -102,7 +102,7 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3';
     /* The compact status is a row at the wide frame: the stamp and the headline at the left, the statement at the right edge. */
     @media (min-width: 62rem) {
       .sbir-status--compact {
-        grid-template-columns: minmax(0, 1fr) fit-content(min(52rem, 60%));
+        grid-template-columns: fit-content(40%) minmax(0, 1fr);
         column-gap: var(--space-block);
         align-items: center;
       }

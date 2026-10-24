@@ -170,6 +170,13 @@ const { fallback } = Astro.props;
       }
     }
 
+    /* Until the search is ready the fallback is a panel, so its two short lines hold the column to its edge (WP-109). */
+    .we-search__fallback {
+      padding: var(--sp-5);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
+
     we-search[data-state='ready'] .we-search__fallback {
       display: none;
     }

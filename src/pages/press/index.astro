@@ -96,8 +96,22 @@ const kitLive = (await getRouteState()).isLive('/press/brand-kit/');
       align-items: start;
 
       @media (min-width: 62rem) {
-        grid-template-columns: minmax(0, var(--prose-max)) minmax(0, 36rem);
+        grid-template-columns: minmax(0, var(--prose-max)) minmax(0, 1fr);
         justify-content: space-between;
+        align-items: stretch;
+      }
+    }
+
+    /* The words are a panel too, so the two share the frame with a gutter between them (WP-109). */
+    @media (min-width: 62rem) {
+      .press-logo__text {
+        padding: var(--sp-6);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+      }
+
+      .press-logo__preview {
+        align-content: center;
       }
     }
 

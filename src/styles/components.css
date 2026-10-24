@@ -929,11 +929,21 @@
       grid-template-columns: minmax(0, 1fr);
     }
 
+    /* The name and the description are two equal panels inside the link, so a short name and a short line share the frame. */
     .next__list > li:only-child .next__link {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      gap: var(--sp-6);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+      gap: var(--sp-5);
+      background: none;
+
+      & > :is(.next__label, .next__desc) {
+        display: block;
+        padding: var(--sp-4) var(--sp-5);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+        background: var(--color-bg);
+      }
     }
   }
 
@@ -1137,6 +1147,14 @@
     @media (min-width: 62rem) {
       grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
       align-items: start;
+    }
+  }
+
+  /* A thank-you page has a short note and its steps beside the aside: the aside is wide enough (44rem) that the note and the aside share
+     the frame instead of leaving 280px between them (WP-109). */
+  @media (min-width: 62rem) {
+    .form-layout:has(> .stack > .steps) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 44rem);
     }
   }
 
@@ -1390,14 +1408,23 @@
     padding-block: var(--sp-6);
   }
 
-  /* The facts hold their own width: the first at the left edge of the frame, the last at the right edge (WP-109). */
+  /* The facts are equal chips that share the frame: the first at its left edge and the last at its right edge (WP-109), so four short
+     facts are not four words with 400px of nothing between them. */
   .factband__list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     gap: var(--sp-5);
     inline-size: min(100% - 2 * var(--gutter), var(--page-max));
     margin-inline: auto;
+  }
+
+  @media (min-width: 62rem) {
+    .factband__item {
+      padding: var(--sp-3) var(--sp-5);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
   }
 
   .factband__item dt {
@@ -1458,6 +1485,11 @@
       & > .stack > p {
         grid-column: 2;
         font-size: var(--fs-lg);
+        max-inline-size: none;
+        padding: var(--sp-4) var(--sp-5);
+        background: color-mix(in oklch, currentColor 7%, transparent);
+        border: 1px solid color-mix(in oklch, currentColor 22%, transparent);
+        border-radius: var(--radius-md);
       }
 
       & > .cluster {
