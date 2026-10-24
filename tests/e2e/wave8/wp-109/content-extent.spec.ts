@@ -9,7 +9,7 @@ import { ALLOWED_BANDS, ALLOWED_ROUTES, expectContentExtent, measureBands, offen
 // at most 240px empty on either side and have no empty run over 160px between them. Running text keeps its reading measure (46rem, growing to 57rem with the type from 1440px) but never sits alone (a rail carries the page's contents list,
 // call to action and sources beside it); cards, grids and tables span the frame; a hero without media is a two-column arrangement.
 
-/** One route per page family, so a failure names the family. A route that is not built is skipped, not failed. */
+/** One route per page family, so a failure names the family. A family route that is not built fails: the e2e jobs run on the built site, so a missing page is a defect, not a reason to look away. */
 const FAMILIES: readonly { readonly path: string; readonly family: string }[] = [
   { path: '/', family: 'home' },
   { path: '/program/', family: 'program hub' },
@@ -33,17 +33,13 @@ const FAMILIES: readonly { readonly path: string; readonly family: string }[] = 
   { path: '/data/formation/', family: 'data page' },
 ];
 
-const desktopOnly = (name: string): boolean => name !== 'wave8-desktop-1440x900';
-
 test.describe('content extent at 1920x1080', () => {
   test.use({ viewport: FULL_HD, reducedMotion: 'reduce' });
-  test.beforeEach(({}, info) => {
-    test.skip(desktopOnly(info.project.name), 'width checks run once, in the desktop wave 8 project');
-  });
+  // The viewport is fixed here, so one project is enough: playwright.config.ts keeps this spec out of the mobile project instead of skipping it.
 
   for (const { path, family } of FAMILIES) {
     test(`${path} (${family}) uses the frame and never scrolls sideways`, async ({ page }) => {
-      test.skip(!isBuilt(path), `${path} is not built`);
+      expect(isBuilt(path), `${path} (${family}) must be built: the e2e jobs run on the built site`).toBe(true);
       await page.goto(path);
       await page.evaluate(() => document.fonts.ready);
       expect(await expectContentExtent(page), 'the page has bands to measure').toBeGreaterThan(0);

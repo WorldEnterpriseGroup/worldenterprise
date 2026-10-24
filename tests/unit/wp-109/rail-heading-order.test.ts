@@ -18,3 +18,11 @@ test('the press logo preview paints with a brand token, not a raw colour', () =>
   assert.doesNotMatch(press, /#fff\b/i);
   assert.match(press, /\.press-logo__preview \{[^}]*background: var\(--we-white\)/s);
 });
+
+test('the content-extent spec never skips: a skipped measurement is a measurement nobody made', () => {
+  const spec = read('tests/e2e/wave8/wp-109/content-extent.spec.ts');
+  assert.doesNotMatch(spec, /\.(skip|fixme)\s*\(/, 'the spec must run in every project it is configured for and fail on a missing page');
+  assert.match(spec, /expect\(isBuilt\(path\)[^;]*\)\.toBe\(true\)/, 'a family route that is not built fails the spec');
+  const config = read('playwright.config.ts');
+  assert.match(config, /testIgnore: WAVE8_FIXED_VIEWPORT_SPECS/, 'the mobile project leaves the fixed-viewport spec out by configuration');
+});
