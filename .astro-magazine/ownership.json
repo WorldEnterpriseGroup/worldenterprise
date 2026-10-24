@@ -2338,6 +2338,11 @@
     },
     {
       "wp": "WP-109",
+      "path": "src/components/cta/CtaAside.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): the rail card that leads a page takes the h2 level so the outline never skips from h1 to h3; the default stays h3."
+    },
+    {
+      "wp": "WP-109",
       "path": "src/components/cta/CtaEnd.astro",
       "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
     },
