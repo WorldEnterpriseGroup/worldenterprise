@@ -4,7 +4,7 @@ import { CLOSING_BANDS, resolveCta, resolveMidCta, FAMILY_SURFACES } from '../..
 import type { CtaModel, FamilySurface, ResolveInput } from '../../../../src/data/cta/index.ts';
 import { listInsightFiles } from '../../../../src/lib/content-files.ts';
 import { ARTICLE_FURNITURE_SELECTOR } from '../../../../src/lib/rehype-mid-cta.ts';
-import { isBuilt } from '../../support/routes.ts';
+import { assertNotLaunched, builtArticles, isOnSite, requireBuilt } from './presence.ts';
 
 // WP-62, acceptance: the surface matrix of the call to action. One sample route of every page family is visited at 1440 and at 390 pixels,
 // with JavaScript on and with JavaScript off (the bands are static HTML, so the two must agree). Each sample has the band the family map
@@ -13,7 +13,7 @@ import { isBuilt } from '../../support/routes.ts';
 // `data-cta` element at all. A long article has at most one mid-body band, after half of the text and before its last tenth, never straight
 // after a heading, and no document under 900 words has one. The band adds no script, no cookie and no tracking attribute beyond `data-cta`.
 
-const isLive = (path: string): boolean => isBuilt(path);
+const isLive = (path: string): boolean => isOnSite(path);
 
 /** The path of a link with any preview base path and any origin taken off, so a link is compared with the ledger path it points at. */
 function endsWithPath(actual: string, expected: string): boolean {
@@ -26,15 +26,18 @@ interface Sample {
   readonly input: ResolveInput;
 }
 
-/** The sample of each row: the row's own route, or, for an article row, the first built article of the desk. */
-function samples(): { sample: Sample; built: boolean }[] {
-  const articles = listInsightFiles(process.cwd());
-  return FAMILY_SURFACES.map((row) => {
-    if (row.family !== 'articles' || row.input.topic === undefined) return { sample: { row, input: row.input }, built: isBuilt(row.input.path) };
-    const found = articles.find((file) => file.desk === row.input.topic && isBuilt(`/insights/${file.slug}/`));
-    const path = found === undefined ? row.input.path : `/insights/${found.slug}/`;
-    return { sample: { row, input: { ...row.input, path } }, built: found !== undefined };
-  });
+/**
+ * The sample of each row: the row's own route, or, for an article row, the first built article of the desk. A desk with no built article
+ * fails, and so does a launched route that is not built (presence.ts); a row is without a sample only when the data says its route is not launched.
+ */
+function sampleOf(row: FamilySurface): Sample | { readonly notLaunched: string } {
+  if (row.family !== 'articles' || row.input.topic === undefined) {
+    if (isOnSite(row.input.path)) return { row, input: row.input };
+    return { notLaunched: assertNotLaunched(row.input.path) };
+  }
+  const found = builtArticles(listInsightFiles(process.cwd())).find((file) => file.desk === row.input.topic);
+  expect(found, `the ${row.input.topic} desk has a built article to sample`).toBeDefined();
+  return { row, input: { ...row.input, path: `/insights/${found?.slug ?? ''}/` } };
 }
 
 /** The attributes an element of a band may carry: the markup of the band and its `data-cta`, and nothing that tracks. */
@@ -89,19 +92,24 @@ async function assertEndBand(page: Page, model: CtaModel, rowId: string): Promis
 
 function matrix(): void {
   test.describe('the end band of each page family', () => {
-    for (const { sample, built } of samples()) {
-      test(`${sample.row.id}`, async ({ page }) => {
-        test.skip(!built, `${sample.input.path} is not built`);
-        await page.goto(sample.input.path);
+    for (const row of FAMILY_SURFACES) {
+      test(`${row.id}`, async ({ page }) => {
+        const found = sampleOf(row);
+        if ('notLaunched' in found) {
+          test.info().annotations.push({ type: 'not-launched', description: `${row.input.path}: ${found.notLaunched}` });
+          return;
+        }
+        const { input: sampleInput } = found;
+        await page.goto(sampleInput.path);
         // A band with no live primary is not drawn, so the resolver decides whether this page has one; the page must agree with it.
-        const model = sample.row.expect === null ? null : resolveCta(sample.input, isLive);
+        const model = row.expect === null ? null : resolveCta(sampleInput, isLive);
         if (model === null) {
           await expect(page.locator('[data-cta]'), 'a form, legal, thanks, search, style guide or 404 page carries no band').toHaveCount(0);
           return;
         }
-        await assertEndBand(page, model, sample.row.id);
+        await assertEndBand(page, model, row.id);
         expect(await page.locator('[data-cta="mid"]').count(), 'at most one mid-body band').toBeLessThanOrEqual(1);
-        if (resolveMidCta(sample.input, isLive) === null) await expect(page.locator('[data-cta="mid"]'), 'no mid-body band where the map gives none').toHaveCount(0);
+        if (resolveMidCta(sampleInput, isLive) === null) await expect(page.locator('[data-cta="mid"]'), 'no mid-body band where the map gives none').toHaveCount(0);
       });
     }
   });
@@ -111,7 +119,7 @@ function matrix(): void {
   test.describe('the mid-body band of the built articles', () => {
     for (const file of listInsightFiles(process.cwd())) {
       test(`${file.slug}: a band sits after half the text and before the last tenth, after a paragraph, in a document of 900 words or more`, async ({ page }) => {
-        test.skip(!isBuilt(`/insights/${file.slug}/`), `/insights/${file.slug}/ is not built`);
+        if (builtArticles([file]).length === 0) return; // a draft: asserted to be unbuilt, and it has no band to measure
         await page.goto(`/insights/${file.slug}/`, { waitUntil: 'domcontentloaded' });
         const bands = page.locator('[data-cta="mid"]');
         const count = await bands.count();
