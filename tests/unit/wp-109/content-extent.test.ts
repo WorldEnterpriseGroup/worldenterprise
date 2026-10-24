@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
-import { ALLOWED_BANDS, ALLOWED_ROUTES, MAX_SIDE_GAP, MIN_CONTENT_SPAN, offenders } from '../../e2e/wave8/wp-51/lib/content-extent.ts';
+import { ALLOWED_BANDS, ALLOWED_ROUTES, MAX_INTERNAL_GAP, MAX_SIDE_GAP, MIN_CONTENT_SPAN, offenders } from '../../e2e/wave8/wp-51/lib/content-extent.ts';
 import type { BandExtent } from '../../e2e/wave8/wp-51/lib/content-extent.ts';
 
 const band = (name: string, left: number, right: number): BandExtent => ({ name, height: 400, left, right, span: 1920 - left - right, gap: 0, gapAt: 0 });
@@ -19,6 +19,16 @@ test('the thresholds are the ones of the issue', () => {
   assert.equal(offenders([band('a', 240, 240)]).length, 0, 'a gap of exactly 240px passes');
   assert.equal(offenders([band('a', 241, 80)]).length, 1, 'a gap of 241px fails');
   assert.equal(offenders([band('a', 80, 80)].map((b) => ({ ...b, span: 1439 }))).length, 1, 'a span of 1439px fails');
+});
+
+test('a band whose content spans the frame but leaves a void in the middle fails with where the void is', () => {
+  // A title at the left edge and its lead at the right edge with 900px of nothing between them: the outer extent is fine, the middle is not.
+  const hollow: BandExtent = { ...band('section "Hollow hero"', 80, 80), gap: 900, gapAt: 520 };
+  const [hit] = offenders([hollow]);
+  assert.match(hit ?? '', /Hollow hero.*widest internal gap 900px at x=520/);
+  assert.equal(MAX_INTERNAL_GAP, 160);
+  assert.equal(offenders([{ ...band('a', 80, 80), gap: 160, gapAt: 0 }]).length, 0, 'a gap of exactly 160px passes');
+  assert.equal(offenders([{ ...band('a', 80, 80), gap: 161, gapAt: 0 }]).length, 1, 'a gap of 161px fails');
 });
 
 test('an allowlisted band is skipped by name', () => {
