@@ -137,3 +137,11 @@ test('the insights hub copy keeps the sentences that say what the articles are n
   assert.match(copy, /Nothing here is a promise of funding/);
   assert.match(copy, /nothing on legal or financial topics is advice/);
 });
+
+test('the deferred insights row reserves a box taller than its cards and desk buttons, so the buttons never run into the footer logo (target-size)', () => {
+  const row = read('src/components/home/LatestInsights.astro');
+  assert.match(row, /class="section section--defer home-insights"/);
+  const size = /\.home-insights\s*\{[^}]*contain-intrinsic-size:\s*auto\s+(\d+(?:\.\d+)?)rem/.exec(row);
+  assert.ok(size?.[1] !== undefined, 'the row sets its own intrinsic size');
+  assert.ok(Number(size[1]) >= 60, `the placeholder is ${size[1]}rem, taller than three cards and eight desk buttons on a phone (about 55rem)`);
+});
