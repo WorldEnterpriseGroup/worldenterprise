@@ -3,6 +3,7 @@ import type { Page } from '@playwright/test';
 import { CLOSING_BANDS, resolveCta, resolveMidCta, FAMILY_SURFACES } from '../../../../src/data/cta/index.ts';
 import type { CtaModel, FamilySurface, ResolveInput } from '../../../../src/data/cta/index.ts';
 import { listInsightFiles } from '../../../../src/lib/content-files.ts';
+import { ARTICLE_FURNITURE_SELECTOR } from '../../../../src/lib/rehype-mid-cta.ts';
 import { isBuilt } from '../../support/routes.ts';
 
 // WP-62, acceptance: the surface matrix of the call to action. One sample route of every page family is visited at 1440 and at 390 pixels,
@@ -105,38 +106,33 @@ function matrix(): void {
     }
   });
 
+  // One test per article, so each has its own timeout and the workers share the load, instead of one loop over every built article. The band is
+  // static markup, so the page is read at domcontentloaded and measured once, in a single evaluate.
   test.describe('the mid-body band of the built articles', () => {
-    test('a band sits after half the text and before the last tenth, after a paragraph, in a document of 900 words or more', async ({ page }) => {
-      const built = listInsightFiles(process.cwd()).filter((file) => isBuilt(`/insights/${file.slug}/`));
-      test.skip(built.length === 0, 'no article is built');
-      test.setTimeout(240_000);
-      let withBand = 0;
-      for (const file of built) {
-        await page.goto(`/insights/${file.slug}/`);
+    for (const file of listInsightFiles(process.cwd())) {
+      test(`${file.slug}: a band sits after half the text and before the last tenth, after a paragraph, in a document of 900 words or more`, async ({ page }) => {
+        test.skip(!isBuilt(`/insights/${file.slug}/`), `/insights/${file.slug}/ is not built`);
+        await page.goto(`/insights/${file.slug}/`, { waitUntil: 'domcontentloaded' });
         const bands = page.locator('[data-cta="mid"]');
         const count = await bands.count();
         expect(count, `${file.slug}: at most one mid-body band`).toBeLessThanOrEqual(1);
-        const measure = await page.evaluate(() => {
+        if (count === 0) return;
+        const measure = await page.evaluate((furniture) => {
           const band = document.querySelector('[data-cta="mid"]');
           const words = (text: string): number => text.split(/\s+/).filter((w) => /[A-Za-z0-9]/.test(w)).length;
-          if (band === null) return { has: false as const, total: 0, before: 0, afterTag: '' };
+          if (band === null) return { total: 0, before: 0, afterTag: '' };
           const parent = band.parentElement;
-          // The text the plugin measures is the article body. Everything the layout puts after it in the same container (the timeline offer,
-          // the "In the data" figures, the sources, the citation box) is page furniture, not article text, so the count stops at the first of them.
-          const furniture = '[data-cta-mid], [data-insight-figures], .sources, [data-cite-this]';
+          // The text the plugin measures is the article body. Everything the layout puts after it in the same container is page furniture, so the
+          // count stops at the first piece of it; the selector is the plugin's own (ARTICLE_FURNITURE_SELECTOR).
           const all = Array.from(parent?.children ?? []);
           const end = all.findIndex((child) => child.matches(furniture));
           const body = end === -1 ? all : all.slice(0, end);
-          const siblings = body.filter((child) => child !== band);
-          const index = body.indexOf(band);
-          const before = body.slice(0, index).reduce((sum, el) => sum + words(el.textContent ?? ''), 0);
-          const total = siblings.reduce((sum, el) => sum + words(el.textContent ?? ''), 0);
-          return { has: true as const, total, before, afterTag: band.previousElementSibling?.tagName ?? '' };
-        });
-        if (!measure.has) continue;
-        withBand += 1;
-        // The page is counted here by splitting its text, the plugin counts the words of the source blocks (headings, lists and tables count
-        // differently, and a table cell or a link adds words to the DOM); a margin of five points on each side keeps the two from disagreeing.
+          const before = body.slice(0, body.indexOf(band)).reduce((sum, el) => sum + words(el.textContent ?? ''), 0);
+          const total = body.filter((child) => child !== band).reduce((sum, el) => sum + words(el.textContent ?? ''), 0);
+          return { total, before, afterTag: band.previousElementSibling?.tagName ?? '' };
+        }, ARTICLE_FURNITURE_SELECTOR);
+        // The page is counted here by splitting its text and the plugin counts the words of the source blocks (and the prose in component props);
+        // a margin of five points on each side keeps the two from disagreeing over a table cell or a link.
         expect(measure.total, `${file.slug}: only a document of about 900 words or more carries a mid-body band`).toBeGreaterThanOrEqual(850);
         const share = measure.before / measure.total;
         expect(share, `${file.slug}: the band is not in the first half`).toBeGreaterThanOrEqual(0.45);
@@ -144,9 +140,8 @@ function matrix(): void {
         expect(measure.afterTag, `${file.slug}: the band follows a paragraph, never a heading`).toBe('P');
         await expect(bands.locator('a'), `${file.slug}: the band has one action`).toHaveCount(1);
         await assertNoTracking(page);
-      }
-      test.info().annotations.push({ type: 'mid-bands', description: `${withBand} of ${built.length} built articles carry a mid-body band` });
-    });
+      });
+    }
   });
 }
 

@@ -49,9 +49,45 @@ function isElement(node: HastNode): node is ElementNode {
   return node.type === 'element';
 }
 
+/**
+ * What the layout puts in the article's container after the body, which is page furniture and not article text: the timeline offer,
+ * the "In the data" figures, the sources and the citation box. The e2e spec stops its count at the first match, so the spec and this
+ * plugin share one notion of "the body".
+ */
+export const ARTICLE_FURNITURE_SELECTOR = '[data-cta-mid], [data-insight-figures], .sources, [data-cite-this]';
+
 /** Words of a text: whitespace-separated pieces that hold a letter or a digit. */
 export function wordCount(text: string): number {
   return text.split(/\s+/).filter((piece) => /[A-Za-z0-9]/.test(piece)).length;
+}
+
+/** Attributes of a component that hold no reading text (routes, ids, styling and layout switches). */
+const NON_TEXT_ATTRIBUTES = new Set(['path', 'href', 'src', 'id', 'class', 'className', 'tone', 'kind', 'variant', 'headingLevel', 'slot', 'name', 'seed']);
+
+/** The words inside the quoted strings of a JavaScript expression, which is where a component keeps the cells, steps and captions it renders. */
+function literalWords(expression: string): number {
+  let total = 0;
+  for (const match of expression.matchAll(/'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)"|`((?:[^`\\]|\\.)*)`/g)) total += wordCount(match[1] ?? match[2] ?? match[3] ?? '');
+  return total;
+}
+
+/**
+ * The words that an MDX component will render from its props. `textContent` of a hast component node holds only its children, so a table
+ * or a list of steps given as props counts as nothing there while the page shows all of its words; counting the prose in the props makes
+ * the plugin and the rendered body agree.
+ */
+function propWords(node: HastNode): number {
+  let total = 0;
+  if ('attributes' in node && Array.isArray(node.attributes)) {
+    for (const attribute of node.attributes as { type: string; name?: string; value?: unknown }[]) {
+      if (attribute.type !== 'mdxJsxAttribute' || attribute.name === undefined || NON_TEXT_ATTRIBUTES.has(attribute.name)) continue;
+      const { value } = attribute;
+      if (typeof value === 'string') total += wordCount(value);
+      else if (typeof value === 'object' && value !== null && 'value' in value && typeof value.value === 'string') total += literalWords(value.value);
+    }
+  }
+  if ('children' in node) for (const child of node.children) total += propWords(child);
+  return total;
 }
 
 const text = (value: string): HastNode => ({ type: 'text', value });
@@ -75,13 +111,18 @@ interface Block {
   readonly words: number;
 }
 
+/** The words a top-level block shows on the page: its text plus the prose in the props of any component inside it. */
+export function blockWords(node: HastNode, ctx: Pick<HastVisitorContext, 'textContent'>): number {
+  return wordCount(ctx.textContent(node)) + propWords(node);
+}
+
 /** The top-level blocks of the document: every child that is not whitespace between them, with its word count. */
 function blocksOf(root: HastNode, ctx: MidCtaContext): Block[] {
   const children = 'children' in root ? root.children : [];
   const blocks: Block[] = [];
   for (const node of children) {
     if (node.type === 'text' && node.value.trim() === '') continue;
-    blocks.push({ node, words: wordCount(ctx.textContent(node)) });
+    blocks.push({ node, words: blockWords(node, ctx) });
   }
   return blocks;
 }
