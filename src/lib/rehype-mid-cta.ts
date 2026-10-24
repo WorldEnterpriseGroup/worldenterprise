@@ -16,6 +16,10 @@
  * It sits between two top-level blocks, so it is never inside a list, table, blockquote, figure or code block, and never between a
  * heading and the paragraph that follows it. A paragraph that introduces a list (it ends in a colon) is skipped. At most one per document.
  *
+ * A component (an MDX flow element) may draw words the plugin cannot read, so it carries a slack of COMPONENT_SLACK_WORDS: the band is placed
+ * only where it is past the middle on the pessimistic reading and short of the last tenth on the other, which keeps the band inside the window on
+ * the page whatever the components draw.
+ *
  * The measure is the words of the document's own top-level blocks, which is the article body and nothing the layout adds after it (the
  * timeline offer, the figures, the sources, the citation box). When no valid paragraph boundary falls in the 50 to 90 percent window, the
  * document gets no band: the rule never moves the band outside the window to find a boundary, because a band in the first half or the last
@@ -109,7 +113,12 @@ export function midCtaNode(model: CtaModel, base?: string): ElementNode {
 interface Block {
   readonly node: HastNode;
   readonly words: number;
+  /** Words the block may show beyond the ones the plugin can read: a component draws labels, legends and fixed notes that are in no prop. */
+  readonly slack: number;
 }
+
+/** What a component block may add to the page beyond the words the plugin can read (a chart's axis labels, a fixed disclaimer). */
+export const COMPONENT_SLACK_WORDS = 80;
 
 /** The words a top-level block shows on the page: its text plus the prose in the props of any component inside it. */
 export function blockWords(node: HastNode, ctx: Pick<HastVisitorContext, 'textContent'>): number {
@@ -122,7 +131,7 @@ function blocksOf(root: HastNode, ctx: MidCtaContext): Block[] {
   const blocks: Block[] = [];
   for (const node of children) {
     if (node.type === 'text' && node.value.trim() === '') continue;
-    blocks.push({ node, words: blockWords(node, ctx) });
+    blocks.push({ node, words: blockWords(node, ctx), slack: node.type === 'mdxJsxFlowElement' ? COMPONENT_SLACK_WORDS : 0 });
   }
   return blocks;
 }
@@ -130,14 +139,18 @@ function blocksOf(root: HastNode, ctx: MidCtaContext): Block[] {
 /** The block after which the band goes, or undefined when the document has no fitting place or is too short. */
 export function findAnchor(root: HastNode, ctx: MidCtaContext): HastNode | undefined {
   const blocks = blocksOf(root, ctx);
-  const total = blocks.reduce((sum, block) => sum + block.words, 0);
-  if (total < MID_CTA_MIN_WORDS) return undefined;
+  const readable = blocks.reduce((sum, block) => sum + block.words, 0);
+  if (readable < MID_CTA_MIN_WORDS) return undefined;
+  const widest = readable + blocks.reduce((sum, block) => sum + block.slack, 0);
   let seen = 0;
+  let seenWide = 0;
   for (const [index, block] of blocks.entries()) {
     seen += block.words;
-    const share = seen / total;
-    if (share > MID_CTA_UNTIL) return undefined;
-    if (share < MID_CTA_FROM) continue;
+    seenWide += block.words + block.slack;
+    // The page shows between `readable` and `widest` words in all, and between `seen` and `seenWide` of them before this block. The band must
+    // be past the middle even if every component drew its most, and short of the last tenth even if it drew nothing beyond what is readable.
+    if (seenWide / readable > MID_CTA_UNTIL) return undefined;
+    if (seen / widest < MID_CTA_FROM) continue;
     const { node } = block;
     if (!isElement(node) || node.tagName !== 'p') continue;
     // The band goes after a paragraph, so it is never between a heading and the paragraph that follows it.
