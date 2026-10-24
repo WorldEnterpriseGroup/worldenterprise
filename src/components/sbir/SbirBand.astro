@@ -54,6 +54,8 @@ const toneClass: Readonly<Record<NonNullable<Props['tone']>, string | false>> = 
     .sbir-band__text,
     .sbir-band__stack {
       display: grid;
+      /* A track that may shrink: an auto track is as wide as its widest child's min-content (the tiles), which overflows at 320px. */
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--sp-4);
       align-content: start;
     }

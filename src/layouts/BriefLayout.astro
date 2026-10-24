@@ -36,13 +36,13 @@ const report = articleNode({ path: meta.path, headline: meta.title, description:
 <BaseLayout {...meta} crumbs={crumbs} ogType="article" published={publishedDate} updated={updatedDate ?? publishedDate} jsonLd={[...(meta.jsonLd ?? []), report]}>
   <HeroArticle crumbs={crumbs} eyebrow="Research brief" title={meta.title} lead={subtitle} />
   <div class="section">
-    <div class="container with-rail">
-      <div class="prose">
+    <div class="container with-rail with-rail--page with-rail--end">
+      <div class="prose with-rail__body">
         <slot />
         <SourcesList sources={sources} />
         <CiteThis title={meta.title} path={meta.path} date={updatedDate ?? publishedDate} />
       </div>
-      <aside class="rail" aria-label="About this brief">
+      <aside class="rail rail--end" aria-label="About this brief">
         <MethodologyBox methodology={methodology} limitations={limitations} version={version} updated={updatedDate ?? publishedDate} />
         <slot name="aside" />
       </aside>

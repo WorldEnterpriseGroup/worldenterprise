@@ -62,9 +62,10 @@ test('the hero takes the body measure so the hero and the reading column share a
     assert.match(read(`src/components/hero/${hero}.astro`), /prose.{0,20}'container container--prose'/, `${hero} puts a prose measure in the reading column`);
   }
   assert.match(read('src/layouts/types.ts'), /measure\?: HeroMeasure \| undefined/);
-  assert.match(read('src/layouts/GuideLayout.astro'), /measure = 'prose'/);
-  assert.match(read('src/layouts/LegalLayout.astro'), /measure = 'prose'/);
-  assert.match(read('src/layouts/TemplateLayout.astro'), /measure = 'prose'/);
+  // WP-109: the prose layouts put their text beside a rail (ProseRail), so the body starts at the frame's left edge and the hero shares it.
+  assert.match(read('src/layouts/GuideLayout.astro'), /measure = 'default'/);
+  assert.match(read('src/layouts/LegalLayout.astro'), /measure = 'default'/);
+  assert.match(read('src/layouts/TemplateLayout.astro'), /measure = 'default'/);
   assert.match(read('src/layouts/MarketingLayout.astro'), /'prose'/);
   assert.match(read('src/layouts/ReferenceLayout.astro'), /measure=\{measure \?\? \(wide \? 'default' : 'prose'\)\}/);
 });
@@ -73,7 +74,7 @@ test('the article hero uses the same container as its body', () => {
   const hero = read('src/components/hero/HeroArticle.astro');
   assert.match(hero, /measure = 'rail'/);
   assert.match(hero, /: 'container'/, 'the rail measure sits in the page container, like the article body');
-  assert.match(read('src/layouts/ArticleLayout.astro'), /<div class="container with-rail">/);
+  assert.match(read('src/layouts/ArticleLayout.astro'), /<div class:list=\{\['container', 'with-rail'/);
 });
 
 test('the breadcrumb is one line and every crumb can shrink, the current page first, so neither a font swap nor a long label moves the page', () => {

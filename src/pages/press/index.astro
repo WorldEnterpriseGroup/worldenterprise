@@ -55,26 +55,83 @@ const kitLive = (await getRouteState()).isLive('/press/brand-kit/');
     <Section labelledby="press-logo">
       <div class="container stack">
         <h2 id="press-logo">Logo downloads</h2>
-        <p>The wordmark is provided as SVG for use on white or very light backgrounds.</p>
-        <p>
-          <a href={asset('/press/we-logo-wordmark.svg')} download>Download the World Enterprise wordmark (SVG)</a>
-        </p>
-        <h3 id="press-use">Using the logo</h3>
-        <ul>
-          <li>Use it dark on light only. There is no reversed version.</li>
-          <li>Keep clear space around it equal to the height of one of its hexagonal cells.</li>
-          <li>Do not stretch, recolour, outline, crop or place it on a dark or busy ground.</li>
-          <li>Do not use it in a way that suggests WE endorses your product or service.</li>
-        </ul>
-        {
-          kitLive && (
+        <div class="press-logo">
+          <div class="press-logo__text stack">
+            <p>The wordmark is provided as SVG for use on white or very light backgrounds.</p>
             <p>
-              <a href={href('/press/brand-kit/')}>Read the brand kit</a> for usage rules, colors and type.
+              <a href={asset('/press/we-logo-wordmark.svg')} download>Download the World Enterprise wordmark (SVG)</a>
             </p>
-          )
-        }
+            <h3 id="press-use">Using the logo</h3>
+            <ul>
+              <li>Use it dark on light only. There is no reversed version.</li>
+              <li>Keep clear space around it equal to the height of one of its hexagonal cells.</li>
+              <li>Do not stretch, recolour, outline, crop or place it on a dark or busy ground.</li>
+              <li>Do not use it in a way that suggests WE endorses your product or service.</li>
+            </ul>
+            {
+              kitLive && (
+                <p>
+                  <a href={href('/press/brand-kit/')}>Read the brand kit</a> for usage rules, colors and type.
+                </p>
+              )
+            }
+          </div>
+          <figure class="press-logo__preview">
+            <img src={asset('/press/we-logo-wordmark.svg')} alt="The World Enterprise wordmark, dark on a white ground" width="480" height="34" loading="lazy" decoding="async" />
+            <figcaption>The wordmark on white, as it is provided.</figcaption>
+          </figure>
+        </div>
       </div>
     </Section>
     <CtaBand title="A question or a correction?" text="Choose the topic Press or media, or A correction to something WE published." cta={{ label: 'Contact WE', href: '/contact/' }} />
   </Fragment>
 </PageShell>
+
+<style>
+  @layer pages {
+    /* The rules at the left, a preview of the file at the right edge of the frame (WP-109). */
+    .press-logo {
+      display: grid;
+      gap: var(--space-block);
+      align-items: start;
+
+      @media (min-width: 62rem) {
+        grid-template-columns: minmax(0, var(--prose-max)) minmax(0, 1fr);
+        justify-content: space-between;
+        align-items: stretch;
+      }
+    }
+
+    /* The words are a panel too, so the two share the frame with a gutter between them (WP-109). */
+    @media (min-width: 62rem) {
+      .press-logo__text {
+        padding: var(--sp-6);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+      }
+
+      .press-logo__preview {
+        align-content: center;
+      }
+    }
+
+    .press-logo__preview {
+      display: grid;
+      gap: var(--sp-3);
+      margin: 0;
+      padding: var(--sp-6);
+      background: var(--we-white); /* the wordmark is supplied for white: this stays white in dark mode */
+      color: var(--color-text-muted);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      font-size: var(--fs-sm);
+      justify-items: center;
+      text-align: center;
+    }
+
+    .press-logo__preview img {
+      inline-size: min(100%, 30rem);
+      block-size: auto;
+    }
+  }
+</style>

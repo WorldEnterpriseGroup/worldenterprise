@@ -850,6 +850,38 @@
     font-size: var(--fs-sm);
   }
 
+  /* A sources band is a label and a list. At the wide frame they are two equal panels in one row (WP-109): the label at the left edge
+     and the list at the right edge, so a short list does not leave the frame empty. The rail's own sources stay stacked. */
+  @media (min-width: 62rem) {
+    .sources:not(.rail-sources .sources) {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--sp-7);
+      align-items: stretch;
+
+      & > :is(h2, h3) {
+        grid-column: 1;
+      }
+
+      & > .sources__list {
+        grid-column: 2;
+        grid-row: 1;
+        margin-block: 0;
+      }
+
+      & > :is(h2, h3, .sources__list) {
+        padding: var(--sp-5) var(--sp-6);
+        background: color-mix(in oklch, var(--color-text) 5%, transparent);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+      }
+
+      & > .sources__list {
+        padding-inline-start: calc(var(--sp-6) + 1.5em);
+      }
+    }
+  }
+
   .methodology {
     padding: var(--sp-5);
     background: var(--color-bg-soft);
@@ -880,10 +912,39 @@
   .next__list {
     display: grid;
     gap: var(--sp-4);
+    /* The cards share the frame (WP-109). */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
     list-style: none;
     padding: 0;
     margin-block-start: var(--sp-4);
+
+    @media (min-width: 62rem) {
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    }
+  }
+
+  /* One next step is a row across the frame: its name at the left edge, its description at the right (WP-109). */
+  @media (min-width: 62rem) {
+    .next__list:has(> li:only-child) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* The name and the description are two equal panels inside the link, so a short name and a short line share the frame. */
+    .next__list > li:only-child .next__link {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+      gap: var(--sp-5);
+      background: none;
+
+      & > :is(.next__label, .next__desc) {
+        display: block;
+        padding: var(--sp-4) var(--sp-5);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+        background: var(--color-bg);
+      }
+    }
   }
 
   .next__link,
@@ -1046,6 +1107,22 @@
     gap: var(--sp-2) var(--sp-4);
     list-style: none;
     padding: 0;
+
+    /* A jump bar (WP-109): the entries are equal chips that share the frame, the first at its left edge and the last at its right edge,
+       so a bar of two or five short words is not a few links with gaps of 400px between them. The tracks are counted from the number
+       of entries, never from the width of the words. */
+    @media (min-width: 62rem) {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+
+      & > li > a {
+        display: block;
+        padding: var(--sp-2) var(--sp-4);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+        background: var(--color-bg-soft);
+        text-align: center;
+      }
+    }
   }
 
   .toc-rail {
@@ -1070,6 +1147,14 @@
     @media (min-width: 62rem) {
       grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
       align-items: start;
+    }
+  }
+
+  /* A thank-you page has a short note and its steps beside the aside: the aside is wide enough (48rem) that the note and the aside share
+     the frame instead of leaving 280px between them (WP-109). */
+  @media (min-width: 62rem) {
+    .form-layout:has(> .stack > .steps) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 48rem);
     }
   }
 
@@ -1323,12 +1408,23 @@
     padding-block: var(--sp-6);
   }
 
+  /* The facts are equal chips that share the frame: the first at its left edge and the last at its right edge (WP-109), so four short
+     facts are not four words with 400px of nothing between them. */
   .factband__list {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     gap: var(--sp-5);
-    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
     inline-size: min(100% - 2 * var(--gutter), var(--page-max));
     margin-inline: auto;
+  }
+
+  @media (min-width: 62rem) {
+    .factband__item {
+      padding: var(--sp-3) var(--sp-5);
+      background: var(--color-bg);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+    }
   }
 
   .factband__item dt {
@@ -1364,6 +1460,44 @@
 
     @media (min-width: 52rem) {
       grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+
+      /* The actions close the band at the frame's right edge (WP-109) instead of hanging under the words' column. */
+      & > .cluster {
+        justify-content: flex-end;
+      }
+    }
+
+    /* From 90rem the words and the actions are three parts on one row: the heading, the sentence and the actions (WP-109). */
+    @media (min-width: 90rem) {
+      grid-template-columns: fit-content(34%) minmax(0, var(--prose-max)) 22rem;
+      justify-content: space-between;
+      column-gap: var(--sp-7);
+
+      & > .stack {
+        display: contents;
+      }
+
+      & > .stack > h2 {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+      }
+
+      & > .stack > p {
+        grid-column: 2;
+        font-size: var(--fs-lg);
+        max-inline-size: none;
+        padding: var(--sp-4) var(--sp-5);
+        background: color-mix(in oklch, currentColor 7%, transparent);
+        border: 1px solid color-mix(in oklch, currentColor 22%, transparent);
+        border-radius: var(--radius-md);
+      }
+
+      & > .cluster {
+        grid-column: 3;
+        justify-self: stretch;
+        flex-direction: column;
+        align-items: stretch;
+      }
     }
   }
 

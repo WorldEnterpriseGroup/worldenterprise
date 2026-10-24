@@ -48,7 +48,35 @@ const stateOf = (index: number): 'done' | 'current' | 'next' => (index < current
   }
 
   .stagerail__stop {
+    --rail-pad: 0rem;
+    --rail-padx: 0rem;
     position: relative;
+  }
+
+  /* From 52rem each stop is a card that holds a third of the frame, so the three share it whatever the names are (WP-109); the line
+     to the next stop starts below the card's padding. */
+  @media (min-width: 52rem) {
+    .stagerail__stop {
+      --rail-pad: var(--sp-3);
+      --rail-padx: var(--sp-4);
+      padding: var(--rail-pad) var(--rail-padx);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-soft);
+    }
+  }
+
+  /* The first stop holds the left edge of the frame and the last the right edge, so the three stops span the frame (WP-109). */
+  @media (min-width: 52rem) {
+    .stagerail__stop:last-child .stagerail__link {
+      justify-items: end;
+      text-align: end;
+    }
+
+    .stagerail__stop:not(:first-child, :last-child) .stagerail__link {
+      justify-items: center;
+      text-align: center;
+    }
   }
 
   /* The node on top, its name under it, so the line to the next stop runs through the node row alone. */
@@ -119,8 +147,8 @@ const stateOf = (index: number): 'done' | 'current' | 'next' => (index < current
   .stagerail__stop:not(:last-child)::after {
     content: '';
     position: absolute;
-    inset-block-start: calc(1.25rem / var(--hex-ratio) - 1.5px);
-    inset-inline: calc(2.5rem + var(--sp-2)) 0;
+    inset-block-start: calc(var(--rail-pad) + 1.25rem / var(--hex-ratio) - 1.5px);
+    inset-inline: calc(var(--rail-padx) + 2.5rem + var(--sp-2)) 0;
     block-size: 3px;
     background: var(--tint-line);
     transform-origin: left;

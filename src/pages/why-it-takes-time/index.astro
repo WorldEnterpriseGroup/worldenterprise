@@ -97,7 +97,7 @@ const ids = [...STATIONS.flatMap((s) => s.sources), ...PACED.sources, ...HEAD_ST
       STATIONS.map((s) => (
         <section class:list={['band', tones[s.id], 'sales-station']} id={`station-${s.id}`} aria-labelledby={`station-${s.id}-title`}>
           <div class="container">
-            <div class="split sales-station__split">
+            <div class="split split--panels sales-station__split">
               <div class="split__text sales-station__text">
                 <div class="sales-station__head">
                   <World variant={`stage-${s.stage}` as WorldStage} title={s.stageTitle} id={`world-${s.id}`} size="sm" />
@@ -244,7 +244,7 @@ const ids = [...STATIONS.flatMap((s) => s.sources), ...PACED.sources, ...HEAD_ST
 
     <section class="band band--tint-blue sales-station" id="paced" aria-labelledby="paced-title">
       <div class="container">
-        <div class="split sales-station__split">
+        <div class="split split--panels sales-station__split">
           <div class="split__text sales-station__text">
             <h2 id="paced-title">{PACED.headline}</h2>
             {PACED.body.map((p) => <p>{p}</p>)}
@@ -261,7 +261,7 @@ const ids = [...STATIONS.flatMap((s) => s.sources), ...PACED.sources, ...HEAD_ST
 
     <section class="band band--soft sales-station" id="head-start" aria-labelledby="head-start-title">
       <div class="container">
-        <div class="split sales-station__split">
+        <div class="split split--panels sales-station__split">
           <div class="split__text sales-station__text">
             <h2 id="head-start-title">{HEAD_START.headline}</h2>
             <p class="sales-station__caption">{HEAD_START.caption}</p>
@@ -289,7 +289,7 @@ const ids = [...STATIONS.flatMap((s) => s.sources), ...PACED.sources, ...HEAD_ST
 
     <section class="band band--deep sales-end" aria-labelledby="clock-end-title">
       <div class="container">
-        <div class="split sales-station__split">
+        <div class="split split--panels sales-station__split">
           <div class="split__text sales-station__text">
             <h2 id="clock-end-title">{CLOCK_END.headline}</h2>
             <p class="sales-station__caption">{CLOCK_END.body}</p>

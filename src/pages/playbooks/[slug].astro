@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import ArticleEnd from '../../components/families/visual/ArticleEnd.astro';
+import ProseRail from '../../components/layout/ProseRail.astro';
 import Button from '../../components/ui/Button.astro';
 import PlaybookMedia from '../../components/playbooks/PlaybookMedia.astro';
 import PlaybookTrail from '../../components/playbooks/PlaybookTrail.astro';
@@ -64,33 +65,33 @@ const leadsTo = terminal && (await isLinkable('/fundability/'));
 
   <Fragment slot="after">
     <div class="section">
-      <div class="container container--prose stack">
-        <div class="prose">
-          <Content components={{ a: SmartLink }} />
-        </div>
-        {
-          next && (
-            <nav class="stack" aria-label="Next playbook">
-              <p class="eyebrow">Next playbook</p>
-              <div class="cluster">
-                <Button href={href(`/playbooks/${next.slug}/`)}>{next.short}</Button>
-                <Button href={href('/playbooks/')} variant="quiet">All playbooks</Button>
-              </div>
-            </nav>
-          )
-        }
-        {
-          terminal && (
-            <nav class="stack" aria-label="Where this leads">
-              <p class="eyebrow">Where this leads</p>
-              <div class="cluster">
-                {leadsTo && <Button href={href('/fundability/')}>Investor readiness</Button>}
-                <Button href={href('/playbooks/')} variant={leadsTo ? 'quiet' : 'primary'}>All playbooks</Button>
-              </div>
-            </nav>
-          )
-        }
-      </div>
+      <ProseRail path={`/playbooks/${slug}/`} collection="playbooks">
+        <Content components={{ a: SmartLink }} />
+        <Fragment slot="after">
+          {
+            next && (
+              <nav class="stack" aria-label="Next playbook">
+                <p class="eyebrow">Next playbook</p>
+                <div class="cluster">
+                  <Button href={href(`/playbooks/${next.slug}/`)}>{next.short}</Button>
+                  <Button href={href('/playbooks/')} variant="quiet">All playbooks</Button>
+                </div>
+              </nav>
+            )
+          }
+          {
+            terminal && (
+              <nav class="stack" aria-label="Where this leads">
+                <p class="eyebrow">Where this leads</p>
+                <div class="cluster">
+                  {leadsTo && <Button href={href('/fundability/')}>Investor readiness</Button>}
+                  <Button href={href('/playbooks/')} variant={leadsTo ? 'quiet' : 'primary'}>All playbooks</Button>
+                </div>
+              </nav>
+            )
+          }
+        </Fragment>
+      </ProseRail>
     </div>
   </Fragment>
   <ArticleEnd slot="cta-end" kind="playbooks" seed={slug} related={related} />

@@ -6,7 +6,7 @@ import { buildCrumbs } from '../lib/breadcrumbs.ts';
 import type { HeaderProps, PageMeta } from './types.ts';
 import NoFundingDisclaimer from '../components/blocks/NoFundingDisclaimer.astro';
 import CiteThis from '../components/geo/CiteThis.astro';
-import SourcesList from '../components/blocks/SourcesList.astro';
+import ProseRail from '../components/layout/ProseRail.astro';
 
 interface Source {
   readonly id: string;
@@ -22,28 +22,27 @@ type Props = PageMeta & HeaderProps & {
   sources?: readonly Source[];
 };
 
-const { eyebrow, lead, disclaimers = [], sources = [], primary, secondary, photo, art, measure = 'prose', cta, ...meta } = Astro.props;
+const { eyebrow, lead, disclaimers = [], sources = [], primary, secondary, photo, art, measure = 'default', cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 ---
 
 <BaseLayout {...meta} crumbs={crumbs}>
   <PageHero title={meta.title} eyebrow={eyebrow ?? 'Guide'} lead={lead} crumbs={crumbs} primary={primary} secondary={secondary} photo={photo} art={art} measure={measure} />
   <div class="section">
-    <div class="container container--prose stack">
-      {disclaimers.includes('no-funding') && <NoFundingDisclaimer />}
-      <div class="prose">
-        <slot />
-      </div>
-      {
-        disclaimers.includes('not-legal-advice') && (
-          <aside class="callout" aria-label="Legal notice">
-            <p>This guide is general information, not legal advice. Ask your own counsel before you rely on it.</p>
-          </aside>
-        )
-      }
-      <SourcesList sources={sources} />
-      <CiteThis title={meta.title} path={meta.path} date={meta.updated} />
-    </div>
+    <ProseRail path={meta.path} collection="guides" cta={cta} sources={sources}>
+      <Fragment slot="before">{disclaimers.includes('no-funding') && <NoFundingDisclaimer />}</Fragment>
+      <slot />
+      <Fragment slot="after">
+        {
+          disclaimers.includes('not-legal-advice') && (
+            <aside class="callout" aria-label="Legal notice">
+              <p>This guide is general information, not legal advice. Ask your own counsel before you rely on it.</p>
+            </aside>
+          )
+        }
+        <CiteThis title={meta.title} path={meta.path} date={meta.updated} />
+      </Fragment>
+    </ProseRail>
   </div>
   <slot name="after" />
   <slot name="cta-end">{!Astro.slots.has('after') && <CtaEnd path={meta.path} collection="guides" cta={cta} />}</slot>

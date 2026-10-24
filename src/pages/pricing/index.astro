@@ -31,17 +31,39 @@ const band = await photoImage('band-3', { sizes: '(min-width: 62rem) 40rem, 100v
   draft={data.draft}
   ogSlot="og-default"
 >
-  <div class="prose"><Content /></div>
-  <p><a href={href('/how-we-work/')}>Go to How WE works</a></p>
-  <div class="pricing-visual">
-    <img src={band.src} srcset={band.srcset} sizes={band.srcset === undefined ? undefined : band.sizes} width={band.width} height={band.height} alt={band.alt} loading="lazy" decoding="async" />
+  <div class="pricing-layout">
+    <div class="pricing-layout__text stack">
+      <div class="prose"><Content /></div>
+      <p><a href={href('/how-we-work/')}>Go to How WE works</a></p>
+    </div>
+    <div class="pricing-visual">
+      <img src={band.src} srcset={band.srcset} sizes={band.srcset === undefined ? undefined : band.sizes} width={band.width} height={band.height} alt={band.alt} loading="lazy" decoding="async" />
+    </div>
   </div>
 </ToolLayout>
 
 <style>
   @layer pages {
+    /* The text holds the left edge and the picture the right edge of the frame at the wide width (WP-109). */
+    .pricing-layout {
+      display: grid;
+      gap: var(--space-block);
+      align-items: start;
+
+      @media (min-width: 62rem) {
+        grid-template-columns: minmax(0, var(--prose-max)) minmax(0, 1fr);
+      }
+    }
+
+    .pricing-visual {
+      justify-self: end;
+      inline-size: 100%;
+    }
+
     .pricing-visual img {
-      inline-size: min(100%, 40rem);
+      inline-size: 100%;
+      max-inline-size: 48rem;
+      margin-inline-start: auto;
       block-size: auto;
       border-radius: var(--radius-md);
     }

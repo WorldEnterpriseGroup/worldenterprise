@@ -58,8 +58,24 @@ const article = articleNode({ path: meta.path, headline: meta.title, description
       </p>
     </HeroArticle>
     <div class="section">
-      <div class="container with-rail">
-        <div class="prose">
+      <div class:list={['container', 'with-rail', 'with-rail--page', toc.length > 0 && 'with-rail--start', hasAside && 'with-rail--end']}>
+        {
+          toc.length > 0 && (
+            <aside class="rail rail--start" aria-label="In this article">
+              <nav class="toc-rail" aria-label="Contents">
+                <p class="eyebrow">Contents</p>
+                <ol role="list">
+                  {toc.map((h) => (
+                    <li>
+                      <a href={`#${h.slug}`}>{h.text}</a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </aside>
+          )
+        }
+        <div class="prose with-rail__body">
           <slot />
           <InsightFigures path={meta.path} />
           <SourcesList sources={sources} />
@@ -73,20 +89,8 @@ const article = articleNode({ path: meta.path, headline: meta.title, description
           }
         </div>
         {
-          (toc.length > 0 || hasAside) && (
-            <aside class="rail" aria-label="In this article">
-              {toc.length > 0 && (
-                <nav class="toc-rail" aria-label="Contents">
-                  <p class="eyebrow">Contents</p>
-                  <ol role="list">
-                    {toc.map((h) => (
-                      <li>
-                        <a href={`#${h.slug}`}>{h.text}</a>
-                      </li>
-                    ))}
-                  </ol>
-                </nav>
-              )}
+          hasAside && (
+            <aside class="rail rail--end" aria-label="About this article">
               <slot name="aside" />
             </aside>
           )

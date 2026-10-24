@@ -60,11 +60,6 @@ const { items, label } = Astro.props;
     margin: 0;
     padding: 0;
     list-style: none;
-    container-type: inline-size;
-
-    @container (min-width: 40rem) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
 
   .fitems__item {

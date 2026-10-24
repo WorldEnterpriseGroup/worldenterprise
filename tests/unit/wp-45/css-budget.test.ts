@@ -12,8 +12,8 @@ import { ROOT } from './props.ts';
 // minifier differences need, and the scoped component blocks are budgeted separately because they only ship on the pages that use them.
 
 const BUDGET_BYTES = 13.5 * 1024;
-/** The global sheet alone. Before WP-45 it measured 9,382 B. */
-const GLOBAL_LIMIT = 11_500;
+/** The global sheet alone. Before WP-45 it measured 9,382 B; WP-109's full-HD layout rules (panels, rails, 76ch measure) brought it to about 11.8 KB. The 13.5 KB budget above is unchanged. */
+const GLOBAL_LIMIT = 12_300;
 /** The scoped styles of the components WP-45 added, all together, as if one page used every one. */
 const VARIANT_LIMIT = 3_800;
 const VARIANTS = [
