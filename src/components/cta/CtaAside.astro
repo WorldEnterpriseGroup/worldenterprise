@@ -3,17 +3,21 @@ import type { Audience, CtaModel, CtaVariant } from '../../data/cta/index.ts';
 import CtaBand from './CtaBand.astro';
 
 /**
- * The compact call to action for a rail or an aside: the same model and the same rules as `CtaBand`, with a smaller heading that sits
- * at h3 so it never breaks the outline of the page it is beside.
+ * The compact call to action for a rail or an aside: the same model and the same rules as `CtaBand`, with a smaller heading. It sits
+ * at h3 so it never breaks the outline of the page it is beside; an aside that comes before the first h2 of its page (the lead
+ * column of a page without an "on this page" list) is the first section of the outline, so it takes `level={2}`: an h3 there would
+ * skip a level.
  */
 interface Props {
   model?: CtaModel | null | undefined;
   audience?: Audience | undefined;
   variant?: CtaVariant | undefined;
   briefId?: string | undefined;
+  /** The heading level: 3 for an aside that follows the page's h2 headings, 2 for one that leads them. */
+  level?: 2 | 3;
 }
 
-const { model, audience, variant, briefId } = Astro.props;
+const { model, audience, variant, briefId, level = 3 } = Astro.props;
 ---
 
-<CtaBand model={model} audience={audience} variant={variant} briefId={briefId} placement="aside" headingLevel={3} />
+<CtaBand model={model} audience={audience} variant={variant} briefId={briefId} placement="aside" headingLevel={level} />
