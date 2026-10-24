@@ -74,7 +74,7 @@ test('the article hero uses the same container as its body', () => {
   const hero = read('src/components/hero/HeroArticle.astro');
   assert.match(hero, /measure = 'rail'/);
   assert.match(hero, /: 'container'/, 'the rail measure sits in the page container, like the article body');
-  assert.match(read('src/layouts/ArticleLayout.astro'), /<div class="container with-rail">/);
+  assert.match(read('src/layouts/ArticleLayout.astro'), /<div class:list=\{\['container', 'with-rail'/);
 });
 
 test('the breadcrumb is one line and every crumb can shrink, the current page first, so neither a font swap nor a long label moves the page', () => {
