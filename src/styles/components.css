@@ -856,7 +856,7 @@
     .sources:not(.rail-sources .sources) {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: var(--space-block);
+      column-gap: var(--sp-7);
       align-items: stretch;
 
       & > :is(h2, h3) {
