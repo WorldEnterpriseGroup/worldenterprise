@@ -351,18 +351,19 @@
 
   /*
    * A heading with one short block of text (WP-109). A section that is only a heading and a paragraph or a plain list is a label and
-   * its text: at the wide frame the heading holds the left edge and the text takes the right edge, in one row, instead of two lines
-   * stacked in the corner. The text column hugs its longest line (never wider than 56rem), so the line stays readable. Sections with
-   * anything else in them (grids, tables, several blocks) are left to their own layout.
+   * its text: at the wide frame they are two equal panels in one row, the label at the left edge and the text at the right edge,
+   * instead of two lines stacked in the corner. A panel is a painted box, so it carries its half of the frame whatever the length of
+   * the words in it (a one-word label and a one-line text left 700px of nothing between them), and no panel is wider than 60rem, so
+   * a line in it keeps its measure. Sections with anything else in them (grids, tables, several blocks) are left to their own layout.
    */
   @media (min-width: 62rem) {
     :is(.section, .band) > .container:is(.stack, :has(> .stack:only-child)) {
       &.stack:has(> h2:first-child + :is(p, ul, ol):not(.fitems, .grid, .cards, .faq-list, .accordion):last-child),
       & > .stack:has(> h2:first-child + :is(p, ul, ol):not(.fitems, .grid, .cards, .faq-list, .accordion):last-child) {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) fit-content(min(56rem, 62%));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         column-gap: var(--space-block);
-        align-items: start;
+        align-items: stretch;
 
         & > h2 {
           grid-column: 1;
@@ -372,6 +373,18 @@
           grid-column: 2;
           grid-row: 1;
           margin-block: 0;
+          max-inline-size: none;
+        }
+
+        & > :is(h2, p, ul, ol) {
+          padding: var(--sp-5) var(--sp-6);
+          background: color-mix(in oklch, var(--color-text) 5%, transparent);
+          border: var(--border-hair);
+          border-radius: var(--radius-md);
+        }
+
+        & > :is(ul, ol) {
+          padding-inline-start: calc(var(--sp-6) + 1.5em);
         }
       }
     }
@@ -417,7 +430,7 @@
     /* From 90rem the band is three parts on one row, as the call to action card is: the question, its text and the actions share the
        frame, and what is left over between them is a gutter. */
     @media (min-width: 90rem) {
-      grid-template-columns: fit-content(34%) minmax(0, 38rem) 22rem;
+      grid-template-columns: fit-content(34%) minmax(0, var(--prose-max)) 22rem;
       justify-content: space-between;
       column-gap: var(--sp-7);
 
@@ -437,6 +450,7 @@
 
       & > .cluster {
         grid-column: 3;
+        justify-self: stretch;
       }
     }
   }

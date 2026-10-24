@@ -850,14 +850,14 @@
     font-size: var(--fs-sm);
   }
 
-  /* A sources band is a label and a list. At the wide frame the label sits at the left edge and the list at the right (WP-109), so the
-     band is one row that uses the frame instead of a short list in the corner. The rail's own sources stay stacked. */
+  /* A sources band is a label and a list. At the wide frame they are two equal panels in one row (WP-109): the label at the left edge
+     and the list at the right edge, so a short list does not leave the frame empty. The rail's own sources stay stacked. */
   @media (min-width: 62rem) {
     .sources:not(.rail-sources .sources) {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) fit-content(min(56rem, 60%));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: var(--space-block);
-      align-items: start;
+      align-items: stretch;
 
       & > :is(h2, h3) {
         grid-column: 1;
@@ -867,6 +867,17 @@
         grid-column: 2;
         grid-row: 1;
         margin-block: 0;
+      }
+
+      & > :is(h2, h3, .sources__list) {
+        padding: var(--sp-5) var(--sp-6);
+        background: color-mix(in oklch, var(--color-text) 5%, transparent);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+      }
+
+      & > .sources__list {
+        padding-inline-start: calc(var(--sp-6) + 1.5em);
       }
     }
   }
@@ -1422,7 +1433,7 @@
 
     /* From 90rem the words and the actions are three parts on one row: the heading, the sentence and the actions (WP-109). */
     @media (min-width: 90rem) {
-      grid-template-columns: fit-content(34%) minmax(0, 38rem) 22rem;
+      grid-template-columns: fit-content(34%) minmax(0, var(--prose-max)) 22rem;
       justify-content: space-between;
       column-gap: var(--sp-7);
 
@@ -1442,6 +1453,7 @@
 
       & > .cluster {
         grid-column: 3;
+        justify-self: stretch;
         flex-direction: column;
         align-items: stretch;
       }

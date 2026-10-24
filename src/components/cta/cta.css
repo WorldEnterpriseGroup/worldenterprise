@@ -75,7 +75,7 @@
    */
   @media (min-width: 90rem) {
     .cta--end {
-      grid-template-columns: fit-content(36%) minmax(0, 38rem) 22rem;
+      grid-template-columns: fit-content(36%) minmax(0, var(--prose-max)) 22rem;
       justify-content: space-between;
       column-gap: var(--sp-7);
 
@@ -87,9 +87,11 @@
         font-size: var(--fs-lg);
       }
 
+      /* The sentence takes its whole column, so the box that carries it reaches the actions and no void opens between the two. */
       & > .cta__body,
       & > .cta__note {
         grid-column: 2;
+        max-inline-size: none;
       }
 
       & > .cta__title {
@@ -99,6 +101,7 @@
 
       & > .cta__actions {
         grid-column: 3;
+        justify-self: stretch;
       }
     }
   }

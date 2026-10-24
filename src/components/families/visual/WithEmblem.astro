@@ -34,7 +34,7 @@ const { kind, seed, index } = Astro.props;
   .wv-with__text {
     display: grid;
     gap: var(--sp-4);
-    max-inline-size: 40rem;
+    max-inline-size: 56rem;
     min-inline-size: 0;
   }
 
@@ -42,9 +42,20 @@ const { kind, seed, index } = Astro.props;
     display: none;
   }
 
+  /* A list beside the emblem is a panel, so it holds its column to the edge however short its lines are (WP-109). */
+  .wv-with__text > :global(:is(ul, ol)) {
+    margin: 0;
+    padding: var(--sp-5) var(--sp-6) var(--sp-5) calc(var(--sp-6) + 1.5em);
+    border: var(--border-hair);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+  }
+
   @media (min-width: 62rem) {
     .wv-with {
-      grid-template-columns: minmax(0, 40rem) minmax(18rem, 34rem);
+      /* The text holds 56rem (a reading line of about 70 characters) and the emblem takes the rest of the frame up to 50rem, so the pair
+         spans the frame with one gutter between them (WP-109). */
+      grid-template-columns: minmax(0, 56rem) minmax(18rem, 50rem);
       justify-content: space-between;
     }
 
