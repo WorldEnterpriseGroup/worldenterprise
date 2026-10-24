@@ -109,14 +109,13 @@
    * A compact hero has no media, so on a wide screen its copy is two columns instead of one column with an empty right half (WP-109):
    * the title at the frame's left edge, the lead in the middle and the actions at the right edge, all three level with the foot of the title, the rule closing the row. The grid places by the DOM
    * order of the copy stack, so a hero without an eyebrow, a lead or actions still closes up; `dense` lets the lead and the actions
-   * fill beside the title. The title and the lead fit their widest line (up to --hero-title and --hero-aside) and the actions take what they need, so the three share the width and the slack between them is a gutter, not a void. The reading-column measure ('prose') keeps its one column, and so does everything below 62rem.
+   * fill beside the title. The title takes 7fr and the lead 5fr (6fr, 4fr and a 20rem track for the actions when there are any), so a title that wraps fills its column and the three parts share the width with a gutter between them. The reading-column measure ('prose') keeps its one column, and so does everything below 62rem.
    */
   @media (min-width: 62rem) {
     .hero--compact:not([data-measure='prose']) .hero__copy,
     .hero--article:not([data-measure='prose']) .hero__copy {
       display: grid;
-      grid-template-columns: fit-content(var(--hero-title, 46%)) fit-content(var(--hero-aside, 44rem));
-      justify-content: space-between;
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
       grid-auto-flow: row dense;
       column-gap: var(--sp-7);
       row-gap: var(--sp-4);
@@ -146,7 +145,7 @@
 
       /* The actions have a definite track: their box is a size container, so an auto track would have no width and squeeze the buttons. */
       &:has(> .hero__actions) {
-        grid-template-columns: fit-content(var(--hero-title, 46%)) fit-content(var(--hero-aside, 44rem)) var(--hero-actions, 20rem);
+        grid-template-columns: minmax(0, 6fr) minmax(0, 4fr) var(--hero-actions, 20rem);
       }
     }
   }
@@ -214,11 +213,6 @@
     @media (min-width: 62rem) {
       max-inline-size: none;
     }
-  }
-
-  /* The article's second column is as wide as the rail under it. */
-  .hero--article {
-    --hero-aside: min(30rem, 45%);
   }
 
   .hero--console {
