@@ -9,7 +9,7 @@ import type { Page } from '@playwright/test';
  * at least {@link MIN_CONTENT_SPAN}px and leaves at most {@link MAX_SIDE_GAP}px empty on either side of the viewport. Content is the
  * rendered text and the media a reader can perceive: text lines, images, video, canvas, tables and form controls, and a visual
  * (an svg, an image) that is large enough to be the art of the band, at least {@link MIN_VISUAL_WIDTH}px wide, as the WP-52 visuals
- * library and the emblems of WP-56 are, and a card: a painted box up to 640px wide that holds text. Text that is `aria-hidden`, anything marked `data-decorative` (starfields, ornament) and a
+ * library and the emblems of WP-56 are, and a card: a painted box up to 960px wide (a two-up: no more than about half the 1760px frame) that holds text. Text that is `aria-hidden`, anything marked `data-decorative` (starfields, ornament) and a
  * small svg that is `aria-hidden` (an icon, a bullet) never count, so ornament does not pass for content; the space has to carry
  * content or the layout has to use the width.
  */
@@ -69,7 +69,7 @@ export function measureBands(): BandExtent[] {
   // A card is a small painted unit (a tile, a chip, a link card) that holds text: its box is content, so a grid of cards that fills the
   // frame counts to its last edge even when the words in the last card stop short of it. A wide panel does not count by its box, only
   // by what is in it, so a 1760px card with two lines at the left does not pass.
-  const MAX_CARD = 640;
+  const MAX_CARD = 960;
   const isCard = (el: Element): boolean => {
     const box = el.getBoundingClientRect();
     if (box.width < 48 || box.width > MAX_CARD || box.height < 24 || (el.textContent ?? '').trim() === '') return false;

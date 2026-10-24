@@ -75,8 +75,7 @@ const sources = Astro.props.ids.map((id) => datasetSource(id));
     /* Three cards across the wide frame (WP-109). */
     @media (min-width: 90rem) {
       .data-sources__list {
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 40rem));
-        justify-content: space-between;
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
       }
     }
 

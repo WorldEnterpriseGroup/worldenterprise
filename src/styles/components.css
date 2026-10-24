@@ -901,15 +901,14 @@
   .next__list {
     display: grid;
     gap: var(--sp-4);
-    /* Cards stay at most 40rem wide and spread to both edges of the frame, so two cards do not become two wide panels with a few words (WP-109). */
+    /* The cards share the frame (WP-109). */
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
     list-style: none;
     padding: 0;
     margin-block-start: var(--sp-4);
 
     @media (min-width: 62rem) {
-      grid-template-columns: repeat(auto-fit, minmax(16rem, 40rem));
-      justify-content: space-between;
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     }
   }
 

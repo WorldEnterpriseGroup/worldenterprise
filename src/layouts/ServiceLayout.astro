@@ -50,8 +50,8 @@ const serviceNode = {
     measure={measure}
   />
   <div class="section">
-    <div class="container with-rail">
-      <div class="stack prose">
+    <div class:list={['container', 'with-rail', 'with-rail--page', Astro.slots.has('aside') && 'with-rail--end']}>
+      <div class="stack prose with-rail__body">
         {
           covers.length > 0 && (
             <section aria-labelledby="covers-title">
@@ -78,9 +78,13 @@ const serviceNode = {
         <LimitsBlock items={doesNotCover} />
         {line === 'F' && <NoFundingDisclaimer />}
       </div>
-      <aside class="rail" aria-label="Related">
-        <slot name="aside" />
-      </aside>
+      {
+        Astro.slots.has('aside') && (
+          <aside class="rail rail--end" aria-label="Related">
+            <slot name="aside" />
+          </aside>
+        )
+      }
     </div>
   </div>
   <slot name="after" />

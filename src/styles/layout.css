@@ -233,7 +233,7 @@
     }
 
     .with-rail--page.with-rail--end {
-      grid-template-columns: minmax(0, var(--prose-max)) minmax(16rem, 1.4fr);
+      grid-template-columns: minmax(0, var(--prose-max)) minmax(16rem, 44rem);
     }
 
     .with-rail--page.with-rail--start.with-rail--end {
@@ -332,14 +332,13 @@
 
   /*
    * Equal cards spread over the frame (WP-109). A list of questions, of challenges or of next steps is a set of cards, not one strip of
-   * text in the corner: two columns of at most 40rem, one pinned to each edge of the frame, and three equal columns from three items
-   * on. A card is never wider than 40rem, so a short card does not become a wide panel with a few words in it. Each card sizes itself
+   * text in the corner: two equal columns that share the frame, and three equal columns from three items on, so the cards (not the
+   * gutter between them) fill the width. Each card sizes itself
    * (the rows align to the start), so opening one question never stretches its neighbours.
    */
   :is(.faq-list, .fitems, .sales-situation__qa, .eco-faq, .jny-check) {
     @media (min-width: 52rem) {
-      grid-template-columns: repeat(2, minmax(0, 40rem));
-      justify-content: space-between;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       align-items: start;
     }
 
