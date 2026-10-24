@@ -31,7 +31,7 @@ function place(file: string): Placement {
   const probe = {
     name: 'probe',
     before(tree: HastNode, ctx: Parameters<typeof findAnchor>[1] & Parameters<typeof blockWords>[1]): void {
-      const blocks = 'children' in tree ? tree.children.filter((node) => !(node.type === 'text' && node.value.trim() === '')) : [];
+      const blocks: HastNode[] = 'children' in tree ? tree.children.filter((node) => !(node.type === 'text' && node.value.trim() === '')) : [];
       const words = blocks.map((node) => blockWords(node, ctx));
       const total = words.reduce((sum, count) => sum + count, 0);
       const anchor = findAnchor(tree, ctx);
