@@ -84,20 +84,25 @@ const HEX = '30,2 56,17 56,47 30,62 4,47 4,17';
       counter-reset: none;
     }
 
+    /* Each step is a card of its own track, so a chain of short steps holds the figure's width to the last edge (WP-109). */
     .flow__step {
       position: relative;
       display: grid;
       grid-template-columns: 3rem minmax(0, 1fr);
       gap: var(--sp-3);
       align-items: start;
+      padding: var(--sp-4);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
+      background: var(--color-bg);
     }
 
     /* The track: a line down from each badge to the next. */
     .flow__step:not(:last-child)::after {
       content: '';
       position: absolute;
-      inset-block: calc(var(--sp-7) + var(--sp-1)) calc(-1 * var(--sp-4));
-      inset-inline-start: var(--sp-5);
+      inset-block: calc(var(--sp-4) + var(--sp-7) + var(--sp-1)) calc(-1 * var(--sp-4));
+      inset-inline-start: calc(var(--sp-4) + var(--sp-5));
       border-inline-start: 2px dashed var(--we-blue-hi);
     }
 
@@ -167,14 +172,9 @@ const HEX = '30,2 56,17 56,47 30,62 4,47 4,17';
         gap: var(--sp-4);
       }
 
-      /* Each step is a card of its own track, so a chain of short steps holds the figure's width to the last edge (WP-109). */
       .flow__step {
         grid-template-columns: minmax(0, 1fr);
         justify-items: start;
-        padding: var(--sp-4);
-        border: var(--border-hair);
-        border-radius: var(--radius-md);
-        background: var(--color-bg);
       }
 
       .flow__step:not(:last-child)::after {
