@@ -575,7 +575,7 @@
    * The wide body of a layout, and any .prose block that now sits in the 110rem frame: text keeps the reading measure at the frame's
    * left edge; figures, tables, grids and splits use the frame. Paragraphs and headings are held at any depth, so a component section
    * in the body cannot run a line across 1760px; lists only at the top level, because a nested list is often a card grid. A
-   * component's own width rule outranks these (layer order). The 80ch cap only binds on smaller type (a note at --fs-sm), which would
+   * component's own width rule outranks these (layer order). The 76ch cap (the gate allows 80ch of the measured zero; 76 leaves room for the font swap, whose fallback face has a wider ch) only binds on smaller type (a note at --fs-sm), which would
    * otherwise run past 80 characters in 46rem; body type reaches 46rem first. A callout straight in a prose container (a template's
    * "How to use this" box) is held the same way.
    */
@@ -585,7 +585,11 @@
 
   :is(.flow-wide, .prose) :where(p, blockquote, h2, h3, h4, h5, h6),
   :is(.flow-wide, .prose) > :where(ul, ol, dl, .callout),
-  .container--prose > :where(.callout) {
-    max-inline-size: min(var(--prose-max), 80ch);
+  .container--prose > :where(.callout),
+  /* Text beside a visual, in a prose container or in a callout holds the same measure (WP-109): --prose-max grows to 57rem with the
+     reading type, and 57rem of 22px type is 84 characters, so the character cap is what binds from 1440px up, at every viewport. */
+  :is(.split__text, .container--prose, .callout) :where(p),
+  :is(.split__text, .container--prose) > :where(ul, ol) {
+    max-inline-size: min(var(--prose-max), 76ch);
   }
 }

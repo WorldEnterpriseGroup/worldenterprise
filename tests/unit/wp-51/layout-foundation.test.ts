@@ -40,7 +40,7 @@ test('the full-bleed primitives exist under the contract names', () => {
     assert.ok(new RegExp(`${selector.replace(/[.-]/g, '\\$&')}(?![\\w-])`).test(layout), `${selector} is defined in layout.css`);
   }
   assert.match(layout, /\.band\s*\{[^}]*overflow-x:\s*clip/, 'a band clips its bleeding media');
-  assert.match(layout, /:is\(\.flow-wide, \.prose\) :where\(p,[^)]*\)[^{]*\{\s*max-inline-size:\s*min\(var\(--prose-max\), 80ch\)/, 'reading text keeps its measure in the wide frame, small type included');
+  assert.match(layout, /:is\(\.flow-wide, \.prose\) :where\(p,[^)]*\)[^{]*\{\s*max-inline-size:\s*min\(var\(--prose-max\), 76ch\)/, 'reading text keeps its measure in the wide frame, small type included');
   assert.doesNotMatch(layout + tokens, /container--wide|--page-wide/);
 });
 

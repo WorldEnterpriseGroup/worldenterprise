@@ -149,6 +149,16 @@
         border-radius: var(--radius-md);
       }
 
+      /* Under 75rem the actions are a row of their own below the title and the lead. */
+      & > .hero__actions {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  @media (min-width: 75rem) {
+    .hero--compact:not([data-measure='prose']) .hero__copy,
+    .hero--article:not([data-measure='prose']) .hero__copy {
       & > .hero__actions {
         grid-column: 3;
         align-self: stretch;
