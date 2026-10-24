@@ -8,6 +8,10 @@ import type { CtaAction, CtaModel, IsLive, ResolveInput, SurfaceMatch, SurfaceRu
 export type { CtaAction, CtaCollection, CtaModel, CtaPlacement, CtaVariant, IsLive, ResolveInput, SurfaceRule, TargetKey } from './types.ts';
 export type { Audience };
 export { FALLBACK_SURFACE, SURFACES } from './map.ts';
+export { ARTICLE_DESKS, FAMILY_SURFACES } from './families.ts';
+export type { FamilyExpectation, FamilyKey, FamilySurface, LegacyFamily } from './families.ts';
+export { withCtaItem } from './next.ts';
+export type { NextItem } from './next.ts';
 export { allKeys, keyForVariant, NO_FUNDING_NOTE, targetFor } from './targets.ts';
 
 /**
@@ -110,3 +114,5 @@ export function ctaForTarget(
   const primary = pick([keyForVariant(variant, options.briefId)], isLive, { band: true });
   return primary === undefined ? null : modelFrom(primary.key, options.audience ?? 'startup', primary, undefined);
 }
+export { CLOSING_BANDS } from './closing-bands.ts';
+export type { ClosingBand } from './closing-bands.ts';

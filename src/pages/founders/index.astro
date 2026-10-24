@@ -1,7 +1,8 @@
 ---
 import { render } from 'astro:content';
 import Callout from '../../components/ui/Callout.astro';
-import CtaBand from '../../components/ui/CtaBand.astro';
+import FounderSegments from '../../components/cta/FounderSegments.astro';
+import CtaEnd from '../../components/cta/CtaEnd.astro';
 import DataTable from '../../components/ui/DataTable.astro';
 import Steps from '../../components/ui/Steps.astro';
 import LimitsBlock from '../../components/blocks/LimitsBlock.astro';
@@ -107,6 +108,12 @@ import { RETRIEVED } from '../../data/datasets/sources.ts';
       </div>
     </Band>
 
+    <Band tone="soft" labelledby="segments-title" id="segments">
+      <div class="founders-stack">
+        <FounderSegments />
+      </div>
+    </Band>
+
     <Band labelledby="fit-title" id="fit">
       <div class="split split--even">
         <div class="split__text founders-stack founders-measure">
@@ -158,12 +165,7 @@ import { RETRIEVED } from '../../data/datasets/sources.ts';
       <HubEcosystem id="founders-ecosystem" />
     </Band>
 
-    <CtaBand
-      title="Ready to describe your company?"
-      text="A readiness review is the first conversation. It commits you to nothing."
-      cta={START_REVIEW}
-      secondary={how ?? TALK_TO_WE}
-    />
+    <CtaEnd path="/founders/" collection="pages" />
   </Fragment>
 </MarketingLayout>
 

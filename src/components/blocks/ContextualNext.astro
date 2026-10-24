@@ -1,4 +1,8 @@
 ---
+import { resolveCta } from '../../data/cta/index.ts';
+import type { CtaCollection } from '../../data/cta/index.ts';
+import { withCtaItem } from '../../data/cta/next.ts';
+import { getRouteState } from '../../lib/route-state.ts';
 import { href } from '../../lib/url.ts';
 
 interface NextItem {
@@ -7,12 +11,23 @@ interface NextItem {
   readonly description?: string;
 }
 
+/**
+ * `cta` is optional. Given the place of the page, the list ends with the primary action that the default map of `src/data/cta` gives it
+ * (through `resolveCta`, so a target that is not live is left out and a target the list already links is not listed twice).
+ */
 interface Props {
   items: readonly NextItem[];
   title?: string;
+  cta?: { readonly path: string; readonly collection: CtaCollection; readonly topic?: string | undefined } | undefined;
 }
 
-const { items, title = 'Next' } = Astro.props;
+const { items: given, title = 'Next', cta } = Astro.props;
+const state = cta === undefined ? undefined : await getRouteState();
+const model =
+  cta === undefined || state === undefined
+    ? null
+    : resolveCta({ path: cta.path, collection: cta.collection, ...(cta.topic !== undefined ? { topic: cta.topic } : {}) }, state.isLive);
+const items = withCtaItem(given, model);
 ---
 
 {

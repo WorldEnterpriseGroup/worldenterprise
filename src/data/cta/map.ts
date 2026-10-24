@@ -66,7 +66,7 @@ export const SURFACES: readonly SurfaceRule[] = [
   row('services:collection', { collection: 'services' }, ['contact'], ['apply']),
 
   // Founders: the hub, the corporate segment, then the other segment pages (the frontmatter override fills the secondary).
-  row('founders:hub', { path: '/founders/' }, ['apply'], ['briefs']),
+  row('founders:hub', { path: '/founders/' }, ['apply'], ['path:/how-we-work/', 'briefs']),
   row('founders:corporate', { path: '/founders/corporate-innovators/' }, ['brief:corporate-spinouts', 'contact'], ['contact'], { audience: 'corporate' }),
   row('founders:segment', { prefix: '/founders/' }, ['apply'], ['briefs'], { frontmatter: 'secondary' }),
 

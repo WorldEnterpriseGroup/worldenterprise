@@ -4,6 +4,7 @@
  * what WE does and how WE is paid, the Universal Business Framework, who WE works with, the latest insights and the closing band.
  * Every secondary action falls back to a built page until its new route is live (src/components/program/ctas.ts).
  */
+import HomeAudience from '../components/home/audience/HomeAudience.astro';
 import HomeClock from '../components/home/HomeClock.astro';
 import HomeHero from '../components/home/HomeHero.astro';
 import HomeJourney from '../components/home/HomeJourney.astro';
@@ -47,6 +48,8 @@ const situations = SITUATIONS.map((s) => ({ ...s, href: situationHref(s, isLive)
     primary={START_REVIEW}
     secondary={howLong}
   />
+
+  <HomeAudience />
 
   <HomeJourney more={pick('program', isLive)} />
 

@@ -472,9 +472,9 @@ Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-
 
 #### CR-17. Founders page, what WE does not do
 
-Source: `src/pages/founders/index.astro:44`. Renders on: /founders/.
+Source: `src/pages/founders/index.astro:45`. Renders on: /founders/.
 
-> L44: It does not promise funding or investor meetings, or predict whether any company will raise money.
+> L45: It does not promise funding or investor meetings, or predict whether any company will raise money.
 
 - [ ] Counsel approves as written
 - [ ] Counsel requires this change: ______

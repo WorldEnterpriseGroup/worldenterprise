@@ -153,7 +153,8 @@ test('the stale wp/62 and WP-48 claims are superseded: their narrowed sets meet 
     for (const w of wave9) for (const p of w.write_set) for (const k of keep) assert.equal(overlaps(p, k), false, `${w.owner} ${p} <-> superseded ${owner} ${k}`);
   }
   // The superseded branches lose the paths in the checker itself, not only on paper.
-  assert.equal(violations(['src/pages/index.astro'], 'WP-62', ownership).length, 1);
+  // WP-62's landing (#42) holds scoped exceptions on the home and founders files, so the proof uses a path it has none on.
+  assert.equal(violations(['src/pages/who-we-work-with/index.astro'], 'WP-62', ownership).length, 1);
   assert.equal(violations(['src/pages/about/frameworks/ubf.astro'], 'WP-48', ownership).length, 1);
   assert.deepEqual(violations(['src/pages/index.astro'], 'WP-53', ownership), []);
   assert.deepEqual(violations(['src/pages/about/frameworks/ubf.astro'], 'WP-55', ownership), []);

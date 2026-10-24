@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import type { SlotId } from '../../assets/photo/slots.ts';
 import MarketingLayout from '../../layouts/MarketingLayout.astro';
+import CtaEnd from '../cta/CtaEnd.astro';
 import SourcesList from '../blocks/SourcesList.astro';
 import BrandCallout from '../brand/BrandCallout.astro';
 import Compositions from '../brand/Compositions.astro';
@@ -77,5 +78,6 @@ const { title, seoTitle, description, eyebrow, updated, draft } = page.data;
         </Section>
       )
     }
+    <CtaEnd path={path} collection="pages" />
   </Fragment>
 </MarketingLayout>

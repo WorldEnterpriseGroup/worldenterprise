@@ -52,8 +52,10 @@ test('the band under the hero is the first section of the page body and opens ri
   const viewport = page.viewportSize()?.height ?? 0;
   expect(box?.y ?? 0, 'the band heading starts below the hero').toBeGreaterThanOrEqual((hero?.y ?? 0) + (hero?.height ?? 0) - 1);
   expect(box?.y ?? 0, 'the band heading starts within one screen of the hero').toBeLessThan((hero?.y ?? 0) + (hero?.height ?? 0) + viewport);
-  const firstH2 = await page.locator('main h2').first().getAttribute('id');
-  expect(firstH2, 'the first h2 of the page is the band').toBe('home-journey');
+  // WP-62 puts the audience strip between the hero and this band, so the band is the first h2 or the one right after the strip.
+  const ids = await page.locator('main h2').evaluateAll((els) => els.slice(0, 2).map((el) => el.id));
+  expect(ids.includes('home-journey'), `the band is one of the first two h2 of the page (${ids.join(', ')})`).toBe(true);
+  if (ids[0] !== 'home-journey') expect(ids[0], 'only the audience strip may come before the band').toBe('home-audience');
 });
 
 test('nothing on the page leaves the width of the screen', async ({ page }) => {

@@ -52,7 +52,7 @@ const copy = [
 
 test('the page is an argument in the planned order, from the galaxy to the closing band', () => {
   const home = read(PAGE);
-  const order = ['<HomeHero', '<HomeJourney', '<HomeClock', '<HomeTeam', '<HomeUbf', 'id="home-who-title"', '<LatestInsights />', 'id="home-end-title"'];
+  const order = ['<HomeHero', '<HomeAudience />', '<HomeJourney', '<HomeClock', '<HomeTeam', '<HomeUbf', 'id="home-who-title"', '<LatestInsights />', 'id="home-end-title"'];
   let at = -1;
   for (const marker of order) {
     const next = home.indexOf(marker, at + 1);
