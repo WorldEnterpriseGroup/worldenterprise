@@ -68,6 +68,41 @@
     }
   }
 
+  /*
+   * From 90rem the band is three parts on one row (WP-109 follow-up): the title, the sentence and the actions. The title steps up a size
+   * so that the three together span the card and the space between them is a gutter, not the void of a heading at one edge and two
+   * buttons at the other.
+   */
+  @media (min-width: 90rem) {
+    .cta--end {
+      grid-template-columns: fit-content(36%) minmax(0, 38rem) 22rem;
+      justify-content: space-between;
+      column-gap: var(--sp-7);
+
+      & .cta__title {
+        font-size: var(--fs-2xl);
+      }
+
+      & .cta__body {
+        font-size: var(--fs-lg);
+      }
+
+      & > .cta__body,
+      & > .cta__note {
+        grid-column: 2;
+      }
+
+      & > .cta__title {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+      }
+
+      & > .cta__actions {
+        grid-column: 3;
+      }
+    }
+  }
+
   .cta--aside {
     padding: var(--sp-5);
 

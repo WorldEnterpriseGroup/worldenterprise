@@ -413,6 +413,31 @@
         justify-self: end;
         text-align: center;
       }
+    
+    /* From 90rem the band is three parts on one row, as the call to action card is: the question, its text and the actions share the
+       frame, and what is left over between them is a gutter. */
+    @media (min-width: 90rem) {
+      grid-template-columns: fit-content(34%) minmax(0, 38rem) 22rem;
+      justify-content: space-between;
+      column-gap: var(--sp-7);
+
+      & > :is(h2, h3) {
+        grid-column: 1;
+        grid-row: 1 / span 4;
+        font-size: var(--fs-2xl);
+      }
+
+      & > :not(:is(h2, h3, .cluster)) {
+        grid-column: 2;
+      }
+
+      & > .lead {
+        font-size: var(--fs-lg);
+      }
+
+      & > .cluster {
+        grid-column: 3;
+      }
     }
   }
 

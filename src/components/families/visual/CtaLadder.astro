@@ -100,6 +100,56 @@ const any = ladder.primary !== undefined || ladder.secondary !== undefined || la
     justify-self: end;
   }
 
+  /* From 90rem the band is three columns, not a copy column and a picture with the frame's width between them: the question and its
+     sentence, the actions with their notes, and the picture (WP-109). */
+  @media (min-width: 90rem) {
+    .wv-ladder__grid {
+      grid-template-columns: minmax(0, 34rem) 22rem minmax(0, 36rem);
+      grid-auto-flow: row dense;
+      justify-content: space-between;
+      column-gap: var(--sp-7);
+    }
+
+    .wv-ladder__copy {
+      display: contents;
+    }
+
+    .wv-ladder__title,
+    .wv-ladder__lead {
+      grid-column: 1;
+      max-inline-size: none;
+    }
+
+    .wv-ladder__lead {
+      grid-row: 2;
+      font-size: var(--fs-lg);
+    }
+
+    .wv-ladder__title {
+      grid-row: 1;
+      font-size: var(--fs-2xl);
+    }
+
+    .wv-ladder__actions {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      flex-direction: column;
+      align-items: stretch;
+      align-self: center;
+    }
+
+    .wv-ladder__note {
+      grid-column: 2;
+    }
+
+    .wv-ladder__art {
+      grid-column: 3;
+      grid-row: 1 / span 4;
+      max-inline-size: none;
+      justify-self: stretch;
+    }
+  }
+
   @media (max-width: 61.99rem) {
     .wv-ladder__art {
       display: none;
