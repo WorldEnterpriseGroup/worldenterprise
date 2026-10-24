@@ -3,7 +3,9 @@
 // lighthouserc.json (SAGE-PLAN 6.9). Each route is judged on the best of up to three runs, taken in rounds over all routes: the
 // timings move with the CPU the shared runner happens to give the job, contention only ever adds time, and a real regression raises every
 // run, the best one included. A route that is within budget on its first run is not measured again. A run that stalls on a DevTools
-// protocol timeout is logged and retried in the next round; a route fails only if none of its runs completes. The budgets are not loosened. The site is served by scripts/lib/serve.mjs with its production origin
+// protocol timeout is logged and retried in the next round; a route fails only if none of its runs completes. A run whose CPU benchmark
+// index is under the floor in lighthouserc.json began on a starved runner: it still counts for every metric except TBT, the CPU-bound one,
+// and the route gets extra runs (bounded) to find a healthy one; if none does, the route fails as "TBT inconclusive". The budgets are not loosened. The site is served by scripts/lib/serve.mjs with its production origin
 // rewritten to the local one so the canonical URL is self-referential. Chromium comes from Playwright.
 // Usage: node scripts/run-lighthouse.mjs [--dist dist] [--out reports/lighthouse] [--config lighthouserc.json]
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -135,7 +137,8 @@ export function checkBudgets(summary, config) {
   }
   if (summary.lcpMs === null || summary.lcpMs >= config.metrics.lcpMs) failures.push({ id: 'lcp', sampled: true, message: `LCP ${summary.lcpMs === null ? 'missing' : `${Math.round(summary.lcpMs)} ms`} is not under ${config.metrics.lcpMs} ms` });
   if (summary.cls === null || summary.cls >= config.metrics.cls) failures.push({ id: 'cls', sampled: true, message: `CLS ${summary.cls ?? 'missing'} is not under ${config.metrics.cls}` });
-  if (summary.tbtMs === null || summary.tbtMs >= config.metrics.tbtMs) failures.push({ id: 'tbt', sampled: true, message: `TBT ${summary.tbtMs === null ? 'missing' : `${Math.round(summary.tbtMs)} ms`} is not under ${config.metrics.tbtMs} ms` });
+  if (summary.tbtInconclusive !== undefined) failures.push({ id: 'tbt-inconclusive', sampled: true, message: `TBT inconclusive: runner CPU starved (benchmark ${summary.tbtInconclusive.map((b) => (b === null ? 'n/a' : Math.round(b))).join('/')}, floor ${config.benchmark?.floor})` });
+  else if (summary.tbtMs === null || summary.tbtMs >= config.metrics.tbtMs) failures.push({ id: 'tbt', sampled: true, message: `TBT ${summary.tbtMs === null ? 'missing' : `${Math.round(summary.tbtMs)} ms`} is not under ${config.metrics.tbtMs} ms` });
   if (summary.thirdParty.length > 0) failures.push({ id: 'third-party', sampled: false, message: `third-party requests: ${summary.thirdParty.slice(0, 3).join(', ')}` });
   const exempt = config.javascript.exemptPrefixes.some((p) => summary.route.startsWith(p));
   if (!exempt && summary.scriptBytes > config.javascript.maxGzipBytes) failures.push({ id: 'javascript', sampled: false, message: `JavaScript transfer ${summary.scriptBytes} bytes exceeds ${config.javascript.maxGzipBytes}` });
@@ -158,12 +161,23 @@ export function best(values, direction) {
 }
 
 /**
- * The run with the lowest total blocking time, the run that saw the least contention. Fields a summary cannot combine (the network
- * profile, the trace the LHR file holds) come from it.
+ * Whether a run began on a starved CPU: Lighthouse's benchmark index (measured once as the run starts) is under `config.benchmark.floor`.
+ * A run with no benchmark index, or a config with no floor, is not called starved: nothing is known, so nothing is excluded.
  */
-export function bestRun(runs) {
+export function isStarved(run, config) {
+  const floor = config?.benchmark?.floor;
+  return typeof floor === 'number' && typeof run.benchmarkIndex === 'number' && run.benchmarkIndex < floor;
+}
+
+/**
+ * The run with the lowest total blocking time, the run that saw the least contention. Fields a summary cannot combine (the network
+ * profile, the trace the LHR file holds) come from it. Starved runs (`isStarved`) are passed over while a healthy run exists: their
+ * blocking time says nothing about the page. With no config every run is taken as healthy.
+ */
+export function bestRun(runs, config) {
   if (runs.length === 0) throw new Error('bestRun needs at least one run');
-  return runs.reduce((a, b) => ((b.tbtMs ?? Infinity) < (a.tbtMs ?? Infinity) ? b : a));
+  const healthy = runs.filter((r) => !isStarved(r, config));
+  return (healthy.length > 0 ? healthy : runs).reduce((a, b) => ((b.tbtMs ?? Infinity) < (a.tbtMs ?? Infinity) ? b : a));
 }
 
 /**
@@ -174,15 +188,23 @@ export function bestRun(runs) {
  * 402/0/209 on pages with the same bytes. Each metric takes its own best, since each is disturbed on its own. Facts fixed by the build are
  * not sampled: any third-party request in any run counts, and the script transfer is the largest seen. The shifts shown for a CLS breach
  * come from the run with the lowest CLS.
+ *
+ * Blocking time is the one CPU-bound metric, so it alone is taken from the healthy runs only: a run that began on a starved CPU
+ * (`isStarved`, the benchmark floor in `config`) is left out of it, while every other metric is still judged on every run. When every run
+ * is starved there is no blocking time to judge: `tbtMs` is null and `tbtInconclusive` lists the benchmark indices, which `checkBudgets`
+ * reports as its own failure, not as a regression.
  */
-export function bestSummary(runs) {
+export function bestSummary(runs, config) {
   const lowestShift = runs.reduce((a, b) => ((b.cls ?? Infinity) < (a.cls ?? Infinity) ? b : a));
+  const healthy = runs.filter((r) => !isStarved(r, config));
+  const inconclusive = healthy.length === 0 ? { tbtInconclusive: runs.map((r) => r.benchmarkIndex) } : {};
   return {
-    ...bestRun(runs),
+    ...bestRun(runs, config),
+    ...inconclusive,
     scores: Object.fromEntries(CATEGORIES.map((c) => [c, best(runs.map((r) => r.scores[c]), 'max')])),
     lcpMs: best(runs.map((r) => r.lcpMs), 'min'),
     cls: best(runs.map((r) => r.cls), 'min'),
-    tbtMs: best(runs.map((r) => r.tbtMs), 'min'),
+    tbtMs: best(healthy.map((r) => r.tbtMs), 'min'),
     shifts: lowestShift.shifts,
     scriptBytes: Math.max(...runs.map((r) => r.scriptBytes)),
     thirdParty: [...new Set(runs.flatMap((r) => r.thirdParty))],
@@ -194,11 +216,17 @@ export function bestSummary(runs) {
  * been made. A route that is within budget in its first run is done (a later run could only match or improve it), and a route that
  * breaches in all `maxRuns` runs fails. Breaches that are fixed by the build (third-party requests, script weight) are the same in every
  * run, so they never earn another run.
+ *
+ * A starved run (`isStarved`) does not count toward `maxRuns`: it earns the route one more run, up to `config.benchmark.maxExtraRuns` extra
+ * in all, so a route gets at most `maxRuns + maxExtraRuns` attempts and a run of bad luck cannot go on for ever. `attempts` is how many runs
+ * were tried, stalled ones included (default: the completed ones). While every run is starved the blocking time is unjudged and the
+ * route is measured again.
  */
-export function needsAnotherRun(runs, config, maxRuns) {
-  if (runs.length >= maxRuns) return false;
+export function needsAnotherRun(runs, config, maxRuns, attempts = runs.length) {
+  const extra = Math.min(runs.filter((r) => isStarved(r, config)).length, config.benchmark?.maxExtraRuns ?? 0);
+  if (attempts >= maxRuns + extra) return false;
   if (runs.length === 0) return true;
-  return checkBudgets(bestSummary(runs), config).some((f) => f.sampled);
+  return checkBudgets(bestSummary(runs, config), config).some((f) => f.sampled);
 }
 
 /**
@@ -221,13 +249,17 @@ export function isStalledRun(error) {
  * A run that stalls (`isStalledRun`: a DevTools protocol timeout) is an attempt that produced nothing. `onStall(round, route, error)` is told,
  * and the route is tried again in the next round; an attempt is spent either way, so a route gets `maxRuns` attempts in all. A route none of
  * whose attempts completed has an empty run list, and `judge` fails it. Any other error from `runOnce` is not a stall and is thrown.
+ *
+ * A starved run (`isStarved`) earns its route extra rounds, up to `config.benchmark.maxExtraRuns` (see `needsAnotherRun`).
  */
 export async function measureRoutes(routes, runOnce, config, maxRuns, onRun = () => {}, onStall = () => {}) {
   const measured = new Map(routes.map((route) => [route, []]));
+  const attempts = new Map(routes.map((route) => [route, 0]));
   let pending = routes;
-  for (let round = 1; pending.length > 0 && round <= maxRuns; round += 1) {
+  for (let round = 1; pending.length > 0 && round <= maxRuns + (config.benchmark?.maxExtraRuns ?? 0); round += 1) {
     for (const route of pending) {
       let summary;
+      attempts.set(route, attempts.get(route) + 1);
       try {
         summary = await runOnce(route);
       } catch (error) {
@@ -238,18 +270,19 @@ export async function measureRoutes(routes, runOnce, config, maxRuns, onRun = ()
       measured.get(route).push(summary);
       onRun(round, summary);
     }
-    pending = pending.filter((route) => needsAnotherRun(measured.get(route), config, maxRuns));
+    pending = pending.filter((route) => needsAnotherRun(measured.get(route), config, maxRuns, attempts.get(route)));
   }
   return measured;
 }
 
 /**
  * The verdict for a route: the best summary of its runs and the budgets that summary breaches. A route with no completed run has no
- * summary and fails: `attempts` says how many runs were tried, all of which stalled.
+ * summary and fails: `attempts` says how many runs were tried, all of which stalled. A route whose every run was starved fails with the
+ * "TBT inconclusive" message (see `bestSummary`), and a healthy run over the blocking budget still fails as a regression.
  */
 export function judge(runs, config, attempts = runs.length) {
   if (runs.length === 0) return { summary: null, failures: [`no run completed: ${attempts} of ${attempts} runs stalled (DevTools protocol timeout)`] };
-  const summary = bestSummary(runs);
+  const summary = bestSummary(runs, config);
   return { summary, failures: evaluate(summary, config) };
 }
 
@@ -262,7 +295,7 @@ async function main() {
   // A candidate that is not in the build yet is skipped, not failed: a package's routes arrive with its own merge request. Say so.
   if (missing.length > 0) console.log(`skipped, not in this build: ${missing.join(' ')}`);
   if (overflow.length > 0) console.log(`not measured, over maxRoutes ${config.maxRoutes}: ${overflow.join(' ')}`);
-  console.log(`measuring ${routes.length} routes, up to ${config.runs ?? 3} runs each`);
+  console.log(`measuring ${routes.length} routes, up to ${config.runs ?? 3} runs each${config.benchmark ? ` (+${config.benchmark.maxExtraRuns ?? 0} for starved runs, benchmark floor ${config.benchmark.floor})` : ''}`);
   mkdirSync(args.out, { recursive: true });
 
   const { createStaticServer, listen } = await import('./lib/serve.mjs');
@@ -283,6 +316,7 @@ async function main() {
   const spread = (runs) => runs.map((r) => (r.tbtMs === null ? 'n/a' : Math.round(r.tbtMs))).join('/');
   /** The benchmark index of each run, in the same order. Lighthouse measures it once as a run starts, so a low one marks a run that began on a starved CPU. */
   const benchmarks = (runs) => runs.map((r) => (r.benchmarkIndex === null ? 'n/a' : Math.round(r.benchmarkIndex))).join('/');
+  let inconclusive = 0;
   try {
     const lhrOf = new Map();
     /** Runs that stalled on a DevTools protocol timeout, per route. They are not measurements and do not count for or against a route. */
@@ -303,7 +337,7 @@ async function main() {
       },
       config,
       maxRuns,
-      (round, summary) => console.log(`run ${round}/${maxRuns}  ${summary.route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  benchmark ${summary.benchmarkIndex === null ? 'n/a' : Math.round(summary.benchmarkIndex)}`),
+      (round, summary) => console.log(`run ${round}/${maxRuns}  ${summary.route}  perf ${Math.round((summary.scores.performance ?? 0) * 100)}  TBT ${Math.round(summary.tbtMs ?? 0)}ms  benchmark ${summary.benchmarkIndex === null ? 'n/a' : Math.round(summary.benchmarkIndex)}${isStarved(summary, config) ? `  starved (floor ${config.benchmark.floor}), TBT not counted` : ''}`),
       (round, route, error) => {
         stalls.set(route, (stalls.get(route) ?? 0) + 1);
         console.log(`run ${round}/${maxRuns}  ${route}  stalled (${error.code}: ${String(error.message).split('\n')[0]}), not counted, tried again in the next round`);
@@ -320,10 +354,10 @@ async function main() {
         console.error(`FAIL  ${route}  ${failures[0]}`);
         continue;
       }
-      writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), lhrOf.get(bestRun(runs)));
+      writeFileSync(join(args.out, `${route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '_')}.json`), lhrOf.get(bestRun(runs, config)));
       results.push({
         ...summary,
-        runs: runs.map((r) => ({ tbtMs: r.tbtMs, lcpMs: r.lcpMs, cls: r.cls, performance: r.scores.performance, benchmarkIndex: r.benchmarkIndex, failures: evaluate(r, config) })),
+        runs: runs.map((r) => ({ tbtMs: r.tbtMs, lcpMs: r.lcpMs, cls: r.cls, performance: r.scores.performance, benchmarkIndex: r.benchmarkIndex, starved: isStarved(r, config), failures: evaluate(r, config) })),
         stalledRuns: stalled,
         failures,
       });
@@ -331,6 +365,7 @@ async function main() {
       if (failures.length === 0) console.log(`ok    ${line}`);
       else {
         failed += 1;
+        if (summary.tbtInconclusive !== undefined) inconclusive += 1;
         console.error(`FAIL  ${line}`);
         for (const f of failures) console.error(`        ${f}`);
         if (failures.some((f) => f.startsWith('CLS'))) {
@@ -349,7 +384,7 @@ async function main() {
   const table = networkReport(results);
   writeFileSync(join(args.out, 'network.md'), table);
   console.log(`\n${table}`);
-  console.log(`run-lighthouse: ${results.length} routes, ${failed} over budget`);
+  console.log(`run-lighthouse: ${results.length} routes, ${failed} failed${inconclusive > 0 ? ` (${inconclusive} TBT inconclusive, runner CPU starved: not a performance regression, run the job again)` : ''}`);
   process.exit(failed === 0 ? 0 : 1);
 }
 
