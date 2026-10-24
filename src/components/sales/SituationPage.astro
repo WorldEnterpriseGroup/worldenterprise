@@ -56,7 +56,7 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
   <Fragment slot="after">
     <section class="band band--deep" aria-labelledby="obstacles-title">
       <div class="container">
-        <div class="split">
+        <div class="split split--panels">
           <div class="split__text sales-situation__text">
             <h2 id="obstacles-title">What usually gets in the way</h2>
             <ul class="sales-situation__list">
@@ -82,7 +82,7 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
 
     <section class="band" aria-labelledby="chart-title">
       <div class="container">
-        <div class="split split--reverse">
+        <div class="split split--reverse split--panels">
           <div class="split__text sales-situation__text">
             <h2 id="chart-title">{chart.title}</h2>
             <p>{chart.description}</p>
@@ -143,7 +143,7 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
 
     <section class="band band--deep" aria-labelledby="fit-title">
       <div class="container">
-        <div class="split">
+        <div class="split split--panels">
           <div class="split__text sales-situation__text">
             <h2 id="fit-title">How it fits</h2>
             <p>{FIT_TEXT}</p>
@@ -210,6 +210,14 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
         & > :is(h2, ul) {
           grid-column: 1;
         }
+
+        /* The claims are a panel, so the list holds its column to the edge however short its lines are. */
+        & > ul {
+          padding: var(--sp-5) var(--sp-6) var(--sp-5) calc(var(--sp-6) + var(--sp-5));
+          border: var(--border-hair);
+          border-radius: var(--radius-md);
+          background: color-mix(in oklch, var(--color-text) 5%, transparent);
+        }
       }
     }
 
@@ -257,17 +265,6 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
       display: grid;
       gap: var(--sp-3);
       align-content: start;
-    }
-
-    /* The other situations are one card at the frame's right edge, as wide as the text column beside it (WP-109). */
-    @media (min-width: 62rem) {
-      .sales-situation__more {
-        justify-self: end;
-        inline-size: min(100%, var(--split-text));
-        padding: var(--sp-5);
-        border: var(--border-hair);
-        border-radius: var(--radius-md);
-      }
     }
 
     .sales-situation__more-title {

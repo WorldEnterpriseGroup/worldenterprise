@@ -484,6 +484,45 @@
     }
   }
 
+  /*
+   * A split of two panels (WP-109): the text and its picture are equal painted boxes sharing the frame, so a short list beside a small
+   * picture leaves no void between them. The picture is centred in its panel; each panel stays under 60rem, so a line of text keeps
+   * its measure. Below 62rem the split is one column and the panels are plain blocks.
+   */
+  @media (min-width: 62rem) {
+    .split.split--panels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+
+      & > :is(.split__text, .split__media) {
+        align-content: center;
+        justify-self: stretch;
+        padding: var(--sp-6);
+        background: color-mix(in oklch, var(--color-text) 5%, transparent);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+      }
+
+      /* Twice the class: the picture-only media of a plain split pins itself to the far edge with a :has() rule, and a panel does not. */
+      &.split > .split__media.split__media:is(.split__media, :has(*)) {
+        display: grid;
+        place-items: center;
+        justify-self: stretch;
+        inline-size: auto;
+        max-inline-size: none;
+      }
+
+      /* A picture takes the width of its panel (its art is drawn to fit and centred), so the panel is covered edge to edge. */
+      & > .split__media > :is(svg, img):only-child {
+        inline-size: 100%;
+        block-size: auto;
+        max-block-size: 26rem;
+        aspect-ratio: 16 / 9;
+        object-fit: contain;
+      }
+    }
+  }
+
   .split--media-first > .split__media {
     order: -1;
   }
