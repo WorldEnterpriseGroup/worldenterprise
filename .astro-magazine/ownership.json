@@ -2372,6 +2372,66 @@
       "reason": "Issue #109 (wp/109-1920-layout): fixes the 1920 content extent in the shared primitive or component it names, so no page is patched on its own."
     },
     {
+      "wp": "WP-109",
+      "path": "src/components/families/visual/ReferenceIntro.astro",
+      "reason": "The emblem row of a reference intro spans the 110rem frame so the emblem and its text share it with no side void (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/families/visual/WithEmblem.astro",
+      "reason": "The emblem row spans the 110rem frame at 1920 so a band with an emblem has no void beside it (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/islands/we-search/WeSearch.astro",
+      "reason": "The search fallback note is a panel that shares the frame instead of leaving 500px of empty band beside it (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/research/media/FlowDiagram.astro",
+      "reason": "Flow steps are cards at every width so a flow row has no internal void at 1440 or 1920 (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/visuals/charts/SourceNote.astro",
+      "reason": "A chart source note holds 76ch so small type stays under the 80ch reading limit (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/layouts/ArticleLayout.astro",
+      "reason": "Article pages use the three-column rail (contents, body, aside) so the 110rem frame has no void beside the body (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/layouts/BriefLayout.astro",
+      "reason": "Brief pages use the three-column rail so the 110rem frame has no void beside the body (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/layouts/ServiceLayout.astro",
+      "reason": "Service pages use the three-column rail so the 110rem frame has no void beside the body (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/pages/who-we-work-with/index.astro",
+      "reason": "The situations split uses equal panels so the band shares the frame (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/pages/why-it-takes-time/index.astro",
+      "reason": "The split uses equal panels so the band shares the frame (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/styles/utilities.css",
+      "reason": "The .measure-prose helper holds the 76ch reading limit at every width (issue #109)."
+    },
+    {
+      "wp": "WP-109",
+      "path": "tests/unit/wp-45/css-budget.test.ts",
+      "reason": "The global-sheet working limit follows the full-HD layout rules; the 13.5 KB transfer budget itself is unchanged (issue #109)."
+    },
+    {
       "wp": "WP-03",
       "path": "src/data/forms.ts",
       "reason": "Created by WP-00, owned by WP-03 (plan 8.4); not frozen."
