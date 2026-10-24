@@ -2432,6 +2432,11 @@
       "reason": "The global-sheet working limit follows the full-HD layout rules; the 13.5 KB transfer budget itself is unchanged (issue #109)."
     },
     {
+      "wp": "WP-109",
+      "path": "src/components/sbir/SbirBand.astro",
+      "reason": "The band text and stack use a shrinkable grid track so a wide tile row cannot push the band past a 320px viewport (issue #109)."
+    },
+    {
       "wp": "WP-03",
       "path": "src/data/forms.ts",
       "reason": "Created by WP-00, owned by WP-03 (plan 8.4); not frozen."
