@@ -25,7 +25,7 @@
 
     /* Wave 9 (W9-4): on a full-HD screen the visual gets the larger share of the 110rem frame; the copy keeps about 44rem. */
     @media (min-width: 100rem) {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 60rem);
     }
   }
 
@@ -105,6 +105,96 @@
     }
   }
 
+  /*
+   * A compact hero has no media, so on a wide screen its copy is a row of panels instead of one column with an empty right half (WP-109):
+   * the title in a panel at the frame's left edge, the lead in a panel beside it (an article's lead and byline stack there) and the
+   * actions at the right edge, the buttons filling their track. A panel is a painted box, so it carries the width whatever the length
+   * of the title or the lead is: a one-word title and a one-line lead still share the frame with a gutter between them, where bare text
+   * left 600px of nothing. The title takes 6fr and the lead 5fr (6fr, 4fr and a 20rem track for the actions when there are any); no
+   * panel is wider than 60rem, so each stays a card and a line in it keeps its measure. The grid places by the DOM order of the copy
+   * stack, so a hero without an eyebrow, a lead or actions still closes up; `dense` lets the lead and the actions fill beside the
+   * title. The reading-column measure ('prose') keeps its one column, and so does everything below 62rem.
+   */
+  @media (min-width: 62rem) {
+    .hero--compact:not([data-measure='prose']) .hero__copy,
+    .hero--article:not([data-measure='prose']) .hero__copy {
+      display: grid;
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+      grid-auto-flow: row dense;
+      column-gap: var(--sp-7);
+      row-gap: var(--sp-4);
+      align-items: start;
+
+      & > * {
+        grid-column: 1 / -1;
+      }
+
+      & > :is(h1, h2) {
+        grid-column: 1;
+        grid-row: span 3;
+        align-self: stretch;
+      }
+
+      & > .lead,
+      & > .byline {
+        grid-column: 2;
+        align-self: stretch;
+      }
+
+      /* The title, the lead and the byline are panels (see above). */
+      & > :is(h1, h2, .lead, .byline) {
+        padding: var(--sp-5) var(--sp-6);
+        background: var(--color-bg);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+      }
+
+      /* Under 75rem the actions are a row of their own below the title and the lead. */
+      & > .hero__actions {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  @media (min-width: 75rem) {
+    .hero--compact:not([data-measure='prose']) .hero__copy,
+    .hero--article:not([data-measure='prose']) .hero__copy {
+      & > .hero__actions {
+        grid-column: 3;
+        align-self: stretch;
+        margin-block-start: 0;
+      }
+
+      /* The actions have a definite track: their box is a size container, so an auto track would have no width and squeeze the buttons. */
+      &:has(> .hero__actions) {
+        grid-template-columns: minmax(0, 6fr) minmax(0, 4fr) var(--hero-actions, 20rem);
+      }
+
+      /* The buttons share the track, so each is a block of the row and the gap to the lead is the gutter. */
+      & .hero__actions-row {
+        align-items: stretch;
+      }
+    }
+  }
+
+  /* At the wide frame the title takes the next step up in type, so a short title and a short lead still share the row with the actions. */
+  @media (min-width: 90rem) {
+    .hero--compact:not([data-measure='prose']) .hero__copy > :is(h1, h2) {
+      font-size: var(--fs-4xl);
+    }
+  }
+
+  /* Beside a picture the lead is a panel too (WP-109), so a one-line lead holds its column up to the picture and the two are not
+     separated by 200px of nothing. */
+  @media (min-width: 62rem) {
+    .hero__grid--media > .hero__copy > .lead {
+      padding: var(--sp-4) var(--sp-5);
+      background: color-mix(in oklch, currentColor 7%, transparent);
+      border: 1px solid color-mix(in oklch, currentColor 22%, transparent);
+      border-radius: var(--radius-md);
+    }
+  }
+
   /* Editorial mode keeps the soft wash; the first band after any hero starts one block below it. */
   .hero + .section,
   .hero + .toc + .section {
@@ -153,9 +243,14 @@
     }
   }
 
-  /* The article copy starts at the left edge of the article body and holds the reading measure. */
+  /* The article copy starts at the left edge of the article body and holds the reading measure. A wide screen splits it in two (see
+     above): the title at the left, the lead and byline over the article's rail at the right. */
   .hero[data-measure='rail'] .hero__copy {
     max-inline-size: var(--prose-max);
+
+    @media (min-width: 62rem) {
+      max-inline-size: none;
+    }
   }
 
   .hero--console {
@@ -169,6 +264,11 @@
 
     & .hero__panel {
       box-shadow: var(--shadow-3);
+    }
+
+    /* A picture in the panel holds the panel's far edge, so the panel reads as the art's frame and the hero reaches the frame's edge. */
+    & .hero__panel > svg {
+      margin-inline-start: auto;
     }
   }
 
@@ -227,6 +327,13 @@
     font-size: var(--fs-lead);
     line-height: 1.5;
     max-inline-size: 60ch;
+  }
+
+  /* The lead panel of a copy-only hero is a column of the row, not a 60ch strip in it (WP-109). */
+  @media (min-width: 62rem) {
+    :is(.hero--compact, .hero--article):not([data-measure='prose']) .hero__copy > .lead {
+      max-inline-size: none;
+    }
   }
 
   .hero__copy > .rule {

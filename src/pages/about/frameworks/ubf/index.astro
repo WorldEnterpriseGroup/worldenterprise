@@ -183,6 +183,8 @@ const related = ['orbital', 'star', 'android', 'supernova']
   .ubf-stack,
   .ubf-head {
     display: grid;
+    /* One track that may shrink: an auto track takes the min-content width of its widest child (the ladder), which is 380px at 320. */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-flow);
     align-content: start;
 
@@ -219,7 +221,7 @@ const related = ['orbital', 'star', 'android', 'supernova']
   .ubf-related {
     display: grid;
     gap: var(--sp-5);
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
     list-style: none;
     margin: 0;
     padding: 0;

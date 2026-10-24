@@ -3,10 +3,11 @@ import BaseLayout from './BaseLayout.astro';
 import CtaEnd from '../components/cta/CtaEnd.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import ProseRail from '../components/layout/ProseRail.astro';
 import type { HeaderProps, PageMeta } from './types.ts';
 type Props = PageMeta & HeaderProps & { title: string; updated: Date };
 
-const { eyebrow, lead, primary, secondary, measure = 'prose', cta, ...meta } = Astro.props;
+const { eyebrow, lead, primary, secondary, measure = 'default', cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
@@ -14,12 +15,10 @@ const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'l
 <BaseLayout {...meta} crumbs={crumbs}>
   <PageHero title={meta.title} eyebrow={eyebrow ?? 'Legal'} lead={lead} crumbs={crumbs} primary={primary} secondary={secondary} measure={measure} />
   <div class="section">
-    <div class="container container--prose stack">
-      <p class="muted ui">Last updated <time datetime={meta.updated.toISOString()}>{dateFormat.format(meta.updated)}</time></p>
-      <div class="prose">
-        <slot />
-      </div>
-    </div>
+    <ProseRail path={meta.path} collection="pages" cta={cta}>
+      <p slot="before" class="muted ui">Last updated <time datetime={meta.updated.toISOString()}>{dateFormat.format(meta.updated)}</time></p>
+      <slot />
+    </ProseRail>
   </div>
   <slot name="cta-end"><CtaEnd path={meta.path} collection="pages" cta={cta} /></slot>
 </BaseLayout>

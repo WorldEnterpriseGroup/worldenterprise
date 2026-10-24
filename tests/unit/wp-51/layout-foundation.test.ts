@@ -16,7 +16,7 @@ const hero = strip(read('src/styles/hero.css'));
 test('the content frame is 110rem and every container uses it through --page-max', () => {
   assert.match(tokens, /--content-max:\s*110rem;/);
   assert.match(tokens, /--page-max:\s*var\(--content-max\);/);
-  assert.match(tokens, /--prose-max:\s*46rem;/, 'the reading column does not widen');
+  assert.match(tokens, /--prose-max:\s*clamp\(46rem,[^;]*57rem\);/, 'the reading column holds 46rem and grows to 57rem only together with the reading type');
   assert.match(tokens, /--split-text:\s*40rem;/);
   assert.match(layout, /\.container\s*\{\s*inline-size:\s*min\(100% - 2 \* var\(--gutter\), var\(--page-max\)\);/);
 });
@@ -40,7 +40,7 @@ test('the full-bleed primitives exist under the contract names', () => {
     assert.ok(new RegExp(`${selector.replace(/[.-]/g, '\\$&')}(?![\\w-])`).test(layout), `${selector} is defined in layout.css`);
   }
   assert.match(layout, /\.band\s*\{[^}]*overflow-x:\s*clip/, 'a band clips its bleeding media');
-  assert.match(layout, /:is\(\.flow-wide, \.prose\) :where\(p,[^)]*\)[^{]*\{\s*max-inline-size:\s*min\(var\(--prose-max\), 80ch\)/, 'reading text keeps its measure in the wide frame, small type included');
+  assert.match(layout, /:is\(\.flow-wide, \.prose\) :where\(p,[^)]*\)[^{]*\{\s*max-inline-size:\s*min\(var\(--prose-max\), 76ch\)/, 'reading text keeps its measure in the wide frame, small type included');
   assert.doesNotMatch(layout + tokens, /container--wide|--page-wide/);
 });
 
@@ -62,17 +62,18 @@ test('the layouts and shared components expose the additive wave 9 props', () =>
   assert.match(read('src/components/ui/Prose.astro'), /width\?: 'prose' \| 'content';/);
   assert.match(read('src/components/hero/HeroEditorial.astro'), /frame\?: 'default' \| 'wide';/);
   assert.match(read('src/components/hero/types.ts'), /HERO_MODES = \[[^\]]*'scene'/);
-  assert.match(hero, /@media \(min-width: 100rem\)\s*\{\s*grid-template-columns:\s*minmax\(0, 5fr\) minmax\(0, 7fr\)/);
+  assert.match(hero, /@media \(min-width: 100rem\)\s*\{\s*grid-template-columns:\s*minmax\(0, 1fr\) minmax\(0, 60rem\)/, 'a picture hero gives the visual a fixed 60rem beside the copy, so the lead and the visual share the 110rem frame');
 });
 
 test('ArticleLayout and BriefLayout take an optional aside slot in the rail, and an article with no related items has no related section', () => {
   const article = read('src/layouts/ArticleLayout.astro');
   const brief = read('src/layouts/BriefLayout.astro');
   assert.match(article, /Astro\.slots\.has\('aside'\)/);
-  assert.match(article, /\(toc\.length > 0 \|\| hasAside\) && \(\s*<aside class="rail"/);
+  assert.match(article, /toc\.length > 0 && \(\s*<aside class="rail rail--start"/, 'the contents rail is the start column');
+  assert.match(article, /hasAside && \(\s*<aside class="rail rail--end"/, 'the aside slot is the end column');
   assert.match(article, /<slot name="aside" \/>\s*<\/aside>/);
   assert.match(article, /related\.length > 0 && \(\s*<div class="section section--soft section--defer">/);
-  assert.match(brief, /<MethodologyBox[^>]*\/>\s*<slot name="aside" \/>\s*<\/aside>/);
+  assert.match(brief, /<aside class="rail rail--end"[^>]*>\s*<MethodologyBox[^>]*\/>\s*<slot name="aside" \/>\s*<\/aside>/);
 });
 
 test('above 1920 the root font size scales with the window, and never drops below the reader\'s own size', () => {

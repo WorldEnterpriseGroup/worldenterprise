@@ -57,7 +57,7 @@ const stats = [...ACCESSIBILITY_STATS, ...BREACH_STATS.slice(0, 2)];
     title="Accessibility: what the web gets wrong, and when rules apply"
     lede="Automated tests found WCAG failures on almost every one of the top million home pages, and six kinds of error account for nearly all of them. The rules behind the obligation arrive on fixed dates."
   />
-  <MomentGrid>
+  <MomentGrid class="moment-grid--timeline">
     <Moment kind="chart" id="research-wcag-failures">
       <BarChart title="The most common detected WCAG failures" items={WCAG_FAILURES} source={SOURCES.webaim} max={100} valueLabel="Share of home pages" highlight={0} note={WCAG_NOTE} />
     </Moment>
@@ -112,13 +112,17 @@ const stats = [...ACCESSIBILITY_STATS, ...BREACH_STATS.slice(0, 2)];
       margin: 0;
       padding: 0;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
       gap: var(--sp-5);
     }
 
+    /* Each cover is a card: the art and its title in one frame, four across the wide frame (WP-109). */
     .rh-cover {
       display: grid;
       gap: var(--sp-2);
+      padding: var(--sp-3);
+      border: var(--border-hair);
+      border-radius: var(--radius-md);
       color: inherit;
       text-decoration: none;
     }

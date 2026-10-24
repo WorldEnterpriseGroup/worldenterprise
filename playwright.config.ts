@@ -17,10 +17,12 @@ const wave7Projects = process.env.E2E_WAVE7
 // Wave 8 specs follow the same rule in tests/e2e/wave8/** (job e2e:wave8, E2E_WAVE8).
 const WAVE8_DIR = /\/e2e\/wave8\//;
 const WAVE8_SPECS = /\/e2e\/wave8\/.+\.spec\.ts$/;
+// Specs that set their own viewport run in the desktop project only: the mobile project would repeat the same measurement at the same width.
+const WAVE8_FIXED_VIEWPORT_SPECS = /\/e2e\/wave8\/wp-109\/content-extent\.spec\.ts$/;
 const wave8Projects = process.env.E2E_WAVE8
   ? [
       { name: 'wave8-desktop-1440x900', testMatch: WAVE8_SPECS, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
-      { name: 'wave8-mobile-390x844', testMatch: WAVE8_SPECS, use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
+      { name: 'wave8-mobile-390x844', testMatch: WAVE8_SPECS, testIgnore: WAVE8_FIXED_VIEWPORT_SPECS, use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
     ]
   : [];
 

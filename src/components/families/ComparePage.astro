@@ -140,9 +140,9 @@ const rows = view.rows.map((row) => [row.label, ...row.cells]);
   .cmp-pair {
     display: grid;
     gap: var(--sp-5);
-    container-type: inline-size;
 
-    @container (min-width: 40rem) {
+    @media (min-width: 52rem) {
+      /* Equal columns that share the frame, so the two cards fill it. */
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }

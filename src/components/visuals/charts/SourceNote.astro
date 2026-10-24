@@ -39,6 +39,8 @@ const prefix = lead ?? (sources.length > 1 ? 'Sources' : 'Source');
     font-size: var(--fs-xs);
     line-height: var(--lh-snug);
     color: var(--color-text-muted);
+    /* Small type: the rendered zero is narrower than the CSS ch unit suggests, so hold the note under the 80ch reading limit. */
+    max-inline-size: min(var(--prose-max), 76ch);
   }
 
   .source-note__lead {

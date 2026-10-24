@@ -29,6 +29,11 @@ const { cols = 2, class: className } = Astro.props;
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      /* A chart beside a timeline: the timeline takes the narrower column, so its entries wrap and fill it. */
+      .moment-grid--timeline {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      }
+
       .moment-grid > :global(.moment--wide) {
         grid-column: 1 / -1;
       }

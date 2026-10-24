@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import CtaEnd from '../components/cta/CtaEnd.astro';
 import PageHero from '../components/hero/PageHero.astro';
 import { buildCrumbs } from '../lib/breadcrumbs.ts';
+import ProseRail from '../components/layout/ProseRail.astro';
 import type { HeaderProps, PageMeta } from './types.ts';
 
 type Props = PageMeta & HeaderProps & {
@@ -12,7 +13,7 @@ type Props = PageMeta & HeaderProps & {
   instructions?: string;
 };
 
-const { eyebrow, lead, markdownHref, instructions, primary, secondary, photo, art, measure = 'prose', cta, ...meta } = Astro.props;
+const { eyebrow, lead, markdownHref, instructions, primary, secondary, photo, art, measure = 'default', cta, ...meta } = Astro.props;
 const crumbs = meta.crumbs ?? buildCrumbs(meta.path, meta.title);
 // The download is the main action of a template, so it sits in the hero. Controls the page adds (copy, print) join it there.
 const download = markdownHref !== undefined ? { label: 'Download as Markdown', href: markdownHref, download: true } : undefined;
@@ -33,12 +34,10 @@ const download = markdownHref !== undefined ? { label: 'Download as Markdown', h
     <Fragment slot="actions"><slot name="actions" /></Fragment>
   </PageHero>
   <div class="section">
-    <div class="container container--prose stack">
-      {instructions && <p class="callout"><strong>How to use this.</strong> {instructions}</p>}
-      <div class="prose template-body">
-        <slot />
-      </div>
-    </div>
+    <ProseRail path={meta.path} collection="library" cta={cta} bodyClass="prose template-body">
+      <Fragment slot="before">{instructions && <p class="callout"><strong>How to use this.</strong> {instructions}</p>}</Fragment>
+      <slot />
+    </ProseRail>
   </div>
   <slot name="cta-end"><CtaEnd path={meta.path} collection="library" cta={cta} /></slot>
 </BaseLayout>

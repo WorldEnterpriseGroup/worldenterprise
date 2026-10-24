@@ -44,6 +44,68 @@
     padding-block: var(--space-block);
   }
 
+  /*
+   * On a wide screen the closing band is two columns that use the frame (WP-109): the words hold their measure at the left, the actions
+   * sit at the right edge of the card, so a 1760px band is not a 650px paragraph with an empty right half.
+   */
+  @media (min-width: 62rem) {
+    .cta--end {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: var(--sp-8);
+      align-items: center;
+
+      & > :not(.cta__actions) {
+        grid-column: 1;
+      }
+
+      & > .cta__actions {
+        grid-column: 2;
+        grid-row: 1 / span 3;
+        justify-self: end;
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  }
+
+  /*
+   * From 90rem the band is three parts on one row (WP-109 follow-up): the title, the sentence and the actions. The title steps up a size
+   * so that the three together span the card and the space between them is a gutter, not the void of a heading at one edge and two
+   * buttons at the other.
+   */
+  @media (min-width: 90rem) {
+    .cta--end {
+      grid-template-columns: fit-content(36%) minmax(0, var(--prose-max)) 22rem;
+      justify-content: space-between;
+      column-gap: var(--sp-7);
+
+      & .cta__title {
+        font-size: var(--fs-2xl);
+      }
+
+      & .cta__body {
+        font-size: var(--fs-lg);
+      }
+
+      /* The sentence takes its whole column, so the box that carries it reaches the actions and no void opens between the two. */
+      & > .cta__body,
+      & > .cta__note {
+        grid-column: 2;
+        max-inline-size: none;
+      }
+
+      & > .cta__title {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+      }
+
+      & > .cta__actions {
+        grid-column: 3;
+        justify-self: stretch;
+      }
+    }
+  }
+
   .cta--aside {
     padding: var(--sp-5);
 

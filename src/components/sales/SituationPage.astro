@@ -56,7 +56,7 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
   <Fragment slot="after">
     <section class="band band--deep" aria-labelledby="obstacles-title">
       <div class="container">
-        <div class="split">
+        <div class="split split--panels">
           <div class="split__text sales-situation__text">
             <h2 id="obstacles-title">What usually gets in the way</h2>
             <ul class="sales-situation__list">
@@ -82,7 +82,7 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
 
     <section class="band" aria-labelledby="chart-title">
       <div class="container">
-        <div class="split split--reverse">
+        <div class="split split--reverse split--panels">
           <div class="split__text sales-situation__text">
             <h2 id="chart-title">{chart.title}</h2>
             <p>{chart.description}</p>
@@ -143,7 +143,7 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
 
     <section class="band band--deep" aria-labelledby="fit-title">
       <div class="container">
-        <div class="split">
+        <div class="split split--panels">
           <div class="split__text sales-situation__text">
             <h2 id="fit-title">How it fits</h2>
             <p>{FIT_TEXT}</p>
@@ -195,6 +195,32 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
       margin: 0;
     }
 
+    /* What WE does: the claims at the left, the figures that back them at the right edge of the frame (WP-109). */
+    @media (min-width: 62rem) {
+      .sales-situation__stack:has(> :is(.stat-tiles, .sales-tiles)) {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        column-gap: var(--sp-7);
+        align-items: start;
+
+        & > :is(.stat-tiles, .sales-tiles) {
+          grid-column: 2;
+          grid-row: 1 / span 2;
+        }
+
+        & > :is(h2, ul) {
+          grid-column: 1;
+        }
+
+        /* The claims are a panel, so the list holds its column to the edge however short its lines are. */
+        & > ul {
+          padding: var(--sp-5) var(--sp-6) var(--sp-5) calc(var(--sp-6) + var(--sp-5));
+          border: var(--border-hair);
+          border-radius: var(--radius-md);
+          background: color-mix(in oklch, var(--color-text) 5%, transparent);
+        }
+      }
+    }
+
     .sales-situation__list {
       display: grid;
       gap: var(--sp-3);
@@ -213,7 +239,6 @@ const others = SITUATIONS.filter((o) => o.id !== s.id);
 
     .sales-situation__qa {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
       gap: var(--sp-5);
       margin: 0;
     }

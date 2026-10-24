@@ -4,6 +4,13 @@
     margin-inline: auto;
   }
 
+  /* A container inside a container is the same frame, not a second inset (WP-109): without this a page that wraps its own .container in
+     a Section's one lost twice the gutter and its text sat 80px inside the frame. */
+  .container > .container:not(.container--prose) {
+    inline-size: auto;
+    margin-inline: 0;
+  }
+
   .container--prose {
     inline-size: min(100% - 2 * var(--gutter), var(--prose-max));
   }
@@ -182,6 +189,88 @@
     }
   }
 
+  /*
+   * The rail of a prose page (WP-109, ProseRail): three columns that fill the frame. The start rail (the list of headings, or the
+   * call to action) and the end rail flex around the body, which holds the reading measure (--prose-max grows with the screen, with
+   * the reading type), so the width left over goes to the rails and the gaps and no track is empty. The sources close the last
+   * column's second row. Below 75rem the page is one column and the list is hidden.
+   */
+  .with-rail--page {
+    @media (min-width: 75rem) {
+      grid-template-columns: minmax(0, var(--prose-max));
+      justify-content: space-between;
+      grid-template-rows: auto;
+      grid-auto-flow: row;
+    }
+
+    & > .with-rail__body {
+      min-inline-size: 0;
+    }
+
+    & .toc-rail {
+      @media (max-width: 74.99rem) {
+        display: none;
+      }
+
+      /* The list is a card at the wide frame, as the call to action beside it is, so both rails read as equal panels. */
+      @media (min-width: 75rem) {
+        padding: var(--sp-4) var(--sp-5);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+      }
+    }
+
+    & > .rail--start:not(.rail--cta):has(> .toc-rail:only-child) {
+      @media (max-width: 74.99rem) {
+        display: none;
+      }
+    }
+  }
+
+  @media (min-width: 75rem) {
+    .with-rail--page.with-rail--start {
+      grid-template-columns: minmax(14rem, 1fr) minmax(0, var(--prose-max));
+    }
+
+    .with-rail--page.with-rail--end {
+      grid-template-columns: minmax(0, var(--prose-max)) minmax(16rem, 44rem);
+    }
+
+    .with-rail--page.with-rail--start.with-rail--end {
+      grid-template-columns: minmax(14rem, 1fr) minmax(0, var(--prose-max)) minmax(16rem, 1.4fr);
+    }
+
+    .with-rail--page > .rail--start {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+    }
+
+    .with-rail--page > .with-rail__body {
+      grid-row: 1 / span 2;
+      grid-column: 1;
+    }
+
+    .with-rail--page.with-rail--start > .with-rail__body {
+      grid-column: 2;
+    }
+
+    .with-rail--page > .rail--end {
+      grid-row: 1;
+      grid-column: -2;
+    }
+
+    .with-rail--page > .rail-sources {
+      grid-row: 2;
+      grid-column: -2;
+      align-self: end;
+    }
+
+    /* A page with neither rail but sources keeps the sources beside the body. */
+    .with-rail--page:not(.with-rail--start):not(.with-rail--end).with-rail--sources {
+      grid-template-columns: minmax(0, var(--prose-max)) minmax(16rem, 1.4fr);
+    }
+  }
+
   .rail {
     position: sticky;
     inset-block-start: calc(var(--header-h) + var(--sp-5));
@@ -241,6 +330,139 @@
     background-size: 13rem 11rem, 17rem 19rem, 23rem 29rem, 100% 100%;
   }
 
+  /*
+   * Equal cards spread over the frame (WP-109). A list of questions, of challenges or of next steps is a set of cards, not one strip of
+   * text in the corner: two equal columns that share the frame, and three equal columns from three items on, so the cards (not the
+   * gutter between them) fill the width. Each card sizes itself
+   * (the rows align to the start), so opening one question never stretches its neighbours.
+   */
+  :is(.faq-list, .fitems, .sales-situation__qa, .eco-faq, .jny-check) {
+    @media (min-width: 52rem) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    @media (min-width: 75rem) {
+      &:has(> :nth-child(3)) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  }
+
+  /*
+   * A heading with one short block of text (WP-109). A section that is only a heading and a paragraph or a plain list is a label and
+   * its text: at the wide frame they are two equal panels in one row, the label at the left edge and the text at the right edge,
+   * instead of two lines stacked in the corner. A panel is a painted box, so it carries its half of the frame whatever the length of
+   * the words in it (a one-word label and a one-line text left 700px of nothing between them), and no panel is wider than 60rem, so
+   * a line in it keeps its measure. Sections with anything else in them (grids, tables, several blocks) are left to their own layout.
+   */
+  @media (min-width: 62rem) {
+    :is(.section, .band) > .container:is(.stack, :has(> .stack:only-child)) {
+      &.stack:has(> h2:first-child + :is(p, ul, ol):not(.fitems, .grid, .cards, .faq-list, .accordion):last-child),
+      & > .stack:has(> h2:first-child + :is(p, ul, ol):not(.fitems, .grid, .cards, .faq-list, .accordion):last-child) {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: var(--sp-7);
+        align-items: stretch;
+
+        & > h2 {
+          grid-column: 1;
+        }
+
+        & > :is(p, ul, ol) {
+          grid-column: 2;
+          grid-row: 1;
+          margin-block: 0;
+          max-inline-size: none;
+        }
+
+        & > :is(h2, p, ul, ol) {
+          padding: var(--sp-5) var(--sp-6);
+          background: color-mix(in oklch, var(--color-text) 5%, transparent);
+          border: var(--border-hair);
+          border-radius: var(--radius-md);
+        }
+
+        & > :is(ul, ol) {
+          padding-inline-start: calc(var(--sp-6) + 1.5em);
+        }
+      }
+    }
+  }
+
+  /* A band that holds only a row of actions: the buttons are equal blocks that share the frame, the first at the left edge and the last
+     at the right edge (WP-109), so two buttons are not two small boxes with 1200px of nothing between them. */
+  @media (min-width: 62rem) {
+    .band > .container > .cluster:only-child:has(> :nth-child(2)) {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+
+      & > .btn {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  }
+
+  /*
+   * The closing band of a page (WP-109): the question and its text at the left of the frame, the actions at the right edge, in one row
+   * at the wide frame. It stacks below 62rem. The band's container holds the heading, the text and one .cluster of actions. Any band
+   * built that way is a closing band, whether or not it carries .band--end.
+   */
+  .band--end > .container,
+  .band > .container:has(> h2:first-child):has(> .cluster:last-child):not(:has(> :is(.grid, .split, ul, ol, table, figure, form))) {
+    display: grid;
+    gap: var(--sp-4);
+    justify-items: start;
+
+    @media (min-width: 62rem) {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: var(--sp-7);
+      align-items: center;
+
+      & > * {
+        grid-column: 1;
+      }
+
+      & > .cluster {
+        grid-column: 2;
+        grid-row: 1 / span 4;
+        flex-direction: column;
+        align-items: stretch;
+        justify-self: end;
+        text-align: center;
+      }
+    }
+
+    /* From 90rem the band is three parts on one row, as the call to action card is: the question, its text and the actions share the
+       frame, and what is left over between them is a gutter. */
+    @media (min-width: 90rem) {
+      grid-template-columns: fit-content(34%) minmax(0, var(--prose-max)) 22rem;
+      justify-content: space-between;
+      column-gap: var(--sp-7);
+
+      & > :is(h2, h3) {
+        grid-column: 1;
+        grid-row: 1 / span 4;
+        font-size: var(--fs-2xl);
+      }
+
+      & > :not(:is(h2, h3, .cluster)) {
+        grid-column: 2;
+      }
+
+      & > .lead {
+        font-size: var(--fs-lg);
+      }
+
+      & > .cluster {
+        grid-column: 3;
+        justify-self: stretch;
+      }
+    }
+  }
+
   /* Text beside a visual: the text column holds --split-text from the container edge, the visual takes the rest of the frame. */
   .split {
     display: grid;
@@ -254,6 +476,58 @@
 
     @media (min-width: 62rem) {
       grid-template-columns: minmax(0, var(--split-text)) minmax(0, 1fr);
+
+      /* A fixed-size picture sits at the frame's far edge, so the pair spans the frame instead of leaving the art floating mid-column
+         (WP-109). Fluid media (a chart, a figure, a panel) keeps the whole column: it has no width of its own to push to the edge. */
+      & > .split__media:has(> :is(svg, img, picture):only-child) {
+        justify-self: end;
+      }
+
+      /* A column of text on the media side (a heading and its paragraph) is one block that keeps its own width and holds the far edge. */
+      & > .split__media:has(> h2:first-child):not(:has(> :is(figure, table, ul.grid, .grid))) {
+        justify-self: end;
+        inline-size: fit-content;
+        max-inline-size: 100%;
+      }
+    }
+  }
+
+  /*
+   * A split of two panels (WP-109): the text and its picture are equal painted boxes sharing the frame, so a short list beside a small
+   * picture leaves no void between them. The picture is centred in its panel; each panel stays under 60rem, so a line of text keeps
+   * its measure. Below 62rem the split is one column and the panels are plain blocks.
+   */
+  @media (min-width: 62rem) {
+    .split.split--panels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+
+      & > :is(.split__text, .split__media) {
+        align-content: center;
+        justify-self: stretch;
+        padding: var(--sp-6);
+        background: color-mix(in oklch, var(--color-text) 5%, transparent);
+        border: var(--border-hair);
+        border-radius: var(--radius-md);
+      }
+
+      /* Twice the class: the picture-only media of a plain split pins itself to the far edge with a :has() rule, and a panel does not. */
+      &.split > .split__media.split__media:is(.split__media, :has(*)) {
+        display: grid;
+        place-items: center;
+        justify-self: stretch;
+        inline-size: auto;
+        max-inline-size: none;
+      }
+
+      /* A picture takes the width of its panel (its art is drawn to fit and centred), so the panel is covered edge to edge. */
+      & > .split__media > :is(svg, img):only-child {
+        inline-size: 100%;
+        block-size: auto;
+        max-block-size: 26rem;
+        aspect-ratio: 16 / 9;
+        object-fit: contain;
+      }
     }
   }
 
@@ -264,6 +538,7 @@
   @media (min-width: 62rem) {
     .split--even {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+
     }
 
     .split--media-first > .split__media {
@@ -272,6 +547,10 @@
 
     .split--reverse {
       grid-template-columns: minmax(0, 1fr) minmax(0, var(--split-text));
+
+      & > .split__media:has(> :is(svg, img, picture):only-child) {
+        justify-self: start;
+      }
 
       & > .split__media {
         order: -1;
@@ -296,13 +575,21 @@
    * The wide body of a layout, and any .prose block that now sits in the 110rem frame: text keeps the reading measure at the frame's
    * left edge; figures, tables, grids and splits use the frame. Paragraphs and headings are held at any depth, so a component section
    * in the body cannot run a line across 1760px; lists only at the top level, because a nested list is often a card grid. A
-   * component's own width rule outranks these (layer order). The 80ch cap only binds on smaller type (a note at --fs-sm), which would
+   * component's own width rule outranks these (layer order). The 76ch cap (the gate allows 80ch of the measured zero; 76 leaves room for the font swap, whose fallback face has a wider ch) only binds on smaller type (a note at --fs-sm), which would
    * otherwise run past 80 characters in 46rem; body type reaches 46rem first. A callout straight in a prose container (a template's
    * "How to use this" box) is held the same way.
    */
+  :is(.flow-wide, .prose) {
+    font-size: var(--fs-read);
+  }
+
   :is(.flow-wide, .prose) :where(p, blockquote, h2, h3, h4, h5, h6),
   :is(.flow-wide, .prose) > :where(ul, ol, dl, .callout),
-  .container--prose > :where(.callout) {
-    max-inline-size: min(var(--prose-max), 80ch);
+  .container--prose > :where(.callout),
+  /* Text beside a visual or in a prose container holds the same measure (WP-109): --prose-max grows to 57rem with the
+     reading type, and 57rem of 22px type is 84 characters, so the character cap is what binds from 1440px up, at every viewport. */
+  :is(.split__text, .container--prose) :where(p),
+  :is(.split__text, .container--prose) > :where(ul, ol) {
+    max-inline-size: min(var(--prose-max), 76ch);
   }
 }

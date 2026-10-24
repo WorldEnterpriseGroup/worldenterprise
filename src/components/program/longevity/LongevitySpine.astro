@@ -140,8 +140,9 @@ const stats = DECADE_STATS.map((s) => visualStat(s, 'gate'));
       color: var(--color-text-muted);
     }
 
+    /* The note fills its half: the half is a card in a two-column row, so its measure is the card's. */
     .longevity__note {
-      max-inline-size: var(--measure);
+      max-inline-size: none;
     }
 
     .longevity__loop {
