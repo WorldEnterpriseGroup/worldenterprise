@@ -2338,6 +2338,16 @@
     },
     {
       "wp": "WP-109",
+      "path": "playwright.config.ts",
+      "reason": "Issue #109 (wp/109-1920-layout): keeps the fixed-viewport content-extent spec out of the mobile wave 8 project by configuration, so the spec never skips at run time."
+    },
+    {
+      "wp": "WP-109",
+      "path": "src/components/families/visual/CtaLadder.astro",
+      "reason": "Issue #109 (wp/109-1920-layout): the closing band of the family templates is a three-part row at the wide frame, fixed in the shared component, not per page."
+    },
+    {
+      "wp": "WP-109",
       "path": "src/components/cta/CtaAside.astro",
       "reason": "Issue #109 (wp/109-1920-layout): the rail card that leads a page takes the h2 level so the outline never skips from h1 to h3; the default stays h3."
     },
