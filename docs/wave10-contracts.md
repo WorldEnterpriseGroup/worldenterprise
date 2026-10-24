@@ -1,6 +1,6 @@
 # Wave 10 contracts: ecosystem context, write sets, sequencing
 
-Owner: WP-32 (issue #81). Decisions D-W10-1 to D-W10-5 in `.astro-magazine/decisions.md`. Write-set map: `.astro-magazine/plans/wave10/writesets.json` (kept equal to `ownership.json` by `tests/unit/wp-32/write-sets-wave10.test.ts`). Claims tests for the mechanism: `tests/unit/wp-32/ecosystem-context.test.ts`.
+Owner: WP-32 (issue #81). Decisions D-W10-1 to D-W10-5 in `.astro-magazine/decisions.md`. Write-set map: `.astro-magazine/plans/wave10/writesets.json` (kept equal to the merged ownership registry (`ownership.json` plus `ownership.d/`) by `tests/unit/wp-32/write-sets-wave10.test.ts`). Claims tests for the mechanism: `tests/unit/wp-32/ecosystem-context.test.ts`.
 
 A wave 10 package merges `origin/demo` once WP-32 has landed, before its first push. Anything outside your write set and your registered exceptions is requested from the tech lead, never edited silently.
 
@@ -41,7 +41,7 @@ Navigation (`src/data/nav.ts`, filtered by `resolveNav`): Network panel, Founder
 
 WP-37 links to `/ecosystem/` and `/sbir-sttr/` only for routes that exist on demo when it merges (it merges after WP-33 and WP-34).
 
-## 4. Frozen-file exceptions (registered in `ownership.json`, each with a reason)
+## 4. Frozen-file exceptions (registered in your own fragment `.astro-magazine/ownership.d/wp-NN.json`, each with a reason)
 
 - **WP-36:** `package.json` and `package-lock.json` (the `three` and `@types/three` lines only; lockfile through `npm install --package-lock-only`), `src/layouts/BaseLayout.astro` (head only), `src/styles/motion.css` (it already holds the `@view-transition { navigation: auto }` block and the reduced-motion guard; extend, do not duplicate), `src/components/seo/SpeculationRules.astro` and `src/lib/seo.ts` (`speculationRules()` only; keep the CSP script hash), `src/components/seo/SeoHead.astro`, `src/scripts/visuals/**` (the wave 9 scene scripts live here, not under `src/scripts/scene*`), `src/pages/styleguide.astro`, the pinning tests `tests/unit/wp-52/**`, `wp-60/motion.test.ts`, `wp-09/seo.test.ts`, `wp-13/design-system.test.ts`, `tests/e2e/wave7/wp-45/visual-system.spec.ts`, `tests/unit/wp-45/css-budget.test.ts` (measured, documented raise only) and `props-baseline.json`.
 - **WP-37:** `src/components/home/**`, `src/components/program/**` (HomeHero and `program/who-its-for.astro` are photography-lane files, listed as lane exceptions), the sales components, data and content of WP-58, and the pinning tests for home, program and the sales pages (`wp-44/home`, `wp-53/**`, `wp-01/program`, `wp-58/**`, the e2e specs and `tests/e2e/folds.spec.ts`).

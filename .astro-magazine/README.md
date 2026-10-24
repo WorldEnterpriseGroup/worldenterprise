@@ -5,7 +5,8 @@ This directory is the durable operating record for a publication commission. Kee
 - `commission.json`: scope, targets, creative direction, owners, and authority.
 - `scope.json`: explicit included/excluded work, protected paths, constraints, and exceptions.
 - `authority-policy.md`: source, rights, privacy, and external-action boundaries.
-- `ownership.json`: exclusive write sets, leases, handoffs, and conflicts.
+- `ownership.json`: the shared registry: exclusive write sets (`assignments`), frozen paths, lanes, conflicts and notes. It never holds a per-package key.
+- `ownership.d/<owner-id-lowercase>.json`: one fragment per work package (`WP-62` -> `wp-62.json`) with that package's `exceptions`, `handoffs` and `active_leases`. To register a frozen-file exception add it to your own fragment (`{ "owner": "WP-62", "exceptions": [{ "wp": "WP-62", "path": "...", "reason": "..." }] }`); never edit `ownership.json` for it and never another package's fragment. `scripts/lib/ownership-load.mjs` merges both, and every reader loads through it (`loadOwnership()`); a branch for WP-NN may write `ownership.d/wp-NN.json` and no other fragment.
 - `checkpoint.json`: current phase, event offset/hash, artifact counts/hashes, verified state, blockers, and exact next action.
 - `schemas/`: versioned JSON Schema contracts for the commission, article records, and brief storyboards.
 - `templates/`: starter route, content, brief, source, claim, media, interaction, and conversion records.
