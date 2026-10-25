@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { ownerOf, violations } from '../../../scripts/check-ownership.mjs';
+import { loadOwnership } from '../../../scripts/lib/ownership-load.mjs';
 
 // WP-108 (#108) registers its write set once, as recent packages did (WP-59 pattern): its own tests and handoffs in write_set, every other
 // path as a named exception. It is the first three-digit package registered, so ownerOf maps a three-digit branch; wp/101 and wp/106
@@ -19,7 +19,7 @@ interface Ownership {
 }
 
 const root = new URL('../../../', import.meta.url);
-const ownership = JSON.parse(readFileSync(new URL('.astro-magazine/ownership.json', root), 'utf8')) as Ownership;
+const ownership = loadOwnership() as unknown as Ownership;
 const check = violations as (files: string[], owner: string, ownership: Ownership) => { path: string; reason: string }[];
 const owner = ownerOf as (branch: string) => string | null;
 

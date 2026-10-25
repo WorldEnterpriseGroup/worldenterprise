@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import * as checker from '../../../scripts/check-ownership.mjs';
+import { loadOwnership } from '../../../scripts/lib/ownership-load.mjs';
 
 // Wave 7 (WP-40): scripts/check-ownership.mjs learns `exclude`, a list of globs inside an assignment's write_set that the package must not
 // edit unless an exception names the path. WP-45 owns a layout and component sweep that must stay clear of the photography lane.
@@ -23,7 +23,7 @@ const api = checker as unknown as {
   ownerOf(branch: string): string | null;
   violations(files: string[], owner: string, o: Ownership): { path: string; reason: string }[];
 };
-const ownership = JSON.parse(readFileSync(new URL('../../../.astro-magazine/ownership.json', import.meta.url), 'utf8')) as Ownership;
+const ownership = loadOwnership() as unknown as Ownership;
 
 test('wave 7 branches map to their packages', () => {
   for (let n = 40; n <= 50; n += 1) assert.equal(api.ownerOf(`wp/${n}`), `WP-${n}`);

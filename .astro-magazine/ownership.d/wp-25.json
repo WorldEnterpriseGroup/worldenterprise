@@ -1,0 +1,35 @@
+{
+  "owner": "WP-25",
+  "exceptions": [
+    {
+      "wp": "WP-25",
+      "path": "src/components/layout/Header.astro",
+      "reason": "Wave 11 (D-W11-1): logo sizes only."
+    },
+    {
+      "wp": "WP-25",
+      "path": ".astro-magazine/events.ndjson",
+      "reason": "Studio checkpoint (#91): the append-only event log is integrator-owned; seq 3 onward are the wave 9 to 11 merges, demo push pipelines and issue closures reconstructed from GitLab, each with its source id."
+    },
+    {
+      "wp": "WP-25",
+      "path": ".astro-magazine/checkpoints/**",
+      "reason": "Studio checkpoint (#91): the immutable gate snapshot of checkpoint.json that README.md promises under checkpoints/."
+    },
+    {
+      "wp": "WP-25",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Studio checkpoint (#91): registers the two WP-25 exceptions above (frozen path, append-only)."
+    },
+    {
+      "wp": "WP-25",
+      "path": "tests/unit/wp-32b/write-sets-wave11.test.ts",
+      "reason": "Studio checkpoint (#91): the wave 11 exception pin lists the WP-25 exceptions it now carries."
+    },
+    {
+      "wp": "WP-25",
+      "path": ".astro-magazine/plans/wave11/writesets.json",
+      "reason": "Studio checkpoint (#91): the wave 11 write-set map mirrors the WP-25 exceptions registered in ownership.json."
+    }
+  ]
+}

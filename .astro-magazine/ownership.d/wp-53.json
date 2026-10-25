@@ -1,0 +1,75 @@
+{
+  "owner": "WP-53",
+  "exceptions": [
+    {
+      "wp": "WP-53",
+      "path": "src/components/home/HomeHero.astro",
+      "reason": "Wave 9 (W9-6): the home hero becomes the galaxy poster plus scene; photography lane, WP-12b is merged."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/pages/program/who-its-for.astro",
+      "reason": "Wave 9: layout only; photography lane, WP-12b is merged. The photograph and its slot stay."
+    },
+    {
+      "wp": "WP-53",
+      "path": "tests/e2e/folds.spec.ts",
+      "reason": "Wave 9: the home first-viewport assertions follow the redesigned home; WP-51 hands the file over after its HERO_MODES edit (W9-2)."
+    },
+    {
+      "wp": "WP-53",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/components/program/stages.ts, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-53",
+      "path": ".astro-magazine/sources/wp-75.json",
+      "reason": "Wave 9 (W9-13): the seat and SaaS entries follow the new Program wording. Those entries only; WP-75 is done."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/build-vs-buy.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+      "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+    },
+    {
+      "wp": "WP-53",
+      "path": "src/pages/faq/_model.ts",
+      "reason": "Wave 9 (W9-13): lines 62 to 65, the link-title values of /program/build/, /program/dedicated-teams/, /program/dream/ and /program/grow/. Those lines only; line 61 (/pricing/) stays with WP-54, and WP-56 keeps the file."
+    },
+    {
+      "wp": "WP-53",
+      "path": "tests/unit/wp-15/image-type.test.ts",
+      "reason": "Wave 9 (W9-6): the hero regex widens to accept heroPoster() for the galaxy poster LCP. That pattern only; shared with WP-17, disjoint by line."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "owner": "WP-22",
+  "exceptions": [
+    {
+      "wp": "WP-22",
+      "path": "src/pages/about/index.astro",
+      "reason": "Wave 11 (D-W11-1): media placements on the about page only."
+    },
+    {
+      "wp": "WP-22",
+      "path": "src/pages/network/index.astro",
+      "reason": "Wave 11 (D-W11-1): media placements on the network index only."
+    },
+    {
+      "wp": "WP-22",
+      "path": "scripts/lib/audit-dist.mjs",
+      "reason": "Wave 11 (D-W11-1): captioned video primitives (#88); additive only. Not frozen and not in the release lane. Allows .mp4, .webm and .vtt extensions only."
+    },
+    {
+      "wp": "WP-22",
+      "path": "scripts/lib/serve.mjs",
+      "reason": "Wave 11 (D-W11-1): captioned video primitives (#88); additive only. Not frozen and not in the release lane. Adds video/mp4, video/webm and text/vtt MIME types and simple HTTP Range (206) support for e2e."
+    }
+  ]
+}

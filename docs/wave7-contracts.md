@@ -10,7 +10,7 @@ Issue #29, milestone "World Enterprise Incubator v1.1 (Wave 7: craft, transparen
 | 1 | WP-41 to WP-49 | Parallel branches `wp/41` to `wp/49` on pairwise disjoint write sets. At most five at once. |
 | 2 | WP-50 | After stage 1. The only package that may fix a seam between two packages. |
 
-Write sets are registered in `.astro-magazine/ownership.json` and policed by `npm run check:ownership` on `wp/*` branches. Two things the checker did not do before wave 7 are now true:
+Write sets are registered in `.astro-magazine/ownership.json` (exceptions in each package's own fragment, `.astro-magazine/ownership.d/wp-NN.json`, since #112) and policed by `npm run check:ownership` on `wp/*` branches. Two things the checker did not do before wave 7 are now true:
 
 - An assignment may carry `exclude`: globs inside its own write set that it must not edit (WP-45 excludes `src/components/ui/Card.astro`, `src/components/hero/HeroAtlas.astro` and `src/components/hero/HeroEditorial.astro`, which the photography lane holds). An `exceptions` entry that names the path overrides the exclusion.
 - An assignment may carry `lane_exceptions`: photography-lane files the package edits through an `exceptions` entry (WP-42 `src/pages/pricing/index.astro`, WP-43 `src/pages/program/who-its-for.astro`). They were gated on WP-12d phase B until decision W7-9 (2026-10-10) lifted the wait: phase B photo generation is deferred and will rebase onto wave 7. Edit them on any branch. The rest of the photography lane (`Card.astro`, `HeroAtlas.astro`, `HeroEditorial.astro`, `src/components/cards/**`, `src/components/media/**`, `src/assets/photo/**`) stays excluded.

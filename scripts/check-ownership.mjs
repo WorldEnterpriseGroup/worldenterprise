@@ -3,7 +3,7 @@
 // Branch wp/NN or wp/NN-suffix maps to WP-NN; wp/NNx (one letter) maps to WP-NNx. Other branches (demo, main) are not policed here.
 // Diffs against origin/demo. Usage: node scripts/check-ownership.mjs [--branch wp/01] [--base origin/demo]
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { loadOwnership, fragmentPathFor } from './lib/ownership-load.mjs';
 
 function arg(name, fallback) {
   const i = process.argv.indexOf(name);
@@ -44,7 +44,8 @@ export function violations(files, owner, ownership) {
   const assignment = ownership.assignments.find((a) => a.owner === owner);
   if (!assignment) return [{ path: '*', reason: `no assignment for ${owner}` }];
   const extra = ownership.exceptions.filter((e) => e.wp === owner).map((e) => e.path);
-  const allowed = [...assignment.write_set, ...ownership.always_allowed, ...extra];
+  // Every package may write its own ownership fragment (.astro-magazine/ownership.d/wp-NN.json) and no other file in ownership.d/ (#112).
+  const allowed = [...assignment.write_set, ...ownership.always_allowed, ...extra, fragmentPathFor(owner)];
   // `exclude` carves files out of a broad glob in write_set (wave 7: a layout glob that must not reach a photography-lane file).
   // An exception that names the path still wins.
   const excluded = assignment.exclude ?? [];
@@ -70,7 +71,13 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.log(`check-ownership: branch ${branch} is not a work-package branch, nothing to check`);
     process.exit(0);
   }
-  const ownership = JSON.parse(readFileSync(new URL('../.astro-magazine/ownership.json', import.meta.url), 'utf8'));
+  let ownership;
+  try {
+    ownership = loadOwnership();
+  } catch (error) {
+    console.error(`check-ownership: ${error instanceof Error ? error.message : String(error)}`);
+    process.exit(2);
+  }
   // Three-digit packages (wp/101, wp/106) predate three-digit mapping and were never registered: they stay unpoliced until they are.
   if (/^WP-\d{3}/.test(owner) && !ownership.assignments.some((a) => a.owner === owner)) {
     console.log(`check-ownership: ${owner} has no assignment (three-digit packages are policed once registered), nothing to check`);

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { matches } from '../../../scripts/check-ownership.mjs';
+import { loadOwnership } from '../../../scripts/lib/ownership-load.mjs';
 
 // 60a.3: the counsel checklist (.astro-magazine/release/RELEASE.md) quotes copy by file and line, and tests/unit/wp-30/release-doc.test.ts
 // pins each quote. A package that edits a pinned file must edit the checklist in the same commit, so the owner registers a scoped exception.
@@ -18,7 +19,7 @@ interface Ownership {
 }
 
 const RELEASE = '.astro-magazine/release/RELEASE.md';
-const ownership = JSON.parse(readFileSync(new URL('../../../.astro-magazine/ownership.json', import.meta.url), 'utf8')) as Ownership;
+const ownership = loadOwnership() as unknown as Ownership;
 const doc = readFileSync(new URL(`../../../${RELEASE}`, import.meta.url), 'utf8');
 const pinned = [...new Set([...doc.matchAll(/^Source: `([^`:]+):\d+`/gm)].map((m) => m[1] as string))];
 const wave8 = ownership.assignments.filter((a) => Number(/^WP-(\d+)/.exec(a.owner)?.[1] ?? 0) >= 60);

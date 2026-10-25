@@ -1,0 +1,95 @@
+{
+  "owner": "WP-60",
+  "exceptions": [
+    {
+      "wp": "WP-60",
+      "path": "tests/unit/wp-16/nav-css.test.ts",
+      "reason": "Wave 8 CI follow-up (#40): the one regex that pins the 1100-1279.98px .mega-nav__list gap moves from --sp-3 to --sp-1 with the css change above, taken over from WP-63 (ruled by the integrator 2026-10-10)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/styles/components.css",
+      "reason": "Wave 8 CI follow-up (#40): the shared breadcrumb rule needs a 24px target-size floor (WCAG 2.2 2.5.8, found by WP-75's e2e). Scoped to the .breadcrumbs li rule and to the .mega-nav__list gap in the 1100-1279.98px block (WP-63's eighth top-level item overflowed the header row at 1100 and 1140 px, taken over from WP-63); WP-71 and WP-63 cannot edit the shared stylesheet, ruled by the integrator 2026-10-10."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/scripts/nav.ts",
+      "reason": "Wave 8 CI follow-up (#40): the hover-intent timer reopened a panel that Escape had just closed (e2e:wave7 nav-identity flake, pipeline 65931). Scoped to cancelling that timer on toggle, click and Escape; ruled by the integrator 2026-10-10."
+    },
+    {
+      "wp": "WP-60",
+      "path": ".astro-magazine/ownership.json",
+      "reason": "Wave 8 foundation: registers the 32 assignments WP-60 to WP-99 and frozen_paths_wave8."
+    },
+    {
+      "wp": "WP-60",
+      "path": ".astro-magazine/decisions.md",
+      "reason": "Wave 8 foundation: records D-20 to D-24 and W8-1 to W8-29."
+    },
+    {
+      "wp": "WP-60",
+      "path": "package.json",
+      "reason": "Wave 8 foundation: npm scripts for the new audits and e2e jobs only (docs/wave8-contracts.md, section 13)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "package-lock.json",
+      "reason": "Wave 8 foundation: single writer of the lockfile when package.json changes."
+    },
+    {
+      "wp": "WP-60",
+      "path": "astro.config.mjs",
+      "reason": "Wave 8 foundation: registers src/lib/rehype-mid-cta.ts next to tableWrapPlugin (contracts section 6.1)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/content.config.ts",
+      "reason": "Wave 8 foundation: 14 desk ids in the topic enum, segments, related and cta on insights, the briefs collection, the portfolio schema and the family frontmatter (contracts sections 2, 5, 7, 8.2)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 8 foundation: ledger derived from desks.ts, families.ts and the content files; RouteOwner gains WP-60 to WP-99; pre-registered wave 8 rows (contracts section 1)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 8 foundation: audience lens, Topics column, Briefs, Industries, Compare and journey entries, Partners replaces Partners and perks (contracts section 1.4)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/data/claims.ts",
+      "reason": "Wave 8 foundation: claim ids that WP-62 to WP-65, WP-72 and WP-73 cite (contracts section 9)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/data/flags.ts",
+      "reason": "Wave 8 foundation: flags.briefUpdates, OFF (contracts section 3.1)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "claims-denylist.json",
+      "reason": "Wave 8 foundation: rule W8-C13-own-peers and the narrow allowPaths for the comparison page (contracts sections 0.1 and 8.1, DP-W8-15)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "tests/unit/foundation/**",
+      "reason": "Wave 8 foundation: exact-count assertions become the invariants of contracts section 1.3; nav snapshot for the new nav."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/lib/route-core.ts",
+      "reason": "Wave 8 foundation: the desk route is built from desks.ts and is live only for a desk that holds an article (contracts section 1.3)."
+    },
+    {
+      "wp": "WP-60",
+      "path": "src/lib/route-state.ts",
+      "reason": "Wave 8 foundation: route state follows the registries (contracts section 1.3)."
+    },
+    {
+      "wp": "WP-60",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3), WP-99 closing package (#49): scoped to the CR entries for src/components/forms/copy.ts, files in this package's own write set. The brief consent line, the delivery sentence and the partner no-partnership notice are pinned there (WP-63 and WP-65 handoffs). The counsel record is written by the release owner from the handoff's proposed entries (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    }
+  ]
+}

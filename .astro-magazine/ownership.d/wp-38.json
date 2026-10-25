@@ -1,0 +1,15 @@
+{
+  "owner": "WP-38",
+  "exceptions": [
+    {
+      "wp": "WP-38",
+      "path": "src/components/geo/mdx-transform.ts",
+      "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+    },
+    {
+      "wp": "WP-38",
+      "path": "tests/unit/wp-91/mdx-transform.test.ts",
+      "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+    }
+  ]
+}

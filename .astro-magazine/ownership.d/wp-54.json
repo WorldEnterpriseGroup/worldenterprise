@@ -1,0 +1,265 @@
+{
+  "owner": "WP-54",
+  "exceptions": [
+    {
+      "wp": "WP-54",
+      "path": "src/components/services/LineAside.astro",
+      "reason": "Wave 9: layout only; photography lane, WP-12b is merged."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/pages/pricing/index.astro",
+      "reason": "Wave 9 (W9-12): the /pricing/ route becomes the engagement-model page (how WE works with you), with no seat prices and no priced cart; photography lane, WP-12b is merged."
+    },
+    {
+      "wp": "WP-54",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/content/pages/pricing/pricing.mdx, src/content/services/fundability-and-investor-readiness.mdx, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 9 (W9-13): launches the /how-we-work/ row, sets /pricing/ indexable:false (a redirect to /how-we-work/), and adds the wave 9 RouteOwner values for WP-54 and WP-58. No other row changes."
+    },
+    {
+      "wp": "WP-54",
+      "path": "claims-denylist.json",
+      "reason": "Wave 9 (W9-13): moves the three required texts from /pricing/ to /how-we-work/; no rule is relaxed."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-18/audit-claims.test.ts",
+      "reason": "Wave 9 (W9-13): the required-text pins follow /pricing/ to /how-we-work/; shared with WP-58 (C-29 lines), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-18/copy.test.ts",
+      "reason": "Wave 9 (W9-13): the package and pricing copy pins follow the retirement, including line 54 (the Program menu intro line) and line 216 (the engagement model). Shared with WP-58 (C-29 and C-13-peers lines), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-42/pricing-packages.spec.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only: the spec is retired with the packages."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-40/packages.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 9 (W9-13): the Pricing and \"Compare seat options\" links become \"How WE works\" (/how-we-work/). Shared with WP-58 (its own routes) and WP-51 (CTA labels), disjoint by line. Also the Program menu intro line: 'Dedicated team seats, steered by WE' becomes 'A dedicated team, steered by WE'."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Wave 9 (W9-13): the nav snapshot follows the nav.ts change above; shared with WP-51 and WP-58, disjoint by entry."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/cta/map.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ row becomes the /how-we-work/ row. Shared with WP-58 (its own rows), disjoint by row."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/lib/schema.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only (the package catalog node)."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/packages.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/components/seo/JsonLd.astro",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/lib/llms.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-41/jsonld.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-41/llms.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-91/llms.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-91/twins.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-91/d23.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only; shared with WP-51 (the Apply label pin), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only: the Team Composer ?package= hand-off is retired; shared with WP-51 (the Apply label pin), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/forms.ts",
+      "reason": "Wave 9 (W9-13): the apply form retires the package select and carries the situation lines inside message (SALES.md 6.4 interim, no contract change); the contact topic seat-rate is relabelled \"Current terms\" with its value kept."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/components/forms/ApplyForm.astro",
+      "reason": "Wave 9 (W9-13): the package select is removed and the readiness-review heading and situation preselect (?situation=) are added; no contract change."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/foundation/nav.test.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-16/active-section.test.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-46/commands.test.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-46/panels.test.ts",
+      "reason": "Wave 9 (W9-13): the strip links to /pricing/ become /how-we-work/; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-91/palette.test.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/menu.spec.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ current-section check moves to /how-we-work/. Shared with WP-51 (header widths, CTA labels), disjoint by line."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-46/palette.spec.ts",
+      "reason": "Wave 9 (W9-13): the palette search for pricing follows /how-we-work/. That check only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/components/geo/llms-input.ts",
+      "reason": "Wave 9 (W9-13): the /pricing/ llms entry becomes /how-we-work/. That entry only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-42/composer-package.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement: the Team Composer ?package= hand-off is removed; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-42/copy-guard.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement: the package sentences leave the Team Composer copy; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-42/package-picker.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement: the package picker is removed; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-43/forms-package.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement: the apply form package select is removed; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-43/sentences.ts",
+      "reason": "Wave 9 (W9-13): package retirement and the readiness-review intake wording; the sentence list follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-43/apply-stepper.spec.ts",
+      "reason": "Wave 9 (W9-13): package retirement and the SALES.md 6.4 interim fields in the apply stepper; the spec follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/scripts/forms.ts",
+      "reason": "Wave 9 (W9-13): scoped wave 9 unfreeze: the package prefill is removed and the SALES.md 6.4 interim fields (situation lines inside message) are added. Nothing else; the forms contract does not change."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/data/faq.yaml",
+      "reason": "Wave 9 (W9-13): the package and pricing answers follow the engagement model (no prices, start any month, yearly checkpoint review), including the entries how-paid, start-seat-count and start-rate. Those entries only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/pages/faq/_model.ts",
+      "reason": "Wave 9 (W9-13): line 48, the /apply/ link title becomes 'Start a readiness review' (wp-78 faq-data test), and line 61, the /pricing/ link title becomes the /how-we-work/ one. Those lines only; lines 62 to 65 are WP-53's, and WP-56 keeps the file."
+    },
+    {
+      "wp": "WP-54",
+      "path": "scripts/audit-claims.mjs",
+      "reason": "Wave 9 (W9-13): the --self-test cases (about lines 458-459 and 494-497) change /pricing/ to /how-we-work/. Those cases only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-41/twins.test.ts",
+      "reason": "Wave 9 (W9-13): lines 73-74, the /pricing/ twin follows /how-we-work/. Those lines only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/foundation/ledger.test.ts",
+      "reason": "Wave 9 (W9-13): line 24, /pricing/ joins NOINDEX (it points to /how-we-work/). That line only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/components/forms/ContactForm.astro",
+      "reason": "Wave 9 (W9-13): line 10, the seat-rate option label only."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-60/fixtures/reference-originals.json",
+      "reason": "Wave 9 (W9-13): the faq hashes for cost, packages and how-paid only."
+    },
+    {
+      "wp": "WP-54",
+      "path": ".astro-magazine/sources/wp-78.json",
+      "reason": "Wave 9 (W9-13): the start-seats-pricing, start-seat-count and start-rate records only; WP-78 is done."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/unit/wp-43/stepper.test.ts",
+      "reason": "Wave 9 (W9-13): package retirement and the SALES.md 6.4 interim fields in the apply stepper; the pin follows."
+    },
+    {
+      "wp": "WP-54",
+      "path": "tests/e2e/wave7/wp-43/how-we-decide.spec.ts",
+      "reason": "Wave 9 (W9-13): line 53, the package field check follows the situation field. That line only."
+    },
+    {
+      "wp": "WP-54",
+      "path": ".astro-magazine/sources/wp-43.json",
+      "reason": "Wave 9 (W9-13): the apply and package field strings only; WP-43 is done."
+    },
+    {
+      "wp": "WP-54",
+      "path": "src/pages/program/how-we-decide.astro",
+      "reason": "Wave 9 (W9-13): line 28, APPLY_FIELDS.package becomes the situation field. That line only; WP-53 keeps the page."
+    },
+    {
+      "wp": "WP-54",
+      "path": ".astro-magazine/sources/wp-41.json",
+      "reason": "Wave 9 (W9-13): deletes the rows that cite the retired pricing, seat and package files. Those rows only; WP-41 is done."
+    }
+  ]
+}

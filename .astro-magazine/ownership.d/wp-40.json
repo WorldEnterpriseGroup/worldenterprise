@@ -1,0 +1,40 @@
+{
+  "owner": "WP-40",
+  "exceptions": [
+    {
+      "wp": "WP-40",
+      "path": "package.json",
+      "reason": "Wave 7 foundation (issue #29): the audit:geo script, added after WP-30 merged to demo."
+    },
+    {
+      "wp": "WP-40",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 7 foundation (issue #29): pre-registers the wave 7 route rows and widens the RouteOwner union."
+    },
+    {
+      "wp": "WP-40",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 7 foundation (issue #29): links to the new pages; each stays hidden until its page exists."
+    },
+    {
+      "wp": "WP-40",
+      "path": "claims-denylist.json",
+      "reason": "Wave 7 foundation (issue #29): version 3: commercial-model wording, response-time promises, application counts, per-package seat counts."
+    },
+    {
+      "wp": "WP-40",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "Wave 7 foundation (issue #29): registers the wave 7 assignments and records decisions W7-1 to W7-8."
+    },
+    {
+      "wp": "WP-40",
+      "path": "tests/unit/foundation/**",
+      "reason": "Wave 7 foundation (issue #29): ledger row count, nav snapshot and the extended dist allowlist cases."
+    },
+    {
+      "wp": "WP-40",
+      "path": "tests/unit/wp-18/audit-claims.test.ts",
+      "reason": "Wave 7 foundation (issue #29): this test pins the denylist version and its rule ids, so adding the version 3 rules changes it."
+    }
+  ]
+}

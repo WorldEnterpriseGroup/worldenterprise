@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { overlaps } from '../../../.astro-magazine/plans/wave8/lib.mjs';
 import { matches, ownerOf, violations } from '../../../scripts/check-ownership.mjs';
+import { loadOwnership } from '../../../scripts/lib/ownership-load.mjs';
 
 // Wave 10 (WP-32, issue #81): the packages WP-22 to WP-26 are registered once, ahead of the edits (W8-30 pattern, D-W10-1).
 // The proof reuses the wave 8 glob comparison (`overlaps`). The wave 7, 8 and 9 tests filter other number ranges, so this test is scoped
@@ -36,7 +37,7 @@ interface Wave11Map {
 }
 
 const root = new URL('../../../', import.meta.url);
-const ownership = JSON.parse(readFileSync(new URL('.astro-magazine/ownership.json', root), 'utf8')) as Ownership;
+const ownership = loadOwnership() as unknown as Ownership;
 const committed = JSON.parse(readFileSync(new URL('.astro-magazine/plans/wave11/writesets.json', root), 'utf8')) as Wave11Map;
 const wave11 = ownership.assignments.filter((a) => /^WP-2[2-6]$/.test(a.owner));
 

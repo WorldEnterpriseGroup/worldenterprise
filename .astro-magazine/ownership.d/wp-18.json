@@ -1,0 +1,25 @@
+{
+  "owner": "WP-18",
+  "exceptions": [
+    {
+      "wp": "WP-18",
+      "path": "src/data/{site,nav,claims,flags}.ts",
+      "reason": "Granted by the orchestrator for the WP-18 copy fix-forward (copy strings, claim summaries, the dead limitsConfirmed flag)."
+    },
+    {
+      "wp": "WP-18",
+      "path": "claims-denylist.json",
+      "reason": "Granted by the orchestrator: new denylist rules and the required-text rules."
+    },
+    {
+      "wp": "WP-18",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "WP-18 registers its own assignment and records the approved SAGE-PLAN 5.2 amendment and the FLAG-LIMITS removal."
+    },
+    {
+      "wp": "WP-18",
+      "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+      "reason": "Forced by the approved nav copy amendment: nav.test.ts asserts every lead and column heading against this snapshot."
+    }
+  ]
+}

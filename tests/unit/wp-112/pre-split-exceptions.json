@@ -1,0 +1,2547 @@
+[
+  {
+    "wp": "WP-108",
+    "path": "scripts/check-ownership.mjs",
+    "reason": "Issue #108 (wp/108-privacy-gate): ownerOf maps a three-digit branch (wp/108) to WP-108, and a three-digit package without an assignment (wp/101, wp/106) stays unpoliced as before."
+  },
+  {
+    "wp": "WP-108",
+    "path": "tests/unit/shared/fixture-dist.ts",
+    "reason": "Issue #108 (wp/108-privacy-gate): makeDist accepts bytes and pagefindFragment builds a real gzip fragment, because audit:dist now decodes fragments for the privacy scan."
+  },
+  {
+    "wp": "WP-108",
+    "path": "tests/unit/wp-19/audit-dist.test.ts",
+    "reason": "Issue #108 (wp/108-privacy-gate): its clean dist carries a real gzip fragment instead of filler bytes, which the privacy scan cannot decode."
+  },
+  {
+    "wp": "WP-108",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Issue #108 (wp/108-privacy-gate): registers the WP-108 assignment and its path exceptions."
+  },
+  {
+    "wp": "WP-108",
+    "path": ".gitlab-ci.yml",
+    "reason": "Issue #108 (wp/108-privacy-gate): runs the audit:dist and audit:images self-tests in verify:static on every pipeline."
+  },
+  {
+    "wp": "WP-108",
+    "path": "claims-denylist.json",
+    "reason": "Issue #108 (wp/108-privacy-gate): C-13 gains the social-proof shapes (our customers, customers include, clients such as, used by, case study:)."
+  },
+  {
+    "wp": "WP-108",
+    "path": "package.json",
+    "reason": "Issue #108 (wp/108-privacy-gate): adds the audit:dist:selftest and audit:images:selftest scripts."
+  },
+  {
+    "wp": "WP-108",
+    "path": "scripts/audit-claims.mjs",
+    "reason": "Issue #108 (wp/108-privacy-gate): self-test seeds for the new C-13 shapes."
+  },
+  {
+    "wp": "WP-108",
+    "path": "scripts/audit-images.mjs",
+    "reason": "Issue #108 (wp/108-privacy-gate): audit:images reads embedded metadata and gains --self-test."
+  },
+  {
+    "wp": "WP-108",
+    "path": "scripts/lib/audit-dist.mjs",
+    "reason": "Issue #108 (wp/108-privacy-gate): audit:dist scans for personal data by shape and gains --self-test."
+  },
+  {
+    "wp": "WP-108",
+    "path": "scripts/lib/image-metadata.mjs",
+    "reason": "Issue #108 (wp/108-privacy-gate): the container parsers and planted-metadata self-test behind audit:images."
+  },
+  {
+    "wp": "WP-03",
+    "path": "src/data/forms.ts",
+    "reason": "Created by WP-00, owned by WP-03 (plan 8.4); not frozen."
+  },
+  {
+    "wp": "WP-63",
+    "path": "src/data/nav.ts",
+    "reason": "Wave 8 R2: /briefs/ going live exposes a third /briefs/ link in the For you panel (nav-identity allows lead + tile only) and the menu row width at 1100/1140; WP-63 removes the duplicate Startup-column Briefs link, ruled by the integrator 2026-10-10."
+  },
+  {
+    "wp": "WP-60",
+    "path": "tests/unit/wp-16/nav-css.test.ts",
+    "reason": "Wave 8 CI follow-up (#40): the one regex that pins the 1100-1279.98px .mega-nav__list gap moves from --sp-3 to --sp-1 with the css change above, taken over from WP-63 (ruled by the integrator 2026-10-10)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "src/styles/components.css",
+    "reason": "Wave 8 CI follow-up (#40): the shared breadcrumb rule needs a 24px target-size floor (WCAG 2.2 2.5.8, found by WP-75's e2e). Scoped to the .breadcrumbs li rule and to the .mega-nav__list gap in the 1100-1279.98px block (WP-63's eighth top-level item overflowed the header row at 1100 and 1140 px, taken over from WP-63); WP-71 and WP-63 cannot edit the shared stylesheet, ruled by the integrator 2026-10-10."
+  },
+  {
+    "wp": "WP-60",
+    "path": "src/scripts/nav.ts",
+    "reason": "Wave 8 CI follow-up (#40): the hover-intent timer reopened a panel that Escape had just closed (e2e:wave7 nav-identity flake, pipeline 65931). Scoped to cancelling that timer on toggle, click and Escape; ruled by the integrator 2026-10-10."
+  },
+  {
+    "wp": "WP-14",
+    "path": "scripts/{audit-contrast,audit-claims}.mjs",
+    "reason": "Created by WP-00; handed to WP-14 after G0 (plan 3.2: policed by WP-14)."
+  },
+  {
+    "wp": "WP-15",
+    "path": "{src,scripts,tests,docs,public}/**",
+    "reason": "The integrator is the sole writer of frozen files in Wave 2 (plan 8.4). CNAME, CLAUDE.md, plan.md and .claude/** stay outside this exception."
+  },
+  {
+    "wp": "WP-15",
+    "path": "{package.json,package-lock.json,astro.config.mjs,tsconfig.json,.node-version,claims-denylist.json}",
+    "reason": "Frozen build and claim configuration changes route through the integrator (plan 8.4)."
+  },
+  {
+    "wp": "WP-15",
+    "path": ".astro-magazine/{ownership.json,decisions.md}",
+    "reason": "The integrator records the flag snapshot and accepted CSP exceptions (plan 8.4) and registers its own assignment."
+  },
+  {
+    "wp": "WP-12b",
+    "path": "src/assets/photo/slots.ts",
+    "reason": "Photography pass (issue #22): slot ids and alt text live here; frozen for every other work package."
+  },
+  {
+    "wp": "WP-12b",
+    "path": "src/components/cards/**",
+    "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+  },
+  {
+    "wp": "WP-12b",
+    "path": "src/components/ui/Card.astro",
+    "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+  },
+  {
+    "wp": "WP-12b",
+    "path": "src/components/hero/HeroAtlas.astro",
+    "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+  },
+  {
+    "wp": "WP-12b",
+    "path": "src/components/hero/HeroEditorial.astro",
+    "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+  },
+  {
+    "wp": "WP-12b",
+    "path": "src/components/home/HomeHero.astro",
+    "reason": "Photography pass (issue #22): img markup only (width, srcset, sizes); no copy or layout change."
+  },
+  {
+    "wp": "WP-12b",
+    "path": ".astro-magazine/{ownership.json,decisions.md}",
+    "reason": "Photography pass (issue #22): records decisions P-1 to P-3 and F-6 and registers the WP-12b exceptions."
+  },
+  {
+    "wp": "WP-12b",
+    "path": "src/components/services/LineAside.astro",
+    "reason": "Photography pass (issue #22): img markup only (srcset, sizes, width, height) through photoImage(); no copy or layout change."
+  },
+  {
+    "wp": "WP-12b",
+    "path": "src/pages/program/who-its-for.astro",
+    "reason": "Photography pass (issue #22): img markup only (srcset, sizes, width, height) through photoImage(); no copy or layout change."
+  },
+  {
+    "wp": "WP-12b",
+    "path": "src/pages/pricing/index.astro",
+    "reason": "Photography pass (issue #22): img markup only (srcset, sizes, width, height) through photoImage(); no copy or layout change."
+  },
+  {
+    "wp": "WP-16",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 4 fix-forward: each work package registers its own assignment and exceptions."
+  },
+  {
+    "wp": "WP-16",
+    "path": "src/data/nav.ts",
+    "reason": "Brief grants the active-section mapping only (activeSectionId): /apply/, /contact/ and /trust/ no longer light up a mega section."
+  },
+  {
+    "wp": "WP-16",
+    "path": "astro.config.mjs",
+    "reason": "One markdown.processor entry: satteri({ hastPlugins: [tableWrapPlugin] }) frames every Markdown and MDX table in .table-wrap (a11y P1-2). Astro 7 renders .md and .mdx with Satteri, and library, research and legal are plain .md with no other hook."
+  },
+  {
+    "wp": "WP-16",
+    "path": "src/components/media/CoverArt.astro",
+    "reason": "One-line CSP fix: the gradient stops carried a style attribute (stop-color), which the policy now blocks. They take the stop-color presentation attribute instead. The component has no importer yet."
+  },
+  {
+    "wp": "WP-18",
+    "path": "src/data/{site,nav,claims,flags}.ts",
+    "reason": "Granted by the orchestrator for the WP-18 copy fix-forward (copy strings, claim summaries, the dead limitsConfirmed flag)."
+  },
+  {
+    "wp": "WP-18",
+    "path": "claims-denylist.json",
+    "reason": "Granted by the orchestrator: new denylist rules and the required-text rules."
+  },
+  {
+    "wp": "WP-18",
+    "path": ".astro-magazine/{ownership.json,decisions.md}",
+    "reason": "WP-18 registers its own assignment and records the approved SAGE-PLAN 5.2 amendment and the FLAG-LIMITS removal."
+  },
+  {
+    "wp": "WP-18",
+    "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+    "reason": "Forced by the approved nav copy amendment: nav.test.ts asserts every lead and column heading against this snapshot."
+  },
+  {
+    "wp": "WP-19",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 4: registers the WP-19 assignment (common rules: every WP adds its own row)."
+  },
+  {
+    "wp": "WP-19",
+    "path": "{package.json,package-lock.json}",
+    "reason": "Wave 4 brief: dependency currency (astro 7.3.7, Playwright 1.64, other outdated packages)."
+  },
+  {
+    "wp": "WP-19",
+    "path": "astro.config.mjs",
+    "reason": "Wave 4 brief: stylesheet inlining, WOFF2 font sources and one endpoint source for the CSP and the forms."
+  },
+  {
+    "wp": "WP-17",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 4: registers the WP-17 assignment (common rules: every WP adds its own row)."
+  },
+  {
+    "wp": "WP-17",
+    "path": "tests/unit/wp-15/image-type.test.ts",
+    "reason": "Wave 4: the first-viewport images moved from the page bodies into the hero photo slot, so the WP-15 file list that asserted an <img> in those pages now asserts the hero component instead."
+  },
+  {
+    "wp": "WP-17",
+    "path": "src/components/about/PageShell.astro",
+    "reason": "Wave 4: the shell forwards the hero primary, secondary and photo props to the layout so the about, press, founders and investors pages carry a call to action above the fold."
+  },
+  {
+    "wp": "WP-17",
+    "path": "tests/unit/wp-16/layout-css.test.ts",
+    "reason": "Wave 4: the hero components replace PageHeader and the .page-header article markup, so the two WP-16 source assertions about the header measure now assert the same shared left edge on the hero components."
+  },
+  {
+    "wp": "WP-17",
+    "path": "src/content.config.ts",
+    "reason": "Wave 4 brief: the optional services `artifacts` field left open by WP-15 (WP-02 request 2)."
+  },
+  {
+    "wp": "WP-40",
+    "path": "package.json",
+    "reason": "Wave 7 foundation (issue #29): the audit:geo script, added after WP-30 merged to demo."
+  },
+  {
+    "wp": "WP-40",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 7 foundation (issue #29): pre-registers the wave 7 route rows and widens the RouteOwner union."
+  },
+  {
+    "wp": "WP-40",
+    "path": "src/data/nav.ts",
+    "reason": "Wave 7 foundation (issue #29): links to the new pages; each stays hidden until its page exists."
+  },
+  {
+    "wp": "WP-40",
+    "path": "claims-denylist.json",
+    "reason": "Wave 7 foundation (issue #29): version 3: commercial-model wording, response-time promises, application counts, per-package seat counts."
+  },
+  {
+    "wp": "WP-40",
+    "path": ".astro-magazine/{ownership.json,decisions.md}",
+    "reason": "Wave 7 foundation (issue #29): registers the wave 7 assignments and records decisions W7-1 to W7-8."
+  },
+  {
+    "wp": "WP-40",
+    "path": "tests/unit/foundation/**",
+    "reason": "Wave 7 foundation (issue #29): ledger row count, nav snapshot and the extended dist allowlist cases."
+  },
+  {
+    "wp": "WP-40",
+    "path": "tests/unit/wp-18/audit-claims.test.ts",
+    "reason": "Wave 7 foundation (issue #29): this test pins the denylist version and its rule ids, so adding the version 3 rules changes it."
+  },
+  {
+    "wp": "WP-42",
+    "path": "src/pages/pricing/index.astro",
+    "reason": "Wave 7, decision W7-9: the photography lane (WP-12b exception) reserves this page, and phase B photo generation is deferred, so the page is released to this package now. Phase B will rebase onto wave 7."
+  },
+  {
+    "wp": "WP-43",
+    "path": "src/pages/program/who-its-for.astro",
+    "reason": "Wave 7, decision W7-9: the photography lane (WP-12b exception) reserves this page, and phase B photo generation is deferred, so the page is released to this package now. Phase B will rebase onto wave 7."
+  },
+  {
+    "wp": "WP-44",
+    "path": "tests/unit/wp-18/copy.test.ts",
+    "reason": "WP-44 (#33): the catalogue-count band is removed from the home page (wave7.md section 5, WP-44 item 1), so the test case that pinned its framework counter is removed. WP-44's own tests assert that no numeric catalogue statistic remains."
+  },
+  {
+    "wp": "WP-43",
+    "path": "tests/e2e/forms.spec.ts",
+    "reason": "WP-43 (#32): the progressive Apply stepper hides inactive fieldsets with JS on, so the apply cases walk the steps; no-JS cases unchanged. Edited in the same MR so demo e2e stays green."
+  },
+  {
+    "wp": "WP-42",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "WP-42 (#31): the reordered pricing.mdx moves four CR-12 quotes (wording unchanged), so only their line numbers are refreshed, plus a note that line numbers track demo while the rc2 text is the copy of this file at tag release-1-rc2."
+  },
+  {
+    "wp": "WP-41",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "WP-41 (#30): /about/facts/ names Investor Introductions, so a new counsel-checklist CR entry for src/content/pages/about/facts.mdx is added, marked release 2 (not in release-1-rc2)."
+  },
+  {
+    "wp": "WP-63",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 (60a.3): scoped to CR entries for files in this package's own write set (src/pages/briefs/**, src/content/pages/briefs/**, src/components/briefs/**, src/content/briefs/*.md, src/pages/research/**, src/content/pages/research/**). No pinned file is there today; a new file under src that names Investor Introductions must be listed (release-doc.test.ts), and this lets its owner add that entry. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-64",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 (60a.3): scoped to the CR entries for src/content/pages/investors/index.mdx and src/pages/investors/index.astro (and any new file under this package's write set that names Investor Introductions). The rebuilt /investors/ moves the quoted lines, and the counsel record changes in the same commit as the copy it quotes. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-65",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 (60a.3): scoped to the CR entries for src/pages/network/index.astro and src/content/pages/network/index.mdx (and any new file under this package's write set that names Investor Introductions). The counsel record changes in the same commit as the copy it quotes. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-67",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 (60a.3): scoped to the CR entries for src/content/pages/insights/topic-fundable.mdx and src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx, both in this package's write set. Same rule: the counsel record changes with the copy it quotes. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-78",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 (60a.3): scoped to the CR entry for src/data/faq.yaml, a file in this package's own write set. Same rule: the counsel record changes with the copy it quotes. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-12c",
+    "path": "{src/pages/index.astro,src/components/hero/HeroAtlas.astro,src/components/hero/HeroEditorial.astro,src/components/home/HomeHero.astro}",
+    "reason": "Brief grants the home page and the three hero components: they serve the slot srcset and sizes through photoImage()."
+  },
+  {
+    "wp": "WP-12c",
+    "path": "{src/components/seo/SeoHead.astro,src/layouts/BaseLayout.astro,src/layouts/types.ts,src/lib/image-type.ts}",
+    "reason": "Preload with imagesrcset and imagesizes: the head, its layout props and the preload helper carry the srcset and sizes of the LCP image."
+  },
+  {
+    "wp": "WP-12c",
+    "path": "src/components/media/photo-image.ts",
+    "reason": "One additive field (format) so a preload names the type of the files photoImage returns."
+  },
+  {
+    "wp": "WP-12c",
+    "path": "scripts/audit-images.mjs",
+    "reason": "audit:images checks that a preload with imagesrcset matches the srcset and sizes of an <img> on the page."
+  },
+  {
+    "wp": "WP-12c",
+    "path": "{tests/unit/wp-12b/markup.test.ts,tests/unit/wp-15/image-type.test.ts,tests/unit/wp-17/heroes.test.ts}",
+    "reason": "The tests that pinned the old hero and preload markup assert the new srcset contract instead."
+  },
+  {
+    "wp": "WP-12c",
+    "path": "{package.json,package-lock.json}",
+    "reason": "Brief grants dependency declarations: satteri and @astrojs/markdown-satteri are imported directly and are now declared."
+  },
+  {
+    "wp": "WP-12c",
+    "path": ".astro-magazine/{ownership.json,decisions.md}",
+    "reason": "Registers the WP-12c assignment and records decision P-4."
+  },
+  {
+    "wp": "WP-30",
+    "path": ".astro-magazine/{ownership.json,decisions.md}",
+    "reason": "Issue #20: registers the WP-30 assignment and records decision R-1 (the release path and its gates)."
+  },
+  {
+    "wp": "WP-30",
+    "path": "tests/unit/wp-19/release-security.test.ts",
+    "reason": "Issue #20: the mirror job tests moved to tests/unit/wp-30 with the job; the GitHub workflow tests stay."
+  },
+  {
+    "wp": "WP-12d",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 6: the WP-12d assignment row (the rig is new dev tooling under scripts/photo)."
+  },
+  {
+    "wp": "WP-12d",
+    "path": ".astro-magazine/decisions.md",
+    "reason": "Wave 6: the decision rows for the photo-generation rig (models.json, seeds, QA rubric, batch promotion)."
+  },
+  {
+    "wp": "WP-30",
+    "path": "src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx",
+    "reason": "Issue #20, team decision of 2026-10-09: line 37 denied that WE offers an introduction service while line 77 sells the paid add-on. Only that sentence is replaced, so the page matches the add-on before counsel reviews the tagged text."
+  },
+  {
+    "wp": "WP-60",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 8 foundation: registers the 32 assignments WP-60 to WP-99 and frozen_paths_wave8."
+  },
+  {
+    "wp": "WP-60",
+    "path": ".astro-magazine/decisions.md",
+    "reason": "Wave 8 foundation: records D-20 to D-24 and W8-1 to W8-29."
+  },
+  {
+    "wp": "WP-60",
+    "path": "package.json",
+    "reason": "Wave 8 foundation: npm scripts for the new audits and e2e jobs only (docs/wave8-contracts.md, section 13)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "package-lock.json",
+    "reason": "Wave 8 foundation: single writer of the lockfile when package.json changes."
+  },
+  {
+    "wp": "WP-60",
+    "path": "astro.config.mjs",
+    "reason": "Wave 8 foundation: registers src/lib/rehype-mid-cta.ts next to tableWrapPlugin (contracts section 6.1)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "src/content.config.ts",
+    "reason": "Wave 8 foundation: 14 desk ids in the topic enum, segments, related and cta on insights, the briefs collection, the portfolio schema and the family frontmatter (contracts sections 2, 5, 7, 8.2)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 8 foundation: ledger derived from desks.ts, families.ts and the content files; RouteOwner gains WP-60 to WP-99; pre-registered wave 8 rows (contracts section 1)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "src/data/nav.ts",
+    "reason": "Wave 8 foundation: audience lens, Topics column, Briefs, Industries, Compare and journey entries, Partners replaces Partners and perks (contracts section 1.4)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "src/data/claims.ts",
+    "reason": "Wave 8 foundation: claim ids that WP-62 to WP-65, WP-72 and WP-73 cite (contracts section 9)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "src/data/flags.ts",
+    "reason": "Wave 8 foundation: flags.briefUpdates, OFF (contracts section 3.1)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "claims-denylist.json",
+    "reason": "Wave 8 foundation: rule W8-C13-own-peers and the narrow allowPaths for the comparison page (contracts sections 0.1 and 8.1, DP-W8-15)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "tests/unit/foundation/**",
+    "reason": "Wave 8 foundation: exact-count assertions become the invariants of contracts section 1.3; nav snapshot for the new nav."
+  },
+  {
+    "wp": "WP-60",
+    "path": "src/lib/route-core.ts",
+    "reason": "Wave 8 foundation: the desk route is built from desks.ts and is live only for a desk that holds an article (contracts section 1.3)."
+  },
+  {
+    "wp": "WP-60",
+    "path": "src/lib/route-state.ts",
+    "reason": "Wave 8 foundation: route state follows the registries (contracts section 1.3)."
+  },
+  {
+    "wp": "WP-51",
+    "path": "package.json",
+    "reason": "Wave 9 (W9-8): three and @types/three, exact pins, added with npm install --package-lock-only."
+  },
+  {
+    "wp": "WP-51",
+    "path": "package-lock.json",
+    "reason": "Wave 9 (W9-8): the lock entries for three and @types/three and nothing else."
+  },
+  {
+    "wp": "WP-51",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 9 governance (W9-1): registers WP-51 to WP-57, their exceptions, and narrows the superseded WP-62 and WP-48 sets (W9-3)."
+  },
+  {
+    "wp": "WP-51",
+    "path": ".astro-magazine/decisions.md",
+    "reason": "Wave 9 governance: decisions W9-1 onward."
+  },
+  {
+    "wp": "WP-51",
+    "path": ".astro-magazine/plans/wave8/writesets.json",
+    "reason": "Wave 9 (W9-3): mirrors the narrowed WP-62 write set so tests/unit/wp-60/write-sets-wave8.test.ts keeps policy and proof equal. No other wave 8 entry changes."
+  },
+  {
+    "wp": "WP-51",
+    "path": ".astro-magazine/plans/wave8/selftest.mjs",
+    "reason": "Wave 9 (W9-3): the one self-test case that named a WP-62 path handed to wave 9 now names a path WP-62 keeps. No other case changes."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/data/claims.ts",
+    "reason": "Wave 9 (W9-10): C-07 equity concept enabled with no numbers, C-17 genericized figures published, internal source strings made generic."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/foundation/claims.test.ts",
+    "reason": "Wave 9 (W9-10): the softened-default pin for C-07 becomes the W9-10 assertion (enabled, C-08 mechanics still excluded)."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/layouts/**",
+    "reason": "Wave 9 (W9-4): every layout defaults to the full-width content frame; additive props only (W8 frozen, WP-60 done)."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/components/layout/**",
+    "reason": "Wave 9 (W9-4): the header and footer widen with --content-max; nav breakpoints unchanged (W8 frozen, WP-60 done)."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/components/hero/HeroEditorial.astro",
+    "reason": "Wave 9 (W9-4): photography-lane file; layout width only, the image markup and slot stay as WP-12b left them."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/components/hero/HeroAtlas.astro",
+    "reason": "Wave 9 (W9-4): photography-lane file; layout width only, the image markup and slot stay as WP-12b left them."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/wp-17/heroes.test.ts",
+    "reason": "Wave 9 (W9-4): hero frame and mode pins move to the wave 9 heroes (additive data-frame='wide', data-hero='scene'); held by WP-60 in wave 8, which is done."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/components/islands/we-calc/MetricsCalculator.astro",
+    "reason": "Wave 9 (W9-4): the 110rem frame fits five 15rem fields at 1440, where an error message wraps past its two reserved lines; the field minimum becomes 18rem. One rule; WP-54 keeps the file."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/data/nav.ts",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The header button label and its short form for 1100 to 1239px, the two featured panel CTAs, and the removal of the direct Pricing item. WP-54 keeps the Pricing and seat links."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/data/cta/targets.ts",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The apply target label and band heading. That entry only."
+  },
+  {
+    "wp": "WP-51",
+    "path": ".astro-magazine/sources/wp-60.json",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. Remaps the apply target label in the WP-60 sentence ledger. That entry only."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/components/nav/commands.ts",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The palette keeps 'Apply' as the command people type, with the button label as its hint. One line; WP-46 keeps the file."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/wp-46/commands.test.ts",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The pinned first palette command gains the hint."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/wp-71/families-logic.test.ts",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review'. The pinned hero primary action label."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The snapshot drops the Pricing section and records the change under wave9."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/foundation/nav.test.ts",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The resolveNav and activeSectionId pins for /pricing/."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/wp-16/active-section.test.ts",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). /pricing/ has no current section."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/wp-91/palette.test.ts",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the primary CTA reads 'Start a readiness review' and the direct Pricing item leaves the top level (no room beside the longer button from 1100 to 1500px). The ranking pin searches 'seat', the name /pricing/ is now listed under."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/wp-60/cta.test.ts",
+    "reason": "Wave 9 (W9-13, SALES.md section 6): the apply target label pins (lines 194 and 407) read 'Start a readiness review'. Those lines only; shared with WP-58 (its own rows), disjoint by line."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/e2e/wave7/wp-46/palette.spec.ts",
+    "reason": "Wave 9 (W9-13): the keyboard palette check searches 'seat', the name /pricing/ is listed under after Pricing left the top level. That test only; shared with WP-54, disjoint by line."
+  },
+  {
+    "wp": "WP-51",
+    "path": "infra/intake/render/render.mjs",
+    "reason": "Wave 9 CI reliability (coordinator request): intake:render timed out launching Chromium on the 100m-CPU runners twice (spawnSync ETIMEDOUT). Raise the print timeout and retry once on ETIMEDOUT only; every other failure still fails."
+  },
+  {
+    "wp": "WP-51",
+    "path": "infra/intake/render/render.d.mts",
+    "reason": "Wave 9 CI reliability (coordinator request): intake:render timed out launching Chromium on the 100m-CPU runners twice (spawnSync ETIMEDOUT). Raise the print timeout and retry once on ETIMEDOUT only; every other failure still fails."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/e2e/wave8/wp-56/families-1920.spec.ts",
+    "reason": "Wave 9 (coordinator grant from WP-56's handoff): the library template's measure skip is lifted once WP-51 caps the 'How to use this' callout at 80ch; the TEMPLATES measure flag and its comment only."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/components/program/steps.ts",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the step title 'Seat your team' becomes 'Assemble your team' only."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/content/pages/journey/first-months.mdx",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the heading that mirrors the step title only."
+  },
+  {
+    "wp": "WP-51",
+    "path": ".astro-magazine/sources/wp-72.json",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the label row for the renamed step heading only."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/wp-53/program.test.ts",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the step-title pin and the PINNED_TITLE allowance follow the rename."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/components/services/lines.ts",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the line G dedicated-teams description only."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/components/geo/assemble.ts",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the /about/facts/ lead only."
+  },
+  {
+    "wp": "WP-51",
+    "path": "tests/unit/wp-60/claims-w8.test.ts",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the negative sample that mirrored the old C-02 wording follows the new summary."
+  },
+  {
+    "wp": "WP-51",
+    "path": "src/components/forms/Field.astro",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); the name prop doc comment drops 'the package choice' only."
+  },
+  {
+    "wp": "WP-51",
+    "path": "README.md",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); naming decision 1: the title line reads 'World Enterprise'."
+  },
+  {
+    "wp": "WP-51",
+    "path": "infra/intake/package.json",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); naming decision 1: the description only."
+  },
+  {
+    "wp": "WP-51",
+    "path": ".gitlab-ci.yml",
+    "reason": "Wave 9 close (WP-59, #80, coordinator): positioning tail after WP-57, so visible copy stops framing WE as selling seats or packages (2026-10-14 positioning); naming decision 1: the line 1 comment only."
+  },
+  {
+    "wp": "WP-52",
+    "path": "src/pages/styleguide.astro",
+    "reason": "Wave 9: a visuals section on the existing styleguide (PUBLIC_STYLEGUIDE=1), not a new route; last held by WP-45, which is done."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/components/home/HomeHero.astro",
+    "reason": "Wave 9 (W9-6): the home hero becomes the galaxy poster plus scene; photography lane, WP-12b is merged."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/pages/program/who-its-for.astro",
+    "reason": "Wave 9: layout only; photography lane, WP-12b is merged. The photograph and its slot stay."
+  },
+  {
+    "wp": "WP-53",
+    "path": "tests/e2e/folds.spec.ts",
+    "reason": "Wave 9: the home first-viewport assertions follow the redesigned home; WP-51 hands the file over after its HERO_MODES edit (W9-2)."
+  },
+  {
+    "wp": "WP-53",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/components/program/stages.ts, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-53",
+    "path": ".astro-magazine/sources/wp-75.json",
+    "reason": "Wave 9 (W9-13): the seat and SaaS entries follow the new Program wording. Those entries only; WP-75 is done."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/content/pages/compare/incubator-vs-other-programs.mdx",
+    "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/content/pages/compare/incubator-vs-venture-studio.mdx",
+    "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/content/pages/compare/dedicated-team-vs-agency.mdx",
+    "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/content/pages/compare/dedicated-team-vs-freelancers.mdx",
+    "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/content/pages/compare/build-vs-buy.mdx",
+    "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/content/pages/compare/onshore-vs-offshore-teams.mdx",
+    "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/content/pages/compare/bootstrapping-vs-outside-funding.mdx",
+    "reason": "Wave 9 (W9-13): the compare-page sentences the WP-75 seat and SaaS entries back. Those sentences only; WP-56 keeps the page."
+  },
+  {
+    "wp": "WP-53",
+    "path": "src/pages/faq/_model.ts",
+    "reason": "Wave 9 (W9-13): lines 62 to 65, the link-title values of /program/build/, /program/dedicated-teams/, /program/dream/ and /program/grow/. Those lines only; line 61 (/pricing/) stays with WP-54, and WP-56 keeps the file."
+  },
+  {
+    "wp": "WP-53",
+    "path": "tests/unit/wp-15/image-type.test.ts",
+    "reason": "Wave 9 (W9-6): the hero regex widens to accept heroPoster() for the galaxy poster LCP. That pattern only; shared with WP-17, disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/components/services/LineAside.astro",
+    "reason": "Wave 9: layout only; photography lane, WP-12b is merged."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/pages/pricing/index.astro",
+    "reason": "Wave 9 (W9-12): the /pricing/ route becomes the engagement-model page (how WE works with you), with no seat prices and no priced cart; photography lane, WP-12b is merged."
+  },
+  {
+    "wp": "WP-54",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/content/pages/pricing/pricing.mdx, src/content/services/fundability-and-investor-readiness.mdx, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 9 (W9-13): launches the /how-we-work/ row, sets /pricing/ indexable:false (a redirect to /how-we-work/), and adds the wave 9 RouteOwner values for WP-54 and WP-58. No other row changes."
+  },
+  {
+    "wp": "WP-54",
+    "path": "claims-denylist.json",
+    "reason": "Wave 9 (W9-13): moves the three required texts from /pricing/ to /how-we-work/; no rule is relaxed."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-18/audit-claims.test.ts",
+    "reason": "Wave 9 (W9-13): the required-text pins follow /pricing/ to /how-we-work/; shared with WP-58 (C-29 lines), disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-18/copy.test.ts",
+    "reason": "Wave 9 (W9-13): the package and pricing copy pins follow the retirement, including line 54 (the Program menu intro line) and line 216 (the engagement model). Shared with WP-58 (C-29 and C-13-peers lines), disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/e2e/wave7/wp-42/pricing-packages.spec.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only: the spec is retired with the packages."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-40/packages.test.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/data/nav.ts",
+    "reason": "Wave 9 (W9-13): the Pricing and \"Compare seat options\" links become \"How WE works\" (/how-we-work/). Shared with WP-58 (its own routes) and WP-51 (CTA labels), disjoint by line. Also the Program menu intro line: 'Dedicated team seats, steered by WE' becomes 'A dedicated team, steered by WE'."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+    "reason": "Wave 9 (W9-13): the nav snapshot follows the nav.ts change above; shared with WP-51 and WP-58, disjoint by entry."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/data/cta/map.ts",
+    "reason": "Wave 9 (W9-13): the /pricing/ row becomes the /how-we-work/ row. Shared with WP-58 (its own rows), disjoint by row."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/lib/schema.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only (the package catalog node)."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/data/packages.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/components/seo/JsonLd.astro",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/lib/llms.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-41/jsonld.test.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-41/llms.test.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-91/llms.test.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-91/twins.test.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-91/d23.test.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only; shared with WP-51 (the Apply label pin), disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only: the Team Composer ?package= hand-off is retired; shared with WP-51 (the Apply label pin), disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/data/forms.ts",
+    "reason": "Wave 9 (W9-13): the apply form retires the package select and carries the situation lines inside message (SALES.md 6.4 interim, no contract change); the contact topic seat-rate is relabelled \"Current terms\" with its value kept."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/components/forms/ApplyForm.astro",
+    "reason": "Wave 9 (W9-13): the package select is removed and the readiness-review heading and situation preselect (?situation=) are added; no contract change."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/foundation/nav.test.ts",
+    "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-16/active-section.test.ts",
+    "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-46/commands.test.ts",
+    "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-46/panels.test.ts",
+    "reason": "Wave 9 (W9-13): the strip links to /pricing/ become /how-we-work/; the pin follows."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-91/palette.test.ts",
+    "reason": "Wave 9 (W9-13): the /pricing/ links in the panels, strips and footer become How WE works (/how-we-work/); the pin follows. No top-level item: the header row is full (W9-13, WP-51). Shared with WP-51 (CTA labels), disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/e2e/menu.spec.ts",
+    "reason": "Wave 9 (W9-13): the /pricing/ current-section check moves to /how-we-work/. Shared with WP-51 (header widths, CTA labels), disjoint by line."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/e2e/wave7/wp-46/palette.spec.ts",
+    "reason": "Wave 9 (W9-13): the palette search for pricing follows /how-we-work/. That check only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/components/geo/llms-input.ts",
+    "reason": "Wave 9 (W9-13): the /pricing/ llms entry becomes /how-we-work/. That entry only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-42/composer-package.test.ts",
+    "reason": "Wave 9 (W9-13): package retirement: the Team Composer ?package= hand-off is removed; the pin follows."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-42/copy-guard.test.ts",
+    "reason": "Wave 9 (W9-13): package retirement: the package sentences leave the Team Composer copy; the pin follows."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-42/package-picker.test.ts",
+    "reason": "Wave 9 (W9-13): package retirement: the package picker is removed; the pin follows."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-43/forms-package.test.ts",
+    "reason": "Wave 9 (W9-13): package retirement: the apply form package select is removed; the pin follows."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-43/sentences.ts",
+    "reason": "Wave 9 (W9-13): package retirement and the readiness-review intake wording; the sentence list follows."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/e2e/wave7/wp-43/apply-stepper.spec.ts",
+    "reason": "Wave 9 (W9-13): package retirement and the SALES.md 6.4 interim fields in the apply stepper; the spec follows."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/scripts/forms.ts",
+    "reason": "Wave 9 (W9-13): scoped wave 9 unfreeze: the package prefill is removed and the SALES.md 6.4 interim fields (situation lines inside message) are added. Nothing else; the forms contract does not change."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/data/faq.yaml",
+    "reason": "Wave 9 (W9-13): the package and pricing answers follow the engagement model (no prices, start any month, yearly checkpoint review), including the entries how-paid, start-seat-count and start-rate. Those entries only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/pages/faq/_model.ts",
+    "reason": "Wave 9 (W9-13): line 48, the /apply/ link title becomes 'Start a readiness review' (wp-78 faq-data test), and line 61, the /pricing/ link title becomes the /how-we-work/ one. Those lines only; lines 62 to 65 are WP-53's, and WP-56 keeps the file."
+  },
+  {
+    "wp": "WP-54",
+    "path": "scripts/audit-claims.mjs",
+    "reason": "Wave 9 (W9-13): the --self-test cases (about lines 458-459 and 494-497) change /pricing/ to /how-we-work/. Those cases only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-41/twins.test.ts",
+    "reason": "Wave 9 (W9-13): lines 73-74, the /pricing/ twin follows /how-we-work/. Those lines only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/foundation/ledger.test.ts",
+    "reason": "Wave 9 (W9-13): line 24, /pricing/ joins NOINDEX (it points to /how-we-work/). That line only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/components/forms/ContactForm.astro",
+    "reason": "Wave 9 (W9-13): line 10, the seat-rate option label only."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-60/fixtures/reference-originals.json",
+    "reason": "Wave 9 (W9-13): the faq hashes for cost, packages and how-paid only."
+  },
+  {
+    "wp": "WP-54",
+    "path": ".astro-magazine/sources/wp-78.json",
+    "reason": "Wave 9 (W9-13): the start-seats-pricing, start-seat-count and start-rate records only; WP-78 is done."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/unit/wp-43/stepper.test.ts",
+    "reason": "Wave 9 (W9-13): package retirement and the SALES.md 6.4 interim fields in the apply stepper; the pin follows."
+  },
+  {
+    "wp": "WP-54",
+    "path": "tests/e2e/wave7/wp-43/how-we-decide.spec.ts",
+    "reason": "Wave 9 (W9-13): line 53, the package field check follows the situation field. That line only."
+  },
+  {
+    "wp": "WP-54",
+    "path": ".astro-magazine/sources/wp-43.json",
+    "reason": "Wave 9 (W9-13): the apply and package field strings only; WP-43 is done."
+  },
+  {
+    "wp": "WP-54",
+    "path": "src/pages/program/how-we-decide.astro",
+    "reason": "Wave 9 (W9-13): line 28, APPLY_FIELDS.package becomes the situation field. That line only; WP-53 keeps the page."
+  },
+  {
+    "wp": "WP-54",
+    "path": ".astro-magazine/sources/wp-41.json",
+    "reason": "Wave 9 (W9-13): deletes the rows that cite the retired pricing, seat and package files. Those rows only; WP-41 is done."
+  },
+  {
+    "wp": "WP-55",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 9 (W9-5): launches the UBF detail row /about/frameworks/ubf/ in the same merge request as its page. Scoped to the framework rows; no other row changes."
+  },
+  {
+    "wp": "WP-55",
+    "path": "tests/unit/wp-62/legacy-founders-page.test.ts",
+    "reason": "Wave 9: the founders hub pins follow the redesigned founders page (W8-18 one owner per test file)."
+  },
+  {
+    "wp": "WP-55",
+    "path": "tests/unit/wp-64/legacy-investors-page.test.ts",
+    "reason": "Wave 9: the investors hub pins follow the redesigned investors page (W8-18 one owner per test file)."
+  },
+  {
+    "wp": "WP-55",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/pages/founders/index.astro, src/pages/investors/**, src/pages/network/index.astro, src/components/investors/**, src/content/pages/investors/**, src/content/pages/network/index.mdx, src/content/pages/about/facts.mdx, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-55",
+    "path": "tests/unit/wp-40/ci.test.ts",
+    "reason": "W9-5: the UBF row launches; drop it from the cut-frameworks assertion, keep /star/ /shift/ /android/ cut"
+  },
+  {
+    "wp": "WP-55",
+    "path": "tests/unit/wp-41/facts.test.ts",
+    "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only: the /about/facts/ package lines go with them; facts pins only."
+  },
+  {
+    "wp": "WP-55",
+    "path": ".astro-magazine/sources/wp-71.json",
+    "reason": "Wave 9 (W9-13): remaps the brand-story and press quote entries to the new About copy; held by WP-71, which is done. Those entries only."
+  },
+  {
+    "wp": "WP-55",
+    "path": "tests/e2e/wave7/wp-41/geo.spec.ts",
+    "reason": "Wave 9 (W9-13, sales direction): the facts page heading 'Is Investor Introductions part of a package?' becomes 'part of the engagement?' now that packages are retired; line 172 only, every other assertion kept."
+  },
+  {
+    "wp": "WP-56",
+    "path": "tests/unit/wp-71/family-templates.test.ts",
+    "reason": "Wave 9: family template pins follow the widened family pages (W8-18); held by WP-71, which is done."
+  },
+  {
+    "wp": "WP-56",
+    "path": ".astro-magazine/sources/wp-75.json",
+    "reason": "Wave 9 (W9-12): the three entries that map the reworded sentences of build-vs-buy.mdx line 55 to C-29. Those entries only; WP-53 keeps the seat and SaaS entries, split by entry."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 9 close (W9-1): removes the wave 9 exceptions nobody used (W8-30) and adds the fix-forward exceptions the regression pass needs."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/decisions.md",
+    "reason": "Wave 9 close: records the measured CSS gzip, three chunk size and Lighthouse scores."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/data/claims.ts",
+    "reason": "Wave 9 close (W9-10): scrub review of the internal source and summary strings before any gh-pages promotion."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/pages/press/_kit-data.ts",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the client source name and internal locators; meaning of each gate and test kept."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-71/story-gate.test.ts",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the client source name and internal locators; meaning of each gate and test kept. Test title only (line 36); WP-58 holds the C-29 lines."
+  },
+  {
+    "wp": "WP-57",
+    "path": "docs/wave8-contracts.md",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the client source name and internal locators; meaning of each gate and test kept."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/handoffs/wp-18.md",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the client source name and internal locators; meaning of each gate and test kept."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/plans/wave7.md",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the client source name and internal locators; meaning of each gate and test kept."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/plans/wave8.md",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the client source name and internal locators; meaning of each gate and test kept."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-01.json",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the client source name and internal locators; meaning of each gate and test kept."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-02.json",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the client source name and internal locators; meaning of each gate and test kept."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/industries/scope-copy.ts",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-74/industry-pages.test.ts",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-74.json",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/partners/copy.ts",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-65.json",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/research/briefs.ts",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-07/briefs.test.ts",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/research/dedicated-team-agency-or-freelancers.md",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/research/saas-security-baseline-year-one.md",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/research/index.md",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-72.json",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-86.json",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/insights/models/marketplaces-the-two-sided-start-up-problem.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-85.json",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/founders/corporate-innovators.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Not founders/index.mdx, which WP-55 holds."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/founders/first-time-founders.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Not founders/index.mdx, which WP-55 holds."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/founders/global-remote-founders.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Not founders/index.mdx, which WP-55 holds."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/founders/non-technical-founders.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Not founders/index.mdx, which WP-55 holds."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/founders/second-career-founders.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Not founders/index.mdx, which WP-55 holds."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/founders/solo-founders.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Not founders/index.mdx, which WP-55 holds."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/founders/student-founders.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Not founders/index.mdx, which WP-55 holds."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/founders/technical-founders.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Not founders/index.mdx, which WP-55 holds."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-73.json",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/investors/index.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. The C-14 disclaimer stays untouched."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/investors/copy.ts",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. SHOWCASE_EMPTY reads 'No company is listed yet'."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-64.json",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-64/portfolio.test.ts",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/e2e/wave8/wp-64/investor-journey.spec.ts",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/network/partners/index.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/network/operators.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/journey/first-months.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/data/glossary.yaml",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/insights/topic-build.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-82.json",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/insights/build/what-a-dedicated-team-seat-is-and-is-not.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Pre-wave-8 original; its pin hash follows."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/insights/build/an-operating-rhythm-for-a-remote-offshore-team.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. Naming rule only; its pin hash follows."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-60/fixtures/existing-articles.json",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit. The two article hashes above only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "README.md",
+    "reason": "Wave 9 close (W9-13 positioning): stale 'digital incubator for SaaS' / seat-centric / naming-rule wording on pages no family WP holds; the sentence ledger and pins follow in the same commit."
+  },
+  {
+    "wp": "WP-57",
+    "path": "scripts/build-og.mjs",
+    "reason": "Wave 9 close (W9-13): the og-home and og-about cards print 'digital incubator for SaaS'; re-render those two cards only with the existing deterministic script. Also naming (coordinator decision 1): the card alts and og-default card follow the 'World Enterprise' site name."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/assets/og/og-home.avif",
+    "reason": "Wave 9 close (W9-13): the og-home and og-about cards print 'digital incubator for SaaS'; re-render those two cards only with the existing deterministic script."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/assets/og/og-about.avif",
+    "reason": "Wave 9 close (W9-13): the og-home and og-about cards print 'digital incubator for SaaS'; re-render those two cards only with the existing deterministic script."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/assets/photo/manifest.json",
+    "reason": "Wave 9 close (W9-13): the og-home and og-about cards print 'digital incubator for SaaS'; re-render those two cards only with the existing deterministic script. The og-home and og-about rows only."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/media/og-rows.json",
+    "reason": "Wave 9 close (W9-13): the og-home and og-about cards print 'digital incubator for SaaS'; re-render those two cards only with the existing deterministic script."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. Line 83 sign-off wording; plus W9-13 on CR-01, CR-02, CR-06, CR-08 and CR-22 prose (/pricing/ to /how-we-work/, quoted copy follows the investors and showcase rewording)."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-71.json",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. Palette source locator and quote rows (about lines 20, 55, 57, 553); plus W9-13 on the manifesto sentence rows."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/styles/tokens.css",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. Line 3 header comment only, pinned with wp-71.json row 553."
+  },
+  {
+    "wp": "WP-57",
+    "path": "claims-denylist.json",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. The C-10 rule description string only; patterns unchanged."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 9 close (W9-10): pre-promotion scrub of the brand source name and internal locators; what each gate and test checks stays the same. The /press/brand-kit/ reason string only; it keeps 'sign-off' for story-gate."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/about/manifesto.md",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. The dedicated-seat sentence only."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-41.json",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Rows quoting the changed manifesto and facts sentences only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/legal/privacy.md",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Also naming. Seat and incubator wording only; no legal substance changes."
+  },
+  {
+    "wp": "WP-57",
+    "path": "docs/forms-contract.md",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Describes the readiness-review intake fields instead of the retired package select."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/data/packages.ts",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Delete, once WP-54's package retirement has landed and nothing imports it."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/pricing/SeatExplainer.astro",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Delete, once WP-54's package retirement has landed and nothing imports it."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/journey/after-you-apply.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. The 'what will each seat work on?' question only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/journey/onboarding-checklist.mdx",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. The line 19 seats checklist item only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/e2e/wave8/wp-74/industries.spec.ts",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Line 10 SEAT_SCOPE_HEADING constant only; follows scope-copy.ts."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-60/reference-data.test.ts",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Glossary hash and seat-entry pins only; follows glossary.yaml."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-77/glossary-data.test.ts",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Glossary hash and seat-entry pins only; follows glossary.yaml."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/pages/press/_boilerplate.ts",
+    "reason": "Wave 9 close (W9-13 positioning): retire 'digital incubator for SaaS' and seat-as-identity wording; the ledger and pins follow in the same commit. Also naming. Boilerplate line 14 only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/data/site.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. name and titleSuffix values and their doc comments only (lines 7, 17, 18, 36)."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/lib/seo.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Doc comments naming the suffix only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/lib/content-schemas.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Doc comments naming the suffix only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/seo/SeoHead.astro",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Doc comments naming the suffix only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "scripts/audit-seo.mjs",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. TITLE_SUFFIX and the siteName default only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "scripts/audit-geo.mjs",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. TITLE_SUFFIX and the siteName default only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/assets/og/og-default.avif",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Re-rendered by the existing deterministic build-og.mjs script only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/foundation/seo.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/shared/fixture-dist.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-09/audit-seo.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-09/helpers.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-09/schema.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-40/denylist.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-40/dist-allowlist.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-41/audit-geo.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-41/facts.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-41/twins.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-44/home.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only (eyebrow fallback regex)."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-78/faq-page.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/e2e/wave7/wp-41/geo.spec.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): titleSuffix and site name 'World Enterprise Incubator' become 'World Enterprise'; every pin moves in the same commit. Name string literals only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-60/fixtures/reference-originals.json",
+    "reason": "Wave 9 close (W9-13 positioning): the glossary 'seat' entry is redefined as the contract unit, not WE's identity; the glossary.seat originals hash only follows glossary.yaml. Also the faq hashes of the ids WP-57 rewords for naming and positioning: what-is-we, is-it-an-accelerator, digital-incubator-meaning and corp-start."
+  },
+  {
+    "wp": "WP-57",
+    "path": "public/favicon.svg",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/briefs/copy.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-63.json",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/geo/cite.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/library/markdown.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/components/reference/resources.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/pages/faq/index.astro",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/pages/search/index.astro",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/pages/glossary/index.astro",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/pages/newsletter/[...slug].astro",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/pages/sitemap.astro",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/pages/styleguide.astro",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/scripts/evidence-room.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/insights/dream/write-the-problem-brief-before-the-code.mdx",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/insights/dream/is-your-saas-idea-a-business-or-a-feature.mdx",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/legal/accessibility.md",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/legal/terms.md",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/network/partners/thanks.mdx",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/press/index.md",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/program/how-we-decide.mdx",
+    "reason": "Wave 9 close (naming, coordinator decision 1): 'World Enterprise Incubator' or 'digital incubator' wording becomes 'World Enterprise'; the ledger or hash that pins the text follows. Name strings only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/about/brand-story.mdx",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/about/facts.mdx",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-55.json",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/apply/apply.mdx",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/content/pages/apply/thanks.mdx",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-43.json",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/scripts/team-composer.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/data/faq.yaml",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": ".astro-magazine/sources/wp-78.json",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/data/nav.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-18/copy.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-41/llms.test.ts",
+    "reason": "Wave 9 close (naming, coordinator decision 1, and W9-13 positioning): 'World Enterprise Incubator' becomes 'World Enterprise', the positioning follows the C-29 / SALES 1.4 wording, and seat-as-identity lines become 'a dedicated team'; each ledger, hash and pin follows. For WP-54 files, edit only after WP-54 (!73) is on demo, on its final text."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-40/packages.test.ts",
+    "reason": "Wave 9 (coordinator decision 5, #78): deleted together with src/data/packages.ts, its only importer after WP-54 retired the packages (!73); delete only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/pages/llms.txt.ts",
+    "reason": "Wave 9 (coordinator decision 5, #78): the doc comment on line 5 drops packages.ts from its source list after the module is deleted; that comment line only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "scripts/validate-jsonld.mjs",
+    "reason": "Wave 9 (coordinator, WP-54 handoff item 4, #78): the organisation node no longer carries an offer catalog, so the JSON-LD validator drops OfferCatalog/Offer and forbids hasOfferCatalog; ALLOWED_TYPES, the catalog exception and the forbidden key only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "src/lib/schema.ts",
+    "reason": "Wave 9 (coordinator, WP-54 handoff item 4, #78): the organisation node no longer carries an offer catalog, so the JSON-LD validator drops OfferCatalog/Offer and forbids hasOfferCatalog; the ALLOWED_TYPES parity entry and the header and FORBIDDEN_TYPES comments only."
+  },
+  {
+    "wp": "WP-57",
+    "path": "tests/unit/wp-41/jsonld.test.ts",
+    "reason": "Wave 9 (coordinator, WP-54 handoff item 4, #78): the organisation node no longer carries an offer catalog, so the JSON-LD validator drops OfferCatalog/Offer and forbids hasOfferCatalog; the catalog tests become 'any catalog or Offer fails'."
+  },
+  {
+    "wp": "WP-58",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 9 (W9-13): adds and launches the rows of its own routes (/who-we-work-with/ and its seven situation pages, /why-it-takes-time/, /briefs/real-timeline/) in the same merge request as their pages. No other row changes."
+  },
+  {
+    "wp": "WP-58",
+    "path": "src/data/nav.ts",
+    "reason": "Wave 9 (W9-13): adds its own routes to the navigation. No other entry moves; WP-54 and WP-51 hold other lines."
+  },
+  {
+    "wp": "WP-58",
+    "path": "src/content.config.ts",
+    "reason": "Wave 9 (W9-13): adds the `sales` collection for src/content/sales/** and nothing else."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-60/cta.test.ts",
+    "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA) and its own map rows; shared with WP-51 (CTA labels), disjoint by line."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+    "reason": "Wave 9 (W9-13): the nav snapshot follows its own nav entries and the C-29 description; disjoint by entry."
+  },
+  {
+    "wp": "WP-58",
+    "path": "src/data/cta/map.ts",
+    "reason": "Wave 9 (W9-12, W9-13): adds the surface rows of its own routes (/why-it-takes-time/, /who-we-work-with/) and the timeline brief row, and nothing else. Disjoint by row from WP-54."
+  },
+  {
+    "wp": "WP-58",
+    "path": "src/data/families.ts",
+    "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): one BRIEF_INPUTS entry, and a WaveNineOwner alias (WP-51 to WP-58) on the owner type. Nothing else; WP-60 keeps the file."
+  },
+  {
+    "wp": "WP-58",
+    "path": "docs/forms-contract.schema.json",
+    "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): the brief id joins the brief-request enum."
+  },
+  {
+    "wp": "WP-58",
+    "path": "docs/forms-contract.md",
+    "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): the brief id joins the list."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-71/families-registry.test.ts",
+    "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): brief count and id pins only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-60/gated-briefs.test.ts",
+    "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): brief count and id pins only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-60/schemas.test.ts",
+    "reason": "Wave 9 (W9-13): registers the timeline brief /briefs/real-timeline/ (SALES.md 6.1, tertiary CTA): brief enum pins only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "src/data/claims.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only. WP-57 reviews the entry at integration."
+  },
+  {
+    "wp": "WP-58",
+    "path": "src/data/site.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only: the site description follows."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/foundation/claims.test.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-60/claims-w8.test.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-18/audit-claims.test.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-18/copy.test.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only; shared with WP-54, disjoint by line. Also (W9-12) adds src/data/sales/sources.ts to the C-13-peers allowed list: the sources ledger cites the research title of Cohen and Hochberg (2014), which names the program category; the built page wraps the ledger in data-claim-allow=\"C-13-peers\"."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-09/helpers.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-09/audit-seo.test.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-41/audit-geo.test.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-71/story-gate.test.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-74/**",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-73/segment-pages.test.ts",
+    "reason": "Wave 9 (W9-13): C-29 is reworded to SALES.md 1.4 (long-horizon business incubation and consulting); the pin follows, C-29 lines only."
+  },
+  {
+    "wp": "WP-58",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 9 (W9-13): the CR-19 quote of the site description follows the C-29 rewording; CR-19 lines only, its counsel box stays unticked."
+  },
+  {
+    "wp": "WP-58",
+    "path": "tests/unit/wp-60/families.test.ts",
+    "reason": "Wave 9 (W9-13): line 69, the owner regex widens to /^WP-(?:[6-9]\\d|5[1-8])$/ for the WaveNineOwner alias. That line only."
+  },
+  {
+    "wp": "WP-32",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 10 (D-W10-1): registers WP-32 to WP-38 (W8-30 pattern)."
+  },
+  {
+    "wp": "WP-32",
+    "path": ".astro-magazine/decisions.md",
+    "reason": "Wave 10 (D-W10-1): records D-W10-1 to D-W10-5."
+  },
+  {
+    "wp": "WP-32",
+    "path": "claims-denylist.json",
+    "reason": "Wave 10 (D-W10-1): scopes the peers, investor-network and demo-day wording to the ecosystem context and adds the always-banned W10 rules."
+  },
+  {
+    "wp": "WP-32",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 10 (D-W10-1): registers /ecosystem/, /sbir-sttr/ and /data/ ahead of their pages and the three per-package blocks."
+  },
+  {
+    "wp": "WP-32",
+    "path": "src/data/nav.ts",
+    "reason": "Wave 10 (D-W10-1): links the three routes from the Network and Resources panels and the footer; inert until the pages exist."
+  },
+  {
+    "wp": "WP-32",
+    "path": "tests/unit/foundation/fixtures/nav-snapshot.json",
+    "reason": "Wave 10 (D-W10-1): the snapshot lists the added nav and footer links (/ecosystem/, /sbir-sttr/, /data/) in its wave8 additions and carries a wave10 note."
+  },
+  {
+    "wp": "WP-32",
+    "path": "src/data/cta/map.ts",
+    "reason": "Wave 10 (D-W10-1): CTA rows for the three new route prefixes (cta.test.ts requires a row per launched route); WP-62's narrowed claim on src/data/cta/** is otherwise unchanged."
+  },
+  {
+    "wp": "WP-32",
+    "path": ".gitlab-ci.yml",
+    "reason": "Wave 10 (D-W10-5): RELEASE_ALLOW gains the /ecosystem/, /sbir-sttr/ and /data/ shapes (hub and one child level) so verify:release tolerates the launched rows until WP-33, WP-34 and WP-35 build the pages; the release-lane edit is the RELEASE_ALLOW value only, and a release tag or gh-pages still sets it empty."
+  },
+  {
+    "wp": "WP-33",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 10 (D-W10-1): add child rows of your own routes inside the marked `BEGIN WP-33 ecosystem block` ... `END` comment pair only; no other line. WP-32 registered the hub row ahead of the page."
+  },
+  {
+    "wp": "WP-34",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 10 (D-W10-1): add child rows of your own routes inside the marked `BEGIN WP-34 sbir-sttr block` ... `END` comment pair only; no other line. WP-32 registered the hub row ahead of the page."
+  },
+  {
+    "wp": "WP-35",
+    "path": "src/data/routes.ts",
+    "reason": "Wave 10 (D-W10-1): add child rows of your own routes inside the marked `BEGIN WP-35 data block` ... `END` comment pair only; no other line. WP-32 registered the hub row ahead of the page."
+  },
+  {
+    "wp": "WP-35",
+    "path": "tests/unit/wp-45/props-baseline.json",
+    "reason": "Wave 10 (D-W10-1): additive chart props and new chart components change the pinned prop baseline; only the chart entries."
+  },
+  {
+    "wp": "WP-35",
+    "path": "tests/unit/wp-45/pinned-props.test.ts",
+    "reason": "Wave 10 (D-W10-1): only if a new chart component needs a pin; additive."
+  },
+  {
+    "wp": "WP-36",
+    "path": "package.json",
+    "reason": "Wave 10 (D-W10-1): three upgrade if a newer stable release is needed for WebGPURenderer and TSL; `three` and `@types/three` lines only, exact versions."
+  },
+  {
+    "wp": "WP-36",
+    "path": "package-lock.json",
+    "reason": "Wave 10 (D-W10-1): lockfile for the three upgrade, produced with `npm install --package-lock-only`; no other dependency may change."
+  },
+  {
+    "wp": "WP-36",
+    "path": "src/layouts/BaseLayout.astro",
+    "reason": "Wave 10 (D-W10-1): <head> additions for the cross-document view transition opt-in, resource hints and any importmap-free module preloads; head only."
+  },
+  {
+    "wp": "WP-36",
+    "path": "src/styles/motion.css",
+    "reason": "Wave 10 (D-W10-1): the existing `@view-transition { navigation: auto }` block, `animation-timeline` scroll-driven rules, `@starting-style` and `@property` additions; WP-60 wave 8 file."
+  },
+  {
+    "wp": "WP-36",
+    "path": "src/components/seo/SpeculationRules.astro",
+    "reason": "Wave 10 (D-W10-1): speculation rules (prefetch/prerender eagerness and exclusions); keep the CSP script hash."
+  },
+  {
+    "wp": "WP-36",
+    "path": "src/components/seo/SeoHead.astro",
+    "reason": "Wave 10 (D-W10-1): only if the head ordering for the speculation rules or view-transition meta needs it."
+  },
+  {
+    "wp": "WP-36",
+    "path": "src/lib/seo.ts",
+    "reason": "Wave 10 (D-W10-1): the `speculationRules()` function only."
+  },
+  {
+    "wp": "WP-36",
+    "path": "src/scripts/visuals/**",
+    "reason": "Wave 10 (D-W10-1): the existing wave 9 scene scripts (WP-52) live here, not under src/scripts/scene*; the seamless 3D rewrite edits them."
+  },
+  {
+    "wp": "WP-36",
+    "path": "src/pages/styleguide.astro",
+    "reason": "Wave 10 (D-W10-1): the styleguide is the demo page for new scenes (WP-52 file)."
+  },
+  {
+    "wp": "WP-36",
+    "path": "tests/unit/wp-52/**",
+    "reason": "Wave 10 (D-W10-1): pins of the wave 9 scene contracts that the seamless 3D rewrite must update."
+  },
+  {
+    "wp": "WP-36",
+    "path": "tests/unit/wp-60/motion.test.ts",
+    "reason": "Wave 10 (D-W10-1): pins motion.css; follows the motion additions."
+  },
+  {
+    "wp": "WP-36",
+    "path": "tests/unit/wp-09/seo.test.ts",
+    "reason": "Wave 10 (D-W10-1): pins the speculation rules; follows the change."
+  },
+  {
+    "wp": "WP-36",
+    "path": "tests/unit/wp-13/design-system.test.ts",
+    "reason": "Wave 10 (D-W10-1): pins the motion tokens; follows the change."
+  },
+  {
+    "wp": "WP-36",
+    "path": "tests/e2e/wave7/wp-45/visual-system.spec.ts",
+    "reason": "Wave 10 (D-W10-1): e2e pin of the view-transition and visual system; follows the change."
+  },
+  {
+    "wp": "WP-36",
+    "path": "tests/unit/wp-45/css-budget.test.ts",
+    "reason": "Wave 10 (D-W10-1): the global CSS gzip budget (limit 11,500 B) may need a measured, documented raise for motion.css; no other assertion."
+  },
+  {
+    "wp": "WP-36",
+    "path": "tests/unit/wp-45/props-baseline.json",
+    "reason": "Wave 10 (D-W10-1): component props baseline for the scene components; only the entries WP-36 changes."
+  },
+  {
+    "wp": "WP-37",
+    "path": "src/components/home/**",
+    "reason": "Wave 10 (D-W10-1): the home page narrative blocks (WP-53 files); HomeHero is a photography-lane file and is also a lane exception."
+  },
+  {
+    "wp": "WP-37",
+    "path": "src/components/program/**",
+    "reason": "Wave 10 (D-W10-1): the program page blocks (WP-53 files)."
+  },
+  {
+    "wp": "WP-37",
+    "path": "src/pages/program/who-its-for.astro",
+    "reason": "Wave 10 (D-W10-1): photography-lane page inside the program glob (W7-9 pattern); lane exception."
+  },
+  {
+    "wp": "WP-37",
+    "path": "src/components/home/HomeHero.astro",
+    "reason": "Wave 10 (D-W10-1): photography-lane file named for the lane rule (W7-9 pattern); lane exception."
+  },
+  {
+    "wp": "WP-37",
+    "path": "src/components/sales/**",
+    "reason": "Wave 10 (D-W10-1): the why-it-takes-time and who-we-work-with blocks (WP-58 files)."
+  },
+  {
+    "wp": "WP-37",
+    "path": "src/data/sales/**",
+    "reason": "Wave 10 (D-W10-1): the timeline data behind why-it-takes-time (WP-58 files); statistics stay in the register."
+  },
+  {
+    "wp": "WP-37",
+    "path": "src/content/sales/**",
+    "reason": "Wave 10 (D-W10-1): the sales literature the longevity narrative draws on (WP-58 files)."
+  },
+  {
+    "wp": "WP-37",
+    "path": "tests/unit/wp-44/home.test.ts",
+    "reason": "Wave 10 (D-W10-1): pins home copy; follows the narrative."
+  },
+  {
+    "wp": "WP-37",
+    "path": "tests/unit/wp-53/**",
+    "reason": "Wave 10 (D-W10-1): pins home and program (WP-53)."
+  },
+  {
+    "wp": "WP-37",
+    "path": "tests/unit/wp-01/program.test.ts",
+    "reason": "Wave 10 (D-W10-1): pins program copy."
+  },
+  {
+    "wp": "WP-37",
+    "path": "tests/unit/wp-58/**",
+    "reason": "Wave 10 (D-W10-1): pins why-it-takes-time and who-we-work-with copy."
+  },
+  {
+    "wp": "WP-37",
+    "path": "tests/e2e/wave7/wp-44/**",
+    "reason": "Wave 10 (D-W10-1): e2e pins of the home page."
+  },
+  {
+    "wp": "WP-37",
+    "path": "tests/e2e/wave8/wp-53/**",
+    "reason": "Wave 10 (D-W10-1): 1920 specs of home and program."
+  },
+  {
+    "wp": "WP-37",
+    "path": "tests/e2e/wave8/wp-58/**",
+    "reason": "Wave 10 (D-W10-1): 1920 specs of the sales pages."
+  },
+  {
+    "wp": "WP-37",
+    "path": "tests/e2e/folds.spec.ts",
+    "reason": "Wave 10 (D-W10-1): the home fold at 1440x900; a longer hero headline can move the primary button."
+  },
+  {
+    "wp": "WP-32b",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 10 (D-W10-6): registers WP-32b."
+  },
+  {
+    "wp": "WP-32b",
+    "path": ".astro-magazine/decisions.md",
+    "reason": "Wave 10 (D-W10-6): records D-W10-6."
+  },
+  {
+    "wp": "WP-32b",
+    "path": ".astro-magazine/sources/wp-58.json",
+    "reason": "Wave 10 (D-W10-6): moves the six fetches held for the OP-HOSTS extension from pendingHostFetches into fetches now that their hosts are listed."
+  },
+  {
+    "wp": "WP-22",
+    "path": "src/pages/about/index.astro",
+    "reason": "Wave 11 (D-W11-1): media placements on the about page only."
+  },
+  {
+    "wp": "WP-22",
+    "path": "src/pages/network/index.astro",
+    "reason": "Wave 11 (D-W11-1): media placements on the network index only."
+  },
+  {
+    "wp": "WP-23",
+    "path": "src/layouts/BriefLayout.astro",
+    "reason": "Wave 11 (D-W11-1): media slots in the brief layout."
+  },
+  {
+    "wp": "WP-23",
+    "path": "src/layouts/PlaybookLayout.astro",
+    "reason": "Wave 11 (D-W11-1): media slots in the playbook layout."
+  },
+  {
+    "wp": "WP-23",
+    "path": "src/layouts/ReferenceLayout.astro",
+    "reason": "Wave 11 (D-W11-1): media slots in the reference layout."
+  },
+  {
+    "wp": "WP-24",
+    "path": "src/layouts/HubLayout.astro",
+    "reason": "Wave 11 (D-W11-1): media slots in the hub layout."
+  },
+  {
+    "wp": "WP-24",
+    "path": "src/layouts/ToolLayout.astro",
+    "reason": "Wave 11 (D-W11-1): media slots in the tool layout."
+  },
+  {
+    "wp": "WP-24",
+    "path": "src/layouts/TemplateLayout.astro",
+    "reason": "Wave 11 (D-W11-1): media slots in the template layout."
+  },
+  {
+    "wp": "WP-24",
+    "path": "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
+    "reason": "Wave 11 (#90): the no-JS composer round trip runs with reduced motion. With the WP-24 tool schematic above the composer the submit button sits below the fold after the fill, and html smooth scroll plus JavaScript off makes Playwright's actionability scroll never settle; real visitors are unaffected. One test.use line and a comment; the assertions are unchanged."
+  },
+  {
+    "wp": "WP-24",
+    "path": "tests/unit/wp-32b/write-sets-wave11.test.ts",
+    "reason": "Wave 11 (#90): records the WP-24 exceptions above in the wave 11 exception proof."
+  },
+  {
+    "wp": "WP-24",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 11 (#90): registers the WP-24 fix-forward exceptions (W8-30 pattern: each package registers its own)."
+  },
+  {
+    "wp": "WP-24",
+    "path": ".astro-magazine/plans/wave11/writesets.json",
+    "reason": "Wave 11 (#90): mirrors the WP-24 exceptions so tests/unit/wp-32b/write-sets-wave11.test.ts keeps policy and proof equal."
+  },
+  {
+    "wp": "WP-25",
+    "path": "src/components/layout/Header.astro",
+    "reason": "Wave 11 (D-W11-1): logo sizes only."
+  },
+  {
+    "wp": "WP-26",
+    "path": "src/layouts/ArticleLayout.astro",
+    "reason": "Wave 11 (D-W11-1): figure slots in the article layout."
+  },
+  {
+    "wp": "WP-26",
+    "path": "src/components/insights/**",
+    "reason": "Wave 11 (D-W11-1): the insights component folder is wave 8 frozen; WP-26 adds figure components there."
+  },
+  {
+    "wp": "WP-38",
+    "path": "src/components/geo/mdx-transform.ts",
+    "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+  },
+  {
+    "wp": "WP-38",
+    "path": "tests/unit/wp-91/mdx-transform.test.ts",
+    "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+  },
+  {
+    "wp": "WP-26",
+    "path": "src/components/geo/mdx-transform.ts",
+    "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+  },
+  {
+    "wp": "WP-26",
+    "path": "tests/unit/wp-91/mdx-transform.test.ts",
+    "reason": "Wave 11 (D-W11-1): the .md and llms transform converts chart components to Markdown tables and lists from props and passes data-context through."
+  },
+  {
+    "wp": "WP-22",
+    "path": "scripts/lib/audit-dist.mjs",
+    "reason": "Wave 11 (D-W11-1): captioned video primitives (#88); additive only. Not frozen and not in the release lane. Allows .mp4, .webm and .vtt extensions only."
+  },
+  {
+    "wp": "WP-22",
+    "path": "scripts/lib/serve.mjs",
+    "reason": "Wave 11 (D-W11-1): captioned video primitives (#88); additive only. Not frozen and not in the release lane. Adds video/mp4, video/webm and text/vtt MIME types and simple HTTP Range (206) support for e2e."
+  },
+  {
+    "wp": "WP-32b",
+    "path": ".astro-magazine/plans/wave10/writesets.json",
+    "reason": "Wave 11 (D-W11-1): records the WP-38 exceptions on the markdown transform in the wave 10 map."
+  },
+  {
+    "wp": "WP-32",
+    "path": "src/lib/route-core.ts",
+    "reason": "Wave 10 follow-up: registers /ecosystem/[category]/ in DYNAMIC_FIXED from WP-33's CATEGORY_IDS, so isLive() sees the eight category pages the directory emits."
+  },
+  {
+    "wp": "WP-32",
+    "path": "tests/e2e/support/page-guards.ts",
+    "reason": "Wave 10 follow-up: routes and axe wait for a quiet network through quiet() in page-guards instead of networkidle, which Playwright can raise before domcontentloaded on a long-parsing page and never raise again (/insights/ hang reported by WP-24)."
+  },
+  {
+    "wp": "WP-32",
+    "path": "tests/e2e/routes.spec.ts",
+    "reason": "Wave 10 follow-up: routes and axe wait for a quiet network through quiet() in page-guards instead of networkidle, which Playwright can raise before domcontentloaded on a long-parsing page and never raise again (/insights/ hang reported by WP-24)."
+  },
+  {
+    "wp": "WP-32",
+    "path": "tests/e2e/axe.spec.ts",
+    "reason": "Wave 10 follow-up: routes and axe wait for a quiet network through quiet() in page-guards instead of networkidle, which Playwright can raise before domcontentloaded on a long-parsing page and never raise again (/insights/ hang reported by WP-24)."
+  },
+  {
+    "wp": "WP-23",
+    "path": "tests/e2e/wave8/wp-87/guides-templates.spec.ts",
+    "reason": "Wave 11 (D-W11-1, #89): the wave 8 'no new image' guard on the WP-87 guides predates the wave 11 media brief; replaced by an image-quality check (alt or hidden, explicit dimensions, lazy below the fold). HowTo, h1, Sources and no-funding checks unchanged."
+  },
+  {
+    "wp": "WP-23",
+    "path": "src/components/program/longevity/SituationMatrix.astro",
+    "reason": "Wave 11 (#89): the /who-we-work-with/ matrix table moves into the plain shared table-wrap frame with an aria-label, as layout.spec requires of every table; markup only."
+  },
+  {
+    "wp": "WP-23",
+    "path": "tests/unit/wp-32b/write-sets-wave11.test.ts",
+    "reason": "Wave 11 (#89): records the two WP-23 exceptions above in the wave 11 exception proof."
+  },
+  {
+    "wp": "WP-23",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 11 (#89): registers the WP-23 fix-forward exceptions (W8-30 pattern: each package registers its own)."
+  },
+  {
+    "wp": "WP-23",
+    "path": ".astro-magazine/plans/wave11/writesets.json",
+    "reason": "Wave 11 (#89): mirrors the WP-23 exceptions so tests/unit/wp-32b/write-sets-wave11.test.ts keeps policy and proof equal."
+  },
+  {
+    "wp": "WP-32",
+    "path": "tests/e2e/wave8/wp-72/resources.spec.ts",
+    "reason": "Wave 10 follow-up (CI owner): the resources hub 'no card is empty' check reads every card in one evaluateAll instead of one assertion per card; 115 round trips outran the 45 s timeout on a busy runner (demo pipeline 70210). Same assertion, same failure detail."
+  },
+  {
+    "wp": "WP-32",
+    "path": "astro.config.mjs",
+    "reason": "Home LCP fix (wp/32-css-inline): vite build.assetsInlineLimit now calls inlineAssetLimit from src/lib/stylesheet-inlining.ts, so every CSS chunk but the shared BaseLayout one is inlined (with CSP hashes) instead of shipping as its own render-blocking stylesheet."
+  },
+  {
+    "wp": "WP-32",
+    "path": "src/lib/stylesheet-inlining.ts",
+    "reason": "Home LCP fix (wp/32-css-inline): the pure, unit-tested inlining policy astro.config.mjs uses (Astro's 4096 raw-byte fallback left the 4.4 to 13 KB component chunks external)."
+  },
+  {
+    "wp": "WP-62",
+    "path": "src/pages/index.astro",
+    "reason": "Wave 8 landing (#42): adds the HomeAudience strip under the hero; everything else is demo's wave 9 home. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+  },
+  {
+    "wp": "WP-62",
+    "path": "src/components/home/LatestInsights.astro",
+    "reason": "Wave 8 landing (#42): desk-aware insights row from the desk registry. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+  },
+  {
+    "wp": "WP-62",
+    "path": "src/components/home/audience/HomeAudience.astro",
+    "reason": "Wave 8 landing (#42): new: the audience strip band (static, no script). W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+  },
+  {
+    "wp": "WP-62",
+    "path": "src/content/pages/home/index.mdx",
+    "reason": "Wave 8 landing (#42): kept as demo has it (metadata only); listed because the merge touched it. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+  },
+  {
+    "wp": "WP-62",
+    "path": "src/pages/founders/index.astro",
+    "reason": "Wave 8 landing (#42): adds the segments list from the registry and takes the end band from the CTA system (CtaEnd). W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+  },
+  {
+    "wp": "WP-62",
+    "path": "tests/e2e/wave7/wp-44/home-folds.spec.ts",
+    "reason": "Wave 8 landing (#42): the fold spec admits the audience strip between the hero and the journey band. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+  },
+  {
+    "wp": "WP-62",
+    "path": "tests/unit/wp-44/home.test.ts",
+    "reason": "Wave 8 landing (#42): the planned-order pin lists the audience strip after the hero. W9-3 moved the path to wave 9 owners; edit is additive on demo's version."
+  },
+  {
+    "wp": "WP-62",
+    "path": "src/data/cta/map.ts",
+    "reason": "Wave 8 landing (#42): the founders hub row offers 'See how WE works' (path:/how-we-work/, W9-13 label) as its secondary before the briefs, as the hub's hard-coded band did on demo; the WP-60 map owner is otherwise unchanged."
+  },
+  {
+    "wp": "WP-62",
+    "path": "tests/unit/wp-51/write-sets-wave9.test.ts",
+    "reason": "Wave 8 landing (#42): the superseded-claims proof named src/pages/index.astro for WP-62, which the landing now reaches through a registered exception; it names a WP-58 path instead (same assertion, same count)."
+  },
+  {
+    "wp": "WP-62",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 8 landing (#42): registers WP-62's scoped exceptions for the landing (append-only)."
+  },
+  {
+    "wp": "WP-62",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 landing (#42), scoped to the CR-17 entry (src/pages/founders/index.astro quote line 44 to 45 after the segments import; W9-9), no other CR entry, no runbook section. WP-99 stays the release owner."
+  },
+  {
+    "wp": "WP-62",
+    "path": "src/components/families/SegmentPage.astro",
+    "reason": "Wave 8 landing (#42): a segment page fills the layout's after slot and so drew no closing band; it now ends with CtaEnd (the map row for /founders/<segment>/), one added line and its import."
+  },
+  {
+    "wp": "WP-62",
+    "path": "src/lib/rehype-mid-cta.ts",
+    "reason": "Wave 8 landing (#42): documentation only, a comment block stating that the band is measured against the article body and that a document with no valid boundary in the 50 to 90 percent window gets no band; no code changed."
+  },
+  {
+    "wp": "WP-59",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the counsel checklist quotes of InvestorIntroductionsOffer.astro follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": ".astro-magazine/sources/wp-78.json",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the sentence ledger follows the four reworded FAQ sentences."
+  },
+  {
+    "wp": "WP-59",
+    "path": "tests/unit/wp-51/write-sets-wave9.test.ts",
+    "reason": "Issue #80 (wp/59-seat-copy): the wave 9 write-set test selects the eight packages WP-51 to WP-58; WP-59 is a follow-up and is not one of them."
+  },
+  {
+    "wp": "WP-59",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Issue #80 (wp/59-seat-copy): registers the WP-59 assignment and its path exceptions."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/blocks/InvestorIntroductionsOffer.astro",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/geo/llms-input.ts",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/reference/resources.ts",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/data/faq.yaml",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/data/glossary.yaml",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/pages/faq/index.astro",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language."
+  },
+  {
+    "wp": "WP-59",
+    "path": "tests/unit/wp-60/fixtures/reference-originals.json",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language ; the pinned FAQ and glossary hashes follow the reworded originals (what-is-a-seat is now what-is-a-dedicated-team, seat is now team-role)."
+  },
+  {
+    "wp": "WP-59",
+    "path": "tests/unit/wp-78/faq-data.test.ts",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the pinned startup group \"Seats and pricing\" is now \"Team size and pricing\"."
+  },
+  {
+    "wp": "WP-59",
+    "path": "tests/unit/wp-78/faq-page.test.ts",
+    "reason": "Issue #80 (wp/59-seat-copy): positioning tail, rewrites remaining seat/package wording to dedicated-team language; the pinned FAQ meta description follows the reworded page description."
+  },
+  {
+    "wp": "WP-25",
+    "path": ".astro-magazine/events.ndjson",
+    "reason": "Studio checkpoint (#91): the append-only event log is integrator-owned; seq 3 onward are the wave 9 to 11 merges, demo push pipelines and issue closures reconstructed from GitLab, each with its source id."
+  },
+  {
+    "wp": "WP-25",
+    "path": ".astro-magazine/checkpoints/**",
+    "reason": "Studio checkpoint (#91): the immutable gate snapshot of checkpoint.json that README.md promises under checkpoints/."
+  },
+  {
+    "wp": "WP-25",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Studio checkpoint (#91): registers the two WP-25 exceptions above (frozen path, append-only)."
+  },
+  {
+    "wp": "WP-25",
+    "path": "tests/unit/wp-32b/write-sets-wave11.test.ts",
+    "reason": "Studio checkpoint (#91): the wave 11 exception pin lists the WP-25 exceptions it now carries."
+  },
+  {
+    "wp": "WP-25",
+    "path": ".astro-magazine/plans/wave11/writesets.json",
+    "reason": "Studio checkpoint (#91): the wave 11 write-set map mirrors the WP-25 exceptions registered in ownership.json."
+  },
+  {
+    "wp": "WP-23",
+    "path": ".astro-magazine/plans/wave9/statistics.json",
+    "reason": "Wave 11 (#89): corrects register entry ST-33 to the Fed SBCS 2026 age bands the page prints (48% for firms aged 0 to 5, 63% for firms aged 21 or more); the register said 61% for 16 or more."
+  },
+  {
+    "wp": "WP-60",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 (60a.3), WP-99 closing package (#49): scoped to the CR entries for src/components/forms/copy.ts, files in this package's own write set. The brief consent line, the delivery sentence and the partner no-partnership notice are pinned there (WP-63 and WP-65 handoffs). The counsel record is written by the release owner from the handoff's proposed entries (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-75",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 (60a.3), WP-99 closing package (#49): scoped to the CR entries for src/content/pages/compare/incubator-vs-venture-studio.mdx, dedicated-team-vs-freelancers.mdx, incubator-vs-other-programs.mdx and onshore-vs-offshore-teams.mdx under src/content/pages/compare/, files in this package's own write set. The entries are the counsel items proposed in the WP-75 handoff. The counsel record is written by the release owner from the handoff's proposed entries (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-80",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 (60a.3), WP-99 closing package (#49): scoped to the CR entries for src/content/briefs/*.md and infra/intake/briefs/*.md for the four audience briefs (early-stage-diligence, ai-company-diligence, corporate-spinouts, partnering-with-founders), files in this package's own write set. The entries are the counsel items proposed in the WP-80 handoff. The counsel record is written by the release owner from the handoff's proposed entries (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-99",
+    "path": ".astro-magazine/release/RELEASE.md",
+    "reason": "Wave 8 close (#49 gap item 5, wp/99-counsel-register): adds the counsel entries CR-26 to CR-41 proposed in the WP-63, WP-64, WP-65, WP-75 and WP-80 handoffs and corrects the form-route counts in the #106 section. scoped to adding CR-26 to CR-41 and correcting the form-route counts in the one #106 paragraph of section 3. No other CR entry, no runbook section is changed. WP-99 stays the release owner (serialize_with_release)."
+  },
+  {
+    "wp": "WP-99",
+    "path": ".astro-magazine/handoffs/wp-78.md",
+    "reason": "Wave 8 close (#49 gap item 5): records the resolution of the open WP-78 question for WP-99 (the cost answer no longer says seat-based). That one line only."
+  },
+  {
+    "wp": "WP-99",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Wave 8 close (#49 gap item 5): appends the WP-60, WP-75, WP-80 and WP-99 RELEASE.md exceptions that the new counsel entries need (frozen path, append-only)."
+  },
+  {
+    "wp": "WP-59",
+    "path": ".astro-magazine/sources/wp-65.json",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": ".astro-magazine/sources/wp-72.json",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/diagrams/SeatDiagram.astro",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/diagrams/SeatRosterPanel.astro",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/islands/we-team-composer/TeamComposer.astro",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/network/roles.ts",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/program/SeatDiagram.astro",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/program/roles.ts",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/components/tools/registry.ts",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/content/pages/journey/after-you-apply.mdx",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/content/pages/journey/onboarding-checklist.mdx",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/content/pages/network/index.mdx",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/content/pages/network/operators.mdx",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/content/pages/tools/team-composer.mdx",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/pages/network/operators/index.astro",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/pages/services/index.astro",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/pages/styleguide.astro",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/pages/tools/team-composer.astro",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "src/scripts/team-composer.ts",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "tests/e2e/interaction.spec.ts",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "tests/e2e/wave7/wp-42/composer-roundtrip.spec.ts",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "tests/unit/wp-03/team-composer.test.ts",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "tests/unit/wp-59/no-seat-framing.test.ts",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-59",
+    "path": "tests/unit/wp-76/surfaces.ts",
+    "reason": "Issue #80 (wp/59-seat-copy-tail): positioning tail, rewrites remaining visible seat framing (Services, Network, Operators, Team Composer, journey) to dedicated-team, role and people language; pinned ledgers and tests follow the new wording."
+  },
+  {
+    "wp": "WP-35",
+    "path": "src/data/claims.ts",
+    "reason": "Issue #84 gap 2 (wp/35-flow-claims): registers claims C-30 to C-36 for the statistics printed on the four /data/ pages (append-only: CLAIM_IDS and seven registry entries; no existing entry changes)."
+  },
+  {
+    "wp": "WP-35",
+    "path": ".astro-magazine/ownership.json",
+    "reason": "Issue #84 gap 2 (wp/35-flow-claims): registers the src/data/claims.ts exception above, append-only."
+  },
+  {
+    "wp": "WP-35",
+    "path": ".astro-magazine/plans/wave10/writesets.json",
+    "reason": "Issue #84 gap 2 (wp/35-flow-claims): the committed wave 10 map lists the WP-35 exceptions, so it gains the same two paths and the shared-exception entries."
+  }
+]

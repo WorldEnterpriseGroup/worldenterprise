@@ -1,0 +1,10 @@
+{
+  "owner": "WP-44",
+  "exceptions": [
+    {
+      "wp": "WP-44",
+      "path": "tests/unit/wp-18/copy.test.ts",
+      "reason": "WP-44 (#33): the catalogue-count band is removed from the home page (wave7.md section 5, WP-44 item 1), so the test case that pinned its framework counter is removed. WP-44's own tests assert that no numeric catalogue statistic remains."
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "owner": "WP-37",
+  "exceptions": [
+    {
+      "wp": "WP-37",
+      "path": "src/components/home/**",
+      "reason": "Wave 10 (D-W10-1): the home page narrative blocks (WP-53 files); HomeHero is a photography-lane file and is also a lane exception."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/components/program/**",
+      "reason": "Wave 10 (D-W10-1): the program page blocks (WP-53 files)."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/pages/program/who-its-for.astro",
+      "reason": "Wave 10 (D-W10-1): photography-lane page inside the program glob (W7-9 pattern); lane exception."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/components/home/HomeHero.astro",
+      "reason": "Wave 10 (D-W10-1): photography-lane file named for the lane rule (W7-9 pattern); lane exception."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/components/sales/**",
+      "reason": "Wave 10 (D-W10-1): the why-it-takes-time and who-we-work-with blocks (WP-58 files)."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/data/sales/**",
+      "reason": "Wave 10 (D-W10-1): the timeline data behind why-it-takes-time (WP-58 files); statistics stay in the register."
+    },
+    {
+      "wp": "WP-37",
+      "path": "src/content/sales/**",
+      "reason": "Wave 10 (D-W10-1): the sales literature the longevity narrative draws on (WP-58 files)."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/unit/wp-44/home.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins home copy; follows the narrative."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/unit/wp-53/**",
+      "reason": "Wave 10 (D-W10-1): pins home and program (WP-53)."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/unit/wp-01/program.test.ts",
+      "reason": "Wave 10 (D-W10-1): pins program copy."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/unit/wp-58/**",
+      "reason": "Wave 10 (D-W10-1): pins why-it-takes-time and who-we-work-with copy."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/e2e/wave7/wp-44/**",
+      "reason": "Wave 10 (D-W10-1): e2e pins of the home page."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/e2e/wave8/wp-53/**",
+      "reason": "Wave 10 (D-W10-1): 1920 specs of home and program."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/e2e/wave8/wp-58/**",
+      "reason": "Wave 10 (D-W10-1): 1920 specs of the sales pages."
+    },
+    {
+      "wp": "WP-37",
+      "path": "tests/e2e/folds.spec.ts",
+      "reason": "Wave 10 (D-W10-1): the home fold at 1440x900; a longer hero headline can move the primary button."
+    }
+  ]
+}

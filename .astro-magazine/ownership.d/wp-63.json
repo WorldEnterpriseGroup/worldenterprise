@@ -1,0 +1,15 @@
+{
+  "owner": "WP-63",
+  "exceptions": [
+    {
+      "wp": "WP-63",
+      "path": "src/data/nav.ts",
+      "reason": "Wave 8 R2: /briefs/ going live exposes a third /briefs/ link in the For you panel (nav-identity allows lead + tile only) and the menu row width at 1100/1140; WP-63 removes the duplicate Startup-column Briefs link, ruled by the integrator 2026-10-10."
+    },
+    {
+      "wp": "WP-63",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 8 (60a.3): scoped to CR entries for files in this package's own write set (src/pages/briefs/**, src/content/pages/briefs/**, src/components/briefs/**, src/content/briefs/*.md, src/pages/research/**, src/content/pages/research/**). No pinned file is there today; a new file under src that names Investor Introductions must be listed (release-doc.test.ts), and this lets its owner add that entry. No other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    }
+  ]
+}

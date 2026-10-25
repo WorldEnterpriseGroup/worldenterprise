@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { overlaps } from '../../../.astro-magazine/plans/wave8/lib.mjs';
 import { matches, ownerOf, violations } from '../../../scripts/check-ownership.mjs';
+import { loadOwnership } from '../../../scripts/lib/ownership-load.mjs';
 
 // Wave 9 (WP-51, issue #72): the redesign packages WP-51 to WP-58 are registered once, ahead of the edits (W8-30 pattern, W9-1;
 // WP-58 joined stage 2 with the positioning change, W9-12).
@@ -40,7 +41,7 @@ interface Wave9Map {
 }
 
 const root = new URL('../../../', import.meta.url);
-const ownership = JSON.parse(readFileSync(new URL('.astro-magazine/ownership.json', root), 'utf8')) as Ownership;
+const ownership = loadOwnership() as unknown as Ownership;
 const committed = JSON.parse(readFileSync(new URL('.astro-magazine/plans/wave9/writesets.json', root), 'utf8')) as Wave9Map;
 const wave9 = ownership.assignments.filter((a) => /^WP-5[1-8]$/.test(a.owner));
 

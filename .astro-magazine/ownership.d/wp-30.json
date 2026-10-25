@@ -1,0 +1,20 @@
+{
+  "owner": "WP-30",
+  "exceptions": [
+    {
+      "wp": "WP-30",
+      "path": ".astro-magazine/{ownership.json,decisions.md}",
+      "reason": "Issue #20: registers the WP-30 assignment and records decision R-1 (the release path and its gates)."
+    },
+    {
+      "wp": "WP-30",
+      "path": "tests/unit/wp-19/release-security.test.ts",
+      "reason": "Issue #20: the mirror job tests moved to tests/unit/wp-30 with the job; the GitHub workflow tests stay."
+    },
+    {
+      "wp": "WP-30",
+      "path": "src/content/insights/fundable/choosing-the-right-first-investors-for-a-saas-company.mdx",
+      "reason": "Issue #20, team decision of 2026-10-09: line 37 denied that WE offers an introduction service while line 77 sells the paid add-on. Only that sentence is replaced, so the page matches the add-on before counsel reviews the tagged text."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "owner": "WP-55",
+  "exceptions": [
+    {
+      "wp": "WP-55",
+      "path": "src/data/routes.ts",
+      "reason": "Wave 9 (W9-5): launches the UBF detail row /about/frameworks/ubf/ in the same merge request as its page. Scoped to the framework rows; no other row changes."
+    },
+    {
+      "wp": "WP-55",
+      "path": "tests/unit/wp-62/legacy-founders-page.test.ts",
+      "reason": "Wave 9: the founders hub pins follow the redesigned founders page (W8-18 one owner per test file)."
+    },
+    {
+      "wp": "WP-55",
+      "path": "tests/unit/wp-64/legacy-investors-page.test.ts",
+      "reason": "Wave 9: the investors hub pins follow the redesigned investors page (W8-18 one owner per test file)."
+    },
+    {
+      "wp": "WP-55",
+      "path": ".astro-magazine/release/RELEASE.md",
+      "reason": "Wave 9 (W9-9): scoped to the CR entries that quote src/pages/founders/index.astro, src/pages/investors/**, src/pages/network/index.astro, src/components/investors/**, src/content/pages/investors/**, src/content/pages/network/index.mdx, src/content/pages/about/facts.mdx, files in this package's own write set. The counsel record changes in the same commit as the copy it quotes (tests/unit/wp-30/release-doc.test.ts pins each quote and line); no other CR entry, no runbook section. WP-99 stays the release owner (serialize_with_release)."
+    },
+    {
+      "wp": "WP-55",
+      "path": "tests/unit/wp-40/ci.test.ts",
+      "reason": "W9-5: the UBF row launches; drop it from the cut-frameworks assertion, keep /star/ /shift/ /android/ cut"
+    },
+    {
+      "wp": "WP-55",
+      "path": "tests/unit/wp-41/facts.test.ts",
+      "reason": "Wave 9 (W9-13): the public Spark, Launch, Accelerate and Studio packages are retired; WP-54 is their single owner, package parts only: the /about/facts/ package lines go with them; facts pins only."
+    },
+    {
+      "wp": "WP-55",
+      "path": ".astro-magazine/sources/wp-71.json",
+      "reason": "Wave 9 (W9-13): remaps the brand-story and press quote entries to the new About copy; held by WP-71, which is done. Those entries only."
+    },
+    {
+      "wp": "WP-55",
+      "path": "tests/e2e/wave7/wp-41/geo.spec.ts",
+      "reason": "Wave 9 (W9-13, sales direction): the facts page heading 'Is Investor Introductions part of a package?' becomes 'part of the engagement?' now that packages are retired; line 172 only, every other assertion kept."
+    }
+  ]
+}

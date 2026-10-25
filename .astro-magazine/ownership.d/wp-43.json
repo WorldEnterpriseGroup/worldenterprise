@@ -1,0 +1,15 @@
+{
+  "owner": "WP-43",
+  "exceptions": [
+    {
+      "wp": "WP-43",
+      "path": "src/pages/program/who-its-for.astro",
+      "reason": "Wave 7, decision W7-9: the photography lane (WP-12b exception) reserves this page, and phase B photo generation is deferred, so the page is released to this package now. Phase B will rebase onto wave 7."
+    },
+    {
+      "wp": "WP-43",
+      "path": "tests/e2e/forms.spec.ts",
+      "reason": "WP-43 (#32): the progressive Apply stepper hides inactive fieldsets with JS on, so the apply cases walk the steps; no-JS cases unchanged. Edited in the same MR so demo e2e stays green."
+    }
+  ]
+}
