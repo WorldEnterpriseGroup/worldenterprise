@@ -60,6 +60,11 @@
       "wp": "WP-49",
       "path": "tests/unit/wp-60/ci-forms-endpoint.test.ts",
       "reason": "#49: e2e:wave8 runs in three shards to stay inside the 1 hour job timeout; the test pins the sharded command and still forbids a grep."
+    },
+    {
+      "wp": "WP-49",
+      "path": "tests/e2e/wave8/wp-109/content-extent.spec.ts",
+      "reason": "#49: the 320-page content-extent walk runs as chunks of 40 so workers share it and a retry repeats one chunk; one serial walk used up the 1 hour e2e:wave8 job on a loaded runner."
     }
   ]
 }

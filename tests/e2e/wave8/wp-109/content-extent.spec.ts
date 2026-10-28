@@ -47,20 +47,33 @@ test.describe('content extent at 1920x1080', () => {
     });
   }
 
-  test('every live route passes the content-extent gate', async ({ page }) => {
-    // The walk is 320 pages at about two seconds each on a loaded runner, past the 3 minute cap of budgetForItems, so it asks for its own size.
-    ensureBudget(Math.max(180_000, liveRoutes.length * 3_000));
-    const allowed = new Set(ALLOWED_ROUTES.map((a) => a.path));
-    const skip = ALLOWED_BANDS.map((a) => a.match);
-    const failures: string[] = [];
-    for (const route of liveRoutes) {
-      if (allowed.has(route.path)) continue;
-      const response = await page.goto(route.path);
-      if (response === null || !response.ok()) continue;
-      await page.evaluate(() => document.fonts.ready);
-      for (const line of offenders(await page.evaluate(measureBands), skip)) failures.push(`${route.path} ${line}`);
-    }
-    expect(failures, 'bands whose content does not use the frame').toEqual([]);
+  // Every live route, walked in chunks of CHUNK (#49). One serial walk of all ~320 pages took 12 to 18 minutes on a loaded runner, overran
+  // its budget, and each retry walked every page again, which alone used up the 1 hour job (pipelines 97297, 97500). As chunks the
+  // workers share the walk, a retry repeats one chunk, and a failure names the chunk's first and last route. No route is left out.
+  const CHUNK = 40;
+  const allowed = new Set(ALLOWED_ROUTES.map((a) => a.path));
+  const walk = liveRoutes.filter((route) => !allowed.has(route.path));
+  for (let start = 0; start < walk.length; start += CHUNK) {
+    const chunk = walk.slice(start, start + CHUNK);
+    const label = `${chunk[0]?.path} .. ${chunk[chunk.length - 1]?.path}`;
+    test(`live routes ${start + 1}-${start + chunk.length} of ${walk.length} pass the content-extent gate (${label})`, async ({ page }) => {
+      // About four seconds a page on a loaded runner, plus the base budget.
+      ensureBudget(45_000 + chunk.length * 4_000);
+      const skip = ALLOWED_BANDS.map((a) => a.match);
+      const failures: string[] = [];
+      for (const route of chunk) {
+        const response = await page.goto(route.path);
+        if (response === null || !response.ok()) continue;
+        await page.evaluate(() => document.fonts.ready);
+        for (const line of offenders(await page.evaluate(measureBands), skip)) failures.push(`${route.path} ${line}`);
+      }
+      expect(failures, 'bands whose content does not use the frame').toEqual([]);
+    });
+  }
+
+  test('the chunked walk covers every live route that is not allowlisted, once', () => {
+    expect(walk.length, 'live routes to walk').toBeGreaterThan(0);
+    expect(new Set(walk.map((r) => r.path)).size, 'no route twice').toBe(walk.length);
   });
 
   test('every allowlisted route and band names its reason', () => {
