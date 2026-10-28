@@ -220,6 +220,11 @@
       "wp": "WP-49",
       "path": "tests/e2e/intake/**",
       "reason": "#121: the Playwright spec for the deployed intake service, gated by INTAKE_E2E=1."
+    },
+    {
+      "wp": "WP-49",
+      "path": "infra/intake/dataverse/apply.ts",
+      "reason": "#120: the applier assigns the intake service role to the owner team World Enterprise Intake, which the team-owned Lead writes need. No other change."
     }
   ]
 }
