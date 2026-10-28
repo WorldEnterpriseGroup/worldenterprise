@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content';
-import { forms, FORM_ROUTES } from '../data/forms.ts';
+import { effectiveRouteMode, FORM_ROUTES } from '../data/forms.ts';
 import { routes } from '../data/routes.ts';
 import { readFlag } from './env.ts';
 import { listPageFiles } from './page-files.ts';
@@ -78,7 +78,7 @@ export async function assertReleaseReady(): Promise<void> {
   for (const draft of drafts) problems.push(`draft content remains: ${draft}`);
   for (const r of routes) {
     const formId = FORM_ROUTES[r.path];
-    if (r.launch && formId !== undefined && forms[formId].mode === 'disabled') {
+    if (r.launch && formId !== undefined && effectiveRouteMode(r.path) === 'disabled') {
       problems.push(`launched form route ${r.path} has form "${formId}" in disabled mode`);
     }
   }

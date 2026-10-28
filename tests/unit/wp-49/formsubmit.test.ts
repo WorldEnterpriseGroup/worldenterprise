@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  effectiveRouteMode,
   FORM_KINDS,
   FORMSUBMIT_SUBJECTS,
   formSubmitBody,
@@ -191,4 +192,15 @@ test('an endpoint that is not FormSubmit still receives the contract body, and a
   await submitIntake('https://intake.example.test/api/intake', PAYLOAD, { fetchImpl });
   const sent: unknown = JSON.parse(String(calls[0]?.init?.body));
   assert.deepEqual(sent, JSON.parse(JSON.stringify(PAYLOAD)));
+});
+
+test('with no endpoint, only apply and contact are mailto; every other launched form route counts as disabled for the release gate', () => {
+  // This run has no endpoint variable in CI, and a confirmed mailbox since 2026-10-28, so the intake form is in mailto mode.
+  if (process.env.PUBLIC_WE_INTAKE_API_URL) return;
+  assert.equal(effectiveRouteMode('/apply/'), 'mailto');
+  assert.equal(effectiveRouteMode('/contact/'), 'mailto');
+  assert.equal(effectiveRouteMode('/investors/interest/'), 'disabled');
+  assert.equal(effectiveRouteMode('/network/partners/enquire/'), 'disabled');
+  assert.equal(effectiveRouteMode('/briefs/funding-paths/'), 'disabled');
+  assert.equal(effectiveRouteMode('/about/'), null);
 });

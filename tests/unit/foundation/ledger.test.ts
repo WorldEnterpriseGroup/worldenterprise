@@ -7,6 +7,7 @@ import { DESK_DEFINITIONS, DESKS } from '../../../src/data/desks.ts';
 import { FAMILIES } from '../../../src/data/families.ts';
 import { buildRoutes, finalizeRow, L2_RESERVED, MACHINE_ROUTES, routes } from '../../../src/data/routes.ts';
 import type { LayoutName, RouteRow } from '../../../src/data/routes.ts';
+import { site } from '../../../src/data/site.ts';
 import { listCollectionFiles, listInsightFiles } from '../../../src/lib/content-files.ts';
 
 /**
@@ -122,8 +123,9 @@ test('newsletter and terms rows derive launch from forms and flags (both off by 
   assert.equal(routes.find((r) => r.path === '/legal/terms/')?.launch, false);
 });
 
-test('security.txt launches only with a confirmed security contact', () => {
-  assert.equal(MACHINE_ROUTES.find((m) => m.path === '/.well-known/security.txt')?.launch, false);
+test('security.txt launches only with a confirmed security contact (confirmed 2026-10-28)', () => {
+  assert.equal(MACHINE_ROUTES.find((m) => m.path === '/.well-known/security.txt')?.launch, site.securityContact !== null);
+  assert.equal(site.securityContact, 'security@worldenterprise.org');
 });
 
 // ---------------------------------------------------------------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { site } from '../../../src/data/site.ts';
 import { securityContactUri, securityTxt, speculationRules } from '../../../src/lib/seo.ts';
 
 // code-security P2-4 and P2-6.
@@ -33,4 +34,13 @@ test('the speculation rules carry no rule that can never match', () => {
   const text = JSON.stringify(speculationRules('/'));
   assert.doesNotMatch(text, /selector_matches/);
   assert.match(text, /href_matches/);
+});
+
+test('the real security.txt carries the confirmed alias, an Expires in the future and the canonical URL (2026-10-28)', () => {
+  const now = new Date('2026-10-28T00:00:00Z');
+  const expires = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+  const body = securityTxt({ contact: site.securityContact, expires }) ?? '';
+  assert.match(body, /^Contact: mailto:security@worldenterprise\.org\n/);
+  assert.match(body, /^Expires: \d{4}-\d{2}-\d{2}T/m);
+  assert.match(body, /^Canonical: https:\/\/worldenterprise\.org\/\.well-known\/security\.txt$/m);
 });

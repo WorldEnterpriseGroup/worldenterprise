@@ -37,8 +37,8 @@ function disabledFormRoutes(): string[] {
   delete env.PUBLIC_WE_NEWSLETTER_API_URL;
   const script = `
     import { routes } from './src/data/routes.ts';
-    import { forms, FORM_ROUTES } from './src/data/forms.ts';
-    const out = routes.filter((r) => r.launch && FORM_ROUTES[r.path] !== undefined && forms[FORM_ROUTES[r.path]].mode === 'disabled').map((r) => r.path);
+    import { effectiveRouteMode, FORM_ROUTES } from './src/data/forms.ts';
+    const out = routes.filter((r) => r.launch && FORM_ROUTES[r.path] !== undefined && effectiveRouteMode(r.path) === 'disabled').map((r) => r.path);
     console.log(JSON.stringify(out));`;
   const stdout = execFileSync(process.execPath, ['--input-type=module', '-e', script], { cwd: repo, env, encoding: 'utf8' });
   return JSON.parse(stdout) as string[];
@@ -72,10 +72,10 @@ Counsel sign-off:
 ## 9. Terms
 `;
 
-test('there are exactly 15 launched form routes in disabled mode with no endpoint: the four fixed forms and eleven briefs', () => {
+test('there are exactly 13 launched form routes in disabled mode with no endpoint: the two fixed forms with no mailbox fallback and eleven briefs (apply and contact fall back to their confirmed mailbox since 2026-10-28)', () => {
   const disabled = disabledFormRoutes();
-  assert.equal(disabled.length, 15);
-  assert.deepEqual(disabled.filter((p) => !p.startsWith('/briefs/')).sort(), ['/apply/', '/contact/', '/investors/interest/', '/network/partners/enquire/']);
+  assert.equal(disabled.length, 13);
+  assert.deepEqual(disabled.filter((p) => !p.startsWith('/briefs/')).sort(), ['/investors/interest/', '/network/partners/enquire/']);
   assert.equal(disabled.filter((p) => p.startsWith('/briefs/')).length, 11);
 });
 
@@ -84,8 +84,8 @@ test('with an empty RELEASE_ALLOW every one of them fails the gate, and demo is 
   assert.deepEqual(gate(lines, ''), lines, 'a release tag allows nothing');
   const verdict = compose({ run: { status: 1, output: buildFailure(lines) }, allow: '', markdown: SIGNED });
   assert.equal(verdict.ok, false);
-  assert.equal(verdict.blocking.length, 15);
-  assert.match(verdict.reason, /^15 of 15 problems are not covered by RELEASE_ALLOW$/);
+  assert.equal(verdict.blocking.length, 13);
+  assert.match(verdict.reason, /^13 of 13 problems are not covered by RELEASE_ALLOW$/);
   assert.equal(compose({ run: { status: 1, output: buildFailure(lines) }, allow: branchAllow(), markdown: SIGNED }).ok, true, 'a branch tolerates them, and lists them as allowed');
 });
 
@@ -93,7 +93,7 @@ test('the gate explains the form routes: the cause, the variable, and that they 
   const lines = disabledFormRoutes().map(formLine);
   const verdict = compose({ run: { status: 1, output: buildFailure(lines) }, allow: '', markdown: SIGNED });
   const text = verdict.explanation.join('\n');
-  assert.match(text, /15 launched form routes are in disabled mode/);
+  assert.match(text, /13 launched form routes are in disabled mode/);
   assert.match(text, /\/briefs\/real-timeline\//);
   assert.match(text, /PUBLIC_WE_INTAKE_API_URL/);
   assert.match(text, /WP-61/);
@@ -181,9 +181,13 @@ test('explain names each cause once and passes unknown lines through verbatim', 
 
 test('the operator notes name every open human item without a value', () => {
   const notes = notesFor({ site, flags, env: {} }).join('\n');
-  assert.match(notes, /hello@worldenterprise\.org is confirmed:false/);
-  assert.match(notes, /apply@worldenterprise\.org is confirmed:false/);
-  assert.match(notes, /site\.securityContact is null/);
+  // The mailboxes and the security contact were confirmed on 2026-10-28 (RELEASE.md sections 6 and 7), so they no longer appear as open.
+  assert.doesNotMatch(notes, /is confirmed:false/);
+  assert.doesNotMatch(notes, /site\.securityContact is null/);
+  const unconfirmed = notesFor({ site: { ...site, mailboxes: { hello: { address: 'hello@worldenterprise.org', confirmed: false }, apply: { address: 'apply@worldenterprise.org', confirmed: false } }, securityContact: null }, flags, env: {} }).join('\n');
+  assert.match(unconfirmed, /hello@worldenterprise\.org is confirmed:false/);
+  assert.match(unconfirmed, /apply@worldenterprise\.org is confirmed:false/);
+  assert.match(unconfirmed, /site\.securityContact is null/);
   assert.match(notes, /PUBLIC_WE_INTAKE_API_URL is not set/);
   assert.match(notes, /PUBLIC_WE_NEWSLETTER_API_URL is not set/);
   assert.match(notes, /flags\.legalTerms .* is off/);
@@ -217,14 +221,14 @@ test('the branch allowance is exactly the two operator-gated kinds', () => {
   assert.deepEqual(branchAllow().split(',').map((p) => p.trim()), ['^launched form route', '^human item open:']);
 });
 
-test('flags that ship forms, terms or PBC wording stay off, and the unconfirmed mailboxes and security contact stay as they are', () => {
+test('flags that ship forms, terms or PBC wording stay off, and the mailboxes and security contact are the confirmed shared-mailbox aliases', () => {
   assert.equal(flags.legalTerms, false);
   assert.equal(flags.pbcWording, false);
   assert.equal(flags.seatPrice.published, false);
   assert.equal(flags.seatPrice.monthlyRate, null);
   assert.equal(flags.focusShiftConfirmed, false);
   assert.equal(flags.briefUpdates, false);
-  assert.equal(site.mailboxes.hello.confirmed, false);
-  assert.equal(site.mailboxes.apply.confirmed, false);
-  assert.equal(site.securityContact, null);
+  assert.equal(site.mailboxes.hello.confirmed, true);
+  assert.equal(site.mailboxes.apply.confirmed, true);
+  assert.equal(site.securityContact, 'security@worldenterprise.org');
 });

@@ -10,11 +10,11 @@ test('only absolute https endpoints are accepted', () => {
   assert.equal(parseEndpoint(undefined), null);
 });
 
-test('without configuration every form is disabled and no mailbox is published', () => {
-  assert.equal(forms.intake.mode, process.env.PUBLIC_WE_INTAKE_API_URL ? 'endpoint' : 'disabled');
-  assert.equal(mailboxFor('apply'), null);
-  assert.equal(mailboxFor('contact'), null);
-  assert.equal(publicContactAddress(), null);
+test('without configuration the intake form is disabled, and the confirmed shared-mailbox aliases are the only fallback (2026-10-28)', () => {
+  assert.equal(forms.intake.mode, process.env.PUBLIC_WE_INTAKE_API_URL ? 'endpoint' : 'mailto');
+  assert.equal(mailboxFor('apply'), 'apply@worldenterprise.org');
+  assert.equal(mailboxFor('contact'), 'hello@worldenterprise.org');
+  assert.equal(publicContactAddress(), 'hello@worldenterprise.org');
 });
 
 test('the seat price is unpublished and the rate is null (claim C-06)', () => {

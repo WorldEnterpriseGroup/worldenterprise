@@ -176,6 +176,20 @@ export const FORM_ROUTES: Readonly<Record<string, FormConfig['id']>> = {
   '/network/partners/enquire/': 'intake',
 };
 
+/**
+ * What a launched form route actually does, for the release assertion. The intake form's own mode is `mailto` whenever a mailbox is
+ * confirmed and no endpoint is set, but only the apply and contact pages may use that fallback (MAILTO_KINDS). Every other route on the
+ * intake form (a brief, the investor interest page, the partner enquiry page) is effectively disabled then, and must still fail a release
+ * that has no endpoint. Reading the raw mode would let confirming a mailbox quietly switch that check off.
+ */
+export function effectiveRouteMode(path: string): FormMode | null {
+  const id = FORM_ROUTES[path];
+  if (id === undefined) return null;
+  const mode = forms[id].mode;
+  if (mode !== 'mailto') return mode;
+  return path === '/apply/' || path === '/contact/' ? 'mailto' : 'disabled';
+}
+
 /** Where a successful submit goes. `contact` confirms in the page and `newsletter` in place; neither has a thanks route. */
 export const THANKS_PATHS = {
   apply: '/apply/thanks/',
