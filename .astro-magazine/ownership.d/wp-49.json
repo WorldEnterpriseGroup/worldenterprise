@@ -55,6 +55,11 @@
       "wp": "WP-49",
       "path": "scripts/run-lighthouse.mjs",
       "reason": "#49 item 2: the 55-route Lighthouse set measures the brief pages, which carry the shared request-form script; exemptBelow exempts pages under /briefs/ from the JS budget while the hub keeps it."
+    },
+    {
+      "wp": "WP-49",
+      "path": "tests/unit/wp-60/ci-forms-endpoint.test.ts",
+      "reason": "#49: e2e:wave8 runs in three shards to stay inside the 1 hour job timeout; the test pins the sharded command and still forbids a grep."
     }
   ]
 }

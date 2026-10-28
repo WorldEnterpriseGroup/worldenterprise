@@ -387,12 +387,15 @@ e2e:wave7:
 
 # Wave 8 specs (tests/e2e/wave8/**) at 1440 and 390, in two projects of their own (E2E_WAVE8 adds them to playwright.config.ts), for the
 # same reason as wave 7. The rules repeat .qa-rules, each with `exists:`, so a pipeline without a wave 8 spec has no such job.
+# Three shards (#49): the suite is about 3000 tests and took 48 minutes in one job on a healthy runner, against the 1 hour job timeout;
+# pipeline 97297 hit that timeout on a loaded runner. Sharding splits the tests, it drops none, so every wave 8 test still runs here.
 e2e:wave8:
   extends: [.e2e]
+  parallel: 3
   variables:
     E2E_WAVE8: "1"
   script:
-    - npx playwright test --project=wave8-desktop-1440x900 --project=wave8-mobile-390x844
+    - npx playwright test --project=wave8-desktop-1440x900 --project=wave8-mobile-390x844 --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
   rules:
     - if: '$CI_COMMIT_TAG =~ /^release-/'
       exists:
