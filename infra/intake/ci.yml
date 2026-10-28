@@ -20,6 +20,8 @@ variables:
   INTAKE_BICEP_VERSION: "v0.48.1"
   INTAKE_BICEP_SHA256: "b09ec25a9d376c1f8e33ede6ed22b587f915ad68488d5db77a6f9541748c7f6e"
   INTAKE_AZURE_CLI_VERSION: "2.91.0"
+  INTAKE_UV_VERSION: "0.13.6"
+  INTAKE_UV_SHA256: "f29c3e94ffabd7e6f3ba521dba169a9b7ec12100bf3257087f0f24f6123f3645"
 
 .intake-bicep:
   before_script:
@@ -31,6 +33,8 @@ variables:
     - export PATH="${CI_PROJECT_DIR}/.tools:${PATH}"
   variables:
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: "1"
+    UV_CACHE_DIR: "${CI_PROJECT_DIR}/.tools/uv-cache"
+    UV_PYTHON_DOWNLOADS: "never"
     BICEP_BIN: "${CI_PROJECT_DIR}/.tools/bicep"
     REQUIRE_BICEP: "1"
 
@@ -119,8 +123,12 @@ intake:render:
   image: "${NODE_FULL_IMAGE}"
   before_script:
     - !reference [.intake-bicep, before_script]
-    - python3 -m venv "${CI_PROJECT_DIR}/.tools/az"
-    - ${CI_PROJECT_DIR}/.tools/az/bin/pip install --quiet --disable-pip-version-check "azure-cli==${INTAKE_AZURE_CLI_VERSION}"
+    # The node image ships python3 without venv/ensurepip, so uv (checksum-pinned) builds the venv and installs azure-cli.
+    - curl --fail --silent --show-error --location --output "${CI_PROJECT_DIR}/.tools/uv.tar.gz" "https://github.com/astral-sh/uv/releases/download/${INTAKE_UV_VERSION}/uv-x86_64-unknown-linux-gnu.tar.gz"
+    - echo "${INTAKE_UV_SHA256}  ${CI_PROJECT_DIR}/.tools/uv.tar.gz" | sha256sum --check --status
+    - tar -xzf "${CI_PROJECT_DIR}/.tools/uv.tar.gz" -C "${CI_PROJECT_DIR}/.tools" --strip-components=1
+    - ${CI_PROJECT_DIR}/.tools/uv venv --quiet --python python3 "${CI_PROJECT_DIR}/.tools/az"
+    - ${CI_PROJECT_DIR}/.tools/uv pip install --quiet --python "${CI_PROJECT_DIR}/.tools/az/bin/python" "azure-cli==${INTAKE_AZURE_CLI_VERSION}"
     - export PATH="${CI_PROJECT_DIR}/.tools/az/bin:${PATH}"
     - az config set bicep.use_binary_from_path=true core.only_show_errors=true core.collect_telemetry=false
     - az login --service-principal --username "${INTAKE_AZURE_CLIENT_ID}" --tenant "${INTAKE_AZURE_TENANT_ID}" --password "${INTAKE_AZURE_CLIENT_SECRET}" --output none
