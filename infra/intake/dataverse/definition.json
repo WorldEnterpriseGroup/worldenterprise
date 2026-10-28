@@ -30,6 +30,26 @@
     "firstName": "WE Intake",
     "lastName": "Service"
   },
+  "deployUser": {
+    "firstName": "WE Intake",
+    "lastName": "Deploy",
+    "role": "System Administrator"
+  },
+  "e2e": {
+    "role": {
+      "name": "World Enterprise Intake E2E Reader",
+      "depth": "Local",
+      "privileges": [
+        { "table": "Lead", "actions": ["Read", "Delete"] },
+        { "table": "Contact", "actions": ["Read", "Delete"] },
+        { "table": "we_Engagement", "actions": ["Read", "Delete"] }
+      ]
+    },
+    "applicationUser": {
+      "firstName": "WE Intake",
+      "lastName": "E2E"
+    }
+  },
   "tables": [
     {
       "schemaName": "we_Engagement",
