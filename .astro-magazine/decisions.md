@@ -136,7 +136,7 @@ Source of truth for scope: `.plan/SAGE-PLAN.md` (internal, untracked). Decisions
 The include is pinned to `6c547b757f89ec5552b5d769dfa64700e9bd4289` (repository HEAD on 2026-10-06). The only difference from the globalenterprise pin `7b817a72...` in the files this project uses (`static-site.yml`, `pages-deploy.yml`, `preflight.yml`, `github-mirror.yml`) is additive retry and interruptible rules. The template `lint` job only runs on merge requests and the default branch, so it does not run on `demo`, `wp/*` or `gh-pages`; the project's own `verify:static` job runs on every branch.
 
 ### W-3 Preview base path
-The internal GitLab Pages URL is `https://worldenterprisegroup.pages.developerdojo.org/worldenterprise`, so the preview uses `PAGES_BASE_PATH=/worldenterprise`. Production has no base (D-7).
+The internal GitLab Pages preview is served under the path `/worldenterprise`, so the preview uses `PAGES_BASE_PATH=/worldenterprise`. Production has no base (D-7).
 
 ### W-4 Fourth noindex route
 The plan says 90 routes, 86 indexable, and names three noindex routes (`/apply/thanks/`, `/sitemap/`, `/404.html`). The fourth is `/search/` (a search results state is not a useful landing page; it stays crawlable with `noindex,follow`).

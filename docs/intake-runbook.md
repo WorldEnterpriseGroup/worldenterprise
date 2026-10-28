@@ -24,7 +24,7 @@ Rules that hold throughout:
 
 ## OP-AZURE
 
-1. Create or choose an Entra application registration for the pipeline. Add a federated credential with issuer `https://git.developerdojo.org`, audience `api://AzureADTokenExchange` and subject `project_path:WorldEnterpriseGroup/worldenterprise:ref_type:branch:ref:demo`. There is no client secret.
+1. Create or choose an Entra application registration for the pipeline. Add a federated credential with issuer the internal GitLab instance URL, audience `api://AzureADTokenExchange` and subject `project_path:WorldEnterpriseGroup/worldenterprise:ref_type:branch:ref:demo`. There is no client secret.
 2. Grant it, at the subscription, the roles Bicep needs to create a resource group and assign roles: Contributor, plus either User Access Administrator or Role Based Access Control Administrator. The role-assignment right is needed because the `keyvault-access.bicep` module, which runs in the vault's resource group `Om-Labs`, assigns Key Vault Secrets User on `omlab-secrets` to the Function's identity, and the main template assigns the storage and Communication Services roles.
 3. Create the two Key Vault secrets in `omlab-secrets`. The operator runs these once, with a value that is never printed:
 
