@@ -16,8 +16,8 @@ const CHECKBOX = /^- \[([ xX])\] (.*)$/;
 const CHECKLIST_END = '<!-- COUNSEL-CHECKLIST:END -->';
 
 /**
- * Reads the counsel checklist of RELEASE.md section 8. An entry is signed only when its box "Counsel approves as written" is ticked;
- * "Counsel requires this change" ticked alone is not a sign-off (the change is made and the box above ticked after it). The sign-off
+ * Reads the decision checklist of RELEASE.md section 8. An entry is signed only when its approval box ("Decided as written under CEO delegation ..." or, after an outside review, "Counsel approves as written") is ticked;
+ * the change box ("Change required before release") ticked alone is not a sign-off (the change is made and the box above ticked after it). The sign-off
  * block after the checklist is a list of its own.
  * @returns {{ entries: { id: string, title: string, approved: boolean }[], tail: { text: string, done: boolean }[] }}
  */
@@ -34,7 +34,7 @@ export function counselSignoff(markdown) {
       continue;
     }
     const box = CHECKBOX.exec(line);
-    if (box !== null && entries.length > 0 && /^Counsel approves as written\b/.test(box[2])) entries[entries.length - 1].approved = box[1] !== ' ';
+    if (box !== null && entries.length > 0 && /^(Decided as written\b|Counsel approves as written\b)/.test(box[2])) entries[entries.length - 1].approved = box[1] !== ' ';
   }
   const tail = [];
   for (const line of section.slice(end + CHECKLIST_END.length).split('\n')) {
@@ -106,7 +106,7 @@ export function explain(problems) {
     const tail = human.length - cr;
     lines.push(
       `Counsel has not finished the review in .astro-magazine/release/RELEASE.md section 8: ${cr} unsigned CR entries and ${tail} open sign-off items. ` +
-        'Counsel ticks "Counsel approves as written" per entry, then the sign-off block, against the exact release commit. Nobody else can do this.',
+        'Each entry needs its box ("Decided as written under CEO delegation" or "Counsel approves as written") ticked, then the sign-off block, against the exact release commit.',
     );
   }
   for (const p of other) lines.push(p);

@@ -123,6 +123,14 @@ test('the counsel parser: approved needs the approval box, a ticked "requires th
   assert.deepEqual(humanProblems(tailOpen), [`${HUMAN_PREFIX}counsel sign-off block not ticked: Read in full`]);
 });
 
+test('the delegated-decision wording signs an entry exactly like the counsel wording', () => {
+  const delegated = SIGNED.replaceAll('- [x] Counsel approves as written', '- [x] Decided as written under CEO delegation, 2026-10-28 (not reviewed by outside counsel)').replaceAll('- [X] Counsel approves as written', '- [x] Decided as written under CEO delegation, 2026-10-28 (not reviewed by outside counsel)');
+  assert.deepEqual(humanProblems(delegated), []);
+  assert.deepEqual(signoff(delegated).entries.map((e) => e.approved), [true, true]);
+  const unticked = delegated.replace('- [x] Decided as written', '- [ ] Decided as written');
+  assert.deepEqual(humanProblems(unticked).map((p) => /CR-\d+/.exec(p)?.[0]), ['CR-01']);
+});
+
 test('a checklist that cannot be read fails loudly instead of passing', () => {
   assert.throws(() => signoff('# nothing here'), /no "## 8\." section/);
   assert.throws(() => signoff('## 8. x\n\ntext\n\n## 9. y\n'), /COUNSEL-CHECKLIST:END/);
