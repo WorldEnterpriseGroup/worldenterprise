@@ -461,10 +461,14 @@ resource deliveryFailedAlert 'Microsoft.Insights/scheduledQueryRules@2023-12-01'
     ]
     evaluationFrequency: 'PT15M'
     windowSize: 'PT15M'
+    // A new component has no traces table until the Function first logs, and validation would fail the first deploy.
+    skipQueryValidation: true
     criteria: {
       allOf: [
         {
-          query: 'AppTraces | where Message has_any ("delivery_exhausted", "delivery_failed", "dataverse_write_failed")'
+          // The scope is the Application Insights component, so the query uses its classic schema (traces/message), not the
+          // workspace tables (AppTraces/Message).
+          query: 'traces | where message has_any ("delivery_exhausted", "delivery_failed", "dataverse_write_failed")'
           timeAggregation: 'Count'
           operator: 'GreaterThan'
           threshold: 0
