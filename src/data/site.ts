@@ -24,8 +24,8 @@ export const site = {
   sameAs: ['https://github.com/WorldEnterpriseGroup'],
   /**
    * Mailboxes. Not published until the operator confirms each exists and is monitored (C-22, B-2). Confirmed 2026-10-28 by the owner:
-   * hello@, apply@ and security@ are aliases of the monitored shared mailbox info@worldenterprise.org, which is also where FormSubmit
-   * delivers every form (RELEASE.md sections 5 to 7).
+   * hello@, apply@ and security@ are aliases of the monitored shared mailbox info@worldenterprise.org, which is also where the intake
+   * backend notifies (RELEASE.md sections 5 to 7).
    */
   mailboxes: {
     hello: { address: 'hello@worldenterprise.org', confirmed: true },

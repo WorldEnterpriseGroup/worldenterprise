@@ -1,5 +1,5 @@
 import { readEnv, readFlag } from '../lib/env.ts';
-import { INTAKE_ENDPOINT_VAR, NEWSLETTER_ENDPOINT_VAR, formSubmitTargets, isFormSubmit, parseEndpoint, resolveEndpoint } from '../lib/endpoints.ts';
+import { INTAKE_ENDPOINT_VAR, NEWSLETTER_ENDPOINT_VAR, parseEndpoint, resolveEndpoint } from '../lib/endpoints.ts';
 import { AUDIENCES, BRIEFS } from './families.ts';
 import type { Audience } from './families.ts';
 import { site } from './site.ts';
@@ -54,19 +54,13 @@ export type FormPage = FormKind;
 /** The only kinds that may fall back to a mail client. A brief request, an investor interest and a partner enquiry have no mailbox. */
 export const MAILTO_KINDS: readonly FormKind[] = ['apply', 'contact'];
 
-export type FormProvider = 'formsubmit' | 'json';
-
 /** What a form shows and permits before any JavaScript has run (docs/forms-contract.md section 8). */
 export interface FormPlan {
   /** Effective mode: a mailto form without a confirmed mailbox is disabled. */
   readonly mode: FormMode;
   readonly mailbox: string | null;
-  /** Who takes the submission: the FormSubmit relay (RELEASE.md section 5) or an endpoint that speaks the JSON contract of docs/forms-contract.md. */
-  readonly provider: FormProvider;
   /** Endpoint a no-JavaScript submit posts to, or null when a no-JavaScript submit must not be possible. */
   readonly nativePost: string | null;
-  /** Endpoint the script posts to (`data-endpoint`), or null when the form has none. For FormSubmit this is its `/ajax/` door, which answers with JSON. */
-  readonly scriptEndpoint: string | null;
   /** The submit button ships `disabled` and only the client script removes it. True whenever `nativePost` is null. */
   readonly submitDisabledInMarkup: boolean;
   /** The client script removes `disabled` when it mounts. False only for a form that is not connected at all. */
@@ -85,67 +79,11 @@ export interface FormPlan {
 export function planForm(kind: FormPage, config: FormConfig, mailbox: string | null, requiresJs: boolean): FormPlan {
   const mailtoAllowed = MAILTO_KINDS.includes(kind) && mailbox !== null;
   const mode: FormMode = config.mode === 'mailto' && !mailtoAllowed ? 'disabled' : config.mode;
-  const provider: FormProvider = isFormSubmit(config.endpoint) ? 'formsubmit' : 'json';
-  const targets = mode === 'endpoint' && config.endpoint !== null && provider === 'formsubmit' ? formSubmitTargets(config.endpoint) : null;
-  const postUrl = targets?.native ?? config.endpoint;
-  const scriptEndpoint = mode === 'endpoint' ? (targets?.ajax ?? config.endpoint) : null;
-  const nativePost = kind !== 'newsletter' && mode === 'endpoint' && !requiresJs ? postUrl : null;
+  const nativePost = kind !== 'newsletter' && mode === 'endpoint' && !requiresJs ? config.endpoint : null;
   let noscript: FormPlan['noscript'] = 'none';
   if (mode === 'mailto') noscript = 'mailto-no-prefill';
   else if (mode === 'endpoint' && nativePost === null) noscript = 'needs-js';
-  return { mode, mailbox, provider, nativePost, scriptEndpoint, submitDisabledInMarkup: nativePost === null, scriptEnablesSubmit: mode !== 'disabled', noscript };
-}
-
-/** The subject line of the email FormSubmit sends to WE, per kind. The sender's name is appended where one exists. */
-export const FORMSUBMIT_SUBJECTS: Readonly<Record<FormKind, string>> = {
-  apply: 'WE application',
-  contact: 'WE contact message',
-  newsletter: 'WE newsletter subscription',
-  'brief-request': 'WE brief request',
-  'investor-interest': 'WE investor interest',
-  'partner-enquiry': 'WE partner enquiry',
-};
-
-export function formSubmitSubject(kind: FormKind, name = ''): string {
-  const who = name.trim();
-  return who === '' ? FORMSUBMIT_SUBJECTS[kind] : `${FORMSUBMIT_SUBJECTS[kind]} from ${who}`;
-}
-
-/**
- * The hidden controls a no-JavaScript post to FormSubmit carries, in order (https://formsubmit.co documentation of the `_` fields).
- * `form` says which form it was. `_subject` titles the email. `_captcha=false` turns off FormSubmit's own captcha page: the privacy notice
- * says WE uses no CAPTCHA, and the honeypot (`_honey`, rendered by HoneypotField) is the bot control. `_template=table` makes the email a
- * readable table. `_next` returns the visitor to the form's own thanks page; a form with none (contact) leaves it out and FormSubmit shows
- * its own confirmation page. No `redirect` and no `requestId` are sent: those belong to the JSON contract, and FormSubmit would only
- * add them to the email as noise.
- */
-export function formSubmitHiddenFields(kind: FormKind, thanksUrl: string | null): readonly (readonly [name: string, value: string])[] {
-  const fields: (readonly [string, string])[] = [
-    ['form', kind],
-    ['_subject', formSubmitSubject(kind)],
-    ['_captcha', 'false'],
-    ['_template', 'table'],
-  ];
-  if (thanksUrl !== null) fields.push(['_next', thanksUrl]);
-  return fields;
-}
-
-/**
- * The JSON body the script posts to FormSubmit's AJAX door. It is the contract body of docs/forms-contract.md section 3.1 without what a
- * mailbox reader does not need: empty values, the honeypot, the two client clocks and the request id (there is no server to deduplicate
- * on it). `email` stays under that name because FormSubmit uses a field called `email` as the reply address. The `_` controls match the
- * native post (`formSubmitHiddenFields`).
- */
-export function formSubmitBody(payload: object, kind: FormKind): Record<string, string | boolean> {
-  const dropped = new Set(['website', 'startedAt', 'submittedAt', 'requestId']);
-  const entries: [string, unknown][] = Object.entries(payload);
-  const body: Record<string, string | boolean> = {};
-  for (const [key, value] of entries) {
-    if (dropped.has(key)) continue;
-    if (typeof value === 'string' && value.trim() !== '') body[key] = value;
-    else if (value === true) body[key] = true;
-  }
-  return { ...body, _subject: formSubmitSubject(kind, typeof body.name === 'string' ? body.name : ''), _captcha: 'false', _template: 'table', _honey: '' };
+  return { mode, mailbox, nativePost, submitDisabledInMarkup: nativePost === null, scriptEnablesSubmit: mode !== 'disabled', noscript };
 }
 
 /** Mailbox that a form may expose as a mailto fallback, or null until the operator confirms it exists (C-22, B-2). */

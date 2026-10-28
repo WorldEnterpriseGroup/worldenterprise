@@ -1,9 +1,9 @@
 ---
 title: Privacy notice
-description: "What World Enterprise collects through its six forms, how FormSubmit passes each one to a WE mailbox, and what the site does not do: no cookies, no analytics."
+description: "What World Enterprise collects through its six forms, how records and emailed briefs work, and what the site does not do: no cookies, no analytics."
 eyebrow: Legal
 hero: H5
-updated: 2026-10-28
+updated: 2026-10-10
 claimsUsed: [C-01, C-18]
 ---
 
@@ -17,14 +17,15 @@ The site is hosted by GitHub Pages. Like any web host, GitHub receives technical
 
 ## What a form collects
 
-Nothing is collected until you press the submit button of a form. Nothing is sent while you type. The site has six forms: Apply, Contact, Request a brief, Investor interest, Partner enquiry and, where it is switched on, the newsletter form. A form sends only the fields below, to FormSubmit, the service described under "Where it goes".
+Nothing is collected until you press the submit button of a form. Nothing is sent while you type. The site has six forms: Apply, Contact, Request a brief, Investor interest, Partner enquiry and, where it is switched on, the newsletter form. A form sends only the fields below.
 
 | Field | Sent as | Which forms | Why |
 |---|---|---|---|
 | Which form it is | `form` | all | So WE can route the message |
+| A random request number | `requestId` | all except the newsletter | Your browser makes it when the page loads, so a repeated press of the button is recognized and handled once |
 | Who you are writing as: startup, investor or partner | `audience` | Apply, Contact, Request a brief, Investor interest, Partner enquiry | So WE can route the message |
 | Your name | `name` | all except the newsletter | To address you |
-| Your email address | `email` | all | To reply to you, to send a brief you asked for, or to send the newsletter. FormSubmit uses it as the reply address of the email it sends to WE |
+| Your email address | `email` | all | To reply to you, to send a brief you asked for, or to send the newsletter |
 | Company or working name | `company` | Apply, Contact, Request a brief, Investor interest, Partner enquiry | Required for Partner enquiry, optional elsewhere |
 | Website of your organization | `companyUrl` | Investor interest (optional), Partner enquiry | To see who the organization is |
 | Stage of your idea | `stage` | Apply, Request a brief (optional) | To understand where you are |
@@ -38,34 +39,34 @@ Nothing is collected until you press the submit button of a form. Nothing is sen
 | Sectors and stages you want to see | `focus` | Investor interest (optional) | The substance of your interest |
 | Your consent | `consent` | all | You tick a box that links to this notice |
 | Your consent to related emails | `consentUpdates` | Request a brief, only when WE offers it | A second box, unticked by default, for related briefs and articles |
-| Hidden spam trap | `_honey` | all | A field people leave empty; automated senders fill it, and FormSubmit drops those messages |
-| Email controls | `_subject`, `_template`, `_captcha` | all | Fixed values that WE sets: the subject line, the layout of the email, and a switch that turns FormSubmit's own CAPTCHA off. They carry nothing about you, except that WE may add your name to the subject line |
-| Page it was sent from | `page` | all, only when you send a form with JavaScript | So WE knows which form it was |
-| Where to go afterward | `_next` | all with a thanks page, only when you send a form without JavaScript | A hidden address on this site, so FormSubmit returns you to WE's own thank-you page |
+| Hidden spam trap | `website` | all | A field people leave empty; automated senders fill it |
+| Time you started and sent | `startedAt`, `submittedAt` | all | A weak signal to spot automated senders |
+| Page it was sent from | `page` | all | So WE knows which form it was |
+| Where to go afterward | `redirect` | all, only when you send a form without JavaScript | A hidden address on this site, which the service follows only if it is on its own list |
 
-The newsletter form uses only `email`, `consent`, the spam trap, the email controls and the page.
+The newsletter form uses only `email`, `consent`, the spam trap, the two times and the page.
 
 ## Where it goes
 
-WE runs no database or intake service of its own. When you press the submit button, your browser sends the fields above over an encrypted connection to FormSubmit (formsubmit.co), a form-forwarding service run by a company other than WE. FormSubmit turns the submission into an email and sends it to WE's shared mailbox, info@worldenterprise.org. That is the only place WE receives it. A form that is not yet connected says so and sends nothing.
+A form posts your answers over an encrypted connection to an intake service at intake.worldenterprise.org, which is separate from this website. The form sends no cookies and does not tell the service which page you came from beyond the `page` field above. Where the intake service is not yet connected, the form says so and sends nothing.
 
-FormSubmit is the service WE uses to forward form submissions: it receives everything you type into a form, and, as with any service your browser contacts, your network address and browser details. WE does not control how FormSubmit handles that data or how long it keeps it. FormSubmit handles it under its own terms and privacy policy, which this notice does not replace. The form sends no cookies. This is the one point at which your browser contacts a company other than GitHub, and it happens only when you press submit.
-
-Your email address is also the reply address of the email FormSubmit sends, so the people at WE who read the shared mailbox can answer you.
-
-The addresses hello@, apply@ and security@ worldenterprise.org are aliases of that same shared mailbox. A message you write to any of them arrives in the same place.
+The service writes each submission to WE's customer relationship management system, which is Microsoft Dataverse, part of Dynamics 365. The service validates what you sent and saves it there before it answers you. For each submission the system holds the fields in the table above, a contact record for you and, where you give a company or a business email address, an organization record. It also holds the time you consented, the page you sent it from, the status of any email WE sent you, the number of attempts to send it and, for a brief, which version was sent. It does not hold your network address.
 
 WE uses what you send to answer you, to consider your application, to send a brief you asked for, to send you the newsletter if you asked for it, and to keep a record of the conversation. WE does not sell it and does not pass it to advertisers.
 
-## Briefs and the newsletter
+## Briefs sent by email
 
-When you request a brief, WE receives your request in the shared mailbox like any other form, and someone at WE sends the brief to the address you gave. A brief you ask for is sent because you asked for it. The site promises no delivery time. The newsletter works the same way: your address reaches the shared mailbox, and WE writes to you from there.
+When you request a brief, the service emails you a link to it. The email is sent through Azure Communication Services. The brief is stored in a private location, the link is made for you and stops working after 48 hours, and the email says how to ask for the brief again. A brief you ask for is sent because you asked for it. Every email from the service carries an unsubscribe link.
 
-The site sends no automatic emails, so there is nothing to opt out of with a link. To stop receiving the newsletter or any related email, write to WE using the contact page, or reply to any email from WE, and WE will remove your address from its list.
+The unsubscribe link opens a page that asks you to confirm. Opening the link does nothing by itself, so a mail program that scans links cannot unsubscribe you by accident. When you confirm, WE records that you unsubscribed and stops emailing that address from this service. The link carries a random token and no personal information. WE keeps an encrypted copy of that token with your record so it can check the link later.
 
 ## Protection against abuse
 
-The hidden `_honey` field is the control used against automated senders: FormSubmit drops a submission that fills it. WE turns FormSubmit's CAPTCHA off, so there is no CAPTCHA and no bot-detection service run by WE. FormSubmit may apply its own limits and checks to the submissions it receives.
+The spam trap and the time check are the controls used against automated senders. There is no CAPTCHA and no third-party bot-detection service.
+
+The service also limits how often one address and one email can send the same form. For that it keeps a one-way scrambled form of the network address and of the email, never the originals, and it discards it shortly afterward.
+
+The service's own logs record only the request number, the form, the result and the scrambled network address. They never contain your message, your email address, or the link sent to you.
 
 ## The Team Composer
 
@@ -73,11 +74,11 @@ The Team Composer runs in your browser. It stores nothing, sets no cookies and s
 
 ## How long WE keeps it
 
-WE has not yet set a period for how long it keeps the emails that form submissions arrive as. Until it does, they stay in the shared mailbox so that WE can answer you and keep a record of the conversation. When WE sets a period, this notice names it before the period takes effect. FormSubmit keeps data under its own policy, as described above.
+WE has not yet set a period for how long it keeps what the service records. Until it does, the records stay in the customer relationship management system so that WE can answer you and keep a record of the conversation. When WE sets a period, this notice names it before the period takes effect.
 
 ## Your choices
 
-You can ask what WE holds about you, ask for it to be corrected, or ask for it to be deleted. Use the contact page and choose the topic about how WE handles information. WE can act on the emails in its own mailbox. For anything FormSubmit holds, ask WE first, and see FormSubmit's own privacy policy.
+You can ask what WE holds about you, ask for it to be corrected, or ask for it to be deleted. Use the contact page and choose the topic about how WE handles information. You can unsubscribe from emails at any time with the link in each one.
 
 ## Links to other sites
 

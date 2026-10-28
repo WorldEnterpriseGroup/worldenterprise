@@ -17,8 +17,7 @@ Waiting on the owner or an operator (names only, no values anywhere in Git):
 
 | Item | Owner | Where it is described |
 |---|---|---|
-| `PUBLIC_WE_INTAKE_API_URL` and `PUBLIC_WE_NEWSLETTER_API_URL` both set to `https://formsubmit.co/info@worldenterprise.org` in GitHub repo variables and in GitLab CI variables (decided 2026-10-28) | operator | section 5 |
-| The mailbox owner clicks FormSubmit's one-time activation link after the first live submission | operator | section 5 |
+| `PUBLIC_WE_INTAKE_API_URL` and `PUBLIC_WE_NEWSLETTER_API_URL` set (https, same values) in GitHub repo variables and in GitLab CI variables, once the Azure intake backend (Functions and Logic Apps into Dynamics 365, notifying `info@`) exists | operator, backend workstream | section 5 |
 | GitHub Pages source is "GitHub Actions" and the `github-pages` environment allows `gh-pages` | operator | section 4, step 2 |
 | Investor Introductions wording: decided 2026-10-28 under CEO delegation (the contradicting article sentence was fixed earlier) | closed | section 8 |
 | `hello@`, `apply@` and `security@` confirmed as aliases of the monitored `info@` mailbox (2026-10-28) | closed | sections 6 and 7 |
@@ -134,8 +133,8 @@ Do these in order. A step that fails stops the release; fix forward, never force
 
 | Name | Set where | Value shape | Purpose |
 |---|---|---|---|
-| `PUBLIC_WE_INTAKE_API_URL` | GitHub repo variable and GitLab CI variable (protected) | `https://formsubmit.co/info@worldenterprise.org` | Endpoint for the apply, contact, brief, investor and partner forms. Without it a launched form that has no mailbox fallback is disabled and the release build refuses to ship. |
-| `PUBLIC_WE_NEWSLETTER_API_URL` | GitHub repo variable and GitLab CI variable (protected) | `https://formsubmit.co/info@worldenterprise.org` | Endpoint for the newsletter form. Without it the newsletter does not launch. |
+| `PUBLIC_WE_INTAKE_API_URL` | GitHub repo variable and GitLab CI variable (protected) | absolute `https://` URL | Endpoint for the apply, contact, brief, investor and partner forms. Without it a launched form that has no mailbox fallback is disabled and the release build refuses to ship. |
+| `PUBLIC_WE_NEWSLETTER_API_URL` | GitHub repo variable and GitLab CI variable (protected) | absolute `https://` URL | Endpoint for the newsletter form. Without it the newsletter does not launch. |
 | `PUBLIC_WE_INTAKE_REQUIRES_JS` | optional, same places | `1` | Set only if the intake endpoint cannot take a native form-encoded post (`docs/forms-contract.md`, section 8). |
 | `RELEASE_APPROVED` | manual `mirror` job run on the release tag only | commit SHA, 12 or more hex characters | Approves exactly one commit. Do not store it as a project variable. |
 | `GITHUB_REPO` | already set in `.gitlab-ci.yml` | `WorldEnterpriseGroup/worldenterprise` | Which public repository the confirmation reads. |
@@ -144,24 +143,15 @@ The GitHub variables feed `.github/workflows/pages.yml`. The GitLab variables fe
 
 A non-https value fails the build with a message naming the variable (`src/lib/endpoints.ts`). The CSP is built from the configured origins and `audit:csp` fails the deploy if a form origin is missing from `connect-src` or `form-action`.
 
-### Forms backend decision (CEO, 2026-10-28): FormSubmit
+### Forms backend decision (CEO, 2026-10-28): no third-party relay
 
-There is no custom intake backend. The forms use FormSubmit (formsubmit.co), the relay the sister site globalenterprise already uses, and FormSubmit emails every submission to `info@worldenterprise.org`. The Azure intake service in `infra/intake` is not used and not provisioned; it stays in the repository as an unused alternative (`docs/intake-runbook.md` says so at its top).
-
-How it works, as built (`src/lib/endpoints.ts`, `src/data/forms.ts`, `src/scripts/forms.ts`, `src/components/forms/FormFrame.astro`, tested in `tests/unit/wp-49/formsubmit.test.ts`):
-
-- With JavaScript the form posts JSON to `https://formsubmit.co/ajax/info@worldenterprise.org`. FormSubmit answers HTTP 200 with a JSON `success` flag that is the string `"true"` or `"false"`. The script treats anything but success as a failure, so a form that FormSubmit has not activated can never show a thank-you page.
-- Without JavaScript the form posts form-encoded to `https://formsubmit.co/info@worldenterprise.org` and FormSubmit redirects to the hidden `_next` address, the form's own thank-you page (`/apply/thanks/`, `/briefs/thanks/` and the two others). Contact and the newsletter have no thanks page: contact shows FormSubmit's own confirmation page on a native post, and the newsletter is script-only.
-- Every post carries `_subject`, `_template=table` and `_captcha=false` (no CAPTCHA, as the privacy notice says), and the spam trap is the hidden `_honey` field. The `email` field becomes the reply address. The request id and the client clocks of `docs/forms-contract.md` are not sent.
-- The Content Security Policy is built from the endpoint variables, so `connect-src` and `form-action` both contain exactly `https://formsubmit.co`, and nothing else is added. The thank-you redirect stays on the site's own origin.
-- Any endpoint that is not on formsubmit.co is treated as before, with the JSON contract. That is how `e2e:forms` keeps using its test endpoint (`intake.example.test` in `.gitlab-ci.yml`).
-- Known limits, said plainly: (1) FormSubmit needs a one-time activation. The first live submission makes it email an activation link to `info@worldenterprise.org`; until someone clicks it, submissions are not delivered, and the forms show an error rather than a thank-you. Do that submission before telling anyone the site is live (section 10). (2) The sender is a third party, so the privacy notice names FormSubmit (`src/content/pages/legal/privacy.md`, `docs/forms-privacy-facts.md`). (3) There is no database and no automatic email: briefs and the newsletter are sent by a person from the mailbox, and the pages promise no delivery time. (4) The apply and contact forms need no mailbox fallback once the variable is set; the fallback only matters in a build without it.
+No third-party form relay is used, and none may be added. The forms keep the existing, provider-neutral mechanism: they post to the endpoint named by `PUBLIC_WE_INTAKE_API_URL` (and `PUBLIC_WE_NEWSLETTER_API_URL` for the newsletter) under the contract in `docs/forms-contract.md`. The real backend is Azure Functions and Logic Apps writing into Dynamics 365 and notifying `info@worldenterprise.org`, built in another workstream to that contract (`infra/intake` holds the earlier design). The privacy notice describes the intake service and names no other processor. Until the variables are set a release build refuses to ship the disabled form routes (below), which is the gate working.
 
 ### What happens when a variable is absent (checked in the code)
 
 Intake (`/apply/`, `/contact/`; `src/data/forms.ts`, `src/components/forms/FormFrame.astro`):
 
-1. Endpoint set: for FormSubmit the script posts JSON to its `/ajax/` door and a no-JavaScript visitor posts to the plain address; for any other endpoint the form posts JSON with a native post when the endpoint allows it.
+1. Endpoint set: the form posts JSON to it, with a native post when the endpoint allows it.
 2. Endpoint absent and the `apply@` mailbox confirmed (`site.mailboxes.apply.confirmed`): the form falls back to a mailto message to the confirmed mailbox.
 3. Endpoint absent and no confirmed mailbox: the form renders disabled. A notice reads "This form is not connected yet" and "It is shown so you can see what WE asks for. It cannot be sent until WE connects it to an inbox, and the send button stays off until then." The submit button stays off.
 4. In a release build (`PUBLIC_RELEASE=1`), state 3 on a launched route fails the build: `launched form route /apply/ has form "intake" in disabled mode` (and the same for `/contact/`). Since 2026-10-28 both mailboxes are confirmed, so `/apply/` and `/contact/` fall back to mailto in a build without the variable and are not flagged. The other intake routes (the briefs, `/investors/interest/` and `/network/partners/enquire/`) have no mailbox fallback and are still counted as disabled by `effectiveRouteMode` in `src/data/forms.ts`, so the variable stays a hard prerequisite for a release.
@@ -174,14 +164,14 @@ Decided 2026-10-28 (owner): `security@worldenterprise.org` is an alias of the mo
 
 ## 7. Mailbox confirmations
 
-Decided 2026-10-28 (owner): `hello@worldenterprise.org`, `apply@worldenterprise.org` and `security@worldenterprise.org` are aliases of `info@worldenterprise.org`, which is monitored and is where FormSubmit delivers every form. `site.mailboxes.hello.confirmed` and `site.mailboxes.apply.confirmed` are `true` in `src/data/site.ts`. Effects: `hello@` is shown on the Contact page, a confirmed mailbox is the mailto fallback for the apply and contact forms in a build without the endpoint variable, and the privacy notice states the alias arrangement. Closed. The aliases must stay in place: if one is removed, set its `confirmed` back to `false` in the same change.
+Decided 2026-10-28 (owner): `hello@worldenterprise.org`, `apply@worldenterprise.org` and `security@worldenterprise.org` are aliases of `info@worldenterprise.org`, which is monitored and is where the intake backend notifies. `site.mailboxes.hello.confirmed` and `site.mailboxes.apply.confirmed` are `true` in `src/data/site.ts`. Effects: `hello@` is shown on the Contact page, a confirmed mailbox is the mailto fallback for the apply and contact forms in a build without the endpoint variable. Closed. The aliases must stay in place: if one is removed, set its `confirmed` back to `false` in the same change.
 
 ## 8. Counsel review: Investor Introductions and investor wording
 
 Decided 2026-10-28 under CEO delegation ("you decide, you audit it and put it together"), not by outside counsel: every entry below was audited against its source and against the ORBITAL registry entry for World Enterprise Group Incorporated (Business Consulting, NAICS 541611, 541690, 561110, 611430, 541990; "a business incubator ... WE Dream, WE Build, WE Grow"; Lewes, Delaware). The audit found no price, no outcome or performance promise, no fund, return or approval claim, no named client or investor, and no statement that contradicts the registry. Every sentence that touches securities or investors states a limit of WE's role, not a service level. The decisions, with the reason for each:
 
 - Investor Introductions (CR-01 to CR-07, CR-09 to CR-16, CR-20, CR-21, CR-23 to CR-25): kept as the owner structured it on 2026-10-09: a separate, optional, flat-fee add-on, no success fee, no stake, no terms negotiated, no funds handled, no promise of a meeting, a reply or funding, and no price published. That structure is what keeps the offer on the consulting side of the line, and the sentences state it plainly. The one-sentence disclaimer stays verbatim in every place it appears: it is the wording the owner fixed under claim C-14, it limits WE's conduct, and softening any copy of it would desynchronize about twenty pinned places without lowering the risk. The add-on is not removed because nothing in it is unverifiable by the registry or contradicts it; what stays unverified is the commercial terms, and the site publishes none.
-- Brief and form wording (CR-26 to CR-29, CR-38 to CR-40): checked against the FormSubmit flow decided the same day (section 5). A brief is sent by email by a person, the pages promise no delivery time and no automation, and the privacy notice names FormSubmit and the shared mailbox. No sentence claims an automatic email, a link that expires or an unsubscribe link, so no edit was needed.
+- Brief and form wording (CR-26 to CR-29, CR-38 to CR-40): checked against the intake contract (`docs/forms-contract.md`). The pages promise no delivery time, no outcome and no partnership, and say only that WE sends the brief by email to the address given, which the intake service does. No edit was needed.
 - Brief abstracts and the gated full texts (CR-30 to CR-37) and the comparison pages (CR-41 to CR-44): each says it is general information, not legal, tax or investment advice, names no company and quotes sources as sources. Approved as written.
 - The facts page (CR-21) was a release 2 item in the rc2 review. It is part of the tree being released now, and it repeats CR-01 and CR-02 verbatim, so it is approved with them.
 - Nothing was reworded in this pass, so every quote and line number below still matches its source, which `tests/unit/wp-30/release-doc.test.ts` checks.
@@ -816,7 +806,7 @@ After step 9, check each on `https://worldenterprise.org`:
 
 - Home, `/apply/`, `/contact/`, `/how-we-work/`, `/investors/`, `/network/`, `/services/fundability-and-investor-readiness/` respond 200 and show the release wording from section 8.
 - `/robots.txt`, `/sitemap-index.xml`, `/rss.xml` respond. `/.well-known/security.txt` responds and shows `Contact: mailto:security@worldenterprise.org`, a future `Expires` and the canonical URL (section 6).
-- Submit one test application and one contact message through the live forms and confirm they arrive in the `info@worldenterprise.org` inbox, clicking FormSubmit's activation link in the first email (section 5). Submit with the browser console open and confirm no CSP violation.
+- Submit one test application and one contact message through the live forms and confirm they arrive where the intake endpoint delivers them (the `info@worldenterprise.org` inbox and the Dynamics 365 record). Submit with the browser console open and confirm no CSP violation.
 - No preview markers (the GitLab preview build sets `PUBLIC_PREVIEW`, the release build must not show it) and no `/styleguide/` route.
 - The custom domain still resolves and `CNAME` is unchanged.
 

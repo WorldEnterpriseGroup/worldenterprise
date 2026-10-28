@@ -1,5 +1,5 @@
 ---
-import { audiencesFor, formSubmitHiddenFields, forms, intakeRequiresJs, mailboxFor, planForm } from '../../data/forms.ts';
+import { audiencesFor, forms, intakeRequiresJs, mailboxFor, planForm } from '../../data/forms.ts';
 import type { FormKind } from '../../data/forms.ts';
 import { REVIEW_COPY } from '../apply/fields.ts';
 import { absoluteUrl, href } from '../../lib/url.ts';
@@ -36,7 +36,7 @@ const { kind, id, submitLabel, thanksPath, audience, briefId, consentLabel, step
 const config = kind === 'newsletter' ? forms.newsletter : forms.intake;
 const mailboxKind = kind === 'apply' || kind === 'contact' ? kind : null;
 const plan = planForm(kind, config, mailboxKind === null ? null : mailboxFor(mailboxKind), intakeRequiresJs);
-const { mode, mailbox, nativePost, provider } = plan;
+const { mode, mailbox, nativePost } = plan;
 const resolvedThanks = thanksPath ?? (kind === 'apply' ? '/apply/thanks/' : undefined);
 const redirect = resolvedThanks !== undefined ? absoluteUrl(resolvedThanks) : null;
 const fixedAudiences = kind === 'brief-request' ? [] : audiencesFor(kind);
@@ -51,8 +51,7 @@ const presetAudience = audience ?? (fixedAudiences.length === 1 ? fixedAudiences
   data-intake-form
   data-kind={kind}
   data-mode={mode}
-  data-endpoint={plan.scriptEndpoint ?? undefined}
-  data-provider={provider}
+  data-endpoint={config.endpoint ?? undefined}
   data-mailto={mailbox ?? undefined}
   data-thanks={resolvedThanks !== undefined ? href(resolvedThanks) : undefined}
 >
@@ -88,14 +87,10 @@ const presetAudience = audience ?? (fixedAudiences.length === 1 ? fixedAudiences
 
   <ErrorSummary id={id} />
 
-  {
-    nativePost !== null && provider === 'formsubmit' &&
-      formSubmitHiddenFields(kind, redirect).map(([name, value]) => <input type="hidden" name={name} value={value} />)
-  }
-  {nativePost !== null && provider === 'json' && <input type="hidden" name="form" value={kind} />}
-  {nativePost !== null && provider === 'json' && redirect !== null && <input type="hidden" name="redirect" value={redirect} />}
+  {nativePost !== null && <input type="hidden" name="form" value={kind} />}
+  {nativePost !== null && redirect !== null && <input type="hidden" name="redirect" value={redirect} />}
   {/* A no-JavaScript post carries an empty request id and the server generates one (contracts section 3.1). The script keeps its own. */}
-  {nativePost !== null && provider === 'json' && kind !== 'newsletter' && <input type="hidden" name="requestId" value="" />}
+  {nativePost !== null && kind !== 'newsletter' && <input type="hidden" name="requestId" value="" />}
   {presetAudience !== undefined && <input type="hidden" name="audience" value={presetAudience} />}
   {briefId !== undefined && <input type="hidden" name="briefId" value={briefId} />}
 
@@ -107,7 +102,7 @@ const presetAudience = audience ?? (fixedAudiences.length === 1 ? fixedAudiences
     <p class="field__hint"><a href={href('/legal/privacy/')}>Read the privacy notice</a>. WE sets no cookies and loads no third-party scripts.</p>
   </div>
 
-  <HoneypotField id={`${id}-website`} name={provider === 'formsubmit' ? '_honey' : 'website'} />
+  <HoneypotField id={`${id}-website`} />
 
   <div class="cluster intake__actions">
     {stepped && <button class="btn btn--secondary" type="button" data-step-back hidden>{REVIEW_COPY.back}</button>}

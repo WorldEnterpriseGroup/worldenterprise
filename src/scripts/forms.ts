@@ -5,8 +5,7 @@
  */
 import { ApplyStepper } from '../components/apply/stepper.ts';
 import type { ApplyStep } from '../components/apply/steps.ts';
-import { FIELD_NAMES, FORM_KINDS, LIMITS, MAILTO_KINDS, SITUATIONS, STAGES, TOPICS, composeMessage, contextLines, formSubmitBody, normaliseText, validate } from '../data/forms.ts';
-import { isFormSubmit } from '../lib/endpoints.ts';
+import { FIELD_NAMES, FORM_KINDS, LIMITS, MAILTO_KINDS, SITUATIONS, STAGES, TOPICS, composeMessage, contextLines, normaliseText, validate } from '../data/forms.ts';
 import type { FieldError, FieldName, FormKind, FormValues, SituationId, Stage, Topic } from '../data/forms.ts';
 import { parseTeamFromLocation, describeTeam } from './team-composer.ts';
 
@@ -178,15 +177,6 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
-/**
- * FormSubmit answers a fetch with `{ "success": "true", "message": "..." }`, the flag as a string, and a refusal (a form that is not
- * yet activated, a blocked sender) with `"success": "false"` and the same 200 status. Only an explicit true counts as sent: a page that
- * is not JSON (a captcha or an error page) must never read as success.
- */
-export function relaySucceeded(body: unknown): boolean {
-  return isRecord(body) && (body.success === true || body.success === 'true');
-}
-
 /** Extracts `{ errors: { field: message } }` from a rejection body. Keys that are not form fields are ignored. */
 export function parseFieldErrors(body: unknown): FieldError[] {
   if (!isRecord(body) || !isRecord(body.errors)) return [];
@@ -212,8 +202,6 @@ export async function submitIntake(endpoint: string, payload: IntakePayload, opt
     throw new SubmitError('invalid-config', 'The form endpoint is not a valid URL.', { cause });
   }
   if (target.protocol !== 'https:') throw new SubmitError('invalid-config', 'The form endpoint must use https.');
-  // The FormSubmit relay (RELEASE.md section 5) takes its own body and answers { success: "true" | "false", message } with a 200 either way.
-  const relay = isFormSubmit(target.href);
 
   const controller = new AbortController();
   let timedOut = false;
@@ -233,7 +221,7 @@ export async function submitIntake(endpoint: string, payload: IntakePayload, opt
       response = await fetchImpl(target.href, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(relay ? formSubmitBody(payload, payload.form) : payload),
+        body: JSON.stringify(payload),
         credentials: 'omit',
         referrerPolicy: 'no-referrer',
         mode: 'cors',
@@ -247,9 +235,6 @@ export async function submitIntake(endpoint: string, payload: IntakePayload, opt
 
     if (response.ok) {
       const body = await readJson(response);
-      if (relay && !relaySucceeded(body)) {
-        throw new SubmitError('server', 'The relay did not accept the submission.', { status: response.status });
-      }
       if (isRecord(body) && body.ok === false) {
         throw new SubmitError('rejected', 'The server did not accept the submission.', { status: response.status, fieldErrors: parseFieldErrors(body) });
       }
@@ -345,8 +330,7 @@ function readValues(form: HTMLFormElement): FormValues {
     topic: text('topic'),
     message: text('message'),
     consent: consent instanceof HTMLInputElement && consent.checked,
-    // The honeypot is `website` on the JSON contract and `_honey` on a FormSubmit form, which only knows that name.
-    website: text('website') || text('_honey'),
+    website: text('website'),
     situation: text('situation'),
     startedMonth: text('startedMonth'),
     industryYears: text('industryYears'),

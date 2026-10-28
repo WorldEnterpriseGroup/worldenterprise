@@ -69,42 +69,12 @@
     {
       "wp": "WP-49",
       "path": ".astro-magazine/release/RELEASE.md",
-      "reason": "#49 items 1 to 3 (CEO decisions 2026-10-28): records the FormSubmit provider decision (section 5), closes sections 6 and 7, and records the delegated counsel, terms, PBC, price and Focus Shifts decisions (sections 8 and 9), ticking the checklist."
-    },
-    {
-      "wp": "WP-49",
-      "path": "docs/forms-contract.md",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. A release note says the contract still describes any non-FormSubmit endpoint and that sections 5 and 7 describe an unused service."
-    },
-    {
-      "wp": "WP-49",
-      "path": "docs/forms-privacy-facts.md",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. Rewritten so the facts match what the forms do: no database, no automatic email, FormSubmit as the forwarder."
-    },
-    {
-      "wp": "WP-49",
-      "path": "docs/intake-runbook.md",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. The runbook is marked as not used by the release; the internal GitLab instance URL is removed from it (#49 item 4, public-exposure audit)."
-    },
-    {
-      "wp": "WP-49",
-      "path": "src/components/forms/FormFrame.astro",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. Renders the FormSubmit hidden controls (_subject, _template, _captcha, _next), the _honey spam trap and the script endpoint."
-    },
-    {
-      "wp": "WP-49",
-      "path": "src/components/forms/HoneypotField.astro",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. The honeypot field name is a prop, `_honey` for FormSubmit and `website` otherwise."
-    },
-    {
-      "wp": "WP-49",
-      "path": "src/content/pages/legal/privacy.md",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. The privacy notice names FormSubmit and the shared mailbox and drops the unused intake service, Dataverse, brief-link and unsubscribe statements."
+      "reason": "#49 items 1 to 3 (CEO decisions 2026-10-28): records that forms use the env-var endpoint with no third-party relay (section 5), closes sections 6 and 7, and records the delegated counsel, terms, PBC, price and Focus Shifts decisions (sections 8 and 9), ticking the checklist."
     },
     {
       "wp": "WP-49",
       "path": "src/data/forms.ts",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. Adds the provider plan, the hidden controls and body for FormSubmit, and effectiveRouteMode so the release gate still counts routes with no mailbox fallback as disabled once a mailbox is confirmed."
+      "reason": "#49 item 2 (CEO decision 2026-10-28): adds effectiveRouteMode so the release gate still counts routes with no mailbox fallback as disabled once a mailbox is confirmed."
     },
     {
       "wp": "WP-49",
@@ -113,18 +83,8 @@
     },
     {
       "wp": "WP-49",
-      "path": "src/lib/endpoints.ts",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. Adds FormSubmit detection and its two doors (plain and /ajax/) to the one module that parses the endpoint variables."
-    },
-    {
-      "wp": "WP-49",
       "path": "src/lib/route-state.ts",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. The release assertion reads effectiveRouteMode, so confirming a mailbox cannot switch the disabled-form check off for routes with no mailto fallback."
-    },
-    {
-      "wp": "WP-49",
-      "path": "src/scripts/forms.ts",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. The script posts FormSubmit its own body to the /ajax/ door and treats a 200 with success other than true as a failure."
+      "reason": "#49 item 2: the release assertion reads effectiveRouteMode, so confirming a mailbox cannot switch the disabled-form check off for routes with no mailto fallback."
     },
     {
       "wp": "WP-49",
@@ -138,18 +98,8 @@
     },
     {
       "wp": "WP-49",
-      "path": "tests/unit/wp-10/truth.test.ts",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. The privacy notice names the FormSubmit fields and no longer the JSON-contract clocks, request id and website field."
-    },
-    {
-      "wp": "WP-49",
       "path": "tests/unit/wp-19/security-txt.test.ts",
       "reason": "#49 item 2 (CEO decision 2026-10-28): hello@, apply@ and security@ are aliases of info@. Pins the real security.txt: contact alias, Expires and the canonical URL."
-    },
-    {
-      "wp": "WP-49",
-      "path": "tests/unit/wp-61/privacy.test.ts",
-      "reason": "#49 item 1 (CEO decision 2026-10-28): the forms post to FormSubmit, which forwards to the info@ mailbox. The notice pins now check FormSubmit, the shared mailbox and the absence of the unused intake service."
     }
   ]
 }
