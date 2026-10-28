@@ -154,7 +154,72 @@
     {
       "wp": "WP-49",
       "path": "docs/intake-runbook.md",
-      "reason": "#49 item 4 (CEO decision 2026-10-28, public-exposure audit): removes an internal hostname or internal pipeline URL from a file that ships in the public repository. No other change."
+      "reason": "#49 item 4 (CEO decision 2026-10-28): removes an internal hostname, and records the intake Lead, the Logic App notification, the client-secret deploy identity and the e2e job (#120, #121)."
+    },
+    {
+      "wp": "WP-49",
+      "path": "infra/intake/src/**",
+      "reason": "#120 (CEO decision 2026-10-28, no third-party form relay): Dynamics 365 Lead write plus a Logic App notification to info@, replacing the webhook."
+    },
+    {
+      "wp": "WP-49",
+      "path": "infra/intake/tests/**",
+      "reason": "#120 (CEO decision 2026-10-28, no third-party form relay): Dynamics 365 Lead write plus a Logic App notification to info@, replacing the webhook. Unit tests with the Dataverse fake, the Bicep compile and the workflow-definition checks."
+    },
+    {
+      "wp": "WP-49",
+      "path": "infra/intake/iac/**",
+      "reason": "#120 (CEO decision 2026-10-28, no third-party form relay): Dynamics 365 Lead write plus a Logic App notification to info@, replacing the webhook. Bicep for the Consumption Logic App, its Entra trigger policy and the role assignments."
+    },
+    {
+      "wp": "WP-49",
+      "path": "infra/intake/logicapps/**",
+      "reason": "#120 (CEO decision 2026-10-28, no third-party form relay): Dynamics 365 Lead write plus a Logic App notification to info@, replacing the webhook. The workflow definition as JSON in git."
+    },
+    {
+      "wp": "WP-49",
+      "path": "infra/intake/dataverse/definition.json",
+      "reason": "#120 (CEO decision 2026-10-28, no third-party form relay): Dynamics 365 Lead write plus a Logic App notification to info@, replacing the webhook. Lead privileges, the Lead extension and key, and the we_notifiedat and we_Lead columns."
+    },
+    {
+      "wp": "WP-49",
+      "path": "infra/intake/ci.yml",
+      "reason": "#120/#121: client-secret deploy identity instead of GitLab OIDC (the issuer is overlay-only), the webhook parameter replaced by notifyEmail, and the manual intake:e2e job."
+    },
+    {
+      "wp": "WP-49",
+      "path": "infra/intake/README.md",
+      "reason": "#120 (CEO decision 2026-10-28, no third-party form relay): Dynamics 365 Lead write plus a Logic App notification to info@, replacing the webhook. The settings table."
+    },
+    {
+      "wp": "WP-49",
+      "path": "docs/decisions/adr-intake-d365.md",
+      "reason": "#120: the ADR for the Dynamics 365 and Logic App decision."
+    },
+    {
+      "wp": "WP-49",
+      "path": "docs/forms-privacy-facts.md",
+      "reason": "#120 (CEO decision 2026-10-28, no third-party form relay): Dynamics 365 Lead write plus a Logic App notification to info@, replacing the webhook. The facts the privacy notice copies."
+    },
+    {
+      "wp": "WP-49",
+      "path": "docs/wave8-contracts.md",
+      "reason": "#120 (CEO decision 2026-10-28, no third-party form relay): Dynamics 365 Lead write plus a Logic App notification to info@, replacing the webhook. Section 4 states the Lead, the single Logic App hop and the identities."
+    },
+    {
+      "wp": "WP-49",
+      "path": "src/content/pages/legal/privacy.md",
+      "reason": "#120 (CEO decision 2026-10-28, no third-party form relay): Dynamics 365 Lead write plus a Logic App notification to info@, replacing the webhook. The privacy notice states the Lead and the in-tenant notification, with the pinned tests unchanged."
+    },
+    {
+      "wp": "WP-49",
+      "path": "playwright.config.ts",
+      "reason": "#121: an intake-e2e project, added only when INTAKE_E2E=1, with no static web server; the other projects ignore its directory."
+    },
+    {
+      "wp": "WP-49",
+      "path": "tests/e2e/intake/**",
+      "reason": "#121: the Playwright spec for the deployed intake service, gated by INTAKE_E2E=1."
     }
   ]
 }

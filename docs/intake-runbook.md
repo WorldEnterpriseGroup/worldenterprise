@@ -2,7 +2,7 @@
 
 Status: authored by WP-61. Audience: the operator who provisions and runs the World Enterprise intake service.
 
-The intake service is an Azure Function (`infra/intake`) that takes the six site forms, writes each submission to Dataverse, and emails gated briefs. It ships inert. Nothing in this repository creates Azure or Dataverse objects until the operator supplies the inputs below and runs the manual pipeline jobs. Until then the site's forms stay `disabled`, and `verify:release` fails closed on a release tag because `PUBLIC_WE_INTAKE_API_URL` is unset. That is intended.
+The intake service is an Azure Function (`infra/intake`) that takes the six site forms, writes each submission to Dataverse (the ledger row and, for every form but the newsletter, a Dynamics 365 Lead), tells the WE inbox through a Logic App, and emails gated briefs. No third-party form relay is involved: every hop is in WE's Microsoft tenant. It ships inert. Nothing in this repository creates Azure or Dataverse objects until the operator supplies the inputs below and runs the manual pipeline jobs. Until then the site's forms stay `disabled`, and `verify:release` fails closed on a release tag because `PUBLIC_WE_INTAKE_API_URL` is unset. That is intended.
 
 Rules that hold throughout:
 
@@ -14,7 +14,7 @@ Rules that hold throughout:
 
 | Id | What is needed | Who provides it | Without it |
 |---|---|---|---|
-| OP-AZURE | An Azure subscription, and an Entra application with a federated credential for this GitLab project that can deploy to it (details below) | Azure subscription owner | No `intake:deploy` job exists; the Function does not exist |
+| OP-AZURE | An Azure subscription, and the deploy identity `sp-worldenterprise-intake-deploy` (an Entra application with a client secret) that can deploy to it (details below) | Azure subscription owner | No `intake:deploy` job exists; the Function does not exist |
 | OP-FD | The Front Door merge request merged and applied, the DNS records for `intake.worldenterprise.org`, and the profile's Front Door id | Owner of FocusApiary/infrastructure and of the worldenterprise.org DNS zone | The endpoint is unreachable from a browser; forms stay disabled |
 | OP-DV | A Dataverse environment URL, and the deploying application registered in it as an application user with the System Administrator role | Power Platform environment admin | `intake:dataverse` cannot run; submissions cannot be stored, so the service answers 503 |
 | OP-MAIL | The sender decision and, if wanted, the mailing address for the email footer | WE owner | The Azure-managed sender domain is used; no footer address is printed |
@@ -24,29 +24,29 @@ Rules that hold throughout:
 
 ## OP-AZURE
 
-1. Create or choose an Entra application registration for the pipeline. Add a federated credential with issuer the internal GitLab instance URL, audience `api://AzureADTokenExchange` and subject `project_path:WorldEnterpriseGroup/worldenterprise:ref_type:branch:ref:demo`. There is no client secret.
+1. The pipeline signs in as the Entra application `sp-worldenterprise-intake-deploy` with a client secret, the way the other house pipelines do. GitLab OIDC federation is not used: the internal GitLab issuer is reachable only on the overlay network, which Entra cannot reach. The application and its secret are created by the infrastructure work (#119), not by hand; the secret is Key Vault `omlab-secrets` secret `worldenterprise-intake-deploy-sp-secret`, and its value is copied once into the protected, masked CI/CD variable `INTAKE_AZURE_CLIENT_SECRET`.
 2. Grant it, at the subscription, the roles Bicep needs to create a resource group and assign roles: Contributor, plus either User Access Administrator or Role Based Access Control Administrator. The role-assignment right is needed because the `keyvault-access.bicep` module, which runs in the vault's resource group `Om-Labs`, assigns Key Vault Secrets User on `omlab-secrets` to the Function's identity, and the main template assigns the storage and Communication Services roles.
-3. Create the two Key Vault secrets in `omlab-secrets`. The operator runs these once, with a value that is never printed:
+3. Create the Key Vault secret in `omlab-secrets`. The operator runs this once, with a value that is never printed:
 
    ```bash
    az keyvault secret set --vault-name omlab-secrets --name worldenterprise-intake-unsubscribe-key --value "$(openssl rand -base64 48)" --output none
-   az keyvault secret set --vault-name omlab-secrets --name worldenterprise-intake-hmac-secret --value "$(openssl rand -base64 48)" --output none
    ```
 
-   `worldenterprise-intake-unsubscribe-key` encrypts the stored unsubscribe tokens and is required. `worldenterprise-intake-hmac-secret` signs the optional webhook and is used only when `INTAKE_WEBHOOK_URL` is set. The third name in the contract, `worldenterprise-intake-acs-endpoint`, is not needed: Bicep injects the Azure Communication Services endpoint.
+   `worldenterprise-intake-unsubscribe-key` encrypts the stored unsubscribe tokens and is required. There is no webhook and no webhook signing secret. The other names, `worldenterprise-intake-deploy-sp-secret` and `worldenterprise-intake-e2e-sp-secret`, hold the two pipeline identities' client secrets (step 1 and OP-E2E). The name in the contract, `worldenterprise-intake-acs-endpoint`, is not needed: Bicep injects the Azure Communication Services endpoint.
 4. Set these protected, masked-where-secret GitLab CI/CD variables on the project (they are identifiers, not secrets, but protect them anyway so only `demo` sees them):
 
    | Variable | Value |
    |---|---|
-   | `INTAKE_AZURE_CLIENT_ID` | The application's client id |
+   | `INTAKE_AZURE_CLIENT_ID` | The deploy application's client id |
+   | `INTAKE_AZURE_CLIENT_SECRET` | The deploy application's client secret (masked), from `worldenterprise-intake-deploy-sp-secret` |
    | `INTAKE_AZURE_TENANT_ID` | The Entra tenant id |
    | `INTAKE_AZURE_SUBSCRIPTION_ID` | The subscription id |
    | `INTAKE_FRONT_DOOR_ID` | The shared profile's Front Door id, from the `frontdoor_fdid` Terraform output (OP-FD) |
    | `INTAKE_DATAVERSE_URL` | `https://<org>.crm.dynamics.com` (OP-DV) |
 
-   Optional: `INTAKE_LOCATION` (default `eastus`), `INTAKE_SENDER_ADDRESS`, `INTAKE_MAIL_FOOTER_ADDRESS`, `INTAKE_WEBHOOK_URL`, `INTAKE_ALERT_EMAIL`, `INTAKE_DEPLOY_PRINCIPAL_ID` (the application's object id, so it can upload rendered briefs), `INTAKE_NURTURE_ENABLED` (leave unset), `INTAKE_API_HOST` (default `intake.worldenterprise.org`).
+   Optional: `INTAKE_LOCATION` (default `eastus`), `INTAKE_SENDER_ADDRESS`, `INTAKE_MAIL_FOOTER_ADDRESS`, `INTAKE_NOTIFY_EMAIL` (the inbox the Logic App emails, default `info@worldenterprise.org`), `INTAKE_ALERT_EMAIL`, `INTAKE_DEPLOY_PRINCIPAL_ID` (the application's object id, so it can upload rendered briefs), `INTAKE_NURTURE_ENABLED` (leave unset), `INTAKE_API_HOST` (default `intake.worldenterprise.org`).
 
-With the five required variables set, the `intake:deploy`, `intake:dataverse` and `intake:verify` jobs appear on the next `demo` pipeline, all manual.
+With the six required variables set, the `intake:deploy`, `intake:dataverse` and `intake:verify` jobs appear on the next `demo` pipeline, all manual.
 
 ## OP-FD
 
@@ -71,9 +71,9 @@ The Function accepts traffic only from this profile (Front Door service tag plus
    The pipeline keeps that role so `intake:dataverse` can apply later changes to the definition (new tables, new role privileges). Narrow or remove it only if the definition is frozen.
 3. Run `intake:dataverse` (manual, demo). It applies `infra/intake/dataverse/definition.json` and nothing else:
    - the publisher `worldenterprise` and the solution `worldenterprise_intake`,
-   - the business unit "World Enterprise", an owner team, and the security role "World Enterprise Intake Service" (create, read, write, append and append-to on `we_engagement` and Contact; create, read, write and append-to on Account; Local depth, so it reaches only rows in the World Enterprise business unit),
-   - the table `we_engagement` with its columns, the lookups to Contact and Account, and the alternate keys `we_engagement_requestid` and `we_engagement_tokenhash`,
-   - the `we_accountkey` column and key on Account,
+   - the business unit "World Enterprise", an owner team, and the security role "World Enterprise Intake Service" (create, read, write, append and append-to on `we_engagement`, Contact and Lead; create, read, write and append-to on Account; Local depth, so it reaches only rows in the World Enterprise business unit),
+   - the table `we_engagement` with its columns (including `we_notifiedat`), the lookups to Contact, Account and Lead, and the alternate keys `we_engagement_requestid` and `we_engagement_tokenhash`,
+   - the `we_accountkey` column and key on Account, and the `we_requestid` column and key `lead_we_requestid` on Lead,
    - the Function's managed identity as an application user holding only that role.
    - when `INTAKE_E2E_CLIENT_ID` is set: the role "World Enterprise Intake E2E Reader" (Read and Delete on Lead, Contact and `we_engagement`, Local depth, nothing else; the definition refuses any other action) and `sp-worldenterprise-intake-e2e` as an application user holding only that role.
 4. The job is idempotent. It looks first, creates only what is missing, never deletes, and never changes an existing object. A rerun after a partial failure is safe. Alternate keys activate asynchronously; the job waits.
@@ -88,6 +88,21 @@ The service sends through Azure Communication Services Email. Bicep creates the 
 - The sender address printed on mail is `DoNotReply@<managed domain>`. A reply goes nowhere. If WE wants a branded sender, that is a Bicep change (a customer-managed domain with SPF, DKIM and DKIM2 DNS records, linked to the Communication Service) and then `INTAKE_SENDER_ADDRESS` is set to the new address. Setting the variable without the linked domain makes every send fail, and the rows are marked `delivery-failed`. This change does not add a custom domain.
 - `INTAKE_MAIL_FOOTER_ADDRESS` is the postal address printed in the footer. Unset means the line is omitted. Bulk marketing mail in some places requires one; counsel decides (OP-COUNSEL).
 - A failed send leaves the row `delivery-failed`, an alert fires if `INTAKE_ALERT_EMAIL` is set, and the retry timer tries again.
+
+## Leads and the inbox notification
+
+After the durable write, the Function does two things, and a failure of either never fails the visitor:
+
+1. **Lead.** For `apply`, `contact`, `investor-interest`, `partner-enquiry` and `brief-request` it creates a standard Dynamics 365 Lead in the World Enterprise business unit, with the subject `<Form>: <name> (<first 8 of the request id>)`, the person, the organization and the message, lead source Web. The Lead is keyed on the request id (`we_requestid`), so a replay or a sweep retry finds the existing Lead and never makes a second one. The ledger row links to it. The newsletter writes a Contact and the ledger row only.
+2. **Notification.** It calls the Consumption Logic App `logic-we-intake-notify-<suffix>` with a managed-identity token. The trigger accepts only the Function's identity (an Entra policy on issuer, audience and object id; there is no shared access signature). The workflow, kept in `infra/intake/logicapps/we-intake-notify.definition.json`, emails `INTAKE_NOTIFY_EMAIL` through the Azure Communication Services Email API with its own managed identity. The email names the form, the person and a link to the Dynamics 365 record. It carries no message text and no address; the submission is read in Dynamics. A request from an `@e2e.invalid` address is subjected `[test]`.
+
+If the Lead or the notification fails, the log shows `lead_failed` or `notify_failed` (error code only), the ledger row stays without `we_notifiedat`, and the retry timer finishes both from the row after ten minutes, for up to seven days. A notification for a submission whose Lead failed links to the Contact until the sweep creates the Lead.
+
+## OP-E2E
+
+`intake:e2e` (manual, `demo` only, after `intake:deploy` and `intake:dataverse`) runs `tests/e2e/intake/intake-d365.spec.ts` against the deployed service. It submits an Apply form with `e2e-<request id>@e2e.invalid`, reads the engagement row, the Lead and the Contact back from Dataverse, replays the submission to prove nothing is written twice, checks the notified time and the Logic App run, then deletes everything it created and queries again for zero rows (cleanup also runs when an assertion fails).
+
+It signs in as the identity `sp-worldenterprise-intake-e2e` (secret `worldenterprise-intake-e2e-sp-secret` in Key Vault `omlab-secrets`), created by the infrastructure work (#119) with these rights and no others: read, create and delete on `we_engagement`, Lead, Contact and Account in the World Enterprise business unit, and Logic App Operator or Reader on the notification Logic App. Variables: `INTAKE_E2E_CLIENT_ID`, `INTAKE_E2E_CLIENT_SECRET` (masked), and optionally `INTAKE_E2E_API_URL` (default is the public endpoint) and `INTAKE_E2E_LOGICAPP_ID` (default is the deploy's `notifyLogicAppId` output). Without the Logic App id the run check is skipped, and the rest runs. The spec does nothing unless `INTAKE_E2E=1`, so no other job can reach the live service.
 
 ## OP-RETAIN, OP-COUNSEL and OP-FLAGS
 
@@ -115,6 +130,7 @@ Order for the first provisioning:
 Log lines hold an event name, request id, form, status and a hashed client address, never a body, email, token or link. Application Insights holds them. A scheduled query alert fires on `delivery_exhausted`, `delivery_failed` and `dataverse_write_failed`.
 
 - `dataverse_write_failed`: the service answered 503 and kept nothing; the visitor sees a generic failure and can retry. Check the managed identity's Dataverse application user and role, and the Dataverse environment's status.
+- `lead_failed`, `lead_link_failed`, `notify_failed`: the submission is stored and the visitor was answered. The retry timer finishes the Lead and the notification. If they keep failing, check the application user's Lead privileges, the Logic App's state, the trigger's Entra policy against the Function identity's object id, and the Logic App identity's Communication Services role.
 - `delivery_failed` or `delivery_exhausted`: the row is stored and `delivery-failed`. Check the Communication Service and the sender. The timer retries; a row that exhausts its attempts needs a person.
 
 ### Rollback
@@ -126,4 +142,4 @@ Log lines hold an event name, request id, form, status and a hashed client addre
 
 ### Secrets
 
-Names only: `worldenterprise-intake-unsubscribe-key`, `worldenterprise-intake-hmac-secret`. Both live in Key Vault `omlab-secrets`. The Function reads them through Key Vault references with its managed identity. There are no client secrets, no connection strings and no storage account keys anywhere; storage is reached through the managed identity only. A repository test scans `infra/intake` and the docs for any secret-shaped value.
+Names only: `worldenterprise-intake-unsubscribe-key` (read by the Function through a Key Vault reference with its managed identity), and `worldenterprise-intake-deploy-sp-secret` and `worldenterprise-intake-e2e-sp-secret` (the two pipeline identities' client secrets, copied into masked CI/CD variables). All live in Key Vault `omlab-secrets`. The Function and the Logic App hold no client secret, no connection string and no storage account key; storage, Dataverse, Communication Services and the Logic App trigger are reached through managed identities only. A repository test scans `infra/intake` and the docs for any secret-shaped value.

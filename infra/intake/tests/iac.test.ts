@@ -284,7 +284,7 @@ describe('repository secret scan', () => {
     ['a SAS signature', /[?&]sig=[A-Za-z0-9%+/=]{20,}/],
     ['a JWT', /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/],
     ['a connection string', /(AccountKey|SharedAccessKey|InstrumentationKey|accesskey)=[A-Za-z0-9+/=_-]{16,}/i],
-    ['a secret setting with an inline value', /\b(UNSUBSCRIBE_KEY|DATAVERSE_TOKEN|INTAKE_DEPLOY_CLIENT_SECRET|INTAKE_E2E_CLIENT_SECRET)\s*[=:]\s*['"]?[A-Za-z0-9+/_-]{24,}/],
+    ['a secret setting with an inline value', /\b(UNSUBSCRIBE_KEY|DATAVERSE_TOKEN|INTAKE_AZURE_CLIENT_SECRET|INTAKE_E2E_CLIENT_SECRET)\s*[=:]\s*['"]?[A-Za-z0-9+/_-]{24,}/],
   ];
 
   function* files(dir: string): Generator<string> {

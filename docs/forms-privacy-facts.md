@@ -22,14 +22,16 @@ The investor form never asks whether the visitor is accredited, how much they in
 ## What the service stores
 
 - **Where.** One `we_engagement` row per submission in WE's Dataverse environment (Dynamics 365), written before the service answers. The row holds the form fields above, the time of consent, the source page, a status (`received`, `delivered`, `delivery-failed`, `unsubscribed`), the delivery attempt count and times, the brief version sent, and a review flag for an ambiguous contact match.
+- **Lead.** For every form except the newsletter, a Dynamics 365 Lead with the person, the organization, the message and the form, written beside the engagement row and keyed on the request id so a repeat never makes a second one.
 - **Who.** A contact row for the person and, for a business email domain, an Account row for the organization; for a consumer email domain the Account is the person. Matching is by normalized email, never by name.
 - **What it does not store.** The client network address. Raw tokens. The browser's user agent.
-- **Unsubscribe token.** A random token goes into each email link. The row keeps an AES-256-GCM ciphertext of it and a hash for lookup, so the link can be rebuilt and verified without a usable token at rest. The encryption key is the Key Vault secret `worldenterprise-intake-unsubscribe-key` (name only, never a value in Git); the optional webhook signature uses `worldenterprise-intake-hmac-secret`.
+- **Unsubscribe token.** A random token goes into each email link. The row keeps an AES-256-GCM ciphertext of it and a hash for lookup, so the link can be rebuilt and verified without a usable token at rest. The encryption key is the Key Vault secret `worldenterprise-intake-unsubscribe-key` (name only, never a value in Git).
 - **Suppression.** An unsubscribe writes a suppression record keyed by a hash of the address. A suppressed address receives no later email from the service, and the matching contact is marked do-not-bulk-email in Dataverse.
 - **Briefs.** Rendered briefs sit in a private blob container. The service mints a 48-hour read-only link for the requester. The link is never logged.
 
 ## Email
 
+- Each stored submission also triggers an internal notification to WE's own inbox, sent by an Azure Logic App in WE's Microsoft tenant through Azure Communication Services Email. It names the form and the person and links to the Dynamics 365 record. It carries no message text and no email address.
 - Sent through Azure Communication Services Email from the sender address the operator provides (OP-MAIL). Open and click tracking is off.
 - A brief the visitor asked for is a transactional email. It carries an unsubscribe link and RFC 8058 one-click headers.
 - The unsubscribe link opens a confirmation page and changes nothing on GET. Only the page's POST unsubscribes, so a mail scanner that fetches links cannot unsubscribe anyone.
@@ -46,7 +48,7 @@ No period is stated anywhere in this repository. The notice says so. OP-RETAIN: 
 
 ## Third parties
 
-Microsoft (Azure Functions, Storage, Communication Services, Dataverse) processes the data on WE's behalf. GitHub Pages hosts the static site and receives ordinary request data; WE receives none of it. There are no analytics, no advertising or tracking scripts, no cookies, no CAPTCHA and no third-party bot service.
+Microsoft (Azure Functions, Storage, Logic Apps, Communication Services, Dataverse and Dynamics 365) processes the data on WE's behalf. GitHub Pages hosts the static site and receives ordinary request data; WE receives none of it. No third-party form service, relay or webhook receives a submission: everything stays inside WE's Microsoft tenant. There are no analytics, no advertising or tracking scripts, no cookies, no CAPTCHA and no third-party bot service.
 
 ## Open items
 
