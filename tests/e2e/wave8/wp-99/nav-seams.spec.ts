@@ -102,7 +102,8 @@ for (const viewport of [DESKTOP, PHONE]) {
 
     test('a segment page has a reading list of built pages', async ({ page }) => {
       await page.goto('/founders/solo-founders/');
-      const hrefs = await hrefsIn(page, '#seg-reading');
+      // #seg-reading is the list's h2; the cards are its siblings inside the section it labels.
+      const hrefs = await hrefsIn(page, 'section[aria-labelledby="seg-reading"]');
       expect(hrefs.length, 'reading list links on /founders/solo-founders/').toBeGreaterThan(0);
       expectBuilt(hrefs, '/founders/solo-founders/ reading list');
     });
