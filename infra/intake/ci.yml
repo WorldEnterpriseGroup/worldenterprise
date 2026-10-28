@@ -119,9 +119,9 @@ intake:render:
   image: "${NODE_FULL_IMAGE}"
   before_script:
     - !reference [.intake-bicep, before_script]
-    - python3 -m venv /opt/az
-    - /opt/az/bin/pip install --quiet --disable-pip-version-check "azure-cli==${INTAKE_AZURE_CLI_VERSION}"
-    - export PATH="/opt/az/bin:${PATH}"
+    - python3 -m venv "${CI_PROJECT_DIR}/.tools/az"
+    - ${CI_PROJECT_DIR}/.tools/az/bin/pip install --quiet --disable-pip-version-check "azure-cli==${INTAKE_AZURE_CLI_VERSION}"
+    - export PATH="${CI_PROJECT_DIR}/.tools/az/bin:${PATH}"
     - az config set bicep.use_binary_from_path=true core.only_show_errors=true core.collect_telemetry=false
     - az login --service-principal --username "${INTAKE_AZURE_CLIENT_ID}" --tenant "${INTAKE_AZURE_TENANT_ID}" --password "${INTAKE_AZURE_CLIENT_SECRET}" --output none
     - az account set --subscription "${INTAKE_AZURE_SUBSCRIPTION_ID}"
@@ -136,7 +136,7 @@ intake:deploy:
       artifacts: true
   resource_group: intake-demo
   script:
-    - export PATH="/opt/az/bin:${PATH}"
+    - export PATH="${CI_PROJECT_DIR}/.tools/az/bin:${PATH}"
     - test -f infra/intake/dist/function.zip || { echo "infra/intake/dist/function.zip is missing, so run intake:test first"; exit 1; }
     - cd infra/intake
     # Every operator input becomes a deployment parameter by name. Optional ones are passed only when set.
@@ -188,7 +188,7 @@ intake:dataverse:
       optional: true
   resource_group: intake-demo
   script:
-    - export PATH="/opt/az/bin:${PATH}"
+    - export PATH="${CI_PROJECT_DIR}/.tools/az/bin:${PATH}"
     # INTAKE_IDENTITY_CLIENT_ID exists only after the first deploy (it comes from intake:deploy's dotenv or is set to the Bicep identityClientId
     # output). Before that the applier registers the pipeline and e2e identities and skips the Function's, and the job is rerun after the deploy.
     - 'test -n "${INTAKE_IDENTITY_CLIENT_ID:-}" || echo "INTAKE_IDENTITY_CLIENT_ID is unset, so the schema and roles are applied without the Function application user"'
