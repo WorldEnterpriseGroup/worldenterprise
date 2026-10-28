@@ -23,7 +23,8 @@
     "privileges": [
       { "table": "we_Engagement", "actions": ["Create", "Read", "Write", "Append", "AppendTo"] },
       { "table": "Contact", "actions": ["Create", "Read", "Write", "Append", "AppendTo"] },
-      { "table": "Account", "actions": ["Create", "Read", "Write", "AppendTo"] }
+      { "table": "Account", "actions": ["Create", "Read", "Write", "AppendTo"] },
+      { "table": "Lead", "actions": ["Create", "Read", "Write", "Append", "AppendTo"] }
     ]
   },
   "applicationUser": {
@@ -105,12 +106,14 @@
         { "schemaName": "we_deliveredat", "displayName": "Delivered at", "type": "datetime" },
         { "schemaName": "we_nurturestage", "displayName": "Follow-ups sent", "type": "integer" },
         { "schemaName": "we_nurturenextat", "displayName": "Next follow-up due", "type": "datetime" },
+        { "schemaName": "we_notifiedat", "displayName": "Inbox notified at", "type": "datetime" },
         { "schemaName": "we_unsubscribetoken", "displayName": "Unsubscribe token (encrypted)", "type": "string", "maxLength": 200 },
         { "schemaName": "we_tokenhash", "displayName": "Unsubscribe token hash", "type": "string", "maxLength": 64 }
       ],
       "lookups": [
         { "schemaName": "we_Contact", "displayName": "Contact", "target": "contact", "relationship": "we_contact_we_engagement" },
-        { "schemaName": "we_Account", "displayName": "Account", "target": "account", "relationship": "we_account_we_engagement" }
+        { "schemaName": "we_Account", "displayName": "Account", "target": "account", "relationship": "we_account_we_engagement" },
+        { "schemaName": "we_Lead", "displayName": "Lead", "target": "lead", "relationship": "we_lead_we_engagement" }
       ],
       "keys": [
         { "schemaName": "we_engagement_requestid", "displayName": "Request id", "attributes": ["we_requestid"] },
@@ -127,6 +130,16 @@
       ],
       "keys": [
         { "schemaName": "account_we_accountkey", "displayName": "WE account key", "attributes": ["we_accountkey"] }
+      ]
+    },
+    {
+      "table": "lead",
+      "tableSchemaName": "Lead",
+      "columns": [
+        { "schemaName": "we_requestid", "displayName": "WE request id", "type": "string", "maxLength": 36 }
+      ],
+      "keys": [
+        { "schemaName": "lead_we_requestid", "displayName": "WE request id", "attributes": ["we_requestid"] }
       ]
     }
   ]

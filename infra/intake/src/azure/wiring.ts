@@ -17,7 +17,8 @@ import { SdkBlobPort } from './blob-sdk.ts';
 import type { IntakeConfig } from './config.ts';
 import { DataverseClient, DataverseCrm, DataverseEngagements } from './dataverse.ts';
 import { SasLinks } from './links.ts';
-import { AcsMailer, noopNotifier, WebhookNotifier } from './mailer.ts';
+import { AcsMailer } from './mailer.ts';
+import { LOGIC_APP_AUDIENCE, LogicAppNotifier } from './notify.ts';
 
 const consoleSink: LogSink = {
   write(level, line) {
@@ -55,6 +56,7 @@ export function buildDeps(config: IntakeConfig, contract: Contract): Deps {
       unsubscribeKey: config.unsubscribeKey,
       nurtureEnabled: config.nurtureEnabled,
       footerAddress: config.footerAddress,
+      crmUrl: config.dataverseUrl,
     },
     clock,
     ids: { requestId: newRequestId, token: newToken },
@@ -70,7 +72,11 @@ export function buildDeps(config: IntakeConfig, contract: Contract): Deps {
       keys: { get: (startsOn, expiresOn) => blobService.getUserDelegationKey(startsOn, expiresOn) },
     }),
     mailer: new AcsMailer({ client: email, senderAddress: config.senderAddress }),
-    notifier: config.webhook === null ? noopNotifier : new WebhookNotifier({ url: config.webhook.url, secret: config.webhook.secret, fetch }),
+    notifier: new LogicAppNotifier({
+      url: config.notifyUrl,
+      fetch,
+      getToken: async () => (await credential.getToken(`${LOGIC_APP_AUDIENCE}.default`)).token,
+    }),
     log: createLogger(consoleSink),
   };
 }

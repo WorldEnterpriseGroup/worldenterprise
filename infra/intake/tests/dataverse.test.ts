@@ -51,6 +51,8 @@ describe('dataverse apply', () => {
     assert.deepEqual([...fake.relationships.keys()].sort(), table.lookups.map((lookup) => lookup.relationship).sort());
     assert.ok(fake.entities.get('account')?.attributes.has('we_accountkey'));
     assert.ok(fake.entities.get('account')?.keys.has('account_we_accountkey'));
+    assert.ok(fake.entities.get('lead')?.attributes.has('we_requestid'), 'the Lead gets its request id column');
+    assert.ok(fake.entities.get('lead')?.keys.has('lead_we_requestid'), 'and the alternate key that makes a replayed create a no-op');
 
     const role = fake.roles.find((row) => row['name'] === definition.role.name);
     assert.equal(role?.['_businessunitid_value'], unit['businessunitid']);
@@ -63,6 +65,7 @@ describe('dataverse apply', () => {
     assert.equal(user['_businessunitid_value'], unit['businessunitid']);
     assert.deepEqual(fake.associations, [{ userId: user['systemuserid'], roleId: role?.['roleid'] }]);
     assert.ok(summary.created.length > 30);
+    assert.ok(privilegeNames(definition).includes('prvCreateLead') && privilegeNames(definition).includes('prvWriteContact'));
   });
 
   test('a second run creates nothing', async () => {

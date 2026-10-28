@@ -4,7 +4,8 @@
  * (the health endpoint, a log line) cannot leak one.
  *
  * Required settings are injected by the Bicep template: the Dataverse URL and storage account come from deployment inputs,
- * the ACS endpoint and sender from the ACS resources the template creates, the two secrets as Key Vault references.
+ * the ACS endpoint and sender from the ACS resources the template creates, the notification Logic App's trigger URL from the
+ * Logic App the template creates, the unsubscribe key as a Key Vault reference.
  */
 
 import { parseOrigins } from '../logic/http.ts';
@@ -20,7 +21,8 @@ export interface IntakeConfig {
   readonly siteOrigin: string;
   readonly apiOrigin: string;
   readonly unsubscribeKey: string;
-  readonly webhook: { readonly url: string; readonly secret: string } | null;
+  /** Trigger URL of the notification Logic App, without a `sig`: the Function authenticates with its managed identity. */
+  readonly notifyUrl: string;
   readonly nurtureEnabled: boolean;
   readonly footerAddress: string;
 }
@@ -42,7 +44,7 @@ function httpsOrigin(value: string | undefined): string | null {
 }
 
 /** The settings that are secrets. Their names are recorded in docs; their values are never read into a message. */
-export const SECRET_SETTINGS = ['UNSUBSCRIBE_KEY', 'WEBHOOK_SECRET'] as const;
+export const SECRET_SETTINGS = ['UNSUBSCRIBE_KEY'] as const;
 
 export function readConfig(env: Env): ConfigResult {
   const problems: string[] = [];
@@ -73,15 +75,9 @@ export function readConfig(env: Env): ConfigResult {
   const allowedOrigins = parseOrigins(env['ALLOWED_ORIGINS']);
   if (allowedOrigins.length === 0) problems.push('ALLOWED_ORIGINS');
 
-  const webhookUrl = env['WEBHOOK_URL']?.trim() ?? '';
-  const webhookSecret = env['WEBHOOK_SECRET']?.trim() ?? '';
-  let webhook: IntakeConfig['webhook'] = null;
-  if (webhookUrl !== '' || webhookSecret !== '') {
-    const target = httpsOrigin(webhookUrl);
-    if (target === null) problems.push('WEBHOOK_URL');
-    if (webhookSecret.length < 16) problems.push('WEBHOOK_SECRET');
-    if (target !== null && webhookSecret.length >= 16) webhook = { url: webhookUrl, secret: webhookSecret };
-  }
+  // The trigger URL is not a credential (it has no `sig`), but a URL that does carry one is refused rather than used.
+  const notifyUrl = env['NOTIFY_LOGICAPP_URL']?.trim() ?? '';
+  if (httpsOrigin(notifyUrl) === null || /[?&]sig=/i.test(notifyUrl)) problems.push('NOTIFY_LOGICAPP_URL');
 
   if (problems.length > 0) return { ok: false, problems };
   return {
@@ -97,7 +93,7 @@ export function readConfig(env: Env): ConfigResult {
       siteOrigin,
       apiOrigin,
       unsubscribeKey,
-      webhook,
+      notifyUrl,
       // Anything other than the exact string 'true' leaves the nurture sequence off.
       nurtureEnabled: env['NURTURE_ENABLED']?.trim().toLowerCase() === 'true',
       footerAddress: env['MAIL_FOOTER_ADDRESS']?.trim() ?? '',

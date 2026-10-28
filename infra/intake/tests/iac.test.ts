@@ -104,8 +104,36 @@ describe('bicep', () => {
     const domain = allResources(compile()).find((resource) => resource['type'] === 'Microsoft.Communication/emailServices/domains');
     assert.equal((domain?.['properties'] as Json)['userEngagementTracking'], 'Disabled');
     const text = JSON.stringify(compile());
-    assert.ok(text.includes('worldenterprise-intake-unsubscribe-key') && text.includes('worldenterprise-intake-hmac-secret'));
+    assert.ok(text.includes('worldenterprise-intake-unsubscribe-key'));
+    assert.ok(!text.includes('hmac') && !text.includes('WEBHOOK'), 'the webhook and its signing secret are gone');
     assert.ok(text.includes('@Microsoft.KeyVault(SecretUri='));
+  });
+
+  test('the notification Logic App is Consumption, enabled, and callable only by the Function identity', { skip }, () => {
+    const workflows = allResources(compile()).filter((resource) => resource['type'] === 'Microsoft.Logic/workflows' && resource['existing'] !== true);
+    assert.equal(workflows.length, 1);
+    const properties = workflows[0]?.['properties'] as Json;
+    assert.equal(properties['state'], 'Enabled');
+    assert.deepEqual(workflows[0]?.['identity'], { type: 'SystemAssigned' });
+    const access = properties['accessControl'] as { triggers: Json };
+    assert.deepEqual(Object.keys(access.triggers), ['openAuthenticationPolicies'], 'no IP allow-list and no SAS-only access');
+    const policies = ((access.triggers['openAuthenticationPolicies'] as Json)['policies'] as Record<string, { type: string; claims: { name: string; value: string }[] }>);
+    const policy = Object.values(policies);
+    assert.equal(policy.length, 1);
+    assert.equal(policy[0]?.type, 'AAD');
+    assert.deepEqual(policy[0]?.claims.map((claim) => claim.name), ['iss', 'aud', 'oid']);
+    assert.match(policy[0]?.claims[0]?.value ?? '', /^\[format\('https:\/\/sts\.windows\.net\/\{0\}\/', tenant\(\)\.tenantId\)\]$/);
+    assert.equal(policy[0]?.claims[1]?.value, 'https://management.core.windows.net/');
+    assert.match(policy[0]?.claims[2]?.value ?? '', /callerPrincipalId/, 'the one allowed caller is the Function identity, passed in');
+    assert.ok(properties['definition'], 'the definition comes from the JSON file in git');
+  });
+
+  test('the Function settings carry the trigger URL without its signature, and both identities may send mail', { skip }, () => {
+    const text = JSON.stringify(compile());
+    assert.ok(text.includes('"NOTIFY_LOGICAPP_URL"'));
+    assert.ok(text.includes('listCallbackUrl') && text.includes('.basePath') && !text.includes('queries.sig') && !text.includes("queries['sig']"), 'the signature is never read');
+    const emailOwners = allResources(compile()).filter((resource) => resource['type'] === 'Microsoft.Authorization/roleAssignments' && JSON.stringify(resource).includes('communicationEmailOwnerRoleId'));
+    assert.equal(emailOwners.length, 2, 'the Function identity and the Logic App identity');
   });
 });
 
@@ -121,13 +149,36 @@ describe('iac source', () => {
     assert.ok(settingNames.includes('AZURE_CLIENT_ID'), 'the identity is selected by AZURE_CLIENT_ID');
   });
 
-  test('the two secrets are Key Vault references, never inline values', () => {
-    for (const line of intake.split('\n').filter((item) => /name: '(UNSUBSCRIBE_KEY|WEBHOOK_SECRET)'/.test(item))) assert.match(line, /@Microsoft\.KeyVault\(SecretUri=/);
+  test('the one secret is a Key Vault reference, never an inline value, and no webhook setting remains', () => {
+    const secretLines = intake.split('\n').filter((item) => /name: '(UNSUBSCRIBE_KEY|WEBHOOK_SECRET)'/.test(item));
+    assert.equal(secretLines.length, 1);
+    for (const line of secretLines) assert.match(line, /name: 'UNSUBSCRIBE_KEY'.*@Microsoft\.KeyVault\(SecretUri=/);
+    assert.ok(!/webhook|hmac/i.test(intake + bicepSource('main.bicep') + bicepSource('parameters.example.json')));
   });
 
-  test('the webhook secret exists only when the webhook url does', () => {
-    assert.match(intake, /var webhookSettings = webhookUrl == '' \? \[\] : \[/);
-    assert.ok(!/baseSettings = \[[^\]]*WEBHOOK/s.test(intake));
+  test('the notification workflow definition is a file in git: one HTTP trigger, one Email API call with the Logic App identity, and no message body', () => {
+    const definition = JSON.parse(readFileSync(join(ROOT, 'logicapps/we-intake-notify.definition.json'), 'utf8')) as {
+      parameters: Record<string, unknown>;
+      triggers: Record<string, { type: string; kind: string; inputs: { method: string; schema: { required: string[]; properties: Record<string, unknown> } } }>;
+      actions: Record<string, { type: string; inputs: { method: string; uri: string; authentication: Record<string, string>; body: { content: { subject: string; plainText: string }; recipients: { to: { address: string }[] }; userEngagementTrackingDisabled: boolean } } }>;
+    };
+    assert.deepEqual(Object.keys(definition.parameters).sort(), ['acsEndpoint', 'notifyTo', 'senderAddress']);
+    const [trigger] = Object.values(definition.triggers);
+    assert.deepEqual([trigger?.type, trigger?.kind, trigger?.inputs.method], ['Request', 'Http', 'POST']);
+    assert.deepEqual(trigger?.inputs.schema.required, ['requestId', 'kind', 'formLabel', 'name', 'recordUrl']);
+    assert.ok(!('message' in (trigger?.inputs.schema.properties ?? {})) && !('email' in (trigger?.inputs.schema.properties ?? {})), 'the trigger schema has no message and no address');
+    const [action] = Object.values(definition.actions);
+    assert.equal(action?.type, 'Http');
+    assert.match(action?.inputs.uri ?? '', /emails:send\?api-version=2023-03-31/);
+    assert.deepEqual(action?.inputs.authentication, { type: 'ManagedServiceIdentity', audience: 'https://communication.azure.com/' });
+    assert.equal(action?.inputs.body.userEngagementTrackingDisabled, true);
+    assert.equal(action?.inputs.body.recipients.to[0]?.address, "@parameters('notifyTo')");
+    for (const part of [action?.inputs.body.content.subject ?? '', action?.inputs.body.content.plainText ?? '']) assert.ok(!/triggerBody\(\)\?\['(message|email)'\]/.test(part));
+    assert.match(action?.inputs.body.content.plainText ?? '', /recordUrl/);
+  });
+
+  test('notify.bicep loads that file, so the deployed workflow is the reviewed one', () => {
+    assert.match(bicepSource('notify.bicep'), /definition: loadJsonContent\('\.\.\/logicapps\/we-intake-notify\.definition\.json'\)/);
   });
 
   test('the example parameter file names only parameters main.bicep declares, and supplies every one without a default', () => {
@@ -224,14 +275,16 @@ describe('post-deployment verification', () => {
 });
 
 describe('repository secret scan', () => {
-  const ALLOWED_NAMES = new Set(['worldenterprise-intake-unsubscribe-key', 'worldenterprise-intake-hmac-secret', 'worldenterprise-intake-acs-endpoint']);
+  const ALLOWED_NAMES = new Set([
+    'worldenterprise-intake-unsubscribe-key', 'worldenterprise-intake-acs-endpoint', 'worldenterprise-intake-deploy-sp-secret', 'worldenterprise-intake-e2e-sp-secret',
+  ]);
   const PATTERNS: [string, RegExp][] = [
     ['a private key', /-----BEGIN [A-Z ]*PRIVATE KEY-----/],
     ['a storage account key', /[A-Za-z0-9+/]{86}==/],
     ['a SAS signature', /[?&]sig=[A-Za-z0-9%+/=]{20,}/],
     ['a JWT', /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/],
     ['a connection string', /(AccountKey|SharedAccessKey|InstrumentationKey|accesskey)=[A-Za-z0-9+/=_-]{16,}/i],
-    ['a secret setting with an inline value', /\b(UNSUBSCRIBE_KEY|WEBHOOK_SECRET|DATAVERSE_TOKEN)\s*[=:]\s*['"]?[A-Za-z0-9+/_-]{24,}/],
+    ['a secret setting with an inline value', /\b(UNSUBSCRIBE_KEY|DATAVERSE_TOKEN|INTAKE_DEPLOY_CLIENT_SECRET|INTAKE_E2E_CLIENT_SECRET)\s*[=:]\s*['"]?[A-Za-z0-9+/_-]{24,}/],
   ];
 
   function* files(dir: string): Generator<string> {
@@ -243,7 +296,7 @@ describe('repository secret scan', () => {
     }
   }
 
-  test('no file under infra/intake holds a secret value, and only the three known secret names appear', () => {
+  test('no file under infra/intake holds a secret value, and only the known secret names appear', () => {
     const problems: string[] = [];
     const names = new Set<string>();
     const documents = ['docs/intake-runbook.md', 'docs/forms-privacy-facts.md', 'src/content/pages/legal/privacy.md'].map((path) => fileURLToPath(new URL(`../../../${path}`, import.meta.url)));
@@ -251,7 +304,7 @@ describe('repository secret scan', () => {
       if (file.endsWith('iac.test.ts')) continue;
       const text = readFileSync(file, 'utf8');
       for (const [label, pattern] of PATTERNS) if (pattern.test(text)) problems.push(`${relative(ROOT, file)}: ${label}`);
-      // Anything named like a secret (a key, secret, token, password or endpoint) must be one of the three known names.
+      // Anything named like a secret (a key, secret, token, password or endpoint) must be one of the known names.
       for (const match of text.matchAll(/worldenterprise-intake-[a-z-]*(?:key|secret|token|password|endpoint)\b/g)) names.add(match[0]);
     }
     assert.deepEqual(problems, []);

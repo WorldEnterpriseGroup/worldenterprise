@@ -2,7 +2,7 @@
  * POST /api/intake. The order of the steps is part of the contract and is pinned by tests:
  *
  *   method, content type, Origin, size cap, parse, honeypot, kind, validate, brief id, rate limit, idempotency,
- *   Dataverse write, side effects, response.
+ *   Dataverse write, side effects (Lead, brief email, notification), response.
  *
  * The honeypot sits before the rate limit because a counter is a write, and a honeypot hit must write nothing. The rate
  * limit sits before the idempotency read so an unauthenticated caller cannot make the service query Dataverse without
@@ -23,6 +23,7 @@ import { isHoneypotTripped, readFormKind, validate, type Submission } from '../l
 import type { Deps } from './deps.ts';
 import type { BriefEntry } from './ports.ts';
 import { emailHashOf, findBrief, sendRequestedBrief } from './deliver.ts';
+import { ensureLeadFor, notifyFor } from './followup.ts';
 
 const ACK = { ok: true };
 
@@ -60,8 +61,10 @@ async function resolveLinks(deps: Deps, submission: Submission): Promise<{ accou
   });
 }
 
-async function afterWrite(deps: Deps, submission: Submission, record: EngagementRecord | null, client: string): Promise<void> {
-  if (record === null) return;
+async function afterWrite(deps: Deps, submission: Submission, stored: EngagementRecord | null, client: string): Promise<void> {
+  if (stored === null) return;
+  // The Lead comes first so the notification can link to it. A failure here is logged and left to the retry sweep.
+  const record = await ensureLeadFor(deps, stored);
   const now = deps.clock.now();
   if (submission.kind === 'brief-request') {
     try {
@@ -84,11 +87,7 @@ async function afterWrite(deps: Deps, submission: Submission, record: Engagement
       }
     }
   }
-  try {
-    await deps.notifier.notify({ requestId: submission.requestId, kind: submission.kind, audience: submission.audience });
-  } catch (error) {
-    deps.log.warn('notify_failed', { requestId: submission.requestId, code: errorCode(error) });
-  }
+  await notifyFor(deps, record);
 }
 
 /**

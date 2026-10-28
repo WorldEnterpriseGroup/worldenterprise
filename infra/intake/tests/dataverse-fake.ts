@@ -66,7 +66,10 @@ export class FakeDataverse {
   readonly teams: Row[] = [];
   readonly roles: Row[] = [];
   readonly users: Row[] = [];
-  readonly entities = new Map<string, Entity>([['account', { body: {}, attributes: new Map(), keys: new Map() }]]);
+  readonly entities = new Map<string, Entity>([
+    ['account', { body: {}, attributes: new Map(), keys: new Map() }],
+    ['lead', { body: {}, attributes: new Map(), keys: new Map() }],
+  ]);
   readonly relationships = new Map<string, Row>();
   readonly grants: { roleId: string; privileges: Row[] }[] = [];
   readonly associations: { userId: string; roleId: string }[] = [];

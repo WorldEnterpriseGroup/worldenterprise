@@ -6,7 +6,7 @@
 
 import type { MailMessage } from '../logic/mail.ts';
 import type { RateDecision } from '../logic/rate.ts';
-import type { AccountPlan, ContactMatch, EngagementRecord, StatusName } from '../logic/mapping.ts';
+import type { AccountPlan, ContactMatch, EngagementRecord, NotifyEvent, StatusName } from '../logic/mapping.ts';
 
 export interface Clock {
   now(): number;
@@ -32,6 +32,9 @@ export interface EngagementPatch {
   readonly briefVersion?: string;
   readonly nurtureStage?: number;
   readonly nurtureNextAt?: Date | null;
+  /** Links the engagement row to its Dynamics 365 Lead. */
+  readonly leadId?: string;
+  readonly notifiedAt?: Date;
 }
 
 export interface EngagementStore {
@@ -47,6 +50,11 @@ export interface EngagementStore {
   listDeliveryPending(staleBefore: Date, limit: number): Promise<readonly EngagementRecord[]>;
   /** Delivered rows with `we_consentupdates` and a stage still to send whose due time has passed. */
   listNurtureDue(now: Date, limit: number): Promise<readonly EngagementRecord[]>;
+  /**
+   * Rows created between `since` and `staleBefore` that still owe a follow-up step: the info@ notification was never
+   * accepted, or a form that makes a Lead has none. Oldest first, at most `limit`.
+   */
+  listFollowUpPending(since: Date, staleBefore: Date, limit: number): Promise<readonly EngagementRecord[]>;
 }
 
 export interface CrmStore {
@@ -57,6 +65,11 @@ export interface CrmStore {
   markContactOptedOut(contactId: string): Promise<void>;
   /** The contact id linked to an engagement row, when there is one. */
   contactOfEngagement(engagementId: string): Promise<string | null>;
+  /**
+   * Creates the Lead for a request, or returns the one that already exists. Keyed on the request id, so a replay, a retry
+   * after a lost response and the sweep cannot make a second Lead.
+   */
+  ensureLead(requestId: string, fields: Readonly<Record<string, unknown>>): Promise<{ readonly id: string }>;
 }
 
 export interface SuppressionRecord {
@@ -97,8 +110,8 @@ export interface Mailer {
 }
 
 export interface Notifier {
-  /** Posts a signed, personal-data-free event to the optional webhook. A no-op when none is configured. */
-  notify(event: Readonly<Record<string, string | number>>): Promise<void>;
+  /** Asks the notification workflow to email the World Enterprise inbox. Throws when it does not accept the event. */
+  notify(event: NotifyEvent): Promise<void>;
 }
 
 export interface Ids {
@@ -115,4 +128,6 @@ export interface Settings {
   readonly unsubscribeKey: string;
   readonly nurtureEnabled: boolean;
   readonly footerAddress: string;
+  /** `https://<org>.crm.dynamics.com`, used to build the record link in a notification. */
+  readonly crmUrl: string;
 }

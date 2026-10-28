@@ -9,16 +9,21 @@ import { NURTURE_STAGES } from '../logic/mail.ts';
 import { hasExhaustedRetries, isRetryDue, MAX_DELIVERY_ATTEMPTS, NURTURE_DAYS } from '../logic/schedule.ts';
 import type { Deps } from './deps.ts';
 import { sendFollowUp, sendRequestedBrief } from './deliver.ts';
+import { ensureLeadFor, notifyFor } from './followup.ts';
 import { syncCrm } from './unsubscribe.ts';
 
 const STALE_RECEIVED_MS = 10 * 60 * 1000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const SWEEP_LIMIT = 25;
+/** How far back the follow-up pass looks. A row older than this is left for a person: the logs already name it. */
+const FOLLOW_UP_WINDOW_MS = 7 * DAY_MS;
 
 export interface RetrySummary {
   readonly delivered: number;
   readonly failed: number;
   readonly reconciled: number;
+  /** Rows whose Lead or notification was finished by this pass. */
+  readonly followedUp: number;
 }
 
 export async function retrySweep(deps: Deps): Promise<RetrySummary> {
@@ -26,6 +31,7 @@ export async function retrySweep(deps: Deps): Promise<RetrySummary> {
   let delivered = 0;
   let failed = 0;
   let reconciled = 0;
+  let followedUp = 0;
 
   let pending: Awaited<ReturnType<Deps['engagements']['listDeliveryPending']>> = [];
   try {
@@ -67,8 +73,19 @@ export async function retrySweep(deps: Deps): Promise<RetrySummary> {
     deps.log.error('suppression_list_failed', { job: 'retry', code: errorCode(error) });
   }
 
-  deps.log.info('retry_sweep_done', { job: 'retry', count: delivered + failed + reconciled });
-  return { delivered, failed, reconciled };
+  let owed: Awaited<ReturnType<Deps['engagements']['listFollowUpPending']>> = [];
+  try {
+    owed = await deps.engagements.listFollowUpPending(new Date(now - FOLLOW_UP_WINDOW_MS), new Date(now - STALE_RECEIVED_MS), SWEEP_LIMIT);
+  } catch (error) {
+    deps.log.error('follow_up_list_failed', { job: 'retry', code: errorCode(error) });
+  }
+  for (const stored of owed) {
+    const record = await ensureLeadFor(deps, stored);
+    if (await notifyFor(deps, record)) followedUp += 1;
+  }
+
+  deps.log.info('retry_sweep_done', { job: 'retry', count: delivered + failed + reconciled + followedUp });
+  return { delivered, failed, reconciled, followedUp };
 }
 
 export interface NurtureSummary {
