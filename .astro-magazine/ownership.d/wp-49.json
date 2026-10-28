@@ -225,6 +225,11 @@
       "wp": "WP-49",
       "path": "infra/intake/dataverse/apply.ts",
       "reason": "#120: the applier assigns the intake service role to the owner team World Enterprise Intake, which the team-owned Lead writes need. No other change."
+    },
+    {
+      "wp": "WP-49",
+      "path": "tests/e2e/modes.spec.ts",
+      "reason": "#49: the zoom-200 walk of every built route runs as chunks of 20 so workers share it and a retry repeats one chunk; one serial walk overran its 5 minute budget on every attempt on a loaded runner."
     }
   ]
 }

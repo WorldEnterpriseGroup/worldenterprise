@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { budgetForItems } from './support/budgets.ts';
 import { findOverflow, formatOffenders } from './support/overflow.ts';
 import { isBuilt, liveRoutes } from './support/routes.ts';
 
@@ -101,17 +102,31 @@ test.describe('zoom-200', () => {
     test.skip(info.project.name !== 'zoom-200', 'zoom-200 project only');
   });
 
-  test('no horizontal scroll and no element outside the viewport at 720 px on any built route', async ({ page }) => {
-    test.setTimeout(300_000);
-    const failures: string[] = [];
-    for (const route of liveRoutes) {
-      await page.goto(route.path);
-      const over = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-      if (over > 0) failures.push(`${route.path} scrolls sideways by ${over}px`);
-      const offenders = await findOverflow(page);
-      if (offenders.length > 0) failures.push(`${route.path}: ${formatOffenders(offenders, 3)}`);
-    }
-    expect(failures).toEqual([]);
+  // Every built route, walked in chunks of ZOOM_CHUNK (#49). One serial walk of every route overran its 5 minute budget on a loaded
+  // runner on all three attempts (demo pipeline 98205); as chunks the workers share the walk, a retry repeats one chunk, and a failure
+  // names the chunk's first and last route. No route is left out.
+  const ZOOM_CHUNK = 20;
+  for (let start = 0; start < liveRoutes.length; start += ZOOM_CHUNK) {
+    const chunk = liveRoutes.slice(start, start + ZOOM_CHUNK);
+    const label = `${chunk[0]?.path} .. ${chunk[chunk.length - 1]?.path}`;
+    test(`routes ${start + 1}-${start + chunk.length} of ${liveRoutes.length}: no horizontal scroll and no element outside the viewport at 720 px (${label})`, async ({ page }) => {
+      // About six seconds a page (navigation plus the overflow scan) on a loaded runner.
+      budgetForItems(chunk.length, 6_000);
+      const failures: string[] = [];
+      for (const route of chunk) {
+        await page.goto(route.path);
+        const over = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+        if (over > 0) failures.push(`${route.path} scrolls sideways by ${over}px`);
+        const offenders = await findOverflow(page);
+        if (offenders.length > 0) failures.push(`${route.path}: ${formatOffenders(offenders, 3)}`);
+      }
+      expect(failures).toEqual([]);
+    });
+  }
+
+  test('the chunked 720 px walk covers every built route, once', () => {
+    expect(liveRoutes.length, 'built routes to walk').toBeGreaterThan(0);
+    expect(new Set(liveRoutes.map((r) => r.path)).size, 'no route twice').toBe(liveRoutes.length);
   });
 
   test('navigation remains operable at 200 percent', async ({ page }) => {
