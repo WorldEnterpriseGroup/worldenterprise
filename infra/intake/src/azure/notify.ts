@@ -8,7 +8,8 @@
  * Errors carry a stable code and nothing else.
  */
 
-import type { NotifyEvent, Notifier } from '../service/ports.ts';
+import type { NotifyEvent } from '../logic/mapping.ts';
+import type { Notifier } from '../service/ports.ts';
 
 /** The audience a Consumption Logic App request trigger validates an Entra token against. */
 export const LOGIC_APP_AUDIENCE = 'https://management.core.windows.net/';
