@@ -89,6 +89,20 @@ The service sends through Azure Communication Services Email. Bicep creates the 
 - `INTAKE_MAIL_FOOTER_ADDRESS` is the postal address printed in the footer. Unset means the line is omitted. Bulk marketing mail in some places requires one; counsel decides (OP-COUNSEL).
 - A failed send leaves the row `delivery-failed`, an alert fires if `INTAKE_ALERT_EMAIL` is set, and the retry timer tries again.
 
+## OP-MAILBOX: tenant mail setup (operator, one time)
+
+World Enterprise's mail (`info@`, `hello@`, `apply@worldenterprise.org`) lives in the focushive Microsoft 365 tenant. `info@`, `hello@` and `apply@` are aliases of one shared mailbox, so the notification reaches the same inbox for all three. The tenant has no declarative config home for Tenant Allow/Block List entries (`FocusApiary/infrastructure` `m365/tenants/focushive/resources` covers transport rules only), so this is a recorded operator step, done through the `ms` skill and not by hand in the portal.
+
+The notification sender is the Azure-managed ACS domain, `DoNotReply@67c671f6-7096-45c6-888a-ae22973c5247.azurecomm.net` (`az communication email domain show`, domain `AzureManagedDomain`, SPF, DKIM, DKIM2 and DMARC verified). A shared `azurecomm.net` domain carries mail for many senders, so the allow is scoped to this one address and never to the domain:
+
+```bash
+ms exo-run focushive New-TenantAllowBlockListItems --params '{"ListType":"Sender","Allow":true,"NoExpiration":true,"Notes":"WE intake notification sender (ACS Azure-managed domain), #119","Entries":["DoNotReply@67c671f6-7096-45c6-888a-ae22973c5247.azurecomm.net"]}'
+```
+
+If the managed domain is ever recreated its GUID changes: add the new address, then remove the old entry. A branded sender (OP-MAIL) replaces this entry with one for the new address.
+
+Applied 2026-10-28. At the same time the temporary `formsubmit.co` Sender entry (Action Block) was removed from the Tenant Allow/Block List. The Default anti-spam policy has no allowed or blocked senders or domains for it, no transport or inbox rule mentions it, and `info@` has no forwarding. FormSubmit has no account or login, so there is nothing further to disable; the site no longer references it.
+
 ## Leads and the inbox notification
 
 After the durable write, the Function does two things, and a failure of either never fails the visitor:
