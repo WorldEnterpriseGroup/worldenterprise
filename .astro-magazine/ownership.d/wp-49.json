@@ -50,6 +50,11 @@
       "wp": "WP-49",
       "path": "docs/wave8-handoff.md",
       "reason": "#49: the owner and operator handoff for the wave 8 release."
+    },
+    {
+      "wp": "WP-49",
+      "path": "scripts/run-lighthouse.mjs",
+      "reason": "#49 item 2: the 55-route Lighthouse set measures the brief pages, which carry the shared request-form script; exemptBelow exempts pages under /briefs/ from the JS budget while the hub keeps it."
     }
   ]
 }
