@@ -362,7 +362,7 @@ async function main(): Promise<void> {
   if (missing.length > 0) throw new ApplyError('inputs', `missing ${missing.join(', ')}`);
   if (!baseUrl.startsWith('https://')) throw new ApplyError('inputs', 'DATAVERSE_URL must be an https URL');
 
-  const client = new DataverseClient({ baseUrl, fetch, getToken: () => Promise.resolve(token), timeoutMs: 60_000 });
+  const client = new DataverseClient({ baseUrl, fetch, getToken: () => Promise.resolve(token), timeoutMs: 300_000 });
   const inputs: ApplyInputs = {
     definition, client, baseUrl, identityClientId, deployClientId: optional('INTAKE_AZURE_CLIENT_ID'), e2eClientId: optional('INTAKE_E2E_CLIENT_ID'), log: (line) => console.log(line),
   };
