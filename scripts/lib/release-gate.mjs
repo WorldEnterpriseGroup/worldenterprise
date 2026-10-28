@@ -3,12 +3,17 @@
 // every release problem (missing launched routes, draft content, disabled launched forms). Operator-gated or not-yet-built items
 // may be tolerated on demo through RELEASE_ALLOW, a comma-separated list of regular expressions matched against each problem line.
 // On gh-pages RELEASE_ALLOW is empty, so any problem fails. A build that fails without the assertion header is always a failure.
+// Since #49 the open human items (counsel sign-off in RELEASE.md section 8) are problem lines too, "human item open: ...", so an empty
+// RELEASE_ALLOW fails them as well, and the gate explains each failing cause (scripts/lib/wave8/release-open-items.mjs).
 // Usage: node scripts/lib/release-gate.mjs [--json reports/release-gate.json]
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parseArgs } from './html.mjs';
+import { composeVerdict, operatorNotes } from './wave8/release-open-items.mjs';
+import { flags } from '../../src/data/flags.ts';
+import { site } from '../../src/data/site.ts';
 
 const ANSI = /\u001b\[[0-9;]*[A-Za-z]/g;
 
@@ -48,24 +53,26 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const run = spawnSync('npm', ['run', 'build'], { env, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   const output = `${run.stdout ?? ''}\n${run.stderr ?? ''}`;
   mkdirSync(dirname(args.json), { recursive: true });
-  let verdict;
-  if (run.error) {
-    verdict = { ok: false, reason: `could not start the build: ${run.error.message}`, problems: [], blocking: [] };
-  } else if (run.status === 0) {
-    verdict = { ok: true, reason: 'release build passed with no problems', problems: [], blocking: [] };
-  } else {
-    const problems = parseProblems(output);
-    if (problems === null) {
-      verdict = { ok: false, reason: 'the build failed for a reason other than the release assertions', problems: [], blocking: [] };
-      console.error(output.split('\n').slice(-40).join('\n'));
-    } else {
-      const blocking = unallowed(problems, allow);
-      verdict = { ok: blocking.length === 0, reason: blocking.length === 0 ? `all ${problems.length} problems are covered by RELEASE_ALLOW` : `${blocking.length} of ${problems.length} problems are not covered by RELEASE_ALLOW`, problems, blocking };
-    }
+  // The open human items (counsel sign-off) are problems like the build's own: they fail unless RELEASE_ALLOW names them (#49).
+  let markdown;
+  try {
+    markdown = readFileSync(new URL('../../.astro-magazine/release/RELEASE.md', import.meta.url), 'utf8');
+  } catch (error) {
+    markdown = error instanceof Error ? error : new Error(String(error));
   }
+  const verdict = composeVerdict({ run: { ...(run.error ? { error: run.error } : {}), status: run.status, output }, allow, markdown, notes: operatorNotes({ site, flags, env: process.env }) });
+  if (verdict.reason.startsWith('the build failed')) console.error(output.split('\n').slice(-40).join('\n'));
   writeFileSync(args.json, `${JSON.stringify({ allow, ...verdict }, null, 2)}\n`);
   for (const b of verdict.blocking) console.error(`FAIL  ${b}`);
   for (const p of verdict.problems.filter((x) => !verdict.blocking.includes(x))) console.warn(`allowed  ${p}`);
+  if (verdict.explanation.length > 0) {
+    console.error('\nWhy this gate is red, and what clears it:');
+    for (const line of verdict.explanation) console.error(`  - ${line}`);
+  }
+  if (verdict.notes.length > 0) {
+    console.log('\nOpen operator items that do not stop the build by themselves:');
+    for (const note of verdict.notes) console.log(`  - ${note}`);
+  }
   console.log(`verify:release: ${verdict.reason}`);
   process.exit(verdict.ok ? 0 : 1);
 }

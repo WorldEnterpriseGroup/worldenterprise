@@ -55,8 +55,12 @@ test('a package without an exclude behaves as before', () => {
 test('no stage-1 package may edit a file WP-40 owns', () => {
   const wp40Only = ['src/data/routes.ts', 'src/data/nav.ts', 'src/data/packages.ts', 'claims-denylist.json', '.astro-magazine/ownership.json', '.gitlab-ci.yml', 'playwright.config.ts', 'package.json', 'scripts/audit-claims.mjs', 'scripts/lib/audit-dist.mjs', 'docs/wave7-contracts.md'];
   for (const owner of ['WP-41', 'WP-42', 'WP-43', 'WP-44', 'WP-45', 'WP-46', 'WP-47', 'WP-48', 'WP-49']) {
+    // A package is refused every WP-40 file unless its own ownership fragment names the path as a declared exception. WP-49 is the branch
+    // name of the wave 8 close (#49), which edits .gitlab-ci.yml through .astro-magazine/ownership.d/wp-49.json with a stated reason.
+    const declared = new Set(ownership.exceptions.filter((e) => e.wp === owner).map((e) => e.path));
+    const expected = wp40Only.filter((path) => !declared.has(path));
     const bad = api.violations(wp40Only, owner, ownership).map((v) => v.path);
-    assert.deepEqual(bad, wp40Only, `${owner} must be refused every WP-40 file`);
+    assert.deepEqual(bad, expected, `${owner} must be refused every WP-40 file it has no declared exception for`);
   }
 });
 

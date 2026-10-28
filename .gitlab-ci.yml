@@ -92,18 +92,15 @@ variables:
   RESTORE_CACHE_ATTEMPTS: "3"
   npm_config_cache: "${CI_PROJECT_DIR}/.npm"
   npm_config_update_notifier: "false"
-  # The one operator-gated item verify:release tolerates off gh-pages: the intake and newsletter endpoints are not provisioned,
-  # so the launched /apply/ and /contact/ forms render disabled. Every launch route exists and no draft remains. gh-pages
-  # overrides this to empty, so the endpoints must exist before production ships.
-  #
-  # Wave 8 (decision W8-31, contracts section 10) also tolerates the pages it pre-registered: the page families (founders segments,
-  # industries, compare, journey, briefs), the investor and partner pages, the brand story and three founder tools are launch:true in
-  # src/data/routes.ts before their packages write the page. Each shape is anchored at both ends, so a launched route anywhere else
-  # that does not exist still fails. The wave 7 patterns are gone: those pages exist, and the four framework pages WP-48 never built
-  # are launch:false. Wave 10 (WP-32, D-W10-5) adds the /ecosystem/, /sbir-sttr/ and /data/ shapes while WP-33, WP-34 and WP-35 build them; WP-37 or the last of them removes the shapes. WP-99 removes the wave 8 shapes when the last page lands, leaving the form routes. A release tag and gh-pages
-  # set RELEASE_ALLOW to empty (verify:release below), so none of this can reach a release. expand: false keeps the `$`.
+  # What verify:release tolerates on a branch pipeline (demo and wp/*), and nothing else. Every launch route exists and no draft remains,
+  # so a `launch:true route does not exist` or `draft content remains` line is a regression and fails, with no allowance (WP-99, #49:
+  # the wave 8 and wave 10 pending-page shapes are gone). Two operator-gated kinds stay visible as `allowed` lines: the launched form
+  # routes (15 of them: /apply/, /contact/, /investors/interest/, /network/partners/enquire/ and eleven /briefs/<id>/) render disabled
+  # until PUBLIC_WE_INTAKE_API_URL is set, and the open counsel sign-off items of RELEASE.md section 8 (`human item open:`).
+  # A release tag and gh-pages set RELEASE_ALLOW to empty (verify:release below), so all of it fails there and the gate prints why.
+  # expand: false keeps the `$` and the regular expressions as written.
   RELEASE_ALLOW:
-    value: '^launched form route,^launch:true route does not exist: (/(?:founders/[a-z0-9-]+|industries|industries/[a-z0-9-]+|compare|compare/[a-z0-9-]+|journey|journey/[a-z0-9-]+|briefs|briefs/[a-z0-9-]+|investors/(?:meet-startups|what-you-can-see|readiness-criteria|showcase-format|faq|interest|interest/thanks)|network/partners|network/partners/(?:categories|how-it-works|faq|enquire|enquire/thanks)|about/brand-story|tools/(?:runway-calculator|pricing-page-checker|cap-table-explainer)|ecosystem|ecosystem/[a-z0-9-]+|sbir-sttr|sbir-sttr/[a-z0-9-]+|data|data/[a-z0-9-]+)/)$'
+    value: '^launched form route,^human item open:'
     expand: false
   # Every qa job blocks on every branch (decision I-10). Set by WP-15 after a wp/15 pipeline passed all of them.
   QA_STRICT: "1"
@@ -390,12 +387,15 @@ e2e:wave7:
 
 # Wave 8 specs (tests/e2e/wave8/**) at 1440 and 390, in two projects of their own (E2E_WAVE8 adds them to playwright.config.ts), for the
 # same reason as wave 7. The rules repeat .qa-rules, each with `exists:`, so a pipeline without a wave 8 spec has no such job.
+# Three shards (#49): the suite is about 3000 tests and took 48 minutes in one job on a healthy runner, against the 1 hour job timeout;
+# pipeline 97297 hit that timeout on a loaded runner. Sharding splits the tests, it drops none, so every wave 8 test still runs here.
 e2e:wave8:
   extends: [.e2e]
+  parallel: 3
   variables:
     E2E_WAVE8: "1"
   script:
-    - npx playwright test --project=wave8-desktop-1440x900 --project=wave8-mobile-390x844
+    - npx playwright test --project=wave8-desktop-1440x900 --project=wave8-mobile-390x844 --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
   rules:
     - if: '$CI_COMMIT_TAG =~ /^release-/'
       exists:

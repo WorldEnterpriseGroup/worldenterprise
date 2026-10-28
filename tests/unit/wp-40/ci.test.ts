@@ -145,19 +145,14 @@ const WAVE_SEVEN = [
   '/llms-full.txt',
 ];
 
-test('RELEASE_ALLOW covers the fixed wave 8 pending rows and the form routes, and no wave 7 pattern survives (contracts section 10)', () => {
+test('RELEASE_ALLOW tolerates the disabled form routes and the open counsel items, and no pending-page pattern survives (#49)', () => {
   const allow = branchAllow();
-  for (const path of PENDING) {
-    assert.equal(getRoute(path)?.launch, true, `${path} is a launched row`);
-    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [], `${path} is tolerated while pending`);
+  assert.deepEqual(allow.split(',').map((p) => p.trim()), ['^launched form route', '^human item open:'], 'exactly the two operator-gated kinds');
+  // Every row that used to be tolerated while its page was pending is launched, built and now has no allowance: a missing page fails.
+  for (const path of [...PENDING, ...WAVE_SEVEN, ...FAMILIES.flatMap((f) => familyPaths(f)), '/ecosystem/', '/sbir-sttr/', '/data/', '/data/startup-survival/']) {
+    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [`launch:true route does not exist: ${path}`], `${path} is not tolerated`);
   }
-  for (const path of WAVE_SEVEN) {
-    assert.deepEqual(
-      unallowed([`launch:true route does not exist: ${path}`], allow),
-      [`launch:true route does not exist: ${path}`],
-      `${path} is no longer tolerated`,
-    );
-  }
+  for (const path of PENDING.filter((p) => !p.endsWith('/thanks/'))) assert.equal(getRoute(path)?.launch, true, `${path} is a launched row`);
   // WP-55 (wave 9) absorbed WP-48 and wrote the UBF page, so its row is launched again; the other three stay cut.
   assert.equal(getRoute('/about/frameworks/ubf/')?.launch, true, '/about/frameworks/ubf/ is launched with its page');
   for (const path of ['/star/', '/shift/', '/android/']) {
@@ -166,52 +161,11 @@ test('RELEASE_ALLOW covers the fixed wave 8 pending rows and the form routes, an
     assert.ok((framework?.reason ?? '').length > 0, `${path} says why`);
   }
   assert.ok(MACHINE_ROUTES.some((m) => m.path === '/llms.txt'), 'the machine routes are untouched');
-  assert.deepEqual(unallowed(['launched form route /apply/ has form "intake" in disabled mode'], allow), [], 'the form routes stay tolerated');
-  for (const problem of [
-    'launch:true route does not exist: /pricing/',
-    'launch:true route does not exist: /tools/team-composer/',
-    'launch:true route does not exist: /tools/evidence-room/extra/',
-    'launch:true route does not exist: /tools/other-tool/',
-    'launch:true route does not exist: /investors/',
-    'launch:true route does not exist: /investors/other/',
-    'launch:true route does not exist: /network/operators/',
-    'launch:true route does not exist: /network/partners/other/',
-    'launch:true route does not exist: /about/facts',
-    'launch:true route does not exist: /robots.txt',
-    'draft content remains: src/content/insights/x.mdx',
-  ]) {
-    assert.deepEqual(unallowed([problem], allow), [problem], `${problem} still fails`);
-  }
-});
-
-test('RELEASE_ALLOW covers every pending page-family row of the registry by path shape, and no other launched route (W8-31)', () => {
-  const allow = branchAllow();
-  const families = FAMILIES.flatMap((f) => familyPaths(f));
-  assert.ok(families.length >= 30, 'the registry launches the family paths');
-  for (const path of families) {
-    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [], `${path} is tolerated while pending`);
-  }
-  for (const problem of [
-    'launch:true route does not exist: /pricing/',
-    'launch:true route does not exist: /investors/',
-    'launch:true route does not exist: /founders/',
-    'launch:true route does not exist: /insights/topic/legal/',
-    'launch:true route does not exist: /briefs/a/b/',
-    'launch:true route does not exist: /compare',
-    'launch:true route does not exist: /compare/x/index.html',
-  ]) {
-    assert.deepEqual(unallowed([problem], allow), [problem], `${problem} still fails`);
-  }
-});
-
-test('RELEASE_ALLOW tolerates the pending wave 10 hubs and their children by path shape, and nothing that merely looks like them (D-W10-5)', () => {
-  const allow = branchAllow();
-  for (const path of ['/ecosystem/', '/ecosystem/programs/', '/sbir-sttr/', '/sbir-sttr/phase-i/', '/data/', '/data/startup-survival/']) {
-    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [], `${path} is tolerated while pending`);
-  }
-  for (const path of ['/ecosystems/', '/database/', '/data/a/b/', '/ecosystem', '/sbir/']) {
-    assert.deepEqual(unallowed([`launch:true route does not exist: ${path}`], allow), [`launch:true route does not exist: ${path}`], `${path} still fails`);
-  }
+  assert.deepEqual(unallowed(['launched form route /apply/ has form "intake" in disabled mode'], allow), [], 'the form routes stay tolerated on a branch');
+  assert.deepEqual(unallowed(['human item open: counsel has not signed CR-01 (x), RELEASE.md section 8'], allow), [], 'open counsel items stay visible but tolerated on a branch');
+  assert.equal(allow.includes('does not exist'), false, 'no pending-page pattern is left');
+  assert.equal(allow.includes('draft content'), false, 'draft content is never tolerated');
+  assert.deepEqual(unallowed(['draft content remains: src/content/insights/x.mdx'], allow), ['draft content remains: src/content/insights/x.mdx']);
 });
 
 test('a release tag and gh-pages still allow nothing: the wave 7 allowance cannot reach a release', () => {

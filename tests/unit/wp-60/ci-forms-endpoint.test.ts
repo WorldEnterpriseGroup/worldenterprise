@@ -64,7 +64,9 @@ test('the wave 8 command runs after the build with the intake endpoint, in the s
 
 test('e2e:wave8 keeps running every wave 8 test, with no grep, so the disabled-mode cases run and the @endpoint ones skip themselves', () => {
   const wave8 = commands('e2e:wave8');
-  assert.deepEqual(wave8, ['npx playwright test --project=wave8-desktop-1440x900 --project=wave8-mobile-390x844']);
+  // Sharded across parallel jobs (#49): --shard splits the tests between the jobs and drops none.
+  assert.deepEqual(wave8, ['npx playwright test --project=wave8-desktop-1440x900 --project=wave8-mobile-390x844 --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL']);
+  assert.match(block('e2e:wave8'), /^ {2}parallel: \d+$/m);
 });
 
 test('no other job runs a wave 8 project: only e2e:wave8 and e2e:forms mention E2E_WAVE8', () => {

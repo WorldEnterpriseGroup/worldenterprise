@@ -140,7 +140,11 @@ export function checkBudgets(summary, config) {
   if (summary.tbtInconclusive !== undefined) failures.push({ id: 'tbt-inconclusive', sampled: true, message: `TBT inconclusive: runner CPU starved (benchmark ${summary.tbtInconclusive.map((b) => (b === null ? 'n/a' : Math.round(b))).join('/')}, floor ${config.benchmark?.floor})` });
   else if (summary.tbtMs === null || summary.tbtMs >= config.metrics.tbtMs) failures.push({ id: 'tbt', sampled: true, message: `TBT ${summary.tbtMs === null ? 'missing' : `${Math.round(summary.tbtMs)} ms`} is not under ${config.metrics.tbtMs} ms` });
   if (summary.thirdParty.length > 0) failures.push({ id: 'third-party', sampled: false, message: `third-party requests: ${summary.thirdParty.slice(0, 3).join(', ')}` });
-  const exempt = config.javascript.exemptPrefixes.some((p) => summary.route.startsWith(p));
+  // exemptPrefixes covers a prefix and every page under it; exemptBelow covers only the pages under it, so a hub keeps its budget while
+  // its child pages that carry the shared form script (the brief request form, like /apply/ and /contact/) do not.
+  const exempt =
+    config.javascript.exemptPrefixes.some((p) => summary.route.startsWith(p)) ||
+    (config.javascript.exemptBelow ?? []).some((p) => summary.route.startsWith(p) && summary.route !== p);
   if (!exempt && summary.scriptBytes > config.javascript.maxGzipBytes) failures.push({ id: 'javascript', sampled: false, message: `JavaScript transfer ${summary.scriptBytes} bytes exceeds ${config.javascript.maxGzipBytes}` });
   return failures;
 }
