@@ -1,13 +1,15 @@
 ---
 interface Props {
   id: string;
+  /** `website` on the JSON contract; `_honey` on a FormSubmit form, which discards a post that fills it. */
+  name?: string;
 }
 
-const { id } = Astro.props;
+const { id, name = 'website' } = Astro.props;
 ---
 
 <!-- Honeypot (docs/forms-contract.md): people never see or reach this field; automation tends to fill it. -->
 <div class="hp" inert>
   <label for={id}>Leave this field empty</label>
-  <input id={id} name="website" type="text" tabindex="-1" autocomplete="off" />
+  <input id={id} name={name} type="text" tabindex="-1" autocomplete="off" />
 </div>
