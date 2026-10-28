@@ -563,8 +563,15 @@ e2e:forms:
 # Mobile Lighthouse on the representative routes, judged on the best of up to three runs per route (scripts/run-lighthouse.mjs,
 # lighthouserc.json). It is a hard gate: no allow_failure here and no "unmeasurable" exit code.
 #
-# Why it is scheduled, not just retried. Lighthouse reads the CPU the runner gives it, and the job pods request 100m of CPU against a
-# 1500m limit (FocusApiary/gitlab-k8s#16, open). Under contention the same 6948 byte page measured a blocking time of 0 in one run and 8814 ms
+# Why it asks for CPU, and why it is also scheduled. Lighthouse reads the CPU the runner gives it. A job pod gets the runner default
+# (250m request, 1500m limit), which under contention is a small share of a busy node: on pipelines 98264 and 98321 (jobs 1631003 and
+# 1631923) 27 and 33 of 55 routes failed "TBT inconclusive: runner CPU starved" with benchmarks of 450-1170 against the floor of 1200,
+# and the scheduler reported "0/18 nodes are available: 11 Insufficient cpu" (issue #123). The runners honour a per-job opt-in up to
+# request 2 / limit 4 CPU (gitlab-k8s#16, closed; FocusApiary/gitlab-k8s CLAUDE.md "Per-job CPU/memory opt-in"), so this job sets
+# KUBERNETES_CPU_REQUEST "2" and KUBERNETES_CPU_LIMIT "4": the scheduler places it only where two CPUs are free and the benchmark gets
+# up to four. The two values are set together with request >= limit / 2, the contract the runner documents (infrastructure#381). A value
+# above the runner cap fails the job at pod creation instead of being clamped. The floor, the budgets and the verdict are unchanged.
+# Earlier history, kept because the scheduling below still applies. Under contention the same 6948 byte page measured a blocking time of 0 in one run and 8814 ms
 # in the next (demo 65923), and on pipeline 66023 the contention lasted the whole window: five of twelve routes failed as a median of three
 # (raw blocking times 830/0/990, 402/0/209). Contention only adds time and a real regression raises every run, so the verdict is the best run,
 # and the job is kept off the busy runner:
@@ -573,10 +580,13 @@ e2e:forms:
 #          compete with them. The wave 7 and wave 8 jobs exist only once their specs do, hence optional.
 # A run that dies on a DevTools PROTOCOL_TIMEOUT (demo 66053, job 1132552, two minutes in, before any route was measured) is a stalled run:
 # it is logged and the route is tried again in the next round. A route fails only if none of its runs completes.
-# Remove both when the runner requests enough CPU for a job (gitlab-k8s#16), and measure again.
+# Remove both once a run with the opt-in below has shown they are not needed, and measure again.
 qa:lighthouse:
   extends: [.e2e]
   resource_group: lighthouse
+  variables:
+    KUBERNETES_CPU_REQUEST: "2"
+    KUBERNETES_CPU_LIMIT: "4"
   needs:
     - job: verify:static
       artifacts: true
