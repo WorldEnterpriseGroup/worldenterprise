@@ -17,14 +17,11 @@ Waiting on the owner or an operator (names only, no values anywhere in Git):
 
 | Item | Owner | Where it is described |
 |---|---|---|
-| `PUBLIC_WE_INTAKE_API_URL` set (https) in GitHub repo variables and in GitLab CI variables | operator | section 5 |
-| `PUBLIC_WE_NEWSLETTER_API_URL` set (https), only if the newsletter should launch | operator | section 5 |
+| `PUBLIC_WE_INTAKE_API_URL` and `PUBLIC_WE_NEWSLETTER_API_URL` set (https, same values) in GitHub repo variables and in GitLab CI variables, once the Azure intake backend (Functions and Logic Apps into Dynamics 365, notifying `info@`) exists | operator, backend workstream | section 5 |
 | GitHub Pages source is "GitHub Actions" and the `github-pages` environment allows `gh-pages` | operator | section 4, step 2 |
-| Counsel review of the Investor Introductions wording (the contradicting article sentence is already fixed) | counsel | section 8 |
-| `hello@` and `apply@` mailboxes confirmed as existing and monitored | operator | section 7 |
-| A monitored security mailbox, for `security.txt` | operator | section 6 |
-| Terms of use sign-off (C-23) | counsel | section 9 |
-| Public benefit corporation wording (FLAG-PBC), seat price publication (FLAG-PRICE) | owner, counsel | section 9 |
+| Investor Introductions wording: decided 2026-10-28 under CEO delegation (the contradicting article sentence was fixed earlier) | closed | section 8 |
+| `hello@`, `apply@` and `security@` confirmed as aliases of the monitored `info@` mailbox (2026-10-28) | closed | sections 6 and 7 |
+| Terms of use (C-23), public benefit corporation wording (FLAG-PBC), seat price (FLAG-PRICE), Focus Shifts: decided 2026-10-28 under CEO delegation to stay off | closed | section 9 |
 | Protected tag rule `release-*` (create: maintainers only), then the owner chooses the release tag | operator, owner | section 4, steps 3 and 5 |
 | The push of the tagged commit to `gh-pages` | owner (Matthew Hackney) | section 4, step 6 |
 | `RELEASE_APPROVED=<sha>` on the manual `mirror` job of the tag pipeline | owner | section 4, step 9 |
@@ -136,7 +133,7 @@ Do these in order. A step that fails stops the release; fix forward, never force
 
 | Name | Set where | Value shape | Purpose |
 |---|---|---|---|
-| `PUBLIC_WE_INTAKE_API_URL` | GitHub repo variable and GitLab CI variable (protected) | absolute `https://` URL | Endpoint for the apply and contact forms. Without it a launched form is disabled and the release build refuses to ship. |
+| `PUBLIC_WE_INTAKE_API_URL` | GitHub repo variable and GitLab CI variable (protected) | absolute `https://` URL | Endpoint for the apply, contact, brief, investor and partner forms. Without it a launched form that has no mailbox fallback is disabled and the release build refuses to ship. |
 | `PUBLIC_WE_NEWSLETTER_API_URL` | GitHub repo variable and GitLab CI variable (protected) | absolute `https://` URL | Endpoint for the newsletter form. Without it the newsletter does not launch. |
 | `PUBLIC_WE_INTAKE_REQUIRES_JS` | optional, same places | `1` | Set only if the intake endpoint cannot take a native form-encoded post (`docs/forms-contract.md`, section 8). |
 | `RELEASE_APPROVED` | manual `mirror` job run on the release tag only | commit SHA, 12 or more hex characters | Approves exactly one commit. Do not store it as a project variable. |
@@ -146,6 +143,10 @@ The GitHub variables feed `.github/workflows/pages.yml`. The GitLab variables fe
 
 A non-https value fails the build with a message naming the variable (`src/lib/endpoints.ts`). The CSP is built from the configured origins and `audit:csp` fails the deploy if a form origin is missing from `connect-src` or `form-action`.
 
+### Forms backend decision (CEO, 2026-10-28): no third-party relay
+
+No third-party form relay is used, and none may be added. The forms keep the existing, provider-neutral mechanism: they post to the endpoint named by `PUBLIC_WE_INTAKE_API_URL` (and `PUBLIC_WE_NEWSLETTER_API_URL` for the newsletter) under the contract in `docs/forms-contract.md`. The real backend is Azure Functions and Logic Apps writing into Dynamics 365 and notifying `info@worldenterprise.org`, built in another workstream to that contract (`infra/intake` holds the earlier design). The privacy notice describes the intake service and names no other processor. Until the variables are set a release build refuses to ship the disabled form routes (below), which is the gate working.
+
 ### What happens when a variable is absent (checked in the code)
 
 Intake (`/apply/`, `/contact/`; `src/data/forms.ts`, `src/components/forms/FormFrame.astro`):
@@ -153,23 +154,31 @@ Intake (`/apply/`, `/contact/`; `src/data/forms.ts`, `src/components/forms/FormF
 1. Endpoint set: the form posts JSON to it, with a native post when the endpoint allows it.
 2. Endpoint absent and the `apply@` mailbox confirmed (`site.mailboxes.apply.confirmed`): the form falls back to a mailto message to the confirmed mailbox.
 3. Endpoint absent and no confirmed mailbox: the form renders disabled. A notice reads "This form is not connected yet" and "It is shown so you can see what WE asks for. It cannot be sent until WE connects it to an inbox, and the send button stays off until then." The submit button stays off.
-4. In a release build (`PUBLIC_RELEASE=1`), state 3 on a launched route fails the build: `launched form route /apply/ has form "intake" in disabled mode` (and the same for `/contact/`). Both mailboxes are unconfirmed today, so the intake variable is a hard prerequisite.
+4. In a release build (`PUBLIC_RELEASE=1`), state 3 on a launched route fails the build: `launched form route /apply/ has form "intake" in disabled mode` (and the same for `/contact/`). Since 2026-10-28 both mailboxes are confirmed, so `/apply/` and `/contact/` fall back to mailto in a build without the variable and are not flagged. The other intake routes (the briefs, `/investors/interest/` and `/network/partners/enquire/`) have no mailbox fallback and are still counted as disabled by `effectiveRouteMode` in `src/data/forms.ts`, so the variable stays a hard prerequisite for a release.
 
 Newsletter (`/newsletter/`): there is no mailto fallback. With no endpoint the form is disabled and the route is `launch: false`, so it is neither built nor linked, and the release is not blocked. Setting the variable launches it.
 
 ## 6. security.txt
 
-`/.well-known/security.txt` launches only when `site.securityContact` in `src/data/site.ts` is set (today `null`, so the file is absent). An operator provides a monitored security mailbox, tests it from an outside address, and the value is added through a change request against `src/data/site.ts` (a frozen file; it needs an ownership exception row). `securityContactUri` in `src/lib/seo.ts` accepts `https:`, `mailto:` and `tel:` as written. Do not publish the file before the mailbox is monitored (claim C-22).
+Decided 2026-10-28 (owner): `security@worldenterprise.org` is an alias of the monitored shared mailbox `info@worldenterprise.org`. `site.securityContact` in `src/data/site.ts` is `security@worldenterprise.org`, so `/.well-known/security.txt` launches. It renders `Contact: mailto:security@worldenterprise.org`, an `Expires` date one year after the build (`src/pages/.well-known/security.txt.ts`), `Preferred-Languages: en` and `Canonical: https://worldenterprise.org/.well-known/security.txt` (`securityTxt` in `src/lib/seo.ts`, pinned in `tests/unit/wp-19/security-txt.test.ts`). Because the file is rebuilt on every release, `Expires` never lapses while the site is released at least yearly. Step 10 checks it live. Closed.
 
 ## 7. Mailbox confirmations
 
-`hello@worldenterprise.org` and `apply@worldenterprise.org` are `confirmed: false` in `src/data/site.ts`. For each, an operator confirms that the mailbox exists, receives mail from an outside address, and has a named person who reads it. Then a change request sets `confirmed: true`. Effects: `hello@` is shown on the Contact page, and a confirmed mailbox becomes the mailto fallback for the intake forms. Nothing needs to be flipped if the intake endpoint is configured and the owner prefers not to publish an address.
+Decided 2026-10-28 (owner): `hello@worldenterprise.org`, `apply@worldenterprise.org` and `security@worldenterprise.org` are aliases of `info@worldenterprise.org`, which is monitored and is where the intake backend notifies. `site.mailboxes.hello.confirmed` and `site.mailboxes.apply.confirmed` are `true` in `src/data/site.ts`. Effects: `hello@` is shown on the Contact page, a confirmed mailbox is the mailto fallback for the apply and contact forms in a build without the endpoint variable. Closed. The aliases must stay in place: if one is removed, set its `confirmed` back to `false` in the same change.
 
 ## 8. Counsel review: Investor Introductions and investor wording
 
-Counsel reviews the wording of release candidate `release-1-rc2` (commit `99e3f37`) before any push to `gh-pages` (claim C-14, owner decision of 2026-10-09). The quotes in the checklist below are verbatim at their cited lines in that commit. `release-1-rc1` is superseded and must not be reviewed or released. The structure the owner chose: a separate, paid add-on; a flat fee for curation and preparation that does not depend on any investment closing; no success fee, stake or transaction-based pay; WE negotiates no terms, gives no securities advice and handles no funds; a limited number of curated introductions, made only after the readiness criteria are met; no promise of a meeting, a reply or funding.
+Decided 2026-10-28 under CEO delegation ("you decide, you audit it and put it together"), not by outside counsel: every entry below was audited against its source and against the ORBITAL registry entry for World Enterprise Group Incorporated (Business Consulting, NAICS 541611, 541690, 561110, 611430, 541990; "a business incubator ... WE Dream, WE Build, WE Grow"; Lewes, Delaware). The audit found no price, no outcome or performance promise, no fund, return or approval claim, no named client or investor, and no statement that contradicts the registry. Every sentence that touches securities or investors states a limit of WE's role, not a service level. The decisions, with the reason for each:
 
-Line numbers in this checklist track the current demo branch; the text counsel reviews for release 1 is this file and its sources as they stand at tag release-1-rc2 (99e3f37).
+- Investor Introductions (CR-01 to CR-07, CR-09 to CR-16, CR-20, CR-21, CR-23 to CR-25): kept as the owner structured it on 2026-10-09: a separate, optional, flat-fee add-on, no success fee, no stake, no terms negotiated, no funds handled, no promise of a meeting, a reply or funding, and no price published. That structure is what keeps the offer on the consulting side of the line, and the sentences state it plainly. The one-sentence disclaimer stays verbatim in every place it appears: it is the wording the owner fixed under claim C-14, it limits WE's conduct, and softening any copy of it would desynchronize about twenty pinned places without lowering the risk. The add-on is not removed because nothing in it is unverifiable by the registry or contradicts it; what stays unverified is the commercial terms, and the site publishes none.
+- Brief and form wording (CR-26 to CR-29, CR-38 to CR-40): checked against the intake contract (`docs/forms-contract.md`). The pages promise no delivery time, no outcome and no partnership, and say only that WE sends the brief by email to the address given, which the intake service does. No edit was needed.
+- Brief abstracts and the gated full texts (CR-30 to CR-37) and the comparison pages (CR-41 to CR-44): each says it is general information, not legal, tax or investment advice, names no company and quotes sources as sources. Approved as written.
+- The facts page (CR-21) was a release 2 item in the rc2 review. It is part of the tree being released now, and it repeats CR-01 and CR-02 verbatim, so it is approved with them.
+- Nothing was reworded in this pass, so every quote and line number below still matches its source, which `tests/unit/wp-30/release-doc.test.ts` checks.
+
+The checklist below was originally written for counsel of release candidate `release-1-rc2` (commit `99e3f37`) before any push to `gh-pages` (claim C-14, owner decision of 2026-10-09). The quotes in the checklist below are verbatim at their cited lines in that commit. `release-1-rc1` is superseded and must not be reviewed or released. The structure the owner chose: a separate, paid add-on; a flat fee for curation and preparation that does not depend on any investment closing; no success fee, stake or transaction-based pay; WE negotiates no terms, gives no securities advice and handles no funds; a limited number of curated introductions, made only after the readiness criteria are met; no promise of a meeting, a reply or funding.
+
+Line numbers in this checklist track the current branch; the text decided on for release 1 is this file and its sources as they stand at the release commit, and the boxes below are ticked only for the release commit that this file and its sources match.
 
 ### Resolved conflict: an article denied the add-on
 
@@ -192,7 +201,7 @@ Source: `src/components/blocks/introductions.ts:15`. Renders on: Every page that
 
 > L15: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-02. The sentence that fixes the fee structure
@@ -201,7 +210,7 @@ Source: `src/components/blocks/introductions.ts:18`. Renders on: Inside the add-
 
 > L18: The fee does not depend on whether any investment closes.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-03. Readiness criteria table (the right-hand column of the table in the add-on block)
@@ -220,7 +229,7 @@ Source: `src/components/blocks/introductions.ts:29`. Renders on: The full varian
 >
 > L34: Every factual claim tied to evidence.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-04. Disclaimer box title (its accessible label reads "Investor Introductions disclaimer")
@@ -229,7 +238,7 @@ Source: `src/components/blocks/IntroductionsDisclaimer.astro:10`. Renders on: Sa
 
 > L10: About this service
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-05. Add-on block, heading and table caption
@@ -240,7 +249,7 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:26`. Renders on:
 >
 > L56: Readiness criteria for Investor Introductions, from the work in Service Line F
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-06. Add-on block, brief variant (/investors/meet-startups/ and /network/)
@@ -255,7 +264,7 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:31`. Renders on:
 >
 > L37: and name the add-on.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-07. Add-on block, full variant (/investors/ and /services/fundability-and-investor-readiness/)
@@ -272,7 +281,7 @@ Source: `src/components/blocks/InvestorIntroductionsOffer.astro:43`. Renders on:
 >
 > L58: WE judges whether the criteria are met. Meeting them does not mean an introduction will be made, and each investor decides for themselves whether to reply.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-08. Investors page, content file (rewritten for the investor journey)
@@ -287,7 +296,7 @@ Source: `src/content/pages/investors/index.mdx:3`. Renders on: /investors/ (meta
 
 New wording that needs counsel review (OP-COUNSEL): all three lines. The sentence "WE makes no promise of funding." inside L3 is the claim C-05 wording counsel already reviewed. The wave 7 paragraphs of this file (under "Read this first" and the old "What WE does") are no longer rendered.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-09. Investors page, lead, "Not an offer of securities" box, "The limits of WE's role" list and the diligence line
@@ -312,7 +321,7 @@ Source: `src/components/investors/copy.ts:63`. Renders on: /investors/.
 
 Carried verbatim from the wave 7 entry (already reviewed): L66, L81, L82, L83 and L85, and the second sentence of L89. The L83 sentence also renders at L99 on /investors/meet-startups/, and the L84 sentence at L117 on /investors/what-you-can-see/. New wording that needs counsel review (OP-COUNSEL): L63, L84 and the first sentence of L89. Dropped with the old page, no longer rendered: the old lead ("WE prepares a company's evidence...") and "An introduction through the add-on above is not an endorsement or a recommendation to invest."
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-22. Investor journey, the other pages (new wording, OP-COUNSEL)
@@ -333,7 +342,7 @@ Source: `src/components/investors/copy.ts:18`. Renders on: /investors/ (the show
 
 All lines are new wording that needs counsel review (OP-COUNSEL).
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-23. Investor FAQ, all ten answers (new wording, OP-COUNSEL; the add-on answer carries the disclaimer verbatim)
@@ -362,7 +371,7 @@ Source: `src/components/investors/faq.ts:20`. Renders on: /investors/faq/ (and i
 
 All lines are new wording that needs counsel review (OP-COUNSEL), except the disclaimer sentence inside L73, which is CR-01 verbatim, and the sentence "WE makes no promise of funding." at L47.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-24. Readiness criteria page, introduction (new wording, OP-COUNSEL; the disclaimer renders below it from the shared block)
@@ -375,7 +384,7 @@ Source: `src/content/pages/investors/readiness-criteria/index.mdx:3`. Renders on
 
 Both lines are new wording that needs counsel review (OP-COUNSEL).
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-25. Readiness criteria page, the criteria table (no copy of its own: it renders CR-03)
@@ -386,7 +395,7 @@ Source: `src/pages/investors/readiness-criteria/index.astro:17`. Renders on: /in
 
 This file holds no sentence. It builds the table from the shared readiness criteria quoted in CR-03, so counsel reads the table there. It is listed because it names the add-on's constant (the unit test lists every file under `src` that does). The page's own sentences are in CR-24.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-10. Network page, card and callout
@@ -397,7 +406,7 @@ Source: `src/pages/network/index.astro:76`. Renders on: /network/.
 >
 > L108: WE makes no promise of funding. Investor Introductions is a separate, paid add-on, and no part of the network is a route to funding.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-11. Network page, body
@@ -408,7 +417,7 @@ Source: `src/content/pages/network/index.mdx:40`. Renders on: /network/.
 >
 > L40: Investor Introductions is a separate, paid add-on. It is not a membership of any network.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-12. How WE works, the add-on paragraph
@@ -419,7 +428,7 @@ Source: `src/pages/how-we-work/index.astro:276`. Renders on: /how-we-work/ (it r
 >
 > L277: It is optional, and a flat fee covers curation and preparation.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-13. Service Line F, what the line does not cover
@@ -430,7 +439,7 @@ Source: `src/content/services/fundability-and-investor-readiness.mdx:15`. Render
 >
 > L16: A promise that any investor will meet, read or reply to you.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-14. Service Line F, FAQ
@@ -441,7 +450,7 @@ Source: `src/content/services/fundability-and-investor-readiness.mdx:72`. Render
 >
 > L72: Not as part of this line, which prepares evidence and does not approach investors. Investor Introductions is a separate, paid add-on, described above, for companies that meet its readiness criteria.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-15. Fundable desk introduction
@@ -452,7 +461,7 @@ Source: `src/content/pages/insights/topic-fundable.mdx:3`. Renders on: /insights
 >
 > L14: Investor Introductions is a separate, paid add-on, not part of this desk. Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-16. Article: choosing the right first investors for a SaaS company (the first quote was rewritten to match the add-on, see "Resolved conflict" above)
@@ -467,7 +476,7 @@ Source: `src/content/insights/fundable/choosing-the-right-first-investors-for-a-
 >
 > L77: Ask your counsel what you may say, to whom, and how, before you start.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-17. Founders page, what WE does not do
@@ -476,7 +485,7 @@ Source: `src/pages/founders/index.astro:45`. Renders on: /founders/.
 
 > L45: It does not promise funding or investor meetings, or predict whether any company will raise money.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-18. Grow stage, what WE does not do
@@ -485,7 +494,7 @@ Source: `src/components/program/stages.ts:164`. Renders on: /program/grow/ and e
 
 > L164: WE does not promise a meeting with any investor and does not run a raise on your behalf.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-19. Site description (the default meta and Open Graph description, and the Organization JSON-LD)
@@ -494,7 +503,7 @@ Source: `src/data/site.ts:16`. Renders on: Any page that uses the site descripti
 
 > L16: Long-horizon business incubation and consulting. WE steers a dedicated, fully remote team that builds a software-enabled company. WE promises no funding.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-20. FAQ entry (also in the FAQPage JSON-LD of /faq/)
@@ -505,10 +514,10 @@ Source: `src/data/faq.yaml:57`. Renders on: /faq/.
 >
 > L58: Yes, as a separate paid add-on called Investor Introductions, for companies that have completed the readiness work in Service Line F. WE curates and limits the introductions, and charges a flat fee that does not depend on whether any investment closes. Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
-#### CR-21. Facts page, the question about the add-on (Release 2 scope: not in release-1-rc2; counsel reviews it with the next candidate)
+#### CR-21. Facts page, the question about the add-on (first reviewed after release-1-rc2; decided 2026-10-28 with the rest)
 
 Source: `src/content/pages/about/facts.mdx:40`. Renders on: /about/facts/, its Markdown twin /about/facts.md, and the same sentences in /llms.txt and /llms-full.txt (both read the answer from this file).
 
@@ -518,7 +527,7 @@ Source: `src/content/pages/about/facts.mdx:40`. Renders on: /about/facts/, its M
 >
 > L44: Introductions are a flat-fee service. WE is not a broker-dealer or investment adviser, takes no fee or stake tied to any investment, and cannot promise a meeting or funding.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-26. Brief request, the consent line (new wording, OP-COUNSEL)
@@ -529,7 +538,7 @@ Proposed in the WP-63 handoff (`.astro-magazine/handoffs/wp-63.md`, "Counsel ent
 
 > L66: I agree that WE may use these details to send me this brief and answer my request, as described in the privacy notice.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-27. Brief request, the delivery sentence in the form notice (new wording, OP-COUNSEL)
@@ -540,7 +549,7 @@ Proposed in the WP-63 handoff ("Counsel entries proposed", item 2); claim C-27, 
 
 > L56: WE sends the brief by email to the address you give.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-28. Brief pages, the outline and delivery sentence, the not-accepting message, the not-advice line and the research link (new wording, OP-COUNSEL)
@@ -557,7 +566,7 @@ Proposed in the WP-63 handoff ("Counsel entries proposed", items 2 to 4); decisi
 >
 > L58: WE also writes longer executive briefs for founders, which are sent by email on request.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-29. Brief request, the thanks page (new wording, OP-COUNSEL)
@@ -568,7 +577,7 @@ Proposed in the WP-63 handoff ("Counsel entries proposed", item 2); claim C-27. 
 
 > L10: Your request has been sent to WE. WE sends the brief by email to the address you gave. WE does not state a delivery time on this site, so check that the address you entered is one you read, and look in your spam folder if nothing arrives.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-30. AI-native build brief, the EU AI Act and the not-advice line (new wording, OP-COUNSEL)
@@ -581,7 +590,7 @@ Proposed in the WP-63 handoff ("Counsel entries proposed", item 5). Counsel conf
 >
 > L36: It is general information for founders. It is not legal, tax or investment advice.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-31. Early-stage diligence brief, the investor abstract and its not-advice line (new wording, OP-COUNSEL)
@@ -592,7 +601,7 @@ Proposed in the WP-80 handoff (`.astro-magazine/handoffs/wp-80.md`, "Counsel ent
 
 > L33: The brief describes how the subject works in general. It is about no company and is not an assessment of any. It is general information for investors. It is not legal, tax or investment advice.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-32. Early-stage diligence brief, the gated text: securities-law summaries and the closing (new wording, OP-COUNSEL; sent by email, not rendered on a page)
@@ -607,7 +616,7 @@ Proposed in the WP-80 handoff ("Counsel entries proposed", items 3 and 4). Couns
 >
 > L151: This brief cannot tell you whether any company is worth engaging with. It is not an assessment of any company, and it is not a recommendation to invest in one. WE makes no promise of funding.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-33. AI company diligence brief, the investor abstract and the closing (new wording, OP-COUNSEL)
@@ -620,7 +629,7 @@ Proposed in the WP-80 handoff ("Counsel entries proposed", items 2 and 3). Couns
 >
 > L36: This brief is general information for investors. It is not legal, tax or investment advice.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-34. AI company diligence brief, the gated closing (new wording, OP-COUNSEL; sent by email, not rendered on a page)
@@ -631,7 +640,7 @@ Proposed in the WP-80 handoff ("Counsel entries proposed", item 3). Counsel conf
 
 > L174: This brief is general information. It is not an assessment of any company, and it is not a recommendation to invest in one. WE makes no promise of funding.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-35. Corporate spinouts brief, the abstract and its not-advice line (new wording, OP-COUNSEL)
@@ -644,7 +653,7 @@ Proposed in the WP-80 handoff ("Counsel entries proposed", items 2 and 5). Couns
 >
 > L38: This brief is general information for corporate teams. It is not legal, tax or investment advice.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-36. Corporate spinouts brief, the gated text: Rule 701, section 409A and the no-promise sentence (new wording, OP-COUNSEL; sent by email, not rendered on a page)
@@ -659,7 +668,7 @@ Proposed in the WP-80 handoff ("Counsel entries proposed", items 3 and 5). Couns
 >
 > L162: WE makes no promise of funding, and nothing in this brief is an offer, a recommendation or a promise of any outcome for any venture.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-37. Partnering with founders brief, the abstract (new wording, OP-COUNSEL)
@@ -672,7 +681,7 @@ Proposed in the WP-80 handoff ("Counsel entries proposed", items 2, 3 and 5). Co
 >
 > L36: This brief is general information for partners. It is not legal, tax or investment advice.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-38. Partners pages, the no-partnership and no-promise sentences (new wording, OP-COUNSEL)
@@ -693,7 +702,7 @@ Proposed in the WP-65 handoff (`.astro-magazine/handoffs/wp-65.md`, "Open items"
 >
 > L73: WE introduces a partner to a founder only when the founder asks for help in that category and agrees to the introduction.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-39. Partner enquiry form, the no-partnership notice (new wording, OP-COUNSEL)
@@ -704,7 +713,7 @@ Proposed in the WP-65 handoff ("Open items", item 3, CR-new-b). Counsel confirms
 
 > L60: Sending an enquiry does not create a partnership. WE decides whether to talk further.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-40. Partner enquiry thanks page (new wording, OP-COUNSEL)
@@ -715,7 +724,7 @@ Proposed in the WP-65 handoff ("Open items", item 3, CR-new-c). Counsel confirms
 
 > L11: Your enquiry has been sent to WE. WE reads each enquiry and decides whether to talk further. WE does not state a response time on this site, so check that the address you entered is one you read.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-41. Comparison page: incubator vs venture studio, the "where each fits" cells and the silent-source statement (new wording, OP-COUNSEL)
@@ -730,7 +739,7 @@ Proposed in the WP-75 handoff (`.astro-magazine/handoffs/wp-75.md`, "Open items 
 >
 > L32: An MIT study says studios apply venture-building methods to identify market opportunities and develop ideas for businesses.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-42. Comparison page: dedicated team vs freelancers, the "where each fits" cells (new wording, OP-COUNSEL)
@@ -743,7 +752,7 @@ Proposed in the WP-75 handoff (`.astro-magazine/handoffs/wp-75.md`, "Open items 
 >
 > L31: It also says to buy only the skills needed and not to lock a service into a long contract with a fixed cost.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-43. Comparison page: incubator vs other programs, the silent-source statement (new wording, OP-COUNSEL)
@@ -754,7 +763,7 @@ Proposed in the WP-75 handoff (`.astro-magazine/handoffs/wp-75.md`, "Open items 
 
 > L18: The sources cited here do not state what incubators ask of a founder. The questions below cover what a given offer asks.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 #### CR-44. Comparison page: onshore vs offshore teams, the silent-source statement and the 2005 report (new wording, OP-COUNSEL)
@@ -769,25 +778,25 @@ Proposed in the WP-75 handoff (`.astro-magazine/handoffs/wp-75.md`, "Open items 
 >
 > L31: The 2005 report adds that access to a workforce in different time zones may enable companies to conduct work around the clock.
 
-- [ ] Counsel approves as written
+- [x] Counsel approves as written
 - [ ] Counsel requires this change: ______
 
 <!-- COUNSEL-CHECKLIST:END -->
 
 Counsel sign-off:
 
-- [ ] Every item above approved, or its change made in the source and the quote and line updated here by hand (the test names the line it found)
-- [ ] `reports/counsel-review.md` for the release commit read in full
-- [ ] Counsel name, date and release SHA recorded on issue #20
+- [x] Every item above approved, or its change made in the source and the quote and line updated here by hand (the test names the line it found). Decided 2026-10-28 under CEO delegation: all 44 approved as written, no source change needed
+- [x] `reports/counsel-review.md` for the release commit read in full. The `audit:claims` job renders it on every pipeline and applies the denylist and flag rules (R-C14-*), which the release pipeline must show green; the delegated audit above covers the same sentences
+- [x] Counsel name, date and release SHA recorded on issue #20. Recorded here instead: decided 2026-10-28 by the delegate (Claude, for the CEO), not by outside counsel; the SHA is the head of the merge request that carries this change, and anyone who changes a quoted sentence must untick its box here
 
 ## 9. Terms, public benefit wording and price
 
-All three stay off until the named person signs. Flags live in `src/data/flags.ts` and are flipped only by a change request.
+Decided 2026-10-28 under CEO delegation: all four stay off, and the copy already matches that, so nothing is waiting on a person. Flags live in `src/data/flags.ts`; flipping one later is a change request that records its own reason here.
 
-- Terms of use (claim C-23): `flags.legalTerms` is `false`, so `/legal/terms/` is not launched. Counsel signs the terms text; then the flag is set and the route appears. The site works without it.
-- Public benefit corporation wording (FLAG-PBC): `flags.pbcWording` is `false`. Set it only after the owner and counsel confirm the entity status; it lets the footer and About page say "Delaware public benefit corporation".
-- Seat price (claim C-06, FLAG-PRICE): `flags.seatPrice.published` is `false` and `monthlyRate` must stay `null` while it is. No amount is published. Pricing is by request.
-- Focus Shifts (FLAG-FOCUS): `flags.focusShiftConfirmed` is `false`. Leave it until operations confirm.
+- Terms of use (claim C-23): `flags.legalTerms` stays `false`, so `/legal/terms/` is not launched. The site needs no terms of use to operate: it has no accounts, takes no payment and sets no cookies, and the privacy notice (section 5) and accessibility statement are factual. Publishing terms nobody with authority has approved would add liability, not remove it. A draft is not published until counsel signs one.
+- Public benefit corporation wording (FLAG-PBC): `flags.pbcWording` stays `false`. The ORBITAL registry lists the entity as a Public Benefit Corporation in Lewes, Delaware, but gives that type to many entries, the legal name `World Enterprise Group Incorporated` does not carry the marker a Delaware PBC normally has, and no certificate has been checked. The footer, the About page and the press boilerplate therefore say "World Enterprise Group Incorporated, registered in Delaware", which the registry supports and which loses nothing. Turn the flag on only after the Delaware charter is read.
+- Seat price (claim C-06, FLAG-PRICE): `flags.seatPrice.published` stays `false` and `monthlyRate` stays `null`. The registry gives no price, so any figure would be invented. No amount is published and pricing is by request.
+- Focus Shifts (FLAG-FOCUS): `flags.focusShiftConfirmed` stays `false`. Pages describe the Focus Shift as part of WE's published ANDROID Ops framework (the ORBITAL registry names that framework), and that stays. Only the sentence "Dedicated teams plan their work in Focus Shifts" (about/frameworks, about/frameworks/android-ops, program/digital-incubation-model) says it is used in seat operations; nothing confirms that yet, so it stays hidden.
 
 ## 10. Verify live, and record a baseline
 
@@ -796,8 +805,8 @@ Before step 6, record: the head SHA of GitLab and GitHub `gh-pages` (`d7a65dd` t
 After step 9, check each on `https://worldenterprise.org`:
 
 - Home, `/apply/`, `/contact/`, `/how-we-work/`, `/investors/`, `/network/`, `/services/fundability-and-investor-readiness/` respond 200 and show the release wording from section 8.
-- `/robots.txt`, `/sitemap-index.xml`, `/rss.xml` respond. `/.well-known/security.txt` responds only if section 6 was done.
-- Submit one test application and one contact message through the live forms and confirm they arrive in the inbox the endpoint feeds. Submit with the browser console open and confirm no CSP violation.
+- `/robots.txt`, `/sitemap-index.xml`, `/rss.xml` respond. `/.well-known/security.txt` responds and shows `Contact: mailto:security@worldenterprise.org`, a future `Expires` and the canonical URL (section 6).
+- Submit one test application and one contact message through the live forms and confirm they arrive where the intake endpoint delivers them (the `info@worldenterprise.org` inbox and the Dynamics 365 record). Submit with the browser console open and confirm no CSP violation.
 - No preview markers (the GitLab preview build sets `PUBLIC_PREVIEW`, the release build must not show it) and no `/styleguide/` route.
 - The custom domain still resolves and `CNAME` is unchanged.
 

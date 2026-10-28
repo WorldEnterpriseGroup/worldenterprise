@@ -22,13 +22,17 @@ export const site = {
   /** NAICS 541611, administrative management and general management consulting. */
   naics: '541611',
   sameAs: ['https://github.com/WorldEnterpriseGroup'],
-  /** Mailboxes. Not published until the operator confirms each exists and is monitored (C-22, B-2). */
+  /**
+   * Mailboxes. Not published until the operator confirms each exists and is monitored (C-22, B-2). Confirmed 2026-10-28 by the owner:
+   * hello@, apply@ and security@ are aliases of the monitored shared mailbox info@worldenterprise.org, which is also where the intake
+   * backend notifies (RELEASE.md sections 5 to 7).
+   */
   mailboxes: {
-    hello: { address: 'hello@worldenterprise.org', confirmed: false },
-    apply: { address: 'apply@worldenterprise.org', confirmed: false },
+    hello: { address: 'hello@worldenterprise.org', confirmed: true },
+    apply: { address: 'apply@worldenterprise.org', confirmed: true },
   },
-  /** security@ address for /.well-known/security.txt, or null until confirmed monitored (C-22). */
-  securityContact: null as string | null,
+  /** security@ address for /.well-known/security.txt, or null until confirmed monitored (C-22). Confirmed 2026-10-28, see mailboxes. */
+  securityContact: 'security@worldenterprise.org' as string | null,
 } as const;
 
 export type Site = typeof site;

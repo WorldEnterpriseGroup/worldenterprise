@@ -66,10 +66,14 @@ export class FakeDataverse {
   readonly teams: Row[] = [];
   readonly roles: Row[] = [];
   readonly users: Row[] = [];
-  readonly entities = new Map<string, Entity>([['account', { body: {}, attributes: new Map(), keys: new Map() }]]);
+  readonly entities = new Map<string, Entity>([
+    ['account', { body: {}, attributes: new Map(), keys: new Map() }],
+    ['lead', { body: {}, attributes: new Map(), keys: new Map() }],
+  ]);
   readonly relationships = new Map<string, Row>();
   readonly grants: { roleId: string; privileges: Row[] }[] = [];
   readonly associations: { userId: string; roleId: string }[] = [];
+  readonly teamRoles: { teamId: string; roleId: string }[] = [];
   readonly privilegeRows: Row[];
   private readonly options: FakeOptions;
 
@@ -142,6 +146,14 @@ export class FakeDataverse {
       if (method === 'GET') return this.list(this.associations.filter((item) => item.userId === userId).map((item) => ({ roleid: item.roleId })), query);
       const roleId = /roles\(([^)]+)\)/.exec(String(body?.['@odata.id']))?.[1] ?? '';
       this.associations.push({ userId, roleId });
+      return new Response(null, { status: 204 });
+    }
+
+    const teamRole = /^teams\(([^)]+)\)\/teamroles_association(\/\$ref)?$/.exec(pathname);
+    if (teamRole !== null) {
+      const teamId = teamRole[1] ?? '';
+      if (method === 'GET') return this.list(this.teamRoles.filter((item) => item.teamId === teamId).map((item) => ({ roleid: item.roleId })), query);
+      this.teamRoles.push({ teamId, roleId: /roles\(([^)]+)\)/.exec(String(body?.['@odata.id']))?.[1] ?? '' });
       return new Response(null, { status: 204 });
     }
 

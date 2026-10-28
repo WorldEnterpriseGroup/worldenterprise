@@ -401,7 +401,7 @@ describe('failure handling', () => {
     assert.equal(h.mailer.sent.length, 0, 'the retry sweep sends it later');
   });
 
-  test('a failing webhook never affects the response', async () => {
+  test('a failing notification never affects the response', async () => {
     const h = harness();
     h.notifier.failWith = leakyError('ECONNRESET');
     assert.equal((await handleIntake(h.deps, jsonPost(validPayload('contact')))).status, 202);

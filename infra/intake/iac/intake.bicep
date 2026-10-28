@@ -7,7 +7,7 @@ param dataverseUrl string
 param keyVaultName string
 param senderAddress string
 param mailFooterAddress string
-param webhookUrl string
+param notifyEmail string
 param alertEmail string
 param deployPrincipalId string
 param nurtureEnabled bool
@@ -20,6 +20,7 @@ var planName = 'asp-we-intake-${suffix}'
 var emailServiceName = 'email-we-intake-${suffix}'
 var communicationServiceName = 'acs-we-intake-${suffix}'
 var identityName = 'uai-we-intake-${suffix}'
+var notifyLogicAppName = 'logic-we-intake-notify-${suffix}'
 var workspaceName = 'log-we-intake-${suffix}'
 var insightsName = 'appi-we-intake-${suffix}'
 var stateContainerName = 'intake-state'
@@ -28,9 +29,8 @@ var deploymentContainerName = 'deployments'
 var storageSuffix = environment().suffixes.storage
 var keyVaultUri = 'https://${keyVaultName}${environment().suffixes.keyvaultDns}'
 
-// Secret NAMES only. The values live in the Key Vault and are never in this repository.
+// Secret NAMES only. The value lives in the Key Vault and is never in this repository.
 var unsubscribeKeySecretName = 'worldenterprise-intake-unsubscribe-key'
-var hmacSecretName = 'worldenterprise-intake-hmac-secret'
 
 var storageBlobDataContributorRoleId = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 var storageQueueDataContributorRoleId = '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
@@ -224,6 +224,37 @@ resource plan 'Microsoft.Web/serverfarms@2024-04-01' = {
 
 var effectiveSender = senderAddress != '' ? senderAddress : 'DoNotReply@${emailDomain.properties.mailFromSenderDomain}'
 
+// The notification workflow. It is told the Function's identity so the trigger accepts only that caller.
+module notify 'notify.bicep' = {
+  name: 'worldenterprise-intake-notify'
+  params: {
+    location: location
+    tags: tags
+    logicAppName: notifyLogicAppName
+    callerPrincipalId: identity.properties.principalId
+    acsEndpoint: 'https://${communicationService.properties.hostName}'
+    senderAddress: effectiveSender
+    notifyTo: notifyEmail
+  }
+}
+
+resource notifyWorkflow 'Microsoft.Logic/workflows@2019-05-01' existing = {
+  name: notifyLogicAppName
+  dependsOn: [
+    notify
+  ]
+}
+
+resource notifyTrigger 'Microsoft.Logic/workflows/triggers@2019-05-01' existing = {
+  parent: notifyWorkflow
+  name: 'manual'
+}
+
+// The trigger URL without its `sig`. The Function authenticates with its managed identity instead, so the setting holds no
+// credential, and the signature the platform generates for the trigger is never read into a setting, an output or a log.
+var notifyCallback = notifyTrigger.listCallbackUrl()
+var notifyUrl = '${notifyCallback.basePath}?api-version=${notifyCallback.queries['api-version']}&sp=${uriComponent(notifyCallback.queries.sp)}&sv=${notifyCallback.queries.sv}'
+
 var baseSettings = [
   { name: 'AzureWebJobsStorage__accountName', value: storage.name }
   { name: 'AzureWebJobsStorage__credential', value: 'managedidentity' }
@@ -244,13 +275,8 @@ var baseSettings = [
   { name: 'API_ORIGIN', value: 'https://${apiHost}' }
   { name: 'MAIL_FOOTER_ADDRESS', value: mailFooterAddress }
   { name: 'NURTURE_ENABLED', value: string(nurtureEnabled) }
+  { name: 'NOTIFY_LOGICAPP_URL', value: notifyUrl }
   { name: 'UNSUBSCRIBE_KEY', value: '@Microsoft.KeyVault(SecretUri=${keyVaultUri}/secrets/${unsubscribeKeySecretName}/)' }
-]
-
-// The webhook needs both halves or neither: the secret setting is only present when a URL is.
-var webhookSettings = webhookUrl == '' ? [] : [
-  { name: 'WEBHOOK_URL', value: webhookUrl }
-  { name: 'WEBHOOK_SECRET', value: '@Microsoft.KeyVault(SecretUri=${keyVaultUri}/secrets/${hmacSecretName}/)' }
 ]
 
 resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
@@ -325,7 +351,7 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
         }
       ]
       scmIpSecurityRestrictionsUseMain: false
-      appSettings: concat(baseSettings, webhookSettings)
+      appSettings: baseSettings
     }
   }
   dependsOn: [
@@ -336,6 +362,7 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
     storageQueueContributor
     storageTableContributor
     communicationEmailOwner
+    notify
   ]
 }
 
@@ -375,6 +402,17 @@ resource communicationEmailOwner 'Microsoft.Authorization/roleAssignments@2022-0
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', communicationEmailOwnerRoleId)
     principalId: identity.properties.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+// The notification Logic App sends through the same Email API, with its own identity.
+resource notifyEmailOwner 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(communicationService.id, notifyLogicAppName, 'Communication and Email Service Owner')
+  scope: communicationService
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', communicationEmailOwnerRoleId)
+    principalId: notify.outputs.principalId
     principalType: 'ServicePrincipal'
   }
 }
@@ -451,3 +489,5 @@ output functionOriginHost string = functionApp.properties.defaultHostName
 output identityClientId string = identity.properties.clientId
 output identityPrincipalId string = identity.properties.principalId
 output senderDomain string = emailDomain.properties.mailFromSenderDomain
+output notifyLogicAppName string = notify.outputs.workflowName
+output notifyLogicAppId string = notify.outputs.workflowId

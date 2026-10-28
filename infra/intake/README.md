@@ -59,5 +59,5 @@ All are set by Bicep. Secret values come from Key Vault references, never from t
 | `ALLOWED_ORIGINS`, `SITE_ORIGIN`, `API_ORIGIN`, `MAIL_FOOTER_ADDRESS` | Bicep parameters |
 | `NURTURE_ENABLED` | Bicep parameter, default `false` |
 | `UNSUBSCRIBE_KEY` | Key Vault secret `worldenterprise-intake-unsubscribe-key` |
-| `WEBHOOK_URL`, `WEBHOOK_SECRET` | Only when a webhook URL is set; the secret is Key Vault secret `worldenterprise-intake-hmac-secret` |
+| `NOTIFY_LOGICAPP_URL` | Bicep output of the notification Logic App trigger, without its signature. The Function calls it with a managed-identity token |
 | `AZURE_CLIENT_ID` | The user-assigned managed identity. There are no client secrets, connection strings or storage keys. |

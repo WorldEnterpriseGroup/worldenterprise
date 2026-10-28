@@ -8,8 +8,9 @@ import { readConfig } from '../src/azure/config.ts';
 import { DataverseClient, DataverseCrm, DataverseEngagements, DataverseError } from '../src/azure/dataverse.ts';
 import { toRequestLike, toResponse, type RuntimeRequest } from '../src/azure/http-adapter.ts';
 import { SasLinks } from '../src/azure/links.ts';
-import { AcsMailer, MailError, WebhookNotifier, type EmailSender } from '../src/azure/mailer.ts';
-import { hmacHex } from '../src/logic/crypto.ts';
+import { AcsMailer, MailError, type EmailSender } from '../src/azure/mailer.ts';
+import { LOGIC_APP_AUDIENCE, LogicAppNotifier, NotifyError } from '../src/azure/notify.ts';
+import { buildNotifyEvent, engagementFromRow } from '../src/logic/mapping.ts';
 import { RATE_LIMIT } from '../src/logic/rate.ts';
 import { MemoryBlobPort } from './blob-fake.ts';
 import { FakeClock, leakyError } from './fakes.ts';
@@ -98,6 +99,35 @@ describe('Dataverse engagements', () => {
     assert.deepEqual(request?.body, { we_status: 100000001, we_deliveryattempts: 2, we_deliveredat: '2026-10-12T12:00:00.000Z', we_nurturenextat: null });
   });
 
+  test('linking a Lead binds the lookup, and the notification time is a plain column', async () => {
+    const linked = client([jsonResponse(204), jsonResponse(204)]);
+    const store = new DataverseEngagements(linked.client);
+    await store.update('row-1', { leadId: 'lead-7' });
+    await store.update('row-1', { notifiedAt: new Date('2026-10-12T12:00:00Z') });
+    assert.deepEqual(linked.seen[0]?.body, { 'we_Lead@odata.bind': '/leads(lead-7)' });
+    assert.deepEqual(linked.seen[1]?.body, { we_notifiedat: '2026-10-12T12:00:00.000Z' });
+  });
+
+  test('a row read back carries the lookups and the contents a Lead is built from', async () => {
+    const read = client([jsonResponse(200, { value: [{
+      we_engagementid: 'row-1', we_requestid: 'req-1', we_kind: 'contact', we_submittername: 'Ada Example', we_email: EMAIL, we_message: 'Hello',
+      _we_lead_value: 'lead-1', _we_contact_value: 'c-1', _we_account_value: 'a-1', we_notifiedat: '2026-10-12T12:00:00Z',
+    }] })]);
+    const record = await new DataverseEngagements(read.client).getByRequestId('req-1');
+    assert.deepEqual([record?.leadId, record?.contactId, record?.accountId, record?.message, record?.notifiedAt], ['lead-1', 'c-1', 'a-1', 'Hello', '2026-10-12T12:00:00Z']);
+    const selected = decodeURIComponent(read.seen[0]?.url ?? '');
+    for (const column of ['_we_lead_value', '_we_contact_value', '_we_account_value', 'we_notifiedat', 'we_message']) assert.ok(selected.includes(column), column);
+  });
+
+  test('the follow-up query covers the window, the unsent notifications and the missing Leads, and leaves newsletter signups without a Lead', async () => {
+    const owed = client([jsonResponse(200, { value: [] })]);
+    await new DataverseEngagements(owed.client).listFollowUpPending(new Date('2026-10-05T12:00:00Z'), new Date('2026-10-12T11:50:00Z'), 25);
+    const url = decodeURIComponent(owed.seen[0]?.url ?? '');
+    assert.ok(url.includes('createdon gt 2026-10-05T12:00:00.000Z and createdon lt 2026-10-12T11:50:00.000Z'));
+    assert.ok(url.includes("(we_notifiedat eq null or (_we_lead_value eq null and we_kind ne 'newsletter'))"));
+    assert.ok(url.includes('$top=25'));
+  });
+
   test('the sweep queries select brief requests that failed or went stale, and nurture rows that are due', async () => {
     const queries = client([jsonResponse(200, { value: [] }), jsonResponse(200, { value: [] })]);
     const store = new DataverseEngagements(queries.client);
@@ -149,6 +179,29 @@ describe('Dataverse accounts and contacts', () => {
     await crm.markContactOptedOut(guid);
     assert.deepEqual(made.seen[1]?.body, { donotbulkemail: true });
     assert.equal(made.seen[1]?.headers['If-Match'], '*');
+  });
+
+  test('a new Lead is an alternate-key upsert that cannot overwrite, with the request id escaped in the path', async () => {
+    const guid = '8c6f0d2e-1b7a-4e53-9a41-0f2d3c4b5a69';
+    const made = client([jsonResponse(204, undefined, { 'OData-EntityId': `https://org.crm.example/api/data/v9.2/leads(${guid})` })]);
+    assert.deepEqual(await new DataverseCrm(made.client).ensureLead("req'1", { subject: 'S', we_requestid: "req'1" }), { id: guid });
+    const [request] = made.seen;
+    assert.equal(request?.method, 'PATCH');
+    assert.ok(request?.url.endsWith("leads(we_requestid='req''1')"), request?.url);
+    assert.equal(request?.headers['If-None-Match'], '*');
+    assert.deepEqual(request?.body, { subject: 'S', we_requestid: "req'1" });
+  });
+
+  test('a Lead that already exists for the request is read back, not duplicated or changed', async () => {
+    const existing = client([jsonResponse(412), jsonResponse(200, { value: [{ leadid: 'lead-3' }] })]);
+    assert.deepEqual(await new DataverseCrm(existing.client).ensureLead('req-1', {}), { id: 'lead-3' });
+    assert.equal(existing.seen.length, 2);
+    assert.equal(existing.seen[1]?.method, 'GET');
+    assert.ok(decodeURIComponent(existing.seen[1]?.url ?? '').includes("we_requestid eq 'req-1'"));
+    const lost = client([jsonResponse(412), jsonResponse(200, { value: [] })]);
+    await assert.rejects(new DataverseCrm(lost.client).ensureLead('req-1', {}), { code: 'dataverse_lead_missing' });
+    const refused = client([jsonResponse(403, { error: { message: `no ${EMAIL}` } })]);
+    await assert.rejects(new DataverseCrm(refused.client).ensureLead('req-1', {}), (error: unknown) => error instanceof DataverseError && error.code === 'dataverse_http_403' && !error.message.includes(EMAIL));
   });
 
   test('the contact linked to an engagement comes from the lookup value, or is null', async () => {
@@ -346,7 +399,7 @@ describe('signed brief links', () => {
   });
 });
 
-describe('ACS mailer and webhook', () => {
+describe('ACS mailer', () => {
   const message = { to: EMAIL, subject: 'Your WE brief', text: 'text', html: '<p>html</p>', headers: { 'List-Unsubscribe': '<https://x.example/u>', 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' } };
 
   function sender(status: string | Error): { sender: EmailSender; sent: Parameters<EmailSender['beginSend']>[0][] } {
@@ -388,14 +441,42 @@ describe('ACS mailer and webhook', () => {
       return true;
     });
   });
+});
 
-  test('the webhook body is signed, and a refusal is an error', async () => {
-    const hook = scriptedFetch([jsonResponse(200, {}), jsonResponse(500, {})]);
-    const notifier = new WebhookNotifier({ url: 'https://hooks.example/in', secret: 'a-webhook-secret-123', fetch: hook.fetch });
-    await notifier.notify({ requestId: 'r-1', kind: 'apply', audience: 'startup' });
+describe('notification Logic App', () => {
+  const record = engagementFromRow({ we_engagementid: 'row-1', we_requestid: 'req-1', we_kind: 'apply', we_submittername: 'Ada Example', we_email: EMAIL, _we_lead_value: 'lead-1' });
+  const event = buildNotifyEvent(record, 'https://org.crm.example');
+  const URL_WITHOUT_SIG = 'https://prod-00.centralus.logic.azure.com:443/workflows/abc/triggers/manual/paths/invoke?api-version=2016-10-01';
+
+  test('posts the event with the identity token and the request id as the run tracking id', async () => {
+    const hook = scriptedFetch([jsonResponse(202)]);
+    const tokens: string[] = [];
+    await new LogicAppNotifier({ url: URL_WITHOUT_SIG, fetch: hook.fetch, getToken: () => { tokens.push('asked'); return Promise.resolve('LOGIC-TOKEN'); } }).notify(event);
     const [posted] = hook.seen;
-    assert.equal(posted?.headers['X-WE-Signature'], `sha256=${hmacHex('a-webhook-secret-123', JSON.stringify({ requestId: 'r-1', kind: 'apply', audience: 'startup' }))}`);
-    await assert.rejects(notifier.notify({ requestId: 'r-2' }), { code: 'webhook_http_500' });
+    assert.equal(posted?.method, 'POST');
+    assert.equal(posted?.url, URL_WITHOUT_SIG);
+    assert.equal(posted?.headers['Authorization'], 'Bearer LOGIC-TOKEN');
+    assert.equal(posted?.headers['x-ms-client-tracking-id'], 'req-1');
+    assert.deepEqual(posted?.body, event);
+    assert.ok(!JSON.stringify(posted?.body).includes(EMAIL), 'no address in the body');
+    assert.deepEqual(tokens, ['asked']);
+    assert.equal(LOGIC_APP_AUDIENCE, 'https://management.core.windows.net/');
+  });
+
+  test('a refusal, an unreachable host, a timeout and a token failure are stable codes with no request data', async () => {
+    const options = { url: URL_WITHOUT_SIG, getToken: () => Promise.resolve('T') };
+    await assert.rejects(new LogicAppNotifier({ ...options, fetch: scriptedFetch([jsonResponse(401)]).fetch }).notify(event), { code: 'notify_http_401' });
+    await assert.rejects(new LogicAppNotifier({ ...options, fetch: scriptedFetch([leakyError('ECONNRESET')]).fetch }).notify(event), (error: unknown) => {
+      assert.ok(error instanceof NotifyError);
+      assert.equal(error.code, 'notify_unreachable');
+      assert.ok(!error.message.includes(EMAIL) && !error.message.includes('SECRETTOKEN'));
+      return true;
+    });
+    const timeout = Object.assign(new Error('slow'), { name: 'TimeoutError' });
+    await assert.rejects(new LogicAppNotifier({ ...options, fetch: scriptedFetch([timeout]).fetch }).notify(event), { code: 'notify_timeout' });
+    const noToken = scriptedFetch([]);
+    await assert.rejects(new LogicAppNotifier({ url: URL_WITHOUT_SIG, fetch: noToken.fetch, getToken: () => Promise.reject(leakyError('CredentialUnavailable')) }).notify(event), { code: 'notify_token' });
+    assert.equal(noToken.seen.length, 0, 'nothing is sent without a token');
   });
 });
 
@@ -409,6 +490,7 @@ describe('configuration', () => {
     SITE_ORIGIN: 'https://worldenterprise.org',
     API_ORIGIN: 'https://intake.worldenterprise.org',
     UNSUBSCRIBE_KEY: 'k'.repeat(40),
+    NOTIFY_LOGICAPP_URL: 'https://prod-00.centralus.logic.azure.com:443/workflows/abc/triggers/manual/paths/invoke?api-version=2016-10-01',
   };
 
   test('a complete environment yields a configuration with the nurture sequence off', () => {
@@ -416,7 +498,7 @@ describe('configuration', () => {
     assert.ok(result.ok);
     assert.equal(result.config.nurtureEnabled, false);
     assert.equal(result.config.stateContainer, 'intake-state');
-    assert.equal(result.config.webhook, null);
+    assert.equal(result.config.notifyUrl, GOOD['NOTIFY_LOGICAPP_URL']);
   });
 
   test('nurture is on only for the exact value true', () => {
@@ -428,20 +510,20 @@ describe('configuration', () => {
   });
 
   test('problems name the settings and never contain a value', () => {
-    const result = readConfig({ ...GOOD, DATAVERSE_URL: 'http://insecure.example', UNSUBSCRIBE_KEY: 'short-secret-value', ACS_ENDPOINT: '', ALLOWED_ORIGINS: '' });
+    const result = readConfig({ ...GOOD, DATAVERSE_URL: 'http://insecure.example', UNSUBSCRIBE_KEY: 'short-secret-value', ACS_ENDPOINT: '', ALLOWED_ORIGINS: '', NOTIFY_LOGICAPP_URL: '' });
     assert.ok(!result.ok);
-    assert.deepEqual([...result.problems].sort(), ['ACS_ENDPOINT', 'ALLOWED_ORIGINS', 'DATAVERSE_URL', 'UNSUBSCRIBE_KEY']);
+    assert.deepEqual([...result.problems].sort(), ['ACS_ENDPOINT', 'ALLOWED_ORIGINS', 'DATAVERSE_URL', 'NOTIFY_LOGICAPP_URL', 'UNSUBSCRIBE_KEY']);
     assert.ok(!JSON.stringify(result).includes('short-secret-value'));
     assert.deepEqual(readConfig({}).ok, false);
   });
 
-  test('a webhook needs both a URL and a secret', () => {
-    const half = readConfig({ ...GOOD, WEBHOOK_URL: 'https://hooks.example/in' });
-    assert.ok(!half.ok);
-    assert.deepEqual(half.problems, ['WEBHOOK_SECRET']);
-    const full = readConfig({ ...GOOD, WEBHOOK_URL: 'https://hooks.example/in', WEBHOOK_SECRET: 'a-webhook-secret-123' });
-    assert.ok(full.ok);
-    assert.equal(full.config.webhook?.url, 'https://hooks.example/in');
+  test('the notification URL must be https and must not carry a signature, because the Function authenticates with its identity', () => {
+    for (const bad of ['http://logic.example/run', 'not a url', `${GOOD['NOTIFY_LOGICAPP_URL']}&sig=AbCdEf0123456789`]) {
+      const result = readConfig({ ...GOOD, NOTIFY_LOGICAPP_URL: bad });
+      assert.ok(!result.ok);
+      assert.deepEqual(result.problems, ['NOTIFY_LOGICAPP_URL']);
+      assert.ok(!JSON.stringify(result).includes('AbCdEf0123456789'));
+    }
   });
 });
 

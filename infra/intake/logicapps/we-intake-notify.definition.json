@@ -1,0 +1,68 @@
+{
+  "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "acsEndpoint": { "type": "String" },
+    "senderAddress": { "type": "String" },
+    "notifyTo": { "type": "String" }
+  },
+  "triggers": {
+    "manual": {
+      "type": "Request",
+      "kind": "Http",
+      "inputs": {
+        "method": "POST",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "requestId": { "type": "string", "maxLength": 36 },
+            "kind": { "type": "string", "maxLength": 32 },
+            "formLabel": { "type": "string", "maxLength": 64 },
+            "name": { "type": "string", "maxLength": 200 },
+            "recordUrl": { "type": "string", "maxLength": 300 },
+            "test": { "type": "boolean" }
+          },
+          "required": ["requestId", "kind", "formLabel", "name", "recordUrl"]
+        }
+      }
+    }
+  },
+  "actions": {
+    "Send_notification_email": {
+      "type": "Http",
+      "runAfter": {},
+      "inputs": {
+        "method": "POST",
+        "uri": "@{concat(parameters('acsEndpoint'), '/emails:send?api-version=2023-03-31')}",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "authentication": {
+          "type": "ManagedServiceIdentity",
+          "audience": "https://communication.azure.com/"
+        },
+        "body": {
+          "senderAddress": "@parameters('senderAddress')",
+          "recipients": {
+            "to": [
+              { "address": "@parameters('notifyTo')" }
+            ]
+          },
+          "content": {
+            "subject": "@{if(equals(triggerBody()?['test'], true), '[test] ', '')}New @{triggerBody()?['formLabel']} on the World Enterprise site",
+            "plainText": "@{triggerBody()?['formLabel']} from @{triggerBody()?['name']}.\n\nOpen the record in Dynamics 365:\n@{triggerBody()?['recordUrl']}\n\nRequest id: @{triggerBody()?['requestId']}\n\nThis message carries no message text. Open the record to read the submission."
+          },
+          "userEngagementTrackingDisabled": true
+        },
+        "retryPolicy": {
+          "type": "exponential",
+          "count": 4,
+          "interval": "PT10S",
+          "minimumInterval": "PT5S",
+          "maximumInterval": "PT1M"
+        }
+      }
+    }
+  },
+  "outputs": {}
+}

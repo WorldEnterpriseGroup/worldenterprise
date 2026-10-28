@@ -4,7 +4,7 @@ import { describe, test } from 'node:test';
 
 import { loadDefinition } from '../dataverse/apply.ts';
 import { attributeBody, parseDefinition } from '../dataverse/metadata.ts';
-import { ACCOUNT_KEY_COLUMN, ENGAGEMENT_SELECT, ENTITY_SET, NAV_ACCOUNT, NAV_CONTACT, REVIEW, STATUS } from '../src/logic/mapping.ts';
+import { ACCOUNT_KEY_COLUMN, ENGAGEMENT_SELECT, ENTITY_SET, LEAD_KEY_COLUMN, NAV_ACCOUNT, NAV_CONTACT, NAV_LEAD, REVIEW, STATUS } from '../src/logic/mapping.ts';
 
 const definition = loadDefinition();
 const table = definition.tables[0];
@@ -27,9 +27,24 @@ describe('dataverse definition', () => {
 
   test('the entity set and navigation properties are the ones the service writes', () => {
     assert.equal(table.entitySetName, ENTITY_SET);
-    assert.deepEqual(table.lookups.map((lookup) => lookup.schemaName).sort(), [NAV_ACCOUNT, NAV_CONTACT].sort());
+    assert.deepEqual(table.lookups.map((lookup) => lookup.schemaName).sort(), [NAV_ACCOUNT, NAV_CONTACT, NAV_LEAD].sort());
     assert.equal(definition.extensions[0]?.columns[0]?.schemaName, ACCOUNT_KEY_COLUMN);
     assert.deepEqual(definition.extensions[0]?.keys[0]?.attributes, [ACCOUNT_KEY_COLUMN]);
+  });
+
+  test('the Lead carries the request id as an alternate key, which is what makes a replayed create a no-op', () => {
+    const lead = definition.extensions.find((extension) => extension.table === 'lead');
+    assert.ok(lead);
+    assert.deepEqual(lead.columns.map((column) => column.schemaName), [LEAD_KEY_COLUMN]);
+    assert.deepEqual(lead.keys.map((key) => key.attributes), [[LEAD_KEY_COLUMN]]);
+  });
+
+  test('the role can create, read and update Leads and Contacts and nothing it does not need', () => {
+    const granted = new Map(definition.role.privileges.map((grant) => [grant.table, grant.actions]));
+    for (const tableName of ['Lead', 'Contact']) {
+      for (const action of ['Create', 'Read', 'Write']) assert.ok(granted.get(tableName)?.includes(action), `${tableName} ${action}`);
+    }
+    assert.deepEqual([...granted.keys()].sort(), ['Account', 'Contact', 'Lead', 'we_Engagement']);
   });
 
   test('every column the adapters and mapping use exists in the definition', () => {
@@ -37,6 +52,7 @@ describe('dataverse definition', () => {
     used.delete(ACCOUNT_KEY_COLUMN);
     used.delete('we_contact');
     used.delete('we_account');
+    used.delete('we_lead');
     used.delete('we_engagementid');
     const known = new Set([...columns.keys(), table.primaryName.schemaName]);
     const unknown = [...used].filter((name) => !known.has(name));

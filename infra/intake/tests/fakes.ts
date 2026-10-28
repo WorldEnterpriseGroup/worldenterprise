@@ -7,7 +7,7 @@ import type { Contract } from '../src/logic/contract.ts';
 import type { HttpRequestLike } from '../src/logic/http.ts';
 import { createLogger, type LogLevel } from '../src/logic/log.ts';
 import type { MailMessage } from '../src/logic/mail.ts';
-import { engagementFromRow, REVIEW, STATUS, type AccountPlan, type ContactMatch, type EngagementRecord } from '../src/logic/mapping.ts';
+import { engagementFromRow, REVIEW, STATUS, type AccountPlan, type ContactMatch, type EngagementRecord, type NotifyEvent } from '../src/logic/mapping.ts';
 import { consume, type RateDecision, type RateRecord } from '../src/logic/rate.ts';
 import { loadContractUnderTest } from './contract-source.ts';
 import type { Deps } from '../src/service/deps.ts';
@@ -63,6 +63,15 @@ export class FakeLock implements LockPort {
   }
 }
 
+/** The record a read returns: lookups bound on write appear as the `_x_value` columns Dataverse returns. */
+function readRow(row: Readonly<Record<string, unknown>>): EngagementRecord {
+  const bound = (nav: string): string => {
+    const value = row[`${nav}@odata.bind`];
+    return typeof value === 'string' ? (/\(([^)]+)\)$/.exec(value)?.[1] ?? '') : '';
+  };
+  return engagementFromRow({ ...row, _we_lead_value: bound('we_Lead'), _we_contact_value: bound('we_Contact'), _we_account_value: bound('we_Account') });
+}
+
 export class FakeEngagements implements EngagementStore {
   readonly rows = new Map<string, Record<string, unknown>>();
   failCreate: Error | null = null;
@@ -82,13 +91,13 @@ export class FakeEngagements implements EngagementStore {
   async getByRequestId(requestId: string): Promise<EngagementRecord | null> {
     if (this.failRead !== null) throw this.failRead;
     const row = this.rows.get(requestId);
-    return row === undefined ? null : engagementFromRow(row);
+    return row === undefined ? null : readRow(row);
   }
 
   async getByTokenHash(tokenHash: string): Promise<EngagementRecord | null> {
     if (this.failRead !== null) throw this.failRead;
     const row = this.find((candidate) => candidate['we_tokenhash'] === tokenHash);
-    return row === null ? null : engagementFromRow(row);
+    return row === null ? null : readRow(row);
   }
 
   async createIfAbsent(requestId: string, row: Readonly<Record<string, unknown>>): Promise<CreateOutcome> {
@@ -110,12 +119,25 @@ export class FakeEngagements implements EngagementStore {
     if (patch.briefVersion !== undefined) row['we_briefversion'] = patch.briefVersion;
     if (patch.nurtureStage !== undefined) row['we_nurturestage'] = patch.nurtureStage;
     if (patch.nurtureNextAt !== undefined) row['we_nurturenextat'] = patch.nurtureNextAt === null ? '' : patch.nurtureNextAt.toISOString();
+    if (patch.notifiedAt !== undefined) row['we_notifiedat'] = patch.notifiedAt.toISOString();
+    if (patch.leadId !== undefined) row['we_Lead@odata.bind'] = `/leads(${patch.leadId})`;
+  }
+
+  async listFollowUpPending(since: Date, staleBefore: Date, limit: number): Promise<readonly EngagementRecord[]> {
+    const out: EngagementRecord[] = [];
+    for (const row of this.rows.values()) {
+      const record = readRow(row);
+      const created = Date.parse(record.createdAt);
+      if (created <= since.getTime() || created >= staleBefore.getTime()) continue;
+      if (record.notifiedAt === '' || (record.leadId === '' && record.kind !== 'newsletter')) out.push(record);
+    }
+    return out.slice(0, limit);
   }
 
   async listDeliveryPending(staleBefore: Date, limit: number): Promise<readonly EngagementRecord[]> {
     const out: EngagementRecord[] = [];
     for (const row of this.rows.values()) {
-      const record = engagementFromRow(row);
+      const record = readRow(row);
       if (record.kind !== 'brief-request') continue;
       const failed = record.status === 'delivery-failed';
       const stale = record.status === 'received' && record.deliveryAttempts === 0 && Date.parse(record.createdAt) < staleBefore.getTime();
@@ -127,7 +149,7 @@ export class FakeEngagements implements EngagementStore {
   async listNurtureDue(now: Date, limit: number): Promise<readonly EngagementRecord[]> {
     const out: EngagementRecord[] = [];
     for (const row of this.rows.values()) {
-      const record = engagementFromRow(row);
+      const record = readRow(row);
       if (record.status !== 'delivered' || !record.consentUpdates || record.nurtureNextAt === '') continue;
       if (Date.parse(record.nurtureNextAt) <= now.getTime()) out.push(record);
     }
@@ -146,6 +168,10 @@ export class FakeCrm implements CrmStore {
   readonly accounts = new Map<string, { id: string; fields: Readonly<Record<string, unknown>> }>();
   readonly contacts: { id: string; fields: Record<string, unknown> }[] = [];
   readonly optedOut = new Set<string>();
+  /** Leads by request id. */
+  readonly leads = new Map<string, { id: string; fields: Readonly<Record<string, unknown>> }>();
+  leadCalls = 0;
+  failLead: Error | null = null;
   accountCalls = 0;
   failWith: Error | null = null;
   failOptOut: Error | null = null;
@@ -176,6 +202,17 @@ export class FakeCrm implements CrmStore {
     this.sequence += 1;
     const created = { id: `contact-${this.sequence}`, fields: { ...fields } };
     this.contacts.push(created);
+    return { id: created.id };
+  }
+
+  async ensureLead(requestId: string, fields: Readonly<Record<string, unknown>>): Promise<{ readonly id: string }> {
+    this.leadCalls += 1;
+    if (this.failLead !== null) throw this.failLead;
+    const existing = this.leads.get(requestId);
+    if (existing !== undefined) return { id: existing.id };
+    this.sequence += 1;
+    const created = { id: `lead-${this.sequence}`, fields: { ...fields } };
+    this.leads.set(requestId, created);
     return { id: created.id };
   }
 
@@ -244,9 +281,9 @@ export class FakeMailer implements Mailer {
 }
 
 export class FakeNotifier implements Notifier {
-  readonly events: Readonly<Record<string, string | number>>[] = [];
+  readonly events: NotifyEvent[] = [];
   failWith: Error | null = null;
-  async notify(event: Readonly<Record<string, string | number>>): Promise<void> {
+  async notify(event: NotifyEvent): Promise<void> {
     if (this.failWith !== null) throw this.failWith;
     this.events.push(event);
   }
@@ -299,6 +336,7 @@ export function harness(overrides: Partial<Settings> = {}): Harness {
     unsubscribeKey: 'test-unsubscribe-key-0123456789',
     nurtureEnabled: false,
     footerAddress: '',
+    crmUrl: 'https://org.crm.example',
     ...overrides,
   };
   const deps: Deps = {

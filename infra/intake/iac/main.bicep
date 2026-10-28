@@ -24,7 +24,7 @@ param frontDoorId string
 @description('The Dataverse environment URL, https://<org>.crm.dynamics.com (OP-DV).')
 param dataverseUrl string
 
-@description('Key Vault that holds the two intake secrets.')
+@description('Key Vault that holds the intake secret.')
 param keyVaultName string = 'omlab-secrets'
 
 @description('Resource group of that Key Vault.')
@@ -36,8 +36,8 @@ param senderAddress string = ''
 @description('Optional. The mailing address printed in the email footer. Empty omits the line.')
 param mailFooterAddress string = ''
 
-@description('Optional. A signed-webhook receiver for new engagements. Empty disables the webhook, and its secret is then not set.')
-param webhookUrl string = ''
+@description('The inbox the notification Logic App emails when a submission is stored.')
+param notifyEmail string = 'info@worldenterprise.org'
 
 @description('Optional. Where delivery-failure alerts go. Empty deploys the alert rule without an action group.')
 param alertEmail string = ''
@@ -75,7 +75,7 @@ module intake 'intake.bicep' = {
     keyVaultName: keyVaultName
     senderAddress: senderAddress
     mailFooterAddress: mailFooterAddress
-    webhookUrl: webhookUrl
+    notifyEmail: notifyEmail
     alertEmail: alertEmail
     deployPrincipalId: deployPrincipalId
     nurtureEnabled: nurtureEnabled
@@ -98,3 +98,5 @@ output functionAppName string = intake.outputs.functionAppName
 output functionOriginHost string = intake.outputs.functionOriginHost
 output identityClientId string = intake.outputs.identityClientId
 output senderDomain string = intake.outputs.senderDomain
+output notifyLogicAppName string = intake.outputs.notifyLogicAppName
+output notifyLogicAppId string = intake.outputs.notifyLogicAppId

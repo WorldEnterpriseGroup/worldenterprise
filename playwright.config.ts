@@ -26,6 +26,12 @@ const wave8Projects = process.env.E2E_WAVE8
     ]
   : [];
 
+// The deployed-intake spec (job intake:e2e, INTAKE_E2E=1) talks to the live endpoint and Dataverse, so it has a project of its own and
+// the config starts no static server for it. Every other project ignores its directory.
+const INTAKE_E2E = process.env.INTAKE_E2E === '1';
+const INTAKE_DIR = /\/e2e\/intake\//;
+const intakeProjects = INTAKE_E2E ? [{ name: 'intake-e2e', testMatch: /\/e2e\/intake\/.+\.spec\.ts$/, use: { ...devices['Desktop Chrome'] } }] : [];
+
 export default defineConfig({
   testDir: 'tests/e2e',
   outputDir: 'test-results',
@@ -43,15 +49,17 @@ export default defineConfig({
     baseURL: `http://127.0.0.1:${PORT}`,
     trace: 'retain-on-failure',
   },
-  webServer: {
-    command: `node scripts/lib/serve.mjs dist ${PORT}`,
-    url: `http://127.0.0.1:${PORT}/`,
-    reuseExistingServer: !process.env.CI,
-    timeout: 30_000,
-  },
+  webServer: INTAKE_E2E
+    ? undefined
+    : {
+        command: `node scripts/lib/serve.mjs dist ${PORT}`,
+        url: `http://127.0.0.1:${PORT}/`,
+        reuseExistingServer: !process.env.CI,
+        timeout: 30_000,
+      },
   projects: [
-    { name: 'desktop-1440x900', testMatch: COMMON, testIgnore: [WAVE7_DIR, WAVE8_DIR], use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
-    { name: 'mobile-390x844', testMatch: COMMON, testIgnore: [WAVE7_DIR, WAVE8_DIR], use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
+    { name: 'desktop-1440x900', testMatch: COMMON, testIgnore: [WAVE7_DIR, WAVE8_DIR, INTAKE_DIR], use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
+    { name: 'mobile-390x844', testMatch: COMMON, testIgnore: [WAVE7_DIR, WAVE8_DIR, INTAKE_DIR], use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } } },
     // 320 px is the WCAG 1.4.10 reflow width. Only the layout spec runs here: it is the suite that measures where elements sit.
     { name: 'mobile-320x568', testMatch: /\/layout\.spec\.ts$/, use: { ...devices['Pixel 7'], viewport: { width: 320, height: 568 } } },
     { name: 'no-js', testMatch: /\/modes\.spec\.ts$/, use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 }, javaScriptEnabled: false } },
@@ -59,5 +67,6 @@ export default defineConfig({
     { name: 'zoom-200', testMatch: /\/modes\.spec\.ts$/, use: { ...devices['Desktop Chrome'], viewport: { width: 720, height: 450 } } },
     ...wave7Projects,
     ...wave8Projects,
+    ...intakeProjects,
   ],
 });

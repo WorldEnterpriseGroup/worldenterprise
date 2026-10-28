@@ -8,7 +8,7 @@
 
 import { odataString } from '../logic/text.ts';
 import {
-  ACCOUNT_KEY_COLUMN, ENGAGEMENT_SELECT, ENTITY_SET, engagementFromRow, STATUS, type AccountPlan, type ContactMatch, type EngagementRecord,
+  ACCOUNT_KEY_COLUMN, ENGAGEMENT_SELECT, ENTITY_SET, engagementFromRow, LEAD_KEY_COLUMN, NAV_LEAD, STATUS, type AccountPlan, type ContactMatch, type EngagementRecord,
 } from '../logic/mapping.ts';
 import { NURTURE_STAGES } from '../logic/mail.ts';
 import type { CreateOutcome, CrmStore, EngagementPatch, EngagementStore } from '../service/ports.ts';
@@ -140,6 +140,8 @@ function patchBody(patch: EngagementPatch): Record<string, unknown> {
   if (patch.briefVersion !== undefined) body['we_briefversion'] = patch.briefVersion;
   if (patch.nurtureStage !== undefined) body['we_nurturestage'] = patch.nurtureStage;
   if (patch.nurtureNextAt !== undefined) body['we_nurturenextat'] = patch.nurtureNextAt === null ? null : patch.nurtureNextAt.toISOString();
+  if (patch.notifiedAt !== undefined) body['we_notifiedat'] = patch.notifiedAt.toISOString();
+  if (patch.leadId !== undefined) body[`${NAV_LEAD}@odata.bind`] = `/leads(${patch.leadId})`;
   return body;
 }
 
@@ -190,6 +192,16 @@ export class DataverseEngagements implements EngagementStore {
     const rows = await this.client.list(`${ENTITY_SET}?${query({ $select: ENGAGEMENT_SELECT.join(','), $filter: filter, $orderby: 'we_nurturenextat asc', $top: String(limit) })}`);
     return rows.map(engagementFromRow);
   }
+
+  /**
+   * Rows from the window whose notification is unsent, or that should have a Lead and have none. Newsletter signups make no
+   * Lead, so only the notification is owed for them.
+   */
+  async listFollowUpPending(since: Date, staleBefore: Date, limit: number): Promise<readonly EngagementRecord[]> {
+    const filter = `createdon gt ${since.toISOString()} and createdon lt ${staleBefore.toISOString()} and (we_notifiedat eq null or (_we_lead_value eq null and we_kind ne 'newsletter'))`;
+    const rows = await this.client.list(`${ENTITY_SET}?${query({ $select: ENGAGEMENT_SELECT.join(','), $filter: filter, $orderby: 'createdon asc', $top: String(limit) })}`);
+    return rows.map(engagementFromRow);
+  }
 }
 
 export class DataverseCrm implements CrmStore {
@@ -229,6 +241,24 @@ export class DataverseCrm implements CrmStore {
 
   async markContactOptedOut(contactId: string): Promise<void> {
     await this.client.expect([204], 'PATCH', `contacts(${contactId})`, { donotbulkemail: true }, { 'If-Match': '*' });
+  }
+
+  /**
+   * Upserts on the `we_requestid` alternate key of the Lead without overwriting: 412 means this request already has its Lead,
+   * and the existing id is read.
+   */
+  async ensureLead(requestId: string, fields: Readonly<Record<string, unknown>>): Promise<{ readonly id: string }> {
+    const created = await this.client.request('PATCH', `leads(${LEAD_KEY_COLUMN}='${keyLiteral(requestId)}')`, fields, { 'If-None-Match': '*', Prefer: 'return=representation' });
+    if (created.status === 201 || created.status === 204) {
+      const id = created.entityId ?? (typeof created.json?.['leadid'] === 'string' ? created.json['leadid'] : null);
+      if (id !== null) return { id };
+    } else if (created.status !== 412) {
+      throw new DataverseError(`dataverse_http_${created.status}`, created.status);
+    }
+    const rows = await this.client.list(`leads?${query({ $select: 'leadid', $filter: `${LEAD_KEY_COLUMN} eq ${odataString(requestId)}`, $top: '1' })}`);
+    const id = rows[0]?.['leadid'];
+    if (typeof id !== 'string') throw new DataverseError('dataverse_lead_missing', 0);
+    return { id };
   }
 
   async contactOfEngagement(engagementId: string): Promise<string | null> {
