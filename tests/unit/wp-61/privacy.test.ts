@@ -6,16 +6,17 @@ import { KINDS } from '../../../infra/intake/src/logic/contract.ts';
 import { loadContractUnderTest } from '../../../infra/intake/tests/contract-source.ts';
 
 /**
- * The privacy notice and docs/forms-privacy-facts.md must say what the intake service does. WP-10's pins check the notice
- * against the v1 field list; these pins check it against the contract the Function actually enforces, so a new field cannot
- * ship without the notice naming it.
+ * The privacy notice and docs/forms-privacy-facts.md must say what happens to a submission. Since 2026-10-28 that is FormSubmit
+ * forwarding it to the shared info@ mailbox (RELEASE.md section 5), not the intake service in infra/intake. WP-10's pins check the notice
+ * against the v1 field list; these pins check it against the field rules of that contract, so a new field cannot ship without the
+ * notice naming it, and against the FormSubmit controls the forms add.
  */
 const ROOT = new URL('../../../', import.meta.url);
 const privacy = readFileSync(new URL('src/content/pages/legal/privacy.md', ROOT), 'utf8');
 const facts = readFileSync(new URL('docs/forms-privacy-facts.md', ROOT), 'utf8');
 
-/** Fields every form sends that are not columns of the required matrix, plus the one a native post adds. */
-const TRANSPORT_FIELDS = ['form', 'audience', 'consentUpdates', 'website', 'startedAt', 'submittedAt', 'page', 'redirect'];
+/** Fields every form sends that are not columns of the required matrix, plus the FormSubmit controls a native post adds. */
+const TRANSPORT_FIELDS = ['form', 'audience', 'consentUpdates', '_honey', '_next', '_subject', '_template', '_captcha', 'page'];
 
 describe('the privacy notice names every field of every form', () => {
   const { contract } = loadContractUnderTest();
@@ -23,7 +24,7 @@ describe('the privacy notice names every field of every form', () => {
   for (const kind of KINDS) {
     test(`${kind}`, () => {
       const used = Object.entries(contract.kinds[kind].fields)
-        .filter(([, rule]) => rule.rule !== '-')
+        .filter(([name, rule]) => rule.rule !== '-' && name !== 'requestId')  // the request id is JSON-contract only; FormSubmit gets none
         .map(([name]) => name);
       for (const field of [...used, ...TRANSPORT_FIELDS]) {
         assert.ok(privacy.includes(`\`${field}\``), `the privacy notice does not name ${field}, which ${kind} uses`);
@@ -38,13 +39,16 @@ describe('the privacy notice names every field of every form', () => {
   });
 });
 
-describe('the privacy notice states what the service does with the data', () => {
-  test('it names the CRM use, the mail provider and the emailed link', () => {
-    assert.match(privacy, /customer relationship management system/i);
-    assert.match(privacy, /Dataverse/);
-    assert.match(privacy, /Azure Communication Services/);
-    assert.match(privacy, /link to it/i);
-    assert.match(privacy, /unsubscribe/i);
+describe('the privacy notice states what happens to the data', () => {
+  test('it names FormSubmit as the forwarder and the shared mailbox as the destination, and no longer names the unused backend', () => {
+    assert.match(privacy, /FormSubmit/);
+    assert.match(privacy, /formsubmit\.co/);
+    assert.match(privacy, /info@worldenterprise\.org/);
+    assert.match(privacy, /hello@, apply@ and security@ worldenterprise\.org are aliases/);
+    assert.match(privacy, /own terms and privacy policy/i);
+    for (const gone of [/Dataverse/, /Azure Communication Services/, /intake\.worldenterprise\.org/, /48 hours/, /unsubscribe link/i]) {
+      assert.doesNotMatch(privacy, gone, `the notice still describes ${String(gone)}, which the FormSubmit forms do not do`);
+    }
   });
 
   test('it keeps the browsing promises', () => {
@@ -73,7 +77,9 @@ describe('docs/forms-privacy-facts.md', () => {
     assert.equal(/\b\d+\s+(?:days|weeks|months|years)\b/i.test(facts), false);
   });
 
-  test('names the secrets by name only', () => {
-    assert.match(facts, /worldenterprise-intake-unsubscribe-key/);
+  test('says the forms post to FormSubmit and that the intake service is unused', () => {
+    assert.match(facts, /FormSubmit/);
+    assert.match(facts, /info@worldenterprise\.org/);
+    assert.match(facts, /not used/i);
   });
 });

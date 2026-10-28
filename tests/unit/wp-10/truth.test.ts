@@ -104,11 +104,16 @@ test('pages hold no commented-out code or placeholders', () => {
   }
 });
 
-test('the privacy notice names every field in the forms contract', () => {
+test('the privacy notice names every field the forms send to FormSubmit, and every field of the forms contract it still shares', () => {
   const privacy = readFileSync(join(ROOT, 'src/content/pages/legal/privacy.md'), 'utf8');
-  const fields = ['form', 'name', 'email', 'company', 'stage', 'seats', 'topic', 'message', 'consent', 'website', 'startedAt', 'submittedAt', 'page'];
-  for (const field of fields) {
+  // Since 2026-10-28 forms post to FormSubmit (RELEASE.md section 5): the spam trap is `_honey`, and the two clocks, the request id and
+  // `website` are not sent, so the notice no longer lists them. `fields` are the ones the contract and the notice both still have.
+  const fields = ['form', 'name', 'email', 'company', 'stage', 'seats', 'topic', 'message', 'consent', 'page'];
+  for (const field of [...fields, '_honey', '_next', '_subject']) {
     assert.ok(privacy.includes(`\`${field}\``), `privacy notice does not list field ${field}`);
+  }
+  for (const gone of ['website', 'startedAt', 'submittedAt', 'requestId', 'redirect']) {
+    assert.equal(privacy.includes(`\`${gone}\``), false, `privacy notice lists ${gone}, which the FormSubmit forms do not send`);
   }
   const contractPath = join(ROOT, 'docs/forms-contract.md');
   if (existsSync(contractPath)) {

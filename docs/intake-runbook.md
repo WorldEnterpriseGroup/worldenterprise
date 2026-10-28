@@ -1,6 +1,6 @@
 # Intake service runbook
 
-Status: authored by WP-61. Audience: the operator who provisions and runs the World Enterprise intake service.
+Status: NOT USED BY THE RELEASE. On 2026-10-28 the CEO decided to use FormSubmit instead of this service (RELEASE.md section 5); nothing below needs to be provisioned for the release, and `infra/intake` stays in the repository as an unused alternative. Authored by WP-61. Audience: the operator who provisions and runs the World Enterprise intake service.
 
 The intake service is an Azure Function (`infra/intake`) that takes the six site forms, writes each submission to Dataverse, and emails gated briefs. It ships inert. Nothing in this repository creates Azure or Dataverse objects until the operator supplies the inputs below and runs the manual pipeline jobs. Until then the site's forms stay `disabled`, and `verify:release` fails closed on a release tag because `PUBLIC_WE_INTAKE_API_URL` is unset. That is intended.
 

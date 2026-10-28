@@ -4,6 +4,8 @@ Status: version 2, rewritten by WP-60 (wave 8) from the WP-03 version 1. Consume
 
 What version 2 adds: three kinds (`brief-request`, `investor-interest`, `partner-enquiry`), the `audience` and `requestId` fields, `Retry-After` on a `429`, idempotency, and the rule that `mailto` belongs to `apply` and `contact` only. The `newsletter` keeps its version 1 contract unchanged.
 
+Release note, 2026-10-28: the release does not use an intake service of its own. Both endpoint variables hold `https://formsubmit.co/info@worldenterprise.org`, and the forms post to FormSubmit, which emails each submission to the shared mailbox (RELEASE.md section 5, `docs/forms-privacy-facts.md`). For a FormSubmit endpoint the browser sends FormSubmit's own body (`formSubmitBody` in `src/data/forms.ts`: no `requestId`, no clocks, the spam trap named `_honey`, `_next` instead of `redirect`) to its `/ajax/` door, and no-JavaScript posts go to the plain address. This document is unchanged for any other endpoint, which is how the `e2e:forms` suite's test endpoint (`intake.example.test`) still exercises the JSON contract. Sections 5 and 7 describe a service that is not used by the release.
+
 This site is static (GitHub Pages). It runs no server code. Every form submits to an external intake endpoint that is owned and operated outside this repository. This document is the interface between the two.
 
 ## 1. Forms in scope
