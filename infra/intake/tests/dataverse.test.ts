@@ -43,6 +43,8 @@ describe('dataverse apply', () => {
     assert.equal(unit['_parentbusinessunitid_value'], fake.units[0]?.['businessunitid'], 'it sits under the root unit');
     assert.equal(fake.teams.length, 1);
     assert.equal(fake.teams[0]?.['_businessunitid_value'], unit['businessunitid']);
+    const serviceRole = fake.roles.find((row) => row['name'] === definition.role.name);
+    assert.deepEqual(fake.teamRoles, [{ teamId: fake.teams[0]?.['teamid'], roleId: serviceRole?.['roleid'] }], 'the service role is assigned to the owner team, once');
 
     const entity = fake.entities.get(table.logicalName);
     assert.ok(entity);
@@ -71,10 +73,10 @@ describe('dataverse apply', () => {
   test('a second run creates nothing', async () => {
     const { fake, run } = setup();
     await run();
-    const counts = [fake.publishers.length, fake.solutions.length, fake.units.length, fake.teams.length, fake.roles.length, fake.users.length, fake.associations.length, fake.relationships.size];
+    const counts = [fake.publishers.length, fake.solutions.length, fake.units.length, fake.teams.length, fake.roles.length, fake.users.length, fake.associations.length, fake.teamRoles.length, fake.relationships.size];
     const second = await run();
     assert.deepEqual(second.created, []);
-    assert.deepEqual([fake.publishers.length, fake.solutions.length, fake.units.length, fake.teams.length, fake.roles.length, fake.users.length, fake.associations.length, fake.relationships.size], counts);
+    assert.deepEqual([fake.publishers.length, fake.solutions.length, fake.units.length, fake.teams.length, fake.roles.length, fake.users.length, fake.associations.length, fake.teamRoles.length, fake.relationships.size], counts);
   });
 
   test('metadata is created inside the solution, and nothing is ever deleted', async () => {
@@ -153,7 +155,7 @@ describe('dataverse apply', () => {
     assert.equal(user?.['_businessunitid_value'], unit['businessunitid']);
     const admin = fake.roles.find((row) => row['name'] === 'System Administrator' && row['_businessunitid_value'] === unit['businessunitid']);
     assert.deepEqual(fake.associations, [{ userId: user?.['systemuserid'], roleId: admin?.['roleid'] }]);
-    assert.deepEqual([fake.publishers.length, fake.teams.length, fake.grants.length, fake.entities.size], [0, 0, 0, 1], 'only the unit, the user and its role');
+    assert.deepEqual([fake.publishers.length, fake.teams.length, fake.grants.length, fake.entities.size], [0, 0, 0, 2], 'only the unit, the user and its role');
 
     // The pipeline's own run then finds both and adds the rest, without a second user or a second unit.
     await run();
@@ -189,7 +191,7 @@ describe('dataverse apply', () => {
   test('the e2e privileges are read and delete only, and it never creates, writes or assigns', () => {
     const definition = loadDefinition();
     const names = privilegeNamesFor(definition.e2e?.role ?? { name: '', depth: 'Local', privileges: [] });
-    assert.deepEqual(names.slice().sort(), ['prvDeleteContact', 'prvDeleteLead', 'prvDeletewe_Engagement', 'prvReadContact', 'prvReadLead', 'prvReadwe_Engagement']);
+    assert.deepEqual(names.slice().sort(), ['prvDeleteAccount', 'prvDeleteContact', 'prvDeleteLead', 'prvDeletewe_Engagement', 'prvReadAccount', 'prvReadContact', 'prvReadLead', 'prvReadwe_Engagement']);
     const widened = JSON.parse(JSON.stringify(definition)) as { e2e: { role: { privileges: { actions: string[] }[] } } };
     widened.e2e.role.privileges[0]?.actions.push('Write');
     assert.throws(() => parseDefinition(JSON.stringify(widened)), /only Read and Delete/);

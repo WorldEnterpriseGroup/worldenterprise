@@ -71,15 +71,15 @@ describe('the Lead', () => {
   });
 
   test('a long message is cut to the Lead description limit and the ledger row keeps it whole', () => {
-    const record = engagementFromRow({ we_engagementid: 'e', we_requestid: '12345678-aaaa', we_kind: 'contact', we_contactname: 'A B', we_email: 'a@b.example', we_message: 'x'.repeat(4000) });
+    const record = engagementFromRow({ we_engagementid: 'e', we_requestid: '12345678-aaaa', we_kind: 'contact', we_submittername: 'A B', we_email: 'a@b.example', we_message: 'x'.repeat(4000) });
     const fields = buildLeadFields(record);
     assert.ok(String(fields['description']).length <= 2000);
     assert.ok(String(fields['description']).endsWith('…'));
   });
 
   test('a person with a single-word name, or none, still gets a valid last name', () => {
-    assert.equal(buildLeadFields(engagementFromRow({ we_requestid: 'r', we_kind: 'apply', we_contactname: 'Cher', we_email: 'c@x.example' }))['lastname'], 'Cher');
-    assert.equal(buildLeadFields(engagementFromRow({ we_requestid: 'r', we_kind: 'apply', we_contactname: '', we_email: 'c@x.example' }))['lastname'], 'c@x.example');
+    assert.equal(buildLeadFields(engagementFromRow({ we_requestid: 'r', we_kind: 'apply', we_submittername: 'Cher', we_email: 'c@x.example' }))['lastname'], 'Cher');
+    assert.equal(buildLeadFields(engagementFromRow({ we_requestid: 'r', we_kind: 'apply', we_submittername: '', we_email: 'c@x.example' }))['lastname'], 'c@x.example');
     assert.equal(leadSubject({ kind: 'apply', requestId: 'abcdefgh-1', name: '', email: 'c@x.example' }), 'Application: c@x.example (abcdefgh)');
   });
 
@@ -188,7 +188,7 @@ describe('the notification', () => {
   });
 
   test('the link points at the engagement row when there is neither a Lead nor a contact', () => {
-    const record = engagementFromRow({ we_engagementid: 'eng-9', we_requestid: 'r', we_kind: 'contact', we_contactname: '', we_email: 'a@b.example' });
+    const record = engagementFromRow({ we_engagementid: 'eng-9', we_requestid: 'r', we_kind: 'contact', we_submittername: '', we_email: 'a@b.example' });
     const event = buildNotifyEvent(record, 'https://org.crm.example');
     assert.equal(event.recordUrl, 'https://org.crm.example/main.aspx?pagetype=entityrecord&etn=we_engagement&id=eng-9');
     assert.equal(event.name, '(no name given)');

@@ -75,11 +75,11 @@ The Function accepts traffic only from this profile (Front Door service tag plus
    - the table `we_engagement` with its columns (including `we_notifiedat`), the lookups to Contact, Account and Lead, and the alternate keys `we_engagement_requestid` and `we_engagement_tokenhash`,
    - the `we_accountkey` column and key on Account, and the `we_requestid` column and key `lead_we_requestid` on Lead,
    - the Function's managed identity as an application user holding only that role.
-   - when `INTAKE_E2E_CLIENT_ID` is set: the role "World Enterprise Intake E2E Reader" (Read and Delete on Lead, Contact and `we_engagement`, Local depth, nothing else; the definition refuses any other action) and `sp-worldenterprise-intake-e2e` as an application user holding only that role.
+   - when `INTAKE_E2E_CLIENT_ID` is set: the role "World Enterprise Intake E2E Reader" (Read and Delete on Lead, Contact, Account and `we_engagement`, Local depth, nothing else; the definition refuses any other action) and `sp-worldenterprise-intake-e2e` as an application user holding only that role.
 4. The job is idempotent. It looks first, creates only what is missing, never deletes, and never changes an existing object. A rerun after a partial failure is safe. Alternate keys activate asynchronously; the job waits.
 5. Staff access. A team owns the rows, but the staff security role and its membership are left to the operator: decide who at WE reads `we_engagement` and add them to the team with a role that grants read.
 
-The job needs `INTAKE_IDENTITY_CLIENT_ID`. Run it in the same pipeline as `intake:deploy` (it inherits the value), or set the variable to the Bicep `identityClientId` output.
+`INTAKE_IDENTITY_CLIENT_ID` exists only after the first deploy. Before it, the job still applies the schema, the roles and the pipeline and e2e identities, and skips the Function's application user; after `intake:deploy`, run it again in the same pipeline (it inherits the value) or set the variable to the Bicep `identityClientId` output. The service role is also assigned to the owner team `World Enterprise Intake`, because the Leads the service writes are team-owned.
 
 ## OP-MAIL
 
@@ -102,7 +102,7 @@ If the Lead or the notification fails, the log shows `lead_failed` or `notify_fa
 
 `intake:e2e` (manual, `demo` only, after `intake:deploy` and `intake:dataverse`) runs `tests/e2e/intake/intake-d365.spec.ts` against the deployed service. It submits an Apply form with `e2e-<request id>@e2e.invalid`, reads the engagement row, the Lead and the Contact back from Dataverse, replays the submission to prove nothing is written twice, checks the notified time and the Logic App run, then deletes everything it created and queries again for zero rows (cleanup also runs when an assertion fails).
 
-It signs in as the identity `sp-worldenterprise-intake-e2e` (secret `worldenterprise-intake-e2e-sp-secret` in Key Vault `omlab-secrets`), created by the infrastructure work (#119) with these rights and no others: read, create and delete on `we_engagement`, Lead, Contact and Account in the World Enterprise business unit, and Logic App Operator or Reader on the notification Logic App. Variables: `INTAKE_E2E_CLIENT_ID`, `INTAKE_E2E_CLIENT_SECRET` (masked), and optionally `INTAKE_E2E_API_URL` (default is the public endpoint) and `INTAKE_E2E_LOGICAPP_ID` (default is the deploy's `notifyLogicAppId` output). Without the Logic App id the run check is skipped, and the rest runs. The spec does nothing unless `INTAKE_E2E=1`, so no other job can reach the live service.
+It signs in as the identity `sp-worldenterprise-intake-e2e` (secret `worldenterprise-intake-e2e-sp-secret` in Key Vault `omlab-secrets`), created by the infrastructure work (#119) with these rights and no others: Read and Delete on `we_engagement`, Lead, Contact and Account in the World Enterprise business unit (the role `intake:dataverse` applies; the spec never creates or writes there), and Reader on the notification Logic App (an Azure role the infrastructure repository assigns; this Bicep does not). Variables: `INTAKE_E2E_CLIENT_ID`, `INTAKE_E2E_CLIENT_SECRET` (masked), and optionally `INTAKE_E2E_API_URL` (default is the public endpoint) and `INTAKE_E2E_LOGICAPP_ID` (default is the deploy's `notifyLogicAppId` output). Without the Logic App id the run check is skipped, and the rest runs. The spec does nothing unless `INTAKE_E2E=1`, so no other job can reach the live service.
 
 ## OP-RETAIN, OP-COUNSEL and OP-FLAGS
 

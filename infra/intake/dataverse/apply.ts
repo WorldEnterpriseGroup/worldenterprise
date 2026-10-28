@@ -123,7 +123,7 @@ class Applier {
     await this.ensurePublisher(definition);
     await this.ensureSolution(definition);
     const unitId = await this.ensureBusinessUnit(definition);
-    await this.ensureTeam(definition, unitId, userId);
+    const teamId = await this.ensureTeam(definition, unitId, userId);
 
     for (const table of definition.tables) await this.ensureTable(table);
     for (const extension of definition.extensions) await this.ensureExtension(extension);
@@ -133,6 +133,7 @@ class Applier {
 
     if (this.inputs.deployClientId !== undefined) await this.ensureDeployUser(definition, unitId, this.inputs.deployClientId);
     const roleId = await this.ensureRole(definition.role, unitId);
+    await this.ensureTeamRole(definition.ownerTeam.name, teamId, roleId);
     // Before the first deploy the Function's identity does not exist yet. The schema, role and e2e identity can still be applied;
     // the job is rerun after intake:deploy to register the Function.
     if (this.inputs.identityClientId === '') this.inputs.log('skipped application user for the intake identity: INTAKE_IDENTITY_CLIENT_ID is unset');
@@ -212,14 +213,27 @@ class Applier {
     return this.idFrom('business unit', reply, 'businessunitid');
   }
 
-  private async ensureTeam(definition: Definition, unitId: string, administratorId: string): Promise<void> {
+  private async ensureTeam(definition: Definition, unitId: string, administratorId: string): Promise<string> {
     const name = definition.ownerTeam.name;
-    if (await this.findId('owner team', 'teams', 'teamid', `name eq ${quote(name)} and _businessunitid_value eq ${unitId}`) !== null) return this.note('existing', `owner team ${name}`);
-    await this.send('owner team', [201, 204], 'POST', 'teams', {
+    const found = await this.findId('owner team', 'teams', 'teamid', `name eq ${quote(name)} and _businessunitid_value eq ${unitId}`);
+    if (found !== null) {
+      this.note('existing', `owner team ${name}`);
+      return found;
+    }
+    const reply = await this.send('owner team', [201, 204], 'POST', 'teams', {
       name, teamtype: 0, description: 'Owns the records the World Enterprise intake service writes.',
       'businessunitid@odata.bind': `/businessunits(${unitId})`, 'administratorid@odata.bind': `/systemusers(${administratorId})`,
     });
     this.note('created', `owner team ${name}`);
+    return this.idFrom('owner team', reply, 'teamid');
+  }
+
+  /** The intake service role goes to the owner team too: a record the team owns (a Lead among them) is written under the team's role. */
+  private async ensureTeamRole(teamName: string, teamId: string, roleId: string): Promise<void> {
+    const assigned = await this.send('team role', [200], 'GET', `teams(${teamId})/teamroles_association?$select=roleid&$filter=${encodeURIComponent(`roleid eq ${roleId}`)}`);
+    if (Array.isArray(assigned.json?.['value']) && assigned.json['value'].length > 0) return this.note('existing', `role assignment for team ${teamName}`);
+    await this.send('team role', [200, 204], 'POST', `teams(${teamId})/teamroles_association/$ref`, { '@odata.id': `${this.inputs.baseUrl}/api/data/v9.2/roles(${roleId})` });
+    this.note('created', `role assignment for team ${teamName}`);
   }
 
   private async ensureColumns(table: string, columns: readonly Column[]): Promise<void> {

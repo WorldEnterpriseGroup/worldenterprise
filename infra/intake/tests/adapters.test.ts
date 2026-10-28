@@ -110,7 +110,7 @@ describe('Dataverse engagements', () => {
 
   test('a row read back carries the lookups and the contents a Lead is built from', async () => {
     const read = client([jsonResponse(200, { value: [{
-      we_engagementid: 'row-1', we_requestid: 'req-1', we_kind: 'contact', we_contactname: 'Ada Example', we_email: EMAIL, we_message: 'Hello',
+      we_engagementid: 'row-1', we_requestid: 'req-1', we_kind: 'contact', we_submittername: 'Ada Example', we_email: EMAIL, we_message: 'Hello',
       _we_lead_value: 'lead-1', _we_contact_value: 'c-1', _we_account_value: 'a-1', we_notifiedat: '2026-10-12T12:00:00Z',
     }] })]);
     const record = await new DataverseEngagements(read.client).getByRequestId('req-1');
@@ -444,7 +444,7 @@ describe('ACS mailer', () => {
 });
 
 describe('notification Logic App', () => {
-  const record = engagementFromRow({ we_engagementid: 'row-1', we_requestid: 'req-1', we_kind: 'apply', we_contactname: 'Ada Example', we_email: EMAIL, _we_lead_value: 'lead-1' });
+  const record = engagementFromRow({ we_engagementid: 'row-1', we_requestid: 'req-1', we_kind: 'apply', we_submittername: 'Ada Example', we_email: EMAIL, _we_lead_value: 'lead-1' });
   const event = buildNotifyEvent(record, 'https://org.crm.example');
   const URL_WITHOUT_SIG = 'https://prod-00.centralus.logic.azure.com:443/workflows/abc/triggers/manual/paths/invoke?api-version=2016-10-01';
 
