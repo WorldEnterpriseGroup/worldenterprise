@@ -67,7 +67,7 @@ function whole(value: unknown): number {
 }
 
 export const ENGAGEMENT_SELECT = [
-  'we_engagementid', 'we_requestid', 'we_kind', 'we_audience', 'we_status', 'we_review', 'we_contactname', 'we_email', 'we_briefid',
+  'we_engagementid', 'we_requestid', 'we_kind', 'we_audience', 'we_status', 'we_review', 'we_submittername', 'we_email', 'we_briefid',
   'we_briefversion', 'we_consentupdates', 'we_deliveryattempts', 'we_lastattemptat', 'we_nurturestage', 'we_nurturenextat',
   'we_unsubscribetoken', 'createdon',
 ] as const;
@@ -80,7 +80,7 @@ export function engagementFromRow(row: Readonly<Record<string, unknown>>): Engag
     audience: text(row['we_audience']),
     status: statusName(row['we_status']),
     review: reviewName(row['we_review']),
-    name: text(row['we_contactname']),
+    name: text(row['we_submittername']),
     email: text(row['we_email']),
     briefId: text(row['we_briefid']),
     briefVersion: text(row['we_briefversion']),
@@ -124,7 +124,7 @@ export function buildEngagementRow(submission: Submission, links: RowLinks, cont
     we_consentupdates: submission.consentUpdates,
     we_status: STATUS.received,
     we_review: REVIEW[links.review],
-    we_contactname: submission.name,
+    we_submittername: submission.name,
     we_email: submission.email,
     we_company: submission.company,
     we_companyurl: submission.companyUrl,

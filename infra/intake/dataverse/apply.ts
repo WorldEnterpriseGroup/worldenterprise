@@ -19,7 +19,7 @@
 
 import { readFileSync } from 'node:fs';
 
-import { DataverseClient } from '../src/azure/dataverse.ts';
+import { DataverseClient, DataverseError } from '../src/azure/dataverse.ts';
 import {
   attributeBody, entityBody, keyBody, logicalName, lookupBody, parseDefinition, privilegeNamesFor,
   type Column, type Definition, type Extension, type KeyDefinition, type PersonName, type RoleSpec, type Table,
@@ -38,7 +38,7 @@ export interface ApplyInputs {
   readonly definition: Definition;
   readonly client: DataverseClient;
   readonly baseUrl: string;
-  /** Client id of the Function's user-assigned managed identity. */
+  /** Client id of the Function's user-assigned managed identity. Empty skips registering it (before the first deploy). */
   readonly identityClientId: string;
   /** Client id of the pipeline identity (`INTAKE_AZURE_CLIENT_ID`). When set, it is registered as an application user holding `definition.deployUser.role`. */
   readonly deployClientId?: string | undefined;
@@ -133,7 +133,10 @@ class Applier {
 
     if (this.inputs.deployClientId !== undefined) await this.ensureDeployUser(definition, unitId, this.inputs.deployClientId);
     const roleId = await this.ensureRole(definition.role, unitId);
-    await this.ensureApplicationUser(this.inputs.identityClientId, definition.applicationUser, unitId, roleId, 'the intake identity');
+    // Before the first deploy the Function's identity does not exist yet. The schema, role and e2e identity can still be applied;
+    // the job is rerun after intake:deploy to register the Function.
+    if (this.inputs.identityClientId === '') this.inputs.log('skipped application user for the intake identity: INTAKE_IDENTITY_CLIENT_ID is unset');
+    else await this.ensureApplicationUser(this.inputs.identityClientId, definition.applicationUser, unitId, roleId, 'the intake identity');
     if (this.inputs.e2eClientId !== undefined) await this.ensureE2e(definition, unitId, this.inputs.e2eClientId);
     return { created: this.created, existing: this.existing };
   }
@@ -355,7 +358,7 @@ async function main(): Promise<void> {
     const value = process.env[name] ?? '';
     return value === '' ? undefined : value;
   };
-  const missing = [['DATAVERSE_URL', baseUrl], ['DATAVERSE_TOKEN', token], ...(bootstrap ? [] : [['INTAKE_IDENTITY_CLIENT_ID', identityClientId]])].filter(([, value]) => value === '').map(([name]) => name);
+  const missing = [['DATAVERSE_URL', baseUrl], ['DATAVERSE_TOKEN', token]].filter(([, value]) => value === '').map(([name]) => name);
   if (missing.length > 0) throw new ApplyError('inputs', `missing ${missing.join(', ')}`);
   if (!baseUrl.startsWith('https://')) throw new ApplyError('inputs', 'DATAVERSE_URL must be an https URL');
 
@@ -369,7 +372,7 @@ async function main(): Promise<void> {
 
 if (import.meta.main) {
   main().catch((error: unknown) => {
-    console.error(error instanceof ApplyError ? `apply failed at ${error.message}` : `apply failed: ${error instanceof Error ? error.name : 'unknown error'}`);
+    console.error(error instanceof ApplyError ? `apply failed at ${error.message}` : error instanceof DataverseError ? `apply failed: ${error.code}` : `apply failed: ${error instanceof Error ? error.name : 'unknown error'}`);
     process.exit(1);
   });
 }

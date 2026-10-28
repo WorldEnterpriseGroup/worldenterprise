@@ -191,4 +191,11 @@ describe('dataverse apply', () => {
     widened.e2e.role.privileges[0]?.actions.push('Write');
     assert.throws(() => parseDefinition(JSON.stringify(widened)), /only Read and Delete/);
   });
+
+  test('before the first deploy the Function identity is skipped, and the rest is applied', async () => {
+    const { fake, log, run } = setup({}, { identity: '', e2e: E2E });
+    await run();
+    assert.equal(fake.users.length, 1, 'only the e2e application user');
+    assert.ok(log.some((line) => /skipped application user for the intake identity/.test(line)));
+  });
 });

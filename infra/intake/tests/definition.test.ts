@@ -59,7 +59,7 @@ describe('dataverse definition', () => {
   });
 
   test('column lengths hold the contract limits', () => {
-    const lengths: Record<string, number> = { we_requestid: 36, we_email: 254, we_message: 4000, we_focus: 1000, we_offer: 1500, we_contactname: 200, we_company: 200 };
+    const lengths: Record<string, number> = { we_requestid: 36, we_email: 254, we_message: 4000, we_focus: 1000, we_offer: 1500, we_submittername: 200, we_company: 200 };
     for (const [name, minimum] of Object.entries(lengths)) assert.ok((columns.get(name)?.maxLength ?? 0) >= minimum, name);
   });
 
