@@ -191,7 +191,7 @@ intake:dataverse:
     - export PATH="/opt/az/bin:${PATH}"
     # INTAKE_IDENTITY_CLIENT_ID exists only after the first deploy (it comes from intake:deploy's dotenv or is set to the Bicep identityClientId
     # output). Before that the applier registers the pipeline and e2e identities and skips the Function's, and the job is rerun after the deploy.
-    - test -n "${INTAKE_IDENTITY_CLIENT_ID:-}" || echo "INTAKE_IDENTITY_CLIENT_ID is unset: applying the schema and roles without the Function's application user"
+    - 'test -n "${INTAKE_IDENTITY_CLIENT_ID:-}" || echo "INTAKE_IDENTITY_CLIENT_ID is unset, so the schema and roles are applied without the Function application user"'
     - cd infra/intake
     # The token goes straight into the environment of one process. It is never written to a file or echoed.
     - DATAVERSE_URL="${INTAKE_DATAVERSE_URL}" DATAVERSE_TOKEN="$(az account get-access-token --resource "${INTAKE_DATAVERSE_URL}" --query accessToken --output tsv)" node dataverse/apply.ts
