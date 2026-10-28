@@ -62,13 +62,20 @@ The Function accepts traffic only from this profile (Front Door service tag plus
 ## OP-DV
 
 1. In the Power Platform admin center, choose or create the Dataverse environment. Its URL is `INTAKE_DATAVERSE_URL`.
-2. Register the pipeline's Entra application in that environment as an application user with the System Administrator security role. This is the one Dataverse step that cannot be code: the environment must trust the identity before anything else can run.
+2. Register the pipeline's Entra application (`sp-worldenterprise-intake-deploy`) in that environment, once. This is code too: an operator who already administers the environment runs the bootstrap, which creates the World Enterprise business unit and the application user for `INTAKE_AZURE_CLIENT_ID`, holding the System Administrator role of that unit, and stops:
+
+   ```bash
+   DATAVERSE_URL="$INTAKE_DATAVERSE_URL" DATAVERSE_TOKEN="$(az account get-access-token --resource "$INTAKE_DATAVERSE_URL" --query accessToken --output tsv)" INTAKE_AZURE_CLIENT_ID=<client id> node infra/intake/dataverse/apply.ts --bootstrap
+   ```
+
+   The pipeline keeps that role so `intake:dataverse` can apply later changes to the definition (new tables, new role privileges). Narrow or remove it only if the definition is frozen.
 3. Run `intake:dataverse` (manual, demo). It applies `infra/intake/dataverse/definition.json` and nothing else:
    - the publisher `worldenterprise` and the solution `worldenterprise_intake`,
    - the business unit "World Enterprise", an owner team, and the security role "World Enterprise Intake Service" (create, read, write, append and append-to on `we_engagement` and Contact; create, read, write and append-to on Account; Local depth, so it reaches only rows in the World Enterprise business unit),
    - the table `we_engagement` with its columns, the lookups to Contact and Account, and the alternate keys `we_engagement_requestid` and `we_engagement_tokenhash`,
    - the `we_accountkey` column and key on Account,
    - the Function's managed identity as an application user holding only that role.
+   - when `INTAKE_E2E_CLIENT_ID` is set: the role "World Enterprise Intake E2E Reader" (Read and Delete on Lead, Contact and `we_engagement`, Local depth, nothing else; the definition refuses any other action) and `sp-worldenterprise-intake-e2e` as an application user holding only that role.
 4. The job is idempotent. It looks first, creates only what is missing, never deletes, and never changes an existing object. A rerun after a partial failure is safe. Alternate keys activate asynchronously; the job waits.
 5. Staff access. A team owns the rows, but the staff security role and its membership are left to the operator: decide who at WE reads `we_engagement` and add them to the team with a role that grants read.
 

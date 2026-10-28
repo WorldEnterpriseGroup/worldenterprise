@@ -5,6 +5,9 @@
 
 import { randomUUID } from 'node:crypto';
 
+import { loadDefinition } from '../dataverse/apply.ts';
+import { privilegeNamesFor } from '../dataverse/metadata.ts';
+
 type Row = Record<string, unknown>;
 
 export interface Recorded {
@@ -30,7 +33,10 @@ const BASE = 'https://org.crm.example/api/data/v9.2/';
 const ROOT_UNIT = randomUUID();
 const ADMIN = randomUUID();
 
-export const ALL_PRIVILEGES: readonly string[] = ['Create', 'Read', 'Write', 'Append', 'AppendTo'].flatMap((action) => [`prv${action}we_Engagement`, `prv${action}Contact`, `prv${action}Account`]);
+const DEFINITION = loadDefinition();
+
+/** Every privilege the definition's roles name, so the fake knows exactly the ones the applier will look up. */
+export const ALL_PRIVILEGES: readonly string[] = [...new Set([...privilegeNamesFor(DEFINITION.role), ...(DEFINITION.e2e === undefined ? [] : privilegeNamesFor(DEFINITION.e2e.role))])];
 
 interface Entity {
   readonly body: Row;
@@ -117,6 +123,8 @@ export class FakeDataverse {
       if (method === 'GET') return this.list(rows, query);
       const id = randomUUID();
       rows.push({ ...this.flatten(body ?? {}), [idColumn[pathname] ?? '']: id });
+      // Dataverse gives every new business unit its own copy of the platform roles.
+      if (pathname === 'businessunits') this.roles.push({ roleid: randomUUID(), name: 'System Administrator', _businessunitid_value: id });
       return this.created(pathname, id);
     }
 

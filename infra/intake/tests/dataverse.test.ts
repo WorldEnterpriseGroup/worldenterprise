@@ -2,22 +2,30 @@ import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 
 import { DataverseClient } from '../src/azure/dataverse.ts';
-import { applyDefinition, ApplyError, loadDefinition } from '../dataverse/apply.ts';
-import { privilegeNames } from '../dataverse/metadata.ts';
+import { applyDefinition, ApplyError, bootstrapEnvironment, loadDefinition } from '../dataverse/apply.ts';
+import { parseDefinition, privilegeNames, privilegeNamesFor } from '../dataverse/metadata.ts';
 import { FakeDataverse, type FakeOptions } from './dataverse-fake.ts';
 
 const IDENTITY = '11111111-2222-4333-8444-555555555555';
 const TOKEN = 'eyJ.fake-bearer-token-value.sig';
 
-function setup(options: FakeOptions = {}, overrides: { identity?: string; keyPollAttempts?: number } = {}) {
+const DEPLOY = '22222222-3333-4444-8555-666666666666';
+const E2E = '33333333-4444-4555-8666-777777777777';
+
+function setup(options: FakeOptions = {}, overrides: { identity?: string; keyPollAttempts?: number; deploy?: string; e2e?: string } = {}) {
   const fake = new FakeDataverse(options);
   const log: string[] = [];
   const client = new DataverseClient({ baseUrl: fake.baseUrl, getToken: () => Promise.resolve(TOKEN), fetch: fake.fetch, sleep: () => Promise.resolve() });
   const run = () => applyDefinition({
     definition: loadDefinition(), client, baseUrl: fake.baseUrl, identityClientId: overrides.identity ?? IDENTITY, log: (line) => log.push(line),
     sleep: () => Promise.resolve(), keyPollAttempts: overrides.keyPollAttempts ?? 5, keyPollMs: 1,
+    ...(overrides.deploy === undefined ? {} : { deployClientId: overrides.deploy }), ...(overrides.e2e === undefined ? {} : { e2eClientId: overrides.e2e }),
   });
-  return { fake, log, run };
+  const bootstrap = () => bootstrapEnvironment({
+    definition: loadDefinition(), client, baseUrl: fake.baseUrl, identityClientId: '', log: (line) => log.push(line), sleep: () => Promise.resolve(), keyPollMs: 1,
+    ...(overrides.deploy === undefined ? {} : { deployClientId: overrides.deploy }),
+  });
+  return { fake, log, run, bootstrap };
 }
 
 describe('dataverse apply', () => {
@@ -44,7 +52,7 @@ describe('dataverse apply', () => {
     assert.ok(fake.entities.get('account')?.attributes.has('we_accountkey'));
     assert.ok(fake.entities.get('account')?.keys.has('account_we_accountkey'));
 
-    const role = fake.roles[0];
+    const role = fake.roles.find((row) => row['name'] === definition.role.name);
     assert.equal(role?.['_businessunitid_value'], unit['businessunitid']);
     assert.equal(fake.grants.length, 1);
     assert.equal(fake.grants[0]?.privileges.length, privilegeNames(definition).length);
@@ -131,5 +139,63 @@ describe('dataverse apply', () => {
   test('a client id that is not a GUID is refused before anything is created for the user', async () => {
     const { run } = setup({}, { identity: 'not-a-guid' });
     await assert.rejects(run(), (error: unknown) => error instanceof ApplyError && error.step === 'application user');
+  });
+
+  test('the bootstrap creates the business unit and the pipeline identity with the platform role, and nothing else', async () => {
+    const { fake, run, bootstrap } = setup({}, { deploy: DEPLOY });
+    await bootstrap();
+    const unit = fake.units.find((row) => row['name'] === 'World Enterprise');
+    assert.ok(unit);
+    const user = fake.users.find((row) => row['applicationid'] === DEPLOY);
+    assert.equal(user?.['_businessunitid_value'], unit['businessunitid']);
+    const admin = fake.roles.find((row) => row['name'] === 'System Administrator' && row['_businessunitid_value'] === unit['businessunitid']);
+    assert.deepEqual(fake.associations, [{ userId: user?.['systemuserid'], roleId: admin?.['roleid'] }]);
+    assert.deepEqual([fake.publishers.length, fake.teams.length, fake.grants.length, fake.entities.size], [0, 0, 0, 1], 'only the unit, the user and its role');
+
+    // The pipeline's own run then finds both and adds the rest, without a second user or a second unit.
+    await run();
+    assert.equal(fake.units.filter((row) => row['name'] === 'World Enterprise').length, 1);
+    assert.equal(fake.users.filter((row) => row['applicationid'] === DEPLOY).length, 1, 'the bootstrap user is kept, not duplicated');
+  });
+
+  test('a bootstrap without the pipeline client id is refused', async () => {
+    const { bootstrap } = setup();
+    await assert.rejects(bootstrap(), (error: unknown) => error instanceof ApplyError && error.step === 'inputs');
+  });
+
+  test('the pipeline run ensures the deploy user and the e2e identity, and a rerun changes nothing', async () => {
+    const { fake, run } = setup({}, { deploy: DEPLOY, e2e: E2E });
+    await run();
+    const definition = loadDefinition();
+    assert.ok(definition.e2e);
+    const e2eRole = fake.roles.find((row) => row['name'] === definition.e2e?.role.name);
+    assert.ok(e2eRole);
+    const grant = fake.grants.find((item) => item.roleId === e2eRole['roleid']);
+    assert.equal(grant?.privileges.length, privilegeNamesFor(definition.e2e.role).length);
+    assert.ok(grant?.privileges.every((item) => item['Depth'] === 'Local'));
+    const e2eUser = fake.users.find((row) => row['applicationid'] === E2E);
+    assert.ok(e2eUser);
+    assert.deepEqual(fake.associations.filter((item) => item.userId === e2eUser['systemuserid']), [{ userId: e2eUser['systemuserid'], roleId: e2eRole['roleid'] }]);
+    assert.ok(fake.users.some((row) => row['applicationid'] === DEPLOY));
+    const counts = [fake.roles.length, fake.users.length, fake.associations.length];
+    const second = await run();
+    assert.deepEqual(second.created, []);
+    assert.deepEqual([fake.roles.length, fake.users.length, fake.associations.length], counts);
+  });
+
+  test('the e2e privileges are read and delete only, and it never creates, writes or assigns', () => {
+    const definition = loadDefinition();
+    const names = privilegeNamesFor(definition.e2e?.role ?? { name: '', depth: 'Local', privileges: [] });
+    assert.deepEqual(names.slice().sort(), ['prvDeleteContact', 'prvDeleteLead', 'prvDeletewe_Engagement', 'prvReadContact', 'prvReadLead', 'prvReadwe_Engagement']);
+    const widened = JSON.parse(JSON.stringify(definition)) as { e2e: { role: { privileges: { actions: string[] }[] } } };
+    widened.e2e.role.privileges[0]?.actions.push('Write');
+    assert.throws(() => parseDefinition(JSON.stringify(widened)), /only Read and Delete/);
+  });
+
+  test('before the first deploy the Function identity is skipped, and the rest is applied', async () => {
+    const { fake, log, run } = setup({}, { identity: '', e2e: E2E });
+    await run();
+    assert.equal(fake.users.length, 1, 'only the e2e application user');
+    assert.ok(log.some((line) => /skipped application user for the intake identity/.test(line)));
   });
 });

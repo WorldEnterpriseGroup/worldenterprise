@@ -30,6 +30,26 @@
     "firstName": "WE Intake",
     "lastName": "Service"
   },
+  "deployUser": {
+    "firstName": "WE Intake",
+    "lastName": "Deploy",
+    "role": "System Administrator"
+  },
+  "e2e": {
+    "role": {
+      "name": "World Enterprise Intake E2E Reader",
+      "depth": "Local",
+      "privileges": [
+        { "table": "Lead", "actions": ["Read", "Delete"] },
+        { "table": "Contact", "actions": ["Read", "Delete"] },
+        { "table": "we_Engagement", "actions": ["Read", "Delete"] }
+      ]
+    },
+    "applicationUser": {
+      "firstName": "WE Intake",
+      "lastName": "E2E"
+    }
+  },
   "tables": [
     {
       "schemaName": "we_Engagement",
@@ -71,7 +91,7 @@
             { "name": "contact-ambiguous", "value": 100000001, "label": "More than one contact has this address" }
           ]
         },
-        { "schemaName": "we_contactname", "displayName": "Name given", "type": "string", "maxLength": 200 },
+        { "schemaName": "we_submittername", "displayName": "Name given", "type": "string", "maxLength": 200 },
         { "schemaName": "we_email", "displayName": "Email given", "type": "string", "maxLength": 254 },
         { "schemaName": "we_company", "displayName": "Company given", "type": "string", "maxLength": 200 },
         { "schemaName": "we_companyurl", "displayName": "Company website given", "type": "string", "maxLength": 300 },

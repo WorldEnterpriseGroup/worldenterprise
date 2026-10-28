@@ -8,16 +8,21 @@
  * short-lived bearer token in `DATAVERSE_TOKEN` that the job obtains from its federated credential. The token is never
  * logged. Output names the objects only.
  *
- *   node dataverse/apply.ts            apply
- *   node dataverse/apply.ts --validate check definition.json offline and exit
+ *   node dataverse/apply.ts              apply
+ *   node dataverse/apply.ts --bootstrap  once per environment, by an operator who administers it: create the business unit and
+ *                                        register the pipeline identity (INTAKE_AZURE_CLIENT_ID) in it, then stop
+ *   node dataverse/apply.ts --validate   check definition.json offline and exit
+ *
+ * Optional inputs: `INTAKE_AZURE_CLIENT_ID` (the pipeline identity, ensured as an application user) and `INTAKE_E2E_CLIENT_ID`
+ * (the e2e read-back identity, ensured with its Read and Delete role). Each is skipped when unset.
  */
 
 import { readFileSync } from 'node:fs';
 
-import { DataverseClient } from '../src/azure/dataverse.ts';
+import { DataverseClient, DataverseError } from '../src/azure/dataverse.ts';
 import {
-  attributeBody, entityBody, keyBody, logicalName, lookupBody, parseDefinition, privilegeNames,
-  type Column, type Definition, type Extension, type KeyDefinition, type Table,
+  attributeBody, entityBody, keyBody, logicalName, lookupBody, parseDefinition, privilegeNamesFor,
+  type Column, type Definition, type Extension, type KeyDefinition, type PersonName, type RoleSpec, type Table,
 } from './metadata.ts';
 
 export class ApplyError extends Error {
@@ -33,8 +38,12 @@ export interface ApplyInputs {
   readonly definition: Definition;
   readonly client: DataverseClient;
   readonly baseUrl: string;
-  /** Client id of the Function's user-assigned managed identity. */
+  /** Client id of the Function's user-assigned managed identity. Empty skips registering it (before the first deploy). */
   readonly identityClientId: string;
+  /** Client id of the pipeline identity (`INTAKE_AZURE_CLIENT_ID`). When set, it is registered as an application user holding `definition.deployUser.role`. */
+  readonly deployClientId?: string | undefined;
+  /** Client id of the e2e read-back identity (`INTAKE_E2E_CLIENT_ID`). When set, the Read and Delete role and its application user are applied. */
+  readonly e2eClientId?: string | undefined;
   readonly log: (line: string) => void;
   readonly sleep?: (ms: number) => Promise<void>;
   readonly keyPollAttempts?: number;
@@ -122,9 +131,50 @@ class Applier {
     for (const table of definition.tables) await this.waitForKeys(table.logicalName, table.keys);
     for (const extension of definition.extensions) await this.waitForKeys(extension.table, extension.keys);
 
-    const roleId = await this.ensureRole(definition, unitId);
-    await this.ensureApplicationUser(definition, unitId, roleId);
+    if (this.inputs.deployClientId !== undefined) await this.ensureDeployUser(definition, unitId, this.inputs.deployClientId);
+    const roleId = await this.ensureRole(definition.role, unitId);
+    // Before the first deploy the Function's identity does not exist yet. The schema, role and e2e identity can still be applied;
+    // the job is rerun after intake:deploy to register the Function.
+    if (this.inputs.identityClientId === '') this.inputs.log('skipped application user for the intake identity: INTAKE_IDENTITY_CLIENT_ID is unset');
+    else await this.ensureApplicationUser(this.inputs.identityClientId, definition.applicationUser, unitId, roleId, 'the intake identity');
+    if (this.inputs.e2eClientId !== undefined) await this.ensureE2e(definition, unitId, this.inputs.e2eClientId);
     return { created: this.created, existing: this.existing };
+  }
+
+  /**
+   * The first step of a new environment, run once by an operator who can already administer it (`--bootstrap`): the business
+   * unit, and the pipeline identity as an application user in it. Every later run is the pipeline itself.
+   */
+  async bootstrap(): Promise<ApplySummary> {
+    const { definition } = this.inputs;
+    const clientId = this.inputs.deployClientId;
+    if (clientId === undefined) throw new ApplyError('inputs', 'INTAKE_AZURE_CLIENT_ID is required to register the pipeline identity');
+    await this.send('whoami', [200], 'GET', 'WhoAmI');
+    const unitId = await this.ensureBusinessUnit(definition);
+    await this.ensureDeployUser(definition, unitId, clientId);
+    return { created: this.created, existing: this.existing };
+  }
+
+  /** The pipeline identity: an application user in the WE business unit holding the named platform role of that unit. */
+  private async ensureDeployUser(definition: Definition, unitId: string, clientId: string): Promise<void> {
+    const deploy = definition.deployUser;
+    if (deploy === undefined) throw new ApplyError('deploy user', 'definition.json has no deployUser');
+    let roleId: string | null = null;
+    // A new business unit receives its copies of the platform roles a moment after it exists.
+    for (let attempt = 1; attempt <= 6 && roleId === null; attempt += 1) {
+      roleId = await this.findId('deploy user', 'roles', 'roleid', `name eq ${quote(deploy.role)} and _businessunitid_value eq ${unitId}`);
+      if (roleId === null) await (this.inputs.sleep ?? realSleep)(this.inputs.keyPollMs ?? 5000);
+    }
+    if (roleId === null) throw new ApplyError('deploy user', `the role ${deploy.role} is not in the business unit yet; rerun in a minute`);
+    await this.ensureApplicationUser(clientId, deploy, unitId, roleId, 'the pipeline identity');
+  }
+
+  /** The e2e read-back identity: its own role (Read and Delete only) and an application user holding it. */
+  private async ensureE2e(definition: Definition, unitId: string, clientId: string): Promise<void> {
+    const e2e = definition.e2e;
+    if (e2e === undefined) throw new ApplyError('e2e', 'definition.json has no e2e section');
+    const roleId = await this.ensureRole(e2e.role, unitId);
+    await this.ensureApplicationUser(clientId, e2e.applicationUser, unitId, roleId, 'the e2e identity');
   }
 
   private async ensurePublisher(definition: Definition): Promise<void> {
@@ -236,8 +286,7 @@ class Applier {
     throw new ApplyError(`keys of ${table}`, 'alternate keys are still building; rerun the job in a few minutes');
   }
 
-  private async ensureRole(definition: Definition, unitId: string): Promise<string> {
-    const { role } = definition;
+  private async ensureRole(role: RoleSpec, unitId: string): Promise<string> {
     let roleId = await this.findId('role', 'roles', 'roleid', `name eq ${quote(role.name)} and _businessunitid_value eq ${unitId}`);
     if (roleId === null) {
       const reply = await this.send('role', [201, 204], 'POST', 'roles', { name: role.name, 'businessunitid@odata.bind': `/businessunits(${unitId})` });
@@ -247,7 +296,7 @@ class Applier {
       this.note('existing', `role ${role.name}`);
     }
 
-    const names = privilegeNames(definition);
+    const names = privilegeNamesFor(role);
     const listed = await this.send('privileges', [200], 'GET', `privileges?$select=privilegeid,name&$filter=${encodeURIComponent(names.map((name) => `name eq ${quote(name)}`).join(' or '))}`);
     const byName = new Map((Array.isArray(listed.json?.['value']) ? (listed.json['value'] as Json[]) : []).map((item) => [String(item['name']), String(item['privilegeid'])]));
     const missing = names.filter((name) => !byName.has(name));
@@ -259,33 +308,36 @@ class Applier {
     return roleId;
   }
 
-  private async ensureApplicationUser(definition: Definition, unitId: string, roleId: string): Promise<void> {
-    const clientId = this.inputs.identityClientId;
-    if (!GUID.test(clientId)) throw new ApplyError('application user', 'INTAKE_IDENTITY_CLIENT_ID is not a GUID');
+  private async ensureApplicationUser(clientId: string, person: PersonName, unitId: string, roleId: string, what: string): Promise<void> {
+    if (!GUID.test(clientId)) throw new ApplyError('application user', `the client id of ${what} is not a GUID`);
     const reply = await this.send('application user', [200], 'GET', `systemusers?$select=systemuserid,_businessunitid_value&$filter=${encodeURIComponent(`applicationid eq ${clientId}`)}&$top=1`);
     const first = Array.isArray(reply.json?.['value']) ? (reply.json['value'][0] as Json | undefined) : undefined;
     let userId: string;
     if (first === undefined) {
       const created = await this.send('application user', [201, 204], 'POST', 'systemusers', {
-        applicationid: clientId, firstname: definition.applicationUser.firstName, lastname: definition.applicationUser.lastName, 'businessunitid@odata.bind': `/businessunits(${unitId})`,
+        applicationid: clientId, firstname: person.firstName, lastname: person.lastName, 'businessunitid@odata.bind': `/businessunits(${unitId})`,
       });
       userId = this.idFrom('application user', created, 'systemuserid');
-      this.note('created', 'application user for the intake identity');
+      this.note('created', `application user for ${what}`);
     } else {
       userId = String(first['systemuserid']);
       if (first['_businessunitid_value'] !== unitId) throw new ApplyError('application user', 'the identity already exists in another business unit; move it to the WE business unit first');
-      this.note('existing', 'application user for the intake identity');
+      this.note('existing', `application user for ${what}`);
     }
 
     const assigned = await this.send('role assignment', [200], 'GET', `systemusers(${userId})/systemuserroles_association?$select=roleid&$filter=${encodeURIComponent(`roleid eq ${roleId}`)}`);
-    if (Array.isArray(assigned.json?.['value']) && assigned.json['value'].length > 0) return this.note('existing', 'role assignment');
+    if (Array.isArray(assigned.json?.['value']) && assigned.json['value'].length > 0) return this.note('existing', `role assignment for ${what}`);
     await this.send('role assignment', [200, 204], 'POST', `systemusers(${userId})/systemuserroles_association/$ref`, { '@odata.id': `${this.inputs.baseUrl}/api/data/v9.2/roles(${roleId})` });
-    this.note('created', 'role assignment');
+    this.note('created', `role assignment for ${what}`);
   }
 }
 
 export async function applyDefinition(inputs: ApplyInputs): Promise<ApplySummary> {
   return new Applier(inputs).run();
+}
+
+export async function bootstrapEnvironment(inputs: ApplyInputs): Promise<ApplySummary> {
+  return new Applier(inputs).bootstrap();
 }
 
 export function loadDefinition(path: URL = new URL('./definition.json', import.meta.url)): Definition {
@@ -301,18 +353,26 @@ async function main(): Promise<void> {
   const baseUrl = (process.env['DATAVERSE_URL'] ?? '').replace(/\/+$/, '');
   const token = process.env['DATAVERSE_TOKEN'] ?? '';
   const identityClientId = process.env['INTAKE_IDENTITY_CLIENT_ID'] ?? '';
-  const missing = [['DATAVERSE_URL', baseUrl], ['DATAVERSE_TOKEN', token], ['INTAKE_IDENTITY_CLIENT_ID', identityClientId]].filter(([, value]) => value === '').map(([name]) => name);
+  const bootstrap = process.argv.includes('--bootstrap');
+  const optional = (name: string): string | undefined => {
+    const value = process.env[name] ?? '';
+    return value === '' ? undefined : value;
+  };
+  const missing = [['DATAVERSE_URL', baseUrl], ['DATAVERSE_TOKEN', token]].filter(([, value]) => value === '').map(([name]) => name);
   if (missing.length > 0) throw new ApplyError('inputs', `missing ${missing.join(', ')}`);
   if (!baseUrl.startsWith('https://')) throw new ApplyError('inputs', 'DATAVERSE_URL must be an https URL');
 
-  const client = new DataverseClient({ baseUrl, fetch, getToken: () => Promise.resolve(token), timeoutMs: 60_000 });
-  const summary = await applyDefinition({ definition, client, baseUrl, identityClientId, log: (line) => console.log(line) });
+  const client = new DataverseClient({ baseUrl, fetch, getToken: () => Promise.resolve(token), timeoutMs: 300_000 });
+  const inputs: ApplyInputs = {
+    definition, client, baseUrl, identityClientId, deployClientId: optional('INTAKE_AZURE_CLIENT_ID'), e2eClientId: optional('INTAKE_E2E_CLIENT_ID'), log: (line) => console.log(line),
+  };
+  const summary = bootstrap ? await bootstrapEnvironment(inputs) : await applyDefinition(inputs);
   console.log(`done: ${summary.created.length} created, ${summary.existing.length} already present`);
 }
 
 if (import.meta.main) {
   main().catch((error: unknown) => {
-    console.error(error instanceof ApplyError ? `apply failed at ${error.message}` : `apply failed: ${error instanceof Error ? error.name : 'unknown error'}`);
+    console.error(error instanceof ApplyError ? `apply failed at ${error.message}` : error instanceof DataverseError ? `apply failed: ${error.code}` : `apply failed: ${error instanceof Error ? error.name : 'unknown error'}`);
     process.exit(1);
   });
 }

@@ -58,14 +58,29 @@ export interface PrivilegeGrant {
   readonly actions: readonly string[];
 }
 
+export interface RoleSpec {
+  readonly name: string;
+  readonly depth: 'Basic' | 'Local' | 'Deep' | 'Global';
+  readonly privileges: readonly PrivilegeGrant[];
+}
+
+export interface PersonName {
+  readonly firstName: string;
+  readonly lastName: string;
+}
+
 export interface Definition {
   readonly version: number;
   readonly publisher: { readonly uniqueName: string; readonly friendlyName: string; readonly customizationPrefix: string; readonly customizationOptionValuePrefix: number };
   readonly solution: { readonly uniqueName: string; readonly friendlyName: string; readonly version: string };
   readonly businessUnit: { readonly name: string };
   readonly ownerTeam: { readonly name: string };
-  readonly role: { readonly name: string; readonly depth: 'Basic' | 'Local' | 'Deep' | 'Global'; readonly privileges: readonly PrivilegeGrant[] };
-  readonly applicationUser: { readonly firstName: string; readonly lastName: string };
+  readonly role: RoleSpec;
+  readonly applicationUser: PersonName;
+  /** The pipeline identity, registered in the WE business unit with an existing platform role (see `--bootstrap`). */
+  readonly deployUser?: PersonName & { readonly role: string };
+  /** The e2e read-back identity: a role limited to Read and Delete, and the application user that holds it. */
+  readonly e2e?: { readonly role: RoleSpec; readonly applicationUser: PersonName };
   readonly tables: readonly Table[];
   readonly extensions: readonly Extension[];
 }
@@ -186,8 +201,12 @@ export function privilegeName(action: string, tableSchemaName: string): string {
   return `prv${action}${tableSchemaName}`;
 }
 
+export function privilegeNamesFor(role: RoleSpec): readonly string[] {
+  return role.privileges.flatMap((grant) => grant.actions.map((action) => privilegeName(action, grant.table)));
+}
+
 export function privilegeNames(definition: Definition): readonly string[] {
-  return definition.role.privileges.flatMap((grant) => grant.actions.map((action) => privilegeName(action, grant.table)));
+  return privilegeNamesFor(definition.role);
 }
 
 export function parseDefinition(text: string): Definition {
@@ -217,6 +236,14 @@ export function parseDefinition(text: string): Definition {
     for (const column of extension.columns) {
       if (!column.schemaName.startsWith(prefix)) throw new Error(`definition: extension column ${column.schemaName} must carry the ${prefix} prefix`);
       attributeBody(column);
+    }
+  }
+  if (definition.deployUser !== undefined && definition.deployUser.role.trim() === '') throw new Error('definition: deployUser needs a role name');
+  if (definition.e2e !== undefined) {
+    const { role } = definition.e2e;
+    if (role.depth !== 'Local') throw new Error('definition: the e2e role must be Local depth');
+    for (const grant of role.privileges) {
+      for (const action of grant.actions) if (action !== 'Read' && action !== 'Delete') throw new Error(`definition: the e2e role may only Read and Delete, not ${action} on ${grant.table}`);
     }
   }
   return definition;
