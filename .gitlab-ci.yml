@@ -629,10 +629,14 @@ verify:release:
     paths:
       - reports/release-gate.json
   rules:
-    # A release tag and gh-pages run the release gate with no allowances, as the GitHub Actions build does.
+    # A release tag and gh-pages run the release gate with no allowances, as the GitHub Actions build does. The production endpoints
+    # reach this job alone, from the protected WE_RELEASE_* variables: a project variable named PUBLIC_WE_* would outrank the job
+    # variables of every test build (e2e:forms mocks intake.example.test, the other suites expect no endpoint) and break them (#119).
     - if: '$CI_COMMIT_TAG =~ /^release-/ || $CI_COMMIT_BRANCH == "gh-pages"'
       variables:
         RELEASE_ALLOW: ""
+        PUBLIC_WE_INTAKE_API_URL: "${WE_RELEASE_INTAKE_API_URL}"
+        PUBLIC_WE_NEWSLETTER_API_URL: "${WE_RELEASE_NEWSLETTER_API_URL}"
       allow_failure: false
     - if: '$CI_COMMIT_BRANCH =~ /^wp\// && $QA_STRICT == "1"'
       changes:

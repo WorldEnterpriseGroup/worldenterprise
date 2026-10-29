@@ -217,6 +217,9 @@ test('CI: the release tag and gh-pages rule empties RELEASE_ALLOW first, cannot 
   const first = rules.slice(0, rules.indexOf("    - if: '$CI_COMMIT_BRANCH =~ /^wp\\/' && $QA_STRICT"));
   assert.match(first, /CI_COMMIT_TAG =~ \/\^release-\/ \|\| \$CI_COMMIT_BRANCH == "gh-pages"/);
   assert.match(first, /RELEASE_ALLOW: ""/);
+  // The production endpoints come from release-only names, so they never outrank a test build's endpoint (#119).
+  assert.match(first, /PUBLIC_WE_INTAKE_API_URL: "\$\{WE_RELEASE_INTAKE_API_URL\}"/);
+  assert.match(first, /PUBLIC_WE_NEWSLETTER_API_URL: "\$\{WE_RELEASE_NEWSLETTER_API_URL\}"/);
   assert.match(first, /allow_failure: false/);
   assert.ok(rules.indexOf('RELEASE_ALLOW: ""') < rules.indexOf('allow_failure: true'), 'the release rule comes before every soft rule');
   const mirror = ci.slice(ci.indexOf('\nmirror:'));

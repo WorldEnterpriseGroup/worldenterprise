@@ -17,7 +17,7 @@ Waiting on the owner or an operator (names only, no values anywhere in Git):
 
 | Item | Owner | Where it is described |
 |---|---|---|
-| `PUBLIC_WE_INTAKE_API_URL` and `PUBLIC_WE_NEWSLETTER_API_URL` set (https, same values) in GitHub repo variables and in GitLab CI variables, once the WE intake Azure Function is deployed and reachable (`docs/intake-runbook.md`, OP-AZURE to OP-FLAGS) | operator | section 5 |
+| `PUBLIC_WE_INTAKE_API_URL` and `PUBLIC_WE_NEWSLETTER_API_URL` set (https, same values) in GitHub repo variables and, as `WE_RELEASE_INTAKE_API_URL` and `WE_RELEASE_NEWSLETTER_API_URL`, in GitLab protected CI variables, once the WE intake Azure Function is deployed and reachable (`docs/intake-runbook.md`, OP-AZURE to OP-FLAGS) | operator | section 5 |
 | GitHub Pages source is "GitHub Actions" and the `github-pages` environment allows `gh-pages` | operator | section 4, step 2 |
 | Investor Introductions wording: decided 2026-10-28 under CEO delegation (the contradicting article sentence was fixed earlier) | closed | section 8 |
 | `hello@`, `apply@` and `security@` confirmed as aliases of the monitored `info@` mailbox (2026-10-28) | closed | sections 6 and 7 |
@@ -144,7 +144,7 @@ State as of 2026-10-28: the release is held by the CEO until the forms are prove
 
 0. Prerequisite, the only open gate. The intake backend is proven end to end (a submission from each form lands in Dataverse and Dynamics 365 and notifies `info@`). Record its public HTTPS endpoint. The newsletter endpoint is optional: unset, `/newsletter/` does not launch and nothing is blocked.
 1. Set the intake variable in both places, same value (an operator with the rights; the value never goes into Git or a ticket):
-   - GitLab: Settings, CI/CD, Variables, `PUBLIC_WE_INTAKE_API_URL`, protected.
+   - GitLab: Settings, CI/CD, Variables, `WE_RELEASE_INTAKE_API_URL`, protected (and `WE_RELEASE_NEWSLETTER_API_URL` if the newsletter launches). Never create a GitLab variable named `PUBLIC_WE_*`: a project variable outranks the job variables, so it would put the production endpoint into every test build and turn `e2e:forms`, `e2e:wave7` and `e2e:wave8` red. The `verify:release` rule for a release tag and `gh-pages` maps the `WE_RELEASE_*` values onto `PUBLIC_WE_*` for that job only. Done on 2026-10-29.
    - GitHub: `gh variable set PUBLIC_WE_INTAKE_API_URL --repo WorldEnterpriseGroup/worldenterprise` (prompts for the value). Do the same for `PUBLIC_WE_NEWSLETTER_API_URL` only if the newsletter launches.
    - Confirm the names: `gh variable list --repo WorldEnterpriseGroup/worldenterprise`.
 2. Pick the commit and prove it. The `demo` head has a green pipeline (`glab api "projects/228/pipelines?ref=demo&per_page=1"`). It descends from `gh-pages`: `git fetch origin --tags && git merge-base --is-ancestor origin/gh-pages <sha> && echo fast-forward`. Section 8 has no open box: `node --input-type=module -e "import { humanItemProblems } from './scripts/lib/wave8/release-open-items.mjs'; import { readFileSync } from 'node:fs'; console.log(humanItemProblems(readFileSync('.astro-magazine/release/RELEASE.md', 'utf8')).length)"` prints `0`.
@@ -164,8 +164,8 @@ Fix-forward note: a wording or form problem after launch is a commit on `demo`, 
 
 | Name | Set where | Value shape | Purpose |
 |---|---|---|---|
-| `PUBLIC_WE_INTAKE_API_URL` | GitHub repo variable and GitLab CI variable (protected) | absolute `https://` URL | Endpoint for the apply, contact, brief, investor and partner forms. Without it a launched form that has no mailbox fallback is disabled and the release build refuses to ship. |
-| `PUBLIC_WE_NEWSLETTER_API_URL` | GitHub repo variable and GitLab CI variable (protected) | absolute `https://` URL | Endpoint for the newsletter form. Without it the newsletter does not launch. |
+| `PUBLIC_WE_INTAKE_API_URL` | GitHub repo variable; in GitLab the protected CI variable `WE_RELEASE_INTAKE_API_URL`, which `verify:release` maps onto this name on a release tag and `gh-pages` | absolute `https://` URL | Endpoint for the apply, contact, brief, investor and partner forms. Without it a launched form that has no mailbox fallback is disabled and the release build refuses to ship. |
+| `PUBLIC_WE_NEWSLETTER_API_URL` | GitHub repo variable; in GitLab the protected CI variable `WE_RELEASE_NEWSLETTER_API_URL`, mapped the same way | absolute `https://` URL | Endpoint for the newsletter form. Without it the newsletter does not launch. |
 | `PUBLIC_WE_INTAKE_REQUIRES_JS` | optional, same places | `1` | Set only if the intake endpoint cannot take a native form-encoded post (`docs/forms-contract.md`, section 8). |
 | `RELEASE_APPROVED` | manual `mirror` job run on the release tag only | commit SHA, 12 or more hex characters | Approves exactly one commit. Do not store it as a project variable. |
 | `GITHUB_REPO` | already set in `.gitlab-ci.yml` | `WorldEnterpriseGroup/worldenterprise` | Which public repository the confirmation reads. |
