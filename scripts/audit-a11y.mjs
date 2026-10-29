@@ -129,7 +129,7 @@ export function auditA11y(pages) {
   return pages.flatMap(auditPage);
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist', json: 'reports/a11y-static.json' });
   try {
     const pages = readPages(args.dist);

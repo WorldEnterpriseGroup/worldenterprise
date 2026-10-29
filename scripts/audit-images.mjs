@@ -158,7 +158,7 @@ export function auditMarkup({ root, pages, sizeOf = (rel) => (existsSync(join(ro
   return { findings, stats };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist', json: 'reports/images.json' });
   if (args['self-test'] === true) {
     const results = selfTest(auditMetadata);

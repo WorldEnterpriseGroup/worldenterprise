@@ -45,7 +45,7 @@ export function unallowed(problems, allowList) {
   return problems.filter((problem) => !patterns.some((re) => re.test(problem)));
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = parseArgs(process.argv.slice(2), { json: 'reports/release-gate.json' });
   const allow = process.env.RELEASE_ALLOW ?? '';
   const env = { ...process.env, PUBLIC_RELEASE: '1' };

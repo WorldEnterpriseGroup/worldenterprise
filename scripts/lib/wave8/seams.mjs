@@ -254,7 +254,7 @@ export function checkSeams(root = process.cwd()) {
   return { root, ok: findings.length === 0, checks, findings };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const argv = process.argv.slice(2);
   const arg = (name, fallback) => (argv.includes(name) ? argv[argv.indexOf(name) + 1] : fallback);
   const root = arg('--root', process.cwd());

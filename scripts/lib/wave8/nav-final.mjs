@@ -43,7 +43,7 @@ export function shippedHrefs(nav) {
   return [...new Set([nav.apply, ...nav.utility, ...nav.sections.flatMap((s) => [s.href, ...s.columns.flatMap((c) => c.links), ...s.strip]), ...nav.footer.flatMap((c) => c.links)])];
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const argv = process.argv.slice(2);
   const root = argv.includes('--root') ? argv[argv.indexOf('--root') + 1] : process.cwd();
   const nav = shippedNav(root);

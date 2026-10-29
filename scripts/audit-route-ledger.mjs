@@ -68,7 +68,7 @@ export function auditLedger({ distDir, ledger, pages, strict = false, fileExists
   return { findings, summary: { built: built.size, live: live.length, pending: pending.map((r) => r.path), leaked: leaked.map((r) => r.path), unledgered } };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist', ledger: 'reports/ledger.json', json: 'reports/ledger-audit.json' });
   try {
     const ledger = loadLedger(args.ledger);
