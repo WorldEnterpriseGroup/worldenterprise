@@ -11,7 +11,7 @@ const script = read(SCRIPT);
 const ci = read('.gitlab-ci.yml');
 const pages = read('.github/workflows/pages.yml');
 /** The command lines of the script, in order. */
-const commands = script.split('\n').filter((line) => line !== '' && !line.startsWith('#') && line !== 'set -eu');
+const commands = script.split('\n').map((line) => line.trim()).filter((line) => line !== '' && !line.startsWith('#') && line !== 'set -eu');
 
 test('GitLab verify:release and the GitHub pages build both run the shared gate script', () => {
   const job = ci.slice(ci.indexOf('\nverify:release:'), ci.indexOf('\n# The shared Pages job'));
