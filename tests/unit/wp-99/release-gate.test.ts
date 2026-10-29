@@ -225,7 +225,7 @@ test('CI: the release tag and gh-pages rule empties RELEASE_ALLOW first, cannot 
   const mirror = ci.slice(ci.indexOf('\nmirror:'));
   assert.match(mirror, /needs:[\s\S]*- job: verify:release\n\s+artifacts: false/);
   assert.equal((ci.match(/RELEASE_ALLOW: ""/g) ?? []).length, 1, 'no other job or rule sets an allowance');
-  assert.match(read('.github/workflows/pages.yml'), /RELEASE_ALLOW: ''[\s\S]*npm run verify:release/);
+  assert.match(read('.github/workflows/pages.yml'), /RELEASE_ALLOW: ''[\s\S]*sh scripts\/ci\/release-gates\.sh/);
 });
 
 test('the branch allowance is exactly the two operator-gated kinds', () => {

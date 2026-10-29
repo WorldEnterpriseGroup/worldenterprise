@@ -622,7 +622,8 @@ verify:release:
       artifacts: false
   script:
     - npm ci --prefer-offline --no-audit --no-fund
-    - npm run verify:release
+    # The same script .github/workflows/pages.yml runs: the release build and every audit of the dist it uploads, so the two cannot drift.
+    - sh scripts/ci/release-gates.sh
   artifacts:
     when: always
     expire_in: 1 week

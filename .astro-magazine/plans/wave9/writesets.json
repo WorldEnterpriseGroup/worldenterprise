@@ -149,7 +149,7 @@
         "src/components/visuals/**",
         "src/scripts/visuals/**",
         "src/assets/visuals/**",
-        "src/pages/styleguide.astro",
+        "src/pages/styleguide/[...slug].astro",
         "tests/unit/wp-52/**",
         "tests/e2e/wave8/wp-52/**",
         ".astro-magazine/handoffs/wp-52*",
@@ -157,7 +157,7 @@
       ],
       "laneExceptions": [],
       "exceptions": [
-        "src/pages/styleguide.astro"
+        "src/pages/styleguide/[...slug].astro"
       ]
     },
     {
@@ -512,7 +512,7 @@
         "src/pages/glossary/index.astro",
         "src/pages/newsletter/[...slug].astro",
         "src/pages/sitemap.astro",
-        "src/pages/styleguide.astro",
+        "src/pages/styleguide/[...slug].astro",
         "src/scripts/evidence-room.ts",
         "src/content/insights/dream/write-the-problem-brief-before-the-code.mdx",
         "src/content/insights/dream/is-your-saas-idea-a-business-or-a-feature.mdx",

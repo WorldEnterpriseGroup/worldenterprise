@@ -97,7 +97,7 @@ test('every stage of the altitude diagram has a rise class', () => {
 });
 
 test('the styleguide swatches colour themselves with an SVG fill, a presentation attribute that the policy allows', () => {
-  const page = read('src/pages/styleguide.astro');
+  const page = read('src/pages/styleguide/[...slug].astro');
   assert.match(page, /<rect[^>]*fill=\{s\.hex\}/);
   assert.doesNotMatch(read('src/styles/components.css'), /var\(--swatch\)/);
 });

@@ -47,13 +47,17 @@ test('the workflow grants no token scopes by default, and each job grants only w
 test('the build job runs the release gate with no allowances before it uploads anything', () => {
   const build = jobs(pages).get('build') as string;
   assert.match(build, /RELEASE_ALLOW: ''/);
-  const verify = build.indexOf('npm run verify:release');
-  const dist = build.indexOf('scripts/lib/audit-dist.mjs --dist dist --cname CNAME --cname-in-dist');
+  // The gate sequence itself lives in scripts/ci/release-gates.sh, shared with the GitLab verify:release job (#124).
+  const gates = build.indexOf('sh scripts/ci/release-gates.sh');
   const upload = build.indexOf('actions/upload-pages-artifact@');
-  assert.ok(verify > 0 && dist > verify && upload > dist, 'verify:release, then the dist audit, then the upload');
-  const csp = build.indexOf('node scripts/audit-csp.mjs --dist dist');
-  assert.ok(csp > dist && csp < upload, 'the CSP coverage audit runs on the final dist, before the upload');
-  const copy = build.indexOf('cp CNAME dist/CNAME');
+  assert.ok(gates > 0 && upload > gates, 'the gate script runs before the upload');
+  const script = readFileSync(new URL('../../../scripts/ci/release-gates.sh', import.meta.url), 'utf8');
+  const verify = script.indexOf('npm run verify:release');
+  const dist = script.indexOf('scripts/lib/audit-dist.mjs --dist dist --cname CNAME --cname-in-dist');
+  assert.ok(verify >= 0 && dist > verify, 'verify:release, then the dist audit');
+  const csp = script.indexOf('node scripts/audit-csp.mjs --dist dist');
+  assert.ok(csp > dist, 'the CSP coverage audit runs on the final dist');
+  const copy = script.indexOf('cp CNAME dist/CNAME');
   assert.ok(copy > verify && copy < dist, 'CNAME is copied in before the dist audit, so the audit checks the final dist');
   assert.match(build, /persist-credentials: false/);
 });
