@@ -58,16 +58,33 @@ function client(script: Scripted[], sleeps: number[] = []): { client: DataverseC
 }
 
 describe('Dataverse engagements', () => {
-  test('create is an alternate-key upsert that cannot overwrite: 204 is created and 412 is exists', async () => {
+  test('create is a POST carrying the alternate key, so it can never overwrite: 204 is created and 412 is exists', async () => {
     const created = client([jsonResponse(204)]);
-    assert.equal(await new DataverseEngagements(created.client).createIfAbsent('req-1', { we_requestid: 'req-1' }), 'created');
+    assert.equal(await new DataverseEngagements(created.client).createIfAbsent('req-1', { we_kind: 'apply' }), 'created');
     const [request] = created.seen;
-    assert.equal(request?.method, 'PATCH');
-    assert.equal(request?.url, "https://org.crm.example/api/data/v9.2/we_engagements(we_requestid='req-1')");
-    assert.equal(request?.headers['If-None-Match'], '*');
+    assert.equal(request?.method, 'POST');
+    assert.equal(request?.url, 'https://org.crm.example/api/data/v9.2/we_engagements');
+    assert.deepEqual(request?.body, { we_kind: 'apply', we_requestid: 'req-1' });
     assert.equal(request?.headers['Authorization'], 'Bearer TOKEN-VALUE');
     const exists = client([jsonResponse(412)]);
     assert.equal(await new DataverseEngagements(exists.client).createIfAbsent('req-1', {}), 'exists');
+  });
+
+  // Gate for #119: Dataverse answers an alternate-key PATCH with `If-None-Match: *` for a NEW key with 404 (0x80060891), so that
+  // pattern can never create. No create-only write may use it.
+  test('no create-only write addresses a row by alternate key with If-None-Match', async () => {
+    const seen: Seen[] = [];
+    const dataverse = (record: Seen): Response => {
+      seen.push(record);
+      if (record.headers['If-None-Match'] !== undefined) return jsonResponse(404, { error: { code: '0x80060891' } });
+      return record.method === 'POST' ? jsonResponse(201, { accountid: 'acct-1', leadid: 'lead-1' }) : jsonResponse(500);
+    };
+    const engagements = client([dataverse]);
+    assert.equal(await new DataverseEngagements(engagements.client).createIfAbsent('req-1', {}), 'created');
+    const crm = client([dataverse, dataverse]);
+    assert.deepEqual(await new DataverseCrm(crm.client).ensureAccount({ key: 'domain:example.org', fields: {}, organization: true }), { id: 'acct-1' });
+    assert.deepEqual(await new DataverseCrm(crm.client).ensureLead('req-1', {}), { id: 'lead-1' });
+    assert.ok(seen.every((record) => record.method === 'POST' && !record.url.includes("='")), JSON.stringify(seen.map((r) => [r.method, r.url])));
   });
 
   test('any other status is an error carrying the status as its code, with no request data in the message', async () => {
@@ -146,12 +163,13 @@ describe('Dataverse engagements', () => {
 describe('Dataverse accounts and contacts', () => {
   const plan = { key: "domain:o'brien.example", fields: { name: 'O Brien Co' }, organization: true };
 
-  test('a new account is created through its alternate key, with the key value escaped in the path', async () => {
+  test('a new account is a POST carrying its alternate key in the body', async () => {
     const made = client([jsonResponse(201, { accountid: 'acct-9' })]);
     assert.deepEqual(await new DataverseCrm(made.client).ensureAccount(plan), { id: 'acct-9' });
     const [request] = made.seen;
-    assert.ok(request?.url.endsWith("accounts(we_accountkey='domain%3Ao''brien.example')"), request?.url);
-    assert.equal(request?.headers['If-None-Match'], '*');
+    assert.equal(request?.method, 'POST');
+    assert.ok(request?.url.endsWith('/accounts'), request?.url);
+    assert.equal(request?.headers['If-None-Match'], undefined);
     assert.deepEqual(request?.body, { name: 'O Brien Co', we_accountkey: "domain:o'brien.example" });
   });
 
@@ -181,14 +199,14 @@ describe('Dataverse accounts and contacts', () => {
     assert.equal(made.seen[1]?.headers['If-Match'], '*');
   });
 
-  test('a new Lead is an alternate-key upsert that cannot overwrite, with the request id escaped in the path', async () => {
+  test('a new Lead is a POST carrying the request id as its alternate key, so it cannot overwrite', async () => {
     const guid = '8c6f0d2e-1b7a-4e53-9a41-0f2d3c4b5a69';
     const made = client([jsonResponse(204, undefined, { 'OData-EntityId': `https://org.crm.example/api/data/v9.2/leads(${guid})` })]);
-    assert.deepEqual(await new DataverseCrm(made.client).ensureLead("req'1", { subject: 'S', we_requestid: "req'1" }), { id: guid });
+    assert.deepEqual(await new DataverseCrm(made.client).ensureLead("req'1", { subject: 'S' }), { id: guid });
     const [request] = made.seen;
-    assert.equal(request?.method, 'PATCH');
-    assert.ok(request?.url.endsWith("leads(we_requestid='req''1')"), request?.url);
-    assert.equal(request?.headers['If-None-Match'], '*');
+    assert.equal(request?.method, 'POST');
+    assert.ok(request?.url.endsWith('/leads'), request?.url);
+    assert.equal(request?.headers['If-None-Match'], undefined);
     assert.deepEqual(request?.body, { subject: 'S', we_requestid: "req'1" });
   });
 
