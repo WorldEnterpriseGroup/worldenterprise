@@ -392,7 +392,7 @@ async function main() {
   process.exit(failed === 0 ? 0 : 1);
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main().catch((error) => {
     console.error(`run-lighthouse: ${error instanceof Error ? error.stack ?? error.message : String(error)}`);
     process.exit(2);

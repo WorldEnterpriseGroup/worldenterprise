@@ -188,7 +188,7 @@ export function listen(server, port, host = '127.0.0.1') {
   });
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const dist = process.argv[2] ?? 'dist';
   const port = Number(process.argv[3] ?? 4321);
   try {

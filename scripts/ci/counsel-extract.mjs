@@ -88,7 +88,7 @@ export function render(into, pageCount) {
   return `${lines.join('\n')}\n`;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist', out: 'reports/counsel-review.md' });
   try {
     const pages = readPages(args.dist).filter((p) => !isDevRoute(p.route));

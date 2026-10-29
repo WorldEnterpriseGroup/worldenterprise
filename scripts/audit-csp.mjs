@@ -146,7 +146,7 @@ export function auditCsp({ pages }) {
   return { findings, summary: `${pages.length} pages, ${blocks} inline blocks` };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist' });
   const { findings, summary } = auditCsp({ pages: readPages(args.dist) });
   process.exit(report('audit-csp', findings, summary));

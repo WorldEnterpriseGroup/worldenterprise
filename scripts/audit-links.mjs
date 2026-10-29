@@ -171,7 +171,7 @@ export function auditLinks({ distDir, pages, ledger = null, strict = false }) {
   return { findings, external, orphans };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist', ledger: 'reports/ledger.json', json: 'reports/links.json' });
   try {
     const ledger = existsSync(args.ledger) ? loadLedger(args.ledger) : null;

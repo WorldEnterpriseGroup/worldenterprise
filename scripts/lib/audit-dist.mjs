@@ -360,7 +360,7 @@ export function selfTest() {
   return results;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = parseArgs(process.argv.slice(2), { dist: 'dist', cname: 'CNAME' });
   if (args['self-test'] === true) {
     const results = selfTest();
