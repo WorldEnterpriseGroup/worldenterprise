@@ -67,6 +67,12 @@ intake:test:
       - infra/intake/dist/function.zip
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^(demo|gh-pages)$/ || $CI_COMMIT_BRANCH =~ /negatives$/'
+    # The merge request pipeline is the one auto-merge waits for, so an intake change cannot merge to demo with red unit tests (#119).
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        paths:
+          - infra/intake/**/*
+          - .gitlab-ci.yml
     - if: '$CI_COMMIT_BRANCH =~ /^wp\//'
       changes:
         paths:

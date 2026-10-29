@@ -194,7 +194,7 @@ describe('dataverse apply', () => {
   test('the e2e privileges are read and delete only, and it never creates, writes or assigns', () => {
     const definition = loadDefinition();
     const names = privilegeNamesFor(definition.e2e?.role ?? { name: '', depth: 'Local', privileges: [] });
-    assert.deepEqual(names.slice().sort(), ['prvDeleteAccount', 'prvDeleteContact', 'prvDeleteLead', 'prvDeletewe_Engagement', 'prvReadAccount', 'prvReadContact', 'prvReadLead', 'prvReadwe_Engagement']);
+    assert.deepEqual(names.slice().sort(), ['prvDeleteAccount', 'prvDeleteContact', 'prvDeleteLead', 'prvDeletewe_Engagement', 'prvReadAccount', 'prvReadAsyncOperation', 'prvReadContact', 'prvReadLead', 'prvReadwe_Engagement']);
     const widened = JSON.parse(JSON.stringify(definition)) as { e2e: { role: { privileges: { actions: string[] }[] } } };
     widened.e2e.role.privileges[0]?.actions.push('Write');
     assert.throws(() => parseDefinition(JSON.stringify(widened)), /only Read and Delete/);
