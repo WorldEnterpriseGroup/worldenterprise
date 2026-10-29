@@ -25,6 +25,8 @@ test('GitLab verify:release and the GitHub pages build both run the shared gate 
 
 test('the gate script builds the release, copies CNAME in before audit-dist, and runs every strict audit', () => {
   assert.equal(commands[0], 'npm run verify:release');
+  assert.equal(commands[1], 'if [ -n "${RELEASE_ALLOW:-}" ]; then', 'only an allowance skips the audits, never a branch or tag name');
+  assert.ok(commands.indexOf('exit 0') < commands.indexOf('cp CNAME dist/CNAME'), 'the skip comes before every audit of the dist');
   const at = (needle: string): number => commands.findIndex((c) => c.startsWith(needle));
   for (const needle of ['npm run audit:contrast', 'npm run audit:claims', 'node scripts/lib/export-ledger.mjs', 'cp CNAME dist/CNAME', 'node scripts/audit-csp.mjs', 'node scripts/audit-images.mjs']) {
     assert.notEqual(at(needle), -1, `${needle} runs`);
