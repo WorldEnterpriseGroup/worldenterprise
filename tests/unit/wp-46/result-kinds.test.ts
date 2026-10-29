@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { RESULT_KINDS, filteredStatus, isResultKind, kindLabel, kindsPresent, readType, resultKind, withType } from '../../../src/components/islands/we-search/query.ts';
+import { RESULT_KINDS, filteredStatus, isResultKind, kindLabel, kindsPresent, partialStatus, readType, resultKind, withType } from '../../../src/components/islands/we-search/query.ts';
 
 test('a result URL says its type, with or without the preview base path', () => {
   assert.equal(resultKind('/insights/some-article/'), 'article');
@@ -64,4 +64,13 @@ test('the status line for a filtered list names the type and its count', () => {
   assert.equal(filteredStatus(3, 'seat', 'playbook'), '3 Playbook results for “seat”.');
   assert.equal(filteredStatus(1, 'seat', 'faq'), '1 FAQ result for “seat”.');
   assert.equal(filteredStatus(0, 'seat', 'guide'), 'No Guide results for “seat”.');
+});
+
+test('the status line while the count is not final names the type and the rows read so far', () => {
+  assert.equal(partialStatus(10, 'the', 'article'), '10 Article results for “the” so far. Counting the rest.');
+  assert.equal(partialStatus(1, 'the', 'faq'), '1 FAQ result for “the” so far. Counting the rest.');
+});
+
+test('the partial status can carry a different closing sentence', () => {
+  assert.equal(partialStatus(3, 'the', 'guide', 'The rest could not be read.'), '3 Guide results for “the” so far. The rest could not be read.');
 });

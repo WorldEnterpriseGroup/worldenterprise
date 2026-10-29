@@ -119,3 +119,12 @@ export function filteredStatus(count: number, query: string, kind: ResultKind): 
   if (count === 0) return `No ${noun} results for “${query}”.`;
   return count === 1 ? `1 ${noun} result for “${query}”.` : `${count} ${noun} results for “${query}”.`;
 }
+
+/**
+ * Status line for a filtered list whose count is not final: the rows of the type read so far are on screen and the rest of the index
+ * is still being read. "10 Article results for “x” so far. Counting the rest."
+ */
+export function partialStatus(count: number, query: string, kind: ResultKind, tail = 'Counting the rest.'): string {
+  const noun = kindLabel(kind);
+  return `${count} ${noun} ${count === 1 ? 'result' : 'results'} for “${query}” so far. ${tail}`;
+}

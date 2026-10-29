@@ -8,6 +8,7 @@ import {
   kindsPresent,
   normalizeBase,
   normalizeQuery,
+  partialStatus,
   readQuery,
   readType,
   resolveResultUrl,
@@ -77,6 +78,8 @@ class WeSearch extends HTMLElement {
   private settling: number | undefined;
   /** A batch of rows is being fetched. A second click on "Show more" meanwhile must not start the same batch again. */
   private rendering = false;
+  /** The filtered count is final: every result that will be read has been read. Reset by each view. */
+  private counted = false;
   /** The kinds the chips were built for, so a new search with the same kinds keeps the buttons (and the focus on one). */
   private chipKey = '';
   /** Listeners are attached once. connectedCallback runs again when the element is moved (a view transition, a re-parent). */
@@ -229,6 +232,7 @@ class WeSearch extends HTMLElement {
     this.more.hidden = true;
     this.shown = 0;
     this.rendering = false;
+    this.counted = false;
     if (this.filter === null) this.status.textContent = resultsStatus(this.pending.length, this.query);
     else this.status.textContent = 'Filtering.';
     await this.renderNext(view);
@@ -250,10 +254,12 @@ class WeSearch extends HTMLElement {
     } catch (error) {
       if (view !== this.view) return;
       console.warn('we-search: the results could not all be read, so the type count is not final.', error);
+      this.status.textContent = partialStatus(this.shown, this.query, filter, 'The rest could not be read.');
     }
   }
 
   private announceFilter(count: number, filter: ResultKind): void {
+    this.counted = true;
     this.status.textContent = `${filteredStatus(count, this.query, filter)}${coverageNote(this.pending.length)}`;
     this.more.hidden = this.shown >= count;
   }
@@ -289,6 +295,9 @@ class WeSearch extends HTMLElement {
       this.shown += batch.length;
       if (settle) this.settle();
       this.more.hidden = this.shown >= total;
+      // The final count waits for every result to be read, which is many requests. Until then the status line says what is on screen
+      // (the rows and this line change in the same task), so it never stays at "Filtering." while the index is read.
+      if (filter !== null && !this.counted) this.status.textContent = partialStatus(this.shown, this.query, filter);
     } finally {
       // A newer view has already reset the flag for its own batches; only the batch that still owns it may release it.
       if (view === this.view) this.rendering = false;
