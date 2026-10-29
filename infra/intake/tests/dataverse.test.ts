@@ -68,6 +68,9 @@ describe('dataverse apply', () => {
     assert.deepEqual(fake.associations, [{ userId: user['systemuserid'], roleId: role?.['roleid'] }]);
     assert.ok(summary.created.length > 30);
     assert.ok(privilegeNames(definition).includes('prvCreateLead') && privilegeNames(definition).includes('prvWriteContact'));
+    // Gate for #119: Dataverse checks the owner's read on System Jobs when an Account or Lead is created, and refuses the
+    // create with 403 (missing prvReadAsyncOperation) without it.
+    assert.ok(privilegeNames(definition).includes('prvReadAsyncOperation'));
   });
 
   test('a second run creates nothing', async () => {
