@@ -44,7 +44,9 @@ describe('dataverse definition', () => {
     for (const tableName of ['Lead', 'Contact']) {
       for (const action of ['Create', 'Read', 'Write']) assert.ok(granted.get(tableName)?.includes(action), `${tableName} ${action}`);
     }
-    assert.deepEqual([...granted.keys()].sort(), ['Account', 'Contact', 'Lead', 'we_Engagement']);
+    // AsyncOperation (System Jobs) is Read only: Dataverse checks it when an Account or Lead is created (#119).
+    assert.deepEqual(granted.get('AsyncOperation'), ['Read']);
+    assert.deepEqual([...granted.keys()].sort(), ['Account', 'AsyncOperation', 'Contact', 'Lead', 'we_Engagement']);
   });
 
   test('every column the adapters and mapping use exists in the definition', () => {
