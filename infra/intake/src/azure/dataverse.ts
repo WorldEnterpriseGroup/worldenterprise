@@ -53,11 +53,6 @@ function asRecord(value: unknown): Readonly<Record<string, unknown>> | null {
   return typeof value === 'object' && value !== null && !Array.isArray(value) ? (value as Record<string, unknown>) : null;
 }
 
-/** A string literal inside a key path segment: quotes doubled, then percent-encoded. */
-function keyLiteral(value: string): string {
-  return encodeURIComponent(value.replaceAll("'", "''"));
-}
-
 export class DataverseClient {
   private readonly options: DataverseOptions;
 
@@ -171,7 +166,9 @@ export class DataverseEngagements implements EngagementStore {
    * two concurrent posts of one request id cannot both create. It never overwrites.
    */
   async createIfAbsent(requestId: string, row: Readonly<Record<string, unknown>>): Promise<CreateOutcome> {
-    const reply = await this.client.request('PATCH', `${ENTITY_SET}(we_requestid='${keyLiteral(requestId)}')`, row, { 'If-None-Match': '*' });
+    // Dataverse refuses an alternate-key PATCH with `If-None-Match: *` for a key that does not exist yet (404), so create-only is
+    // a POST that carries the key in the body: the alternate key's uniqueness turns a duplicate into 412.
+    const reply = await this.client.request('POST', ENTITY_SET, { ...row, we_requestid: requestId });
     if (reply.status === 204 || reply.status === 201) return 'created';
     if (reply.status === 412) return 'exists';
     throw new DataverseError(`dataverse_http_${reply.status}`, reply.status);
@@ -211,10 +208,9 @@ export class DataverseCrm implements CrmStore {
     this.client = client;
   }
 
-  /** Upserts on the `we_accountkey` alternate key without overwriting: 412 means it exists, and the existing id is read. */
+  /** Creates on the `we_accountkey` alternate key without overwriting: 412 means it exists, and the existing id is read. */
   async ensureAccount(plan: AccountPlan): Promise<{ readonly id: string }> {
-    const path = `accounts(${ACCOUNT_KEY_COLUMN}='${keyLiteral(plan.key)}')`;
-    const created = await this.client.request('PATCH', path, { ...plan.fields, [ACCOUNT_KEY_COLUMN]: plan.key }, { 'If-None-Match': '*', Prefer: 'return=representation' });
+    const created = await this.client.request('POST', 'accounts', { ...plan.fields, [ACCOUNT_KEY_COLUMN]: plan.key }, { Prefer: 'return=representation' });
     if (created.status === 201 || created.status === 204) {
       const id = created.entityId ?? (typeof created.json?.['accountid'] === 'string' ? created.json['accountid'] : null);
       if (id !== null) return { id };
@@ -244,11 +240,11 @@ export class DataverseCrm implements CrmStore {
   }
 
   /**
-   * Upserts on the `we_requestid` alternate key of the Lead without overwriting: 412 means this request already has its Lead,
+   * Creates on the `we_requestid` alternate key of the Lead without overwriting: 412 means this request already has its Lead,
    * and the existing id is read.
    */
   async ensureLead(requestId: string, fields: Readonly<Record<string, unknown>>): Promise<{ readonly id: string }> {
-    const created = await this.client.request('PATCH', `leads(${LEAD_KEY_COLUMN}='${keyLiteral(requestId)}')`, fields, { 'If-None-Match': '*', Prefer: 'return=representation' });
+    const created = await this.client.request('POST', 'leads', { ...fields, [LEAD_KEY_COLUMN]: requestId }, { Prefer: 'return=representation' });
     if (created.status === 201 || created.status === 204) {
       const id = created.entityId ?? (typeof created.json?.['leadid'] === 'string' ? created.json['leadid'] : null);
       if (id !== null) return { id };
