@@ -14,6 +14,12 @@ import type { Notifier } from '../service/ports.ts';
 /** The audience a Consumption Logic App request trigger validates an Entra token against. */
 export const LOGIC_APP_AUDIENCE = 'https://management.core.windows.net/';
 
+/**
+ * The token scope for that audience. Entra drops a single trailing slash before `.default`, so `<audience>.default` yields a
+ * token whose `aud` lacks the slash and the trigger refuses it with 403 MisMatchingOAuthClaims (#119). The doubled slash keeps it.
+ */
+export const LOGIC_APP_SCOPE = `${LOGIC_APP_AUDIENCE}/.default`;
+
 export class NotifyError extends Error {
   readonly code: string;
   constructor(code: string) {

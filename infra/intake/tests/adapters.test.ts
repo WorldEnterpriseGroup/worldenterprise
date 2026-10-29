@@ -9,7 +9,7 @@ import { DataverseClient, DataverseCrm, DataverseEngagements, DataverseError } f
 import { toRequestLike, toResponse, type RuntimeRequest } from '../src/azure/http-adapter.ts';
 import { SasLinks } from '../src/azure/links.ts';
 import { AcsMailer, MailError, type EmailSender } from '../src/azure/mailer.ts';
-import { LOGIC_APP_AUDIENCE, LogicAppNotifier, NotifyError } from '../src/azure/notify.ts';
+import { LOGIC_APP_AUDIENCE, LOGIC_APP_SCOPE, LogicAppNotifier, NotifyError } from '../src/azure/notify.ts';
 import { buildNotifyEvent, engagementFromRow } from '../src/logic/mapping.ts';
 import { RATE_LIMIT } from '../src/logic/rate.ts';
 import { MemoryBlobPort } from './blob-fake.ts';
@@ -479,6 +479,8 @@ describe('notification Logic App', () => {
     assert.ok(!JSON.stringify(posted?.body).includes(EMAIL), 'no address in the body');
     assert.deepEqual(tokens, ['asked']);
     assert.equal(LOGIC_APP_AUDIENCE, 'https://management.core.windows.net/');
+    // Gate for #119: the scope keeps the audience's trailing slash, as the trigger's `aud` claim policy requires.
+    assert.equal(LOGIC_APP_SCOPE, 'https://management.core.windows.net//.default');
   });
 
   test('a refusal, an unreachable host, a timeout and a token failure are stable codes with no request data', async () => {
