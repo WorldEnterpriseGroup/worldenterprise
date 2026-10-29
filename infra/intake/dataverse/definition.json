@@ -24,7 +24,8 @@
       { "table": "we_Engagement", "actions": ["Create", "Read", "Write", "Append", "AppendTo"] },
       { "table": "Contact", "actions": ["Create", "Read", "Write", "Append", "AppendTo"] },
       { "table": "Account", "actions": ["Create", "Read", "Write", "AppendTo"] },
-      { "table": "Lead", "actions": ["Create", "Read", "Write", "Append", "AppendTo"] }
+      { "table": "Lead", "actions": ["Create", "Read", "Write", "Append", "AppendTo"] },
+      { "table": "AsyncOperation", "actions": ["Read"] }
     ]
   },
   "applicationUser": {
@@ -44,7 +45,8 @@
         { "table": "Lead", "actions": ["Read", "Delete"] },
         { "table": "Contact", "actions": ["Read", "Delete"] },
         { "table": "Account", "actions": ["Read", "Delete"] },
-        { "table": "we_Engagement", "actions": ["Read", "Delete"] }
+        { "table": "we_Engagement", "actions": ["Read", "Delete"] },
+        { "table": "AsyncOperation", "actions": ["Read"] }
       ]
     },
     "applicationUser": {
