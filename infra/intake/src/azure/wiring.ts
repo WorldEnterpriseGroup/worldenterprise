@@ -18,7 +18,7 @@ import type { IntakeConfig } from './config.ts';
 import { DataverseClient, DataverseCrm, DataverseEngagements } from './dataverse.ts';
 import { SasLinks } from './links.ts';
 import { AcsMailer } from './mailer.ts';
-import { LOGIC_APP_AUDIENCE, LogicAppNotifier } from './notify.ts';
+import { LOGIC_APP_SCOPE, LogicAppNotifier } from './notify.ts';
 
 const consoleSink: LogSink = {
   write(level, line) {
@@ -75,7 +75,7 @@ export function buildDeps(config: IntakeConfig, contract: Contract): Deps {
     notifier: new LogicAppNotifier({
       url: config.notifyUrl,
       fetch,
-      getToken: async () => (await credential.getToken(`${LOGIC_APP_AUDIENCE}.default`)).token,
+      getToken: async () => (await credential.getToken(LOGIC_APP_SCOPE)).token,
     }),
     log: createLogger(consoleSink),
   };
