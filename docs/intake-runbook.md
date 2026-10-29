@@ -123,7 +123,7 @@ It signs in as the identity `sp-worldenterprise-intake-e2e` (secret `worldenterp
 - Decide how long engagement rows, suppression records and brief links are kept. Send the wording. Updating `src/content/pages/legal/privacy.md` then also means changing the wp-10 pin that forbids a stated period, in the same merge request.
 - `NURTURE_ENABLED` (Function setting, Bicep parameter `nurtureEnabled`) stays `false` until the notice states the retention period and counsel has reviewed the day 3, 10 and 21 emails. While it is `false` the nurture timer runs and sends nothing.
 - `flags.briefUpdates` (site flag, default off) shows the second consent box on the brief form. It stays off until the same two items are closed.
-- To connect the site: set `PUBLIC_WE_INTAKE_API_URL` to `https://intake.worldenterprise.org/api/intake` and `PUBLIC_WE_NEWSLETTER_API_URL` to `https://intake.worldenterprise.org/api/newsletter` in the site build's variables. A release build then passes `verify:release`.
+- To connect the site: set `PUBLIC_WE_INTAKE_API_URL` to `https://intake.worldenterprise.org/api/intake` (and `PUBLIC_WE_NEWSLETTER_API_URL` to `https://intake.worldenterprise.org/api/newsletter` if the newsletter launches) as GitHub repo variables, and the same values in GitLab as the protected variables `WE_RELEASE_INTAKE_API_URL` and `WE_RELEASE_NEWSLETTER_API_URL`. Never name a GitLab variable `PUBLIC_WE_*`: it would outrank the test builds' endpoints. A release build then passes `verify:release`.
 
 ## Running it
 
